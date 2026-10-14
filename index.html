@@ -16,9 +16,9 @@
 <meta property="og:title" content="संकष्टी चतुर्थी · Sankashti Chaturthi">
 <meta property="og:description" content="Pooja and aarti texts in Marathi and English, with the next date and moonrise.">
 <meta property="og:url" content="https://sankashti-chaturthi.pages.dev/">
-<meta property="og:image" content="https://sankashti-chaturthi.pages.dev/icon-512.png">
-<meta property="og:image:width" content="512">
-<meta property="og:image:height" content="512">
+<meta property="og:image" content="https://sankashti-chaturthi.pages.dev/share.jpg">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <!-- In the page itself (not added by script) so iPhone share sheets and link previews, which don't run scripts, find the icon -->
@@ -1091,6 +1091,9 @@ ol.toc li.soon .m {
 .grp + .ash {
   border-top: 0;
 }
+.grp {
+  scroll-margin-top: 64px;
+}
 .grp[data-lang="both"] .en {
   margin-left: 0.6em;
   color: var(--muted);
@@ -1244,6 +1247,14 @@ a.t {
   font: 600 16px/1.3 var(--body);
   padding: 10px 18px;
   white-space: nowrap;
+}
+#szt.msg.err {
+  white-space: normal;
+  width: min(92vw, 30rem);
+  box-sizing: border-box;
+  border-radius: 14px;
+  text-align: center;
+  font-size: 14px;
 }
 .bar .lb {
   padding: 0 3px;
@@ -1413,8 +1424,34 @@ a.t {
 [data-lang="both"] #jhb .en {
   display: inline;
   margin-left: 4px;
-  color: var(--muted);
   font-size: 0.85em;
+}
+/* Panels take focus when opened (for keyboards and screen readers); the panel itself shows no ring */
+/* Skip link: off screen until a keyboard Tab lands on it */
+.skip {
+  position: fixed;
+  left: 8px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 600 15px/1.2 var(--lat);
+}
+.skip:focus {
+  top: calc(8px + env(safe-area-inset-top));
+}
+@media print {
+  .skip {
+    display: none;
+  }
+}
+#main:focus,
+#panel:focus,
+#jump:focus,
+h2[tabindex="-1"]:focus {
+  outline: none;
 }
 
 
@@ -2226,15 +2263,11 @@ a.t {
   height: 18px;
   margin: 0 !important;
 }
-#shr2 {
-  margin: 16px 0 4px;
-}
-/* Version number under the Settings buttons, so we can tell which copy a phone is showing */
+/* Version number beside the Settings title, so we can tell which copy a phone is showing */
 #ver {
-  font: 500 12px var(--lat);
+  margin-left: 8px;
+  font: 500 13px var(--lat);
   color: var(--muted);
-  text-align: center;
-  margin-top: 6px;
 }
 /* Narrow phones: icons only (each button keeps its spoken name in aria-label) */
 @media (max-width: 379px) {
@@ -2304,6 +2337,10 @@ a.t {
 [data-cols="2"] {
   --ww: 76rem;
 }
+/* With the side menu (iPad landscape, desktop) the page sits right beside the menu and uses its whole width, up to 60rem */
+[data-rail="1"] {
+  --ww: 60rem;
+}
 @media screen and (min-width: 1100px) {
   [data-rail="1"] {
     --W: min(var(--ww), calc(100vw - 340px));
@@ -2330,12 +2367,26 @@ a.t {
     padding: 4px 6px 12px 0;
     scrollbar-width: thin;
   }
-  #rail .rg {
+  #rail .rg,
+  #rail a.rg {
+    display: block;
     font: 600 13px/1.3 var(--head);
     color: var(--accent);
     margin: 14px 0 4px;
     padding: 0 8px 4px;
+    border: 0;
     border-bottom: 1px solid var(--rule);
+    border-radius: 0;
+  }
+  #rail a.rg {
+    padding-top: 6px;
+    margin-top: 8px;
+  }
+  #rail a.rg:hover {
+    background: var(--surface);
+  }
+  #rail[data-lang="both"] a.rg .en {
+    display: none;
   }
   #rail .rg:first-child {
     margin-top: 0;
@@ -2451,29 +2502,27 @@ a.t {
   --sheet: color-mix(in srgb, var(--surface) 60%, var(--bg));
   --sheet-sh: 0 10px 28px -14px rgb(0 0 0 / 0.6);
 }
+/* High contrast is always black, whichever theme is picked, so the sheet uses the dark mix */
+:root:root:root[data-hc="1"] {
+  --sheet: color-mix(in srgb, var(--surface) 60%, var(--bg));
+  --sheet-sh: none;
+}
+/* The card matches the section rows below it (Contents, Pooja, Aarti): accent bar on top, same border and corners */
 .top {
-  background: var(--sheet);
-  border: 1px solid var(--rule);
-  border-radius: 18px;
-  box-shadow: var(--sheet-sh);
+  background: var(--hdr);
+  border: 1px solid var(--hdrl);
+  border-top: 3px solid var(--accent);
+  border-radius: 12px;
   padding: 10px 10px 2px;
   margin-bottom: 8px;
 }
+/* the card's own top bar replaces the Ganesha band's (kept on wide screens, where the card has no frame) */
+.top .hero {
+  border-top: 0;
+}
 @media screen and (min-width: 1100px) {
   [data-rail="1"] #home {
-    background: var(--sheet);
-    border: 1px solid var(--rule);
-    border-radius: 18px;
-    box-shadow: var(--sheet-sh);
-    padding: 30px 40px 22px;
-    margin-top: 22px;
-  }
-  [data-rail="1"] .top {
-    background: none;
-    border: 0;
-    box-shadow: none;
-    padding: 0;
-    margin: 0;
+    margin-top: 16px;
   }
 }
 @media print {
@@ -2499,7 +2548,8 @@ a.t {
     --warnbg: #3a2a12;
   }
 }
-:root[data-pref="dark"] {
+:root[data-pref="dark"],
+:root:root:root[data-hc="1"] {
   --ok: #5fd08e;
   --warn: #f0b35a;
   --warnbg: #3a2a12;
@@ -2631,20 +2681,6 @@ a.t {
   background: linear-gradient(180deg, var(--hdr), transparent);
   border-top: 3px solid var(--accent);
   text-align: center;
-}
-.hero .om {
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  border: 1.5px solid var(--gold);
-  color: var(--accent);
-  font: 400 24px/1 var(--head);
-  margin-bottom: 4px;
-  box-shadow:
-    0 0 0 3px var(--hdr),
-    0 0 0 4px var(--hdrl);
 }
 .hero .hl1 {
   font: 400 0.95em/1.4 var(--head);
@@ -2956,56 +2992,7 @@ a.t {
 }
 
 
-/* ==== Section dividers (पूजा · POOJA): label between two thin fading lines ==== */
-@media screen {
-  .grp {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    max-width: 46rem;
-    margin: 46px auto 4px;
-    padding: 0;
-    border: 0;
-    font: 400 1.02em/1.3 var(--head);
-    color: var(--accent);
-    letter-spacing: 0;
-    text-align: center;
-  }
-  .grp::before,
-  .grp::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--hdrl) 30%, var(--hdrl) 70%, transparent);
-  }
-  #home + .grp {
-    margin-top: 20px;
-    padding-top: 0;
-    border-top: 0;
-  }
-  .grp .en {
-    font: 500 0.72em/1.3 var(--lat);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .grp[data-lang="en"] .en {
-    font-size: 0.78em;
-  }
-  .grp[data-lang="both"] .en {
-    margin-left: 0;
-    color: var(--muted);
-  }
-  .grp[data-lang="both"] .mr::after {
-    content: "·";
-    margin: 0 0.55em;
-    color: var(--muted);
-  }
-  .grp + .ash header {
-    margin-top: 10px;
-  }
-}
-
-/* ==== Tappable dhrupad marker (Aartis 1–5 and 7): sits right under the stanza; tap shows the dhrupad above ==== */
+/* ==== Tappable dhrupad marker (Aartis 1–5, 7 and 9): sits right under the stanza; tap shows the dhrupad above ==== */
 @media screen {
   [data-ref="1"] .items > .rmk.rmkt {
     position: relative;
@@ -3027,8 +3014,7 @@ a.t {
     position: absolute;
     z-index: 6;
     bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     width: max-content;
     max-width: min(560px, calc(100vw - 16px));
     box-sizing: border-box;
@@ -3066,7 +3052,6 @@ a.t {
   @keyframes rmkin {
     from {
       opacity: 0;
-      transform: translate(-50%, 4px);
     }
   }
 }
@@ -3354,6 +3339,10 @@ a.t {
 #panel #wrow {
   display: block;
 }
+/* a feature held back for a later release (see FEAT_AS in the script) */
+[data-feat][hidden] {
+  display: none !important;
+}
 #panel .sw {
   position: relative;
   display: flex;
@@ -3404,29 +3393,68 @@ a.t {
 #panel .sw:focus-visible {
   outline-offset: -2px;
 }
+/* Header: Settings v1.0 … App, Help, ✕ (App and Help as small outlined pills, always in view) */
+#panel .phd {
+  gap: 8px;
+}
+#panel .phd b {
+  flex: 1;
+  min-width: 0;
+}
 #panel #shr2 {
-  gap: 22px;
-  margin: 2px 0 0;
+  flex: none;
+  gap: 6px;
+  margin: 0;
 }
 #panel #shr2 button {
   flex: none;
   max-width: none;
-  height: 36px;
-  padding: 0 4px;
-  gap: 6px;
-  border: 0;
+  height: 32px;
+  padding: 0 10px;
+  gap: 5px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
   background: none;
   color: var(--accent);
   font: 500 14px/1 var(--lat);
 }
 #panel #shr2 button svg {
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
 }
-#panel #ver {
-  margin-top: 0;
+/* compact rows (44px, still a comfortable tap) so the panel fits on a phone without scrolling */
+#panel {
+  gap: 10px;
+  padding: 10px 16px 12px;
+  max-height: calc(100vh - 72px);
+  max-height: calc(100dvh - 72px);
+}
+#panel .row {
+  min-height: 44px;
+}
+#panel .sw {
+  height: 44px;
+}
+#panel .sw::after {
+  top: 10px;
+}
+#panel .seg button {
+  height: 28px;
+}
+#panel .sz button {
+  height: 30px;
+}
+#panel .phd .xc {
+  width: 32px;
+  height: 32px;
 }
 @media (max-width: 379px) {
+  #panel #shr2 button > span {
+    display: none;
+  }
+  #panel #shr2 button {
+    padding: 0 8px;
+  }
   #panel .sgrp {
     padding: 0 10px;
   }
@@ -3604,15 +3632,6 @@ a.t {
   }
 }
 /* ==== Ganesha in the home card, and folding the card (final rules) ==== */
-.hero .om {
-  width: 72px;
-  height: 72px;
-  padding: 0;
-  border: 2px solid var(--gold);
-  object-fit: cover;
-  background: var(--hdr);
-  margin-bottom: 6px;
-}
 #cvb {
   position: absolute;
   top: 16px;
@@ -3660,9 +3679,6 @@ a.t {
   height: 44px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow:
-    0 0 0 1.5px var(--gold),
-    0 0 0 4px var(--hdr);
 }
 #slimt {
   min-width: 0;
@@ -3705,52 +3721,19 @@ a.t {
     display: none !important;
   }
 }
-/* ==== Folding the Pooja section (for those who come only for the aartis) ==== */
+/* ==== Folding the Pooja and Aarti sections (the headings' look is in "Fold headings" below) ==== */
 #pfb,
 #xfb {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: var(--surface);
   color: inherit;
   font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
   cursor: pointer;
-}
-#pfb .en,
-#xfb .en {
-  font: 500 0.72em/1.3 var(--lat);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-#g-pooja[data-lang="both"] #pfb > .mr::after,
-#g-aarti[data-lang="both"] #xfb > .mr::after {
-  content: "·";
-  margin: 0 0.55em;
-  color: var(--muted);
-}
-#pfb .pfs,
-#xfb .pfs {
-  display: none;
-  font: 500 13px/1 var(--lat);
-  color: var(--muted);
-  letter-spacing: 0;
-  text-transform: none;
-}
-#pfb .pfs:lang(mr),
-#xfb .pfs:lang(mr),
-#tfb .pfs:lang(mr) {
-  font-family: var(--body);
 }
 #pfb svg,
 #xfb svg {
   flex: none;
-  color: var(--muted);
   transition: transform 0.2s;
 }
 @media screen {
@@ -3758,15 +3741,12 @@ a.t {
   [data-xf="1"] .ar {
     display: none !important;
   }
-  [data-pf="1"] #pfb .pfs,
-  [data-xf="1"] #xfb .pfs {
-    display: inline;
-  }
   [data-pf="1"] #pfb svg,
   [data-xf="1"] #xfb svg {
     transform: rotate(180deg);
   }
 }
+/* the print view copies these headings as plain labels (पूजा POOJA) */
 @media print {
   #pfb,
   #xfb {
@@ -3774,52 +3754,167 @@ a.t {
     background: none;
     padding: 0;
     min-height: 0;
+    letter-spacing: inherit;
+    text-transform: inherit;
+  }
+  #pfb .en,
+  #xfb .en {
+    font: 500 0.72em/1.3 var(--lat);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
   #pfb svg,
-  #pfb .pfs,
-  #xfb svg,
-  #xfb .pfs {
+  #xfb svg {
     display: none !important;
   }
 }
-/* ==== Folding the home contents list and each piece ==== */
-#tfr {
-  display: flex;
-  justify-content: center;
-  margin: 18px 0 4px;
+/* ==== Bottom bar (footer menu on every page; replaced the Previous / Next cards at the end of each piece) ==== */
+@media screen {
+  .pn {
+    display: none !important;
+  }
 }
-#tfb {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 14px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--accent);
-  font: 600 15px/1 var(--lat);
-  cursor: pointer;
+#asc {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 7;
+  /* on iPhones without a home button the buttons sit partly in the home-bar zone (as Safari's own toolbar
+     does), so the bar isn't padded by the whole zone; never less than 8px */
+  padding: 8px 16px max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px));
+  background: var(--bar);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-top: 1px solid var(--rule);
 }
-#tfb .mr {
-  font: 400 17px/1 var(--head);
-}
-#tfr[data-lang="both"] #tfb > .mr::after {
-  content: "·";
-  margin: 0 0.4em;
-  color: var(--muted);
-}
-#tfb .pfs {
+#asc[hidden] {
   display: none;
-  font: 500 13px/1 var(--lat);
+}
+/* out of the way while Settings or Contents is open (data-menu is set by the script; a CSS :has() rule
+   here made every style change on the page several times slower) */
+[data-menu="1"] #asc {
+  display: none;
+}
+[data-asb="1"] body {
+  padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)));
+}
+#asi {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  max-width: 34rem;
+  margin: 0 auto;
+}
+@media screen and (min-width: 1100px) {
+  [data-rail="1"] #asc {
+    padding-left: calc(var(--L) + 260px);
+    padding-right: max(16px, calc(100vw - var(--L) - 260px - var(--W)));
+  }
+}
+/* Buttons as in the top bar (fixed pixel sizes, so text size and pinch leave the bar alone) */
+#asc .asx {
+  font: 600 15px/1 var(--lat);
+  white-space: nowrap;
+}
+#asc .asx:lang(mr) {
+  font-family: var(--body);
+}
+#asc .asx:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+#asc .asi {
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+#asb {
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+#asb svg {
+  grid-area: 1 / 1;
+}
+#asb .ia,
+#asc.on #asb .ip {
+  display: none;
+}
+#asc.on #asb .ia {
+  display: block;
+}
+#ass,
+#asc.on .asx,
+:root:not([data-ason="1"]) #asb {
+  display: none !important;
+}
+#asc.on #ass {
+  display: flex !important;
+}
+#asc.on #asi {
+  justify-content: center;
+}
+#ass {
+  align-items: center;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+#ass button {
+  border: 0;
+  background: none;
+  min-width: 40px;
+  font-size: 20px;
+  color: var(--accent);
+}
+#asl {
+  min-width: 58px;
+  text-align: center;
+  white-space: nowrap;
+  font: 600 14px/1 var(--lat);
+  color: var(--ink);
+}
+#asl:lang(mr) {
+  font-family: var(--body);
+}
+@media (max-width: 359px) {
+  #asl {
+    min-width: 22px;
+  }
+  #asl .asw {
+    display: none;
+  }
+  #ass button {
+    min-width: 32px;
+  }
+  #asc .asx {
+    padding: 0 9px;
+  }
+}
+.rmkpop .ash-h {
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px solid var(--hdrl);
+  font: 600 12px/1.3 var(--lat);
   color: var(--muted);
 }
-#tfb .pfs .mr {
-  font: 400 14px/1 var(--body);
+.rmkpop .ash-h:lang(mr) {
+  font-family: var(--body);
+}
+@media print {
+  #asc {
+    display: none !important;
+  }
+}
+/* ==== Folding the home contents list and each piece (the Contents button's look is in "Fold headings" below) ==== */
+#tfb {
+  cursor: pointer;
 }
 #tfb svg {
   flex: none;
-  color: var(--muted);
   transition: transform 0.2s;
 }
 .ash header {
@@ -3855,9 +3950,6 @@ a.t {
   [data-tf="1"] #home .tocg {
     display: none !important;
   }
-  [data-tf="1"] #tfb .pfs {
-    display: inline;
-  }
   [data-tf="1"] #tfb svg,
   .ash.af .afb svg {
     transform: rotate(180deg);
@@ -3868,33 +3960,57 @@ a.t {
   .ash.af header {
     margin-bottom: 4px;
   }
-  /* Folded pieces line up as one tidy row each: number and name, left aligned, same height */
-  .ash.af header {
+  /* Piece headings are one row, open or folded, so folding never makes the heading jump: number and name
+     on the left, ⌃ on the right, the same height as the Contents, Pooja and Aarti rows (Satish's pick B,
+     2026-10-14). The language tag shows only in print. In Marathi + English the English name follows
+     the Marathi on the same line, small and muted, like the section rows; long names wrap. */
+  .ash header {
+    box-sizing: border-box;
     justify-content: flex-start;
     flex-wrap: nowrap;
     text-align: left;
-    min-height: 64px;
-    padding: 10px 66px 10px 16px;
-    margin: 10px 0 0;
-    border-top-width: 3px;
+    min-height: 52px;
+    padding: 8px 56px 8px 16px;
+    margin: 10px 0 14px;
+    /* plain like the old section rows; the accent bar marks the sections (Contents, पूजा, आरती) instead */
+    background: var(--surface);
+    border-top: 1px solid var(--hdrl);
   }
-  .ash.af header h2 {
-    font-size: 1.05em;
-    line-height: 1.25;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .ash.af header {
+    margin-bottom: 0;
+  }
+  /* the same type as the section rows: 19 px Marathi, 16 px English, so pieces and sections line up */
+  .ash header h2 {
+    font-size: 19px;
+    line-height: 1.3;
     flex: 1 1 auto;
+    text-wrap: pretty;
   }
-  /* in Marathi + English the English name is dropped from the folded row; in English only it is the title */
-  [data-lang="both"] .ash.af header h2 .en,
-  .ash.af[data-lang="both"] header h2 .en,
-  .ash.af header .tag {
+  .ash[data-lang="en"] header h2 {
+    font-size: 16px;
+  }
+  [data-lang="both"] .ash header h2 .en,
+  .ash[data-lang="both"] header h2 .en {
+    margin: 1px 0 0;
+    font: 600 14px/1.25 var(--lat);
+    color: var(--muted);
+  }
+  .ash header .tag {
     display: none;
+  }
+  .afb {
+    right: 10px;
   }
   .ash.af {
     margin-top: 0;
     border-top: 0;
+  }
+  /* no rule between pieces: the boxed heading rows and the end ornament already separate them */
+  .ash {
+    border-top: 0;
+  }
+  .ash.af + .ash {
+    margin-top: 10px;
   }
   .ash.af + .ash.af {
     margin-top: 10px;
@@ -3910,12 +4026,371 @@ a.t {
     padding-inline: 14px;
   }
 }
+/* ==== Fold headings (Contents, Pooja, Aarti): one look, full-width rows lined up with the folded pieces ==== */
+@media screen {
+  #tfr,
+  .grp,
+  #home + .grp {
+    display: block;
+    max-width: 46rem;
+    margin: 10px auto 0;
+  }
+  .grp,
+  #home + .grp {
+    padding: 0;
+    border: 0;
+  }
+  [data-tf="1"] #home {
+    padding-bottom: 0;
+  }
+  #tfb,
+  #pfb,
+  #xfb {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 52px;
+    margin: 0;
+    padding: 0 10px 0 16px;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid var(--hdrl);
+    border-top: 3px solid var(--accent);
+    border-radius: 12px;
+    background: var(--hdr);
+    color: var(--accent);
+    text-align: left;
+  }
+  #tfb .mr,
+  #pfb .mr,
+  #xfb .mr {
+    font: 600 20px/1.2 var(--head);
+    color: var(--accent);
+  }
+  #tfb .en,
+  #pfb .en,
+  #xfb .en {
+    font: 600 14px/1.2 var(--lat);
+    color: var(--muted);
+  }
+  #g-pooja[data-lang="en"] #pfb .en,
+  #g-aarti[data-lang="en"] #xfb .en,
+  #tfr[data-lang="en"] #tfb .en {
+    font: 700 17px/1.2 var(--lat);
+    color: var(--accent);
+  }
+  #tfb svg,
+  #pfb svg,
+  #xfb svg {
+    margin-left: auto;
+    box-sizing: border-box;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--hdrl);
+    color: var(--muted);
+  }
+  .grp + .ash header {
+    margin-top: 10px;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  [data-rail="1"] #home,
+  [data-rail="1"] #tfr,
+  [data-rail="1"] .grp,
+  [data-rail="1"] #home + .grp,
+  [data-rail="1"] .ash header,
+  [data-rail="1"] .rftop {
+    max-width: none;
+  }
+}
+/* Piece headings, the card's Ganesha picture and its folded line fold or open with a tap anywhere on them */
+.ash header,
+#home .hero,
+#slim {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The app's picture on the home card, and its full-screen viewer (#pzv) */
+#iconb {
+  display: block;
+  width: 72px;
+  height: 72px;
+  min-height: 0;
+  margin: 0 auto 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: zoom-in;
+  -webkit-tap-highlight-color: transparent;
+}
+#iconb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 2px 5px rgb(0 0 0 / 0.3));
+}
+#pzv {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(8 6 4 / 0.94);
+  touch-action: none;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  -webkit-user-select: none;
+  user-select: none;
+}
+#pzv[hidden] {
+  display: none;
+}
+#pzi {
+  max-width: min(94vw, 760px);
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  cursor: zoom-in;
+  -webkit-user-drag: none;
+}
+#pzv.zoomed #pzi {
+  cursor: grab;
+}
+#pzx {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top));
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  min-height: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.5);
+  color: #fff;
+}
+#pzh {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  text-align: center;
+  color: rgb(255 255 255 / 0.7);
+  font: 500 13px/1.3 var(--lat);
+  pointer-events: none;
+}
+@media print {
+  #iconb,
+  #pzv {
+    display: none !important;
+  }
+}
+
+/* Vibrant home card (option B): gold glow behind the picture, warm date box, next date in the accent colour
+   with an "in N days" badge, a gold ring on the chosen date chip, past dates dimmed */
+.top .hero {
+  background:
+    radial-gradient(closest-side, color-mix(in srgb, var(--gold) 38%, transparent), transparent) no-repeat center 0 / 150px 110px,
+    linear-gradient(180deg, var(--hdr), transparent);
+}
+#iconb img {
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--gold) 55%, transparent));
+}
+.skc {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface) 55%);
+  border-color: color-mix(in srgb, var(--gold) 55%, var(--hdrl));
+}
+.skc.today {
+  border-color: var(--accent);
+}
+.skc .skh .en {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.9em;
+}
+.skc[data-lang="both"] .skh .en {
+  text-transform: none;
+  letter-spacing: 0;
+}
+.skc .skd {
+  color: var(--accent);
+  font-weight: 600;
+}
+.skc .skd .skin {
+  display: inline-block;
+  margin: 0 2px 0 8px;
+  padding: 0 9px;
+  border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent);
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+  font: 600 12px/1.6 var(--lat);
+  vertical-align: 4px;
+  white-space: nowrap;
+}
+.skc .skd .skin.mr {
+  font-family: var(--body);
+}
+.skc[data-lang="both"] .skd .skin.en {
+  display: none;
+}
+.skc .skch.on {
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 3.5px var(--gold),
+    0 4px 12px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.skc .skch.past:not(.on) {
+  opacity: 0.6;
+}
+/* A little tighter (Satish, 2026-10-14): smaller gaps between the card's lines; room under the chips for the chosen one's glow */
+@media screen {
+  .top .hero {
+    padding-bottom: 2px;
+    margin-bottom: 6px;
+  }
+  .skc {
+    padding-top: 6px;
+    margin-bottom: 10px;
+  }
+  .skc .sktd {
+    margin-bottom: 2px;
+    padding-bottom: 3px;
+  }
+  .skc .skm {
+    row-gap: 0;
+  }
+  .skc .skp.own {
+    margin-top: -2px;
+  }
+  .skc .sks {
+    margin-top: 4px;
+    padding: 8px 6px 7px;
+  }
+  .skc #skall {
+    margin: 0 auto -6px;
+  }
+  #ofb {
+    margin-top: 2px;
+  }
+}
+
+/* English style choices: example on top, a small caption (Simple / Standard (IAST)) under it, same row height */
+#panel #str button {
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1.1;
+}
+#panel #str small {
+  font: 500 10.5px/1.1 var(--lat);
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+#panel #str small .mr {
+  font: 500 11px/1.1 var(--body);
+}
+@media (max-width: 360px) {
+  #panel #str button {
+    padding: 0 7px;
+  }
+}
+
+/* Open all / Fold all pill in a section row, just left of the section's arrow */
+.grp {
+  position: relative;
+}
+.allb {
+  position: absolute;
+  top: 50%;
+  right: 60px;
+  transform: translateY(calc(-50% + 1px));
+  height: 30px;
+  min-height: 0;
+  padding: 0 12px;
+  border: 1px solid var(--hdrl);
+  border-radius: 15px;
+  background: var(--surface);
+  color: var(--accent);
+  font: 600 13px/1 var(--lat);
+  cursor: pointer;
+}
+.allb[lang="mr"] {
+  font: 500 14px/1 var(--body);
+}
+.allb::after {
+  content: "";
+  position: absolute;
+  inset: -7px -4px;
+}
+@media print {
+  .allb {
+    display: none !important;
+  }
+}
+
+/* ==== Bigger tap areas, same look (2026-10-14 accessibility review) ====
+   Small controls get an invisible touch area of about 44 px (Apple and Google's guide) from a transparent
+   ::after, or for the top-bar title (whose box clips) from padding cancelled by a negative margin. */
+.bar .t.site {
+  padding-block: 9px;
+  margin-block: -9px;
+}
+.skc .skl,
+#ofb,
+#xc,
+#shr2 button,
+#panel .seg button,
+#panel .sz button {
+  position: relative;
+}
+.skc .skl::after,
+#ofb::after,
+#xc::after,
+#shr2 button::after,
+#panel .seg button::after,
+#panel .sz button::after {
+  content: "";
+  position: absolute;
+  inset: -6px 0;
+}
+#ofb::after {
+  inset: -4px 0;
+}
+#xc::after {
+  inset: -6px;
+}
+#panel .seg button::after,
+#panel .sz button::after {
+  inset: -7px 0;
+}
+@media screen {
+  .rmk.rmkt::after {
+    inset: -10px -8px;
+  }
+}
 </style>
 </head>
 
 <body>
+<!-- Keyboard users: the first Tab shows this link, which skips the top bar and the contents menu -->
+<a class="skip" id="skip" href="#home" lang="en">Skip to the texts</a>
 <!-- ==== Top bar: home link, then Contents+search, Language, Dhrupad and Settings buttons (icons filled in by the script) ==== -->
-<div class="bar">
+<div class="bar" role="banner">
   <div id="prog" aria-hidden="true"></div>
   <a class="t site" id="bt" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg><span id="btt">संकष्टी चतुर्थी</span></a>
   <div class="tools">
@@ -3926,16 +4401,21 @@ a.t {
   </div>
 </div>
 <!-- ==== Contents + search overlay (list filled in by the script) ==== -->
-<div id="jump" hidden>
+<div id="jump" hidden role="dialog" aria-label="Contents and search" tabindex="-1">
   <input id="q" type="search" placeholder="Find a line (Marathi or English letters)" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Find a line">
   <div id="none" hidden><span class="mr">काही सापडले नाही</span><span class="en" lang="en">Nothing found</span></div>
   <ul id="res"></ul>
   <ul id="jl"></ul>
 </div>
 <!-- ==== Settings panel ==== -->
-<div class="panel" id="panel" hidden>
+<div class="panel" id="panel" hidden role="dialog" aria-label="Settings" tabindex="-1">
   <div class="phd">
-    <b><span class="mr">सेटिंग्ज</span><span class="en" lang="en">Settings</span></b>
+    <b><span class="mr">सेटिंग्ज</span><span class="en" lang="en">Settings</span><span id="ver" lang="en"></span></b>
+    <!-- App (hidden once installed) and Help sit in the header, so they are always in view -->
+    <div id="shr2">
+    <button type="button" id="inb2" aria-label="Add to Home Screen" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="M9 11l3 3 3-3"/><path d="M10.5 18.5h3"/></svg><span class="mr">ॲप</span><span class="en" lang="en">App</span></button>
+    <button type="button" id="hlp2" aria-label="Help and how to use"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.3-2.5 3.9"/><path d="M12 17.2v.01"/></svg><span class="mr">मदत</span><span class="en" lang="en">Help</span></button>
+    </div>
     <button type="button" class="xc" id="xc" aria-label="Close"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
   <!-- Settings look like phone settings: two rounded cards, label on the left, a small sliding control on the right -->
@@ -3950,8 +4430,9 @@ a.t {
   <div class="row">
     <label><span class="mr">इंग्रजी लिपी</span><span class="en" lang="en">English style</span></label>
     <div class="seg" id="str" role="group" aria-label="English style">
-      <button type="button" data-v="simple" lang="en">Sukhkarta</button>
-      <button type="button" data-v="iast" lang="en">sukhakartā</button>
+      <!-- each choice shows an example and, under it, what the style is (in the menu language) -->
+      <button type="button" data-v="simple" lang="en">Sukhkarta<small><span class="mr" lang="mr">सोपे</span><span class="en">Simple</span></small></button>
+      <button type="button" data-v="iast" lang="en">sukhakartā<small><span class="mr" lang="mr">प्रमाणित (IAST)</span><span class="en">Standard (IAST)</span></small></button>
     </div>
   </div>
   <div class="row" id="colrow">
@@ -3982,27 +4463,23 @@ a.t {
   <div class="sgrp">
     <button id="tc" class="sw" type="button"><span class="mr">अधिक ठळक</span><span class="en" lang="en">High contrast</span></button>
     <div id="wrow"><button id="tw" class="sw" type="button"><span class="mr">स्क्रीन चालू ठेवा</span><span class="en" lang="en">Keep screen on</span></button></div>
+    <button id="tas" class="sw" type="button" data-feat="as" hidden><span class="mr">आपोआप पुढे सरकवा</span><span class="en" lang="en">Autoscroll</span></button>
   </div>
-  <!-- Same quiet row as the home page: App (hidden once installed) and Help -->
-  <div id="shr2">
-    <button type="button" id="inb2" aria-label="Add to Home Screen" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="M9 11l3 3 3-3"/><path d="M10.5 18.5h3"/></svg><span class="mr">ॲप</span><span class="en" lang="en">App</span></button>
-    <button type="button" id="hlp2" aria-label="Help and how to use"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.3-2.5 3.9"/><path d="M12 17.2v.01"/></svg><span class="mr">मदत</span><span class="en" lang="en">Help</span></button>
-  </div>
-  <div id="ver" lang="en"></div>
 </div>
 <!-- ==== Left menu on wide screens (filled in by the script); placed here so keyboard users reach it before the page ==== -->
 <nav id="rail" aria-label="Contents"></nav>
 <!-- ==== Page: home, then every piece ==== -->
-<div class="wrap">
+<main class="wrap" id="main" tabindex="-1">
   <!-- ==== Home page ==== -->
-  <main id="home">
+  <section id="home" aria-label="Home">
     <div class="top">
     <!-- Fold button: the card folds to one slim line (Ganesha, next date, moonrise); the buttons come back when it opens -->
     <button type="button" id="cvb" aria-expanded="true" aria-controls="skc" aria-label="Fold the card"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
-    <div id="slim" hidden><img src="ganesha.webp" alt="" width="44" height="44"><div id="slimt"></div></div>
-    <div class="hero" aria-hidden="true">
-      <img class="om" src="ganesha.webp" alt="" width="72" height="72">
-      <div class="hl1">॥ श्री गणेशाय नमः ॥</div>
+    <div id="slim" hidden><img src="picture-360.webp" alt="" width="44" height="44"><div id="slimt"></div></div>
+    <div class="hero">
+      <!-- The app's picture; a tap opens it full screen (#pzv), where it can be pinched or double-tapped to zoom -->
+      <button type="button" id="iconb" aria-label="Show the picture full screen"><img src="picture-360.webp" alt="" width="360" height="360"></button>
+      <div class="hl1" aria-hidden="true">॥ श्री गणेशाय नमः ॥</div>
     </div>
     <div id="skc" class="skc" hidden></div>
     <h1 class="sr"><span class="mr">संकष्टी चतुर्थी</span><span class="en" lang="en">Sankashti Chaturthi</span></h1>
@@ -4019,7 +4496,7 @@ a.t {
     <button type="button" id="ofb" hidden aria-label="Saved for offline. Tap to check for updates"></button>
     </div>
     <!-- Contents fold: hides the list of pieces on the home page -->
-    <div id="tfr"><button type="button" id="tfb" aria-expanded="true" aria-label="Fold the contents"><span class="mr">अनुक्रमणिका</span><span class="en" lang="en">Contents</span><span class="pfs" lang="en">Show</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
+    <div id="tfr"><button type="button" id="tfb" aria-expanded="true" aria-label="Fold the contents"><span class="mr">अनुक्रमणिका</span><span class="en" lang="en">Contents</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
     <div class="tocg">
       <h2 class="gh"><span class="mr">पूजा</span><span class="en" lang="en">Pooja</span></h2>
       <ol class="toc">
@@ -4047,9 +4524,9 @@ a.t {
         <li><a href="#a10" data-go="a10"><span class="m"><span class="no"><span class="nm">१०.</span><span class="ne">10.</span></span> <span class="mr">आरती जय जगदीश हरे</span><span class="en" lang="en">Aarti Jai Jagdish Hare</span></span></a></li>
       </ol>
     </div>
-  </main>
+  </section>
   <!-- ==================== पूजा / POOJA ==================== -->
-  <div class="grp" id="g-pooja"><button type="button" id="pfb" aria-expanded="true" aria-label="Fold the Pooja section"><span class="mr">पूजा</span><span class="en" lang="en">Pooja</span><span class="pfs" lang="en">Show</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
+  <div class="grp" id="g-pooja"><button type="button" id="pfb" aria-expanded="true" aria-label="Fold the Pooja section"><span class="mr">पूजा</span><span class="en" lang="en">Pooja</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
   <!-- ---- Pooja 1. गणपत्यथर्वशीर्षोपनिषत् / Ganapati Atharvashirsha ---- -->
   <section id="p1" class="ash" lang="sa">
     <header>
@@ -4384,7 +4861,7 @@ a.t {
     </nav>
   </section>
   <!-- ==================== आरती / AARTI ==================== -->
-  <div class="grp" id="g-aarti"><button type="button" id="xfb" aria-expanded="true" aria-label="Fold the Aarti section"><span class="mr">आरती</span><span class="en" lang="en">Aarti</span><span class="pfs" lang="en">Show</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
+  <div class="grp" id="g-aarti"><button type="button" id="xfb" aria-expanded="true" aria-label="Fold the Aarti section"><span class="mr">आरती</span><span class="en" lang="en">Aarti</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
   <!-- ---- Aarti 1. गणपतीची आरती / Ganapati Aarti ---- -->
   <section id="a1" class="ash">
     <header>
@@ -5622,8 +6099,14 @@ a.t {
       <span></span>
     </nav>
   </section>
-</div>
+</main>
 <!-- ==== Pop-ups (QR code, print options), print view, status message ==== -->
+<!-- Full-screen picture: pinch, double-tap or (with a mouse) scroll to zoom; drag to move; ✕, Back, Escape or a tap outside closes -->
+<div id="pzv" hidden role="dialog" aria-modal="true" aria-label="Sankashti Chaturthi picture">
+  <img id="pzi" src="picture.webp" alt="Shri Ganesha, Sankashti Chaturthi" width="941" height="940" draggable="false">
+  <button type="button" id="pzx" aria-label="Close"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div id="pzh" aria-hidden="true"></div>
+</div>
 <div id="qrm" hidden role="dialog" aria-modal="true" aria-label="QR code">
   <div class="qrc"><div class="qrt"><span class="mr">उघडण्यासाठी कॅमेऱ्याने स्कॅन करा</span><span class="en" lang="en">Scan with the camera to open</span></div><div class="qri"><svg viewBox="-4 -4 37 37" width="100%" height="100%" shape-rendering="crispEdges" role="img" aria-label="QR code for https://sankashti-chaturthi.pages.dev/"><rect x="-4" y="-4" width="37" height="37" fill="#fff"/><path fill="#000" d="M0 0h7v1h-7zM9 0h1v1h-1zM12 0h1v1h-1zM15 0h1v1h-1zM19 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM10 1h6v1h-6zM17 1h2v1h-2zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM10 2h1v1h-1zM12 2h1v1h-1zM17 2h1v1h-1zM20 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM9 3h2v1h-2zM12 3h1v1h-1zM15 3h1v1h-1zM18 3h3v1h-3zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h1v1h-1zM14 4h3v1h-3zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h1v1h-1zM15 5h1v1h-1zM17 5h1v1h-1zM19 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM11 7h1v1h-1zM14 7h2v1h-2zM17 7h1v1h-1zM0 8h1v1h-1zM3 8h1v1h-1zM5 8h2v1h-2zM8 8h2v1h-2zM16 8h1v1h-1zM21 8h1v1h-1zM23 8h1v1h-1zM0 9h3v1h-3zM7 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM16 9h3v1h-3zM20 9h3v1h-3zM25 9h1v1h-1zM28 9h1v1h-1zM3 10h1v1h-1zM6 10h1v1h-1zM10 10h2v1h-2zM13 10h2v1h-2zM19 10h2v1h-2zM23 10h1v1h-1zM25 10h3v1h-3zM1 11h1v1h-1zM3 11h1v1h-1zM7 11h1v1h-1zM10 11h1v1h-1zM12 11h3v1h-3zM16 11h1v1h-1zM19 11h2v1h-2zM24 11h1v1h-1zM26 11h2v1h-2zM1 12h2v1h-2zM4 12h6v1h-6zM14 12h4v1h-4zM19 12h4v1h-4zM25 12h1v1h-1zM27 12h2v1h-2zM0 13h1v1h-1zM5 13h1v1h-1zM10 13h1v1h-1zM13 13h1v1h-1zM16 13h1v1h-1zM19 13h2v1h-2zM1 14h2v1h-2zM4 14h4v1h-4zM9 14h2v1h-2zM12 14h3v1h-3zM17 14h2v1h-2zM20 14h1v1h-1zM22 14h2v1h-2zM25 14h4v1h-4zM1 15h2v1h-2zM4 15h1v1h-1zM7 15h1v1h-1zM10 15h3v1h-3zM17 15h1v1h-1zM22 15h1v1h-1zM24 15h2v1h-2zM27 15h1v1h-1zM0 16h1v1h-1zM3 16h1v1h-1zM6 16h2v1h-2zM9 16h5v1h-5zM16 16h2v1h-2zM19 16h3v1h-3zM27 16h1v1h-1zM1 17h1v1h-1zM3 17h1v1h-1zM5 17h1v1h-1zM7 17h1v1h-1zM10 17h2v1h-2zM13 17h2v1h-2zM16 17h2v1h-2zM21 17h3v1h-3zM25 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM4 18h1v1h-1zM6 18h3v1h-3zM10 18h1v1h-1zM12 18h1v1h-1zM14 18h1v1h-1zM18 18h1v1h-1zM23 18h2v1h-2zM27 18h2v1h-2zM3 19h2v1h-2zM11 19h2v1h-2zM14 19h2v1h-2zM17 19h2v1h-2zM20 19h4v1h-4zM27 19h2v1h-2zM0 20h1v1h-1zM3 20h4v1h-4zM8 20h1v1h-1zM10 20h2v1h-2zM16 20h1v1h-1zM18 20h7v1h-7zM26 20h1v1h-1zM8 21h1v1h-1zM10 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM19 21h2v1h-2zM24 21h1v1h-1zM26 21h3v1h-3zM0 22h7v1h-7zM9 22h1v1h-1zM11 22h1v1h-1zM16 22h2v1h-2zM20 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h2v1h-2zM12 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM19 23h2v1h-2zM24 23h5v1h-5zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM9 24h1v1h-1zM11 24h2v1h-2zM16 24h2v1h-2zM20 24h5v1h-5zM27 24h2v1h-2zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h3v1h-3zM17 25h3v1h-3zM22 25h6v1h-6zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM9 26h1v1h-1zM12 26h2v1h-2zM17 26h2v1h-2zM20 26h2v1h-2zM24 26h3v1h-3zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM10 27h3v1h-3zM14 27h2v1h-2zM17 27h1v1h-1zM19 27h2v1h-2zM24 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h1v1h-1zM10 28h1v1h-1zM12 28h1v1h-1zM14 28h1v1h-1zM17 28h1v1h-1zM20 28h1v1h-1zM24 28h1v1h-1zM27 28h1v1h-1z"/></svg></div><div class="qru" lang="en">sankashti-chaturthi.pages.dev</div><button type="button" class="wide" id="qrx"><span class="mr">बंद</span><span class="en" lang="en">Close</span></button></div>
 </div>
@@ -5682,9 +6165,11 @@ a.t {
     <ul>
       <li>Shows today's date, the next Sankashti Chaturthi and its <b>moonrise time</b> for where you are. Angaraki Sankashti (on a Tuesday) is marked.</li>
       <li><b>📍 Pin:</b> tap to use your phone's location. The town is worked out on the phone; your location is never sent anywhere.</li>
-      <li><b>Fold the card:</b> the round ⌃ button at the top right of the card folds it to one line (Ganesha, the next date and moonrise); ⌄ opens it again with all the buttons. Your phone remembers this. On Sankashti day the card opens by itself.</li>
-      <li><b>Fold what you don't need:</b> the <b>Contents</b> button on the home page folds the list of pieces, and the round ⌃ in each piece's heading folds that piece down to its heading (⌄ opens it). Your phone remembers these. Going to a folded piece from Contents or search opens it.</li>
-      <li><b>Only here for the aartis?</b> Tap the <b>पूजा / Pooja</b> heading above the Atharvashirsha to fold the Pooja section away; tap it again (“Show”) to bring it back. Your phone remembers this. Going to the Atharvashirsha from Contents, search or Previous opens it again. The <b>आरती / Aarti</b> heading folds the aartis the same way.</li>
+      <li><b>The picture:</b> tap the Ganesha picture on the card to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
+      <li><b>Fold the card:</b> the round ⌃ button at the top right of the card, or a tap beside the picture, folds it to one line (Ganesha, the next date and moonrise); ⌄ or a tap on that line opens it again with all the buttons. On the home page the <b>Ganesha</b> home buttons (top bar title, bottom bar) do the same: tap to close the card, tap again to open it. Your phone remembers this. On Sankashti day the card opens by itself.</li>
+      <li><b>Fold what you don't need:</b> the <b>Contents</b> button on the home page folds the list of pieces, and a tap anywhere on a piece's heading (or its round ⌃) folds that piece down to its heading; tap it again to open it. The <b>Fold all</b> / <b>Open all</b> button on the <b>आरती / Aarti</b> heading folds or opens every aarti at once. Your phone remembers these. Going to a folded piece from Contents or search opens it.</li>
+      <li><b>Only here for the aartis?</b> Tap the <b>पूजा / Pooja</b> heading above the Atharvashirsha to fold the Pooja section away; tap it again (the arrow points down while folded) to bring it back. Your phone remembers this. Going to the Atharvashirsha from Contents, search or Previous opens it again. The <b>आरती / Aarti</b> heading folds the aartis the same way.</li>
+      <li data-feat="as" hidden><b>Autoscroll:</b> turn it on in ⚙ Settings (<b>Autoscroll</b>); it is off until you do. A round ▶ then appears in the bottom bar; tap it and the page scrolls by itself through the Pooja and the aartis. It folds the home card and the contents, opens every piece, and starts from the piece on screen (or the first one). A section you have folded (Pooja or Aarti) is skipped. Each sung line gets the same time; − and + set the speed (1–10) of the piece you are on, and each piece remembers its own speed, since each has its own tempo. <b>‹ Prev</b> and <b>Next ›</b> go to the previous or next piece. With the dhrupad shown once, it waits at each <b>↻ ध्रुपद</b> while the dhrupad is sung and shows it in the bubble. While it runs, Prev and Next make way for the speed, so one piece flows into the next. Scroll by hand any time, or hold a finger still to pause; when you let go it carries on from there. In Marathi + English it moves through each whole stanza, both languages, in the time the Marathi takes. ⏸ stops it. The screen stays on while it runs.</li>
       <li><b>Date strip:</b> swipe to see past and future dates; tap one to show it. “Back to next Sankashti” returns.</li>
       <li><b>Calendar icon</b> next to the date: adds that day's pooja (7:00–8:30 pm, at Bharatiya Hindu Temple when you are in central Ohio) to your calendar with a reminder 2 hours before.</li>
       <li><b>Add all upcoming dates to calendar:</b> adds every coming Sankashti at once.</li>
@@ -5710,8 +6195,8 @@ a.t {
         </ul>
         It changes straight away and keeps your place.</li>
       <li><b>Text size</b> (A− / A+ / ↺ to reset) and <b>Theme</b> (Auto, Light, Sepia, Dark).</li>
-      <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off.</li>
-      <li>At the bottom: <b>App</b> (until it is installed), <b>Help</b> and the version number (Version 1.0). Tap ✕ at the top to close Settings.</li>
+      <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off. Keep screen on starts on for phones and tablets and off on computers.</li>
+      <li>At the top, beside the title: the version number (v1.0), <b>App</b> (until it is installed), <b>Help</b>, and ✕ to close Settings.</li>
       <li><b>Layout</b> (wide screens only): one or two columns of stanzas.</li>
     </ul>
 
@@ -5720,7 +6205,7 @@ a.t {
       <li><b>Tap a line</b> to highlight it, so everyone can keep their place. Tap again to clear.</li>
       <li><b>Pinch</b> or use A− / A+ in Settings to change the text size of the aartis (the home page stays readable at its normal size). The bubble shows the size (100% is the normal size for your screen); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
       <li><b>Back:</b> your phone's Back button (or swipe) closes an open menu or box, then goes back to where you were before the last jump, for example from an aarti back to the contents.</li>
-      <li><b>At the end of each aarti:</b> Previous and Next go to the neighbouring pieces; the small <b>Ganesha</b> (home) and <b>contents-and-search</b> buttons between them work just like the ones at the top.</li>
+      <li><b>Bottom bar (on every page):</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring pieces (on the home page, Next opens the first piece); the <b>Ganesha</b> (home) and <b>contents-and-search</b> buttons work just like the ones at the top. Like the top bar it keeps its size when you change the text size or pinch, and it steps aside while Settings or Contents is open.</li>
       <li>The screen stays on while the site is open (you can turn this off in Settings).</li>
     </ul>
 
@@ -5743,6 +6228,18 @@ a.t {
 </div>
 <div id="pv" aria-hidden="true"></div>
 <div id="szt" role="status" aria-live="polite"></div>
+<!-- ==== Bottom bar (footer menu, every page): ‹ Previous, Home, Contents + search, (autoscroll ▶), Next ›.
+     ▶ shows only once autoscroll is released (FEAT_AS) and switched on; while it runs: Home, Search, speed, ⏸. ==== -->
+<div id="asc" hidden role="navigation" aria-label="Previous, home, contents, next">
+  <div id="asi">
+    <button type="button" id="asv" class="asx"></button>
+    <button type="button" id="ash" class="asi" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></button>
+    <button type="button" id="asq" class="asi" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button>
+    <div id="ass"><button type="button" id="asm" aria-label="Slower">−</button><span id="asl" aria-live="polite"></span><button type="button" id="asp" aria-label="Faster">+</button></div>
+    <button type="button" id="asb" aria-label="Autoscroll" aria-pressed="false"><svg class="ip" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg><svg class="ia" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg></button>
+    <button type="button" id="asn" class="asx"></button>
+  </div>
+</div>
 <button type="button" id="szr" hidden><span class="mr">↺ मूळ आकार</span><span class="en" lang="en">↺ Default size</span></button>
 
 <script>
@@ -5755,6 +6252,7 @@ a.t {
 
    Sections, in order:
      Settings (P)            what the reader chose, and migrations
+     Features held back      FEAT_AS: autoscroll is built but hidden until released
      IAST transliteration    IA(): Devanagari line → scholarly English;
                              run once at start-up when English style = sukhakartā
      Layout helpers          two-column grid rows, contents rail
@@ -5765,7 +6263,9 @@ a.t {
      Stanza numbers          ॥ १ ॥ added at the end of each stanza
      Preferred line breaks   where long lines may wrap on phones
      Auto-fit text size      largest size at which lines fit the screen
-     Current piece, apply()  menus follow the reader; P → page
+     Current piece, apply()  menus follow the reader; folds; P → page
+     Bottom bar, autoscroll  footer menu on every page (Prev, Home,
+                             Contents, Next); autoscroll (held back)
      Settings panel, buttons dhrupad, wake lock, overlays, clicks, pinch
      Search                  every line in both scripts and both spellings
      Start-up                first paint, reading position, help
@@ -5796,6 +6296,7 @@ a.t {
   function flash(m, e) {
     var x = document.getElementById("szt");
     x.textContent = P.ui === "en" ? e : m;
+    x.classList.remove("err");
     x.classList.add("msg", "on");
     clearTimeout(flash.t);
     flash.t = setTimeout(function () {
@@ -5811,6 +6312,8 @@ a.t {
       co = window.matchMedia && matchMedia("(pointer:coarse)").matches;
     return co && s >= 600 ? 28 : 24;
   }
+  // A computer (no touch screen): the screen is kept on only if the reader turns it on
+  var DESK = !!(window.matchMedia && !matchMedia("(any-pointer:coarse)").matches);
   var P = {
     sv: 0, // settings version (see migrations below)
     fs: dfs(), // text size in px
@@ -5820,7 +6323,7 @@ a.t {
     ui: "en", // menus, home page and buttons: en | mr
     ref: 1, // dhrupad: 1 = once at the top, 0 = repeated after every stanza
     hc: 0, // high contrast
-    wake: 1, // keep the screen on
+    wake: DESK ? 0 : 1, // keep the screen on (phones and tablets; off by default on computers)
     cols: 0, // wide screens: 0 = automatic, 1 = one column, 2 = two columns
     loc: null, // { lat, lon } from "Use my location"
     hl: "", // data-l id of the highlighted (tapped) line
@@ -5830,6 +6333,9 @@ a.t {
     xf: 0, // Aarti section folded
     tf: 0, // home contents list folded
     af: [], // ids of folded pieces
+    as: 3, // autoscroll speed for an aarti not yet adjusted, 1 (slow) to 10 (fast)
+    ason: 0, // show the autoscroll button in the bottom bar (Settings switch)
+    asp: {}, // autoscroll speed per piece (each has its own tempo): { a1: 3, p1: 4, … }
   };
   try {
     var s = JSON.parse(localStorage.getItem(K) || "{}");
@@ -5844,6 +6350,22 @@ a.t {
     P.sv = 4;
     save();
   }
+  if (P.sv < 5) {
+    if (DESK) P.wake = 0; // v5: computers no longer keep the screen on by default
+    P.sv = 5;
+    save();
+  }
+
+  // ---- Features held back for a later release ----
+  // Autoscroll (the ▶ in the bottom bar, its Settings switch and its Help entry) is built and tested but not
+  // released yet. With FEAT_AS false the switch and Help entry (data-feat="as") stay hidden, the ▶ never shows
+  // and asStart() does nothing. A reader's saved choice (P.ason) is left as it is, so nothing is lost.
+  // To release it: set FEAT_AS to true. Nothing else needs changing.
+  var FEAT_AS = false;
+  if (FEAT_AS)
+    [].forEach.call(document.querySelectorAll('[data-feat="as"]'), function (e) {
+      e.hidden = false;
+    });
 
   // ---- IAST transliteration (Devanagari → Latin with diacritics, Vedic accents as marks) ----
   var IA = (function () {
@@ -5973,9 +6495,14 @@ a.t {
 
   // ---- Layout helpers that run once ----
   // Two-column screens read across: stanza 1 | stanza 2, then 3 | 4. Each stanza keeps its own dhrupad marker/repeat under it.
+  // Two stanzas of very different length (Atharvashirsha: 7 lines beside 1) don't pair: the first goes alone across both columns.
+  function nLines(e) {
+    return e.querySelectorAll(".verse > .mr > p").length || e.querySelectorAll("p").length || 1;
+  }
   [].forEach.call(document.querySelectorAll(".items"), function (b) {
     var row = 1,
       pair = [],
+      lone = false,
       cur = null;
     function flush() {
       if (!pair.length) return;
@@ -5983,13 +6510,14 @@ a.t {
       pair.forEach(function (g, i) {
         g.forEach(function (e, k) {
           e.style.gridRow = String(row + k);
-          e.style.gridColumn = String(i + 1);
+          e.style.gridColumn = lone ? "1 / -1" : String(i + 1);
           if (i) e.classList.add("c2");
         });
         h = Math.max(h, g.length);
       });
       row += h;
       pair = [];
+      lone = false;
     }
     function full(e) {
       flush();
@@ -6005,6 +6533,14 @@ a.t {
       }
       if (main) {
         if (pair.length === 2) flush();
+        if (pair.length === 1) {
+          var a = nLines(pair[0][0]),
+            c = nLines(e);
+          if (Math.abs(a - c) > 1 && Math.min(a, c) * 2 < Math.max(a, c)) {
+            lone = true;
+            flush();
+          }
+        }
         cur = [e];
         pair.push(cur);
         return;
@@ -6032,7 +6568,12 @@ a.t {
     [].forEach.call(document.querySelectorAll(".tocg"), function (g) {
       var as = g.querySelectorAll("ol.toc li a");
       if (!as.length) return;
-      h += '<div class="rg">' + g.querySelector(".gh").innerHTML + "</div><ul>";
+      // the group name is a link to its section row (पूजा → Pooja, आरती → Aarti)
+      var gh = g.querySelector(".gh"),
+        gid = /पूजा/.test(gh.textContent) ? "g-pooja" : /आरती/.test(gh.textContent) ? "g-aarti" : "";
+      h += gid
+        ? '<a class="rg" href="#' + gid + '" data-go="' + gid + '">' + gh.innerHTML + "</a><ul>"
+        : '<div class="rg">' + gh.innerHTML + "</div><ul>";
       [].forEach.call(as, function (a) {
         var m = a.querySelector(".m");
         h +=
@@ -6744,6 +7285,15 @@ a.t {
     save();
     foldSet();
   };
+  // One-hand use: tapping the Ganesha picture folds the card, and tapping the folded slim line opens it
+  ["#home .hero", "#slim"].forEach(function (s) {
+    var e = document.querySelector(s);
+    if (e)
+      e.addEventListener("click", function (ev) {
+        if (ev.target.closest("#iconb")) return; // the picture opens full screen instead
+        document.getElementById("cvb").onclick();
+      });
+  });
   // Show one Sankashti in the card and mark its chip in the strip (focus stays where it is)
   function skShow(k, focus) {
     var box = document.getElementById("skc"),
@@ -6779,9 +7329,13 @@ a.t {
       "</span></div>" +
       '<div class="skd"><span class="mr">' +
       f.dmr +
-      '</span><span class="en" lang="en">' +
+      "</span>" +
+      // a few days ahead: "in 14 days" badge (today and tomorrow are already in the heading)
+      (dd >= 2 ? '<span class="skin mr">' + skDV(dd) + " दिवसांनी</span>" : "") +
+      '<span class="en" lang="en">' +
       f.den +
       "</span>" +
+      (dd >= 2 ? '<span class="skin en" lang="en">in ' + dd + " days</span>" : "") +
       (o.day + 86400000 > Date.now()
         ? '<button type="button" class="skli" id="skcal" aria-label="' +
           (P.ui === "en" ? "Add to calendar" : "कॅलेंडरमध्ये जोडा") +
@@ -6996,10 +7550,10 @@ a.t {
   });
 
 
-  // ---- Tappable dhrupad markers (Aartis 1–5 and 7) ----
+  // ---- Tappable dhrupad markers (Aartis 1–5, 7 and 9) ----
   // Tapping ↻ ध्रुपद shows the dhrupad in a bubble just above the marker, over the stanza just sung,
   // so the next stanza stays clear. Tap again, tap elsewhere or press Escape to close; it also closes by itself.
-  var RMKTAP = ["a1", "a2", "a3", "a4", "a5", "a7"],
+  var RMKTAP = ["a1", "a2", "a3", "a4", "a5", "a7", "a9"],
     rmkPop = null;
   RMKTAP.forEach(function (id) {
     [].forEach.call(document.querySelectorAll("#" + id + " .items > .rmk"), function (m) {
@@ -7013,6 +7567,7 @@ a.t {
     if (!rmkPop) return;
     clearTimeout(rmkClose.t);
     rmkPop.m.setAttribute("aria-expanded", "false");
+    if (rmkPop.el.ro) rmkPop.el.ro.disconnect();
     rmkPop.el.remove();
     rmkPop = null;
   }
@@ -7028,13 +7583,41 @@ a.t {
     el.appendChild(src.cloneNode(true));
     m.appendChild(el);
     m.setAttribute("aria-expanded", "true");
-    // Keep the bubble on screen: shift it sideways if needed; if there is no room above (under the top bar), put it below
+    // Keep the bubble on screen: shift it sideways if needed; if there is no room above (under the top bar), put it below.
+    // Placed again whenever the bubble changes size (text size, fonts, the iPhone toolbar hiding or showing)
+    // or the window resizes, so an earlier shift can't leave it off the edge.
+    function place() {
+      // Placed in pixels, without CSS transforms: Safari can report the box before a transform
+      // applies, which made the old centring shift the bubble off the left edge.
+      el.style.left = "0px";
+      var b0 = el.getBoundingClientRect(),
+        mr = m.getBoundingClientRect(),
+        w = b0.width,
+        pad = 8,
+        vv = window.visualViewport,
+        W = document.documentElement.clientWidth || innerWidth,
+        L = Math.max(0, vv ? vv.offsetLeft : 0),
+        R = Math.min(W, vv ? vv.offsetLeft + vv.width : W);
+      if (R - L < w + 2 * pad) {
+        L = 0;
+        R = W;
+      }
+      var x = mr.left + mr.width / 2 - w / 2;
+      x = Math.min(x, R - pad - w);
+      x = Math.max(x, L + pad, pad);
+      el.style.left = Math.round(x - b0.left) + "px";
+    }
+    place();
     var r = el.getBoundingClientRect(),
-      pad = 8,
-      dx = r.left < pad ? pad - r.left : r.right > innerWidth - pad ? innerWidth - pad - r.right : 0;
-    if (dx) el.style.marginLeft = dx + "px";
-    var bar = document.querySelector("body > .bar");
+      bar = document.querySelector("body > .bar");
     if (r.top < (bar ? bar.getBoundingClientRect().bottom : 56) + 4) el.classList.add("below");
+    el.place = place;
+    if (window.ResizeObserver) {
+      el.ro = new ResizeObserver(function () {
+        place();
+      });
+      el.ro.observe(el);
+    }
     rmkPop = { m: m, el: el };
     rmkClose.t = setTimeout(rmkClose, 7000);
   }
@@ -7056,6 +7639,9 @@ a.t {
   addEventListener("scroll", function () {
     if (rmkPop && !rmkPop.m.getBoundingClientRect().height) rmkClose();
   }, { passive: true });
+  addEventListener("resize", function () {
+    if (rmkPop) rmkPop.el.place();
+  });
 
 
   // ---- Stanza numbers ----
@@ -7264,14 +7850,50 @@ a.t {
       if (e.classList.contains("ash")) e.classList.add("ar");
     }
   })();
+  // Open all / Fold all: a pill in a section row (beside its arrow) folds or opens every piece in that section.
+  // Shown only for sections with two or more pieces (Aarti today; Pooja has one), and not while the section
+  // itself is folded. It reads "Fold all" while any piece is open, "Open all" when all are folded.
+  var allB = [];
+  [["g-pooja", "pj", "pf"], ["g-aarti", "ar", "xf"]].forEach(function (a) {
+    var g = document.getElementById(a[0]),
+      ps = secs.filter(function (x) {
+        return x.classList.contains(a[1]);
+      });
+    if (!g || ps.length < 2) return;
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "allb";
+    b.onclick = function () {
+      var y = g.getBoundingClientRect().top,
+        open = b.dataset.open === "1";
+      ps.forEach(function (x) {
+        var i = P.af.indexOf(x.id);
+        if (open && i >= 0) P.af.splice(i, 1);
+        if (!open && i < 0) P.af.push(x.id);
+      });
+      save();
+      pfSet();
+      scrollBy(0, g.getBoundingClientRect().top - y);
+      mark();
+    };
+    g.appendChild(b);
+    allB.push({ b: b, ps: ps, k: a[2] });
+  });
+  function allSet() {
+    var mr = P.ui === "mr";
+    allB.forEach(function (o) {
+      var open = o.ps.every(function (x) {
+        return P.af.indexOf(x.id) >= 0;
+      });
+      o.b.dataset.open = open ? "1" : "0";
+      o.b.hidden = !!P[o.k];
+      o.b.lang = mr ? "mr" : "en";
+      o.b.textContent = open ? (mr ? "सर्व उघडा" : "Open all") : mr ? "सर्व मिटवा" : "Fold all";
+    });
+  }
   function pfSet() {
     var mr = P.ui === "mr",
       tb = document.getElementById("tfb");
-    // "Show" on a folded heading follows the menu language, not the text language
-    [].forEach.call(document.querySelectorAll(".pfs"), function (e) {
-      e.textContent = mr ? "दाखवा" : "Show";
-      e.lang = mr ? "mr" : "en";
-    });
     if (P.tf) root.setAttribute("data-tf", "1");
     else root.removeAttribute("data-tf");
     if (tb) {
@@ -7294,6 +7916,7 @@ a.t {
       xb.setAttribute("aria-expanded", String(!P.xf));
       xb.setAttribute("aria-label", P.xf ? (mr ? "आरती विभाग उघडा" : "Show the Aarti section") : mr ? "आरती विभाग मिटवा" : "Fold the Aarti section");
     }
+    allSet();
     var b = document.getElementById("pfb");
     if (P.pf) root.setAttribute("data-pf", "1");
     else root.removeAttribute("data-pf");
@@ -7303,6 +7926,17 @@ a.t {
   }
   // Going to a piece (or a line in it) opens it if it is folded, and the Pooja section if that is folded
   function pjOpen(el, onlyPooja) {
+    // a section row (side menu पूजा / आरती): open that section if it is folded
+    if (el && el.id === "g-pooja" && P.pf) {
+      P.pf = 0;
+      save();
+      pfSet();
+    }
+    if (el && el.id === "g-aarti" && P.xf) {
+      P.xf = 0;
+      save();
+      pfSet();
+    }
     var sec = el && el.closest && el.closest(".ash");
     if (!sec) return;
     var ch = false;
@@ -7346,6 +7980,12 @@ a.t {
       mark();
     };
     h.appendChild(b);
+    // One-hand use: a tap anywhere on the heading folds or opens the piece, not only on ⌃
+    // (the ⌃ stays for keyboards and screen readers; links in the heading still work)
+    h.addEventListener("click", function (e) {
+      if (e.target.closest("a,button,input") || String(getSelection()).trim()) return;
+      b.onclick();
+    });
   });
   document.getElementById("tfb").onclick = function () {
     P.tf = P.tf ? 0 : 1;
@@ -7363,6 +8003,391 @@ a.t {
       scrollBy(0, g.getBoundingClientRect().top - y);
     };
   });
+  // ---- Bottom bar (#asc) and autoscroll ----
+  // The bottom bar is the footer menu on every page: ‹ Prev, Home, Contents + search, ▶, Next ›.
+  // Its parts share the "as" prefix (asc, asv, ash, asq, asb, asn) because it began as the autoscroll bar.
+  // ▶ appears only when autoscroll is released (FEAT_AS) and switched on in Settings (P.ason; root data-ason).
+  //
+  // Autoscroll (held back for a later release, see FEAT_AS): runs through every open section (Pooja, aartis,
+  // and any added later). Turning it on folds the home card and the contents, opens every piece, and scrolls
+  // line by line: each sung line gets the same time (a little more for long lines), whatever its height.
+  // With the dhrupad shown once, each ↻ ध्रुपद marker holds the page while the dhrupad is sung and shows it
+  // in the bubble. While running the bar shows Home, Search, speed − / + and ⏸ (CSS: #asc.on).
+  // AS: on = running; u = steps from asBuild(); i = current step; t = seconds into it; raf = animation frame;
+  // last = previous frame time; y = furthest scroll so far; held / down / ht = paused by the reader's touch;
+  // sec = id of the piece whose speed the bar shows.
+  var AS = { on: 0, u: [], i: 0, t: 0, raf: 0, last: 0, y: 0 },
+    asc = document.getElementById("asc"),
+    asb = document.getElementById("asb"),
+    ASPD = [0, 7.5, 6.2, 5.2, 4.5, 3.9, 3.4, 3, 2.6, 2.3, 2]; // seconds per line for speeds 1–10
+  if (!P.asp || typeof P.asp !== "object") P.asp = {};
+  // speed of a piece: its own if the reader set one, else the general one
+  function asSpd(id) {
+    return P.asp[id] || P.as;
+  }
+  // the piece whose speed the − / + buttons change: the one scrolling, else the one on screen
+  // (c: the piece on screen, when the caller already has it; finding it costs a page layout)
+  function asSec(c) {
+    var a = AS.on && AS.u[AS.i];
+    if (a) return a.sec;
+    if (c === undefined) c = cur();
+    return c ? c.id : "";
+  }
+  function asSpot() {
+    // the reading spot: a third of the way down the screen, below the top bar
+    var bar = document.querySelector("body > .bar"),
+      top = bar ? bar.getBoundingClientRect().bottom : 60;
+    return top + (innerHeight - top) * 0.3;
+  }
+  function asLabel() {
+    var mr = P.ui === "mr",
+      l = document.getElementById("asl"),
+      c = cur();
+    l.lang = mr ? "mr" : "en";
+    var v = asSpd(asSec(c));
+    l.innerHTML =
+      '<span class="asw">' + (mr ? "वेग" : "Speed") + " </span>" +
+      (mr
+        ? String(v).replace(/\d/g, function (d) {
+            return "०१२३४५६७८९"[d];
+          })
+        : v);
+    l.setAttribute("aria-label", (mr ? "वेग " : "Speed ") + v);
+    asb.setAttribute("aria-label", AS.on ? (mr ? "स्वयं-स्क्रोल थांबवा" : "Pause autoscroll") : mr ? "आपोआप पुढे सरकवा" : "Autoscroll");
+    asb.setAttribute("aria-pressed", String(!!AS.on));
+    document.getElementById("asm").setAttribute("aria-label", mr ? "हळू" : "Slower");
+    document.getElementById("asp").setAttribute("aria-label", mr ? "जलद" : "Faster");
+    [
+      ["asv", "‹ मागील", "‹ Prev", ".prev"],
+      ["asn", "पुढील ›", "Next ›", ".next"],
+    ].forEach(function (x) {
+      var b = document.getElementById(x[0]),
+        a = c ? c.querySelector(".pn " + x[3]) : x[3] === ".next" && !document.getElementById("p1").hidden ? secs[0] : null,
+        t = a && a.querySelector(mr ? ":scope > .mr" : ":scope > .en");
+      b.textContent = mr ? x[1] : x[2];
+      b.lang = mr ? "mr" : "en";
+      b.setAttribute("aria-label", (mr ? x[1] : x[2]).replace(/[‹›]/g, "").trim() + (t ? ": " + t.textContent : ""));
+      b.disabled = !a;
+    });
+    document.getElementById("ash").setAttribute("aria-label", mr ? "मुख्य पान: अनुक्रमणिका" : "Home: contents");
+    document.getElementById("asq").setAttribute("aria-label", mr ? "अनुक्रमणिका आणि शोध" : "Contents and search");
+  }
+
+  // The steps to scroll through: each open piece's heading, its dhrupad at the top, every sung line in order,
+  // and a hold at each tappable dhrupad marker. Lines are taken in the main text language only.
+  function asBuild() {
+    var u = [],
+      main = P.lang === "en" ? ".en" : ".mr",
+      both = P.lang === "both";
+    secs.forEach(function (x) {
+      if (x.offsetParent === null) return;
+      u.push({ el: x.querySelector("header"), w: 1.2, sec: x.id });
+      var ls = [].slice.call(x.querySelectorAll(".rftop .verse " + main + " p, .items .verse " + main + " p, .items > .rmk")).filter(function (e) {
+        return e.offsetParent !== null || e.getClientRects().length;
+      });
+      var tot = 0,
+        n = 0;
+      ls.forEach(function (e) {
+        if (e.tagName === "P") {
+          tot += e.textContent.length;
+          n++;
+        }
+      });
+      var avg = n ? tot / n : 1,
+        src = x.querySelector(".rftop .verse " + main),
+        dl = src ? src.querySelectorAll("p").length : 0;
+      // Marathi + English: the page moves through each whole stanza (both languages, whatever the layout)
+      // in the time its Marathi lines take, so the stanza in view is always the one being sung
+      var lw = function (e) {
+          return Math.max(0.75, Math.min(1.4, e.textContent.length / avg));
+        },
+        lastV = null;
+      ls.forEach(function (e) {
+        if (both && e.tagName === "P") {
+          var v = e.closest(".verse");
+          if (v === lastV) u[u.length - 1].w += lw(e);
+          else u.push({ el: v, w: lw(e), sec: x.id });
+          lastV = v;
+          return;
+        }
+        lastV = null;
+        if (e.tagName === "P") u.push({ el: e, w: lw(e), sec: x.id });
+        else if (e.classList.contains("rmkt") && dl) u.push({ el: e, w: dl, hold: 1, sec: x.id });
+      });
+    });
+    return u;
+  }
+  function asY(e) {
+    return e.getBoundingClientRect().top + scrollY;
+  }
+  // Start from the line at the reading spot
+  function asStartAt() {
+    var spot = scrollY + asSpot(),
+      k = 0;
+    for (var j = 0; j < AS.u.length; j++) {
+      if (asY(AS.u[j].el) <= spot + 4) k = j;
+      else break;
+    }
+    return k;
+  }
+  function asStep(now) {
+    if (!AS.on) return;
+    var dt = Math.min(0.1, (now - (AS.last || now)) / 1000);
+    AS.last = now;
+    var u = AS.u,
+      a = u[AS.i],
+      b = u[AS.i + 1];
+    if (!a || !b) return asStop(true);
+    var T = ASPD[asSpd(a.sec)] * a.w;
+    AS.t += dt;
+    // a new piece: show its own speed
+    if (a.sec !== AS.sec) {
+      AS.sec = a.sec;
+      asLabel();
+    }
+    if (a.hold && !a.shown) {
+      a.shown = 1;
+      if (!rmkPop || rmkPop.m !== a.el) rmkOpen(a.el);
+      if (rmkPop) {
+        clearTimeout(rmkClose.t);
+        rmkClose.t = setTimeout(rmkClose, T * 1000 + 600);
+        var h = document.createElement("div");
+        h.className = "ash-h";
+        h.lang = P.ui === "mr" ? "mr" : "en";
+        h.textContent = P.ui === "mr" ? "ध्रुपद म्हणा, मग पुढे" : "Sing the dhrupad, then on";
+        rmkPop.el.appendChild(h);
+      }
+    }
+    // a hold keeps the page still while the dhrupad is sung, then moves on
+    var f = a.hold ? Math.max(0, (AS.t - T * 0.85) / (T * 0.15)) : AS.t / T,
+      ya = asY(a.el),
+      yb = asY(b.el),
+      want = ya + (yb - ya) * Math.min(1, f) - asSpot();
+    // never scroll back up (two-column layouts list stanzas side by side)
+    want = Math.max(want, AS.y);
+    var max = document.documentElement.scrollHeight - innerHeight;
+    if (want > max) want = max;
+    AS.y = want;
+    if (Math.abs(want - scrollY) >= 0.5) scrollTo(0, want);
+    if (AS.t >= T) {
+      AS.t = 0;
+      AS.i++;
+      if (AS.i >= u.length - 1 || (want >= max - 1 && yb - asSpot() > max)) return asStop(true);
+    }
+    AS.raf = requestAnimationFrame(asStep);
+  }
+  function asStart() {
+    if (!FEAT_AS) return;
+    // keep the piece in view where it is while the rest folds away
+    var c0 = cur(),
+      t0 = c0 && c0.getBoundingClientRect().top;
+    // fold the home card and contents, open every piece; a folded section (Pooja / Aarti) stays folded and is skipped,
+    // unless every section is folded, then all open again
+    P.fold = 1;
+    P.tf = 1;
+    if (P.pf && P.xf) P.pf = P.xf = 0;
+    P.af = [];
+    save();
+    apply();
+    if (c0 && c0.offsetParent !== null) scrollBy(0, c0.getBoundingClientRect().top - t0);
+    asRun();
+  }
+  // Start (or carry on) scrolling from the line in view (from the home page: the first open piece)
+  function asRun() {
+    AS.u = asBuild();
+    if (AS.u.length < 2) return;
+    var c = cur();
+    if (!c) {
+      var a1 = AS.u[0].el;
+      scrollTo(0, asY(a1) - asSpot());
+      AS.i = 0;
+    } else AS.i = asStartAt();
+    AS.y = scrollY;
+    AS.t = 0;
+    AS.last = 0;
+    AS.u.forEach(function (x) {
+      x.shown = 0;
+    });
+    // Carrying on mid-piece: skip a dhrupad hold just passed, and start from where the page is now, not a line back
+    var a = AS.u[AS.i],
+      b = AS.u[AS.i + 1];
+    if (a && a.hold && b) {
+      AS.i++;
+      a = b;
+      b = AS.u[AS.i + 1];
+    }
+    if (a && b && !a.hold) {
+      var ya = asY(a.el),
+        yb = asY(b.el),
+        f = yb > ya ? (scrollY + asSpot() - ya) / (yb - ya) : 0;
+      AS.t = ASPD[asSpd(a.sec)] * a.w * Math.max(0, Math.min(0.95, f));
+    }
+    AS.on = 1;
+    asc.classList.add("on");
+    asLabel();
+    if (!wl) wake(true);
+    AS.raf = requestAnimationFrame(asStep);
+  }
+  function asStop() {
+    if (AS.held) {
+      AS.held = 0;
+      AS.down = 0;
+      clearTimeout(AS.ht);
+      AS.on = 1;
+    }
+    if (!AS.on) return;
+    AS.on = 0;
+    cancelAnimationFrame(AS.raf);
+    asc.classList.remove("on");
+    asLabel();
+    if (!P.wake) wake(false);
+  }
+  asb.onclick = function () {
+    if (AS.on) asStop();
+    else asStart();
+  };
+  // − / + set the speed of the piece being sung; it is remembered for that piece only
+  function asSpeed(d) {
+    var id = asSec(),
+      o = asSpd(id),
+      v = Math.max(1, Math.min(10, o + d));
+    if (v === o || !id) return;
+    // keep the same point in the current line
+    if (AS.on && AS.u[AS.i]) AS.t *= ASPD[v] / ASPD[o];
+    P.asp[id] = v;
+    save();
+    asLabel();
+  }
+  document.getElementById("asm").onclick = function () {
+    asSpeed(-1);
+  };
+  document.getElementById("asp").onclick = function () {
+    asSpeed(1);
+  };
+  // The reader takes over: touching, wheeling or keys outside the controls pause it.
+  // Scrolling by hand doesn't stop it: while a finger is on the text (or the wheel turns) it lets go of the page,
+  // and once the page settles it carries on from the line in view. Holding a finger still pauses it the same way.
+  // A tap on the top bar or a menu stops it (▶ starts again).
+  function asHold() {
+    if (!AS.on && !AS.held) return;
+    if (AS.on) {
+      AS.on = 0;
+      cancelAnimationFrame(AS.raf);
+    }
+    AS.held = 1;
+    clearTimeout(AS.ht);
+  }
+  function asLetGo(ms) {
+    if (!AS.held) return;
+    clearTimeout(AS.ht);
+    AS.ht = setTimeout(function () {
+      if (!AS.held || AS.down) return;
+      AS.held = 0;
+      asRun();
+    }, ms);
+  }
+  addEventListener(
+    "pointerdown",
+    function (e) {
+      if (!AS.on && !AS.held) return;
+      var t = e.target && e.target.closest ? e.target : document.body;
+      if (t.closest("#asc")) return;
+      if (t.closest(".bar, #panel, #jump, #help, #qrm, #prm, #inm, #rail")) asStop();
+      else {
+        AS.down = 1;
+        asHold();
+      }
+    },
+    { passive: true, capture: true },
+  );
+  ["pointerup", "pointercancel", "touchend", "touchcancel"].forEach(function (n) {
+    addEventListener(n, function (e) {
+      // a drag hands the touch to the browser (pointercancel) while the finger is still down
+      if (n === "pointercancel" || (e.touches && e.touches.length)) return;
+      AS.down = 0;
+      asLetGo(400);
+    }, { passive: true, capture: true });
+  });
+  // the page still gliding after a flick: wait for it to settle
+  addEventListener("scroll", function () {
+    if (AS.held && !AS.down) asLetGo(400);
+  }, { passive: true });
+  addEventListener("wheel", function (e) {
+    if (!AS.on && !AS.held) return;
+    if (e.target && e.target.closest && e.target.closest("#asc")) return;
+    asHold();
+    asLetGo(700);
+  }, { passive: true, capture: true });
+  addEventListener("keydown", function (e) {
+    if (!AS.on && !AS.held) return;
+    if (e.target && e.target.closest && e.target.closest("#asc")) return;
+    if (e.key === " " || /^(Arrow|Page|Home|End)/.test(e.key)) {
+      asHold();
+      asLetGo(700);
+    }
+  }, { capture: true });
+  // Previous / Next follow the links in each piece's .pn block (kept in the page but never shown on screen,
+  // the bar replaced it); Home and Search work as in the top bar
+  function asGo(sel) {
+    var c = cur(),
+      a = c && c.querySelector(".pn " + sel);
+    if (a) a.click();
+    else if (!c && sel === ".next") {
+      // from the home page: the first piece (the Pooja, or Aarti 1 when the Pooja is folded)
+      var f = document.querySelector('#home a[data-go="' + (P.pf ? "a1" : "p1") + '"]');
+      if (f) f.click();
+    }
+  }
+  document.getElementById("asv").onclick = function () {
+    asGo(".prev");
+  };
+  document.getElementById("asn").onclick = function () {
+    asGo(".next");
+  };
+  document.getElementById("ash").onclick = function () {
+    asStop();
+    goHomeNav();
+  };
+  document.getElementById("asq").onclick = function () {
+    document.getElementById("hm").onclick();
+  };
+  document.getElementById("tas").onclick = function () {
+    P.ason = P.ason ? 0 : 1;
+    if (!P.ason) asStop();
+    save();
+    apply();
+  };
+  // The bar is always there, like the top bar (data-asb leaves room for it under the text).
+  // asShow() keeps ▶ in step with the settings, and Prev / Next with the piece on screen.
+  asc.hidden = false;
+  root.setAttribute("data-asb", "1");
+  // the bar steps aside while Settings (#panel) or Contents (#jump) is open
+  (function () {
+    var ms = [document.getElementById("panel"), document.getElementById("jump")];
+    function menu() {
+      if (ms.some(function (m) { return m && !m.hidden; })) root.setAttribute("data-menu", "1");
+      else root.removeAttribute("data-menu");
+    }
+    var mo = new MutationObserver(menu);
+    ms.forEach(function (m) {
+      if (m) mo.observe(m, { attributes: true, attributeFilter: ["hidden"] });
+    });
+    menu();
+  })();
+  function asShow() {
+    var c = cur(),
+      id = c ? c.id : "";
+    if (FEAT_AS && P.ason) root.setAttribute("data-ason", "1");
+    else root.removeAttribute("data-ason");
+    if (id !== asShow.id) {
+      asShow.id = id;
+      asLabel();
+    }
+  }
+  addEventListener("scroll", asShow, { passive: true });
+  asLabel();
+  asShow();
+
   // Highlight the current piece in the menus; update the progress line
   function mark() {
     var c = cur();
@@ -7432,10 +8457,11 @@ a.t {
     if (P.th === "auto") root.removeAttribute("data-pref");
     else root.setAttribute("data-pref", P.th);
     // Text language on the pieces and the printout; menu language on the bar, menus, home page and dialogs
-    [].forEach.call(document.querySelectorAll(".grp,.wrap > section,#pv,#home .tocg,#jl,#rail"), function (e) {
+    // (the Contents fold row #tfr follows the text language, like the पूजा and आरती rows below it)
+    [].forEach.call(document.querySelectorAll(".grp,.wrap > .ash,#pv,#home .tocg,#tfr,#jl,#rail"), function (e) {
       e.setAttribute("data-lang", P.lang);
     });
-    [].forEach.call(document.querySelectorAll(".bar,#none,#panel,#home > :not(.tocg),#qrm,#prm,#inm,#szt,#szr"), function (e) {
+    [].forEach.call(document.querySelectorAll(".bar,#none,#panel,#home > :not(.tocg):not(#tfr),#qrm,#prm,#inm,#szt,#szr"), function (e) {
       e.setAttribute("data-lang", P.ui);
     });
     root.lang = "mr"; // the page is Marathi; English parts carry lang="en" themselves (screen readers pick the voice from this)
@@ -7497,6 +8523,11 @@ a.t {
     });
     document.getElementById("tc").setAttribute("aria-pressed", String(!!P.hc));
     document.getElementById("tw").setAttribute("aria-pressed", String(!!P.wake));
+    document.getElementById("tas").setAttribute("aria-pressed", String(!!P.ason));
+    if (asb) {
+      asLabel();
+      asShow();
+    }
     mark();
   }
 
@@ -7525,9 +8556,30 @@ a.t {
     if (v && v !== P.tr) {
       P.tr = v;
       save();
-      trSet(v, true);
-      buildIX();
-      refit();
+      // each step runs on its own, so a failure in one (named with the browser's message, so it can be traced)
+      // can't stop the others or leave the switch showing the old choice; apply() below always runs
+      var bad = [];
+      [
+        ["lines", function () { trSet(v, true); }],
+        ["search", buildIX],
+        // the text size is fitted to the main language's lines, so only English-only text needs fitting again
+        ["size", function () { if (P.lang === "en") refit(); }],
+      ].forEach(function (st) {
+        try {
+          st[1]();
+        } catch (er) {
+          bad.push(st[0] + ": " + ((er && er.message) || er));
+        }
+      });
+      if (bad.length) {
+        flash("बदल पूर्ण झाला नाही (" + bad.join("; ") + ")", "Could not finish the change (" + bad.join("; ") + ")");
+        var zt = document.getElementById("szt");
+        zt.classList.add("err");
+        clearTimeout(flash.t);
+        flash.t = setTimeout(function () {
+          zt.classList.remove("on", "msg", "err");
+        }, 9000);
+      }
       apply();
     }
   };
@@ -7631,9 +8683,26 @@ a.t {
   });
 
   // ---- Overlays: settings panel (setP) and contents + search (setJ); opening one closes the other ----
+  // Keyboard and screen reader users: opening a panel moves focus into it; closing it puts focus back on
+  // the button that opened it (only if focus was still in the panel, so a jump to a piece isn't undone)
+  function ovFocus(el, o) {
+    var a = document.activeElement;
+    if (o) {
+      if (el.hidden) el._ret = a;
+      return;
+    }
+    if (el._ret && (el.contains(a) || a === document.body || !a)) {
+      try {
+        el._ret.focus({ preventScroll: true });
+      } catch (e) {}
+    }
+    el._ret = null;
+  }
   function setP(o) {
     if (o) ovPush();
+    ovFocus(pn, o);
     pn.hidden = !o;
+    if (o) pn.focus({ preventScroll: true });
     aa.setAttribute("aria-expanded", String(o));
     if (o) setJ(false);
     else ovDone();
@@ -7653,11 +8722,14 @@ a.t {
       var bb = document.querySelector(".bar").getBoundingClientRect();
       jp.style.top = Math.round(bb.bottom) + "px";
     }
+    ovFocus(jp, o);
     jp.hidden = !o;
-    [].forEach.call(document.querySelectorAll("#hm,.pns"), function (b) {
+    if (o && !jp.contains(document.activeElement)) jp.focus({ preventScroll: true });
+    [].forEach.call(document.querySelectorAll("#hm,.pns,#asq"), function (b) {
       b.setAttribute("aria-expanded", String(o));
     });
     if (o) {
+      ovFocus(pn, false);
       pn.hidden = true;
       aa.setAttribute("aria-expanded", "false");
     } else ovDone();
@@ -7678,7 +8750,7 @@ a.t {
     return (
       !pn.hidden ||
       !jp.hidden ||
-      ["qrm", "prm", "inm", "help"].some(function (i) {
+      ["qrm", "prm", "inm", "help", "pzv"].some(function (i) {
         var e = document.getElementById(i);
         return e && !e.hidden;
       })
@@ -7691,9 +8763,10 @@ a.t {
       history.pushState({ ov: 1, y: scrollY }, "", location.href);
     } catch (e) {}
   }
-  // Closed with ✕, Escape or a tap outside: take the panel's Back step off again
+  // Closed with ✕, Escape or a tap outside: take the panel's Back step off again. Only once: history.back()
+  // lands later, so a second close in the same moment (Escape closes both panels) must not step back again.
   function ovDone() {
-    if (!NAV || !hs().ov || ovOpen()) return;
+    if (!NAV || !hs().ov || ovOpen() || popSkip) return;
     popSkip++;
     history.back();
   }
@@ -7709,15 +8782,29 @@ a.t {
     try {
       if (NAV) history[ov ? "replaceState" : "pushState"]({ y: scrollY }, "", url);
     } catch (e) {}
+    // Focus follows to the piece's heading, so the next Tab or screen reader line starts there
+    var el = url && url.charAt(0) === "#" && document.getElementById(url.slice(1)),
+      h = el && el.querySelector("h2");
+    if (h) {
+      h.tabIndex = -1;
+      try {
+        h.focus({ preventScroll: true });
+      } catch (e) {}
+    }
   }
+  // Home buttons (top-bar title, Ganesha in the bottom bar, the rail's Home): from a piece they go home;
+  // on the home page, with the card in view, they open or close the card like its own round button
   function goHomeNav() {
-    jumpTo(goHome, location.pathname);
+    var top = document.querySelector("#home .top"),
+      r = top && top.getBoundingClientRect();
+    if (!cur() && r && r.bottom > 60 && r.top < innerHeight / 2) document.getElementById("cvb").onclick();
+    else jumpTo(goHome, location.pathname);
   }
   addEventListener("popstate", function (e) {
     var was = ovOpen();
     setP(false);
     setJ(false);
-    ["qrm", "prm", "inm"].forEach(function (i) {
+    ["qrm", "prm", "inm", "pzv"].forEach(function (i) {
       var d = document.getElementById(i);
       if (d) d.hidden = true;
     });
@@ -7736,7 +8823,7 @@ a.t {
   // Keyboard: Tab stays inside an open dialog (QR, Print, Add to Home Screen, Help)
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Tab") return;
-    var d = ["help", "qrm", "prm", "inm"]
+    var d = ["help", "qrm", "prm", "inm", "pzv"]
       .map(function (i) {
         return document.getElementById(i);
       })
@@ -7790,6 +8877,27 @@ a.t {
   });
   [].forEach.call(document.querySelectorAll(".pns"), function (b) {
     b.onclick = hmb.onclick;
+  });
+  // Skip link: focus goes to the first text on screen (a piece, or the page), without changing the address
+  document.getElementById("skip").addEventListener("click", function (e) {
+    e.preventDefault();
+    var c = cur(),
+      h = c && c.querySelector("h2"),
+      m = document.getElementById("main");
+    if (h) h.tabIndex = -1;
+    try {
+      (h || m).focus({ preventScroll: !!h });
+    } catch (x) {}
+  });
+  // Tabbing out of an open panel closes it, so it doesn't stay over the page you have moved on to
+  [pn, jp].forEach(function (el) {
+    el.addEventListener("focusout", function (e) {
+      var t = e.relatedTarget;
+      if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help")) return;
+      el._ret = null;
+      if (el === pn) setP(false);
+      else setJ(false);
+    });
   });
   document.getElementById("xc").onclick = function () {
     setP(false);
@@ -7847,6 +8955,7 @@ a.t {
     if (a) {
       e.preventDefault();
       var el = document.getElementById(a.getAttribute("data-go"));
+      if (el && el.id === "home" && a.closest("#rail")) return goHomeNav();
       pjOpen(el);
       if (el)
         jumpTo(
@@ -7937,7 +9046,7 @@ a.t {
   document.addEventListener(
     "touchstart",
     function (e) {
-      if (e.touches.length === 2) {
+      if (e.touches.length === 2 && document.getElementById("pzv").hidden) {
         if (e.cancelable) e.preventDefault();
         szr.hidden = true;
         pz = { d: dist(e) || 1, fs: P.fs };
@@ -8031,10 +9140,12 @@ a.t {
   function buildIX() {
     var seen = {};
     IX = [];
-    [].forEach.call(document.querySelectorAll(".mr p[data-l]"), function (p) {
+    // only the lines in the pieces themselves: not the copies in the print view or the dhrupad bubble
+    [].forEach.call(document.querySelectorAll(".ash .mr p[data-l]"), function (p) {
+      if (p.closest("#pv, .rmkpop")) return;
       var id = p.getAttribute("data-l"),
-        en = document.querySelector('.en p[data-l="' + id + '"]'),
         sec = p.closest(".ash"),
+        en = sec.querySelector('.en p[data-l="' + id + '"]'),
         m = p.innerHTML
           .replace(/<br\s*\/?>/g, " ")
           .replace(/<[^>]+>/g, "")
@@ -8247,11 +9358,170 @@ a.t {
   }
 
 
+  // ---- Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move ----
+  // Works with fingers and a mouse (scroll wheel zooms). The text-size pinch is off while it is open.
+  (function () {
+    var v = document.getElementById("pzv"),
+      im = document.getElementById("pzi"),
+      ib = document.getElementById("iconb"),
+      hint = document.getElementById("pzh");
+    if (!v || !im || !ib) return;
+    var s = 1,
+      tx = 0,
+      ty = 0,
+      pts = {},
+      g = null,
+      lastTap = 0,
+      moved = false;
+    function draw() {
+      // keep the picture from being dragged out of view
+      var w = im.offsetWidth,
+        h = im.offsetHeight,
+        mx = Math.max(0, ((s - 1) * w) / 2 + 40),
+        my = Math.max(0, ((s - 1) * h) / 2 + 40);
+      if (s <= 1.01) {
+        s = 1;
+        tx = ty = 0;
+      }
+      tx = Math.max(-mx, Math.min(mx, tx));
+      ty = Math.max(-my, Math.min(my, ty));
+      im.style.transform = "translate(" + tx + "px," + ty + "px) scale(" + s + ")";
+      v.classList.toggle("zoomed", s > 1);
+    }
+    // zoom to scale ns, keeping the screen point (px, py) still
+    function zoomAt(ns, px, py) {
+      ns = Math.max(1, Math.min(5, ns));
+      var r = v.getBoundingClientRect(),
+        cx = r.left + r.width / 2 + tx,
+        cy = r.top + r.height / 2 + ty;
+      tx += (px - cx) * (1 - ns / s);
+      ty += (py - cy) * (1 - ns / s);
+      s = ns;
+      draw();
+    }
+    function open() {
+      ovPush();
+      s = 1;
+      tx = ty = 0;
+      draw();
+      hint.textContent = P.ui === "mr" ? "मोठे करण्यासाठी दोन बोटांनी पसरा किंवा दोनदा टॅप करा" : "Pinch or double-tap to zoom";
+      v.hidden = false;
+      document.documentElement.style.overflow = "hidden";
+      document.getElementById("pzx").focus();
+    }
+    function close(fromPop) {
+      if (v.hidden) return;
+      v.hidden = true;
+      document.documentElement.style.overflow = "";
+      if (!fromPop) ovDone();
+      try {
+        ib.focus({ preventScroll: true });
+      } catch (e) {}
+    }
+    ib.addEventListener("click", function (e) {
+      e.stopPropagation();
+      open();
+    });
+    document.getElementById("pzx").onclick = function () {
+      close();
+    };
+    addEventListener("popstate", function () {
+      close(true);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (v.hidden) return;
+      if (e.key === "Escape") close();
+      if (e.key === "+" || e.key === "=") zoomAt(s * 1.5, innerWidth / 2, innerHeight / 2);
+      if (e.key === "-") zoomAt(s / 1.5, innerWidth / 2, innerHeight / 2);
+    });
+    v.addEventListener("pointerdown", function (e) {
+      if (e.target.closest("#pzx")) return;
+      try {
+        v.setPointerCapture(e.pointerId);
+      } catch (x) {}
+      pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var k = Object.keys(pts);
+      if (k.length === 1) {
+        moved = false;
+        g = { x: e.clientX, y: e.clientY, tx: tx, ty: ty };
+      } else if (k.length === 2) {
+        var a = pts[k[0]],
+          b = pts[k[1]];
+        g = { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, s: s, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
+        moved = true;
+      }
+    });
+    v.addEventListener("pointermove", function (e) {
+      if (!pts[e.pointerId] || !g) return;
+      pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var k = Object.keys(pts);
+      if (k.length >= 2 && g.d) {
+        var a = pts[k[0]],
+          b = pts[k[1]];
+        zoomAt((g.s * Math.hypot(a.x - b.x, a.y - b.y)) / g.d, (a.x + b.x) / 2, (a.y + b.y) / 2);
+      } else if (k.length === 1 && g.tx !== undefined) {
+        var dx = e.clientX - g.x,
+          dy = e.clientY - g.y;
+        if (Math.abs(dx) + Math.abs(dy) > 6) moved = true;
+        if (s > 1) {
+          tx = g.tx + dx;
+          ty = g.ty + dy;
+          draw();
+        }
+      }
+    });
+    function up(e) {
+      if (!pts[e.pointerId]) return;
+      delete pts[e.pointerId];
+      var k = Object.keys(pts);
+      if (k.length === 1) {
+        // one finger lifted from a pinch: carry on dragging with the other
+        var p = pts[k[0]];
+        g = { x: p.x, y: p.y, tx: tx, ty: ty };
+        return;
+      }
+      if (k.length) return;
+      g = null;
+      if (moved || e.type === "pointercancel") return;
+      var now = Date.now();
+      if (now - lastTap < 320) {
+        // double tap: zoom in where tapped, or back out
+        lastTap = 0;
+        if (s > 1) {
+          s = 1;
+          draw();
+        } else zoomAt(2.5, e.clientX, e.clientY);
+        return;
+      }
+      lastTap = now;
+      // a single tap outside the picture closes it (after the double-tap wait)
+      if (e.target !== im && s === 1)
+        setTimeout(function () {
+          if (lastTap === now) close();
+        }, 330);
+    }
+    v.addEventListener("pointerup", up);
+    v.addEventListener("pointercancel", up);
+    v.addEventListener(
+      "wheel",
+      function (e) {
+        e.preventDefault();
+        zoomAt(s * Math.exp(-e.deltaY / 300), e.clientX, e.clientY);
+      },
+      { passive: false },
+    );
+    addEventListener("resize", function () {
+      if (!v.hidden) draw();
+    });
+  })();
+
   // ---- Help: opens over the page; the phone's Back button closes it ----
   (function () {
     var hp = document.getElementById("help");
     function open() {
       ovPush();
+      // From Settings, focus goes back to the ⚙ button when Help closes
+      hp._ret = pn.hidden ? document.activeElement : aa;
       hp.hidden = false;
       setP(false);
       hp.scrollTop = 0;
@@ -8263,6 +9533,12 @@ a.t {
       hp.hidden = true;
       document.documentElement.style.overflow = "";
       if (!fromPop) ovDone();
+      if (hp._ret) {
+        try {
+          hp._ret.focus({ preventScroll: true });
+        } catch (e) {}
+        hp._ret = null;
+      }
     }
     document.getElementById("hlpb").onclick = open;
     document.getElementById("hlp2").onclick = open;
@@ -8386,6 +9662,9 @@ a.t {
           var gl = document.createElement("div");
           gl.className = "pvg";
           gl.innerHTML = gp.innerHTML;
+          [].forEach.call(gl.querySelectorAll(".allb"), function (x) {
+            x.remove(); // Open all / Fold all is for the screen only
+          });
           pre.push(gl);
         }
         pre.push(hd);
@@ -8983,7 +10262,7 @@ a.t {
     var RE = /caches\.open\("aarti-v([\d.]+)"/,
       me = ((document.scripts[document.scripts.length - 1] || {}).text || "").match(RE);
     me = me && me[1];
-    document.getElementById("ver").textContent = me ? "Version " + me : "";
+    document.getElementById("ver").textContent = me ? "v" + me : "";
     function ofSet(st) {
       ofb.setAttribute("data-s", st);
       // The version sits after "Saved offline" / "Up to date", e.g. "✓ Saved offline · v1.0 · Check for updates"
