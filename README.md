@@ -4,7 +4,7 @@ The texts our group recites at Sankashti Chaturthi puja: Pooja, Bhajans (coming 
 
 **Live site:** https://sankashti-chaturthi.pages.dev
 
-**Version:** 1.0.2 (shown as **v1.0.2** on the home card and as *v1.0.2* beside the Settings title)
+**Version:** 1.0 (shown as **v1.0** on the home card and as *v1.0* beside the Settings title)
 
 ## What the site does
 
@@ -97,11 +97,11 @@ The version is what the home card shows (v1.0). It appears in **two** places, an
 
 1. `sw.js`, near the top:
    ```js
-   const V='aarti-v1.0.2';
+   const V='aarti-v1.0';
    ```
 2. `index.html`, near the end (search for `aarti-v`):
    ```js
-   caches.open("aarti-v1.0.2")
+   caches.open("aarti-v1.0")
    ```
 
 Change it only for a new release, and change both together, using digits and dots only: `1.0` → `1.0.1` for fixes, `1.1` for new features, `2.0` for a redesign. Changing it also makes phones refresh the saved icons and fonts.
