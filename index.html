@@ -4839,6 +4839,7 @@ h2[tabindex="-1"]:focus {
   }
   #home .tocg ol.toc a {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: flex-start;
     gap: 0;
@@ -4854,14 +4855,33 @@ h2[tabindex="-1"]:focus {
   }
   #home .tocg ol.toc .m {
     flex: 0 1 auto;
+    max-width: 100%;
+    overflow-wrap: normal;
+  }
+  /* Marathi + English: the English line starts under the Marathi title, past the number */
+  #home .tocg[data-lang="both"] ol.toc .m {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.3em;
+    align-items: baseline;
+  }
+  #home .tocg[data-lang="both"] ol.toc .m > .no {
+    grid-row: 1;
+  }
+  #home .tocg[data-lang="both"] ol.toc .m > .mr,
+  #home .tocg[data-lang="both"] ol.toc .m > .en {
+    grid-column: 2;
+  }
+  /* Latin titles look larger than Devanagari at the same size */
+  #home .tocg[data-lang="en"] ol.toc .m {
+    font-size: 0.86em;
   }
   #home .tocg ol.toc .no {
     color: var(--igold);
   }
-  /* the dotted leader, then the language */
-  #home .tocg ol.toc a::after {
+  /* the dotted leader, then the language: one piece, so on a long title both move to the next line together */
+  #home .tocg ol.toc .lt::before {
     content: "";
-    order: 2;
     flex: 1 1 16px;
     min-width: 16px;
     margin: 0 8px;
@@ -4869,7 +4889,8 @@ h2[tabindex="-1"]:focus {
     transform: translateY(-0.3em);
   }
   #home .tocg ol.toc .lt {
-    order: 3;
+    flex: 1 0 auto;
+    align-items: baseline;
     white-space: nowrap;
     font: 400 15px/1 var(--body);
     color: var(--muted);
@@ -4890,7 +4911,45 @@ h2[tabindex="-1"]:focus {
 }
 @media screen {
   #home .tocg ol.toc .lt {
-    display: inline;
+    display: flex;
+  }
+  /* Marathi + English: "अनुक्रमणिका Contents" (English alone says "Table of Contents"), to fit one line */
+  #tfr[data-lang="both"] #tfb .tfo {
+    display: none;
+  }
+  /* Marathi + English piece headings: the English line starts under the Marathi title, past the number */
+  .ash[data-lang="both"] header h2 {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.3em;
+    align-items: baseline;
+    justify-items: start;
+  }
+  .ash[data-lang="both"] header h2 > .no {
+    grid-row: 1;
+  }
+  .ash[data-lang="both"] header h2 > .mr,
+  .ash[data-lang="both"] header h2 > .en {
+    grid-column: 2;
+  }
+  /* the same in the desktop left menu and the contents list of the search panel */
+  #rail[data-lang="both"] ul a,
+  #jl[data-lang="both"] li > a {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.3em;
+    align-items: baseline;
+    justify-items: start;
+  }
+  #rail[data-lang="both"] ul a > .no,
+  #jl[data-lang="both"] li > a > .no {
+    grid-row: 1;
+  }
+  #rail[data-lang="both"] ul a > .mr,
+  #rail[data-lang="both"] ul a > .en,
+  #jl[data-lang="both"] li > a > .mr,
+  #jl[data-lang="both"] li > a > .en {
+    grid-column: 2;
   }
 }
 </style>
@@ -5015,7 +5074,7 @@ h2[tabindex="-1"]:focus {
     <button type="button" id="ofb" hidden aria-label="Saved for offline. Tap to check for updates"></button>
     </div>
     <!-- Contents fold: hides the list of pieces on the home page -->
-    <div id="tfr"><button type="button" id="tfb" aria-expanded="true" aria-label="Fold the contents"><span class="mr">अनुक्रमणिका</span><span class="en" lang="en">Contents</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
+    <div id="tfr"><button type="button" id="tfb" aria-expanded="true" aria-label="Fold the contents"><span class="mr">अनुक्रमणिका</span><span class="en" lang="en"><span class="tfo">Table of </span>Contents</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
     <div class="tocg">
       <h2 class="gh"><span class="mr">पूजा</span><span class="en" lang="en">Pooja</span></h2>
       <ol class="toc">
@@ -7022,7 +7081,7 @@ h2[tabindex="-1"]:focus {
       [].forEach.call(
         document.querySelectorAll("#" + t.id + ' header h2 > .en, a[data-go="' + t.id + '"] .en'),
         function (e) {
-          if (!e.closest("small")) e.textContent = v;
+          if (!e.closest("small, .lt")) e.textContent = v; // not the language tag in the home list
         },
       );
     });
@@ -11202,7 +11261,7 @@ h2[tabindex="-1"]:focus {
         })
         .then(function () {
           if (!("caches" in window)) return;
-          caches.open("aarti-v1.0.2").then(function (c) {
+          caches.open("aarti-v1.0").then(function (c) {
             // Keep the page and every font file, then show the offline badge (sw.js caches the same files)
             var done = ofSaved;
             c.add(new Request("./", { cache: "reload" })).catch(function () {});

@@ -1,6 +1,6 @@
 // Service worker: keeps a copy of the site on the phone so it opens without internet.
 // V is the site's version (shown as "v1.0" on the home card). It must match the cache name in index.html; change both on every deploy.
-const V='aarti-v1.0.2';
+const V='aarti-v1.0';
 // Font files (the same list is in index.html)
 const FONTS=['inter-latin','inter-latin-ext','noto-sans-deva-devanagari','noto-sans-deva-latin','noto-sans-deva-latin-ext','tiro-marathi-devanagari','tiro-marathi-latin','tiro-marathi-latin-ext','tiro-sanskrit-devanagari','tiro-sanskrit-latin','tiro-sanskrit-latin-ext'].map(f=>'fonts/'+f+'.woff2');
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(V).then(c=>c.addAll(['./','manifest.json','icon-180.png','icon-192.png','icon-32.png','icon-maskable-192.png','picture-360.webp','picture.webp',...FONTS].map(x=>new Request(x,{cache:'reload'}))).catch(()=>{})))});
