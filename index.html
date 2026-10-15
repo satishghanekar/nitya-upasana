@@ -138,6 +138,129 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Text font choices (Settings → Text font). Each family joins its Marathi and English letters; a browser downloads
+   a file only when someone picks that font (the service worker then keeps it for offline use). */
+@font-face {
+  font-family: "SC Classic";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(fonts/noto-serif-deva-devanagari.woff2) format("woff2");
+  unicode-range: U+0900-097F, U+1CD0-1CF4, U+1CF7-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B0A;
+}
+@font-face {
+  font-family: "SC Classic";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(fonts/noto-serif-latin.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "SC Classic";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(fonts/noto-serif-latin-ext.woff2) format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "SC Bold";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/sura-devanagari-400.woff2) format("woff2");
+  unicode-range: U+0900-097F, U+1CD0-1CF4, U+1CF7-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B0A;
+}
+@font-face {
+  font-family: "SC Bold";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/sura-latin-400.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "SC Bold";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/sura-latin-ext-400.woff2) format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "SC Bold";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/sura-devanagari-700.woff2) format("woff2");
+  unicode-range: U+0900-097F, U+1CD0-1CF4, U+1CF7-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B0A;
+}
+@font-face {
+  font-family: "SC Bold";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/sura-latin-700.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "SC Bold";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/sura-latin-ext-700.woff2) format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "SC Hand";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/kalam-devanagari-400.woff2) format("woff2");
+  unicode-range: U+0900-097F, U+1CD0-1CF4, U+1CF7-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B0A;
+}
+@font-face {
+  font-family: "SC Hand";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/kalam-latin-400.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "SC Hand";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/kalam-latin-ext-400.woff2) format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "SC Hand";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/kalam-devanagari-700.woff2) format("woff2");
+  unicode-range: U+0900-097F, U+1CD0-1CF4, U+1CF7-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B0A;
+}
+@font-face {
+  font-family: "SC Hand";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/kalam-latin-700.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "SC Hand";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/kalam-latin-ext-700.woff2) format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 /* ==== Theme colours and fonts ==== */
 :root {
   --bg: #fcf9f4;
@@ -765,6 +888,15 @@ ol.toc .m {
 }
 .verse p.hl {
   background: var(--hl);
+}
+/* the stanza (or dhrupad) holding the tapped line gets a soft band with a gold rule, so the place is easy
+   to find again at a glance (class "hli", set with the line's "hl"); screen only */
+@media screen {
+  .hli {
+    background: var(--hdr);
+    box-shadow: inset 3px 0 0 var(--gold);
+    border-radius: 10px;
+  }
 }
 /* the transliteration under a tapped line keeps full contrast on the highlight */
 html:not([data-hc="1"]) [data-lang="both"] .verse .en p.hl {
@@ -2075,6 +2207,16 @@ h2[tabindex="-1"]:focus {
   max-width: 46rem;
   margin: 0 auto;
 }
+/* stanza columns drawn closer together in pieces of short lines (--pull, set by the script: pull()) */
+@media screen {
+  /* the translate property, not transform, so the fade-in on scroll (which animates transform) leaves it be */
+  [data-cols="2"] .items > .c1 {
+    translate: var(--pull, 0px) 0;
+  }
+  [data-cols="2"] .items > .c2 {
+    translate: calc(-1 * var(--pull, 0px)) 0;
+  }
+}
 @media print {
   [data-cols="2"] .wrap {
     max-width: none;
@@ -2193,6 +2335,19 @@ h2[tabindex="-1"]:focus {
   }
   #pv .pvc .verse {
     text-align: center;
+  }
+  /* each piece starts at the top of a new page: a forced break is the one page rule Chrome and
+     Safari both follow, so every print breaks the same way and the contents numbers stay right */
+  #pv .pvs + .pvs {
+    break-before: page;
+    page-break-before: always;
+  }
+  #pv .pvs:last-child {
+    margin-bottom: 0;
+  }
+  /* pages always print upright (the contents numbers are worked out for upright pages) */
+  @page {
+    size: portrait;
   }
 }
 
@@ -2382,8 +2537,10 @@ h2[tabindex="-1"]:focus {
     padding-top: 6px;
     margin-top: 8px;
   }
-  #rail a.rg:hover {
-    background: var(--surface);
+  @media (hover: hover) {
+    #rail a.rg:hover {
+      background: var(--surface);
+    }
   }
   #rail[data-lang="both"] a.rg .en {
     display: none;
@@ -2433,8 +2590,10 @@ h2[tabindex="-1"]:focus {
     font-weight: 400;
     margin-right: 0.3em;
   }
-  #rail a:hover {
-    background: var(--surface);
+  @media (hover: hover) {
+    #rail a:hover {
+      background: var(--surface);
+    }
   }
   #rail a.on {
     border-left-color: var(--accent);
@@ -2523,6 +2682,10 @@ h2[tabindex="-1"]:focus {
 @media screen and (min-width: 1100px) {
   [data-rail="1"] #home {
     margin-top: 16px;
+    padding-bottom: 0;
+  }
+  [data-rail="1"] .top {
+    margin-bottom: 0;
   }
 }
 @media print {
@@ -3853,6 +4016,93 @@ h2[tabindex="-1"]:focus {
 #asc.on #ass {
   display: flex !important;
 }
+/* Tilt to scroll: the button shows on phones and tablets (data-tilt); while it runs (#asc.tl) the bar
+   shows the meter (a dot that moves with the lean), the label and ⏸ */
+:root:not([data-tilt="1"]) #tlb,
+#asc.tl #asi > :not(#tls) {
+  display: none !important;
+}
+#tls {
+  display: none;
+}
+#asc.tl #tls {
+  display: flex;
+}
+#asc.tl #asi {
+  justify-content: center;
+}
+#tlb svg {
+  color: var(--accent);
+}
+#tls {
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 4px 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--ink);
+}
+#tlm {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 34px;
+  border-radius: 7px;
+  background: var(--rule);
+}
+#tlm b {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 16px;
+  height: 2px;
+  background: var(--ink);
+  opacity: 0.4;
+}
+#tlm i {
+  position: absolute;
+  left: 2px;
+  top: 12px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+#tlt {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+#tll {
+  font: 600 14px/1 var(--lat);
+  white-space: nowrap;
+}
+#tlh {
+  font: 500 12px/1.1 var(--lat);
+  white-space: nowrap;
+}
+#tls:lang(mr) #tll,
+#tls:lang(mr) #tlh {
+  font-family: var(--body);
+}
+#tlx {
+  border: 0;
+  background: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+}
+@media (max-width: 359px) {
+  #tlh {
+    display: none;
+  }
+}
 #asc.on #asi {
   justify-content: center;
 }
@@ -3903,6 +4153,63 @@ h2[tabindex="-1"]:focus {
 }
 .rmkpop .ash-h:lang(mr) {
   font-family: var(--body);
+}
+/* ==== Bars tuck away while reading (phones and tablets without the side menu) ====
+   Scrolling down slides the top and bottom bars out of view, leaving a slim strip with the piece name;
+   scrolling up, reaching the end of the page, or tapping a blank part of the page brings them back.
+   While autoscroll runs the bottom bar (pause, speed) stays. The script sets data-tuck on <html>. */
+#tuck {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(30px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 16px 0;
+  background: var(--bar);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--rule);
+  font: 600 14px/1 var(--body);
+  color: var(--accent);
+  visibility: hidden;
+}
+#tuck span:lang(en) {
+  font-family: var(--lat);
+}
+#tuck span {
+  line-height: 1.6;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#tuck i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.75;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+/* Shown and hidden at once with visibility, never slid with a transform or transition: on iPhones a
+   fixed bar that is being transformed while the page scrolls can be drawn mid-page (seen 2026-10-15). */
+[data-tuck="1"] #tuck {
+  visibility: visible;
+}
+[data-tuck="1"] body > .bar,
+[data-tuck="1"] #asc:not(.on):not(.tl) {
+  visibility: hidden;
+}
+@media print {
+  #tuck {
+    display: none !important;
+  }
 }
 @media print {
   #asc {
@@ -4286,6 +4593,57 @@ h2[tabindex="-1"]:focus {
   }
 }
 
+/* Text font (Settings): Standard keeps the site's own fonts; the others change the texts (Marathi and English).
+   The Atharvashirsha's Marathi lines keep their Sanskrit font, which has the Vedic accent marks. */
+:root[data-font="classic"] {
+  --tf: "SC Classic";
+}
+:root[data-font="bold"] {
+  --tf: "SC Bold";
+}
+:root[data-font="hand"] {
+  --tf: "SC Hand";
+}
+:root[data-font]:not([data-font="std"]) .ash .items,
+:root[data-font]:not([data-font="std"]) .ash .rftop {
+  font-family: var(--tf), var(--body);
+}
+:root[data-font]:not([data-font="std"]) .ash .items .en,
+:root[data-font]:not([data-font="std"]) .ash .rftop .en,
+:root[data-font]:not([data-font="std"]) .ash .items .en p,
+:root[data-font]:not([data-font="std"]) .ash .rftop .en p {
+  font-family: var(--tf), var(--lat);
+}
+/* the chosen font also reaches the printed copy (#pv has no .ash wrapper); headings keep theirs */
+:root[data-font]:not([data-font="std"]) #pv .pvs {
+  font-family: var(--tf), var(--body);
+}
+:root[data-font]:not([data-font="std"]) #pv .pvs .en,
+:root[data-font]:not([data-font="std"]) #pv .pvs .en p,
+:root[data-font]:not([data-font="std"]) #pv .pvs td.pve {
+  font-family: var(--tf), var(--lat);
+}
+:root[data-font]:not([data-font="std"]) #pv .pvs h2 .en {
+  font-family: inherit;
+}
+/* the font row: label on top, the four choices across the full width */
+#panel .row.stk {
+  flex-wrap: wrap;
+  row-gap: 6px;
+  padding-block: 8px;
+}
+#panel .row.stk > label {
+  flex-basis: 100%;
+}
+#panel .row.stk .seg {
+  flex: 1 1 100%;
+  margin-left: 0;
+}
+#panel .row.stk .seg button {
+  flex: 1 1 0;
+  padding: 0 4px;
+}
+
 /* English style choices: example on top, a small caption (Simple / Standard (IAST)) under it, same row height */
 #panel #str button {
   height: 38px;
@@ -4383,6 +4741,158 @@ h2[tabindex="-1"]:focus {
     inset: -10px -8px;
   }
 }
+
+/* ==== Home contents as a book index (1.0.2, option A of the "book-like" mockups): no tiles or box; the
+   अनुक्रमणिका title between two gold rules, small पूजा / आरती labels between fading gold lines, and one piece per
+   line with a dotted leader to its language (संस्कृत / मराठी / हिंदी, from the piece's own tag) ==== */
+:root {
+  --igold: #8a6430; /* gold for the index's text and rules: 4.5:1 or more on each theme's background */
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-pref]) {
+    --igold: #d8b27a;
+  }
+}
+:root[data-pref="dark"] {
+  --igold: #d8b27a;
+}
+:root[data-pref="light"] {
+  --igold: #8a6430;
+}
+:root[data-pref="sepia"] {
+  --igold: #73521f;
+}
+:root:root:root[data-hc="1"] {
+  --igold: var(--accent);
+}
+@media screen {
+  #tfr,
+  #home .tocg {
+    max-width: 34rem;
+    box-sizing: border-box;
+    margin-inline: auto;
+  }
+  #tfr {
+    margin-top: 18px;
+    border-block: 1px solid var(--igold);
+  }
+  #tfb {
+    position: relative;
+    justify-content: center;
+    min-height: 54px;
+    padding: 0 48px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  #tfb .mr {
+    font-size: 22px;
+  }
+  #tfb svg {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    margin-top: -18px;
+    border-color: transparent;
+  }
+  #home .tocg {
+    margin-block: 0;
+    padding: 1px 4px 0;
+    border: 0;
+    background: transparent;
+  }
+  #home .tocg:last-child {
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--igold);
+  }
+  #home .tocg .gh,
+  #home .sr + .tocg .gh,
+  #home .tocg:first-child .gh {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0 4px;
+    padding: 0;
+    border: 0;
+    font: 500 15px/1.3 var(--head);
+    color: var(--igold);
+  }
+  #home .tocg[data-lang="en"] .gh {
+    font: 500 14px/1.3 var(--lat);
+    letter-spacing: 0.08em;
+  }
+  #home .tocg .gh::before,
+  #home .tocg .gh::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--igold), transparent);
+  }
+  #home .tocg[data-lang="both"] .gh .en {
+    display: inline;
+    margin-left: 0.5em;
+    font: 500 13px/1.3 var(--lat);
+    color: var(--igold);
+  }
+  #home .tocg ol.toc {
+    display: block;
+  }
+  #home .tocg ol.toc a {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 0;
+    min-height: 0;
+    height: auto;
+    padding: 11px 2px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  #home .tocg ol.toc a:active {
+    background: var(--surface);
+  }
+  #home .tocg ol.toc .m {
+    flex: 0 1 auto;
+  }
+  #home .tocg ol.toc .no {
+    color: var(--igold);
+  }
+  /* the dotted leader, then the language */
+  #home .tocg ol.toc a::after {
+    content: "";
+    order: 2;
+    flex: 1 1 16px;
+    min-width: 16px;
+    margin: 0 8px;
+    border-bottom: 1.5px dotted var(--igold);
+    transform: translateY(-0.3em);
+  }
+  #home .tocg ol.toc .lt {
+    order: 3;
+    white-space: nowrap;
+    font: 400 15px/1 var(--body);
+    color: var(--muted);
+  }
+  #home .tocg[data-lang="en"] ol.toc .lt {
+    font: 400 13px/1 var(--lat);
+  }
+  #home .tocg[data-lang="both"] ol.toc .lt .en {
+    display: none;
+  }
+  #home + .grp {
+    margin-top: 28px;
+  }
+}
+/* The language tags are only for the home list on screen */
+.lt {
+  display: none;
+}
+@media screen {
+  #home .tocg ol.toc .lt {
+    display: inline;
+  }
+}
 </style>
 </head>
 
@@ -4433,6 +4943,15 @@ h2[tabindex="-1"]:focus {
       <!-- each choice shows an example and, under it, what the style is (in the menu language) -->
       <button type="button" data-v="simple" lang="en">Sukhkarta<small><span class="mr" lang="mr">सोपे</span><span class="en">Simple</span></small></button>
       <button type="button" data-v="iast" lang="en">sukhakartā<small><span class="mr" lang="mr">प्रमाणित (IAST)</span><span class="en">Standard (IAST)</span></small></button>
+    </div>
+  </div>
+  <div class="row stk">
+    <label><span class="mr">अक्षरशैली</span><span class="en" lang="en">Text font</span></label>
+    <div class="seg" id="sfn" role="group" aria-label="Text font">
+      <button type="button" data-v="std"><span class="mr">नेहमीची</span><span class="en" lang="en">Standard</span></button>
+      <button type="button" data-v="classic"><span class="mr">पारंपरिक</span><span class="en" lang="en">Classic</span></button>
+      <button type="button" data-v="bold"><span class="mr">ठळक</span><span class="en" lang="en">Bold</span></button>
+      <button type="button" data-v="hand"><span class="mr">हस्तलिखित</span><span class="en" lang="en">Handwritten</span></button>
     </div>
   </div>
   <div class="row" id="colrow">
@@ -4500,7 +5019,7 @@ h2[tabindex="-1"]:focus {
     <div class="tocg">
       <h2 class="gh"><span class="mr">पूजा</span><span class="en" lang="en">Pooja</span></h2>
       <ol class="toc">
-        <li><a href="#p1" data-go="p1"><span class="m"><span class="no"><span class="nm">१.</span><span class="ne">1.</span></span> <span class="mr">गणपत्यथर्वशीर्षोपनिषत्</span><span class="en" lang="en">Ganapati Atharvashirsha</span></span></a></li>
+        <li><a href="#p1" data-go="p1"><span class="m"><span class="no"><span class="nm">१.</span><span class="ne">1.</span></span> <span class="mr">गणपत्यथर्वशीर्षोपनिषत्</span><span class="en" lang="en">Ganapati Atharvashirsha</span></span><span class="lt"><span class="mr">संस्कृत</span><span class="en" lang="en">Sanskrit</span></span></a></li>
       </ol>
     </div>
     <div class="tocg" hidden>
@@ -4512,16 +5031,16 @@ h2[tabindex="-1"]:focus {
     <div class="tocg">
       <h2 class="gh"><span class="mr">आरती</span><span class="en" lang="en">Aarti</span></h2>
       <ol class="toc">
-        <li><a href="#a1" data-go="a1"><span class="m"><span class="no"><span class="nm">१.</span><span class="ne">1.</span></span> <span class="mr">गणपतीची आरती</span><span class="en" lang="en">Ganapati Aarti</span></span></a></li>
-        <li><a href="#a2" data-go="a2"><span class="m"><span class="no"><span class="nm">२.</span><span class="ne">2.</span></span> <span class="mr">गणपतीची आरती (हिंदी)</span><span class="en" lang="en">Ganapati Aarti (Hindi)</span></span></a></li>
-        <li><a href="#a3" data-go="a3"><span class="m"><span class="no"><span class="nm">३.</span><span class="ne">3.</span></span> <span class="mr">देवीची आरती</span><span class="en" lang="en">Devi Aarti</span></span></a></li>
-        <li><a href="#a4" data-go="a4"><span class="m"><span class="no"><span class="nm">४.</span><span class="ne">4.</span></span> <span class="mr">शंकराची आरती</span><span class="en" lang="en">Shankar Aarti</span></span></a></li>
-        <li><a href="#a5" data-go="a5"><span class="m"><span class="no"><span class="nm">५.</span><span class="ne">5.</span></span> <span class="mr">दत्ताची आरती</span><span class="en" lang="en">Dattatreya Aarti</span></span></a></li>
-        <li><a href="#a6" data-go="a6"><span class="m"><span class="no"><span class="nm">६.</span><span class="ne">6.</span></span> <span class="mr">ज्ञानेश्वरांची आरती</span><span class="en" lang="en">Dnyaneshwar Aarti</span></span></a></li>
-        <li><a href="#a7" data-go="a7"><span class="m"><span class="no"><span class="nm">७.</span><span class="ne">7.</span></span> <span class="mr">विठ्ठलाची आरती</span><span class="en" lang="en">Vitthal Aarti</span></span></a></li>
-        <li><a href="#a8" data-go="a8"><span class="m"><span class="no"><span class="nm">८.</span><span class="ne">8.</span></span> <span class="mr">घालीन लोटांगण</span><span class="en" lang="en">Ghalin Lotangan</span></span></a></li>
-        <li><a href="#a9" data-go="a9"><span class="m"><span class="no"><span class="nm">९.</span><span class="ne">9.</span></span> <span class="mr">आरती जय गणेश देवा</span><span class="en" lang="en">Aarti Jai Ganesh Deva</span></span></a></li>
-        <li><a href="#a10" data-go="a10"><span class="m"><span class="no"><span class="nm">१०.</span><span class="ne">10.</span></span> <span class="mr">आरती जय जगदीश हरे</span><span class="en" lang="en">Aarti Jai Jagdish Hare</span></span></a></li>
+        <li><a href="#a1" data-go="a1"><span class="m"><span class="no"><span class="nm">१.</span><span class="ne">1.</span></span> <span class="mr">गणपतीची आरती</span><span class="en" lang="en">Ganapati Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
+        <li><a href="#a2" data-go="a2"><span class="m"><span class="no"><span class="nm">२.</span><span class="ne">2.</span></span> <span class="mr">गणपतीची आरती (हिंदी)</span><span class="en" lang="en">Ganapati Aarti (Hindi)</span></span><span class="lt"><span class="mr">हिंदी</span><span class="en" lang="en">Hindi</span></span></a></li>
+        <li><a href="#a3" data-go="a3"><span class="m"><span class="no"><span class="nm">३.</span><span class="ne">3.</span></span> <span class="mr">देवीची आरती</span><span class="en" lang="en">Devi Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
+        <li><a href="#a4" data-go="a4"><span class="m"><span class="no"><span class="nm">४.</span><span class="ne">4.</span></span> <span class="mr">शंकराची आरती</span><span class="en" lang="en">Shankar Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
+        <li><a href="#a5" data-go="a5"><span class="m"><span class="no"><span class="nm">५.</span><span class="ne">5.</span></span> <span class="mr">दत्ताची आरती</span><span class="en" lang="en">Dattatreya Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
+        <li><a href="#a6" data-go="a6"><span class="m"><span class="no"><span class="nm">६.</span><span class="ne">6.</span></span> <span class="mr">ज्ञानेश्वरांची आरती</span><span class="en" lang="en">Dnyaneshwar Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
+        <li><a href="#a7" data-go="a7"><span class="m"><span class="no"><span class="nm">७.</span><span class="ne">7.</span></span> <span class="mr">विठ्ठलाची आरती</span><span class="en" lang="en">Vitthal Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
+        <li><a href="#a8" data-go="a8"><span class="m"><span class="no"><span class="nm">८.</span><span class="ne">8.</span></span> <span class="mr">घालीन लोटांगण</span><span class="en" lang="en">Ghalin Lotangan</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
+        <li><a href="#a9" data-go="a9"><span class="m"><span class="no"><span class="nm">९.</span><span class="ne">9.</span></span> <span class="mr">आरती जय गणेश देवा</span><span class="en" lang="en">Aarti Jai Ganesh Deva</span></span><span class="lt"><span class="mr">हिंदी</span><span class="en" lang="en">Hindi</span></span></a></li>
+        <li><a href="#a10" data-go="a10"><span class="m"><span class="no"><span class="nm">१०.</span><span class="ne">10.</span></span> <span class="mr">आरती जय जगदीश हरे</span><span class="en" lang="en">Aarti Jai Jagdish Hare</span></span><span class="lt"><span class="mr">हिंदी</span><span class="en" lang="en">Hindi</span></span></a></li>
       </ol>
     </div>
   </section>
@@ -5549,13 +6068,13 @@ h2[tabindex="-1"]:focus {
       <div class="item dh">
         <div class="verse">
           <div class="mr">
-            <p data-l="s6l1">आरती ज्ञानराजा ।​<br>हो महाकैवल्यतेजा । कैवल्यतेजा ।</p>
-            <p data-l="s6l2">सेविती साधुसंत ।​<br>हो मनु वेधला माझा । वेधला माझा ।</p>
+            <p data-l="s6l1">आरती ज्ञानराजा ।​<br>हो महाकैवल्यतेजा, कैवल्यतेजा ।</p>
+            <p data-l="s6l2">सेविती साधुसंत ।​<br>हो मनु वेधला माझा, वेधला माझा ।</p>
             <p class="rf" data-l="s6l3">आरती ज्ञानराजा ॥ धृ. ॥</p>
           </div>
           <div class="en" lang="en">
-            <p data-l="s6l1">Aarti Dnyanaraja | Ho Mahakaivalyateja | Kaivalyateja |</p>
-            <p data-l="s6l2">Seviti Sadhusant | Ho Manu Vedhala Majha | Vedhala Majha |</p>
+            <p data-l="s6l1">Aarti Dnyanaraja | Ho Mahakaivalyateja, Kaivalyateja |</p>
+            <p data-l="s6l2">Seviti Sadhusant | Ho Manu Vedhala Majha, Vedhala Majha |</p>
             <p class="rf" data-l="s6l3">Aarti Dnyanaraja || Dhr. ||</p>
           </div>
         </div>
@@ -5563,13 +6082,13 @@ h2[tabindex="-1"]:focus {
       <div class="item">
         <div class="verse">
           <div class="mr">
-            <p data-l="s6l4">लोपलें ज्ञान जगीं ।​<br>हित नेणती कोणी । नेणती कोणी ।</p>
-            <p data-l="s6l5">अवतार पांडुरंग ।​<br>नाम ठेविलें ज्ञानी । ठेविलें ज्ञानी ॥</p>
+            <p data-l="s6l4">लोपलें ज्ञान जगीं ।​<br>हित नेणती कोणी, नेणती कोणी ।</p>
+            <p data-l="s6l5">अवतार पांडुरंग ।​<br>नाम ठेविलें ज्ञानी, ठेविलें ज्ञानी ॥</p>
             <p class="rf" data-l="s6l6">आरती ज्ञानराजा ॥ धृ. ॥</p>
           </div>
           <div class="en" lang="en">
-            <p data-l="s6l4">Lopale Dnyan Jagi | Hita Nenati Koni | Nenati Koni |</p>
-            <p data-l="s6l5">Avatar Pandurang | Nam Thevile Dnyani | Thevile Dnyani ||</p>
+            <p data-l="s6l4">Lopale Dnyan Jagi | Hita Nenati Koni, Nenati Koni |</p>
+            <p data-l="s6l5">Avatar Pandurang | Nam Thevile Dnyani, Thevile Dnyani ||</p>
             <p class="rf" data-l="s6l6">Aarti Dnyanaraja || Dhr. ||</p>
           </div>
         </div>
@@ -5577,13 +6096,13 @@ h2[tabindex="-1"]:focus {
       <div class="item">
         <div class="verse">
           <div class="mr">
-            <p data-l="s6l7">कनकाचें ताट करीं ।​<br>उभ्या गोपिका नारी । गोपिका नारी ।</p>
-            <p data-l="s6l8">नारद तुंबरु हो ।​<br>साम गायन करी । गायन करी ॥</p>
+            <p data-l="s6l7">कनकाचें ताट करीं ।​<br>उभ्या गोपिका नारी, गोपिका नारी ।</p>
+            <p data-l="s6l8">नारद तुंबरु हो ।​<br>साम गायन करी, गायन करी ॥</p>
             <p class="rf" data-l="s6l9">आरती ज्ञानराजा ॥ धृ. ॥</p>
           </div>
           <div class="en" lang="en">
-            <p data-l="s6l7">Kanakache Taat Kari | Ubhya Gopika Nari | Gopika Nari |</p>
-            <p data-l="s6l8">Narad Tumbaru Ho | Saama Gaayan Kari | Gaayan Kari ||</p>
+            <p data-l="s6l7">Kanakache Taat Kari | Ubhya Gopika Nari, Gopika Nari |</p>
+            <p data-l="s6l8">Narad Tumbaru Ho | Saama Gaayan Kari, Gaayan Kari ||</p>
             <p class="rf" data-l="s6l9">Aarti Dnyanaraja || Dhr. ||</p>
           </div>
         </div>
@@ -5591,13 +6110,13 @@ h2[tabindex="-1"]:focus {
       <div class="item">
         <div class="verse">
           <div class="mr">
-            <p data-l="s6l10">प्रगट गुह्य बोले ।​<br>विश्व ब्रह्मची केलें । ब्रह्मची केलें ।</p>
-            <p data-l="s6l11">रामा जनार्दनी ।​<br>पायीं मस्तक ठेविलें । मस्तक ठेविलें ॥</p>
+            <p data-l="s6l10">प्रगट गुह्य बोले ।​<br>विश्व ब्रह्मची केलें, ब्रह्मची केलें ।</p>
+            <p data-l="s6l11">रामा जनार्दनी ।​<br>पायीं मस्तक ठेविलें, मस्तक ठेविलें ॥</p>
             <p class="rf" data-l="s6l12">आरती ज्ञानराजा ॥ धृ. ॥</p>
           </div>
           <div class="en" lang="en">
-            <p data-l="s6l10">Pragat Guhya Bole | Vishwa Brahmachi Kele | Brahmachi Kele |</p>
-            <p data-l="s6l11">Rama Janardani | Paayi Mastak Thevile | Mastak Thevile ||</p>
+            <p data-l="s6l10">Pragat Guhya Bole | Vishwa Brahmachi Kele, Brahmachi Kele |</p>
+            <p data-l="s6l11">Rama Janardani | Paayi Mastak Thevile, Mastak Thevile ||</p>
             <p class="rf" data-l="s6l12">Aarti Dnyanaraja || Dhr. ||</p>
           </div>
         </div>
@@ -5639,17 +6158,15 @@ h2[tabindex="-1"]:focus {
           </div>
         </div>
       </div>
-      <div class="item dh">
+      <div class="item">
         <div class="verse">
           <div class="mr">
             <p data-l="s7l2">निढळावरी कर, ​निढळावरी कर ठेवुनी वाट मी पाहे ।</p>
-            <p data-l="s7l3">हो देवा वाट मी पाहे ।</p>
-            <p data-l="s7l4">येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥</p>
+            <p data-l="s7l3">हो देवा वाट मी पाहे ॥</p>
           </div>
           <div class="en" lang="en">
             <p data-l="s7l2">Nidhalavari Kar, Nidhalavari Kar Thevuni Vaat Mi Pahe |</p>
-            <p data-l="s7l3">Ho Deva Vaat Mi Pahe |</p>
-            <p data-l="s7l4">Yei O Vitthale Majhi Maauli Ye || Dhr. ||</p>
+            <p data-l="s7l3">Ho Deva Vaat Mi Pahe ||</p>
           </div>
         </div>
       </div>
@@ -5724,13 +6241,13 @@ h2[tabindex="-1"]:focus {
             <p data-l="s7l15">विठोबाचे राज आम्हां नित्य दिपवाळी ।</p>
             <p data-l="s7l16">विठोबाचे राज आम्हां नित्य दिपवाळी ।</p>
             <p data-l="s7l17">विष्णुदास नामा, ​विष्णुदास नामा जीवेभावे ओवाळी ।</p>
-            <p data-l="s7l18">हो नामा जीवेभावे ओवाळी ॥</p>
+            <p data-l="s7l18">हो जीवेभावे ओवाळी ॥</p>
           </div>
           <div class="en" lang="en">
             <p data-l="s7l15">Vithobache Raaj Aamha Nitya Dipavali |</p>
             <p data-l="s7l16">Vithobache Raaj Aamha Nitya Dipavali |</p>
             <p data-l="s7l17">Vishnudas Naama, Vishnudas Naama Jivebhave Owaali |</p>
-            <p data-l="s7l18">Ho Naama Jivebhave Owaali ||</p>
+            <p data-l="s7l18">Ho Jivebhave Owaali ||</p>
           </div>
         </div>
       </div>
@@ -6182,7 +6699,7 @@ h2[tabindex="-1"]:focus {
       <li><b>Contents and search</b> (lines with a magnifier): jump to any aarti, or type a few letters of a line in Marathi or English to find it. Plain letters are enough, and spelling is forgiving: <i>sukhakarta</i>, <i>ganpati</i> and <i>vithal</i> find <i>sukhakartā</i>, <i>Ganapati</i> and <i>Vitthal</i>. The matching words are shown in bold; tap a result to go to that line. On a computer you can type straight away, and use ↑ ↓ and Enter.</li>
       <li><b>अ/A</b> (language): switches the aarti text between Marathi, English, and both together.</li>
       <li><b>धृ</b> (dhrupad): show the refrain once at the top, or repeated after every stanza. In “once” mode, tap <b>↻ ध्रुपद</b> under a stanza to see the refrain for a few seconds.</li>
-      <li><b>⚙ Settings:</b> menu language, English style, text size, theme, high contrast, keeping the screen on, and one or two columns on wide screens. See below.</li>
+      <li><b>⚙ Settings:</b> menu language, English style, text font, text size, theme, high contrast, keeping the screen on, and one or two columns on wide screens. See below.</li>
     </ul>
 
     <h3>Settings</h3>
@@ -6194,6 +6711,7 @@ h2[tabindex="-1"]:focus {
           <li><b>sukhakartā</b>: the scholarly spelling (IAST), with exact sounds: ā ī ū for long vowels, ṭ ḍ ṇ for the hard sounds, ś ṣ for the two kinds of “sh”. In the Atharvashirsha it also shows the swara marks: a line under a syllable is the low note (anudātta) and a tick above is the svarita (<i>bha̱draṃ karṇe̍bhiḥ</i>).</li>
         </ul>
         It changes straight away and keeps your place.</li>
+      <li><b>Text font:</b> how the aartis look. <b>Standard</b> (clean, already on your phone), <b>Classic</b> (book style, like a printed pothi), <b>Bold</b> (strong strokes, good in low light) or <b>Handwritten</b>. A new font downloads once when you pick it and then works offline. The Atharvashirsha keeps its Sanskrit lettering. Printing uses the same font.</li>
       <li><b>Text size</b> (A− / A+ / ↺ to reset) and <b>Theme</b> (Auto, Light, Sepia, Dark).</li>
       <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off. Keep screen on starts on for phones and tablets and off on computers.</li>
       <li>At the top, beside the title: the version number (v1.0), <b>App</b> (until it is installed), <b>Help</b>, and ✕ to close Settings.</li>
@@ -6202,10 +6720,12 @@ h2[tabindex="-1"]:focus {
 
     <h3>While reading</h3>
     <ul>
-      <li><b>Tap a line</b> to highlight it, so everyone can keep their place. Tap again to clear.</li>
+      <li><b>Tap a line</b> to highlight it, so everyone can keep their place; its whole stanza gets a soft band too, so you find it again at a glance. Tap again to clear.</li>
+      <li><b>More room to read:</b> on phones and tablets, the top and bottom bars slide away as you scroll down, leaving a thin strip with the name of the piece. Scroll up a little, tap a blank part of the page or the strip, or reach the end of the page to bring them back.</li>
       <li><b>Pinch</b> or use A− / A+ in Settings to change the text size of the aartis (the home page stays readable at its normal size). The bubble shows the size (100% is the normal size for your screen); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
       <li><b>Back:</b> your phone's Back button (or swipe) closes an open menu or box, then goes back to where you were before the last jump, for example from an aarti back to the contents.</li>
       <li><b>Bottom bar (on every page):</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring pieces (on the home page, Next opens the first piece); the <b>Ganesha</b> (home) and <b>contents-and-search</b> buttons work just like the ones at the top. Like the top bar it keeps its size when you change the text size or pinch, and it steps aside while Settings or Contents is open.</li>
+      <li data-feat="tl" hidden><b>Tilt to scroll</b> (phones and tablets): tap the tilted-phone button in the bottom bar, holding the phone however is comfortable. Lean the top of the phone away from you and the page moves down; lean it back towards you and it moves up. The further you lean, the faster it goes; hold it still and the page stays put. The dot in the bar shows the lean. Touch the page to hold it; when you let go, the way you are holding the phone then becomes the new "still". ⏸ stops it. On an iPhone, tap <b>Allow</b> when it asks for motion access (only the first time). The tilt is read on the phone; nothing is sent anywhere.</li>
       <li>The screen stays on while the site is open (you can turn this off in Settings).</li>
     </ul>
 
@@ -6228,13 +6748,18 @@ h2[tabindex="-1"]:focus {
 </div>
 <div id="pv" aria-hidden="true"></div>
 <div id="szt" role="status" aria-live="polite"></div>
-<!-- ==== Bottom bar (footer menu, every page): ‹ Previous, Home, Contents + search, (autoscroll ▶), Next ›.
+<!-- ==== Bottom bar (footer menu, every page): ‹ Previous, Home, Contents + search, (tilt, phones and tablets), (autoscroll ▶), Next ›.
+     While tilt to scroll runs (#asc.tl) the bar shows only the tilt meter, its label and ⏸.
      ▶ shows only once autoscroll is released (FEAT_AS) and switched on; while it runs: Home, Search, speed, ⏸. ==== -->
+<!-- slim strip with the piece name, shown while the bars are tucked away on phones and tablets (data-tuck) -->
+<div id="tuck" aria-hidden="true"><span id="tkt"></span><i id="tkp"></i></div>
 <div id="asc" hidden role="navigation" aria-label="Previous, home, contents, next">
   <div id="asi">
     <button type="button" id="asv" class="asx"></button>
     <button type="button" id="ash" class="asi" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></button>
     <button type="button" id="asq" class="asi" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button>
+    <button type="button" id="tlb" class="asi" aria-label="Tilt to scroll" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="8" height="15" rx="1.6" transform="rotate(-18 12 10.5)"/><path d="M4 15c0 3 2 5 5 5.5"/><path d="M7.5 18.6 9 20.5l-2 1"/></svg></button>
+    <div id="tls"><span id="tlm" aria-hidden="true"><b></b><i></i></span><span id="tlt"><span id="tll"></span><span id="tlh"></span></span><button type="button" id="tlx"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg></button></div>
     <div id="ass"><button type="button" id="asm" aria-label="Slower">−</button><span id="asl" aria-live="polite"></span><button type="button" id="asp" aria-label="Faster">+</button></div>
     <button type="button" id="asb" aria-label="Autoscroll" aria-pressed="false"><svg class="ip" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg><svg class="ia" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg></button>
     <button type="button" id="asn" class="asx"></button>
@@ -6252,7 +6777,8 @@ h2[tabindex="-1"]:focus {
 
    Sections, in order:
      Settings (P)            what the reader chose, and migrations
-     Features held back      FEAT_AS: autoscroll is built but hidden until released
+     Features held back      FEAT_AS: autoscroll, FEAT_TL: tilt to scroll;
+                             both built but hidden until released
      IAST transliteration    IA(): Devanagari line → scholarly English;
                              run once at start-up when English style = sukhakartā
      Layout helpers          two-column grid rows, contents rail
@@ -6265,7 +6791,8 @@ h2[tabindex="-1"]:focus {
      Auto-fit text size      largest size at which lines fit the screen
      Current piece, apply()  menus follow the reader; folds; P → page
      Bottom bar, autoscroll  footer menu on every page (Prev, Home,
-                             Contents, Next); autoscroll (held back)
+                             Contents, Next); autoscroll (held back);
+                             tilt to scroll (phones and tablets)
      Settings panel, buttons dhrupad, wake lock, overlays, clicks, pinch
      Search                  every line in both scripts and both spellings
      Start-up                first paint, reading position, help
@@ -6327,6 +6854,7 @@ h2[tabindex="-1"]:focus {
     cols: 0, // wide screens: 0 = automatic, 1 = one column, 2 = two columns
     loc: null, // { lat, lon } from "Use my location"
     hl: "", // data-l id of the highlighted (tapped) line
+    fnt: "std", // text font: std | classic | bold | hand (Settings → Text font)
     tr: "simple", // English text style: simple ("Sukhkarta") | iast ("sukhakartā", with Vedic accent marks)
     fold: 0, // home card folded to one slim line
     pf: 0, // Pooja section folded (for those who come only for the aartis)
@@ -6364,6 +6892,14 @@ h2[tabindex="-1"]:focus {
   var FEAT_AS = false;
   if (FEAT_AS)
     [].forEach.call(document.querySelectorAll('[data-feat="as"]'), function (e) {
+      e.hidden = false;
+    });
+  // Tilt to scroll (the tilted-phone button in the bottom bar and its Help entry, data-feat="tl") is built and
+  // tested the same way. With FEAT_TL false the button never shows (data-tilt is not set), so it can't start.
+  // To release it: set FEAT_TL to true. Nothing else needs changing.
+  var FEAT_TL = false;
+  if (FEAT_TL)
+    [].forEach.call(document.querySelectorAll('[data-feat="tl"]'), function (e) {
       e.hidden = false;
     });
 
@@ -6512,6 +7048,7 @@ h2[tabindex="-1"]:focus {
           e.style.gridRow = String(row + k);
           e.style.gridColumn = lone ? "1 / -1" : String(i + 1);
           if (i) e.classList.add("c2");
+          else if (!lone) e.classList.add("c1");
         });
         h = Math.max(h, g.length);
       });
@@ -7608,9 +8145,8 @@ h2[tabindex="-1"]:focus {
       el.style.left = Math.round(x - b0.left) + "px";
     }
     place();
-    var r = el.getBoundingClientRect(),
-      bar = document.querySelector("body > .bar");
-    if (r.top < (bar ? bar.getBoundingClientRect().bottom : 56) + 4) el.classList.add("below");
+    var r = el.getBoundingClientRect();
+    if (r.top < topEdge() + 4) el.classList.add("below");
     el.place = place;
     if (window.ResizeObserver) {
       el.ro = new ResizeObserver(function () {
@@ -7814,7 +8350,40 @@ h2[tabindex="-1"]:focus {
   function refit() {
     for (var k in FR) delete FR[k];
     autoFs();
+    pullSoon();
   }
+  // Two columns (Marathi or English only): a piece of short lines leaves a wide gap between its stanza
+  // columns, so the left column moves right and the right column left until the piece's widest lines
+  // are 48px apart. It is a CSS translate (--pull on the piece), so the
+  // column widths that auto-fit measures stay the same. Worked out again after every fit and resize.
+  function pull() {
+    var on = root.getAttribute("data-cols") === "2" && P.lang !== "both";
+    secs.forEach(function (sec) {
+      var v = 0;
+      if (on && sec.offsetParent !== null) {
+        var lw = 0,
+          cw = 0,
+          rg = document.createRange();
+        [].forEach.call(sec.querySelectorAll(".items > .c1 .verse ." + P.lang + " p, .items > .c2 .verse ." + P.lang + " p"), function (p) {
+          if (!p.offsetParent) return;
+          rg.selectNodeContents(p);
+          var w = rg.getBoundingClientRect().width,
+            cs = getComputedStyle(p);
+          if (w > lw) lw = w;
+          cw = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        });
+        // the column gap is 64px; the widest lines of the two columns end up 48px apart
+        if (lw && cw) v = Math.max(0, Math.floor((cw - lw) / 2 + 8));
+      }
+      if (v) sec.style.setProperty("--pull", v + "px");
+      else sec.style.removeProperty("--pull");
+    });
+  }
+  function pullSoon() {
+    clearTimeout(pull.tm);
+    pull.tm = setTimeout(pull, 80);
+  }
+  addEventListener("resize", pullSoon);
   if (document.fonts) {
     try {
       document.fonts.ready.then(refit);
@@ -8033,10 +8602,14 @@ h2[tabindex="-1"]:focus {
     if (c === undefined) c = cur();
     return c ? c.id : "";
   }
+  // the bottom of whatever sits at the top of the screen: the top bar, or the slim strip while it is tucked away
+  function topEdge() {
+    var bar = document.querySelector(root.hasAttribute("data-tuck") ? "#tuck" : "body > .bar");
+    return bar ? Math.max(0, bar.getBoundingClientRect().bottom) : 60;
+  }
   function asSpot() {
     // the reading spot: a third of the way down the screen, below the top bar
-    var bar = document.querySelector("body > .bar"),
-      top = bar ? bar.getBoundingClientRect().bottom : 60;
+    var top = topEdge();
     return top + (innerHeight - top) * 0.3;
   }
   function asLabel() {
@@ -8070,6 +8643,7 @@ h2[tabindex="-1"]:focus {
       b.disabled = !a;
     });
     document.getElementById("ash").setAttribute("aria-label", mr ? "मुख्य पान: अनुक्रमणिका" : "Home: contents");
+    tlLabel();
     document.getElementById("asq").setAttribute("aria-label", mr ? "अनुक्रमणिका आणि शोध" : "Contents and search");
   }
 
@@ -8178,6 +8752,7 @@ h2[tabindex="-1"]:focus {
   }
   function asStart() {
     if (!FEAT_AS) return;
+    if (TL.on) tlStop();
     // keep the piece in view where it is while the rest folds away
     var c0 = cur(),
       t0 = c0 && c0.getBoundingClientRect().top;
@@ -8388,14 +8963,228 @@ h2[tabindex="-1"]:focus {
   asLabel();
   asShow();
 
+  // ---- Tilt to scroll (bottom bar, phones and tablets) ----
+  // Tap the tilt button holding the phone however is comfortable: that angle is "still". Leaning the top of the
+  // screen away scrolls down, leaning it back towards you scrolls up, faster the further it leans (4° either way
+  // does nothing). A finger on the page holds it; letting go makes the new angle "still". ⏸ stops it.
+  // The angle is the screen's own (portrait or sideways), from the phone's motion sensor; nothing leaves the phone.
+  // iPhones ask "Allow motion access?" the first time (requestPermission must run inside the tap).
+  // TL: on = running; p = smoothed angle; base = the "still" angle; got = the sensor has answered;
+  // held = finger on the page; ht = timer to carry on; raf / last = animation frame; acc = part-pixel left over.
+  var TL = { on: 0, p: null, base: null, got: 0, held: 0, ht: 0, raf: 0, last: 0, acc: 0, d: 0 },
+    tlb = document.getElementById("tlb"),
+    tlDot = document.querySelector("#tlm i");
+  if (FEAT_TL && "DeviceOrientationEvent" in window && window.matchMedia && matchMedia("(pointer: coarse)").matches) root.setAttribute("data-tilt", "1");
+  function tlLabel() {
+    var mr = P.ui === "mr",
+      s = document.getElementById("tls");
+    s.lang = mr ? "mr" : "en";
+    document.getElementById("tll").textContent = mr ? "झुकवून सरकवा" : "Tilt to scroll";
+    document.getElementById("tlh").textContent = mr ? "दूर झुकवा = खाली · जवळ = वर" : "lean away = down · toward = up";
+    document.getElementById("tlx").setAttribute("aria-label", mr ? "झुकवून सरकवणे थांबवा" : "Stop tilt to scroll");
+    // (also called from asLabel, before TL is set up)
+    var b = document.getElementById("tlb");
+    b.setAttribute("aria-label", mr ? "झुकवून सरकवा" : "Tilt to scroll");
+    b.setAttribute("aria-pressed", String(!!(TL && TL.on)));
+  }
+  // the screen's angle from flat (0) to upright (90), whichever way round the phone is held
+  function tlPitch(e) {
+    if (e.beta == null) return null;
+    var r = Math.PI / 180,
+      b = e.beta * r,
+      g = (e.gamma || 0) * r,
+      o = typeof window.orientation === "number" ? window.orientation : (screen.orientation && screen.orientation.angle) || 0,
+      a = (((o % 360) + 360) % 360) * r,
+      // which way is up, seen from the phone (x right, y top, z out of the screen)
+      ux = -Math.sin(g) * Math.cos(b),
+      uy = Math.sin(b),
+      uz = Math.cos(g) * Math.cos(b);
+    return Math.atan2(ux * Math.sin(a) + uy * Math.cos(a), uz) / r;
+  }
+  function tlRead(e) {
+    var p = tlPitch(e);
+    if (p == null || isNaN(p)) return;
+    TL.got = 1;
+    TL.p = TL.p == null ? p : TL.p + 0.25 * (p - TL.p);
+    if (TL.base == null) TL.base = TL.p;
+  }
+  function tlStep(now) {
+    if (!TL.on) return;
+    var dt = Math.min(0.1, (now - (TL.last || now)) / 1000);
+    TL.last = now;
+    var d = TL.base == null || TL.p == null || TL.held ? 0 : TL.base - TL.p;
+    // the dot: lower when leaning away (the page goes down), higher when leaning back
+    var k = Math.round(Math.max(-10, Math.min(10, d / 2)));
+    if (k !== TL.d) {
+      TL.d = k;
+      tlDot.style.transform = "translateY(" + k + "px)";
+    }
+    var m = Math.abs(d) - 4;
+    if (m > 0) {
+      TL.acc += (d > 0 ? 1 : -1) * Math.min(900, 2.5 * Math.pow(m, 1.7)) * dt;
+      var n = TL.acc > 0 ? Math.floor(TL.acc) : Math.ceil(TL.acc);
+      if (n) {
+        TL.acc -= n;
+        scrollBy(0, n);
+      }
+    } else TL.acc = 0;
+    TL.raf = requestAnimationFrame(tlStep);
+  }
+  function tlStart() {
+    if (TL.on) return;
+    asStop();
+    TL.on = 1;
+    TL.p = TL.base = null;
+    TL.got = TL.held = 0;
+    TL.acc = TL.last = 0;
+    addEventListener("deviceorientation", tlRead);
+    asc.classList.add("tl");
+    tlLabel();
+    if (!wl) wake(true);
+    TL.raf = requestAnimationFrame(tlStep);
+    // some phones and tablets have no motion sensor, or the browser keeps it from the page
+    setTimeout(function () {
+      if (TL.on && !TL.got) {
+        tlStop();
+        flash("हा फोन झुकणे ओळखत नाही", "Tilt isn't available on this device");
+      }
+    }, 1500);
+  }
+  function tlStop() {
+    if (!TL.on) return;
+    TL.on = 0;
+    clearTimeout(TL.ht);
+    cancelAnimationFrame(TL.raf);
+    removeEventListener("deviceorientation", tlRead);
+    asc.classList.remove("tl");
+    tlLabel();
+    if (!P.wake) wake(false);
+    tlb.focus({ preventScroll: true });
+  }
+  tlb.onclick = function () {
+    if (!FEAT_TL) return;
+    var D = window.DeviceOrientationEvent;
+    if (D && typeof D.requestPermission === "function")
+      D.requestPermission()
+        .then(function (s) {
+          if (s === "granted") tlStart();
+          else flash("सेटिंग्जमध्ये Motion access ला परवानगी द्या", "Motion access was not allowed");
+        })
+        .catch(function () {
+          flash("हा फोन झुकणे ओळखत नाही", "Tilt isn't available on this device");
+        });
+    else tlStart();
+  };
+  document.getElementById("tlx").onclick = tlStop;
+  // a finger on the page holds it; once lifted (and the page has settled) the angle then is the new "still"
+  addEventListener(
+    "pointerdown",
+    function (e) {
+      if (!TL.on) return;
+      var t = e.target && e.target.closest ? e.target : document.body;
+      if (t.closest("#asc")) return;
+      if (t.closest(".bar, #panel, #jump, #help, #qrm, #prm, #inm, #rail, #pzv")) return tlStop();
+      TL.held = 1;
+      clearTimeout(TL.ht);
+    },
+    { passive: true, capture: true },
+  );
+  ["pointerup", "touchend", "touchcancel"].forEach(function (n) {
+    addEventListener(
+      n,
+      function (e) {
+        if (!TL.held || (e.touches && e.touches.length)) return;
+        clearTimeout(TL.ht);
+        TL.ht = setTimeout(function () {
+          TL.base = TL.p;
+          TL.acc = 0;
+          TL.held = 0;
+        }, 400);
+      },
+      { passive: true, capture: true },
+    );
+  });
+  // turning the phone round, or switching away, starts afresh
+  addEventListener("orientationchange", function () {
+    TL.p = TL.base = null;
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState !== "visible") tlStop();
+  });
+  tlLabel();
+
+  // ---- Bars tuck away while reading (CSS: "Bars tuck away while reading") ----
+  // Phones and tablets without the side menu. Scrolling down past the top of the page tucks the top and
+  // bottom bars away (data-tuck); scrolling up, the end of the page, a tap on a blank part of the page,
+  // a menu opening, keyboard focus in a bar or a jump (Contents, Prev / Next) brings them back.
+  var TK = { y: scrollY, acc: 0, hold: 0 },
+    tkStrip = document.getElementById("tuck");
+  function tuck(on) {
+    on = on && !root.hasAttribute("data-rail") && !root.hasAttribute("data-menu");
+    if (on === root.hasAttribute("data-tuck")) return;
+    if (on) root.setAttribute("data-tuck", "1");
+    else root.removeAttribute("data-tuck");
+  }
+  addEventListener(
+    "scroll",
+    function () {
+      var y = scrollY,
+        d = y - TK.y;
+      TK.y = y;
+      if (Date.now() < TK.hold) return;
+      if (y < 80 || y + innerHeight >= document.documentElement.scrollHeight - 4) return tuck(false);
+      // small movements add up, so a slow drag still counts; a change of direction starts again
+      TK.acc = (d > 0) === (TK.acc > 0) ? TK.acc + d : d;
+      if (TK.acc > 24) tuck(true);
+      else if (TK.acc < -24) tuck(false);
+    },
+    { passive: true },
+  );
+  function tuckHold() {
+    TK.hold = Date.now() + 700;
+    TK.acc = 0;
+    tuck(false);
+  }
+  // a jump by the browser (Back, Forward, a link to #piece) brings the bars back; jumps made by the site
+  // (Contents, Prev / Next, search) do so in jumpTo(). A big leap between scroll events is not used as a
+  // sign of a jump: a fast flick on an iPhone also scrolls in big leaps, and the bars popped up mid-page.
+  addEventListener("popstate", tuckHold);
+  addEventListener("hashchange", tuckHold);
+  // a tap on a blank part of the page (not a line, a link, a button or a dhrupad marker) brings the bars back
+  document.addEventListener("click", function (e) {
+    if (!root.hasAttribute("data-tuck") || !e.target.closest) return;
+    if (e.target.closest(".verse p, a, button, input, select, label, .rmk, .rmkpop, #asc, .bar")) return;
+    tuck(false);
+  });
+  // when autoscroll stops, the bars come back, so ▶ (and the rest) is at hand again
+  if (window.MutationObserver)
+    new MutationObserver(function () {
+      if (!asc.classList.contains("on")) tuckHold();
+    }).observe(asc, { attributes: true, attributeFilter: ["class"] });
+  tkStrip.addEventListener("click", function () {
+    tuck(false);
+  });
+  document.addEventListener("focusin", function (e) {
+    if (e.target.closest && e.target.closest(".bar, #asc")) tuck(false);
+  });
+
   // Highlight the current piece in the menus; update the progress line
   function mark() {
-    var c = cur();
+    var c = cur(),
+      ct = c ? c.getBoundingClientRect().top : -1e9;
+    // a section row (पूजा / आरती) at the top, below the last piece passed: that section is current, not the piece above it
+    [].forEach.call(document.querySelectorAll(".grp"), function (g) {
+      var t = g.getBoundingClientRect().top;
+      if (g.offsetParent !== null && t <= 90 && t > ct) {
+        c = g;
+        ct = t;
+      }
+    });
     // Top bar title: the site's name, or once a piece's heading has scrolled under the bar, that piece ("३. देवीची आरती")
     var en = P.lang === "en",
       tt = en ? "Sankashti Chaturthi" : "संकष्टी चतुर्थी",
       bt0 = document.getElementById("bt"),
-      hd = c && c.querySelector("header");
+      hd = c && c.classList.contains("ash") && c.querySelector("header");
     if (hd && hd.getBoundingClientRect().bottom < 64) {
       var no = c.querySelector("h2 .no ." + (en ? "ne" : "nm")),
         nm = c.querySelector("h2 > ." + (en ? "en" : "mr"));
@@ -8403,6 +9192,10 @@ h2[tabindex="-1"]:focus {
       bt0.classList.add("pc");
     } else bt0.classList.remove("pc");
     if (document.getElementById("btt").textContent !== tt) document.getElementById("btt").textContent = tt;
+    // the slim strip shown while the bars are tucked away carries the same name and progress line
+    var tkt = document.getElementById("tkt");
+    if (tkt.textContent !== tt) tkt.textContent = tt;
+    tkt.lang = en ? "en" : "mr";
     bt0.setAttribute("data-tl", en ? "en" : "mr");
     [].forEach.call(document.querySelectorAll("#jump a,#rail a"), function (a) {
       var g = a.getAttribute("data-go"),
@@ -8414,7 +9207,8 @@ h2[tabindex="-1"]:focus {
     var pg = document.getElementById("prog");
     if (pg) {
       var dh = document.documentElement.scrollHeight - innerHeight;
-      pg.style.transform = "scaleX(" + (dh > 0 ? Math.min(1, Math.max(0, scrollY / dh)) : 0) + ")";
+      pg.style.transform = document.getElementById("tkp").style.transform =
+        "scaleX(" + (dh > 0 ? Math.min(1, Math.max(0, scrollY / dh)) : 0) + ")";
     }
   }
   function goHome() {
@@ -8471,6 +9265,11 @@ h2[tabindex="-1"]:focus {
     [].forEach.call(document.querySelectorAll("#str button"), function (b) {
       b.setAttribute("aria-pressed", String(b.dataset.v === P.tr));
     });
+    if (["std", "classic", "bold", "hand"].indexOf(P.fnt) < 0) P.fnt = "std";
+    root.setAttribute("data-font", P.fnt);
+    [].forEach.call(document.querySelectorAll("#sfn button"), function (b) {
+      b.setAttribute("aria-pressed", String(b.dataset.v === P.fnt));
+    });
     var qi = document.getElementById("q");
     qi.placeholder = P.ui === "mr" ? "ओळ शोधा (मराठी किंवा इंग्रजी अक्षरे)" : "Find a line (Marathi or English letters)";
     qi.setAttribute("aria-label", P.ui === "mr" ? "ओळ शोधा" : "Find a line");
@@ -8508,6 +9307,7 @@ h2[tabindex="-1"]:focus {
     pfSet();
     autoFs();
     root.style.setProperty("--fs", P.fs + "px");
+    pullSoon();
     // The date card is rebuilt only when the menu language or the day changes (rebuilding it on
     // every language switch cost a second page layout on slow phones); otherwise just re-check its wrap
     var sk = P.ui + new Date().toDateString();
@@ -8549,6 +9349,15 @@ h2[tabindex="-1"]:focus {
     P.fsu = 1;
     apply();
     save();
+  };
+  // Text font: switched at once; the text size is fitted again when the new font has arrived
+  document.getElementById("sfn").onclick = function (e) {
+    var v = (e.target.closest("button") || { dataset: {} }).dataset.v;
+    if (!v || v === P.fnt) return;
+    P.fnt = v;
+    save();
+    apply();
+    refit();
   };
   // English style: switched in place (lines, titles, search list), then the text size is fitted again
   document.getElementById("str").onclick = function (e) {
@@ -8773,6 +9582,7 @@ h2[tabindex="-1"]:focus {
   // Go somewhere in the page: go() scrolls, url is "#a3" (a piece) or the bare address (home)
   function jumpTo(go, url) {
     var ov = NAV && hs().ov;
+    if (typeof TK === "object" && TK) tuckHold();
     try {
       if (NAV) history.replaceState({ y: scrollY }, "", location.href);
     } catch (e) {}
@@ -8972,13 +9782,11 @@ h2[tabindex="-1"]:focus {
     if (p) {
       var id = p.getAttribute("data-l"),
         was = p.classList.contains("hl");
-      [].forEach.call(document.querySelectorAll("p.hl"), function (x) {
-        x.classList.remove("hl");
+      [].forEach.call(document.querySelectorAll("p.hl, .hli"), function (x) {
+        x.classList.remove("hl", "hli");
       });
       if (!was) {
-        [].forEach.call(document.querySelectorAll('[data-l="' + id + '"]'), function (x) {
-          x.classList.add("hl");
-        });
+        hlMark(id);
         P.hl = id;
       } else {
         P.hl = "";
@@ -9268,11 +10076,15 @@ h2[tabindex="-1"]:focus {
     },
     { passive: true },
   );
-  if (P.hl) {
-    [].forEach.call(document.querySelectorAll('[data-l="' + P.hl + '"]'), function (x) {
+  // highlight a tapped line (each copy of it: Marathi, English, a repeated dhrupad) and the stanza around it
+  function hlMark(id) {
+    [].forEach.call(document.querySelectorAll('[data-l="' + id + '"]'), function (x) {
       x.classList.add("hl");
+      var st = x.closest(".items > .item, .rftop");
+      if (st) st.classList.add("hli");
     });
   }
+  if (P.hl) hlMark(P.hl);
   apply();
   if (document.fonts && document.fonts.ready)
     document.fonts.ready.then(function () {
@@ -9876,7 +10688,7 @@ h2[tabindex="-1"]:focus {
       PAPER = LTR ? [215.9, 279.4] : [210, 297],
       pcache = { key: "", pg: null };
     function pkey(mode) {
-      return [mode, P.lang, P.ref, P.tr, P.ui].join("|");
+      return [mode, P.lang, P.ref, P.tr, P.ui, P.fnt].join("|");
     }
     // the site's CSS as the printer sees it: print rules on, screen-only rules off, no @page
     function pcss() {
@@ -9906,7 +10718,7 @@ h2[tabindex="-1"]:focus {
         done = false;
       f.setAttribute("aria-hidden", "true");
       f.tabIndex = -1;
-      f.style.cssText = "position:fixed;left:-10000px;top:0;border:0;visibility:hidden;width:" + ((PAPER[0] - 18) * mm - 12) + "px;height:" + (PAPER[1] - 23) * mm + "px";
+      f.style.cssText = "position:fixed;left:-10000px;top:0;border:0;visibility:hidden;width:" + ((PAPER[0] - 18) * mm - (P.fnt && P.fnt !== "std" ? 16 : 12)) + "px;height:" + (PAPER[1] - 23) * mm + "px";
       [].forEach.call(root.attributes, function (a) {
         if (a.name !== "data-print") at += " " + a.name + '="' + a.value.replace(/&/g, "&amp;").replace(/"/g, "&quot;") + '"';
       });
@@ -9923,8 +10735,10 @@ h2[tabindex="-1"]:focus {
       try {
         var d = f.contentDocument;
         d.open();
-        d.write('<!doctype html><html data-print="' + mode + '"' + at + '><head><base href="' + location.href.replace(/"/g, "%22") + '"><style>' + pcss() + "\nhtml,body{margin:0;overflow:hidden}#pv .pvtoc{break-after:column}</style></head><body>" + pv.outerHTML + "</body></html>");
+        d.write('<!doctype html><html data-print="' + mode + '"' + at + '><head><base href="' + location.href.replace(/"/g, "%22") + '"><style>' + pcss() + "\nhtml,body{margin:0;overflow:hidden}#pv .pvtoc{break-after:column}#pv .pvs+.pvs{break-before:column}</style></head><body>" + pv.outerHTML + "</body></html>");
         d.close();
+        // lay out once so the fonts the copy uses start loading, then wait for them before measuring
+        d.documentElement.offsetHeight;
         d.fonts.ready.then(function () {
           try {
             end(paginate(f.contentWindow, d, PAPER[1] - 23, mm));
@@ -9945,21 +10759,61 @@ h2[tabindex="-1"]:focus {
         pl = parseFloat(cs.paddingLeft),
         cw = p.clientWidth - pl - parseFloat(cs.paddingRight),
         out = {};
-      // Measured against Chrome's own PDFs: the frame is 12px narrower than the page (printed text
-      // runs a little wider, so a near-full line wraps), and pages with two columns of text hold
+      // Measured against Chrome's own PDFs: the frame is 12px narrower than the page (16px with the
+      // optional text fonts; printed text runs a little wider, so a near-full line wraps), and pages with two columns of text hold
       // 4px more than the plain sum of heights.
       p.style.cssText =
         "padding-top:0;padding-bottom:0;box-sizing:content-box;overflow:visible;column-gap:0;column-fill:auto;column-width:" +
         cw + "px;height:" + (hmm * mm - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) + (p.querySelector(".pvc") ? 4 : 0)) + "px";
-      var x0 = p.getBoundingClientRect().left + pl;
-      [].forEach.call(p.querySelectorAll(".pvs"), function (e) {
-        var c = e.firstElementChild;
-        if (c) out[e.getAttribute("data-sid")] = Math.round((c.getBoundingClientRect().left - x0) / cw) + 1;
+      var x0 = p.getBoundingClientRect().left + pl,
+        y0 = p.getBoundingClientRect().top,
+        H = p.clientHeight,
+        secs = [].slice.call(p.querySelectorAll(".pvs")),
+        z = {};
+      // first page, number of pages and how full the last page is, for each piece
+      function measure() {
+        var m = {};
+        secs.forEach(function (e) {
+          var c = e.firstElementChild,
+            l = e.lastElementChild;
+          if (!c) return;
+          var rr = l.getClientRects(),
+            b = rr[rr.length - 1] || l.getBoundingClientRect(),
+            s = Math.round((c.getBoundingClientRect().left - x0) / cw) + 1;
+          m[e.getAttribute("data-sid")] = { s: s, n: Math.round((b.left - x0) / cw) + 2 - s, f: (b.bottom - y0) / H };
+        });
+        return m;
+      }
+      // Each piece starts on a new page. A piece that only just spills onto another page, or only
+      // just fills its last page, is set slightly smaller (down to 85%) so it ends well inside a page:
+      // then small differences between browsers can't move it, or every later piece, by a page.
+      var m = measure();
+      secs.forEach(function (e) {
+        var id = e.getAttribute("data-sid"),
+          r = m[id],
+          k = 0;
+        if (!r) return;
+        if (r.n > 1 && r.f < 0.15) k = (0.94 * (r.n - 1)) / (r.n - 1 + r.f);
+        else if (r.f > 0.94) k = (r.n - 1 + 0.9) / (r.n - 1 + r.f);
+        if (k >= 0.85 && k < 1) {
+          z[id] = Math.round(k * 100) / 100;
+          e.style.zoom = z[id];
+        }
       });
+      for (var id in z) {
+        m = measure();
+        break;
+      }
+      for (id in m) out[id] = m[id].s;
+      out.z = z;
       return out;
     }
     // write the page numbers into the printed contents
     function pnums(pg) {
+      // pieces set smaller so they end well inside a page (see paginate)
+      [].forEach.call(pv.querySelectorAll(".pvs"), function (e) {
+        e.style.zoom = (pg && pg.z && pg.z[e.getAttribute("data-sid")]) || "";
+      });
       [].forEach.call(pv.querySelectorAll(".pvtoc li[data-sid]"), function (li) {
         var n = pg && pg[li.getAttribute("data-sid")],
           s = li.querySelector(".pgn");
@@ -10348,7 +11202,7 @@ h2[tabindex="-1"]:focus {
         })
         .then(function () {
           if (!("caches" in window)) return;
-          caches.open("aarti-v1.0").then(function (c) {
+          caches.open("aarti-v1.0.2").then(function (c) {
             // Keep the page and every font file, then show the offline badge (sw.js caches the same files)
             var done = ofSaved;
             c.add(new Request("./", { cache: "reload" })).catch(function () {});

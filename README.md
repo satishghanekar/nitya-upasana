@@ -4,7 +4,7 @@ The texts our group recites at Sankashti Chaturthi puja: Pooja, Bhajans (coming 
 
 **Live site:** https://sankashti-chaturthi.pages.dev
 
-**Version:** 1.0 (shown as **v1.0** on the home card and as *v1.0* beside the Settings title)
+**Version:** 1.0.2 (shown as **v1.0.2** on the home card and as *v1.0.2* beside the Settings title)
 
 ## What the site does
 
@@ -19,6 +19,7 @@ Everything runs on the phone or computer. Nothing is sent anywhere, and the site
 - **Pooja fold:** the पूजा heading in the reading page folds the Pooja section (Atharvashirsha) away for people who come only for the aartis; remembered on the phone, and opened again when someone goes to it from Contents, search, Previous or a link. Printing always includes it.
 - **Aarti fold:** the आरती heading folds the whole Aarti section the same way, and going to an aarti opens it again. Every piece heading, open or folded, is one left-aligned row (number and name, ⌃/⌄ on the right) the same height and type as the Contents, पूजा and आरती rows, so folding never makes the heading jump (option B, 2026-10-14); the language tag (मराठी, हिंदी) shows only in print. In Marathi + English the English name sits under the Marathi. The home card and the section rows (अनुक्रमणिका, पूजा, आरती) carry the accent bar on top (the section rows also have bolder titles); piece rows are plain, so sections stand out over the pieces under them. A section with two or more pieces (Aarti today) has an Open all / Fold all pill beside its arrow (`.allb`, `allSet()`), which opens or folds every piece in that section; it hides while the section is folded and never prints.
 - **Autoscroll (built, held back for a future release):** switched off for readers by `FEAT_AS = false` in the script, which hides the Settings switch and Help entry (`data-feat="as"`) and the ▶; set it to `true` to release, nothing else changes. When released: switched on in Settings (Autoscroll, `ason`, off by default); a ▶ in the bottom bar (while running the bar shows Home, Search, speed − / + and ⏸) scrolls the Pooja and aartis (and any section added later) line by line: every sung line gets the same time (longer lines a little more), speed 1–10 with − / +, remembered per piece because each has its own tempo (`asp` in the settings, `as` for pieces not yet adjusted). Turning it on folds the home card and contents and opens every piece; a folded section (Pooja / Aarti) is skipped, and if both are folded both open. In dhrupad-once mode it holds at each tappable ↻ ध्रुपद marker for as many lines as the dhrupad has and shows it in the bubble. Scrolling by hand (touch, wheel or keys) doesn't stop it: it lets go of the page while you scroll or hold a finger still, then carries on from the line in view once the page settles; Prev/Next make way for the speed while running; a tap on the top bar or a menu stops it. In Marathi + English mode it paces by whole stanzas (both languages) instead of single lines. Keeps the screen on while running.
+- **Text font** (Settings, Satish's pick of all four, 2026-10-14): Standard (default: Noto Sans Devanagari + Inter, precached), Classic (Noto Serif Devanagari + Noto Serif), Bold (Sura) or Handwritten (Kalam). Set as `data-font` on the root from `P.fnt`; the `SC Classic` / `SC Bold` / `SC Hand` families join each font's Devanagari and Latin files, which load only when picked and are then cached by the service worker. Applies to the texts (`.items`, `.rftop`); the Atharvashirsha's Marathi lines keep Tiro Devanagari Sanskrit. Printing and PDFs follow the font too (`#pv .pvs` rules; headings keep theirs), and `pages()` lays out the contents page numbers with it (frame 16px narrower than the page for the optional fonts, 12px for Standard: tuned so all 80 font × language × layout PDFs give the right numbers). The print view is cached per font (`pkey`). Decorative fonts Martel, Amita and Yatra One were tried and rejected: they drew the reph wrongly (दर्शन as दरशन).
 - **App picture** (Satish's round Sankashti Chaturthi medallion): `picture-360.webp` is shown small (72 px, the size the card always had) at the top of the open home card; a tap opens the full-resolution `picture.webp` (941 px) full screen (`#pzv`) where pinch, double-tap or the mouse wheel zooms 1x to 5x and a drag moves it. Back, ✕, Escape or a tap outside closes it. The text-size pinch is off while it is open.
 - **Home card colour** (Satish picked option B, 2026-10-14): a soft gold glow behind the picture, a warm tint and gold edge on the date box, the shown date in the accent colour with an "in N days" badge (from 2 days ahead; today and tomorrow are in the heading), a gold ring on the chosen date chip and dimmed past dates.
 - **App icon and share image** come from Satish's square picture: `icon-32/192/512.png` keep its rounded gold-bordered shape (white corners removed), `icon-180.png` and the `apple-touch-icon` files are the full-bleed inside of the border (iPhone rounds them itself), the maskable icons keep everything inside Android's safe circle, and `share.jpg` (1024 px) is the link-preview picture (`og:image`).
@@ -96,14 +97,14 @@ The version is what the home card shows (v1.0). It appears in **two** places, an
 
 1. `sw.js`, near the top:
    ```js
-   const V='aarti-v1.0';
+   const V='aarti-v1.0.2';
    ```
 2. `index.html`, near the end (search for `aarti-v`):
    ```js
-   caches.open("aarti-v1.0")
+   caches.open("aarti-v1.0.2")
    ```
 
-Change it only for a new release, and change both together, using digits and dots only: `1.0` → `1.1` for new features, `2.0` for a redesign. Changing it also makes phones refresh the saved icons and fonts.
+Change it only for a new release, and change both together, using digits and dots only: `1.0` → `1.0.1` for fixes, `1.1` for new features, `2.0` for a redesign. Changing it also makes phones refresh the saved icons and fonts.
 
 ### After publishing
 
