@@ -2,7 +2,7 @@
 
 The texts our group recites at Sankashti Chaturthi puja: Pooja, Bhajans (coming soon) and Aarti, in Marathi with English transliteration.
 
-**Live site:** https://sankashti-chaturthi.pages.dev
+**Live site:** https://nitya-upasana.pages.dev
 
 **Version:** 1.0 (shown as **v1.0** on the home card and as *v1.0* beside the Settings title)
 
@@ -52,13 +52,13 @@ There is no build step. The files in this repository are exactly what the site s
 
 The site is hosted on **Cloudflare Pages**, connected to this repository. Every push (commit) to the `main` branch is published automatically, usually within a minute or two. Nothing else needs to be done.
 
-To watch a publish: Cloudflare dashboard → **Workers & Pages** → **sankashti-chaturthi** → **Deployments**. The newest deployment should show *Success*.
+To watch a publish: Cloudflare dashboard → **Workers & Pages** → **nitya-upasana** → **Deployments**. The newest deployment should show *Success*.
 
 ## Making a change by hand
 
 ### Option A: on the GitHub website (no software needed)
 
-1. Open https://github.com/satishghanekar/sankashti-chaturthi and click `index.html`.
+1. Open https://github.com/satishghanekar/nitya-upasana and click `index.html`.
 2. Click the pencil icon (**Edit this file**).
 3. Use the browser's find (Ctrl+F / ⌘F) to locate the text you want (see *Finding things in index.html* below), and make the change.
 4. If this is a new release, **change the version** (see below). This is a second small edit, in `index.html` and in `sw.js`.
@@ -72,8 +72,8 @@ When you edit two files (`index.html` and `sw.js`) on the website, each one is i
 One-time setup:
 
 ```sh
-git clone https://github.com/satishghanekar/sankashti-chaturthi.git
-cd sankashti-chaturthi
+git clone https://github.com/satishghanekar/nitya-upasana.git
+cd nitya-upasana
 ```
 
 Every time:
