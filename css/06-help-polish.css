@@ -1,0 +1,442 @@
+/* 06-help-polish.css: Help, 1.0 review polish, Ganesha card fold, Pooja / Aarti section folds
+   Part 7 of 11 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   Review rounds after 1.0 refine rules in the earlier files.
+   Sections:
+   - Help (English, phone-first)
+   - Settings panel (final rules): like phone settings. Two rounded cards with hairlines between rows, label on …
+   - Polish after the 1.0 review (final rules)
+   - Round 2 review (final rules)
+   - Ganesha in the home card, and folding the card (final rules)
+   - Folding the Pooja and Aarti sections (the headings' look is in "Fold headings" below)
+*/
+
+/* ==== Help (English, phone-first) ==== */
+#help {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  font: 400 16px/1.55 var(--lat);
+}
+#help[hidden] {
+  display: none;
+}
+#help .hlpbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  /* clear of the notch: on top, and at the sides when the phone is turned sideways */
+  padding: calc(10px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px
+    max(16px, env(safe-area-inset-left, 0px));
+  background: var(--bar);
+  border-bottom: 1px solid var(--rule);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+#help h2 {
+  margin: 0;
+  font: 600 20px/1.2 var(--lat);
+  color: var(--accent);
+}
+#hlpx {
+  background: var(--surface);
+  font: 500 15px/1 var(--lat);
+  cursor: pointer;
+}
+#help .hlpin {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 8px 16px calc(40px + env(safe-area-inset-bottom, 0px));
+}
+#help .hlead {
+  color: var(--muted);
+}
+#help h3 {
+  margin: 26px 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--accent);
+  font: 600 17px/1.3 var(--lat);
+  color: var(--accent);
+}
+#help h4 {
+  margin: 14px 0 4px;
+  font: 600 15px/1.3 var(--lat);
+}
+#help ol,
+#help ul {
+  margin: 0;
+  padding-left: 1.3em;
+}
+#help li {
+  margin: 6px 0;
+}
+#help li::marker {
+  color: var(--accent);
+}
+/* Help pictures of where to tap (drawn, not screenshots) */
+#help .hfigs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 10px 0 6px;
+}
+#help .hfig {
+  margin: 0;
+}
+#help .hfig svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  font-family: var(--lat);
+}
+#help .hfig figcaption {
+  margin-top: 4px;
+  font: 600 14px/1.3 var(--lat);
+  color: var(--muted);
+}
+#help .hfig .sc {
+  fill: var(--surface);
+  stroke: var(--rule);
+}
+#help .hfig .pl {
+  fill: var(--bg);
+  stroke: var(--rule);
+}
+#help .hfig .dv {
+  stroke: var(--rule);
+}
+#help .hfig .ln {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#help .hfig .hl {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+#help .hfig .k {
+  fill: var(--ink);
+}
+#help .hfig .m {
+  fill: var(--muted);
+}
+#help .hfig .a {
+  fill: var(--accent);
+}
+#hlpb:focus-visible,
+#hlpx:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+@media print {
+  #help,
+  #hlpb {
+    display: none !important;
+  }
+}
+
+/* ==== Settings panel (final rules): like phone settings. Two rounded cards with hairlines between rows,
+   label on the left, a small sliding control on the right; switches for High contrast and Keep screen on;
+   App and Help as quiet links at the bottom ==== */
+/* a feature held back for a later release (see FEAT_AS in the script) */
+[data-feat][hidden] {
+  display: none !important;
+}
+/* Header: Settings v1.0 … App, Help, ✕ (App and Help as small outlined pills, always in view) */
+/* compact rows (44px, still a comfortable tap) so the panel fits on a phone without scrolling */
+
+/* ==== Polish after the 1.0 review (final rules) ==== */
+/* Previous / Next cards at the end of each piece: always the same width; readable English names */
+.pn {
+  grid-template-columns: minmax(0, 1fr) 46px minmax(0, 1fr);
+}
+[data-lang="both"] .pn > a > .en {
+  font: 400 12.5px/1.3 var(--lat);
+}
+.pn > a {
+  padding: 10px 12px;
+  font-size: 15.5px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 420px) {
+  .pn {
+    grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+    gap: 6px;
+  }
+  .pn > a {
+    padding-inline: 10px;
+    font-size: 14.5px;
+  }
+}
+/* Refrain marker in Marathi + English: one arrow ("↻ ध्रुपद · Refrain"), and a taller area to tap */
+@media screen {
+  [data-lang="both"] .rmk .ra {
+    display: none;
+  }
+  [data-lang="both"] .rmk .en::before {
+    content: "· ";
+  }
+  [data-ref="1"] .rmk .en {
+    margin-left: 0.3em;
+  }
+  .rmk.rmkt::after {
+    content: "";
+    position: absolute;
+  }
+}
+/* Help's close button: the same round ✕ as Settings */
+#hlpx {
+  width: 36px;
+  height: 36px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  color: var(--muted);
+}
+/* Small labels a little larger */
+.rftop .lab {
+  font-size: 12.5px;
+}
+.ash header .tag {
+  font-size: 12.5px;
+}
+/* Date card: the calendar and pin buttons keep their look but get a full 44 px area to tap;
+   the date strip fades out at its edges, so dates cut off at the side read as "swipe for more" */
+.skc .skli {
+  position: relative;
+}
+.skc .skli::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+}
+.skc .sks {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+}
+/* Home page contents: the same two-column cards as the Contents panel (a group with one piece spans both columns) */
+@media screen {
+  #home .tocg ol.toc {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+    border: 0;
+  }
+  #home .tocg ol.toc li {
+    border: 0;
+  }
+  #home .tocg ol.toc li:only-child {
+    grid-column: 1 / -1;
+  }
+  #home .tocg ol.toc .m {
+    font-size: 1em;
+  }
+  #home .tocg[data-lang="both"] ol.toc .en {
+    font: 400 12.5px/1.3 var(--lat);
+    margin-top: 2px;
+  }
+  #home .tocg .gh {
+    margin-bottom: 10px;
+  }
+}
+/* Top bar showing the piece being read: a little smaller, so most names fit */
+.bar .t.site.pc {
+  font-size: 16.5px;
+  gap: 4px;
+}
+.bar .t.site.pc[data-tl="en"] {
+  font-size: 14.5px;
+}
+/* ==== Round 2 review (final rules) ==== */
+/* A+ is for the verses: the home page keeps its normal size, and very long names may wrap */
+#home {
+  font-size: min(var(--fs), 24px);
+}
+@media (min-width: 600px) {
+  #home {
+    font-size: min(var(--fs), 28px);
+  }
+}
+#home .tocg ol.toc a,
+#jump a {
+  overflow-wrap: anywhere;
+}
+/* Contents panel: the number beside the name, as on the home page */
+#jump a {
+  flex-flow: row wrap;
+  align-items: baseline;
+  justify-content: flex-start;
+  align-content: center;
+  column-gap: 0.3em;
+}
+#jump a > .mr,
+#jump a > .en {
+  flex: 1 1 0;
+  min-width: 0;
+}
+#jl[data-lang="both"] a .en {
+  flex-basis: 100%;
+}
+/* Side by side on wide screens: a soft gold band marks the refrain (a left line would sit far from the right-aligned Marathi), and one space before "· Refrain" */
+@media screen {
+  [data-cols="2"] [data-lang="both"] .rftop .verse {
+    border-left: 0;
+    border-radius: 12px;
+    padding: 8px 0;
+    background: color-mix(in srgb, var(--gold) 10%, transparent);
+  }
+  [data-cols="2"] [data-lang="both"] .rmk .en {
+    margin-left: 0.3em;
+  }
+}
+/* ==== Ganesha in the home card, and folding the card (final rules) ==== */
+#cvb {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  min-height: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--muted);
+}
+#cvb::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+}
+#cvb svg {
+  transition: transform 0.2s;
+}
+.top.fold #cvb {
+  top: 14px;
+  right: 12px;
+}
+.top.fold #cvb svg {
+  transform: rotate(180deg);
+}
+#slim {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 52px 0 4px;
+  text-align: left;
+}
+#slim[hidden] {
+  display: none;
+}
+#slim img {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+#slimt {
+  min-width: 0;
+  font-family: var(--lat);
+  line-height: 1.3;
+}
+#slimt b {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--accent);
+}
+#slimt .sld {
+  display: block;
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--ink);
+}
+#slimt .slm {
+  display: block;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--muted);
+}
+#slimt .mr {
+  font-family: var(--body);
+}
+.top.fold .hero,
+.top.fold #skc,
+.top.fold #shr {
+  display: none !important;
+}
+.top.fold {
+  padding-bottom: 8px;
+}
+@media print {
+  #cvb,
+  #slim {
+    display: none !important;
+  }
+}
+/* ==== Folding the Pooja and Aarti sections (the headings' look is in "Fold headings" below) ==== */
+#pfb,
+#xfb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+#pfb svg,
+#xfb svg {
+  flex: none;
+  transition: transform 0.2s;
+}
+@media screen {
+  [data-pf="1"] .pj,
+  [data-xf="1"] .ar {
+    display: none !important;
+  }
+  [data-pf="1"] #pfb svg,
+  [data-xf="1"] #xfb svg {
+    transform: rotate(180deg);
+  }
+}
+/* the print view copies these headings as plain labels (पूजा POOJA) */
+@media print {
+  #pfb,
+  #xfb {
+    border: 0;
+    background: none;
+    padding: 0;
+    min-height: 0;
+    letter-spacing: inherit;
+    text-transform: inherit;
+  }
+  #pfb .en,
+  #xfb .en {
+    font: 500 0.72em/1.3 var(--lat);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  #pfb svg,
+  #xfb svg {
+    display: none !important;
+  }
+}

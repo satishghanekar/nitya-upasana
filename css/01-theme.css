@@ -1,0 +1,66 @@
+/* 01-theme.css: Theme colours and fonts
+   Part 2 of 11 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   Colour and font variables on :root for the light, sepia and dark themes and high contrast.
+   Sections:
+   - Theme colours and fonts
+*/
+
+/* ==== Theme colours and fonts ==== */
+:root {
+  --bg: #fcf9f4;
+  --surface: #f4ecd8;
+  --ink: #391a0e;
+  --muted: #6d5a4c;
+  --accent: #7b1113;
+  --rule: #d9c9b4;
+  --bar: #fcf9f4ee;
+  --head:
+    "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI",
+    Mangal, serif;
+  --body: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
+  --fs: 21px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-pref]) {
+    --bg: #17110e;
+    --surface: #241a15;
+    --ink: #efe3d4;
+    --muted: #b4a08f;
+    --accent: #e8a98c;
+    --rule: #3a2d25;
+    --bar: #17110eee;
+    color-scheme: dark;
+  }
+}
+
+:root[data-pref="dark"] {
+  --bg: #17110e;
+  --surface: #241a15;
+  --ink: #efe3d4;
+  --muted: #b4a08f;
+  --accent: #e8a98c;
+  --rule: #3a2d25;
+  --bar: #17110eee;
+  color-scheme: dark;
+}
+:root[data-pref="light"] {
+  --bg: #fcf9f4;
+  --surface: #f4ecd8;
+  --ink: #391a0e;
+  --muted: #6d5a4c;
+  --accent: #7b1113;
+  --rule: #d9c9b4;
+  --bar: #fcf9f4ee;
+  color-scheme: light;
+}
+:root[data-pref="sepia"] {
+  --bg: #efe0c3;
+  --surface: #e4d1ab;
+  --ink: #3b2a17;
+  --muted: #6a5436;
+  --accent: #7a2418;
+  --rule: #cdb78d;
+  --bar: #efe0c3ee;
+  color-scheme: light;
+}

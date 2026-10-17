@@ -1,0 +1,430 @@
+/* 08-contents-book.css: Home contents as a book index, author lines, English-first Both
+   Part 9 of 11 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   Sections:
+   - Home contents as a book index (1.0.2, option A of the "book-like" mockups): no tiles or box; the …
+   - Author line under the lotus at the end of each piece (who wrote it, with a Wikipedia link)
+   - Both languages, English first (Settings → "In Both, show first": English)
+*/
+
+/* ==== Home contents as a book index (1.0.2, option A of the "book-like" mockups): no tiles or box; the
+   अनुक्रमणिका title between two gold rules, small पूजा / आरती labels between fading gold lines, and one piece per
+   line with a dotted leader to its language (संस्कृत / मराठी / हिंदी, from the piece's own tag) ==== */
+:root {
+  --igold: #8a6430; /* gold for the index's text and rules: 4.5:1 or more on each theme's background */
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-pref]) {
+    --igold: #d8b27a;
+  }
+}
+:root[data-pref="dark"] {
+  --igold: #d8b27a;
+}
+:root[data-pref="light"] {
+  --igold: #8a6430;
+}
+:root[data-pref="sepia"] {
+  --igold: #73521f;
+}
+:root:root:root[data-hc="1"] {
+  --igold: var(--accent);
+}
+@media screen {
+  #tfr,
+  #home .tocg {
+    max-width: 34rem;
+    box-sizing: border-box;
+    margin-inline: auto;
+  }
+  #tfr {
+    margin-top: 18px;
+    border-block: 1px solid var(--igold);
+  }
+  #tfb {
+    position: relative;
+    justify-content: center;
+    min-height: 54px;
+    padding: 0 48px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  #tfb .mr {
+    font-size: 22px;
+  }
+  #tfb svg {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    margin-top: -18px;
+    border-color: transparent;
+  }
+  #home .tocg {
+    margin-block: 0;
+    padding: 1px 4px 0;
+    border: 0;
+    background: transparent;
+  }
+  #home .tocg:last-child {
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--igold);
+  }
+  #home .tocg .gh,
+  #home .sr + .tocg .gh,
+  #home .tocg:first-child .gh {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0 4px;
+    padding: 0;
+    border: 0;
+    font: 500 15px/1.3 var(--head);
+    color: var(--igold);
+  }
+  #home .tocg[data-lang="en"] .gh {
+    font: 500 14px/1.3 var(--lat);
+    letter-spacing: 0.08em;
+  }
+  #home .tocg .gh::before,
+  #home .tocg .gh::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--igold), transparent);
+  }
+  #home .tocg[data-lang="both"] .gh .en {
+    display: inline;
+    margin-left: 0.5em;
+    font: 500 13px/1.3 var(--lat);
+    color: var(--igold);
+  }
+  #home .tocg ol.toc {
+    display: block;
+  }
+  #home .tocg ol.toc a {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 0;
+    min-height: 0;
+    height: auto;
+    padding: 11px 2px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  #home .tocg ol.toc a:active {
+    background: var(--surface);
+  }
+  #home .tocg ol.toc .m {
+    flex: 0 1 auto;
+    max-width: 100%;
+    overflow-wrap: normal;
+  }
+  /* Marathi + English: the English line starts under the Marathi title, past the number */
+  #home .tocg[data-lang="both"] ol.toc .m {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.3em;
+    align-items: baseline;
+  }
+  #home .tocg[data-lang="both"] ol.toc .m > .no {
+    grid-row: 1;
+  }
+  #home .tocg[data-lang="both"] ol.toc .m > .mr,
+  #home .tocg[data-lang="both"] ol.toc .m > .en {
+    grid-column: 2;
+  }
+  /* Latin titles look larger than Devanagari at the same size */
+  #home .tocg[data-lang="en"] ol.toc .m {
+    font-size: 0.86em;
+  }
+  #home .tocg ol.toc .no {
+    color: var(--igold);
+  }
+  /* the dotted leader, then the language: one piece, so on a long title both move to the next line together */
+  #home .tocg ol.toc .lt::before {
+    content: "";
+    flex: 1 1 16px;
+    min-width: 16px;
+    margin: 0 8px;
+    border-bottom: 1.5px dotted var(--igold);
+    transform: translateY(-0.3em);
+  }
+  #home .tocg ol.toc .lt {
+    flex: 1 0 auto;
+    align-items: baseline;
+    white-space: nowrap;
+    font: 400 15px/1 var(--body);
+    color: var(--muted);
+  }
+  #home .tocg[data-lang="en"] ol.toc .lt {
+    font: 400 13px/1 var(--lat);
+  }
+  #home .tocg[data-lang="both"] ol.toc .lt .en {
+    display: none;
+  }
+  #home + .grp {
+    margin-top: 28px;
+  }
+}
+/* The language tags are only for the home list on screen */
+.lt {
+  display: none;
+}
+@media screen {
+  #home .tocg ol.toc .lt {
+    display: flex;
+  }
+  /* Marathi + English: "अनुक्रमणिका Contents" (English alone says "Table of Contents"), to fit one line */
+  #tfr[data-lang="both"] #tfb .tfo {
+    display: none;
+  }
+  /* Marathi + English piece headings: the English line starts under the Marathi title, past the number */
+  .ash[data-lang="both"] header h2 {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.3em;
+    align-items: baseline;
+    justify-items: start;
+  }
+  .ash[data-lang="both"] header h2 > .no {
+    grid-row: 1;
+  }
+  .ash[data-lang="both"] header h2 > .mr,
+  .ash[data-lang="both"] header h2 > .en {
+    grid-column: 2;
+  }
+  /* the same in the desktop left menu and the contents list of the search panel */
+  #rail[data-lang="both"] ul a,
+  #jl[data-lang="both"] li > a {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.3em;
+    align-items: baseline;
+    justify-items: start;
+  }
+  #rail[data-lang="both"] ul a > .no,
+  #jl[data-lang="both"] li > a > .no {
+    grid-row: 1;
+  }
+  #rail[data-lang="both"] ul a > .mr,
+  #rail[data-lang="both"] ul a > .en,
+  #jl[data-lang="both"] li > a > .mr,
+  #jl[data-lang="both"] li > a > .en {
+    grid-column: 2;
+  }
+}
+/* ==== Author line under the lotus at the end of each piece (who wrote it, with a Wikipedia link) ==== */
+.cr {
+  margin: 2px 0 12px;
+  text-align: center;
+  color: var(--muted);
+  font-family: Inter, "Noto Sans Devanagari", sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.cr small {
+  display: block;
+  font-size: 12.5px;
+}
+.cr a {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.cr a:hover {
+  color: var(--accent);
+}
+.cr a:not([href]) {
+  text-decoration: none;
+  cursor: default;
+}
+.cr a:not([href]) .crx {
+  display: none;
+}
+.ash[data-lang="both"] .cr .en,
+#pv[data-lang="both"] .pvcr .en {
+  display: none;
+}
+@media print {
+  .cr {
+    display: none;
+  }
+  #pv .pvcr {
+    display: block;
+    margin: 6pt 0 0;
+    text-align: center;
+    font-size: 9.5pt;
+    color: #555;
+    break-before: avoid;
+  }
+  #pv .pvcr small {
+    font-size: 8.5pt;
+  }
+}
+/* ==== Both languages, English first (Settings → "In Both, show first": English) ====
+   The script sets data-lead="en" on the page (only in Both) and moves each stanza's English block above its
+   Marathi. English gets the reading size and colour; the Marathi becomes the smaller, muted line. */
+[data-lead="en"] [data-lang="both"] .verse .en {
+  color: var(--ink);
+  font-size: 1em;
+  margin-top: 0;
+  line-height: inherit;
+}
+[data-lead="en"] [data-lang="both"] .verse .en p {
+  font-size: 0.86em;
+  line-height: 1.6;
+}
+[data-lead="en"] [data-lang="both"] .verse .mr {
+  color: var(--muted);
+  font-size: 0.72em;
+  margin-top: 0.15em;
+  line-height: 1.5;
+}
+html:not([data-hc="1"])[data-lead="en"] [data-lang="both"] .verse .mr p.hl {
+  color: var(--ink);
+}
+[data-lead="en"] [data-lang="both"] .rmkpop .verse .en p {
+  font-weight: 700;
+  font-size: 0.86em;
+  color: inherit;
+}
+[data-lead="en"] [data-lang="both"] .rmkpop .verse .mr p {
+  font-weight: 400;
+  font-size: 0.85em;
+  color: var(--muted);
+}
+/* piece titles: the English title leads, the Marathi one sits under it */
+html[data-lead="en"] .ash[data-lang="both"] header h2 .en {
+  display: inline;
+  margin: 0;
+  font-family: var(--lat);
+  font-size: 0.92em;
+  font-weight: 600;
+  line-height: inherit;
+  color: inherit;
+}
+html[data-lead="en"] .ash[data-lang="both"] header h2 .mr {
+  display: block;
+  margin: 1px 0 0;
+  font-size: 0.72em;
+  font-weight: 400;
+  color: var(--muted);
+}
+/* the author line follows the leading language */
+html[data-lead="en"] .ash[data-lang="both"] .cr .en,
+html[data-lead="en"] #pv[data-lang="both"] .pvcr .en {
+  display: inline;
+}
+html[data-lead="en"] .ash[data-lang="both"] .cr small .en,
+html[data-lead="en"] #pv[data-lang="both"] .pvcr small .en {
+  display: block;
+}
+html[data-lead="en"] .ash[data-lang="both"] .cr .mr,
+html[data-lead="en"] #pv[data-lang="both"] .pvcr .mr {
+  display: none;
+}
+/* contents lists (home, desktop menu, search panel): the English title leads, the Marathi one under it */
+@media screen {
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .m > .en {
+    margin: 0;
+    font: 600 0.86em/1.3 var(--lat);
+    color: inherit;
+  }
+  /* one line for the English title (Safari otherwise sizes the title to the shorter Marathi line under it) */
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .m > .en {
+    white-space: nowrap;
+  }
+  /* the language tag on the right follows too: Marathi, Hindi, Sanskrit */
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .lt {
+    font: 400 13px/1 var(--lat);
+  }
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .lt .en {
+    display: inline;
+  }
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .lt .mr {
+    display: none;
+  }
+  html[data-lead="en"] [data-lang="both"] .tag .en {
+    display: inline;
+  }
+  html[data-lead="en"] [data-lang="both"] .tag .mr {
+    display: none;
+  }
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .m > .mr {
+    display: block;
+    margin-top: 2px;
+    font: 400 13.5px/1.3 var(--body);
+    color: var(--muted);
+  }
+  html[data-lead="en"] #rail[data-lang="both"] ul a > .en {
+    display: block;
+    font: 500 14px/1.35 var(--lat);
+    color: inherit;
+  }
+  html[data-lead="en"] #rail[data-lang="both"] ul a > .mr {
+    display: block;
+    font: 400 12.5px/1.3 var(--head);
+    color: var(--muted);
+  }
+  html[data-lead="en"] #jl[data-lang="both"] li > a > .en {
+    display: block;
+    font-size: 1em;
+    opacity: 1;
+  }
+  html[data-lead="en"] #jl[data-lang="both"] li > a > .mr {
+    display: block;
+    font-size: 0.8em;
+    opacity: 0.8;
+  }
+}
+/* wide screens, side by side: English on the left (right-aligned toward the centre), Marathi on the right */
+@media screen {
+  html[data-lead="en"][data-cols="2"] [data-lang="both"] .verse > .en {
+    font-size: 1em;
+    line-height: inherit;
+  }
+  html[data-lead="en"][data-cols="2"] [data-lang="both"] .verse > .en > p {
+    grid-column: 1;
+    text-align: right;
+    font-size: 0.86em;
+  }
+  html[data-lead="en"][data-cols="2"] [data-lang="both"] .verse > .mr {
+    font-size: 0.8em;
+    line-height: 1.5;
+  }
+  html[data-lead="en"][data-cols="2"] [data-lang="both"] .verse > .mr > p {
+    grid-column: 2;
+    text-align: left;
+    font-size: 1em;
+    margin: 0;
+  }
+}
+@media print {
+  [data-lead="en"] [data-lang="both"] .verse .en {
+    font-size: 1em;
+  }
+  [data-lead="en"] [data-lang="both"] .verse .mr {
+    font-size: 0.78em;
+  }
+  /* side by side: English is the left column, so the dividing rule and the dhrupad mark move with it */
+  html[data-lead="en"] #pv .pvside .pvm {
+    border-right: 0;
+  }
+  html[data-lead="en"] #pv .pvside .pve {
+    border-right: 0.5pt solid #bbb;
+  }
+  html[data-lead="en"] #pv .pvside tr.pvrefrow td.pvm {
+    box-shadow: none;
+    border-left: 0;
+    padding-left: 10pt;
+  }
+  html[data-lead="en"] #pv .pvside tr.pvrefrow td.pve {
+    box-shadow: inset 2.5pt 0 0 var(--accent);
+    padding-left: 12pt;
+  }
+}

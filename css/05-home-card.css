@@ -1,0 +1,547 @@
+/* 05-home-card.css: Home page sheet, next Sankashti card, lotus, fade-in, dhrupad markers
+   Part 6 of 11 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   The home card and the decorations at the ends of the pieces.
+   Sections:
+   - The top of the home page sits on a raised "paper sheet"
+   - Offline: a small muted cloud in the top bar (#ofb) while there is no internet; the saved copy is in use. …
+   - Lotus ornament at the end of each piece
+   - Home page saffron band with ॐ
+   - Quieter piece number and language tag in headers
+   - Gentle fade-in on scroll (class added and removed by the script)
+   - Next Sankashti card (home page)
+   - Desktop: the left menu replaces the home-page contents list
+   - Tappable dhrupad marker (Aartis 1–5, 7 and 9): sits right under the stanza; tap shows the dhrupad above
+   - Aarti 6: one-line dhrupad, always shown at the end of each stanza (no top box, no ↻ markers)
+   - Repeated dhrupad (repeat mode, and Aarti 6's always-shown line): lighter, smaller, thin gold rule; the …
+*/
+
+/* ==== The top of the home page sits on a raised "paper sheet" ====
+   Phones and tablets: greeting, date card, Share/QR/Print and Help (.top). Wide screens with the left
+   contents menu: the whole top piece (#home, down to Help), since its contents list is hidden there. */
+:root {
+  --sheet: color-mix(in srgb, var(--bg) 45%, #fff);
+  --sheet-sh: 0 1px 2px rgb(60 30 10 / 0.06), 0 10px 28px -14px rgb(60 30 10 / 0.22);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-pref]) {
+    --sheet: color-mix(in srgb, var(--surface) 60%, var(--bg));
+    --sheet-sh: 0 10px 28px -14px rgb(0 0 0 / 0.6);
+  }
+}
+:root[data-pref="dark"] {
+  --sheet: color-mix(in srgb, var(--surface) 60%, var(--bg));
+  --sheet-sh: 0 10px 28px -14px rgb(0 0 0 / 0.6);
+}
+/* High contrast is always black, whichever theme is picked, so the sheet uses the dark mix */
+:root:root:root[data-hc="1"] {
+  --sheet: color-mix(in srgb, var(--surface) 60%, var(--bg));
+  --sheet-sh: none;
+}
+/* The card matches the section rows below it (Contents, Pooja, Aarti): accent bar on top, same border and corners */
+.top {
+  background: var(--hdr);
+  border: 1px solid var(--hdrl);
+  border-top: 3px solid var(--accent);
+  border-radius: 12px;
+  padding: 10px 10px 2px;
+  margin-bottom: 8px;
+}
+/* the card's own top bar replaces the Ganesha band's (kept on wide screens, where the card has no frame) */
+.top .hero {
+  border-top: 0;
+}
+@media screen and (min-width: 1100px) {
+  [data-rail="1"] #home {
+    margin-top: 16px;
+    padding-bottom: 0;
+  }
+  [data-rail="1"] .top {
+    margin-bottom: 0;
+  }
+}
+@media print {
+  .top {
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+/* ==== Offline: a small muted cloud in the top bar (#ofb) while there is no internet; the saved copy is in use.
+   Not a warning, so no colour. Settings → About says whether the site is saved for offline use. ==== */
+:root {
+  --ok: #1f8a4c;
+  --warn: #a8650a;
+  --warnbg: #fbefd9;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-pref]) {
+    --ok: #5fd08e;
+    --warn: #f0b35a;
+    --warnbg: #3a2a12;
+  }
+}
+:root[data-pref="dark"],
+:root:root:root[data-hc="1"] {
+  --ok: #5fd08e;
+  --warn: #f0b35a;
+  --warnbg: #3a2a12;
+}
+.top {
+  position: relative;
+}
+#ofb {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  align-self: center;
+  color: var(--muted);
+  opacity: 0.8;
+}
+#ofb[hidden] {
+  display: none;
+}
+@media print {
+  #ofb {
+    display: none !important;
+  }
+}
+
+/* ==== Lotus ornament at the end of each piece ==== */
+.fin {
+  display: flex;
+  justify-content: center;
+  color: var(--gold);
+  margin: 22px 0 4px;
+  opacity: 0.9;
+}
+.fin svg {
+  max-width: 60%;
+  height: auto;
+}
+
+/* ==== Home page saffron band with ॐ ==== */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 2px 0 10px;
+  padding: 10px 12px 8px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--hdr), transparent);
+  border-top: 3px solid var(--accent);
+  text-align: center;
+}
+.hero .hl1 {
+  font: 400 0.95em/1.4 var(--head);
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+/* ==== Quieter piece number and language tag in headers ==== */
+.ash header .no {
+  font-weight: 400;
+  font-size: 0.86em;
+  color: var(--muted);
+  margin-right: 0.1em;
+}
+.ash header .tag {
+  line-height: 1.6;
+  padding: 0 9px;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ==== Gentle fade-in on scroll (class added and removed by the script) ==== */
+@keyframes fxin {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fx-in {
+  animation: fxin 0.5s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-in {
+    animation: none;
+  }
+}
+@media print {
+  #rail,
+  #prog,
+  .hero,
+  .fin {
+    display: none !important;
+  }
+  .fx-in {
+    animation: none !important;
+  }
+  .rmk {
+    background: none !important;
+    border: 0 !important;
+  }
+}
+
+
+/* ==== Next Sankashti card (home page) ==== */
+.skc {
+  margin: 0 0 14px;
+  padding: 8px 12px 8px;
+  border: 1px solid var(--hdrl);
+  border-radius: 14px;
+  background: var(--surface);
+  text-align: center;
+}
+.skc.today {
+  box-shadow: 0 0 0 2px var(--hdr) inset;
+}
+.skc .skh {
+  font: 600 0.8em/1.4 var(--body);
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.skc .skd {
+  font: 400 1.15em/1.3 var(--head);
+  margin: 0;
+}
+/* Calendar button after the date */
+.skc .skd #skcal {
+  margin: -6px -8px -6px 2px;
+  vertical-align: -3px;
+}
+/* Pin button after the place name: use / update my location */
+.skc .skli {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -6px -4px -6px -2px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+}
+.skc .skm .skli svg {
+  color: inherit;
+}
+.skc .skli:focus-visible,
+.skc #skb:focus-visible,
+.skc #skall:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+.skc #skb:not([hidden]),
+.skc #skall {
+  display: block;
+  margin: 6px auto 0;
+}
+.skc #skall {
+  margin: 2px auto -6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+/* On the day: pooja time and moonrise countdown */
+.skc .skcd {
+  margin-top: 2px;
+  font: 600 13px/1.4 var(--lat);
+  color: var(--accent);
+}
+.skc .skcd .mr {
+  font-family: var(--body);
+}
+.skc .skm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  font-size: 0.92em;
+  color: var(--ink);
+}
+.skc .skm svg {
+  color: var(--gold);
+}
+.skc .skp {
+  color: var(--muted);
+  font-size: 0.9em;
+  font-family: var(--lat);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.skc .skp.own {
+  flex-basis: 100%;
+  justify-content: center;
+}
+.skc .skl {
+  background: none;
+  border: 0;
+  padding: 4px 8px;
+  min-height: 32px;
+  color: var(--accent);
+  font: 500 13px/1.3 var(--lat);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.skc[data-lang="both"] .skh .en,
+.skc[data-lang="both"] .skd .en {
+  display: block;
+  font: 400 12px/1.4 var(--lat);
+  color: var(--muted);
+}
+.skc[data-lang="both"] .skm .en {
+  display: none;
+}
+/* Today's date, a small line at the top of the card */
+.skc .sktd {
+  margin: 0 0 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--hdrl);
+  font: 500 14px/1.4 var(--body);
+  color: var(--ink);
+}
+.skc[data-lang="en"] .sktd {
+  font-family: var(--lat);
+}
+.skc[data-lang="both"] .sktd .en {
+  display: block;
+  font: 400 12px/1.4 var(--lat);
+}
+.skc .ske {
+  display: none;
+}
+.skc[data-lang="both"] .ske {
+  display: block;
+  font: 400 12px/1.4 var(--lat);
+  color: var(--muted);
+}
+.skc[data-lang="en"] .skd {
+  font: 600 1.1em/1.35 var(--lat);
+}
+/* Date strip: every Sankashti from last January to the end of next year; tap one to show it above */
+.skc .sks {
+  position: relative;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  margin: 6px -6px 0;
+  padding: 10px 6px 2px;
+  border-top: 1px solid var(--hdrl);
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+.skc .skch {
+  flex: none;
+  position: relative;
+  min-width: 46px;
+  min-height: 46px;
+  padding: 4px 6px;
+  border: 1px solid var(--hdrl);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 12px/1.25 var(--body);
+  cursor: pointer;
+}
+.skc .skch b {
+  display: block;
+  font: 600 16px/1.2 var(--body);
+}
+.skc[data-lang="en"] .skch b {
+  font-family: var(--lat);
+}
+.skc[data-lang="both"] .skch .en {
+  display: none;
+}
+.skc .skch.past {
+  color: var(--muted);
+}
+.skc .skch.ang {
+  border-color: var(--gold);
+}
+.skc .skch.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.skc .skch:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.skc .skch i {
+  position: absolute;
+  top: -8px;
+  left: 4px;
+  padding: 0 3px;
+  background: var(--surface);
+  color: var(--muted);
+  font: 600 10px/1.2 var(--lat);
+  font-style: normal;
+}
+.skc[data-lang="both"] .skch i .en {
+  display: none;
+}
+.skc[data-lang="both"] #skb .en {
+  display: none;
+}
+@media print {
+  .skc {
+    display: none !important;
+  }
+}
+
+
+/* ==== Desktop: the left menu replaces the home-page contents list ==== */
+@media screen and (min-width: 1100px) {
+  [data-rail="1"] #home .tocg {
+    display: none;
+  }
+  /* The rail lists the contents, so the fold button has nothing to fold */
+  [data-rail="1"] #tfr {
+    display: none !important;
+  }
+  #rail .rhome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 10px;
+    font: 600 15px/1.35 var(--head);
+    color: var(--accent);
+  }
+  #rail[data-lang="en"] .rhome {
+    font: 600 14px/1.35 var(--lat);
+  }
+  #rail .rhome .en {
+    display: none;
+  }
+  #rail[data-lang="en"] .rhome .en {
+    display: inline;
+  }
+  #rail[data-lang="en"] .rhome .mr {
+    display: none;
+  }
+  #rail[data-lang="both"] .rhome .en {
+    display: inline;
+    font: 400 12px var(--lat);
+    color: var(--muted);
+    margin-left: 4px;
+  }
+}
+
+
+/* ==== Tappable dhrupad marker (Aartis 1–5, 7 and 9): sits right under the stanza; tap shows the dhrupad above ==== */
+@media screen {
+  [data-ref="1"] .items > .rmk.rmkt {
+    position: relative;
+    margin-top: -1.6em;
+    margin-bottom: 2.2em;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .rmk.rmkt:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  .rmk.rmkt[aria-expanded="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+  .rmkpop {
+    position: absolute;
+    z-index: 6;
+    bottom: calc(100% + 8px);
+    left: 0;
+    width: max-content;
+    max-width: min(560px, calc(var(--vw, 100vw) - 16px));
+    box-sizing: border-box;
+    padding: 0.5em 1em 0.6em;
+    border: 1px solid var(--hdrl);
+    border-inline-start: 3px solid var(--accent);
+    border-radius: 10px;
+    background: var(--surface);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+    color: var(--ink);
+    font-size: calc(var(--fs) * 0.85);
+    letter-spacing: 0;
+    text-align: center;
+    cursor: default;
+    animation: rmkin 0.15s ease-out;
+  }
+  .rmkpop.below {
+    bottom: auto;
+    top: calc(100% + 8px);
+  }
+  .rmkpop .verse {
+    display: block;
+    margin: 0;
+  }
+  .rmkpop .verse p {
+    margin: 0.1em 0;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  [data-lang="both"] .rmkpop .verse .en p {
+    font-weight: 400;
+    font-size: 0.85em;
+    color: var(--muted);
+  }
+  @keyframes rmkin {
+    from {
+      opacity: 0;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rmkpop {
+    animation: none;
+  }
+}
+@media print {
+  .rmkpop {
+    display: none !important;
+  }
+}
+
+/* ==== Aarti 6: one-line dhrupad, always shown at the end of each stanza (no top box, no ↻ markers) ==== */
+[data-ref] .ash.norf p.rf {
+  display: block;
+}
+
+/* ==== Repeated dhrupad (repeat mode, and Aarti 6's always-shown line): lighter, smaller, thin gold rule; the main stanza stays the focus ==== */
+@media screen {
+  [data-ref="0"] .item.rf p,
+  [data-ref="0"] .verse p.rf,
+  .ash.norf .verse p.rf {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  [data-ref="0"] .items > .item.rf > .verse {
+    width: fit-content;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-inline: auto;
+    padding-inline-start: 0.6em;
+    border-inline-start: 2px solid var(--gold);
+  }
+  /* Desktop Both (Marathi | English side by side): keep the grid full width, no rule */
+  [data-ref="0"][data-cols="2"] [data-lang="both"] .items > .item.rf > .verse {
+    width: auto;
+    margin-inline: 0;
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
+}

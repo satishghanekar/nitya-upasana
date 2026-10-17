@@ -1,0 +1,24 @@
+{
+  "name": "sankathara-chaturthi",
+  "private": true,
+  "description": "Tests and checks for the Sankathara Chaturthi site. The site itself has no build step: the files at the repository root are served as they are. Run everything from this folder (cd tests).",
+  "scripts": {
+    "serve": "node serve.mjs",
+    "test": "playwright test",
+    "test:update": "playwright test --update-snapshots",
+    "lhci": "lhci autorun",
+    "lint": "stylelint --config stylelint.config.mjs \"../css/**/*.css\" && cd .. && eslint -c tests/eslint.config.mjs js content sw.js",
+    "print:audit": "rm -rf pdfs && PRINT_AUDIT=1 playwright test print-audit.spec.mjs; node print-audit-report.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@lhci/cli": "^0.14.0",
+    "@playwright/test": "^1.56.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-compat": "^6.0.1",
+    "globals": "^15.12.0",
+    "pdfjs-dist": "^4.10.38",
+    "stylelint": "^16.10.0",
+    "stylelint-no-unsupported-browser-features": "^8.0.2"
+  }
+}
