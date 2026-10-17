@@ -130,7 +130,7 @@ Each piece is a `<section>` with an id. Search for the id to jump to it:
 |---|---|
 | `id="p1"` | Pooja 1. गणपत्यथर्वशीर्षोपनिषत् (Ganapati Atharvashirsha) |
 | `id="a1"` | Aarti 1. गणपतीची आरती |
-| `id="a2"` | Aarti 2. गणपतीची आरती (हिंदी) |
+| `id="a2"` | Aarti 2. गणपति जी की आरती |
 | `id="a3"` | Aarti 3. देवीची आरती |
 | `id="a4"` | Aarti 4. शंकराची आरती |
 | `id="a5"` | Aarti 5. दत्ताची आरती |
