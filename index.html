@@ -2345,6 +2345,18 @@ h2[tabindex="-1"]:focus {
   #pv .pvs:last-child {
     margin-bottom: 0;
   }
+  /* a page break the print plan forces (see paginate) */
+  #pv .pvbr {
+    display: block;
+    height: 0;
+    margin: 0;
+    break-before: page;
+    page-break-before: always;
+  }
+  /* nothing after the last piece, so Safari adds no empty page at the end */
+  .wk[data-print] body {
+    margin: 0;
+  }
   /* pages always print upright (the contents numbers are worked out for upright pages) */
   @page {
     size: portrait;
@@ -4626,6 +4638,31 @@ h2[tabindex="-1"]:focus {
 :root[data-font]:not([data-font="std"]) #pv .pvs h2 .en {
   font-family: inherit;
 }
+/* and the home page, the section bars (पूजा, आरती) and the piece title cards: their font names point to the
+   chosen font first. The home page's buttons and offline line, and the Open all / Fold all pill, stay in the site's own fonts (they are controls). */
+:root[data-font]:not([data-font="std"]) #home,
+:root[data-font]:not([data-font="std"]) .grp,
+:root[data-font]:not([data-font="std"]) .ash header {
+  --head: var(--tf), "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
+  --body: var(--tf), "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
+  --lat: var(--tf), "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+}
+:root[data-font]:not([data-font="std"]) #home #shr,
+:root[data-font]:not([data-font="std"]) #home #ofb,
+:root[data-font]:not([data-font="std"]) #home #cvb,
+:root[data-font]:not([data-font="std"]) .grp .allb {
+  --head: "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
+  --body: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
+  --lat: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+}
+/* and the home page's Table of Contents: piece names, numbers and languages */
+:root[data-font]:not([data-font="std"]) #home .tocg ol.toc .m,
+:root[data-font]:not([data-font="std"]) #home .tocg ol.toc .lt {
+  font-family: var(--tf), var(--head);
+}
+:root[data-font]:not([data-font="std"]) #home .tocg ol.toc .en {
+  font-family: var(--tf), var(--lat);
+}
 /* the font row: label on top, the four choices across the full width */
 #panel .row.stk {
   flex-wrap: wrap;
@@ -4952,6 +4989,217 @@ h2[tabindex="-1"]:focus {
     grid-column: 2;
   }
 }
+/* ==== Author line under the lotus at the end of each piece (who wrote it, with a Wikipedia link) ==== */
+.cr {
+  margin: 2px 0 12px;
+  text-align: center;
+  color: var(--muted);
+  font-family: Inter, "Noto Sans Devanagari", sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.cr small {
+  display: block;
+  font-size: 12.5px;
+}
+.cr a {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.cr a:hover {
+  color: var(--accent);
+}
+.cr a:not([href]) {
+  text-decoration: none;
+  cursor: default;
+}
+.cr a:not([href]) .crx {
+  display: none;
+}
+.ash[data-lang="both"] .cr .en,
+#pv[data-lang="both"] .pvcr .en {
+  display: none;
+}
+@media print {
+  .cr {
+    display: none;
+  }
+  #pv .pvcr {
+    display: block;
+    margin: 6pt 0 0;
+    text-align: center;
+    font-size: 9.5pt;
+    color: #555;
+    break-before: avoid;
+  }
+  #pv .pvcr small {
+    font-size: 8.5pt;
+  }
+}
+/* ==== Both languages, English first (Settings → "In Both, show first": English) ====
+   The script sets data-lead="en" on the page (only in Both) and moves each stanza's English block above its
+   Marathi. English gets the reading size and colour; the Marathi becomes the smaller, muted line. */
+[data-lead="en"] [data-lang="both"] .verse .en {
+  color: var(--ink);
+  font-size: 1em;
+  margin-top: 0;
+  line-height: inherit;
+}
+[data-lead="en"] [data-lang="both"] .verse .en p {
+  font-size: 0.86em;
+  line-height: 1.6;
+}
+[data-lead="en"] [data-lang="both"] .verse .mr {
+  color: var(--muted);
+  font-size: 0.72em;
+  margin-top: 0.15em;
+  line-height: 1.5;
+}
+html:not([data-hc="1"])[data-lead="en"] [data-lang="both"] .verse .mr p.hl {
+  color: var(--ink);
+}
+[data-lead="en"] [data-lang="both"] .rmkpop .verse .en p {
+  font-weight: 700;
+  font-size: 0.86em;
+  color: inherit;
+}
+[data-lead="en"] [data-lang="both"] .rmkpop .verse .mr p {
+  font-weight: 400;
+  font-size: 0.85em;
+  color: var(--muted);
+}
+/* piece titles: the English title leads, the Marathi one sits under it */
+html[data-lead="en"] .ash[data-lang="both"] header h2 .en {
+  display: inline;
+  margin: 0;
+  font-family: var(--lat);
+  font-size: 0.92em;
+  font-weight: 600;
+  line-height: inherit;
+  color: inherit;
+}
+html[data-lead="en"] .ash[data-lang="both"] header h2 .mr {
+  display: block;
+  margin: 1px 0 0;
+  font-size: 0.72em;
+  font-weight: 400;
+  color: var(--muted);
+}
+/* the author line follows the leading language */
+html[data-lead="en"] .ash[data-lang="both"] .cr .en,
+html[data-lead="en"] #pv[data-lang="both"] .pvcr .en {
+  display: inline;
+}
+html[data-lead="en"] .ash[data-lang="both"] .cr small .en,
+html[data-lead="en"] #pv[data-lang="both"] .pvcr small .en {
+  display: block;
+}
+html[data-lead="en"] .ash[data-lang="both"] .cr .mr,
+html[data-lead="en"] #pv[data-lang="both"] .pvcr .mr {
+  display: none;
+}
+/* contents lists (home, desktop menu, search panel): the English title leads, the Marathi one under it */
+@media screen {
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .m > .en {
+    margin: 0;
+    font: 600 0.86em/1.3 var(--lat);
+    color: inherit;
+  }
+  /* one line for the English title (Safari otherwise sizes the title to the shorter Marathi line under it) */
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .m > .en {
+    white-space: nowrap;
+  }
+  /* the language tag on the right follows too: Marathi, Hindi, Sanskrit */
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .lt {
+    font: 400 13px/1 var(--lat);
+  }
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .lt .en {
+    display: inline;
+  }
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .lt .mr {
+    display: none;
+  }
+  html[data-lead="en"] [data-lang="both"] .tag .en {
+    display: inline;
+  }
+  html[data-lead="en"] [data-lang="both"] .tag .mr {
+    display: none;
+  }
+  html[data-lead="en"] #home .tocg[data-lang="both"] ol.toc .m > .mr {
+    display: block;
+    margin-top: 2px;
+    font: 400 13.5px/1.3 var(--body);
+    color: var(--muted);
+  }
+  html[data-lead="en"] #rail[data-lang="both"] ul a > .en {
+    display: block;
+    font: 500 14px/1.35 var(--lat);
+    color: inherit;
+  }
+  html[data-lead="en"] #rail[data-lang="both"] ul a > .mr {
+    display: block;
+    font: 400 12.5px/1.3 var(--head);
+    color: var(--muted);
+  }
+  html[data-lead="en"] #jl[data-lang="both"] li > a > .en {
+    display: block;
+    font-size: 1em;
+    opacity: 1;
+  }
+  html[data-lead="en"] #jl[data-lang="both"] li > a > .mr {
+    display: block;
+    font-size: 0.8em;
+    opacity: 0.8;
+  }
+}
+/* wide screens, side by side: English on the left (right-aligned toward the centre), Marathi on the right */
+@media screen {
+  html[data-lead="en"][data-cols="2"] [data-lang="both"] .verse > .en {
+    font-size: 1em;
+    line-height: inherit;
+  }
+  html[data-lead="en"][data-cols="2"] [data-lang="both"] .verse > .en > p {
+    grid-column: 1;
+    text-align: right;
+    font-size: 0.86em;
+  }
+  html[data-lead="en"][data-cols="2"] [data-lang="both"] .verse > .mr {
+    font-size: 0.8em;
+    line-height: 1.5;
+  }
+  html[data-lead="en"][data-cols="2"] [data-lang="both"] .verse > .mr > p {
+    grid-column: 2;
+    text-align: left;
+    font-size: 1em;
+    margin: 0;
+  }
+}
+@media print {
+  [data-lead="en"] [data-lang="both"] .verse .en {
+    font-size: 1em;
+  }
+  [data-lead="en"] [data-lang="both"] .verse .mr {
+    font-size: 0.78em;
+  }
+  /* side by side: English is the left column, so the dividing rule and the dhrupad mark move with it */
+  html[data-lead="en"] #pv .pvside .pvm {
+    border-right: 0;
+  }
+  html[data-lead="en"] #pv .pvside .pve {
+    border-right: 0.5pt solid #bbb;
+  }
+  html[data-lead="en"] #pv .pvside tr.pvrefrow td.pvm {
+    box-shadow: none;
+    border-left: 0;
+    padding-left: 10pt;
+  }
+  html[data-lead="en"] #pv .pvside tr.pvrefrow td.pve {
+    box-shadow: inset 2.5pt 0 0 var(--accent);
+    padding-left: 12pt;
+  }
+}
 </style>
 </head>
 
@@ -4994,6 +5242,13 @@ h2[tabindex="-1"]:focus {
     <div class="seg" id="su" role="group" aria-label="Menu language">
       <button type="button" data-v="en" lang="en">English</button>
       <button type="button" data-v="mr" lang="mr">मराठी</button>
+    </div>
+  </div>
+  <div class="row">
+    <label><span class="mr">दोन्ही भाषांत आधी</span><span class="en" lang="en">In Both, show first</span></label>
+    <div class="seg" id="sld" role="group" aria-label="In Both, show first">
+      <button type="button" data-v="mr" lang="mr">मराठी</button>
+      <button type="button" data-v="en" lang="en">English</button>
     </div>
   </div>
   <div class="row">
@@ -5091,7 +5346,7 @@ h2[tabindex="-1"]:focus {
       <h2 class="gh"><span class="mr">आरती</span><span class="en" lang="en">Aarti</span></h2>
       <ol class="toc">
         <li><a href="#a1" data-go="a1"><span class="m"><span class="no"><span class="nm">१.</span><span class="ne">1.</span></span> <span class="mr">गणपतीची आरती</span><span class="en" lang="en">Ganapati Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
-        <li><a href="#a2" data-go="a2"><span class="m"><span class="no"><span class="nm">२.</span><span class="ne">2.</span></span> <span class="mr">गणपतीची आरती (हिंदी)</span><span class="en" lang="en">Ganapati Aarti (Hindi)</span></span><span class="lt"><span class="mr">हिंदी</span><span class="en" lang="en">Hindi</span></span></a></li>
+        <li><a href="#a2" data-go="a2"><span class="m"><span class="no"><span class="nm">२.</span><span class="ne">2.</span></span> <span class="mr">गणपति जी की आरती</span><span class="en" lang="en">Ganapati Ji ki Aarti</span></span><span class="lt"><span class="mr">हिंदी</span><span class="en" lang="en">Hindi</span></span></a></li>
         <li><a href="#a3" data-go="a3"><span class="m"><span class="no"><span class="nm">३.</span><span class="ne">3.</span></span> <span class="mr">देवीची आरती</span><span class="en" lang="en">Devi Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
         <li><a href="#a4" data-go="a4"><span class="m"><span class="no"><span class="nm">४.</span><span class="ne">4.</span></span> <span class="mr">शंकराची आरती</span><span class="en" lang="en">Shankar Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
         <li><a href="#a5" data-go="a5"><span class="m"><span class="no"><span class="nm">५.</span><span class="ne">5.</span></span> <span class="mr">दत्ताची आरती</span><span class="en" lang="en">Dattatreya Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
@@ -5432,6 +5687,7 @@ h2[tabindex="-1"]:focus {
       </div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr"><a href="https://mr.wikipedia.org/wiki/गणपती_अथर्वशीर्ष" target="_blank" rel="noopener" aria-label="अथर्ववेदीय उपनिषद — विकिपीडिया (नवीन टॅबमध्ये उघडेल)">अथर्ववेदीय उपनिषद<span class="crx" aria-hidden="true"> ↗</span></a></span><span class="en" lang="en"><a href="https://en.wikipedia.org/wiki/Ganapati_Atharvaśīrṣa" target="_blank" rel="noopener" aria-label="An Atharva Veda Upanishad: Wikipedia (opens in a new tab)">An Atharva Veda Upanishad<span class="crx" aria-hidden="true"> ↗</span></a></span></div>
     <nav class="pn">
       <span></span>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
@@ -5557,16 +5813,17 @@ h2[tabindex="-1"]:focus {
       </div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr">रचना : <a href="https://mr.wikipedia.org/wiki/सुखकर्ता_दुःखहर्ता" target="_blank" rel="noopener" aria-label="समर्थ रामदास — विकिपीडिया (नवीन टॅबमध्ये उघडेल)">समर्थ रामदास<span class="crx" aria-hidden="true"> ↗</span></a> (१६०८–१६८२)</span><span class="en" lang="en">By <a href="https://en.wikipedia.org/wiki/Sukhakarta_Dukhaharta" target="_blank" rel="noopener" aria-label="Samarth Ramdas: Wikipedia (opens in a new tab)">Samarth Ramdas<span class="crx" aria-hidden="true"> ↗</span></a> (1608–1682)</span></div>
     <nav class="pn">
       <a class="prev" href="#p1" data-go="p1"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">गणपत्यथर्वशीर्षोपनिषत्</span><span class="en" lang="en">Ganapati Atharvashirsha</span></a>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
-      <a class="next" href="#a2" data-go="a2"><small><span class="mr">पुढील</span><span class="en" lang="en">Next</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></small><span class="mr">गणपतीची आरती (हिंदी)</span><span class="en" lang="en">Ganapati Aarti (Hindi)</span></a>
+      <a class="next" href="#a2" data-go="a2"><small><span class="mr">पुढील</span><span class="en" lang="en">Next</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></small><span class="mr">गणपति जी की आरती</span><span class="en" lang="en">Ganapati Ji ki Aarti</span></a>
     </nav>
   </section>
-  <!-- ---- Aarti 2. गणपतीची आरती (हिंदी) / Ganapati Aarti (Hindi) ---- -->
+  <!-- ---- Aarti 2. गणपति जी की आरती / Ganapati Ji ki Aarti ---- -->
   <section id="a2" class="ash" lang="hi">
     <header>
-      <h2><span class="no"><span class="nm">२.</span><span class="ne">2.</span></span> <span class="mr">गणपतीची आरती (हिंदी)</span><span class="en" lang="en">Ganapati Aarti (Hindi)</span></h2>
+      <h2><span class="no"><span class="nm">२.</span><span class="ne">2.</span></span> <span class="mr">गणपति जी की आरती</span><span class="en" lang="en">Ganapati Ji ki Aarti</span></h2>
       <div class="tag"><span class="mr">हिंदी</span><span class="en" lang="en">Hindi</span></div>
     </header>
     <div class="rftop">
@@ -5680,6 +5937,7 @@ h2[tabindex="-1"]:focus {
       </div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr">रचना : गोसावीनंदन</span><span class="en" lang="en">By Gosavinandan</span></div>
     <nav class="pn">
       <a class="prev" href="#a1" data-go="a1"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">गणपतीची आरती</span><span class="en" lang="en">Ganapati Aarti</span></a>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
@@ -5803,8 +6061,9 @@ h2[tabindex="-1"]:focus {
       </div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr">रचना : <a href="https://mr.wikipedia.org/wiki/नरहरी_सोनार" target="_blank" rel="noopener" aria-label="संत नरहरी सोनार — विकिपीडिया (नवीन टॅबमध्ये उघडेल)">संत नरहरी सोनार<span class="crx" aria-hidden="true"> ↗</span></a> (१३ वे शतक)</span><span class="en" lang="en">By <a href="https://en.wikipedia.org/wiki/Narahari_Sonar" target="_blank" rel="noopener" aria-label="Sant Narahari Sonar: Wikipedia (opens in a new tab)">Sant Narahari Sonar<span class="crx" aria-hidden="true"> ↗</span></a> (13th century)</span></div>
     <nav class="pn">
-      <a class="prev" href="#a2" data-go="a2"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">गणपतीची आरती (हिंदी)</span><span class="en" lang="en">Ganapati Aarti (Hindi)</span></a>
+      <a class="prev" href="#a2" data-go="a2"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">गणपति जी की आरती</span><span class="en" lang="en">Ganapati Ji ki Aarti</span></a>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
       <a class="next" href="#a4" data-go="a4"><small><span class="mr">पुढील</span><span class="en" lang="en">Next</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></small><span class="mr">शंकराची आरती</span><span class="en" lang="en">Shankar Aarti</span></a>
     </nav>
@@ -5957,6 +6216,7 @@ h2[tabindex="-1"]:focus {
       </div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr">रचना : <a href="https://mr.wikipedia.org/wiki/समर्थ_रामदास_स्वामी" target="_blank" rel="noopener" aria-label="समर्थ रामदास — विकिपीडिया (नवीन टॅबमध्ये उघडेल)">समर्थ रामदास<span class="crx" aria-hidden="true"> ↗</span></a> (१६०८–१६८२)</span><span class="en" lang="en">By <a href="https://en.wikipedia.org/wiki/Samarth_Ramdas" target="_blank" rel="noopener" aria-label="Samarth Ramdas: Wikipedia (opens in a new tab)">Samarth Ramdas<span class="crx" aria-hidden="true"> ↗</span></a> (1608–1682)</span></div>
     <nav class="pn">
       <a class="prev" href="#a3" data-go="a3"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">देवीची आरती</span><span class="en" lang="en">Devi Aarti</span></a>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
@@ -6111,6 +6371,7 @@ h2[tabindex="-1"]:focus {
       </div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr">रचना : <a href="https://mr.wikipedia.org/wiki/एकनाथ" target="_blank" rel="noopener" aria-label="संत एकनाथ — विकिपीडिया (नवीन टॅबमध्ये उघडेल)">संत एकनाथ<span class="crx" aria-hidden="true"> ↗</span></a> (१५३३–१५९९)</span><span class="en" lang="en">By <a href="https://en.wikipedia.org/wiki/Eknath" target="_blank" rel="noopener" aria-label="Sant Eknath: Wikipedia (opens in a new tab)">Sant Eknath<span class="crx" aria-hidden="true"> ↗</span></a> (1533–1599)</span></div>
     <nav class="pn">
       <a class="prev" href="#a4" data-go="a4"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">शंकराची आरती</span><span class="en" lang="en">Shankar Aarti</span></a>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
@@ -6182,6 +6443,7 @@ h2[tabindex="-1"]:focus {
       </div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr">रचना : रामा जनार्दन</span><span class="en" lang="en">By Rama Janardan</span></div>
     <nav class="pn">
       <a class="prev" href="#a5" data-go="a5"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">दत्ताची आरती</span><span class="en" lang="en">Dattatreya Aarti</span></a>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
@@ -6323,6 +6585,7 @@ h2[tabindex="-1"]:focus {
       </div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr">रचना : विष्णुदास नामा</span><span class="en" lang="en">By Vishnudas Nama</span><small><span class="mr">(<a href="https://mr.wikipedia.org/wiki/नामदेव" target="_blank" rel="noopener" aria-label="संत नामदेवांची — विकिपीडिया (नवीन टॅबमध्ये उघडेल)">संत नामदेवांची<span class="crx" aria-hidden="true"> ↗</span></a>, अशीही मान्यता)</span><span class="en" lang="en">(also credited to <a href="https://en.wikipedia.org/wiki/Namdev" target="_blank" rel="noopener" aria-label="Sant Namdev: Wikipedia (opens in a new tab)">Sant Namdev<span class="crx" aria-hidden="true"> ↗</span></a>)</span></small></div>
     <nav class="pn">
       <a class="prev" href="#a6" data-go="a6"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">ज्ञानेश्वरांची आरती</span><span class="en" lang="en">Dnyaneshwar Aarti</span></a>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
@@ -6415,6 +6678,7 @@ h2[tabindex="-1"]:focus {
       <div class="rmk"><span class="mr">↻ ३ वेळा</span><span class="en" lang="en"><i class="ra">↻ </i>3 times</span></div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr">संकलन : संत नामदेव व संस्कृत स्तोत्रे</span><span class="en" lang="en">A compilation: Sant Namdev and Sanskrit verses</span></div>
     <nav class="pn">
       <a class="prev" href="#a7" data-go="a7"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">विठ्ठलाची आरती</span><span class="en" lang="en">Vitthal Aarti</span></a>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
@@ -6514,6 +6778,7 @@ h2[tabindex="-1"]:focus {
       </div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr">पारंपरिक</span><span class="en" lang="en">Traditional</span></div>
     <nav class="pn">
       <a class="prev" href="#a8" data-go="a8"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">घालीन लोटांगण</span><span class="en" lang="en">Ghalin Lotangan</span></a>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
@@ -6669,6 +6934,7 @@ h2[tabindex="-1"]:focus {
       </div>
     </div>
     <div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>
+    <div class="cr"><span class="mr">रचना : <a href="https://hi.wikipedia.org/wiki/ओम_जय_जगदीश_हरे" target="_blank" rel="noopener" aria-label="पं. श्रद्धाराम फिल्लौरी — विकिपीडिया (नवीन टॅबमध्ये उघडेल)">पं. श्रद्धाराम फिल्लौरी<span class="crx" aria-hidden="true"> ↗</span></a> (सु. १८७०)</span><span class="en" lang="en">By <a href="https://en.wikipedia.org/wiki/Om_Jai_Jagdish_Hare" target="_blank" rel="noopener" aria-label="Pt. Shardha Ram Phillauri: Wikipedia (opens in a new tab)">Pt. Shardha Ram Phillauri<span class="crx" aria-hidden="true"> ↗</span></a> (c. 1870)</span></div>
     <nav class="pn">
       <a class="prev" href="#a9" data-go="a9"><small><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागील</span><span class="en" lang="en">Previous</span></small><span class="mr">आरती जय गणेश देवा</span><span class="en" lang="en">Aarti Jai Ganesh Deva</span></a>
       <div class="pnq"><a class="pnh" href="./" aria-label="Home: contents"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg></a><button type="button" class="pns" aria-label="Contents and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>
@@ -6764,6 +7030,7 @@ h2[tabindex="-1"]:focus {
     <h3>Settings</h3>
     <ul>
       <li><b>Menu language:</b> English or <span lang="mr">मराठी</span> for the date card, buttons and settings. The aartis follow the अ/A button instead.</li>
+      <li><b>In Both, show first:</b> when the अ/A button shows both languages, whether each stanza starts with the Marathi lines (English smaller under them) or with the English lines (Marathi smaller under them). The अ/A icon shows which comes first.</li>
       <li><b>English style:</b> how the English lines and the titles of the pieces are spelled.
         <ul>
           <li><b>Sukhkarta</b>: the everyday spelling most of us read easily.</li>
@@ -6872,6 +7139,8 @@ h2[tabindex="-1"]:focus {
     mr: '<svg viewBox="0 0 40 34" width="40" height="34" aria-hidden="true"><rect x="14" y="3" width="20" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><text x="24" y="16.5" text-anchor="middle" font-size="12" font-weight="600" style="fill:currentColor;font-family:var(--lat)" opacity=".55">A</text><rect x="4" y="11" width="20" height="18" rx="4" style="fill:var(--accent)"/><text x="14" y="25" text-anchor="middle" font-size="14" style="fill:var(--bg);font-family:var(--head)">अ</text></svg>',
     en: '<svg viewBox="0 0 40 34" width="40" height="34" aria-hidden="true"><rect x="4" y="3" width="20" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><text x="14" y="16.5" text-anchor="middle" font-size="13" style="fill:currentColor;font-family:var(--head)" opacity=".55">अ</text><rect x="14" y="11" width="20" height="18" rx="4" style="fill:var(--accent)"/><text x="24" y="24.5" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--bg);font-family:var(--lat)">A</text></svg>',
     both: '<svg viewBox="0 0 44 34" width="42" height="34" aria-hidden="true"><rect x="2" y="8" width="19" height="18" rx="4" style="fill:var(--accent)"/><text x="11.5" y="22" text-anchor="middle" font-size="14" style="fill:var(--bg);font-family:var(--head)">अ</text><rect x="23" y="8" width="19" height="18" rx="4" style="fill:var(--accent)"/><text x="32.5" y="21.5" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--bg);font-family:var(--lat)">A</text></svg>',
+    // Both, English first (Settings → In Both, show first): the same two cards, A on the left
+    bothEn: '<svg viewBox="0 0 44 34" width="42" height="34" aria-hidden="true"><rect x="2" y="8" width="19" height="18" rx="4" style="fill:var(--accent)"/><text x="11.5" y="21.5" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--bg);font-family:var(--lat)">A</text><rect x="23" y="8" width="19" height="18" rx="4" style="fill:var(--accent)"/><text x="32.5" y="22" text-anchor="middle" font-size="14" style="fill:var(--bg);font-family:var(--head)">अ</text></svg>',
   };
   // Icons for the dhrupad button: repeated after every stanza / shown once
   var RB_LOOP =
@@ -6906,6 +7175,7 @@ h2[tabindex="-1"]:focus {
     fsu: 0, // 1 = the reader chose the size (A−/A+/pinch), so auto-fit leaves it alone
     th: "auto", // theme: auto | light | sepia | dark
     lang: "mr", // mr | en | both
+    lead: "mr", // in Both, which language comes first: mr | en (Settings → In Both, show first)
     ui: "en", // menus, home page and buttons: en | mr
     ref: 1, // dhrupad: 1 = once at the top, 0 = repeated after every stanza
     hc: 0, // high contrast
@@ -8352,6 +8622,7 @@ h2[tabindex="-1"]:focus {
     // cached per language / dhrupad / layout / orientation
     var k = [
       P.lang,
+      LEAD,
       P.ref,
       P.pf,
       P.xf,
@@ -8367,7 +8638,7 @@ h2[tabindex="-1"]:focus {
       w = document.querySelector(".wrap"),
       W = w ? w.clientWidth : innerWidth - 32,
       r = 0;
-    [].forEach.call(document.querySelectorAll(P.lang === "en" ? ".verse .en p" : ".verse .mr p"), function (p) {
+    [].forEach.call(document.querySelectorAll(P.lang === "en" || LEAD === "en" ? ".verse .en p" : ".verse .mr p"), function (p) {
       if (!p.offsetParent) return;
       var cs = getComputedStyle(p),
         avail = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
@@ -9304,6 +9575,25 @@ h2[tabindex="-1"]:focus {
       });
     }
   }
+  // Both languages, English first (Settings → In Both, show first). Each stanza's English block and each piece
+  // title's English part are moved in front of the Marathi, so the page, screen readers, the dhrupad bubble and
+  // the printout all read English first; data-lead="en" on the page gives English the reading size (CSS below).
+  // Outside Both, or with Marathi first, everything is in its original order.
+  var LEAD = "mr";
+  function leadSet() {
+    var L = P.lang === "both" && P.lead === "en" ? "en" : "mr";
+    if (L === "en") root.setAttribute("data-lead", "en");
+    else root.removeAttribute("data-lead");
+    LEAD = L;
+    // (checked every time: the contents lists are built after the first call)
+    [].forEach.call(document.querySelectorAll(".wrap .verse, .wrap .ash header h2, #home ol.toc .m, #rail ul a, #jl li > a"), function (v) {
+      var m = v.querySelector(":scope > .mr"),
+        e = v.querySelector(":scope > .en");
+      if (!m || !e) return;
+      var enFirst = !!(e.compareDocumentPosition(m) & Node.DOCUMENT_POSITION_FOLLOWING);
+      if (enFirst !== (L === "en")) v.insertBefore(L === "en" ? e : m, L === "en" ? m : e);
+    });
+  }
   // Apply every setting in P to the page
   function apply() {
     root.style.setProperty("--fs", P.fs + "px");
@@ -9357,10 +9647,15 @@ h2[tabindex="-1"]:focus {
         ? "Refrain (dhrupad) after every verse. Tap to show it once"
         : "Refrain (dhrupad) shown once. Tap to repeat after every verse",
     );
-    var LB = { mr: [LI.mr, "Marathi"], en: [LI.en, "English"], both: [LI.both, "Marathi and English"] }[P.lang];
-    if (hb.getAttribute("data-l") !== P.lang) {
+    leadSet();
+    [].forEach.call(document.querySelectorAll("#sld button"), function (b) {
+      b.setAttribute("aria-pressed", String(b.dataset.v === (P.lead === "en" ? "en" : "mr")));
+    });
+    var LB = { mr: [LI.mr, "Marathi"], en: [LI.en, "English"], both: LEAD === "en" ? [LI.bothEn, "English and Marathi"] : [LI.both, "Marathi and English"] }[P.lang],
+      lk = P.lang + LEAD;
+    if (hb.getAttribute("data-l") !== lk) {
       hb.innerHTML = LB[0];
-      hb.setAttribute("data-l", P.lang);
+      hb.setAttribute("data-l", lk);
     }
     hb.setAttribute("aria-label", "Language: " + LB[1] + ". Tap to change");
     pfSet();
@@ -9449,6 +9744,16 @@ h2[tabindex="-1"]:focus {
         }, 9000);
       }
       apply();
+    }
+  };
+  document.getElementById("sld").onclick = function (e) {
+    var v = (e.target.closest("button") || { dataset: {} }).dataset.v;
+    if (v) {
+      var c = P.lang === "both" ? cur() : null;
+      P.lead = v;
+      apply();
+      save();
+      if (c) c.scrollIntoView();
     }
   };
   document.getElementById("su").onclick = function (e) {
@@ -9782,7 +10087,7 @@ h2[tabindex="-1"]:focus {
     apply();
     save();
     if (c) c.scrollIntoView();
-    var L = { mr: "मराठी", en: "English", both: "मराठी + English" }[P.lang];
+    var L = { mr: "मराठी", en: "English", both: LEAD === "en" ? "English + मराठी" : "मराठी + English" }[P.lang];
     flash(L, L);
   };
 
@@ -10607,8 +10912,9 @@ h2[tabindex="-1"]:focus {
               if (mp.classList.contains("rf")) {
                 tr.classList.add("rfl");
               }
-              tr.appendChild(a);
-              tr.appendChild(b);
+              // English first (Settings → In Both, show first): English on the left
+              tr.appendChild(LEAD === "en" ? b : a);
+              tr.appendChild(LEAD === "en" ? a : b);
               t.appendChild(tr);
             });
           });
@@ -10736,6 +11042,21 @@ h2[tabindex="-1"]:focus {
             box.appendChild(cols);
           }
         }
+        var cr = sec.querySelector(".cr");
+        if (cr) {
+          // the author line prints as plain text: the Wikipedia link is for the screen
+          var pc = cl(cr);
+          pc.className = "pvcr";
+          [].forEach.call(pc.querySelectorAll(".crx"), function (x) {
+            x.remove();
+          });
+          [].forEach.call(pc.querySelectorAll("a"), function (a) {
+            a.replaceWith(document.createTextNode(a.textContent));
+          });
+          // inside the piece's last unbroken block, so it never lands alone at the top of a page
+          var ks = box.querySelectorAll(".pvk");
+          (ks.length ? ks[ks.length - 1] : box).appendChild(pc);
+        }
         pv.appendChild(box);
       });
     }
@@ -10747,7 +11068,7 @@ h2[tabindex="-1"]:focus {
       PAPER = LTR ? [215.9, 279.4] : [210, 297],
       pcache = { key: "", pg: null };
     function pkey(mode) {
-      return [mode, P.lang, P.ref, P.tr, P.ui, P.fnt].join("|");
+      return [mode, P.lang, LEAD, P.ref, P.tr, P.ui, P.fnt].join("|");
     }
     // the site's CSS as the printer sees it: print rules on, screen-only rules off, no @page
     function pcss() {
@@ -10777,7 +11098,10 @@ h2[tabindex="-1"]:focus {
         done = false;
       f.setAttribute("aria-hidden", "true");
       f.tabIndex = -1;
-      f.style.cssText = "position:fixed;left:-10000px;top:0;border:0;visibility:hidden;width:" + ((PAPER[0] - 18) * mm - (P.fnt && P.fnt !== "std" ? 16 : 12)) + "px;height:" + (PAPER[1] - 23) * mm + "px";
+      // Safari (macOS 26, from Satish's PDFs) prints everything about 16/15 larger than Chrome, so a
+      // page holds less: lay it out on a page that much smaller
+      var sf = root.classList.contains("wk") ? 15 / 16 : 1;
+      f.style.cssText = "position:fixed;left:-10000px;top:0;border:0;visibility:hidden;width:" + ((PAPER[0] - 18) * mm * sf - (P.fnt && P.fnt !== "std" ? 16 : 12)) + "px;height:" + (PAPER[1] - 23) * mm * sf + "px";
       [].forEach.call(root.attributes, function (a) {
         if (a.name !== "data-print") at += " " + a.name + '="' + a.value.replace(/&/g, "&amp;").replace(/"/g, "&quot;") + '"';
       });
@@ -10800,7 +11124,7 @@ h2[tabindex="-1"]:focus {
         d.documentElement.offsetHeight;
         d.fonts.ready.then(function () {
           try {
-            end(paginate(f.contentWindow, d, PAPER[1] - 23, mm));
+            end(paginate(f.contentWindow, d, (PAPER[1] - 23) * sf, mm));
           } catch (e) {
             end(null);
           }
@@ -10809,69 +11133,131 @@ h2[tabindex="-1"]:focus {
         end(null);
       }
     }
-    // The browser itself breaks the pages: the print view becomes a row of page-sized columns
-    // (same width and height as a printed page, same rules for keeping blocks together), so the
-    // column a heading lands in is its page.
+    // The site decides every page break, because a forced break ("start a new page here") is the one
+    // page rule Chrome and Safari both follow. Each piece starts on a new page; its blocks (stanzas,
+    // verse groups) are packed onto pages with 4% to spare, and a break is forced before each block
+    // that starts a page. The contents numbers come from the same plan, so they match the printout.
+    // Chrome's two-column flow (.pvc) can't take forced breaks, so its pages are found by laying the
+    // print view out as a row of page-sized columns, as the browser breaks pages.
     function paginate(w, d, hmm, mm) {
       var p = d.getElementById("pv"),
         cs = w.getComputedStyle(p),
         pl = parseFloat(cs.paddingLeft),
         cw = p.clientWidth - pl - parseFloat(cs.paddingRight),
-        out = {};
-      // Measured against Chrome's own PDFs: the frame is 12px narrower than the page (16px with the
-      // optional text fonts; printed text runs a little wider, so a near-full line wraps), and pages with two columns of text hold
-      // 4px more than the plain sum of heights.
-      p.style.cssText =
-        "padding-top:0;padding-bottom:0;box-sizing:content-box;overflow:visible;column-gap:0;column-fill:auto;column-width:" +
-        cw + "px;height:" + (hmm * mm - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) + (p.querySelector(".pvc") ? 4 : 0)) + "px";
-      var x0 = p.getBoundingClientRect().left + pl,
-        y0 = p.getBoundingClientRect().top,
-        H = p.clientHeight,
         secs = [].slice.call(p.querySelectorAll(".pvs")),
-        z = {};
-      // first page, number of pages and how full the last page is, for each piece
-      function measure() {
-        var m = {};
-        secs.forEach(function (e) {
-          var c = e.firstElementChild,
-            l = e.lastElementChild;
-          if (!c) return;
-          var rr = l.getClientRects(),
-            b = rr[rr.length - 1] || l.getBoundingClientRect(),
-            s = Math.round((c.getBoundingClientRect().left - x0) / cw) + 1;
-          m[e.getAttribute("data-sid")] = { s: s, n: Math.round((b.left - x0) / cw) + 2 - s, f: (b.bottom - y0) / H };
+        // Measured against Chrome's own PDFs: the frame is 12px narrower than the page (16px with the
+        // optional text fonts; printed text runs a little wider, so a near-full line wraps), and pages
+        // with two columns of text hold 4px more than the plain sum of heights.
+        H = hmm * mm - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) + (p.querySelector(".pvc") ? 4 : 0),
+        C = H * 0.96,
+        plan = {},
+        z = {},
+        out = { z: z, b: {} };
+      if (!secs.length) return out;
+      function pack(hs, k) {
+        var n = 1,
+          used = 0,
+          br = [];
+        hs.forEach(function (h, i) {
+          h *= k;
+          if (used > 0 && used + h > C) {
+            n++;
+            used = 0;
+            br.push(i);
+          }
+          used += h;
         });
-        return m;
+        return { n: n, b: br, f: used / C };
       }
-      // Each piece starts on a new page. A piece that only just spills onto another page, or only
-      // just fills its last page, is set slightly smaller (down to 85%) so it ends well inside a page:
-      // then small differences between browsers can't move it, or every later piece, by a page.
-      var m = measure();
+      // 1. pieces made of blocks: measure each block and pack them onto pages. Measured 20px narrower
+      // than the frame (a near-full line then wraps here first), so heights err on the tall side.
+      var pw = p.style.cssText;
+      p.style.cssText = "box-sizing:border-box;width:" + (p.offsetWidth - 20) + "px";
       secs.forEach(function (e) {
         var id = e.getAttribute("data-sid"),
-          r = m[id],
-          k = 0;
-        if (!r) return;
-        if (r.n > 1 && r.f < 0.15) k = (0.94 * (r.n - 1)) / (r.n - 1 + r.f);
-        else if (r.f > 0.94) k = (r.n - 1 + 0.9) / (r.n - 1 + r.f);
-        if (k >= 0.85 && k < 1) {
-          z[id] = Math.round(k * 100) / 100;
-          e.style.zoom = z[id];
-        }
+          kids = [].slice.call(e.children);
+        if (!kids.length || e.querySelector(".pvc")) return;
+        var top = e.getBoundingClientRect().top,
+          tops = kids.map(function (c) {
+            return c.getBoundingClientRect().top;
+          }),
+          hs = kids.map(function (c, i) {
+            return (i + 1 < kids.length ? tops[i + 1] : c.getBoundingClientRect().bottom) - (i ? tops[i] : top);
+          }),
+          r = pack(hs, 1);
+        // a piece that spills a little onto another page is set slightly smaller (down to 80%) to fit
+        if (r.n > 1 && r.f < 0.25)
+          for (var t = 98; t >= 80; t -= 2) {
+            var q = pack(hs, t / 100);
+            if (q.n < r.n) {
+              r = q;
+              z[id] = t / 100;
+              break;
+            }
+          }
+        plan[id] = r;
+        if (r.b.length) out.b[id] = r.b;
       });
-      for (var id in z) {
-        m = measure();
-        break;
+      p.style.cssText = pw;
+      // pages the contents take
+      var first = secs[0].getBoundingClientRect().top - p.getBoundingClientRect().top - parseFloat(cs.paddingTop),
+        page = Math.max(1, Math.ceil((first - 1) / H));
+      // 2. Chrome's two-column pieces: lay out as page-sized columns and count the columns each takes
+      if (secs.some(function (e) {
+          return !plan[e.getAttribute("data-sid")];
+        })) {
+        p.style.cssText =
+          "padding-top:0;padding-bottom:0;box-sizing:content-box;overflow:visible;column-gap:0;column-fill:auto;column-width:" + cw + "px;height:" + H + "px";
+        var x0 = p.getBoundingClientRect().left + pl,
+          y0 = p.getBoundingClientRect().top;
+        var measure = function (e) {
+          var c = e.firstElementChild,
+            l = e.lastElementChild,
+            rr = l.getClientRects(),
+            b = rr[rr.length - 1] || l.getBoundingClientRect(),
+            s = Math.round((c.getBoundingClientRect().left - x0) / cw);
+          return { n: Math.round((b.left - x0) / cw) + 1 - s, f: (b.bottom - y0) / H };
+        };
+        secs.forEach(function (e) {
+          var id = e.getAttribute("data-sid");
+          if (plan[id] || !e.firstElementChild) return;
+          var r = measure(e),
+            k = 0;
+          // only just spilling onto a page, or only just filling one: set slightly smaller so it
+          // ends well inside a page
+          if (r.n > 1 && r.f < 0.15) k = (0.94 * (r.n - 1)) / (r.n - 1 + r.f);
+          else if (r.f > 0.94) k = (r.n - 1 + 0.9) / (r.n - 1 + r.f);
+          if (k >= 0.8 && k < 1) {
+            z[id] = Math.round(k * 100) / 100;
+            e.style.zoom = z[id];
+            r = measure(e);
+          }
+          plan[id] = r;
+        });
       }
-      for (id in m) out[id] = m[id].s;
-      out.z = z;
+      secs.forEach(function (e) {
+        var id = e.getAttribute("data-sid");
+        out[id] = page + 1;
+        page += (plan[id] && plan[id].n) || 1;
+      });
       return out;
     }
     // write the page numbers into the printed contents
     function pnums(pg) {
-      // pieces set smaller so they end well inside a page (see paginate)
+      // the page plan (see paginate): pieces set slightly smaller, and a forced page break before
+      // each block that starts a page
+      [].forEach.call(pv.querySelectorAll(".pvbr"), function (e) {
+        e.parentNode.removeChild(e);
+      });
       [].forEach.call(pv.querySelectorAll(".pvs"), function (e) {
-        e.style.zoom = (pg && pg.z && pg.z[e.getAttribute("data-sid")]) || "";
+        var id = e.getAttribute("data-sid"),
+          kids = [].slice.call(e.children);
+        e.style.zoom = (pg && pg.z && pg.z[id]) || "";
+        ((pg && pg.b && pg.b[id]) || []).forEach(function (i) {
+          var br = document.createElement("div");
+          br.className = "pvbr";
+          if (kids[i]) e.insertBefore(br, kids[i]);
+        });
       });
       [].forEach.call(pv.querySelectorAll(".pvtoc li[data-sid]"), function (li) {
         var n = pg && pg[li.getAttribute("data-sid")],
@@ -11183,6 +11569,24 @@ h2[tabindex="-1"]:focus {
       ofb.innerHTML = OFI[st].replace(/(<span class="en" lang="en">[^<]*<\/span>)/, "$1" + vn);
       ofb.setAttribute("aria-label", OFL[st] + (vn ? ". Version " + me : ""));
     }
+    // Author lines: the Wikipedia link on a poet's name works only online; offline the name is plain text
+    function crNet() {
+      var on = navigator.onLine !== false;
+      [].forEach.call(document.querySelectorAll(".cr a"), function (a) {
+        if (on && a.getAttribute("data-href")) {
+          a.setAttribute("href", a.getAttribute("data-href"));
+          a.removeAttribute("data-href");
+          a.removeAttribute("aria-disabled");
+        } else if (!on && a.hasAttribute("href")) {
+          a.setAttribute("data-href", a.getAttribute("href"));
+          a.removeAttribute("href");
+          a.setAttribute("aria-disabled", "true");
+        }
+      });
+    }
+    crNet();
+    addEventListener("online", crNet);
+    addEventListener("offline", crNet);
     ofSet(navigator.onLine === false ? "off" : "idle");
     addEventListener("online", function () {
       if (ofb.getAttribute("data-s") === "off") ofSet("idle");
