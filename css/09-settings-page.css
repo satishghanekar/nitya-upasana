@@ -1,0 +1,423 @@
+/* 09-settings-page.css: Settings page, Kannada letters
+   Part 10 of 11 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   Sections:
+   - Settings page (option A, 2026-10-15): covers the whole page while open; rounded cards of rows in groups …
+   - Kannada letters: the original text when it is shown in Kannada letters (html[data-scr="kn"], set by …
+*/
+
+/* ==== Settings page (option A, 2026-10-15): covers the whole page while open; rounded cards of rows in groups
+   (Languages, Reading, Screen, About), like phone settings. The main and second language are dropdowns.
+   Centred, at most 640px wide, on wide screens. ==== */
+html[data-sp] {
+  overflow: hidden;
+}
+.sp {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.35 var(--lat);
+}
+.sp:focus {
+  outline: none;
+}
+.sp *,
+.sp *::before,
+.sp *::after {
+  box-sizing: border-box;
+}
+.sp-pg {
+  max-width: 640px;
+  margin-inline: auto;
+  padding-bottom: calc(32px + env(safe-area-inset-bottom));
+}
+.sp-hd {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: 56px;
+  padding: env(safe-area-inset-top) max(8px, env(safe-area-inset-right, 0px)) 0 max(8px, env(safe-area-inset-left, 0px));
+  background: var(--bg);
+  /* the bar and its line run the full width of the screen, past the centred column */
+  box-shadow:
+    0 1px 0 var(--rule),
+    0 0 0 100vmax var(--bg);
+  clip-path: inset(0 -100vmax -1px -100vmax);
+}
+.sp-hd h2 {
+  grid-column: 2;
+  margin: 0;
+  font: 700 19px/1.2 var(--lat);
+  text-align: center;
+}
+.sp-hd h2 .mr {
+  font-family: var(--body);
+}
+.sp button {
+  font: inherit;
+  color: inherit;
+  min-width: 0;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  text-align: start;
+}
+.sp .sp-bk {
+  grid-column: 1;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  padding: 0 10px 0 4px;
+  border-radius: 10px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 17px;
+}
+.sp-bk .mr {
+  font-family: var(--body);
+}
+.sp-body {
+  padding: 4px 16px 0;
+}
+.sp-h {
+  margin: 22px 6px 8px;
+  font: 600 12.5px/1.2 var(--lat);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.sp-h .mr {
+  font: 600 14px/1.2 var(--body);
+  letter-spacing: 0;
+}
+.sp-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.sp .sp-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--rule);
+}
+.sp-card > :first-child,
+.sp-card > [hidden] + .sp-row:not([hidden]) {
+  border-top: 0;
+}
+.sp-row[hidden] {
+  display: none;
+}
+.sp-l {
+  flex: 1;
+  min-width: 0;
+  font-weight: 500;
+}
+.sp-l .mr,
+.sp-row [lang="mr"] {
+  font-family: var(--body);
+}
+.sp-l small {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.sp-v {
+  flex: none;
+  color: var(--muted);
+  font-size: 15px;
+}
+.sp-ch {
+  flex: none;
+  color: var(--muted);
+}
+.sp .sp-go:active {
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+}
+.sp button:focus-visible,
+.sp .sp-pick:has(select:focus-visible) {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+/* language rows: the phone's own dropdown, invisible over the whole row, so a tap anywhere opens it */
+.sp .sp-pick {
+  position: relative;
+  cursor: pointer;
+}
+.sp-pick select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  font-size: 16px; /* iPhone zooms into a select under 16px */
+  cursor: pointer;
+}
+/* segmented controls: a soft track with the chosen option raised */
+.sp-seg {
+  flex: 0 1 auto;
+  min-width: 0;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ink) 9%, var(--bg));
+}
+.sp .sp-seg button {
+  flex: 1 1 auto;
+  min-height: 32px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.15;
+}
+.sp .sp-seg button[aria-pressed="true"] {
+  background: var(--bg);
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow:
+    0 1px 3px #0003,
+    0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.sp-seg small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.sp .sp-sz button {
+  color: var(--ink);
+  font-weight: 600;
+  padding: 4px 12px;
+}
+/* the text size as a share of the default (100%), between A− and A+ */
+.sp-szv {
+  align-self: center;
+  min-width: 3.4em;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--muted);
+}
+/* rows whose control needs the whole width put it under the label */
+.sp .sp-stk {
+  flex-wrap: wrap;
+  padding-block: 10px 12px;
+}
+.sp-stk .sp-l {
+  flex-basis: 100%;
+}
+.sp-stk .sp-seg {
+  flex: 1 1 100%;
+}
+.sp-stk .sp-seg button {
+  flex: 1 1 0;
+}
+/* the four text fonts on one line: each button as wide as its name; on the narrowest phones they wrap rather than
+   let a long name spill out of its button */
+.sp #sfn {
+  flex-wrap: wrap;
+}
+.sp #sfn button {
+  flex: 1 1 auto;
+  padding-inline: 6px;
+}
+/* switches */
+.sp .sp-sw::after {
+  content: "";
+  flex: none;
+  width: 46px;
+  height: 28px;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 14px 50%, #fff 11px, transparent 12px),
+    color-mix(in srgb, var(--ink) 20%, var(--surface));
+  box-shadow: inset 0 0 0 1px #0001;
+  transition: background 0.2s;
+}
+.sp .sp-sw[aria-pressed="true"]::after {
+  background:
+    radial-gradient(circle at 32px 50%, #fff 11px, transparent 12px),
+    var(--accent);
+}
+/* the preview: a few lines as the pieces show them */
+.sp-prev {
+  margin-top: 12px;
+  padding: 12px 14px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  text-align: center;
+}
+.sp-prev p {
+  margin: 0;
+  white-space: nowrap;
+}
+/* the preview is a fixed window: lines never wrap, so A+ visibly makes the text bigger, running past the edges
+   (faded) and below the window, as it would on the page */
+.sp-pw {
+  touch-action: pan-y; /* a pinch here changes the text size (js/features/pinch.js), not the page zoom */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 150px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent),
+    linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent),
+    linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+  mask-composite: intersect;
+}
+.sp-pw > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Check for updates: "Checking…", then "Up to date" in green, or "No internet" in amber */
+.sp #upd[data-s="ok"] #updv {
+  color: var(--ok);
+}
+.sp #upd[data-s="off"] #updv {
+  color: var(--warn);
+}
+.sp-pt {
+  margin-bottom: 6px;
+  font: 600 11.5px var(--lat);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* the preview's lines follow the pieces: the same text size (--fs) and share of it, line spacing and font */
+.sp-p1 {
+  font: 400 var(--fs) / 1.7 var(--body);
+}
+.sp-p1[lang="en"] {
+  font-size: calc(var(--fs) * 0.86);
+  line-height: 1.6;
+}
+.sp-p2 {
+  margin-top: 4px;
+  font: 400 calc(var(--fs) * 0.72) / 1.6 var(--body);
+  color: var(--muted);
+}
+.sp-p2[lang="en"] {
+  line-height: 1.5;
+}
+.sp-p1[lang="en"],
+.sp-p2[lang="en"] {
+  font-family: var(--lat);
+}
+/* two columns on wide screens make the pieces' text a little larger */
+:root[data-cols="2"] .sp-p1:not([lang="en"]) {
+  font-size: calc(var(--fs) * 1.05);
+}
+:root[data-cols="2"] .sp-p2 {
+  font-size: calc(var(--fs) * 0.8);
+}
+:root[data-font]:not([data-font="std"]) .sp-pw > div {
+  font-family: var(--tf), var(--body);
+}
+:root[data-font]:not([data-font="std"]) .sp-pw > [lang="en"] {
+  font-family: var(--tf), var(--lat);
+}
+/* the maker's name and email, quiet, under About */
+.sp-by {
+  margin: 18px 6px 8px;
+  font: 400 13px/1.6 var(--lat);
+  text-align: center;
+  color: var(--muted);
+}
+.sp-by a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 3px;
+}
+@media (max-width: 359px) {
+  .sp-body {
+    padding-inline: 12px;
+  }
+  .sp .sp-seg button {
+    padding: 4px 6px;
+    font-size: 13px;
+  }
+  .sp .sp-stk .sp-seg button {
+    padding-inline: 2px;
+    font-size: 12.5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sp .sp-sw::after {
+    transition: none;
+  }
+}
+@media print {
+  .sp {
+    display: none !important;
+  }
+}
+
+/* ==== Kannada letters: the original text when it is shown in Kannada letters (html[data-scr="kn"], set by js/render.js),
+   and the word ಕನ್ನಡ wherever it appears (the language pages in Settings, Help) ==== */
+html[data-scr="kn"] .mr,
+html[data-scr="kn"] .mr *,
+html[data-scr="kn"] #home .nm,
+html[data-scr="kn"] #home .hl1,
+html[data-scr="kn"] #bt[data-tl="mr"] #btt,
+[lang="kn"]:not(html):not(.ash) {
+  font-family: "Noto Sans Kannada", var(--body) !important;
+}
+/* the chosen text font (Settings → Text font) for the Kannada texts, the home page and the Settings preview; the
+   Atharvashirsha keeps a font with its Vedic accent marks (Noto Sans Kannada, or Noto Serif Kannada for Classic) */
+:root[data-font="classic"] {
+  --kf: "SC Kn Classic";
+  --kv: "SC Kn Classic";
+}
+:root[data-font="bold"] {
+  --kf: "SC Kn Bold";
+}
+:root[data-font="hand"] {
+  --kf: "SC Kn Hand";
+}
+html[data-scr="kn"][data-font]:not([data-font="std"]) .mr,
+html[data-scr="kn"][data-font]:not([data-font="std"]) .mr *,
+html[data-scr="kn"][data-font]:not([data-font="std"]) #home .nm,
+html[data-scr="kn"][data-font]:not([data-font="std"]) #home .hl1,
+html[data-scr="kn"][data-font]:not([data-font="std"]) .sp-pw [lang="kn"] {
+  font-family: var(--kf), "Noto Sans Kannada", var(--body) !important;
+}
+/* Baloo Tamma at its regular weight is no heavier than the standard font; a step up keeps Bold looking bold */
+html[data-scr="kn"][data-font="bold"] .mr,
+html[data-scr="kn"][data-font="bold"] .sp-pw [lang="kn"] {
+  font-weight: 500;
+}
+html[data-scr="kn"][data-font]:not([data-font="std"]) #p1 .mr,
+html[data-scr="kn"][data-font]:not([data-font="std"]) #p1 .mr *,
+html[data-scr="kn"][data-font]:not([data-font="std"]) #pv .pvs[data-sid="p1"] .mr,
+html[data-scr="kn"][data-font]:not([data-font="std"]) #pv .pvs[data-sid="p1"] .mr * {
+  font-family: var(--kv, "Noto Sans Kannada"), "Noto Sans Kannada", var(--body) !important;
+}

@@ -1,0 +1,66 @@
+/* 99-fallbacks.css: Fallbacks for browsers without color-mix()
+   Part 11 of 11 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   Must stay last: it replaces colours set anywhere above on older iPhones and iPads (iOS 15).
+   Sections:
+   - Fallbacks for browsers without color-mix()
+*/
+
+/* ==== Fallbacks for browsers without color-mix() ====
+   color-mix() needs Safari 16.2 (iOS 16.2). iPhone 6s/7 and iPad Air 2/mini 4 stop at iOS 15.8, and there a
+   declaration that uses it is dropped whole: the Settings switches lost their track and knob, and the home
+   sheet, date box and search highlights lost their colour. These rules give those browsers the nearest plain
+   theme colour instead. They sit inside @supports not (...), so browsers that have color-mix() never see them
+   and nothing changes there. Selectors repeat the originals exactly so they win by coming later. ==== */
+@supports not (color: color-mix(in srgb, red 50%, blue)) {
+  :root {
+    --sheet: var(--bg);
+  }
+  :root[data-pref="dark"],
+  :root:root:root[data-hc="1"] {
+    --sheet: var(--surface);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]):not([data-pref]) {
+      --sheet: var(--surface);
+    }
+  }
+  #res mark,
+  #hlpx,
+  [data-cols="2"] [data-lang="both"] .rftop .verse,
+  .sp .sp-go:active,
+  .sp-seg,
+  .sp-prev {
+    background: var(--surface);
+  }
+  .top .hero {
+    background: linear-gradient(180deg, var(--hdr), transparent);
+  }
+  #iconb img {
+    filter: drop-shadow(0 0 8px var(--gold));
+  }
+  .skc {
+    background: var(--surface);
+    border-color: var(--gold);
+  }
+  .skc .skd .skin {
+    border: 1px solid var(--gold);
+    background: var(--surface);
+  }
+  .skc .skch.on {
+    box-shadow:
+      0 0 0 2px var(--surface),
+      0 0 0 3.5px var(--gold);
+  }
+  .sp .sp-seg button[aria-pressed="true"] {
+    box-shadow:
+      0 1px 3px #0003,
+      0 0 0 1px var(--accent);
+  }
+  .sp .sp-sw::after {
+    background:
+      radial-gradient(circle at 14px 50%, #fff 11px, transparent 12px),
+      var(--rule);
+    box-shadow: inset 0 0 0 1px var(--muted);
+  }
+}

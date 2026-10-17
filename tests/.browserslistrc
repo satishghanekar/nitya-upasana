@@ -1,0 +1,10 @@
+# The oldest browsers the site supports (see the plan, section 3.2). iOS 15.4+ keeps iPhone 6s/7 and
+# iPad Air 2 / mini 4 working: they can't go past iOS 15.8, but every iOS 15 device can reach 15.8.
+iOS >= 15.4
+Safari >= 15.4
+Chrome >= 100
+Edge >= 100
+Firefox >= 100
+Samsung >= 17
+ChromeAndroid >= 100
+FirefoxAndroid >= 100

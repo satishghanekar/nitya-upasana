@@ -1,12 +1,15 @@
 // Service worker: keeps a copy of the site on the phone so it opens without internet.
-// V is the site's version (shown as "v1.0" on the home card). It must match the cache name in index.html; change both on every deploy.
+// V is the site's version (shown as "v1.0" on the home card). It must match <meta name="version"> in index.html; change both on a new release.
 const V='aarti-v1.0';
-// Font files (the same list is in index.html)
-const FONTS=['inter-latin','inter-latin-ext','noto-sans-deva-devanagari','noto-sans-deva-latin','noto-sans-deva-latin-ext','tiro-marathi-devanagari','tiro-marathi-latin','tiro-marathi-latin-ext','tiro-sanskrit-devanagari','tiro-sanskrit-latin','tiro-sanskrit-latin-ext'].map(f=>'fonts/'+f+'.woff2');
-self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(V).then(c=>c.addAll(['./','manifest.json','icon-180.png','icon-192.png','icon-32.png','icon-maskable-192.png','picture-360.webp','picture.webp',...FONTS].map(x=>new Request(x,{cache:'reload'}))).catch(()=>{})))});
+// The page's styles and scripts, and the font files to keep: one list for the page and this worker, in js/parts.js
+importScripts('js/parts.js');
+const PARTS=SITE_PARTS.all;
+const FONTS=SITE_PARTS.fonts;
+self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(V).then(c=>c.addAll(['./','manifest.json','icon-180.png','icon-192.png','icon-32.png','icon-maskable-192.png','picture-360.webp','picture.webp',...PARTS,...FONTS].map(x=>new Request(x,{cache:'reload'}))).catch(()=>{})))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
-// Same-site files: the page itself is fetched fresh when possible (3 s limit, then the saved copy);
-// everything else is answered from the saved copy and refreshed in the background.
+// Same-site files: the page itself and its style and script files are fetched fresh when possible (3 s limit, then the
+// saved copy), so the page never runs with an older copy of its parts; everything else is answered from the
+// saved copy and refreshed in the background.
 // Nothing here may leave the page waiting: if the saved copy can't be read within 2 s, or anything
 // goes wrong, the request goes straight to the network as if there were no service worker.
 // (Safari on a Mac sat on a blank page with the previous version; its storage can stall.)
@@ -20,6 +23,7 @@ self.addEventListener('fetch',e=>{
   let done;const bg=new Promise(res=>done=res);e.waitUntil(bg);
   const nav=r.mode==='navigate'||/\/(index\.html)?$/.test(u.pathname);
   const key=nav?new URL('./',location.href).href:u.origin+u.pathname;
+  const fresh=nav||/\.(js|css)$/.test(u.pathname);
   const go=async()=>{
     const c=await wait(caches.open(V),2000);
     let m=c?await wait(c.match(key),2000):null;
@@ -27,7 +31,7 @@ self.addEventListener('fetch',e=>{
     if(m&&u.pathname.includes('/fonts/'))return m; // font files never change
     const net=()=>fetch(nav?key:u.origin+u.pathname,{cache:'no-cache',credentials:'same-origin'}).then(x=>{
       if(c&&x&&x.ok&&!x.redirected)c.put(key,x.clone()).catch(()=>{});return x}).catch(()=>null);
-    if(nav&&m){const n=net();const x=await wait(n,3000);if(x&&x.ok)return x;done(n);return m}
+    if(fresh&&m){const n=net();const x=await wait(n,3000);if(x&&x.ok)return x;done(n);return m}
     if(m){done(net());return m}
     const x=await net();if(x)return x;
     if(c&&r.mode==='navigate'){const h=await wait(c.match('./',{ignoreSearch:true}),2000);if(h)return h}

@@ -1,0 +1,940 @@
+/* 03-menus-print-view.css: Top-bar title, Share / QR / Print, Add to Home Screen, print view, piece header card
+   Part 4 of 11 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   Includes the print view (#pv) built by the script for the Print button.
+   Sections:
+   - Top-bar title, heading for screen readers, contents overlay refinements
+   - Share / QR / Print buttons, QR pop-up
+   - Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm)
+   - Top-bar title with Ganesha (home) icon; Home button in the contents overlay
+   - Contents headings (refined)
+   - Share / QR / Print row; print pop-up (#prm); print view (#pv, built by the script just before printing)
+   - Piece header card (saffron, maroon top edge)
+   - Dhrupad at the top: small label above, thin rule on the left (final look below)
+*/
+
+/* ==== Top-bar title, heading for screen readers, contents overlay refinements ==== */
+.sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.bar .t.site {
+  font: 400 23px/1.25 var(--head);
+  color: var(--accent);
+}
+/* Title follows the text language: English only when the text is English */
+.bar .t.site[data-tl="en"] {
+  font: 600 19px/1.25 var(--lat);
+}
+#home {
+  padding-top: 6px;
+}
+.tocg ol.toc {
+  margin-left: 18px;
+}
+.tocg ol.toc li.soon .m {
+  padding-left: 4px;
+}
+@media print {
+  .sr {
+    position: static !important;
+    width: auto;
+    height: auto;
+    clip: auto;
+    font: 400 26pt var(--head);
+    color: var(--accent);
+    text-align: center;
+    margin: 0 0 10pt;
+  }
+}
+ol.toc a {
+  box-sizing: border-box;
+  justify-content: center;
+}
+.bar .lb {
+  font: 600 17px/1 var(--body);
+  min-width: 48px;
+}
+#jump {
+  /* vh first for browsers without dvh (Chrome < 108); dvh follows the phone's moving address bar */
+  max-height: calc(100vh - 90px);
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- vh fallback on the line above */
+  max-height: calc(100dvh - 90px);
+  overflow: auto;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+}
+#hm[aria-expanded="true"] {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+#jump {
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: 46rem;
+  box-sizing: border-box;
+  z-index: 6;
+}
+@media (min-width: 820px) {
+  #jump {
+    border: 1px solid var(--rule);
+    border-top: 0;
+    border-radius: 0 0 12px 12px;
+  }
+}
+
+#hm svg {
+  display: block;
+  margin: auto;
+}
+#jump #q {
+  margin: 0 0 10px;
+}
+#jump #res {
+  display: block;
+  max-height: none;
+  margin: 0 0 4px;
+}
+#jump #none {
+  padding: 6px 4px 10px;
+}
+
+#rb {
+  font: 600 19px/1 var(--head);
+  min-width: 44px;
+}
+
+#aa svg {
+  display: block;
+  margin: auto;
+}
+.tools {
+  gap: 5px;
+}
+.bar .t {
+  flex: 1 1 auto;
+}
+a.t {
+  text-decoration: none;
+  display: block;
+}
+#rb {
+  padding: 0 4px;
+}
+#rb svg {
+  display: block;
+  margin: auto;
+}
+#fl {
+  font: 600 16px/1.3 var(--body);
+  padding: 10px 18px;
+  white-space: nowrap;
+}
+#fl.err {
+  white-space: normal;
+  width: min(92vw, 30rem);
+  box-sizing: border-box;
+  border-radius: 14px;
+  text-align: center;
+  font-size: 14px;
+}
+.bar .lb {
+  padding: 0 3px;
+}
+.bar .lb svg {
+  display: block;
+  margin: auto;
+}
+
+
+/* ==== Share / QR / Print buttons, QR pop-up ==== */
+#shr {
+  margin: 22px 0 0;
+}
+#shb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  font-size: 16px;
+}
+@media print {
+  #shr {
+    display: none !important;
+  }
+}
+
+#shr {
+  display: grid;
+  gap: 10px;
+}
+#qrb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  font-size: 16px;
+}
+#qrm,
+#inm {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#qrm[hidden],
+#inm[hidden] {
+  display: none;
+}
+.qrc {
+  width: min(340px, 100%);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+}
+.qrt {
+  font: 600 17px/1.35 var(--body);
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.qri {
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px;
+  width: min(280px, 100%);
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+.qru {
+  font: 13px/1.4 var(--lat);
+  color: var(--muted);
+  margin: 10px 0 14px;
+  overflow-wrap: anywhere;
+}
+
+@media print {
+  #qrm,
+  #inm,
+  .inb {
+    display: none !important;
+  }
+}
+
+/* ==== Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm) ==== */
+.inb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: auto;
+  min-height: 48px;
+  margin: 22px 0 0;
+  font: 16px/1.3 var(--lat);
+}
+.inb .mr {
+  font-family: var(--body);
+}
+.inb[hidden] {
+  display: none;
+}
+#inb:not([hidden]) + #shr {
+  margin-top: 10px;
+}
+.inl {
+  text-align: left;
+  font: 16px/1.5 var(--lat);
+  margin: 0 0 10px;
+  padding-left: 24px;
+}
+.inl .mr {
+  font-family: var(--body);
+}
+.inl li + li {
+  margin-top: 6px;
+}
+.inn {
+  font: 14px/1.45 var(--lat);
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+.inn .mr {
+  font-family: var(--body);
+}
+
+
+/* ==== Top-bar title with Ganesha (home) icon; Home button in the contents overlay ==== */
+.bar .t.site {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 21px;
+}
+.bar .t.site svg {
+  flex: none;
+  opacity: 0.85;
+}
+.bar .t.site span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#jump li.jhome {
+  grid-column: 1/-1;
+}
+#jhb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 46px;
+  justify-content: flex-start;
+  padding: 0 14px;
+  font: 500 17px/1 var(--body);
+  color: var(--accent);
+  border-color: var(--rule);
+}
+#jhb svg {
+  flex: none;
+}
+[data-lang="both"] #jhb .en {
+  display: inline;
+  margin-left: 4px;
+  font-size: 0.85em;
+}
+/* Panels take focus when opened (for keyboards and screen readers); the panel itself shows no ring */
+/* Skip link: off screen until a keyboard Tab lands on it */
+.skip {
+  position: fixed;
+  left: max(8px, env(safe-area-inset-left, 0px));
+  top: -60px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 600 15px/1.2 var(--lat);
+}
+.skip:focus {
+  top: calc(8px + env(safe-area-inset-top));
+}
+@media print {
+  .skip {
+    display: none;
+  }
+}
+#main:focus,
+#jump:focus,
+h2[tabindex="-1"]:focus {
+  outline: none;
+}
+
+
+/* ==== Contents headings (refined) ==== */
+.tocg .gh {
+  font: 600 1.02em/1.3 var(--head);
+  color: var(--accent);
+  letter-spacing: 0;
+  margin: 24px 0 6px;
+  padding: 0 4px 6px;
+  border-bottom: 2px solid var(--accent);
+}
+/* The first group right under the date card */
+#home .sr + .tocg .gh {
+  margin-top: 10px;
+}
+.tocg:first-child .gh {
+  margin-top: 6px;
+}
+.tocg[data-lang="en"] .gh {
+  font: 600 0.95em/1.3 var(--lat);
+}
+#jump li.jh {
+  font: 600 16px/1.3 var(--head);
+  padding: 10px 2px 2px;
+}
+#jl[data-lang="en"] li.jh {
+  font: 600 15px/1.3 var(--lat);
+}
+.tocg ol.toc {
+  border-top: 0;
+}
+@media print {
+  #szt,
+  #fl {
+    display: none !important;
+  }
+  .tocg:has(li.soon) {
+    display: none !important;
+  }
+}
+@media print {
+  .rftop {
+    break-inside: avoid;
+  }
+  .rmk {
+    break-before: avoid;
+  }
+}
+
+
+/* ==== Share / QR / Print row; print pop-up (#prm); print view (#pv, built by the script just before printing) ==== */
+#shr {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+#shr button {
+  font-size: 15px;
+  padding: 0 6px;
+}
+.prs {
+  display: grid;
+  gap: 10px;
+  margin: 4px 0 10px;
+}
+.prs button {
+  height: auto;
+  min-height: 50px;
+  padding: 8px 12px;
+  font-size: 16px;
+  line-height: 1.3;
+}
+/* under each choice: the page it prints on, and Recommended for the one that prints best */
+.prs .prsub {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.8;
+}
+/* Upright or Sideways pages (P.por): pressed to turn every choice that way; none pressed, each its own way */
+.pro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 4px 0 10px;
+}
+.pro button {
+  min-height: 44px;
+  padding: 6px 10px;
+  font-size: 15px;
+}
+.pro[hidden] {
+  display: none;
+}
+.prn {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+.prx {
+  border-color: var(--rule);
+  color: var(--ink);
+}
+#prm {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#prm[hidden] {
+  display: none;
+}
+#pv {
+  display: none;
+}
+@media print {
+  @page {
+    margin: 9mm 9mm 14mm;
+    @bottom-center {
+      content: counter(page) " / " counter(pages);
+      font: 9pt sans-serif;
+      color: #555;
+      vertical-align: top;
+      padding-top: 3mm;
+    }
+  }
+  #prm {
+    display: none !important;
+  }
+  :root[data-print] .wrap,
+  :root[data-print] .bar {
+    display: none !important;
+  }
+  :root[data-print] #pv {
+    display: block !important;
+    font-size: 13pt;
+    line-height: 1.45;
+    color: #000;
+    /* no font hinting: the paper then takes the same letter widths on every computer, the ones the fitting
+       measures (js/print/fit.js); hinted, Linux printed words up to 3% wider or narrower, by its font settings */
+    text-rendering: geometricPrecision;
+  }
+  #pv .pvh {
+    font: 400 22pt/1.2 var(--head);
+    color: var(--accent);
+    text-align: center;
+    margin: 0 0 6pt;
+  }
+  #pv .pvs {
+    margin: 0 0 10pt;
+  }
+  #pv .pvs h2 {
+    font: 400 16pt/1.25 var(--head);
+    color: var(--accent);
+    text-align: center;
+    /* padding rather than margin above, so the tops of the letters stay on the heading's own page */
+    margin: 9pt 0 6pt;
+    padding-top: 3pt;
+    break-after: avoid;
+  }
+  #pv .pvs h2 .en {
+    display: none;
+  }
+  #pv[data-lang="en"] .pvs h2 .en {
+    display: inline;
+  }
+  #pv[data-lang="en"] .pvs h2 .mr {
+    display: none;
+  }
+  #pv .pvt {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: 0 0 4pt;
+  }
+  #pv .pvt td {
+    vertical-align: top;
+    padding: 0 8pt;
+  }
+  #pv .pvt tr {
+    break-inside: avoid;
+  }
+  #pv .pv2 td:first-child {
+    border-right: 0.5pt solid #bbb;
+  }
+  #pv .verse {
+    margin: 0 0 0.7em;
+    break-inside: avoid;
+  }
+  #pv .verse p {
+    padding: 0;
+    cursor: auto;
+  }
+  #pv .rmk {
+    display: block;
+    text-align: center;
+    font-size: 0.75em;
+    margin: -0.3em 0 0.5em;
+    color: #555;
+  }
+  #pv .pvref {
+    margin: 0 auto 8pt;
+    background: none;
+    display: table;
+  }
+  #pv .pvk {
+    display: block;
+    font-size: 13pt;
+    line-height: 1.45;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  } /* Safari splits table rows across pages and ignores keep-together on them; an inline-block cannot be split */
+  .wk #pv .pvs {
+    font-size: 0;
+    line-height: 0;
+  }
+  .wk #pv .pvk {
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+  }
+  :root[data-print="one"] #pv .pvk {
+    font-size: 14pt;
+  }
+  /* a block taller than a page (js/features/print.js marks it; it happens on a sideways page) breaks between
+     its lines rather than running off the page */
+  #pv .pvk.pvtall,
+  .wk #pv .pvk.pvtall,
+  #pv .pvtall .verse {
+    display: block;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  #pv .pvtall p,
+  #pv .pvtall tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  #pv .pvg {
+    font: 600 11pt/1.3 var(--head);
+    color: var(--accent);
+    text-align: center;
+    letter-spacing: 0.04em;
+    margin: 6pt 0 0;
+  }
+  /* Contents on page 1 (it gets a page to itself: see the final print rules) */
+  #pv .pvtoc {
+    margin: 10pt 0 14pt;
+  }
+  #pv .pvtoc h3 {
+    font: 600 13pt/1.3 var(--head);
+    color: var(--accent);
+    margin: 16pt 0 4pt;
+    padding: 0 0 3pt;
+    border-bottom: 1pt solid var(--accent);
+  }
+  #pv .pvtoc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  #pv .pvtoc li {
+    font: 400 13pt/1.35 var(--head);
+    padding: 4pt 2pt;
+    border-bottom: 0.5pt solid #ccc;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  #pv[data-lang="both"] .pvtoc .en {
+    display: block;
+    font: 400 10pt/1.3 var(--lat);
+    color: #555;
+  }
+  #pv[data-lang="both"] .pvtoc h3 .en {
+    display: inline;
+    margin-left: 0.5em;
+  }
+  #pv[data-lang="en"] .pvtoc li,
+  #pv[data-lang="en"] .pvtoc h3 {
+    font-family: var(--lat);
+  }
+  :root[data-print="one"] #pv .verse {
+    text-align: center;
+  }
+  #pv .pvk > table {
+    margin-bottom: 0;
+  }
+  #pv .pvside {
+    margin: 0;
+  }
+  #pv .pvside .pvm {
+    border-right: 0.5pt solid #bbb;
+  }
+
+  #pv .pvside .mr,
+  #pv .pvside .en {
+    display: block !important;
+    text-align: left;
+  }
+  #pv .pvside tr:not(.rfl) .en {
+    color: #000 !important;
+  }
+  #pv .pvside .en {
+    line-height: 1.45;
+  }
+  /* the English lines themselves (td.pve) are sized below */
+  #pv .pvside .en:not(td) {
+    font-size: 0.92em !important;
+  }
+  #pv .pvside tr.pvrefrow td {
+    border-left: 0;
+  }
+  #pv .pvside .rmk .mr,
+  #pv .pvside .rmk .en,
+  #pv .pvside .lab .mr,
+  #pv .pvside .lab .en {
+    display: inline !important;
+    margin-right: 0.7em;
+  }
+  #pv .pvg .en {
+    margin-left: 0.5em;
+    font-weight: 400;
+  }
+  #pv .pvside .lab {
+    font-size: 0.7em;
+    color: #555;
+  }
+
+  #pv .pvs[data-sid="p1"] .mr p {
+    font-family: "Tiro Devanagari Sanskrit", "Noto Serif Devanagari", var(--body);
+    line-height: 1.9;
+  }
+}
+
+@media print {
+  #pv .pvh .en {
+    display: none;
+  }
+  #pv[data-lang="en"] .pvh .en {
+    display: inline;
+  }
+  #pv[data-lang="en"] .pvh .mr {
+    display: none;
+  }
+  #pv .pvside td {
+    padding: 1pt 10pt;
+    vertical-align: baseline;
+  }
+  /* English 10.5pt beside 13pt Marathi, in a wider column: the English line is longer than its original.
+     These are the starting sizes: js/print/fit.js then chooses the column widths for the printout, and sets a
+     stanza a little smaller where that keeps its lines whole and the two columns in step. */
+  #pv .pvside td.pve {
+    font-family: var(--lat);
+    font-size: 0.81em;
+    color: #000;
+  }
+  #pv .pvside col.pvcm {
+    width: 46%;
+  }
+  #pv .pvside tr.pvend td {
+    padding-bottom: 9pt;
+  }
+  #pv .pvside tr.pvb td {
+    font-weight: 700;
+  }
+  [data-ref="1"] #pv .pvside tr.rfl {
+    display: none;
+  }
+  /* the dhrupad repeated after each stanza: lighter and a little smaller than the stanza, as on screen
+     (css/05-home-card.css), so the stanza stays the focus; the dhrupad at the top stays bold */
+  #pv .verse p.rf,
+  #pv .item.rf p,
+  #pv .pvside tr.rfl td {
+    font-weight: 400;
+    color: #555;
+  }
+  #pv .verse p.rf,
+  #pv .item.rf p,
+  #pv .pvside tr.rfl td.pvm {
+    font-size: 0.9em;
+  }
+  #pv .pvside tr.rfl td.pve {
+    font-size: 0.73em;
+  }
+  #pv .pvs[data-sid="p1"] td.pvm {
+    font-family: "Tiro Devanagari Sanskrit", "Noto Serif Devanagari", var(--body);
+  }
+  #pv .pvside td.mr,
+  #pv .pvside td.en {
+    display: table-cell !important;
+  }
+}
+@media print {
+  #p1 .mr p {
+    line-height: 1.75;
+  }
+  #p1 .verse {
+    margin-bottom: 0.6em;
+  }
+}
+#home h2.gh {
+  margin-left: 0;
+  margin-right: 0;
+}
+@media print {
+  #pv .pvh {
+    break-after: avoid;
+  }
+  #pv .pvs h2,
+  #pv .pvref {
+    break-after: avoid;
+  }
+}
+
+
+/* ==== Piece header card (saffron, maroon top edge) ==== */
+:root {
+  --hdr: #fbe9cf;
+  --hdrl: #efcf9f;
+  --hdrt: #fff6e8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-pref]) {
+    --hdr: #2a1d16;
+    --hdrl: #4a3426;
+    --hdrt: #1f1611;
+  }
+}
+:root[data-pref="dark"] {
+  --hdr: #2a1d16;
+  --hdrl: #4a3426;
+  --hdrt: #1f1611;
+}
+:root[data-pref="light"] {
+  --hdr: #fbe9cf;
+  --hdrl: #efcf9f;
+  --hdrt: #fff6e8;
+}
+:root[data-pref="sepia"] {
+  --hdr: #e8cfa0;
+  --hdrl: #d4b47f;
+  --hdrt: #f1e1c2;
+}
+:root:root:root[data-hc="1"] {
+  --hdr: #000;
+  --hdrl: #fff;
+  --hdrt: #000;
+}
+.ash header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 12px;
+  margin: 26px 0 18px;
+  padding: 12px 14px;
+  background: var(--hdr);
+  border: 1px solid var(--hdrl);
+  border-top: 4px solid var(--accent);
+  border-radius: 12px;
+  text-align: center;
+}
+.ash header::after {
+  display: none;
+}
+.ash header h2 {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+.ash header .tag {
+  margin: 0;
+  background: var(--hdrt);
+  border-color: var(--hdrl);
+}
+.ash[data-lang="both"] header h2 .en {
+  margin-top: 2px;
+}
+.grp + .ash header {
+  margin-top: 14px;
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .ash header {
+    margin: 14px 0 10px;
+    padding: 8px 12px;
+  }
+}
+@media print {
+  .ash header {
+    background: none !important;
+    border: 1pt solid #bbb;
+    border-top: 3pt solid #7b1113;
+    margin: 6pt 0 10pt;
+    padding: 6pt 10pt;
+  }
+  .ash header .tag {
+    background: none;
+  }
+}
+
+/* ==== Dhrupad at the top: small label above, thin rule on the left (final look below) ==== */
+[data-lang="both"] .rftop .lab .en::before {
+  content: " · ";
+}
+
+.rftop {
+  border-inline-start: 1px dashed var(--rule);
+}
+.rftop .lab {
+  top: 0;
+  left: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.item.rf p,
+.verse p.rf,
+.rftop p {
+  font-weight: 600;
+}
+[data-hc="1"] .rftop {
+  border-color: #fff;
+}
+@media print {
+  .rftop {
+    border-left: 1pt dashed #999;
+  }
+}
+.rftop .verse {
+  margin-bottom: 0.35em;
+}
+
+:root {
+  --gold: #d8b27a;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-pref]) {
+    --gold: #8f6c3f;
+  }
+}
+:root[data-pref="dark"] {
+  --gold: #8f6c3f;
+}
+:root[data-pref="light"] {
+  --gold: #d8b27a;
+}
+:root[data-pref="sepia"] {
+  --gold: #b8925a;
+}
+:root:root:root[data-hc="1"] {
+  --gold: #fff;
+}
+.rftop {
+  position: static;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.rftop .lab {
+  position: static;
+  transform: none;
+  max-width: none;
+  white-space: normal;
+  background: none;
+  padding: 0;
+  margin: 0 0 4px;
+  font: 600 11px/1.4 var(--body);
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+.rftop .verse {
+  border-left: 2px solid var(--gold);
+  border-radius: 0;
+  padding: 2px 0 2px 6px;
+  margin: 0;
+}
+[data-hc="1"] .rftop {
+  border: 0;
+}
+@media print {
+  .rftop {
+    border: 0 !important;
+    background: none;
+  }
+  .rftop .lab {
+    background: none;
+  }
+  .rftop .verse {
+    border-left: 1pt solid #999;
+  }
+  #pv .pvref {
+    border-left: 1pt solid #999 !important;
+  }
+}
+.rftop {
+  margin: 6px 10px 1.3em;
+}

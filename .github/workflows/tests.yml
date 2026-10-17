@@ -1,0 +1,79 @@
+# Runs the regression suite (tests/) on every pull request and every push to main.
+# Chromium runs everything; Firefox and WebKit (Safari's engine) run the cross-browser suites;
+# iPhone, iPad and Pixel emulation run the @mobile tests. Lighthouse CI checks the Core Web Vitals.
+# The site itself is not built: these jobs only test the files as Cloudflare Pages serves them.
+#
+# The tests run inside Playwright's own Docker image, so the browsers and system fonts are the same on
+# every run. Screenshots and printed page counts taken there are kept under __snapshots__/**/ci/
+# (see update-snapshots.yml for how they are made).
+name: Tests
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+  playwright:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    container:
+      # Keep in step with @playwright/test in tests/package.json
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+    strategy:
+      fail-fast: false
+      matrix:
+        projects: [chromium, firefox, webkit, "iphone,ipad,pixel"]
+    defaults:
+      run:
+        working-directory: tests
+    env:
+      CI: "1"
+      HOME: /root
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx playwright test
+        env:
+          PW_PROJECTS: ${{ matrix.projects }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-${{ strategy.job-index }}
+          path: |
+            tests/playwright-report/
+            tests/test-results/
+          retention-days: 14
+  lighthouse:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/package-lock.json
+      - run: npm ci
+      - run: npx lhci autorun
