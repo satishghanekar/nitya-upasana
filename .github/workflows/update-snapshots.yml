@@ -1,0 +1,47 @@
+# Makes the screenshots and printed page counts that the GitHub test run compares against.
+#
+# They are taken on GitHub's machines (in the same Playwright Docker image as tests.yml), because pixels
+# and page breaks differ slightly from one computer to another. To refresh them, push a commit to a
+# branch (not main) with "[update-snapshots]" in its message. This job then commits the new files under
+# tests/__snapshots__/**/ci/ to that branch. Check the pictures in the commit before merging.
+#
+# A commit made by this job does not start the tests again; push any later change (or re-run the
+# Tests workflow) to test against the new files.
+name: Update CI snapshots
+on:
+  push:
+    branches-ignore: [main]
+permissions:
+  contents: write
+jobs:
+  update:
+    if: contains(github.event.head_commit.message, '[update-snapshots]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+    defaults:
+      run:
+        working-directory: tests
+    env:
+      CI: "1"
+      HOME: /root
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - name: Take new screenshots and print snapshots
+        run: npx playwright test --update-snapshots=all --retries=0 print.spec.mjs visual.spec.mjs || true
+        env:
+          PW_PROJECTS: chromium
+      - name: Commit them to the branch
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add __snapshots__
+          git diff --cached --quiet && { echo "No changes"; exit 0; }
+          git commit -m "Update CI screenshots and print snapshots"
+          git push
