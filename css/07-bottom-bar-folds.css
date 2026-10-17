@@ -1,0 +1,792 @@
+/* 07-bottom-bar-folds.css: Bottom bar, bars tucking away, folding contents and pieces, bigger tap areas
+   Part 8 of 11 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   Sections:
+   - Bottom bar (footer menu on every page; replaced the Previous / Next cards at the end of each piece)
+   - Bars tuck away while reading (phones and tablets without the side menu)
+   - Folding the home contents list and each piece (the Contents button's look is in "Fold headings" below)
+   - Fold headings (Contents, Pooja, Aarti): one look, full-width rows lined up with the folded pieces
+   - Bigger tap areas, same look (2026-10-14 accessibility review)
+*/
+
+/* ==== Bottom bar (footer menu on every page; replaced the Previous / Next cards at the end of each piece) ==== */
+@media screen {
+  .pn {
+    display: none !important;
+  }
+}
+#asc {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 7;
+  /* on iPhones without a home button the buttons sit partly in the home-bar zone (as Safari's own toolbar
+     does), so the bar isn't padded by the whole zone; never less than 8px */
+  padding: 8px max(16px, env(safe-area-inset-right, 0px)) max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px))
+    max(16px, env(safe-area-inset-left, 0px));
+  background: var(--bar);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-top: 1px solid var(--rule);
+}
+#asc[hidden] {
+  display: none;
+}
+/* out of the way while Settings or Contents is open (data-menu is set by the script; a CSS :has() rule
+   here made every style change on the page several times slower) */
+[data-menu="1"] #asc {
+  display: none;
+}
+[data-asb="1"] body {
+  padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)));
+}
+#asi {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  max-width: 34rem;
+  margin: 0 auto;
+}
+@media screen and (min-width: 1100px) {
+  [data-rail="1"] #asc {
+    padding-left: calc(var(--L) + 260px);
+    padding-right: max(16px, calc(var(--vw, 100vw) - var(--L) - 260px - var(--W)));
+  }
+}
+/* Buttons as in the top bar (fixed pixel sizes, so text size and pinch leave the bar alone) */
+#asc .asx {
+  font: 600 15px/1 var(--lat);
+  white-space: nowrap;
+}
+#asc .asx:lang(mr) {
+  font-family: var(--body);
+}
+#asc .asx:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+#asc .asi {
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+#asb {
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+#asb svg {
+  grid-area: 1 / 1;
+}
+#asb .ia,
+#asc.on #asb .ip {
+  display: none;
+}
+#asc.on #asb .ia {
+  display: block;
+}
+#ass,
+#asc.on .asx,
+:root:not([data-ason="1"]) #asb {
+  display: none !important;
+}
+#asc.on #ass {
+  display: flex !important;
+}
+/* Tilt to scroll: the button shows on phones and tablets (data-tilt); while it runs (#asc.tl) the bar
+   shows the meter (a dot that moves with the lean), the label and ⏸ */
+:root:not([data-tilt="1"]) #tlb,
+#asc.tl #asi > :not(#tls) {
+  display: none !important;
+}
+#tls {
+  display: none;
+}
+#asc.tl #tls {
+  display: flex;
+}
+#asc.tl #asi {
+  justify-content: center;
+}
+#tlb svg {
+  color: var(--accent);
+}
+#tls {
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 4px 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--ink);
+}
+#tlm {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 34px;
+  border-radius: 7px;
+  background: var(--rule);
+}
+#tlm b {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 16px;
+  height: 2px;
+  background: var(--ink);
+  opacity: 0.4;
+}
+#tlm i {
+  position: absolute;
+  left: 2px;
+  top: 12px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+#tlt {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+#tll {
+  font: 600 14px/1 var(--lat);
+  white-space: nowrap;
+}
+#tlh {
+  font: 500 12px/1.1 var(--lat);
+  white-space: nowrap;
+}
+#tls:lang(mr) #tll,
+#tls:lang(mr) #tlh {
+  font-family: var(--body);
+}
+#tlx {
+  border: 0;
+  background: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+}
+@media (max-width: 359px) {
+  #tlh {
+    display: none;
+  }
+}
+#asc.on #asi {
+  justify-content: center;
+}
+#ass {
+  align-items: center;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+#ass button {
+  border: 0;
+  background: none;
+  min-width: 40px;
+  font-size: 20px;
+  color: var(--accent);
+}
+#asl {
+  min-width: 58px;
+  text-align: center;
+  white-space: nowrap;
+  font: 600 14px/1 var(--lat);
+  color: var(--ink);
+}
+#asl:lang(mr) {
+  font-family: var(--body);
+}
+@media (max-width: 359px) {
+  #asl {
+    min-width: 22px;
+  }
+  #asl .asw {
+    display: none;
+  }
+  #ass button {
+    min-width: 32px;
+  }
+  #asc .asx {
+    padding: 0 9px;
+  }
+}
+.rmkpop .ash-h {
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px solid var(--hdrl);
+  font: 600 12px/1.3 var(--lat);
+  color: var(--muted);
+}
+.rmkpop .ash-h:lang(mr) {
+  font-family: var(--body);
+}
+/* ==== Bars tuck away while reading (phones and tablets without the side menu) ====
+   Scrolling down slides the top and bottom bars out of view, leaving a slim strip with the piece name;
+   scrolling up, reaching the end of the page, or tapping a blank part of the page brings them back.
+   While autoscroll runs the bottom bar (pause, speed) stays. The script sets data-tuck on <html>. */
+#tuck {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(30px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 16px 0;
+  background: var(--bar);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--rule);
+  font: 600 14px/1 var(--body);
+  color: var(--accent);
+  visibility: hidden;
+}
+#tuck span:lang(en) {
+  font-family: var(--lat);
+}
+#tuck span {
+  line-height: 1.6;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#tuck i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.75;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+/* Shown and hidden at once with visibility, never slid with a transform or transition: on iPhones a
+   fixed bar that is being transformed while the page scrolls can be drawn mid-page (seen 2026-10-15). */
+[data-tuck="1"] #tuck {
+  visibility: visible;
+}
+[data-tuck="1"] body > .bar,
+[data-tuck="1"] #asc:not(.on):not(.tl) {
+  visibility: hidden;
+}
+@media print {
+  #tuck {
+    display: none !important;
+  }
+}
+@media print {
+  #asc {
+    display: none !important;
+  }
+}
+/* ==== Folding the home contents list and each piece (the Contents button's look is in "Fold headings" below) ==== */
+#tfb {
+  cursor: pointer;
+}
+#tfb svg {
+  flex: none;
+  transition: transform 0.2s;
+}
+.ash header {
+  position: relative;
+  padding-inline: 56px;
+}
+.afb {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  min-height: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--hdrl);
+  border-radius: 50%;
+  background: var(--hdrt, var(--surface));
+  color: var(--muted);
+  cursor: pointer;
+}
+.afb::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+}
+.afb svg {
+  transition: transform 0.2s;
+}
+@media screen {
+  [data-tf="1"] #home .tocg {
+    display: none !important;
+  }
+  [data-tf="1"] #tfb svg,
+  .ash.af .afb svg {
+    transform: rotate(180deg);
+  }
+  .ash.af > :not(header) {
+    display: none !important;
+  }
+  /* Piece headings are one row, open or folded, so folding never makes the heading jump: number and name
+     on the left, ⌃ on the right, the same height as the Contents, Pooja and Aarti rows (Satish's pick B,
+     2026-10-14). The language tag shows only in print. In Marathi + English the English name follows
+     the Marathi on the same line, small and muted, like the section rows; long names wrap. */
+  .ash header {
+    box-sizing: border-box;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    text-align: left;
+    min-height: 52px;
+    padding: 8px 56px 8px 16px;
+    margin: 10px 0 14px;
+    /* plain like the old section rows; the accent bar marks the sections (Contents, पूजा, आरती) instead */
+    background: var(--surface);
+    border-top: 1px solid var(--hdrl);
+  }
+  .ash.af header {
+    margin-bottom: 0;
+  }
+  /* the same type as the section rows: 19 px Marathi, 16 px English, so pieces and sections line up */
+  .ash header h2 {
+    font-size: 19px;
+    line-height: 1.3;
+    flex: 1 1 auto;
+    text-wrap: pretty;
+  }
+  .ash[data-lang="en"] header h2 {
+    font-size: 16px;
+  }
+  [data-lang="both"] .ash header h2 .en,
+  .ash[data-lang="both"] header h2 .en {
+    margin: 1px 0 0;
+    font: 600 14px/1.25 var(--lat);
+    color: var(--muted);
+  }
+  .ash header .tag {
+    display: none;
+  }
+  .afb {
+    right: 10px;
+  }
+  .ash.af {
+    margin-top: 0;
+    border-top: 0;
+  }
+  /* no rule between pieces: the boxed heading rows and the end ornament already separate them */
+  .ash {
+    border-top: 0;
+  }
+  .ash.af + .ash {
+    margin-top: 10px;
+  }
+  .ash.af + .ash.af {
+    margin-top: 10px;
+    border-top: 0;
+  }
+}
+@media print {
+  .afb,
+  #tfr {
+    display: none !important;
+  }
+  .ash header {
+    padding-inline: 14px;
+  }
+}
+/* ==== Fold headings (Contents, Pooja, Aarti): one look, full-width rows lined up with the folded pieces ==== */
+@media screen {
+  #tfr,
+  .grp,
+  #home + .grp {
+    display: block;
+    max-width: 46rem;
+    margin: 10px auto 0;
+  }
+  .grp,
+  #home + .grp {
+    padding: 0;
+    border: 0;
+  }
+  [data-tf="1"] #home {
+    padding-bottom: 0;
+  }
+  #tfb,
+  #pfb,
+  #xfb {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 52px;
+    margin: 0;
+    padding: 0 10px 0 16px;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid var(--hdrl);
+    border-top: 3px solid var(--accent);
+    border-radius: 12px;
+    background: var(--hdr);
+    color: var(--accent);
+    text-align: left;
+  }
+  #tfb .mr,
+  #pfb .mr,
+  #xfb .mr {
+    font: 600 20px/1.2 var(--head);
+    color: var(--accent);
+  }
+  #tfb .en,
+  #pfb .en,
+  #xfb .en {
+    font: 600 14px/1.2 var(--lat);
+    color: var(--muted);
+  }
+  #g-pooja[data-lang="en"] #pfb .en,
+  #g-aarti[data-lang="en"] #xfb .en,
+  #tfr[data-lang="en"] #tfb .en {
+    font: 700 17px/1.2 var(--lat);
+    color: var(--accent);
+  }
+  #tfb svg,
+  #pfb svg,
+  #xfb svg {
+    margin-left: auto;
+    box-sizing: border-box;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--hdrl);
+    color: var(--muted);
+  }
+  .grp + .ash header {
+    margin-top: 10px;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  [data-rail="1"] #home,
+  [data-rail="1"] #tfr,
+  [data-rail="1"] .grp,
+  [data-rail="1"] #home + .grp,
+  [data-rail="1"] .ash header,
+  [data-rail="1"] .rftop {
+    max-width: none;
+  }
+}
+/* Piece headings, the card's Ganesha picture and its folded line fold or open with a tap anywhere on them */
+.ash header,
+#home .hero,
+#slim {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The app's picture on the home card, and its full-screen viewer (#pzv) */
+#iconb {
+  display: block;
+  width: 72px;
+  height: 72px;
+  min-height: 0;
+  margin: 0 auto 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: zoom-in;
+  -webkit-tap-highlight-color: transparent;
+}
+#iconb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 2px 5px rgb(0 0 0 / 0.3));
+}
+#pzv {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(8 6 4 / 0.94);
+  touch-action: none;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  -webkit-user-select: none;
+  user-select: none;
+}
+#pzv[hidden] {
+  display: none;
+}
+#pzi {
+  max-width: min(94vw, 760px);
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  cursor: zoom-in;
+  -webkit-user-drag: none;
+}
+#pzv.zoomed #pzi {
+  cursor: grab;
+}
+#pzx {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right, 0px));
+  width: 44px;
+  height: 44px;
+  min-height: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.5);
+  color: #fff;
+}
+#pzh {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  text-align: center;
+  color: rgb(255 255 255 / 0.7);
+  font: 500 13px/1.3 var(--lat);
+  pointer-events: none;
+}
+@media print {
+  #iconb,
+  #pzv {
+    display: none !important;
+  }
+}
+
+/* Vibrant home card (option B): gold glow behind the picture, warm date box, next date in the accent colour
+   with an "in N days" badge, a gold ring on the chosen date chip, past dates dimmed */
+.top .hero {
+  background:
+    radial-gradient(closest-side, color-mix(in srgb, var(--gold) 38%, transparent), transparent) no-repeat center 0 / 150px 110px,
+    linear-gradient(180deg, var(--hdr), transparent);
+}
+#iconb img {
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--gold) 55%, transparent));
+}
+.skc {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface) 55%);
+  border-color: color-mix(in srgb, var(--gold) 55%, var(--hdrl));
+}
+.skc.today {
+  border-color: var(--accent);
+}
+.skc .skh .en {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.9em;
+}
+.skc[data-lang="both"] .skh .en {
+  text-transform: none;
+  letter-spacing: 0;
+}
+.skc .skd {
+  color: var(--accent);
+  font-weight: 600;
+}
+.skc .skd .skin {
+  display: inline-block;
+  margin: 0 2px 0 8px;
+  padding: 0 9px;
+  border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent);
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+  font: 600 12px/1.6 var(--lat);
+  vertical-align: 4px;
+  white-space: nowrap;
+}
+.skc .skd .skin.mr {
+  font-family: var(--body);
+}
+.skc[data-lang="both"] .skd .skin.en {
+  display: none;
+}
+.skc .skch.on {
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 3.5px var(--gold),
+    0 4px 12px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+/* Past dates step back without fading: muted text and a lighter edge instead of opacity, which took the
+   text below the 4.5:1 contrast every reader needs (WCAG 1.4.3) */
+.skc .skch.past:not(.on) {
+  background: transparent;
+  border-color: var(--rule);
+  color: var(--muted);
+}
+/* A little tighter (Satish, 2026-10-14): smaller gaps between the card's lines; room under the chips for the chosen one's glow */
+@media screen {
+  .top .hero {
+    padding-bottom: 2px;
+    margin-bottom: 6px;
+  }
+  .skc {
+    padding-top: 6px;
+    margin-bottom: 10px;
+  }
+  .skc .sktd {
+    margin-bottom: 2px;
+    padding-bottom: 3px;
+  }
+  .skc .skm {
+    row-gap: 0;
+  }
+  .skc .skp.own {
+    margin-top: -2px;
+  }
+  .skc .sks {
+    margin-top: 4px;
+    padding: 8px 6px 7px;
+  }
+  .skc #skall {
+    margin: 0 auto -6px;
+  }
+}
+
+/* Text font (Settings): Standard keeps the site's own fonts; the others change the texts (Marathi and English).
+   The Atharvashirsha's Marathi lines keep their Sanskrit font, which has the Vedic accent marks. */
+:root[data-font="classic"] {
+  --tf: "SC Classic";
+}
+:root[data-font="bold"] {
+  --tf: "SC Bold";
+}
+:root[data-font="hand"] {
+  --tf: "SC Hand";
+}
+:root[data-font]:not([data-font="std"]) .ash .items,
+:root[data-font]:not([data-font="std"]) .ash .rftop {
+  font-family: var(--tf), var(--body);
+}
+:root[data-font]:not([data-font="std"]) .ash .items .en,
+:root[data-font]:not([data-font="std"]) .ash .rftop .en,
+:root[data-font]:not([data-font="std"]) .ash .items .en p,
+:root[data-font]:not([data-font="std"]) .ash .rftop .en p {
+  font-family: var(--tf), var(--lat);
+}
+/* the chosen font also reaches the printed copy (#pv has no .ash wrapper); headings keep theirs */
+:root[data-font]:not([data-font="std"]) #pv .pvs {
+  font-family: var(--tf), var(--body);
+}
+:root[data-font]:not([data-font="std"]) #pv .pvs .en,
+:root[data-font]:not([data-font="std"]) #pv .pvs .en p,
+:root[data-font]:not([data-font="std"]) #pv .pvs td.pve {
+  font-family: var(--tf), var(--lat);
+}
+:root[data-font]:not([data-font="std"]) #pv .pvs h2 .en {
+  font-family: inherit;
+}
+/* and the home page, the section bars (पूजा, आरती) and the piece title cards: their font names point to the
+   chosen font first. The home page's buttons and offline line, and the Open all / Fold all pill, stay in the site's own fonts (they are controls). */
+:root[data-font]:not([data-font="std"]) #home,
+:root[data-font]:not([data-font="std"]) .grp,
+:root[data-font]:not([data-font="std"]) .ash header {
+  --head: var(--tf), "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
+  --body: var(--tf), "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
+  --lat: var(--tf), "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+}
+:root[data-font]:not([data-font="std"]) #home #shr,
+:root[data-font]:not([data-font="std"]) #home #cvb,
+:root[data-font]:not([data-font="std"]) .grp .allb {
+  --head: "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
+  --body: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
+  --lat: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+}
+/* and the home page's Table of Contents: piece names, numbers and languages */
+:root[data-font]:not([data-font="std"]) #home .tocg ol.toc .m,
+:root[data-font]:not([data-font="std"]) #home .tocg ol.toc .lt {
+  font-family: var(--tf), var(--head);
+}
+:root[data-font]:not([data-font="std"]) #home .tocg ol.toc .en {
+  font-family: var(--tf), var(--lat);
+}
+/* the font row: label on top, the four choices across the full width */
+
+/* English style choices: example on top, a small caption (Simple / Standard (IAST)) under it, same row height */
+
+/* Open all / Fold all pill in a section row, just left of the section's arrow */
+.grp {
+  position: relative;
+}
+.allb {
+  position: absolute;
+  top: 50%;
+  right: 60px;
+  transform: translateY(calc(-50% + 1px));
+  height: 30px;
+  min-height: 0;
+  padding: 0 12px;
+  border: 1px solid var(--hdrl);
+  border-radius: 15px;
+  background: var(--surface);
+  color: var(--accent);
+  font: 600 13px/1 var(--lat);
+  cursor: pointer;
+}
+.allb[lang="mr"] {
+  font: 500 14px/1 var(--body);
+}
+.allb::after {
+  content: "";
+  position: absolute;
+  inset: -7px -4px;
+}
+@media print {
+  .allb {
+    display: none !important;
+  }
+}
+
+/* ==== Bigger tap areas, same look (2026-10-14 accessibility review) ====
+   Small controls get an invisible touch area of about 44 px (Apple and Google's guide) from a transparent
+   ::after, or for the top-bar title (whose box clips) from padding cancelled by a negative margin. */
+.bar .t.site {
+  padding-block: 9px;
+  margin-block: -9px;
+}
+.skc .skl {
+  position: relative;
+}
+.skc .skl::after {
+  content: "";
+  position: absolute;
+  inset: -6px 0;
+}
+@media screen {
+  .rmk.rmkt::after {
+    inset: -10px -8px;
+  }
+}
+
+/* Keyboard focus never lands behind the bottom bar (WCAG 2.4.11): the browser keeps this much room
+   below a focused item when it scrolls it into view */
+html[data-asb="1"] {
+  scroll-padding-bottom: calc(61px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)));
+}

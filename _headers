@@ -1,0 +1,42 @@
+# Cloudflare Pages response headers (https://developers.cloudflare.com/pages/configuration/headers/)
+#
+# Why: by default every file is re-checked with the server on every visit. Fonts never change in place,
+# so phones can keep them for a year without asking; pictures for a week. The page, styles and scripts
+# are always re-checked (no-cache = "ask first", not "don't store"), so an update reaches readers on
+# their next visit, and the service worker (sw.js) keeps everything for offline use either way.
+#
+# If a font file is ever replaced, give it a new name (and update css/00-fonts.css and js/parts.js), because
+# phones that already have the old one will not ask for it again.
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.webp
+  Cache-Control: public, max-age=604800
+
+/*.png
+  Cache-Control: public, max-age=604800
+
+/*.jpg
+  Cache-Control: public, max-age=604800
+
+/
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache
+
+/css/*
+  Cache-Control: no-cache
+
+/js/*
+  Cache-Control: no-cache
+
+/content/*
+  Cache-Control: no-cache
+
+/sw.js
+  Cache-Control: no-cache
+
+/manifest.json
+  Cache-Control: no-cache

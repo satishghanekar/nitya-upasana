@@ -1,0 +1,861 @@
+/* 02-core.css: Page, bars, contents, pieces, language switching, search
+   Part 3 of 11 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   The first full set of rules for the reading page, plus the first print rules.
+   Sections:
+   - Page, top bar and buttons
+   - Home page contents list
+   - Pieces: header, verses, previous / next links
+   - Language switching: .mr and .en parts shown according to data-lang
+   - Settings panel
+   - Wider screens (820px and up)
+   - Piece spacing; contents + search overlay (#jump)
+   - Reduced motion; print (first set of print rules, more further down)
+   - Tapped-line highlight, high contrast, language tag
+   - Dhrupad: data-ref="1" shows it once at the top (.rftop) and hides the repeats (.rf); .rmk marks where it …
+   - Search box and results, status message (#szt), settings panel details
+   - Phones held sideways
+   - Group headings (पूजा / भजने / आरती) in the contents; "coming soon"; section dividers
+   - Atharvashirsha: Vedic text in Tiro Devanagari Sanskrit
+*/
+
+/* ==== Page, top bar and buttons ==== */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+/* The page is shown once the site script has set it up (js/main.js then sets data-ready on <html>): before that
+   the reader's theme, language and folds, and the date card, are not on it yet, and showing it early made the
+   home page jump down when they arrived. If the script cannot run, the page shows after 1.5 s anyway.
+   (!important and the extra specificity keep the reveal working under "reduce motion", which turns animations off.) */
+html:not([data-ready]) body {
+  visibility: hidden;
+  animation: boot-reveal 0s 1.5s both !important;
+}
+@keyframes boot-reveal {
+  to {
+    visibility: visible;
+  }
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  padding-inline: 16px;
+  padding-block: 0 40px;
+  line-height: 1.7;
+  font-size: var(--fs);
+}
+.wrap {
+  max-width: 34rem;
+  margin: 0 auto;
+}
+.bar {
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0;
+  background: var(--bar);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--rule);
+  margin-inline: -16px;
+}
+.bar .t {
+  font: 700 15px/1.2 var(--body);
+  color: var(--accent);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tools {
+  display: flex;
+  flex: none;
+}
+button {
+  font: 600 15px/1 var(--body);
+  min-width: 44px;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+/* ==== Home page contents list ==== */
+#home {
+  padding-block: 28px 24px;
+}
+#home h1 {
+  font: 400 1.6em/1.25 var(--head);
+  color: var(--accent);
+  margin: 0 0 4px;
+  text-align: center;
+  text-wrap: balance;
+}
+
+ol.toc {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+ol.toc li {
+  border-bottom: 1px solid var(--rule);
+}
+ol.toc a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 4px;
+  min-height: 48px;
+  text-decoration: none;
+  color: var(--ink);
+}
+ol.toc a:active {
+  background: var(--surface);
+}
+ol.toc .m {
+  font: 400 1.05em/1.3 var(--head);
+  color: var(--ink);
+}
+
+
+/* ==== Pieces: header, verses, previous / next links ==== */
+.ash h2 {
+  font: 400 1.4em/1.3 var(--head);
+  color: var(--accent);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.ash header::after {
+  content: "";
+  width: 56px;
+  height: 2px;
+  background: var(--accent);
+  margin: 16px auto 6px;
+  opacity: 0.7;
+}
+.verse {
+  text-align: center;
+  margin: 0 0 1.15em;
+  padding: 0.1em 0;
+}
+.verse p {
+  margin: 0;
+  text-wrap: pretty;
+}
+.verse.bold p {
+  font-weight: 700;
+}
+
+.verse p {
+  overflow-wrap: anywhere;
+}
+/* End of each piece: ‹ Previous | Home + Search | Next › (the search button works like the top bar's) */
+.pn {
+  display: grid;
+  gap: 8px;
+  margin-top: 22px;
+}
+.pn > a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font: 500 16.5px/1.3 var(--head);
+  min-height: 64px;
+}
+.pn small {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font: 600 12.5px/1 var(--body);
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+.pn small span {
+  display: inline;
+}
+.pn .next {
+  text-align: right;
+}
+.pn .next small {
+  justify-content: flex-end;
+}
+.pn span {
+  display: block;
+}
+.pn svg {
+  flex: none;
+}
+.pnq {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pnq a,
+.pnq button {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Pressed: a header-tinted background. (--rule was used before; in High contrast it is white, the same as
+   the text, so a pressed button went blank.) */
+.pn > a:active {
+  background: var(--hdr);
+}
+.pnq a:active,
+.pnq button:active {
+  background: var(--surface);
+}
+
+
+/* ==== Language switching: .mr and .en parts shown according to data-lang ==== */
+:root {
+  --lat: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+}
+[data-lang="en"] .mr,
+[data-lang="mr"] .en {
+  display: none !important;
+}
+.en {
+  font-family: var(--lat);
+}
+
+.verse .en p {
+  font-size: 0.86em;
+  line-height: 1.6;
+}
+[data-lang="both"] .verse .en {
+  color: var(--muted);
+  font-size: 0.72em;
+  margin-top: 0.15em;
+  line-height: 1.5;
+}
+[data-lang="both"] .verse .en p {
+  font-size: 1em;
+}
+
+[data-lang="both"] h2 .en,
+[data-lang="both"] ol.toc .en,
+[data-lang="both"] .pn > a > .en {
+  display: block;
+  font-size: 0.55em;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+[data-lang="en"] h2,
+[data-lang="en"] ol.toc .m {
+  font-family: var(--lat);
+}
+[data-lang="en"] h2 {
+  font-size: 1.1em;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.ash h2 {
+  overflow-wrap: anywhere;
+}
+[data-lang="en"] ol.toc .m {
+  font-size: 0.95em;
+  font-weight: 600;
+}
+
+/* ==== Settings panel ==== */
+
+/* ==== Wider screens (820px and up) ==== */
+@media (min-width: 820px) {
+  .wrap {
+    max-width: 46rem;
+  }
+  ol.toc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 32px;
+  }
+  .bar {
+    margin-inline: -16px;
+  }
+  .pn {
+    max-width: 46rem;
+  }
+  .verse p {
+    font-size: 1.05em;
+  }
+}
+#home h1[data-lang="both"] .en {
+  display: block;
+  font-size: 0.55em;
+  color: var(--muted);
+}
+
+
+/* ==== Piece spacing; contents + search overlay (#jump) ==== */
+.bar {
+  padding-left: max(16px, env(safe-area-inset-left, 0px), calc((var(--vw, 100vw) - 46rem) / 2));
+  padding-right: max(16px, env(safe-area-inset-right, 0px), calc((var(--vw, 100vw) - 46rem) / 2));
+}
+
+.ash {
+  scroll-margin-top: 60px;
+  border-top: 1px solid var(--rule);
+  margin-top: 34px;
+}
+.ash:first-of-type {
+  margin-top: 8px;
+}
+.ash header {
+  padding-block: 26px 8px;
+}
+.ash header .mr,
+.ash header .en {
+  overflow-wrap: anywhere;
+}
+#jump {
+  top: 61px;
+  margin-inline: -16px;
+  padding: 10px 16px 14px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+#jump[hidden] {
+  display: none;
+}
+#jump ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+#jump a {
+  display: flex;
+  flex-direction: column;
+  min-height: 48px;
+  padding: 6px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font: 500 15px/1.3 var(--body);
+}
+#jump a.on {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+#jl .en {
+  font-size: 0.8em;
+}
+#jl[data-lang="both"] .en {
+  display: block;
+  opacity: 0.8;
+}
+
+
+/* ==== Reduced motion; print (first set of print rules, more further down) ==== */
+/* Readers who ask their phone for less motion get none: no transitions or animations anywhere.
+   "none" rather than the common 0.01ms trick: a short duration on every element (transition-property
+   defaults to "all") turns each font-size change into a transition, so auto-fit, which sets the size and
+   reads it straight back, measured the old size. Nothing in the script waits for transitionend. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+@media print {
+  :root:root:root[data-pref],
+  :root:root:root {
+    --bg: #fff;
+    --surface: #fff;
+    --ink: #000;
+    --muted: #444;
+    --accent: #7b1113;
+    --rule: #bbb;
+    color-scheme: light;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  body {
+    background: #fff !important;
+    color: #000;
+    font-size: 14pt !important;
+    padding: 0 !important;
+    line-height: 1.55;
+  }
+  .bar,
+#jump {
+    display: none !important;
+  }
+  .wrap {
+    max-width: none;
+  }
+  #home {
+    padding: 0 0 10px;
+    break-after: page;
+  }
+  ol.toc {
+    display: block;
+  }
+  ol.toc a {
+    padding: 6px 4px;
+    min-height: 0;
+  }
+  ol.toc .m {
+    font-size: 15pt;
+  }
+  .ash {
+    break-before: auto;
+    break-inside: auto;
+    margin: 0 0 22pt;
+    border: 0;
+    animation: none !important;
+  }
+  .ash:first-of-type {
+    break-before: auto;
+  }
+  .ash header {
+    break-after: avoid;
+    padding-top: 0;
+  }
+  .ash h2 {
+    font-size: 22pt;
+  }
+  .verse {
+    break-inside: avoid;
+    margin: 0 0 0.9em;
+  }
+  [data-lang="both"] .verse .en {
+    font-size: 0.78em;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ash {
+    animation: in 0.18s ease-out;
+  }
+  @keyframes in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+
+/* ==== Tapped-line highlight, high contrast, language tag ==== */
+:root {
+  --hl: #f9e4a6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-pref]) {
+    --hl: #4d3a22;
+  }
+}
+:root[data-pref="dark"] {
+  --hl: #4d3a22;
+}
+:root[data-pref="sepia"] {
+  --hl: #dcbf86;
+}
+:root[data-pref="light"] {
+  --hl: #f9e4a6;
+}
+:root:root:root[data-hc="1"] {
+  --bg: #000;
+  --surface: #141414;
+  --ink: #fff;
+  --muted: #f2f2f2;
+  --accent: #ffd54a;
+  --rule: #fff;
+  --bar: #000;
+  --hl: #ffd54a;
+  color-scheme: dark;
+}
+[data-hc="1"] body {
+  font-weight: 500;
+}
+[data-hc="1"] .verse p.hl {
+  color: #000;
+}
+[data-lang="both"] .tag .en {
+  display: none;
+}
+.tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 1px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
+  font: 600 13px/1.7 var(--body);
+  color: var(--muted);
+}
+.verse p {
+  cursor: pointer;
+  border-radius: 8px;
+  -webkit-tap-highlight-color: transparent;
+  padding-inline: 0.25em;
+}
+.verse p.hl {
+  background: var(--hl);
+}
+/* the stanza (or dhrupad) holding the tapped line gets a soft band with a gold rule, so the place is easy
+   to find again at a glance (class "hli", set with the line's "hl"); screen only */
+@media screen {
+  .hli {
+    background: var(--hdr);
+    box-shadow: inset 3px 0 0 var(--gold);
+    border-radius: 10px;
+  }
+}
+/* the transliteration under a tapped line keeps full contrast on the highlight */
+html:not([data-hc="1"]) [data-lang="both"] .verse .en p.hl {
+  color: var(--ink);
+}
+/* parts of a long line between preferred break points (see "Preferred line breaks" in the script) */
+.zs {
+  display: inline-block;
+}
+@keyframes fl {
+  from {
+    background: var(--hl);
+  }
+  to {
+    background: transparent;
+  }
+}
+p.fl {
+  animation: fl 1.6s ease-out;
+}
+
+/* ==== Dhrupad: data-ref="1" shows it once at the top (.rftop) and hides the repeats (.rf); .rmk marks where it is sung ==== */
+.rftop,
+.rmk {
+  display: none;
+}
+[data-ref="1"] .rftop {
+  display: block;
+}
+[data-ref="1"] .item.rf,
+[data-ref="1"] p.rf {
+  display: none;
+}
+[data-ref="1"] .rmk {
+  display: block;
+}
+.rftop {
+  text-align: center;
+}
+.rftop .lab {
+  margin-bottom: 0.3em;
+}
+.rmk {
+  text-align: center;
+  color: var(--muted);
+  font: 600 0.6em/1.2 var(--body);
+  margin: -0.2em 0 0.6em;
+}
+.items {
+  display: block;
+}
+
+/* ==== Search box and results, status message (#szt), settings panel details ==== */
+
+#q {
+  width: 100%;
+  box-sizing: border-box;
+  height: 46px;
+  /* the edge is what shows this is a box to type in, so it needs 3:1 against the page (WCAG 1.4.11);
+     --rule is a decorative hairline at about 1.4:1 */
+  border: 1px solid var(--muted);
+  border-radius: 10px;
+  padding: 0 14px;
+  font: 16px var(--body);
+  background: var(--surface);
+  color: var(--ink);
+}
+#res {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 52vh;
+  overflow: auto;
+}
+#res li {
+  border-bottom: 1px solid var(--rule);
+}
+#res button {
+  display: block;
+  width: 100%;
+  height: auto;
+  text-align: start;
+  border: 0;
+  background: none;
+  border-radius: 0;
+  padding: 10px 4px;
+  font: 400 16px/1.45 var(--body);
+}
+#res .rs {
+  display: block;
+  /* Inter for English names, the site's Devanagari font for Marathi ones (not the system's) */
+  font: 600 12px "Inter", var(--body);
+  color: var(--muted);
+}
+#res .rl {
+  display: block;
+}
+#res mark {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: inherit;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 0 1px;
+}
+#res .rl2 {
+  display: block;
+  font: 14px var(--lat);
+  color: var(--muted);
+}
+#none {
+  padding: 10px 4px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+#hm {
+  font-size: 22px;
+  padding-inline: 12px;
+}
+html,
+body {
+  touch-action: pan-x pan-y;
+}
+/* Below the top bar, which itself sits below the notch on iPhones (#fl: short messages, same look) */
+#szt,
+#fl {
+  position: fixed;
+  left: 50%;
+  top: calc(84px + env(safe-area-inset-top, 0px));
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 8px 16px;
+  border-radius: 99px;
+  font: 700 15px var(--lat);
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+#szt.on,
+#fl.on {
+  opacity: 0.92;
+}
+/* After a pinch: a pill in the same place that puts the text size back to the default in one tap */
+#szr {
+  position: fixed;
+  left: 50%;
+  top: calc(84px + env(safe-area-inset-top, 0px));
+  transform: translateX(-50%);
+  z-index: 9;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 99px;
+  border: 0;
+  background: var(--accent);
+  color: var(--bg);
+  font: 700 15px var(--lat);
+  box-shadow: 0 2px 10px #0003;
+}
+#szr .mr {
+  font-family: var(--body);
+}
+@media print {
+  #szr {
+    display: none !important;
+  }
+}
+[hidden] {
+  display: none !important;
+}
+.wide {
+  width: 100%;
+  height: 42px;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+
+/* ==== Phones held sideways ==== */
+@media (orientation: landscape) and (max-height: 520px) {
+  body {
+    line-height: 1.5;
+  }
+  .bar {
+    padding-block: 4px;
+  }
+  .bar button {
+    height: 38px;
+  }
+  .ash header {
+    padding-block: 10px 4px;
+  }
+  .ash header::after {
+    margin: 8px auto 2px;
+  }
+
+  .verse {
+    margin-bottom: 0.7em;
+  }
+}
+@media print {
+  :root:root:root:root[data-hc="1"] {
+    --bg: #fff;
+    --surface: #fff;
+    --ink: #000;
+    --muted: #444;
+    --accent: #7b1113;
+    --rule: #bbb;
+    --hl: #fff;
+    color-scheme: light;
+  }
+  [data-hc="1"] body {
+    font-weight: 400;
+  }
+  .verse p.hl {
+    background: none !important;
+  }
+
+  .pn {
+    display: none !important;
+  }
+}
+
+
+/* ==== Group headings (पूजा / भजने / आरती) in the contents; "coming soon"; section dividers ==== */
+.gh {
+  font: 700 0.74em/1.2 var(--body);
+  color: var(--accent);
+  margin: 24px 0 8px;
+  padding: 0 4px;
+  letter-spacing: 0.03em;
+}
+[data-lang="both"] .gh .en {
+  font-size: 0.85em;
+  color: var(--muted);
+  font-weight: 600;
+  margin-left: 0.5em;
+}
+[data-lang="en"] .gh {
+  font-family: var(--lat);
+}
+ol.toc li.soon .m {
+  display: block;
+  padding: 14px 4px;
+  color: var(--muted);
+  font: 400 0.9em/1.3 var(--body);
+}
+[data-lang="both"] ol.toc li.soon .en {
+  display: inline;
+  margin-left: 0.5em;
+}
+#jump li.jh {
+  grid-column: 1/-1;
+  color: var(--accent);
+}
+#jump li.jh:first-child {
+  padding-top: 0;
+}
+#jl[data-lang="both"] li.jh .en {
+  display: inline;
+  margin-left: 0.5em;
+  opacity: 0.8;
+}
+.grp {
+  margin: 48px 0 -18px;
+  text-align: center;
+  font: 700 0.8em/1.2 var(--body);
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+#home + .grp {
+  margin-top: 8px;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+}
+.grp + .ash {
+  border-top: 0;
+}
+.grp {
+  scroll-margin-top: 64px;
+}
+.grp[data-lang="both"] .en {
+  margin-left: 0.6em;
+  color: var(--muted);
+}
+
+@media (min-width: 820px) {
+  .tocg ol.toc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 32px;
+  }
+}
+@media print {
+  .gh {
+    margin-top: 14pt;
+  }
+  .grp {
+    margin: 0 0 8pt;
+    break-after: avoid;
+  }
+}
+
+/* ==== Atharvashirsha: Vedic text in Tiro Devanagari Sanskrit ==== */
+#p1 .mr p {
+  font-family: "Tiro Devanagari Sanskrit", "Noto Serif Devanagari", "Sanskrit 2003", "Kohinoor Devanagari", var(--body);
+  line-height: 2.1;
+}
+#p1 .verse .mr {
+  font-size: 1.05em;
+}

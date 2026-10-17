@@ -1,0 +1,491 @@
+/* 04-columns-rail.css: Two columns, piece and stanza numbers, button rows, left menu
+   Part 5 of 11 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   Wide-screen layouts: two stanza columns, both languages side by side, the left contents menu.
+   Sections:
+   - Two columns on wide screens (data-cols="2"); the script assigns each stanza its grid row
+   - Piece numbers (.no) and stanza numbers (.sn, added by the script)
+   - Print: page border, contents on its own page, two-column flow (final rules)
+   - Share / QR / Print use the Latin font
+   - Button rows (final rules), styled like the top menu: home page (#shr: App, Share, QR, Print, Help) and the …
+   - Both languages on wide screens: each Marathi line with its transliteration beside it
+   - Left menu (contents) on screens 1100px and wider
+   - Reading progress line under the top bar
+   - Dhrupad markers (↻ ध्रुपद) as small pills
+*/
+
+/* ==== Two columns on wide screens (data-cols="2"); the script assigns each stanza its grid row ==== */
+[data-cols="2"] .wrap {
+  max-width: 76rem;
+}
+[data-cols="2"] .bar {
+  padding-inline: max(16px, calc((var(--vw, 100vw) - 76rem) / 2));
+}
+[data-cols="2"] .ash header,
+[data-cols="2"] .rftop {
+  max-width: 46rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media screen {
+  [data-cols="2"] .items {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 64px;
+    align-items: start;
+  }
+  [data-cols="2"] .rftop .verse {
+    width: fit-content;
+    margin-inline: auto;
+    padding-right: 1em;
+  }
+  [data-cols="2"] .pn {
+    margin-inline: auto;
+  }
+}
+
+[data-cols="2"] #home {
+  max-width: 46rem;
+  margin: 0 auto;
+}
+/* stanza columns drawn closer together in pieces of short lines (--pull, set by the script: pull()) */
+@media screen {
+  /* the translate property, not transform, so the fade-in on scroll (which animates transform) leaves it be */
+  [data-cols="2"] .items > .c1 {
+    translate: var(--pull, 0px) 0;
+  }
+  [data-cols="2"] .items > .c2 {
+    translate: calc(-1 * var(--pull, 0px)) 0;
+  }
+}
+@media print {
+  [data-cols="2"] .wrap {
+    max-width: none;
+  }
+  [data-cols="2"] .items {
+    column-count: 1;
+    column-rule: none;
+  }
+  [data-cols="2"] #home,
+  [data-cols="2"] .ash header,
+  [data-cols="2"] .rftop {
+    max-width: none;
+  }
+}
+
+/* ==== Piece numbers (.no) and stanza numbers (.sn, added by the script) ==== */
+.no {
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  font-weight: 600;
+  margin-right: 0.15em;
+}
+.no .ne,
+[data-lang="en"] .no .nm,
+[data-lang="both"] .no .nm {
+  display: none;
+}
+[data-lang="en"] .no .ne,
+[data-lang="both"] .no .ne {
+  display: inline;
+}
+.sn {
+  white-space: nowrap;
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.85em;
+}
+@media print {
+  /* final dhrupad styling in print: one gold rule beside the dhrupad text */
+  #pv .pvref {
+    border: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+  #pv .pvside tr.pvrefrow td.pvm {
+    box-shadow: none !important;
+    border-left: 2pt solid var(--accent) !important;
+    padding-left: 10pt;
+  }
+}
+@media print {
+  /* ==== Print: page border, contents on its own page, two-column flow (final rules) ==== */
+  /* light border on every page: a fixed box repeats on each printed page (around the page area);
+     the print view keeps a little space inside it on every page (box-decoration-break: clone).
+     Only where the browser can do both, so text never touches the line. */
+  @supports (box-decoration-break: clone) {
+    :root[data-print] #pv {
+      box-decoration-break: clone;
+      padding: 6mm 7mm;
+    }
+    :root[data-print] #pv::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      border: 0.75pt solid #c9ab7f;
+      border-radius: 2mm;
+      pointer-events: none;
+    }
+  }
+  #pv .pvtoc {
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    break-after: page;
+    page-break-after: always;
+  }
+  /* contents in two columns read top to bottom; a grid, because Safari ignores CSS columns in print */
+  #pv .pvtoc ol {
+    columns: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    column-gap: 28pt;
+  }
+  /* page number at the right of each contents line */
+  #pv .pvtoc li[data-sid] {
+    position: relative;
+    padding-right: 26pt;
+  }
+  #pv .pvtoc .pgn {
+    position: absolute;
+    right: 2pt;
+    top: 4pt;
+    font: 400 12pt/1.35 var(--lat);
+    color: #555;
+  }
+  #pv[data-lang="mr"] .pvtoc .pgn {
+    font-family: var(--head);
+  }
+  /* two columns: stanzas run down the left column to the foot of the page, then down the right */
+  #pv .pvhd {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  #pv .pvc {
+    columns: 2;
+    column-gap: 16pt;
+    column-rule: 0.5pt solid #bbb;
+    column-fill: balance;
+    margin: 0 0 6pt;
+  }
+  /* a page's part of a two-column piece, before its last part (js/features/print.js cuts the flow at each page) */
+  #pv .pvc.pvcf {
+    column-fill: auto;
+  }
+  #pv .pvc .pvk {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+  }
+  #pv .pvc .verse {
+    text-align: center;
+  }
+  /* each piece starts at the top of a new page: a forced break is the one page rule Chrome and
+     Safari both follow, so every print breaks the same way and the contents numbers stay right */
+  #pv .pvs + .pvs {
+    break-before: page;
+    page-break-before: always;
+  }
+  #pv .pvs:last-child {
+    margin-bottom: 0;
+  }
+  /* a page break the print plan forces (see paginate) */
+  #pv .pvbr {
+    display: block;
+    height: 0;
+    margin: 0;
+    break-before: page;
+    page-break-before: always;
+  }
+  /* nothing after the last piece, so Safari adds no empty page at the end */
+  .wk[data-print] body {
+    margin: 0;
+  }
+  /* upright unless the reader chose Sideways in the Print pop-up: js/features/print.js then adds
+     "@page { size: landscape }" after this (the contents numbers are worked out for the pages chosen) */
+  @page {
+    size: portrait;
+  }
+}
+
+/* ==== Share / QR / Print use the Latin font ==== */
+#shr button,
+#prm .qrt,
+#prm .prn,
+#prm button {
+  font-family: var(--lat);
+}
+#shr {
+  align-items: stretch;
+}
+#shr button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin: 0;
+}
+#shr button svg {
+  margin-right: 8px !important;
+  vertical-align: 0 !important;
+}
+
+/* ==== Button rows (final rules), styled like the top menu: home page (#shr: App, Share, QR, Print, Help)
+   and the bottom of Settings (#shr2: App, Help) ==== */
+#shr {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin: 18px 0 6px;
+}
+#shr button {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 128px;
+  height: 44px;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 2px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 500 13.5px/1 var(--lat);
+  text-decoration: none;
+  white-space: nowrap;
+}
+#shr button[hidden] {
+  display: none;
+}
+#shr button .mr {
+  font-family: var(--body);
+}
+#shr button svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 0 !important;
+}
+/* Version number beside the Settings title, so we can tell which copy a phone is showing */
+/* Narrow phones: icons only. The words are clipped out of sight rather than removed (display:none), because
+   they are each button's name for screen readers and voice control (WCAG 2.5.3 Label in Name) */
+@media (max-width: 379px) {
+  #shr button > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* ==== Both languages on wide screens: each Marathi line with its transliteration beside it ==== */
+@media screen {
+  [data-cols="2"] [data-lang="both"] .items {
+    display: block;
+  }
+  [data-cols="2"] [data-lang="both"] .verse {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    column-gap: 40px;
+    align-items: baseline;
+  }
+  [data-cols="2"] [data-lang="both"] .verse > .mr,
+  [data-cols="2"] [data-lang="both"] .verse > .en {
+    display: contents;
+  }
+  [data-cols="2"] [data-lang="both"] .verse > .mr > p {
+    grid-column: 1;
+    text-align: right;
+  }
+  [data-cols="2"] [data-lang="both"] .verse > .en {
+    font-size: 0.8em;
+    line-height: 1.5;
+  }
+  [data-cols="2"] [data-lang="both"] .verse > .en > p {
+    grid-column: 2;
+    text-align: left;
+    font-size: 1em;
+    margin: 0;
+  }
+  [data-cols="2"] [data-lang="both"] .rftop {
+    max-width: none;
+  }
+  [data-cols="2"] [data-lang="both"] .rftop .verse {
+    width: auto;
+  }
+  [data-cols="2"] [data-lang="both"] .rftop .lab {
+    text-align: center;
+  }
+  [data-cols="2"] [data-lang="both"] .items .item,
+  [data-cols="2"] [data-lang="both"] .items .rmk {
+    grid-row: auto !important;
+    grid-column: auto !important;
+  }
+}
+
+
+/* ==== Left menu (contents) on screens 1100px and wider ==== */
+#rail {
+  display: none;
+}
+:root {
+  --ww: 46rem;
+}
+[data-cols="2"] {
+  --ww: 76rem;
+}
+/* With the side menu (iPad landscape, desktop) the page sits right beside the menu and uses its whole width, up to 60rem */
+[data-rail="1"] {
+  --ww: 60rem;
+}
+@media screen and (min-width: 1100px) {
+  [data-rail="1"] {
+    --W: min(var(--ww), calc(var(--vw, 100vw) - 340px));
+    --L: max(24px, calc((var(--vw, 100vw) - 260px - var(--W)) / 2));
+  }
+  [data-rail="1"] .wrap {
+    max-width: var(--W);
+    margin-left: calc(var(--L) + 260px);
+    margin-right: 0;
+  }
+  [data-rail="1"] .bar {
+    padding-left: calc(var(--L) - 8px);
+    padding-right: max(16px, calc(var(--vw, 100vw) - var(--L) - 260px - var(--W) - 8px));
+  }
+  [data-rail="1"] #rail {
+    display: block;
+    position: fixed;
+    z-index: 4;
+    left: var(--L);
+    top: 72px;
+    width: 220px;
+    max-height: calc(100vh - 96px);
+    overflow: auto;
+    padding: 4px 6px 12px 0;
+    scrollbar-width: thin;
+  }
+  #rail .rg,
+  #rail a.rg {
+    display: block;
+    font: 600 13px/1.3 var(--head);
+    color: var(--accent);
+    margin: 14px 0 4px;
+    padding: 0 8px 4px;
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    border-radius: 0;
+  }
+  #rail a.rg {
+    padding-top: 6px;
+    margin-top: 8px;
+  }
+  @media (hover: hover) {
+    #rail a.rg:hover {
+      background: var(--surface);
+    }
+  }
+  #rail[data-lang="both"] a.rg .en {
+    display: none;
+  }
+  #rail .rg:first-child {
+    margin-top: 0;
+  }
+  #rail .rg .en {
+    display: none;
+  }
+  #rail[data-lang="en"] .rg .en {
+    display: inline;
+  }
+  #rail ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  #rail a {
+    display: block;
+    padding: 6px 8px 6px 10px;
+    border-left: 3px solid transparent;
+    border-radius: 0 8px 8px 0;
+    color: var(--ink);
+    text-decoration: none;
+    font: 400 15px/1.35 var(--head);
+  }
+  #rail[data-lang="en"] a {
+    font: 500 14px/1.35 var(--lat);
+  }
+  #rail a .en {
+    display: none;
+  }
+  #rail[data-lang="en"] a .en {
+    display: inline;
+  }
+  #rail[data-lang="en"] a .mr {
+    display: none;
+  }
+  #rail[data-lang="both"] a .en {
+    display: block;
+    font: 400 11.5px/1.3 var(--lat);
+    color: var(--muted);
+  }
+  #rail a .no {
+    color: var(--muted);
+    font-weight: 400;
+    margin-right: 0.3em;
+  }
+  @media (hover: hover) {
+    #rail a:hover {
+      background: var(--surface);
+    }
+  }
+  #rail a.on {
+    border-left-color: var(--accent);
+    background: var(--hdr);
+    color: var(--accent);
+  }
+  #rail a.on .no {
+    color: var(--accent);
+  }
+}
+
+/* ==== Reading progress line under the top bar ==== */
+.bar {
+  position: sticky;
+}
+#prog {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.75;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* ==== Dhrupad markers (↻ ध्रुपद) as small pills ==== */
+@media screen {
+  [data-ref="1"] .rmk {
+    display: block;
+    width: fit-content;
+    margin: 0.15em auto 0.8em;
+    padding: 1px 12px 2px;
+    border-radius: 999px;
+    background: var(--hdr);
+    border: 1px solid var(--hdrl);
+    color: var(--accent);
+    font: 600 0.58em/1.6 var(--body);
+    letter-spacing: 0.02em;
+  }
+  [data-cols="2"] .items > .rmk {
+    justify-self: center;
+  }
+}
