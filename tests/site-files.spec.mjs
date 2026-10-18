@@ -23,7 +23,7 @@ test("index.html loads the scripts listed in js/parts.js, in the same order", ()
 });
 
 test("js/parts.js lists every part of the site script, and main.js imports each one", () => {
-  const files = ["core", "text", "features", "print"].flatMap((d) =>
+  const files = ["core", "text", "features", "print", "store"].flatMap((d) =>
     readdirSync(new URL(`../js/${d}/`, import.meta.url)).filter((f) => f.endsWith(".js")).map((f) => `js/${d}/${f}`),
   );
   expect([...parts.modules].sort()).toEqual(["js/main.js", ...files].sort());

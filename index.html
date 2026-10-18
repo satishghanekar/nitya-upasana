@@ -6,7 +6,7 @@
 <title>Nitya Upasana</title>
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.3">
+<meta name="version" content="aarti-v1.4">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -40,6 +40,7 @@
 <link rel="stylesheet" href="css/08-contents-book.css">
 <link rel="stylesheet" href="css/09-settings-page.css">
 <link rel="stylesheet" href="css/10-today.css">
+<link rel="stylesheet" href="css/11-profiles.css">
 <link rel="stylesheet" href="css/99-fallbacks.css">
 <!-- The list of the site's files, for Check for updates and the offline copy. In the head: in the body it would
      sit between elements that the styles expect to be neighbours (#home + .grp) -->
@@ -50,6 +51,10 @@
 <link rel="modulepreload" href="js/text/load.js">
 <link rel="modulepreload" href="js/text/content.js">
 <link rel="modulepreload" href="js/text/format.js">
+<link rel="modulepreload" href="js/store/db.js">
+<link rel="modulepreload" href="js/store/migrate.js">
+<link rel="modulepreload" href="js/store/profiles.js">
+<link rel="modulepreload" href="js/store/store.js">
 <link rel="modulepreload" href="js/core/page.js">
 <link rel="modulepreload" href="js/core/state.js">
 <link rel="modulepreload" href="js/core/features.js">
@@ -89,6 +94,9 @@
 <link rel="modulepreload" href="js/features/print.js">
 <link rel="modulepreload" href="js/features/share.js">
 <link rel="modulepreload" href="js/features/offline.js">
+<link rel="modulepreload" href="js/store/backup.js">
+<link rel="modulepreload" href="js/features/profiles.js">
+<link rel="modulepreload" href="js/features/backup.js">
 </head>
 
 <body>
@@ -98,6 +106,9 @@
 <div class="bar" role="banner">
   <div id="prog" aria-hidden="true"></div>
   <a class="t site" id="bt" href="./" aria-label="Home: नित्य उपासना"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg><span id="btt">संकटहर चतुर्थी</span></a>
+  <!-- Who is reading (js/features/profiles.js): their round badge and name; a tap opens the profile sheet (#pfm).
+       The words "Profile:" are for screen readers; on narrow phones the name is hidden visually only. -->
+  <button type="button" id="who" aria-haspopup="dialog" aria-expanded="false" aria-controls="pfm"><span class="pfa" aria-hidden="true"></span><span class="sr" id="whol">Profile: </span><span class="pfn"></span></button>
   <div class="tools">
     <!-- shown only with no internet: the saved copy is in use -->
     <span id="ofb" role="img" hidden aria-label="No internet. Using the saved copy" title="No internet · using the saved copy"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.5a4 4 0 0 0 1.6-.33M20.8 14.5A4 4 0 0 0 18.1 10.05 6 6 0 0 0 9.2 5.6M6.4 9.1A4.5 4.5 0 0 0 7 18"/><path d="M3 3l18 18"/></svg></span>
@@ -190,6 +201,15 @@
         <button id="tw" class="sp-row sp-sw" type="button"><span class="sp-l"><span class="mr">स्क्रीन चालू ठेवा</span><span class="en" lang="en">Keep screen on</span></span></button>
         <button id="tas" class="sp-row sp-sw" type="button" data-feat="as" hidden><span class="sp-l"><span class="mr">आपोआप पुढे सरकवा</span><span class="en" lang="en">Autoscroll</span></span></button>
       </div>
+      <!-- Profiles and backup (js/features/profiles.js, js/features/backup.js): who is reading (opens the profile sheet),
+           Save a backup file, Restore from a file, and a warning when this browser can't save here -->
+      <h3 class="sp-h"><span class="mr">प्रोफाइल आणि बॅकअप</span><span class="en" lang="en">Profiles and backup</span></h3>
+      <div class="sp-card">
+        <p class="sp-row sp-warn" id="stw2" hidden><span class="sp-l"><span class="mr">हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.</span><span class="en" lang="en">This browser can't save here. Use Save a backup file before closing.</span></span></p>
+        <button type="button" class="sp-row sp-go" id="spf"><span class="sp-l"><span class="mr">कोण वाचत आहे</span><span class="en" lang="en">Who is reading</span></span><span class="sp-v" id="spfv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        <button type="button" class="sp-row sp-go" id="bks"><span class="sp-l"><span class="mr">बॅकअप फाइल जतन करा</span><span class="en" lang="en">Save a backup file</span><small id="bksv"></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
+        <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span class="mr">फाइलमधून परत आणा</span><span class="en" lang="en">Restore from a file</span><small><span class="mr">आधी जतन केलेली .nitya फाइल</span><span class="en" lang="en">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
+      </div>
       <h3 class="sp-h"><span class="mr">माहिती</span><span class="en" lang="en">About</span></h3>
       <div class="sp-card">
         <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span class="mr">मदत आणि वापर</span><span class="en" lang="en">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -243,6 +263,12 @@
       <button type="button" id="prb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg><span class="mr">प्रिंट</span><span class="en" lang="en">Print</span></button>
       <button type="button" id="hlpb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.3-2.5 3.9"/><path d="M12 17.2v.01"/></svg><span class="mr">मदत</span><span class="en" lang="en">Help</span></button>
     </div>
+    </div>
+    <!-- Notes about saving (js/features/backup.js): this browser can't save here (IndexedDB could not be opened), or a
+         gentle reminder to save a backup file (none for 30 days, or never and 14 days since the first visit) -->
+    <div id="pfnt" hidden>
+      <div id="stw" class="pfw warn" hidden><p><span class="mr">हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.</span><span class="en" lang="en">This browser can't save here. Use Save a backup file before closing.</span></p><div class="pfwb"><button type="button" id="stws"><span class="mr">बॅकअप फाइल जतन करा</span><span class="en" lang="en">Save a backup file</span></button></div></div>
+      <div id="bkn" class="pfw" hidden><p id="bknt"></p><div class="pfwb"><button type="button" id="bkns"><span class="mr">बॅकअप फाइल जतन करा</span><span class="en" lang="en">Save a backup file</span></button><button type="button" id="bknx"><span class="mr">आता नको</span><span class="en" lang="en">Not now</span></button></div></div>
     </div>
     <!-- The session picked above (js/features/today-card.js): its texts in order, each with a tick (kept on this device
          for today only) and its title, which opens it; Start / Continue opens the first text not yet ticked, and in the
@@ -315,6 +341,43 @@
     <p class="inn"><span class="mr">मग ते ॲपसारखे उघडेल, इंटरनेटशिवायही.</span><span class="en" lang="en">It will then open like an app, even without internet.</span></p>
     <button type="button" class="wide" id="inx"><span class="mr">ठीक आहे</span><span class="en" lang="en">OK</span></button></div>
 </div>
+<!-- ==== Profile sheet (js/features/profiles.js), opened by the profile chip in the top bar or Settings → Who is
+     reading: the people on this phone (tap one to switch), Add a person, and for each, Edit (name, badge letters,
+     colour, Delete with a confirmation; never the last one). Three views in one dialog; the words follow the menu
+     language. ==== -->
+<div id="pfm" hidden role="dialog" aria-modal="true" aria-labelledby="pfmt">
+  <div class="qrc pfc">
+    <div class="pfhd"><h2 class="qrt" id="pfmt" tabindex="-1"></h2><button type="button" id="pfx" class="pfxb"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div id="pfv1">
+      <ul id="pfl"></ul>
+      <button type="button" id="pfadd" class="wide"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span id="pfaddw"></span></button>
+      <p class="pfi" id="pfi"></p>
+    </div>
+    <form id="pfv2" hidden novalidate>
+      <label class="pff" for="pfname"><span id="pfnamel"></span><input id="pfname" type="text" maxlength="24" autocomplete="off" autocapitalize="words" spellcheck="false" aria-describedby="pferr"></label>
+      <label class="pff" for="pfini"><span id="pfinil"></span><input id="pfini" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="pfinih"><small id="pfinih"></small></label>
+      <fieldset class="pfcs"><legend id="pfcl"></legend><div id="pfcol"></div></fieldset>
+      <p id="pferr" class="pferr" role="alert"></p>
+      <div class="pfbs"><button type="submit" id="pfsave" class="pri"></button><button type="button" id="pfcan"></button></div>
+      <button type="button" id="pfdel" class="pfdel"></button>
+    </form>
+    <div id="pfv3" hidden>
+      <p id="pfdq"></p>
+      <div class="pfbs"><button type="button" id="pfdy" class="pri dng"></button><button type="button" id="pfdn"></button></div>
+    </div>
+  </div>
+</div>
+<!-- ==== Restore from a file (js/features/backup.js): what the file holds and what will change, then Restore or
+     Cancel; or why the file can't be used ==== -->
+<!-- the phone's own file picker for Restore; no file type filter, because iPhone home-screen apps can't filter by type -->
+<input type="file" id="bkf" class="sr" tabindex="-1" aria-hidden="true" data-keep>
+<div id="bkm" hidden role="dialog" aria-modal="true" aria-labelledby="bkmt" aria-describedby="bkmd">
+  <div class="qrc pfc">
+    <h2 class="qrt" id="bkmt" tabindex="-1"></h2>
+    <div id="bkmd"></div>
+    <div class="pfbs"><button type="button" id="bkok" class="pri"></button><button type="button" id="bkno"></button></div>
+  </div>
+</div>
 <!-- ==== Help (English only), opened from the home page and Settings ==== -->
 <div id="help" hidden role="dialog" aria-modal="true" aria-labelledby="hlpt" lang="en">
   <div class="hlpbar"><h2 id="hlpt">Help</h2><button type="button" id="hlpx" aria-label="Close help"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -325,6 +388,7 @@
 
       <h3>Put it on your phone</h3>
       <p>Tap <b>App</b> (phone with an arrow) in the row of buttons on the home page, or <b>Add to Home Screen</b> under About in Settings. On Android and in Chrome or Edge on a computer this usually installs it in one tap; otherwise it shows the steps for your phone or browser (on a Mac in Safari: Share or File → Add to Dock).</p>
+      <p>On an iPhone, the Home Screen app also keeps your people, settings and ticks safer: Safari can clear a website's saved data after some weeks without a visit, but not an app on the Home Screen.</p>
       <h4>iPhone (Safari or Chrome)</h4>
       <ol>
         <li>Open the site in <b>Safari</b>. If you opened it from WhatsApp, Mail or Messages, tap the compass or ⋯ icon to open it in Safari first; those built-in viewers don't have the option.</li>
@@ -358,9 +422,10 @@
       <ul>
         <li><b>The session</b> starts on the one for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. Tap another to see its texts. For now every day has the same routine: Morning is the Ganapati Atharvashirsha, Evening the ten aartis, and the Afternoon is free.</li>
         <li><b>The days</b> (Monday to Sunday): tap one to see that day's routine; tap today to come back.</li>
-        <li><b>The list</b> under it has the session's texts in order. Tap the round tick when you have finished one; the ticks are kept on this phone for today and start fresh tomorrow. Tap a title to open it.</li>
-        <li><b>Start</b> (or <b>Continue</b>, once some are ticked) opens the first text not yet ticked. While you read, <b>Next ›</b> in the bottom bar goes to the next text of the session, and after the last one brings you back here.</li>
+        <li><b>The list</b> under it has the session's texts in order. Tap the round tick when you have finished one; the ticks are kept on this phone for today, for the person reading, and start fresh tomorrow. Tap a title to open it.</li>
+        <li><b>Start</b> (or <b>Continue</b>, once some are ticked) opens the first text not yet ticked. While you read, <b>Next ›</b> in the bottom bar ticks the text you were reading as done for today, then goes to the next text of the session; after the last one it brings you back here. <b>‹ Prev</b> goes back without ticking. To take a tick off, tap it on the list.</li>
         <li>On a computer: Tab to the days or the sessions, then use the arrow keys; Space ticks a text.</li>
+        <li>On a phone, the row of App, Share, QR, Print and Help buttons sits under the session's list; on a wider screen it stays at the top.</li>
         <li>Folding the card (⌃) leaves the session's list in view. The list of every text (<b>अनुक्रमणिका / Contents</b>) is still under it.</li>
       </ul>
 
@@ -379,6 +444,25 @@
         <li><b>Next Chaturthi date:</b> the card leads with the next Sankashti date and its moonrise. The strip of past and coming dates and the calendar links wait under <b>More dates</b>: tap it to show them. On Sankashti day the moonrise is in large type with how long until it rises and, in central Ohio, the pooja time; the contents below are larger too, and the App, Share, QR, Print and Help buttons also wait under More dates.</li>
       </ul>
 
+      <h3>People on one phone</h3>
+      <p>Several people can read on the same phone, each with their own text size, languages, letters, English spelling, font, theme, high contrast and today's ticks. Location, Keep screen on, the layout and print choices belong to the phone and are shared.</p>
+      <ul>
+        <li><b>The badge</b> at the top (letters on a colour, with the name on a wider screen) shows who is reading. Tap it to see everyone on this phone.</li>
+        <li><b>Switch:</b> tap a name. The page changes to that person's settings straight away.</li>
+        <li><b>Add a person:</b> give a name; the badge letters come from the name (or type up to four), and pick a colour. There is room for eight.</li>
+        <li><b>Edit</b> beside a name: rename, change the letters or the colour, or <b>Delete this person</b> (it asks first). The last person can't be deleted.</li>
+        <li>The same list opens from Settings → <b>Who is reading</b>.</li>
+      </ul>
+
+      <h3>Backup</h3>
+      <p>Everything is kept on this phone only. A backup file keeps a copy you can bring back after a new phone, a reset or cleared browser data.</p>
+      <ul>
+        <li><b>Save a backup file</b> (Settings → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and today's ticks, nothing else.</li>
+        <li><b>Restore from a file:</b> pick a <i>.nitya</i> file. The site checks it, then shows who will be added, replaced or removed before anything changes; tap <b>Restore</b> to go ahead. Restoring replaces the people on this phone with the ones in the file.</li>
+        <li>A short reminder to save a backup shows on the home page now and then (two weeks after you start, then a month after each backup). <b>Not now</b> hides it for two weeks.</li>
+        <li>If the browser can't save anything (some private windows), a note says so: everything works, but is forgotten when the page closes, so save a backup file first.</li>
+      </ul>
+
       <h3>Buttons at the top</h3>
       <ul>
         <li><b>Home</b> (Ganesha and title): back to the start. While you read, the title shows the piece on screen (for example <i lang="mr">५. दत्ताची आरती</i>).</li>
@@ -389,7 +473,7 @@
       </ul>
 
       <h3>Settings</h3>
-      <p>Settings is in four groups: Languages, Reading, Screen and About.</p>
+      <p>Settings is in five groups: Languages, Reading, Screen, Profiles and backup, and About. The Languages, Reading and Screen settings are kept for the person reading (see People on one phone).</p>
       <ul>
         <li><b>Main language:</b> the language you read in, in large text: <span lang="mr">मराठी</span> (the text as written), English (in English letters) or <span lang="kn">ಕನ್ನಡ</span> (the same words in Kannada letters). Tap it to pick from a list; English is there twice, once for each spelling (see English spelling below). With Kannada the menus are in English, and the second language can be English or None.</li>
         <li><b>Second language:</b> shown smaller, under each line, when the अ/A button shows both. Pick the other language, or <b>None</b> to read in one language only. Picking your second language as the main one swaps the two.</li>
@@ -407,7 +491,8 @@
         <li><b>Layout</b> (wide screens only): one or two columns of stanzas.</li>
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off. Keep screen on starts on for phones and tablets and off on computers.</li>
-        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.3), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
+        <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
+        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.4), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
       </ul>
 
       <h3>While reading</h3>
@@ -423,7 +508,7 @@
       </ul>
 
       <h3>Share, QR and Print</h3>
-      <p>These sit in one row at the bottom of the top card on the home page, with App and Help. On narrow phones each word sits under its icon.</p>
+      <p>These sit in one row with App and Help: on a phone under the session's list, on a wider screen at the bottom of the top card. On narrow phones each word sits under its icon.</p>
       <ul>
         <li><b>Share</b> sends a ready reminder with the next date, pooja time, moonrise and the link, for WhatsApp or messages.</li>
         <li><b>QR</b> shows a code others can scan with their camera to open the site.</li>
@@ -434,7 +519,7 @@
       <ul>
         <li><b>Works without internet:</b> the first time you open the site it is saved on your phone, and a short “Ready to use offline” note shows. Settings → About shows “Offline ready” beside the version once it is saved. With no internet, a small cloud with a line through it shows in the top bar: the saved copy is in use, and everything still works.</li>
         <li><b>Getting updates:</b> new changes load by themselves whenever you are online. To look straight away, open Settings and tap <b>Check for updates</b> under About: it shows “Checking…”, then “Up to date” (or “No internet”), or reloads with the new version.</li>
-        <li><b>Privacy:</b> your settings and location stay on your phone. Nothing is sent anywhere.</li>
+        <li><b>Privacy:</b> your people, settings, ticks and location stay on your phone. Nothing is sent anywhere; a backup file goes only where you save or send it.</li>
         <li>Moonrise times are calculated on your phone and may differ by a few minutes from printed calendars.</li>
       </ul>
     </div>

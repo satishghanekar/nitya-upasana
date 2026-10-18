@@ -22,7 +22,7 @@ export function init() {
     setP(false);
     setJ(false);
     var shut = 0;
-    ["qrm", "prm", "inm", "pzv", "rsh"].forEach(function (i) {
+    ["qrm", "prm", "inm", "pzv", "rsh", "bkm"].forEach(function (i) {
       var d = document.getElementById(i);
       if (d && !d.hidden) {
         d.hidden = true;
@@ -51,10 +51,10 @@ export function init() {
     else if (el) el.scrollIntoView();
     else scrollTo(0, 0);
   });
-  // Keyboard: Tab stays inside an open dialog (QR, Print, Add to Home Screen, Help, Settings)
+  // Keyboard: Tab stays inside an open dialog (Restore, the profile sheet, QR, Print, Add to Home Screen, Help, Settings)
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Tab") return;
-    var d = ["help", "qrm", "prm", "inm", "pzv", "rsh", "panel"]
+    var d = ["bkm", "pfm", "help", "qrm", "prm", "inm", "pzv", "rsh", "panel"]
       .map(function (i) {
         return document.getElementById(i);
       })
@@ -171,7 +171,7 @@ function ovOpen() {
   return (
     !pn.hidden ||
     !jp.hidden ||
-    ["qrm", "prm", "inm", "help", "pzv", "rsh"].some(function (i) {
+    ["qrm", "prm", "inm", "help", "pzv", "rsh", "pfm", "bkm"].some(function (i) {
       var e = document.getElementById(i);
       return e && !e.hidden;
     })

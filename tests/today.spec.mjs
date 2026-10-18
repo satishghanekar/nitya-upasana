@@ -167,6 +167,52 @@ test("a text's title in the list opens it, in the session", async ({ page }) => 
   await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: Today");
 });
 
+test("in a session, Next ticks the text as done for today before moving on; Prev doesn't; a tick can still be taken off @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await page.locator("#tst").click();
+  await expect.poll(() => onPiece(page)).toBe("a1");
+  await page.locator("#asn").click();
+  await expect.poll(() => onPiece(page)).toBe("a2");
+  // Prev back to the first: the second is not ticked
+  await page.locator("#asv").click();
+  await expect.poll(() => onPiece(page)).toBe("a1");
+  await page.locator("#asn").click();
+  await expect.poll(() => onPiece(page)).toBe("a2");
+  await page.locator("#asn").click();
+  await expect.poll(() => onPiece(page)).toBe("a3");
+  await page.goto(page.url().split("#")[0]);
+  await settle(page);
+  await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
+  await expect(rows(page).nth(0).locator("input")).toBeChecked();
+  await expect(rows(page).nth(1).locator("input")).toBeChecked();
+  await expect(rows(page).nth(2).locator("input")).not.toBeChecked();
+  // taking a tick off by hand still works
+  await rows(page).nth(1).locator("input").uncheck();
+  await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
+});
+
+test("Next on the last text of the session ticks it too, then returns to Today @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: MORNING });
+  await page.locator("#tst").click();
+  await expect.poll(() => onPiece(page)).toBe("p1");
+  await page.locator("#asn").click();
+  await expect.poll(() => onPiece(page)).toBe("");
+  await expect(page.locator("#tsn")).toHaveText("1 of 1 done");
+  await expect(rows(page).nth(0).locator("input")).toBeChecked();
+});
+
+test("on another day's list, Next doesn't tick (ticks are only for today)", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await page.locator('#twk [data-d="2026-10-17"]').click();
+  await page.locator("#tst").click();
+  await expect.poll(() => onPiece(page)).toBe("a1");
+  await page.locator("#asn").click();
+  await expect.poll(() => onPiece(page)).toBe("a2");
+  await page.goto(page.url().split("#")[0]);
+  await settle(page);
+  await expect(page.locator("#tsn")).toHaveText("0 of 10 done");
+});
+
 test("keyboard: arrows move along the day and session switches; Space ticks @mobile", async ({ page, browserName }) => {
   test.skip(browserName === "webkit", "Safari's default Tab skips buttons");
   await openSite(page, SETUPS.marathi, { now: EVENING });
@@ -288,6 +334,36 @@ test("the list of every text stays under the card, on a phone", async ({ page })
     return y("#home .top") < y("#tsc") && y("#tsc") < y("#tfr");
   });
   expect(order).toBe(true);
+});
+
+test("on a phone the App / Share / QR / Print / Help row sits below the session card (mockup A); wide, it stays at the top", async ({ browser }) => {
+  for (const [width, below] of [[390, true], [819, true], [820, false], [1280, false]]) {
+    const context = await browser.newContext({ viewport: { width, height: 844 }, serviceWorkers: "block" });
+    const page = await context.newPage();
+    await openSite(page, SETUPS.marathi, { now: EVENING });
+    const where = await page.evaluate(() => {
+      const row = document.getElementById("shr");
+      return { afterCard: row.previousElementSibling && row.previousElementSibling.id === "tsc", inTop: !!row.closest("#home > .top") };
+    });
+    expect(where, `${width}px`).toEqual({ afterCard: below, inTop: !below });
+    await expect(page.locator("#shr")).toBeVisible();
+    if (below) {
+      const card = await page.locator("#tsc").boundingBox();
+      const row = await page.locator("#shr").boundingBox();
+      expect(row.y, `${width}px`).toBeGreaterThanOrEqual(card.y + card.height - 1);
+    }
+    await context.close();
+  }
+});
+
+test("turning a tablet from portrait to landscape moves the row back to the top", async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await expect(page.locator("#tsc + #shr")).toHaveCount(1);
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await expect(page.locator("#home > .top #shr")).toHaveCount(1);
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await expect(page.locator("#tsc + #shr")).toHaveCount(1);
 });
 
 test("on a wide screen the card and the session sit side by side", async ({ browser }) => {

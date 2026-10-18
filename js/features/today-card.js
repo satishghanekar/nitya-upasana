@@ -8,7 +8,8 @@
 //
 // What it reads: the routine (content/routines.json) and the titles (content/library.json), both loaded by
 // js/text/load.js; which texts a session has and the walk through it: js/core/routine.js; the ticks, kept on this
-// device for today only: js/core/ticks.js. Titles are always the library's, never typed here.
+// device for today only, per person (in their profile, js/store/store.js): js/core/ticks.js. Titles are always the
+// library's, never typed here. Switching person re-draws the card with their ticks (profileChanged()).
 // Reading a session: Start / Continue (or a title in the list) opens the text in the reading page, and while the
 // reader is on a text of that session, ‹ Prev and Next › in the bottom bar follow the session (sessionStep(), read by
 // js/features/bottom-bar.js); Next after the last text comes back here.
@@ -22,6 +23,7 @@ import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, firstUndone, stepInSession, textsFor, weekOf } from "../core/routine.js";
 import { createTicks } from "../core/ticks.js";
+import { active, ticksStorage } from "../store/store.js";
 
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
@@ -344,12 +346,29 @@ export function sessionStep(sec, dir) {
   if (!run || !id) return null;
   var st = stepInSession(run.ids, id, dir);
   if (!st) return null;
-  if ("end" in st) return { label: words().end, go: endSession };
+  var r = run;
+  // Next › on a text of the session ticks it as done today (for the person reading) before moving on; ‹ Prev
+  // doesn't. A tick can still be taken off by hand on the card.
+  function tick() {
+    var today = dateKey(new Date());
+    if (dir === 1 && r && r.day === today && id) ticks.set(today, r.session, id, true);
+  }
+  if ("end" in st)
+    return {
+      label: words().end,
+      go: function () {
+        tick();
+        endSession();
+        render();
+      },
+    };
   var to = st.to;
   return {
     label: titleOf(to),
     go: function () {
+      tick();
       openText(to);
+      render();
     },
   };
 }
@@ -390,12 +409,39 @@ function roving(e, group, choose) {
   if (now) now.focus();
 }
 
+/**
+ * The App / Share / QR / Print / Help row: on phones (below 820px) under the session card, as in mockup A, so the
+ * session comes first; on wider screens in the card, as before. The row is moved in the page (not just drawn
+ * elsewhere), so Tab and screen readers meet it where it is seen.
+ */
+function placeRow() {
+  var row = document.getElementById("shr"),
+    top = document.querySelector("#home > .top"),
+    sc = document.getElementById("tsc");
+  if (!row || !top || !sc || !sc.parentNode) return;
+  var wide = typeof matchMedia === "function" && matchMedia("(min-width: 820px)").matches;
+  if (wide && row.parentNode !== top) top.appendChild(row);
+  else if (!wide && row.previousElementSibling !== sc) sc.parentNode.insertBefore(row, sc.nextSibling);
+}
+
+/** Another person is reading (js/features/profiles.js): their ticks, and their menu language */
+export function profileChanged() {
+  if (!ticks) return;
+  ticks.prune(dateKey(new Date()));
+  if (document.getElementById("tdy")) render();
+}
+
 export function init() {
-  var store = null;
-  try {
-    store = window.localStorage;
-  } catch (e) {}
-  ticks = createTicks(store);
+  placeRow();
+  if (typeof matchMedia === "function") {
+    var mq = matchMedia("(min-width: 820px)");
+    if (mq.addEventListener) mq.addEventListener("change", placeRow);
+    else if (mq.addListener) mq.addListener(placeRow);
+  }
+  ticks = createTicks(ticksStorage(), undefined, function () {
+    var a = active();
+    return a ? a.id : "";
+  });
   buildInfo();
   try {
     var r = JSON.parse(sessionStorage.getItem(RUN_KEY) || "null");

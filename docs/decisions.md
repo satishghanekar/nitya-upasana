@@ -2,6 +2,25 @@
 
 Newest first. Each entry: the decision, who made it, and where it came from.
 
+## 2026-10-18: slice 2, storage, profiles and backup
+
+Built as planned in `docs/architecture.md` §3.4, §3.7, §3.8 and §4.2 (see the "As built" notes there). Version aarti-v1.4. Choices made while building, open for Satish to change:
+
+- **The boot copy keeps the old key.** The active person's settings are written at once to `localStorage["aarti2-prefs"]` with `pid`, instead of a new `nitya-boot`: `js/render.js` and the Print hand-over already read that key, version 1.3 still works if someone goes back, and it wins at start-up for its person because IndexedDB writes may not finish before a page closes.
+- **Person or phone.** Per person: languages, menus, letters, English spelling, text size, font, dhrupad, theme, high contrast (Q4), autoscroll speeds, folds of the Pooja / Aarti / Contents and the highlighted line. Per phone: Keep screen on, layout, location, print page and print choices, and the home card fold.
+- **The first person is called "Me"** (renameable), made from today's settings and ticks on the first visit after 1.3.
+- **Restore replaces everyone** on the phone with the people in the file, after showing who is added, replaced and removed. The phone's Keep screen on stays.
+- **The reminder** shows 14 days after the first visit if no backup was ever saved, then 30 days after each backup; *Not now* hides it for 14 days. `navigator.storage.persist()` is asked after a backup, a restore or adding a person.
+- **The chip** (mockup A) shows the badge and name from 600 px up, the badge alone on phones; at 420 px and under the top bar tightens (the title's Ganesha drawing hides, the Marathi title is 19 px) so नित्य उपासना still fits at 390 px.
+- Up to eight people, eight badge colours (white letters at 4.5:1 or more), up to four badge letters.
+
+Two Today changes Satish approved during the slice (2026-10-18):
+
+1. In a session, **Next › ticks the text being left** as done today for the person reading, before moving on (also after the last text). ‹ Prev does not tick; a tick can still be taken off on the card. Only on today's list.
+2. **On phones (below 820 px) the App / Share / QR / Print / Help row moves under the session card**, as in mockup A. The wide layout is unchanged.
+
+The Marathi menu labels on the Today card (वार, वेळ, सकाळ/दुपार/सायंकाळ, सुरू करा, पुढे चालू, N पैकी M झाले) are confirmed as they are.
+
 ## 2026-10-18: Today page brought forward before profiles and library
 
 Satish said "go ahead" to building slice 4 (the Today page) before slices 2 (profiles) and 3 (library), with mockup A (paper card) and the time-of-day picture (`mockups/today-icons.html`). One implicit family profile until slice 2: the ticks are kept under `localStorage["nitya-ticks"]` behind `js/core/ticks.js`, so only that module moves to IndexedDB later. Default routine from Q5 in `content/routines.json` (Morning = Ganapati Atharvashirsha, Evening = all ten aartis, Afternoon empty), the same every weekday; session times from Q6; the only special-day rule is the existing Sankashti one, shown on the card and adding no texts (Q7). No profile chip yet. The reading view is still the one long page: Start / Continue opens the first unticked text there, and ‹ Prev / Next › follow the session. Version aarti-v1.3.
