@@ -1,0 +1,17 @@
+{
+  // Type checks for the site's JavaScript (npm run types). TypeScript is a checking tool only: nothing is compiled
+  // or shipped. Only files that start with "// @ts-check" are checked, so files join one at a time.
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "strict": true,
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["es2020", "dom", "dom.iterable"],
+    "types": [],
+    "skipLibCheck": true
+  },
+  "include": ["../js/**/*.js"]
+}
