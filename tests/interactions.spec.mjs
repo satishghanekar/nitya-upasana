@@ -168,7 +168,9 @@ test("on other days the card leads with the next Chaturthi date, and More dates 
   await openSite(page, SETUPS.marathi);
   await expect(page.locator("#home")).not.toHaveClass(/\bpday\b/);
   await expect(page.locator("#skc .skh").first()).toContainText("पुढील चतुर्थी");
-  await expect(page.locator("#skc .sktd")).toBeVisible();
+  // today's date is on the Today card above (#tdd); the card's own "Today:" line waits under More dates
+  await expect(page.locator("#tdd")).toBeVisible();
+  await expect(page.locator("#skc .sktd")).toBeHidden();
   const more = page.locator("#skmore");
   await expect(more).toBeVisible();
   await expect(more).toHaveAttribute("aria-expanded", "false");
@@ -177,6 +179,7 @@ test("on other days the card leads with the next Chaturthi date, and More dates 
   await more.click();
   await expect(more).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator("#skc .sks")).toBeVisible();
+  await expect(page.locator("#skc .sktd")).toBeVisible();
   await expect(page.locator("#shr")).toBeVisible();
 });
 

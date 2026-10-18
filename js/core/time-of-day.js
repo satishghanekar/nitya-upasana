@@ -56,9 +56,17 @@ export function sessionAt(now) {
  * @returns {Picture}
  */
 export function pictureAt(now) {
-  const session = sessionAt(now),
-    picture = PICTURE[session],
-    day = now.getDay();
+  return pictureFor(sessionAt(now), now.getDay());
+}
+
+/**
+ * The picture for a session and a weekday: what the Today card shows for the day and session picked on it.
+ * @param {Session} session
+ * @param {number} day  0 Sunday … 6 Saturday
+ * @returns {Picture}
+ */
+export function pictureFor(session, day) {
+  const picture = PICTURE[session];
   return {
     session,
     picture,

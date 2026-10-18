@@ -1,5 +1,5 @@
 /* 01-theme.css: Theme colours and fonts
-   Part 2 of 11 of the site styles. index.html loads the parts in number order, and the order
+   Part 2 of 12 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Colour and font variables on :root for the light, sepia and dark themes and high contrast.
    Sections:

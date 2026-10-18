@@ -4,6 +4,7 @@ There is no build step: the browser loads these files as they are.
 
 - `parts.js` and `render.js` are plain scripts. `render.js` turns the pieces' data into HTML (`renderPieces`) and holds the Kannada-letters switch (`SCR`).
 - The texts are files (`../content/texts/`). `text/load.js` fetches them with `../content/library.json`, `text/content.js` turns them into the pieces' data (`CONTENT`, read with `text/format.js`), and `render.js` puts the pieces into the page. `main.js` waits for this before it starts the parts, so they find the page as if the pieces were written into it. These three are plain functions with no start-up work of their own; `text/format.js` and `text/content.js` touch no page at all, so the unit tests run them in Node.
+- `text/load.js` also fetches `../content/routines.json` (the Today card's default routine) at the same time; without it the texts still load.
 - `main.js` is the site script. It is an ES module (`<script type="module">`), and it imports one part per topic from `core/`, `text/` and `features/` (`features/overlays.js` and the `print/` files are imported by the parts that use them). `print/` holds the print layout, used by `features/print.js`.
 
 ## How the parts fit together
@@ -27,6 +28,9 @@ There is no build step: the browser loads these files as they are.
 | `text/layout.js` | Layout helpers that run once |
 | `features/astronomy.js` | Astronomy for the Next Sankathara Chaturthi card |
 | `features/date-card.js` | Next Sankathara Chaturthi card (computed on this device; works offline) |
+| `features/today-card.js` | The Today card: date, week row (Monday to Sunday), Morning / Afternoon / Evening switch, the session's texts with a tick each, Start / Continue; while a session is being read, ‹ Prev and Next › follow it (`sessionStep()`, read by `features/bottom-bar.js`) |
+| `core/routine.js` | Which texts a session has on a weekday (`content/routines.json`), the week row's days, the first unticked text, the step to the next text of a session (pure functions, unit-tested; no `init()`) |
+| `core/ticks.js` | The ticks, kept on this device for today only (`localStorage["nitya-ticks"]`, one "family" profile until profiles arrive; pure, the storage passed in, unit-tested; no `init()`) |
 | `text/dhrupad-markers.js` | Tappable dhrupad markers (Aartis 1–5, 7 and 9) |
 | `text/stanza-numbers.js` | Stanza numbers |
 | `text/line-breaks.js` | Preferred line breaks |

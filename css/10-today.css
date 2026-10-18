@@ -1,0 +1,363 @@
+/* 10-today.css: The Today card
+   Part 11 of 12 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   The top of the home page as the Today card (mockup A, docs/architecture.md §5.4), built by
+   js/features/today-card.js: the larger time-of-day picture, the date, the week row (#twk), the session switch
+   (#tss), the next Sankathara Chaturthi line (#skc, the date card) and the session card (#tsc) with its ticks.
+   Sizes are in px: the home page keeps its size when the reader enlarges the verses.
+   Sections:
+   - The picture, larger
+   - Date, week row and session switch
+   - The next Sankathara Chaturthi line
+   - The session card: texts, ticks, Start
+   - Folded card, print
+   - Wide screens: the card and the session side by side
+*/
+
+/* ==== The picture, larger (as in the approved mockup today-icons) ==== */
+#iconb {
+  width: 168px;
+  height: 168px;
+  margin-bottom: 8px;
+}
+.top .hero {
+  background:
+    radial-gradient(closest-side, color-mix(in srgb, var(--gold) 38%, transparent), transparent) no-repeat center 0 / 240px 190px,
+    linear-gradient(180deg, var(--hdr), transparent);
+}
+/* whole-pixel line heights keep the card a whole number of pixels tall, so the texts below it land on the same
+   pixel rows as before (the screenshots compare them) */
+.hero .hl1 {
+  font-size: 19px;
+  line-height: 27px;
+}
+
+/* ==== Date, week row and session switch ==== */
+#tdy {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 10px;
+  font: 400 15px/1.4 var(--lat);
+}
+#tdy[lang="mr"] {
+  font-family: var(--body);
+}
+#tdd {
+  margin: 0;
+  text-align: center;
+  font-weight: 600;
+  color: var(--ink);
+}
+#twk {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+#twk button {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-width: 0;
+  min-height: 52px;
+  padding: 4px 0;
+  border: 1px solid var(--hdrl);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.25;
+  cursor: pointer;
+}
+#twk button b {
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 600;
+}
+/* today, when another day is shown: a gold edge */
+#twk button.now {
+  border: 2px solid var(--gold);
+}
+#twk button[aria-checked="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+#twk button[aria-checked="true"] b {
+  color: var(--bg);
+}
+#tss {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--hdrl);
+  border-radius: 14px;
+  background: var(--surface);
+}
+#tss button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+#tss button[aria-checked="true"] {
+  background: var(--bg);
+  color: var(--ink);
+  font-weight: 650;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+}
+[data-hc="1"] #tss button[aria-checked="true"] {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+#twk button:focus-visible,
+#tss button:focus-visible,
+#tsl a:focus-visible,
+#tst:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+/* the narrowest phones: the session icons give way to the words */
+@media (max-width: 379px) {
+  #tss svg {
+    display: none;
+  }
+}
+
+/* ==== The next Sankathara Chaturthi line (the date card, #skc): today's date is already above, so the card's own
+   "Today:" line waits under More dates with the strip ==== */
+#home.skn:not(.pmore) .skc .sktd {
+  display: none;
+}
+.top .skc {
+  margin-bottom: 10px;
+}
+/* a quieter line on ordinary days (on Sankashti day itself the card keeps its large moonrise) */
+#home.skn:not(.pday) .top .skc .skh {
+  font-size: 13px;
+  line-height: 18px;
+}
+#home.skn:not(.pday) .top .skc .skd,
+#home.skn:not(.pday) .top .skc[data-lang="en"] .skd {
+  font-size: 21px;
+  line-height: 28px;
+}
+#home.skn:not(.pday) .top .skc .skm {
+  font-size: 16px;
+  line-height: 22px;
+}
+
+/* ==== The session card: texts, ticks, Start ==== */
+#tsc {
+  margin: 0 0 8px;
+  padding: 6px 12px 12px;
+  border: 1px solid var(--hdrl);
+  border-radius: 12px;
+  background: var(--hdr);
+  font: 400 15px/1.4 var(--lat);
+  scroll-margin-top: 72px;
+}
+#tsc[lang="mr"] {
+  font-family: var(--body);
+}
+.tshd {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 2px 4px;
+}
+#tsh {
+  margin: 0;
+  font: 400 22px/29px var(--head);
+  color: var(--accent);
+  outline: none;
+}
+#tsh [lang="en"] {
+  font-family: var(--head);
+}
+#tsn {
+  flex: none;
+  color: var(--muted);
+  font-size: 14px;
+}
+#tsl {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#tsl li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 56px;
+  border-bottom: 1px solid var(--rule);
+}
+#tsl li:last-child {
+  border-bottom: 0;
+}
+/* the tick: a real checkbox over the round mark, with a 44px target */
+.ttk {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+}
+.ttk input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.tkc {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  color: transparent;
+}
+.ttk input:checked + .tkc {
+  border-color: var(--ok);
+  background: var(--ok);
+  color: var(--bg);
+}
+.ttk input:focus-visible + .tkc {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.tgo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  padding: 4px 2px;
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 8px;
+}
+.preview .tgo {
+  padding-left: 8px;
+}
+.tno {
+  flex: none;
+  min-width: 1.6em;
+  color: var(--muted);
+  font: 400 14px/1 var(--body);
+  text-align: right;
+}
+.tt {
+  flex: 1;
+  min-width: 0;
+}
+.tt .t1 {
+  display: block;
+  font: 400 19px/26px var(--head);
+  overflow-wrap: anywhere;
+}
+.tt .t2 {
+  display: block;
+  color: var(--muted);
+  font: 400 12.5px/17px var(--lat);
+}
+#tsl li.done .t1 {
+  color: var(--muted);
+}
+.ttg {
+  flex: none;
+  padding: 1px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+#tsc[lang="mr"] .ttg {
+  font-family: var(--body);
+}
+#tse {
+  margin: 4px 2px 6px;
+  color: var(--muted);
+}
+#tst {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 10px;
+  padding: 6px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--bg);
+  font: inherit;
+  font-weight: 650;
+  text-align: center;
+  cursor: pointer;
+}
+#tst[hidden] {
+  display: none;
+}
+#tst svg {
+  flex: none;
+}
+
+/* ==== Folded card, print ==== */
+.top.fold #tdy {
+  display: none;
+}
+@media print {
+  #tdy,
+  #tsc {
+    display: none;
+  }
+}
+
+/* ==== Wide screens (tablets and up): the card and the session side by side, the list of texts below both ==== */
+@media screen and (min-width: 820px) {
+  #home {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: start;
+  }
+  #home > * {
+    grid-column: 1 / -1;
+  }
+  #home > .top {
+    grid-column: 1;
+    grid-row: 1;
+    margin-bottom: 8px;
+  }
+  #home > #tsc {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  #tsl li {
+    min-height: 50px;
+  }
+}

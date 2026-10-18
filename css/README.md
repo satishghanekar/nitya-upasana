@@ -25,6 +25,7 @@ Each file starts with a comment that lists its sections. Every section begins wi
 | `07-bottom-bar-folds.css` | Bottom bar, bars tucking away while reading, folding the contents and each piece, fold headings, bigger tap areas, the Sankashti-day home card and the reading sheet (Aa). |
 | `08-contents-book.css` | Home contents as a book index, author lines, and Both languages with English first. |
 | `09-settings-page.css` | The Settings page and Kannada letters. |
+| `10-today.css` | The Today card: the larger picture, the date, the week row (`#twk`), the session switch (`#tss`), the quieter next-Chaturthi line, the session card (`#tsc`) with its ticks and Start, and on wide screens (820px and up) the card and the session side by side. |
 | `99-fallbacks.css` | Plain colours for browsers without `color-mix()` (iOS 15). **Keep it last**, because it replaces colours set in every file above. |
 
 ## Switches the styles read
@@ -51,10 +52,10 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | Query | What changes |
 |---|---|
 | `(max-width: 359px)` | The smallest phones: the bottom bar drops the tilt label, the words of Prev and Next, and narrows the autoscroll speed; Settings tightens |
-| `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon; the bottom bar closes its gaps |
+| `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon; the bottom bar closes its gaps; the session switch drops its icons |
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
-| `(min-width: 820px)` | Tablets and up: two-column contents, wider spacing |
+| `(min-width: 820px)` | Tablets and up: two-column contents, wider spacing; the Today card and its session side by side |
 | `(min-width: 1100px)` | Desktop: the left contents menu (`#rail`) |
 | `(orientation: landscape) and (max-height: 520px)` | Phones held sideways: tighter line spacing and headers |
 
