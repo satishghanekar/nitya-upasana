@@ -10,6 +10,8 @@ npm ci                               # once
 npx playwright install chromium      # once (add firefox webkit for the other engines)
 npm test                             # Chromium only, the default on a computer
 npm run lint                         # stylelint and eslint, as CI runs it
+npm run unit                         # Vitest: the logic tests in unit/ (no browser, a second or two)
+npm run types                        # TypeScript checks the JavaScript files that start with // @ts-check (nothing is compiled)
 PW_PROJECTS=chromium,firefox,webkit,iphone,ipad,pixel npm test   # every engine, as CI runs it
 npx playwright test print.spec.mjs   # one suite
 npx playwright test -g "kannada"     # tests whose name matches
@@ -26,6 +28,7 @@ On GitHub every pull request and every push to `main` runs everything (`.github/
 
 | File | What it protects |
 |---|---|
+| `unit/*.test.mjs` | Logic tests with Vitest, no browser: the 12 IAST reference lines from TRANSLITERATION.md against `js/text/iast.js`. New v2 code (text format, storage, search) gets its tests here. |
 | `smoke.spec.mjs` | The site opens with no script errors in every language set-up. |
 | `content.spec.mjs` | Every line of every piece, exactly, in Marathi, English (both spellings), Kannada and Both; the home page text; every line has a unique id and a partner in the other language. |
 | `print.spec.mjs` | **Print and PDF** (see below). |

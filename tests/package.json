@@ -8,7 +8,9 @@
     "test:update": "playwright test --update-snapshots",
     "lhci": "lhci autorun",
     "lint": "stylelint --config stylelint.config.mjs \"../css/**/*.css\" && cd .. && eslint -c tests/eslint.config.mjs js content sw.js",
-    "print:audit": "rm -rf pdfs && PRINT_AUDIT=1 playwright test print-audit.spec.mjs; node print-audit-report.mjs"
+    "print:audit": "rm -rf pdfs && PRINT_AUDIT=1 playwright test print-audit.spec.mjs; node print-audit-report.mjs",
+    "unit": "vitest run",
+    "types": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
@@ -19,6 +21,8 @@
     "globals": "^15.15.0",
     "pdfjs-dist": "^4.10.38",
     "stylelint": "^16.26.1",
-    "stylelint-no-unsupported-browser-features": "^8.1.2"
+    "stylelint-no-unsupported-browser-features": "^8.1.2",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
   }
 }
