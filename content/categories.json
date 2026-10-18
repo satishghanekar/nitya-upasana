@@ -1,0 +1,34 @@
+[
+ {
+  "id": "vedic-chant",
+  "name": {
+   "mr": "वैदिक मंत्र",
+   "en": "Vedic Chant"
+  },
+  "order": 1
+ },
+ {
+  "id": "aarti",
+  "name": {
+   "mr": "आरती",
+   "en": "Aarti"
+  },
+  "order": 2
+ },
+ {
+  "id": "stotra",
+  "name": {
+   "mr": "स्तोत्र",
+   "en": "Stotra"
+  },
+  "order": 3
+ },
+ {
+  "id": "ashtak",
+  "name": {
+   "mr": "अष्टक",
+   "en": "Ashtak"
+  },
+  "order": 4
+ }
+]

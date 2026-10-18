@@ -2,7 +2,8 @@
 
 There is no build step: the browser loads these files as they are.
 
-- `parts.js`, `../content/pieces.js` and `render.js` are plain scripts. They run first and put the pieces into the page while it loads, so nothing moves when the rest starts.
+- `parts.js` and `render.js` are plain scripts. `render.js` turns the pieces' data into HTML (`renderPieces`) and holds the Kannada-letters switch (`SCR`).
+- The texts are files (`../content/texts/`). `text/load.js` fetches them with `../content/library.json`, `text/content.js` turns them into the pieces' data (`CONTENT`, read with `text/format.js`), and `render.js` puts the pieces into the page. `main.js` waits for this before it starts the parts, so they find the page as if the pieces were written into it. These three are plain functions with no start-up work of their own; `text/format.js` and `text/content.js` touch no page at all, so the unit tests run them in Node.
 - `main.js` is the site script. It is an ES module (`<script type="module">`), and it imports one part per topic from `core/`, `text/` and `features/` (`features/overlays.js` and the `print/` files are imported by the parts that use them). `print/` holds the print layout, used by `features/print.js`.
 
 ## How the parts fit together

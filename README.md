@@ -4,7 +4,7 @@ The texts our group recites at Sankathara (Sankashti) Chaturthi puja: Pooja, Bha
 
 **Live site:** https://nitya-upasana.pages.dev
 
-**Version:** 1.0 (shown as *v1.0* in Settings → About, on the line that checks for updates)
+**Version:** 1.1 (shown as *v1.1* in Settings → About, on the line that checks for updates)
 
 ## What the site does
 
@@ -12,7 +12,7 @@ Everything runs on the phone or computer. Nothing is sent anywhere, and the site
 
 - **Texts:** the Ganapati Atharvashirsha (with Vedic swara marks) and ten aartis, in Marathi, English, or both side by side (the अ/A button).
 - **English style** (Settings): the everyday spelling (*Sukhkarta*) or the scholarly spelling, IAST (*sukhakartā*, *bha̱draṃ*). The scholarly lines are not typed. The script builds them from the Marathi/Sanskrit lines, along with the piece titles, the first time they are needed; switching style happens in place, without reloading (see *How the scholarly English is made*). In Settings the spelling is picked with the language: English is listed twice, *English · Sukhkarta* and *English · sukhakartā*.
-- **Languages** (Settings, option A of the redesign, 2026-10-15): a **main language** (large text) and a **second language** (smaller, under each line, or *None*), each picked from the phone's own dropdown on the Settings page (an invisible `<select>` over the row), with every language named in its own script (`LANGS` in `js/core/apply.js`; today मराठी, English and ಕನ್ನಡ). English is listed twice, once per spelling (*English · Sukhkarta*, *English · sukhakartā*), so the English spelling is picked with it. The अ/A button cycles main → second → both; with no second language it opens Settings at the second list. **Menus and buttons** are in English or the main language (`P.ui`); with English as the main language they are English. Settings are saved as `lead` (main), `l2` (second) and `lang` (shown now); settings version 6 turned the old "In Both, show first" into the main language. The fold rows (अनुक्रमणिका / Contents, पूजा, आरती) follow the text language. **Kannada** (2026-10-15) is the same words in Kannada letters, not a translation: the page has two places for text, the original (`.mr`) and English (`.en`), and `P.ind` says whether the original shows Marathi (`mr`, as written) or Kannada (`kn`). `SCR` in `js/render.js` rewrites the Devanagari into Kannada letters while the page loads (each letter is 0x380 further on in Unicode; dandas and Vedic accent marks stay, ॐ becomes ಓಂ), and switches back and forth in place (`SCR.set`, which keeps what it changed and puts it back exactly), with no reload; `SCR.from` turns it back for the English spelling (IAST) and search, which also finds lines typed in Kannada letters. The Kannada text uses Noto Sans Kannada (`fonts/`); with the other text fonts it uses Noto Serif Kannada (Classic), Baloo Tamma 2 (Bold) or Hubballi (Handwritten), and the Atharvashirsha keeps a font with the Vedic marks. In Kannada the poet links go to Kannada Wikipedia when it has a page (`wiki` in `content/pieces.js`), else to English. For now Kannada pairs only with English (it can't sit beside Marathi, which shares its place) and its menus are English. Another script would be one more entry in `SCRIPTS` (`js/render.js`) and `LANGS` (`js/core/apply.js`).
+- **Languages** (Settings, option A of the redesign, 2026-10-15): a **main language** (large text) and a **second language** (smaller, under each line, or *None*), each picked from the phone's own dropdown on the Settings page (an invisible `<select>` over the row), with every language named in its own script (`LANGS` in `js/core/apply.js`; today मराठी, English and ಕನ್ನಡ). English is listed twice, once per spelling (*English · Sukhkarta*, *English · sukhakartā*), so the English spelling is picked with it. The अ/A button cycles main → second → both; with no second language it opens Settings at the second list. **Menus and buttons** are in English or the main language (`P.ui`); with English as the main language they are English. Settings are saved as `lead` (main), `l2` (second) and `lang` (shown now); settings version 6 turned the old "In Both, show first" into the main language. The fold rows (अनुक्रमणिका / Contents, पूजा, आरती) follow the text language. **Kannada** (2026-10-15) is the same words in Kannada letters, not a translation: the page has two places for text, the original (`.mr`) and English (`.en`), and `P.ind` says whether the original shows Marathi (`mr`, as written) or Kannada (`kn`). `SCR` in `js/render.js` rewrites the Devanagari into Kannada letters while the page loads (each letter is 0x380 further on in Unicode; dandas and Vedic accent marks stay, ॐ becomes ಓಂ), and switches back and forth in place (`SCR.set`, which keeps what it changed and puts it back exactly), with no reload; `SCR.from` turns it back for the English spelling (IAST) and search, which also finds lines typed in Kannada letters. The Kannada text uses Noto Sans Kannada (`fonts/`); with the other text fonts it uses Noto Serif Kannada (Classic), Baloo Tamma 2 (Bold) or Hubballi (Handwritten), and the Atharvashirsha keeps a font with the Vedic marks. In Kannada the poet links go to Kannada Wikipedia when it has a page (`wiki` in `content/library.json`), else to English. For now Kannada pairs only with English (it can't sit beside Marathi, which shares its place) and its menus are English. Another script would be one more entry in `SCRIPTS` (`js/render.js`) and `LANGS` (`js/core/apply.js`).
 - **Dhrupad:** shown once at the top or after every stanza (the धृ button); in "once" mode, ↻ ध्रुपद under a stanza shows it until the next tap. The Print pop-up has its own Once / Every verse choice for the printout; it starts as the page shows it and leaves the page as it is.
 - **Ganesha:** the folded home card shows the round picture (`picture-360.webp`) small at its left, and the home buttons (top bar, Contents, bottom bar) are a small line drawing of Ganesha.
 - **Contents and piece folds:** a Contents button on the home page folds the list of pieces, and a tap anywhere on a piece's heading (or its round ⌃ button) folds that piece to its heading, for one-hand use; both are remembered on the phone, and going to a folded piece from Contents or search opens it (a reload keeps it folded). Printing always includes everything.
@@ -46,8 +46,10 @@ Everything runs on the phone or computer. Nothing is sent anywhere, and the site
 | `css/` | All the styles, in numbered parts loaded in order (see `css/README.md`). |
 | `js/parts.js` | The list of the site's style, script and font files, shared by the page and the service worker. |
 | `js/main.js` and `js/core/`, `js/text/`, `js/features/`, `js/print/` | All the behaviour (settings, dates, search, print, offline…), one file per topic (see `js/README.md`). |
-| `content/pieces.js` | The text of every piece (Pooja and Aarti): each line in Marathi/Hindi/Sanskrit and in everyday English, titles, author lines. **Edit the texts here.** |
-| `js/render.js` | Builds each piece's HTML from `content/pieces.js` while the page loads. |
+| `content/texts/` | The texts, one plain-text file each (`sukhkarta.txt`, …): each line in Marathi/Hindi/Sanskrit with its everyday English line under it, the title and the author line. **Edit the texts here** (see *How to add a text*). |
+| `content/library.json`, `content/categories.json` | The list of texts and how the reading page groups them (Pooja, Aarti), with the few words the app adds (language tags, the dhrupad label); the categories (Vedic Chant, Aarti, Stotra, Ashtak). |
+| `js/text/format.js`, `js/text/content.js`, `js/text/load.js` | Read the text files, turn them into the pieces' data and put them into the page when it opens. |
+| `js/render.js` | Builds each piece's HTML from that data. |
 | `sw.js` | The service worker. It keeps a copy of the site on each phone so it opens without internet. |
 | `manifest.json` | Name, colours and icons used when someone adds the site to their home screen. |
 | `icon-180.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-192.png`, `icon-maskable-512.png`, `icon-32.png`, `apple-touch-icon.png`, `apple-touch-icon-precomposed.png` | App icons (Ganesha artwork): 180 for iPhone, 192/512 rounded tile, maskable versions with extra margin for Android, 32 for the browser tab. The two `apple-touch-icon` files are copies of `icon-180.png` at the site root, where iPhone also looks when it adds the site to the Home Screen. |
@@ -69,7 +71,7 @@ To watch a publish: Cloudflare dashboard → **Workers & Pages** → **nitya-upa
 
 ### Option A: on the GitHub website (no software needed)
 
-1. Open https://github.com/satishghanekar/nitya-upasana and click `content/pieces.js` to change a piece's text, `css/` for styles (see `css/README.md` for which file), `js/` for behaviour (see `js/README.md` for which file), or `index.html` for the page itself.
+1. Open https://github.com/satishghanekar/nitya-upasana and open `content/texts/` and click a text's file to change its text, `css/` for styles (see `css/README.md` for which file), `js/` for behaviour (see `js/README.md` for which file), or `index.html` for the page itself.
 2. Click the pencil icon (**Edit this file**).
 3. Use the browser's find (Ctrl+F / ⌘F) to locate the text you want (see *Finding things in the files* below), and make the change.
 4. If this is a new release, **change the version** (see below). This is a second small edit, in `index.html` and in `sw.js`.
@@ -104,15 +106,15 @@ Use a plain-text editor that saves UTF-8 (VS Code, Sublime Text, TextEdit in pla
 
 Phones keep a saved copy of the site, but the page and its style, script and text files are always fetched fresh when there is internet, so a published change reaches phones the next time the site is opened online. **Check for updates** (a tap on the version line in Settings → About) compares each of those files on the phone with the live one, so it finds changes even when the version stays the same.
 
-The version is what Settings → About shows (v1.0). It appears in **two** places, and both must always be the **same**:
+The version is what Settings → About shows (v1.1). It appears in **two** places, and both must always be the **same**:
 
 1. `sw.js`, near the top:
    ```js
-   const V='aarti-v1.0';
+   const V='aarti-v1.1';
    ```
 2. `index.html`, near the top:
    ```html
-   <meta name="version" content="aarti-v1.0">
+   <meta name="version" content="aarti-v1.1">
    ```
 
 Change it only for a new release, and change both together, using digits and dots only: `1.0` → `1.0.1` for fixes, `1.1` for new features, `2.0` for a redesign. Changing it also makes phones refresh the saved icons and fonts.
@@ -132,67 +134,101 @@ On GitHub, open **Commits** (the clock icon above the file list) and click the c
 
 1. `<head>`: title, and preloading of the main font files.
 2. Links to the style files in `css/`, in order (see `css/README.md`): labelled sections (`/* ==== … ==== */`), starting with the `@font-face` rules for `fonts/`. Then `js/parts.js`, the list of the site's files, and `modulepreload` links for the script parts.
-3. `<body>`: the top bar, the settings panel, then the home page. The pieces themselves are in `content/pieces.js`; a short script at the end of `<main>` has `js/render.js` build them in place while the page loads, so the page is exactly as if they were written there.
+3. `<body>`: the top bar, the settings panel, then the home page. The pieces themselves are in `content/texts/`; at the end of `<main>`, `#pieces` marks their place, and when the page opens `js/text/load.js` fetches the text files and has `js/render.js` build the pieces there before anything else starts, so the page is exactly as if they were written there.
 4. `<script type="module" src="js/main.js">`: all behaviour. `main.js` starts each part in `js/core/`, `js/text/` and `js/features/` in order (see `js/README.md`).
 
-Each piece is an entry in `content/pieces.js` with an id (it becomes a `<section>` with that id on the page). Search that file for the id to jump to it:
+Each piece is one file in `content/texts/`. Its `legacy-id` is the id of its `<section>` on the page (and the `#a5` in links):
 
-| Search `content/pieces.js` for | Piece |
-|---|---|
-| `"id": "p1"` | Pooja 1. गणपत्यथर्वशीर्षोपनिषत् (Ganapati Atharvashirsha) |
-| `"id": "a1"` | Aarti 1. गणपतीची आरती |
-| `"id": "a2"` | Aarti 2. गणपति जी की आरती |
-| `"id": "a3"` | Aarti 3. देवीची आरती |
-| `"id": "a4"` | Aarti 4. शंकराची आरती |
-| `"id": "a5"` | Aarti 5. दत्ताची आरती |
-| `"id": "a6"` | Aarti 6. ज्ञानेश्वरांची आरती |
-| `"id": "a7"` | Aarti 7. विठ्ठलाची आरती |
-| `"id": "a8"` | Aarti 8. घालीन लोटांगण |
-| `"id": "a9"` | Aarti 9. आरती जय गणेश देवा |
-| `"id": "a10"` | Aarti 10. आरती जय जगदीश हरे |
+| File in `content/texts/` | legacy-id | Piece |
+|---|---|---|
+| `atharvashirsha.txt` | `p1` | Pooja 1. गणपत्यथर्वशीर्षोपनिषत् (Ganapati Atharvashirsha) |
+| `sukhkarta.txt` | `a1` | Aarti 1. गणपतीची आरती |
+| `shendur-lal-chadhayo.txt` | `a2` | Aarti 2. गणपति जी की आरती |
+| `durge-durghat-bhari.txt` | `a3` | Aarti 3. देवीची आरती |
+| `lavathavati-vikrala.txt` | `a4` | Aarti 4. शंकराची आरती |
+| `trigunatmak-traimurti.txt` | `a5` | Aarti 5. दत्ताची आरती |
+| `aarti-dnyanaraja.txt` | `a6` | Aarti 6. ज्ञानेश्वरांची आरती |
+| `yei-o-vitthale.txt` | `a7` | Aarti 7. विठ्ठलाची आरती |
+| `ghalin-lotangan.txt` | `a8` | Aarti 8. घालीन लोटांगण |
+| `jai-ganesh-deva.txt` | `a9` | Aarti 9. आरती जय गणेश देवा |
+| `jai-jagdish-hare.txt` | `a10` | Aarti 10. आरती जय जगदीश हरे |
 
 Or search for a few words of the line itself.
 
-### How a piece is written
+## How to add a text
 
-In `content/pieces.js` the pieces sit in two groups (Pooja, Aarti), in reading order. One piece looks like this:
+A text is one plain-text file in `content/texts/`, named after its id (`sukhkarta.txt`). Use a plain-text editor that saves UTF-8 (see *Option B*) and never one that "fixes" spelling or Unicode: the words are kept exactly as typed, svara marks and all. The easiest start is a copy of a similar text.
 
-```js
-{
- "id": "a1",
- "no": { "mr": "१.", "en": "1." },
- "title": { "mr": "गणपतीची आरती", "en": "Ganapati Aarti" },
- "tag": { "mr": "मराठी", "en": "Marathi" },
- "refrain": {                               // the dhrupad shown once at the top
-  "label": { "mr": "ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)", "en": "Refrain (sung after every verse)" },
-  "lines": [ { "mr": "जय देव जय देव, जय मंगल मूर्ती ।", "en": "Jai Dev Jai Dev, Jai Mangal Murti |" }, … ]
- },
- "items": [
-  { "lines": [                              // one stanza
-    { "l": "s1l1", "mr": "सुखकर्ता दुःखहर्ता, वार्ता विघ्नाची ।", "en": "Sukhkarta Dukhharta, Varta Vighnachi |" },
-    …
-  ] },
-  { "rmk": { "mr": "↻ ध्रुपद", "en": "Refrain" } },   // marker where the dhrupad is sung
-  { "kind": "rf", "lines": [ { "l": "s1l5", "rf": true, … }, … ] },   // the dhrupad repeated ("after every stanza")
-  …
- ],
- "credit": "<span class=\"mr\">रचना : …</span><span class=\"en\" lang=\"en\">By …</span>"
-}
+### The file
+
+```
+id: sukhkarta
+title: गणपतीची आरती
+title-en: Ganapati Aarti
+category: aarti
+language: mr
+legacy-id: a1
+line-ids: s1l
+refrain: every-verse
+credit: रचना : [समर्थ रामदास](https://mr.wikipedia.org/wiki/सुखकर्ता_दुःखहर्ता) (१६०८–१६८२)
+credit-en: By [Samarth Ramdas](https://en.wikipedia.org/wiki/Sukhakarta_Dukhaharta) (1608–1682)
+---
+[dhrupad]
+जय देव जय देव, जय मंगल मूर्ती ।
+Jai Dev Jai Dev, Jai Mangal Murti |
+…
+
+[1]
+सुखकर्ता दुःखहर्ता, वार्ता विघ्नाची ।
+Sukhkarta Dukhharta, Varta Vighnachi |
+…
 ```
 
-Other fields: `"lang": "hi"` or `"sa"` for a Hindi or Sanskrit piece, `"cls": "norf"` for a piece with no repeated dhrupad, `"kind": "dh"` for a stanza said once, `"bold": true` for a stanza shown in bold. Previous / Next links are made from the order, so they never need editing.
+**The header** (one `name: value` per line, then a line `---`):
 
-### Rules when editing text
+| Field | |
+|---|---|
+| `id` | Required. Lower case and hyphens, the same as the file name. |
+| `title`, `title-en` | Required. The title in the original language and in English. |
+| `category` | Required. One of the ids in `content/categories.json`: `vedic-chant`, `aarti`, `stotra`, `ashtak`. |
+| `language` | Required. `mr` (Marathi), `hi` (Hindi), `sa` (Sanskrit); `te`, `kn`, `ta` later. The page shows the language name from `content/library.json`. |
+| `legacy-id` | The piece's id on the page (`a1`) and in links. Without it, the `id`. |
+| `line-ids` | What each line's id starts with (`s1l`: the lines are `s1l1`, `s1l2`, …, counted as the page shows them, repeated dhrupads included). Without it, the `id` and a dot (`sukhkarta.1`). |
+| `line-id-exceptions` | Only for the old Vitthal Aarti, whose 4th line has always been `s7l4r`: `s7l4=s7l4r`. |
+| `refrain` | `every-verse`: the `[dhrupad]` is shown once at the top, and after every stanza the app adds the "↻ ध्रुपद" note and the dhrupad again (for the धृ button). `always`: the refrain lines are written inside the stanzas and always shown (today's Dnyaneshwar Aarti). Leave it out for none. |
+| `refrain-before-first` | `yes` when the dhrupad is also sung before the first stanza (Vitthal Aarti, Jai Ganesh Deva). |
+| `layout` | `prose` prints the text as running paragraphs, like a booklet (the Atharvashirsha). |
+| `credit`, `credit-en` | The author line in each language. `[name](address)` becomes a Wikipedia link that opens in a new tab, with its ↗. |
+| `credit-note`, `credit-note-en` | A second, smaller author line (Vitthal Aarti: "also credited to Sant Namdev"). |
 
-- **One entry per line**, with the Marathi (`mr`) and English (`en`) together, so they always stay paired.
-- **`l`** is the line's id (used by search and by tapping a line to highlight it). A new line needs an id not used anywhere else on the page.
-- The file is written as JSON: keep the double quotes around every value, write a `"` inside a line as `\"`, and keep the commas between entries. A mistake here stops the pieces from showing, so check the site after every edit (see *Checking a change*).
-- **Stanza numbers (॥ १ ॥) are added automatically** at the end of each Aarti stanza. Do not type them. The Atharvashirsha keeps its own numbers, which are part of its text.
-- **Piece numbers** are typed in two places: the piece's `"no"` in `content/pieces.js` and its line in the home-page contents in `index.html` (search for `class="toc"`). The left-hand menu and the search list build themselves from the home-page contents.
-- **Vedic svara marks** (॑ ॒ ᳚) in the Atharvashirsha must be kept exactly. A mark that belongs with a visarga goes **after** the ः, otherwise it shows as a dotted circle.
-- `<br>` inside a line forces a break at that point. An invisible zero-width space (written `&#8203;` if you need to type one) marks a place where a long line may break on a narrow phone. Put it after the space, e.g. `कर, &#8203;निढळावरी`, so the words keep their space when the line fits on one row. English lines need no marker: on a phone they break after a single `|` or a comma by themselves.
-- Keep `&` written as `&amp;` and `<` as `&lt;` if they ever appear in text.
-- **Only the Marathi/Sanskrit line and the everyday English line are typed.** The scholarly English (IAST) is made from the Marathi line, so a spelling fix in Marathi fixes the scholarly English too. If the everyday English should change as well, edit it by hand.
+**The blocks**, after `---`, separated by one blank line. Each starts with its name in brackets, then its lines, **always in pairs: the original line, then its everyday English line**. An English line where the original belongs (or the other way round) stops the text from loading, and the test names the file and line.
+
+| Block | |
+|---|---|
+| `[1]`, `[2]`, … | A stanza, numbered in order. In an aarti the app adds ॥ १ ॥ at its end; do not type it. (The Atharvashirsha's numbers are part of its text, and its blocks are simply counted.) |
+| `[para 3]` | A stanza that starts a new paragraph when printed as prose. |
+| `[dhrupad]` | With `refrain: every-verse`: the dhrupad, first in the file. Otherwise: lines said once, where they stand. |
+| `[dhrupad bold]` | The same, shown in bold (Ghalin Lotangan's closing mantra). |
+| `[dhrupad repeated]` | Right after `[dhrupad]`, only when the repeats are written differently from the top (Vitthal Aarti breaks its repeated dhrupad in two). |
+| `[refrain]` | Inside a block: the lines after it are refrain lines (shown as the refrain, or hidden with the dhrupad set to once). |
+| `[note: ↻ ३ वेळा \| 3 times]` | The small note between blocks, in both languages. |
+
+**Inside a line:**
+
+- `¦` marks a place where a long line may break on a narrow phone (it shows as nothing). Put it after the space: `निढळावरी कर, ¦निढळावरी कर`, so the words keep their space when the line fits on one row. English lines need none: on a phone they break after a single `|` or a comma by themselves.
+- ` // ` (a space, two slashes, a space) always breaks the line there. The spaces belong to the mark: `|  // ` (two spaces) keeps one real space before the break, as in Ghalin Lotangan's English.
+- **Vedic svara marks** (॑ ॒ ᳚) must be kept exactly. A mark that belongs with a visarga goes **after** the ः, otherwise it shows as a dotted circle.
+- **Only the original line and the everyday English line are typed.** The scholarly English (IAST) is made from the original line, so a spelling fix there fixes the scholarly English too.
+
+### Adding it to the site
+
+1. Write the file in `content/texts/`.
+2. In `content/library.json`, add it to `"texts"` (its `id`, `file`, `title`, `titleEn`, `category`, `language` and `lines`, the number of line pairs in the file) and to the `"texts"` of its group in `"groups"` (Pooja or Aarti), where it should appear. The piece number (१. 1.) and Previous / Next come from that order.
+3. In `js/parts.js`, add `texts/<id>.txt` to the `content` list, so the text is kept for offline use.
+4. Add a line for it in the home-page contents in `index.html` (`<ol class="toc">` under आरती), with its `legacy-id` (or `id`) in `href` and `data-go`.
+5. Run the checks (`cd tests && npm run unit`): they read every text, check `library.json` and `js/parts.js` against the files and name any mistake with its line number. Then look at it on the site (see *Checking a change*), commit and push (change the version if this is a new release).
+
+When **editing** a text, only the file changes, unless a title or the number of lines changes (then update `content/library.json` too; the checks say so). Line ids follow the order of the lines, so a fix within a line keeps them; adding or removing a line renumbers the lines after it (a highlighted line saved on a phone may then point at its neighbour).
 
 ## How the scholarly English is made
 
@@ -205,14 +241,6 @@ When English style is set to *sukhakartā*, `js/text/iast.js` (function `IA`) re
 - Hindi nukta letters: ड़ ṛ, ढ़ ṛh.
 
 To change a rule, edit `IA` in `js/text/iast.js` and check the Atharvashirsha and Ganapati Aarti against the printed booklet afterwards.
-
-### Adding a new Aarti
-
-1. In `content/pieces.js`, copy the whole `{ "id": … }` entry of a similar piece and paste it where the new one should appear (mind the comma between entries).
-2. Give it a new `id` (for example `a11`), the next number in `"no"`, its title in both languages, the language tag and its author line.
-3. Replace the lines, giving every new line a new `l` id (for example `s11l1`, `s11l2`, …).
-4. Add a line for it in the home-page contents in `index.html` (`<ol class="toc">` under आरती).
-5. Commit and push (change the version if this is a new release).
 
 ## Checking a change
 
