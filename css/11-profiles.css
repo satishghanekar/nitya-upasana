@@ -1,0 +1,451 @@
+/* 11-profiles.css: Profiles and backup
+   Part 12 of 13 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   The profile chip in the top bar (#who, mockup A: round badge and name), the profile sheet (#pfm: the people on
+   this phone, Add / Edit / Delete), the Restore dialog (#bkm) and the notes on the home page (#pfnt: this browser
+   can't save here, the backup reminder). Built by js/features/profiles.js and js/features/backup.js. Sizes in px,
+   like the bars: the reader's text size leaves them alone. No color-mix() here, so nothing needs a fallback in 99.
+   Sections:
+   - The profile chip
+   - Round badges
+   - The profile sheet and the Restore dialog
+   - Edit a person: fields and colours
+   - Notes on the home page
+   - High contrast, print
+*/
+
+/* ==== The profile chip (top bar, between the title and the buttons) ==== */
+#who {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 132px;
+  height: 44px;
+  padding: 0 10px 0 4px;
+  border-radius: 22px;
+  font: 600 14px/1.2 var(--lat);
+}
+#who .pfn {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#who .pfn[lang="mr"] {
+  font-family: var(--body);
+}
+/* phones and small tablets: the badge alone (the name stays in the button's name for screen readers) */
+@media not all and (min-width: 600px) {
+  #who {
+    width: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+  #who .pfn {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+}
+/* phones: the badge without the button's frame, and the title gives up its small Ganesha (the bottom bar's Ganesha
+   is Home too) and a little size, so नित्य उपासना still fits beside it on a 390px phone */
+@media (max-width: 420px) {
+  #who {
+    width: 40px;
+    border-color: transparent;
+    background: transparent;
+  }
+  .bar {
+    gap: 4px;
+  }
+  .bar .tools {
+    gap: 3px;
+  }
+  .bar .t.site svg {
+    display: none;
+  }
+  .bar .t.site:not([data-tl="en"]) {
+    font-size: 19px;
+  }
+}
+
+/* ==== Round badges: the person's letters, white on their colour ==== */
+.pfa {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #7b1113;
+  color: #fff;
+  font: 600 14px/1 var(--lat);
+  letter-spacing: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.pfa[lang="mr"] {
+  font: 600 13px/1 var(--body);
+}
+.pfa.long {
+  font-size: 11px;
+}
+
+/* ==== The profile sheet and the Restore dialog (centred, like the QR and Add to Home Screen pop-ups) ==== */
+#pfm,
+#bkm {
+  position: fixed;
+  inset: 0;
+  z-index: 21;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#bkm {
+  z-index: 22;
+}
+#pfm[hidden],
+#bkm[hidden] {
+  display: none;
+}
+.pfc {
+  width: min(380px, 100%);
+  margin-block: auto;
+  text-align: start;
+  font: 400 15px/1.45 var(--lat);
+  color: var(--ink);
+}
+.pfc[lang="mr"] {
+  font-family: var(--body);
+}
+.pfc .qrt {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+.pfhd {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.pfhd .qrt {
+  flex: 1;
+  margin-top: 10px;
+}
+.pfxb {
+  flex: none;
+  width: 44px;
+  padding: 0;
+}
+.pfxb svg {
+  display: block;
+  margin: auto;
+}
+#pfl {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+#pfl li {
+  display: flex;
+  gap: 8px;
+}
+.pfp {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 6px 12px 6px 8px;
+  border-radius: 14px;
+  background: var(--surface);
+  font: inherit;
+  font-weight: 600;
+  text-align: start;
+}
+.pfp[aria-current="true"] {
+  border: 2px solid var(--accent);
+}
+.pfnm {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pfnm[lang="mr"] {
+  font-family: var(--body);
+}
+.pfnow {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+}
+.pfe {
+  flex: none;
+  width: 48px;
+  min-height: 56px;
+  padding: 0;
+  border-radius: 14px;
+}
+.pfe svg {
+  display: block;
+  margin: auto;
+}
+#pfadd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  border-radius: 14px;
+  font: inherit;
+  font-weight: 600;
+}
+#pfadd[hidden] {
+  display: none;
+}
+.pfi {
+  margin: 12px 2px 0;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+.pfbs {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+.pfbs button {
+  flex: 1;
+  min-height: 48px;
+  border-radius: 14px;
+  font: inherit;
+  font-weight: 600;
+}
+.pfc button.pri {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.pfc button.dng {
+  background: #a3191c;
+  border-color: #a3191c;
+  color: #fff;
+}
+#bkmd p {
+  margin: 0 0 10px;
+}
+.bkl {
+  margin: 0 0 10px;
+  padding-left: 20px;
+}
+.bkl li {
+  margin: 4px 0;
+}
+
+/* ==== Edit a person: name, badge letters, colour ==== */
+#pfv2 {
+  display: grid;
+  gap: 12px;
+}
+#pfv2[hidden],
+#pfv3[hidden],
+#pfv1[hidden] {
+  display: none;
+}
+.pff {
+  display: grid;
+  gap: 4px;
+  font-weight: 600;
+}
+.pff input {
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 1px solid var(--muted);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.3 var(--lat); /* 16px: iPhone doesn't zoom into the field */
+}
+.pfc[lang="mr"] .pff input {
+  font-family: var(--body), var(--lat);
+}
+.pff input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 1px;
+}
+.pff input[aria-invalid="true"] {
+  border: 2px solid #a3191c;
+}
+.pff small {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 400;
+}
+.pfcs {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.pfcs legend {
+  margin-bottom: 6px;
+  padding: 0;
+  font-weight: 600;
+}
+#pfcol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+/* each colour is a real radio button (arrow keys move along), drawn as a 44px swatch */
+.pfsw {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--c);
+  color: #fff;
+  cursor: pointer;
+}
+.pfsw input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.pfsw span {
+  display: none;
+}
+.pfsw:has(input:checked) {
+  box-shadow:
+    0 0 0 3px var(--bg),
+    0 0 0 5px var(--ink);
+}
+.pfsw input:checked + span {
+  display: block;
+}
+.pfsw:has(input:focus-visible) {
+  outline: 3px solid var(--accent);
+  outline-offset: 5px;
+}
+.pferr {
+  margin: 0;
+  color: #a3191c;
+  font-weight: 600;
+}
+.pferr:empty {
+  display: none;
+}
+.pfdel {
+  min-height: 46px;
+  border-color: #a3191c;
+  color: #a3191c;
+  border-radius: 14px;
+  font: inherit;
+  font-weight: 600;
+}
+#pfdq {
+  margin: 0;
+}
+:root[data-pref="dark"] .pfdel,
+:root[data-pref="dark"] .pferr {
+  color: #ff9a8f;
+  border-color: #ff9a8f;
+}
+:root[data-pref="dark"] .pff input[aria-invalid="true"] {
+  border-color: #ff9a8f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-pref]) .pfdel,
+  :root:not([data-pref]) .pferr {
+    color: #ff9a8f;
+    border-color: #ff9a8f;
+  }
+}
+
+/* ==== Notes on the home page: can't save here, the backup reminder ==== */
+#pfnt {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 10px;
+  font: 400 14.5px/1.45 var(--lat);
+}
+#pfnt[data-lang="mr"] {
+  font-family: var(--body);
+}
+.pfw {
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+}
+.pfw p {
+  margin: 0;
+}
+.pfw.warn {
+  border-left-color: #a3191c;
+}
+.pfwb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.pfwb button {
+  min-height: 44px;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 600;
+}
+.pfwb button:first-child {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+/* Settings: the warning row */
+.sp .sp-warn {
+  margin: 0;
+  color: var(--ink);
+  border-left: 4px solid #a3191c;
+}
+
+/* ==== High contrast, reduced motion, print ==== */
+/* high contrast is black: the red of Delete and of a problem turns light */
+[data-hc="1"] .pfdel,
+[data-hc="1"] .pferr {
+  color: #ff9a8f;
+  border-color: #ff9a8f;
+}
+[data-hc="1"] .pfp[aria-current="true"],
+[data-hc="1"] .pfw {
+  border-color: var(--ink);
+}
+/* (nothing here moves, so reduced motion needs no rule) */
+@media print {
+  .bar #who,
+  #pfm,
+  #bkm,
+  #home #pfnt {
+    display: none;
+  }
+}

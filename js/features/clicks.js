@@ -42,13 +42,14 @@ export function init() {
       save();
     }
   });
-  // A click outside an open overlay closes it
+  // A click outside an open overlay closes it (not the page's own clicks on a hidden download link or file
+  // picker, marked data-keep: saving or restoring a backup from Settings keeps Settings open)
   document.addEventListener(
     "click",
     function (e) {
       var x = e.target;
       if (!x.closest) return;
-      if (x.closest("#panel,#jump,.bar")) return;
+      if (x.closest("#panel,#jump,.bar,[data-keep]")) return;
       if (!pn.hidden || !jp.hidden) {
         setP(false);
         setJ(false);

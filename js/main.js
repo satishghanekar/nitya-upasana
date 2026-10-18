@@ -3,9 +3,11 @@
    The behaviour is split into parts (ES modules), one per topic, in the
    folders core/ (settings and apply()), text/ (what happens to the
    verse text) and features/ (each menu, button and gesture).
-   Settings live in P (core/state.js) and are saved on this device
-   only (localStorage key "aarti2-prefs"); apply() (core/apply.js) turns
-   P into the data-* switches on <html> that the styles react to.
+   Settings live in P (core/state.js): the settings of the person
+   reading (profiles, kept with this device's settings in IndexedDB by
+   store/store.js, and the active person's also in localStorage
+   "aarti2-prefs"); apply() (features/bars.js) turns P into the data-*
+   switches on <html> that the styles react to.
 
    Loading a part only defines its functions. Its init() does what the
    part needs at start-up (reads the page, adds listeners), and the
@@ -15,10 +17,13 @@
    fetches the text files (content/texts/) and has render.js (a plain
    script) build them, and only then do the parts start. The page is
    kept hidden until every part has started (data-ready, below), so it
-   never jumps while settling.
+   never jumps while settling. The store (IndexedDB) is opened at the
+   same time as the texts load; if it can't be opened within its time
+   limit (twice), the parts start with the data kept in memory.
    ===================================================================== */
 
 import { load as loadTexts } from "./text/load.js";
+import { openStore } from "./store/store.js";
 import { init as startPage } from "./core/page.js";
 import { init as startState } from "./core/state.js";
 import { init as startFeatures } from "./core/features.js";
@@ -52,6 +57,8 @@ import { init as startHelp } from "./features/help.js";
 import { init as startPrint } from "./features/print.js";
 import { init as startShare } from "./features/share.js";
 import { init as startOffline } from "./features/offline.js";
+import { init as startProfiles } from "./features/profiles.js";
+import { init as startBackup } from "./features/backup.js";
 
 function start() {
   try {
@@ -88,16 +95,20 @@ function start() {
     startPrint(); // Print
     startShare(); // Share, QR code and the Add to Home Screen buttons
     startOffline(); // Offline use: home-screen app details and the service worker (sw.js)
+    startProfiles(); // People on this phone: the profile chip in the top bar and its sheet (switch, add, edit, delete)
+    startBackup(); // Save a backup file / Restore from a file, the backup reminder, keeping the data (storage.persist)
   } finally {
     // Show the page (see "data-ready" in css/02-core.css), even if a part failed to start
     document.documentElement.setAttribute("data-ready", "");
   }
 }
 
-// The texts first (the parts read them from the page), then the parts. If the texts can't be loaded, the parts
-// still start, so the home page, Settings and Help work.
-loadTexts()
-  .catch(function (e) {
+// The texts first (the parts read them from the page) and the store (who is reading, their settings), then the
+// parts. If the texts can't be loaded, the parts still start, so the home page, Settings and Help work; the store
+// never fails (it falls back to memory).
+Promise.all([
+  loadTexts().catch(function (e) {
     console.error(e);
-  })
-  .then(start);
+  }),
+  openStore(),
+]).then(start, start);

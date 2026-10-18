@@ -32,7 +32,7 @@ export default [
   },
   {
     // the site script (js/main.js and the parts it imports) is ES modules
-    files: ["js/main.js", "js/core/**/*.js", "js/text/**/*.js", "js/features/**/*.js", "js/print/**/*.js"],
+    files: ["js/main.js", "js/core/**/*.js", "js/text/**/*.js", "js/features/**/*.js", "js/print/**/*.js", "js/store/**/*.js"],
     languageOptions: { sourceType: "module" },
   },
   {

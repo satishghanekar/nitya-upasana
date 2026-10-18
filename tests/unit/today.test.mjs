@@ -180,7 +180,22 @@ describe("ticks: kept on this device for one day", () => {
     t.prune("2026-10-19");
     expect(t.done("2026-10-19", "evening")).toEqual(["a"]);
   });
-  test("one family profile for now, kept under its own key", () => {
+  test("ticks belong to the person reading: each has their own, the same storage", () => {
+    const s = memory();
+    let who = "pa";
+    const t = createTicks(s, undefined, () => who);
+    t.set("2026-10-18", "evening", "a", true);
+    who = "pb";
+    expect(t.done("2026-10-18", "evening")).toEqual([]);
+    t.set("2026-10-18", "evening", "b", true);
+    who = "pa";
+    expect(t.done("2026-10-18", "evening")).toEqual(["a"]);
+    expect(Object.keys(JSON.parse(s.getItem(TICKS_KEY)).profiles).sort()).toEqual(["pa", "pb"]);
+    // no one named yet: the family's
+    who = "";
+    expect(t.done("2026-10-18", "evening")).toEqual([]);
+  });
+  test("the old single list's key and name (read once, when moving ticks into the first person)", () => {
     expect(TICKS_KEY).toBe("nitya-ticks");
     expect(PROFILE).toBe("family");
   });

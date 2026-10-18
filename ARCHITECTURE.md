@@ -6,10 +6,10 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files. **There
 
 ## What happens when the page opens
 
-1. **`<head>`** loads the 12 style files in `css/` in number order, then `js/parts.js`, the one list of the site's files. `modulepreload` links fetch the script parts in parallel.
+1. **`<head>`** loads the 13 style files in `css/` in number order, then `js/parts.js`, the one list of the site's files. `modulepreload` links fetch the script parts in parallel.
 2. **`<body>`** has the top bar, Settings, the home page and the dialogs, written in HTML. Help's text sits in a `<template>` and is only laid out when Help is first opened.
 3. **At the end of `<main>`**, `#pieces` marks where the pieces go, and the plain script `js/render.js` defines `renderPieces` (the pieces' HTML) and `SCR` (Kannada letters).
-4. **`js/main.js`** (`<script type="module">`) starts the site script. First `js/text/load.js` fetches `content/library.json` and the text files in `content/texts/` (and, at the same time, `content/routines.json` for the Today card), `js/text/content.js` builds `CONTENT` from them (reading each file with `js/text/format.js`), and `renderPieces` puts the pieces in place of `#pieces` (rewritten in Kannada letters when chosen). Only then does it call each part's `init()` in a fixed order (listed in `js/README.md`), and set `data-ready` on `<html>`. So every part finds the pieces in the page, as if they had been written in the HTML. If the texts can't be loaded, the parts start anyway.
+4. **`js/main.js`** (`<script type="module">`) starts the site script. First `js/text/load.js` fetches `content/library.json` and the text files in `content/texts/` (and, at the same time, `content/routines.json` for the Today card), `js/text/content.js` builds `CONTENT` from them (reading each file with `js/text/format.js`), and `renderPieces` puts the pieces in place of `#pieces` (rewritten in Kannada letters when chosen). At the same time `openStore()` (`js/store/store.js`) opens IndexedDB, where the people on this phone are kept (it never takes more than about two seconds: one second per try, two tries, then memory). Only then does it call each part's `init()` in a fixed order (listed in `js/README.md`), and set `data-ready` on `<html>`. So every part finds the pieces in the page, as if they had been written in the HTML. If the texts can't be loaded, the parts start anyway.
 5. **Until `data-ready` is set, the page is hidden.** The reader's theme, languages and folds, the fitted text size and the date card all arrive in step 4. Showing the page before that made the home page jump down by about 90px on a phone (layout shift 0.13). If the script never runs, the page shows after 1.5 s anyway.
 6. **After the page is shown:**
    - The service worker (`sw.js`) saves the site for offline use.
@@ -18,9 +18,12 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files. **There
 
 ## Where the state lives
 
-- **`P`** (`js/core/state.js`) holds everything the reader chose: languages, theme, font, text size, folds, the highlighted line, and so on.
-  - It is saved on the device only, in `localStorage["aarti2-prefs"]`. Nothing is ever sent anywhere.
-  - `P.sv` is the settings version. The migrations below it in `state.js` upgrade settings saved by older versions of the site.
+- **People** (version 1.4): several people can read on one phone. Each is a profile in IndexedDB (database `nitya`, store `profiles`: id, name, badge letters, colour, their settings and today's ticks); store `meta` holds who is reading, the device's settings, the order of the people and when the last backup was saved. `js/store/store.js` keeps them in memory while the page is open and writes changes back in order. If IndexedDB can't be opened (an early iOS 15 hang, an old private window) everything is kept in memory for this visit and the page says so.
+- **`P`** (`js/core/state.js`) holds everything the reader chose: languages, theme, font, text size, folds, the highlighted line, and so on. It is the reading person's settings (`PROFILE_KEYS` in `js/store/migrate.js`) joined with the device's (`DEVICE_KEYS`: keep screen on, layout, location, print choices, the home card fold).
+  - It is saved on the device only. Nothing is ever sent anywhere.
+  - `save()` writes it at once to `localStorage["aarti2-prefs"]` with `pid`, the person's id. This **boot copy** is read first at the next start (IndexedDB writes may not have finished when a page closes), and by `js/render.js` before the scripts run. A moment later the store writes it into the person's profile.
+  - `P.sv` is the settings version. `js/store/migrate.js` upgrades settings saved by every older version of the site (unit-tested with each shape in the git history). The first visit after 1.3 moves them, and the ticks, into one person called *Me*.
+  - Switching person replaces `P` in place (`setAll()`, then `applyPrefs()` in `js/features/profiles.js`), with no reload.
 - **`apply()`** (`js/features/bars.js`) is the only place that turns `P` into the page.
   - It sets the `data-*` switches the styles react to: `data-lang` on each region, and `data-ref`, `data-cols`, `data-rail`, `data-font`, `data-pref` and `data-hc` on `<html>`.
   - It sets `--fs`, the text size.
@@ -29,7 +32,8 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files. **There
   - It measures all lines at once in a hidden copy, so the page is laid out only once.
   - It remembers each result per language, font, layout and window size.
   - It is skipped when the reader has chosen a size (`P.fsu`).
-- **The Today card's ticks** are kept apart from `P`, in `localStorage["nitya-ticks"]`, for today only, under one implicit "family" profile (`js/core/ticks.js`). When profiles arrive they move to IndexedDB with the rest of the profile; nothing else reads that key.
+- **The Today card's ticks** are kept apart from `P`, in the reading person's profile (`checklist`), for today only (`js/core/ticks.js`, given the store's storage). The old `localStorage["nitya-ticks"]` is read once, on the first visit after 1.3, and moved into the first person.
+- **Backups** (`js/store/backup.js`, `js/features/backup.js`) are `.nitya` files: plain JSON with every person, the device's settings and a SHA-256 of them. Restoring checks the file, shows what changes and replaces everyone only when confirmed.
 - **The session being read** (after Start / Continue) is in `sessionStorage["nitya-run"]`, so ‹ Prev and Next › keep following it if the page reloads; a jump from Contents or the side menu ends it.
 - **`shared`** (`js/core/state.js`) holds the seven values that more than one part changes. A JavaScript module can only change its own variables, so these live in one object everyone can write to.
 - **The styles** read only those switches and variables. `css/README.md` lists them and explains the one rule for editing: a later rule for the same element wins, so change the last one.
@@ -55,7 +59,7 @@ The Print button builds a separate print view (`#pv`, in `js/features/print.js`)
 
 ## Offline use and updates
 
-- `sw.js` keeps the page, every file in `js/parts.js` (styles, scripts, texts, the main fonts and the three time-of-day pictures with the icons) in a cache named after the version (`aarti-v1.3`).
+- `sw.js` keeps the page, every file in `js/parts.js` (styles, scripts, texts, the main fonts and the three time-of-day pictures with the icons) in a cache named after the version (`aarti-v1.4`).
   - The page and its parts are always fetched fresh when possible, with a 3 s limit before the saved copy is used, so the page never mixes old and new parts.
   - Everything else comes from the saved copy and is refreshed in the background.
   - If the saved copy cannot be read within 2 s, the request goes to the network. Safari's storage can stall, and a Mac once sat on a blank page because of it.
