@@ -19,6 +19,7 @@ var SITE_PARTS = (function () {
     "09-settings-page",
     "10-today",
     "11-profiles",
+    "12-library",
     "99-fallbacks",
   ].map(function (f) {
     return "css/" + f + ".css";
@@ -40,6 +41,8 @@ var SITE_PARTS = (function () {
     "core/features",
     "core/time-of-day",
     "features/day-picture",
+    "core/library",
+    "features/library",
     "text/iast",
     "text/layout",
     "features/astronomy",
@@ -65,6 +68,7 @@ var SITE_PARTS = (function () {
     "features/contents-list",
     "features/clicks",
     "features/pinch",
+    "text/search-core",
     "text/search",
     "core/startup",
     "features/picture-viewer",

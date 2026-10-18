@@ -189,6 +189,39 @@ describe("the store", () => {
     expect(store.active().id).toBe(before.active);
   });
 
+  test("the library's categories are kept per phone (meta.library), for everyone, and travel in the backup", async () => {
+    await load(idb, V13, null);
+    expect(store.getLibrary()).toEqual({ added: [], renames: {}, moves: {} });
+    const lib = {
+      added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }],
+      renames: { aarti: { mr: "आरत्या", en: "Aartis" } },
+      moves: { "ghalin-lotangan": "bhajan" },
+    };
+    await store.setLibrary(lib);
+    // another person reading sees the same library
+    store.add({ name: "Baba" });
+    store.switchTo(store.list()[1].id, migratePrefs(V13, ENV).prefs);
+    expect(store.getLibrary()).toEqual(lib);
+    await store.settled();
+    await load(idb, null, null);
+    expect(store.getLibrary()).toEqual(lib);
+    // backup → restore on a new phone
+    const text = serialise(makeBackup(store.exportData(), { app: "aarti-v1.5", created: "2026-10-18T20:00:00Z" }));
+    expect(JSON.parse(text).payload.library).toEqual(lib);
+    const other = new IDBFactory();
+    await load(other, null, null);
+    expect(store.getLibrary().added).toEqual([]);
+    await store.restore(parseBackup(text, ENV).data);
+    expect(store.getLibrary()).toEqual(lib);
+    await load(other, null, null);
+    expect(store.getLibrary()).toEqual(lib);
+    // a file from version 1.4 (no library) leaves this phone's categories as they are
+    const old = makeBackup({ profiles: store.list(), activeProfile: store.active().id, device: {} }, { app: "aarti-v1.4", created: "2026-10-18T20:00:00Z" });
+    expect(old.payload.library).toBeUndefined();
+    await store.restore(parseBackup(serialise(old), ENV).data);
+    expect(store.getLibrary()).toEqual(lib);
+  });
+
   test("in memory (IndexedDB failed): everything works for this visit", async () => {
     store._reset();
     await store.openStore({ idb: { open: () => ({}) }, timeout: 20 });

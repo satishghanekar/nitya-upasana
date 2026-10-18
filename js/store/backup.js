@@ -7,7 +7,8 @@
 //
 // {
 //   "format": "nitya", "schema": 1, "kind": "backup", "app": "aarti-v1.4", "created": "2026-10-18T19:00:00.000Z",
-//   "payload": { "profiles": [ … ], "activeProfile": "p…", "settings": { device settings } },
+//   "payload": { "profiles": [ … ], "activeProfile": "p…", "settings": { device settings },
+//                "library": { the family's categories: added, renames, moves (from version 1.5; js/core/library.js) } },
 //   "sha256": "‹of JSON.stringify(payload)›"
 // }
 // The checksum is of the payload written without spaces, so a file re-indented by an editor still checks out, and
@@ -15,12 +16,14 @@
 
 import { cleanProfile } from "./profiles.js";
 import { devicePart, joinPrefs } from "./migrate.js";
+import { cleanLocal } from "../core/library.js";
 
 /**
  * @typedef {import("./profiles.js").Profile} Profile
  * @typedef {import("./migrate.js").Env} Env
  * @typedef {import("./migrate.js").Prefs} Prefs
- * @typedef {{ profiles: Profile[], activeProfile: string, settings: Prefs }} Payload
+ * @typedef {import("../core/library.js").LibraryLocal} LibraryLocal
+ * @typedef {{ profiles: Profile[], activeProfile: string, settings: Prefs, library?: LibraryLocal }} Payload
  * @typedef {{ format: string, schema: number, kind: string, app: string, created: string, payload: Payload, sha256: string }} Backup
  * @typedef {"not-json" | "not-nitya" | "newer" | "kind" | "checksum" | "empty"} Problem
  * @typedef {{ ok: true, backup: Backup, data: Payload } | { ok: false, problem: Problem }} Read
@@ -118,7 +121,7 @@ export function sha256(text) {
 
 /**
  * A backup of everything on this phone, ready to write to a file
- * @param {{ profiles: Profile[], activeProfile: string, device: Prefs }} data
+ * @param {{ profiles: Profile[], activeProfile: string, device: Prefs, library?: LibraryLocal }} data
  * @param {{ app: string, created: string }} o
  * @returns {Backup}
  */
@@ -129,6 +132,7 @@ export function makeBackup(data, o) {
     activeProfile: data.activeProfile,
     settings: devicePart(data.device),
   };
+  if (data.library) payload.library = cleanLocal(data.library);
   return { format: FORMAT, schema: SCHEMA, kind: "backup", app: o.app, created: o.created, payload: payload, sha256: sha256(JSON.stringify(payload)) };
 }
 
@@ -176,6 +180,7 @@ export function parseBackup(text, env) {
   var active = typeof b.payload.activeProfile === "string" && seen[b.payload.activeProfile] ? b.payload.activeProfile : profiles[0].id;
   /** @type {Payload} */
   var data = { profiles: profiles, activeProfile: active, settings: devicePart(joinPrefs(null, b.payload.settings, env)) };
+  if (b.payload.library) data.library = cleanLocal(b.payload.library);
   return { ok: true, backup: b, data: data };
 }
 

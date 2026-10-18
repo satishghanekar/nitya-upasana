@@ -1,0 +1,275 @@
+/* 12-library.css: The library by category
+   Part 13 of 14 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   The home list by category keeps the book-index look of 08-contents-book.css (the list's category names take the
+   place of पूजा / आरती); this file adds the "Edit categories" buttons under the list and in the left menu, the
+   categories sheet (#lbm: categories, Add, Rename, and the category of each text) and the search results that are
+   whole texts. Built by js/features/library.js and js/text/search.js. Sizes in px, like the bars. No color-mix()
+   here, so nothing needs a fallback in 99.
+   Sections:
+   - The home list's last category; the Edit categories buttons
+   - The categories sheet
+   - Search results: texts
+   - Print
+*/
+
+/* ==== The home list's last category; the Edit categories buttons ==== */
+@media screen {
+  /* the last category closes the list with the gold rule (the list is no longer the last thing in #home) */
+  #home .tocg.tocl {
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--igold);
+  }
+  #lbr {
+    max-width: 34rem;
+    margin: 10px auto 4px;
+    text-align: center;
+  }
+  #lbr:empty {
+    display: none;
+  }
+  [data-tf="1"] #lbr {
+    display: none;
+  }
+}
+#lbb,
+#rlb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  height: auto;
+  padding: 6px 16px;
+  border-radius: 22px;
+  border-color: var(--rule);
+  background: transparent;
+  color: var(--igold, var(--accent));
+  font: 600 15px/1.25 var(--lat);
+}
+#lbb .mr,
+#rlb .mr {
+  font-family: var(--body);
+}
+#lbb svg,
+#rlb svg {
+  flex: none;
+}
+@media (hover: hover) {
+  #lbb:hover,
+  #rlb:hover {
+    background: var(--surface);
+  }
+}
+#rail[data-lang="both"] #rlb .en {
+  display: none;
+}
+@media screen and (min-width: 1100px) {
+  /* the left menu lists the texts, so the button under the hidden home list goes with it */
+  [data-rail="1"] #lbr {
+    display: none;
+  }
+  #rail #rlb {
+    display: flex;
+    width: 100%;
+    margin-top: 16px;
+    font: 600 14px/1.25 var(--lat);
+  }
+  #rail[data-lang="mr"] #rlb,
+  #rail[data-lang="both"] #rlb {
+    font: 500 15px/1.25 var(--body);
+  }
+}
+
+/* ==== The categories sheet (centred, like the profile sheet) ==== */
+#lbm {
+  position: fixed;
+  inset: 0;
+  z-index: 21;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#lbm[hidden],
+#lbv1[hidden],
+#lbv2[hidden],
+#lbv3[hidden] {
+  display: none;
+}
+.lbc {
+  width: min(420px, 100%);
+}
+#lbcl,
+#lbtl {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+#lbcl li {
+  display: flex;
+  gap: 8px;
+}
+.lbcn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 8px;
+  min-height: 56px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: var(--surface);
+  box-sizing: border-box;
+}
+.lbn {
+  font-weight: 600;
+}
+.lbn[lang="mr"],
+.lbo[lang="mr"],
+.lbtn[lang="mr"] {
+  font-family: var(--body);
+}
+.lbo {
+  color: var(--muted);
+  font-size: 14px;
+}
+.lbk {
+  flex-basis: 100%;
+  color: var(--muted);
+  font-size: 13px;
+}
+.lbe {
+  flex: none;
+  width: 48px;
+  height: auto;
+  min-height: 56px;
+  padding: 0;
+  border-radius: 14px;
+}
+.lbe svg {
+  display: block;
+  margin: auto;
+}
+#lbadd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  border-radius: 14px;
+  font: inherit;
+  font-weight: 600;
+}
+#lbadd[hidden] {
+  display: none;
+}
+.lbh {
+  margin: 20px 0 2px;
+  font: 600 16px/1.3 var(--lat);
+}
+.pfc[lang="mr"] .lbh {
+  font-family: var(--body);
+}
+.pfi.lbti {
+  margin: 0 2px 10px;
+}
+#lbtl li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 11rem);
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+#lbtl label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+#lbtl select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 8px;
+  border: 1px solid var(--muted);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.2 var(--lat); /* 16px: iPhone doesn't zoom into it */
+}
+.pfc[lang="mr"] #lbtl select {
+  font-family: var(--body), var(--lat);
+}
+#lbtl select:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 1px;
+}
+/* narrow phones: each text above its category */
+@media (max-width: 359px) {
+  #lbtl li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}
+#lbv2 {
+  display: grid;
+  gap: 12px;
+}
+.lbhint {
+  margin-top: -6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.lbreset {
+  min-height: 46px;
+  height: auto;
+  padding: 8px 14px;
+  border-radius: 14px;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.lbreset[hidden],
+#lbdel[hidden],
+#lbbi[hidden] {
+  display: none;
+}
+#lbbi {
+  margin: 0 2px;
+}
+#lbdq {
+  margin: 0;
+}
+:root[data-hc="1"] .lbcn {
+  border: 1px solid var(--ink);
+}
+
+/* ==== Search results: texts (a whole text, by title, id or category), listed before the lines ==== */
+#res li.rh {
+  padding: 10px 4px 4px;
+  font: 600 12px/1.3 var(--lat);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+#res li.rh[lang="mr"] {
+  font-family: var(--body);
+  letter-spacing: 0;
+}
+#res li.rt .rl {
+  font-weight: 600;
+}
+
+/* ==== Print: none of this is printed ==== */
+@media print {
+  #lbr,
+  #rlb,
+  #lbm {
+    display: none !important;
+  }
+}

@@ -224,8 +224,8 @@ export function apply() {
     b.setAttribute("aria-pressed", String(b.dataset.v === P.fnt));
   });
   var qi = document.getElementById("q");
-  qi.placeholder = P.ui === "mr" ? "ओळ शोधा (मराठी किंवा इंग्रजी अक्षरे)" : "Find a line (Marathi or English letters)";
-  qi.setAttribute("aria-label", P.ui === "mr" ? "ओळ शोधा" : "Find a line");
+  qi.placeholder = P.ui === "mr" ? "रचना किंवा ओळ शोधा (मराठी किंवा इंग्रजी अक्षरे)" : "Find a text or a line (Marathi or English letters)";
+  qi.setAttribute("aria-label", P.ui === "mr" ? "रचना किंवा ओळ शोधा" : "Find a text or a line");
   root.setAttribute("data-ref", String(P.ref));
   root.setAttribute("data-hc", String(P.hc));
   // (media queries answer without laying the page out; innerWidth would, right after the changes above)

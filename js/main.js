@@ -29,6 +29,7 @@ import { init as startState } from "./core/state.js";
 import { init as startFeatures } from "./core/features.js";
 import { init as startDayPicture } from "./features/day-picture.js";
 import { init as startIast } from "./text/iast.js";
+import { init as startLibrary } from "./features/library.js";
 import { init as startLayout } from "./text/layout.js";
 import { init as startAstronomy } from "./features/astronomy.js";
 import { init as startDateCard } from "./features/date-card.js";
@@ -66,6 +67,7 @@ function start() {
     startState(); // Settings (P), loaded from this device
     startFeatures(); // Features held back for a later release
     startDayPicture(); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed
+    startLibrary(); // The home list of texts by category (Vedic Chant, Aarti…) and the categories sheet (add, rename, move)
     startIast(); // IAST transliteration (Devanagari → Latin with diacritics, Vedic accents as marks)
     startLayout(); // Layout helpers that run once
     startAstronomy(); // Astronomy for the Next Sankathara Chaturthi card
@@ -88,7 +90,7 @@ function start() {
     startContentsList(); // Contents list inside the contents + search overlay (built from the home page contents)
     startClicks(); // Clicks: contents links (data-go) jump to a piece; tapping a verse line highlights it
     startPinch(); // Pinch with two fingers to change the text size (the page itself never zooms)
-    startSearch(); // Search: every Marathi line with its English line; matches ignore svara marks and punctuation
+    startSearch(); // Search across the library: texts by title, id and category first, then every line in both spellings
     startStartup(); // Start-up
     startPictureViewer(); // Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move
     startHelp(); // Help: opens over the page; the phone's Back button closes it

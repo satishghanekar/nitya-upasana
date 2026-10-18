@@ -94,8 +94,10 @@
   } catch (e) {}
   var S = SCRIPTS[ind],
     OLD = [], // [node, "", text] or [element, attribute, value]: what SCR.page() changed
-    ROOTS = ".grp, .ash, #home .tocg, #tfr, #home .hl1, #home h1, #btt",
-    LATER = "#rail, #jl"; // built by the site script (js/text/layout.js, js/features/contents-list.js) from the home contents, already in the chosen script
+    ROOTS = ".grp, .ash, #tfr, #home .hl1, #home h1, #btt",
+    // built by the site script (js/features/library.js, js/text/layout.js, js/features/contents-list.js), already in
+    // the chosen script: the home list by category, the left menu, the Contents list and the categories buttons
+    LATER = "#home .tocg, #rail, #jl, #lbr";
   window.SCR = {
     k: S ? ind : "", // "" while the text is shown as written
     // Devanagari → the chosen script
@@ -114,8 +116,7 @@
         return n >= lo && n <= hi ? String.fromCharCode(n - S.off) : c;
       });
     },
-    // Rewrite the text (and its tooltips) in the pieces, their group rows, the home contents, the site's name and the
-    // contents lists. What was there is kept (OLD), so switching back to Devanagari puts it back exactly.
+    // Rewrite the text (and its tooltips) in the pieces, their group rows, the site's name and the contents lists. What was there is kept (OLD), so switching back to Devanagari puts it back exactly.
     page: function () {
       if (!S) return;
       document.documentElement.setAttribute("data-scr", ind);

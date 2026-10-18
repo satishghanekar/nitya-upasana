@@ -1,4 +1,5 @@
-// Contents list inside the contents + search overlay (built from the home page contents)
+// Contents list inside the contents + search overlay (built from the home page contents, which js/features/library.js
+// lists by category; built again when the categories change)
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { goHomeNav } from "./history.js";
@@ -19,7 +20,14 @@ export function init() {
     li.appendChild(b);
     ul.appendChild(li);
   })();
-  [].forEach.call(document.querySelectorAll(".tocg"), function (g) {
+  buildList();
+}
+
+// The texts, by category, below the Home button (everything after it is replaced)
+export function buildList() {
+  if (!ul) return;
+  while (ul.children.length > 1) ul.removeChild(ul.lastChild);
+  [].forEach.call(document.querySelectorAll("#home .tocg"), function (g) {
     var as = g.querySelectorAll("ol.toc li a");
     if (!as.length) return;
     var h = document.createElement("li");
