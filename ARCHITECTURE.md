@@ -90,7 +90,7 @@ The floor is **iOS 15.4** (iPhone 6s / 7, iPad Air 2 / mini 4 run up to iOS 15.8
 
 ## Checking a change
 
-- `cd tests && npm run lint && npm test` runs the checks on a computer.
+- `cd tests && npm run lint && npm run types && npm run unit && npm test` runs the checks on a computer.
 - GitHub runs every browser on each pull request.
 - `tests/README.md` says what each suite protects and how to refresh screenshots.
 - `tests/MANUAL.md` is the short checklist for real phones and screen readers.

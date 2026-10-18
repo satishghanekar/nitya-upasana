@@ -5,83 +5,85 @@ import { P } from "../core/state.js";
 import { enCut, zsplit } from "./line-breaks.js";
 
 export var ENS;
-var IA, TRL, TRT;
+var TRL, TRT;
+
+// Devanagari (or Kannada letters, through SCR) → IAST. Pure: reads only its argument, so tests/unit can check it.
+export var IA = (function () {
+  var C = {
+    क: "k", ख: "kh", ग: "g", घ: "gh", ङ: "ṅ", च: "c", छ: "ch", ज: "j", झ: "jh", ञ: "ñ",
+    ट: "ṭ", ठ: "ṭh", ड: "ḍ", ढ: "ḍh", ण: "ṇ", त: "t", थ: "th", द: "d", ध: "dh", न: "n",
+    प: "p", फ: "ph", ब: "b", भ: "bh", म: "m", य: "y", र: "r", ल: "l", ळ: "ḷ", व: "v",
+    श: "ś", ष: "ṣ", स: "s", ह: "h",
+  };
+  var NK = { ड: "ṛ", ढ: "ṛh", क: "q", ख: "x", ग: "ġ", ज: "z", फ: "f" }; // with nukta (Hindi)
+  var V = { अ: "a", आ: "ā", इ: "i", ई: "ī", उ: "u", ऊ: "ū", ऋ: "ṛ", ॠ: "ṝ", ऌ: "ḷ", ए: "e", ऐ: "ai", ओ: "o", औ: "au" };
+  var M = { "ा": "ā", "ि": "i", "ी": "ī", "ु": "u", "ू": "ū", "ृ": "ṛ", "ॄ": "ṝ", "े": "e", "ै": "ai", "ो": "o", "ौ": "au" };
+  var S = { "॑": "̍", "॒": "̱", "᳚": "̎" }; // svarita, anudatta, dirgha svarita
+  var O = { "ॐ": "om̐", "ऽ": "'", "।": "|", "॥": "||" };
+  return function (t) {
+    t = SCR.from(t); // from Kannada letters back to the Devanagari the rules below read
+    var o = "",
+      i = 0,
+      n = t.length,
+      c,
+      v;
+    while (i < n) {
+      c = t[i];
+      v = null;
+      if (C[c]) {
+        var k = C[c];
+        i++;
+        if (t[i] === "़") {
+          k = NK[c] || k;
+          i++;
+        }
+        if (t[i] === "्") {
+          o += k;
+          i++;
+          continue;
+        }
+        if (M[t[i]]) v = M[t[i++]];
+        else v = "a";
+        o += k;
+      } else if (V[c]) {
+        v = V[c];
+        i++;
+      } else if (O[c]) {
+        o += O[c];
+        i++;
+        continue;
+      } else if (c >= "०" && c <= "९") {
+        o += c.charCodeAt(0) - 0x966;
+        i++;
+        continue;
+      } else {
+        // a stray mark attaches to what came before; anything else passes through
+        o += S[c] || (c === "ं" ? "ṃ" : c === "ः" ? "ḥ" : c === "ँ" ? "m̐" : c);
+        i++;
+        continue;
+      }
+      // the syllable's accent marks go on its vowel, then any anusvara / visarga / chandrabindu
+      var acc = "",
+        tail = "";
+      while (i < n && (S[t[i]] || t[i] === "ं" || t[i] === "ः" || t[i] === "ँ")) {
+        c = t[i++];
+        if (S[c]) acc += S[c];
+        else tail += c === "ं" ? "ṃ" : c === "ः" ? "ḥ" : "m̐";
+      }
+      o += v + acc + tail;
+    }
+    // An anusvara inside a word before a stop takes that stop's nasal: sarvāṅgī, sundara, vakratuṇḍa, lambodara.
+    // Marathi plural endings keep ṃ: sumanāṃcyā, ḍoḷyāṃnī, kleśāṃpāsuni; so do nasal vowels: kaiṃcā, bāṃjhana.
+    return o.replace(/(ā?)ṃ(?=(k|g)|(c|j)|(ṭ|ḍ)|(t|d|n)|(p|b|m))/g, function (x, l, a, b, c, d, e, i) {
+      var r = o.slice(i + x.length);
+      if (l && /^(c(?!h)|n|pās|jh)/.test(r)) return x;
+      if (o.slice(i - 2, i) === "ai" && /^c/.test(r)) return x;
+      return l + (a ? "ṅ" : b ? "ñ" : c ? "ṇ" : d ? "n" : "m");
+    });
+  };
+})();
 
 export function init() {
-  IA = (function () {
-    var C = {
-      क: "k", ख: "kh", ग: "g", घ: "gh", ङ: "ṅ", च: "c", छ: "ch", ज: "j", झ: "jh", ञ: "ñ",
-      ट: "ṭ", ठ: "ṭh", ड: "ḍ", ढ: "ḍh", ण: "ṇ", त: "t", थ: "th", द: "d", ध: "dh", न: "n",
-      प: "p", फ: "ph", ब: "b", भ: "bh", म: "m", य: "y", र: "r", ल: "l", ळ: "ḷ", व: "v",
-      श: "ś", ष: "ṣ", स: "s", ह: "h",
-    };
-    var NK = { ड: "ṛ", ढ: "ṛh", क: "q", ख: "x", ग: "ġ", ज: "z", फ: "f" }; // with nukta (Hindi)
-    var V = { अ: "a", आ: "ā", इ: "i", ई: "ī", उ: "u", ऊ: "ū", ऋ: "ṛ", ॠ: "ṝ", ऌ: "ḷ", ए: "e", ऐ: "ai", ओ: "o", औ: "au" };
-    var M = { "ा": "ā", "ि": "i", "ी": "ī", "ु": "u", "ू": "ū", "ृ": "ṛ", "ॄ": "ṝ", "े": "e", "ै": "ai", "ो": "o", "ौ": "au" };
-    var S = { "॑": "̍", "॒": "̱", "᳚": "̎" }; // svarita, anudatta, dirgha svarita
-    var O = { "ॐ": "om̐", "ऽ": "'", "।": "|", "॥": "||" };
-    return function (t) {
-      t = SCR.from(t); // from Kannada letters back to the Devanagari the rules below read
-      var o = "",
-        i = 0,
-        n = t.length,
-        c,
-        v;
-      while (i < n) {
-        c = t[i];
-        v = null;
-        if (C[c]) {
-          var k = C[c];
-          i++;
-          if (t[i] === "़") {
-            k = NK[c] || k;
-            i++;
-          }
-          if (t[i] === "्") {
-            o += k;
-            i++;
-            continue;
-          }
-          if (M[t[i]]) v = M[t[i++]];
-          else v = "a";
-          o += k;
-        } else if (V[c]) {
-          v = V[c];
-          i++;
-        } else if (O[c]) {
-          o += O[c];
-          i++;
-          continue;
-        } else if (c >= "०" && c <= "९") {
-          o += c.charCodeAt(0) - 0x966;
-          i++;
-          continue;
-        } else {
-          // a stray mark attaches to what came before; anything else passes through
-          o += S[c] || (c === "ं" ? "ṃ" : c === "ः" ? "ḥ" : c === "ँ" ? "m̐" : c);
-          i++;
-          continue;
-        }
-        // the syllable's accent marks go on its vowel, then any anusvara / visarga / chandrabindu
-        var acc = "",
-          tail = "";
-        while (i < n && (S[t[i]] || t[i] === "ं" || t[i] === "ः" || t[i] === "ँ")) {
-          c = t[i++];
-          if (S[c]) acc += S[c];
-          else tail += c === "ं" ? "ṃ" : c === "ः" ? "ḥ" : "m̐";
-        }
-        o += v + acc + tail;
-      }
-      // An anusvara inside a word before a stop takes that stop's nasal: sarvāṅgī, sundara, vakratuṇḍa, lambodara.
-      // Marathi plural endings keep ṃ: sumanāṃcyā, ḍoḷyāṃnī, kleśāṃpāsuni; so do nasal vowels: kaiṃcā, bāṃjhana.
-      return o.replace(/(ā?)ṃ(?=(k|g)|(c|j)|(ṭ|ḍ)|(t|d|n)|(p|b|m))/g, function (x, l, a, b, c, d, e, i) {
-        var r = o.slice(i + x.length);
-        if (l && /^(c(?!h)|n|pās|jh)/.test(r)) return x;
-        if (o.slice(i - 2, i) === "ai" && /^c/.test(r)) return x;
-        return l + (a ? "ṅ" : b ? "ñ" : c ? "ṇ" : d ? "n" : "m");
-      });
-    };
-  })();
   // English style. Each English line keeps its everyday text and its Marathi/Sanskrit source (taken here, before
   // anything else touches the lines), so the style switches in place without reloading (trSet). The scholarly
   // (IAST) text is made the first time it is needed. ENS keeps the everyday text so search still finds "sukhakarta".
