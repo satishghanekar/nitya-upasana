@@ -1,5 +1,5 @@
 /* 10-today.css: The Today card
-   Part 11 of 12 of the site styles. index.html loads the parts in number order, and the order
+   Part 11 of 13 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    The top of the home page as the Today card (mockup A, docs/architecture.md §5.4), built by
    js/features/today-card.js: the larger time-of-day picture, the date, the week row (#twk), the session switch

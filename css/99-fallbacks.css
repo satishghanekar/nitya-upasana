@@ -1,5 +1,5 @@
 /* 99-fallbacks.css: Fallbacks for browsers without color-mix()
-   Part 12 of 12 of the site styles. index.html loads the parts in number order, and the order
+   Part 13 of 13 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Must stay last: it replaces colours set anywhere above on older iPhones and iPads (iOS 15).
    Sections:

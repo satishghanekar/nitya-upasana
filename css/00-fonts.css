@@ -1,5 +1,5 @@
 /* 00-fonts.css: Fonts
-   Part 1 of 12 of the site styles. index.html loads the parts in number order, and the order
+   Part 1 of 13 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    The @font-face rules for fonts/. unicode-range means a browser downloads only the parts a page uses.
    Sections:
