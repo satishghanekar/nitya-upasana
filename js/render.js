@@ -1,5 +1,5 @@
-// Builds the HTML of every piece from the text in content/pieces.js.
-// index.html calls it while the page is loading, at the place the pieces belong, so the page
+// Builds the HTML of every piece from CONTENT (made from the text files in content/texts/ by js/text/content.js).
+// js/text/load.js calls it before the site script starts, at the place the pieces belong, so the page
 // the rest of the script sees is the same as when the pieces were written into index.html.
 // Each line keeps its two languages side by side in the data; this file decides how they are shown.
 (function () {

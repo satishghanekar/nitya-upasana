@@ -13,7 +13,7 @@ const browsers = readFileSync(new URL(".browserslistrc", import.meta.url), "utf8
 export default [
   {
     // the site's own scripts, written to run on iOS 15 Safari (plain scripts, except the modules below)
-    files: ["js/**/*.js", "content/**/*.js", "sw.js"],
+    files: ["js/**/*.js", "sw.js"],
     plugins: { compat },
     languageOptions: {
       ecmaVersion: 2020,
