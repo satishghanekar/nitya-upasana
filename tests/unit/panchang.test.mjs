@@ -69,7 +69,8 @@ describe("18 October 2026, Columbus, Ohio", () => {
     // Swiss Ephemeris: sunrise 07:45:46, sunset 18:47:53 EDT
     expect(clock(p.sunrise, tz)).toBe("Sun 07:45");
     expect(clock(p.sunset, tz)).toBe("Sun 18:47");
-    expect(clock(p.moonrise, tz)).toMatch(/^Sun 15:1\d$/);
+    // Swiss Ephemeris: moonrise 15:05:51 EDT
+    expect(mins(p.moonrise, Date.parse("2026-10-18T15:05:51-04:00"))).toBeLessThan(1);
     expect(p.vara).toEqual({ n: 0, name: { mr: "रविवार", en: "Sunday" } });
   });
   test("आश्विन शुद्ध अष्टमी, ending Monday about 01:22", () => {
@@ -180,6 +181,31 @@ describe("2026 in Pune", () => {
 });
 
 describe("Sankashti days are the app's own", () => {
+  // the app's Sankashti days in 2026 (unchanged by the moonrise fix of October 2026)
+  const DAYS_2026 = {
+    Pune: "01-06 02-05 03-06 04-05 05-05 06-03 07-03 08-02 08-31 09-29 10-29 11-27 12-26",
+    Columbus: "01-06 02-04 03-06 04-05 05-04 06-03 07-03 08-01 08-31 09-29 10-28 11-27 12-26",
+  };
+  for (const [label, place] of [
+    ["Pune", PUNE],
+    ["Columbus", COLUMBUS],
+  ]) {
+    test(`${label}, 2026 dates`, () => {
+      process.env.TZ = place.tz;
+      init();
+      const ours = [];
+      for (let m = 1; m <= 12; m++) for (const d of monthPanchang(2026, m, place)) if (d.sankashti) ours.push(d.date.slice(5));
+      expect(ours.join(" ")).toBe(DAYS_2026[label]);
+    });
+  }
+  test("moonrise on Sankashti, 28 October 2026 in Columbus: 8:09–8:10 pm (Swiss Ephemeris 20:10:04 EDT)", () => {
+    process.env.TZ = COLUMBUS.tz;
+    init();
+    const p = dayPanchang("2026-10-28", COLUMBUS);
+    expect(mins(p.moonrise, Date.parse("2026-10-28T20:10:04-04:00"))).toBeLessThan(1);
+    const card = SK.upcoming(new Date(2026, 9, 28).getTime(), COLUMBUS.lat, COLUMBUS.lon, 1)[0];
+    expect(Math.abs(card.rise - p.moonrise.getTime())).toBeLessThan(1000);
+  });
   for (const [label, place] of [
     ["Pune", PUNE],
     ["Columbus", COLUMBUS],
