@@ -2,6 +2,10 @@
 
 Newest first. Each entry: the decision, who made it, and where it came from.
 
+## 2026-10-18: Today page brought forward before profiles and library
+
+Satish said "go ahead" to building slice 4 (the Today page) before slices 2 (profiles) and 3 (library), with mockup A (paper card) and the time-of-day picture (`mockups/today-icons.html`). One implicit family profile until slice 2: the ticks are kept under `localStorage["nitya-ticks"]` behind `js/core/ticks.js`, so only that module moves to IndexedDB later. Default routine from Q5 in `content/routines.json` (Morning = Ganapati Atharvashirsha, Evening = all ten aartis, Afternoon empty), the same every weekday; session times from Q6; the only special-day rule is the existing Sankashti one, shown on the card and adding no texts (Q7). No profile chip yet. The reading view is still the one long page: Start / Continue opens the first unticked text there, and ‹ Prev / Next › follow the session. Version aarti-v1.3.
+
 ## 2026-10-18: time-of-day pictures
 
 Satish chose three new pictures for the app (his images, kept in `originals/`): a circle with ॐ, a palm-leaf book and a rosary under an arch of seven stars for the weekdays (र सो मं बु गु शु श = Sunday … Saturday), in sunrise (orange), midday (blue) and sunset (purple). In the app the picture follows the default sessions: Morning before 12:00 → sunrise, Afternoon 12:00–17:00 → midday, Evening from 17:00 → sunset, with a glowing ring on today's weekday star (as in the approved mockup `mockups/today-icons.html` on the `mockup-icons` branch). It updates if the app stays open across 12:00, 17:00 or midnight. **The sunrise picture is the fixed home-screen icon** (chosen by Satish): iPhone and Android copy the icon when the app is installed, so it cannot follow the time; only the browser tab icon does. Titles and texts stay as they are. Version aarti-v1.2.
