@@ -5,7 +5,7 @@
    Sections:
    - Two columns on wide screens (data-cols="2"); the script assigns each stanza its grid row
    - Piece numbers (.no) and stanza numbers (.sn, added by the script)
-   - Print: page border, contents on its own page, two-column flow (final rules)
+   - Print: page border, contents on its own page, page breaks (final rules)
    - Share / QR / Print use the Latin font
    - Button rows (final rules), styled like the top menu: home page (#shr: App, Share, QR, Print, Help) and the …
    - Both languages on wide screens: each Marathi line with its transliteration beside it
@@ -157,30 +157,6 @@
   #pv[data-lang="mr"] .pvtoc .pgn {
     font-family: var(--head);
   }
-  /* two columns: stanzas run down the left column to the foot of the page, then down the right */
-  #pv .pvhd {
-    break-after: avoid;
-    page-break-after: avoid;
-  }
-  #pv .pvc {
-    columns: 2;
-    column-gap: 16pt;
-    column-rule: 0.5pt solid #bbb;
-    column-fill: balance;
-    margin: 0 0 6pt;
-  }
-  /* a page's part of a two-column piece, before its last part (js/features/print.js cuts the flow at each page) */
-  #pv .pvc.pvcf {
-    column-fill: auto;
-  }
-  #pv .pvc .pvk {
-    break-inside: avoid;
-    page-break-inside: avoid;
-    -webkit-column-break-inside: avoid;
-  }
-  #pv .pvc .verse {
-    text-align: center;
-  }
   /* each piece starts at the top of a new page: a forced break is the one page rule Chrome and
      Safari both follow, so every print breaks the same way and the contents numbers stay right */
   #pv .pvs + .pvs {
@@ -271,17 +247,14 @@
   height: 18px;
   margin: 0 !important;
 }
-/* Version number beside the Settings title, so we can tell which copy a phone is showing */
-/* Narrow phones: icons only. The words are clipped out of sight rather than removed (display:none), because
-   they are each button's name for screen readers and voice control (WCAG 2.5.3 Label in Name) */
+/* Narrow phones: the word sits under its icon, smaller, so the five buttons still fit and a first-time reader
+   can tell what each does (an icon alone, a phone with an arrow for App, was too hard to guess) */
 @media (max-width: 379px) {
-  #shr button > span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
+  #shr button {
+    flex-direction: column;
+    gap: 3px;
+    height: 52px;
+    font-size: 11px;
   }
 }
 

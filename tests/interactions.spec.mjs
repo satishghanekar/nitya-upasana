@@ -144,6 +144,86 @@ test("home card folds to one line and opens again @mobile", async ({ page }) => 
   await expect(page.locator("#shr")).toBeVisible();
 });
 
+// Sankashti day (28 Oct 2026 in Columbus): the card opens on tonight's moonrise; the date strip, the calendar
+// links and the App / Share / QR / Print / Help row wait under More dates
+test("on Sankashti day the card leads with moonrise, and More dates opens the rest @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: new Date("2026-10-28T17:30:00-04:00") });
+  await expect(page.locator("#home")).toHaveClass(/\bpday\b/);
+  await expect(page.locator("#skc .skm b").last()).toHaveText(/pm/);
+  const more = page.locator("#skmore");
+  await expect(more).toBeVisible();
+  await expect(more).toHaveAttribute("aria-expanded", "false");
+  await expect(page.locator("#skc .sks")).toBeHidden();
+  await expect(page.locator("#shr")).toBeHidden();
+  await more.click();
+  await expect(more).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#skc .sks")).toBeVisible();
+  await expect(page.locator("#skall")).toBeVisible();
+  await expect(page.locator("#shr")).toBeVisible();
+});
+
+// Other days: the card leads with the next Chaturthi date and its moonrise too, with the App / Share / QR /
+// Print / Help row in view and the date strip under More dates
+test("on other days the card leads with the next Chaturthi date, and More dates opens the strip @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await expect(page.locator("#home")).not.toHaveClass(/\bpday\b/);
+  await expect(page.locator("#skc .skh").first()).toContainText("पुढील चतुर्थी");
+  const more = page.locator("#skmore");
+  await expect(more).toBeVisible();
+  await expect(more).toHaveAttribute("aria-expanded", "false");
+  await expect(page.locator("#skc .sks")).toBeHidden();
+  await expect(page.locator("#shr")).toBeVisible();
+  await more.click();
+  await expect(more).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#skc .sks")).toBeVisible();
+  await expect(page.locator("#shr")).toBeVisible();
+});
+
+// Reading sheet: Aa in the bottom bar; language, text size and dhrupad in one place, within thumb reach
+test("Aa opens the reading sheet: language, text size and dhrupad, then Escape closes it @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  const rsb = page.locator("#rsb");
+  await rsb.click();
+  await expect(page.locator("#rsh")).toBeVisible();
+  await expect(rsb).toHaveAttribute("aria-expanded", "true");
+  const langs = page.locator("#rsl button");
+  await expect(langs).toHaveCount(3);
+  await expect(langs.first()).toHaveAttribute("aria-pressed", "true");
+  await langs.nth(1).click();
+  expect(await page.locator("#a1").getAttribute("data-lang")).toBe("en");
+  await expect(langs.nth(1)).toHaveAttribute("aria-pressed", "true");
+  await langs.nth(2).click();
+  expect(await page.locator("#a1").getAttribute("data-lang")).toBe("both");
+  const fs0 = (await prefs(page)).fs;
+  await page.locator("#rsp").click();
+  await page.locator("#rsp").click();
+  expect((await prefs(page)).fs).toBe(fs0 + 4);
+  await expect(page.locator("#rsv")).toHaveText(/%$/);
+  await page.waitForTimeout(600);
+  expect(await page.evaluate(() => document.documentElement.style.getPropertyValue("--fs"))).toBe(fs0 + 4 + "px");
+  await page.locator("#rsr").click();
+  await page.waitForTimeout(600);
+  expect((await prefs(page)).fsu).toBe(0);
+  await page.locator("#rsf button[data-v='0']").click();
+  expect(await rootAttr(page, "data-ref")).toBe("0");
+  await expect(page.locator("#rsf button[data-v='0']")).toHaveAttribute("aria-pressed", "true");
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#rsh")).toBeHidden();
+  await expect(rsb).toHaveAttribute("aria-expanded", "false");
+  await expect(rsb).toBeFocused();
+});
+
+test("reading sheet: a tap outside closes it, and All settings opens Settings @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await page.locator("#rsb").click();
+  await page.locator("#rsh").click({ position: { x: 20, y: 20 } });
+  await expect(page.locator("#rsh")).toBeHidden();
+  await page.locator("#rsb").click();
+  await page.locator("#rsall").click();
+  await expect(page.locator("#rsh")).toBeHidden();
+  await expect(page.locator("#panel")).toBeVisible();
+});
+
 test("tapping a line highlights it and is remembered @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   const line = page.locator("#a1 .items .verse .mr p[data-l]").first();

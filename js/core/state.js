@@ -28,8 +28,10 @@ export function init() {
     cols: 0, // wide screens: 0 = automatic, 1 = one column, 2 = two columns
     loc: null, // { lat, lon } from "Use my location"
     hl: "", // data-l id of the highlighted (tapped) line
-    por: "", // printed pages (the Print pop-up): "" each layout on its best (CHOICE in js/print/profiles.js) | "up" upright | "land" sideways
+    por: "", // the page last chosen in the Print pop-up: "" not yet (CHOICE in js/print/profiles.js) | "up" Portrait | "land" Landscape
     fnt: "std", // text font: std | classic | bold | hand (Settings → Text font)
+    pref: "", // dhrupad in the printout, picked in the Print pop-up: "" as on the page (ref) | 0 after every verse | 1 once
+    pfn: "", // font of the printout, picked in the Print pop-up: "" the text font above | std | classic | bold | hand
     tr: "simple", // English text style: simple ("Sukhkarta") | iast ("sukhakartā", with Vedic accent marks)
     fold: 0, // home card folded to one slim line
     pf: 0, // Pooja section folded (for those who come only for the aartis)

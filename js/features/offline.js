@@ -30,9 +30,9 @@ export function init() {
     ofb = document.getElementById("ofb");
     offv = document.getElementById("offv");
     OFV = {
-        idle: ["तयार", "Ready"],
-        save: ["जतन करत आहे…", "Saving…"],
-        off: ["इंटरनेट नाही · जतन केलेली प्रत", "No internet · saved copy in use"],
+        idle: ["ऑफलाइन तयार", "Offline ready"],
+        save: ["ऑफलाइनसाठी जतन…", "Saving for offline…"],
+        off: ["जतन केलेली प्रत", "Saved copy in use"],
       };
     // The offline copy's name ("aarti-v1.0") from <meta name="version"> in index.html, and the version shown ("1.0")
     CACHE = (document.querySelector('meta[name="version"]') || {}).content || "aarti-v1.0";
@@ -47,17 +47,18 @@ export function init() {
       offv.innerHTML = two(OFV[st]);
       ofb.hidden = st !== "off";
     }
-    // Check for updates (Settings → About): what it says beside the label, in the menu language
+    // Check for updates (Settings → About, a tap on the version line): what it says on the right, in the menu language
     upd = document.getElementById("upd");
     updv = document.getElementById("updv");
     UPD = {
+        "": ["अपडेट तपासा", "Check for updates"],
         busy: ["तपासत आहे…", "Checking…"],
         ok: ["सर्व अद्ययावत आहे", "Up to date"],
         off: ["इंटरनेट नाही", "No internet"],
       };
     function updSet(st) {
       upd.setAttribute("data-s", st);
-      updv.innerHTML = st ? two(UPD[st]) : "";
+      updv.innerHTML = two(UPD[st]);
     }
     // Author lines: the Wikipedia link on a poet's name works only online; offline the name is plain text
     function crNet() {
@@ -82,6 +83,7 @@ export function init() {
       if (offv.getAttribute("data-s") === "off") ofSet("idle");
       if (upd.getAttribute("data-s") === "off") updSet("");
     });
+    updSet("");
     addEventListener("offline", function () {
       ofSet("off");
     });

@@ -349,9 +349,7 @@ test("keyboard only: Tab to Print, choose a layout, print, and focus comes back 
   expect(found, "Tab never reached the Print button").toBe(true);
   await page.keyboard.press("Enter");
   await expect(page.locator("#prm")).toBeVisible();
-  await expect(page.locator("#pr1")).toBeFocused();
-  await page.keyboard.press("Tab");
-  await expect(page.locator("#pr2")).toBeFocused();
+  await expect(page.locator("#prgp")).toBeFocused();
   await page.keyboard.press("Enter");
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
   expect(await page.evaluate(() => document.documentElement.getAttribute("data-print"))).toBeTruthy();
@@ -362,6 +360,68 @@ test("keyboard only: Tab to Print, choose a layout, print, and focus comes back 
 
 // ---- Keeping the cascade from getting harder to change (L1, L2) ----------------------------------------
 // The counts may only go down. A new breakpoint must be added to css/README.md's list first.
+// ---- 2026-10-18 audit: pop-ups on short screens, Back, and the dhrupad bubble ----------------------------
+for (const size of [{ width: 667, height: 375 }, { width: 320, height: 256 }]) {
+  test(`QR and Add to Home Screen pop-ups scroll so Close is reachable at ${size.width}×${size.height} (WCAG 1.4.10) @chromium-only`, async ({ page }) => {
+    await page.setViewportSize(size);
+    await openSite(page, SETUPS.marathi);
+    for (const [open, close] of [["#qrb", "#qrx"], ["#inb", "#inx"]]) {
+      if (!(await page.locator(open).isVisible())) continue;
+      await page.locator(open).click();
+      const x = page.locator(close);
+      await x.scrollIntoViewIfNeeded();
+      const box = await x.boundingBox();
+      expect(box.y, `${close} top`).toBeGreaterThanOrEqual(0);
+      expect(box.y + box.height, `${close} bottom`).toBeLessThanOrEqual(size.height + 1);
+      await x.click();
+    }
+  });
+}
+
+test("the phone's Back closes QR, Print and the picture and returns focus to their button (WCAG 2.4.3) @chromium-only", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  for (const [open, dlg] of [["#qrb", "#qrm"], ["#prb", "#prm"], ["#iconb", "#pzv"]]) {
+    await page.locator(open).focus();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(dlg)).toBeVisible();
+    await page.goBack();
+    await expect(page.locator(dlg)).toBeHidden();
+    expect(await page.evaluate(() => "#" + document.activeElement.id), `focus after Back from ${dlg}`).toBe(open);
+    expect(await page.evaluate(() => document.documentElement.style.overflow), "page scrolls again").toBe("");
+  }
+});
+
+test("the ↻ ध्रुपद bubble stays open until the next tap (WCAG 2.2.1)", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  const m = page.locator(".rmkt").first();
+  await m.scrollIntoViewIfNeeded();
+  await m.click();
+  await expect(m).toHaveAttribute("aria-expanded", "true");
+  await page.waitForTimeout(7500); // longer than the 7 s it used to close after
+  await expect(m).toHaveAttribute("aria-expanded", "true");
+  await page.locator("main").click({ position: { x: 5, y: 5 } });
+  await expect(m).toHaveAttribute("aria-expanded", "false");
+});
+
+test("a 320px phone: the home buttons show their words, and a note sits under the top bar, on screen @chromium-only", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await openSite(page, SETUPS.both);
+  for (const id of ["#shb", "#qrb", "#prb"]) {
+    const w = page.locator(id + " > span.en");
+    await expect(w).toBeVisible();
+    const b = await page.locator(id).boundingBox(), t = await w.boundingBox();
+    expect(t.x >= b.x - 0.5 && t.x + t.width <= b.x + b.width + 0.5, `${id} word inside its button`).toBe(true);
+  }
+  await page.locator("#home-btn").click();
+  const fl = page.locator("#fl");
+  await expect(fl).toHaveClass(/\bon\b/);
+  await expect(fl).toContainText("Next tap:");
+  const f = await fl.boundingBox(), bar = await page.locator("body > .bar").first().boundingBox();
+  expect(f.x).toBeGreaterThanOrEqual(0);
+  expect(f.x + f.width).toBeLessThanOrEqual(320);
+  expect(f.y, "note under the top bar").toBeGreaterThanOrEqual(bar.y + bar.height - 0.5);
+});
+
 test("CSS: no new !important, :root:root boosts or unlisted breakpoints (L1, L2)", () => {
   const dir = new URL("../css/", import.meta.url);
   const css = readdirSync(dir)

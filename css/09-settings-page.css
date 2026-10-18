@@ -192,13 +192,13 @@ html[data-sp] {
   text-align: center;
   line-height: 1.15;
 }
+/* the chosen option filled with the accent colour, like the chosen date chip: a pale pill on a pale track
+   was too faint to tell apart (WCAG 1.4.11 asks 3:1) */
 .sp .sp-seg button[aria-pressed="true"] {
-  background: var(--bg);
-  color: var(--ink);
+  background: var(--accent);
+  color: var(--bg);
   font-weight: 600;
-  box-shadow:
-    0 1px 3px #0003,
-    0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+  box-shadow: 0 1px 3px #0003;
 }
 .sp-seg small {
   display: block;
@@ -206,6 +206,10 @@ html[data-sp] {
   font-size: 11.5px;
   font-weight: 400;
   color: var(--muted);
+}
+.sp-seg button[aria-pressed="true"] small {
+  color: inherit;
+  opacity: 0.9;
 }
 .sp .sp-sz button {
   color: var(--ink);
@@ -272,6 +276,10 @@ html[data-sp] {
   background: color-mix(in srgb, var(--accent) 6%, var(--surface));
   text-align: center;
 }
+/* Sepia: the accent tint took the grey preview lines just under 4.5:1 (4.36:1); plain surface keeps 4.77:1 */
+:root[data-pref="sepia"] .sp-prev {
+  background: var(--surface);
+}
 .sp-prev p {
   margin: 0;
   white-space: nowrap;
@@ -297,7 +305,14 @@ html[data-sp] {
   flex-direction: column;
   align-items: center;
 }
-/* Check for updates: "Checking…", then "Up to date" in green, or "No internet" in amber */
+/* About: the version line (version · offline state) in plain weight; a tap on it checks for updates, so the
+   right side reads "Check for updates" in the accent colour, then "Checking…", "Up to date" in green, or "No internet" in amber */
+.sp #upd .sp-l {
+  font-weight: 400;
+}
+.sp #upd:not([data-s="ok"], [data-s="off"]) #updv {
+  color: var(--accent);
+}
 .sp #upd[data-s="ok"] #updv {
   color: var(--ok);
 }
@@ -407,12 +422,14 @@ html[data-scr="kn"][data-font]:not([data-font="std"]) .mr,
 html[data-scr="kn"][data-font]:not([data-font="std"]) .mr *,
 html[data-scr="kn"][data-font]:not([data-font="std"]) #home .nm,
 html[data-scr="kn"][data-font]:not([data-font="std"]) #home .hl1,
-html[data-scr="kn"][data-font]:not([data-font="std"]) .sp-pw [lang="kn"] {
+html[data-scr="kn"][data-font]:not([data-font="std"]) .sp-pw [lang="kn"],
+html[data-scr="kn"][data-font]:not([data-font="std"]) #prfs[lang="kn"] {
   font-family: var(--kf), "Noto Sans Kannada", var(--body) !important;
 }
 /* Baloo Tamma at its regular weight is no heavier than the standard font; a step up keeps Bold looking bold */
 html[data-scr="kn"][data-font="bold"] .mr,
-html[data-scr="kn"][data-font="bold"] .sp-pw [lang="kn"] {
+html[data-scr="kn"][data-font="bold"] .sp-pw [lang="kn"],
+html[data-scr="kn"][data-font="bold"] #prfs[lang="kn"] {
   font-weight: 500;
 }
 html[data-scr="kn"][data-font]:not([data-font="std"]) #p1 .mr,
