@@ -1,6 +1,6 @@
 # v2 mockups (Step 2)
 
-Static pages for choosing a design. **Not app code**: no logic, sample data only, and nothing links to them from the site. The text lines shown come from `content/pieces.js`, never retyped.
+Static pages for choosing a design. **Not app code**: no logic, sample data only, and nothing links to them from the site. The text lines shown come from `tests/unit/fixtures/pieces.js` (the texts as they were before they became files in `content/texts/`; identical to them, as `tests/unit/content.test.mjs` proves), never retyped.
 
 | Page | What it shows |
 |---|---|

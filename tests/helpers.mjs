@@ -61,8 +61,10 @@ export async function openSite(page, prefs = {}, opt = {}) {
   await settle(page);
 }
 
-/** Wait until fonts have loaded and the page has stopped re-fitting its text. */
+/** Wait until the texts are in the page, fonts have loaded and the page has stopped re-fitting its text. */
 export async function settle(page) {
+  // the texts are fetched after the page loads (js/text/load.js); data-ready is set once every part has started
+  await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
   await page.evaluate(async () => {
     await document.fonts.ready;
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));

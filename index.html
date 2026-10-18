@@ -6,7 +6,7 @@
 <title>Sankathara Chaturthi</title>
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.0">
+<meta name="version" content="aarti-v1.1">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -45,6 +45,9 @@
 <!-- The site script (js/main.js) and its parts, fetched now in parallel instead of one after another
      when main.js asks for them. Same list as "modules" in js/parts.js. -->
 <link rel="modulepreload" href="js/main.js">
+<link rel="modulepreload" href="js/text/load.js">
+<link rel="modulepreload" href="js/text/content.js">
+<link rel="modulepreload" href="js/text/format.js">
 <link rel="modulepreload" href="js/core/page.js">
 <link rel="modulepreload" href="js/core/state.js">
 <link rel="modulepreload" href="js/core/features.js">
@@ -251,20 +254,11 @@
       </ol>
     </div>
   </section>
-  <!-- ==== Pooja and Aarti: every piece, built from content/pieces.js by js/render.js while the page loads ==== -->
-  <script src="content/pieces.js"></script>
+  <!-- ==== Pooja and Aarti: every piece, from the text files in content/texts/. js/text/load.js (started by js/main.js)
+       fetches them and has js/render.js build the pieces here, in place of #pieces (right after #home: the styles
+       space "#home + .grp") ==== -->
+  <div id="pieces" hidden></div>
   <script src="js/render.js"></script>
-  <script>
-    (function (me) {
-      var p = me.parentNode, a = me.previousElementSibling, b = a.previousElementSibling;
-      me.insertAdjacentHTML("beforebegin", renderPieces(CONTENT));
-      SCR.page(); // in Kannada letters when that is the chosen language
-      // Leave only the pieces behind, as if they had been written here
-      p.removeChild(b);
-      p.removeChild(a);
-      p.removeChild(me);
-    })(document.currentScript);
-  </script>
 </main>
 <!-- ==== Pop-ups (QR code, print options), print view, status message ==== -->
 <!-- Full-screen picture: pinch, double-tap or (with a mouse) scroll to zoom; drag to move; ✕, Back, Escape or a tap outside closes -->
@@ -372,7 +366,7 @@
         <li><b>Layout</b> (wide screens only): one or two columns of stanzas.</li>
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off. Keep screen on starts on for phones and tablets and off on computers.</li>
-        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.0), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
+        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.1), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
       </ul>
 
       <h3>While reading</h3>

@@ -56,7 +56,7 @@ export function init() {
       });
       return d;
     }
-    // A prose piece (content/pieces.js) printed in one language reads as running paragraphs, as in a printed
+    // A prose piece (layout: prose in its text file, content/texts/) printed in one language reads as running paragraphs, as in a printed
     // booklet: its stanzas run on, each line after the last, and a paragraph starts at a stanza marked para
     // or a dh stanza (said once: a paragraph of its own; one of a single line, the closing peace chant, is
     // centred). Each paragraph is one item; its lines keep their data-l.
