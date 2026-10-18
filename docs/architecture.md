@@ -24,17 +24,17 @@ Each question has the recommended answer in **bold**. Satish answered "yes to al
 | Q8 | Keep "show the same words in Kannada letters" and add Telugu letters the same way (both are one-for-one with Devanagari)? Tamil letters can't be shown this way (see §4.8). | **Yes** |
 | Q9 | Tamil originals: the everyday English line is typed by hand as now, and no scholarly line is generated (Tamil script doesn't show voicing, so it would guess). | **Yes** |
 | Q10 | `.nitya` files: plain JSON with a checksum in Phase 1; an optional passphrase (AES-GCM) after the cut line. | **Yes** |
-| Q11 | The preview shows "v2.0 preview", and its offline cache is named `nitya-v2.0-pre`, so it can never be confused with the live `aarti-v1.0`. It becomes "v2.0" only when you decide to switch `main`. | **Yes** |
+| Q11 | ~~The preview shows "v2.0 preview" with cache `nitya-v2.0-pre`.~~ Superseded 18 Oct 2026: v2 is built on `main`, so the version follows the release rules (bumped only when you ask; the cache name matches it). | **Yes** (superseded) |
 | Q12 | Everything the site does today carries over unless you say so, including the bottom bar, autoscroll, tilt-to-scroll, the reading sheet (Aa), the picture viewer, QR code, four text fonts and the Sankashti date card. | **Yes** |
 
 Assumptions (no answer needed unless one is wrong):
 
-- **A1.** The v2 preview lives at the Cloudflare branch address `https://v2.nitya-upasana.pages.dev`. It is a separate site address, so it has its own storage: nothing you do on the preview touches your data on the live site. The move of today's settings into v2 (§3.8) therefore runs for real only on switch day.
+- **A1.** (Changed 18 Oct 2026.) v2 is built on `main`, which goes live at `https://nitya-upasana.pages.dev` on every merge. Today's code is kept on the branch `sankathara-chaturthi-base`. Each slice reaches `main` only after its tests pass and you approve it, so the live site always shows the last finished slice. The move of today's settings (§3.8) runs on the first visit after slice 2.
 - **A2.** Profiles are a convenience, not security: no PINs. Anyone holding the phone can switch profiles.
 - **A3.** No new texts in Telugu, Kannada or Tamil script exist yet. Their support is planned now (format, fonts, transliteration) and built when the first such text arrives. Until then, such a text already works if added, just without a generated scholarly line.
 - **A4.** The week row runs Monday to Sunday, as the prompt says.
 - **A5.** Recordings: none yet. Audio is planned (data and UI) and built when you have recordings.
-- **A6.** `main` keeps receiving syncs from sankathara-chaturthi. Text changes made there must reach v2's text files; §8 (R3) covers how.
+- **A6.** (Changed 18 Oct 2026.) `main` no longer receives syncs from sankathara-chaturthi. Nitya Upasana is its own app from here; its texts live only in `content/texts/`.
 
 ## 2. Inventory of the current code
 
@@ -353,11 +353,11 @@ All tooling stays in `tests/` as now (`npm` there: Playwright, Vitest, TypeScrip
 
 ## 7. Phase 1 slices
 
-Each slice: tests first, then code, then every suite (including today's regression tests); done = tests pass, phone and desktop screenshots (one dark), README and Help updated, `main` untouched. After each, I stop for your OK.
+Each slice: tests first, then code, then every suite (including today's regression tests); done = tests pass, phone and desktop screenshots (one dark), README and Help updated. Work happens on a branch per slice and merges to `main` (which goes live) after your OK.
 
-| # | Slice | Tests | What you can check on your phone (v2 preview) |
+| # | Slice | Tests | What you can check on your phone (live site after merge) |
 |---|---|---|---|
-| 0 | **Branch and checks.** `v2` branch, preview address, CI on `v2`, Vitest and `tsc --noEmit` set up, `docs/decisions.md`. | CI green on the unchanged site | The preview opens and looks exactly like today's site. |
+| 0 | **Checks.** Vitest and `tsc --noEmit` set up in CI, `docs/decisions.md` kept up to date. | CI green on the unchanged site | The site looks exactly as today. |
 | 1 | **Texts become files.** The 11 text files, the format parser, `npm run content`, the migration script, and the new renderer producing today's markup. | Per text, every line identical to today's (count reported); today's content test passes unchanged; format checks; IAST checks | Nothing looks different: same texts, same print. README explains how to add a text. |
 | 2 | **Storage, profiles, backup.** IndexedDB, store, per-profile settings, settings move from v1, Save a backup file / Restore, storage persistence, backup reminder. | Migration from each old settings version; backup → restore round trip; profile switch; a11y | Create two profiles with different text sizes and languages, switch between them, save a backup, restore it. |
 | 3 | **Library and categories.** Library view by category, add or rename a category, search across the library. | Search scoring; a11y; layout matrix | Browse Vedic Chant / Aarti; find "sukhkarta" and "सुखकर्ता". |
@@ -382,7 +382,7 @@ Slices 9 and 10 are small and could move above the line if you want them in Phas
 |---|---|---|
 | R1 | **A text changes by accident** during migration or later editing (an editor normalising Unicode, a lost svara mark, a swapped line). | The migration proves every line identical; files are never normalised and the checker refuses a file that would change under normalisation; today's content test stays; per-text line counts reported each time. |
 | R2 | **Print regresses**, since it is the most tuned part. | Wrap, don't rewrite: same markup, same engine. The print suite and 208-PDF audit must reproduce today's page counts and contents numbers for "everything". You check Safari PDFs after slices 1 and 4 (I can't run real Safari). |
-| R3 | **`main` keeps changing** (syncs from sankathara-chaturthi) while v2 is built, and text changes there must reach v2's files. | `main` is merged into `v2` regularly. A check (`npm run content:sync`) compares v2's text files with `main`'s `content/pieces.js` and lists every difference, so nothing is missed or silently overwritten. |
+| R3 | ~~Two copies of the texts drifting apart while v2 is built.~~ Gone since 18 Oct 2026: v2 is built on `main` and syncs from sankathara-chaturthi have stopped. New risk instead: **every merge goes live**. | Slices merge only with all tests green and your OK; slice 1 changes nothing visible; `sankathara-chaturthi-base` keeps today's code to go back to. |
 | R4 | **iPhone wipes site data** (common for sites not added to the home screen). | Backup and restore in slice 2, `persist()`, the reminder, and Help explaining "Add to Home Screen" keeps data safer. |
 | R5 | **Safari's IndexedDB quirks** (early iOS 15 had a bug where the first open could hang). | Open with a timeout and one retry, fall back to memory with a warning (§4.2), tested on WebKit in CI; your iPhone check after slice 2. |
 | R6 | **Special-day dates wrong** (adhik months, a tithi that skips a sunrise). | Only rules you supply; each tested against published dates before it ships; the existing ±1 minute moonrise accuracy kept. |

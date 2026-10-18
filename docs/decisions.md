@@ -2,6 +2,10 @@
 
 Newest first. Each entry: the decision, who made it, and where it came from.
 
+## 2026-10-18: build on main
+
+Satish chose to build v2 on `main` ("Nitya Upasana is a brand new app"). Today's code was saved as the branch `sankathara-chaturthi-base` (at `22b6702`); the `v2` branch was merged into `main` and deleted. `main` no longer mirrors or syncs from sankathara-chaturthi. Every merge to `main` goes live at nitya-upasana.pages.dev, so slices merge only with tests green and Satish's OK. Q11 below is superseded: the version follows the normal release rules.
+
 ## 2026-10-18: architecture plan approved
 
 Satish approved `docs/architecture.md` and answered "yes to all" to its questions:

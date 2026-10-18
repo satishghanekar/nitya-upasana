@@ -9,4 +9,4 @@ Static pages for choosing a design. **Not app code**: no logic, sample data only
 | `recital.html` | Recital mode (goes with either reading view) |
 | `builder-a.html`, `builder-b.html` | Routine builder: A list with move buttons, B week grid |
 
-Add `?dark` to an address for the dark theme. They will be deleted once a design is chosen and built.
+Add `?dark` to an address for the dark theme. Live at nitya-upasana.pages.dev/mockups/ (not linked from the app). They will be deleted once a design is chosen and built.
