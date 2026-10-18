@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mockup · Recital mode</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  body { min-height: 100vh; }
+  .rc { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; }
+  .rt { display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: var(--muted); font-size: 14px; }
+  .rt .x { margin-left: auto; }
+  .rt b { font: 18px var(--head); color: var(--accent); font-weight: 400; }
+  .stage { display: grid; place-items: center; padding: 10px 18px; text-align: center; }
+  .stage .v p { --fs: min(6.2vw, 46px); line-height: 1.9; white-space: nowrap; }
+  .stage .lab { color: var(--muted); font: 15px var(--body); margin-bottom: 10px; }
+  .rb { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 12px 16px 20px; }
+  .rb .btn { min-height: 56px; }
+  .dots { display: flex; gap: 6px; justify-content: center; }
+  .dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--rule); }
+  .dots i.on { background: var(--accent); width: 22px; border-radius: 5px; }
+  .hint { text-align: center; font-size: 13px; color: var(--muted); padding-bottom: 6px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Recital mode (goes with A or B)</span>
+<script src="../content/pieces.js"></script>
+<script src="mock.js"></script>
+<script>
+var p = piece(3);
+document.getElementById("app").innerHTML =
+  '<div class="rc"><div class="rt"><b>देवीची आरती</b><span>· Verse 2 of 6</span><button class="ib x" aria-label="Leave recital mode">' + I.x + "</button></div>" +
+  '<div class="stage"><div><div class="v">' + p.items.filter(function (x) { return x.lines && !x.kind; })[1].lines.map(function (l, i, a) { return "<p>" + l.mr + (i === a.length - 1 ? ' <span class="sn">२ ॥</span>' : "") + "</p>"; }).join("") +
+  '</div><div class="lab" style="margin-top:22px">↻ ध्रुपद</div></div></div>' +
+  '<div><div class="dots" aria-hidden="true"><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i></div><div class="hint">Tap or swipe for the next verse · screen stays on</div>' +
+  '<div class="rb"><button class="btn ghost">' + I.prev + 'Back</button><span></span><button class="btn">Next' + I.next + "</button></div></div></div>";
+</script>
+</body>
+</html>

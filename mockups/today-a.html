@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mockup · Today A · Paper card</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  main { max-width: 640px; margin: 0 auto; padding: 14px 14px 120px; display: grid; gap: 14px; }
+  .hero { padding: 16px 14px; display: grid; gap: 12px; border-top: 3px solid var(--accent); }
+  .pic { width: 84px; height: 84px; border-radius: 50%; margin: 0 auto; background: url(../picture-360.webp) center/cover; box-shadow: 0 0 0 3px var(--line); }
+  .om { text-align: center; color: var(--accent); font: 19px var(--head); margin-top: -4px; }
+  .date { text-align: center; font-weight: 600; }
+  .sess { padding: 6px 14px 14px; }
+  .sh { display: flex; align-items: baseline; justify-content: space-between; padding: 8px 4px 2px; }
+  .sh h2 { margin: 0; font: 22px var(--head); color: var(--accent); }
+  .start { width: 100%; margin-top: 10px; }
+  .rail { display: none; }
+  @media (min-width: 1000px) {
+    #app { display: grid; grid-template-columns: 260px 1fr; }
+    .top { grid-column: 1 / -1; }
+    .rail { display: block; padding: 20px 18px; border-right: 1px solid var(--rule); min-height: calc(100vh - 65px); }
+    .rail a { display: block; padding: 7px 10px; border-radius: 8px; color: var(--ink); text-decoration: none; font: 15px var(--body); }
+    .rail a.on { background: var(--card); color: var(--accent); font-weight: 600; }
+    .rail h3 { margin: 16px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    main { max-width: 760px; padding-top: 22px; grid-template-columns: 1fr 1fr; align-items: start; align-content: start; }
+    .hero { grid-column: 1; }
+    .sess { grid-column: 2; grid-row: 1 / span 4; }
+    .tools, .off { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Option A · Paper card</span>
+<script src="mock.js"></script>
+<script>
+document.getElementById("app").innerHTML =
+  topbar('<button class="chip" aria-label="Profile: Aai. Change profile"><span class="av" style="--c:#7b1113;font:600 12px var(--body)">आई</span>Aai</button>') +
+  '<nav class="rail" aria-label="Library"><a class="on" href="#">Today</a><h3>Vedic Chant</h3><a href="#">१. ' + T[0].mr + '</a><h3>Aarti</h3>' +
+  T.slice(1).map(function (t, i) { return '<a href="#">' + dn(i + 1) + ". " + t.mr + "</a>"; }).join("") + "</nav>" +
+  "<main>" +
+  '<section class="card hero" aria-label="Today"><div class="pic" role="img" aria-label="Shri Ganesha"></div><div class="om">॥ श्री गणेशाय नमः ॥</div>' +
+  '<div class="date">Sunday, 18 October 2026</div>' + week("Sun") + seg("Evening") +
+  '<div class="spl"><span class="dot">' + I.moon + '</span><span>Next <b>Sankashti Chaturthi</b>: Wed, Oct 28<br><span class="muted">Moonrise 8:16 pm · Columbus, OH</span></span></div></section>' +
+  '<section class="card sess" aria-label="Evening session"><div class="sh"><h2>सायंकाळ · Evening</h2><span class="muted">2 of 10 done</span></div>' +
+  rows(EVENING, [1, 2], { num: true, tag: true }) +
+  '<button class="btn start">' + I.play + "Continue: Devi Aarti</button></section>" +
+  tools() + '<div class="off"><b>✓ Saved offline</b> · v2.0 preview · Check for updates</div>' +
+  "</main>";
+</script>
+</body>
+</html>

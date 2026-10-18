@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mockup · Reading A · One text at a time</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  .sbar { padding: 8px 14px 10px; border-bottom: 1px solid var(--rule); background: var(--bg); position: sticky; top: 65px; z-index: 4; }
+  .sbar .t { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+  .sbar .t b { color: var(--ink); }
+  .pips { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; margin-top: 6px; }
+  .pips i { height: 4px; border-radius: 2px; background: var(--rule); }
+  .pips i.d { background: var(--tick); }
+  .pips i.c { background: var(--accent); }
+  main { max-width: 760px; margin: 0 auto; padding: 14px 14px 150px; }
+  .finb { display: flex; flex-direction: column; gap: 10px; margin: 10px 0 0; }
+  .finb .btn { width: 100%; }
+  .bb .ib small { font-size: 13px; }
+  .side { display: none; }
+  @media (min-width: 1000px) {
+    #app { display: grid; grid-template-columns: 280px 1fr; }
+    .top, .sbar { grid-column: 1 / -1; }
+    .side { display: block; padding: 16px; border-right: 1px solid var(--rule); }
+    .side .row { min-height: 46px; }
+    .side .t1 { font-size: 16px; }
+    .side .row.cur { background: var(--card); border-radius: 10px; }
+    main { max-width: 900px; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; column-gap: 30px; }
+    .bb { left: 280px; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Reading A · one text at a time</span>
+<script src="../content/pieces.js"></script>
+<script src="mock.js"></script>
+<script>
+var body = renderPiece(3, {});
+var dhEnd = body.lastIndexOf("</div></div>", body.indexOf('<span class="rmk">')) ;
+document.getElementById("app").innerHTML =
+  topbar('<button class="ib" aria-label="Languages">' + I.lang + "</button>") +
+  '<div class="sbar"><div class="t"><span><b>आई</b> · Evening</span><span>3 of 10</span></div><div class="pips">' +
+  EVENING.map(function (k, i) { return '<i class="' + (i < 2 ? "d" : i === 2 ? "c" : "") + '"></i>'; }).join("") + "</div></div>" +
+  '<aside class="side" aria-label="This session">' + '<div class="lbl" style="margin:4px 4px 8px">Evening · आई</div>' + rows(EVENING, [1, 2]).replace('<li class="row">', '<li class="row cur">') + "</aside>" +
+  "<main>" + '<div class="ph"><span class="n">३.</span><h2>देवीची आरती</h2><span class="tag">मराठी</span></div>' +
+  '<div class="two-wrap">' + body + "</div>" + LOTUS +
+  '<div class="finb"><button class="btn">' + I.check + "Done · next: शंकराची आरती</button></div>" +
+  "</main>" +
+  '<nav class="bb" aria-label="Session"><button class="ib">' + I.prev + '<small>Prev</small></button><button class="ib" aria-label="Text size and language"><b>Aa</b></button><button class="ib" aria-label="Recital mode">' + I.full + '</button><button class="ib">' + '<small>Next</small>' + I.next + "</button></nav>";
+// Desktop: stanzas in two columns, as today's site does from 1000 px
+if (innerWidth >= 1000) {
+  var w = document.querySelector(".two-wrap"), sts = [].slice.call(w.querySelectorAll(".st, .rmk"));
+  var g = document.createElement("div"); g.className = "two";
+  var col = [document.createElement("div"), document.createElement("div")], c = -1;
+  sts.forEach(function (el) { if (el.classList.contains("st")) c++; col[c % 2].appendChild(el); });
+  g.appendChild(col[0]); g.appendChild(col[1]); w.appendChild(g);
+}
+</script>
+</body>
+</html>

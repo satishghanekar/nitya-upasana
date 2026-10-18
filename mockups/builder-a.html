@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mockup · Routine builder A · List with move buttons</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  main { max-width: 640px; margin: 0 auto; padding: 14px 14px 40px; display: grid; gap: 14px; }
+  main > * { min-width: 0; }
+  .mode button { font-size: 14px; }
+  h1 { margin: 0; font: 650 20px var(--ui); display: flex; align-items: center; gap: 10px; }
+  .mode { display: grid; grid-template-columns: 1fr 1fr; }
+  .copy { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--muted); }
+  .copy button { border: 0; background: none; color: var(--accent); font-weight: 600; min-height: 44px; }
+  .edit { padding: 4px 10px; }
+  .er { display: flex; align-items: center; gap: 6px; min-height: 60px; border-bottom: 1px solid var(--rule); }
+  .er:last-child { border-bottom: 0; }
+  .er .g { color: var(--muted); cursor: grab; width: 28px; display: grid; place-items: center; }
+  .er .no { width: 22px; color: var(--muted); font: 14px var(--body); }
+  .er .tt .t1 { font-size: 18px; }
+  .mv { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: var(--soft); display: grid; place-items: center; }
+  .mv[disabled] { opacity: .35; }
+  .mv.rm { color: var(--accent); }
+  .er.lift { background: var(--bg); box-shadow: 0 6px 18px #0003; border-radius: 12px; border: 1px solid var(--accent); transform: rotate(-.6deg); }
+  .add { width: 100%; }
+  .announce { font-size: 13px; color: var(--muted); text-align: center; }
+  .pick { display: none; }
+  @media (min-width: 1000px) {
+    main { max-width: 1180px; grid-template-columns: 1fr 400px; align-items: start; column-gap: 28px; }
+    main > * { grid-column: 1; }
+    .pick { display: grid; gap: 10px; grid-column: 2; grid-row: 1 / span 8; padding: 16px; position: sticky; top: 80px; }
+    .pick input { min-height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); padding: 0 14px; font: inherit; color: var(--ink); }
+    .cats { display: flex; gap: 6px; flex-wrap: wrap; }
+    .cats span { padding: 6px 12px; border-radius: 16px; border: 1px solid var(--line); font-size: 13.5px; }
+    .cats span.on { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+    .pr { display: flex; align-items: center; gap: 10px; min-height: 48px; border-bottom: 1px solid var(--rule); }
+    .cb { width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--line); display: grid; place-items: center; }
+    .cb.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+    .add.m { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Builder A · list with move buttons</span>
+<script src="mock.js"></script>
+<script>
+var list = [0, 1, 8, 9, 10];
+function er(k, i, n) {
+  return '<li class="er' + (i === 2 ? " lift" : "") + '"><span class="g" aria-hidden="true">' + I.grip + '</span><span class="no">' + dn(i + 1) + '.</span><span class="tt"><span class="t1">' + T[k].mr + '</span><span class="t2">' + T[k].en + "</span></span>" +
+    '<button class="mv" aria-label="Move ' + T[k].en + ' up"' + (i === 0 ? " disabled" : "") + ">" + I.up + '</button><button class="mv" aria-label="Move ' + T[k].en + ' down"' + (i === n - 1 ? " disabled" : "") + ">" + I.down + '</button><button class="mv rm" aria-label="Remove ' + T[k].en + '">' + I.x + "</button></li>";
+}
+document.getElementById("app").innerHTML =
+  topbar() + "<main>" +
+  '<h1><span class="av" style="--c:#7b1113;font:600 12px var(--body)">आई</span>Aai’s routine</h1>' +
+  seg("Morning") +
+  '<div class="seg mode" role="radiogroup" aria-label="Which days"><button role="radio" aria-checked="false">Same every day</button><button class="on" role="radio" aria-checked="true">Different by weekday</button></div>' +
+  week("Mon") +
+  '<div class="copy"><span>Monday morning · 5 texts</span><button>Copy to other days…</button></div>' +
+  '<ol class="list sheet edit">' + list.map(function (k, i) { return er(k, i, list.length); }).join("") + "</ol>" +
+  '<div class="announce" aria-live="polite">घालीन लोटांगण moved to 3 of 5 · Alt+↑/↓ moves with a keyboard</div>' +
+  '<button class="btn ghost add m">' + I.plus + "Add texts</button>" +
+  '<aside class="pick sheet" aria-label="Add texts"><div class="lbl">Add texts to Monday morning</div><input placeholder="Search (Marathi or English)" aria-label="Search texts">' +
+  '<div class="cats"><span class="on">All</span><span>Vedic Chant</span><span>Stotra</span><span>Ashtak</span><span>Aarti</span></div>' +
+  T.map(function (t, k) { var on = list.indexOf(k) >= 0; return '<div class="pr"><span class="cb' + (on ? " on" : "") + '">' + (on ? I.check : "") + '</span><span class="tt"><span class="t1" style="font-size:16px">' + t.mr + '</span><span class="t2">' + t.en + '</span></span><span class="tag">' + t.cat + "</span></div>"; }).slice(0, 8).join("") +
+  "</aside></main>";
+</script>
+</body>
+</html>
