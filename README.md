@@ -1,4 +1,4 @@
-# संकटहर चतुर्थी / Sankathara Chaturthi
+# नित्य उपासना / Nitya Upasana
 
 The texts our group recites at Sankathara (Sankashti) Chaturthi puja: Pooja, Bhajans (coming soon) and Aarti, in Marathi with English transliteration.
 

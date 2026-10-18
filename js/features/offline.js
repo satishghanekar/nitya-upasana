@@ -23,7 +23,7 @@ export function init() {
       hd.appendChild(m1);
       m2 = document.createElement("meta");
       m2.name = "apple-mobile-web-app-title";
-      m2.content = "Sankathara Chaturthi";
+      m2.content = "Nitya Upasana";
       hd.appendChild(m2);
     } catch (e) {}
     // Offline: a small cloud in the top bar while there is no internet (#ofb), and in Settings → About whether the
