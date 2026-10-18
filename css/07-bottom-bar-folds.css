@@ -795,7 +795,7 @@ html[data-asb="1"] {
 
 /* ==== The date card: next Chaturthi date first, More dates folded ====
    js/features/date-card.js sets #home.skn once the date is known: the card leads with the next Chaturthi date,
-   larger, and its moonrise; today's date, the date strip and "Add all upcoming dates" wait under "More dates"
+   larger, and its moonrise, under today's date; the date strip and "Add all upcoming dates" wait under "More dates"
    (#skmore; #home.pmore while open). The calendar icon and the App / Share / QR / Print / Help row stay in sight.
    On Sankashti day itself (#home.pday) the moonrise time is large, the contents below are set larger, and the
    button row waits under More dates too. */
@@ -834,7 +834,6 @@ html[data-asb="1"] {
 #home.pmore .skc .skmore svg {
   transform: rotate(180deg);
 }
-#home.skn:not(.pmore) .skc .sktd,
 #home.skn:not(.pmore) .skc .sks,
 #home.skn:not(.pmore) .skc #skb,
 #home.skn:not(.pmore) .skc #skall,
