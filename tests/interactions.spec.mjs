@@ -168,6 +168,7 @@ test("on other days the card leads with the next Chaturthi date, and More dates 
   await openSite(page, SETUPS.marathi);
   await expect(page.locator("#home")).not.toHaveClass(/\bpday\b/);
   await expect(page.locator("#skc .skh").first()).toContainText("पुढील चतुर्थी");
+  await expect(page.locator("#skc .sktd")).toBeVisible();
   const more = page.locator("#skmore");
   await expect(more).toBeVisible();
   await expect(more).toHaveAttribute("aria-expanded", "false");
