@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mockup · Today A · Time-of-day picture</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  main { max-width: 640px; margin: 0 auto; padding: 14px 14px 120px; display: grid; gap: 14px; }
+  .hero { padding: 16px 14px; display: grid; gap: 12px; border-top: 3px solid var(--accent); }
+  /* The picture follows the session; the ring marks today's weekday star. */
+  .pic { position: relative; width: 168px; height: 168px; margin: 0 auto; border-radius: 50%; overflow: hidden;
+    box-shadow: 0 0 0 3px var(--line); background: #1b1512; }
+  .pic img { position: absolute; inset: -3%; width: 106%; height: 106%; transition: opacity .6s; }
+  .pic .ring { position: absolute; width: 17%; height: 17%; margin: -8.5% 0 0 -8.5%; border-radius: 50%;
+    border: 2px solid #fff; box-shadow: 0 0 10px 3px #fff8, inset 0 0 6px #fff8; transition: left .4s, top .4s; }
+  .om { text-align: center; color: var(--accent); font: 19px var(--head); margin-top: -4px; }
+  .date { text-align: center; font-weight: 600; }
+  .sess { padding: 6px 14px 14px; }
+  .sh { display: flex; align-items: baseline; justify-content: space-between; padding: 8px 4px 2px; }
+  .sh h2 { margin: 0; font: 22px var(--head); color: var(--accent); }
+  .start { width: 100%; margin-top: 10px; }
+  .rail { display: none; }
+  @media (min-width: 1000px) {
+    #app { display: grid; grid-template-columns: 260px 1fr; }
+    .top { grid-column: 1 / -1; }
+    .rail { display: block; padding: 20px 18px; border-right: 1px solid var(--rule); min-height: calc(100vh - 65px); }
+    .rail a { display: block; padding: 7px 10px; border-radius: 8px; color: var(--ink); text-decoration: none; font: 15px var(--body); }
+    .rail a.on { background: var(--card); color: var(--accent); font-weight: 600; }
+    .rail h3 { margin: 16px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    main { max-width: 760px; padding-top: 22px; grid-template-columns: 1fr 1fr; align-items: start; align-content: start; }
+    .hero { grid-column: 1; }
+    .sess { grid-column: 2; grid-row: 1 / span 4; }
+    .tools, .off { grid-column: 1; }
+    .pic { width: 200px; height: 200px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pic img, .pic .ring { transition: none; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Today A · picture follows the time of day</span>
+<script src="mock.js"></script>
+<script>
+// Sample only. ?s=Morning|Afternoon|Evening and ?d=Sun..Sat pick what the screenshot shows; otherwise the clock decides
+// (Morning before 12:00, Afternoon until 17:00, Evening after, as in docs/decisions.md).
+var Q = new URLSearchParams(location.search);
+var PIC = { Morning: "sunrise", Afternoon: "midday", Evening: "sunset" };
+var LABEL = { Morning: "Sunrise picture", Afternoon: "Midday picture", Evening: "Sunset picture" };
+var MR = { Morning: "सकाळ", Afternoon: "दुपार", Evening: "सायंकाळ" };
+// Star centres on each picture (per cent), Sunday र to Saturday श, read off Satish's images.
+var STAR = {
+  sunrise: [[15.8, 40.9], [22.3, 27.7], [33.6, 18.4], [49.9, 15], [66, 18.4], [77.6, 27.9], [83.6, 40.9]],
+  midday: [[16, 44.3], [22, 30], [33.6, 19.9], [49.9, 15.8], [66.3, 19.9], [77.9, 30.3], [83.9, 44.5]],
+  sunset: [[16.6, 40.1], [23.3, 27.4], [34.9, 18.4], [49.9, 15], [65.2, 18.4], [76.9, 27.7], [83.6, 40.1]]
+};
+var ORDER = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+// The picture is drawn 106% wide from -3% (to hide its dark corners), so move the ring the same way.
+function at(n) { return (n * 1.06 - 3).toFixed(1) + "%"; }
+var FULL = { Sun: "Sunday", Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday" };
+var h = new Date().getHours();
+var S = Q.get("s") || (h < 12 ? "Morning" : h < 17 ? "Afternoon" : "Evening");
+var D = Q.get("d") || "Sun";
+var DATE = { Mon: 12, Tue: 13, Wed: 14, Thu: 15, Fri: 16, Sat: 17, Sun: 18 };
+
+function draw() {
+  document.getElementById("app").innerHTML =
+    topbar('<button class="chip" aria-label="Profile: Aai. Change profile"><span class="av" style="--c:#7b1113;font:600 12px var(--body)">आई</span>Aai</button>') +
+    '<nav class="rail" aria-label="Library"><a class="on" href="#">Today</a><h3>Vedic Chant</h3><a href="#">१. ' + T[0].mr + '</a><h3>Aarti</h3>' +
+    T.slice(1).map(function (t, i) { return '<a href="#">' + dn(i + 1) + ". " + t.mr + "</a>"; }).join("") + "</nav>" +
+    "<main>" +
+    '<section class="card hero" aria-label="Today"><div class="pic" role="img" aria-label="' + LABEL[S] + ", " + FULL[D] + ' star marked">' +
+    '<img src="icons/' + PIC[S] + '.webp" alt=""><span class="ring" style="left:' + at(STAR[PIC[S]][ORDER.indexOf(D)][0]) + ";top:" + at(STAR[PIC[S]][ORDER.indexOf(D)][1]) + '"></span></div>' +
+    '<div class="om">॥ श्री गणेशाय नमः ॥</div>' +
+    '<div class="date">' + FULL[D] + ", " + DATE[D] + " October 2026</div>" + week(D) + seg(S) +
+    '<div class="spl"><span class="dot">' + I.moon + '</span><span>Next <b>Sankashti Chaturthi</b>: Wed, Oct 28<br><span class="muted">Moonrise 8:16 pm · Columbus, OH</span></span></div></section>' +
+    (S === "Morning"
+      ? '<section class="card sess" aria-label="Morning session"><div class="sh"><h2>' + MR[S] + ' · Morning</h2><span class="muted">0 of 1 done</span></div>' +
+        rows([0], [], { num: true, tag: true }) + '<button class="btn start">' + I.play + "Start: " + T[0].en + "</button></section>"
+      : S === "Afternoon"
+      ? '<section class="card sess" aria-label="Afternoon session"><div class="sh"><h2>' + MR[S] + ' · Afternoon</h2><span class="muted">Nothing planned</span></div>' +
+        '<p class="muted" style="padding:8px 4px">No texts in this session yet. Add some in the routine builder.</p></section>'
+      : '<section class="card sess" aria-label="Evening session"><div class="sh"><h2>' + MR[S] + ' · Evening</h2><span class="muted">2 of 10 done</span></div>' +
+        rows(EVENING, [1, 2], { num: true, tag: true }) + '<button class="btn start">' + I.play + "Continue: " + T[3].en + "</button></section>") +
+    tools() + '<div class="off"><b>✓ Saved offline</b> · v2.0 preview · Check for updates</div>' +
+    "</main>";
+}
+draw();
+// In the mockup, tapping a session or a day shows what changes.
+document.addEventListener("click", function (e) {
+  var b = e.target.closest(".seg button, .day");
+  if (!b) return;
+  var t = b.textContent.trim();
+  if (b.classList.contains("day")) D = t.slice(0, 3); else S = t;
+  draw();
+});
+</script>
+</body>
+</html>

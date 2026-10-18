@@ -5,6 +5,7 @@ Static pages for choosing a design. **Not app code**: no logic, sample data only
 | Page | What it shows |
 |---|---|
 | `today-a.html`, `today-b.html`, `today-c.html` | Today page: A paper card, B family first, C whole day at a glance |
+| `today-icons.html` | Today A with Satish's pictures: sunrise, midday or sunset by session, today's weekday star ringed (`?s=Morning&d=Thu` to pick) |
 | `reading-a.html`, `reading-b.html` | Reading view: A one text at a time, B whole session in one scroll |
 | `recital.html` | Recital mode (goes with either reading view) |
 | `builder-a.html`, `builder-b.html` | Routine builder: A list with move buttons, B week grid |
