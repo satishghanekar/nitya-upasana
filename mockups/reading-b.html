@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mockup · Reading B · Whole session in one scroll</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  main { max-width: 760px; margin: 0 auto; padding: 10px 14px 120px; }
+  .now { position: sticky; top: 65px; z-index: 4; display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: var(--bg);
+    border-bottom: 1px solid var(--rule); font-size: 14px; }
+  .now .t1 { font: 17px var(--head); color: var(--accent); flex: 1; }
+  .ph { margin-top: 26px; align-items: center; }
+  .ph .tk { background: var(--bg); }
+  .ph.done .tk { background: var(--tick); border-color: var(--tick); color: var(--bg); }
+  .ph.done h2 { color: var(--muted); }
+  .folded { padding: 10px 14px; margin-top: 10px; border-radius: 12px; border: 1px dashed var(--line); color: var(--muted); font-size: 14px; display: flex; gap: 8px; align-items: center; }
+  .folded b { font: 16px var(--head); color: var(--ink); font-weight: 400; }
+  .bb { justify-content: space-around; }
+  @media (min-width: 1000px) {
+    .v p.e { font-size: 15px; }
+    main { max-width: 1100px; }
+    .both .st, .both .dh .v { display: grid; grid-template-columns: 1.3fr 1fr; column-gap: 28px; align-items: baseline; }
+    .both .dh .v { width: 100%; border-left: 0; padding: 10px 0; border-radius: 12px; background: var(--card); }
+    .both .v p { text-align: right; }
+    .both .v p.e { text-align: left; margin: 0; font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Reading B · whole session, one scroll</span>
+<script src="../content/pieces.js"></script>
+<script src="mock.js"></script>
+<script>
+function head(k, no, done) {
+  return '<div class="ph' + (done ? " done" : "") + '"><span class="tk" role="checkbox" aria-checked="' + !!done + '" aria-label="Done: ' + T[k].en + '">' + (done ? I.check : "") + '</span><span class="n">' + dn(no) + '.</span><h2>' + T[k].mr + '</h2><span class="tag">' + T[k].lang + "</span></div>";
+}
+document.getElementById("app").innerHTML =
+  topbar('<button class="ib" aria-label="Languages">' + I.lang + "</button>") +
+  '<div class="now"><span class="av" style="--c:#2f5d8a;font:600 11px var(--body);width:30px;height:30px">बाबा</span><span class="t1">देवीची आरती</span><span class="muted">3 / 10 · Evening</span></div>' +
+  "<main class=\"both\">" +
+  '<div class="folded">' + I.check + "<span><b>गणपतीची आरती</b>, <b>गणपति जी की आरती</b> done · Show</span></div>" +
+  head(3, 3) + renderPiece(3, { en: 1, max: 2 }) +
+  head(4, 4) + renderPiece(4, { en: 1, max: 1 }) +
+  "</main>" +
+  '<nav class="bb"><button class="ib">' + I.prev + '</button><button class="ib"><b>Aa</b></button><button class="ib">' + I.search + '</button><button class="ib">' + I.full + '</button><button class="ib">' + I.next + "</button></nav>";
+</script>
+</body>
+</html>

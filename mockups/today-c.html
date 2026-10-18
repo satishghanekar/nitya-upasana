@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mockup · Today C · Whole day</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  main { max-width: 640px; margin: 0 auto; padding: 14px 14px 40px; display: grid; gap: 14px; }
+  .top2 { display: grid; gap: 14px; }
+  .hd { display: flex; align-items: center; gap: 12px; }
+  .hd .pic { width: 52px; height: 52px; border-radius: 50%; background: url(../picture-360.webp) center/cover; box-shadow: 0 0 0 2px var(--line); }
+  .hd h1 { margin: 0; font: 600 19px var(--ui); }
+  .hd .om { color: var(--accent); font: 16px var(--head); }
+  .day3 { display: grid; gap: 12px; }
+  .s { padding: 12px 14px; }
+  .s .h { display: flex; align-items: center; gap: 10px; }
+  .s .h h2 { margin: 0; font: 650 17px var(--ui); flex: 1; }
+  .s .h small { color: var(--muted); font-weight: 400; display: block; font-size: 13px; }
+  .ring { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 650;
+    background: conic-gradient(var(--tick) calc(var(--p) * 1%), var(--rule) 0); position: relative; }
+  .ring::before { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: var(--card); }
+  .ring span { position: relative; }
+  .s.cur { border-width: 2px; border-color: var(--accent); }
+  .s.shut .list { display: none; }
+  .s .btn { width: 100%; margin-top: 8px; }
+  .s.empty { background: var(--soft); border-style: dashed; }
+  .s.empty .btn { background: none; color: var(--accent); border: 1px solid var(--line); }
+  @media (min-width: 1000px) {
+    main { max-width: 1240px; padding: 22px 28px; }
+    .day3 { grid-template-columns: 1fr 1fr 1fr; align-items: start; }
+    .s.shut .list { display: block; }
+    .s.shut:not(.empty) .btn { display: none; }
+    .wk { max-width: 520px; }
+    .top2 { display: grid; grid-template-columns: 1fr 520px; gap: 24px; align-items: center; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Option C · Whole day at a glance</span>
+<script src="mock.js"></script>
+<script>
+function sCard(name, icon, ids, done, opts) {
+  var n = ids.length, p = n ? Math.round(done.length / n * 100) : 0;
+  return '<section class="card s' + (opts.cur ? " cur" : " shut") + (n ? "" : " empty") + '" aria-label="' + name + '"><div class="h">' + icon +
+    "<h2>" + name + "<small>" + (n ? n + (n > 1 ? " texts" : " text") + " · " + done.length + " done" : "Nothing set for Sunday") + "</small></h2>" +
+    (n ? '<span class="ring" style="--p:' + p + '"><span>' + (p === 100 ? "✓" : done.length + "/" + n) + "</span></span>" : "") + "</div>" +
+    (n ? rows(ids, done) : "") +
+    (opts.cur ? '<button class="btn">' + I.play + "Continue: Devi Aarti</button>" : n ? "" : '<button class="btn">' + I.plus + "Add texts</button>") + "</section>";
+}
+document.getElementById("app").innerHTML =
+  topbar('<button class="chip"><span class="av" style="--c:#6b4a8a;font:600 12px var(--body)">आजी</span>Aaji</button>') + "<main>" +
+  '<div class="top2"><div class="hd"><div class="pic" role="img" aria-label="Shri Ganesha"></div><div><div class="om">॥ श्री गणेशाय नमः ॥</div><h1>Sunday, 18 October</h1></div></div>' +
+  '<div class="wk">' + week("Sun") + "</div></div>" +
+  '<div class="spl"><span class="dot">' + I.moon + '</span><span>Next <b>Sankashti Chaturthi</b>: Wed, Oct 28 · moonrise 8:16 pm</span></div>' +
+  '<div class="day3">' + sCard("Morning", I.sun, [0], [0], {}) + sCard("Afternoon", I.noon, [], [], {}) + sCard("Evening", I.lamp, EVENING, [1, 2], { cur: 1 }) + "</div>" +
+  tools() + '<div class="off"><b>✓ Saved offline</b> · v2.0 preview · Check for updates</div></main>';
+</script>
+</body>
+</html>
