@@ -3,12 +3,13 @@
 
 import { flash } from "../core/page.js";
 
-var FONTS, hd, l1, m1, m2, ofb, offv, OFV, CACHE, me, upd, updv, UPD, PARTS, ofSaved;
+var FONTS, IMAGES, hd, l1, m1, m2, ofb, offv, OFV, CACHE, me, upd, updv, UPD, PARTS, ofSaved;
 
 export function init() {
   // The cache name below must match the one in sw.js; change both on every deploy.
-  // Font files kept for offline use (the list is in js/parts.js, shared with sw.js)
+  // Font files and pictures kept for offline use (the lists are in js/parts.js, shared with sw.js)
   FONTS = SITE_PARTS.fonts;
+  IMAGES = SITE_PARTS.images;
   if (/^https?:$/.test(location.protocol)) {
     try {
       hd = document.head;
@@ -22,7 +23,7 @@ export function init() {
       hd.appendChild(m1);
       m2 = document.createElement("meta");
       m2.name = "apple-mobile-web-app-title";
-      m2.content = "Sankathara Chaturthi";
+      m2.content = "Nitya Upasana";
       hd.appendChild(m2);
     } catch (e) {}
     // Offline: a small cloud in the top bar while there is no internet (#ofb), and in Settings → About whether the
@@ -178,11 +179,11 @@ export function init() {
         .then(function () {
           if (!("caches" in window)) return;
           caches.open(CACHE).then(function (c) {
-            // Keep the page, its parts and every font file, then show the offline badge (sw.js caches the same files)
+            // Keep the page, its parts, every font file and the pictures, then show the offline badge (sw.js caches the same files)
             var done = ofSaved;
             c.add(new Request("./", { cache: "reload" })).catch(function () {});
             Promise.all(
-              PARTS.concat(FONTS).map(function (u) {
+              PARTS.concat(FONTS, IMAGES).map(function (u) {
                 return c.match(u).then(function (h) {
                   return h || c.add(u);
                 });

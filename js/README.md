@@ -21,6 +21,8 @@ There is no build step: the browser loads these files as they are.
 | `core/page.js` | Page basics: the <html> element, the language button icons, the short message (flash) |
 | `core/state.js` | Settings (P), loaded from this device |
 | `core/features.js` | Features held back for a later release |
+| `features/day-picture.js` | The app's picture follows the time of day (sunrise, midday, sunset) with today's weekday star ringed; checks again at 12:00, 17:00, midnight and when the page comes back into view |
+| `core/time-of-day.js` | Which picture and which star for a given moment (pure functions, unit-tested; no `init()`: used by `features/day-picture.js`) |
 | `text/iast.js` | IAST transliteration (Devanagari → Latin with diacritics, Vedic accents as marks) |
 | `text/layout.js` | Layout helpers that run once |
 | `features/astronomy.js` | Astronomy for the Next Sankathara Chaturthi card |

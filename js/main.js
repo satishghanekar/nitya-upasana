@@ -22,6 +22,7 @@ import { load as loadTexts } from "./text/load.js";
 import { init as startPage } from "./core/page.js";
 import { init as startState } from "./core/state.js";
 import { init as startFeatures } from "./core/features.js";
+import { init as startDayPicture } from "./features/day-picture.js";
 import { init as startIast } from "./text/iast.js";
 import { init as startLayout } from "./text/layout.js";
 import { init as startAstronomy } from "./features/astronomy.js";
@@ -56,6 +57,7 @@ function start() {
     startPage(); // Page basics: the <html> element, the language button icons, the short message (flash)
     startState(); // Settings (P), loaded from this device
     startFeatures(); // Features held back for a later release
+    startDayPicture(); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed
     startIast(); // IAST transliteration (Devanagari → Latin with diacritics, Vedic accents as marks)
     startLayout(); // Layout helpers that run once
     startAstronomy(); // Astronomy for the Next Sankathara Chaturthi card
