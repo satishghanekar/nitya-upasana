@@ -6,7 +6,7 @@
 // side, each line of the original should take as many lines as its English, so the rows stay in step.
 // The print styles give every line its size; this adjusts them, in five steps:
 //   1. collect: each piece, with its columns (the original, the English) and their lines, in any
-//      layout: side by side (a table per stanza), stacked, single or two columns (a .verse per stanza);
+//      layout: side by side (a table per stanza), stacked or single column (a .verse per stanza);
 //   1b. match (side by side): a line written in two lines (<br>) in one language and as one line in the
 //      other is broken in the other too, at its preferred break nearest the same place, so the row takes
 //      as many lines on both sides however wide the page;
@@ -33,6 +33,15 @@ export function fit(w, d, mode, pv) {
     mine = pv.querySelectorAll(sel[1]),
     at = new Map(),
     fnt = d.documentElement.getAttribute("data-font") || "std";
+  // a prose piece printed in one language (running paragraphs, .pvpr) is not fitted, as its lines run on: it is
+  // set at its script's size in the reader's font, so it looks as large in every font
+  var pr = d.querySelectorAll("#pv p.pvpr"),
+    mp = pv.querySelectorAll("p.pvpr");
+  if (pr.length === mp.length)
+    [].forEach.call(pr, function (el, i) {
+      var f = sizeOf(SCRIPTS[scriptOf(el.textContent)] || OTHER, fnt);
+      if (Math.abs(f - 1) >= 0.005) el.style.fontSize = mp[i].style.fontSize = parseFloat(w.getComputedStyle(el).fontSize) * f + "px";
+    });
   if (!lines.length || lines.length !== mine.length) return;
   lines.forEach(function (el, i) {
     at.set(el, mine[i]);

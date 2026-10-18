@@ -9,8 +9,8 @@
 //   - a line that takes more lines than it has segments wrapped (at a preferred break, if no part broke);
 //   - side by side, the two cells of a row ending at different heights are out of step;
 //   - a marker missing from the PDF is text that was not printed;
-//   - a part ending past its column (the page's margin, the middle of the page in two columns, or the start of
-//     the cell beside it side by side) ran over: text drawn over its neighbour or off the paper.
+//   - a part ending past its column (the page's margin, or the start of the cell beside it side by side) ran
+//     over: text drawn over its neighbour or off the paper.
 import * as pdfjs from "pdfjs-dist/legacy/build/pdf.mjs";
 
 /** Add the line markers; returns what was marked: one entry per printed line. */
@@ -79,8 +79,6 @@ export async function addLineMarkers(page) {
         sid: el.closest(".pvs")?.dataset.sid || "",
         lang: el.closest("[lang]")?.getAttribute("lang") || "",
         cell: side ? (el.classList.contains("pvm") ? "orig" : "en") : "",
-        // the dhrupad above two columns runs across the page
-        across: !!el.closest(".pvref"),
         row: side ? [...pv.querySelectorAll(".pvside tr")].indexOf(tr) : -1,
         text: el.textContent.replace(/\s*(\{\{[^}]*\}\}|\[\[[^\]]*\]\])\s*/g, " ").replace(/\s+/g, " ").trim(),
         parts: parts.length,
@@ -132,7 +130,7 @@ function lineCount(pts) {
 }
 
 /**
- * Judge the printout from the markers (mode: the print layout, "two", "one" or "side"). Returns the numbers
+ * Judge the printout from the markers (mode: the print layout, "one" or "side"). Returns the numbers
  * for the report and a list of findings, each { kind, sid, text, … }.
  */
 export function auditLines(lines, { marks, pageHeights }, mode) {
@@ -163,18 +161,14 @@ export function auditLines(lines, { marks, pageHeights }, mode) {
       page = xs[0] || { w: 0 };
     return { ...ln, used, broke, bottom, left, right, pw: page.w, pts };
   });
-  // running over: past the page's margin, past the middle of the page (two columns), or into the next cell
+  // running over: past the page's margin, or into the next cell
   let overflow = 0;
   const over = (l, limit, where) => {
     if (l.right <= limit + OVER) return;
     overflow++;
     find.push({ kind: "runs past its column", sid: l.sid, text: l.text, lines: `${where}, ${Math.round(l.right - limit)}pt over` });
   };
-  for (const l of L) {
-    if (!l.pw) continue;
-    if (mode === "two" && !l.across) over(l, l.left < l.pw / 2 ? l.pw / 2 : l.pw - MARGIN, l.left < l.pw / 2 ? "left column" : "right column");
-    else over(l, l.pw - MARGIN, "page margin");
-  }
+  for (const l of L) if (l.pw) over(l, l.pw - MARGIN, "page margin");
   // side by side: the two cells of a row should take the same number of lines
   let outOfStep = 0;
   const rows = {};

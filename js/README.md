@@ -3,14 +3,14 @@
 There is no build step: the browser loads these files as they are.
 
 - `parts.js`, `../content/pieces.js` and `render.js` are plain scripts. They run first and put the pieces into the page while it loads, so nothing moves when the rest starts.
-- `main.js` is the site script. It is an ES module (`<script type="module">`), and it imports one part per topic from `core/`, `text/` and `features/`. `print/` holds the print layout, used by `features/print.js`.
+- `main.js` is the site script. It is an ES module (`<script type="module">`), and it imports one part per topic from `core/`, `text/` and `features/` (`features/overlays.js` and the `print/` files are imported by the parts that use them). `print/` holds the print layout, used by `features/print.js`.
 
 ## How the parts fit together
 
 - Loading a part only defines its functions and variables. Each part's `init()` does its start-up work (reads the page, adds listeners), and `main.js` calls the `init()`s in a fixed order. That is the order the code ran in when it was one file (`app.js`), so a part can rely on everything above it in `main.js` being ready.
 - A part imports what it uses from other parts by name, for example `import { P, save } from "../core/state.js"`. Functions can be imported in any order. A variable belongs to the part that sets it, and other parts only read it.
 - `shared` (in `core/state.js`) holds the few values that several parts change: `skCache`, `skKey`, `rmkPop`, `FSA`, `fontN`, `LEAD` and `wl`. They are read and written as `shared.LEAD` and so on.
-- The settings are `P` (`core/state.js`), saved on this device only (localStorage key `aarti2-prefs`). `apply()` (`core/apply.js`) turns `P` into the `data-*` switches on `<html>` that the styles react to (see `../css/README.md`).
+- The settings are `P` (`core/state.js`), saved on this device only (localStorage key `aarti2-prefs`). `apply()` (`features/bars.js`) turns `P` into the `data-*` switches on `<html>` that the styles react to (see `../css/README.md`).
 - A new file must also be added to `parts.js`, so it is kept for offline use. `tests/site-files.spec.mjs` checks this.
 
 ## Parts, in start-up order
@@ -28,14 +28,15 @@ There is no build step: the browser loads these files as they are.
 | `text/stanza-numbers.js` | Stanza numbers |
 | `text/line-breaks.js` | Preferred line breaks |
 | `text/autofit.js` | Auto-fit text size |
-| `core/apply.js` | Current piece, menus and apply() |
+| `core/apply.js` | Current piece, folds and menus |
 | `features/bottom-bar.js` | Bottom bar (#asc) and autoscroll |
 | `features/tilt.js` | Tilt to scroll (bottom bar, phones and tablets) |
-| `features/bars.js` | Bars tuck away while reading (CSS: "Bars tuck away while reading") |
+| `features/bars.js` | Bars tuck away while reading (CSS: "Bars tuck away while reading"), and apply() |
 | `features/settings-panel.js` | Settings panel |
 | `features/dhrupad-button.js` | Dhrupad button: toggle once / after every stanza, keeping the reader's place |
+| `features/reading-sheet.js` | Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad, within thumb reach |
 | `features/wake-lock.js` | Keep the screen on (Wake Lock). Browsers drop the lock when the page is hidden, so it is re-requested. |
-| `features/overlays.js` | Overlays: settings panel (setP) and contents + search (setJ); opening one closes the other |
+| `features/overlays.js` | Overlays: settings panel (setP) and contents + search (setJ); opening one closes the other (no `init()`: used by bars, clicks, pinch, help and history) |
 | `features/history.js` | Back button |
 | `features/languages.js` | Settings page: languages |
 | `features/contents-list.js` | Contents list inside the contents + search overlay (built from the home page contents) |
@@ -45,9 +46,9 @@ There is no build step: the browser loads these files as they are.
 | `core/startup.js` | Start-up |
 | `features/picture-viewer.js` | Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move |
 | `features/help.js` | Help: opens over the page; the phone's Back button closes it |
-| `features/print.js` | Print |
-| `print/profiles.js` | Print typography: per script, how far print may adjust a line's size; the side-by-side column range (no `init()`: read by `print/fit.js`) |
+| `print/profiles.js` | Print typography: per script, how far print may adjust a line's size; the side-by-side column range; the pop-up's default page (`CHOICE`) (no `init()`: read by `print/fit.js`) |
 | `print/fit.js` | Print layout: sets each stanza's size (and side by side, the column widths) so lines stay whole and in step (no `init()`: called by `features/print.js`) |
+| `features/print.js` | Print |
 | `features/share.js` | Share, QR code and the Add to Home Screen buttons |
 | `features/offline.js` | Offline use: home-screen app details and the service worker (sw.js) |
 

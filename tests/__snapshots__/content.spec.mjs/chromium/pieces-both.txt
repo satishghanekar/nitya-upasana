@@ -421,7 +421,7 @@ Ya Evam Veda | Ityupanishat || 14 ||
 1.
 गणपतीची आरती
 Ganapati Aarti
-ध्रुपद (प्रत्येक कडव्यानंतर)Refrain (after every verse)
+ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 जय देव जय देव, जय मंगल मूर्ती ।
 
@@ -494,7 +494,7 @@ Sankati Pavave Nirvani Rakshave Survarvandana || 3 ||
 2.
 गणपति जी की आरती
 Ganapati Ji ki Aarti
-ध्रुपद (प्रत्येक कडव्यानंतर)Refrain (after every verse)
+ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 जय जय श्री गणराज विद्या सुखदाता ।
 
@@ -567,7 +567,7 @@ Gosavinandan Nishidin Gun Gave || 3 ||
 3.
 देवीची आरती
 Devi Aarti
-ध्रुपद (प्रत्येक कडव्यानंतर)Refrain (after every verse)
+ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 जय देवी जय देवी महिषासुरमर्दिनी ।
 
@@ -640,7 +640,7 @@ Narahar Tallina Jhala Pada Pankaja Lesha || 3 ||
 4.
 शंकराची आरती
 Shankar Aarti
-ध्रुपद (प्रत्येक कडव्यानंतर)Refrain (after every verse)
+ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 जय देव जय देव जय श्रीशंकरा ।
 
@@ -731,7 +731,7 @@ Raghukulatilak Ramdasa Antari || 4 ||
 5.
 दत्ताची आरती
 Dattatreya Aarti
-ध्रुपद (प्रत्येक कडव्यानंतर)Refrain (after every verse)
+ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 जय देव जय देव जय श्री गुरुदत्ता ।
 
@@ -885,7 +885,7 @@ Aarti Dnyanaraja || Dhr. ||
 7.
 विठ्ठलाची आरती
 Vitthal Aarti
-ध्रुपद (प्रत्येक कडव्यानंतर)Refrain (after every verse)
+ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 येई ओ विठ्ठले माझी माऊली ये । ​येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥
 
@@ -1035,7 +1035,7 @@ Hare Krishna Hare Krishna Krishna Krishna Hare Hare ||
 9.
 आरती जय गणेश देवा
 Aarti Jai Ganesh Deva
-ध्रुपद (प्रत्येक कडव्यानंतर)Refrain (after every verse)
+ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 जय गणेश जय गणेश, जय गणेश देवा ।
 
