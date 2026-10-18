@@ -236,6 +236,17 @@ export function init() {
       }
       return out.slice(0, count);
     }
-    return { elong: elong, rise: rise, upcoming: upcoming };
+    // moonLon / sunLon: apparent tropical ecliptic longitudes (degrees) at time t (ms), for js/core/panchang.js
+    return {
+      elong: elong,
+      rise: rise,
+      upcoming: upcoming,
+      moonLon: function (t) {
+        return moon(T(t)).lon;
+      },
+      sunLon: function (t) {
+        return sunLon(T(t));
+      },
+    };
   })();
 }
