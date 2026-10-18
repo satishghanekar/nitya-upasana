@@ -107,7 +107,7 @@ export function mark() {
   });
   // Top bar title: the site's name, or once a piece's heading has scrolled under the bar, that piece ("३. देवीची आरती")
   var en = P.lang === "en",
-    tt = en ? "Sankathara Chaturthi" : SCR.to("संकटहर चतुर्थी"),
+    tt = en ? "Nitya Upasana" : SCR.to("नित्य उपासना"),
     bt0 = document.getElementById("bt"),
     hd = c && c.classList.contains("ash") && c.querySelector("header");
   if (hd && hd.getBoundingClientRect().bottom < 64) {

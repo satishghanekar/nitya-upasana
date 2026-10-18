@@ -9,7 +9,7 @@ import { ovDone, ovPush } from "./history.js";
 export function init() {
   (function () {
     var url = location.origin + location.pathname,
-      title = "Sankathara Chaturthi"; // the app's name is always in English (share, install, page title)
+      title = "Nitya Upasana"; // the app's name is always in English (share, install, page title)
     var qm = document.getElementById("qrm");
     function qr(o) {
       if (o) ovPush();
