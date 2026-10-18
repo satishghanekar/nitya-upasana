@@ -143,7 +143,7 @@ export function init() {
     }
     function altMoon(t, lat, lon) {
       var x = T(t),
-        m = moon(x),
+        m = moon(T(t + (63.8 + 0.2 * (t / 31557600000 - 30)) * 1000)), // the moon at TT = UT + ΔT (~69 s)
         eps = (23.439291 - 0.0130042 * x) * D2R,
         l = m.lon * D2R,
         b = m.lat * D2R;
@@ -154,9 +154,10 @@ export function init() {
         p = lat * D2R;
       return Math.asin(Math.sin(p) * Math.sin(dec) + Math.cos(p) * Math.cos(dec) * Math.cos(H)) / D2R;
     }
-    // moonrise within [t0,t1): first upward crossing of +0.125 deg (centre, refraction, semidiameter, parallax)
+    // moonrise within [t0,t1): first upward crossing of +0.125 deg geocentric altitude of the centre (upper limb on the
+    // horizon with refraction, semidiameter and parallax); within ~0.5 min of the Swiss Ephemeris, 2020-2032
     function rise(t0, t1, lat, lon) {
-      var h0 = 1.1,
+      var h0 = 0.125,
         st = 10 * 60000,
         a = altMoon(t0, lat, lon) - h0;
       for (var t = t0 + st; t <= t1; t += st) {

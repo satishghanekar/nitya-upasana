@@ -15,8 +15,8 @@
 // every 11th day at Pune and Columbus): sunrise and sunset within 0.2 minute; tithi end times within 1.5 minutes
 // (typically 0.5), nakshatra within 0.5, yoga within 1.5. So a day whose tithi begins or ends within BORDERLINE_MIN
 // minutes of sunrise is flagged `borderline`: a printed panchang may give it the neighbouring tithi.
-// Moonrise is SK.rise, exactly as the Sankashti card shows it (about 4–5 minutes later than the Swiss Ephemeris's
-// upper-limb moonrise, because SK.rise waits for the moon's centre to reach 1.1° geocentric altitude).
+// Moonrise is SK.rise, exactly as the Sankashti card shows it: within 0.5 minute of the Swiss Ephemeris's
+// upper-limb moonrise (typically 0.1).
 
 import { SK, init as initSky } from "../features/astronomy.js";
 import {
