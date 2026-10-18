@@ -34,7 +34,7 @@ test("js/parts.js lists every part of the site script, and main.js imports each 
 });
 
 test("every file in js/parts.js exists", () => {
-  const missing = [...parts.css, ...parts.scripts, ...parts.modules, ...parts.content, ...parts.fonts].filter((f) => !existsSync(new URL("../" + f, import.meta.url)));
+  const missing = [...parts.css, ...parts.scripts, ...parts.modules, ...parts.content, ...parts.fonts, ...parts.images].filter((f) => !existsSync(new URL("../" + f, import.meta.url)));
   expect(missing).toEqual([]);
 });
 
@@ -42,4 +42,18 @@ test("js/parts.js lists the texts in content/library.json, so every text is kept
   const lib = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
   expect(parts.content).toEqual(["content/library.json", "content/categories.json", ...lib.texts.map((t) => "content/" + t.file)]);
   for (const f of parts.content) expect(parts.all).toContain(f);
+});
+
+test("js/parts.js keeps every picture the page shows, at every time of day, for offline use", () => {
+  // the pictures and icons named in index.html (link previews' https addresses aside)
+  const named = [...html.matchAll(/(?:src|href|data-src)="([^":]+\.(?:png|webp))"/g)].map((m) => m[1]);
+  expect(named.length).toBeGreaterThan(3);
+  for (const f of named) expect(parts.images).toContain(f);
+  for (const t of ["sunrise", "midday", "sunset"]) {
+    expect(parts.images).toContain(`picture-${t}-360.webp`);
+    expect(parts.images).toContain(`picture-${t}.webp`);
+  }
+  // the manifest's app icons exist (the installed icon is the sunrise picture)
+  const manifest = JSON.parse(readFileSync(new URL("../manifest.json", import.meta.url), "utf8"));
+  for (const i of manifest.icons) expect(existsSync(new URL("../" + i.src, import.meta.url)), i.src).toBe(true);
 });

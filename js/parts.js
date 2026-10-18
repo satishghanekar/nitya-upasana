@@ -32,6 +32,8 @@ var SITE_PARTS = (function () {
     "core/page",
     "core/state",
     "core/features",
+    "core/time-of-day",
+    "features/day-picture",
     "text/iast",
     "text/layout",
     "features/astronomy",
@@ -102,5 +104,22 @@ var SITE_PARTS = (function () {
   ].map(function (f) {
     return "fonts/" + f + ".woff2";
   });
-  return { css: css, scripts: scripts, modules: modules, content: content, fonts: fonts, all: css.concat(scripts, modules, content) };
+  // The pictures and icons kept for offline use: the app's three time-of-day pictures (sunrise, midday, sunset;
+  // js/core/time-of-day.js picks one), each small (home card) and full size (full-screen view), the tab icons
+  // and the installed app icons. Not in "all": "Check for updates" compares text files only.
+  var images = [
+    "picture-sunrise-360.webp",
+    "picture-midday-360.webp",
+    "picture-sunset-360.webp",
+    "picture-sunrise.webp",
+    "picture-midday.webp",
+    "picture-sunset.webp",
+    "icon-32.png",
+    "favicon-midday-32.png",
+    "favicon-sunset-32.png",
+    "icon-180.png",
+    "icon-192.png",
+    "icon-maskable-192.png",
+  ];
+  return { css: css, scripts: scripts, modules: modules, content: content, fonts: fonts, images: images, all: css.concat(scripts, modules, content) };
 })();

@@ -6,7 +6,7 @@
 <title>Sankathara Chaturthi</title>
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.1">
+<meta name="version" content="aarti-v1.2">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -22,6 +22,7 @@
 <meta property="og:image:width" content="1024">
 <meta property="og:image:height" content="1024">
 <meta name="twitter:card" content="summary">
+<!-- The tab icon follows the time of day (js/features/day-picture.js); the app icons below stay the sunrise picture -->
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <!-- In the page itself (not added by script) so iPhone share sheets and link previews, which don't run scripts, find the icon -->
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
@@ -51,6 +52,8 @@
 <link rel="modulepreload" href="js/core/page.js">
 <link rel="modulepreload" href="js/core/state.js">
 <link rel="modulepreload" href="js/core/features.js">
+<link rel="modulepreload" href="js/core/time-of-day.js">
+<link rel="modulepreload" href="js/features/day-picture.js">
 <link rel="modulepreload" href="js/text/iast.js">
 <link rel="modulepreload" href="js/text/layout.js">
 <link rel="modulepreload" href="js/features/astronomy.js">
@@ -205,10 +208,11 @@
     <div class="top">
     <!-- Fold button: the card folds to one slim line (Ganesha, next date, moonrise); the buttons come back when it opens -->
     <button type="button" id="cvb" aria-expanded="true" aria-controls="skc" aria-label="Fold the card"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
-    <div id="slim" hidden><img src="picture-360.webp" alt="" width="44" height="44"><div id="slimt"></div></div>
+    <div id="slim" hidden><img src="picture-sunrise-360.webp" alt="" width="44" height="44"><div id="slimt"></div></div>
     <div class="hero">
-      <!-- The app's picture; a tap opens it full screen (#pzv), where it can be pinched or double-tapped to zoom -->
-      <button type="button" id="iconb" aria-label="Show the picture full screen"><img src="picture-360.webp" fetchpriority="high" alt="" width="360" height="360"></button>
+      <!-- The app's picture, which follows the time of day (sunrise, midday, sunset) with a ring on today's weekday star
+           (#iconr, placed by js/features/day-picture.js); a tap opens it full screen (#pzv), where it can be pinched or double-tapped to zoom -->
+      <button type="button" id="iconb" aria-label="Show the picture full screen: Sunrise picture"><img src="picture-sunrise-360.webp" fetchpriority="high" alt="" width="360" height="360"><span id="iconr" hidden></span></button>
       <div class="hl1" aria-hidden="true">॥ श्री गणेशाय नमः ॥</div>
     </div>
     <div id="skc" class="skc" hidden></div>
@@ -262,8 +266,8 @@
 </main>
 <!-- ==== Pop-ups (QR code, print options), print view, status message ==== -->
 <!-- Full-screen picture: pinch, double-tap or (with a mouse) scroll to zoom; drag to move; ✕, Back, Escape or a tap outside closes -->
-<div id="pzv" hidden role="dialog" aria-modal="true" aria-label="Sankathara Chaturthi picture">
-  <img id="pzi" data-src="picture.webp" alt="Shri Ganesha, Sankathara Chaturthi" width="941" height="940" draggable="false">
+<div id="pzv" hidden role="dialog" aria-modal="true" aria-label="Sunrise picture">
+  <img id="pzi" data-src="picture-sunrise.webp" alt="Sunrise picture: ॐ, a palm-leaf book and a rosary under seven stars for the days of the week" width="940" height="940" draggable="false">
   <button type="button" id="pzx" aria-label="Close"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   <div id="pzh" aria-hidden="true"></div>
 </div>
@@ -366,7 +370,7 @@
         <li><b>Layout</b> (wide screens only): one or two columns of stanzas.</li>
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off. Keep screen on starts on for phones and tablets and off on computers.</li>
-        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.1), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
+        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.2), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
       </ul>
 
       <h3>While reading</h3>

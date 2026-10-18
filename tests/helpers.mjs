@@ -38,11 +38,13 @@ export const SETUPS = {
  * Open the site with the given settings.
  * @param {import('@playwright/test').Page} page
  * @param {object} prefs   settings merged over BASE_PREFS
- * @param {object} [opt]   { hash: "#a1", errors: array that collects page errors, now: a Date other than FIXED_NOW }
+ * @param {object} [opt]   { hash: "#a1", errors: array that collects page errors, now: a Date other than FIXED_NOW,
+ *                          running: true to start the clock at that time and let the test move it (page.clock.runFor) }
  */
 export async function openSite(page, prefs = {}, opt = {}) {
   const all = { ...BASE_PREFS, ...prefs };
-  await page.clock.setFixedTime(opt.now || FIXED_NOW);
+  if (opt.running) await page.clock.install({ time: opt.now || FIXED_NOW });
+  else await page.clock.setFixedTime(opt.now || FIXED_NOW);
   await page.addInitScript(
     ([k, v]) => {
       // only on the first load of this page: a test that reloads keeps what the site saved

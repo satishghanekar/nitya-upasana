@@ -46,7 +46,7 @@ export function init() {
       draw();
     }
     function open() {
-      // the full-size picture (140 KB) is fetched on the first open, not with the page (the service worker
+      // the full-size picture (about 75 KB; which one follows the time of day, features/day-picture.js) is fetched on the first open, not with the page (the service worker
       // still keeps a copy for offline use); the small card picture shows until it arrives
       if (!im.getAttribute("src")) im.src = im.getAttribute("data-src");
       ovPush();
