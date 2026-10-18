@@ -79,7 +79,7 @@ function tools() {
   return '<div class="tools"><button>' + I.app + "App</button><button>" + I.share + "Share</button><button>" + I.print + "Print</button><button>" + I.help + "Help</button></div>";
 }
 var EVENING = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-// The real text of a piece, read from content/pieces.js (never retyped): k = index in T
+// The real text of a piece, read from the old content/pieces.js, now tests/unit/fixtures/pieces.js (never retyped): k = index in T
 function piece(k) {
   var all = [];
   window.CONTENT.groups.forEach(function (g) { all = all.concat(g.pieces); });

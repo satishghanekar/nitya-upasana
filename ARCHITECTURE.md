@@ -8,13 +8,8 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files. **There
 
 1. **`<head>`** loads the 11 style files in `css/` in number order, then `js/parts.js`, the one list of the site's files. `modulepreload` links fetch the script parts in parallel.
 2. **`<body>`** has the top bar, Settings, the home page and the dialogs, written in HTML. Help's text sits in a `<template>` and is only laid out when Help is first opened.
-3. **At the end of `<main>`**, three plain scripts build the pieces:
-   - `content/pieces.js` holds the text of every piece (`CONTENT`).
-   - `js/render.js` turns it into HTML (`renderPieces`). When Kannada letters are chosen, it rewrites the Devanagari in place (`SCR`).
-   - A short inline script puts the result into the page.
-
-   The pieces are therefore in the page as it is parsed, as if they had been written in the HTML.
-4. **`js/main.js`** (`<script type="module">`) starts the site script. It calls each part's `init()` in a fixed order (listed in `js/README.md`), then sets `data-ready` on `<html>`.
+3. **At the end of `<main>`**, `#pieces` marks where the pieces go, and the plain script `js/render.js` defines `renderPieces` (the pieces' HTML) and `SCR` (Kannada letters).
+4. **`js/main.js`** (`<script type="module">`) starts the site script. First `js/text/load.js` fetches `content/library.json` and the text files in `content/texts/`, `js/text/content.js` builds `CONTENT` from them (reading each file with `js/text/format.js`), and `renderPieces` puts the pieces in place of `#pieces` (rewritten in Kannada letters when chosen). Only then does it call each part's `init()` in a fixed order (listed in `js/README.md`), and set `data-ready` on `<html>`. So every part finds the pieces in the page, as if they had been written in the HTML. If the texts can't be loaded, the parts start anyway.
 5. **Until `data-ready` is set, the page is hidden.** The reader's theme, languages and folds, the fitted text size and the date card all arrive in step 4. Showing the page before that made the home page jump down by about 90px on a phone (layout shift 0.13). If the script never runs, the page shows after 1.5 s anyway.
 6. **After the page is shown:**
    - The service worker (`sw.js`) saves the site for offline use.
@@ -41,7 +36,7 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files. **There
 
 The Print button builds a separate print view (`#pv`, in `js/features/print.js`) for the chosen layout. Printing from the browser's own menu builds the same view.
 
-- **Layouts:** the Print pop-up offers two choices, Portrait and Landscape. One language prints in a column on either; the original with its English prints side by side, on Landscape only (stacked, one above the other, took a third more paper and is no longer offered). A piece marked `prose` in `content/pieces.js` (the Atharvashirsha) prints in one language as a booklet does: running paragraphs with a first-line indent and the verse numbers inline (`prose()` in `print.js`). A paragraph starts at a stanza marked `para`, and a dhrupad stanza is a paragraph of its own (centred when it is one line, like the closing peace chant). A danda stays with the word before it and a verse number stays whole (`glue()`). Paragraphs run on from page to page; side by side keeps the piece as stanzas.
+- **Layouts:** the Print pop-up offers two choices, Portrait and Landscape. One language prints in a column on either; the original with its English prints side by side, on Landscape only (stacked, one above the other, took a third more paper and is no longer offered). A piece marked `prose` (`layout: prose` in its text file: the Atharvashirsha) prints in one language as a booklet does: running paragraphs with a first-line indent and the verse numbers inline (`prose()` in `print.js`). A paragraph starts at a stanza marked `para`, and a dhrupad stanza is a paragraph of its own (centred when it is one line, like the closing peace chant). A danda stays with the word before it and a verse number stays whole (`glue()`). Paragraphs run on from page to page; side by side keeps the piece as stanzas.
 
 - **Fitting the text** (`js/print/`): before the pages are planned, `fit.js` measures every printed line in the page-sized frame and sets each piece's size per language, and side by side the share of the width each column gets, so that lines stay whole and the two columns stay in step. Side by side, a row stays in step by line breaks too: a line written in two lines in one language is broken in the other at its preferred break nearest the same place; a row whose one side would wrap where the other fits has the other broken to match (between two words only when the first side has no better place either); and every planned wrap is written into the line as a `<br class="pvfb">`, because a line within 2% of its column may or may not wrap on paper, and a written break always does. `profiles.js` holds every number it works with: per script and text font, the size that makes the script look as large as the others, and how much smaller it may go to fit (never more than 15%).
 - **New languages:** the fitting works out each column's script from its letters (`scriptOf` in `profiles.js`: Devanagari, Bengali, Gurmukhi, Gujarati, Odia, Tamil, Telugu, Kannada, Malayalam or Latin), so a new script needs nothing in the print code. Give it an entry in `SCRIPTS` only if `npm run print:audit` shows it looks larger or smaller than the others. The printed cells carry the page's own `lang`, and the Print pop-up's sample takes its first words from the page, so a new language needs nothing there either.
@@ -58,7 +53,7 @@ The Print button builds a separate print view (`#pv`, in `js/features/print.js`)
 
 ## Offline use and updates
 
-- `sw.js` keeps the page, every file in `js/parts.js` and the main fonts in a cache named after the version (`aarti-v1.0`).
+- `sw.js` keeps the page, every file in `js/parts.js` and the main fonts in a cache named after the version (`aarti-v1.1`).
   - The page and its parts are always fetched fresh when possible, with a 3 s limit before the saved copy is used, so the page never mixes old and new parts.
   - Everything else comes from the saved copy and is refreshed in the background.
   - If the saved copy cannot be read within 2 s, the request goes to the network. Safari's storage can stall, and a Mac once sat on a blank page because of it.

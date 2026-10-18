@@ -1,0 +1,178 @@
+{
+ "texts": [
+  {
+   "id": "atharvashirsha",
+   "file": "texts/atharvashirsha.txt",
+   "title": "गणपत्यथर्वशीर्षोपनिषत्",
+   "titleEn": "Ganapati Atharvashirsha",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 95
+  },
+  {
+   "id": "sukhkarta",
+   "file": "texts/sukhkarta.txt",
+   "title": "गणपतीची आरती",
+   "titleEn": "Ganapati Aarti",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 15
+  },
+  {
+   "id": "shendur-lal-chadhayo",
+   "file": "texts/shendur-lal-chadhayo.txt",
+   "title": "गणपति जी की आरती",
+   "titleEn": "Ganapati Ji ki Aarti",
+   "category": "aarti",
+   "language": "hi",
+   "lines": 15
+  },
+  {
+   "id": "durge-durghat-bhari",
+   "file": "texts/durge-durghat-bhari.txt",
+   "title": "देवीची आरती",
+   "titleEn": "Devi Aarti",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 15
+  },
+  {
+   "id": "lavathavati-vikrala",
+   "file": "texts/lavathavati-vikrala.txt",
+   "title": "शंकराची आरती",
+   "titleEn": "Shankar Aarti",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 19
+  },
+  {
+   "id": "trigunatmak-traimurti",
+   "file": "texts/trigunatmak-traimurti.txt",
+   "title": "दत्ताची आरती",
+   "titleEn": "Dattatreya Aarti",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 19
+  },
+  {
+   "id": "aarti-dnyanaraja",
+   "file": "texts/aarti-dnyanaraja.txt",
+   "title": "ज्ञानेश्वरांची आरती",
+   "titleEn": "Dnyaneshwar Aarti",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 12
+  },
+  {
+   "id": "yei-o-vitthale",
+   "file": "texts/yei-o-vitthale.txt",
+   "title": "विठ्ठलाची आरती",
+   "titleEn": "Vitthal Aarti",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 16
+  },
+  {
+   "id": "ghalin-lotangan",
+   "file": "texts/ghalin-lotangan.txt",
+   "title": "घालीन लोटांगण",
+   "titleEn": "Ghalin Lotangan",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 18
+  },
+  {
+   "id": "jai-ganesh-deva",
+   "file": "texts/jai-ganesh-deva.txt",
+   "title": "आरती जय गणेश देवा",
+   "titleEn": "Aarti Jai Ganesh Deva",
+   "category": "aarti",
+   "language": "hi",
+   "lines": 10
+  },
+  {
+   "id": "jai-jagdish-hare",
+   "file": "texts/jai-jagdish-hare.txt",
+   "title": "आरती जय जगदीश हरे",
+   "titleEn": "Aarti Jai Jagdish Hare",
+   "category": "aarti",
+   "language": "hi",
+   "lines": 30
+  }
+ ],
+ "groups": [
+  {
+   "id": "g-pooja",
+   "btn": "pfb",
+   "name": {
+    "mr": "पूजा",
+    "en": "Pooja"
+   },
+   "texts": [
+    "atharvashirsha"
+   ]
+  },
+  {
+   "id": "g-aarti",
+   "btn": "xfb",
+   "name": {
+    "mr": "आरती",
+    "en": "Aarti"
+   },
+   "texts": [
+    "sukhkarta",
+    "shendur-lal-chadhayo",
+    "durge-durghat-bhari",
+    "lavathavati-vikrala",
+    "trigunatmak-traimurti",
+    "aarti-dnyanaraja",
+    "yei-o-vitthale",
+    "ghalin-lotangan",
+    "jai-ganesh-deva",
+    "jai-jagdish-hare"
+   ]
+  }
+ ],
+ "pageLanguage": "mr",
+ "languages": {
+  "sa": {
+   "mr": "संस्कृत",
+   "en": "Sanskrit"
+  },
+  "mr": {
+   "mr": "मराठी",
+   "en": "Marathi"
+  },
+  "hi": {
+   "mr": "हिंदी",
+   "en": "Hindi"
+  }
+ },
+ "refrain": {
+  "label": {
+   "mr": "ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)",
+   "en": "Refrain (sung after every verse)"
+  },
+  "note": {
+   "mr": "↻ ध्रुपद",
+   "en": "Refrain"
+  }
+ },
+ "ui": {
+  "prev": {
+   "mr": "मागील",
+   "en": "Previous"
+  },
+  "next": {
+   "mr": "पुढील",
+   "en": "Next"
+  }
+ },
+ "wiki": {
+  "kn": {
+   "https://mr.wikipedia.org/wiki/एकनाथ": "https://kn.wikipedia.org/wiki/ಸಂತ_ಏಕನಾಥ್",
+   "https://mr.wikipedia.org/wiki/नामदेव": "https://kn.wikipedia.org/wiki/ನಾಮ್‍ದೇವ್",
+   "https://mr.wikipedia.org/wiki/समर्थ_रामदास_स्वामी": "https://kn.wikipedia.org/wiki/ಸಮರ್ಥ_ರಾಮದಾಸರು"
+  }
+ }
+}
