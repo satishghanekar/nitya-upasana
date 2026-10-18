@@ -2,7 +2,7 @@
 
 Step 1 of the v2 work (plan only, no code). Written 18 Oct 2026 from `prompt-review/REVISED-PROMPT.md`, `PROJECT-BRIEF.md`, `TRANSLITERATION.md` and the code on `main` at `22b6702`.
 
-**Status: waiting for Satish's approval.** Nothing below is built yet. After approval comes Step 2 (mockups), then Step 3 (one slice at a time).
+**Status: approved by Satish on 18 Oct 2026, with the recommended answer to every question (Q1–Q12).** Next is Step 2 (mockups), then Step 3 (one slice at a time). Decisions are logged in `docs/decisions.md`.
 
 One finding up front: `PROJECT-BRIEF.md` describes an older shape of the site (one `index.html` with everything inline). The repository has moved on: it already has `content/pieces.js` (the texts as data), 11 CSS files, 35 small JavaScript modules, a Kannada-letters option, a redesigned print engine (Portrait / Landscape, prose layout for the Atharvashirsha) and 12 Playwright suites. This plan builds on the repository as it is, which makes v2 much less work than a rewrite.
 
@@ -10,7 +10,7 @@ One finding up front: `PROJECT-BRIEF.md` describes an older shape of the site (o
 
 ## 1. Open questions and assumptions
 
-Each question has my recommended answer in **bold**. A one-word reply ("yes", or the number and your answer) is enough. Work continues on the recommended answers until you say otherwise.
+Each question has the recommended answer in **bold**. Satish answered "yes to all" on 18 Oct 2026, so every bold answer is now a decision.
 
 | # | Question | Recommended |
 |---|---|---|
