@@ -29,6 +29,9 @@ jobs:
           cache-dependency-path: tests/package-lock.json
       - run: npm ci
       - run: npm run lint
+      # Type checks (files marked // @ts-check) and the logic tests in tests/unit (Vitest)
+      - run: npm run types
+      - run: npm run unit
   playwright:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
