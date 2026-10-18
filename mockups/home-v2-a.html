@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mockup · Home v2 A · Simple list</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  main { max-width: 560px; margin: 0 auto; padding: 14px 14px 110px; display: grid; gap: 14px; }
+  .day1 { display: flex; align-items: center; gap: 14px; }
+  .day1 .d1 { font: 22px/1.25 var(--head); }
+  .day1 .d2 { color: var(--muted); font-size: 13.5px; }
+  .sh { display: flex; align-items: baseline; justify-content: space-between; padding: 6px 2px 0; }
+  .sh h2 { margin: 0; font: 22px var(--head); color: var(--accent); }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--rule); }
+  .bar .btn { width: 100%; max-width: 532px; margin: 0 auto; display: flex; min-height: 54px; font-size: 17px; }
+  .other { text-align: center; font-size: 14px; color: var(--muted); }
+  .other a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Option A · Simple list</span>
+<script src="mock.js"></script>
+<script src="home-v2.js"></script>
+<script>
+loadEvening().then(function (L) {
+  document.getElementById("app").innerHTML = topbar2() + "<main>" +
+    '<div class="day1">' + pic(76) + '<div><div class="d1">' + PAN.vara.mr + ", " + PAN.dateMr + '</div><div class="d2">' + PAN.vara.en + ", " + PAN.dateEn + "</div></div></div>" +
+    '<button class="pan" aria-label="Today in the Vedic calendar. Open the calendar">' + I.cal + '<span class="pt">' +
+      '<span class="p1">' + PAN.masa.mr + " " + PAN.paksha.mr + " " + PAN.tithi.mr + "</span>" +
+      '<span class="p2">नक्षत्र ' + PAN.nak.mr + " · " + PAN.samvat.mr + "</span>" +
+      '<span class="p3"><span>' + I.sunUp + PAN.sunrise + "</span><span>" + I.sunDn + PAN.sunset + "</span><span>" + PAN.place + "</span></span></span>" + I.chev + "</button>" +
+    '<div class="sh"><h2>सायंकाळ · Evening</h2><span class="muted">2 of ' + L.length + "</span></div>" +
+    trows(L, 2) +
+    '<p class="other">Not this time? <a href="#">Morning</a> · <a href="#">Afternoon</a></p>' +
+    "</main>" +
+    '<div class="bar"><button class="btn">' + I.play + "Continue · " + L[2].title + "</button></div>";
+});
+</script>
+</body>
+</html>

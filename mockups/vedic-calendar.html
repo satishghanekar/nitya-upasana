@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mockup · Vedic calendar</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  main { max-width: 980px; margin: 0 auto; padding: 14px 14px 60px; display: grid; gap: 16px; }
+  .back { display: flex; align-items: center; gap: 8px; }
+  .back h1 { margin: 0; font: 22px var(--head); color: var(--accent); flex: 1; }
+  .dayc { padding: 16px; display: grid; gap: 12px; border-top: 3px solid var(--accent); }
+  .dh1 { display: flex; gap: 14px; align-items: center; }
+  .dh1 .a { font: 22px/1.3 var(--head); color: var(--accent); }
+  .dh1 .b { font-size: 13.5px; color: var(--muted); }
+  dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0; }
+  dt, dd { margin: 0; padding: 9px 2px; border-bottom: 1px solid var(--line); }
+  dt { color: var(--muted); font: 14px var(--body); padding-right: 14px; }
+  dd { font: 16px var(--body); }
+  dd small { display: block; font: 12.5px var(--ui); color: var(--muted); }
+  .next { font-size: 14px; }
+  .mon { padding: 14px 10px; }
+  .mh { display: flex; align-items: center; gap: 8px; padding: 0 4px 10px; }
+  .mh h2 { flex: 1; margin: 0; font: 19px var(--head); text-align: center; }
+  .mh .s { display: block; font: 13px var(--body); color: var(--muted); }
+  .mh .ib { width: 40px; height: 40px; }
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .wd { text-align: center; font: 12px var(--body); color: var(--muted); padding-bottom: 2px; }
+  .c { min-height: 64px; border-radius: 10px; background: var(--soft); border: 1px solid var(--rule); padding: 4px 1px; display: grid; align-content: start; gap: 1px; text-align: center; }
+  .c b { font: 600 15px var(--ui); }
+  .c .t { font: 10.5px/1.15 var(--body); color: var(--muted); }
+  .c .f { font: 10.5px/1.2 var(--body); color: var(--accent); font-weight: 600; }
+  .c.today { background: var(--accent); border-color: var(--accent); }
+  .c.today b, .c.today .t, .c.today .f { color: var(--on-accent); }
+  .c.k { background: var(--surface); }
+  .key { display: flex; justify-content: center; gap: 14px; font: 12.5px var(--body); color: var(--muted); padding-top: 10px; }
+  .key i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--rule); background: var(--soft); vertical-align: -1px; margin-right: 4px; }
+  .key i.k { background: var(--surface); }
+  .c.e { background: none; border: 0; }
+  .c .ph { display: none; }
+  .moon { width: 10px; height: 10px; border-radius: 50%; margin: 1px auto 0; border: 1.5px solid var(--gold); }
+  .moon.full { background: var(--gold); }
+  .note { font-size: 12.5px; color: var(--muted); text-align: center; }
+  @media (min-width: 900px) { main { grid-template-columns: 360px 1fr; align-items: start; } .back, .note { grid-column: 1 / -1; } .c { min-height: 78px; } .c .t { font-size: 12.5px; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Vedic calendar · day and month</span>
+<script src="mock.js"></script>
+<script src="home-v2.js"></script>
+<script>
+var P = PAN, cells = "", wd = ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"];
+for (var e = 0; e < 4; e++) cells += '<div class="c e"></div>';  // 1 Oct 2026 is a Thursday
+OCT.forEach(function (t, i) {
+  var d = i + 1, f = SPECIAL[d];
+  cells += '<div class="c' + (t > 15 && t < 30 ? " k" : "") + (d === 18 ? " today" : "") + '"><b>' + d + '</b><span class="t">' + (t === 30 ? "अमावास्या" : TN[t > 15 ? t - 15 : t]) + "</span>" +
+    (t === 15 ? '<span class="moon full" role="img" aria-label="Full moon"></span>' : t === 30 ? '<span class="moon" role="img" aria-label="New moon"></span>' : "") +
+    (f && t !== 15 && t !== 30 ? '<span class="f">' + f + "</span>" : "") + "</div>";
+});
+document.getElementById("app").innerHTML = topbar2() + "<main>" +
+  '<div class="back"><button class="ib" aria-label="Back">' + I.prev + "</button><h1>पंचांग · Vedic calendar</h1></div>" +
+  '<section class="card dayc" aria-label="Today"><div class="dh1">' + pic(64) + "<div>" +
+    '<div class="a">' + P.masa.mr + " " + P.paksha.mr + " " + P.tithi.mr + '</div><div class="b">' + P.vara.mr + ", " + P.dateMr + "</div></div></div>" +
+    "<dl>" +
+    "<dt>तिथी</dt><dd>" + P.paksha.mr + " " + P.tithi.mr + "<small>" + P.paksha.en + " " + P.tithi.en + " · until " + P.tithi.ends + "</small></dd>" +
+    "<dt>नक्षत्र</dt><dd>" + P.nak.mr + "<small>" + P.nak.en + " · until " + P.nak.ends + "</small></dd>" +
+    "<dt>योग</dt><dd>" + P.yoga.mr + "<small>" + P.yoga.en + "</small></dd>" +
+    "<dt>वार</dt><dd>" + P.vara.mr + "<small>" + P.vara.en + "</small></dd>" +
+    "<dt>सूर्योदय</dt><dd>" + P.sunrise + "<small>Sunset " + P.sunset + " · " + P.place + "</small></dd>" +
+    "<dt>मास</dt><dd>" + P.masa.mr + "<small>" + P.masa.en + " (amanta)</small></dd>" +
+    "<dt>संवत्सर</dt><dd>" + P.samvat.mr + "<small>" + P.samvat.en + "</small></dd>" +
+    "<dt>ऋतु · अयन</dt><dd>" + P.ritu.mr + " · " + P.ayana.mr + "<small>" + P.ritu.en + " · " + P.ayana.en + "</small></dd>" +
+    "</dl>" +
+    '<div class="spl next"><span class="dot">' + I.moon + "</span><span>Next <b>संकष्टी चतुर्थी</b>: Wed, 28 Oct<br><span class=\"muted\">Moonrise 8:16 pm · " + P.place + "</span></span></div>" +
+  "</section>" +
+  '<section class="card mon" aria-label="October 2026"><div class="mh"><button class="ib" aria-label="September">' + I.prev + "</button>" +
+    '<h2>ऑक्टोबर २०२६<span class="s">भाद्रपद वद्य → आश्विन (११ ऑक्टोबरपासून)</span></h2><button class="ib" aria-label="November">' + I.next + "</button></div>" +
+    '<div class="grid">' + wd.map(function (w) { return '<div class="wd">' + w + "</div>"; }).join("") + cells + '</div><div class="key"><span><i></i>शुद्ध पक्ष</span><span><i class="k"></i>वद्य पक्ष</span><span>Tithi at sunrise</span></div></section>' +
+  '<p class="note">Worked out on this phone for ' + P.place + ". Tap a day to see its details. Sample values, still to be checked against Kalnirnay.</p>" +
+  "</main>";
+</script>
+</body>
+</html>
