@@ -6,7 +6,7 @@
 <title>Nitya Upasana</title>
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.2">
+<meta name="version" content="aarti-v1.3">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="css/07-bottom-bar-folds.css">
 <link rel="stylesheet" href="css/08-contents-book.css">
 <link rel="stylesheet" href="css/09-settings-page.css">
+<link rel="stylesheet" href="css/10-today.css">
 <link rel="stylesheet" href="css/99-fallbacks.css">
 <!-- The list of the site's files, for Check for updates and the offline copy. In the head: in the body it would
      sit between elements that the styles expect to be neighbours (#home + .grp) -->
@@ -58,6 +59,9 @@
 <link rel="modulepreload" href="js/text/layout.js">
 <link rel="modulepreload" href="js/features/astronomy.js">
 <link rel="modulepreload" href="js/features/date-card.js">
+<link rel="modulepreload" href="js/core/routine.js">
+<link rel="modulepreload" href="js/core/ticks.js">
+<link rel="modulepreload" href="js/features/today-card.js">
 <link rel="modulepreload" href="js/text/dhrupad-markers.js">
 <link rel="modulepreload" href="js/text/stanza-numbers.js">
 <link rel="modulepreload" href="js/text/line-breaks.js">
@@ -215,8 +219,20 @@
       <button type="button" id="iconb" aria-label="Show the picture full screen: Sunrise picture"><img src="picture-sunrise-360.webp" fetchpriority="high" alt="" width="360" height="360"><span id="iconr" hidden></span></button>
       <div class="hl1" aria-hidden="true">॥ श्री गणेशाय नमः ॥</div>
     </div>
-    <div id="skc" class="skc" hidden></div>
     <h1 class="sr"><span class="mr">नित्य उपासना</span><span class="en" lang="en">Nitya Upasana</span></h1>
+    <!-- Today (js/features/today-card.js): the day shown, the week row (Monday to Sunday; tap a day to see its routine)
+         and the Morning / Afternoon / Evening switch, which starts on the session for the time now. Both switches are
+         radio groups: one Tab stop each, arrow keys move along. The words are written in by the script, in the menu language. -->
+    <div id="tdy">
+      <p id="tdd"></p>
+      <div id="twk" role="radiogroup" aria-label="Day"></div>
+      <div id="tss" role="radiogroup" aria-label="Session">
+        <button type="button" role="radio" data-s="morning" aria-checked="false" tabindex="-1"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 18h18"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 6v3M5.6 10.6l1.8 1.4M18.4 10.6 16.6 12"/></svg><span class="tsw"></span></button>
+        <button type="button" role="radio" data-s="afternoon" aria-checked="false" tabindex="-1"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="tsw"></span></button>
+        <button type="button" role="radio" data-s="evening" aria-checked="false" tabindex="-1"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1.6 2 2 3.6 0 5.5C10 6.6 10.4 5 12 3z"/><path d="M4 12h16c0 3.3-3.6 6-8 6s-8-2.7-8-6z"/><path d="M9 21h6"/></svg><span class="tsw"></span></button>
+      </div>
+    </div>
+    <div id="skc" class="skc" hidden></div>
     <!-- One quiet row like the top menu: App (Add to Home Screen, hidden once installed), Share, QR, Print, Help.
          The words on each button are its name for screen readers and voice control (no aria-label), so the name
          always matches what is shown, in either menu language; on narrow phones they are hidden visually only. -->
@@ -228,6 +244,16 @@
       <button type="button" id="hlpb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.3-2.5 3.9"/><path d="M12 17.2v.01"/></svg><span class="mr">मदत</span><span class="en" lang="en">Help</span></button>
     </div>
     </div>
+    <!-- The session picked above (js/features/today-card.js): its texts in order, each with a tick (kept on this device
+         for today only) and its title, which opens it; Start / Continue opens the first text not yet ticked, and in the
+         reading page Prev and Next then follow the session. On wide screens it sits beside the card. -->
+    <section id="tsc" aria-labelledby="tsh">
+      <div class="tshd"><h2 id="tsh" tabindex="-1"></h2><span id="tsn"></span></div>
+      <ol id="tsl"></ol>
+      <p id="tse" hidden></p>
+      <button type="button" id="tst" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span id="tstw"></span></button>
+      <p id="tlive" class="sr" aria-live="polite"></p>
+    </section>
     <!-- Contents fold: hides the list of pieces on the home page -->
     <div id="tfr"><button type="button" id="tfb" aria-expanded="true"><span class="mr">अनुक्रमणिका</span><span class="en" lang="en"><span class="tfo">Table of </span>Contents</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button></div>
     <div class="tocg">
@@ -327,9 +353,20 @@
       <div class="hfigs"><figure class="hfig"><svg viewBox="0 0 280 80" role="img" aria-label="Chrome's address bar with the install icon circled"><rect class="sc" x="1" y="1" width="278" height="78" rx="12"/><rect class="pl" x="14" y="24" width="252" height="32" rx="16"/><text class="m" x="30" y="45" font-size="11" text-anchor="start">nitya-upasana.pages.dev</text><g class="ln" transform="translate(220 31)"><rect x="1" y="1" width="16" height="12" rx="2"/><path d="M5 17h8M9 4v6M6.5 7.5 9 10l2.5-2.5"/></g><rect class="hl" x="212" y="26" width="34" height="28" rx="14"/><text class="m" x="250" y="46" font-size="13" text-anchor="middle">☆</text></svg><figcaption>Click the install icon</figcaption></figure></div>
       <p>The icon opens the site like an app, even without internet. If you switch away and come back, it returns to where you were reading.</p>
 
+      <h3>Today</h3>
+      <p>The top of the home page is your day: the picture follows the time of day (sunrise, midday, sunset) with the day's star ringed, then the date, the days of this week and <b>Morning</b>, <b>Afternoon</b> and <b>Evening</b>.</p>
+      <ul>
+        <li><b>The session</b> starts on the one for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. Tap another to see its texts. For now every day has the same routine: Morning is the Ganapati Atharvashirsha, Evening the ten aartis, and the Afternoon is free.</li>
+        <li><b>The days</b> (Monday to Sunday): tap one to see that day's routine; tap today to come back.</li>
+        <li><b>The list</b> under it has the session's texts in order. Tap the round tick when you have finished one; the ticks are kept on this phone for today and start fresh tomorrow. Tap a title to open it.</li>
+        <li><b>Start</b> (or <b>Continue</b>, once some are ticked) opens the first text not yet ticked. While you read, <b>Next ›</b> in the bottom bar goes to the next text of the session, and after the last one brings you back here.</li>
+        <li>On a computer: Tab to the days or the sessions, then use the arrow keys; Space ticks a text.</li>
+        <li>Folding the card (⌃) leaves the session's list in view. The list of every text (<b>अनुक्रमणिका / Contents</b>) is still under it.</li>
+      </ul>
+
       <h3>The date card</h3>
       <ul>
-        <li>Shows today's date, the next Sankathara Chaturthi and its <b>moonrise time</b> for where you are. Angaraki Sankathara Chaturthi (on a Tuesday) is marked.</li>
+        <li>The line under Morning / Afternoon / Evening shows the next Sankathara Chaturthi and its <b>moonrise time</b> for where you are. Angaraki Sankathara Chaturthi (on a Tuesday) is marked.</li>
         <li><b>Pin</b> (after the place name, or <b>📍 Use my location</b>): tap to use your phone's location. The town is worked out on the phone; your location is never sent anywhere.</li>
         <li><b>The picture:</b> tap the Ganesha picture on the card to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Fold the card:</b> the round ⌃ button at the top right of the card, or a tap beside the picture, folds it to one line (Ganesha, the next date and moonrise); ⌄ or a tap on that line opens it again with all the buttons. On the home page the <b>Ganesha</b> home buttons (top bar title, bottom bar) do the same: tap to close the card, tap again to open it. Your phone remembers this. On Sankashti day the card opens by itself.</li>
@@ -370,7 +407,7 @@
         <li><b>Layout</b> (wide screens only): one or two columns of stanzas.</li>
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off. Keep screen on starts on for phones and tablets and off on computers.</li>
-        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.2), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
+        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.3), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
       </ul>
 
       <h3>While reading</h3>

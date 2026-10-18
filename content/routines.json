@@ -1,0 +1,27 @@
+{
+ "morning": {
+  "mode": "fixed",
+  "texts": [
+   "atharvashirsha"
+  ]
+ },
+ "afternoon": {
+  "mode": "fixed",
+  "texts": []
+ },
+ "evening": {
+  "mode": "fixed",
+  "texts": [
+   "sukhkarta",
+   "shendur-lal-chadhayo",
+   "durge-durghat-bhari",
+   "lavathavati-vikrala",
+   "trigunatmak-traimurti",
+   "aarti-dnyanaraja",
+   "yei-o-vitthale",
+   "ghalin-lotangan",
+   "jai-ganesh-deva",
+   "jai-jagdish-hare"
+  ]
+ }
+}

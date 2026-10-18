@@ -1,5 +1,5 @@
 /* 04-columns-rail.css: Two columns, piece and stanza numbers, button rows, left menu
-   Part 5 of 11 of the site styles. index.html loads the parts in number order, and the order
+   Part 5 of 12 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Wide-screen layouts: two stanza columns, both languages side by side, the left contents menu.
    Sections:
