@@ -43,6 +43,7 @@ var SITE_PARTS = (function () {
     "features/bars",
     "features/settings-panel",
     "features/dhrupad-button",
+    "features/reading-sheet",
     "features/wake-lock",
     "features/overlays",
     "features/history",

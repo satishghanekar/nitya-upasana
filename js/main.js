@@ -33,6 +33,7 @@ import { init as startTilt } from "./features/tilt.js";
 import { init as startBars } from "./features/bars.js";
 import { init as startSettingsPanel } from "./features/settings-panel.js";
 import { init as startDhrupadButton } from "./features/dhrupad-button.js";
+import { init as startReadingSheet } from "./features/reading-sheet.js";
 import { init as startWakeLock } from "./features/wake-lock.js";
 import { init as startHistory } from "./features/history.js";
 import { init as startLanguages } from "./features/languages.js";
@@ -65,6 +66,7 @@ try {
   startBars(); // Bars tuck away while reading (CSS: "Bars tuck away while reading")
   startSettingsPanel(); // Settings panel
   startDhrupadButton(); // Dhrupad button: toggle once / after every stanza, keeping the reader's place
+  startReadingSheet(); // Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad
   startWakeLock(); // Keep the screen on (Wake Lock). Browsers drop the lock when the page is hidden, so it is re-requested.
   startHistory(); // Back button
   startLanguages(); // Settings page: languages

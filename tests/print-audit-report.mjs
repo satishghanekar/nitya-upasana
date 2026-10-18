@@ -23,8 +23,8 @@ md.push(`${runs.length} printouts. Each passed the print checks (contents page n
 md.push("Columns: **over** = lines running past their column or the page margin; **out of step** = side-by-side rows where one side takes more lines than the other; **mid-phrase** = lines broken inside a phrase rather than at a preferred break; **wrapped** = lines that took more than their own lines (at a preferred break or not); **empty** = pages less than 45% used before a page break inside a piece; **resized** = lines set smaller to fit (smallest size in brackets).", "");
 const tot = (k) => runs.reduce((s, r) => s + (r[k] || 0), 0);
 md.push(`Totals: missing text ${tot("missing")}, running over ${tot("overflow")}, out of step ${tot("outOfStep")}, mid-phrase ${tot("brokeMidPhrase")}, wrapped ${tot("wrapped")}, mostly empty pages ${tot("lowFill")}, resized ${tot("resized")}.`, "");
-for (const o of ["upright", "sideways"]) {
-  const rs = runs.filter((r) => r.orient === o),
+for (const o of ["portrait", "landscape"]) {
+  const rs = runs.filter((r) => r.layout === o),
     t = (k) => rs.reduce((s, r) => s + (r[k] || 0), 0);
   if (rs.length) md.push(`- ${o}: ${rs.length} printouts; running over ${t("overflow")}, out of step ${t("outOfStep")}, mid-phrase ${t("brokeMidPhrase")}, wrapped ${t("wrapped")}, pages ${t("pages")}`);
 }

@@ -37,7 +37,7 @@ export function liSet() {
 
 // Short message near the top of the screen (Marathi text m, English text e). It has its own element,
 // separate from the text-size bubble, so a pinch can't wipe it and screen readers hear it on its own.
-export function flash(m, e) {
+export function flash(m, e, ms) {
   var x = document.getElementById("fl");
   x.textContent = P.ui === "en" ? e : m;
   x.classList.remove("err");
@@ -45,5 +45,5 @@ export function flash(m, e) {
   clearTimeout(flash.t);
   flash.t = setTimeout(function () {
     x.classList.remove("on");
-  }, 1600);
+  }, ms || 1600);
 }

@@ -421,7 +421,7 @@ Ya Evam Veda | Ityupanishat || 14 ||
 1.
 ಗಣಪತೀಚೀ ಆರತೀ
 Ganapati Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ)Refrain (after every verse)
+ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
 ಜಯ ದೇವ ಜಯ ದೇವ, ಜಯ ಮಂಗಲ ಮೂರ್ತೀ ।
 
@@ -494,7 +494,7 @@ Sankati Pavave Nirvani Rakshave Survarvandana || 3 ||
 2.
 ಗಣಪತಿ ಜೀ ಕೀ ಆರತೀ
 Ganapati Ji ki Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ)Refrain (after every verse)
+ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
 ಜಯ ಜಯ ಶ್ರೀ ಗಣರಾಜ ವಿದ್ಯಾ ಸುಖದಾತಾ ।
 
@@ -567,7 +567,7 @@ Gosavinandan Nishidin Gun Gave || 3 ||
 3.
 ದೇವೀಚೀ ಆರತೀ
 Devi Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ)Refrain (after every verse)
+ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
 ಜಯ ದೇವೀ ಜಯ ದೇವೀ ಮಹಿಷಾಸುರಮರ್ದಿನೀ ।
 
@@ -640,7 +640,7 @@ Narahar Tallina Jhala Pada Pankaja Lesha || 3 ||
 4.
 ಶಂಕರಾಚೀ ಆರತೀ
 Shankar Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ)Refrain (after every verse)
+ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
 ಜಯ ದೇವ ಜಯ ದೇವ ಜಯ ಶ್ರೀಶಂಕರಾ ।
 
@@ -731,7 +731,7 @@ Raghukulatilak Ramdasa Antari || 4 ||
 5.
 ದತ್ತಾಚೀ ಆರತೀ
 Dattatreya Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ)Refrain (after every verse)
+ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
 ಜಯ ದೇವ ಜಯ ದೇವ ಜಯ ಶ್ರೀ ಗುರುದತ್ತಾ ।
 
@@ -885,7 +885,7 @@ Aarti Dnyanaraja || Dhr. ||
 7.
 ವಿಠ್ಠಲಾಚೀ ಆರತೀ
 Vitthal Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ)Refrain (after every verse)
+ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
 ಯೇಈ ಓ ವಿಠ್ಠಲೇ ಮಾಝೀ ಮಾಊಲೀ ಯೇ । ​ಯೇಈ ಓ ವಿಠ್ಠಲೇ ಮಾಝೀ ಮಾಊಲೀ ಯೇ ॥ ಧೃ. ॥
 
@@ -1035,7 +1035,7 @@ Hare Krishna Hare Krishna Krishna Krishna Hare Hare ||
 9.
 ಆರತೀ ಜಯ ಗಣೇಶ ದೇವಾ
 Aarti Jai Ganesh Deva
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ)Refrain (after every verse)
+ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
 ಜಯ ಗಣೇಶ ಜಯ ಗಣೇಶ, ಜಯ ಗಣೇಶ ದೇವಾ ।
 

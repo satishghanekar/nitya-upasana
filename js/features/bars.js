@@ -210,7 +210,7 @@ export function apply() {
   [].forEach.call(document.querySelectorAll(".grp,.wrap > .ash,#pv,#home .tocg,#tfr,#jl,#rail"), function (e) {
     e.setAttribute("data-lang", P.lang);
   });
-  [].forEach.call(document.querySelectorAll(".bar,#none,#panel,#home > :not(.tocg):not(#tfr),#qrm,#prm,#inm,#szt,#szr,#fl"), function (e) {
+  [].forEach.call(document.querySelectorAll(".bar,#none,#panel,#home > :not(.tocg):not(#tfr),#qrm,#prm,#inm,#rsh,#szt,#szr,#fl"), function (e) {
     e.setAttribute("data-lang", P.ui);
   });
   root.lang = SCR.k || "mr"; // the page is Marathi (or Kannada); English parts carry lang="en" themselves (screen readers pick the voice from this)

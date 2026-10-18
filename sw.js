@@ -1,5 +1,5 @@
 // Service worker: keeps a copy of the site on the phone so it opens without internet.
-// V is the site's version (shown as "v1.0" on the home card). It must match <meta name="version"> in index.html; change both on a new release.
+// V is the site's version (shown as "v1.0" in Settings → About). It must match <meta name="version"> in index.html; change both on a new release.
 const V='aarti-v1.0';
 // The page's styles and scripts, and the font files to keep: one list for the page and this worker, in js/parts.js
 importScripts('js/parts.js');

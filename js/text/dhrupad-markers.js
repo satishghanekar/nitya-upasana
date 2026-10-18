@@ -44,7 +44,6 @@ export function init() {
 
 export function rmkClose() {
   if (!shared.rmkPop) return;
-  clearTimeout(rmkClose.t);
   shared.rmkPop.m.setAttribute("aria-expanded", "false");
   if (shared.rmkPop.el.ro) shared.rmkPop.el.ro.disconnect();
   shared.rmkPop.el.remove();
@@ -97,6 +96,7 @@ export function rmkOpen(m) {
     });
     el.ro.observe(el);
   }
+  // no time limit (WCAG 2.2.1): a refrain can take longer to sing than any timer; it closes on a second tap,
+  // a tap elsewhere, Escape, or when its marker scrolls out of sight
   shared.rmkPop = { m: m, el: el };
-  rmkClose.t = setTimeout(rmkClose, 7000);
 }
