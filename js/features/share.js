@@ -33,7 +33,7 @@ export function init() {
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && !qm.hidden) qr(false);
     });
-    // Share: a ready reminder for the group chat (next Sankathara Chaturthi, pooja time near the temple, moonrise) plus the link
+    // Share: the app's name, then a ready reminder for the group chat (next Sankathara Chaturthi, pooja time near the temple, moonrise) plus the link
     // sep = true: leave the link out, because the share sheet is given it separately (it lands at the end)
     function shareText(sep) {
       var C = shared.skCache,
@@ -49,21 +49,25 @@ export function init() {
         ang = f.ang ? "Angaraki " : ""; // with the name, which is always English
       if (mr)
         return (
+          title +
+          " — पूजा आणि आरती\nपुढील " +
           ang +
           "Sankathara Chaturthi: " +
           f.dmr +
           (t ? " · पूजा सायं. ७:०० ते ८:३०, भारतीय हिंदू मंदिर, पॉवेल" : "") +
           (o.rise ? " · चंद्रोदय " + f.tmr : "") +
-          (sep ? "" : "\nआरत्या: " + url) +
+          (sep ? "" : "\n" + url) +
           tip
         );
       return (
+        title +
+        "\nNext " +
         ang +
         "Sankathara Chaturthi: " +
         f.den +
         (t ? " · Pooja 7:00–8:30 pm at Bharatiya Hindu Temple, Powell" : "") +
         (o.rise ? " · Moonrise " + f.ten : "") +
-        (sep ? "" : "\nAartis: " + url) +
+        (sep ? "" : "\n" + url) +
         tip
       );
     }
