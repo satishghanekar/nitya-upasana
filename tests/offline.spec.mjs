@@ -26,6 +26,14 @@ test("works offline after the first visit @chromium-only", async ({ page, contex
   await expect(page.locator("#ofb")).toBeVisible();
   // the main fonts came from the saved copy
   expect(await page.evaluate(() => document.fonts.check('16px "Noto Sans Devanagari"', "क"))).toBe(true);
+  // the picture shows, and all three time-of-day pictures are kept, so the afternoon and evening ones work offline too
+  expect(await page.locator("#iconb img").evaluate((i) => i.complete && i.naturalWidth)).toBe(360);
+  const kept = await page.evaluate(async () => {
+    const c = await caches.open(document.querySelector('meta[name="version"]').content);
+    const names = ["sunrise", "midday", "sunset"].flatMap((t) => [`picture-${t}-360.webp`, `picture-${t}.webp`]);
+    return Promise.all(names.map(async (n) => !!(await c.match(n))));
+  });
+  expect(kept).toEqual([true, true, true, true, true, true]);
   await context.setOffline(false);
 });
 

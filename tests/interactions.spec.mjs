@@ -266,6 +266,67 @@ test("picture opens full screen and closes", async ({ page }) => {
   await expect(page.locator("#pzv")).toBeHidden();
 });
 
+// The picture follows the time of day (Morning before 12:00 → sunrise, Afternoon → midday, Evening from 17:00 →
+// sunset) with today's weekday star ringed. 15 Oct 2026 is a Thursday (star 4), 18 Oct a Sunday (star 0).
+for (const [when, picture, day, name, label] of [
+  ["2026-10-15T10:00:00-04:00", "sunrise", 4, "icon-32.png", "Sunrise picture, Thursday star marked"],
+  ["2026-10-15T12:00:00-04:00", "midday", 4, "favicon-midday-32.png", "Midday picture, Thursday star marked"],
+  ["2026-10-18T19:30:00-04:00", "sunset", 0, "favicon-sunset-32.png", "Sunset picture, Sunday star marked"],
+]) {
+  test(`at ${when.slice(11, 16)} on the ${when.slice(8, 10)}th the ${picture} picture shows with star ${day} ringed @mobile`, async ({ page }) => {
+    await openSite(page, SETUPS.marathi, { now: new Date(when) });
+    const btn = page.locator("#iconb");
+    await expect(btn).toHaveAttribute("data-picture", picture);
+    await expect(btn).toHaveAttribute("data-day", String(day));
+    await expect(btn.locator("img")).toHaveAttribute("src", `picture-${picture}-360.webp`);
+    await expect(btn).toHaveAttribute("aria-label", "Show the picture full screen: " + label);
+    await expect(page.locator("#slim img")).toHaveAttribute("src", `picture-${picture}-360.webp`);
+    await expect(page.locator('link[rel="icon"][sizes="32x32"]')).toHaveAttribute("href", name);
+    // the picture has loaded
+    expect(await btn.locator("img").evaluate((i) => i.complete && i.naturalWidth)).toBe(360);
+    // the ring sits on today's star: on the picture, in the upper half, left of centre on Sunday, right on Thursday
+    const ring = page.locator("#iconr");
+    await expect(ring).toBeVisible();
+    const b = await btn.boundingBox();
+    const r = await ring.boundingBox();
+    const cx = (r.x + r.width / 2 - b.x) / b.width,
+      cy = (r.y + r.height / 2 - b.y) / b.height;
+    expect(cy).toBeGreaterThan(0.1);
+    expect(cy).toBeLessThan(0.5);
+    if (day === 0) expect(cx).toBeLessThan(0.2);
+    else expect(cx).toBeGreaterThan(0.6);
+    // full screen: the same picture, large
+    await btn.click();
+    await expect(page.locator("#pzv")).toHaveAttribute("aria-label", label.replace(/,.*/, ""));
+    await expect(page.locator("#pzi")).toHaveAttribute("src", `picture-${picture}.webp`);
+    await expect(page.locator("#pzi")).toHaveAttribute("alt", new RegExp("^" + label.replace(/,.*/, "") + ": ॐ"));
+  });
+}
+
+test("the picture changes by itself at 12:00 and 17:00, and the star at midnight, while the page stays open", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: new Date("2026-10-17T11:59:00-04:00"), running: true }); // Saturday morning
+  const btn = page.locator("#iconb");
+  await expect(btn).toHaveAttribute("data-picture", "sunrise");
+  await expect(btn).toHaveAttribute("data-day", "6");
+  await page.clock.runFor("02:00");
+  await expect(btn).toHaveAttribute("data-picture", "midday");
+  await expect(btn.locator("img")).toHaveAttribute("src", "picture-midday-360.webp");
+  await page.clock.runFor("05:00:00");
+  await expect(btn).toHaveAttribute("data-picture", "sunset");
+  await page.clock.runFor("07:00:00"); // past midnight: Sunday morning
+  await expect(btn).toHaveAttribute("data-picture", "sunrise");
+  await expect(btn).toHaveAttribute("data-day", "0");
+});
+
+test("coming back to the page shows the picture for the time now", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: new Date("2026-10-15T10:00:00-04:00") });
+  await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunrise");
+  // the phone slept (timers paused) and is woken in the evening
+  await page.clock.setFixedTime(new Date("2026-10-15T18:00:00-04:00"));
+  await page.evaluate(() => document.dispatchEvent(new Event("visibilitychange")));
+  await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunset");
+});
+
 test("IAST spelling switches in place without a reload", async ({ page }) => {
   await openSite(page, SETUPS.english);
   const first = () => page.locator("#a1 .items .verse .en p").first().textContent();

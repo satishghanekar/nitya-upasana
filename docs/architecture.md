@@ -304,6 +304,7 @@ Old links (`#a5`, `#p1`) redirect to `#/read/<new id>`. The Back button walks ro
 - Changing day, session or profile updates the list in place (no reload) and announces it to screen readers (`aria-live`).
 - The App, Share, Print and Help buttons and the offline line stay, laid out for the new card (mockups in Step 2).
 - Folds to one line as today, remembered per profile.
+- The picture follows the time of day (2026-10-18, built before the Today card): `js/core/time-of-day.js` answers "which picture and which weekday star for this Date" (pure, unit-tested in `tests/unit/time-of-day.test.mjs`) and `js/features/day-picture.js` puts it on the card, the folded line, the full-screen view and the tab icon, checking again at the next 12:00 / 17:00 / midnight and on `visibilitychange`. It uses the default session times; when profiles get their own sessions (§3.5), it should take the profile's session instead. The installed app icon stays the sunrise picture.
 
 ### 5.5 Routine builder (accessible)
 
