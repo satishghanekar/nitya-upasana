@@ -172,7 +172,7 @@ export function init() {
       pv.innerHTML = "";
       var h = document.createElement("h1");
       h.className = "pvh";
-      h.innerHTML = lbl(SCR.to("संकटहर चतुर्थी"), "Sankathara Chaturthi");
+      h.innerHTML = lbl(SCR.to("नित्य उपासना"), "Nitya Upasana");
       pv.appendChild(h);
       var tc = document.createElement("div");
       tc.className = "pvtoc";

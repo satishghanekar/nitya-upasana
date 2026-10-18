@@ -1,11 +1,12 @@
 // Service worker: keeps a copy of the site on the phone so it opens without internet.
-// V is the site's version (shown as "v1.1" in Settings → About). It must match <meta name="version"> in index.html; change both on a new release.
-const V='aarti-v1.1';
-// The page's styles and scripts, and the font files to keep: one list for the page and this worker, in js/parts.js
+// V is the site's version (shown as "v1.2" in Settings → About). It must match <meta name="version"> in index.html; change both on a new release.
+const V='aarti-v1.2';
+// The page's styles and scripts, the font files and the pictures to keep: one list for the page and this worker, in js/parts.js
 importScripts('js/parts.js');
 const PARTS=SITE_PARTS.all;
 const FONTS=SITE_PARTS.fonts;
-self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(V).then(c=>c.addAll(['./','manifest.json','icon-180.png','icon-192.png','icon-32.png','icon-maskable-192.png','picture-360.webp','picture.webp',...PARTS,...FONTS].map(x=>new Request(x,{cache:'reload'}))).catch(()=>{})))});
+const IMAGES=SITE_PARTS.images;
+self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(V).then(c=>c.addAll(['./','manifest.json',...IMAGES,...PARTS,...FONTS].map(x=>new Request(x,{cache:'reload'}))).catch(()=>{})))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 // Same-site files: the page itself, its style and script files and the texts (content/) are fetched fresh when possible (3 s limit, then the
 // saved copy), so the page never runs with an older copy of its parts; everything else is answered from the

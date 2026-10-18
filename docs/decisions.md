@@ -2,6 +2,10 @@
 
 Newest first. Each entry: the decision, who made it, and where it came from.
 
+## 2026-10-18: time-of-day pictures
+
+Satish chose three new pictures for the app (his images, kept in `originals/`): a circle with ॐ, a palm-leaf book and a rosary under an arch of seven stars for the weekdays (र सो मं बु गु शु श = Sunday … Saturday), in sunrise (orange), midday (blue) and sunset (purple). In the app the picture follows the default sessions: Morning before 12:00 → sunrise, Afternoon 12:00–17:00 → midday, Evening from 17:00 → sunset, with a glowing ring on today's weekday star (as in the approved mockup `mockups/today-icons.html` on the `mockup-icons` branch). It updates if the app stays open across 12:00, 17:00 or midnight. **The sunrise picture is the fixed home-screen icon** (chosen by Satish): iPhone and Android copy the icon when the app is installed, so it cannot follow the time; only the browser tab icon does. Titles and texts stay as they are. Version aarti-v1.2.
+
 ## 2026-10-18: build on main
 
 Satish chose to build v2 on `main` ("Nitya Upasana is a brand new app"). Today's code was saved as the branch `sankathara-chaturthi-base` (at `22b6702`); the `v2` branch was merged into `main` and deleted. `main` no longer mirrors or syncs from sankathara-chaturthi. Every merge to `main` goes live at nitya-upasana.pages.dev, so slices merge only with tests green and Satish's OK. Q11 below is superseded: the version follows the normal release rules.
