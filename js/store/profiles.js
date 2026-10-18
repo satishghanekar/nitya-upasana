@@ -1,0 +1,300 @@
+// @ts-check
+// People (profiles) on a shared phone: each keeps their own settings (text size, languages, theme…) and today's
+// ticks. Profiles are a convenience, not security: no PINs, anyone holding the phone can switch (docs/architecture.md
+// A2). Pure: the unit tests (tests/unit/profiles.test.mjs) run it in Node; js/store/store.js keeps the profiles in
+// IndexedDB and js/features/profiles.js shows them.
+//
+// The start-up rule (startPlan): the settings saved under localStorage["aarti2-prefs"] are the active person's
+// "boot copy", written at once on every change (IndexedDB writes are asynchronous and can be cut short when a phone
+// closes the page). So for the active person the boot copy wins, and on the first visit after this version it
+// becomes the first person ("Me"), with today's ticks.
+
+import { cleanPerson, devicePart, migratePrefs, profilePart } from "./migrate.js";
+
+/**
+ * @typedef {import("./migrate.js").Env} Env
+ * @typedef {import("./migrate.js").Prefs} Prefs
+ * @typedef {{ date: string, done: Record<string, string[]> }} Checklist
+ * @typedef {{ id: string, name: string, initials: string, colour: string, settings: Prefs,
+ *   checklist: Checklist | null, created: string, updated: string }} Profile
+ * @typedef {{ activeProfile: string, device: Prefs, since: string, lastBackup: string, snooze: string,
+ *   schema: number, order?: string[] }} Meta   order: the people's ids in the order they were added
+ */
+
+// The badge colours offered (white letters on each meet WCAG AA, 4.5:1 or more)
+export const COLOURS = [
+  { v: "#7b1113", en: "Maroon", mr: "किरमिजी" },
+  { v: "#2f5d8a", en: "Blue", mr: "निळा" },
+  { v: "#6b4a8a", en: "Purple", mr: "जांभळा" },
+  { v: "#2f6b3a", en: "Green", mr: "हिरवा" },
+  { v: "#8a4b12", en: "Brown", mr: "तपकिरी" },
+  { v: "#1f6363", en: "Teal", mr: "मोरपंखी" },
+  { v: "#8a2f5d", en: "Rose", mr: "गुलाबी" },
+  { v: "#4a4a4a", en: "Grey", mr: "राखाडी" },
+];
+// a shared phone usually has four or five people (docs/decisions.md); room for a few more
+export const MAX_PROFILES = 8;
+export const NAME_MAX = 24;
+export const INITIALS_MAX = 4;
+export const FIRST_NAME = "Me";
+
+/** @param {string} s */
+export function cleanName(s) {
+  return String(s || "")
+    .replace(/[\u0000-\u001f\u007f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, NAME_MAX);
+}
+
+// One letter as a reader sees it: a base letter with its vowel signs, and a Devanagari (or Kannada) conjunct with
+// its virama, so "क्षि" counts as one
+var CLUSTER = /(?:[ऀ-෿](?:[ऀ-ःऺ-ौॎ-ॗॢॣಀ-ಃ಼ಾ-ೌೕೖೢೣ]|[्್][ऀ-෿])*[्್]?)|[\ud800-\udbff][\udc00-\udfff]|[\s\S]/g;
+
+/** @param {string} s */
+function clusters(s) {
+  return s.match(CLUSTER) || [];
+}
+
+/**
+ * The letters on a person's round badge, from their name: the first letters of the first two words in the Latin
+ * alphabet ("Aaji Ghanekar" → "AG"), or the first two letters of an Indian-script name ("आई" → "आई", "आजोबा" → "आजो")
+ * @param {string} name
+ */
+export function initialsOf(name) {
+  var n = cleanName(name);
+  if (!n) return "";
+  var words = n.split(" ");
+  if (/^[A-Za-zÀ-ɏ]/.test(words[0])) {
+    return words
+      .slice(0, 2)
+      .map(function (w) {
+        return clusters(w)[0] || "";
+      })
+      .join("")
+      .toUpperCase();
+  }
+  return clusters(words[0]).slice(0, 2).join("");
+}
+
+/**
+ * The badge letters as typed (at most four letters as a reader sees them), or from the name when left empty
+ * @param {string} typed
+ * @param {string} name
+ */
+export function cleanInitials(typed, name) {
+  var t = String(typed || "").replace(/\s+/g, "").replace(/[\u0000-\u001f\u007f]/g, "");
+  return t ? clusters(t).slice(0, INITIALS_MAX).join("") : initialsOf(name);
+}
+
+/** @param {string} c */
+export function cleanColour(c) {
+  return COLOURS.some(function (x) {
+    return x.v === c;
+  })
+    ? c
+    : COLOURS[0].v;
+}
+
+/**
+ * The first colour no one has yet (or the first again when all are taken)
+ * @param {Profile[]} list
+ */
+export function nextColour(list) {
+  for (var i = 0; i < COLOURS.length; i++) {
+    var v = COLOURS[i].v;
+    if (
+      !list.some(function (p) {
+        return p.colour === v;
+      })
+    )
+      return v;
+  }
+  return COLOURS[list.length % COLOURS.length].v;
+}
+
+/** A new id: short, random, not reused */
+/** @param {Profile[]} list @param {() => number} [rand] */
+export function makeId(list, rand) {
+  var r = rand || Math.random,
+    /** @type {string} */
+    id;
+  do {
+    id = "p" + Math.floor(r() * 2176782336).toString(36).padStart(6, "0");
+  } while (
+    list.some(function (p) {
+      return p.id === id;
+    })
+  );
+  return id;
+}
+
+/**
+ * Why a name can't be used, or "" when it can: it must not be empty, nor the same as another person's
+ * @param {string} name
+ * @param {Profile[]} list
+ * @param {string} [self]  the id of the person being renamed
+ * @returns {"" | "empty" | "taken"}
+ */
+export function nameProblem(name, list, self) {
+  var n = cleanName(name).toLowerCase();
+  if (!n) return "empty";
+  if (
+    list.some(function (p) {
+      return p.id !== self && p.name.toLowerCase() === n;
+    })
+  )
+    return "taken";
+  return "";
+}
+
+/**
+ * @param {{ id: string, name: string, initials?: string, colour?: string, settings: Prefs, checklist?: Checklist | null, now: string }} o
+ * @returns {Profile}
+ */
+export function newProfile(o) {
+  var name = cleanName(o.name) || FIRST_NAME;
+  return {
+    id: o.id,
+    name: name,
+    initials: cleanInitials(o.initials || "", name),
+    colour: cleanColour(o.colour || ""),
+    settings: o.settings,
+    checklist: o.checklist || null,
+    created: o.now,
+    updated: o.now,
+  };
+}
+
+/** A person can be deleted while someone else remains */
+/** @param {Profile[]} list @param {string} id */
+export function canDelete(list, id) {
+  return (
+    list.length > 1 &&
+    list.some(function (p) {
+      return p.id === id;
+    })
+  );
+}
+
+/** @param {Profile[]} list */
+export function canAdd(list) {
+  return list.length < MAX_PROFILES;
+}
+
+/**
+ * Today's ticks in a profile, if well formed
+ * @param {any} c
+ * @returns {Checklist | null}
+ */
+export function cleanChecklist(c) {
+  if (!c || typeof c !== "object" || typeof c.date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(c.date)) return null;
+  /** @type {Record<string, string[]>} */
+  var done = {};
+  if (c.done && typeof c.done === "object")
+    Object.keys(c.done).forEach(function (s) {
+      if (Array.isArray(c.done[s]))
+        done[s] = c.done[s].filter(function (/** @type {any} */ x) {
+          return typeof x === "string";
+        });
+    });
+  return { date: c.date, done: done };
+}
+
+/**
+ * A profile read from IndexedDB or a backup file, cleaned: null if it can't be used at all
+ * @param {any} p
+ * @param {Env} env
+ * @returns {Profile | null}
+ */
+export function cleanProfile(p, env) {
+  if (!p || typeof p !== "object" || typeof p.id !== "string" || !/^[A-Za-z0-9_-]{1,40}$/.test(p.id)) return null;
+  var name = cleanName(p.name);
+  if (!name) return null;
+  return {
+    id: p.id,
+    name: name,
+    initials: cleanInitials(typeof p.initials === "string" ? p.initials : "", name),
+    colour: cleanColour(p.colour),
+    settings: cleanPerson(p.settings, env),
+    checklist: cleanChecklist(p.checklist),
+    created: typeof p.created === "string" ? p.created : "",
+    updated: typeof p.updated === "string" ? p.updated : "",
+  };
+}
+
+/**
+ * How start-up goes, from what IndexedDB holds and the boot copy in localStorage (see the top of this file).
+ * @param {{ profiles: Profile[], meta: Meta | null, saved: any, ticks: any, env: Env, now: string, id: () => string }} o
+ *   saved: the parsed localStorage["aarti2-prefs"] or null; ticks: the parsed localStorage["nitya-ticks"] or null
+ * @returns {{ profiles: Profile[], meta: Meta, prefs: Prefs, write: string[], writeMeta: boolean, first: boolean,
+ *   saveBoot: boolean }}
+ *   write: ids of profiles to save to IndexedDB; first: this is the move of today's settings into the first profile;
+ *   saveBoot: the boot copy should be written again
+ */
+export function startPlan(o) {
+  var profiles = o.profiles.slice(),
+    saved = o.saved && typeof o.saved === "object" ? o.saved : null,
+    meta = o.meta;
+  if (!profiles.length) {
+    // The first visit since profiles arrived (or a new phone): today's settings, upgraded from whichever version
+    // saved them, become the first person; the device settings go to meta. The old key is left as it is, so going
+    // back to the previous version still works.
+    var m = migratePrefs(saved, o.env),
+      fam = o.ticks && o.ticks.profiles && o.ticks.profiles.family,
+      p = newProfile({ id: o.id(), name: FIRST_NAME, colour: COLOURS[0].v, settings: profilePart(m.prefs), checklist: cleanChecklist(fam), now: o.now });
+    return {
+      profiles: [p],
+      meta: { activeProfile: p.id, device: devicePart(m.prefs), since: o.now, lastBackup: (meta && meta.lastBackup) || "", snooze: "", schema: 1 },
+      prefs: m.prefs,
+      write: [p.id],
+      writeMeta: true,
+      first: true,
+      saveBoot: true,
+    };
+  }
+  var ids = profiles.map(function (p) {
+      return p.id;
+    }),
+    m0 = meta || { activeProfile: "", device: {}, since: o.now, lastBackup: "", snooze: "", schema: 1 },
+    // the boot copy names its person (pid); if that person still exists, they are the one reading
+    active = saved && ids.indexOf(saved.pid) >= 0 ? saved.pid : ids.indexOf(m0.activeProfile) >= 0 ? m0.activeProfile : ids[0],
+    person = profiles[ids.indexOf(active)],
+    // the boot copy is this person's (or from a version without profiles): it wins, being the newest
+    mine = !!saved && (!saved.pid || saved.pid === active),
+    prefs = mine
+      ? migratePrefs(Object.assign({}, m0.device, saved), o.env).prefs
+      : migratePrefs(Object.assign({}, saved ? pick(saved, m0.device) : m0.device, person.settings, { sv: 6 }), o.env).prefs,
+    write = [],
+    settings = profilePart(prefs),
+    device = devicePart(prefs);
+  if (JSON.stringify(settings) !== JSON.stringify(person.settings)) {
+    person = Object.assign({}, person, { settings: settings });
+    profiles[ids.indexOf(active)] = person;
+    write.push(active);
+  }
+  var meta2 = Object.assign({}, m0, { activeProfile: active, device: device });
+  return {
+    profiles: profiles,
+    meta: meta2,
+    prefs: prefs,
+    write: write,
+    writeMeta: !meta || JSON.stringify(meta2) !== JSON.stringify(meta),
+    first: false,
+    saveBoot: !mine,
+  };
+}
+
+/**
+ * The device settings: from the boot copy when there is one (it is written first), else as kept in meta
+ * @param {any} saved
+ * @param {Prefs} device
+ */
+function pick(saved, device) {
+  /** @type {Prefs} */
+  var o = Object.assign({}, device);
+  Object.keys(devicePart(saved)).forEach(function (k) {
+    o[k] = saved[k];
+  });
+  return o;
+}

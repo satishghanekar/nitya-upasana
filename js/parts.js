@@ -18,6 +18,7 @@ var SITE_PARTS = (function () {
     "08-contents-book",
     "09-settings-page",
     "10-today",
+    "11-profiles",
     "99-fallbacks",
   ].map(function (f) {
     return "css/" + f + ".css";
@@ -30,6 +31,10 @@ var SITE_PARTS = (function () {
     "text/load",
     "text/content",
     "text/format",
+    "store/db",
+    "store/migrate",
+    "store/profiles",
+    "store/store",
     "core/page",
     "core/state",
     "core/features",
@@ -69,6 +74,9 @@ var SITE_PARTS = (function () {
     "features/print",
     "features/share",
     "features/offline",
+    "store/backup",
+    "features/profiles",
+    "features/backup",
   ].map(function (f) {
     return "js/" + f + ".js";
   });
