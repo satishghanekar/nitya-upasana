@@ -31,7 +31,7 @@
   }
   function item(x) {
     if (x.rmk) return '      <div class="rmk"><span class="mr">' + x.rmk.mr + '</span><span class="en" lang="en"><i class="ra">↻ </i>' + x.rmk.en + "</span></div>\n";
-    return '      <div class="item' + (x.kind ? " " + x.kind : "") + '">\n' + verse(x.lines, "        ", x.bold) + "      </div>\n";
+    return '      <div class="item' + (x.kind ? " " + x.kind : "") + (x.para ? " para" : "") + '">\n' + verse(x.lines, "        ", x.bold) + "      </div>\n";
   }
   function navLink(cls, p, label, iconFirst) {
     if (!p) return "      <span></span>\n";
@@ -40,7 +40,7 @@
   }
   function piece(p, prev, next, ui) {
     var h =
-      '  <section id="' + p.id + '" class="ash' + (p.cls ? " " + p.cls : "") + '"' + (p.lang ? ' lang="' + p.lang + '"' : "") + ">\n" +
+      '  <section id="' + p.id + '" class="ash' + (p.cls ? " " + p.cls : "") + (p.prose ? " prose" : "") + '"' + (p.lang ? ' lang="' + p.lang + '"' : "") + ">\n" +
       "    <header>\n" +
       '      <h2><span class="no"><span class="nm">' + p.no.mr + '</span><span class="ne">' + p.no.en + "</span></span> " + two(p.title) + "</h2>\n" +
       '      <div class="tag">' + two(p.tag) + "</div>\n" +
@@ -69,7 +69,7 @@
   };
   var KEEP = /[॒॑।॥]/;
   // ---- Print handed over from the iPhone Home Screen app (js/features/print.js, "Open in Safari") ----
-  // The app cannot print, so it opens Safari at …/?print=two&s={…}: the reader's print choices (language, dhrupad,
+  // The app cannot print, so it opens Safari at …/?print=as&s={…}: the reader's print choices (language, dhrupad,
   // font, page) are saved here first, before anything reads them, and the address is put back to the plain one.
   // js/features/print.js then lays the printout out and offers Print now (window.PRQ is the chosen layout).
   try {
@@ -77,14 +77,14 @@
     if (q) {
       var got = JSON.parse(decodeURIComponent(q[2] || "") || "{}"),
         prefs = JSON.parse(localStorage.getItem("aarti2-prefs") || "{}");
-      ["lang", "lead", "l2", "ui", "ind", "ref", "fnt", "tr", "por"].forEach(function (k) {
+      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "tr", "por"].forEach(function (k) {
         if (typeof got[k] === "string" || typeof got[k] === "number") prefs[k] = got[k];
       });
       // a first visit in Safari: these choices are already up to date, so the start-up changes for older settings
       // (js/core/state.js) must not reset them
       if (!prefs.sv) prefs.sv = 6;
       localStorage.setItem("aarti2-prefs", JSON.stringify(prefs));
-      window.PRQ = q[1];
+      window.PRQ = q[1] === "two" ? "as" : q[1]; // two columns (no longer offered): a link from before
       history.replaceState(null, "", location.pathname + location.hash);
     }
   } catch (e) {}

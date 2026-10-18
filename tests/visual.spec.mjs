@@ -5,6 +5,7 @@
 // Recorded in Chromium; the site's fonts are its own files, so shots are the same on any Linux machine.
 import { test, expect } from "@playwright/test";
 import { openSite, settle, SETUPS } from "./helpers.mjs";
+import { printFromButton } from "./print-helpers.mjs";
 
 const SIZES = {
   phone: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },
@@ -94,19 +95,16 @@ for (const [name, size, prefs, prep] of CASES) {
 
 // The print layout as the printer sees it (first part of each layout: contents and the first piece)
 for (const [name, prefs, choice] of [
-  ["print-two-columns", SETUPS.marathi, "pr1"],
-  ["print-single-column", SETUPS.english, "pr2"],
-  ["print-side-by-side", SETUPS.both, "pr1"],
+  ["print-single-column-marathi", SETUPS.marathi, "pr1"],
+  ["print-single-column", SETUPS.english, "pr1"],
+  ["print-side-by-side", SETUPS.both, "pr2"],
 ]) {
   test(`screenshot ${name} @chromium-only`, async ({ browser }) => {
     const context = await browser.newContext({ viewport: { width: 816, height: 1056 }, deviceScaleFactor: 1, serviceWorkers: "block", locale: "en-US" });
     const page = await context.newPage();
     await page.addInitScript(() => (window.print = () => ((window.__printed = 1), dispatchEvent(new Event("beforeprint")))));
     await openSite(page, prefs);
-    await page.locator("#prb").click();
-    await page.locator("#" + choice).click();
-    await page.waitForFunction(() => window.__printed);
-    await page.emulateMedia({ media: "print" });
+    await printFromButton(page, choice);
     await settle(page);
     await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: false, clip: { x: 0, y: 0, width: 816, height: 2112 } });
     await context.close();

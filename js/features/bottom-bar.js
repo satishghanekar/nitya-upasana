@@ -172,7 +172,8 @@ export function asLabel() {
     var b = document.getElementById(x[0]),
       a = c ? c.querySelector(".pn " + x[3]) : x[3] === ".next" && !document.getElementById("p1").hidden ? secs[0] : null,
       t = a && a.querySelector(mr ? ":scope > .mr" : ":scope > .en");
-    b.textContent = mr ? x[1] : x[2];
+    // the word in its own span: the smallest phones show only the arrow, to fit the bar (css/07-bottom-bar-folds.css)
+    b.innerHTML = (mr ? x[1] : x[2]).replace(/([^‹›]+)/, '<span class="asw2">$1</span>');
     b.lang = mr ? "mr" : "en";
     b.setAttribute("aria-label", (mr ? x[1] : x[2]).replace(/[‹›]/g, "").trim() + (t ? ": " + t.textContent : ""));
     b.disabled = !a;
