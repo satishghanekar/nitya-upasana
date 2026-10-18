@@ -27,6 +27,7 @@ import { init as startIast } from "./text/iast.js";
 import { init as startLayout } from "./text/layout.js";
 import { init as startAstronomy } from "./features/astronomy.js";
 import { init as startDateCard } from "./features/date-card.js";
+import { init as startTodayCard } from "./features/today-card.js";
 import { init as startDhrupadMarkers } from "./text/dhrupad-markers.js";
 import { init as startStanzaNumbers } from "./text/stanza-numbers.js";
 import { init as startLineBreaks } from "./text/line-breaks.js";
@@ -62,6 +63,7 @@ function start() {
     startLayout(); // Layout helpers that run once
     startAstronomy(); // Astronomy for the Next Sankathara Chaturthi card
     startDateCard(); // Next Sankathara Chaturthi card (computed on this device; works offline)
+    startTodayCard(); // Today card: the week row, the session switch and the session's texts with ticks and Start
     startDhrupadMarkers(); // Tappable dhrupad markers (Aartis 1–5, 7 and 9)
     startStanzaNumbers(); // Stanza numbers
     startLineBreaks(); // Preferred line breaks

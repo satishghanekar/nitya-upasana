@@ -17,6 +17,7 @@ var SITE_PARTS = (function () {
     "07-bottom-bar-folds",
     "08-contents-book",
     "09-settings-page",
+    "10-today",
     "99-fallbacks",
   ].map(function (f) {
     return "css/" + f + ".css";
@@ -38,6 +39,9 @@ var SITE_PARTS = (function () {
     "text/layout",
     "features/astronomy",
     "features/date-card",
+    "core/routine",
+    "core/ticks",
+    "features/today-card",
     "text/dhrupad-markers",
     "text/stanza-numbers",
     "text/line-breaks",
@@ -73,6 +77,7 @@ var SITE_PARTS = (function () {
   var content = [
     "library.json",
     "categories.json",
+    "routines.json",
     "texts/atharvashirsha.txt",
     "texts/sukhkarta.txt",
     "texts/shendur-lal-chadhayo.txt",

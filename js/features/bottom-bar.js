@@ -10,6 +10,7 @@ import { TL, tlLabel, tlStop } from "./tilt.js";
 import { apply } from "./bars.js";
 import { wake } from "./wake-lock.js";
 import { goHomeNav } from "./history.js";
+import { sessionStep } from "./today-card.js";
 
 export var asc, asb;
 var AS, ASPD;
@@ -119,6 +120,11 @@ export function init() {
     menu();
   })();
   addEventListener("scroll", asShow, { passive: true });
+  // a session started on the Today card: Prev and Next now follow it, even on the piece already on screen
+  document.addEventListener("nitya-session", function () {
+    asShow.id = undefined;
+    asShow();
+  });
 }
 
 // speed of a piece: its own if the reader set one, else the general one
@@ -171,12 +177,15 @@ export function asLabel() {
   ].forEach(function (x) {
     var b = document.getElementById(x[0]),
       a = c ? c.querySelector(".pn " + x[3]) : x[3] === ".next" && !document.getElementById("p1").hidden ? secs[0] : null,
-      t = a && a.querySelector(mr ? ":scope > .mr" : ":scope > .en");
+      t = a && a.querySelector(mr ? ":scope > .mr" : ":scope > .en"),
+      // reading a session from the Today card: Prev and Next follow it (js/features/today-card.js)
+      ss = c && sessionStep(c.id, x[3] === ".next" ? 1 : -1),
+      name = ss ? ss.label : t ? t.textContent : "";
     // the word in its own span: the smallest phones show only the arrow, to fit the bar (css/07-bottom-bar-folds.css)
     b.innerHTML = (mr ? x[1] : x[2]).replace(/([^‹›]+)/, '<span class="asw2">$1</span>');
     b.lang = mr ? "mr" : "en";
-    b.setAttribute("aria-label", (mr ? x[1] : x[2]).replace(/[‹›]/g, "").trim() + (t ? ": " + t.textContent : ""));
-    b.disabled = !a;
+    b.setAttribute("aria-label", (mr ? x[1] : x[2]).replace(/[‹›]/g, "").trim() + (name ? ": " + name : ""));
+    b.disabled = !a && !ss;
   });
   document.getElementById("ash").setAttribute("aria-label", mr ? "मुख्य पान: अनुक्रमणिका" : "Home: contents");
   tlLabel();
@@ -401,8 +410,10 @@ function asLetGo(ms) {
 // the bar replaced it); Home and Search work as in the top bar
 function asGo(sel) {
   var c = cur(),
+    ss = c && sessionStep(c.id, sel === ".next" ? 1 : -1),
     a = c && c.querySelector(".pn " + sel);
-  if (a) a.click();
+  if (ss) ss.go();
+  else if (a) a.click();
   else if (!c && sel === ".next") {
     // from the home page: the first piece (the Pooja, or Aarti 1 when the Pooja is folded)
     var f = document.querySelector('#home a[data-go="' + (P.pf ? "a1" : "p1") + '"]');

@@ -8,11 +8,24 @@
 // stays the sunrise picture (phones copy it when the app is added to the Home Screen).
 // The page can stay open for hours, so it checks again at the next change (12:00, 17:00, midnight) and whenever
 // the page comes back into view (a phone's timers sleep while its screen is off).
+// The Today card (js/features/today-card.js) can show another day or session: setView() then puts that day's star
+// and that session's picture on the card, while the browser tab icon keeps following the clock.
 
-import { nextChange, pictureAt } from "../core/time-of-day.js";
+import { nextChange, pictureAt, pictureFor } from "../core/time-of-day.js";
 
 /** @type {ReturnType<typeof setTimeout> | undefined} */
 let timer;
+/** @type {{ session: import("../core/time-of-day.js").Session, day: number } | null} */
+let view = null;
+
+/**
+ * Show the picture for a day and session picked on the Today card, or (null) for the time now.
+ * @param {{ session: import("../core/time-of-day.js").Session, day: number } | null} v
+ */
+export function setView(v) {
+  view = v;
+  update();
+}
 
 /**
  * Set an attribute only when it changes, so the same picture is never asked for again.
@@ -27,7 +40,8 @@ function set(el, name, value) {
 /** Show the picture for this moment, then wait for the next change. */
 export function update() {
   const now = new Date(),
-    p = pictureAt(now),
+    clock = pictureAt(now),
+    p = view ? pictureFor(view.session, view.day) : clock,
     btn = document.getElementById("iconb"),
     ring = document.getElementById("iconr"),
     big = document.getElementById("pzi");
@@ -50,7 +64,7 @@ export function update() {
     set(big, "alt", p.label.replace(/,.*/, "") + ": ॐ, a palm-leaf book and a rosary under seven stars for the days of the week");
   }
   set(document.getElementById("pzv"), "aria-label", p.label.replace(/,.*/, ""));
-  set(document.querySelector('link[rel="icon"][sizes="32x32"]'), "href", p.favicon);
+  set(document.querySelector('link[rel="icon"][sizes="32x32"]'), "href", clock.favicon);
   clearTimeout(timer);
   // a second after the change, so the clock is surely past it
   timer = setTimeout(update, nextChange(now).getTime() - now.getTime() + 1000);

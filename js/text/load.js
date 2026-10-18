@@ -4,8 +4,17 @@
 // their place (#pieces), in Kannada letters when that is the chosen language. js/main.js waits for this before it
 // starts the other parts, so they find the page as it was when the pieces were written into index.html.
 // The files are on the offline list (js/parts.js), so this works without internet too.
+// It also fetches content/routines.json, the default routine the Today card shows (js/features/today-card.js),
+// at the same time; without it the texts still load and the card shows empty sessions.
 
 import { buildContent } from "./content.js";
+
+/**
+ * What was loaded, for the parts that need it after start-up: the library (content/library.json) and the
+ * routine (content/routines.json; null when it could not be loaded).
+ * @type {{ library: import("./content.js").Library | null, routine: import("../core/routine.js").Routine | null }}
+ */
+export const loaded = { library: null, routine: null };
 
 /**
  * @param {string} url
@@ -20,11 +29,24 @@ function get(url) {
 
 /** @returns {Promise<void>} */
 export function load() {
-  return get("content/library.json")
+  var routine = get("content/routines.json")
+    .then(function (r) {
+      return r.json();
+    })
+    .then(
+      function (/** @type {import("../core/routine.js").Routine} */ o) {
+        loaded.routine = o && typeof o === "object" ? o : null;
+      },
+      function (/** @type {unknown} */ e) {
+        console.warn(e);
+      },
+    );
+  var texts = get("content/library.json")
     .then(function (r) {
       return r.json();
     })
     .then(function (/** @type {import("./content.js").Library} */ lib) {
+      loaded.library = lib;
       return Promise.all(
         lib.texts.map(function (t) {
           return get("content/" + t.file).then(function (r) {
@@ -46,4 +68,5 @@ export function load() {
         w.SCR.page();
       });
     });
+  return Promise.all([texts, routine]).then(function () {});
 }
