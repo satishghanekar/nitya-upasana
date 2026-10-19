@@ -422,6 +422,53 @@ export function dayPanchang(date, place) {
 }
 
 /**
+ * A day's sunrise, sunset, moonrise and the next day's sunrise at a place, without the rest of the panchang (for the
+ * festival rules in js/core/festivals.js, which need the parts of the day: midday, afternoon, pradosh, midnight).
+ * `ref` is the sunrise, or local 06:00 where the sun does not rise; `next` is the same for the following day.
+ * @param {string} date "YYYY-MM-DD" (a day on the place's clock)
+ * @param {Place} place
+ * @returns {{ date: string, sunrise: Date | null, sunset: Date | null, moonrise: Date | null, ref: Date, next: Date }}
+ */
+export function dayTimes(date, place) {
+  var c = dayOf(date, place),
+    ds = dayStart(c.y, c.m, c.d, place),
+    nx = dayStart(c.y, c.m, c.d + 1, place),
+    ss = sunCross(ds.m0, ds.m1, place.lat, place.lon, false),
+    mr = sk().rise(ds.m0, ds.m1, place.lat, place.lon);
+  return {
+    date: key(c.y, c.m, c.d),
+    sunrise: ds.sunrise === null ? null : new Date(ds.sunrise),
+    sunset: ss === null ? null : new Date(ss),
+    moonrise: mr === null ? null : new Date(mr),
+    ref: new Date(ds.ref),
+    next: new Date(nx.ref),
+  };
+}
+
+/**
+ * The day on the place's clock ("YYYY-MM-DD") whose sunrise-to-sunrise span holds `date` (the panchang's day: the
+ * hours before sunrise belong to the day before).
+ * @param {Date} date @param {Place} place
+ */
+export function panchangDay(date, place) {
+  var t = date.getTime(),
+    c = ymd(t, place.tz),
+    ds = dayStart(c.y, c.m, c.d, place);
+  if (t >= ds.ref) return key(c.y, c.m, c.d);
+  var p = ymd(ds.m0 - HOUR, place.tz);
+  return key(p.y, p.m, p.d);
+}
+
+/**
+ * The amanta month in effect at a moment (adhika when no sankranti falls in it).
+ * @param {Date} date
+ * @returns {Masa}
+ */
+export function masaOf(date) {
+  return masaAt(date.getTime());
+}
+
+/**
  * The tithi at sunrise for each day of a month, with kshaya / vriddhi tithis and the days to mark.
  * @param {number} year @param {number} month 1–12 @param {Place} place
  * @returns {MonthDay[]}
