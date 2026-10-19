@@ -25,7 +25,7 @@
 //    before the next, so 19 March); "two" is a vriddhi tithi, at two sunrises, and the first is taken.
 // The tie choices in content/festivals.json: "second" for Holi (pradosh), Lakshmi Pujan (pradosh) and Bhaubeej
 // (aparahna: the dvitiya that fills the afternoon, 11 November 2026), "first" for the rest (Ganesh Chaturthi takes the tritiya-mixed chaturthi, Dasara the first aparahna dashami, Smarta ekadashis the
-// first day). Nothing else (nakshatra such as Shravana for Dasara or Rohini for Janmashtami, bhadra for Holi and Raksha
+// first day). Nothing else (nakshatra such as Shravan for Dasara or Rohini for Janmashtami, bhadra for Holi and Raksha
 // Bandhan, Vaishnava ekadashi) is considered; a printed calendar may differ on such years.
 //
 // A solar festival (Makar Sankranti) is on the day the sun enters the sidereal sign (Lahiri), counted from sunset to
@@ -41,7 +41,7 @@ import { dayTimes, masaOf, panchangDay, sunSidereal, tithiAt } from "./panchang.
  * @typedef {import("./panchang.js").Place} Place
  * @typedef {"sunrise" | "madhyahna" | "aparahna" | "pradosh" | "nishita" | "moonrise"} Kala
  * @typedef {{ masa: number, paksha: "shukla" | "krishna", tithi: number, kala: Kala, tie: "first" | "second" }} LunarRule
- *   masa 1 Chaitra … 12 Phalguna (amanta, nija); tithi 1–15 within the paksha (krishna 15 is amavasya)
+ *   masa 1 Chaitra … 12 Phalgun (amanta, nija); tithi 1–15 within the paksha (krishna 15 is amavasya)
  * @typedef {{ rashi: number }} SolarRule  rashi 1 Mesha … 10 Makara … 12 Meena: the sidereal sign the sun enters
  * @typedef {import("./panchang-names.js").Name} Name
  * @typedef {{ id: string, mr: string, en: string, short: Name, rule: LunarRule | SolarRule }} Festival

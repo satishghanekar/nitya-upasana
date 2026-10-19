@@ -65,7 +65,7 @@ test("the line opens the calendar page; the day card has today's panchang @mobil
 
 test("the month: weekdays, tithi at sunrise, paksha shading, moons, Ekadashi, Sankashti, kshaya, today @mobile", async ({ page }) => {
   await open(page);
-  await expect(page.locator("#cmt")).toHaveText("October 2026Bhadrapada → Ashvin from 11 Oct");
+  await expect(page.locator("#cmt")).toHaveText("October 2026भाद्रपद → आश्विन from 11 Oct");
   await expect(page.locator(".cgr thead th [aria-hidden]")).toHaveText(["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"]);
   // 1 October 2026 is a Thursday: four empty cells first
   await expect(page.locator(".cgr tbody tr").first().locator("td.ce")).toHaveCount(4);
@@ -186,7 +186,8 @@ test("Marathi menus: the page's words and digits are Marathi", async ({ page }) 
   await expect(page.locator("#cbk .en")).toBeHidden();
   await expect(page.locator("#cbk")).toHaveAccessibleName("मागे");
   await expect(page.locator("#cmt")).toHaveText("ऑक्टोबर २०२६भाद्रपद → आश्विन (११ ऑक्टोबरपासून)");
-  await expect(row(page, "तिथी")).toHaveText("शुद्ध अष्टमीसोमवारी रात्री १:२१ पर्यंत");
+  // the second reading language (English) is the small line, with the menus' words
+  await expect(row(page, "तिथी")).toHaveText("शुद्ध अष्टमीShukla Ashtami · सोमवारी रात्री १:२१ पर्यंत");
   await expect(row(page, "सूर्योदय")).toHaveText("सकाळी ७:४५सूर्यास्त सायं. ६:४७ · कोलंबस");
   await expect(page.locator('#calm button[data-d="2026-10-25"] b')).toHaveText("२५");
   await expect(page.locator("#cald .csk")).toHaveText("पुढील संकष्टी चतुर्थी: बुधवार, २८ ऑक्टोबरचंद्रोदय रात्री ८:०९ · कोलंबस");
@@ -223,6 +224,146 @@ test("desktop: the day card beside the month", async ({ page }) => {
   expect(a.x + a.width).toBeLessThan(b.x);
 });
 
+// ----- the reading languages (Settings → Languages): the names follow the first, and the second where there is room -----
+
+const AT = (prefs) => ({ ...prefs, loc: { lat: 39.96, lon: -83.0 } });
+const ENGLISH_ONLY = AT({ lang: "en", lead: "en", l2: "", ui: "en" });
+const ENGLISH_MARATHI = AT({ lang: "both", lead: "en", l2: "mr", ui: "en" });
+const MARATHI_ONLY = AT({ lang: "mr", lead: "mr", l2: "", ui: "en" });
+const KANNADA = AT(SETUPS.kannada);
+const ENGLISH_IAST = AT({ lang: "en", lead: "en", l2: "", ui: "en", tr: "iast" });
+const DEVANAGARI = /[\u0900-\u097F]/;
+const day = (page, d) => page.locator(`#calm button[data-d="2026-10-${String(d).padStart(2, "0")}"]`);
+
+test("English first, no second: Home and the calendar are all in English, with Latin digits @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: NOW });
+  const b = page.locator("#panb");
+  await expect(b.locator(".p1")).toHaveText("Ashvin Shukla Ashtami");
+  await expect(b.locator(".p1")).toHaveAttribute("lang", "en");
+  await expect(b.locator(".p2")).toHaveText("Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava");
+  await expect(b).toHaveAccessibleName(
+    "Ashvin Shukla Ashtami Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava Sunrise 7:45 am Sunset 6:47 pm Columbus, OH (open the Vedic calendar)",
+  );
+  expect(await page.locator("#pan").innerText()).not.toMatch(DEVANAGARI);
+  await b.click();
+  await expect(page.locator("#calm button.cd")).toHaveCount(31);
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Ashtami");
+  await expect(row(page, "Tithi")).toHaveText("Shukla Ashtamiuntil Mon 1:21 am");
+  await expect(row(page, "Nakshatra")).toHaveText("Uttara Ashadhauntil Mon 6:08 am");
+  await expect(row(page, "Yoga")).toHaveText("Sukarmauntil 2:26 pm");
+  await expect(row(page, "Weekday")).toHaveText("Sunday");
+  await expect(row(page, "Sunrise")).toHaveText("7:45 amSunset 6:47 pm · Columbus, OH");
+  await expect(row(page, "Moonrise")).toHaveText("3:05 pm");
+  await expect(row(page, "Month")).toHaveText("Ashvinamanta");
+  await expect(row(page, "Samvatsara")).toHaveText("Shaka 1948 · Parabhava");
+  await expect(row(page, "Ritu · Ayana")).toHaveText("Sharad · Dakshinayana");
+  await expect(page.locator("#cald .csk")).toHaveText("Next Sankashti Chaturthi: Wed, Oct 28Moonrise 8:09 pm · Columbus, OH");
+  await expect(page.locator("#cmt")).toHaveText("October 2026Bhadrapad → Ashvin from 11 Oct");
+  await expect(page.locator(".cgr thead th [aria-hidden]")).toHaveText(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
+  await expect(day(page, 18).locator(".t")).toHaveText("Ashtami");
+  await expect(day(page, 25).locator(".t")).toHaveText("Purnima");
+  await expect(day(page, 10).locator(".t")).toHaveText("Amavasya");
+  await expect(day(page, 25).locator("b")).toHaveText("25");
+  await expect(day(page, 28).locator(".f")).toHaveText("Sankashti");
+  await expect(day(page, 6).locator(".f")).toHaveText("Ekadashi");
+  await expect(day(page, 30).locator(".kx")).toHaveText("+Shashthi");
+  await expect(day(page, 30)).toHaveAccessibleName(/^30 October, Friday, Panchami \+Shashthi , Krishna Panchami, kshaya tithi: Krishna Shashthi$/);
+  // nothing in Devanagari but the page's bilingual name (पंचांग · Vedic calendar)
+  expect(await page.locator("#cald").innerText()).not.toMatch(DEVANAGARI);
+  expect(await page.locator("#calm").innerText()).not.toMatch(DEVANAGARI);
+  // a long name fits its day (it may break before its last part), and nothing scrolls sideways at 320px
+  await page.setViewportSize({ width: 320, height: 640 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.locator('#calm button[data-d="2026-10-28"]').click();
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Krishna Tritiya");
+  await expect(page.locator("#cald .cdg")).toHaveText("Sankashti");
+  await expect(page.locator("#call")).toHaveText("Showing 28 October: Ashvin Krishna Tritiya");
+});
+
+test("Marathi first, English second: Marathi names, English as the day card's small lines @mobile", async ({ page }) => {
+  await openSite(page, COLUMBUS, { now: NOW });
+  // the Home line has the first language only
+  await expect(page.locator("#panb .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
+  await expect(page.locator("#panb .p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
+  await page.locator("#panb").click();
+  await expect(page.locator("#calm button.cd")).toHaveCount(31);
+  await expect(row(page, "तिथी").locator("small [lang=en]")).toHaveText("Shukla Ashtami");
+  await expect(row(page, "वार")).toHaveText("रविवारSunday");
+  await expect(row(page, "मास")).toHaveText("आश्विनAshvin (amanta)");
+  // the month's days have the first language only
+  await expect(page.locator(".cgr thead th [aria-hidden]").first()).toHaveText("रवि");
+  await expect(day(page, 18).locator(".t")).toHaveText("अष्टमी");
+  await expect(day(page, 18).locator(".t")).toHaveAttribute("lang", "mr");
+});
+
+test("English first, Marathi second: English names, Marathi as the day card's small lines @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_MARATHI, { now: NOW });
+  await expect(page.locator("#panb .p1")).toHaveText("Ashvin Shukla Ashtami");
+  await expect(page.locator("#panb .p2")).toHaveText("Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava");
+  await page.locator("#panb").click();
+  await expect(page.locator("#calm button.cd")).toHaveCount(31);
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Ashtami");
+  await expect(row(page, "Tithi")).toHaveText("Shukla Ashtamiशुद्ध अष्टमी · until Mon 1:21 am");
+  await expect(row(page, "Tithi").locator("small [lang=mr]")).toHaveText("शुद्ध अष्टमी");
+  await expect(row(page, "Nakshatra")).toHaveText("Uttara Ashadhaउत्तराषाढा · until Mon 6:08 am");
+  await expect(row(page, "Weekday")).toHaveText("Sundayरविवार");
+  await expect(row(page, "Month")).toHaveText("Ashvinआश्विन (amanta)");
+  await expect(row(page, "Samvatsara")).toHaveText("Shaka 1948 · Parabhavaशके १९४८ · पराभव संवत्सर");
+  await expect(row(page, "Ritu · Ayana")).toHaveText("Sharad · Dakshinayanaशरद ऋतु · दक्षिणायन");
+  await expect(page.locator(".cgr thead th [aria-hidden]").first()).toHaveText("Sun");
+  await expect(day(page, 18).locator(".t")).toHaveText("Ashtami");
+  await page.locator('#calm button[data-d="2026-10-30"]').click();
+  await expect(row(page, "Tithi")).toContainText("kshaya tithi: वद्य षष्ठी");
+});
+
+test("Marathi first, no second: Marathi names without English lines @mobile", async ({ page }) => {
+  await openSite(page, MARATHI_ONLY, { now: NOW });
+  await expect(page.locator("#panb .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
+  await expect(page.locator("#panb .p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
+  await page.locator("#panb").click();
+  await expect(page.locator("#calm button.cd")).toHaveCount(31);
+  await expect(page.locator("#cdt")).toHaveText("आश्विन शुद्ध अष्टमी");
+  await expect(row(page, "तिथी")).toHaveText("शुद्ध अष्टमीuntil Mon 1:21 am");
+  await expect(row(page, "वार")).toHaveText("रविवार");
+  await expect(row(page, "संवत्सर")).toHaveText("शके १९४८ · पराभव संवत्सर");
+  await expect(day(page, 18).locator(".t")).toHaveText("अष्टमी");
+});
+
+test("Kannada letters: the Marathi names in Kannada script @mobile", async ({ page }) => {
+  await openSite(page, KANNADA, { now: NOW });
+  await expect(page.locator("#panb .p1")).toHaveAttribute("lang", "kn");
+  await expect(page.locator("#panb .p1")).toHaveText(/^[\u0C80-\u0CFF ]+$/);
+  await page.locator("#panb").click();
+  await expect(page.locator("#calm button.cd")).toHaveCount(31);
+  await expect(page.locator("#cdt")).toHaveText(/^[\u0C80-\u0CFF ]+$/);
+  await expect(day(page, 18).locator(".t")).toHaveText(/^[\u0C80-\u0CFF]+$/);
+  await expect(page.locator(".cgr thead th [aria-hidden]").first()).toHaveAttribute("lang", "kn");
+  // the second language, English, is the small line
+  await expect(page.locator("#cald dd small [lang=en]").first()).toHaveText("Shukla Ashtami");
+});
+
+test("English first in the scholarly style: the names in IAST @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_IAST, { now: NOW });
+  await expect(page.locator("#panb .p1")).toHaveText("Āśvina Śukla Aṣṭamī");
+  await expect(page.locator("#panb .p2")).toHaveText("Nakṣatra Uttarāṣāḍhā · Śaka 1948 · Parābhava");
+  await page.locator("#panb").click();
+  await expect(page.locator("#calm button.cd")).toHaveCount(31);
+  await expect(day(page, 18).locator(".t")).toHaveText("Aṣṭamī");
+  await expect(page.locator(".cgr thead th [aria-hidden]").first()).toHaveText("Sun");
+});
+
+test("changing the first language in Settings re-draws the Home line", async ({ page }) => {
+  await openSite(page, COLUMBUS, { now: NOW });
+  await expect(page.locator("#panb .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
+  await page.locator("#aa").click();
+  await page.locator("#sl1s").selectOption("en:simple");
+  await page.locator("#xc").click();
+  await expect(page.locator("#panb .p1")).toHaveText("Ashvin Shukla Ashtami");
+  await page.locator("#panb").click();
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Ashtami");
+  await expect(row(page, "Tithi")).toHaveText("Shukla Ashtamiशुद्ध अष्टमी · until Mon 1:21 am");
+});
+
 // Festivals (content/festivals.json, js/core/festivals.js): in Columbus the engine keeps Dasara on 20 October 2026
 // (dashami from 3:20 am on the 20th to 4:41 am on the 21st EDT: the afternoon of the 20th) and Kojagiri on the 25th
 // (tests/unit/festivals.test.mjs).
@@ -256,14 +397,14 @@ test("festivals: Home says आज दसरा on the day only @mobile", async (
   expect(await y("#fst")).toBeLessThan(await y("#tsc"));
 });
 
-test("festivals: Marathi menus say आज दसरा; no line the day before or after", async ({ browser }) => {
+test("festivals: Marathi only says आज दसरा; no line the day before or after", async ({ browser }) => {
   for (const [now, shown] of [
     [DASARA, true],
     [new Date("2026-10-19T20:00:00-04:00"), false],
     [new Date("2026-10-21T08:00:00-04:00"), false],
   ]) {
     const page = await browser.newPage();
-    await openSite(page, { ...SETUPS["marathi-menus"], loc: { lat: 39.96, lon: -83.0 } }, { now });
+    await openSite(page, { ...SETUPS["marathi-menus"], l2: "", loc: { lat: 39.96, lon: -83.0 } }, { now });
     await expect(page.locator("#panb")).toBeVisible();
     if (shown) await expect(page.locator("#fst")).toHaveText("आज दसरा");
     else await expect(page.locator("#fst")).toBeHidden();
@@ -282,12 +423,39 @@ test("axe: the festival line on Home and Dasara in the calendar @mobile", async 
   expect(fmt(await new AxeBuilder({ page }).include("#cal").withTags(tags).analyze())).toEqual([]);
 });
 
+test("festivals in English only: Home says Today: Dasara, the month and the day card have no Devanagari @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: DASARA });
+  const f = page.locator("#fst");
+  await expect(f).toHaveText("Today: Dasara (Vijayadashami)");
+  expect(await f.innerText()).not.toMatch(DEVANAGARI);
+  await page.locator("#panb").click();
+  await expect(page.locator("#calm button.cd")).toHaveCount(31);
+  await expect(day(page, 20).locator(".fs")).toHaveText("Dasara");
+  await expect(day(page, 20).locator(".fs")).toHaveAttribute("lang", "en");
+  await expect(day(page, 11).locator(".fs")).toHaveText("Navratri");
+  await expect(day(page, 25).locator(".fs")).toHaveText("Kojagiri");
+  await expect(page.locator("#cald .cdg .tag.fest")).toHaveText("Dasara (Vijayadashami)");
+  await expect(row(page, "Festival")).toHaveText("Dasara (Vijayadashami)");
+  expect(await page.locator("#cald .cdg").innerText()).not.toMatch(DEVANAGARI);
+  expect(await page.locator("#calm .fs").allInnerTexts()).not.toContainEqual(expect.stringMatching(DEVANAGARI));
+});
+
+test("festivals in Marathi only: आज दसरा, and no English line in the day card", async ({ page }) => {
+  await openSite(page, { ...SETUPS["marathi-menus"], lead: "mr", l2: "", loc: { lat: 39.96, lon: -83.0 } }, { now: DASARA });
+  await expect(page.locator("#fst")).toHaveText("आज दसरा");
+  await page.locator("#panb").click();
+  await expect(row(page, "सण")).toHaveText("दसरा");
+});
+
 for (const [name, prefs] of [
   ["light", COLUMBUS],
   ["dark", { ...COLUMBUS, th: "dark" }],
   ["sepia", { ...COLUMBUS, th: "sepia" }],
   ["high contrast", { ...COLUMBUS, hc: 1 }],
   ["Marathi menus", { ...SETUPS["marathi-menus"], loc: { lat: 39.96, lon: -83.0 } }],
+  ["English only", ENGLISH_ONLY],
+  ["English and Marathi", ENGLISH_MARATHI],
+  ["Kannada letters", KANNADA],
 ]) {
   test(`axe: the calendar line and page, ${name} @mobile`, async ({ page }) => {
     await openSite(page, prefs, { now: NOW });

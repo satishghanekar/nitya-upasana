@@ -54,10 +54,10 @@ describe("2026 in Pune (IST)", () => {
     ["ganesh-chaturthi", "2026-09-14"], // chaturthi 07:07 14 Sep → 07:44 15 Sep: midday on the 14th only
     ["dasara", "2026-10-20"], // dashami 12:50 20 Oct → 14:12 21 Oct: afternoon on both days, the first is taken
     ["lakshmi-pujan", "2026-11-08"], // amavasya 11:28 8 Nov → 12:32 9 Nov: at dusk on the 8th only
-    ["bali-pratipada", "2026-11-10"], // Kartika pratipada at sunrise on the 10th
+    ["bali-pratipada", "2026-11-10"], // Kartik pratipada at sunrise on the 10th
     // more, each worked through from the tithi times
     ["makar-sankranti", "2026-01-14"], // the sun enters sidereal Makara at 15:07 (Swiss Ephemeris), before sunset
-    ["maha-shivratri", "2026-02-15"], // Magha krishna chaturdashi 17:06 15 Feb → 17:35 16 Feb: midnight of the 15th
+    ["maha-shivratri", "2026-02-15"], // Magh krishna chaturdashi 17:06 15 Feb → 17:35 16 Feb: midnight of the 15th
     ["ram-navami", "2026-03-26"], // navami 11:49 26 Mar → 10:07 27 Mar: midday on the 26th only
     ["hanuman-jayanti", "2026-04-02"], // Chaitra purnima 07:06 1 Apr → 07:42 2 Apr: at sunrise on the 2nd
     ["vat-purnima", "2026-06-29"], // nija Jyeshtha purnima (not Adhika Jyeshtha's, 31 May)
