@@ -2,6 +2,15 @@
 
 Newest first. Each entry: the decision, who made it, and where it came from.
 
+## 2026-10-19: the Vedic calendar follows the reading languages
+
+Satish (2026-10-19): "The Vedic calendar when English is set as 1st language and none for 2nd language shows in marathi". Version aarti-v1.6.1 (a patch, so phones fetch it). This replaces the "Words" choice of the entry below.
+
+- **The panchang's names follow Settings → Languages**, as the pieces do: tithi, paksha, masa, nakshatra, yoga, samvatsara, ritu, ayana, the weekday headers, the day card's labels, the Ekadashi / Sankashti / Purnima / Amavasya marks and the next-Sankashti name. The **first language** is used everywhere (Home line, day card, month); the **second** is the small line under each of the day card's rows ("शुद्ध अष्टमी" / "Shukla Ashtami · until Mon 1:21 am"). The Home line and the month's days show the first language only (no room for two).
+- English first, no second: all English, Latin digits ("Ashvin Shukla Ashtami", "Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava", Sun…Sat). Marathi first, no second: Marathi names with no English line (before, English menus added English glosses). Kannada letters: the Marathi names in Kannada script, as before. Scholarly English (IAST): the names are worked out from their Marathi by `js/text/iast.js` ("Āśvina Śukla Aṣṭamī"), with śukla / kṛṣṇa for the paksha.
+- **The words around the names** (times, dates, "until", the key, the footnote, the screen-reader text of each day) still follow the menu language, with Devanagari digits in Marathi menus. English first always has English menus (Settings), so the two never disagree that way; with Marathi first and English menus, the names are Marathi and the words English.
+- **Spellings:** the months in plain English are spelled as said in Marathi (Shravan, Bhadrapad, Ashvin, Kartik, Magh …; were Shravana, Bhadrapada, Kartika, Magha). Long English names in the month's days break at a soft hyphen ("Chatur-dashi") and are a step smaller on phones.
+
 ## 2026-10-19: Vedic calendar (panchang) on Home and its own page
 
 Built from the approved mockups (`mockups/home-v2-a.html`, the line on Home; `mockups/vedic-calendar.html`, the page; branch `mockup-home-v2`). Version aarti-v1.6.
@@ -12,7 +21,7 @@ Built from the approved mockups (`mockups/home-v2-a.html`, the line on Home; `mo
 - **Place:** the one moonrise already uses (Settings → Place for moonrise, else the city for the phone's time zone, `skLoc()`); times are on the phone's clock. With no place known, the line stays hidden.
 - **Home:** one button under the date, "आश्विन शुद्ध अष्टमी" (adhika named when so; पौर्णिमा and अमावास्या without the paksha), "नक्षत्र … · शके १९४८ · पराभव संवत्सर", then sunrise, sunset and the place. Only today is worked out, a moment after the page shows (its room is kept so nothing jumps).
 - **The page** works like the Library (Back, the phone's Back, Escape; focus returns to the line). Day card: picture, title, tithi / नक्षत्र / योग with "until …" (weekday named when it ends on another day), वार, सूर्योदय with sunset and place, चंद्रोदय, मास (amanta), संवत्सर, ऋतु · अयन, and the next Sankashti with moonrise (`js/features/sankashti.js`). Month: a table of day buttons (रवि…शनि), each day's tithi at sunrise, shukla / krishna shading with a key, full and new moon marks, Ekadashi and Sankashti labels, today highlighted; previous / next month; arrow keys and Page Up / Down. A month is worked out only when shown. Two columns from 820px.
-- **Words:** the panchang's names stay Marathi in both menu languages, as in the approved design; the words around them (English glosses, times, dates, buttons, key, footnote) follow the menu language, with Devanagari digits in Marathi menus. Open for Satish: whether English menus should show the month heading in Marathi as the mockup did (it now follows the menus: "October 2026"; the weekday headers रवि…शनि stay Marathi), and whether festivals beyond Ekadashi and Sankashti (e.g. दसरा in the mockup) should be marked.
+- **Words** (replaced on 2026-10-19, above): the panchang's names stay Marathi in both menu languages, as in the approved design; the words around them (English glosses, times, dates, buttons, key, footnote) follow the menu language, with Devanagari digits in Marathi menus. Open for Satish: whether English menus should show the month heading in Marathi as the mockup did (it now follows the menus: "October 2026"; the weekday headers रवि…शनि stay Marathi), and whether festivals beyond Ekadashi and Sankashti (e.g. दसरा in the mockup) should be marked.
 
 ## 2026-10-18: Home redesign (simple "what to chant now" page) and the Library page
 
