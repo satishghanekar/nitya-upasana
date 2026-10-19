@@ -4,7 +4,7 @@
 //
 // Home v2 (docs/decisions.md, 2026-10-18): the home page no longer has the date card. On a Sankashti day only, one
 // small line under the date says so, with tonight's moonrise and the place (#skt): "Sankashti Chaturthi today ·
-// Moonrise 8:16 pm · Columbus, OH". The next Sankashti is still worked out on every visit for the Share message
+// Moonrise 8:09 pm · Columbus, OH". The next Sankashti is still worked out on every visit for the Share message
 // (js/features/share.js reads shared.skCache), which is unchanged.
 // The place: the reader's own (Settings → Place for moonrise, "Use my location", kept on this device as P.loc and
 // named from the built-in list below), else a city for the phone's time zone.
