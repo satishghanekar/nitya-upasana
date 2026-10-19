@@ -6,7 +6,7 @@
 <title>Nitya Upasana</title>
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.6.1">
+<meta name="version" content="aarti-v1.7">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -70,6 +70,7 @@
 <link rel="modulepreload" href="js/features/today-card.js">
 <link rel="modulepreload" href="js/core/panchang-names.js">
 <link rel="modulepreload" href="js/core/panchang.js">
+<link rel="modulepreload" href="js/core/festivals.js">
 <link rel="modulepreload" href="js/features/vedic-calendar.js">
 <link rel="modulepreload" href="js/text/dhrupad-markers.js">
 <link rel="modulepreload" href="js/text/stanza-numbers.js">
@@ -300,6 +301,8 @@
     <!-- The Vedic calendar line (js/features/vedic-calendar.js): today's month, paksha and tithi, nakshatra, Shaka year
          and samvatsara, sunrise, sunset and the place; a tap opens the calendar page (#cal) -->
     <div id="pan" hidden></div>
+    <!-- On a festival day only (js/features/vedic-calendar.js, rules in content/festivals.json): "आज दसरा" -->
+    <p id="fst" hidden></p>
     <!-- On a Sankashti day only (js/features/sankashti.js): "Sankashti Chaturthi today · Moonrise 8:09 pm · place" -->
     <p id="skt" hidden></p>
     <!-- Notes about saving (js/features/backup.js): this browser can't save here (IndexedDB could not be opened), or a
@@ -451,7 +454,7 @@
         <li><b>Start</b> (or <b>Continue</b>, once some are ticked) opens the first text not yet ticked. On a phone it stays at the bottom of the screen while the home page is in view. While you read, <b>Next ›</b> in the bottom bar ticks the text you were reading as done for today, then goes to the next text of the session; after the last one it brings you back here. <b>‹ Prev</b> goes back without ticking. To take a tick off, tap it on the list.</li>
         <li>The row of <b>App</b>, <b>Share</b>, <b>QR</b>, <b>Print</b> and <b>Help</b> buttons sits under the list.</li>
         <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
-        <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi and Sankashti marked). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise.</li>
+        <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home says so, "Today: Dasara"). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
         <li><b>On a Sankashti day</b> a line under the date gives tonight's <b>moonrise</b> for where you are (Angaraki, on a Tuesday, is marked). The place is your phone's time zone until you choose <b>Place for moonrise</b> under About in Settings, which uses your phone's location; the town is worked out on the phone and your location is never sent anywhere.</li>
       </ul>
 
@@ -511,7 +514,7 @@
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off. Keep screen on starts on for phones and tablets and off on computers.</li>
         <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
-        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.6.1), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
+        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.7), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
       </ul>
 
       <h3>While reading</h3>
