@@ -3,7 +3,7 @@
 // evening, with today's weekday star ringed (which picture and which star: js/core/time-of-day.js).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
-// It sets the home card picture (#iconb), the folded line's picture (#slim), the full-screen picture (#pzi,
+// It sets the home page picture (#iconb), the full-screen picture (#pzi,
 // fetched on its first open by features/picture-viewer.js) and the browser tab icon. The installed app icon
 // stays the sunrise picture (phones copy it when the app is added to the Home Screen).
 // The page can stay open for hours, so it checks again at the next change (12:00, 17:00, midnight) and whenever
@@ -56,7 +56,6 @@ export function update() {
     ring.style.top = p.star[1] + "%";
     ring.hidden = false;
   }
-  set(document.querySelector("#slim img"), "src", p.small);
   if (big) {
     set(big, "data-src", p.large);
     // already opened once: swap the full-size picture too

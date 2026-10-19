@@ -21,7 +21,7 @@ export function init() {
   // ▶ appears only when autoscroll is released (FEAT_AS) and switched on in Settings (P.ason; root data-ason).
   //
   // Autoscroll (held back for a later release, see FEAT_AS): runs through every open section (Pooja, aartis,
-  // and any added later). Turning it on folds the home card and the contents, opens every piece, and scrolls
+  // and any added later). Turning it on opens every piece, and scrolls
   // line by line: each sung line gets the same time (a little more for long lines), whatever its height.
   // With the dhrupad shown once, each ↻ ध्रुपद marker holds the page while the dhrupad is sung and shows it
   // in the bubble. While running the bar shows Home, Search, speed − / + and ⏸ (CSS: #asc.on).
@@ -305,10 +305,8 @@ function asStart() {
   // keep the piece in view where it is while the rest folds away
   var c0 = cur(),
     t0 = c0 && c0.getBoundingClientRect().top;
-  // fold the home card and contents, open every piece; a folded section (Pooja / Aarti) stays folded and is skipped,
-  // unless every section is folded, then all open again
-  P.fold = 1;
-  P.tf = 1;
+  // open every piece; a folded section (Pooja / Aarti) stays folded and is skipped, unless every section is folded,
+  // then all open again
   if (P.pf && P.xf) P.pf = P.xf = 0;
   P.af = [];
   save();
@@ -416,7 +414,7 @@ function asGo(sel) {
   else if (a) a.click();
   else if (!c && sel === ".next") {
     // from the home page: the first piece (the Pooja, or Aarti 1 when the Pooja is folded)
-    var f = document.querySelector('#home a[data-go="' + (P.pf ? "a1" : "p1") + '"]');
+    var f = document.querySelector('#jl a[data-go="' + (P.pf ? "a1" : "p1") + '"]');
     if (f) f.click();
   }
 }
