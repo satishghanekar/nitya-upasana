@@ -12,6 +12,9 @@
 //   samvatsara, ritu and ayana, the next Sankashti) and the month as a table of buttons: each day's tithi at sunrise,
 //   shukla / krishna shading, full and new moon, Ekadashi and Sankashti, kshaya and vriddhi tithis, today. A month is
 //   worked out only when it is shown (monthPanchang(), ~50 ms) and kept while the page is open.
+// - Festivals (content/festivals.json, rules in js/core/festivals.js): a short label on the day in the month, a tag
+//   and a row in the day card, and on Home, on the day only, one line under the calendar line (#fst): "आज दसरा" /
+//   "Today: Dasara". Their names follow the reading languages like the panchang's (nameH / nameH2).
 // Words: the panchang's names (tithi, paksha, masa, nakshatra, yoga, samvatsara, ritu, ayana, the weekdays, the day's
 // marks) follow the reading languages in Settings, as the pieces do: the first language (P.lead) everywhere, and the
 // second (P.l2) as the small line of the day card's rows; Marathi in Kannada letters when that is the script (P.ind),
@@ -20,6 +23,8 @@
 
 import { P } from "../core/state.js";
 import { dayPanchang, monthPanchang } from "../core/panchang.js";
+import { festivalsFor, festivalsInMonth } from "../core/festivals.js";
+import { loaded } from "../text/load.js";
 import { skLoc, skNext, skFmt, skMid } from "./sankashti.js";
 import { setC } from "./overlays.js";
 import { IA } from "../text/iast.js";
@@ -29,6 +34,7 @@ import { PAKSHA } from "../core/panchang-names.js";
  * @typedef {import("../core/panchang.js").DayPanchang} DayPanchang
  * @typedef {import("../core/panchang.js").MonthDay} MonthDay
  * @typedef {import("../core/panchang-names.js").Name} Name
+ * @typedef {import("../core/festivals.js").FestivalDay} FestivalDay
  * @typedef {{ lat: number, lon: number, mr: string, en: string }} Where
  */
 
@@ -56,6 +62,7 @@ const N = {
   angSk: { mr: "अंगारकी संकष्टी", en: "Angaraki Sankashti" },
   skc: { mr: "संकष्टी चतुर्थी", en: "Sankashti Chaturthi" },
   angSkc: { mr: "अंगारकी संकष्टी चतुर्थी", en: "Angaraki Sankashti Chaturthi" },
+  festival: { mr: "सण", en: "Festival", ia: "Festival" },
 };
 
 // The words around the names, in the menu language
@@ -83,6 +90,7 @@ const W = {
       return "Worked out on this phone for " + p + ". Tap a day to see its details.";
     },
     showing: "Showing ",
+    fToday: "Today: ",
   },
   mr: {
     open: " (पंचांग उघडा)",
@@ -107,6 +115,7 @@ const W = {
       return "हे पंचांग या फोनवर " + p + " साठी काढले आहे. तपशील पाहण्यासाठी एखादा दिवस निवडा.";
     },
     showing: "",
+    fToday: "आज ",
   },
 };
 
@@ -117,6 +126,7 @@ const ICON = {
   chev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   prev: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
   next: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+  star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8l-5.8 3.5 1.6-6.6-5.2-4.4 6.8-.5z" fill="currentColor"/></svg>',
   moon: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" fill="currentColor"/></svg>',
 };
 
@@ -315,6 +325,7 @@ function homeRender() {
   if (!L || !pl) {
     box.hidden = true;
     box.innerHTML = "";
+    festHome(null);
     return;
   }
   var p;
@@ -353,6 +364,59 @@ function homeRender() {
     '<span class="sr">' + esc(w.open) + "</span>" +
     ICON.chev +
     "</button>";
+  box.hidden = false;
+  festHome(pl);
+}
+
+// ----- festivals (content/festivals.json; js/core/festivals.js) -----
+
+/** A festival's name (a Name: mr and en) in the first reading language, like the panchang's names
+ * @param {Name} n @param {string} [cls] */
+function fname(n, cls) {
+  return nameH(n, cls);
+}
+/** @type {Record<string, Record<string, FestivalDay[]>>} months' festivals worked out while the page is open */
+var fmonths = {};
+/** @param {number} y @param {number} m 1–12 @returns {Record<string, FestivalDay[]>} */
+function monthFests(y, m) {
+  var pl = where();
+  if (!pl || !loaded.festivals) return {};
+  var k = pl.lat + "," + pl.lon + ":" + y + "-" + m;
+  if (!fmonths[k]) fmonths[k] = festivalsInMonth(y, m, pl, loaded.festivals);
+  return fmonths[k];
+}
+/** The festivals on one day ("YYYY-MM-DD", or now), [] when the rules did not load
+ * @param {string | Date} k @param {{ lat: number, lon: number }} pl */
+function festsOn(k, pl) {
+  if (!loaded.festivals) return [];
+  if (typeof k === "string") {
+    var d = dateOf(k);
+    return monthFests(d.getFullYear(), d.getMonth() + 1)[k] || [];
+  }
+  return festivalsFor(k, pl, loaded.festivals);
+}
+/** Home, on a festival day only (#fst): "आज दसरा" / "Today: Dasara", with the second reading language after a dot
+ * @param {{ lat: number, lon: number } | null} pl */
+function festHome(pl) {
+  var box = document.getElementById("fst");
+  if (!box) return;
+  var fs = pl ? festsOn(new Date(), pl) : [];
+  if (!fs.length) {
+    box.hidden = true;
+    box.innerHTML = "";
+    return;
+  }
+  box.lang = ui();
+  box.innerHTML =
+    '<span class="dot" aria-hidden="true">' + ICON.star + "</span><span>" +
+    say(words().fToday) +
+    fs
+      .map(function (f) {
+        var two = nameH2(f);
+        return "<b>" + fname(f) + "</b>" + (two ? say(" · ") + two : "");
+      })
+      .join(say(", ")) +
+    "</span>";
   box.hidden = false;
 }
 
@@ -442,7 +506,8 @@ function dayRender() {
         .join(", ");
   if (md && md.vriddhi) tSmall += "<br>" + esc(w.vriddhi);
   if (p.tithi.borderline) tSmall += "<br>" + esc(w.near);
-  var tags = md ? marks(md) : [],
+  var fs = festsOn(k, pl),
+    tags = md ? marks(md) : [],
     masa = cat(" ", (p.masa.adhikaName ? [p.masa.adhikaName] : []).concat([p.masa.name]));
   // "शके १९४८ · पराभव संवत्सर" / "Shaka 1948 · Parabhava"; "शरद ऋतु · दक्षिणायन" / "Sharad · Dakshinayana"
   /** @param {string} l */
@@ -460,8 +525,14 @@ function dayRender() {
     "<div>" +
     '<h3 id="cdt">' + nameH(title(p)) + "</h3>" +
     '<p class="cdd">' + say(dateLine) + (k === keyOf(new Date()) ? " · " + say(w.today) : "") + "</p>" +
-    (tags.length
+    (tags.length || fs.length
       ? '<p class="cdg">' +
+        fs
+          .map(function (f) {
+            return fname(f, "tag fest");
+          })
+          .join(" ") +
+        (fs.length && tags.length ? " " : "") +
         tags
           .map(function (t) {
             return nameH(t, "tag");
@@ -471,6 +542,23 @@ function dayRender() {
       : "") +
     "</div></div>" +
     "<dl>" +
+    (fs.length
+      ? row(
+          N.festival,
+          fs
+            .map(function (f) {
+              return fname(f);
+            })
+            .join(say(", ")),
+          two
+            ? fs
+                .map(function (f) {
+                  return nameH2(f);
+                })
+                .join(say(", "))
+            : "",
+        )
+      : "") +
     row(N.tithi, nameH(tithiName(p.tithi)), tSmall) +
     row(N.nakshatra, nameH(p.nakshatra.name), then(p.nakshatra.name, p.nakshatra.endsAt)) +
     row(N.yoga, nameH(p.yoga.name), then(p.yoga.name, p.yoga.endsAt)) +
@@ -552,6 +640,7 @@ function monthRender() {
     y = view.y,
     m = view.m,
     days = monthOf(y, m),
+    fm = monthFests(y, m),
     today = keyOf(new Date()),
     first = new Date(y, m - 1, 1).getDay(),
     py = m === 1 ? y - 1 : y,
@@ -605,7 +694,9 @@ function monthRender() {
       isT = d.date === today,
       sel = d.date === view.day,
       tn = t.name,
-      lab = d.ekadashi ? N.ekadashi : null,
+      fs = fm[d.date] || [],
+      // a festival's own label stands for एकादशी on आषाढी / कार्तिकी एकादशी
+      lab = d.ekadashi && !fs.length ? N.ekadashi : null,
       skl = d.sankashti ? (d.vara === 2 ? N.angaraki : N.sankashti) : null,
       moon = d.purnima ? "full" : d.amavasya ? "new" : "",
       // what a screen reader hears beyond what is shown: the date, the paksha, today, the marks
@@ -616,6 +707,13 @@ function monthRender() {
         .concat(d.kshaya.length ? [w.kshaya + d.kshaya.map(function (n) {
           return E ? monthTithi(n).en : monthTithi(n).mr;
         }).join(", ")] : [])
+        .concat(
+          fs.length && E
+            ? fs.map(function (f) {
+                return f.en;
+              })
+            : [],
+        )
         .concat(d.vriddhi ? [w.vriddhi] : [])
         .concat(isT ? [w.today] : [])
         .filter(Boolean)
@@ -632,6 +730,11 @@ function monthRender() {
           }).join(" +") + "</span>"
         : "") +
       (moon ? '<span class="mn ' + moon + '" aria-hidden="true"></span>' : "") +
+      fs
+        .map(function (f) {
+          return cell(f.short, "fs");
+        })
+        .join("") +
       (lab ? cell(lab, "f") : "") +
       (skl ? cell(skl, "f") : "") +
       (d.vriddhi ? '<span class="vr" aria-hidden="true">' + (E ? "vriddhi" : esc(scr("वृद्धी"))) + "</span>" : "") +

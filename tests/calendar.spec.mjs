@@ -91,7 +91,8 @@ test("the month: weekdays, tithi at sunrise, paksha shading, moons, Ekadashi, Sa
   // 30 Oct: vadya panchami at sunrise, and shashthi begins and ends before the next sunrise (kshaya)
   await expect(day(30).locator(".kx")).toHaveText("+षष्ठी");
   await expect(day(30)).toHaveAccessibleName(/30 October, Friday, पंचमी.*Krishna Panchami.*kshaya tithi: Krishna Shashthi/);
-  await expect(day(25)).toHaveAccessibleName("25 October, Sunday, पौर्णिमा , Purnima");
+  // with Kojagiri Purnima, a festival (content/festivals.json): its short name shows, its full name is heard
+  await expect(day(25)).toHaveAccessibleName("25 October, Sunday, पौर्णिमा कोजागिरी , Purnima, Kojagiri Purnima");
   // the key
   await expect(page.locator(".ckey")).toContainText("Shukla paksha");
   await expect(page.locator(".ckey")).toContainText("Krishna paksha");
@@ -111,7 +112,7 @@ test("tapping a day shows it in the day card @mobile", async ({ page }) => {
   // purnima: no paksha in the title
   await page.locator('#calm button[data-d="2026-10-25"]').click();
   await expect(page.locator("#cdt")).toHaveText("आश्विन पौर्णिमा");
-  await expect(page.locator("#cald .cdg")).toHaveText("पौर्णिमा");
+  await expect(page.locator("#cald .cdg")).toHaveText("कोजागिरी पौर्णिमा पौर्णिमा");
 });
 
 test("previous and next month @mobile", async ({ page }) => {
@@ -361,6 +362,89 @@ test("changing the first language in Settings re-draws the Home line", async ({ 
   await page.locator("#panb").click();
   await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Ashtami");
   await expect(row(page, "Tithi")).toHaveText("Shukla Ashtamiशुद्ध अष्टमी · until Mon 1:21 am");
+});
+
+// Festivals (content/festivals.json, js/core/festivals.js): in Columbus the engine keeps Dasara on 20 October 2026
+// (dashami from 3:20 am on the 20th to 4:41 am on the 21st EDT: the afternoon of the 20th) and Kojagiri on the 25th
+// (tests/unit/festivals.test.mjs).
+const DASARA = new Date("2026-10-20T08:00:00-04:00");
+test("festivals: दसरा on 20 October in the month, a tag and a row in the day card @mobile", async ({ page }) => {
+  await open(page);
+  const day = (d) => page.locator(`#calm button[data-d="2026-10-${String(d).padStart(2, "0")}"]`);
+  await expect(day(20).locator(".fs")).toHaveText("दसरा");
+  await expect(day(11).locator(".fs")).toHaveText("नवरात्र"); // घटस्थापना: Navratri begins
+  await expect(day(25).locator(".fs")).toHaveText("कोजागिरी");
+  await expect(page.locator("#calm .cd .fs")).toHaveCount(3);
+  await expect(day(20)).toHaveAccessibleName("20 October, Tuesday, दशमी दसरा , Shukla Dashami, Dasara (Vijayadashami)");
+  await day(20).click();
+  await expect(page.locator("#cald .cdg")).toHaveText("दसरा");
+  await expect(page.locator("#cald .cdg .tag.fest")).toHaveCount(1);
+  await expect(row(page, "सण")).toHaveText("दसराDasara (Vijayadashami)");
+  // an ordinary day has no festival row
+  await day(19).click();
+  await expect(page.locator("#cald dt", { hasText: "सण" })).toHaveCount(0);
+});
+
+test("festivals: Home says आज दसरा on the day only @mobile", async ({ page }) => {
+  await openSite(page, COLUMBUS, { now: DASARA });
+  await expect(page.locator("#panb .p1")).toHaveText("आश्विन शुद्ध दशमी");
+  const f = page.locator("#fst");
+  await expect(f).toBeVisible();
+  await expect(f).toHaveText("Today: दसरा · Dasara (Vijayadashami)");
+  // it sits under the calendar line, above the session's texts
+  const y = async (s) => (await page.locator(s).boundingBox()).y;
+  expect(await y("#pan")).toBeLessThan(await y("#fst"));
+  expect(await y("#fst")).toBeLessThan(await y("#tsc"));
+});
+
+test("festivals: Marathi only says आज दसरा; no line the day before or after", async ({ browser }) => {
+  for (const [now, shown] of [
+    [DASARA, true],
+    [new Date("2026-10-19T20:00:00-04:00"), false],
+    [new Date("2026-10-21T08:00:00-04:00"), false],
+  ]) {
+    const page = await browser.newPage();
+    await openSite(page, { ...SETUPS["marathi-menus"], l2: "", loc: { lat: 39.96, lon: -83.0 } }, { now });
+    await expect(page.locator("#panb")).toBeVisible();
+    if (shown) await expect(page.locator("#fst")).toHaveText("आज दसरा");
+    else await expect(page.locator("#fst")).toBeHidden();
+    await page.close();
+  }
+});
+
+test("axe: the festival line on Home and Dasara in the calendar @mobile", async ({ page }) => {
+  await openSite(page, COLUMBUS, { now: DASARA });
+  await expect(page.locator("#fst")).toBeVisible();
+  const tags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
+  const fmt = (r) => r.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).slice(0, 5).join(", ")}`);
+  expect(fmt(await new AxeBuilder({ page }).include("#fst").include("#pan").withTags(tags).analyze())).toEqual([]);
+  await page.locator("#panb").click();
+  await expect(page.locator("#calm button.cd")).toHaveCount(31);
+  expect(fmt(await new AxeBuilder({ page }).include("#cal").withTags(tags).analyze())).toEqual([]);
+});
+
+test("festivals in English only: Home says Today: Dasara, the month and the day card have no Devanagari @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: DASARA });
+  const f = page.locator("#fst");
+  await expect(f).toHaveText("Today: Dasara (Vijayadashami)");
+  expect(await f.innerText()).not.toMatch(DEVANAGARI);
+  await page.locator("#panb").click();
+  await expect(page.locator("#calm button.cd")).toHaveCount(31);
+  await expect(day(page, 20).locator(".fs")).toHaveText("Dasara");
+  await expect(day(page, 20).locator(".fs")).toHaveAttribute("lang", "en");
+  await expect(day(page, 11).locator(".fs")).toHaveText("Navratri");
+  await expect(day(page, 25).locator(".fs")).toHaveText("Kojagiri");
+  await expect(page.locator("#cald .cdg .tag.fest")).toHaveText("Dasara (Vijayadashami)");
+  await expect(row(page, "Festival")).toHaveText("Dasara (Vijayadashami)");
+  expect(await page.locator("#cald .cdg").innerText()).not.toMatch(DEVANAGARI);
+  expect(await page.locator("#calm .fs").allInnerTexts()).not.toContainEqual(expect.stringMatching(DEVANAGARI));
+});
+
+test("festivals in Marathi only: आज दसरा, and no English line in the day card", async ({ page }) => {
+  await openSite(page, { ...SETUPS["marathi-menus"], lead: "mr", l2: "", loc: { lat: 39.96, lon: -83.0 } }, { now: DASARA });
+  await expect(page.locator("#fst")).toHaveText("आज दसरा");
+  await page.locator("#panb").click();
+  await expect(row(page, "सण")).toHaveText("दसरा");
 });
 
 for (const [name, prefs] of [

@@ -229,6 +229,9 @@
   flex-wrap: wrap;
   gap: 4px;
 }
+.cdg .tag.fest {
+  border-color: var(--accent);
+}
 .cdg .tag {
   padding: 1px 8px;
   border: 1px solid var(--hdrl);
@@ -416,6 +419,13 @@
   font: 600 10.5px/1.2 var(--body);
   overflow-wrap: anywhere;
 }
+/* a festival (content/festivals.json): its short name, a little bolder than the Ekadashi / Sankashti marks */
+.cd .fs {
+  max-width: 100%;
+  color: var(--accent);
+  font: 700 10.5px/1.2 var(--body);
+  overflow-wrap: anywhere;
+}
 .cd .vr {
   color: var(--muted);
   font: 400 9.5px/1.15 var(--lat);
@@ -437,6 +447,7 @@
 .cd.today .t,
 .cd.today .kx,
 .cd.today .f,
+.cd.today .fs,
 .cd.today .vr {
   color: var(--bg);
 }
@@ -517,7 +528,8 @@
   .cd .t {
     font-size: 12.5px;
   }
-  .cd .f {
+  .cd .f,
+  .cd .fs {
     font-size: 11.5px;
   }
 }
