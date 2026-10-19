@@ -1,9 +1,11 @@
 // @ts-check
-// Names for the Vedic calendar (js/core/panchang.js), in Marathi (Devanagari, Kalnirnay usage) and English.
+// Names for the Vedic calendar (js/core/panchang.js), in Marathi (Devanagari, Kalnirnay usage) and plain everyday
+// English (no diacritics: "Ashvin Shukla Ashtami"). The scholarly English (IAST) of a name is worked out from its
+// Marathi by js/text/iast.js when that style is chosen; ia gives it where the Marathi word differs (शुद्ध: śukla).
 // Each list is in its traditional order; the panchang's numbers are 1-based (tithi 1–30, nakshatra 1–27 …),
 // so a name is LIST[n - 1]. Plain data, no page.
 
-/** @typedef {{ mr: string, en: string }} Name */
+/** @typedef {{ mr: string, en: string, ia?: string }} Name */
 
 /**
  * @param {string} mr space-separated Marathi names ("_" stands for a space inside one name)
@@ -28,12 +30,12 @@ export var TITHI = pairs(
 export var AMAVASYA = { mr: "अमावास्या", en: "Amavasya" };
 
 /** shukla (bright half) then krishna (dark half) */
-export var PAKSHA = { shukla: { mr: "शुद्ध", en: "Shukla" }, krishna: { mr: "वद्य", en: "Krishna" } };
+export var PAKSHA = { shukla: { mr: "शुद्ध", en: "Shukla", ia: "Śukla" }, krishna: { mr: "वद्य", en: "Krishna", ia: "Kṛṣṇa" } };
 
-/** Amanta lunar months, Chaitra first */
+/** Amanta lunar months, Chaitra first; in English as they are said in Marathi (Shravan, Bhadrapad, Ashvin) */
 export var MASA = pairs(
   "चैत्र वैशाख ज्येष्ठ आषाढ श्रावण भाद्रपद आश्विन कार्तिक मार्गशीर्ष पौष माघ फाल्गुन",
-  "Chaitra Vaishakha Jyeshtha Ashadha Shravana Bhadrapada Ashvin Kartika Margashirsha Pausha Magha Phalguna"
+  "Chaitra Vaishakh Jyeshtha Ashadh Shravan Bhadrapad Ashvin Kartik Margashirsha Paush Magh Phalgun"
 );
 export var ADHIKA = { mr: "अधिक", en: "Adhika" };
 export var NIJA = { mr: "निज", en: "Nija" };
