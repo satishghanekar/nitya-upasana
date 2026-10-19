@@ -2,6 +2,18 @@
 
 Newest first. Each entry: the decision, who made it, and where it came from.
 
+## 2026-10-19: Vedic calendar (panchang) on Home and its own page
+
+Built from the approved mockups (`mockups/home-v2-a.html`, the line on Home; `mockups/vedic-calendar.html`, the page; branch `mockup-home-v2`). Version aarti-v1.6.
+
+- **On-device only.** Everything is worked out on the phone by `js/core/panchang.js` (from the Meeus sun and moon in `js/features/astronomy.js`); nothing is fetched or sent, and it works offline. Checked against the Swiss Ephemeris 2020–2032 (`tests/unit/panchang.test.mjs`): sunrise and sunset within 0.2 minute, tithi end times within 1.5 minutes, moonrise within 0.5 minute.
+- **Convention: Kalnirnay / Drik Panchang.** Sidereal positions with the **Lahiri** (Chitrapaksha) ayanamsha; **amanta** months (new moon to new moon, adhika when no sankranti falls in it); a day's tithi, nakshatra, yoga and month are those at that day's **sunrise** at the place. A tithi that begins and ends between two sunrises is kshaya (shown as "+ name" in its day), one at two sunrises is vriddhi; a tithi boundary within 5 minutes of sunrise gets a note that a printed calendar may differ.
+- **Moonrise fix, chosen by Satish (2026-10-18):** moonrise is the moon's centre at +0.125° (upper limb on the horizon with refraction, semidiameter and parallax) with the moon taken at UT + ΔT. The Sankashti moonrise for 28 October 2026 in Columbus moves from 8:16 pm to 8:09 pm (Swiss Ephemeris 8:10 pm).
+- **Place:** the one moonrise already uses (Settings → Place for moonrise, else the city for the phone's time zone, `skLoc()`); times are on the phone's clock. With no place known, the line stays hidden.
+- **Home:** one button under the date, "आश्विन शुद्ध अष्टमी" (adhika named when so; पौर्णिमा and अमावास्या without the paksha), "नक्षत्र … · शके १९४८ · पराभव संवत्सर", then sunrise, sunset and the place. Only today is worked out, a moment after the page shows (its room is kept so nothing jumps).
+- **The page** works like the Library (Back, the phone's Back, Escape; focus returns to the line). Day card: picture, title, tithi / नक्षत्र / योग with "until …" (weekday named when it ends on another day), वार, सूर्योदय with sunset and place, चंद्रोदय, मास (amanta), संवत्सर, ऋतु · अयन, and the next Sankashti with moonrise (`js/features/sankashti.js`). Month: a table of day buttons (रवि…शनि), each day's tithi at sunrise, shukla / krishna shading with a key, full and new moon marks, Ekadashi and Sankashti labels, today highlighted; previous / next month; arrow keys and Page Up / Down. A month is worked out only when shown. Two columns from 820px.
+- **Words:** the panchang's names stay Marathi in both menu languages, as in the approved design; the words around them (English glosses, times, dates, buttons, key, footnote) follow the menu language, with Devanagari digits in Marathi menus. Open for Satish: whether English menus should show the month heading in Marathi as the mockup did (it now follows the menus: "October 2026"; the weekday headers रवि…शनि stay Marathi), and whether festivals beyond Ekadashi and Sankashti (e.g. दसरा in the mockup) should be marked.
+
 ## 2026-10-18: Home redesign (simple "what to chant now" page) and the Library page
 
 Satish (2026-10-18): "This app has nothing to do with sankathara chaturthi.. the main card needs to be redesigned. That can go away. When I open the app it should just be simplistic layout of what i should be chanting for that day and time... I think the table of contents can also go away." Built from mockup A (`mockups/home-v2-a.html` on `mockup-home-v2`). Version aarti-v1.5.
