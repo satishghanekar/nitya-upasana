@@ -5,8 +5,9 @@ import { openSite, settle, SETUPS, PREFS_KEY } from "./helpers.mjs";
 const prefs = (page) => page.evaluate((k) => JSON.parse(localStorage.getItem(k)), PREFS_KEY);
 const rootAttr = (page, a) => page.evaluate((a) => document.documentElement.getAttribute(a), a);
 
+// (the Language and Dhrupad buttons are in the top bar while reading; on the home page they step aside)
 test("language button cycles main → second → both and is remembered @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
   const btn = page.locator("#home-btn");
   const lang = () => page.locator("#a1").getAttribute("data-lang");
   expect(await lang()).toBe("mr");
@@ -24,7 +25,7 @@ test("language button cycles main → second → both and is remembered @mobile"
 });
 
 test("dhrupad button switches between once and after every verse @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
   expect(await rootAttr(page, "data-ref")).toBe("1");
   await page.locator("#rb").click();
   expect(await rootAttr(page, "data-ref")).toBe("0");
@@ -33,9 +34,10 @@ test("dhrupad button switches between once and after every verse @mobile", async
   expect(await rootAttr(page, "data-ref")).toBe("1");
 });
 
-test("contents link jumps to a piece and moves focus to its heading", async ({ page }) => {
+test("a Library link jumps to a piece and moves focus to its heading", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
-  await page.locator('a[data-go="a5"]:visible').first().click();
+  await page.locator("#hm").click();
+  await page.locator('#jl a[data-go="a5"]').click();
   await page.waitForTimeout(400);
   const top = await page.locator("#a5").evaluate((e) => e.getBoundingClientRect().top);
   expect(Math.abs(top)).toBeLessThan(200);
@@ -119,8 +121,9 @@ test("piece fold is remembered across a reload @mobile", async ({ page }) => {
   await page.reload();
   await settle(page);
   await expect(page.locator("#a2 .items")).toBeHidden();
-  // going to a folded piece from the contents opens it
-  await page.locator('a[data-go="a2"]:visible').first().click();
+  // going to a folded piece from the Library opens it
+  await page.locator("#hm").click();
+  await page.locator('#jl a[data-go="a2"]').click();
   await expect(page.locator("#a2 .items")).toBeVisible();
 });
 
@@ -135,57 +138,10 @@ test("Pooja and Aarti section folds @mobile", async ({ page }) => {
   expect(await rootAttr(page, "data-pf")).toBeNull();
 });
 
-test("home card folds to one line and opens again @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
-  await page.locator("#cvb").click();
-  await expect(page.locator("#slim")).toBeVisible();
-  await expect(page.locator("#shr")).toBeHidden();
-  await page.locator("#slim").click();
-  await expect(page.locator("#shr")).toBeVisible();
-});
-
-// Sankashti day (28 Oct 2026 in Columbus): the card opens on tonight's moonrise; the date strip, the calendar
-// links and the App / Share / QR / Print / Help row wait under More dates
-test("on Sankashti day the card leads with moonrise, and More dates opens the rest @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi, { now: new Date("2026-10-28T17:30:00-04:00") });
-  await expect(page.locator("#home")).toHaveClass(/\bpday\b/);
-  await expect(page.locator("#skc .skm b").last()).toHaveText(/pm/);
-  const more = page.locator("#skmore");
-  await expect(more).toBeVisible();
-  await expect(more).toHaveAttribute("aria-expanded", "false");
-  await expect(page.locator("#skc .sks")).toBeHidden();
-  await expect(page.locator("#shr")).toBeHidden();
-  await more.click();
-  await expect(more).toHaveAttribute("aria-expanded", "true");
-  await expect(page.locator("#skc .sks")).toBeVisible();
-  await expect(page.locator("#skall")).toBeVisible();
-  await expect(page.locator("#shr")).toBeVisible();
-});
-
-// Other days: the card leads with the next Chaturthi date and its moonrise too, with the App / Share / QR /
-// Print / Help row in view and the date strip under More dates
-test("on other days the card leads with the next Chaturthi date, and More dates opens the strip @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
-  await expect(page.locator("#home")).not.toHaveClass(/\bpday\b/);
-  await expect(page.locator("#skc .skh").first()).toContainText("पुढील चतुर्थी");
-  // today's date is on the Today card above (#tdd); the card's own "Today:" line waits under More dates
-  await expect(page.locator("#tdd")).toBeVisible();
-  await expect(page.locator("#skc .sktd")).toBeHidden();
-  const more = page.locator("#skmore");
-  await expect(more).toBeVisible();
-  await expect(more).toHaveAttribute("aria-expanded", "false");
-  await expect(page.locator("#skc .sks")).toBeHidden();
-  await expect(page.locator("#shr")).toBeVisible();
-  await more.click();
-  await expect(more).toHaveAttribute("aria-expanded", "true");
-  await expect(page.locator("#skc .sks")).toBeVisible();
-  await expect(page.locator("#skc .sktd")).toBeVisible();
-  await expect(page.locator("#shr")).toBeVisible();
-});
-
-// Reading sheet: Aa in the bottom bar; language, text size and dhrupad in one place, within thumb reach
+// Reading sheet: Aa in the bottom bar (while reading; on the home page Start takes its place); language, text size
+// and dhrupad in one place, within thumb reach
 test("Aa opens the reading sheet: language, text size and dhrupad, then Escape closes it @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
   const rsb = page.locator("#rsb");
   await rsb.click();
   await expect(page.locator("#rsh")).toBeVisible();
@@ -218,7 +174,7 @@ test("Aa opens the reading sheet: language, text size and dhrupad, then Escape c
 });
 
 test("reading sheet: a tap outside closes it, and All settings opens Settings @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
   await page.locator("#rsb").click();
   await page.locator("#rsh").click({ position: { x: 20, y: 20 } });
   await expect(page.locator("#rsh")).toBeHidden();
@@ -283,7 +239,6 @@ for (const [when, picture, day, name, label] of [
     await expect(btn).toHaveAttribute("data-day", String(day));
     await expect(btn.locator("img")).toHaveAttribute("src", `picture-${picture}-360.webp`);
     await expect(btn).toHaveAttribute("aria-label", "Show the picture full screen: " + label);
-    await expect(page.locator("#slim img")).toHaveAttribute("src", `picture-${picture}-360.webp`);
     await expect(page.locator('link[rel="icon"][sizes="32x32"]')).toHaveAttribute("href", name);
     // the picture has loaded
     expect(await btn.locator("img").evaluate((i) => i.complete && i.naturalWidth)).toBe(360);
@@ -345,12 +300,6 @@ test("IAST spelling switches in place without a reload", async ({ page }) => {
   expect(await first()).toMatch(/sukhakartā/);
 });
 
-test("the date card shows the next Sankashti with moonrise", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
-  const card = await page.locator("#skc").innerText();
-  expect(card).toMatch(/Moonrise|moonrise|चंद्रोदय/);
-});
-
 test("reopens where the reader was (within 12 hours)", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a6" });
   await page.waitForTimeout(500);
@@ -397,9 +346,9 @@ test.describe("pinch @chromium-only", () => {
       return { before, after };
     });
 
-  test("on the home card a pinch does nothing", async ({ page }) => {
+  test("on the home page a pinch does nothing", async ({ page }) => {
     await openSite(page, SETUPS.marathi);
-    const r = await pinchOut(page, "#home .top .hero");
+    const r = await pinchOut(page, "#tdy");
     expect(r.after).toBe(r.before);
     await expect(page.locator("#szt")).not.toHaveClass(/\bon\b/);
   });
@@ -416,9 +365,9 @@ test.describe("pinch @chromium-only", () => {
     await openSite(page, SETUPS.marathi);
     expect(await pinchStart(page, "#a1 .items .verse p")).toBe(true);
   });
-  test("on the home card, Settings and Help the page does not zoom either", async ({ page }) => {
+  test("on the home page, Settings and Help the page does not zoom either", async ({ page }) => {
     await openSite(page, SETUPS.marathi);
-    expect(await pinchStart(page, "#home .top .hero")).toBe(true);
+    expect(await pinchStart(page, "#tdy")).toBe(true);
     await page.locator("#aa").click();
     expect(await pinchStart(page, "#panel .sp-card")).toBe(true);
     await page.locator("#xc").click();

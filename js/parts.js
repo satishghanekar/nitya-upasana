@@ -43,7 +43,7 @@ var SITE_PARTS = (function () {
     "text/iast",
     "text/layout",
     "features/astronomy",
-    "features/date-card",
+    "features/sankashti",
     "core/routine",
     "core/ticks",
     "features/today-card",

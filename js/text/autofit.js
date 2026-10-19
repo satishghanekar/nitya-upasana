@@ -3,7 +3,6 @@
 
 import { root, secs } from "../core/page.js";
 import { shared, P, dfs } from "../core/state.js";
-import { skDot } from "../features/date-card.js";
 import { ZW } from "./line-breaks.js";
 
 var VW, MQL, FR, CW, MQP;
@@ -212,8 +211,4 @@ function fontsIn() {
   shared.fontN = n;
   autoFs();
   pullSoon();
-  // the date card's chips may wrap differently in the arrived font
-  try {
-    skDot();
-  } catch (e) {}
 }

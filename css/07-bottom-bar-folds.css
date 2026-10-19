@@ -298,13 +298,8 @@
   }
 }
 /* ==== Folding the home contents list and each piece (the Contents button's look is in "Fold headings" below) ==== */
-#tfb {
-  cursor: pointer;
-}
-#tfb svg {
-  flex: none;
-  transition: transform 0.2s;
-}
+
+
 .ash header {
   position: relative;
   padding-inline: 56px;
@@ -335,10 +330,7 @@
   transition: transform 0.2s;
 }
 @media screen {
-  [data-tf="1"] #home .tocg {
-    display: none !important;
-  }
-  [data-tf="1"] #tfb svg,
+
   .ash.af .afb svg {
     transform: rotate(180deg);
   }
@@ -403,8 +395,7 @@
   }
 }
 @media print {
-  .afb,
-  #tfr {
+  .afb {
     display: none !important;
   }
   .ash header {
@@ -413,7 +404,6 @@
 }
 /* ==== Fold headings (Contents, Pooja, Aarti): one look, full-width rows lined up with the folded pieces ==== */
 @media screen {
-  #tfr,
   .grp,
   #home + .grp {
     display: block;
@@ -425,10 +415,7 @@
     padding: 0;
     border: 0;
   }
-  [data-tf="1"] #home {
-    padding-bottom: 0;
-  }
-  #tfb,
+
   #pfb,
   #xfb {
     display: flex;
@@ -447,25 +434,21 @@
     color: var(--accent);
     text-align: left;
   }
-  #tfb .mr,
   #pfb .mr,
   #xfb .mr {
     font: 600 20px/1.2 var(--head);
     color: var(--accent);
   }
-  #tfb .en,
   #pfb .en,
   #xfb .en {
     font: 600 14px/1.2 var(--lat);
     color: var(--muted);
   }
   #g-pooja[data-lang="en"] #pfb .en,
-  #g-aarti[data-lang="en"] #xfb .en,
-  #tfr[data-lang="en"] #tfb .en {
+  #g-aarti[data-lang="en"] #xfb .en {
     font: 700 17px/1.2 var(--lat);
     color: var(--accent);
   }
-  #tfb svg,
   #pfb svg,
   #xfb svg {
     margin-left: auto;
@@ -484,7 +467,6 @@
 
 @media screen and (min-width: 1100px) {
   [data-rail="1"] #home,
-  [data-rail="1"] #tfr,
   [data-rail="1"] .grp,
   [data-rail="1"] #home + .grp,
   [data-rail="1"] .ash header,
@@ -493,9 +475,7 @@
   }
 }
 /* Piece headings, the card's picture and its folded line fold or open with a tap anywhere on them */
-.ash header,
-#home .hero,
-#slim {
+.ash header {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -617,95 +597,11 @@
   }
 }
 
-/* Vibrant home card (option B): gold glow behind the picture, warm date box, next date in the accent colour
-   with an "in N days" badge, a gold ring on the chosen date chip, past dates dimmed */
-.top .hero {
-  background:
-    radial-gradient(closest-side, color-mix(in srgb, var(--gold) 38%, transparent), transparent) no-repeat center 0 / 150px 110px,
-    linear-gradient(180deg, var(--hdr), transparent);
-}
+
 #iconb img {
   filter: drop-shadow(0 0 10px color-mix(in srgb, var(--gold) 55%, transparent));
 }
-.skc {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface) 55%);
-  border-color: color-mix(in srgb, var(--gold) 55%, var(--hdrl));
-}
-.skc.today {
-  border-color: var(--accent);
-}
-.skc .skh .en {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.9em;
-}
-.skc[data-lang="both"] .skh .en {
-  text-transform: none;
-  letter-spacing: 0;
-}
-.skc .skd {
-  color: var(--accent);
-  font-weight: 600;
-}
-.skc .skd .skin {
-  display: inline-block;
-  margin: 0 2px 0 8px;
-  padding: 0 9px;
-  border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent);
-  border-radius: 99px;
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
-  color: var(--accent);
-  font: 600 12px/1.6 var(--lat);
-  vertical-align: 4px;
-  white-space: nowrap;
-}
-.skc .skd .skin.mr {
-  font-family: var(--body);
-}
-.skc[data-lang="both"] .skd .skin.en {
-  display: none;
-}
-.skc .skch.on {
-  box-shadow:
-    0 0 0 2px var(--surface),
-    0 0 0 3.5px var(--gold),
-    0 4px 12px color-mix(in srgb, var(--accent) 45%, transparent);
-}
-/* Past dates step back without fading: muted text and a lighter edge instead of opacity, which took the
-   text below the 4.5:1 contrast every reader needs (WCAG 1.4.3) */
-.skc .skch.past:not(.on) {
-  background: transparent;
-  border-color: var(--rule);
-  color: var(--muted);
-}
-/* A little tighter (Satish, 2026-10-14): smaller gaps between the card's lines; room under the chips for the chosen one's glow */
-@media screen {
-  .top .hero {
-    padding-bottom: 2px;
-    margin-bottom: 6px;
-  }
-  .skc {
-    padding-top: 6px;
-    margin-bottom: 10px;
-  }
-  .skc .sktd {
-    margin-bottom: 2px;
-    padding-bottom: 3px;
-  }
-  .skc .skm {
-    row-gap: 0;
-  }
-  .skc .skp.own {
-    margin-top: -2px;
-  }
-  .skc .sks {
-    margin-top: 4px;
-    padding: 8px 6px 7px;
-  }
-  .skc #skall {
-    margin: 0 auto -6px;
-  }
-}
+
 
 /* Text font (Settings): Standard keeps the site's own fonts; the others change the texts (Marathi and English).
    The Atharvashirsha's Marathi lines keep their Sanskrit font, which has the Vedic accent marks. */
@@ -750,18 +646,17 @@
   --lat: var(--tf), "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
 }
 :root[data-font]:not([data-font="std"]) #home #shr,
-:root[data-font]:not([data-font="std"]) #home #cvb,
 :root[data-font]:not([data-font="std"]) .grp .allb {
   --head: "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
   --body: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
   --lat: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
 }
 /* and the home page's Table of Contents: piece names, numbers and languages */
-:root[data-font]:not([data-font="std"]) #home .tocg ol.toc .m,
-:root[data-font]:not([data-font="std"]) #home .tocg ol.toc .lt {
+:root[data-font]:not([data-font="std"]) #jl .tocg ol.toc .m,
+:root[data-font]:not([data-font="std"]) #jl .tocg ol.toc .lt {
   font-family: var(--tf), var(--head);
 }
-:root[data-font]:not([data-font="std"]) #home .tocg ol.toc .en {
+:root[data-font]:not([data-font="std"]) #jl .tocg ol.toc .en {
   font-family: var(--tf), var(--lat);
 }
 /* the font row: label on top, the four choices across the full width */
@@ -808,14 +703,8 @@
   padding-block: 9px;
   margin-block: -9px;
 }
-.skc .skl {
-  position: relative;
-}
-.skc .skl::after {
-  content: "";
-  position: absolute;
-  inset: -6px 0;
-}
+
+
 @media screen {
   .rmk.rmkt::after {
     inset: -10px -8px;
@@ -834,100 +723,7 @@ html[data-asb="1"] {
    (#skmore; #home.pmore while open). The calendar icon and the App / Share / QR / Print / Help row stay in sight.
    On Sankashti day itself (#home.pday) the moonrise time is large, the contents below are set larger, and the
    button row waits under More dates too. */
-.skc .skm b {
-  font-weight: inherit;
-}
-.skc .skmore {
-  display: none;
-}
-#home.skn .skc .skmore {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: calc(100% + 24px);
-  height: 44px;
-  margin: 8px -12px -8px;
-  padding: 0;
-  border: 0;
-  border-top: 1px solid var(--hdrl);
-  border-radius: 0 0 14px 14px;
-  background: none;
-  color: var(--ink);
-  font: 500 15px/1 var(--lat);
-}
-#home.skn .skc .skmore .mr {
-  font-family: var(--body);
-}
-#home.skn .skc .skmore svg {
-  transition: transform 0.2s;
-}
-#home.pmore .skc .skmore {
-  margin-bottom: 0;
-  border-radius: 0;
-}
-#home.pmore .skc .skmore svg {
-  transform: rotate(180deg);
-}
-#home.skn:not(.pmore) .skc .sks,
-#home.skn:not(.pmore) .skc #skb,
-#home.skn:not(.pmore) .skc #skall,
-#home.pday:not(.pmore) #shr {
-  display: none;
-}
-/* the days before: the date a little larger, the moonrise time in bold */
-#home.skn .skc .skh {
-  margin-top: 4px;
-}
-#home.skn .skc .skd,
-#home.skn .skc[data-lang="en"] .skd {
-  font-size: 1.4em;
-  line-height: 1.3;
-}
-#home.skn .skc .skm {
-  margin-top: 2px;
-}
-#home.skn .skc .skm b {
-  font-weight: 600;
-}
-/* today's date chosen: "Moonrise" over the time in large type, the place under it */
-#home.pday .skc.today .skm {
-  margin-top: 8px;
-}
-#home.pday .skc.today .skm > svg {
-  display: none;
-}
-#home.pday .skc.today .skm > .mr,
-#home.pday .skc.today .skm > .en {
-  font-size: 15px;
-  color: var(--muted);
-}
-#home.pday .skc.today .skm b {
-  display: block;
-  font: 600 44px/1.15 var(--lat);
-  color: var(--ink);
-}
-#home.pday .skc.today .skm > .mr b {
-  font-family: var(--body);
-  font-size: 40px;
-}
-#home.pday .skc.today .skp {
-  flex-basis: 100%;
-  justify-content: center;
-}
-#home.pday .skc.today .skp .skdt {
-  display: none;
-}
-#home.pday .skc.today .skcd {
-  margin-top: 8px;
-  font-size: 15px;
-}
-@media screen {
-  #home.pday .tocg ol.toc a {
-    font-size: 1.2em;
-    padding-block: 13px;
-  }
-}
+
 
 /* ==== Reading sheet (Aa in the bottom bar): language, text size and dhrupad within thumb reach ====
    js/features/reading-sheet.js. The sheet sits on the bottom bar (--rsb: the bar's height); the page around it,

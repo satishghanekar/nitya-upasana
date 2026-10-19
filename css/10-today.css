@@ -1,171 +1,101 @@
-/* 10-today.css: The Today card
+/* 10-today.css: Home and the Library page
    Part 11 of 13 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
-   The top of the home page as the Today card (mockup A, docs/architecture.md §5.4), built by
-   js/features/today-card.js: the larger time-of-day picture, the date, the week row (#twk), the session switch
-   (#tss), the next Sankathara Chaturthi line (#skc, the date card) and the session card (#tsc) with its ticks.
+   Home v2 (approved by Satish 2026-10-18, mockup A "Simple list"; docs/decisions.md): the home page is what to chant
+   now, in one column. Built by js/features/today-card.js: the time-of-day picture beside today's date (#tdy), a slot
+   for the Vedic calendar line (#pan), the Sankashti line on the day (#skt, js/features/sankashti.js), the session's
+   texts with their ticks (#tsc), "Not this time?" (#tso), the App / Share / QR / Print / Help row (#shr), and
+   Start / Continue (#tsb), pinned to the bottom of the screen on phones. The Library (#jump) holds every text.
    Sizes are in px: the home page keeps its size when the reader enlarges the verses.
    Sections:
-   - The picture, larger
-   - Date, week row and session switch
-   - The next Sankathara Chaturthi line
-   - The session card: texts, ticks, Start
-   - Folded card, print
-   - Wide screens: the card and the session side by side
+   - The home page: picture and date
+   - The Sankashti line and the Vedic calendar slot
+   - The session: texts, ticks
+   - Another session; the quiet row
+   - Start / Continue, pinned on phones
+   - On the home page: Language and Dhrupad step aside, the bottom bar gives way to Start, the side menu waits
+   - The Library page
+   - Print
 */
 
-/* ==== The picture, larger (as in the approved mockup today-icons) ==== */
-#iconb {
-  width: 168px;
-  height: 168px;
-  margin-bottom: 8px;
+/* ==== The home page: picture and date ==== */
+/* (:root: wins over the wider column that two-column reading gives the page, [data-cols="2"] #home) */
+:root #home {
+  max-width: 560px;
+  margin-inline: auto;
+  padding-top: 14px;
 }
-.top .hero {
-  background:
-    radial-gradient(closest-side, color-mix(in srgb, var(--gold) 38%, transparent), transparent) no-repeat center 0 / 240px 190px,
-    linear-gradient(180deg, var(--hdr), transparent);
-}
-/* whole-pixel line heights keep the card a whole number of pixels tall, so the texts below it land on the same
-   pixel rows as before (the screenshots compare them) */
-.hero .hl1 {
-  font-size: 19px;
-  line-height: 27px;
-}
-
-/* ==== Date, week row and session switch ==== */
 #tdy {
-  display: grid;
-  gap: 10px;
-  margin: 0 0 10px;
-  font: 400 15px/1.4 var(--lat);
-}
-#tdy[lang="mr"] {
-  font-family: var(--body);
-}
-#tdd {
-  margin: 0;
-  text-align: center;
-  font-weight: 600;
-  color: var(--ink);
-}
-#twk {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 5px;
-}
-#twk button {
-  display: grid;
-  place-items: center;
-  align-content: center;
-  min-width: 0;
-  min-height: 52px;
-  padding: 4px 0;
-  border: 1px solid var(--hdrl);
-  border-radius: 12px;
-  background: var(--bg);
-  color: var(--muted);
-  font: inherit;
-  font-size: 12px;
-  line-height: 1.25;
-  cursor: pointer;
-}
-#twk button b {
-  color: var(--ink);
-  font-size: 16px;
-  font-weight: 600;
-}
-/* today, when another day is shown: a gold edge */
-#twk button.now {
-  border: 2px solid var(--gold);
-}
-#twk button[aria-checked="true"] {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--bg);
-}
-#twk button[aria-checked="true"] b {
-  color: var(--bg);
-}
-#tss {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
-  gap: 4px;
-  padding: 4px;
-  border: 1px solid var(--hdrl);
-  border-radius: 14px;
-  background: var(--surface);
-}
-#tss button {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
+  gap: 14px;
+  margin: 0 0 14px;
+}
+#tdy #iconb {
+  flex: none;
+  width: 76px;
+  height: 76px;
+  margin: 0;
+}
+#tdd {
+  display: grid;
+  gap: 2px;
   min-width: 0;
-  min-height: 44px;
-  padding: 0 4px;
-  border: 0;
-  border-radius: 10px;
-  background: none;
-  color: var(--muted);
-  font: inherit;
-  font-weight: 500;
-  cursor: pointer;
+  margin: 0;
 }
-#tss button[aria-checked="true"] {
-  background: var(--bg);
+#tdd .d1 {
+  font: 400 22px/1.3 var(--head);
   color: var(--ink);
-  font-weight: 650;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
 }
-[data-hc="1"] #tss button[aria-checked="true"] {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
+#tdd .d2 {
+  font: 400 14px/1.35 var(--lat);
+  color: var(--muted);
 }
-#twk button:focus-visible,
-#tss button:focus-visible,
-#tsl a:focus-visible,
-#tst:focus-visible {
+#iconb:focus-visible {
   outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
-/* the narrowest phones: the session icons give way to the words */
-@media (max-width: 379px) {
-  #tss svg {
-    display: none;
-  }
+  outline-offset: 3px;
 }
 
-/* ==== The next Sankathara Chaturthi line (the date card, #skc): today's date is already above, so the card's own
-   "Today:" line waits under More dates with the strip ==== */
-#home.skn:not(.pmore) .skc .sktd {
+/* ==== The Sankashti line (on the day only) and the Vedic calendar slot (js/core/panchang.js, to come) ==== */
+#pan[hidden],
+#skt[hidden] {
   display: none;
 }
-.top .skc {
-  margin-bottom: 10px;
+#pan {
+  margin: 0 0 14px;
 }
-/* a quieter line on ordinary days (on Sankashti day itself the card keeps its large moonrise) */
-#home.skn:not(.pday) .top .skc .skh {
-  font-size: 13px;
-  line-height: 18px;
-}
-#home.skn:not(.pday) .top .skc .skd,
-#home.skn:not(.pday) .top .skc[data-lang="en"] .skd {
-  font-size: 21px;
-  line-height: 28px;
-}
-#home.skn:not(.pday) .top .skc .skm {
-  font-size: 16px;
-  line-height: 22px;
-}
-
-/* ==== The session card: texts, ticks, Start ==== */
-#tsc {
-  margin: 0 0 8px;
-  padding: 6px 12px 12px;
+#skt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 6px 12px;
   border: 1px solid var(--hdrl);
   border-radius: 12px;
   background: var(--hdr);
+  color: var(--ink);
+  font: 400 14px/1.45 var(--lat);
+}
+#skt .skp {
+  white-space: nowrap;
+}
+#skt[lang="mr"] {
+  font-family: var(--body);
+}
+#skt svg {
+  flex: none;
+  color: var(--igold);
+}
+#skt b {
+  font-weight: 650;
+}
+
+/* ==== The session: texts, ticks ==== */
+#tsc {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
   font: 400 15px/1.4 var(--lat);
   scroll-margin-top: 72px;
 }
@@ -177,7 +107,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px 2px 4px;
+  padding: 4px 2px 4px;
 }
 #tsh {
   margin: 0;
@@ -187,6 +117,10 @@
 }
 #tsh [lang="en"] {
   font-family: var(--head);
+}
+#tsh:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
 }
 #tsn {
   flex: none;
@@ -257,9 +191,6 @@
   text-decoration: none;
   border-radius: 8px;
 }
-.preview .tgo {
-  padding-left: 8px;
-}
 .tno {
   flex: none;
   min-width: 1.6em;
@@ -301,23 +232,77 @@
   margin: 4px 2px 6px;
   color: var(--muted);
 }
+#tsl a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ==== Another session ("Not this time? Morning · Afternoon"); the quiet row (App, Share, QR, Print, Help) ==== */
+#tso {
+  margin: 6px 0 0;
+  text-align: center;
+  color: var(--muted);
+  font: 400 15px/1.4 var(--lat);
+}
+#tso[lang="mr"] {
+  font-family: var(--body);
+}
+#tso button {
+  min-width: 44px;
+  min-height: 44px;
+  height: auto;
+  margin: 0;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+#tso button[hidden],
+#tso .tsod[hidden] {
+  display: none;
+}
+#tso button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 0;
+}
+#home #shr {
+  margin: 10px 0 0;
+}
+
+/* ==== Start / Continue: below the list; on phones pinned to the bottom of the screen while the home page is in
+   view. position: sticky keeps it in the page's flow, so at the end of the home page it sits after the row above and
+   never covers the last text; the phone's home indicator gets its room (safe area) ==== */
+#tsb {
+  margin: 14px 0 0;
+}
+#tsb[hidden] {
+  display: none;
+}
 #tst {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  min-height: 48px;
-  margin-top: 10px;
+  min-height: 54px;
+  margin: 0;
   padding: 6px 16px;
   border: 0;
   border-radius: 14px;
   background: var(--accent);
   color: var(--bg);
-  font: inherit;
-  font-weight: 650;
+  font: 650 17px/1.3 var(--lat);
   text-align: center;
   cursor: pointer;
+}
+#tsb[lang="mr"] #tst {
+  font-family: var(--body);
 }
 #tst[hidden] {
   display: none;
@@ -325,39 +310,122 @@
 #tst svg {
   flex: none;
 }
+#tst:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+@media screen and (max-width: 819px) {
+  #tsb {
+    position: sticky;
+    bottom: 0;
+    z-index: 4;
+    margin: 14px -16px 0;
+    padding: 10px 16px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+  }
+}
 
-/* ==== Folded card, print ==== */
-.top.fold #tdy {
+/* ==== On the home page (data-home, set by js/features/bars.js while no piece is at the top): the top bar keeps the
+   name, the profile, Library and Settings; the bottom bar gives way to Start / Continue ==== */
+[data-home="1"] .bar #home-btn,
+[data-home="1"] .bar #rb,
+[data-home="1"] #asc {
   display: none;
 }
-@media print {
-  #tdy,
-  #tsc {
-    display: none;
+/* wide screens: the side menu of texts is for reading; the home page stays one quiet column (the Library has them) */
+[data-home="1"] #rail {
+  visibility: hidden;
+}
+@media screen and (min-width: 1100px) {
+  /* and the column sits in the middle of the screen, not of the space beside the menu */
+  [data-home="1"][data-rail="1"] #home {
+    position: relative;
+    left: -130px;
   }
 }
 
-/* ==== Wide screens (tablets and up): the card and the session side by side, the list of texts below both ==== */
-@media screen and (min-width: 820px) {
-  #home {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: 14px;
-    align-items: start;
+/* ==== The Library page (#jump): under the top bar, over the page; one centred column ==== */
+#jump {
+  bottom: 0;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0 16px;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--bg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+@media (min-width: 820px) {
+  #jump {
+    border: 0;
   }
-  #home > * {
-    grid-column: 1 / -1;
-  }
-  #home > .top {
-    grid-column: 1;
-    grid-row: 1;
-    margin-bottom: 8px;
-  }
-  #home > #tsc {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  #tsl li {
-    min-height: 50px;
+}
+#jump .libin {
+  max-width: 34rem;
+  margin: 0 auto;
+}
+.libhd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+}
+#jbk {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  height: auto;
+  margin: 0;
+  padding: 0 10px 0 4px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--accent);
+  font: 600 17px/1.2 var(--lat);
+  cursor: pointer;
+}
+.libhd[data-lang="mr"] #jbk {
+  font-family: var(--body);
+}
+#jbk:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 0;
+}
+#jlt {
+  margin: 0;
+  font: 400 22px/1.3 var(--head);
+  color: var(--accent);
+}
+#jlt [lang="en"] {
+  font-family: var(--head);
+}
+#jump #q {
+  width: 100%;
+  box-sizing: border-box;
+}
+#jl .tocg ol.toc a {
+  min-height: 44px;
+}
+#jl .tocg ol.toc a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 0;
+}
+
+/* ==== Print ==== */
+@media print {
+  #tdy,
+  #skt,
+  #pan,
+  #tsc,
+  #tso,
+  #tsb {
+    display: none;
   }
 }

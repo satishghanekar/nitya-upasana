@@ -17,6 +17,8 @@ import { defineConfig, devices } from "@playwright/test";
 // Same rule as SNAP_ENV in helpers.mjs (kept here so the config does not load the test helpers)
 const SNAP_ENV = process.env.SNAPSHOT_ENV || (process.env.CI ? "ci" : "local");
 
+// PW_PORT serves this checkout on another port, so a server left running by another checkout on 4173 is never reused
+const PORT = Number(process.env.PW_PORT || 4173);
 const exe = process.env.PW_CHROMIUM_PATH;
 const chromiumLaunch = exe ? { launchOptions: { executablePath: exe } } : {};
 const all = {
@@ -51,7 +53,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : [["list"]],
   use: {
-    baseURL: "http://localhost:4173/",
+    baseURL: `http://localhost:${PORT}/`,
     // The service worker is blocked except in the offline tests, so every test sees the files on disk
     serviceWorkers: "block",
     locale: "en-US",
@@ -61,7 +63,8 @@ export default defineConfig({
   projects: wanted.map((name) => ({ name, ...all[name] })),
   webServer: {
     command: "node serve.mjs",
-    url: "http://localhost:4173/",
+    env: { PORT: String(PORT) },
+    url: `http://localhost:${PORT}/`,
     reuseExistingServer: !process.env.CI,
   },
 });

@@ -23,6 +23,13 @@ test("home page in Marathi menus @chromium-only", async ({ page }) => {
   expect(home.replace(/[ \t]+\n/g, "\n")).toMatchSnapshot("home-marathi-menus.txt");
 });
 
+test("the Library's list of texts @chromium-only", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await page.locator("#hm").click();
+  const lib = await page.evaluate(() => document.getElementById("jump").innerText.trim());
+  expect(lib.replace(/[ \t]+\n/g, "\n")).toMatchSnapshot("library-marathi.txt");
+});
+
 test("every line has a unique id and a partner in the other language @chromium-only", async ({ page }) => {
   await openSite(page, SETUPS.both);
   const r = await page.evaluate(() => {

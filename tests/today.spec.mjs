@@ -1,7 +1,8 @@
-// The Today card (docs/architecture.md §5.4, mockup A): the time-of-day picture, the date, the week row, the
-// Morning / Afternoon / Evening switch, the next Sankathara Chaturthi line and the session's texts with a tick each
-// and Start / Continue. Default routine (content/routines.json): Morning = Atharvashirsha, Evening = the ten aartis.
-// 15 Oct 2026 is a Thursday, 18 Oct a Sunday (the week row runs Mon 12 – Sun 18).
+// Home (Home v2, docs/decisions.md 2026-10-18): the time-of-day picture beside today's date, the session's texts with
+// a tick each, "Not this time?" with the other sessions, the App / Share / QR / Print / Help row and Start /
+// Continue (pinned to the bottom on phones). On a Sankashti day only, one line with moonrise. Every text is in the
+// Library (the book button). Default routine (content/routines.json): Morning = Atharvashirsha, Evening = the ten
+// aartis. 15 Oct 2026 is a Thursday, 18 Oct a Sunday, 28 Oct a Sankashti (Wednesday).
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
@@ -14,7 +15,7 @@ const MORNING = new Date("2026-10-15T10:00:00-04:00"); // Thursday
 const EVENING = new Date("2026-10-18T19:00:00-04:00"); // Sunday
 
 const rows = (page) => page.locator("#tsl li");
-const checked = (page, group) => page.locator(`${group} [role="radio"][aria-checked="true"]`);
+const other = (page, s) => page.locator(`#tso button[data-s="${s}"]`);
 const hash = (page) => page.evaluate(() => location.hash);
 // the piece the reader is on: the last one whose top has passed just under the top bar (js/core/apply.js cur())
 const onPiece = (page) =>
@@ -26,70 +27,55 @@ const onPiece = (page) =>
     return c;
   });
 
-test("in the morning the card shows Thursday's Morning: the Atharvashirsha, with Start @mobile", async ({ page }) => {
+test("in the morning Home shows Thursday's Morning: the Atharvashirsha, with Start @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
-  await expect(checked(page, "#tss")).toHaveAttribute("data-s", "morning");
-  await expect(checked(page, "#twk")).toHaveAttribute("data-d", "2026-10-15");
-  await expect(page.locator("#tdd")).toHaveText("Thursday, 15 October 2026");
-  await expect(page.locator("#twk [role=radio]")).toHaveCount(7);
-  await expect(page.locator("#twk [role=radio]").first()).toContainText("Mon");
-  await expect(page.locator("#twk [role=radio]").last()).toContainText("Sun");
+  await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
+  await expect(page.locator("#tdd .d1")).toHaveText("गुरुवार, १५ ऑक्टोबर २०२६");
+  await expect(page.locator("#tdd .d2")).toHaveText("Thursday, 15 October 2026");
   await expect(rows(page)).toHaveCount(1);
   await expect(rows(page).first().locator(".t1")).toHaveText(TITLE.atharvashirsha.title);
   await expect(rows(page).first().locator(".t2")).toHaveText(TITLE.atharvashirsha.titleEn);
   await expect(rows(page).first().locator(".ttg")).toHaveText("Sanskrit");
   await expect(page.locator("#tsn")).toHaveText("0 of 1 done");
   await expect(page.locator("#tst")).toHaveText("Start: Ganapati Atharvashirsha");
-  // the picture is the sunrise one, Thursday's star ringed; the next Chaturthi line is still on the card
+  // the picture is the sunrise one, Thursday's star ringed; not a Sankashti, so no moonrise line
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunrise");
   await expect(page.locator("#iconb")).toHaveAttribute("data-day", "4");
-  await expect(page.locator("#skc .skm")).toContainText("Moonrise");
-  await expect(page.locator(".top #skc")).toBeVisible();
+  await expect(page.locator("#skt")).toBeHidden();
+  // the other two sessions are offered
+  await expect(page.locator("#tso")).toHaveText("Not this time? Afternoon · Evening", { useInnerText: true });
+  await expect(other(page, "morning")).toBeHidden();
 });
 
-test("in the evening the card shows Sunday's Evening: the ten aartis in order @mobile", async ({ page }) => {
+test("in the evening Home shows Sunday's Evening: the ten aartis in order @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await expect(checked(page, "#tss")).toHaveAttribute("data-s", "evening");
-  await expect(checked(page, "#twk")).toHaveAttribute("data-d", "2026-10-18");
   await expect(rows(page)).toHaveCount(10);
   expect(await rows(page).locator(".t1").allTextContents()).toEqual(AARTIS.map((id) => TITLE[id].title));
   expect(await rows(page).locator(".t2").allTextContents()).toEqual(AARTIS.map((id) => TITLE[id].titleEn));
   expect(await rows(page).locator(".tno").allTextContents()).toEqual(["१.", "२.", "३.", "४.", "५.", "६.", "७.", "८.", "९.", "१०."]);
-  await expect(page.locator("#tsh")).toContainText("Evening");
+  await expect(page.locator("#tsh")).toHaveText("सायंकाळ · Evening");
   await expect(page.locator("#tst")).toHaveText("Start: Ganapati Aarti");
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunset");
+  await expect(page.locator("#tso")).toHaveText("Not this time? Morning · Afternoon", { useInnerText: true });
 });
 
-test("the session switch changes the list, the picture and what screen readers hear @mobile", async ({ page }) => {
+test("Not this time? changes the list, the picture and what screen readers hear @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
-  await page.locator('#tss [data-s="afternoon"]').click();
-  await expect(checked(page, "#tss")).toHaveAttribute("data-s", "afternoon");
+  await other(page, "afternoon").click();
+  await expect(page.locator("#tsh")).toHaveText("दुपार · Afternoon");
+  await expect(page.locator("#tsh")).toBeFocused();
+  await expect(page.locator("#tso")).toHaveText("Not this time? Morning · Evening", { useInnerText: true });
   await expect(rows(page)).toHaveCount(0);
   await expect(page.locator("#tse")).toBeVisible();
   await expect(page.locator("#tst")).toBeHidden();
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "midday");
   await expect(page.locator("#tlive")).toContainText("Afternoon");
-  await page.locator('#tss [data-s="evening"]').click();
+  await other(page, "evening").click();
   await expect(rows(page)).toHaveCount(10);
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunset");
   await expect(page.locator("#tlive")).toContainText("10 texts");
   // the browser tab icon still follows the clock
   await expect(page.locator('link[rel="icon"][sizes="32x32"]')).toHaveAttribute("href", "icon-32.png");
-});
-
-test("tapping another day shows that day's routine; ticks are only for today @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi, { now: EVENING });
-  await page.locator('#twk [data-d="2026-10-12"]').click();
-  await expect(checked(page, "#twk")).toHaveAttribute("data-d", "2026-10-12");
-  await expect(page.locator("#tdd")).toHaveText("Monday, 12 October 2026");
-  await expect(page.locator("#iconb")).toHaveAttribute("data-day", "1");
-  await expect(rows(page)).toHaveCount(10);
-  await expect(page.locator("#tsl input[type=checkbox]")).toHaveCount(0);
-  await expect(page.locator("#tsn")).toHaveText("10 texts");
-  // back to today: the ticks are there again
-  await page.locator('#twk [data-d="2026-10-18"]').click();
-  await expect(page.locator("#tsl input[type=checkbox]")).toHaveCount(10);
-  await expect(page.locator("#tdd")).toHaveText("Sunday, 18 October 2026");
 });
 
 test("ticks are kept after a reload and cleared the next day @mobile", async ({ page }) => {
@@ -106,10 +92,10 @@ test("ticks are kept after a reload and cleared the next day @mobile", async ({ 
   await expect(rows(page).nth(1)).toHaveClass(/\bdone\b/);
   await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
   // the morning's list has its own ticks
-  await page.locator('#tss [data-s="morning"]').click();
+  await other(page, "morning").click();
   await expect(page.locator("#tsn")).toHaveText("0 of 1 done");
   // untick one
-  await page.locator('#tss [data-s="evening"]').click();
+  await other(page, "evening").click();
   await rows(page).nth(0).locator("input").uncheck();
   await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
   await expect(page.locator("#tst")).toHaveText("Continue: Ganapati Aarti");
@@ -117,7 +103,7 @@ test("ticks are kept after a reload and cleared the next day @mobile", async ({ 
   await page.clock.setFixedTime(new Date("2026-10-19T19:00:00-04:00"));
   await page.reload();
   await settle(page);
-  await expect(checked(page, "#twk")).toHaveAttribute("data-d", "2026-10-19");
+  await expect(page.locator("#tdd .d2")).toHaveText("Monday, 19 October 2026");
   await expect(page.locator("#tsl input:checked")).toHaveCount(0);
   await expect(page.locator("#tsn")).toHaveText("0 of 10 done");
 });
@@ -126,8 +112,8 @@ test("a page left open overnight starts the new day with no ticks", async ({ pag
   await openSite(page, SETUPS.marathi, { now: new Date("2026-10-18T23:58:00-04:00"), running: true });
   await rows(page).nth(0).locator("input").check();
   await page.clock.runFor("03:00");
-  await expect(checked(page, "#twk")).toHaveAttribute("data-d", "2026-10-19");
-  await expect(checked(page, "#tss")).toHaveAttribute("data-s", "morning");
+  await expect(page.locator("#tdd .d2")).toHaveText("Monday, 19 October 2026");
+  await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
   await expect(page.locator("#tsl input:checked")).toHaveCount(0);
 });
 
@@ -155,8 +141,9 @@ test("in the morning, Next after the Atharvashirsha ends the session and returns
   await expect.poll(() => onPiece(page)).toBe("");
   await expect(page.locator("#tsc")).toBeInViewport();
   await expect(page.locator("#tsh")).toBeFocused();
-  // reading outside a session (a contents link): Next follows the library again
-  await page.locator('a[data-go="p1"]:visible').first().click();
+  // reading outside a session (a Library link): Next follows the library again
+  await page.locator("#hm").click();
+  await page.locator('#jl a[data-go="p1"]').click();
   await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: Ganapati Aarti");
 });
 
@@ -201,48 +188,9 @@ test("Next on the last text of the session ticks it too, then returns to Today @
   await expect(rows(page).nth(0).locator("input")).toBeChecked();
 });
 
-test("on another day's list, Next doesn't tick (ticks are only for today)", async ({ page }) => {
-  await openSite(page, SETUPS.marathi, { now: EVENING });
-  await page.locator('#twk [data-d="2026-10-17"]').click();
-  await page.locator("#tst").click();
-  await expect.poll(() => onPiece(page)).toBe("a1");
-  await page.locator("#asn").click();
-  await expect.poll(() => onPiece(page)).toBe("a2");
-  await page.goto(page.url().split("#")[0]);
-  await settle(page);
-  await expect(page.locator("#tsn")).toHaveText("0 of 10 done");
-});
-
-test("keyboard: arrows move along the day and session switches; Space ticks @mobile", async ({ page, browserName }) => {
+test("keyboard: Space ticks, Not this time? and Start are buttons, focus is drawn @mobile", async ({ page, browserName }) => {
   test.skip(browserName === "webkit", "Safari's default Tab skips buttons");
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  // one Tab stop per group: the chosen day
-  const day = checked(page, "#twk");
-  await day.focus();
-  await expect(day).toHaveAttribute("tabindex", "0");
-  expect(await page.locator('#twk [tabindex="0"]').count()).toBe(1);
-  await page.keyboard.press("ArrowLeft");
-  await expect(checked(page, "#twk")).toHaveAttribute("data-d", "2026-10-17");
-  await expect(page.locator('#twk [data-d="2026-10-17"]')).toBeFocused();
-  await page.keyboard.press("Home");
-  await expect(page.locator('#twk [data-d="2026-10-12"]')).toBeFocused();
-  await expect(page.locator("#tdd")).toHaveText("Monday, 12 October 2026");
-  await page.keyboard.press("End");
-  await expect(checked(page, "#twk")).toHaveAttribute("data-d", "2026-10-18");
-  await page.keyboard.press("ArrowRight"); // wraps to Monday
-  await expect(checked(page, "#twk")).toHaveAttribute("data-d", "2026-10-12");
-  await page.keyboard.press("End");
-  // Tab goes on to the session switch, on the chosen session
-  await page.keyboard.press("Tab");
-  await expect(page.locator('#tss [data-s="evening"]')).toBeFocused();
-  await page.keyboard.press("ArrowRight"); // wraps to Morning
-  await expect(checked(page, "#tss")).toHaveAttribute("data-s", "morning");
-  await page.keyboard.press("ArrowLeft");
-  await expect(checked(page, "#tss")).toHaveAttribute("data-s", "evening");
-  await page.keyboard.press("ArrowUp");
-  await expect(checked(page, "#tss")).toHaveAttribute("data-s", "afternoon");
-  await page.keyboard.press("ArrowDown");
-  await expect(checked(page, "#tss")).toHaveAttribute("data-s", "evening");
   // a tick with the keyboard
   const box = rows(page).nth(0).locator("input");
   await box.focus();
@@ -255,17 +203,20 @@ test("keyboard: arrows move along the day and session switches; Space ticks @mob
     return s.outlineStyle !== "none" && parseFloat(s.outlineWidth) >= 2;
   });
   expect(outline).toBe(true);
+  // Enter on another session shows it
+  await other(page, "morning").focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
+  await expect(page.locator("#tsh")).toBeFocused();
 });
 
-test("each tick, day and session control has a name and a 44px target @mobile", async ({ page }) => {
+test("each tick, session and Start control has a name and a 44px target @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(rows(page).nth(2).locator("input")).toHaveAccessibleName("Done: Devi Aarti");
-  await expect(page.locator("#twk")).toHaveAccessibleName("Day");
-  await expect(page.locator("#tss")).toHaveAccessibleName("Session");
-  await expect(page.locator('#tss [data-s="evening"]')).toHaveAccessibleName("Evening");
+  await expect(other(page, "morning")).toHaveAccessibleName("Show Morning");
   const small = await page.evaluate(() =>
-    [...document.querySelectorAll("#twk [role=radio], #tss [role=radio], #tsl .ttk, #tsl a, #tst")]
-      .map((b) => ({ c: b.className || b.id, ...b.getBoundingClientRect().toJSON() }))
+    [...document.querySelectorAll("#tso button:not([hidden]), #tsl .ttk, #tsl a, #tst, #shr button:not([hidden]), #iconb")]
+      .map((b) => ({ c: b.className || b.id || b.dataset.s, ...b.getBoundingClientRect().toJSON() }))
       .filter((r) => r.width < 44 || r.height < 44)
       .map((r) => `${r.c} ${Math.round(r.width)}×${Math.round(r.height)}`),
   );
@@ -279,7 +230,7 @@ for (const [name, prefs] of [
   ["high contrast", { ...SETUPS.marathi, hc: 1 }],
   ["Marathi menus", SETUPS["marathi-menus"]],
 ]) {
-  test(`axe: the Today card with ticks, ${name} @mobile`, async ({ page }) => {
+  test(`axe: Home with ticks, ${name} @mobile`, async ({ page }) => {
     await openSite(page, prefs, { now: EVENING });
     await rows(page).nth(0).locator("input").check();
     await rows(page).nth(1).locator("input").check();
@@ -292,11 +243,13 @@ for (const [name, prefs] of [
   });
 }
 
-test("Marathi menus: the card speaks Marathi, the titles stay as written", async ({ page }) => {
+test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ page }) => {
   await openSite(page, SETUPS["marathi-menus"], { now: EVENING });
-  await expect(page.locator("#tdd")).toHaveText("रविवार, १८ ऑक्टोबर २०२६");
+  await expect(page.locator("#tdd .d1")).toHaveText("रविवार, १८ ऑक्टोबर २०२६");
+  await expect(page.locator("#tdd .d2")).toHaveText("Sunday, 18 October 2026");
   await expect(page.locator("#tst")).toHaveText("सुरू करा: गणपतीची आरती");
-  await expect(page.locator('#tss [data-s="evening"]')).toHaveAccessibleName("सायंकाळ");
+  await expect(page.locator("#tso")).toHaveText("दुसरी वेळ: सकाळ · दुपार", { useInnerText: true });
+  await expect(other(page, "morning")).toHaveAccessibleName("दाखवा: सकाळ");
   await expect(rows(page).nth(1).locator(".t1")).toHaveText(TITLE["shendur-lal-chadhayo"].title);
 });
 
@@ -306,74 +259,73 @@ test("Kannada letters: the titles in the list are shown in Kannada", async ({ pa
   await expect(rows(page).first().locator(".t2")).toHaveText("Ganapati Aarti");
 });
 
-test("the full date card is still there: More dates opens the strip and the calendar buttons", async ({ page }) => {
+test("Home has no date card, week row or contents list: the Library has every text", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await expect(page.locator("#skc .sks")).toBeHidden();
-  await page.locator("#skmore").click();
-  await expect(page.locator("#skc .sks")).toBeVisible();
-  await expect(page.locator("#skall")).toBeVisible();
-  await expect(page.locator("#skc .sktd")).toBeVisible();
-  await expect(page.locator("#shr #shb")).toBeVisible();
+  for (const sel of ["#skc", "#skmore", "#skall", "#twk", "#tss", "#tfb", "#cvb", "#home .tocg", "#home a[data-go]"])
+    await expect(page.locator(sel), sel).toHaveCount(0);
+  await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(11);
 });
 
-test("folding the card keeps the session in view", async ({ page }) => {
-  await openSite(page, SETUPS.marathi, { now: EVENING });
-  await page.locator("#cvb").click();
-  await expect(page.locator("#slim")).toBeVisible();
-  await expect(page.locator("#twk")).toBeHidden();
-  await expect(page.locator("#tsc")).toBeVisible();
-  await expect(rows(page)).toHaveCount(10);
+test("on a Sankashti day only, one line gives tonight's moonrise and the place @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: new Date("2026-10-28T19:00:00-04:00") });
+  await expect(page.locator("#skt")).toBeVisible();
+  await expect(page.locator("#skt")).toHaveText(/^Sankashti Chaturthi today · Moonrise \d{1,2}:\d\d pm · Columbus, OH$/);
+  // the evening before, nothing
+  await page.clock.setFixedTime(new Date("2026-10-27T19:00:00-04:00"));
+  await page.reload();
+  await settle(page);
+  await expect(page.locator("#skt")).toBeHidden();
 });
 
-test("the list of every text stays under the card, on a phone", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await openSite(page, SETUPS.marathi, { now: EVENING });
-  await expect(page.locator("#tfb")).toBeVisible();
-  const order = await page.evaluate(() => {
-    const y = (s) => document.querySelector(s).getBoundingClientRect().top;
-    return y("#home .top") < y("#tsc") && y("#tsc") < y("#tfr");
-  });
-  expect(order).toBe(true);
+test("Marathi menus: the Sankashti line in Marathi", async ({ page }) => {
+  await openSite(page, SETUPS["marathi-menus"], { now: new Date("2026-10-28T19:00:00-04:00") });
+  await expect(page.locator("#skt")).toHaveText(/^संकष्टी चतुर्थी आज · चंद्रोदय .+ · कोलंबस$/);
 });
 
-test("on a phone the App / Share / QR / Print / Help row sits below the session card (mockup A); wide, it stays at the top", async ({ browser }) => {
-  for (const [width, below] of [[390, true], [819, true], [820, false], [1280, false]]) {
+test("the App / Share / QR / Print / Help row sits under the list, at every width", async ({ browser }) => {
+  for (const width of [390, 820, 1280]) {
     const context = await browser.newContext({ viewport: { width, height: 844 }, serviceWorkers: "block" });
     const page = await context.newPage();
     await openSite(page, SETUPS.marathi, { now: EVENING });
-    const where = await page.evaluate(() => {
-      const row = document.getElementById("shr");
-      return { afterCard: row.previousElementSibling && row.previousElementSibling.id === "tsc", inTop: !!row.closest("#home > .top") };
-    });
-    expect(where, `${width}px`).toEqual({ afterCard: below, inTop: !below });
-    await expect(page.locator("#shr")).toBeVisible();
-    if (below) {
-      const card = await page.locator("#tsc").boundingBox();
-      const row = await page.locator("#shr").boundingBox();
-      expect(row.y, `${width}px`).toBeGreaterThanOrEqual(card.y + card.height - 1);
-    }
+    for (const b of ["#shb", "#qrb", "#prb", "#hlpb"]) await expect(page.locator(b), `${b} ${width}px`).toBeAttached();
+    const list = await page.locator("#tsc").boundingBox();
+    const row = await page.locator("#shr").boundingBox();
+    expect(row.y, `${width}px`).toBeGreaterThanOrEqual(list.y + list.height - 1);
     await context.close();
   }
 });
 
-test("turning a tablet from portrait to landscape moves the row back to the top", async ({ page }) => {
-  await page.setViewportSize({ width: 768, height: 1024 });
+test("on a phone Start stays at the bottom of the screen, clear of the safe area, and never covers the last text @mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await expect(page.locator("#tsc + #shr")).toHaveCount(1);
-  await page.setViewportSize({ width: 1024, height: 768 });
-  await expect(page.locator("#home > .top #shr")).toHaveCount(1);
-  await page.setViewportSize({ width: 768, height: 1024 });
-  await expect(page.locator("#tsc + #shr")).toHaveCount(1);
+  const vh = 844;
+  const bar = await page.locator("#tsb").boundingBox();
+  expect(Math.round(bar.y + bar.height)).toBe(vh);
+  // the bottom bar gives way to Start on the home page
+  await expect(page.locator("#asc")).toBeHidden();
+  // scrolled to the end of the home page, the last text sits above Start
+  await page.evaluate(() => {
+    const h = document.getElementById("home");
+    scrollTo(0, h.offsetTop + h.offsetHeight - innerHeight);
+  });
+  await page.waitForTimeout(100);
+  const last = await rows(page).last().boundingBox();
+  const bar2 = await page.locator("#tsb").boundingBox();
+  expect(last.y + last.height).toBeLessThanOrEqual(bar2.y + 1);
+  // the safe area is added below the button
+  const pad = await page.locator("#tsb").evaluate((e) => getComputedStyle(e).paddingBottom);
+  expect(pad).toBe("10px");
+  expect(await page.evaluate(() => [...document.styleSheets].some((s) => [...s.cssRules].some((r) => /#tsb/.test(r.cssText) && /safe-area-inset-bottom/.test(r.cssText))))).toBe(true);
 });
 
-test("on a wide screen the card and the session sit side by side", async ({ browser }) => {
-  const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: "block" });
+test("on a wide screen Home is one centred column", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 820 }, serviceWorkers: "block" });
   const page = await context.newPage();
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  const a = await page.locator("#home .top").boundingBox();
-  const b = await page.locator("#tsc").boundingBox();
-  expect(b.x).toBeGreaterThan(a.x + a.width - 1);
-  expect(Math.abs(b.y - a.y)).toBeLessThan(4);
+  const h = await page.locator("#home").boundingBox();
+  expect(h.width).toBeLessThanOrEqual(560);
+  expect(Math.abs(h.x + h.width / 2 - 640)).toBeLessThan(40);
+  await expect(page.locator("#rail")).toBeHidden();
   await context.close();
 });
 

@@ -2,6 +2,17 @@
 
 Newest first. Each entry: the decision, who made it, and where it came from.
 
+## 2026-10-18: Home redesign (simple "what to chant now" page) and the Library page
+
+Satish (2026-10-18): "This app has nothing to do with sankathara chaturthi.. the main card needs to be redesigned. That can go away. When I open the app it should just be simplistic layout of what i should be chanting for that day and time... I think the table of contents can also go away." Built from mockup A (`mockups/home-v2-a.html` on `mockup-home-v2`). Version aarti-v1.5.
+
+- **Home** holds only: the top bar (brand, profile chip, Library with a book icon, Settings); the time-of-day picture with today's weekday star beside the date in Marathi and English; an empty slot `#pan` for the Vedic calendar line (filled later by `js/core/panchang.js`); this session's texts with ticks under "सायंकाळ · Evening" and "2 of 10"; a line "Not this time? Morning · Afternoon" to switch session; and Start / Continue, which is pinned to the bottom on phones (below 820 px, above the safe-area inset). On desktop it is one centred column of up to 560 px.
+- **Gone from Home:** the Sankathara / Next Chaturthi date card (with its date strip and "add all to calendar", `js/features/date-card.js` deleted), the table of contents, the ॥ श्री गणेशाय नमः ॥ line, the hero picture and the weekday row (the list is always today's). The "home card fold" setting goes with the card.
+- **Sankashti** (`js/features/sankashti.js`, using `js/core/astronomy.js` as before): only on a Sankashti day one small line shows, "Sankashti Chaturthi today · Moonrise h:mm pm · place" (Angaraki named when it falls on a Tuesday). The place for moonrise moved to Settings → About ("Place for moonrise · Use my location"). The share message is unchanged.
+- **The Library** (`#jump`, opened by the book button or the bottom bar's search button) is a full page with Back, search and the contents grouped as before (Pooja / Aarti). Opening a text works as before; Back from that text returns to Home (the Library step is replaced, not stacked). Opening the Library does not change the URL; browser Back closes it.
+- **App / Share / QR / Print / Help** stay in their quiet row, now under the session list (below Start) at every width: the least disruptive place, unchanged buttons and order.
+- On Home the reading-only controls (Home button, reading sheet, bottom bar, desktop side menu) hide; they come back as soon as a text is at the top.
+
 ## 2026-10-18: slice 2, storage, profiles and backup
 
 Built as planned in `docs/architecture.md` §3.4, §3.7, §3.8 and §4.2 (see the "As built" notes there). Version aarti-v1.4. Choices made while building, open for Satish to change:
