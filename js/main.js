@@ -33,6 +33,7 @@ import { init as startLayout } from "./text/layout.js";
 import { init as startAstronomy } from "./features/astronomy.js";
 import { init as startSankashti } from "./features/sankashti.js";
 import { init as startTodayCard } from "./features/today-card.js";
+import { init as startVedicCalendar } from "./features/vedic-calendar.js";
 import { init as startDhrupadMarkers } from "./text/dhrupad-markers.js";
 import { init as startStanzaNumbers } from "./text/stanza-numbers.js";
 import { init as startLineBreaks } from "./text/line-breaks.js";
@@ -71,6 +72,7 @@ function start() {
     startAstronomy(); // Astronomy: sun and moon, tithi, moonrise and the Sankashti rule (worked out on this device)
     startSankashti(); // Sankashti: the next one (for Share) and, on the day, one line on the home page with moonrise
     startTodayCard(); // Home: the picture and date, this session's texts with ticks, another session, and Start
+    startVedicCalendar(); // the Vedic calendar: the line on Home (today only, after the page shows) and its page (#cal)
     startDhrupadMarkers(); // Tappable dhrupad markers (Aartis 1–5, 7 and 9)
     startStanzaNumbers(); // Stanza numbers
     startLineBreaks(); // Preferred line breaks

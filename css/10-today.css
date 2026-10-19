@@ -1,5 +1,5 @@
 /* 10-today.css: Home and the Library page
-   Part 11 of 13 of the site styles. index.html loads the parts in number order, and the order
+   Part 11 of 14 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Home v2 (approved by Satish 2026-10-18, mockup A "Simple list"; docs/decisions.md): the home page is what to chant
    now, in one column. Built by js/features/today-card.js: the time-of-day picture beside today's date (#tdy), a slot
@@ -9,7 +9,7 @@
    Sizes are in px: the home page keeps its size when the reader enlarges the verses.
    Sections:
    - The home page: picture and date
-   - The Sankashti line and the Vedic calendar slot
+   - The Sankashti line (on the day only) and the Vedic calendar line's place
    - The session: texts, ticks
    - Another session; the quiet row
    - Start / Continue, pinned on phones
@@ -56,7 +56,7 @@
   outline-offset: 3px;
 }
 
-/* ==== The Sankashti line (on the day only) and the Vedic calendar slot (js/core/panchang.js, to come) ==== */
+/* ==== The Sankashti line (on the day only) and the Vedic calendar line's place (its look: css/12-calendar.css) ==== */
 #pan[hidden],
 #skt[hidden] {
   display: none;

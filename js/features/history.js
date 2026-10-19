@@ -5,7 +5,7 @@ import { bt, flash } from "../core/page.js";
 import { P, save } from "../core/state.js";
 import { LANGS, LK, aa, cur, hb, jp, pjOpen, pn } from "../core/apply.js";
 import { TK, apply, goHome, tuckHold } from "./bars.js";
-import { setJ, setP } from "./overlays.js";
+import { setC, setJ, setP } from "./overlays.js";
 
 var NAV, popSkip, adT, hmb, ovFrom;
 
@@ -21,6 +21,7 @@ export function init() {
     var was = ovOpen();
     setP(false);
     setJ(false);
+    setC(false);
     var shut = 0;
     ["qrm", "prm", "inm", "pzv", "rsh", "bkm"].forEach(function (i) {
       var d = document.getElementById(i);
@@ -123,13 +124,15 @@ export function init() {
     } catch (x) {}
   });
   // Tabbing out of an open panel closes it, so it doesn't stay over the page you have moved on to
-  [pn, jp].forEach(function (el) {
+  [pn, jp, document.getElementById("cal")].forEach(function (el) {
+    if (!el) return;
     el.addEventListener("focusout", function (e) {
       var t = e.relatedTarget;
       if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help")) return;
       el._ret = null;
       if (el === pn) setP(false);
-      else setJ(false);
+      else if (el === jp) setJ(false);
+      else setC(false);
     });
   });
   document.getElementById("xc").onclick = function () {
@@ -171,7 +174,7 @@ function ovOpen() {
   return (
     !pn.hidden ||
     !jp.hidden ||
-    ["qrm", "prm", "inm", "help", "pzv", "rsh", "pfm", "bkm"].some(function (i) {
+    ["cal", "qrm", "prm", "inm", "help", "pzv", "rsh", "pfm", "bkm"].some(function (i) {
       var e = document.getElementById(i);
       return e && !e.hidden;
     })

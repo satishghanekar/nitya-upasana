@@ -19,6 +19,7 @@ var SITE_PARTS = (function () {
     "09-settings-page",
     "10-today",
     "11-profiles",
+    "12-calendar",
     "99-fallbacks",
   ].map(function (f) {
     return "css/" + f + ".css";
@@ -47,6 +48,9 @@ var SITE_PARTS = (function () {
     "core/routine",
     "core/ticks",
     "features/today-card",
+    "core/panchang-names",
+    "core/panchang",
+    "features/vedic-calendar",
     "text/dhrupad-markers",
     "text/stanza-numbers",
     "text/line-breaks",
