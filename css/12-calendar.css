@@ -1,5 +1,5 @@
 /* 12-calendar.css: the Vedic calendar
-   Part 13 of 14 of the site styles. index.html loads the parts in number order, and the order
+   Part 13 of 15 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Built by js/features/vedic-calendar.js (approved mockups: mockups/home-v2-a.html and mockups/vedic-calendar.html on
    branch mockup-home-v2). Sizes are in px, like the home page: they keep their size when the reader enlarges the verses.

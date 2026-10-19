@@ -123,6 +123,14 @@ export function trSet(st, fin) {
     if (sn) p.appendChild(sn);
     if (fin) zsplit(p, enCut, "");
   });
+  titlesSet(ia);
+}
+
+// Piece titles in the chosen English style: headings, contents, Previous/Next, and the left menu and search list
+// (copies of the contents). Called again when the contents lists are built anew (js/features/library.js).
+export function titlesSet(ia) {
+  if (!TRT) return;
+  if (ia === undefined) ia = P.tr === "iast";
   TRT.forEach(function (t) {
     if (ia && t.i === null)
       t.i = IA(t.m).replace(/(^|[\s(])([^\s(])/g, function (x, a, c) {

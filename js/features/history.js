@@ -52,10 +52,11 @@ export function init() {
     else if (el) el.scrollIntoView();
     else scrollTo(0, 0);
   });
-  // Keyboard: Tab stays inside an open dialog (Restore, the profile sheet, QR, Print, Add to Home Screen, Help, Settings)
+  // Keyboard: Tab stays inside an open dialog (Restore, the profile sheet, the categories sheet, QR, Print, Add to Home
+  // Screen, Help, Settings)
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Tab") return;
-    var d = ["bkm", "pfm", "help", "qrm", "prm", "inm", "pzv", "rsh", "panel"]
+    var d = ["bkm", "pfm", "lbm", "help", "qrm", "prm", "inm", "pzv", "rsh", "panel"]
       .map(function (i) {
         return document.getElementById(i);
       })
@@ -128,7 +129,8 @@ export function init() {
     if (!el) return;
     el.addEventListener("focusout", function (e) {
       var t = e.relatedTarget;
-      if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help")) return;
+      // (not into the categories sheet, which opens over the Library)
+      if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help,#lbm")) return;
       el._ret = null;
       if (el === pn) setP(false);
       else if (el === jp) setJ(false);
@@ -174,7 +176,7 @@ function ovOpen() {
   return (
     !pn.hidden ||
     !jp.hidden ||
-    ["cal", "qrm", "prm", "inm", "help", "pzv", "rsh", "pfm", "bkm"].some(function (i) {
+    ["cal", "qrm", "prm", "inm", "help", "pzv", "rsh", "pfm", "bkm", "lbm"].some(function (i) {
       var e = document.getElementById(i);
       return e && !e.hidden;
     })

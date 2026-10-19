@@ -25,6 +25,7 @@ import {
   startPlan,
 } from "./profiles.js";
 import { defaults, devicePart, joinPrefs, profilePart } from "./migrate.js";
+import { cleanLocal, emptyLocal } from "../core/library.js";
 
 /**
  * @typedef {import("./db.js").DB} DB
@@ -139,7 +140,8 @@ function cleanMeta(m) {
   var s = function (v) {
     return typeof v === "string" ? v : "";
   };
-  return {
+  /** @type {Meta} */
+  var out = {
     activeProfile: s(m.activeProfile),
     device: m.device && typeof m.device === "object" ? devicePart(m.device) : {},
     since: s(m.since),
@@ -152,6 +154,8 @@ function cleanMeta(m) {
         })
       : [],
   };
+  if (m.library) out.library = cleanLocal(m.library);
+  return out;
 }
 
 /** The people's ids, in order */
@@ -381,10 +385,25 @@ export function ticksStorage() {
   };
 }
 
+// ---- the library's categories (js/core/library.js), per phone, for everyone on it ----
+/** The family's categories, renames and moves on this phone */
+export function getLibrary() {
+  return cleanLocal(meta.library || emptyLocal());
+}
+
+/**
+ * Keep the family's categories, renames and moves (written to IndexedDB at once)
+ * @param {import("../core/library.js").LibraryLocal} l
+ */
+export function setLibrary(l) {
+  meta.library = cleanLocal(l);
+  return putMeta();
+}
+
 // ---- backup ----
 /** Everything a backup file holds */
 export function exportData() {
-  return { profiles: list(), activeProfile: active().id, device: meta.device };
+  return { profiles: list(), activeProfile: active().id, device: meta.device, library: getLibrary() };
 }
 
 /**
@@ -423,6 +442,8 @@ export function restore(data) {
   // keeping the screen on depends on the device (a computer's backup restored on a phone), so it stays as it was here
   if (keepWake !== undefined) meta.device.wake = keepWake;
   meta.activeProfile = data.activeProfile;
+  // the categories in the file (a file from version 1.7 or before has none: this phone's stay)
+  if (data.library) meta.library = cleanLocal(data.library);
   meta.lastBackup = meta.lastBackup || new Date().toISOString();
   pending = false;
   clearTimeout(timer);
