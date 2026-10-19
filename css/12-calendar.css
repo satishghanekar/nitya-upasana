@@ -1,0 +1,516 @@
+/* 12-calendar.css: the Vedic calendar
+   Part 13 of 14 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   Built by js/features/vedic-calendar.js (approved mockups: mockups/home-v2-a.html and mockups/vedic-calendar.html on
+   branch mockup-home-v2). Sizes are in px, like the home page: they keep their size when the reader enlarges the verses.
+   Sections:
+   - Krishna paksha shading
+   - The calendar line on Home (#pan)
+   - The calendar page (#cal): under the top bar, like the Library
+   - The day card (#cald)
+   - The month (#calm): a table of day buttons, shukla and krishna shading, moon marks, the key
+   - Two columns on tablets and desktops
+   - Print
+*/
+
+/* ==== Krishna paksha shading (--ck): a step darker than the shukla days (--hdrt), with the muted text and the
+   accent still at 4.5:1 or more on it, in each theme ==== */
+:root {
+  --ck: #ecdcbf;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-pref]) {
+    --ck: #3a2b22;
+  }
+}
+:root[data-pref="dark"] {
+  --ck: #3a2b22;
+}
+:root[data-pref="light"] {
+  --ck: #ecdcbf;
+}
+:root[data-pref="sepia"] {
+  --ck: #e2cea8;
+}
+:root[data-hc="1"][data-hc] {
+  --ck: #333;
+}
+
+/* ==== The calendar line on Home (#pan): one button with three lines and a chevron ==== */
+#panb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  height: auto;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--hdrl);
+  border-radius: 14px;
+  background: var(--hdrt);
+  color: var(--ink);
+  font: 400 13.5px/1.4 var(--lat);
+  text-align: left;
+  cursor: pointer;
+}
+#panb > svg {
+  flex: none;
+  color: var(--muted);
+}
+#panb:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+#panb .pt {
+  flex: 1;
+  min-width: 0;
+}
+#panb .p1 {
+  display: block;
+  font: 400 18px/1.35 var(--head);
+  color: var(--accent);
+}
+#panb .p2 {
+  display: block;
+  font: 400 13.5px/1.4 var(--body);
+}
+#panb .p3 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+#pan[lang="mr"] #panb .p3 {
+  font-family: var(--body);
+}
+#panb .p3 > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+/* the line's room, kept while today is worked out (a moment after the page shows) */
+#pan .pwait {
+  display: block;
+  height: 86px;
+  border: 1px solid var(--hdrl);
+  border-radius: 14px;
+  background: var(--hdrt);
+}
+
+/* ==== The calendar page (#cal): under the top bar, over the page (top set by the script), one centred column ==== */
+#cal {
+  position: fixed;
+  top: 61px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 6;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 16px;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 15px/1.45 var(--lat);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#cal[hidden] {
+  display: none;
+}
+#cal:focus {
+  outline: none;
+}
+#cal[lang="mr"] {
+  font-family: var(--body);
+}
+#cal .calin {
+  display: grid;
+  gap: 16px;
+  max-width: 34rem;
+  margin: 0 auto;
+}
+#cal .libhd {
+  padding-bottom: 0;
+}
+#cbk {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  height: auto;
+  margin: 0;
+  padding: 0 10px 0 4px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--accent);
+  font: 600 17px/1.2 var(--lat);
+  cursor: pointer;
+}
+#cal .libhd[data-lang="mr"] #cbk {
+  font-family: var(--body);
+}
+#cbk:focus-visible,
+#cal button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+#calt {
+  margin: 0;
+  font: 400 22px/1.3 var(--head);
+  color: var(--accent);
+}
+#calt [lang="en"] {
+  font-family: var(--head);
+}
+#cal [lang="en"] {
+  font-family: var(--lat);
+}
+#calt [lang="en"],
+#cal h3 [lang="en"] {
+  font-family: var(--head);
+}
+#caln0 {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+#cal .cwait {
+  margin: 0;
+  padding: 24px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ==== The day card (#cald): picture and title, the rows, the next Sankashti ==== */
+#cald {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--hdrl);
+  border-top: 3px solid var(--accent);
+  border-radius: 18px;
+  background: var(--hdr);
+}
+#cald:empty {
+  display: none;
+}
+.cdh {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cdh img {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--hdrl);
+}
+#cdt {
+  margin: 0;
+  font: 400 22px/1.3 var(--head);
+  color: var(--accent);
+}
+.cdd,
+.cdg {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+.cdg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.cdg .tag {
+  padding: 1px 8px;
+  border: 1px solid var(--hdrl);
+  border-radius: 10px;
+  background: var(--hdrt);
+  color: var(--accent);
+  font: 600 12.5px/1.5 var(--body);
+}
+#cald dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  margin: 0;
+}
+#cald dt,
+#cald dd {
+  margin: 0;
+  padding: 9px 2px;
+  border-bottom: 1px solid var(--hdrl);
+}
+#cald dt {
+  padding-right: 14px;
+  color: var(--muted);
+  font: 400 14px/1.45 var(--body);
+}
+#cald dd {
+  font: 400 16px/1.45 var(--body);
+  overflow-wrap: anywhere;
+}
+#cald dd small {
+  display: block;
+  color: var(--muted);
+  font: 400 12.5px/1.45 var(--lat);
+}
+#cald dd small[lang="mr"],
+#cald dd small[lang="kn"] {
+  font-family: var(--body);
+}
+.csk {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--hdrl);
+  border-radius: 12px;
+  background: var(--hdrt);
+  font-size: 14px;
+}
+.csk .dot {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--hdr);
+  color: var(--igold);
+}
+.csk b {
+  color: var(--accent);
+  font-weight: 650;
+}
+.csk .muted {
+  color: var(--muted);
+}
+
+/* ==== The month (#calm): the header with previous / next, the table of days, the key ==== */
+#calm {
+  padding: 14px 8px;
+  border: 1px solid var(--hdrl);
+  border-radius: 18px;
+  background: var(--hdr);
+}
+.cmh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px 10px;
+}
+#cmt {
+  flex: 1;
+  margin: 0;
+  font: 400 19px/1.35 var(--head);
+  text-align: center;
+}
+.cms {
+  display: block;
+  color: var(--muted);
+  font: 400 13px/1.4 var(--body);
+}
+.cms [lang="en"] {
+  font-family: var(--lat);
+}
+.cnav {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--hdrl);
+  border-radius: 12px;
+  background: var(--hdrt);
+  color: var(--ink);
+  cursor: pointer;
+}
+.cgr {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 3px;
+}
+.cgr th {
+  padding: 0 0 2px;
+  color: var(--muted);
+  font: 400 12px/1.4 var(--body);
+  text-align: center;
+}
+.cgr td {
+  padding: 0;
+  vertical-align: top;
+}
+/* a day: a button filling its cell (at least 24px wide on the smallest phones with the gaps around it, WCAG 2.5.8;
+   44px and more from 390px wide), shaded by its paksha */
+.cd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 24px;
+  min-height: 60px;
+  height: auto;
+  margin: 0;
+  padding: 4px 1px;
+  border: 1px solid var(--hdrl);
+  border-radius: 10px;
+  background: var(--hdrt);
+  color: var(--ink);
+  text-align: center;
+  cursor: pointer;
+}
+.cgr td.kr .cd {
+  background: var(--ck);
+}
+.cd b {
+  font: 600 15px/1.2 var(--lat);
+}
+.cd b[lang="mr"],
+.cd b[lang="kn"] {
+  font-family: var(--body);
+}
+.cd .t {
+  max-width: 100%;
+  color: var(--muted);
+  font: 400 10.5px/1.15 var(--body);
+  overflow-wrap: anywhere;
+}
+.cd .kx {
+  max-width: 100%;
+  color: var(--muted);
+  font: 400 9.5px/1.15 var(--body);
+  overflow-wrap: anywhere;
+}
+.cd .f {
+  max-width: 100%;
+  color: var(--accent);
+  font: 600 10.5px/1.2 var(--body);
+  overflow-wrap: anywhere;
+}
+.cd .vr {
+  color: var(--muted);
+  font: 400 9.5px/1.15 var(--lat);
+}
+/* the day shown in the card */
+.cd[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--hdrt);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+/* today */
+.cd.today,
+.cgr td.kr .cd.today {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+.cd.today .t,
+.cd.today .kx,
+.cd.today .f,
+.cd.today .vr {
+  color: var(--bg);
+}
+.cd.today[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 2px var(--bg);
+}
+/* full moon (filled) and new moon (a ring) */
+.mn {
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+  width: 10px;
+  height: 10px;
+  margin: 1px auto 0;
+  border: 1.5px solid var(--igold);
+  border-radius: 50%;
+}
+.mn.full {
+  background: var(--igold);
+}
+.cd.today .mn {
+  border-color: var(--bg);
+}
+.cd.today .mn.full {
+  background: var(--bg);
+}
+.ckey {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 14px;
+  margin: 0;
+  padding-top: 10px;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+.ckey > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.ckey .kn {
+  flex-basis: 100%;
+  justify-content: center;
+  text-align: center;
+}
+.ckey i.ks,
+.ckey i.kk {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--muted);
+  border-radius: 3px;
+  background: var(--hdrt);
+}
+.ckey i.kk {
+  background: var(--ck);
+}
+.ckey .mn {
+  margin: 0;
+}
+
+/* ==== Two columns on tablets and desktops: the day card beside the month ==== */
+@media (min-width: 820px) {
+  #cal .calin {
+    grid-template-columns: 360px 1fr;
+    align-items: start;
+    max-width: 980px;
+  }
+  #cal .libhd,
+  #caln0,
+  #call {
+    grid-column: 1 / -1;
+  }
+  .cd {
+    min-height: 76px;
+  }
+  .cd .t {
+    font-size: 12.5px;
+  }
+  .cd .f {
+    font-size: 11.5px;
+  }
+}
+
+/* ==== Print: neither the line nor the page is printed ==== */
+@media print {
+  #cal,
+  #pan {
+    display: none;
+  }
+}
