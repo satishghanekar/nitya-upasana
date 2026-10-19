@@ -1,6 +1,6 @@
 // Visual regression: screenshots compared pixel by pixel with the ones recorded before the refactor.
 // A curated set (not every combination) chosen so that every CSS section is on at least one shot:
-// the home card, contents, a piece with its dhrupad, two columns, the side menu, Settings, search,
+// the home page, the Library, a piece with its dhrupad, two columns, the side menu, Settings, search,
 // Help, the dialogs, every theme and every language arrangement.
 // Recorded in Chromium; the site's fonts are its own files, so shots are the same on any Linux machine.
 import { test, expect } from "@playwright/test";
@@ -15,10 +15,10 @@ const SIZES = {
   wide: { viewport: { width: 2560, height: 1440 } },
 };
 
-async function shoot(browser, name, size, prefs, prepare) {
+async function shoot(browser, name, size, prefs, prepare, now) {
   const context = await browser.newContext({ ...SIZES[size], deviceScaleFactor: 1, serviceWorkers: "block", reducedMotion: "reduce" });
   const page = await context.newPage();
-  await openSite(page, prefs);
+  await openSite(page, prefs, now ? { now } : {});
   if (prepare) {
     await prepare(page);
     await settle(page);
@@ -42,7 +42,7 @@ const CASES = [
   ["home-tablet", "tablet", SETUPS.marathi],
   ["home-desktop", "desktop", SETUPS.marathi],
   ["home-wide", "wide", SETUPS.marathi],
-  ["home-folded-phone", "phone", { ...SETUPS.marathi, fold: 1 }],
+  ["home-sankashti-phone", "phone", SETUPS.marathi, null, new Date("2026-10-28T19:00:00-04:00")],
   ["home-marathi-menus", "phone", SETUPS["marathi-menus"]],
   // a piece in every language arrangement
   ["aarti-marathi-phone", "phone", SETUPS.marathi, goTo("a1")],
@@ -72,7 +72,7 @@ const CASES = [
   ["font-bold", "phone", { ...SETUPS.both, fnt: "bold" }, goTo("a1")],
   ["font-hand", "phone", { ...SETUPS.both, fnt: "hand" }, goTo("a1")],
   // folds
-  ["folded-sections", "phone", { ...SETUPS.marathi, pf: 1, af: ["a1", "a2"], tf: 1, fold: 1 }],
+  ["folded-sections", "phone", { ...SETUPS.marathi, pf: 1, af: ["a1", "a2"] }],
   // overlays
   ["settings-phone", "phone", SETUPS.marathi, (p) => p.locator("#aa").click()],
   ["settings-desktop", "desktop", SETUPS.marathi, (p) => p.locator("#aa").click()],
@@ -81,15 +81,16 @@ const CASES = [
     await p.locator("#hm").click();
     await p.locator("#q").fill("sukh");
   }],
-  ["contents-phone", "phone", SETUPS.marathi, (p) => p.locator("#hm").click()],
+  ["library-phone", "phone", SETUPS.marathi, (p) => p.locator("#hm").click()],
+  ["library-desktop", "desktop", SETUPS.marathi, (p) => p.locator("#hm").click()],
   ["help-phone", "phone", SETUPS.marathi, (p) => p.locator("#hlpb").click()],
   ["qr-phone", "phone", SETUPS.marathi, (p) => p.locator("#qrb").click()],
   ["print-dialog", "phone", SETUPS.marathi, (p) => p.locator("#prb").click()],
 ];
 
-for (const [name, size, prefs, prep] of CASES) {
+for (const [name, size, prefs, prep, now] of CASES) {
   test(`screenshot ${name} @chromium-only`, async ({ browser }) => {
-    await shoot(browser, name, size, prefs, prep);
+    await shoot(browser, name, size, prefs, prep, now);
   });
 }
 

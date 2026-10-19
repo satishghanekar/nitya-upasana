@@ -9,8 +9,8 @@ import { fsTap, szSet } from "./settings-panel.js";
 import { setJ, setP } from "./overlays.js";
 
 var pz, szTm, szrTm, szaT, szt, szr, pzF, wz, wzT;
-// Where a pinch does nothing (neither resizes the text nor zooms): the home card
-var NO_PINCH = "#home .top";
+// Where a pinch does nothing (neither resizes the text nor zooms): the home page
+var NO_PINCH = "#home";
 
 export function init() {
   pz = null;
@@ -33,7 +33,7 @@ export function init() {
   // zoomed (a pinch that began mid-scroll can't be cancelled), it is put back to normal straight away.
   pzF = 0;
   // The page never zooms anywhere (decided 2026-10-16): a page that zooms on some parts and not others looks
-  // broken on a phone. On the home card a pinch does nothing at all, since the card has no verses to resize.
+  // broken on a phone. On the home page a pinch does nothing at all, since it has no verses to resize.
   document.addEventListener(
     "touchstart",
     function (e) {
@@ -52,7 +52,7 @@ export function init() {
   document.addEventListener(
     "touchmove",
     function (e) {
-      // a two-finger move that is not resizing the text (it began on the home card) is stopped too
+      // a two-finger move that is not resizing the text (it began on the home page) is stopped too
       if (!pz && e.touches.length === 2 && e.cancelable && document.getElementById("pzv").hidden) e.preventDefault();
       if (pz && e.touches.length === 2) {
         if (e.cancelable) e.preventDefault();

@@ -27,9 +27,9 @@ There is no build step: the browser loads these files as they are.
 | `core/time-of-day.js` | Which picture and which star for a given moment (pure functions, unit-tested; no `init()`: used by `features/day-picture.js`) |
 | `text/iast.js` | IAST transliteration (Devanagari → Latin with diacritics, Vedic accents as marks) |
 | `text/layout.js` | Layout helpers that run once |
-| `features/astronomy.js` | Astronomy for the Next Sankathara Chaturthi card |
-| `features/date-card.js` | Next Sankathara Chaturthi card (computed on this device; works offline) |
-| `features/today-card.js` | The Today card: date, week row (Monday to Sunday), Morning / Afternoon / Evening switch, the session's texts with a tick each, Start / Continue; while a session is being read, ‹ Prev and Next › follow it (`sessionStep()`, read by `features/bottom-bar.js`), and Next ticks the text it leaves; below 820px it moves the App / Share / QR / Print / Help row under the card (`placeRow()`) |
+| `features/astronomy.js` | Astronomy: sun and moon positions, tithi, moonrise and the Sankashti rule (worked out on this device) |
+| `features/sankashti.js` | Sankashti: the place (the reader's own from Settings → Place for moonrise, else the time zone's city), the next Sankashti (kept in `shared.skCache` for the Share message), and on a Sankashti day only one line on the home page (`#skt`) with moonrise and the place |
+| `features/today-card.js` | Home (Home v2): the picture beside today's date in Marathi and English, the session for the time now with its texts and a tick each, "Not this time?" (the other sessions), Start / Continue; while a session is being read, ‹ Prev and Next › follow it (`sessionStep()`, read by `features/bottom-bar.js`), and Next ticks the text it leaves |
 | `core/routine.js` | Which texts a session has on a weekday (`content/routines.json`), the week row's days, the first unticked text, the step to the next text of a session (pure functions, unit-tested; no `init()`) |
 | `core/ticks.js` | The ticks, kept on this device for today only, per person (the storage passed in is the store's, which keeps them in each person's profile; `localStorage["nitya-ticks"]` from before 1.4 is moved into the first person; pure, unit-tested; no `init()`) |
 | `text/dhrupad-markers.js` | Tappable dhrupad markers (Aartis 1–5, 7 and 9) |
@@ -44,12 +44,12 @@ There is no build step: the browser loads these files as they are.
 | `features/dhrupad-button.js` | Dhrupad button: toggle once / after every stanza, keeping the reader's place |
 | `features/reading-sheet.js` | Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad, within thumb reach |
 | `features/wake-lock.js` | Keep the screen on (Wake Lock). Browsers drop the lock when the page is hidden, so it is re-requested. |
-| `features/overlays.js` | Overlays: settings panel (setP) and contents + search (setJ); opening one closes the other (no `init()`: used by bars, clicks, pinch, help and history) |
+| `features/overlays.js` | Overlays: settings panel (setP) and the Library (setJ); opening one closes the other (no `init()`: used by bars, clicks, pinch, help and history) |
 | `features/history.js` | Back button |
 | `features/languages.js` | Settings page: languages |
-| `features/contents-list.js` | Contents list inside the contents + search overlay (built from the home page contents) |
-| `features/clicks.js` | Clicks: contents links (data-go) jump to a piece; tapping a verse line highlights it |
-| `features/pinch.js` | Pinch with two fingers to change the text size (the page itself never zooms) |
+| `features/contents-list.js` | The Library page (`#jump`): every text, grouped, with search; its Back button. The list is written in `index.html` and also feeds the side menu and the printout's contents |
+| `features/clicks.js` | Clicks: Library and side-menu links (data-go) jump to a piece; tapping a verse line highlights it |
+| `features/pinch.js` | Pinch with two fingers to change the text size (the page itself never zooms; on the home page a pinch does nothing) |
 | `text/search.js` | Search: every Marathi line with its English line; matches ignore svara marks and punctuation |
 | `core/startup.js` | Start-up |
 | `features/picture-viewer.js` | Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move |

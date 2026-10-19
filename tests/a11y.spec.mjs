@@ -23,11 +23,13 @@ const STATES = [
   ["both languages", SETUPS.both],
   ["Kannada", SETUPS["kannada-both"]],
   ["English main", SETUPS["english-main-both"]],
-  ["everything folded", { ...SETUPS.marathi, pf: 1, xf: 1, tf: 1, fold: 1 }],
+  ["everything folded", { ...SETUPS.marathi, pf: 1, xf: 1 }],
   ["Settings open", SETUPS.marathi, (p) => p.locator("#aa").click()],
   ["Settings open, dark", { ...SETUPS.marathi, th: "dark" }, (p) => p.locator("#aa").click()],
   ["Settings open, sepia", { ...SETUPS.marathi, th: "sepia" }, (p) => p.locator("#aa").click()],
   ["Print open, sepia", { ...SETUPS.marathi, th: "sepia" }, (p) => p.locator("#prb").click()],
+  ["Library open", SETUPS.marathi, (p) => p.locator("#hm").click()],
+  ["Library open, dark", { ...SETUPS.marathi, th: "dark" }, (p) => p.locator("#hm").click()],
   ["search open", SETUPS.marathi, async (p) => {
     await p.locator("#hm").click();
     await p.locator("#q").fill("deva");
