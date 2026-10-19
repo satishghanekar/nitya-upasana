@@ -145,7 +145,7 @@ describe("2026 in Pune", () => {
   });
   test("Ganesh Chaturthi, 14 September: Bhadrapada shukla chaturthi at midday", () => {
     expect(tithiAt(at("2026-09-14", "12:30")).n).toBe(4);
-    expect(dayPanchang("2026-09-14", PUNE).masa.name.en).toBe("Bhadrapada");
+    expect(dayPanchang("2026-09-14", PUNE).masa.name.en).toBe("Bhadrapad");
     expect(tithiAt(at("2026-09-13", "12:30")).n).toBe(3);
   });
   test("Dasara, 20 October: Ashvin shukla dashami in the afternoon", () => {
@@ -162,7 +162,7 @@ describe("2026 in Pune", () => {
     const nov = month(11);
     expect(nov[8]).toMatchObject({ amavasya: true });
     expect(nov[9].tithi.n).toBe(1);
-    expect(nov[9].masa.name.en).toBe("Kartika");
+    expect(nov[9].masa.name.en).toBe("Kartik");
   });
   test("October: a repeated saptami (vriddhi), purnima, ekadashis and amavasya", () => {
     const oct = month(10);
