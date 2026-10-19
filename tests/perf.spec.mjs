@@ -50,7 +50,8 @@ test("load and the language button lay the page out only a few times @chromium-o
     } catch (e) {}
   });
   const t0 = await metrics(cdp);
-  await openSite(page, { ...SETUPS.marathi, lead: "mr", l2: "en" });
+  // on a piece: the language button is in the top bar while reading (on the home page it steps aside)
+  await openSite(page, { ...SETUPS.marathi, lead: "mr", l2: "en" }, { hash: "#a1" });
   // fonts arrive and the print warm-up runs (3 s after load, when idle); all of it counts as load
   await page.waitForTimeout(5500);
   const load = diff(t0, await metrics(cdp));
@@ -58,6 +59,8 @@ test("load and the language button lay the page out only a few times @chromium-o
   // Marathi → English → both: each is a first visit to that language, so the text is fitted again
   const taps = [];
   for (let i = 0; i < 3; i++) {
+    // opened at a piece, the bars start tucked away (a tap on the page brings them back)
+    await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
     await page.evaluate(() => (window.__slow = 0));
     const t = await metrics(cdp);
     await page.locator("#home-btn").click();

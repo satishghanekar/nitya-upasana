@@ -215,42 +215,30 @@
 .ash header .tag {
   font-size: 12.5px;
 }
-/* Date card: the calendar and pin buttons keep their look but get a full 44 px area to tap;
-   the date strip fades out at its edges, so dates cut off at the side read as "swipe for more" */
-.skc .skli {
-  position: relative;
-}
-.skc .skli::after {
-  content: "";
-  position: absolute;
-  inset: -6px;
-}
-.skc .sks {
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
-}
+
+
 /* Home page contents: the same two-column cards as the Contents panel (a group with one piece spans both columns) */
 @media screen {
-  #home .tocg ol.toc {
+  #jl .tocg ol.toc {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
     margin: 0;
     border: 0;
   }
-  #home .tocg ol.toc li {
+  #jl .tocg ol.toc li {
     border: 0;
   }
-  #home .tocg ol.toc li:only-child {
+  #jl .tocg ol.toc li:only-child {
     grid-column: 1 / -1;
   }
-  #home .tocg ol.toc .m {
+  #jl .tocg ol.toc .m {
     font-size: 1em;
   }
-  #home .tocg[data-lang="both"] ol.toc .en {
+  #jl .tocg[data-lang="both"] ol.toc .en {
     font: 400 12.5px/1.3 var(--lat);
     margin-top: 2px;
   }
-  #home .tocg .gh {
+  #jl .tocg .gh {
     margin-bottom: 10px;
   }
 }
@@ -272,7 +260,7 @@
     font-size: min(var(--fs), 28px);
   }
 }
-#home .tocg ol.toc a,
+#jl .tocg ol.toc a,
 #jump a {
   overflow-wrap: anywhere;
 }
@@ -289,9 +277,7 @@
   flex: 1 1 0;
   min-width: 0;
 }
-#jl[data-lang="both"] a .en {
-  flex-basis: 100%;
-}
+
 /* Side by side on wide screens: a soft gold band marks the refrain (a left line would sit far from the right-aligned Marathi), and one space before "· Refrain" */
 @media screen {
   [data-cols="2"] [data-lang="both"] .rftop .verse {
@@ -305,94 +291,8 @@
   }
 }
 /* ==== Ganesha in the home card, and folding the card (final rules) ==== */
-#cvb {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 2;
-  width: 36px;
-  height: 36px;
-  min-height: 0;
-  padding: 0;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--rule);
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--muted);
-}
-#cvb::after {
-  content: "";
-  position: absolute;
-  inset: -5px;
-}
-#cvb svg {
-  transition: transform 0.2s;
-}
-.top.fold #cvb {
-  top: 14px;
-  right: 12px;
-}
-.top.fold #cvb svg {
-  transform: rotate(180deg);
-}
-#slim {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 4px 52px 0 4px;
-  text-align: left;
-}
-#slim[hidden] {
-  display: none;
-}
-#slim img {
-  flex: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-#slimt {
-  min-width: 0;
-  font-family: var(--lat);
-  line-height: 1.3;
-}
-#slimt b {
-  display: block;
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--accent);
-}
-#slimt .sld {
-  display: block;
-  font-weight: 600;
-  font-size: 17px;
-  color: var(--ink);
-}
-#slimt .slm {
-  display: block;
-  font-weight: 500;
-  font-size: 13px;
-  color: var(--muted);
-}
-#slimt .mr {
-  font-family: var(--body);
-}
-.top.fold .hero,
-.top.fold #skc,
-.top.fold #shr {
-  display: none !important;
-}
-.top.fold {
-  padding-bottom: 8px;
-}
-@media print {
-  #cvb,
-  #slim {
-    display: none !important;
-  }
-}
+
+
 /* ==== Folding the Pooja and Aarti sections (the headings' look is in "Fold headings" below) ==== */
 #pfb,
 #xfb {

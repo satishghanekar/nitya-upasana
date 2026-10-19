@@ -89,11 +89,6 @@ export function init() {
       b.onclick();
     });
   });
-  document.getElementById("tfb").onclick = function () {
-    P.tf = P.tf ? 0 : 1;
-    save();
-    pfSet();
-  };
   [["pfb", "g-pooja", "pf"], ["xfb", "g-aarti", "xf"]].forEach(function (a) {
     document.getElementById(a[0]).onclick = function () {
       var g = document.getElementById(a[1]),
@@ -137,13 +132,9 @@ function allSet() {
 }
 
 export function pfSet() {
-  var mr = P.ui === "mr",
-    tb = document.getElementById("tfb");
-  if (P.tf) root.setAttribute("data-tf", "1");
-  else root.removeAttribute("data-tf");
-  // The Contents, पूजा and आरती rows are named by their visible words, with aria-expanded giving the state,
+  var mr = P.ui === "mr";
+  // The पूजा and आरती rows are named by their visible words, with aria-expanded giving the state,
   // so voice control users can say what they see (WCAG 2.5.3)
-  if (tb) tb.setAttribute("aria-expanded", String(!P.tf));
   secs.forEach(function (x) {
     var f = P.af.indexOf(x.id) >= 0,
       ab = x.querySelector(".afb");

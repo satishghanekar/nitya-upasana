@@ -376,13 +376,6 @@ ol.toc .m {
   color: var(--bg);
   border-color: var(--accent);
 }
-#jl .en {
-  font-size: 0.8em;
-}
-#jl[data-lang="both"] .en {
-  display: block;
-  opacity: 0.8;
-}
 
 
 /* ==== Reduced motion; print (first set of print rules, more further down) ==== */
@@ -806,11 +799,7 @@ ol.toc li.soon .m {
 #jump li.jh:first-child {
   padding-top: 0;
 }
-#jl[data-lang="both"] li.jh .en {
-  display: inline;
-  margin-left: 0.5em;
-  opacity: 0.8;
-}
+
 .grp {
   margin: 48px 0 -18px;
   text-align: center;

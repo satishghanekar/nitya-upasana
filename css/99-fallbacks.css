@@ -34,25 +34,12 @@
   .sp-prev {
     background: var(--surface);
   }
-  .top .hero {
-    background: linear-gradient(180deg, var(--hdr), transparent);
-  }
+
   #iconb img {
     filter: drop-shadow(0 0 8px var(--gold));
   }
-  .skc {
-    background: var(--surface);
-    border-color: var(--gold);
-  }
-  .skc .skd .skin {
-    border: 1px solid var(--gold);
-    background: var(--surface);
-  }
-  .skc .skch.on {
-    box-shadow:
-      0 0 0 2px var(--surface),
-      0 0 0 3.5px var(--gold);
-  }
+
+
   .sp .sp-sw::after {
     background:
       radial-gradient(circle at 14px 50%, #fff 11px, transparent 12px),

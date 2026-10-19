@@ -412,6 +412,9 @@ test("a 320px phone: the home buttons show their words, and a note sits under th
     const b = await page.locator(id).boundingBox(), t = await w.boundingBox();
     expect(t.x >= b.x - 0.5 && t.x + t.width <= b.x + b.width + 0.5, `${id} word inside its button`).toBe(true);
   }
+  // the language button is in the top bar while reading
+  await page.locator("#hm").click();
+  await page.locator('#jl a[data-go="a1"]').click();
   await page.locator("#home-btn").click();
   const fl = page.locator("#fl");
   await expect(fl).toHaveClass(/\bon\b/);

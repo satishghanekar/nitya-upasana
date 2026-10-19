@@ -229,11 +229,7 @@ export function jumpTo(go, url) {
   }
 }
 
-// Home buttons (top-bar title, Ganesha in the bottom bar, the rail's Home): from a piece they go home;
-// on the home page, with the card in view, they open or close the card like its own round button
+// Home buttons (top-bar title, Ganesha in the bottom bar, the rail's Home): back to the top of the home page
 export function goHomeNav() {
-  var top = document.querySelector("#home .top"),
-    r = top && top.getBoundingClientRect();
-  if (!cur() && r && r.bottom > 60 && r.top < innerHeight / 2) document.getElementById("cvb").onclick();
-  else jumpTo(goHome, location.pathname);
+  jumpTo(goHome, location.pathname);
 }
