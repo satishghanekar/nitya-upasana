@@ -1,4 +1,5 @@
-// Overlays: settings panel (setP) and contents + search (setJ); opening one closes the other
+// Overlays: settings panel (setP), the Library (setJ) and the Vedic calendar page (setC, js/features/vedic-calendar.js);
+// opening one closes the others
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root } from "../core/page.js";
@@ -36,6 +37,7 @@ export function setP(o) {
   // the Settings page covers the whole page; the page under it doesn't scroll
   if (o) root.setAttribute("data-sp", "1");
   else root.removeAttribute("data-sp");
+  if (o) calHide();
   if (o) {
     pn.scrollTop = 0;
     pn.focus({ preventScroll: true });
@@ -71,5 +73,39 @@ export function setJ(o) {
     ovFocus(pn, false);
     pn.hidden = true;
     aa.setAttribute("aria-expanded", "false");
+    calHide();
+  } else ovDone();
+}
+
+// The Vedic calendar page (#cal): opened by the line on Home (#panb), under the top bar like the Library; Back, the
+// phone's Back or Escape closes it and focus returns to that line
+function calHide() {
+  var c = document.getElementById("cal"),
+    b = document.getElementById("panb");
+  if (!c || c.hidden) return;
+  c._ret = null;
+  c.hidden = true;
+  if (b) b.setAttribute("aria-expanded", "false");
+}
+
+export function setC(o) {
+  var c = document.getElementById("cal"),
+    b = document.getElementById("panb");
+  if (!c) return;
+  if (o) ovPush();
+  if (o) {
+    mark();
+    var bb = document.querySelector(".bar").getBoundingClientRect();
+    c.style.top = Math.round(bb.bottom) + "px";
+  }
+  ovFocus(c, o);
+  c.hidden = !o;
+  if (b) b.setAttribute("aria-expanded", String(o));
+  if (o) {
+    // the others close after this one is shown, so their closing does not take this page's Back step
+    setJ(false);
+    setP(false);
+    c.scrollTop = 0;
+    c.focus({ preventScroll: true });
   } else ovDone();
 }

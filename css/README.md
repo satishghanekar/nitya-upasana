@@ -25,8 +25,9 @@ Each file starts with a comment that lists its sections. Every section begins wi
 | `07-bottom-bar-folds.css` | Bottom bar, bars tucking away while reading, folding each piece, fold headings, bigger tap areas and the reading sheet (Aa). |
 | `08-contents-book.css` | The Library's list of texts (`#jl`) as a book index, author lines, and Both languages with English first. |
 | `09-settings-page.css` | The Settings page and Kannada letters. |
-| `10-today.css` | Home (Home v2) and the Library page: the picture beside the date (`#tdy`), the Vedic calendar slot (`#pan`), the Sankashti-day line (`#skt`), the session's texts with their ticks (`#tsc`), "Not this time?" (`#tso`), Start / Continue (`#tsb`, pinned on phones), the top bar and bottom bar on the home page (`data-home`), and the Library (`#jump`). |
+| `10-today.css` | Home (Home v2) and the Library page: the picture beside the date (`#tdy`), the Vedic calendar line's place (`#pan`), the Sankashti-day line (`#skt`), the session's texts with their ticks (`#tsc`), "Not this time?" (`#tso`), Start / Continue (`#tsb`, pinned on phones), the top bar and bottom bar on the home page (`data-home`), and the Library (`#jump`). |
 | `11-profiles.css` | Profiles and backup: the profile chip in the top bar (`#who`, the badge alone below 600px; on phones up to 420px without its frame, and the title without its small Ganesha), the round badges, the profile sheet (`#pfm`: the people on this phone, Add / Edit / Delete, the colour swatches), the Restore dialog (`#bkm`) and the notes on the home page (`#pfnt`: this browser can't save here, the backup reminder). |
+| `12-calendar.css` | The Vedic calendar: the line on Home (`#panb`), the calendar page (`#cal`, under the top bar like the Library), the day card (`#cald`), the month table (`#calm`: day buttons, shukla and krishna shading with `--ck`, full and new moon marks, Ekadashi and Sankashti labels, today and the day shown, the key), two columns from 820px. |
 | `99-fallbacks.css` | Plain colours for browsers without `color-mix()` (iOS 15). **Keep it last**, because it replaces colours set in every file above. |
 
 ## Switches the styles read
@@ -59,7 +60,7 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
 | `(max-width: 819px)` | Phones and small tablets: Start / Continue is pinned to the bottom of the screen on the home page |
-| `(min-width: 820px)` | Tablets and up: wider spacing |
+| `(min-width: 820px)` | Tablets and up: wider spacing; the Vedic calendar shows the day card beside the month |
 | `(min-width: 1100px)` | Desktop: the left contents menu (`#rail`) |
 | `(orientation: landscape) and (max-height: 520px)` | Phones held sideways: tighter line spacing and headers |
 

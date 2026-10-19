@@ -5,6 +5,7 @@ import { LI, RB_LOOP, RB_ONCE, root } from "../core/page.js";
 import { shared, P } from "../core/state.js";
 import { skLang } from "./sankashti.js";
 import { todayLang } from "./today-card.js";
+import { calLang } from "./vedic-calendar.js";
 import { autoFs, pullSoon } from "../text/autofit.js";
 import { cur, hb, pfSet, pjOpen } from "../core/apply.js";
 import { asLabel, asShow, asb, asc } from "./bottom-bar.js";
@@ -275,6 +276,10 @@ export function apply() {
   } catch (e) {}
   // the Today card's words follow the menu language, and its titles the script (Kannada letters)
   todayLang();
+  // the Vedic calendar line on Home (and the calendar page when open): menu language, script, day and place
+  try {
+    calLang();
+  } catch (e) {}
   [].forEach.call(document.querySelectorAll("#st button"), function (b) {
     b.setAttribute("aria-pressed", b.dataset.v === P.th);
   });
