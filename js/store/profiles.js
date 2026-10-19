@@ -18,7 +18,9 @@ import { cleanPerson, devicePart, migratePrefs, profilePart } from "./migrate.js
  * @typedef {{ id: string, name: string, initials: string, colour: string, settings: Prefs,
  *   checklist: Checklist | null, created: string, updated: string }} Profile
  * @typedef {{ activeProfile: string, device: Prefs, since: string, lastBackup: string, snooze: string,
- *   schema: number, order?: string[] }} Meta   order: the people's ids in the order they were added
+ *   schema: number, order?: string[], library?: import("../core/library.js").LibraryLocal }} Meta
+ *   order: the people's ids in the order they were added; library: the family's categories, renames and moves
+ *   (js/core/library.js), for everyone on this phone
  */
 
 // The badge colours offered (white letters on each meet WCAG AA, 4.5:1 or more)

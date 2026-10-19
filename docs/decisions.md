@@ -2,6 +2,40 @@
 
 Newest first. Each entry: the decision, who made it, and where it came from.
 
+## 2026-10-19: slice 3, the Library by category
+
+Satish said go ahead (2026-10-19) on finishing slice 3 on the new Library page. It was begun on the old home page
+(WIP commit 58ccc19 on `slice-3-library`); the category model (`js/core/library.js`), the search rules
+(`js/text/search-core.js`), the store and backup parts and the categories sheet are reused from it, re-pointed from the
+old home list to the Library (`#jump`). Version aarti-v1.8.
+
+- **The Library lists the texts by category** (`content/categories.json`: वैदिक मंत्र / Vedic Chant, आरती / Aarti,
+  स्तोत्र / Stotra, अष्टक / Ashtak, in that order, then the family's own), in place of पूजा / आरती. The reading page
+  keeps its groups (पूजा, आरती), and so does the printout's contents page, which now follows the reading page rather
+  than the Library's list. The side menu on wide screens follows the Library's categories.
+- **"Edit categories" ("विभाग बदला")** at the end of the list opens the categories sheet over the Library: add a
+  category (Marathi name, English name, or one of them for both; up to 20), rename any (a built-in one only on this
+  phone, with "Use the original name" to undo), delete one the family added (its texts go back to their own
+  categories; built-in ones can't be deleted), and choose each text's category. Kept per phone for everyone on it
+  (IndexedDB `meta.library`) and in backup files (`payload.library`); a backup from 1.7 or before leaves the
+  categories alone. The texts are never changed.
+- **Search** covers the whole library: texts by title (Marathi, English, scholarly spelling), id, first line and
+  category, listed first under "Texts" ("रचना"), then lines under "Lines" ("ओळी"); loose spellings, one typo per four
+  letters, Devanagari typed found through its English letters.
+- **Languages:** the sheet's words follow the menu language; category and text names in the sheet follow the reading
+  languages as the Vedic calendar's do (first language, the second as a small line under a category's name); the list
+  and search results follow the language shown on the reading page, like every title there, with English first when
+  English is the first language. English category names stay plain English (they are English words, not
+  transliterations), also with the scholarly spelling.
+- **Defaults for the open questions** (Claude's, for Satish to confirm or change):
+  1. A category with no texts is **hidden from the Library's list** but **shown in the sheet** ("No texts yet (not shown
+     in the Library)"), so it can be filled.
+  2. Texts **keep their reading-page numbers** in the Library (आरती ५ stays ५ in whichever category it is listed).
+  3. Marathi wording: **रचना** for a text, **विभाग** for a category, the search box says **"रचना किंवा ओळ शोधा"**
+     (English: "Find a text or a line").
+- **Back:** the sheet has its own Back step over the Library's, so the phone's Back (or ✕, Escape, a tap outside)
+  closes the sheet and leaves the Library open; focus returns to "Edit categories".
+
 ## 2026-10-19: festival days in the Vedic calendar
 
 Satish said yes (2026-10-19) to marking festivals such as दसरा, the open question in the entry below. Version aarti-v1.7.

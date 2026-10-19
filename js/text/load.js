@@ -6,21 +6,24 @@
 // The files are on the offline list (js/parts.js), so this works without internet too.
 // It also fetches content/routines.json, the default routine the Today card shows (js/features/today-card.js),
 // at the same time; without it the texts still load and the card shows empty sessions. And content/festivals.json, the
-// festival rules the Vedic calendar marks (js/core/festivals.js); without it no festivals are marked.
+// festival rules the Vedic calendar marks (js/core/festivals.js); without it no festivals are marked. And
+// content/categories.json, the library's categories (js/core/library.js, js/features/library.js); without it the
+// Library lists the texts in the reading page's groups (पूजा, आरती).
 
 import { buildContent } from "./content.js";
 
 /**
  * What was loaded, for the parts that need it after start-up: the library (content/library.json) and the
  * routine (content/routines.json; null when it could not be loaded) and the festival rules (content/festivals.json;
- * null when it could not be loaded).
+ * null when it could not be loaded) and the categories (content/categories.json; null when it could not be loaded).
  * @type {{
  *   library: import("./content.js").Library | null,
  *   routine: import("../core/routine.js").Routine | null,
- *   festivals: import("../core/festivals.js").FestivalList | null
+ *   festivals: import("../core/festivals.js").FestivalList | null,
+ *   categories: import("../core/library.js").BundledCategory[] | null
  * }}
  */
-export const loaded = { library: null, routine: null, festivals: null };
+export const loaded = { library: null, routine: null, festivals: null, categories: null };
 
 /**
  * @param {string} url
@@ -59,6 +62,18 @@ export function load() {
         console.warn(e);
       },
     );
+  var categories = get("content/categories.json")
+    .then(function (r) {
+      return r.json();
+    })
+    .then(
+      function (/** @type {any} */ o) {
+        loaded.categories = Array.isArray(o) ? o : null;
+      },
+      function (/** @type {unknown} */ e) {
+        console.warn(e);
+      },
+    );
   var texts = get("content/library.json")
     .then(function (r) {
       return r.json();
@@ -86,5 +101,5 @@ export function load() {
         w.SCR.page();
       });
     });
-  return Promise.all([texts, routine, festivals]).then(function () {});
+  return Promise.all([texts, routine, festivals, categories]).then(function () {});
 }

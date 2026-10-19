@@ -49,7 +49,7 @@ export function init() {
     function (e) {
       var x = e.target;
       if (!x.closest) return;
-      if (x.closest("#panel,#jump,.bar,[data-keep]")) return;
+      if (x.closest("#panel,#jump,#lbm,.bar,[data-keep]")) return;
       if (!pn.hidden || !jp.hidden) {
         setP(false);
         setJ(false);

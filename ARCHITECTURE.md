@@ -34,6 +34,7 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files. **There
   - It is skipped when the reader has chosen a size (`P.fsu`).
 - **The home page's ticks** are kept apart from `P`, in the reading person's profile (`checklist`), for today only (`js/core/ticks.js`, given the store's storage). The old `localStorage["nitya-ticks"]` is read once, on the first visit after 1.3, and moved into the first person.
 - **Backups** (`js/store/backup.js`, `js/features/backup.js`) are `.nitya` files: plain JSON with every person, the device's settings and a SHA-256 of them. Restoring checks the file, shows what changes and replaces everyone only when confirmed.
+- **The library's categories** (version 1.8): the built-in ones are `content/categories.json`; what the family changes on this phone (categories added, names changed, texts moved) is one object in IndexedDB `meta.library`, for everyone on the phone, and in backup files (`payload.library`; a file from 1.7 or before has none, and restoring it leaves this phone's categories as they are). `js/core/library.js` merges the two (pure, unit-tested); `js/features/library.js` shows the Library by category and the categories sheet. The texts themselves are never changed. Search (`js/text/search-core.js`, pure) finds texts by title, id, first line and category before lines.
 - **The session being read** (after Start / Continue) is in `sessionStorage["nitya-run"]`, so ‹ Prev and Next › keep following it if the page reloads; a jump from the Library or the side menu ends it.
 - **`shared`** (`js/core/state.js`) holds the seven values that more than one part changes. A JavaScript module can only change its own variables, so these live in one object everyone can write to.
 - **The styles** read only those switches and variables. `css/README.md` lists them and explains the one rule for editing: a later rule for the same element wins, so change the last one.
@@ -59,7 +60,7 @@ The Print button builds a separate print view (`#pv`, in `js/features/print.js`)
 
 ## Offline use and updates
 
-- `sw.js` keeps the page, every file in `js/parts.js` (styles, scripts, texts, the main fonts and the three time-of-day pictures with the icons) in a cache named after the version (`aarti-v1.7`).
+- `sw.js` keeps the page, every file in `js/parts.js` (styles, scripts, texts, the main fonts and the three time-of-day pictures with the icons) in a cache named after the version (`aarti-v1.8`).
   - The page and its parts are always fetched fresh when possible, with a 3 s limit before the saved copy is used, so the page never mixes old and new parts.
   - Everything else comes from the saved copy and is refreshed in the background.
   - If the saved copy cannot be read within 2 s, the request goes to the network. Safari's storage can stall, and a Mac once sat on a blank page because of it.
