@@ -255,7 +255,7 @@ test("Save a backup file → Restore from it: every person, setting and tick com
   const file = info.outputPath("backup.nitya");
   await dl.saveAs(file);
   const json = JSON.parse(readFileSync(file, "utf8"));
-  expect([json.format, json.kind, json.app]).toEqual(["nitya", "backup", "aarti-v1.6"]);
+  expect([json.format, json.kind, json.app]).toEqual(["nitya", "backup", "aarti-v1.6.1"]);
   expect(json.payload.profiles.map((p) => p.name)).toEqual(["Me", "Aai"]);
   await expect(page.locator("#bksv")).toHaveText("Last saved 18 October 2026");
   await page.locator("#xc").click();

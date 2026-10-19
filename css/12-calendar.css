@@ -322,6 +322,21 @@
 .cms [lang="en"] {
   font-family: var(--lat);
 }
+/* The panchang's names in English (English as the first reading language, Settings) on Home: the title in the
+   heading font, as the calendar's titles are (#cal h3 above), the line under it in the Latin font */
+#panb .p2 [lang="en"] {
+  font-family: var(--lat);
+}
+/* English names in a day of the month: a step smaller, so most fit on one line (a long one breaks at its soft hyphen) */
+@media (max-width: 819px) {
+  .cd .t[lang="en"],
+  .cd .f[lang="en"] {
+    font-size: 10px;
+  }
+  .cd .kx[lang="en"] {
+    font-size: 9px;
+  }
+}
 .cnav {
   display: grid;
   flex: none;
