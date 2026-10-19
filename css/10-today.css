@@ -3,13 +3,14 @@
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Home v2 (approved by Satish 2026-10-18, mockup A "Simple list"; docs/decisions.md): the home page is what to chant
    now, in one column. Built by js/features/today-card.js: the time-of-day picture beside today's date (#tdy), a slot
-   for the Vedic calendar line (#pan), the Sankashti line on the day (#skt, js/features/sankashti.js), the session's
+   for the Vedic calendar line (#pan), the festival line on the day (#fst, js/features/vedic-calendar.js), the Sankashti
+   line on the day (#skt, js/features/sankashti.js), the session's
    texts with their ticks (#tsc), "Not this time?" (#tso), the App / Share / QR / Print / Help row (#shr), and
    Start / Continue (#tsb), pinned to the bottom of the screen on phones. The Library (#jump) holds every text.
    Sizes are in px: the home page keeps its size when the reader enlarges the verses.
    Sections:
    - The home page: picture and date
-   - The Sankashti line (on the day only) and the Vedic calendar line's place
+   - The festival and Sankashti lines (on the day only) and the Vedic calendar line's place
    - The session: texts, ticks
    - Another session; the quiet row
    - Start / Continue, pinned on phones
@@ -56,14 +57,16 @@
   outline-offset: 3px;
 }
 
-/* ==== The Sankashti line (on the day only) and the Vedic calendar line's place (its look: css/12-calendar.css) ==== */
+/* ==== The festival and Sankashti lines (on the day only) and the Vedic calendar line's place (its look: css/12-calendar.css) ==== */
 #pan[hidden],
+#fst[hidden],
 #skt[hidden] {
   display: none;
 }
 #pan {
   margin: 0 0 14px;
 }
+#fst,
 #skt {
   display: flex;
   align-items: center;
@@ -79,15 +82,21 @@
 #skt .skp {
   white-space: nowrap;
 }
+#fst[lang="mr"],
 #skt[lang="mr"] {
   font-family: var(--body);
 }
+#fst svg,
 #skt svg {
   flex: none;
   color: var(--igold);
 }
+#fst b,
 #skt b {
   font-weight: 650;
+}
+#fst b {
+  color: var(--accent);
 }
 
 /* ==== The session: texts, ticks ==== */
@@ -422,6 +431,7 @@
 @media print {
   #tdy,
   #skt,
+  #fst,
   #pan,
   #tsc,
   #tso,

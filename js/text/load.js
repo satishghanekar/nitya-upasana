@@ -5,16 +5,22 @@
 // starts the other parts, so they find the page as it was when the pieces were written into index.html.
 // The files are on the offline list (js/parts.js), so this works without internet too.
 // It also fetches content/routines.json, the default routine the Today card shows (js/features/today-card.js),
-// at the same time; without it the texts still load and the card shows empty sessions.
+// at the same time; without it the texts still load and the card shows empty sessions. And content/festivals.json, the
+// festival rules the Vedic calendar marks (js/core/festivals.js); without it no festivals are marked.
 
 import { buildContent } from "./content.js";
 
 /**
  * What was loaded, for the parts that need it after start-up: the library (content/library.json) and the
- * routine (content/routines.json; null when it could not be loaded).
- * @type {{ library: import("./content.js").Library | null, routine: import("../core/routine.js").Routine | null }}
+ * routine (content/routines.json; null when it could not be loaded) and the festival rules (content/festivals.json;
+ * null when it could not be loaded).
+ * @type {{
+ *   library: import("./content.js").Library | null,
+ *   routine: import("../core/routine.js").Routine | null,
+ *   festivals: import("../core/festivals.js").FestivalList | null
+ * }}
  */
-export const loaded = { library: null, routine: null };
+export const loaded = { library: null, routine: null, festivals: null };
 
 /**
  * @param {string} url
@@ -36,6 +42,18 @@ export function load() {
     .then(
       function (/** @type {import("../core/routine.js").Routine} */ o) {
         loaded.routine = o && typeof o === "object" ? o : null;
+      },
+      function (/** @type {unknown} */ e) {
+        console.warn(e);
+      },
+    );
+  var festivals = get("content/festivals.json")
+    .then(function (r) {
+      return r.json();
+    })
+    .then(
+      function (/** @type {import("../core/festivals.js").FestivalList} */ o) {
+        loaded.festivals = o && Array.isArray(o.festivals) ? o : null;
       },
       function (/** @type {unknown} */ e) {
         console.warn(e);
@@ -68,5 +86,5 @@ export function load() {
         w.SCR.page();
       });
     });
-  return Promise.all([texts, routine]).then(function () {});
+  return Promise.all([texts, routine, festivals]).then(function () {});
 }
