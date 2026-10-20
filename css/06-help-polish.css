@@ -309,8 +309,8 @@
   transition: transform 0.2s;
 }
 @media screen {
-  [data-pf="1"] .pj,
-  [data-xf="1"] .ar {
+  [data-pf="1"]:not([data-run]) .pj,
+  [data-xf="1"]:not([data-run]) .ar {
     display: none !important;
   }
   [data-pf="1"] #pfb svg,
