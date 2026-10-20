@@ -319,6 +319,7 @@ export function render() {
     /** @type {HTMLElement} */ (document.getElementById("tstw")).textContent =
       (k < 0 ? w.again : nDone ? w.cont : w.start) + titleOf(ids[k < 0 ? 0 : k]);
   setView(pick.session ? { session: c.session, day: d.getDay() } : null);
+  railRun();
 }
 
 /** Say what the card now shows (after a day or session is picked) */
@@ -381,10 +382,16 @@ export function railRun() {
   if (!rail || !run) return;
   var d = document.createElement("div"),
     ul = document.createElement("ul"),
-    n = 0;
+    n = 0,
+    done = ticks ? ticks.done(run.day, run.session) : [],
+    nd = run.ids.filter(function (id) {
+      return done.indexOf(id) >= 0;
+    }).length,
+    w = words();
   d.id = "rrun";
+  // Desktop A: the session's name, how many are done, the texts with their ticks, and the Library at the end
   d.innerHTML =
-    '<div class="rg"><span class="mr">' + W.mr.sessions[run.session] + '</span><span class="en" lang="en">' + W.en.sessions[run.session] + "</span></div>";
+    '<div class="rg"><span class="mr">' + W.mr.sessions[run.session] + '</span><span class="en" lang="en">' + W.en.sessions[run.session] + '</span><span class="rcnt">' + w.count(nd, run.ids.length) + "</span></div>";
   run.ids.forEach(function (id) {
     var t = info[id],
       a = t && rail.querySelector('a[data-go="' + t.sec + '"]');
@@ -398,10 +405,21 @@ export function railRun() {
     b.removeAttribute("aria-current");
     if (nm) nm.textContent = scr(String(n).replace(/[0-9]/g, function (x) { return "०१२३४५६७८९".charAt(+x); })) + ".";
     if (ne) ne.textContent = n + ".";
+    if (done.indexOf(id) >= 0) li.className = "done";
     li.appendChild(b);
     ul.appendChild(li);
   });
   d.appendChild(ul);
+  var lb = document.createElement("button");
+  lb.type = "button";
+  lb.className = "rlib";
+  lb.lang = P.ui === "mr" ? "mr" : "en";
+  lb.textContent = w.another + " " + w.library;
+  lb.addEventListener("click", function () {
+    var b = document.getElementById("tlibb");
+    if (b) b.click();
+  });
+  d.appendChild(lb);
   var home = rail.querySelector(".rhome");
   rail.insertBefore(d, home ? home.nextSibling : rail.firstChild);
 }
