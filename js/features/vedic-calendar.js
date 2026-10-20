@@ -1,0 +1,895 @@
+// @ts-check
+// The Vedic calendar (panchang), worked out on this phone by js/core/panchang.js for the place moonrise uses
+// (skLoc() in js/features/sankashti.js); nothing is fetched or sent anywhere. Approved design: mockups/home-v2-a.html
+// (the line on Home) and mockups/vedic-calendar.html (the calendar page) on branch mockup-home-v2; docs/decisions.md.
+// One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
+//
+// - Home (#pan): one button under the date, "आश्विन शुद्ध अष्टमी" / "नक्षत्र … · शके १९४८ · पराभव संवत्सर" / sunrise,
+//   sunset and the place. Only today is worked out (one dayPanchang(), a few milliseconds), after the page is shown.
+// - The calendar page (#cal), opened by that button: like the Library page (#jump) it sits under the top bar with a
+//   Back button, the phone's Back closes it (js/features/history.js) and focus returns to the button (overlays.js
+//   setC). A day card (tithi, nakshatra and yoga with their end times, vara, sunrise and sunset, moonrise, month,
+//   samvatsara, ritu and ayana, the next Sankashti) and the month as a table of buttons: each day's tithi at sunrise,
+//   shukla / krishna shading, full and new moon, Ekadashi and Sankashti, kshaya and vriddhi tithis, today. A month is
+//   worked out only when it is shown (monthPanchang(), ~50 ms) and kept while the page is open.
+// - Festivals (content/festivals.json, rules in js/core/festivals.js): a short label on the day in the month, a tag
+//   and a row in the day card, and on Home, on the day only, one line under the calendar line (#fst): "आज दसरा" /
+//   "Today: Dasara". Their names follow the reading languages like the panchang's (nameH / nameH2).
+// Words: the panchang's names (tithi, paksha, masa, nakshatra, yoga, samvatsara, ritu, ayana, the weekdays, the day's
+// marks) follow the reading languages in Settings, as the pieces do: the first language (P.lead) everywhere, and the
+// second (P.l2) as the small line of the day card's rows; Marathi in Kannada letters when that is the script (P.ind),
+// English plain ("Ashvin Shukla Ashtami") or scholarly (IAST, P.tr). The words around them (glosses, times, dates,
+// buttons, the key, the footnote) follow the menu language, P.ui, with Devanagari digits in Marathi menus.
+
+import { P } from "../core/state.js";
+import { dayPanchang, monthPanchang } from "../core/panchang.js";
+import { festivalsFor, festivalsInMonth } from "../core/festivals.js";
+import { loaded } from "../text/load.js";
+import { skLoc, skNext, skFmt, skMid } from "./sankashti.js";
+import { setC } from "./overlays.js";
+import { IA } from "../text/iast.js";
+import { PAKSHA } from "../core/panchang-names.js";
+
+/**
+ * @typedef {import("../core/panchang.js").DayPanchang} DayPanchang
+ * @typedef {import("../core/panchang.js").MonthDay} MonthDay
+ * @typedef {import("../core/panchang-names.js").Name} Name
+ * @typedef {import("../core/festivals.js").FestivalDay} FestivalDay
+ * @typedef {{ lat: number, lon: number, mr: string, en: string }} Where
+ */
+
+const MR_MONTHS = ["जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"];
+const EN_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const MR_DAYS = ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"];
+const EN_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MR_WD = ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"];
+/** Words said with the names, in each reading language (ia: the scholarly English, when not worked out from mr) */
+const N = {
+  tithi: { mr: "तिथी", en: "Tithi", ia: "Tithi" },
+  nakshatra: { mr: "नक्षत्र", en: "Nakshatra" },
+  yoga: { mr: "योग", en: "Yoga" },
+  vara: { mr: "वार", en: "Weekday", ia: "Weekday" },
+  sunrise: { mr: "सूर्योदय", en: "Sunrise", ia: "Sunrise" },
+  moonrise: { mr: "चंद्रोदय", en: "Moonrise", ia: "Moonrise" },
+  masa: { mr: "मास", en: "Month", ia: "Month" },
+  samvatsara: { mr: "संवत्सर", en: "Samvatsara" },
+  rituAyana: { mr: "ऋतु · अयन", en: "Ritu · Ayana" },
+  purnima: { mr: "पौर्णिमा", en: "Purnima" },
+  amavasya: { mr: "अमावास्या", en: "Amavasya" },
+  ekadashi: { mr: "एकादशी", en: "Ekadashi" },
+  sankashti: { mr: "संकष्टी", en: "Sankashti" },
+  angaraki: { mr: "अंगारकी", en: "Angaraki" },
+  angSk: { mr: "अंगारकी संकष्टी", en: "Angaraki Sankashti" },
+  skc: { mr: "संकष्टी चतुर्थी", en: "Sankashti Chaturthi" },
+  angSkc: { mr: "अंगारकी संकष्टी चतुर्थी", en: "Angaraki Sankashti Chaturthi" },
+  festival: { mr: "सण", en: "Festival", ia: "Festival" },
+};
+
+// The words around the names, in the menu language
+const W = {
+  en: {
+    open: " (open the Vedic calendar)",
+    sunrise: "Sunrise",
+    sunset: "Sunset",
+    moonrise: "Moonrise",
+    noRise: "No moonrise this day",
+    until: "until ",
+    amanta: "amanta",
+    today: "today",
+    next: "Next",
+    skToday: "Sankashti Chaturthi today",
+    prev: "Previous month",
+    nextM: "Next month",
+    key: ["Shukla paksha", "Krishna paksha", "Purnima", "Amavasya"],
+    keyNote: "Tithi at sunrise · + a tithi that begins and ends before the next sunrise (kshaya)",
+    vriddhi: "same tithi as the day before (vriddhi)",
+    kshaya: "kshaya tithi: ",
+    near: "Close to sunrise: a printed calendar may give the neighbouring tithi.",
+    /** @param {string} p */
+    note: function (p) {
+      return "Worked out on this phone for " + p + ". Tap a day to see its details.";
+    },
+    showing: "Showing ",
+    fToday: "Today: ",
+  },
+  mr: {
+    open: " (पंचांग उघडा)",
+    sunrise: "सूर्योदय",
+    sunset: "सूर्यास्त",
+    moonrise: "चंद्रोदय",
+    noRise: "या दिवशी चंद्रोदय नाही",
+    until: "",
+    amanta: "अमान्त",
+    today: "आज",
+    next: "पुढील",
+    skToday: "संकष्टी चतुर्थी आज",
+    prev: "मागचा महिना",
+    nextM: "पुढचा महिना",
+    key: ["शुद्ध पक्ष", "वद्य पक्ष", "पौर्णिमा", "अमावास्या"],
+    keyNote: "सूर्योदयाची तिथी · + पुढच्या सूर्योदयापूर्वीच संपणारी (क्षय) तिथी",
+    vriddhi: "आदल्या दिवसाचीच तिथी (वृद्धी)",
+    kshaya: "क्षय तिथी: ",
+    near: "सूर्योदयाच्या अगदी जवळ: छापील पंचांगात शेजारची तिथी असू शकते.",
+    /** @param {string} p */
+    note: function (p) {
+      return "हे पंचांग या फोनवर " + p + " साठी काढले आहे. तपशील पाहण्यासाठी एखादा दिवस निवडा.";
+    },
+    showing: "",
+    fToday: "आज ",
+  },
+};
+
+const ICON = {
+  cal: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  up: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 4v5M9.5 6.5 12 4l2.5 2.5"/></svg>',
+  down: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 4v5M9.5 6.5 12 9l2.5-2.5"/></svg>',
+  chev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+  prev: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+  next: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+  star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8l-5.8 3.5 1.6-6.6-5.2-4.4 6.8-.5z" fill="currentColor"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" fill="currentColor"/></svg>',
+};
+
+/** The calendar page's state while it is open */
+var view = {
+  /** @type {string} the day shown in the day card, "YYYY-MM-DD" */
+  day: "",
+  y: 0,
+  /** 1–12 */
+  m: 0,
+};
+/** @type {Record<string, MonthDay[]>} months worked out while the page is open, by place and month */
+var months = {};
+var homeKey = "",
+  calKey = "";
+/** @type {ReturnType<typeof setTimeout> | undefined} */
+var homeT;
+
+// ----- small helpers -----
+
+function ui() {
+  return P && P.ui === "mr" ? "mr" : "en";
+}
+function words() {
+  return W[ui()];
+}
+/** @param {number | string} n Devanagari digits */
+function dv(n) {
+  return String(n).replace(/[0-9]/g, function (d) {
+    return "०१२३४५६७८९"[+d];
+  });
+}
+/** Digits as the menu language writes them @param {number | string} n */
+function num(n) {
+  return ui() === "mr" ? dv(n) : String(n);
+}
+/** @param {string} s */
+function esc(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+// Marathi shown in Kannada letters when that is the chosen script (SCR in js/render.js)
+/** @param {string} s */
+function scr(s) {
+  /** @type {any} */
+  var w = window;
+  return w.SCR && w.SCR.k ? w.SCR.to(s) : s;
+}
+function mrLang() {
+  /** @type {any} */
+  var w = window;
+  return (w.SCR && w.SCR.k) || "mr";
+}
+/** A Marathi name, escaped, in the chosen script, marked with its language @param {string} s @param {string} [cls] */
+function mr(s, cls) {
+  return '<span lang="' + mrLang() + '"' + (cls ? ' class="' + cls + '"' : "") + ">" + esc(scr(s)) + "</span>";
+}
+/** @param {string} s @param {string} [cls] */
+function en(s, cls) {
+  return '<span lang="en"' + (cls ? ' class="' + cls + '"' : "") + ">" + esc(s) + "</span>";
+}
+/** Text in the menu language, marked with it @param {string} s */
+function say(s) {
+  return ui() === "mr" ? mr(s) : en(s);
+}
+// The reading languages (Settings): the names follow the first, and the second where there is room for it
+/** @returns {"mr" | "en"} */
+function lead() {
+  return P && P.lead === "en" ? "en" : "mr";
+}
+/** @returns {"mr" | "en" | ""} */
+function second() {
+  var s = P && P.l2;
+  return (s === "mr" || s === "en") && s !== lead() ? s : "";
+}
+/** @param {"mr" | "en"} l */
+function langOf(l) {
+  return l === "en" ? "en" : mrLang();
+}
+/** A name's scholarly English: given, or worked out from its Marathi, each word capitalised @param {Name} n */
+function iaOf(n) {
+  return (
+    n.ia ||
+    IA(n.mr).replace(/(^|[\s(])(\S)/g, function (_, a, b) {
+      return a + b.toUpperCase();
+    })
+  );
+}
+/** A name's text in a reading language: Marathi in the chosen script, English plain or IAST @param {Name} n @param {"mr" | "en"} l */
+function txt(n, l) {
+  return l === "mr" ? scr(n.mr) : P && P.tr === "iast" ? iaOf(n) : n.en;
+}
+/** A name in the first reading language, escaped and marked @param {Name} n @param {string} [cls] */
+function nameH(n, cls) {
+  var l = lead();
+  return '<span lang="' + langOf(l) + '"' + (cls ? ' class="' + cls + '"' : "") + ">" + esc(txt(n, l)) + "</span>";
+}
+/** The same in the second reading language, or "" when there is none @param {Name} n */
+function nameH2(n) {
+  var l = second();
+  return l ? '<span lang="' + langOf(l) + '">' + esc(txt(n, l)) + "</span>" : "";
+}
+/** Names joined into one (for a title or a line) @param {string} sep @param {Name[]} ns @returns {Name} */
+function cat(sep, ns) {
+  return {
+    mr: ns.map(function (n) { return n.mr; }).join(sep),
+    en: ns.map(function (n) { return n.en; }).join(sep),
+    ia: P && P.tr === "iast" ? ns.map(iaOf).join(sep) : undefined,
+  };
+}
+/** "Shaka 1948", Devanagari digits in Marathi @param {number} y @returns {Name} */
+function shaka(y) {
+  return { mr: "शके\u00a0" + dv(y), en: "Shaka\u00a0" + y, ia: "Śaka\u00a0" + y };
+}
+// Where an English name may break in a narrow day of the month ("Chatur-dashi"), when it must
+const HY = {
+  Pratipada: "Prati-pada", Dvitiya: "Dvi-tiya", Tritiya: "Tri-tiya", Chaturthi: "Chatur-thi", Panchami: "Pan-chami",
+  Shashthi: "Shash-thi", Saptami: "Sap-tami", Ashtami: "Ash-tami", Navami: "Nav-ami", Dashami: "Dash-ami",
+  Ekadashi: "Eka-dashi", Dvadashi: "Dva-dashi", Trayodashi: "Trayo-dashi", Chaturdashi: "Chatur-dashi",
+  Purnima: "Pur-nima", Amavasya: "Ama-vasya", Sankashti: "San-kashti", Angaraki: "Anga-raki",
+};
+/** @param {string} h an escaped English name (IAST: before its last part only) */
+function hy(h) {
+  return Object.prototype.hasOwnProperty.call(HY, h)
+    ? HY[/** @type {keyof typeof HY} */ (h)].replace("-", "&shy;")
+    : h.replace(/^(\S{3,}?)(daśī|pada|thī|mī|vāsyā|kaṣṭī)$/, "$1&shy;$2");
+}
+/** @param {Date} d */
+function keyOf(d) {
+  var m = d.getMonth() + 1,
+    x = d.getDate();
+  return d.getFullYear() + "-" + (m < 10 ? "0" : "") + m + "-" + (x < 10 ? "0" : "") + x;
+}
+/** @param {string} k "YYYY-MM-DD" */
+function dateOf(k) {
+  var p = k.split("-");
+  return new Date(+p[0], +p[1] - 1, +p[2]);
+}
+
+/**
+ * A clock time on this phone: "7:45 am", or in Marathi "सकाळी ७:४५" (रात्री, पहाटे, सकाळी, दुपारी, सायं.)
+ * @param {Date} t
+ */
+function clock(t) {
+  var h = t.getHours(),
+    mi = ("0" + t.getMinutes()).slice(-2),
+    h12 = ((h + 11) % 12) + 1;
+  if (ui() === "en") return h12 + ":" + mi + (h >= 12 ? " pm" : " am");
+  var part = h < 4 ? "रात्री" : h < 6 ? "पहाटे" : h < 12 ? "सकाळी" : h < 16 ? "दुपारी" : h < 20 ? "सायं." : "रात्री";
+  return part + " " + dv(h12) + ":" + dv(mi);
+}
+/**
+ * "until 1:21 am" (with the weekday when it ends on another day than `day`): "until Mon 1:21 am" / "सोमवारी रात्री
+ * १:२१ पर्यंत"
+ * @param {Date} t @param {string} day
+ */
+function until(t, day) {
+  var other = keyOf(t) !== day,
+    w = words();
+  if (ui() === "en") return w.until + (other ? EN_DAYS[t.getDay()].slice(0, 3) + " " : "") + clock(t);
+  return (other ? MR_DAYS[t.getDay()] + "ी " : "") + clock(t) + " पर्यंत";
+}
+/** The place's name in the menu language @param {Where} L */
+function placeName(L) {
+  return ui() === "mr" ? L.mr : L.en;
+}
+/** @returns {{ lat: number, lon: number } | null} */
+function where() {
+  var L = skLoc();
+  return L ? { lat: L.lat, lon: L.lon } : null;
+}
+
+/**
+ * "आश्विन शुद्ध अष्टमी": the month (अधिक when so), the paksha and the tithi; पौर्णिमा and अमावास्या take no paksha
+ * @param {DayPanchang} p @returns {Name}
+ */
+function title(p) {
+  return cat(" ", (p.masa.adhikaName ? [p.masa.adhikaName] : []).concat([p.masa.name, tithiName(p.tithi)]));
+}
+/** The paksha and tithi: "शुद्ध अष्टमी" @param {DayPanchang["tithi"]} t @returns {Name} */
+function tithiName(t) {
+  return t.n === 15 || t.n === 30 ? t.name : cat(" ", [t.pakshaName, t.name]);
+}
+/** @param {DayPanchang["tithi"]} t @param {"mr" | "en"} l */
+function tithiText(t, l) {
+  return (t.n === 15 || t.n === 30 ? "" : t.pakshaName[l] + " ") + t.name[l];
+}
+
+// ----- Home: the calendar line -----
+
+/** Fill the line on Home (#pan) with today's panchang; hidden when no place is known */
+function homeRender() {
+  var box = document.getElementById("pan"),
+    L = skLoc(),
+    pl = where();
+  if (!box) return;
+  if (!L || !pl) {
+    box.hidden = true;
+    box.innerHTML = "";
+    festHome(null);
+    return;
+  }
+  var p;
+  try {
+    p = dayPanchang(new Date(), pl);
+  } catch (e) {
+    box.hidden = true;
+    return;
+  }
+  var w = words(),
+    l = ui(),
+    s = p.samvatsara,
+    sr = p.sunrise ? clock(p.sunrise) : "—",
+    ss = p.sunset ? clock(p.sunset) : "—";
+  box.lang = l;
+  box.innerHTML =
+    '<button type="button" id="panb" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">' +
+    ICON.cal +
+    '<span class="pt">' +
+    nameH(title(p), "p1") +
+    '<span class="p2">' +
+    // "\u00a0·" keeps each dot with the word before it when the line wraps
+    nameH(cat("\u00a0· ", [cat(" ", [N.nakshatra, p.nakshatra.name]), shaka(s.shaka), lead() === "mr" ? cat(" ", [s.name, N.samvatsara]) : s.name])) +
+    "</span>" +
+    '<span class="p3"><span>' +
+    ICON.up +
+    '<span class="sr">' + esc(w.sunrise) + " </span>" +
+    esc(sr) +
+    "</span><span>" +
+    ICON.down +
+    '<span class="sr">' + esc(w.sunset) + " </span>" +
+    esc(ss) +
+    "</span><span>" +
+    esc(placeName(L)) +
+    "</span></span></span>" +
+    '<span class="sr">' + esc(w.open) + "</span>" +
+    ICON.chev +
+    "</button>";
+  box.hidden = false;
+  festHome(pl);
+}
+
+// ----- festivals (content/festivals.json; js/core/festivals.js) -----
+
+/** A festival's name (a Name: mr and en) in the first reading language, like the panchang's names
+ * @param {Name} n @param {string} [cls] */
+function fname(n, cls) {
+  return nameH(n, cls);
+}
+/** @type {Record<string, Record<string, FestivalDay[]>>} months' festivals worked out while the page is open */
+var fmonths = {};
+/** @param {number} y @param {number} m 1–12 @returns {Record<string, FestivalDay[]>} */
+function monthFests(y, m) {
+  var pl = where();
+  if (!pl || !loaded.festivals) return {};
+  var k = pl.lat + "," + pl.lon + ":" + y + "-" + m;
+  if (!fmonths[k]) fmonths[k] = festivalsInMonth(y, m, pl, loaded.festivals);
+  return fmonths[k];
+}
+/** The festivals on one day ("YYYY-MM-DD", or now), [] when the rules did not load
+ * @param {string | Date} k @param {{ lat: number, lon: number }} pl */
+function festsOn(k, pl) {
+  if (!loaded.festivals) return [];
+  if (typeof k === "string") {
+    var d = dateOf(k);
+    return monthFests(d.getFullYear(), d.getMonth() + 1)[k] || [];
+  }
+  return festivalsFor(k, pl, loaded.festivals);
+}
+/** Home, on a festival day only (#fst): "आज दसरा" / "Today: Dasara", with the second reading language after a dot
+ * @param {{ lat: number, lon: number } | null} pl */
+function festHome(pl) {
+  var box = document.getElementById("fst");
+  if (!box) return;
+  var fs = pl ? festsOn(new Date(), pl) : [];
+  if (!fs.length) {
+    box.hidden = true;
+    box.innerHTML = "";
+    return;
+  }
+  box.lang = ui();
+  box.innerHTML =
+    '<span class="dot" aria-hidden="true">' + ICON.star + "</span><span>" +
+    say(words().fToday) +
+    fs
+      .map(function (f) {
+        var two = nameH2(f);
+        return "<b>" + fname(f) + "</b>" + (two ? say(" · ") + two : "");
+      })
+      .join(say(", ")) +
+    "</span>";
+  box.hidden = false;
+}
+
+/** What the words and names are drawn in: the menu language, the script and the reading languages */
+function langKey() {
+  return ui() + mrLang() + lead() + second() + (P && P.tr);
+}
+
+/** Re-draw the Home line soon (after the page is shown), when the languages, the day or the place changed */
+function homeSoon() {
+  var k = langKey() + new Date().toDateString() + JSON.stringify(P.loc || null);
+  if (k === homeKey) return;
+  homeKey = k;
+  var box = document.getElementById("pan");
+  // keep the line's room while today is worked out, so the list below does not jump
+  if (box && box.hidden && skLoc()) {
+    box.innerHTML = '<span class="pwait" aria-hidden="true"></span>';
+    box.hidden = false;
+  }
+  clearTimeout(homeT);
+  homeT = setTimeout(function () {
+    homeRender();
+    if (isOpen()) calRender();
+  }, 0);
+}
+
+// ----- the calendar page -----
+
+function page() {
+  return /** @type {HTMLElement | null} */ (document.getElementById("cal"));
+}
+function isOpen() {
+  var c = page();
+  return !!c && !c.hidden;
+}
+
+/** The month (worked out once while the page is open) @param {number} y @param {number} m 1–12 */
+function monthOf(y, m) {
+  var pl = where();
+  if (!pl) return [];
+  var k = pl.lat + "," + pl.lon + ":" + y + "-" + m;
+  if (!months[k]) months[k] = monthPanchang(y, m, pl);
+  return months[k];
+}
+
+/** One row of the day card: a label (a name), a value and its small line @param {Name} dt @param {string} dd @param {string} small */
+function row(dt, dd, small) {
+  return "<dt>" + nameH(dt) + "</dt><dd>" + dd + (small ? '<small lang="' + (ui() === "mr" ? mrLang() : "en") + '">' + small + "</small>" : "") + "</dd>";
+}
+
+/** The day card for view.day */
+function dayRender() {
+  var box = document.getElementById("cald"),
+    L = skLoc(),
+    pl = where();
+  if (!box || !L || !pl) return;
+  var w = words(),
+    l = ui(),
+    k = view.day,
+    d = dateOf(k),
+    p = dayPanchang(k, pl),
+    md = monthOf(d.getFullYear(), d.getMonth() + 1)[d.getDate() - 1],
+    E = l === "en",
+    pic = /** @type {HTMLImageElement | null} */ (document.querySelector("#iconb img")),
+    src = pic ? pic.getAttribute("src") || "" : "",
+    s = p.samvatsara,
+    dateLine = E
+      ? EN_DAYS[d.getDay()] + ", " + d.getDate() + " " + EN_MONTHS[d.getMonth()] + " " + d.getFullYear()
+      : MR_DAYS[d.getDay()] + ", " + dv(d.getDate()) + " " + MR_MONTHS[d.getMonth()] + " " + dv(d.getFullYear());
+  // the small lines: the name in the second reading language and when it ends; the tithi's also has kshaya / vriddhi /
+  // borderline notes
+  var two = !!second();
+  /** @param {Name} n @param {Date} t */
+  var then = function (n, t) {
+    return (two ? nameH2(n) + " · " : "") + esc(until(t, k));
+  };
+  var tSmall = then(tithiName(p.tithi), p.tithi.endsAt);
+  if (md && md.kshaya.length)
+    tSmall +=
+      "<br>" +
+      esc(w.kshaya) +
+      md.kshaya
+        .map(function (n) {
+          var t = monthTithi(n);
+          return two ? nameH2(t) : nameH(t);
+        })
+        .join(", ");
+  if (md && md.vriddhi) tSmall += "<br>" + esc(w.vriddhi);
+  if (p.tithi.borderline) tSmall += "<br>" + esc(w.near);
+  var fs = festsOn(k, pl),
+    tags = md ? marks(md) : [],
+    masa = cat(" ", (p.masa.adhikaName ? [p.masa.adhikaName] : []).concat([p.masa.name]));
+  // "शके १९४८ · पराभव संवत्सर" / "Shaka 1948 · Parabhava"; "शरद ऋतु · दक्षिणायन" / "Sharad · Dakshinayana"
+  /** @param {string} l */
+  var sam = function (l) {
+    return cat(" · ", [shaka(s.shaka), l === "mr" ? cat(" ", [s.name, N.samvatsara]) : s.name]);
+  };
+  /** @param {string} l */
+  var ritu = function (l) {
+    return cat(" · ", [l === "mr" ? cat(" ", [p.ritu.name, { mr: "ऋतु", en: "" }]) : p.ritu.name, p.ayana.name]);
+  };
+  var sk = skLine(L);
+  box.innerHTML =
+    '<div class="cdh">' +
+    (src ? '<img src="' + esc(src) + '" alt="" width="64" height="64">' : "") +
+    "<div>" +
+    '<h3 id="cdt">' + nameH(title(p)) + "</h3>" +
+    '<p class="cdd">' + say(dateLine) + (k === keyOf(new Date()) ? " · " + say(w.today) : "") + "</p>" +
+    (tags.length || fs.length
+      ? '<p class="cdg">' +
+        fs
+          .map(function (f) {
+            return fname(f, "tag fest");
+          })
+          .join(" ") +
+        (fs.length && tags.length ? " " : "") +
+        tags
+          .map(function (t) {
+            return nameH(t, "tag");
+          })
+          .join(" ") +
+        "</p>"
+      : "") +
+    "</div></div>" +
+    "<dl>" +
+    (fs.length
+      ? row(
+          N.festival,
+          fs
+            .map(function (f) {
+              return fname(f);
+            })
+            .join(say(", ")),
+          two
+            ? fs
+                .map(function (f) {
+                  return nameH2(f);
+                })
+                .join(say(", "))
+            : "",
+        )
+      : "") +
+    row(N.tithi, nameH(tithiName(p.tithi)), tSmall) +
+    row(N.nakshatra, nameH(p.nakshatra.name), then(p.nakshatra.name, p.nakshatra.endsAt)) +
+    row(N.yoga, nameH(p.yoga.name), then(p.yoga.name, p.yoga.endsAt)) +
+    row(N.vara, nameH(p.vara.name), nameH2(p.vara.name)) +
+    row(
+      N.sunrise,
+      say(p.sunrise ? clock(p.sunrise) : "—"),
+      esc(w.sunset + " " + (p.sunset ? clock(p.sunset) : "—") + " · " + placeName(L)),
+    ) +
+    row(N.moonrise, say(p.moonrise ? clock(p.moonrise) : "—"), p.moonrise ? "" : esc(w.noRise)) +
+    row(N.masa, nameH(masa), two ? nameH2(masa) + esc(" (" + w.amanta + ")") : esc(w.amanta)) +
+    row(N.samvatsara, nameH(sam(lead())), two ? nameH2(sam(second() || "en")) : "") +
+    row(N.rituAyana, nameH(ritu(lead())), two ? nameH2(ritu(second() || "en")) : "") +
+    "</dl>" +
+    sk;
+}
+
+/** The tithi name for 1–30 (for kshaya notes) @param {number} n @returns {Name} */
+function monthTithi(n) {
+  if (n === 15) return N.purnima;
+  if (n === 30) return N.amavasya;
+  var i = (n - 1) % 15;
+  return cat(" ", [n < 15 ? PAKSHA.shukla : PAKSHA.krishna, { mr: TN.mr[i], en: TN.en[i] }]);
+}
+const TN = {
+  mr: ["प्रतिपदा", "द्वितीया", "तृतीया", "चतुर्थी", "पंचमी", "षष्ठी", "सप्तमी", "अष्टमी", "नवमी", "दशमी", "एकादशी", "द्वादशी", "त्रयोदशी", "चतुर्दशी"],
+  en: ["Pratipada", "Dvitiya", "Tritiya", "Chaturthi", "Panchami", "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dvadashi", "Trayodashi", "Chaturdashi"],
+};
+
+/** The day's marks: पौर्णिमा, अमावास्या, एकादशी, संकष्टी (अंगारकी on a Tuesday) @param {MonthDay} md */
+function marks(md) {
+  /** @type {Name[]} */
+  var t = [];
+  if (md.purnima) t.push(N.purnima);
+  if (md.amavasya) t.push(N.amavasya);
+  if (md.ekadashi) t.push(N.ekadashi);
+  if (md.sankashti) t.push(md.vara === 2 ? N.angSk : N.sankashti);
+  return t;
+}
+
+/** The next Sankashti, with moonrise and the place (as on Home and in the Share message) @param {Where} L */
+function skLine(L) {
+  var o = skNext();
+  if (!o) return "";
+  var f = skFmt(o),
+    E = ui() === "en",
+    today = Math.round((o.day - skMid()) / 86400000) === 0,
+    w = words(),
+    head = today
+      ? E
+        ? en(w.skToday + (f.ang ? " (Angaraki)" : ""))
+        : mr((f.ang ? "अंगारकी " : "") + w.skToday)
+      : E
+        ? en(w.next + " ") + "<b>" + nameH(f.ang ? N.angSkc : N.skc) + "</b>" + en(": " + f.den)
+        : mr(w.next + " ") + "<b>" + nameH(f.ang ? N.angSkc : N.skc) + "</b>" + mr(": " + f.dmr);
+  return (
+    '<p class="csk"><span class="dot">' +
+    ICON.moon +
+    "</span><span>" +
+    head +
+    '<br><span class="muted" lang="' + (E ? "en" : mrLang()) + '">' +
+    esc((E ? w.moonrise + " " + f.ten : w.moonrise + " " + f.tmr) + " · " + placeName(L)) +
+    "</span></span></p>"
+  );
+}
+
+/** A name in a day of the month: the first reading language only, a long English one may break @param {Name} n @param {string} cls */
+function cell(n, cls) {
+  var l = lead();
+  return '<span lang="' + langOf(l) + '" class="' + cls + '">' + (l === "en" ? hy(esc(txt(n, l))) : esc(txt(n, l))) + "</span>";
+}
+
+/** The month table for view.y / view.m */
+function monthRender() {
+  var box = document.getElementById("calm");
+  if (!box) return;
+  var w = words(),
+    E = ui() === "en",
+    y = view.y,
+    m = view.m,
+    days = monthOf(y, m),
+    fm = monthFests(y, m),
+    today = keyOf(new Date()),
+    first = new Date(y, m - 1, 1).getDay(),
+    py = m === 1 ? y - 1 : y,
+    pm = m === 1 ? 12 : m - 1,
+    ny = m === 12 ? y + 1 : y,
+    nm = m === 12 ? 1 : m + 1;
+  // which lunar months the Gregorian month spans: "भाद्रपद → आश्विन (११ ऑक्टोबरपासून)"; the months' names in the
+  // first reading language, the date in the menu language
+  var sub = "";
+  days.forEach(function (d, i) {
+    var nmM = nameH(cat(" ", (d.masa.adhika ? [{ mr: "अधिक", en: "Adhika" }] : []).concat([d.masa.name])));
+    if (i === 0) sub = nmM;
+    else if (d.masa.n !== days[i - 1].masa.n || d.masa.adhika !== days[i - 1].masa.adhika)
+      sub += " → " + nmM + say(E ? " from " + d.day + " " + EN_MONTHS[m - 1].slice(0, 3) : " (" + dv(d.day) + " " + MR_MONTHS[m - 1] + "पासून)");
+  });
+  var mName = E ? EN_MONTHS[m - 1] + " " + y : MR_MONTHS[m - 1] + " " + dv(y);
+  var html =
+    '<div class="cmh">' +
+    '<button type="button" class="cnav" id="calp" data-y="' + py + '" data-m="' + pm + '">' + ICON.prev + '<span class="sr">' + esc(w.prev) + ": " + esc(E ? EN_MONTHS[pm - 1] + " " + py : MR_MONTHS[pm - 1] + " " + dv(py)) + "</span></button>" +
+    '<h3 id="cmt">' + say(mName) + '<span class="cms">' + sub + "</span></h3>" +
+    '<button type="button" class="cnav" id="caln" data-y="' + ny + '" data-m="' + nm + '">' + ICON.next + '<span class="sr">' + esc(w.nextM) + ": " + esc(E ? EN_MONTHS[nm - 1] + " " + ny : MR_MONTHS[nm - 1] + " " + dv(ny)) + "</span></button>" +
+    "</div>" +
+    '<table class="cgr" aria-labelledby="cmt"><thead><tr>' +
+    MR_WD.map(function (x, i) {
+      var wd = { mr: x, en: EN_DAYS[i].slice(0, 3), ia: EN_DAYS[i].slice(0, 3) };
+      return '<th scope="col"><span aria-hidden="true" lang="' + langOf(lead()) + '">' + esc(txt(wd, lead())) + '</span><span class="sr">' + esc(E ? EN_DAYS[i] : scr(MR_DAYS[i])) + "</span></th>";
+    }).join("") +
+    "</tr></thead><tbody><tr>";
+  var col = 0;
+  for (; col < first; col++) html += '<td class="ce"></td>';
+  // the one day Tab lands on: the day shown in the card when it is in this month, else today, else the 1st
+  var focusDay = days.some(function (d) {
+    return d.date === view.day;
+  })
+    ? view.day
+    : days.some(function (d) {
+          return d.date === today;
+        })
+      ? today
+      : days.length
+        ? days[0].date
+        : "";
+  days.forEach(function (d) {
+    if (col === 7) {
+      html += "</tr><tr>";
+      col = 0;
+    }
+    col++;
+    var t = d.tithi,
+      kr = t.paksha === "krishna",
+      isT = d.date === today,
+      sel = d.date === view.day,
+      tn = t.name,
+      fs = fm[d.date] || [],
+      // a festival's own label stands for एकादशी on आषाढी / कार्तिकी एकादशी
+      lab = d.ekadashi && !fs.length ? N.ekadashi : null,
+      skl = d.sankashti ? (d.vara === 2 ? N.angaraki : N.sankashti) : null,
+      moon = d.purnima ? "full" : d.amavasya ? "new" : "",
+      // what a screen reader hears beyond what is shown: the date, the paksha, today, the marks
+      srBefore = E ? " " + EN_MONTHS[m - 1] + ", " + EN_DAYS[d.vara] + ", " : " " + MR_MONTHS[m - 1] + ", " + MR_DAYS[d.vara] + ", ",
+      srAfter = [E ? tithiText(t, "en") : t.n === 15 || t.n === 30 ? "" : t.pakshaName.mr + " पक्ष"]
+        .concat(d.purnima && t.n !== 15 ? [E ? "Purnima" : "पौर्णिमा"] : [])
+        .concat(d.amavasya && t.n !== 30 ? [E ? "Amavasya" : "अमावास्या"] : [])
+        .concat(d.kshaya.length ? [w.kshaya + d.kshaya.map(function (n) {
+          return E ? monthTithi(n).en : monthTithi(n).mr;
+        }).join(", ")] : [])
+        .concat(
+          fs.length && E
+            ? fs.map(function (f) {
+                return f.en;
+              })
+            : [],
+        )
+        .concat(d.vriddhi ? [w.vriddhi] : [])
+        .concat(isT ? [w.today] : [])
+        .filter(Boolean)
+        .join(", ");
+    html +=
+      '<td class="' + (kr ? "kr" : "sh") + '">' +
+      '<button type="button" class="cd' + (isT ? " today" : "") + '" data-d="' + d.date + '" tabindex="' + (d.date === focusDay ? "0" : "-1") + '" aria-pressed="' + sel + '"' + (isT ? ' aria-current="date"' : "") + ">" +
+      '<b lang="' + (E ? "en" : mrLang()) + '">' + num(d.day) + "</b>" +
+      '<span class="sr" lang="' + (E ? "en" : mrLang()) + '">' + esc(scr(srBefore)) + "</span>" +
+      cell(tn, "t") +
+      (d.kshaya.length
+        ? '<span class="kx" lang="' + langOf(lead()) + '">+' + d.kshaya.map(function (n) {
+            return hy(esc(txt(n === 15 ? N.purnima : n === 30 ? N.amavasya : { mr: TN.mr[(n - 1) % 15], en: TN.en[(n - 1) % 15] }, lead())));
+          }).join(" +") + "</span>"
+        : "") +
+      (moon ? '<span class="mn ' + moon + '" aria-hidden="true"></span>' : "") +
+      fs
+        .map(function (f) {
+          return cell(f.short, "fs");
+        })
+        .join("") +
+      (lab ? cell(lab, "f") : "") +
+      (skl ? cell(skl, "f") : "") +
+      (d.vriddhi ? '<span class="vr" aria-hidden="true">' + (E ? "vriddhi" : esc(scr("वृद्धी"))) + "</span>" : "") +
+      '<span class="sr" lang="' + (E ? "en" : mrLang()) + '">, ' + esc(scr(srAfter)) + "</span>" +
+      "</button></td>";
+  });
+  for (; col < 7; col++) html += '<td class="ce"></td>';
+  html +=
+    "</tr></tbody></table>" +
+    '<p class="ckey">' +
+    '<span><i class="ks" aria-hidden="true"></i>' + say(w.key[0]) + "</span>" +
+    '<span><i class="kk" aria-hidden="true"></i>' + say(w.key[1]) + "</span>" +
+    '<span><i class="mn full" aria-hidden="true"></i>' + say(w.key[2]) + "</span>" +
+    '<span><i class="mn new" aria-hidden="true"></i>' + say(w.key[3]) + "</span>" +
+    '<span class="kn">' + say(w.keyNote) + "</span>" +
+    "</p>";
+  box.innerHTML = html;
+}
+
+/** Draw the whole page in the menu language */
+function calRender() {
+  var c = page(),
+    L = skLoc();
+  if (!c) return;
+  var l = ui(),
+    hd = /** @type {HTMLElement | null} */ (c.querySelector(".libhd"));
+  if (hd) hd.setAttribute("data-lang", l);
+  c.lang = l;
+  calKey = langKey();
+  var note = document.getElementById("caln0");
+  if (note) note.innerHTML = L ? say(words().note(placeName(L))) : "";
+  dayRender();
+  monthRender();
+}
+
+/** Open the calendar at today */
+export function calOpen() {
+  var c = page();
+  if (!c || !skLoc()) return;
+  var now = new Date();
+  view.day = keyOf(now);
+  view.y = now.getFullYear();
+  view.m = now.getMonth() + 1;
+  setC(true);
+  // the page is shown first; the month is worked out right after (about 50 ms)
+  var wait = document.getElementById("calm");
+  if (wait) wait.innerHTML = '<p class="cwait">…</p>';
+  setTimeout(function () {
+    if (isOpen()) calRender();
+  }, 0);
+}
+
+/**
+ * Show a day in the card, and its month in the table; focus stays with the day picked
+ * @param {string} k "YYYY-MM-DD" @param {boolean} [focus]
+ */
+function pick(k, focus) {
+  var d = dateOf(k);
+  view.day = k;
+  view.y = d.getFullYear();
+  view.m = d.getMonth() + 1;
+  dayRender();
+  monthRender();
+  var live = document.getElementById("call");
+  if (live) {
+    var p = /** @type {HTMLElement | null} */ (document.getElementById("cdt"));
+    live.textContent =
+      words().showing +
+      (ui() === "en" ? d.getDate() + " " + EN_MONTHS[d.getMonth()] : dv(d.getDate()) + " " + MR_MONTHS[d.getMonth()]) +
+      ": " +
+      (p ? p.textContent : "");
+  }
+  if (focus) focusDay(k);
+}
+
+/** @param {string} k */
+function focusDay(k) {
+  var b = /** @type {HTMLElement | null} */ (document.querySelector('#calm button[data-d="' + k + '"]'));
+  if (b) {
+    [].forEach.call(document.querySelectorAll("#calm button.cd"), function (/** @type {HTMLElement} */ x) {
+      x.tabIndex = x === b ? 0 : -1;
+    });
+    b.focus();
+  }
+}
+
+/** Another month in the table (the card keeps its day) @param {number} y @param {number} m @param {string} [focusKey] */
+function showMonth(y, m, focusKey) {
+  view.y = y;
+  view.m = m;
+  monthRender();
+  if (focusKey) focusDay(focusKey);
+}
+
+/** Re-draw for the languages, the script, the day and the place (called by apply(), js/features/bars.js) */
+export function calLang() {
+  homeSoon();
+  if (isOpen() && calKey !== langKey()) calRender();
+}
+
+export function init() {
+  var pan = document.getElementById("pan"),
+    c = page();
+  if (pan)
+    pan.addEventListener("click", function (e) {
+      if (/** @type {HTMLElement} */ (e.target).closest("#panb")) calOpen();
+    });
+  if (c) {
+    var bk = document.getElementById("cbk");
+    if (bk)
+      bk.addEventListener("click", function () {
+        setC(false);
+      });
+    c.addEventListener("click", function (e) {
+      var t = /** @type {HTMLElement} */ (e.target),
+        b = /** @type {HTMLElement | null} */ (t.closest("button"));
+      if (!b) return;
+      if (b.classList.contains("cd") && b.dataset.d) pick(b.dataset.d, true);
+      else if (b.classList.contains("cnav")) {
+        var id = b.id;
+        showMonth(+(b.dataset.y || 0), +(b.dataset.m || 0));
+        var again = document.getElementById(id);
+        if (again) again.focus();
+      }
+    });
+    // Keyboard in the month: arrows move a day or a week (into the next or previous month at the ends), Page Up /
+    // Page Down a month, Home / End the week's ends; Enter or Space shows the day (it is a button)
+    c.addEventListener("keydown", function (e) {
+      var b = /** @type {HTMLElement} */ (e.target);
+      if (!b.classList || !b.classList.contains("cd") || !b.dataset.d) return;
+      var d = dateOf(b.dataset.d),
+        n = new Date(d);
+      if (e.key === "ArrowLeft") n.setDate(d.getDate() - 1);
+      else if (e.key === "ArrowRight") n.setDate(d.getDate() + 1);
+      else if (e.key === "ArrowUp") n.setDate(d.getDate() - 7);
+      else if (e.key === "ArrowDown") n.setDate(d.getDate() + 7);
+      else if (e.key === "Home") n.setDate(d.getDate() - d.getDay());
+      else if (e.key === "End") n.setDate(d.getDate() + 6 - d.getDay());
+      else if (e.key === "PageUp" || e.key === "PageDown") {
+        n = new Date(d.getFullYear(), d.getMonth() + (e.key === "PageUp" ? -1 : 1), 1);
+        var last = new Date(n.getFullYear(), n.getMonth() + 1, 0).getDate();
+        n.setDate(Math.min(d.getDate(), last));
+      } else return;
+      e.preventDefault();
+      var k = keyOf(n);
+      if (n.getFullYear() !== view.y || n.getMonth() + 1 !== view.m) showMonth(n.getFullYear(), n.getMonth() + 1, k);
+      else focusDay(k);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && isOpen()) setC(false);
+    });
+  }
+  // the day can change while the page is open: check again when it comes back into view
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) homeSoon();
+  });
+  homeSoon();
+}

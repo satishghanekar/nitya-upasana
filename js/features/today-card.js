@@ -1,18 +1,22 @@
 // @ts-check
-// The Today card (docs/architecture.md §5.4, mockup A): today's date, the week row (Monday to Sunday; another day
-// shows that day's routine), the Morning / Afternoon / Evening switch (starting on the session for the time now),
-// and the session's texts, each with a tick and its title, with Start / Continue. The picture above follows the
-// day and session shown (js/features/day-picture.js); the next Sankathara Chaturthi line under the switch is the
-// date card (js/features/date-card.js), with its More dates.
+// Home (Home v2, approved by Satish 2026-10-18; docs/decisions.md): what to chant now. The time-of-day picture with
+// today's weekday star (js/features/day-picture.js) beside today's date in Marathi and English; the texts of the
+// session for the time now (Morning / Afternoon / Evening), each with a tick and its title; "Not this time?" with the
+// other two sessions; and Start / Continue, pinned to the bottom of the screen on phones. Every text, with search, is
+// in the Library (#jump, js/features/contents-list.js).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
-// What it reads: the routine (content/routines.json) and the titles (content/library.json), both loaded by
+// What it reads: the reading person's routine (their own, made in the routine builder, js/features/routine-builder.js,
+// or else content/routines.json) and the titles (content/library.json), both loaded by
 // js/text/load.js; which texts a session has and the walk through it: js/core/routine.js; the ticks, kept on this
 // device for today only, per person (in their profile, js/store/store.js): js/core/ticks.js. Titles are always the
-// library's, never typed here. Switching person re-draws the card with their ticks (profileChanged()).
+// library's, never typed here. Switching person re-draws the list with their ticks (profileChanged()).
 // Reading a session: Start / Continue (or a title in the list) opens the text in the reading page, and while the
 // reader is on a text of that session, ‹ Prev and Next › in the bottom bar follow the session (sessionStep(), read by
 // js/features/bottom-bar.js); Next after the last text comes back here.
+// Changing the routine: "Edit" beside the session's heading (#tsed), and "Add texts" when a session is empty (#tsea),
+// open the routine builder for this session (the event "nitya-routine-edit"); the builder says "nitya-routine" after
+// each change, and the list is drawn again (a removed text's tick just no longer shows).
 
 import { P } from "../core/state.js";
 import { flash } from "../core/page.js";
@@ -21,9 +25,9 @@ import { jumpTo } from "./history.js";
 import { setView } from "./day-picture.js";
 import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
-import { dateKey, firstUndone, stepInSession, textsFor, weekOf } from "../core/routine.js";
+import { dateKey, firstUndone, stepInSession, textsFor } from "../core/routine.js";
 import { createTicks } from "../core/ticks.js";
-import { active, ticksStorage } from "../store/store.js";
+import { active, routine, ticksStorage } from "../store/store.js";
 
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
@@ -35,12 +39,10 @@ import { active, ticksStorage } from "../store/store.js";
 const W = {
   en: {
     days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    short: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     sessions: { morning: "Morning", afternoon: "Afternoon", evening: "Evening" },
-    day: "Day",
-    session: "Session",
-    today: "today",
+    other: "Not this time?",
+    show: "Show ",
     done: "Done: ",
     start: "Start: ",
     cont: "Continue: ",
@@ -54,18 +56,25 @@ const W = {
       return n + (n === 1 ? " text" : " texts");
     },
     none: "Nothing planned",
-    empty: "Nothing is planned for this session. Any text can be opened from the contents at any time.",
+    /** @param {string} s */
+    empty: function (s) {
+      return "Nothing is planned for " + s.toLowerCase() + " yet. ";
+    },
+    add: "Add texts",
+    edit: "Edit",
+    /** @param {string} s */
+    editL: function (s) {
+      return "Edit routine: " + s;
+    },
     end: "Today",
     ended: "End of the session",
   },
   mr: {
     days: ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
-    short: ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"],
     months: ["जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"],
     sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
-    day: "वार",
-    session: "वेळ",
-    today: "आज",
+    other: "दुसरी वेळ:",
+    show: "दाखवा: ",
     done: "झाले: ",
     start: "सुरू करा: ",
     cont: "पुढे चालू: ",
@@ -79,7 +88,16 @@ const W = {
       return dv(n) + " रचना";
     },
     none: "काही ठरलेले नाही",
-    empty: "या वेळेसाठी काही ठरलेले नाही. कोणतीही रचना अनुक्रमणिकेतून केव्हाही उघडता येईल.",
+    /** @param {string} s */
+    empty: function (s) {
+      return s + "साठी अजून काही ठरवलेले नाही. ";
+    },
+    add: "रचना जोडा",
+    edit: "बदला",
+    /** @param {string} s */
+    editL: function (s) {
+      return "बदला: " + s + "चा दिनक्रम";
+    },
     end: "आज",
     ended: "या वेळेची उपासना पूर्ण",
   },
@@ -97,9 +115,10 @@ var ticks;
 var info = {};
 /** @type {Record<string, string>} section id → text id */
 var bySec = {};
-// What the card shows: the day (YYYY-MM-DD) and session picked, or null to follow the clock
-/** @type {{ day: string | null, session: Session | null }} */
-var pick = { day: null, session: null };
+// The session shown when one is picked by hand ("Not this time?"), or null to follow the clock; a new day starts
+// again from the clock
+/** @type {{ session: Session | null }} */
+var pick = { session: null };
 // The session being read (Start / Continue), so Prev and Next follow it
 /** @type {Run | null} */
 var run = null;
@@ -145,17 +164,17 @@ function fromKey(key) {
   return new Date(+p[0], +p[1] - 1, +p[2]);
 }
 
-/** The day and session the card shows */
+/** The day and session the home page shows: always today */
 function current() {
   var now = new Date(),
     today = dateKey(now);
-  return { today: today, day: pick.day || today, session: pick.session || sessionAt(now) };
+  return { today: today, day: today, session: pick.session || sessionAt(now) };
 }
 
-/** The texts of a session on a day, keeping only those in the library */
+/** The texts of a session on a day, from the reading person's routine, keeping only those in the library */
 /** @param {string} day @param {Session} session */
 function idsFor(day, session) {
-  return textsFor(loaded.routine, fromKey(day).getDay(), session).filter(function (id) {
+  return textsFor(routine() || loaded.routine, fromKey(day).getDay(), session).filter(function (id) {
     return !!info[id];
   });
 }
@@ -196,15 +215,14 @@ function titleOf(id) {
   return !t ? "" : P.ui === "mr" ? scr(t.title) : t.titleEn;
 }
 
-// Draw the date, the week row, the session switch and the session card for what is picked
+// Draw the date, the session's texts with their ticks, the other sessions and Start / Continue
 export function render() {
   var c = current(),
     w = words(),
     ui = /** @type {"mr" | "en"} */ (P.ui === "mr" ? "mr" : "en"),
     d = fromKey(c.day),
-    isToday = c.day === c.today,
     ids = idsFor(c.day, c.session),
-    done = isToday ? ticks.done(c.today, c.session) : [],
+    done = ticks.done(c.today, c.session),
     nDone = ids.filter(function (id) {
       return done.indexOf(id) >= 0;
     }).length,
@@ -213,41 +231,21 @@ export function render() {
   if (!box || !sc) return;
   shownToday = c.today;
   langKey = ui + scrKey();
-  box.lang = ui;
   sc.lang = ui;
-  // the date shown
-  /** @type {HTMLElement} */ (document.getElementById("tdd")).textContent =
-    w.days[d.getDay()] + ", " + (ui === "mr" ? dv(d.getDate()) : d.getDate()) + " " + w.months[d.getMonth()] + " " + (ui === "mr" ? dv(d.getFullYear()) : d.getFullYear());
-  // the week row: Monday to Sunday of this week
-  var wk = /** @type {HTMLElement} */ (document.getElementById("twk"));
-  wk.setAttribute("aria-label", w.day);
-  wk.innerHTML = weekOf(fromKey(c.today))
-    .map(function (x) {
-      var k = dateKey(x),
-        on = k === c.day,
-        now = k === c.today;
-      return (
-        '<button type="button" role="radio" class="twd' + (now ? " now" : "") + '" data-d="' + k + '" aria-checked="' + on + '" tabindex="' + (on ? 0 : -1) + '">' +
-        "<span>" + w.short[x.getDay()] + "</span> <b>" + (ui === "mr" ? dv(x.getDate()) : x.getDate()) + "</b>" +
-        (now ? '<span class="sr">, ' + w.today + "</span>" : "") +
-        "</button>"
-      );
-    })
-    .join("");
-  // the session switch
-  var ss = /** @type {HTMLElement} */ (document.getElementById("tss"));
-  ss.setAttribute("aria-label", w.session);
-  [].forEach.call(ss.querySelectorAll("[role=radio]"), function (/** @type {HTMLElement} */ b) {
-    var s = /** @type {Session} */ (b.dataset.s),
-      on = s === c.session;
-    b.setAttribute("aria-checked", String(on));
-    b.tabIndex = on ? 0 : -1;
-    /** @type {HTMLElement} */ (b.querySelector(".tsw")).textContent = w.sessions[s];
-  });
-  // the session card
+  // the date, in Marathi (in Kannada letters when chosen) and in English
+  var dd = /** @type {HTMLElement} */ (document.getElementById("tdd"));
+  /** @type {HTMLElement} */ (dd.querySelector(".d1")).textContent = scr(W.mr.days[d.getDay()] + ", " + dv(d.getDate()) + " " + W.mr.months[d.getMonth()] + " " + dv(d.getFullYear()));
+  /** @type {HTMLElement} */ (dd.querySelector(".d1")).lang = scrKey() || "mr";
+  /** @type {HTMLElement} */ (dd.querySelector(".d2")).textContent = W.en.days[d.getDay()] + ", " + d.getDate() + " " + W.en.months[d.getMonth()] + " " + d.getFullYear();
+  // the session's heading, in both languages, and how many are done
   var head = /** @type {HTMLElement} */ (document.getElementById("tsh"));
-  head.innerHTML = '<span lang="mr">' + scr(MR_SESSION[c.session]) + '</span><span class="tsdot" aria-hidden="true"> · </span><span lang="en">' + EN_SESSION[c.session] + "</span>";
-  /** @type {HTMLElement} */ (document.getElementById("tsn")).textContent = !ids.length ? w.none : isToday ? w.count(nDone, ids.length) : w.texts(ids.length);
+  head.innerHTML = '<span lang="' + (scrKey() || "mr") + '">' + scr(MR_SESSION[c.session]) + '</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">' + EN_SESSION[c.session] + "</span>";
+  /** @type {HTMLElement} */ (document.getElementById("tsn")).textContent = !ids.length ? w.none : w.count(nDone, ids.length);
+  var ed = document.getElementById("tsed");
+  if (ed) {
+    ed.textContent = w.edit;
+    ed.setAttribute("aria-label", w.editL(w.sessions[c.session]));
+  }
   var list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
   list.innerHTML = ids
     .map(function (id, i) {
@@ -256,9 +254,7 @@ export function render() {
         name = ui === "mr" ? scr(t.title) : t.titleEn;
       return (
         '<li class="' + (on ? "done" : "") + '">' +
-        (isToday
-          ? '<label class="ttk"><input type="checkbox" data-t="' + id + '"' + (on ? " checked" : "") + ' aria-label="' + esc(w.done + name) + '"><span class="tkc" aria-hidden="true">' + CHECK + "</span></label>"
-          : "") +
+        '<label class="ttk"><input type="checkbox" data-t="' + id + '"' + (on ? " checked" : "") + ' aria-label="' + esc(w.done + name) + '"><span class="tkc" aria-hidden="true">' + CHECK + "</span></label>" +
         '<a class="tgo" href="#' + t.sec + '" data-t="' + id + '">' +
         '<span class="tno" aria-hidden="true">' + scr(dv(i + 1)) + ".</span>" +
         '<span class="tt"><span class="t1" lang="' + (scrKey() || t.language) + '">' + esc(scr(t.title)) + '</span><span class="t2" lang="en">' + esc(t.titleEn) + "</span></span>" +
@@ -269,15 +265,34 @@ export function render() {
     .join("");
   var empty = /** @type {HTMLElement} */ (document.getElementById("tse"));
   empty.hidden = ids.length > 0;
-  empty.textContent = w.empty;
+  /** @type {HTMLElement} */ (document.getElementById("tset")).textContent = w.empty(w.sessions[c.session]);
+  /** @type {HTMLElement} */ (document.getElementById("tsea")).textContent = w.add;
+  // "Not this time?" and the two other sessions
+  var so = /** @type {HTMLElement} */ (document.getElementById("tso"));
+  so.lang = ui;
+  /** @type {HTMLElement} */ (document.getElementById("tsow")).textContent = w.other;
+  var first = true;
+  [].forEach.call(so.querySelectorAll("button[data-s]"), function (/** @type {HTMLElement} */ b) {
+    var s = /** @type {Session} */ (b.dataset.s),
+      off = s === c.session,
+      sep = /** @type {HTMLElement | null} */ (b.previousElementSibling);
+    b.hidden = off;
+    b.textContent = w.sessions[s];
+    b.setAttribute("aria-label", w.show + w.sessions[s]);
+    // the "·" before a button shows only between two shown buttons
+    if (sep && sep.classList.contains("tsod")) sep.hidden = off || first;
+    if (!off) first = false;
+  });
+  // Start / Continue
   var start = /** @type {HTMLElement} */ (document.getElementById("tst")),
     k = firstUndone(ids, done);
   start.hidden = !ids.length;
+  /** @type {HTMLElement} */ (document.getElementById("tsb")).hidden = !ids.length;
+  /** @type {HTMLElement} */ (document.getElementById("tsb")).lang = ui;
   if (ids.length)
     /** @type {HTMLElement} */ (document.getElementById("tstw")).textContent =
       (k < 0 ? w.again : nDone ? w.cont : w.start) + titleOf(ids[k < 0 ? 0 : k]);
-  sc.classList.toggle("preview", !isToday);
-  setView(pick.day || pick.session ? { session: c.session, day: d.getDay() } : null);
+  setView(pick.session ? { session: c.session, day: d.getDay() } : null);
 }
 
 /** Say what the card now shows (after a day or session is picked) */
@@ -286,12 +301,12 @@ function announce() {
     w = words(),
     d = fromKey(c.day),
     ids = idsFor(c.day, c.session),
-    done = c.day === c.today ? ticks.done(c.today, c.session) : [],
+    done = ticks.done(c.today, c.session),
     n = ids.filter(function (id) {
       return done.indexOf(id) >= 0;
     }).length;
   /** @type {HTMLElement} */ (document.getElementById("tlive")).textContent =
-    w.sessions[c.session] + ", " + w.days[d.getDay()] + ": " + (ids.length ? w.texts(ids.length) + (c.day === c.today ? ", " + w.count(n, ids.length) : "") : w.none);
+    w.sessions[c.session] + ", " + w.days[d.getDay()] + ": " + (ids.length ? w.texts(ids.length) + ", " + w.count(n, ids.length) : w.none);
 }
 
 /**
@@ -320,12 +335,11 @@ function startAt(id) {
   openText(id);
 }
 
-// After the last text of a session: back to the card, with the session's heading in view and focused
+// After the last text of a session: back home, with the session's heading focused
 function endSession() {
-  var sc = document.getElementById("tsc"),
-    h = document.getElementById("tsh");
+  var h = document.getElementById("tsh");
   jumpTo(function () {
-    if (sc) sc.scrollIntoView();
+    scrollTo(0, 0);
   }, location.pathname);
   if (h)
     try {
@@ -377,7 +391,7 @@ export function sessionStep(sec, dir) {
 function check() {
   var now = new Date();
   if (dateKey(now) !== shownToday) {
-    pick = { day: null, session: null };
+    pick = { session: null };
     ticks.prune(dateKey(now));
     render();
   } else if (!pick.session) render();
@@ -385,43 +399,15 @@ function check() {
   timer = setTimeout(check, nextChange(now).getTime() - now.getTime() + 1000);
 }
 
+/** The session Home shows (the routine builder opens at it from Settings) @returns {Session} */
+export function shownSession() {
+  return current().session;
+}
+
 /** Re-draw when the menu language or the script changes (called by apply(), js/features/bars.js) */
 export function todayLang() {
   var ui = P.ui === "mr" ? "mr" : "en";
   if (ui + scrKey() !== langKey && document.getElementById("tdy")) render();
-}
-
-/**
- * Arrow keys, Home and End in a radio group: pick the next, previous, first or last, and focus it
- * @param {KeyboardEvent} e
- * @param {HTMLElement} group
- * @param {(b: HTMLElement) => void} choose
- */
-function roving(e, group, choose) {
-  var bs = /** @type {HTMLElement[]} */ ([].slice.call(group.querySelectorAll("[role=radio]"))),
-    i = bs.indexOf(/** @type {HTMLElement} */ (e.target)),
-    n = bs.length,
-    j = /** @type {Record<string, number>} */ ({ ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: n - 1 })[e.key];
-  if (i < 0 || j === undefined) return;
-  e.preventDefault();
-  choose(bs[(j + n) % n]);
-  var now = /** @type {HTMLElement | null} */ (group.querySelector('[role=radio][aria-checked="true"]'));
-  if (now) now.focus();
-}
-
-/**
- * The App / Share / QR / Print / Help row: on phones (below 820px) under the session card, as in mockup A, so the
- * session comes first; on wider screens in the card, as before. The row is moved in the page (not just drawn
- * elsewhere), so Tab and screen readers meet it where it is seen.
- */
-function placeRow() {
-  var row = document.getElementById("shr"),
-    top = document.querySelector("#home > .top"),
-    sc = document.getElementById("tsc");
-  if (!row || !top || !sc || !sc.parentNode) return;
-  var wide = typeof matchMedia === "function" && matchMedia("(min-width: 820px)").matches;
-  if (wide && row.parentNode !== top) top.appendChild(row);
-  else if (!wide && row.previousElementSibling !== sc) sc.parentNode.insertBefore(row, sc.nextSibling);
 }
 
 /** Another person is reading (js/features/profiles.js): their ticks, and their menu language */
@@ -432,12 +418,6 @@ export function profileChanged() {
 }
 
 export function init() {
-  placeRow();
-  if (typeof matchMedia === "function") {
-    var mq = matchMedia("(min-width: 820px)");
-    if (mq.addEventListener) mq.addEventListener("change", placeRow);
-    else if (mq.addListener) mq.addListener(placeRow);
-  }
   ticks = createTicks(ticksStorage(), undefined, function () {
     var a = active();
     return a ? a.id : "";
@@ -448,48 +428,44 @@ export function init() {
     if (r && Array.isArray(r.ids)) run = r;
   } catch (e) {}
   ticks.prune(dateKey(new Date()));
-  var wk = /** @type {HTMLElement} */ (document.getElementById("twk")),
-    ss = /** @type {HTMLElement} */ (document.getElementById("tss")),
+  var so = /** @type {HTMLElement} */ (document.getElementById("tso")),
     list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
-  if (!wk || !ss || !list) return;
-  /** @param {HTMLElement} b */
-  function pickDay(b) {
-    var k = b.dataset.d || null;
-    pick.day = k === dateKey(new Date()) ? null : k;
-    render();
-    announce();
-  }
-  /** @param {HTMLElement} b */
-  function pickSession(b) {
-    // a session picked by hand stays picked; until then the switch follows the clock
+  if (!so || !list) return;
+  // "Not this time?": another session; it stays picked until the next day (then the clock again)
+  so.addEventListener("click", function (e) {
+    var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest("button[data-s]"));
+    if (!b) return;
     pick.session = /** @type {Session} */ (b.dataset.s);
     render();
     announce();
-  }
-  wk.addEventListener("click", function (e) {
-    var b = /** @type {HTMLElement} */ (e.target).closest("[role=radio]");
-    if (b) pickDay(/** @type {HTMLElement} */ (b));
-  });
-  ss.addEventListener("click", function (e) {
-    var b = /** @type {HTMLElement} */ (e.target).closest("[role=radio]");
-    if (b) pickSession(/** @type {HTMLElement} */ (b));
-  });
-  wk.addEventListener("keydown", function (e) {
-    roving(e, wk, pickDay);
-  });
-  ss.addEventListener("keydown", function (e) {
-    roving(e, ss, pickSession);
+    // focus goes to the new list's heading, since the button pressed is now hidden
+    var h = document.getElementById("tsh");
+    if (h)
+      try {
+        h.focus({ preventScroll: true });
+      } catch (x) {}
   });
   // a tick
   list.addEventListener("change", function (e) {
     var x = /** @type {HTMLInputElement} */ (e.target),
       id = x.dataset.t,
       c = current();
-    if (!id || c.day !== c.today) return;
+    if (!id) return;
     ticks.set(c.today, c.session, id, x.checked);
     render();
     var again = /** @type {HTMLElement | null} */ (list.querySelector('input[data-t="' + id + '"]'));
     if (again) again.focus();
+  });
+  // Edit (beside the heading) and Add texts (an empty session): the routine builder, at this session
+  [document.getElementById("tsed"), document.getElementById("tsea")].forEach(function (b) {
+    if (!b) return;
+    b.addEventListener("click", function () {
+      document.dispatchEvent(new CustomEvent("nitya-routine-edit", { detail: { session: current().session, add: b.id === "tsea", from: b } }));
+    });
+  });
+  // the routine changed (the builder) or another person's was restored: draw the list again
+  document.addEventListener("nitya-routine", function () {
+    render();
   });
   // a title opens its text, reading the session from there
   list.addEventListener("click", function (e) {
@@ -501,10 +477,10 @@ export function init() {
   /** @type {HTMLElement} */ (document.getElementById("tst")).addEventListener("click", function () {
     var c = current(),
       ids = idsFor(c.day, c.session),
-      k = firstUndone(ids, c.day === c.today ? ticks.done(c.today, c.session) : []);
+      k = firstUndone(ids, ticks.done(c.today, c.session));
     if (ids.length) startAt(ids[k < 0 ? 0 : k]);
   });
-  // going to a text another way (contents, the side menu, the hidden Previous / Next links) leaves the session:
+  // going to a text another way (the Library, the side menu, the hidden Previous / Next links) leaves the session:
   // Prev and Next follow the library order again
   document.addEventListener(
     "click",

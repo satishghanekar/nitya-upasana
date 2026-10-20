@@ -1,7 +1,8 @@
 // @ts-check
 // Backup and restore (docs/architecture.md §3.7, §4.2; risk R4: an iPhone can clear a website's data):
-// - Save a backup file (Settings, and the reminder on the home page): every person on this phone with their settings
-//   and today's ticks, and the device's settings, as a .nitya file (plain JSON with a checksum, js/store/backup.js).
+// - Save a backup file (Settings, and the reminder on the home page): every person on this phone with their settings,
+//   routine and today's ticks, and the device's settings, as a .nitya file (plain JSON with a checksum,
+//   js/store/backup.js).
 //   On a phone or tablet with the share sheet (iPhone: Save to Files, AirDrop, Messages) it is shared, since an
 //   iPhone has no Downloads folder to speak of; elsewhere it downloads.
 // - Restore from a file: the file is read and checked first (a wrong checksum stops it), then a dialog (#bkm) says
@@ -16,6 +17,7 @@ import { P, dfs } from "../core/state.js";
 import { flash } from "../core/page.js";
 import { ovDone, ovPush } from "./history.js";
 import { applyPrefs } from "./profiles.js";
+import { refresh as refreshLibrary } from "./library.js";
 import { describeRestore, fileName, makeBackup, needsReminder, parseBackup, serialise } from "../store/backup.js";
 import { exportData, getMeta, kind, list, markBackup, onChange, restore, snooze } from "../store/store.js";
 
@@ -43,7 +45,7 @@ const W = {
     },
     inFile: "People in the file: ",
     added: "New on this phone: ",
-    replaced: "Replaced by the file's copy (settings and today's ticks): ",
+    replaced: "Replaced by the file's copy (settings, routine and today's ticks): ",
     removed: "Removed from this phone: ",
     /** @param {string} n */
     then: function (n) {
@@ -85,7 +87,7 @@ const W = {
     },
     inFile: "फाइलमधील व्यक्ती: ",
     added: "या फोनवर नव्या: ",
-    replaced: "फाइलमधील प्रतीने बदलल्या जातील (सेटिंग्ज आणि आजच्या खुणा): ",
+    replaced: "फाइलमधील प्रतीने बदलल्या जातील (सेटिंग्ज, दिनक्रम आणि आजच्या खुणा): ",
     removed: "या फोनवरून काढल्या जातील: ",
     /** @param {string} n */
     then: function (n) {
@@ -322,6 +324,7 @@ function doRestore() {
   pendingData = null;
   restore(data).then(function (prefs) {
     applyPrefs(prefs);
+    refreshLibrary();
     persist();
     closeDialog();
     flash(W.mr.done, W.en.done, 2500);

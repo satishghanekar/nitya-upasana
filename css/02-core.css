@@ -1,5 +1,5 @@
 /* 02-core.css: Page, bars, contents, pieces, language switching, search
-   Part 3 of 13 of the site styles. index.html loads the parts in number order, and the order
+   Part 3 of 16 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    The first full set of rules for the reading page, plus the first print rules.
    Sections:
@@ -375,13 +375,6 @@ ol.toc .m {
   background: var(--accent);
   color: var(--bg);
   border-color: var(--accent);
-}
-#jl .en {
-  font-size: 0.8em;
-}
-#jl[data-lang="both"] .en {
-  display: block;
-  opacity: 0.8;
 }
 
 
@@ -806,11 +799,7 @@ ol.toc li.soon .m {
 #jump li.jh:first-child {
   padding-top: 0;
 }
-#jl[data-lang="both"] li.jh .en {
-  display: inline;
-  margin-left: 0.5em;
-  opacity: 0.8;
-}
+
 .grp {
   margin: 48px 0 -18px;
   text-align: center;

@@ -1,5 +1,5 @@
 /* 09-settings-page.css: Settings page, Kannada letters
-   Part 10 of 13 of the site styles. index.html loads the parts in number order, and the order
+   Part 10 of 16 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Sections:
    - Settings page (option A, 2026-10-15): covers the whole page while open; rounded cards of rows in groups …
@@ -401,7 +401,6 @@ html[data-sp] {
 html[data-scr="kn"] .mr,
 html[data-scr="kn"] .mr *,
 html[data-scr="kn"] #home .nm,
-html[data-scr="kn"] #home .hl1,
 html[data-scr="kn"] #bt[data-tl="mr"] #btt,
 [lang="kn"]:not(html):not(.ash) {
   font-family: "Noto Sans Kannada", var(--body) !important;
@@ -421,7 +420,6 @@ html[data-scr="kn"] #bt[data-tl="mr"] #btt,
 html[data-scr="kn"][data-font]:not([data-font="std"]) .mr,
 html[data-scr="kn"][data-font]:not([data-font="std"]) .mr *,
 html[data-scr="kn"][data-font]:not([data-font="std"]) #home .nm,
-html[data-scr="kn"][data-font]:not([data-font="std"]) #home .hl1,
 html[data-scr="kn"][data-font]:not([data-font="std"]) .sp-pw [lang="kn"],
 html[data-scr="kn"][data-font]:not([data-font="std"]) #prfs[lang="kn"] {
   font-family: var(--kf), "Noto Sans Kannada", var(--body) !important;

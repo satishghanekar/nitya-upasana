@@ -3,8 +3,10 @@
 
 import { LI, RB_LOOP, RB_ONCE, root } from "../core/page.js";
 import { shared, P } from "../core/state.js";
-import { foldSet, skDot, skRender } from "./date-card.js";
+import { skLang } from "./sankashti.js";
 import { todayLang } from "./today-card.js";
+import { calLang } from "./vedic-calendar.js";
+import { libLang } from "./library.js";
 import { autoFs, pullSoon } from "../text/autofit.js";
 import { cur, hb, pfSet, pjOpen } from "../core/apply.js";
 import { asLabel, asShow, asb, asc } from "./bottom-bar.js";
@@ -106,6 +108,10 @@ export function mark() {
       ct = t;
     }
   });
+  // On the home page (no piece or section row at the top yet): Language and Dhrupad step aside in the top bar, and
+  // the bottom bar gives way to Start / Continue (css/10-today.css)
+  if (c) root.removeAttribute("data-home");
+  else if (!root.hasAttribute("data-home")) root.setAttribute("data-home", "1");
   // Top bar title: the site's name, or once a piece's heading has scrolled under the bar, that piece ("३. देवीची आरती")
   var en = P.lang === "en",
     tt = en ? "Nitya Upasana" : SCR.to("नित्य उपासना"),
@@ -184,7 +190,7 @@ function leadSet() {
   else root.removeAttribute("data-lead");
   shared.LEAD = L;
   // (checked every time: the contents lists are built after the first call)
-  [].forEach.call(document.querySelectorAll(".wrap .verse, .wrap .ash header h2, #home ol.toc .m, #rail ul a, #jl li > a"), function (v) {
+  [].forEach.call(document.querySelectorAll(".wrap .verse, .wrap .ash header h2, #jl ol.toc .m, #jl .gh, #rail ul a, #rail .rg"), function (v) {
     var m = v.querySelector(":scope > .mr"),
       e = v.querySelector(":scope > .en");
     if (!m || !e) return;
@@ -207,11 +213,10 @@ export function apply() {
   if (P.th === "auto") root.removeAttribute("data-pref");
   else root.setAttribute("data-pref", P.th);
   // Text language on the pieces and the printout; menu language on the bar, menus, home page and dialogs
-  // (the Contents fold row #tfr follows the text language, like the पूजा and आरती rows below it)
-  [].forEach.call(document.querySelectorAll(".grp,.wrap > .ash,#pv,#home .tocg,#tfr,#jl,#rail"), function (e) {
+  [].forEach.call(document.querySelectorAll(".grp,.wrap > .ash,#pv,#jl,#rail"), function (e) {
     e.setAttribute("data-lang", P.lang);
   });
-  [].forEach.call(document.querySelectorAll(".bar,#none,#panel,#home > :not(.tocg):not(#tfr),#qrm,#prm,#inm,#rsh,#szt,#szr,#fl"), function (e) {
+  [].forEach.call(document.querySelectorAll(".bar,#none,.libhd,#panel,#home > *,#qrm,#prm,#inm,#rsh,#szt,#szr,#fl"), function (e) {
     e.setAttribute("data-lang", P.ui);
   });
   root.lang = SCR.k || "mr"; // the page is Marathi (or Kannada); English parts carry lang="en" themselves (screen readers pick the voice from this)
@@ -224,8 +229,8 @@ export function apply() {
     b.setAttribute("aria-pressed", String(b.dataset.v === P.fnt));
   });
   var qi = document.getElementById("q");
-  qi.placeholder = P.ui === "mr" ? "ओळ शोधा (मराठी किंवा इंग्रजी अक्षरे)" : "Find a line (Marathi or English letters)";
-  qi.setAttribute("aria-label", P.ui === "mr" ? "ओळ शोधा" : "Find a line");
+  qi.placeholder = P.ui === "mr" ? "रचना किंवा ओळ शोधा" : "Find a text or a line";
+  qi.setAttribute("aria-label", qi.placeholder);
   root.setAttribute("data-ref", String(P.ref));
   root.setAttribute("data-hc", String(P.hc));
   // (media queries answer without laying the page out; innerWidth would, right after the changes above)
@@ -266,18 +271,20 @@ export function apply() {
   autoFs();
   root.style.setProperty("--fs", P.fs + "px");
   pullSoon();
-  // The date card is rebuilt only when the menu language or the day changes (rebuilding it on
-  // every language switch cost a second page layout on slow phones); otherwise just re-check its wrap
-  var sk = P.ui + new Date().toDateString();
+  // The Sankashti line (on the day only) is re-drawn only when the menu language, the day or the place changes
   try {
-    if (sk !== shared.skKey) {
-      shared.skKey = sk;
-      skRender();
-    } else skDot();
+    skLang();
   } catch (e) {}
-  foldSet();
   // the Today card's words follow the menu language, and its titles the script (Kannada letters)
   todayLang();
+  // the Vedic calendar line on Home (and the calendar page when open): menu language, script, day and place
+  try {
+    calLang();
+  } catch (e) {}
+  // the Library's "Edit categories" button (menu language) and the categories sheet when open
+  try {
+    libLang();
+  } catch (e) {}
   [].forEach.call(document.querySelectorAll("#st button"), function (b) {
     b.setAttribute("aria-pressed", b.dataset.v === P.th);
   });

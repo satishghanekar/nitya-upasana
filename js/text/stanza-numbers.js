@@ -4,8 +4,11 @@
 import { DV } from "./line-breaks.js";
 
 export function init() {
-  // Stanza numbers at the end of each verse (the dhrupad is not counted)
-  [].forEach.call(document.querySelectorAll('section.ash[id^="a"] .items'), function (b) {
+  // Stanza numbers at the end of each verse (the dhrupad is not counted), in every piece but the prose ones
+  // (the Atharvashirsha's numbers are part of its text) and those whose file says "stanza-numbers: as-written"
+  // (section class ownsn: the numbers are written in the text, as in some ashtaks). By class, not by id, so a text without a legacy-id
+  // (its section id is its own id, aarti-belaguve) is numbered too.
+  [].forEach.call(document.querySelectorAll("section.ash:not(.prose):not(.ownsn) .items"), function (b) {
     var n = 0;
     [].forEach.call(b.querySelectorAll(".item:not(.rf):not(.dh)"), function (it) {
       n++;

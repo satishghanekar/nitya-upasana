@@ -22,11 +22,14 @@ Each file starts with a comment that lists its sections. Every section begins wi
 | `04-columns-rail.css` | Wide screens: two stanza columns, piece and stanza numbers, button rows, both languages side by side, and the left contents menu (`#rail`). |
 | `05-home-card.css` | The home page "paper sheet", the next Sankashti card, the offline cloud, the lotus ornament, fade-in, and the dhrupad markers. |
 | `06-help-polish.css` | Help, the review rounds after 1.0, folding the Ganesha card, and folding the Pooja / Aarti sections. |
-| `07-bottom-bar-folds.css` | Bottom bar, bars tucking away while reading, folding the contents and each piece, fold headings, bigger tap areas, the Sankashti-day home card and the reading sheet (Aa). |
-| `08-contents-book.css` | Home contents as a book index, author lines, and Both languages with English first. |
+| `07-bottom-bar-folds.css` | Bottom bar, bars tucking away while reading, folding each piece, fold headings, bigger tap areas and the reading sheet (Aa). |
+| `08-contents-book.css` | The Library's list of texts (`#jl`) as a book index, author lines, and Both languages with English first. |
 | `09-settings-page.css` | The Settings page and Kannada letters. |
-| `10-today.css` | The Today card: the larger picture, the date, the week row (`#twk`), the session switch (`#tss`), the quieter next-Chaturthi line, the session card (`#tsc`) with its ticks and Start, and on wide screens (820px and up) the card and the session side by side. |
+| `10-today.css` | Home (Home v2) and the Library page: the picture beside the date (`#tdy`), the Vedic calendar line's place (`#pan`), the festival-day line (`#fst`) and the Sankashti-day line (`#skt`), the session's texts with their ticks (`#tsc`), "Not this time?" (`#tso`), Start / Continue (`#tsb`, pinned on phones), the top bar and bottom bar on the home page (`data-home`), and the Library (`#jump`). |
 | `11-profiles.css` | Profiles and backup: the profile chip in the top bar (`#who`, the badge alone below 600px; on phones up to 420px without its frame, and the title without its small Ganesha), the round badges, the profile sheet (`#pfm`: the people on this phone, Add / Edit / Delete, the colour swatches), the Restore dialog (`#bkm`) and the notes on the home page (`#pfnt`: this browser can't save here, the backup reminder). |
+| `12-calendar.css` | The Vedic calendar: the line on Home (`#panb`), the calendar page (`#cal`, under the top bar like the Library), the day card (`#cald`), the month table (`#calm`: day buttons, shukla and krishna shading with `--ck`, full and new moon marks, Ekadashi and Sankashti labels, festival labels (`.fs`) and tags (`.tag.fest`), today and the day shown, the key), two columns from 820px. |
+| `13-library.css` | The Library by category (version 1.8): the "Edit categories" button at the end of the list (`#lbr`, `#lbb`), the categories sheet (`#lbm`: the categories with their counts and Rename, Add, the form, Delete, the category of each text), the search results' groups (`#res li.rh`: Texts, then Lines). |
+| `14-builder.css` | The routine builder: Edit beside the session on Home (`#tsed`) and an empty session's Add texts (`#tse`, `#tsea`); the builder page (`#rtb`, under the top bar like the Library), the session / which-days radio groups (`.rtseg`), the weekday row (`#rtwk`), Copy to other days… (`#rtcpf`), the list with grip, ↑ ↓ ✕ (`#rtl`, `.mv`), and Add texts (`#tpk`): a sheet from the bottom on phones and tablets, beside the list from 1100px. |
 | `99-fallbacks.css` | Plain colours for browsers without `color-mix()` (iOS 15). **Keep it last**, because it replaces colours set in every file above. |
 
 ## Switches the styles read
@@ -34,7 +37,7 @@ Each file starts with a comment that lists its sections. Every section begins wi
 - **Themes** are sets of colour variables (`--bg`, `--ink`, `--accent`, …) on `:root`. Light is the default. Dark follows the device unless a theme is picked in Settings (`data-pref="light|sepia|dark"`). `data-hc="1"` turns on high contrast.
 - **`data-lang`** (`mr|en|both`) is set on each region, not on `<html>`:
   - The pieces, section headings, printout and contents lists carry the text language.
-  - The bar, Settings, date card, buttons and dialogs carry the menu language (`en|mr`).
+  - The bar, Settings, the home page, buttons and dialogs carry the menu language (`en|mr`).
 - **Other switches on `<html>`:**
   - `data-ref`: the dhrupad, `1` = once, `0` = after every stanza.
   - `data-cols`: `1` or `2` columns.
@@ -43,7 +46,9 @@ Each file starts with a comment that lists its sections. Every section begins wi
   - `data-font`: the text font.
   - `data-tuck`: the bars are tucked away.
   - `data-lead="en"`: English is the main language; `data-scr`: Kannada letters.
-  - `data-pf`, `data-xf`, `data-tf`: the Pooja, Aarti and Contents folds.
+  - `data-pf`, `data-xf`: the Pooja and Aarti folds.
+  - `data-home`: the home page is on screen (no piece at the top yet): Language and Dhrupad step aside, the bottom bar gives way to Start.
+  - `data-menu`: Settings or the Library is open; the bottom bar steps aside.
   - `data-ready`: the site script has started. Until then the page is hidden, so it never shows half set up.
 
 ## Breakpoints
@@ -53,11 +58,12 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | Query | What changes |
 |---|---|
 | `(max-width: 359px)` | The smallest phones: the bottom bar drops the tilt label, the words of Prev and Next, and narrows the autoscroll speed; Settings tightens |
-| `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon; the bottom bar closes its gaps; the session switch drops its icons |
+| `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon; the bottom bar closes its gaps |
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
-| `(min-width: 820px)` | Tablets and up: two-column contents, wider spacing; the Today card and its session side by side |
-| `(min-width: 1100px)` | Desktop: the left contents menu (`#rail`) |
+| `(max-width: 819px)` | Phones and small tablets: Start / Continue is pinned to the bottom of the screen on the home page |
+| `(min-width: 820px)` | Tablets and up: wider spacing; the Vedic calendar shows the day card beside the month |
+| `(min-width: 1100px)` | Desktop: the left contents menu (`#rail`); the routine builder's Add texts picker sits beside its list |
 | `(orientation: landscape) and (max-height: 520px)` | Phones held sideways: tighter line spacing and headers |
 
 The same test keeps the number of `!important` (70) and `:root:root` (11) from growing: they only win over earlier rules, and each new one makes the next change harder.

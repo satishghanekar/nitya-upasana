@@ -2,6 +2,124 @@
 
 Newest first. Each entry: the decision, who made it, and where it came from.
 
+## 2026-10-19: routine builder (design A, "List per day")
+
+Satish chose design A, "List per day" (`mockups/builder-a.html` on `mockup-home-v2`; picture `builder.png`, panels "A · List with move buttons", "A · dark theme" and "A · with the Add texts picker beside it"), on 2026-10-19. Built to fit today's app (the Home redesign came after the mockup): a page like the Library and the Vedic calendar, under the top bar with Back. Version aarti-v1.9 (merged after the Library by category, which took 1.8).
+
+- **Way in:** "Edit" (Marathi menus "बदला") beside the session's heading on Home, "Add texts" in an empty session (which also opens the picker), and Settings → Profiles and backup → **Routine**. It opens for the person reading ("Aai's routine" / "दिनक्रम: आई"), at the session Home shows and today's weekday.
+- **The page:** Morning / Afternoon / Evening; "Same every day" or "Different by weekday"; with weekdays a row Monday … Sunday (this week's dates, today underlined) and "Copy to other days…" (tick the days, Copy). The list has ↑ ↓ ✕ (44px), Alt+↑/↓ and Delete on a text's buttons, and drag by the grip (pointer events, so touch works on iPhone); every change is read out ("घालीन लोटांगण moved to 3 of 5") and shown in a line under the list. Changes are kept at once; there is no Save button.
+- **Add texts** (`js/features/text-picker.js`): every text in `content/library.json`, with search (Marathi or English letters, accents ignored) and a checkbox each; ticking adds at the end, unticking removes. Beside the list from 1100px; on phones and tablets a sheet from the bottom (Done, Escape, the phone's Back or a tap outside closes it). Its own file so the Library's categories can become filters later; each row already shows its category.
+- **Data:** each profile has `routine`, in the shape of `content/routines.json`; `null` means "never changed" and follows `content/routines.json` (decision 5 of the architecture plan): a new person starts from it, and a person who never edited gets a changed default after an update. The first edit copies the default into the profile. Backups carry each person's routine; a backup from before 1.9 restores everyone on the default. Switching "Different by weekday" back to "Same every day" keeps the day shown's list for every day (the weekday lists come back if switched again before leaving the page).
+- **Home** uses the reading person's routine for today's weekday and the session; a text taken out of a session loses its tick for today (the others keep theirs). An empty session says "Nothing is planned for afternoon yet." with Add texts.
+- **Names** follow the reading languages as the Vedic calendar's do: the first language large, the second under it; English first gives the English titles. Home's own list is unchanged (Marathi title with the English under it).
+
+Open for Satish: whether a person who never edited should keep following `content/routines.json` when it changes (as built), or get a frozen copy when the person is made; whether "Same every day" after "Different by weekday" should ask first (as built it keeps the day shown's list and says so); the Marathi words (बदला, दिनक्रम: …, रोज तेच / वारानुसार वेगळे, इतर वारांना हीच यादी…, रचना जोडा); whether Home's list should also follow the reading languages.
+
+## 2026-10-19: slice 3, the Library by category
+
+Satish said go ahead (2026-10-19) on finishing slice 3 on the new Library page. It was begun on the old home page
+(WIP commit 58ccc19 on `slice-3-library`); the category model (`js/core/library.js`), the search rules
+(`js/text/search-core.js`), the store and backup parts and the categories sheet are reused from it, re-pointed from the
+old home list to the Library (`#jump`). Version aarti-v1.8.
+
+- **The Library lists the texts by category** (`content/categories.json`: वैदिक मंत्र / Vedic Chant, आरती / Aarti,
+  स्तोत्र / Stotra, अष्टक / Ashtak, in that order, then the family's own), in place of पूजा / आरती. The reading page
+  keeps its groups (पूजा, आरती), and so does the printout's contents page, which now follows the reading page rather
+  than the Library's list. The side menu on wide screens follows the Library's categories.
+- **"Edit categories" ("विभाग बदला")** at the end of the list opens the categories sheet over the Library: add a
+  category (Marathi name, English name, or one of them for both; up to 20), rename any (a built-in one only on this
+  phone, with "Use the original name" to undo), delete one the family added (its texts go back to their own
+  categories; built-in ones can't be deleted), and choose each text's category. Kept per phone for everyone on it
+  (IndexedDB `meta.library`) and in backup files (`payload.library`); a backup from 1.7 or before leaves the
+  categories alone. The texts are never changed.
+- **Search** covers the whole library: texts by title (Marathi, English, scholarly spelling), id, first line and
+  category, listed first under "Texts" ("रचना"), then lines under "Lines" ("ओळी"); loose spellings, one typo per four
+  letters, Devanagari typed found through its English letters.
+- **Languages:** the sheet's words follow the menu language; category and text names in the sheet follow the reading
+  languages as the Vedic calendar's do (first language, the second as a small line under a category's name); the list
+  and search results follow the language shown on the reading page, like every title there, with English first when
+  English is the first language. English category names stay plain English (they are English words, not
+  transliterations), also with the scholarly spelling.
+- **Defaults for the open questions** (Claude's, for Satish to confirm or change):
+  1. A category with no texts is **hidden from the Library's list** but **shown in the sheet** ("No texts yet (not shown
+     in the Library)"), so it can be filled.
+  2. Texts **keep their reading-page numbers** in the Library (आरती ५ stays ५ in whichever category it is listed).
+  3. Marathi wording: **रचना** for a text, **विभाग** for a category, the search box says **"रचना किंवा ओळ शोधा"**
+     (English: "Find a text or a line").
+- **Back:** the sheet has its own Back step over the Library's, so the phone's Back (or ✕, Escape, a tap outside)
+  closes the sheet and leaves the Library open; focus returns to "Edit categories".
+
+## 2026-10-19: festival days in the Vedic calendar
+
+Satish said yes (2026-10-19) to marking festivals such as दसरा, the open question in the entry below. Version aarti-v1.7.
+
+- **What shows:** on the day in the month grid, the festival's short name (bolder than the Ekadashi / Sankashti marks; it stands in for "एकादशी" on आषाढी and कार्तिकी एकादशी); in the day card a tag and a row "सण" with the full name (and the English name in English menus); on Home, on the day only, one line under the calendar line: "आज दसरा" (Marathi menus) / "Today: दसरा · Dasara (Vijayadashami)" (Marathi first, English second, English menus); like the panchang's names they follow the reading languages (the entry below): English only gives "Today: Dasara (Vijayadashami)" and "Dasara" in the month, Marathi only "आज दसरा". The English names are plain, in the same style as the months (Shravan, Bhadrapad, Kartik).
+- **The list** is data, `content/festivals.json` (kept for offline use; fetched with the routine by `js/text/load.js`), each with Marathi and English names, a short label (both languages) and a rule. The rules are applied on the phone by `js/core/festivals.js` (pure, `tests/unit/festivals.test.mjs`):
+
+| Festival | Month (amanta) · tithi | Decided by |
+|---|---|---|
+| मकर संक्रांत Makar Sankranti | sun enters sidereal Makara (Lahiri) | the day from the previous sunset to this sunset in which it happens |
+| महाशिवरात्री Maha Shivratri | Magh krishna 14 | nishita (midnight), first |
+| होळी Holi | Phalgun purnima | pradosh, second |
+| गुढीपाडवा Gudi Padwa | Chaitra shukla 1 | sunrise |
+| श्रीराम नवमी Ram Navami | Chaitra shukla 9 | madhyahna, second |
+| हनुमान जयंती Hanuman Jayanti | Chaitra purnima | sunrise |
+| अक्षय्य तृतीया Akshaya Tritiya | Vaishakh shukla 3 | sunrise |
+| वटपौर्णिमा Vat Purnima | Jyeshtha purnima | madhyahna, first |
+| आषाढी एकादशी Ashadhi Ekadashi | Ashadh shukla 11 | sunrise (Smarta: first of two) |
+| गुरुपौर्णिमा Guru Purnima | Ashadh purnima | sunrise |
+| नागपंचमी Nag Panchami | Shravan shukla 5 | sunrise |
+| नारळी पौर्णिमा · रक्षाबंधन | Shravan purnima | sunrise |
+| गोकुळाष्टमी Gokulashtami | Shravan krishna 8 | nishita, first |
+| श्री गणेश चतुर्थी Ganesh Chaturthi | Bhadrapad shukla 4 | madhyahna, first |
+| अनंत चतुर्दशी Anant Chaturdashi | Bhadrapad shukla 14 | sunrise |
+| घटस्थापना Ghatasthapana | Ashvin shukla 1 | sunrise |
+| दसरा Dasara | Ashvin shukla 10 | aparahna, first |
+| कोजागिरी पौर्णिमा Kojagiri | Ashvin purnima | nishita, first |
+| नरक चतुर्दशी Narak Chaturdashi | Ashvin krishna 14 | moonrise (before dawn), first |
+| लक्ष्मीपूजन Lakshmi Pujan | Ashvin amavasya | pradosh, second |
+| बलिप्रतिपदा (दिवाळी पाडवा) Bali Pratipada | Kartik shukla 1 | sunrise |
+| भाऊबीज Bhaubeej | Kartik shukla 2 | aparahna, second |
+| कार्तिकी एकादशी Kartiki Ekadashi | Kartik shukla 11 | sunrise (Smarta: first of two) |
+| त्रिपुरारी पौर्णिमा Tripurari Purnima | Kartik purnima | pradosh, first |
+| दत्त जयंती Datta Jayanti | Margashirsha purnima | pradosh, first |
+
+- **The rules** (as Kalnirnay / Drik apply dharmashastra): the festival's tithi in its **nija** month (never an adhika month: Vat Purnima 2026 is in nija Jyeshtha, 29 June); the day is the one on which that tithi is current at the festival's part of the day — sunrise; madhyahna / aparahna, the 3rd / 4th fifth of daylight; pradosh, the first fifth of the night; nishita, the 8th of the night's 15 muhurtas; moonrise. When that is so on two days, or on none (vriddhi / kshaya at that time), the rule's "first" or "second" day is taken; on none, only among the days the tithi is current in daylight. A kshaya tithi at sunrise is kept on the day it falls in (Gudi Padwa 2026, 19 March). Not considered: nakshatra (Shravana for Dasara, Rohini for Janmashtami), bhadra (Holi, Raksha Bandhan), Vaishnava ekadashi, and Dharmasindhu's special cases for Lakshmi Pujan (2025: the app gives 20 October, Kalnirnay printed 21), so a printed calendar can differ in such years.
+- **Checked:** 2026 Pune against the printed dates (Gudi Padwa 19 Mar, Ram Navami 26 Mar, Ganesh Chaturthi 14 Sep, Dasara 20 Oct, Lakshmi Pujan 8 Nov, Bali Pratipada 10 Nov, Bhaubeej 11 Nov and more), the tie rules against 2024 (Ram Navami 17 Apr, Vat Purnima 21 Jun, Lakshmi Pujan 1 Nov). **In America** the same rules at the local sunrise, midday and midnight put some festivals a day earlier than in India (2026 Columbus: Narak Chaturdashi 7 Nov, Bali Pratipada 9 Nov, Bhaubeej 10 Nov, Gokulashtami 3 Sep, …); a day's difference from India is expected there. Dasara is 20 October in both.
+- Less certain for 2026 Pune (not in the tests): Holi 2 March (purnima at dusk only on the 2nd, but bhadra then and a lunar eclipse on the 3rd; a printed calendar may say 3 March) and Akshaya Tritiya 20 April (tritiya at sunrise for 1¼ hours; Drik may give 19 April).
+
+## 2026-10-19: the Vedic calendar follows the reading languages
+
+Satish (2026-10-19): "The Vedic calendar when English is set as 1st language and none for 2nd language shows in marathi". Version aarti-v1.6.1 (a patch, so phones fetch it). This replaces the "Words" choice of the entry below.
+
+- **The panchang's names follow Settings → Languages**, as the pieces do: tithi, paksha, masa, nakshatra, yoga, samvatsara, ritu, ayana, the weekday headers, the day card's labels, the Ekadashi / Sankashti / Purnima / Amavasya marks and the next-Sankashti name. The **first language** is used everywhere (Home line, day card, month); the **second** is the small line under each of the day card's rows ("शुद्ध अष्टमी" / "Shukla Ashtami · until Mon 1:21 am"). The Home line and the month's days show the first language only (no room for two).
+- English first, no second: all English, Latin digits ("Ashvin Shukla Ashtami", "Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava", Sun…Sat). Marathi first, no second: Marathi names with no English line (before, English menus added English glosses). Kannada letters: the Marathi names in Kannada script, as before. Scholarly English (IAST): the names are worked out from their Marathi by `js/text/iast.js` ("Āśvina Śukla Aṣṭamī"), with śukla / kṛṣṇa for the paksha.
+- **The words around the names** (times, dates, "until", the key, the footnote, the screen-reader text of each day) still follow the menu language, with Devanagari digits in Marathi menus. English first always has English menus (Settings), so the two never disagree that way; with Marathi first and English menus, the names are Marathi and the words English.
+- **Spellings:** the months in plain English are spelled as said in Marathi (Shravan, Bhadrapad, Ashvin, Kartik, Magh …; were Shravana, Bhadrapada, Kartika, Magha). Long English names in the month's days break at a soft hyphen ("Chatur-dashi") and are a step smaller on phones.
+
+## 2026-10-19: Vedic calendar (panchang) on Home and its own page
+
+Built from the approved mockups (`mockups/home-v2-a.html`, the line on Home; `mockups/vedic-calendar.html`, the page; branch `mockup-home-v2`). Version aarti-v1.6.
+
+- **On-device only.** Everything is worked out on the phone by `js/core/panchang.js` (from the Meeus sun and moon in `js/features/astronomy.js`); nothing is fetched or sent, and it works offline. Checked against the Swiss Ephemeris 2020–2032 (`tests/unit/panchang.test.mjs`): sunrise and sunset within 0.2 minute, tithi end times within 1.5 minutes, moonrise within 0.5 minute.
+- **Convention: Kalnirnay / Drik Panchang.** Sidereal positions with the **Lahiri** (Chitrapaksha) ayanamsha; **amanta** months (new moon to new moon, adhika when no sankranti falls in it); a day's tithi, nakshatra, yoga and month are those at that day's **sunrise** at the place. A tithi that begins and ends between two sunrises is kshaya (shown as "+ name" in its day), one at two sunrises is vriddhi; a tithi boundary within 5 minutes of sunrise gets a note that a printed calendar may differ.
+- **Moonrise fix, chosen by Satish (2026-10-18):** moonrise is the moon's centre at +0.125° (upper limb on the horizon with refraction, semidiameter and parallax) with the moon taken at UT + ΔT. The Sankashti moonrise for 28 October 2026 in Columbus moves from 8:16 pm to 8:09 pm (Swiss Ephemeris 8:10 pm).
+- **Place:** the one moonrise already uses (Settings → Place for moonrise, else the city for the phone's time zone, `skLoc()`); times are on the phone's clock. With no place known, the line stays hidden.
+- **Home:** one button under the date, "आश्विन शुद्ध अष्टमी" (adhika named when so; पौर्णिमा and अमावास्या without the paksha), "नक्षत्र … · शके १९४८ · पराभव संवत्सर", then sunrise, sunset and the place. Only today is worked out, a moment after the page shows (its room is kept so nothing jumps).
+- **The page** works like the Library (Back, the phone's Back, Escape; focus returns to the line). Day card: picture, title, tithi / नक्षत्र / योग with "until …" (weekday named when it ends on another day), वार, सूर्योदय with sunset and place, चंद्रोदय, मास (amanta), संवत्सर, ऋतु · अयन, and the next Sankashti with moonrise (`js/features/sankashti.js`). Month: a table of day buttons (रवि…शनि), each day's tithi at sunrise, shukla / krishna shading with a key, full and new moon marks, Ekadashi and Sankashti labels, today highlighted; previous / next month; arrow keys and Page Up / Down. A month is worked out only when shown. Two columns from 820px.
+- **Words** (replaced on 2026-10-19, above): the panchang's names stay Marathi in both menu languages, as in the approved design; the words around them (English glosses, times, dates, buttons, key, footnote) follow the menu language, with Devanagari digits in Marathi menus. Open for Satish: whether English menus should show the month heading in Marathi as the mockup did (it now follows the menus: "October 2026"; the weekday headers रवि…शनि stay Marathi), and whether festivals beyond Ekadashi and Sankashti (e.g. दसरा in the mockup) should be marked (yes: see "festival days" above).
+
+## 2026-10-18: Home redesign (simple "what to chant now" page) and the Library page
+
+Satish (2026-10-18): "This app has nothing to do with sankathara chaturthi.. the main card needs to be redesigned. That can go away. When I open the app it should just be simplistic layout of what i should be chanting for that day and time... I think the table of contents can also go away." Built from mockup A (`mockups/home-v2-a.html` on `mockup-home-v2`). Version aarti-v1.5.
+
+- **Home** holds only: the top bar (brand, profile chip, Library with a book icon, Settings); the time-of-day picture with today's weekday star beside the date in Marathi and English; an empty slot `#pan` for the Vedic calendar line (filled later by `js/core/panchang.js`); this session's texts with ticks under "सायंकाळ · Evening" and "2 of 10"; a line "Not this time? Morning · Afternoon" to switch session; and Start / Continue, which is pinned to the bottom on phones (below 820 px, above the safe-area inset). On desktop it is one centred column of up to 560 px.
+- **Gone from Home:** the Sankathara / Next Chaturthi date card (with its date strip and "add all to calendar", `js/features/date-card.js` deleted), the table of contents, the ॥ श्री गणेशाय नमः ॥ line, the hero picture and the weekday row (the list is always today's). The "home card fold" setting goes with the card.
+- **Sankashti** (`js/features/sankashti.js`, using `js/core/astronomy.js` as before): only on a Sankashti day one small line shows, "Sankashti Chaturthi today · Moonrise h:mm pm · place" (Angaraki named when it falls on a Tuesday). The place for moonrise moved to Settings → About ("Place for moonrise · Use my location"). The share message is unchanged.
+- **The Library** (`#jump`, opened by the book button or the bottom bar's search button) is a full page with Back, search and the contents grouped as before (Pooja / Aarti). Opening a text works as before; Back from that text returns to Home (the Library step is replaced, not stacked). Opening the Library does not change the URL; browser Back closes it.
+- **App / Share / QR / Print / Help** stay in their quiet row, now under the session list (below Start) at every width: the least disruptive place, unchanged buttons and order.
+- On Home the reading-only controls (Home button, reading sheet, bottom bar, desktop side menu) hide; they come back as soon as a text is at the top.
+
 ## 2026-10-18: slice 2, storage, profiles and backup
 
 Built as planned in `docs/architecture.md` §3.4, §3.7, §3.8 and §4.2 (see the "As built" notes there). Version aarti-v1.4. Choices made while building, open for Satish to change:

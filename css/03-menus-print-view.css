@@ -1,5 +1,5 @@
 /* 03-menus-print-view.css: Top-bar title, Share / QR / Print, Add to Home Screen, print view, piece header card
-   Part 4 of 13 of the site styles. index.html loads the parts in number order, and the order
+   Part 4 of 16 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Includes the print view (#pv) built by the script for the Print button.
    Sections:
@@ -306,29 +306,8 @@ a.t {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-#jump li.jhome {
-  grid-column: 1/-1;
-}
-#jhb {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  height: 46px;
-  justify-content: flex-start;
-  padding: 0 14px;
-  font: 500 17px/1 var(--body);
-  color: var(--accent);
-  border-color: var(--rule);
-}
-#jhb svg {
-  flex: none;
-}
-[data-lang="both"] #jhb .en {
-  display: inline;
-  margin-left: 4px;
-  font-size: 0.85em;
-}
+
+
 /* Panels take focus when opened (for keyboards and screen readers); the panel itself shows no ring */
 /* Skip link: off screen until a keyboard Tab lands on it */
 .skip {
@@ -367,7 +346,7 @@ h2[tabindex="-1"]:focus {
   border-bottom: 2px solid var(--accent);
 }
 /* The first group right under the date card */
-#home .sr + .tocg .gh {
+#jl .tocg .gh {
   margin-top: 10px;
 }
 .tocg:first-child .gh {
@@ -380,9 +359,7 @@ h2[tabindex="-1"]:focus {
   font: 600 16px/1.3 var(--head);
   padding: 10px 2px 2px;
 }
-#jl[data-lang="en"] li.jh {
-  font: 600 15px/1.3 var(--lat);
-}
+
 .tocg ol.toc {
   border-top: 0;
 }

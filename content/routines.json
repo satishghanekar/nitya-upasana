@@ -1,27 +1,97 @@
 {
  "morning": {
-  "mode": "fixed",
-  "texts": [
-   "atharvashirsha"
-  ]
+  "mode": "weekday",
+  "days": {
+   "sun": [
+    "atharvashirsha",
+    "shree-rudra",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "mon": [
+    "atharvashirsha",
+    "shree-rudra",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "tue": [
+    "atharvashirsha",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "wed": [
+    "atharvashirsha",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "thu": [
+    "atharvashirsha",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "fri": [
+    "atharvashirsha",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "sat": [
+    "atharvashirsha",
+    "shree-rudra",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ]
+  }
  },
  "afternoon": {
   "mode": "fixed",
   "texts": []
  },
  "evening": {
-  "mode": "fixed",
-  "texts": [
-   "sukhkarta",
-   "shendur-lal-chadhayo",
-   "durge-durghat-bhari",
-   "lavathavati-vikrala",
-   "trigunatmak-traimurti",
-   "aarti-dnyanaraja",
-   "yei-o-vitthale",
-   "ghalin-lotangan",
-   "jai-ganesh-deva",
-   "jai-jagdish-hare"
-  ]
+  "mode": "weekday",
+  "days": {
+   "sun": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan",
+    "ashtak-sunday"
+   ],
+   "mon": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "lavathavati-vikrala",
+    "ghalin-lotangan",
+    "ashtak-monday"
+   ],
+   "tue": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan",
+    "ashtak-tuesday"
+   ],
+   "wed": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan",
+    "ashtak-wednesday"
+   ],
+   "thu": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan",
+    "ashtak-thursday"
+   ],
+   "fri": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan",
+    "ashtak-friday"
+   ],
+   "sat": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan",
+    "ashtak-saturday"
+   ]
+  }
  }
 }

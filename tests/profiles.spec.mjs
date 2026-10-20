@@ -102,7 +102,7 @@ test("switching person changes the text size and language at once, and each keep
   await switchTo(page, "Baba");
   // Baba starts with the defaults; he picks English and a larger size
   expect(await textLang(page)).toBe("mr");
-  await page.locator("#home-btn").click(); // Marathi → English
+  await page.locator("#home-btn").evaluate((b) => b.click()); // Marathi → English (the button is in the top bar while reading)
   expect(await textLang(page)).toBe("en");
   await page.locator("#aa").click();
   for (let i = 0; i < 5; i++) await page.locator("#lg").click();
@@ -246,7 +246,7 @@ test("Save a backup file → Restore from it: every person, setting and tick com
   await addPerson(page, "Aai", { initials: "आई", colour: 2 });
   await page.locator("#pfx").click();
   await switchTo(page, "Aai");
-  await page.locator("#home-btn").click(); // English
+  await page.locator("#home-btn").evaluate((b) => b.click()); // English (the button is in the top bar while reading)
   await rows(page).nth(4).locator("input").check();
   await page.locator("#aa").click();
   await expect(page.locator("#bksv")).toHaveText("Not saved yet");
@@ -255,7 +255,7 @@ test("Save a backup file → Restore from it: every person, setting and tick com
   const file = info.outputPath("backup.nitya");
   await dl.saveAs(file);
   const json = JSON.parse(readFileSync(file, "utf8"));
-  expect([json.format, json.kind, json.app]).toEqual(["nitya", "backup", "aarti-v1.4"]);
+  expect([json.format, json.kind, json.app]).toEqual(["nitya", "backup", "aarti-v1.9"]);
   expect(json.payload.profiles.map((p) => p.name)).toEqual(["Me", "Aai"]);
   await expect(page.locator("#bksv")).toHaveText("Last saved 18 October 2026");
   await page.locator("#xc").click();

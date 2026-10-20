@@ -273,7 +273,7 @@ test("screen readers: search announces how many lines matched, or that nothing d
   await expect(page.locator("#srs")).toHaveAttribute("role", "status");
   await page.locator("#hm").click();
   await page.locator("#q").fill("deva");
-  await expect(page.locator("#srs")).toHaveText(/^(\d+|40 or more) results?$/);
+  await expect(page.locator("#srs")).toHaveText(/^(\d+ texts? and )?(\d+|40 or more) (results?|lines?)$/);
   await page.locator("#q").fill("zzqxw");
   await expect(page.locator("#srs")).toHaveText("Nothing found");
   // Enter straight after typing opens the first result, even before the pause
@@ -412,6 +412,9 @@ test("a 320px phone: the home buttons show their words, and a note sits under th
     const b = await page.locator(id).boundingBox(), t = await w.boundingBox();
     expect(t.x >= b.x - 0.5 && t.x + t.width <= b.x + b.width + 0.5, `${id} word inside its button`).toBe(true);
   }
+  // the language button is in the top bar while reading
+  await page.locator("#hm").click();
+  await page.locator('#jl a[data-go="a1"]').click();
   await page.locator("#home-btn").click();
   const fl = page.locator("#fl");
   await expect(fl).toHaveClass(/\bon\b/);
