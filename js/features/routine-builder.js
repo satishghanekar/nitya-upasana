@@ -34,7 +34,8 @@ import {
   textsFor,
   weekOf,
 } from "../core/routine.js";
-import { active, onChange, routine, setRoutine } from "../store/store.js";
+import { active, getLibrary, onChange, routine, setRoutine } from "../store/store.js";
+import { categoriesOf, categoryOf } from "../core/library.js";
 import { setR } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { shownSession } from "./today-card.js";
@@ -237,10 +238,8 @@ var weekBefore = {};
 var info = {};
 /** @type {PickText[]} */
 var all = [];
-/** @type {Record<string, string> | null} category names in the menu language, once categories.json is read */
-var catNames = null;
-/** @type {any} */
-var cats = null;
+/** @type {Record<string, string>} each text's category in content/library.json (before the family's moves) */
+var baseCat = {};
 /** @type {import("./text-picker.js").Picker} */
 var picker;
 /** @type {HTMLElement | null} */
@@ -338,36 +337,27 @@ function buildInfo() {
     g.texts.forEach(function (id) {
       var x = byId[id];
       if (!x || info[id]) return;
-      info[id] = { id: id, title: x.title, titleEn: x.titleEn, language: x.language, category: /** @type {any} */ (x).category || "" };
+      baseCat[id] = /** @type {any} */ (x).category || "";
+      info[id] = { id: id, title: x.title, titleEn: x.titleEn, language: x.language, category: baseCat[id] };
       all.push(info[id]);
     });
   });
 }
 
-// The categories' names for the picker's tags (content/categories.json, kept for offline use); without them, no tags
-function loadCats() {
-  if (cats || typeof fetch !== "function") return;
-  cats = {};
-  fetch("content/categories.json")
-    .then(function (r) {
-      return r.ok ? r.json() : [];
-    })
-    .then(function (list) {
-      cats = Array.isArray(list) ? list : [];
-      catNames = null;
-      if (page && !page.hidden) picker.render();
-    })
-    .catch(function () {});
-}
+// The picker's category tags: each text's category on this phone (the family's moves and renames, js/core/library.js),
+// named in the menu language
 function catWords() {
-  if (catNames) return catNames;
   /** @type {Record<string, string>} */
   var o = {};
-  if (Array.isArray(cats))
-    cats.forEach(function (/** @type {any} */ c) {
-      if (c && c.id && c.name) o[c.id] = c.name[ui()] || c.name.en || "";
-    });
-  catNames = o;
+  if (!loaded.categories) return o;
+  var local = getLibrary(),
+    cats = categoriesOf(loaded.categories, local);
+  all.forEach(function (t) {
+    t.category = categoryOf({ id: t.id, category: baseCat[t.id] || "" }, cats, local);
+  });
+  cats.forEach(function (c) {
+    o[c.id] = c.name[ui()] || c.name.en || c.name.mr;
+  });
   return o;
 }
 
@@ -711,7 +701,6 @@ export function openBuilder(o) {
   if (!page) return;
   o = o || {};
   buildInfo();
-  loadCats();
   view.session = o.session || shownSession() || sessionAt(new Date());
   view.day = typeof o.day === "number" ? o.day : new Date().getDay();
   view.r = editable(routine(), loaded.routine);

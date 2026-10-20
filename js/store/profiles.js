@@ -19,9 +19,11 @@ import { cleanRoutine } from "../core/routine.js";
  * @typedef {import("../core/routine.js").Routine} Routine
  * @typedef {{ id: string, name: string, initials: string, colour: string, settings: Prefs,
  *   checklist: Checklist | null, routine: Routine | null, created: string, updated: string }} Profile
- *   routine: their own (the routine builder, version 1.8), or null to follow content/routines.json (Q5)
+ *   routine: their own (the routine builder, version 1.9), or null to follow content/routines.json (Q5)
  * @typedef {{ activeProfile: string, device: Prefs, since: string, lastBackup: string, snooze: string,
- *   schema: number, order?: string[] }} Meta   order: the people's ids in the order they were added
+ *   schema: number, order?: string[], library?: import("../core/library.js").LibraryLocal }} Meta
+ *   order: the people's ids in the order they were added; library: the family's categories, renames and moves
+ *   (js/core/library.js), for everyone on this phone
  */
 
 // The badge colours offered (white letters on each meet WCAG AA, 4.5:1 or more)
@@ -224,7 +226,7 @@ export function cleanProfile(p, env) {
     colour: cleanColour(p.colour),
     settings: cleanPerson(p.settings, env),
     checklist: cleanChecklist(p.checklist),
-    // a profile saved before version 1.8 (or a backup file from then) has none: the default routine
+    // a profile saved before version 1.9 (or a backup file from then) has none: the default routine
     routine: cleanRoutine(p.routine),
     created: typeof p.created === "string" ? p.created : "",
     updated: typeof p.updated === "string" ? p.updated : "",

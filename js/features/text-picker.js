@@ -29,7 +29,7 @@
  *   isSheet: () => boolean, isOpen: () => boolean }} Picker
  */
 
-// Beside the list from this width (css/13-builder.css); below it, a sheet
+// Beside the list from this width (css/14-builder.css); below it, a sheet
 const WIDE = "(min-width: 1100px)";
 
 /** @param {string} s */

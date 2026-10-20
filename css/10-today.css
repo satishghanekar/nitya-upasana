@@ -1,5 +1,5 @@
 /* 10-today.css: Home and the Library page
-   Part 11 of 15 of the site styles. index.html loads the parts in number order, and the order
+   Part 11 of 16 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Home v2 (approved by Satish 2026-10-18, mockup A "Simple list"; docs/decisions.md): the home page is what to chant
    now, in one column. Built by js/features/today-card.js: the time-of-day picture beside today's date (#tdy), a slot

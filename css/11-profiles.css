@@ -1,5 +1,5 @@
 /* 11-profiles.css: Profiles and backup
-   Part 12 of 15 of the site styles. index.html loads the parts in number order, and the order
+   Part 12 of 16 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    The profile chip in the top bar (#who, mockup A: round badge and name), the profile sheet (#pfm: the people on
    this phone, Add / Edit / Delete), the Restore dialog (#bkm) and the notes on the home page (#pfnt: this browser

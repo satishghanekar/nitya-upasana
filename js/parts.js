@@ -20,7 +20,8 @@ var SITE_PARTS = (function () {
     "10-today",
     "11-profiles",
     "12-calendar",
-    "13-builder",
+    "13-library",
+    "14-builder",
     "99-fallbacks",
   ].map(function (f) {
     return "css/" + f + ".css";
@@ -43,6 +44,8 @@ var SITE_PARTS = (function () {
     "core/time-of-day",
     "features/day-picture",
     "text/iast",
+    "core/library",
+    "features/library",
     "text/layout",
     "features/astronomy",
     "features/sankashti",
@@ -71,6 +74,7 @@ var SITE_PARTS = (function () {
     "features/contents-list",
     "features/clicks",
     "features/pinch",
+    "text/search-core",
     "text/search",
     "core/startup",
     "features/picture-viewer",
