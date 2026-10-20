@@ -143,7 +143,9 @@ test("the Library lists the texts by category; empty categories are left out; th
   await page.locator("#hm").click();
   expect(await groups(page)).toEqual(["वैदिक मंत्र", "आरती"]);
   expect(await inGroup(page, "vedic-chant")).toEqual(["p1"]);
-  expect(await inGroup(page, "aarti")).toEqual(["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10"]);
+  expect(await inGroup(page, "aarti")).toEqual(["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10",
+    "jaydeva-jaydeva-samartha", "jay-jay-aarti-shrigururaya", "ovaloon-aarti-chaitanyabrahma", "aarti-kariton-guruvar",
+    "dhanya-jagin-guruvarya", "aarti-belaguve", "svastha-karin-shayan", "ovaloo-sapreme-aarti"]);
   await expect(page.locator('#jl a[data-go="a5"] .nm')).toHaveText("५.");
   await expect(page.locator("#lbb")).toHaveAccessibleName("Edit categories");
   // the side menu on wide screens follows the same categories

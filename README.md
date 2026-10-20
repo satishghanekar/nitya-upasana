@@ -157,6 +157,14 @@ Each piece is one file in `content/texts/`. Its `legacy-id` is the id of its `<s
 | `ghalin-lotangan.txt` | `a8` | Aarti 8. घालीन लोटांगण |
 | `jai-ganesh-deva.txt` | `a9` | Aarti 9. आरती जय गणेश देवा |
 | `jai-jagdish-hare.txt` | `a10` | Aarti 10. आरती जय जगदीश हरे |
+| `jaydeva-jaydeva-samartha.txt` | (none: `jaydeva-jaydeva-samartha`) | Aarti 11. श्रीमहाराजांची आरती |
+| `jay-jay-aarti-shrigururaya.txt` | (none: `jay-jay-aarti-shrigururaya`) | Aarti 12. आरती श्रीमहाराजांची |
+| `ovaloon-aarti-chaitanyabrahma.txt` | (none: `ovaloon-aarti-chaitanyabrahma`) | Aarti 13. ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा |
+| `aarti-kariton-guruvar.txt` | (none: `aarti-kariton-guruvar`) | Aarti 14. आरति करितों गुरुवर |
+| `dhanya-jagin-guruvarya.txt` | (none: `dhanya-jagin-guruvarya`) | Aarti 15. धन्य जगीं या गुरुवर्य हे मारुतिअवतार |
+| `aarti-belaguve.txt` | (none: `aarti-belaguve`) | Aarti 16. आरति बेळगुवे |
+| `svastha-karin-shayan.txt` | (none: `svastha-karin-shayan`) | Aarti 17. स्वस्थ करीं शयन प्रभो मंचकावरी |
+| `ovaloo-sapreme-aarti.txt` | (none: `ovaloo-sapreme-aarti`) | Aarti 18. आरती श्री नानामहाराजांची |
 
 Or search for a few words of the line itself.
 
@@ -210,7 +218,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 
 | Block | |
 |---|---|
-| `[1]`, `[2]`, … | A stanza, numbered in order. In an aarti the app adds ॥ १ ॥ at its end; do not type it. (The Atharvashirsha's numbers are part of its text, and its blocks are simply counted.) |
+| `[1]`, `[2]`, … | A stanza, numbered in order. The app adds ॥ १ ॥ at its end (after its last line that is not a refrain line); do not type it. (Not in a `layout: prose` text: the Atharvashirsha's numbers are part of its text, and its blocks are simply counted.) |
 | `[para 3]` | A stanza that starts a new paragraph when printed as prose. |
 | `[dhrupad]` | With `refrain: every-verse`: the dhrupad, first in the file. Otherwise: lines said once, where they stand. |
 | `[dhrupad bold]` | The same, shown in bold (Ghalin Lotangan's closing mantra). |

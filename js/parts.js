@@ -110,6 +110,14 @@ var SITE_PARTS = (function () {
     "texts/ghalin-lotangan.txt",
     "texts/jai-ganesh-deva.txt",
     "texts/jai-jagdish-hare.txt",
+    "texts/jaydeva-jaydeva-samartha.txt",
+    "texts/jay-jay-aarti-shrigururaya.txt",
+    "texts/ovaloon-aarti-chaitanyabrahma.txt",
+    "texts/aarti-kariton-guruvar.txt",
+    "texts/dhanya-jagin-guruvarya.txt",
+    "texts/aarti-belaguve.txt",
+    "texts/svastha-karin-shayan.txt",
+    "texts/ovaloo-sapreme-aarti.txt",
   ].map(function (f) {
     return "content/" + f;
   });

@@ -1,0 +1,36 @@
+id: svastha-karin-shayan
+title: स्वस्थ करीं शयन प्रभो मंचकावरी
+title-en: Svastha kareen shayan prabho manchakaavaree
+category: aarti
+language: mr
+refrain: every-verse
+---
+[dhrupad]
+स्वस्थ करीं शयन प्रभो मंचकावरी ।
+Svastha kareen shayan prabho manchakaavaree |
+श्रीसद्‌गुरुमहाराज पाहूं डोळेभरी ॥ धृ. ॥
+Shreesadgurumahaaraaj paahoon dolebharee || dhru. ||
+
+[1]
+चिन्मय तूं परमात्मा अससि तत्त्वतां ।
+Chinmay toon paramaatmaa asasi tattvataan |
+व्यवहरसी संतमिसें प्रगटुनी आतां ।
+Vyavaharasee santamisen pragatunee aataan |
+उघडें परब्रह्मचि हे मूर्ति गोजिरी ॥
+Ughaden parabrahmachi he moorti gojiree ||
+
+[2]
+देहगुणातीतचि तूं पतितपावना ।
+Dehagunaateetachi toon patitapaavanaa |
+म्हणवुनि तनु झिजवुनिया सुखविसी जनां ।
+Mhanavuni tanu jhijavuniyaa sukhavisee janaan |
+पहावेना, विश्रांती घेई क्षणभरी ॥
+Pahaavenaa, vishraantee gheee kshanabharee ||
+
+[3]
+भूतदया शांति तव पाय सेविती ।
+Bhootadayaa shaanti tav paay sevitee |
+सहजावस्था दक्षताहि वारा घालिती ।
+Sahajaavasthaa dakshataahi vaaraa ghaalitee |
+महाभागवत प्रार्थी कांहीं चाकरी ॥
+Mahaabhaagavat praarthee kaanheen chaakaree ||

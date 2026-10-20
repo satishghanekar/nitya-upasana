@@ -1,0 +1,42 @@
+id: jaydeva-jaydeva-samartha
+title: श्रीमहाराजांची आरती
+title-en: Shreemahaaraajaanchee aaratee
+category: aarti
+language: mr
+refrain: every-verse
+---
+[dhrupad]
+जयदेवा जयदेवा जय जय समर्था ॥
+Jayadevaa jayadevaa jay jay samarthaa ||
+श्रीब्रह्मचैतन्या सद्गुरुनाथा । जयदेवा जयदेवा ॥ धृ. ॥
+Shreebrahmachaitanyaa sadgurunaathaa | jayadevaa jayadevaa || dhru. ||
+
+[1]
+तू अनिर्वचनीय परमात्मा अससी ।
+Too anirvachaneey paramaatmaa asasee |
+लोकोद्धारासाठी नरतनु धरिलासी ।
+Lokoddhaaraasaathee naratanu dharilaasee |
+माणगंगातीरी प्रगट झालासी ॥
+Maanagangaateeree pragat jhaalaasee ||
+गोंदवले ग्रामी कुलकर्णीवंशी ॥
+Gondavale graamee kulakarneevanshee ||
+
+[2]
+शरणागतासी त्वां निजसुख दिधले ।
+Sharanaagataasee tvaan nijasukh didhale |
+दीनालागी कृत्य अद्भुत केले ।
+Deenaalaagee krutya adbhut kele |
+जागोजागी राममंदिर निर्मियेले ।
+Jaagojaagee raamamandir nirmiyele |
+भूमंडळी रामनामा गर्जविले ॥
+Bhoomandalee raamanaamaa garjavile ||
+
+[3]
+तू सच्चिदानंद तू स्वयंज्योति ।
+Too sachchidaanand too svayanjyoti |
+भावे ओंवाळितो कर्पुर आरती ॥
+Bhaave onvaalito karpur aaratee ||
+महाभागवताची तव पायीं प्रीती ।
+Mahaabhaagavataachee tav paayeen preetee |
+घ्यावी सेवा सदा हीच विनंती ॥
+Ghyaavee sevaa sadaa heech vinantee ||
