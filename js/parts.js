@@ -118,6 +118,19 @@ var SITE_PARTS = (function () {
     "texts/aarti-belaguve.txt",
     "texts/svastha-karin-shayan.txt",
     "texts/ovaloo-sapreme-aarti.txt",
+    "texts/sadguru-padukashtak.txt",
+    "texts/ananyata-maj-ghado.txt",
+    "texts/anudin-anutapen.txt",
+    "texts/ashtak-monday.txt",
+    "texts/ashtak-tuesday.txt",
+    "texts/ashtak-wednesday.txt",
+    "texts/ashtak-thursday.txt",
+    "texts/ashtak-friday.txt",
+    "texts/ashtak-saturday.txt",
+    "texts/ashtak-sunday.txt",
+    "texts/haachi-subodh.txt",
+    "texts/brahmachaitanya-sarikha.txt",
+    "texts/swami-majha-pahila.txt",
   ].map(function (f) {
     return "content/" + f;
   });
