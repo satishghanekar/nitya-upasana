@@ -97,7 +97,7 @@ describe("ranking", () => {
   test("a category name finds its texts", () => {
     expect(textIds("vedic chant")).toEqual(["atharvashirsha"]);
     expect(textIds("वैदिक")).toEqual(["atharvashirsha"]);
-    expect(textIds("aarti").length).toBe(10);
+    expect(textIds("aarti").length).toBe(18);
   });
   test("an exact title outranks one it merely starts", () => {
     const r = search(ix, "ganapati aarti").texts;
