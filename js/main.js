@@ -60,6 +60,7 @@ import { init as startShare } from "./features/share.js";
 import { init as startOffline } from "./features/offline.js";
 import { init as startProfiles } from "./features/profiles.js";
 import { init as startBackup } from "./features/backup.js";
+import { init as startRoutineBuilder } from "./features/routine-builder.js";
 
 function start() {
   try {
@@ -99,6 +100,7 @@ function start() {
     startOffline(); // Offline use: home-screen app details and the service worker (sw.js)
     startProfiles(); // People on this phone: the profile chip in the top bar and its sheet (switch, add, edit, delete)
     startBackup(); // Save a backup file / Restore from a file, the backup reminder, keeping the data (storage.persist)
+    startRoutineBuilder(); // The routine builder (#rtb): each person's texts per session, in order, with the Add texts picker
   } finally {
     // Show the page (see "data-ready" in css/02-core.css), even if a part failed to start
     document.documentElement.setAttribute("data-ready", "");

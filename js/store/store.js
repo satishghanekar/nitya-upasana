@@ -25,6 +25,7 @@ import {
   startPlan,
 } from "./profiles.js";
 import { defaults, devicePart, joinPrefs, profilePart } from "./migrate.js";
+import { cleanRoutine } from "../core/routine.js";
 
 /**
  * @typedef {import("./db.js").DB} DB
@@ -276,7 +277,8 @@ export function switchTo(id, P) {
 }
 
 /**
- * Add a person, with the settings a new reader starts with (the defaults: text size, Marathi with English…)
+ * Add a person, with the settings a new reader starts with (the defaults: text size, Marathi with English…) and the
+ * default routine (content/routines.json, Q5)
  * @param {{ name: string, initials?: string, colour?: string }} o
  * @returns {{ ok: true, profile: Profile } | { ok: false, problem: "empty" | "taken" | "full" }}
  */
@@ -292,6 +294,7 @@ export function add(o) {
       colour: o.colour || nextColour(profiles),
       settings: profilePart(defaults(env)),
       checklist: null,
+      routine: null,
       now: now,
     });
   profiles.push(p);
@@ -379,6 +382,28 @@ export function ticksStorage() {
       });
     },
   };
+}
+
+// ---- the reading person's routine (the routine builder, js/features/routine-builder.js) ----
+/**
+ * Their own routine, or null when they follow content/routines.json
+ * @returns {import("../core/routine.js").Routine | null}
+ */
+export function routine() {
+  var p = active();
+  return p && p.routine ? JSON.parse(JSON.stringify(p.routine)) : null;
+}
+
+/**
+ * Keep a changed routine for the person reading, in their profile, written to IndexedDB at once
+ * @param {import("../core/routine.js").Routine | null} r  null: back to content/routines.json
+ */
+export function setRoutine(r) {
+  var p = active();
+  if (!p) return writing;
+  p.routine = cleanRoutine(r);
+  p.updated = new Date().toISOString();
+  return putProfile(p);
 }
 
 // ---- backup ----

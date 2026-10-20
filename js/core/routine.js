@@ -95,3 +95,191 @@ export function stepInSession(ids, id, dir) {
   if (j >= ids.length) return { end: true };
   return j < 0 ? null : { to: ids[j] };
 }
+
+// ---- Each person's own routine (the routine builder, js/features/routine-builder.js; docs/decisions.md 2026-10-19) ----
+// A person's routine is kept in their profile (Profile.routine, js/store/profiles.js), in the same shape as
+// content/routines.json. null means "never changed": they follow content/routines.json (Q5), so a new person starts
+// from it. The functions below never change what they are given: each returns a new routine or list.
+
+/** The weekday row of the builder, Monday first (A4), as Date.getDay() numbers @type {number[]} */
+export const WEEK_ORDER = [1, 2, 3, 4, 5, 6, 0];
+// at most this many texts in one list (the library has 11; room for family texts later)
+export const MAX_TEXTS = 60;
+var ID = /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/;
+
+/**
+ * A list of text ids read from storage or a file: strings that look like ids, each once, at most MAX_TEXTS
+ * @param {unknown} list
+ * @returns {string[]}
+ */
+export function cleanList(list) {
+  /** @type {string[]} */
+  var out = [];
+  if (!Array.isArray(list)) return out;
+  list.forEach(function (/** @type {unknown} */ id) {
+    if (typeof id === "string" && ID.test(id) && out.indexOf(id) < 0 && out.length < MAX_TEXTS) out.push(id);
+  });
+  return out;
+}
+
+/**
+ * One session's plan, cleaned: a weekday plan always has all seven days; anything unreadable is an empty fixed list
+ * @param {any} p
+ * @returns {SessionPlan}
+ */
+function cleanPlan(p) {
+  if (p && typeof p === "object" && p.mode === "weekday" && p.days && typeof p.days === "object") {
+    /** @type {Partial<Record<DayKey, string[]>>} */
+    var days = {};
+    DAY_KEYS.forEach(function (k) {
+      days[k] = cleanList(p.days[k]);
+    });
+    return { mode: "weekday", days: days };
+  }
+  return { mode: "fixed", texts: cleanList(p && typeof p === "object" ? p.texts : null) };
+}
+
+/**
+ * A routine read from IndexedDB or a backup file, cleaned (never trusted as it is): null when there is none (the
+ * person follows content/routines.json), else every session with a well-formed plan.
+ * @param {any} r
+ * @returns {Routine | null}
+ */
+export function cleanRoutine(r) {
+  if (!r || typeof r !== "object" || Array.isArray(r)) return null;
+  /** @type {Routine} */
+  var out = {};
+  SESSIONS.forEach(function (s) {
+    out[s] = cleanPlan(r[s]);
+  });
+  return out;
+}
+
+/**
+ * A person's routine to edit: their own, or a copy of the default (content/routines.json) when they have none
+ * @param {Routine | null | undefined} mine
+ * @param {Routine | null | undefined} fallback
+ * @returns {Routine}
+ */
+export function editable(mine, fallback) {
+  return /** @type {Routine} */ (cleanRoutine(mine) || cleanRoutine(fallback) || cleanRoutine({}));
+}
+
+/**
+ * Whether a session has a list per weekday
+ * @param {Routine} routine
+ * @param {Session} session
+ */
+export function byWeekday(routine, session) {
+  var p = routine[session];
+  return !!p && p.mode === "weekday";
+}
+
+/**
+ * Put a list in place: the session's one list, or one weekday's when the session has a list per weekday
+ * @param {Routine} routine
+ * @param {Session} session
+ * @param {number} day  0 Sunday … 6 Saturday
+ * @param {string[]} ids
+ * @returns {Routine}
+ */
+export function setList(routine, session, day, ids) {
+  var r = editable(routine, null),
+    p = /** @type {SessionPlan} */ (r[session]),
+    list = cleanList(ids);
+  if (p.mode === "weekday") p.days[DAY_KEYS[day]] = list;
+  else r[session] = { mode: "fixed", texts: list };
+  return r;
+}
+
+/**
+ * "Same every day" (fixed) or "Different by weekday": to weekdays, every day starts with the one list; to the same
+ * every day, the list of the day being shown becomes everyone's.
+ * @param {Routine} routine
+ * @param {Session} session
+ * @param {"fixed" | "weekday"} mode
+ * @param {number} day  the day shown (0 Sunday … 6 Saturday)
+ * @returns {Routine}
+ */
+export function setMode(routine, session, mode, day) {
+  var r = editable(routine, null),
+    now = textsFor(r, day, session);
+  if (mode === "weekday") {
+    /** @type {Partial<Record<DayKey, string[]>>} */
+    var days = {};
+    DAY_KEYS.forEach(function (k) {
+      days[k] = now.slice();
+    });
+    r[session] = { mode: "weekday", days: days };
+  } else r[session] = { mode: "fixed", texts: now };
+  return r;
+}
+
+/**
+ * "Copy to other days…": the list of one weekday given to the days chosen (a session with one list is unchanged)
+ * @param {Routine} routine
+ * @param {Session} session
+ * @param {number} from
+ * @param {number[]} to
+ * @returns {Routine}
+ */
+export function copyDays(routine, session, from, to) {
+  var r = editable(routine, null),
+    p = /** @type {SessionPlan} */ (r[session]);
+  if (p.mode !== "weekday") return r;
+  var list = textsFor(r, from, session),
+    days = p.days;
+  to.forEach(function (d) {
+    if (d >= 0 && d <= 6 && d !== from) days[DAY_KEYS[d]] = list.slice();
+  });
+  return r;
+}
+
+/**
+ * Whether every weekday of a session has the same list (then "Same every day" loses nothing)
+ * @param {Routine} routine
+ * @param {Session} session
+ */
+export function allDaysSame(routine, session) {
+  var first = JSON.stringify(textsFor(routine, 0, session));
+  for (var d = 1; d < 7; d++) if (JSON.stringify(textsFor(routine, d, session)) !== first) return false;
+  return true;
+}
+
+/**
+ * A list with one text moved from one place to another (places counted from 0, kept inside the list)
+ * @param {string[]} list
+ * @param {number} from
+ * @param {number} to
+ * @returns {string[]}
+ */
+export function moveItem(list, from, to) {
+  var out = list.slice();
+  if (from < 0 || from >= out.length) return out;
+  var t = Math.max(0, Math.min(out.length - 1, to)),
+    x = out.splice(from, 1)[0];
+  out.splice(t, 0, x);
+  return out;
+}
+
+/**
+ * A list with texts added at the end (those already in it stay where they are)
+ * @param {string[]} list
+ * @param {string[]} ids
+ * @returns {string[]}
+ */
+export function addTexts(list, ids) {
+  return cleanList(list.concat(ids));
+}
+
+/**
+ * A list without one text
+ * @param {string[]} list
+ * @param {string} id
+ * @returns {string[]}
+ */
+export function removeText(list, id) {
+  return list.filter(function (x) {
+    return x !== id;
+  });
+}
