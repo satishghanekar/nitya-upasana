@@ -61,7 +61,7 @@ The Print button builds a separate print view (`#pv`, in `js/features/print.js`)
 
 ## Offline use and updates
 
-- `sw.js` keeps the page, every file in `js/parts.js` (styles, scripts, texts, the main fonts and the three time-of-day pictures with the icons) in a cache named after the version (`aarti-v1.11`).
+- `sw.js` keeps the page, every file in `js/parts.js` (styles, scripts, texts, the main fonts and the three time-of-day pictures with the icons) in a cache named after the version (`aarti-v1.12`).
   - The page and its parts are always fetched fresh when possible, with a 3 s limit before the saved copy is used, so the page never mixes old and new parts.
   - Everything else comes from the saved copy and is refreshed in the background.
   - If the saved copy cannot be read within 2 s, the request goes to the network. Safari's storage can stall, and a Mac once sat on a blank page because of it.
