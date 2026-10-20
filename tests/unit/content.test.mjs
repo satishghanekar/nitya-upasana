@@ -24,10 +24,15 @@ const allLines = (C) => pieces(C).flatMap((p) => [...(p.refrain ? p.refrain.line
 
 describe("CONTENT from the text files", () => {
   const C = buildContent(lib, files);
+  // The texts added since (the Gondavalekar Maharaj aartis) come after the old ones in their group
+  const ADDED = ["jaydeva-jaydeva-samartha", "jay-jay-aarti-shrigururaya", "ovaloon-aarti-chaitanyabrahma", "aarti-kariton-guruvar",
+    "dhanya-jagin-guruvarya", "aarti-belaguve", "svastha-karin-shayan", "ovaloo-sapreme-aarti"];
+  const OLD_C = { ...C, groups: C.groups.map((g) => ({ ...g, pieces: g.pieces.filter((p) => !ADDED.includes(p.id)) })) };
   test("is identical to the old content/pieces.js", () => {
-    expect(C).toStrictEqual(OLD);
+    expect(OLD_C).toStrictEqual(OLD);
     // and in the same key order, so even the order the page meets things in is unchanged
-    expect(JSON.stringify(C)).toBe(JSON.stringify(OLD));
+    expect(JSON.stringify(OLD_C)).toBe(JSON.stringify(OLD));
+    expect(pieces(C).map((p) => p.id).slice(-ADDED.length)).toEqual(ADDED);
   });
   test("the marks that matter are all there: 53 <br>, 42 zero-width spaces, svara marks", () => {
     const s = JSON.stringify(allLines(C));

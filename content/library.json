@@ -98,6 +98,78 @@
    "category": "aarti",
    "language": "hi",
    "lines": 30
+  },
+  {
+   "id": "jaydeva-jaydeva-samartha",
+   "file": "texts/jaydeva-jaydeva-samartha.txt",
+   "title": "श्रीमहाराजांची आरती",
+   "titleEn": "Shreemahaaraajaanchee aaratee",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 14
+  },
+  {
+   "id": "jay-jay-aarti-shrigururaya",
+   "file": "texts/jay-jay-aarti-shrigururaya.txt",
+   "title": "आरती श्रीमहाराजांची",
+   "titleEn": "Aaratee shreemahaaraajaanchee",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 8
+  },
+  {
+   "id": "ovaloon-aarti-chaitanyabrahma",
+   "file": "texts/ovaloon-aarti-chaitanyabrahma.txt",
+   "title": "ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा",
+   "titleEn": "Ovaaloon aaratee sadguru chaitanyabrahmaa",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 11
+  },
+  {
+   "id": "aarti-kariton-guruvar",
+   "file": "texts/aarti-kariton-guruvar.txt",
+   "title": "आरति करितों गुरुवर",
+   "titleEn": "Aarati kariton guruvar",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 11
+  },
+  {
+   "id": "dhanya-jagin-guruvarya",
+   "file": "texts/dhanya-jagin-guruvarya.txt",
+   "title": "धन्य जगीं या गुरुवर्य हे मारुतिअवतार",
+   "titleEn": "Dhanya jageen yaa guruvarya he maarutiavataar",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 18
+  },
+  {
+   "id": "aarti-belaguve",
+   "file": "texts/aarti-belaguve.txt",
+   "title": "आरति बेळगुवे",
+   "titleEn": "Aarati belaguve",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 18
+  },
+  {
+   "id": "svastha-karin-shayan",
+   "file": "texts/svastha-karin-shayan.txt",
+   "title": "स्वस्थ करीं शयन प्रभो मंचकावरी",
+   "titleEn": "Svastha kareen shayan prabho manchakaavaree",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 11
+  },
+  {
+   "id": "ovaloo-sapreme-aarti",
+   "file": "texts/ovaloo-sapreme-aarti.txt",
+   "title": "आरती श्री नानामहाराजांची",
+   "titleEn": "Aaratee shree naanaamahaaraajaanchee",
+   "category": "aarti",
+   "language": "mr",
+   "lines": 28
   }
  ],
  "groups": [
@@ -129,7 +201,15 @@
     "yei-o-vitthale",
     "ghalin-lotangan",
     "jai-ganesh-deva",
-    "jai-jagdish-hare"
+    "jai-jagdish-hare",
+    "jaydeva-jaydeva-samartha",
+    "jay-jay-aarti-shrigururaya",
+    "ovaloon-aarti-chaitanyabrahma",
+    "aarti-kariton-guruvar",
+    "dhanya-jagin-guruvarya",
+    "aarti-belaguve",
+    "svastha-karin-shayan",
+    "ovaloo-sapreme-aarti"
    ]
   }
  ],
