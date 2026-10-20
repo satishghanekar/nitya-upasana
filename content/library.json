@@ -10,6 +10,15 @@
    "lines": 95
   },
   {
+   "id": "shree-rudra",
+   "file": "texts/shree-rudra.txt",
+   "title": "श्री रुद्रप्रश्नः",
+   "titleEn": "Shree Rudra",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 278
+  },
+  {
    "id": "shri-sukta",
    "file": "texts/shri-sukta.txt",
    "title": "श्रीसूक्त",
@@ -308,6 +317,7 @@
    },
    "texts": [
     "atharvashirsha",
+    "shree-rudra",
     "shri-sukta"
    ]
   },

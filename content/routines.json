@@ -1,11 +1,46 @@
 {
  "morning": {
-  "mode": "fixed",
-  "texts": [
-   "atharvashirsha",
-   "sukhkarta",
-   "durge-durghat-bhari"
-  ]
+  "mode": "weekday",
+  "days": {
+   "sun": [
+    "atharvashirsha",
+    "shree-rudra",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "mon": [
+    "atharvashirsha",
+    "shree-rudra",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "tue": [
+    "atharvashirsha",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "wed": [
+    "atharvashirsha",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "thu": [
+    "atharvashirsha",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "fri": [
+    "atharvashirsha",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ],
+   "sat": [
+    "atharvashirsha",
+    "shree-rudra",
+    "sukhkarta",
+    "durge-durghat-bhari"
+   ]
+  }
  },
  "afternoon": {
   "mode": "fixed",
