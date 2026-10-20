@@ -6,7 +6,7 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files. **There
 
 ## What happens when the page opens
 
-1. **`<head>`** loads the 13 style files in `css/` in number order, then `js/parts.js`, the one list of the site's files. `modulepreload` links fetch the script parts in parallel.
+1. **`<head>`** loads the 15 style files in `css/` in number order, then `js/parts.js`, the one list of the site's files. `modulepreload` links fetch the script parts in parallel.
 2. **`<body>`** has the top bar, Settings, the home page and the dialogs, written in HTML. Help's text sits in a `<template>` and is only laid out when Help is first opened.
 3. **At the end of `<main>`**, `#pieces` marks where the pieces go, and the plain script `js/render.js` defines `renderPieces` (the pieces' HTML) and `SCR` (Kannada letters).
 4. **`js/main.js`** (`<script type="module">`) starts the site script. First `js/text/load.js` fetches `content/library.json` and the text files in `content/texts/` (and, at the same time, `content/routines.json` for the home page), `js/text/content.js` builds `CONTENT` from them (reading each file with `js/text/format.js`), and `renderPieces` puts the pieces in place of `#pieces` (rewritten in Kannada letters when chosen). At the same time `openStore()` (`js/store/store.js`) opens IndexedDB, where the people on this phone are kept (it never takes more than about two seconds: one second per try, two tries, then memory). Only then does it call each part's `init()` in a fixed order (listed in `js/README.md`), and set `data-ready` on `<html>`. So every part finds the pieces in the page, as if they had been written in the HTML. If the texts can't be loaded, the parts start anyway.
@@ -33,7 +33,8 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files. **There
   - It remembers each result per language, font, layout and window size.
   - It is skipped when the reader has chosen a size (`P.fsu`).
 - **The home page's ticks** are kept apart from `P`, in the reading person's profile (`checklist`), for today only (`js/core/ticks.js`, given the store's storage). The old `localStorage["nitya-ticks"]` is read once, on the first visit after 1.3, and moved into the first person.
-- **Backups** (`js/store/backup.js`, `js/features/backup.js`) are `.nitya` files: plain JSON with every person, the device's settings and a SHA-256 of them. Restoring checks the file, shows what changes and replaces everyone only when confirmed.
+- **Each person's routine** (version 1.9, the routine builder `js/features/routine-builder.js`): in their profile (`routine`), in the shape of `content/routines.json` (per session `{ mode: "fixed", texts }` or `{ mode: "weekday", days: { mon: […], … } }`). `null` (a new person, or a profile or backup from before 1.9) means they follow `content/routines.json`; the first change in the builder copies it. Home reads the reading person's routine for today's weekday and the session (`js/features/today-card.js`). The rules for the lists are pure functions in `js/core/routine.js`, unit-tested.
+- **Backups** (`js/store/backup.js`, `js/features/backup.js`) are `.nitya` files: plain JSON with every person (settings, routine, today's ticks), the device's settings and a SHA-256 of them. Restoring checks the file, shows what changes and replaces everyone only when confirmed.
 - **The library's categories** (version 1.8): the built-in ones are `content/categories.json`; what the family changes on this phone (categories added, names changed, texts moved) is one object in IndexedDB `meta.library`, for everyone on the phone, and in backup files (`payload.library`; a file from 1.7 or before has none, and restoring it leaves this phone's categories as they are). `js/core/library.js` merges the two (pure, unit-tested); `js/features/library.js` shows the Library by category and the categories sheet. The texts themselves are never changed. Search (`js/text/search-core.js`, pure) finds texts by title, id, first line and category before lines.
 - **The session being read** (after Start / Continue) is in `sessionStorage["nitya-run"]`, so ‹ Prev and Next › keep following it if the page reloads; a jump from the Library or the side menu ends it.
 - **`shared`** (`js/core/state.js`) holds the seven values that more than one part changes. A JavaScript module can only change its own variables, so these live in one object everyone can write to.
@@ -60,7 +61,7 @@ The Print button builds a separate print view (`#pv`, in `js/features/print.js`)
 
 ## Offline use and updates
 
-- `sw.js` keeps the page, every file in `js/parts.js` (styles, scripts, texts, the main fonts and the three time-of-day pictures with the icons) in a cache named after the version (`aarti-v1.8`).
+- `sw.js` keeps the page, every file in `js/parts.js` (styles, scripts, texts, the main fonts and the three time-of-day pictures with the icons) in a cache named after the version (`aarti-v1.9`).
   - The page and its parts are always fetched fresh when possible, with a 3 s limit before the saved copy is used, so the page never mixes old and new parts.
   - Everything else comes from the saved copy and is refreshed in the background.
   - If the saved copy cannot be read within 2 s, the request goes to the network. Safari's storage can stall, and a Mac once sat on a blank page because of it.

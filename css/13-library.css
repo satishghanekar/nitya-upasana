@@ -1,5 +1,5 @@
 /* 13-library.css: The Library by category
-   Part 14 of 15 of the site styles. index.html loads the parts in number order, and the order
+   Part 14 of 16 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    The Library's list (#jl) keeps the book-index look of 08-contents-book.css and 10-today.css, its category names
    in place of पूजा / आरती; this file adds the "Edit categories" button at the end of the list (#lbr), the categories

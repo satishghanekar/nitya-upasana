@@ -1,0 +1,659 @@
+/* 14-builder.css: the routine builder
+   Part 15 of 16 of the site styles. index.html loads the parts in number order, and the order
+   matters: a later rule for the same element refines an earlier one (see css/README.md).
+   Built by js/features/routine-builder.js and js/features/text-picker.js (design A, "List per day", chosen by
+   Satish 2026-10-19: mockups/builder-a.html on branch mockup-home-v2). Sizes are in px, like the home page: they keep
+   their size when the reader enlarges the verses. Every button is at least 44px.
+   Sections:
+   - Edit beside the session on Home, and an empty session
+   - The builder page (#rtb): under the top bar, like the Library
+   - Session, which days, the weekday row
+   - Copy to other days…
+   - The list: grip, number, title, ↑ ↓ ✕
+   - Add texts: the picker (#tpk), a sheet on phones and tablets
+   - Wide screens: the picker beside the list
+   - Print
+*/
+
+/* ==== Edit beside the session on Home, and an empty session (js/features/today-card.js) ==== */
+#tsed,
+#tsea {
+  flex: none;
+  min-width: 44px;
+  min-height: 44px;
+  height: auto;
+  /* a 44px target that doesn't make the heading's row taller (the list stays where it was) */
+  margin: -8px -6px -8px 0;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--accent);
+  font: 600 15px/1.2 var(--lat);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+#tsed {
+  align-self: center;
+}
+#tsc[lang="mr"] #tsed,
+#tsc[lang="mr"] #tsea {
+  font-family: var(--body);
+}
+#tsed:focus-visible,
+#tsea:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 0;
+}
+.tshd #tsh {
+  flex: 1;
+  min-width: 0;
+}
+#tse {
+  margin: 4px 0 6px;
+  padding: 12px 14px;
+  border: 1px dashed var(--hdrl);
+  border-radius: 14px;
+  background: var(--hdrt);
+  color: var(--ink);
+}
+#tse[hidden] {
+  display: none;
+}
+#tsea {
+  margin: 0 0 0 -6px;
+}
+
+/* ==== The builder page (#rtb): under the top bar, over the page (top set by the script), one centred column ==== */
+#rtb {
+  position: fixed;
+  top: 61px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 6;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 16px;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 15px/1.45 var(--lat);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#rtb[hidden] {
+  display: none;
+}
+#rtb:focus {
+  outline: none;
+}
+#rtb[lang="mr"] {
+  font-family: var(--body);
+}
+#rtb .rtin {
+  max-width: 34rem;
+  margin: 0 auto;
+}
+#rtb .rtmain {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+#rtb .libhd {
+  flex-wrap: wrap;
+  padding-bottom: 0;
+}
+#rbk {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  height: auto;
+  margin: 0;
+  padding: 0 10px 0 4px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--accent);
+  font: 600 17px/1.2 var(--lat);
+  cursor: pointer;
+}
+#rtb .libhd[data-lang="mr"] #rbk {
+  font-family: var(--body);
+}
+#rtb button:focus-visible,
+#rtb input:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+#rtbt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  font: 650 20px/1.3 var(--lat);
+  outline: none;
+}
+#rtb[lang="mr"] #rtbt {
+  font: 600 20px/1.35 var(--body);
+}
+#rtbt:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+#rtbn {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ==== Session, which days, the weekday row: radio groups of buttons ==== */
+.rtseg {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--hdrl);
+  border-radius: 14px;
+  background: var(--hdrt);
+}
+.rtseg button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 44px;
+  height: auto;
+  margin: 0;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: none;
+  color: var(--muted);
+  font: 500 14.5px/1.25 var(--lat);
+  text-align: center;
+  cursor: pointer;
+}
+#rtb[lang="mr"] .rtseg button {
+  font-family: var(--body);
+}
+.rtseg button svg {
+  flex: none;
+}
+.rtseg button[aria-checked="true"] {
+  border-color: var(--hdrl);
+  background: var(--bg);
+  color: var(--ink);
+  font-weight: 650;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+#rtwk {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+#rtwk[hidden] {
+  display: none;
+}
+#rtwk button {
+  display: grid;
+  place-items: center;
+  gap: 0;
+  min-width: 0;
+  min-height: 52px;
+  height: auto;
+  margin: 0;
+  padding: 4px 0;
+  border: 1px solid var(--hdrl);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--muted);
+  font: 400 12.5px/1.2 var(--lat);
+  cursor: pointer;
+}
+#rtb[lang="mr"] #rtwk button {
+  font-family: var(--body);
+}
+#rtwk button b {
+  color: var(--ink);
+  font: 600 17px/1.2 var(--lat);
+}
+#rtwk button.today .rtwd {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+#rtwk button[aria-checked="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+#rtwk button[aria-checked="true"] b {
+  color: var(--bg);
+}
+
+/* ==== The line above the list, and Copy to other days… ==== */
+.rtcp {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+#rtcpb {
+  min-height: 44px;
+  height: auto;
+  margin: 0 -6px 0 0;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--accent);
+  font: 600 14.5px/1.2 var(--lat);
+  cursor: pointer;
+}
+#rtb[lang="mr"] #rtcpb {
+  font-family: var(--body);
+}
+#rtcpb[hidden],
+#rtcpf[hidden] {
+  display: none;
+}
+#rtcpf {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--hdrl);
+  border-radius: 14px;
+  background: var(--hdr);
+}
+#rtcpl {
+  padding: 0;
+  color: var(--ink);
+  font-weight: 600;
+}
+#rtcpd {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 8px;
+}
+.rtck {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.rtck input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+.rtcpbs {
+  display: flex;
+  gap: 8px;
+}
+.rtcpbs button {
+  min-width: 88px;
+  min-height: 44px;
+  height: auto;
+  margin: 0;
+  padding: 0 16px;
+  border: 1px solid var(--hdrl);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 600 15px/1.2 var(--lat);
+  cursor: pointer;
+}
+.rtcpbs button.pri {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+#rtb[lang="mr"] .rtcpbs button {
+  font-family: var(--body);
+}
+
+/* ==== The list: grip, number, title, ↑ ↓ ✕ ==== */
+#rtl {
+  margin: 0;
+  padding: 0 10px;
+  border: 1px solid var(--hdrl);
+  border-radius: 16px;
+  background: var(--hdr);
+  list-style: none;
+}
+#rtl:empty {
+  display: none;
+}
+#rtl li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 60px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--hdr);
+}
+#rtl li:last-child {
+  border-bottom: 0;
+}
+#rtl li.lift {
+  position: relative;
+  z-index: 1;
+  margin: 0 -6px;
+  padding: 0 6px;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+.rtg {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 44px;
+  color: var(--muted);
+  cursor: grab;
+  touch-action: none;
+}
+#rtl li.lift .rtg {
+  cursor: grabbing;
+}
+#rtl .tno {
+  min-width: 1.4em;
+}
+#rtl .tt,
+#tpk .tt {
+  flex: 1;
+  min-width: 0;
+}
+#rtl .tt .t1 {
+  font-size: 18px;
+  line-height: 24px;
+}
+#rtl .tt .t1[lang="en"],
+#tpk .tt .t1[lang="en"] {
+  font-family: var(--lat);
+  font-size: 16px;
+  line-height: 22px;
+}
+.rtbs {
+  flex: none;
+  display: flex;
+  gap: 4px;
+}
+.mv {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--hdrl);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+  cursor: pointer;
+}
+.mv.rm {
+  color: var(--accent);
+}
+.mv[aria-disabled="true"] {
+  color: var(--muted);
+  opacity: 0.45;
+  cursor: default;
+}
+#rte {
+  margin: 0;
+  padding: 14px;
+  border: 1px dashed var(--hdrl);
+  border-radius: 14px;
+  color: var(--muted);
+  text-align: center;
+}
+#rte[hidden] {
+  display: none;
+}
+#rtnote {
+  margin: -4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+#rtlive:not(:empty)::after {
+  content: " · ";
+}
+#rtadd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 50px;
+  height: auto;
+  margin: 0;
+  padding: 0 16px;
+  border: 1px solid var(--hdrl);
+  border-radius: 14px;
+  background: var(--hdrt);
+  color: var(--ink);
+  font: 600 16px/1.2 var(--lat);
+  cursor: pointer;
+}
+#rtb[lang="mr"] #rtadd {
+  font-family: var(--body);
+}
+
+/* ==== Add texts: the picker (#tpk). On phones and tablets a sheet from the bottom over a dimmed page ==== */
+#tpk[hidden] {
+  display: none;
+}
+#tpk.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 22;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+}
+#tpk.sheet[hidden] {
+  display: none;
+}
+#tpk .tpkin {
+  display: grid;
+  gap: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--hdrl);
+  border-radius: 18px;
+  background: var(--bg);
+  color: var(--ink);
+}
+#tpk.sheet .tpkin {
+  max-width: 34rem;
+  /* vh first for browsers without dvh (Chrome < 108); dvh follows the phone's moving address bar */
+  max-height: 85vh;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- vh fallback on the line above */
+  max-height: 85dvh;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  border-radius: 18px 18px 0 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.tpkhd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+#tpkt {
+  margin: 0;
+  color: var(--muted);
+  font: 600 13px/1.3 var(--lat);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  outline: none;
+}
+#tpk[lang="mr"] #tpkt {
+  font-family: var(--body);
+  letter-spacing: 0;
+}
+#tpkt:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.tpkx {
+  min-width: 64px;
+  min-height: 44px;
+  height: auto;
+  margin: 0;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--bg);
+  font: 650 15px/1.2 var(--lat);
+  cursor: pointer;
+}
+#tpk[lang="mr"] .tpkx {
+  font-family: var(--body);
+}
+#tpk:not(.sheet) .tpkx {
+  display: none;
+}
+.tpkq {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 14px;
+  border: 1px solid var(--hdrl);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.2 var(--lat);
+}
+.tpkq::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+#tpk[lang="mr"] .tpkq {
+  font-family: var(--body);
+}
+.tpkl {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tpkl li {
+  border-bottom: 1px solid var(--rule);
+}
+.tpkl li:last-child {
+  border-bottom: 0;
+}
+.tpkl li[hidden] {
+  display: none;
+}
+.tpkr {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+.tpkr input {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.tpkc {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--muted);
+  border-radius: 6px;
+  color: transparent;
+}
+.tpkr input:checked + .tpkc {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+.tpkr input:focus-visible + .tpkc {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+#tpk .tt .t1 {
+  display: block;
+  font: 400 17px/23px var(--head);
+  overflow-wrap: anywhere;
+}
+#tpk .tt .t2 {
+  display: block;
+  color: var(--muted);
+  font: 400 12.5px/17px var(--lat);
+}
+#tpk[lang="mr"] .ttg {
+  font-family: var(--body);
+}
+.tpkn {
+  margin: 0;
+  padding: 10px 0;
+  color: var(--muted);
+  text-align: center;
+}
+.tpkn[hidden] {
+  display: none;
+}
+
+/* ==== Wide screens: the picker beside the list (no Add texts button: the picker is always there) ==== */
+@media (min-width: 1100px) {
+  #rtb .rtin {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    align-items: start;
+    gap: 28px;
+    max-width: 1100px;
+  }
+  #tpk {
+    position: sticky;
+    top: 12px;
+    margin-top: 12px;
+  }
+  #tpk .tpkin {
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+  #rtadd {
+    display: none;
+  }
+}
+
+/* ==== Print ==== */
+@media print {
+  #rtb,
+  #tsed {
+    display: none;
+  }
+}

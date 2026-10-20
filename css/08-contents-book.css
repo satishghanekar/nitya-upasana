@@ -1,5 +1,5 @@
 /* 08-contents-book.css: Home contents as a book index, author lines, English-first Both
-   Part 9 of 15 of the site styles. index.html loads the parts in number order, and the order
+   Part 9 of 16 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Sections:
    - Home contents as a book index (1.0.2, option A of the "book-like" mockups): no tiles or box; the …

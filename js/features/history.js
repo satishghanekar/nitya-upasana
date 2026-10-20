@@ -5,9 +5,9 @@ import { bt, flash } from "../core/page.js";
 import { P, save } from "../core/state.js";
 import { LANGS, LK, aa, cur, hb, jp, pjOpen, pn } from "../core/apply.js";
 import { TK, apply, goHome, tuckHold } from "./bars.js";
-import { setC, setJ, setP } from "./overlays.js";
+import { setC, setJ, setP, setR } from "./overlays.js";
 
-var NAV, popSkip, adT, hmb, ovFrom;
+var NAV, popSkip, adT, hmb, ovFrom, sub, subSkip;
 
 export function init() {
   // Opening a panel or dialog adds a Back step, so the phone's Back closes it instead of leaving the site.
@@ -18,10 +18,22 @@ export function init() {
   // The script puts the page back in place itself (the browser's own guess can land at the top)
   if (NAV && "scrollRestoration" in history) history.scrollRestoration = "manual";
   addEventListener("popstate", function (e) {
+    // a sheet over a page (Add texts in the routine builder, on a phone) has its own Back step: Back closes only it
+    if (subSkip) {
+      subSkip = 0;
+      return;
+    }
+    if (sub) {
+      var f = sub;
+      sub = null;
+      f();
+      return;
+    }
     var was = ovOpen();
     setP(false);
     setJ(false);
     setC(false);
+    setR(false);
     var shut = 0;
     ["qrm", "prm", "inm", "pzv", "rsh", "bkm"].forEach(function (i) {
       var d = document.getElementById(i);
@@ -125,15 +137,16 @@ export function init() {
     } catch (x) {}
   });
   // Tabbing out of an open panel closes it, so it doesn't stay over the page you have moved on to
-  [pn, jp, document.getElementById("cal")].forEach(function (el) {
+  [pn, jp, document.getElementById("cal"), document.getElementById("rtb")].forEach(function (el) {
     if (!el) return;
     el.addEventListener("focusout", function (e) {
       var t = e.relatedTarget;
-      // (not into the categories sheet, which opens over the Library)
-      if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help,#lbm")) return;
+      // (not into the categories sheet, which opens over the Library, nor the profile sheet, over the routine builder)
+      if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help,#lbm,#pfm")) return;
       el._ret = null;
       if (el === pn) setP(false);
       else if (el === jp) setJ(false);
+      else if (el.id === "rtb") setR(false);
       else setC(false);
     });
   });
@@ -176,7 +189,7 @@ function ovOpen() {
   return (
     !pn.hidden ||
     !jp.hidden ||
-    ["cal", "qrm", "prm", "inm", "help", "pzv", "rsh", "pfm", "bkm", "lbm"].some(function (i) {
+    ["cal", "rtb", "qrm", "prm", "inm", "help", "pzv", "rsh", "pfm", "bkm", "lbm"].some(function (i) {
       var e = document.getElementById(i);
       return e && !e.hidden;
     })
@@ -190,6 +203,25 @@ export function ovPush() {
     history.replaceState({ y: scrollY }, "", location.href);
     history.pushState({ ov: 1, y: scrollY }, "", location.href);
   } catch (e) {}
+}
+
+// A sheet opened over a page that is open already (the routine builder's Add texts on a phone): a Back step of its
+// own, so the phone's Back closes the sheet (close is called) and leaves the page open
+export function ovSub(close) {
+  if (!NAV || !hs().ov) return;
+  sub = close;
+  try {
+    history.pushState({ ov: 1, sub: 1, y: scrollY }, "", location.href);
+  } catch (e) {}
+}
+
+// The sheet was closed another way (Done, Escape, a tap outside): take its Back step off again
+export function ovSubDone() {
+  if (!sub) return;
+  sub = null;
+  if (!NAV || !hs().sub) return;
+  subSkip = 1;
+  history.back();
 }
 
 // Closed with ✕, Escape or a tap outside: take the panel's Back step off again. Only once: history.back()
