@@ -102,6 +102,7 @@ var SITE_PARTS = (function () {
     "texts/atharvashirsha.txt",
     "texts/shree-rudra.txt",
     "texts/shri-sukta.txt",
+    "texts/purusha-suktam.txt",
     "texts/sukhkarta.txt",
     "texts/shendur-lal-chadhayo.txt",
     "texts/durge-durghat-bhari.txt",
