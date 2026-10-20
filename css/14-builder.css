@@ -1,5 +1,5 @@
-/* 13-builder.css: the routine builder
-   Part 14 of 15 of the site styles. index.html loads the parts in number order, and the order
+/* 14-builder.css: the routine builder
+   Part 15 of 16 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Built by js/features/routine-builder.js and js/features/text-picker.js (design A, "List per day", chosen by
    Satish 2026-10-19: mockups/builder-a.html on branch mockup-home-v2). Sizes are in px, like the home page: they keep

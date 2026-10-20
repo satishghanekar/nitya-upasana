@@ -4,16 +4,50 @@ Newest first. Each entry: the decision, who made it, and where it came from.
 
 ## 2026-10-19: routine builder (design A, "List per day")
 
-Satish chose design A, "List per day" (`mockups/builder-a.html` on `mockup-home-v2`; picture `builder.png`, panels "A · List with move buttons", "A · dark theme" and "A · with the Add texts picker beside it"), on 2026-10-19. Built to fit today's app (the Home redesign came after the mockup): a page like the Library and the Vedic calendar, under the top bar with Back. Version aarti-v1.8.
+Satish chose design A, "List per day" (`mockups/builder-a.html` on `mockup-home-v2`; picture `builder.png`, panels "A · List with move buttons", "A · dark theme" and "A · with the Add texts picker beside it"), on 2026-10-19. Built to fit today's app (the Home redesign came after the mockup): a page like the Library and the Vedic calendar, under the top bar with Back. Version aarti-v1.9 (merged after the Library by category, which took 1.8).
 
 - **Way in:** "Edit" (Marathi menus "बदला") beside the session's heading on Home, "Add texts" in an empty session (which also opens the picker), and Settings → Profiles and backup → **Routine**. It opens for the person reading ("Aai's routine" / "दिनक्रम: आई"), at the session Home shows and today's weekday.
 - **The page:** Morning / Afternoon / Evening; "Same every day" or "Different by weekday"; with weekdays a row Monday … Sunday (this week's dates, today underlined) and "Copy to other days…" (tick the days, Copy). The list has ↑ ↓ ✕ (44px), Alt+↑/↓ and Delete on a text's buttons, and drag by the grip (pointer events, so touch works on iPhone); every change is read out ("घालीन लोटांगण moved to 3 of 5") and shown in a line under the list. Changes are kept at once; there is no Save button.
 - **Add texts** (`js/features/text-picker.js`): every text in `content/library.json`, with search (Marathi or English letters, accents ignored) and a checkbox each; ticking adds at the end, unticking removes. Beside the list from 1100px; on phones and tablets a sheet from the bottom (Done, Escape, the phone's Back or a tap outside closes it). Its own file so the Library's categories can become filters later; each row already shows its category.
-- **Data:** each profile has `routine`, in the shape of `content/routines.json`; `null` means "never changed" and follows `content/routines.json` (decision 5 of the architecture plan): a new person starts from it, and a person who never edited gets a changed default after an update. The first edit copies the default into the profile. Backups carry each person's routine; a backup from before 1.8 restores everyone on the default. Switching "Different by weekday" back to "Same every day" keeps the day shown's list for every day (the weekday lists come back if switched again before leaving the page).
+- **Data:** each profile has `routine`, in the shape of `content/routines.json`; `null` means "never changed" and follows `content/routines.json` (decision 5 of the architecture plan): a new person starts from it, and a person who never edited gets a changed default after an update. The first edit copies the default into the profile. Backups carry each person's routine; a backup from before 1.9 restores everyone on the default. Switching "Different by weekday" back to "Same every day" keeps the day shown's list for every day (the weekday lists come back if switched again before leaving the page).
 - **Home** uses the reading person's routine for today's weekday and the session; a text taken out of a session loses its tick for today (the others keep theirs). An empty session says "Nothing is planned for afternoon yet." with Add texts.
 - **Names** follow the reading languages as the Vedic calendar's do: the first language large, the second under it; English first gives the English titles. Home's own list is unchanged (Marathi title with the English under it).
 
 Open for Satish: whether a person who never edited should keep following `content/routines.json` when it changes (as built), or get a frozen copy when the person is made; whether "Same every day" after "Different by weekday" should ask first (as built it keeps the day shown's list and says so); the Marathi words (बदला, दिनक्रम: …, रोज तेच / वारानुसार वेगळे, इतर वारांना हीच यादी…, रचना जोडा); whether Home's list should also follow the reading languages.
+
+## 2026-10-19: slice 3, the Library by category
+
+Satish said go ahead (2026-10-19) on finishing slice 3 on the new Library page. It was begun on the old home page
+(WIP commit 58ccc19 on `slice-3-library`); the category model (`js/core/library.js`), the search rules
+(`js/text/search-core.js`), the store and backup parts and the categories sheet are reused from it, re-pointed from the
+old home list to the Library (`#jump`). Version aarti-v1.8.
+
+- **The Library lists the texts by category** (`content/categories.json`: वैदिक मंत्र / Vedic Chant, आरती / Aarti,
+  स्तोत्र / Stotra, अष्टक / Ashtak, in that order, then the family's own), in place of पूजा / आरती. The reading page
+  keeps its groups (पूजा, आरती), and so does the printout's contents page, which now follows the reading page rather
+  than the Library's list. The side menu on wide screens follows the Library's categories.
+- **"Edit categories" ("विभाग बदला")** at the end of the list opens the categories sheet over the Library: add a
+  category (Marathi name, English name, or one of them for both; up to 20), rename any (a built-in one only on this
+  phone, with "Use the original name" to undo), delete one the family added (its texts go back to their own
+  categories; built-in ones can't be deleted), and choose each text's category. Kept per phone for everyone on it
+  (IndexedDB `meta.library`) and in backup files (`payload.library`); a backup from 1.7 or before leaves the
+  categories alone. The texts are never changed.
+- **Search** covers the whole library: texts by title (Marathi, English, scholarly spelling), id, first line and
+  category, listed first under "Texts" ("रचना"), then lines under "Lines" ("ओळी"); loose spellings, one typo per four
+  letters, Devanagari typed found through its English letters.
+- **Languages:** the sheet's words follow the menu language; category and text names in the sheet follow the reading
+  languages as the Vedic calendar's do (first language, the second as a small line under a category's name); the list
+  and search results follow the language shown on the reading page, like every title there, with English first when
+  English is the first language. English category names stay plain English (they are English words, not
+  transliterations), also with the scholarly spelling.
+- **Defaults for the open questions** (Claude's, for Satish to confirm or change):
+  1. A category with no texts is **hidden from the Library's list** but **shown in the sheet** ("No texts yet (not shown
+     in the Library)"), so it can be filled.
+  2. Texts **keep their reading-page numbers** in the Library (आरती ५ stays ५ in whichever category it is listed).
+  3. Marathi wording: **रचना** for a text, **विभाग** for a category, the search box says **"रचना किंवा ओळ शोधा"**
+     (English: "Find a text or a line").
+- **Back:** the sheet has its own Back step over the Library's, so the phone's Back (or ✕, Escape, a tap outside)
+  closes the sheet and leaves the Library open; focus returns to "Edit categories".
 
 ## 2026-10-19: festival days in the Vedic calendar
 

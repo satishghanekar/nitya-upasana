@@ -278,7 +278,7 @@ test("each person has their own routine; Save a backup file → Restore brings i
   const file = info.outputPath("backup.nitya");
   await dl.saveAs(file);
   const json = JSON.parse(readFileSync(file, "utf8"));
-  expect(json.app).toBe("aarti-v1.8");
+  expect(json.app).toBe("aarti-v1.9");
   expect(json.payload.profiles.map((p) => [p.name, p.routine && p.routine.evening.texts])).toEqual([
     ["Me", ["sukhkarta", "ghalin-lotangan"]],
     ["Aai", null],

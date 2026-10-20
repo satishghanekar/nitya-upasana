@@ -1,4 +1,5 @@
-// Library (#jump): every text, grouped (पूजा, आरती), with search above the list (js/text/search.js). Opened by the book
+// Library (#jump): every text by category (js/features/library.js builds the list), with search above it
+// (js/text/search.js). Opened by the book
 // button in the top bar (#hm), the search button in the bottom bar and at the end of each piece; a title opens its
 // text (js/features/clicks.js), and Back (the button here, the phone's Back, or Escape) returns. Home v2 moved the
 // list here from the home page (docs/decisions.md, 2026-10-18).

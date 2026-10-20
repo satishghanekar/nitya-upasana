@@ -94,8 +94,10 @@
   } catch (e) {}
   var S = SCRIPTS[ind],
     OLD = [], // [node, "", text] or [element, attribute, value]: what SCR.page() changed
-    ROOTS = ".grp, .ash, #jl .tocg, #home h1, #btt",
-    LATER = "#rail"; // built by the site script (js/text/layout.js) from the Library's contents, already in the chosen script
+    ROOTS = ".grp, .ash, #home h1, #btt",
+    // built by the site script, already in the chosen script: the Library's list by category (js/features/library.js)
+    // and the side menu made from it (js/text/layout.js)
+    LATER = "#jl, #rail";
   window.SCR = {
     k: S ? ind : "", // "" while the text is shown as written
     // Devanagari → the chosen script

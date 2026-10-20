@@ -2,7 +2,7 @@
 // rules for the lists (js/core/routine.js: the same every day or different by weekday, copying a day's list to other
 // days, moving, adding and removing texts, cleaning what is read back), the routine kept in the profile
 // (js/store/profiles.js, js/store/store.js on fake-indexeddb), and backups: a file with routines restores them, a file
-// from before version 1.8 (no routine) leaves the default (content/routines.json, Q5).
+// from before version 1.9 (no routine) leaves the default (content/routines.json, Q5).
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
 import { readFileSync } from "node:fs";
@@ -151,7 +151,7 @@ describe("the routine in a profile and in a backup file", () => {
   const settings = profilePart(defaults(ENV));
   const MINE = setList(setMode(editable(null, ROUTINE), "evening", "weekday", MON), "evening", THU, ["ghalin-lotangan"]);
 
-  test("a new person has none (they follow content/routines.json, Q5); a profile from before 1.8 reads as none", () => {
+  test("a new person has none (they follow content/routines.json, Q5); a profile from before 1.9 reads as none", () => {
     expect(newProfile({ id: "p1", name: "Aai", settings, now: NOW }).routine).toBeNull();
     const old = { id: "p1", name: "Aai", initials: "A", colour: COLOURS[0].v, settings, checklist: null, created: NOW, updated: NOW };
     expect(cleanProfile(old, ENV).routine).toBeNull();
@@ -162,7 +162,7 @@ describe("the routine in a profile and in a backup file", () => {
   test("a backup keeps each person's routine, and reads back unchanged", () => {
     const aai = newProfile({ id: "paai", name: "Aai", settings, routine: MINE, now: NOW });
     const me = newProfile({ id: "pme", name: "Me", settings, now: NOW });
-    const text = serialise(makeBackup({ profiles: [aai, me], activeProfile: "paai", device: devicePart(defaults(ENV)) }, { app: "aarti-v1.8", created: NOW }));
+    const text = serialise(makeBackup({ profiles: [aai, me], activeProfile: "paai", device: devicePart(defaults(ENV)) }, { app: "aarti-v1.9", created: NOW }));
     expect(JSON.parse(text).payload.profiles[0].routine).toEqual(MINE);
     const r = parseBackup(text, ENV);
     expect(r.ok).toBe(true);
@@ -221,7 +221,7 @@ describe("the store keeps the reading person's routine", () => {
     await load(idb);
     const mine = setMode(editable(null, ROUTINE), "evening", "weekday", THU);
     store.setRoutine(mine);
-    const text = serialise(makeBackup(store.exportData(), { app: "aarti-v1.8", created: NOW }));
+    const text = serialise(makeBackup(store.exportData(), { app: "aarti-v1.9", created: NOW }));
     const other = new IDBFactory();
     await load(other);
     expect(store.routine()).toBeNull();
