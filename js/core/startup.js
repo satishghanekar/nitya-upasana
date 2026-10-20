@@ -6,7 +6,7 @@ import { fontsN } from "../text/autofit.js";
 import { cur, pjOpen } from "./apply.js";
 import { apply, mark } from "../features/bars.js";
 import { wake } from "../features/wake-lock.js";
-import { homeView } from "../features/history.js";
+import { homeAlone, homeInView, homeView } from "../features/history.js";
 
 var tk, rzT, h, el, PK, posT, sp, moved, goPos;
 
@@ -119,8 +119,7 @@ export function init() {
           function () {
             moved = true;
             // touched before the page got back to the piece: it stays on Home, on its own
-            var hm = document.getElementById("home");
-            if (hm && hm.getBoundingClientRect().bottom >= innerHeight) homeView(true);
+            if (homeInView()) homeAlone();
           },
           { once: true, passive: true },
         );

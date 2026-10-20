@@ -277,7 +277,8 @@ export function jumpTo(go, url) {
 // title, Home in the side menu or the bottom bar, the end of a session, Back to the bare address) and at start-up
 // with no piece to open (js/core/startup.js), and taken off before the page goes to a piece (jumpTo(), Back to a
 // piece's address, a link such as #a3, the reading position), so reading a text, ‹ Prev and Next ›, and scrolling
-// between pieces work as before. Scrolling up from a piece all the way to Home sets it again (homeOnScroll()).
+// between pieces work as before. Scrolling up from a piece back to Home, or picking a session there, sets it again
+// (homeOnScroll(), js/features/today-card.js).
 // Coming back to the pieces, the text is fitted to the screen again (apply()), since it could not be measured
 // while hidden.
 /** @param {boolean} on */
@@ -291,11 +292,10 @@ export function homeView(on) {
   }
 }
 
-// Scrolling up from a piece all the way to Home: once nothing below Home is on screen, Home is on its own again
-// (data-hv), so scrolling down from there ends after the session's texts, More and the Library line instead of
-// showing every piece. Only on the way up (scrolling down from Home never hides a piece you are reading, nor does the
-// reading position going down to a piece at start-up), and only once the pieces are out of sight, so nothing moves.
-// The address goes back to the bare one, so a reload stays on Home too.
+// Scrolling up from a piece back to Home: once the Morning / Afternoon / Evening switch is on screen, Home is on its
+// own again (data-hv), so the page ends after the session's texts, More and the Library line instead of showing every
+// piece below them, even when Home is short (a session with nothing planned). Only on the way up, so scrolling down
+// from Home never hides a piece you are reading, nor does the reading position going down to a piece at start-up.
 function homeOnScroll() {
   var y0 = scrollY,
     hT = 0;
@@ -307,16 +307,26 @@ function homeOnScroll() {
       if (!up || hT || document.documentElement.hasAttribute("data-hv")) return;
       hT = requestAnimationFrame(function () {
         hT = 0;
-        var h = document.getElementById("home");
-        if (!h || h.getBoundingClientRect().bottom < innerHeight) return;
-        homeView(true);
-        try {
-          if (NAV && location.hash) history.replaceState({ y: scrollY }, "", location.pathname);
-        } catch (e) {}
+        if (homeInView()) homeAlone();
       });
     },
     { passive: true },
   );
+}
+
+// The Morning / Afternoon / Evening switch is on screen: the reader is on Home
+export function homeInView() {
+  var t = document.getElementById("tss"),
+    r = t && t.getBoundingClientRect();
+  return !!r && r.bottom > 0 && r.top < innerHeight;
+}
+
+// Home on its own, the address back to the bare one (so a reload stays on Home too); the page keeps its place
+export function homeAlone() {
+  homeView(true);
+  try {
+    if (NAV && location.hash) history.replaceState({ y: scrollY }, "", location.pathname);
+  } catch (e) {}
 }
 
 // Home buttons (top-bar title, Ganesha in the bottom bar, the rail's Home): back to the top of the home page
