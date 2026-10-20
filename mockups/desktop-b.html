@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup · Desktop B · Calendar and Settings on the right</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  /* Desktop A's layout (85% wide, today on the left) with the Vedic calendar (?cal) or Settings (?settings) opening in
+     the right-hand area in place of the picture or the text: no separate page, the left side stays put. */
+  body { min-width: 1100px; }
+  #app { display: grid; grid-template-columns: 360px 1fr; grid-template-rows: auto 1fr; min-height: 100vh; width: 85vw; margin: 0 auto; }
+  .top { grid-column: 1 / -1; padding: 10px 0; }
+  .ib.on { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  .side { border-right: 1px solid var(--rule); padding: 18px 18px 24px 0; position: sticky; top: 65px; height: calc(100vh - 65px); overflow: auto; display: flex; flex-direction: column; gap: 12px; }
+  .dt { display: flex; gap: 12px; align-items: center; }
+  .dt img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
+  .dt b { display: block; font-size: 15px; }
+  .pan { padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); font-size: 13px; }
+  .pan.on { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+  .pan .h { font: 18px/1.3 var(--head); color: var(--accent); }
+  .sh { display: flex; align-items: baseline; justify-content: space-between; margin-top: 4px; }
+  .sh h2 { margin: 0; font: 22px/1.2 var(--head); color: var(--accent); }
+  .sh span { font-size: 13px; color: var(--muted); }
+  .side .row { min-height: 52px; border-radius: 10px; padding: 4px 8px; }
+  .side .t1 { font-size: 17px; }
+  .lib { margin-top: auto; font-size: 13px; color: var(--muted); padding-top: 10px; border-top: 1px solid var(--rule); }
+  .lib a { color: var(--accent); font-weight: 600; }
+  main { padding: 22px 0 60px 40px; }
+  .ph { display: flex; align-items: center; gap: 14px; margin: 0 0 18px; }
+  .ph h2 { margin: 0; font: 26px/1.2 var(--head); color: var(--accent); }
+  .back { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 6px 12px; font-weight: 600; }
+  .cal { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+  .card { border: 1px solid var(--line); border-radius: 16px; background: var(--soft); padding: 16px; }
+  .mh { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .mh b { font: 22px/1.2 var(--head); }
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .grid .wd { text-align: center; font-size: 12px; color: var(--muted); padding: 4px 0; }
+  .grid .d { min-height: 78px; border-radius: 10px; border: 1px solid var(--rule); background: var(--bg); padding: 6px; text-align: center; font-size: 12px; color: var(--muted); }
+  .grid .d b { display: block; font-size: 17px; color: var(--ink); }
+  .grid .d i { display: block; font-style: normal; color: var(--accent); font-weight: 600; }
+  .grid .d.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .grid .d.on b, .grid .d.on i { color: var(--on-accent); }
+  .kv { display: grid; grid-template-columns: 90px 1fr; gap: 10px 12px; font-size: 14px; }
+  .kv dt { color: var(--muted); } .kv dd { margin: 0; } .kv dd b { font: 17px/1.3 var(--head); display: block; }
+  .sets { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 18px; align-items: start; }
+  .sets h3 { margin: 0 0 10px; font: 18px/1.2 var(--head); color: var(--accent); }
+  .sr { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--rule); font-size: 14px; }
+  .sr:first-of-type { border-top: 0; }
+  .pill { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .pill span { padding: 5px 10px; font-size: 13px; } .pill span.on { background: var(--accent); color: var(--on-accent); }
+  .note { font-size: 13px; color: var(--muted); margin: 0 0 16px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Desktop B · calendar and Settings open on the right</span>
+<script src="../tests/unit/fixtures/pieces.js"></script>
+<script src="mock.js"></script>
+<script>
+var settings = /[?&]settings\b/.test(location.search);
+var side =
+  '<aside class="side" aria-label="Today">' +
+  '<div class="dt"><img src="../picture-sunrise-360.webp" alt=""><span><b>मंगळवार, २० ऑक्टोबर</b><span class="muted">Tuesday, 20 October 2026</span></span></div>' +
+  '<div class="pan' + (settings ? "" : " on") + '"><div class="h">आश्विन शुद्ध दशमी</div>नक्षत्र श्रवण · शके १९४८ · पराभव संवत्सर</div>' +
+  '<div class="pan">★ Today: <b class="dev">दसरा</b> · Dasara (Vijayadashami)</div>' + seg("Morning") +
+  '<div class="sh"><h2>सकाळ · Morning</h2><span>0 of 3 done · Edit</span></div>' + rows([0, 1, 3], [], { num: true }) +
+  '<div class="lib">Another text? <a>Open the Library</a> · More: App, Share, Print, Help</div></aside>';
+var main;
+if (!settings) {
+  // sample tithis for the month (mockup only)
+  var TI = ["षष्ठी","सप्तमी","अष्टमी","नवमी","दशमी","एकादशी","द्वादशी","त्रयोदशी","चतुर्दशी","अमावास्या","प्रतिपदा","द्वितीया","तृतीया","चतुर्थी","पंचमी","षष्ठी","सप्तमी","अष्टमी","नवमी","दशमी","एकादशी","द्वादशी","त्रयोदशी","चतुर्दशी","पौर्णिमा","प्रतिपदा","द्वितीया","तृतीया","चतुर्थी","पंचमी","सप्तमी"];
+  var FE = { 6: "एकादशी", 11: "नवरात्र", 20: "दसरा", 21: "एकादशी", 25: "कोजागिरी", 28: "संकष्टी" };
+  var g = ["रवि","सोम","मंगळ","बुध","गुरु","शुक्र","शनि"].map(function (d) { return '<div class="wd">' + d + "</div>"; }).join("") + "<div></div><div></div><div></div><div></div>";
+  for (var i = 1; i <= 31; i++) g += '<div class="d' + (i === 20 ? " on" : "") + '"><b>' + i + "</b>" + TI[i - 1] + (FE[i] ? "<i>" + FE[i] + "</i>" : "") + "</div>";
+  main = '<main><div class="ph"><button class="back">‹ Today</button><h2>पंचांग · Vedic calendar</h2></div>' +
+    '<p class="note">Opens here, beside today, without moving the page. Pick a day in the month to see it on the right.</p>' +
+    '<div class="cal"><div class="card"><div class="mh"><button class="ib">' + I.prev + '</button><span style="text-align:center"><b>October 2026</b><br><span class="muted" style="font-size:12px">भाद्रपद → आश्विन from 11 Oct</span></span><button class="ib">' + I.next + '</button></div><div class="grid">' + g + "</div></div>" +
+    '<div class="card"><div class="h" style="font:22px/1.3 var(--head);color:var(--accent)">आश्विन शुद्ध दशमी</div><div class="muted" style="margin-bottom:12px">Tuesday, 20 October 2026 · today</div><dl class="kv">' +
+    "<dt>सण</dt><dd><b>दसरा</b>Dasara (Vijayadashami)</dd><dt>तिथी</dt><dd><b>शुद्ध दशमी</b>until Wed 4:41 am</dd><dt>नक्षत्र</dt><dd><b>श्रवण</b>until 8:32 am</dd><dt>योग</dt><dd><b>शूल</b>until 3:20 pm</dd><dt>सूर्योदय</dt><dd><b>7:47 am</b>Sunset 6:45 pm · Columbus, OH</dd><dt>चंद्रोदय</dt><dd><b>4:03 pm</b></dd><dt>संवत्सर</dt><dd><b>शके १९४८ · पराभव</b></dd></dl></div></div></main>";
+} else {
+  function pill(a, on) { return '<span class="pill">' + a.map(function (x, i) { return '<span class="' + (i === on ? "on" : "") + '">' + x + "</span>"; }).join("") + "</span>"; }
+  main = '<main><div class="ph"><button class="back">‹ Today</button><h2>सेटिंग्ज · Settings</h2></div>' +
+    '<p class="note">Opens here as part of the page, in cards across the width; the left side stays.</p><div class="sets">' +
+    '<div class="card"><h3>भाषा · Languages</h3><div class="sr">Main language' + pill(["मराठी","English"], 0) + '</div><div class="sr">Second language' + pill(["None","English","मराठी"], 1) + '</div><div class="sr">Menus and buttons' + pill(["मराठी","English"], 1) + "</div></div>" +
+    '<div class="card"><h3>वाचन · Reading</h3><div class="sr">Text size' + pill(["A−","100%","A+"], 1) + '</div><div class="sr">Text font' + pill(["Standard","Classic","Bold","Handwritten"], 0) + '</div><div class="sr">Dhrupad' + pill(["Once","Every verse"], 0) + "</div></div>" +
+    '<div class="card"><h3>स्क्रीन · Screen</h3><div class="sr">Theme' + pill(["Auto","Light","Sepia","Dark","High contrast"], 0) + '</div><div class="sr">Keep screen on' + pill(["Off","On"], 1) + '</div><div class="sr">Autoscroll' + pill(["Off","On"], 0) + "</div></div>" +
+    '<div class="card"><h3>प्रोफाइल आणि बॅकअप · Profiles and backup</h3><div class="sr">Who is reading<span class="chip"><span class="av">M</span>Me</span></div><div class="sr">Routine<span class="muted">The texts for each session, in order ›</span></div><div class="sr">Save a backup file<span class="muted">›</span></div><div class="sr">Restore from a file<span class="muted">›</span></div></div>' +
+    '<div class="card"><h3>माहिती · About</h3><div class="sr">Place for moonrise<span class="muted">Columbus, OH · Use my location</span></div><div class="sr">Help and how to use<span class="muted">›</span></div><div class="sr">Version<span class="muted">v1.14</span></div></div>' +
+    "</div></main>";
+}
+document.getElementById("app").innerHTML =
+  topbar('<span class="chip"><span class="av">M</span>Me</span>').replace('aria-label="Settings"', 'aria-label="Settings"' + (settings ? ' style="background:var(--accent);color:var(--on-accent);border-color:var(--accent)"' : "")) + side + main;
+</script>
+</body>
+</html>
