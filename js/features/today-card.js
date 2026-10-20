@@ -1,9 +1,13 @@
 // @ts-check
-// Home (Home v2, approved by Satish 2026-10-18; docs/decisions.md): what to chant now. The time-of-day picture with
-// today's weekday star (js/features/day-picture.js) beside today's date in Marathi and English; the texts of the
-// session for the time now (Morning / Afternoon / Evening), each with a tick and its title; "Not this time?" with the
-// other two sessions; and Start / Continue, pinned to the bottom of the screen on phones. Every text, with search, is
-// in the Library (#jump, js/features/contents-list.js).
+// Home (Home v2, approved by Satish 2026-10-18; Home v3 option A, 2026-10-20; docs/decisions.md): what to chant now.
+// The time-of-day picture with today's weekday star (js/features/day-picture.js) beside today's date in Marathi and
+// English; a Morning | Afternoon | Evening switch (#tss, tabs: arrow keys move between them, Enter or Space picks),
+// opened at the session for the time now; a session with nothing set today is greyed ("Nothing set", aria-disabled,
+// still focusable, and picking it shows the empty state with Add texts); the picked session's texts, each with a tick
+// and its title; Start / Continue, pinned to the bottom of the screen on phones; More (#tmb), a disclosure over the
+// App / Share / QR / Print / Help buttons (#shr, closed by default); and "Another text? Open the Library" (#tlibb,
+// as the top bar's book button). Every text, with search, is in the Library (#jump, js/features/contents-list.js);
+// the reading page's pieces are not shown under Home (data-hv, js/features/history.js).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
 // What it reads: the reading person's routine (their own, made in the routine builder, js/features/routine-builder.js,
@@ -41,8 +45,12 @@ const W = {
     days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     sessions: { morning: "Morning", afternoon: "Afternoon", evening: "Evening" },
-    other: "Not this time?",
-    show: "Show ",
+    tabs: "Session",
+    unset: "Nothing set",
+    more: "More",
+    moreHint: "App · Share · QR · Print · Help",
+    another: "Another text?",
+    library: "Open the Library",
     done: "Done: ",
     start: "Start: ",
     cont: "Continue: ",
@@ -73,8 +81,12 @@ const W = {
     days: ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
     months: ["जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"],
     sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
-    other: "दुसरी वेळ:",
-    show: "दाखवा: ",
+    tabs: "वेळ",
+    unset: "काहीच नाही",
+    more: "आणखी",
+    moreHint: "ॲप · शेअर · QR · प्रिंट · मदत",
+    another: "दुसरी रचना?",
+    library: "संग्रह उघडा",
     done: "झाले: ",
     start: "सुरू करा: ",
     cont: "पुढे चालू: ",
@@ -115,8 +127,8 @@ var ticks;
 var info = {};
 /** @type {Record<string, string>} section id → text id */
 var bySec = {};
-// The session shown when one is picked by hand ("Not this time?"), or null to follow the clock; a new day starts
-// again from the clock
+// The session shown when one is picked by hand (the Morning | Afternoon | Evening switch), or null to follow the
+// clock; a new day starts again from the clock
 /** @type {{ session: Session | null }} */
 var pick = { session: null };
 // The session being read (Start / Continue), so Prev and Next follow it
@@ -215,7 +227,7 @@ function titleOf(id) {
   return !t ? "" : P.ui === "mr" ? scr(t.title) : t.titleEn;
 }
 
-// Draw the date, the session's texts with their ticks, the other sessions and Start / Continue
+// Draw the date, the session switch, the session's texts with their ticks, Start / Continue, More and the Library line
 export function render() {
   var c = current(),
     w = words(),
@@ -267,22 +279,36 @@ export function render() {
   empty.hidden = ids.length > 0;
   /** @type {HTMLElement} */ (document.getElementById("tset")).textContent = w.empty(w.sessions[c.session]);
   /** @type {HTMLElement} */ (document.getElementById("tsea")).textContent = w.add;
-  // "Not this time?" and the two other sessions
-  var so = /** @type {HTMLElement} */ (document.getElementById("tso"));
-  so.lang = ui;
-  /** @type {HTMLElement} */ (document.getElementById("tsow")).textContent = w.other;
-  var first = true;
-  [].forEach.call(so.querySelectorAll("button[data-s]"), function (/** @type {HTMLElement} */ b) {
+  // Morning | Afternoon | Evening: the one shown is selected (and the one Tab reaches); one with nothing set today is
+  // greyed, with "Nothing set" under its name, and stays focusable (aria-disabled)
+  var tabs = /** @type {HTMLElement} */ (document.getElementById("tss"));
+  tabs.lang = ui;
+  tabs.setAttribute("aria-label", w.tabs);
+  [].forEach.call(tabs.querySelectorAll('[role="tab"]'), function (/** @type {HTMLElement} */ b) {
     var s = /** @type {Session} */ (b.dataset.s),
-      off = s === c.session,
-      sep = /** @type {HTMLElement | null} */ (b.previousElementSibling);
-    b.hidden = off;
-    b.textContent = w.sessions[s];
-    b.setAttribute("aria-label", w.show + w.sessions[s]);
-    // the "·" before a button shows only between two shown buttons
-    if (sep && sep.classList.contains("tsod")) sep.hidden = off || first;
-    if (!off) first = false;
+      on = s === c.session,
+      n = idsFor(c.day, s).length;
+    b.setAttribute("aria-selected", String(on));
+    b.tabIndex = on ? 0 : -1;
+    if (n) b.removeAttribute("aria-disabled");
+    else b.setAttribute("aria-disabled", "true");
+    /** @type {HTMLElement} */ (b.querySelector(".tsw")).textContent = w.sessions[s];
+    /** @type {HTMLElement} */ (b.querySelector(".tshn")).textContent = n ? "" : w.unset;
   });
+  /** @type {HTMLElement} */ (document.getElementById("tsp")).setAttribute("aria-labelledby", "tss-" + c.session);
+  // More, and the Library line
+  var mo = /** @type {HTMLElement} */ (document.getElementById("tmo"));
+  if (mo) {
+    mo.lang = ui;
+    /** @type {HTMLElement} */ (document.getElementById("tmbw")).textContent = w.more;
+    /** @type {HTMLElement} */ (document.getElementById("tmbh")).textContent = w.moreHint;
+  }
+  var lb = document.getElementById("tlib");
+  if (lb) {
+    lb.lang = ui;
+    /** @type {HTMLElement} */ (document.getElementById("tlibw")).textContent = w.another;
+    /** @type {HTMLElement} */ (document.getElementById("tlibbw")).textContent = w.library;
+  }
   // Start / Continue
   var start = /** @type {HTMLElement} */ (document.getElementById("tst")),
     k = firstUndone(ids, done);
@@ -428,23 +454,66 @@ export function init() {
     if (r && Array.isArray(r.ids)) run = r;
   } catch (e) {}
   ticks.prune(dateKey(new Date()));
-  var so = /** @type {HTMLElement} */ (document.getElementById("tso")),
+  var tabs = /** @type {HTMLElement} */ (document.getElementById("tss")),
     list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
-  if (!so || !list) return;
-  // "Not this time?": another session; it stays picked until the next day (then the clock again)
-  so.addEventListener("click", function (e) {
-    var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest("button[data-s]"));
-    if (!b) return;
-    pick.session = /** @type {Session} */ (b.dataset.s);
+  if (!tabs || !list) return;
+  // Morning | Afternoon | Evening: a tap (or Enter / Space) shows that session's texts for today in place; it stays
+  // picked until the next day (then the clock again). Picking the session of the clock follows the clock again.
+  /** @param {Session} s */
+  function choose(s) {
+    pick.session = s === sessionAt(new Date()) ? null : s;
     render();
     announce();
-    // focus goes to the new list's heading, since the button pressed is now hidden
-    var h = document.getElementById("tsh");
-    if (h)
+    var b = document.getElementById("tss-" + s);
+    if (b && document.activeElement !== b)
       try {
-        h.focus({ preventScroll: true });
+        b.focus({ preventScroll: true });
       } catch (x) {}
+  }
+  tabs.addEventListener("click", function (e) {
+    var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('[role="tab"]'));
+    if (b) choose(/** @type {Session} */ (b.dataset.s));
   });
+  // arrow keys, Home and End move between the three (focus only: Enter or Space picks, as a button does)
+  tabs.addEventListener("keydown", function (e) {
+    var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('[role="tab"]'));
+    if (!b || !/^(ArrowLeft|ArrowRight|Home|End)$/.test(e.key)) return;
+    e.preventDefault();
+    var all = /** @type {HTMLElement[]} */ ([].slice.call(tabs.querySelectorAll('[role="tab"]'))),
+      i = all.indexOf(b),
+      j = e.key === "Home" ? 0 : e.key === "End" ? all.length - 1 : (i + (e.key === "ArrowRight" ? 1 : all.length - 1)) % all.length;
+    all.forEach(function (x, k) {
+      x.tabIndex = k === j ? 0 : -1;
+    });
+    all[j].focus();
+  });
+  // leaving the switch: Tab comes back to the session shown
+  tabs.addEventListener("focusout", function (e) {
+    var t = /** @type {Node | null} */ (e.relatedTarget);
+    if (t && tabs.contains(t)) return;
+    [].forEach.call(tabs.querySelectorAll('[role="tab"]'), function (/** @type {HTMLElement} */ x) {
+      x.tabIndex = x.getAttribute("aria-selected") === "true" ? 0 : -1;
+    });
+  });
+  // More: App, Share, QR, Print and Help, closed by default
+  var mb = document.getElementById("tmb"),
+    shr = document.getElementById("shr");
+  if (mb && shr) {
+    var more = mb,
+      row = shr;
+    more.addEventListener("click", function () {
+      var open = more.getAttribute("aria-expanded") !== "true";
+      more.setAttribute("aria-expanded", String(open));
+      row.hidden = !open;
+    });
+  }
+  // Another text? Open the Library: as the top bar's book button
+  var lbb = document.getElementById("tlibb");
+  if (lbb)
+    lbb.addEventListener("click", function () {
+      var hm = document.getElementById("hm");
+      if (hm) hm.click();
+    });
   // a tick
   list.addEventListener("change", function (e) {
     var x = /** @type {HTMLInputElement} */ (e.target),

@@ -59,6 +59,8 @@ export function init() {
     if (was) return;
     var st = e.state,
       el = location.hash && document.getElementById(location.hash.slice(1));
+    // back on the bare address: Home on its own; on a piece's address: the reading page
+    homeView(!el || el.id === "home");
     pjOpen(el);
     if (st && typeof st.y === "number") scrollTo(0, st.y);
     else if (el) el.scrollIntoView();
@@ -251,6 +253,8 @@ export function jumpTo(go, url) {
   } catch (e) {}
   setP(false);
   setJ(false);
+  // a piece (#a3): the reading page with every piece; the bare address: Home on its own
+  homeView(!(url && url.charAt(0) === "#" && url !== "#home"));
   go();
   try {
     if (NAV) history[ov ? "replaceState" : "pushState"]({ y: scrollY }, "", url);
@@ -263,6 +267,26 @@ export function jumpTo(go, url) {
     try {
       h.focus({ preventScroll: true });
     } catch (e) {}
+  }
+}
+
+// Home on its own (Home v3, docs/decisions.md): while data-hv is on <html>, the page ends after Home (More and the
+// Library line) and the pieces below it are not shown (css/10-today.css, screen only). They are still in the page:
+// the Library, search, print and the reading position read them as before. It is set by going home (the top-bar
+// title, Home in the side menu or the bottom bar, the end of a session, Back to the bare address) and at start-up
+// with no piece to open (js/core/startup.js), and taken off before the page goes to a piece (jumpTo(), Back to a
+// piece's address, a link such as #a3, the reading position), so reading a text, ‹ Prev and Next ›, and scrolling
+// between pieces work as before. Scrolling up from a piece to Home keeps the pieces (it is not a way home).
+// Coming back to the pieces, the text is fitted to the screen again (apply()), since it could not be measured
+// while hidden.
+/** @param {boolean} on */
+export function homeView(on) {
+  var r = document.documentElement;
+  if (on === r.hasAttribute("data-hv")) return;
+  if (on) r.setAttribute("data-hv", "1");
+  else {
+    r.removeAttribute("data-hv");
+    apply();
   }
 }
 
