@@ -38,7 +38,7 @@ describe("the bundled library (decisions Q2)", () => {
     expect(cats[1].name).toEqual({ mr: "आरती", en: "Aarti" });
     expect(cats.every((c) => c.origin === "bundled" && c.original === null)).toBe(true);
   });
-  test("Atharvashirsha is Vedic Chant; all ten aartis, Ghalin Lotangan too, are Aarti; Stotra and Ashtak are empty", () => {
+  test("Atharvashirsha is Vedic Chant; all eighteen aartis, Ghalin Lotangan too, are Aarti; Stotra and Ashtak are empty", () => {
     const sh = shelves(TEXTS, cats, emptyLocal());
     expect(sh.map((s) => [s.category.id, s.texts])).toEqual([
       ["vedic-chant", ["atharvashirsha"]],
@@ -47,7 +47,7 @@ describe("the bundled library (decisions Q2)", () => {
       ["ashtak", []],
     ]);
     expect(shelf(emptyLocal(), "aarti")).toContain("ghalin-lotangan");
-    expect(counts(sh)).toEqual({ "vedic-chant": 1, aarti: 10, stotra: 0, ashtak: 0 });
+    expect(counts(sh)).toEqual({ "vedic-chant": 1, aarti: 18, stotra: 0, ashtak: 0 });
   });
   test("every text in library.json names a bundled category", () => {
     for (const t of lib.texts) expect(ids(cats)).toContain(t.category);

@@ -1,0 +1,36 @@
+id: aarti-kariton-guruvar
+title: आरति करितों गुरुवर
+title-en: Aarati kariton guruvar
+category: aarti
+language: mr
+refrain: every-verse
+---
+[dhrupad]
+आरति करितों गुरुवर भगवन् ब्रह्मचैतन्या ।
+Aarati kariton guruvar bhagavan brahmachaitanyaa |
+करुणेनें स्वीकार करावा अनन्यसामान्या ॥ धृ. ॥
+Karunenen sveekaar karaavaa ananyasaamaanyaa || dhru. ||
+
+[1]
+स्वप्रकाश तूं तव तेजानें जग भासे सकळ ।
+Svaprakaash toon tav tejaanen jag bhaase sakal |
+नीरांजन हें भगवत्पादापाशीं निश्चळ ।
+Neeraanjan hen bhagavatpaadaapaasheen nishchal |
+स्वप्रीतीस्तव किमपि अर्पितों गुरुपदिं हा भाळ ॥
+Svapreeteestav kimapi arpiton gurupadin haa bhaal ||
+
+[2]
+यद्यपि पापी योग्य नसें मी भेट तुझी घ्याया ।
+Yadyapi paapee yogya nasen mee bhet tujhee ghyaayaa |
+तद्यपि पतितपावन म्हणुनी आलों सेवाया ।
+Tadyapi patitapaavan mhanunee aalon sevaayaa |
+घ्यावी माझ्याकडुनी करवुनि सेवा गुरुराया ॥
+Ghyaavee maajhyaakadunee karavuni sevaa gururaayaa ||
+
+[3]
+मातापितादिक मम सर्वहि पूज्य तुझे चरण ।
+Maataapitaadik mam sarvahi poojya tujhe charan |
+आतां माझी सुप्रिय वस्तु नाहीं तुजवीण ।
+Aataan maajhee supriy vastu naaheen tujaveen |
+नाथादिनाथा जय जय होवो भागवतप्राण ॥
+Naathaadinaathaa jay jay hovo bhaagavatapraan ||
