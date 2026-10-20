@@ -120,6 +120,7 @@ var SITE_PARTS = (function () {
     "texts/aarti-belaguve.txt",
     "texts/svastha-karin-shayan.txt",
     "texts/ovaloo-sapreme-aarti.txt",
+    "texts/lalita-sahasranama.txt",
     "texts/sadguru-padukashtak.txt",
     "texts/ananyata-maj-ghado.txt",
     "texts/anudin-anutapen.txt",
