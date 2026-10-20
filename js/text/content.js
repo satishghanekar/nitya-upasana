@@ -95,6 +95,8 @@ export function toPiece(t, n, lib) {
   var p = /** @type {any} */ ({ id: t.legacyId || t.id });
   if (t.language !== lib.pageLanguage) p.lang = t.language;
   if (t.refrain === "always") p.cls = "norf";
+  // stanza-numbers: as-written: the numbers are part of the text, so js/text/stanza-numbers.js adds none
+  if (t.stanzaNumbers === "as-written") p.cls = (p.cls ? p.cls + " " : "") + "ownsn";
   if (t.layout === "prose") p.prose = true;
   p.no = { mr: String(n).replace(/[0-9]/g, function (d) { return DIGITS[+d]; }) + ".", en: n + "." };
   p.title = { mr: t.title, en: t.titleEn };

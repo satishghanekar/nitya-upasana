@@ -170,6 +170,123 @@
    "category": "aarti",
    "language": "mr",
    "lines": 28
+  },
+  {
+   "id": "sadguru-padukashtak",
+   "file": "texts/sadguru-padukashtak.txt",
+   "title": "श्रीसद्गुरुपादुकाष्टक",
+   "titleEn": "Shreesadgurupaadukaashtak",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 41
+  },
+  {
+   "id": "ananyata-maj-ghado",
+   "file": "texts/ananyata-maj-ghado.txt",
+   "title": "अनन्यता मज घडो स्वानंदरूपीं",
+   "titleEn": "Ananyataa maj ghado svaanandaroopeen",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 103
+  },
+  {
+   "id": "anudin-anutapen",
+   "file": "texts/anudin-anutapen.txt",
+   "title": "अनुदिन अनुतापें तापलों",
+   "titleEn": "Anudin anutaapen taapalon",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 60
+  },
+  {
+   "id": "ashtak-monday",
+   "file": "texts/ashtak-monday.txt",
+   "title": "सोमवार – नसे भक्ति ना",
+   "titleEn": "Monday – Nase bhakti naa",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 24
+  },
+  {
+   "id": "ashtak-tuesday",
+   "file": "texts/ashtak-tuesday.txt",
+   "title": "मंगळवार – उदासीन हे वृत्ति",
+   "titleEn": "Tuesday – Udaaseen he vrutti",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 36
+  },
+  {
+   "id": "ashtak-wednesday",
+   "file": "texts/ashtak-wednesday.txt",
+   "title": "बुधवार – युक्ति नाहीं बुद्धि",
+   "titleEn": "Wednesday – Yukti naaheen buddhi",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 36
+  },
+  {
+   "id": "ashtak-thursday",
+   "file": "texts/ashtak-thursday.txt",
+   "title": "गुरुवार – समाधान साधूजनाचेनि योगें",
+   "titleEn": "Thursday – Samaadhaan saadhoojanaacheni yogen",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 40
+  },
+  {
+   "id": "ashtak-friday",
+   "file": "texts/ashtak-friday.txt",
+   "title": "शुक्रवार – उदासीन हा काळ",
+   "titleEn": "Friday – Udaaseen haa kaal",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 16
+  },
+  {
+   "id": "ashtak-saturday",
+   "file": "texts/ashtak-saturday.txt",
+   "title": "शनिवार – तुझिया वियोगें जीवित्व",
+   "titleEn": "Saturday – Tujhiyaa viyogen jeevitva",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 20
+  },
+  {
+   "id": "ashtak-sunday",
+   "file": "texts/ashtak-sunday.txt",
+   "title": "रविवार – असंख्यात ते भक्त",
+   "titleEn": "Sunday – Asankhyaat te bhakta",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 32
+  },
+  {
+   "id": "haachi-subodh",
+   "file": "texts/haachi-subodh.txt",
+   "title": "हाचि सुबोध गुरूंचा",
+   "titleEn": "Haachi subodh guroonchaa",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 28
+  },
+  {
+   "id": "brahmachaitanya-sarikha",
+   "file": "texts/brahmachaitanya-sarikha.txt",
+   "title": "श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला",
+   "titleEn": "Shreebrahmachaitanyaasaarikhaa naaheen paahilaa",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 19
+  },
+  {
+   "id": "swami-majha-pahila",
+   "file": "texts/swami-majha-pahila.txt",
+   "title": "स्वामी माझा पाहिला",
+   "titleEn": "Svaamee maajhaa paahilaa",
+   "category": "ashtak",
+   "language": "mr",
+   "lines": 22
   }
  ],
  "groups": [
@@ -209,7 +326,20 @@
     "dhanya-jagin-guruvarya",
     "aarti-belaguve",
     "svastha-karin-shayan",
-    "ovaloo-sapreme-aarti"
+    "ovaloo-sapreme-aarti",
+    "sadguru-padukashtak",
+    "ananyata-maj-ghado",
+    "anudin-anutapen",
+    "ashtak-monday",
+    "ashtak-tuesday",
+    "ashtak-wednesday",
+    "ashtak-thursday",
+    "ashtak-friday",
+    "ashtak-saturday",
+    "ashtak-sunday",
+    "haachi-subodh",
+    "brahmachaitanya-sarikha",
+    "swami-majha-pahila"
    ]
   }
  ],
