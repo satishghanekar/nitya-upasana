@@ -25,7 +25,7 @@
 import { P } from "../core/state.js";
 import { flash } from "../core/page.js";
 import { pjOpen } from "../core/apply.js";
-import { jumpTo } from "./history.js";
+import { homeAlone, jumpTo } from "./history.js";
 import { setView } from "./day-picture.js";
 import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
@@ -461,6 +461,8 @@ export function init() {
   // picked until the next day (then the clock again). Picking the session of the clock follows the clock again.
   /** @param {Session} s */
   function choose(s) {
+    // picking a session is being on Home: only that session's texts, no pieces below (Home on its own)
+    homeAlone();
     pick.session = s === sessionAt(new Date()) ? null : s;
     render();
     announce();
