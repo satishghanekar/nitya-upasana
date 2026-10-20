@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.13.5">
+<meta name="version" content="aarti-v1.14">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -313,7 +313,7 @@
          (sunrise, midday, sunset) with a ring on today's weekday star (#iconr, placed by js/features/day-picture.js; a
          tap opens it full screen, #pzv), beside today's date in Marathi and English (written in by the script) -->
     <div id="tdy">
-      <button type="button" id="iconb" aria-label="Show the picture full screen: Sunrise picture"><img src="picture-sunrise-360.webp" fetchpriority="high" alt="" width="360" height="360"><span id="iconr" hidden></span></button>
+      <button type="button" id="iconb" aria-label="Show the picture full screen: Sunrise picture"><img src="picture-sunrise-360.webp" srcset="picture-sunrise-360.webp 360w, picture-sunrise.webp 940w" sizes="(min-width: 1100px) 440px, 76px" fetchpriority="high" alt="" width="360" height="360"><span id="iconr" hidden></span></button>
       <p id="tdd"><span class="d1" lang="mr"></span><span class="d2" lang="en"></span></p>
     </div>
     <!-- The Vedic calendar line (js/features/vedic-calendar.js): today's month, paksha and tithi, nakshatra, Shaka year

@@ -204,3 +204,11 @@ Satish approved `docs/architecture.md` and answered "yes to all" to its question
 12. Everything the site does today carries over (bottom bar, autoscroll, tilt, reading sheet, picture viewer, QR, four fonts, Sankashti card).
 
 Earlier (from the revised prompt, before the plan): work on the long-lived `v2` branch, `main` untouched; plain JavaScript, no build step, no framework; profiles share one device and each phone keeps its own data.
+
+## Desktop A (v1.14, 2026-10-20)
+
+Satish picked Desktop A (mockup `mockups/desktop-a.html` on branch `mockup-desktop`). On screens 1100px and wider the
+layout spans 85% of the screen (at least 1000px). Home on its own shows today on the left (session switch, the
+session's texts with ticks, Start, More, Library line) and the day's picture large on the right with the date. While a
+session is read, the side menu is the session panel: its name, how many are done, its texts with ticks (the one on
+screen highlighted) and "Another text? Open the Library". Reading from the Library keeps the full contents menu.
