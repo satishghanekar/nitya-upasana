@@ -314,23 +314,23 @@
 [data-cols="2"] {
   --ww: 76rem;
 }
-/* With the side menu (iPad landscape, desktop) the page sits right beside the menu and uses its whole width, up to 60rem */
-[data-rail="1"] {
-  --ww: 60rem;
-}
+/* With the side menu (iPad landscape, desktop) the whole layout spans 85% of the screen (Desktop A, docs/decisions.md;
+   at least 1000px, never closer than 24px to the edges): the menu (300px) on the left, the page beside it */
 @media screen and (min-width: 1100px) {
   [data-rail="1"] {
-    --W: min(var(--ww), calc(var(--vw, 100vw) - 340px));
-    --L: max(24px, calc((var(--vw, 100vw) - 260px - var(--W)) / 2));
+    --T: min(calc(var(--vw, 100vw) - 48px), max(1000px, calc(var(--vw, 100vw) * 0.85)));
+    --S: 340px;
+    --W: calc(var(--T) - var(--S));
+    --L: calc((var(--vw, 100vw) - var(--T)) / 2);
   }
   [data-rail="1"] .wrap {
     max-width: var(--W);
-    margin-left: calc(var(--L) + 260px);
+    margin-left: calc(var(--L) + var(--S));
     margin-right: 0;
   }
   [data-rail="1"] .bar {
     padding-left: calc(var(--L) - 8px);
-    padding-right: max(16px, calc(var(--vw, 100vw) - var(--L) - 260px - var(--W) - 8px));
+    padding-right: max(16px, calc(var(--L) - 8px));
   }
   [data-rail="1"] #rail {
     display: block;
@@ -338,7 +338,7 @@
     z-index: 4;
     left: var(--L);
     top: 72px;
-    width: 220px;
+    width: 300px;
     max-height: calc(100vh - 96px);
     overflow: auto;
     padding: 4px 6px 12px 0;
