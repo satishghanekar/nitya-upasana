@@ -28,6 +28,15 @@
    "lines": 84
   },
   {
+   "id": "purusha-suktam",
+   "file": "texts/purusha-suktam.txt",
+   "title": "पुरुषसूक्तम्",
+   "titleEn": "Purusha Suktam",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 106
+  },
+  {
    "id": "sukhkarta",
    "file": "texts/sukhkarta.txt",
    "title": "गणपतीची आरती",
@@ -327,7 +336,8 @@
    "texts": [
     "atharvashirsha",
     "shree-rudra",
-    "shri-sukta"
+    "shri-sukta",
+    "purusha-suktam"
    ]
   },
   {
