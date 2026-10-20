@@ -10,6 +10,15 @@
    "lines": 95
   },
   {
+   "id": "shri-sukta",
+   "file": "texts/shri-sukta.txt",
+   "title": "श्रीसूक्त",
+   "titleEn": "Shri Sukta",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 84
+  },
+  {
    "id": "sukhkarta",
    "file": "texts/sukhkarta.txt",
    "title": "गणपतीची आरती",
@@ -298,7 +307,8 @@
     "en": "Pooja"
    },
    "texts": [
-    "atharvashirsha"
+    "atharvashirsha",
+    "shri-sukta"
    ]
   },
   {

@@ -100,6 +100,7 @@ var SITE_PARTS = (function () {
     "routines.json",
     "festivals.json",
     "texts/atharvashirsha.txt",
+    "texts/shri-sukta.txt",
     "texts/sukhkarta.txt",
     "texts/shendur-lal-chadhayo.txt",
     "texts/durge-durghat-bhari.txt",
