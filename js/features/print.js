@@ -176,21 +176,26 @@ export function init() {
       pv.appendChild(h);
       var tc = document.createElement("div");
       tc.className = "pvtoc";
-      [].forEach.call(document.querySelectorAll(".tocg"), function (g) {
-        var as = g.querySelectorAll("ol.toc li a");
-        if (!as.length) return;
-        var h3 = document.createElement("h3");
-        h3.innerHTML = g.querySelector(".gh").innerHTML;
+      // The contents page follows the printout: the reading page's groups (पूजा, आरती) and their pieces in order,
+      // whatever categories the home list shows (js/features/library.js)
+      [].forEach.call(document.querySelectorAll(".wrap > .grp"), function (g) {
+        var ps = [];
+        for (var e = g.nextElementSibling; e && !e.classList.contains("grp"); e = e.nextElementSibling) if (e.matches("section.ash")) ps.push(e);
+        if (!ps.length) return;
+        var h3 = document.createElement("h3"),
+          b = g.querySelector("button");
+        [].forEach.call((b || g).querySelectorAll(":scope > .mr, :scope > .en"), function (x) {
+          h3.appendChild(x.cloneNode(true));
+        });
         tc.appendChild(h3);
         var ol = document.createElement("ol");
-        [].forEach.call(as, function (a) {
-          var li = document.createElement("li"),
-            m = a.querySelector(".m");
-          li.innerHTML = m ? m.innerHTML : a.innerHTML;
-          li.setAttribute("data-sid", a.getAttribute("data-go") || "");
+        ps.forEach(function (sec) {
+          var li = document.createElement("li");
+          li.innerHTML = sec.querySelector("header h2").innerHTML;
+          li.setAttribute("data-sid", sec.id);
           ol.appendChild(li);
         });
-        ol.style.gridTemplateRows = "repeat(" + Math.ceil(as.length / 2) + ", auto)"; // two columns, top to bottom
+        ol.style.gridTemplateRows = "repeat(" + Math.ceil(ps.length / 2) + ", auto)"; // two columns, top to bottom
         tc.appendChild(ol);
       });
       pv.appendChild(tc);

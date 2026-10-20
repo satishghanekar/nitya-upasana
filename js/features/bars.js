@@ -6,6 +6,7 @@ import { shared, P } from "../core/state.js";
 import { skLang } from "./sankashti.js";
 import { todayLang } from "./today-card.js";
 import { calLang } from "./vedic-calendar.js";
+import { libLang } from "./library.js";
 import { autoFs, pullSoon } from "../text/autofit.js";
 import { cur, hb, pfSet, pjOpen } from "../core/apply.js";
 import { asLabel, asShow, asb, asc } from "./bottom-bar.js";
@@ -189,7 +190,7 @@ function leadSet() {
   else root.removeAttribute("data-lead");
   shared.LEAD = L;
   // (checked every time: the contents lists are built after the first call)
-  [].forEach.call(document.querySelectorAll(".wrap .verse, .wrap .ash header h2, #jl ol.toc .m, #rail ul a"), function (v) {
+  [].forEach.call(document.querySelectorAll(".wrap .verse, .wrap .ash header h2, #jl ol.toc .m, #jl .gh, #rail ul a, #rail .rg"), function (v) {
     var m = v.querySelector(":scope > .mr"),
       e = v.querySelector(":scope > .en");
     if (!m || !e) return;
@@ -228,8 +229,8 @@ export function apply() {
     b.setAttribute("aria-pressed", String(b.dataset.v === P.fnt));
   });
   var qi = document.getElementById("q");
-  qi.placeholder = P.ui === "mr" ? "ओळ शोधा (मराठी किंवा इंग्रजी अक्षरे)" : "Find a line (Marathi or English letters)";
-  qi.setAttribute("aria-label", P.ui === "mr" ? "ओळ शोधा" : "Find a line");
+  qi.placeholder = P.ui === "mr" ? "रचना किंवा ओळ शोधा" : "Find a text or a line";
+  qi.setAttribute("aria-label", qi.placeholder);
   root.setAttribute("data-ref", String(P.ref));
   root.setAttribute("data-hc", String(P.hc));
   // (media queries answer without laying the page out; innerWidth would, right after the changes above)
@@ -279,6 +280,10 @@ export function apply() {
   // the Vedic calendar line on Home (and the calendar page when open): menu language, script, day and place
   try {
     calLang();
+  } catch (e) {}
+  // the Library's "Edit categories" button (menu language) and the categories sheet when open
+  try {
+    libLang();
   } catch (e) {}
   [].forEach.call(document.querySelectorAll("#st button"), function (b) {
     b.setAttribute("aria-pressed", b.dataset.v === P.th);

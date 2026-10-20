@@ -6,7 +6,7 @@
 <title>Nitya Upasana</title>
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.7">
+<meta name="version" content="aarti-v1.8">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -42,6 +42,7 @@
 <link rel="stylesheet" href="css/10-today.css">
 <link rel="stylesheet" href="css/11-profiles.css">
 <link rel="stylesheet" href="css/12-calendar.css">
+<link rel="stylesheet" href="css/13-library.css">
 <link rel="stylesheet" href="css/99-fallbacks.css">
 <!-- The list of the site's files, for Check for updates and the offline copy. In the head: in the body it would
      sit between elements that the styles expect to be neighbours (#home + .grp) -->
@@ -62,6 +63,8 @@
 <link rel="modulepreload" href="js/core/time-of-day.js">
 <link rel="modulepreload" href="js/features/day-picture.js">
 <link rel="modulepreload" href="js/text/iast.js">
+<link rel="modulepreload" href="js/core/library.js">
+<link rel="modulepreload" href="js/features/library.js">
 <link rel="modulepreload" href="js/text/layout.js">
 <link rel="modulepreload" href="js/features/astronomy.js">
 <link rel="modulepreload" href="js/features/sankashti.js">
@@ -90,6 +93,7 @@
 <link rel="modulepreload" href="js/features/contents-list.js">
 <link rel="modulepreload" href="js/features/clicks.js">
 <link rel="modulepreload" href="js/features/pinch.js">
+<link rel="modulepreload" href="js/text/search-core.js">
 <link rel="modulepreload" href="js/text/search.js">
 <link rel="modulepreload" href="js/core/startup.js">
 <link rel="modulepreload" href="js/features/picture-viewer.js">
@@ -125,47 +129,25 @@
   </div>
 </div>
 <!-- ==== Library (js/features/contents-list.js): opened by the book button in the top bar (and the search buttons in the
-     bottom bar and at the end of each piece). Every text, grouped as before, with search. A title opens it; Back (or
-     the phone's Back) returns. Over the page, under the top bar; the bottom bar steps aside while it is open. ==== -->
+     bottom bar and at the end of each piece). Every text by category (js/features/library.js), with search across the
+     library (texts, then lines: js/text/search.js). A title opens it; Back (or the phone's Back) returns. Over the page,
+     under the top bar; the bottom bar steps aside while it is open. ==== -->
 <div id="jump" hidden role="dialog" aria-labelledby="jlt" tabindex="-1">
   <div class="libin">
   <div class="libhd">
     <button type="button" id="jbk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागे</span><span class="en" lang="en">Back</span></button>
     <h2 id="jlt"><span lang="mr">संग्रह</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">Library</span></h2>
   </div>
-  <input id="q" type="search" placeholder="Find a line (Marathi or English letters)" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Find a line">
+  <input id="q" type="search" placeholder="Find a text or a line" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Find a text or a line">
   <div id="none" hidden><span class="mr">काही सापडले नाही</span><span class="en" lang="en">Nothing found</span></div>
   <ul id="res"></ul>
   <div id="srs" class="sr" role="status"></div>
-  <!-- Every text, grouped (the groups also feed the side menu, js/text/layout.js, and the printout's contents) -->
+  <!-- Every text by category (js/features/library.js): Vedic Chant, Aarti and any the family added, each with its texts
+       in reading order and their numbers on the reading page, built from content/library.json and content/categories.json
+       with this phone's changes; categories with no texts are left out. The side menu (js/text/layout.js) is built from
+       it. Last, the button that opens the categories sheet (#lbm). -->
   <div id="jl">
-  <div class="tocg">
-    <h2 class="gh"><span class="mr">पूजा</span><span class="en" lang="en">Pooja</span></h2>
-    <ol class="toc">
-      <li><a href="#p1" data-go="p1"><span class="m"><span class="no"><span class="nm">१.</span><span class="ne">1.</span></span> <span class="mr">गणपत्यथर्वशीर्षोपनिषत्</span><span class="en" lang="en">Ganapati Atharvashirsha</span></span><span class="lt"><span class="mr">संस्कृत</span><span class="en" lang="en">Sanskrit</span></span></a></li>
-    </ol>
-  </div>
-  <div class="tocg" hidden>
-    <h2 class="gh"><span class="mr">भजने</span><span class="en" lang="en">Bhajans</span></h2>
-    <ol class="toc">
-      <li class="soon"><span class="m"><span class="mr">लवकरच येत आहे</span><span class="en" lang="en">Coming soon</span></span></li>
-    </ol>
-  </div>
-  <div class="tocg">
-    <h2 class="gh"><span class="mr">आरती</span><span class="en" lang="en">Aarti</span></h2>
-    <ol class="toc">
-      <li><a href="#a1" data-go="a1"><span class="m"><span class="no"><span class="nm">१.</span><span class="ne">1.</span></span> <span class="mr">गणपतीची आरती</span><span class="en" lang="en">Ganapati Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
-      <li><a href="#a2" data-go="a2"><span class="m"><span class="no"><span class="nm">२.</span><span class="ne">2.</span></span> <span class="mr">गणपति जी की आरती</span><span class="en" lang="en">Ganapati Ji ki Aarti</span></span><span class="lt"><span class="mr">हिंदी</span><span class="en" lang="en">Hindi</span></span></a></li>
-      <li><a href="#a3" data-go="a3"><span class="m"><span class="no"><span class="nm">३.</span><span class="ne">3.</span></span> <span class="mr">देवीची आरती</span><span class="en" lang="en">Devi Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
-      <li><a href="#a4" data-go="a4"><span class="m"><span class="no"><span class="nm">४.</span><span class="ne">4.</span></span> <span class="mr">शंकराची आरती</span><span class="en" lang="en">Shankar Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
-      <li><a href="#a5" data-go="a5"><span class="m"><span class="no"><span class="nm">५.</span><span class="ne">5.</span></span> <span class="mr">दत्ताची आरती</span><span class="en" lang="en">Dattatreya Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
-      <li><a href="#a6" data-go="a6"><span class="m"><span class="no"><span class="nm">६.</span><span class="ne">6.</span></span> <span class="mr">ज्ञानेश्वरांची आरती</span><span class="en" lang="en">Dnyaneshwar Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
-      <li><a href="#a7" data-go="a7"><span class="m"><span class="no"><span class="nm">७.</span><span class="ne">7.</span></span> <span class="mr">विठ्ठलाची आरती</span><span class="en" lang="en">Vitthal Aarti</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
-      <li><a href="#a8" data-go="a8"><span class="m"><span class="no"><span class="nm">८.</span><span class="ne">8.</span></span> <span class="mr">घालीन लोटांगण</span><span class="en" lang="en">Ghalin Lotangan</span></span><span class="lt"><span class="mr">मराठी</span><span class="en" lang="en">Marathi</span></span></a></li>
-      <li><a href="#a9" data-go="a9"><span class="m"><span class="no"><span class="nm">९.</span><span class="ne">9.</span></span> <span class="mr">आरती जय गणेश देवा</span><span class="en" lang="en">Aarti Jai Ganesh Deva</span></span><span class="lt"><span class="mr">हिंदी</span><span class="en" lang="en">Hindi</span></span></a></li>
-      <li><a href="#a10" data-go="a10"><span class="m"><span class="no"><span class="nm">१०.</span><span class="ne">10.</span></span> <span class="mr">आरती जय जगदीश हरे</span><span class="en" lang="en">Aarti Jai Jagdish Hare</span></span><span class="lt"><span class="mr">हिंदी</span><span class="en" lang="en">Hindi</span></span></a></li>
-    </ol>
-  </div>
+  <div id="lbr"><button type="button" id="lbb" aria-haspopup="dialog" aria-expanded="false" aria-controls="lbm"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h4v16H4zM10 4h4v16h-4z"/><path d="M15 5.2l3.9-1 3.6 14.6-3.9 1z"/></svg><span id="lbbw" lang="en">Edit categories</span></button></div>
   </div>
   </div>
 </div>
@@ -374,6 +356,39 @@
      reading: the people on this phone (tap one to switch), Add a person, and for each, Edit (name, badge letters,
      colour, Delete with a confirmation; never the last one). Three views in one dialog; the words follow the menu
      language. ==== -->
+<!-- ==== Categories (js/features/library.js), opened by "Edit categories" at the end of the Library's list, over the
+     Library: every category with how many texts it holds and Rename (a built-in one only on this phone; it can't be
+     deleted), Add a category, Delete one the family added, and for each text the category it is listed under. Kept on
+     this phone for everyone on it, and in backup files. Three views in one dialog. The words follow the menu language;
+     the names of categories and texts follow the reading languages, as the Vedic calendar's do. ==== -->
+<div id="lbm" hidden role="dialog" aria-modal="true" aria-labelledby="lbmt">
+  <div class="qrc pfc lbc">
+    <div class="pfhd"><h2 class="qrt" id="lbmt" tabindex="-1"></h2><button type="button" id="lbx" class="pfxb"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div id="lbv1">
+      <ul id="lbcl"></ul>
+      <button type="button" id="lbadd" class="wide"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span id="lbaddw"></span></button>
+      <h3 class="lbh" id="lbth"></h3>
+      <p class="pfi lbti" id="lbti"></p>
+      <ul id="lbtl"></ul>
+      <p class="pfi" id="lbi"></p>
+    </div>
+    <form id="lbv2" hidden novalidate>
+      <label class="pff" for="lbmr"><span id="lbmrl"></span><input id="lbmr" type="text" lang="mr" maxlength="40" autocomplete="off" spellcheck="false" aria-describedby="lbh lberr"></label>
+      <label class="pff" for="lben"><span id="lbenl"></span><input id="lben" type="text" lang="en" maxlength="40" autocomplete="off" autocapitalize="words" spellcheck="false" aria-describedby="lbh lberr"></label>
+      <small id="lbh" class="lbhint"></small>
+      <p id="lberr" class="pferr" role="alert"></p>
+      <div class="pfbs"><button type="submit" id="lbsave" class="pri"></button><button type="button" id="lbcan"></button></div>
+      <button type="button" id="lbreset" class="lbreset" hidden></button>
+      <p id="lbbi" class="pfi" hidden></p>
+      <button type="button" id="lbdel" class="pfdel" hidden></button>
+    </form>
+    <div id="lbv3" hidden>
+      <p id="lbdq"></p>
+      <div class="pfbs"><button type="button" id="lbdy" class="pri dng"></button><button type="button" id="lbdn"></button></div>
+    </div>
+    <p id="lblive" class="sr" aria-live="polite"></p>
+  </div>
+</div>
 <div id="pfm" hidden role="dialog" aria-modal="true" aria-labelledby="pfmt">
   <div class="qrc pfc">
     <div class="pfhd"><h2 class="qrt" id="pfmt" tabindex="-1"></h2><button type="button" id="pfx" class="pfxb"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -460,7 +475,8 @@
 
       <h3>Library</h3>
       <ul>
-        <li>The <b>book</b> button at the top opens the Library: every text, under पूजा / Pooja and आरती / Aarti, with a search box. Tap a title to open it; <b>Back</b> (or your phone's Back) returns.</li>
+        <li>The <b>book</b> button at the top opens the Library: every text by category (वैदिक मंत्र / Vedic Chant, आरती / Aarti), each with its number on the reading page, with a search box. Tap a title to open it; <b>Back</b> (or your phone's Back) returns.</li>
+        <li><b>Edit categories</b> (विभाग बदला), at the end of the Library's list: add a category of your own (a name in Marathi, English or both), rename any category, delete one you added (its texts go back where they came from), and choose the category each text is listed under. A category with no texts is not shown in the list. The built-in categories can be renamed but not deleted, and <b>Use the original name</b> brings their name back. These changes stay on this phone for everyone who reads here and are saved in backup files; the words of the texts never change. ✕, Escape or your phone's Back closes it and leaves the Library open.</li>
         <li><b>Fold what you don't need:</b> a tap anywhere on a piece's heading (or its round ⌃) folds that piece down to its heading; tap it again to open it. The <b>Fold all</b> / <b>Open all</b> button on the <b>आरती / Aarti</b> heading folds or opens every aarti at once. Your phone remembers these. Going to a folded piece from the Library or search opens it.</li>
         <li><b>Only here for the aartis?</b> Tap the <b>पूजा / Pooja</b> heading above the Atharvashirsha to fold the Pooja section away; tap it again (the arrow points down while folded) to bring it back. Your phone remembers this. Going to the Atharvashirsha from the Library, search or Previous opens it again. The <b>आरती / Aarti</b> heading folds the aartis the same way.</li>
         <li data-feat="as" hidden><b>Autoscroll:</b> turn it on in ⚙ Settings (<b>Autoscroll</b>); it is off until you do. A round ▶ then appears in the bottom bar; tap it and the page scrolls by itself through the Pooja and the aartis. It opens every piece, and starts from the piece on screen (or the first one). A section you have folded (Pooja or Aarti) is skipped. Each sung line gets the same time; − and + set the speed (1–10) of the piece you are on, and each piece remembers its own speed, since each has its own tempo. <b>‹ Prev</b> and <b>Next ›</b> go to the previous or next piece. With the dhrupad shown once, it waits at each <b>↻ ध्रुपद</b> while the dhrupad is sung and shows it in the bubble. While it runs, Prev and Next make way for the speed, so one piece flows into the next. Scroll by hand any time, or hold a finger still to pause; when you let go it carries on from there. In Marathi + English it moves through each whole stanza, both languages, in the time the Marathi takes. ⏸ stops it. The screen stays on while it runs.</li>
@@ -488,7 +504,7 @@
       <h3>Buttons at the top</h3>
       <ul>
         <li><b>Home</b> (Ganesha and title): back to the start. While you read, the title shows the piece on screen (for example <i lang="mr">५. दत्ताची आरती</i>).</li>
-        <li><b>Library</b> (book): every text, to open any one, and search: type a few letters of a line in Marathi, English or Kannada to find it. Plain letters are enough, and spelling is forgiving: <i>sukhakarta</i>, <i>ganpati</i> and <i>vithal</i> find <i>sukhakartā</i>, <i>Ganapati</i> and <i>Vitthal</i>. The matching words are shown in bold; tap a result to go to that line. On a computer you can type straight away, and use ↑ ↓ and Enter.</li>
+        <li><b>Library</b> (book): every text by category, to open any one, and search across the whole library: type a few letters of a title, a category or a line in Marathi, English or Kannada. Texts whose title, first line or category match come first, under <b>Texts</b> (रचना), then the lines, under <b>Lines</b> (ओळी). Plain letters are enough, spelling is forgiving (<i>sukhakarta</i>, <i>ganpati</i> and <i>vithal</i> find <i>sukhakartā</i>, <i>Ganapati</i> and <i>Vitthal</i>), one typo is forgiven, and Marathi letters find English ones too. The matching words are shown in bold; tap a text to open it, or a line to go to that line. On a computer you can type straight away, and use ↑ ↓ and Enter.</li>
         <li><b>अ/A</b> (language; ಕ/A in Kannada): each tap goes main language → second language → both together, and says which shows now and what the next tap shows (pick them in Settings). With no second language, it opens Settings at the second-language list.</li>
         <li><b>धृ</b> (dhrupad): show the refrain once at the top, or repeated after every stanza. In “once” mode, tap <b>↻ ध्रुपद</b> under a stanza to see the refrain; tap anywhere to close it.</li>
         <li><b>⚙ Settings:</b> opens as its own page, over the reading page; <b>‹ Back</b> (or your phone's Back) returns you to where you were. See below.</li>
@@ -514,7 +530,7 @@
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off. Keep screen on starts on for phones and tablets and off on computers.</li>
         <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
-        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.7), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
+        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.8), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
       </ul>
 
       <h3>While reading</h3>
