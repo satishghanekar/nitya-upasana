@@ -459,6 +459,15 @@
   }
 }
 
+/* ==== A session being read (data-run, js/features/today-card.js): only its texts (.inrun) are on the reading page,
+   not the rest of the Library nor the पूजा / आरती rows; folded sections don't hide them. Screen only ==== */
+@media screen {
+  :root[data-run="1"] .ash:not(.inrun),
+  :root[data-run="1"] .grp {
+    display: none !important;
+  }
+}
+
 /* ==== Start / Continue: below the list; on phones pinned to the bottom of the screen while the home page is in
    view. position: sticky keeps it in the page's flow, so at the end of the home page it sits after the row above and
    never covers the last text; the phone's home indicator gets its room (safe area) ==== */
