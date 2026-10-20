@@ -146,8 +146,8 @@ export function init() {
     // mode: "one" (one column) or "side" (Marathi and English side by side)
     function build(mode) {
       // Folded sections and pieces are printed in full: open them while the text is copied (and the pieces Home on
-      // its own leaves out, data-hv: js/features/history.js)
-      var fa = ["data-pf", "data-xf", "data-hv"].map(function (a) {
+      // its own leaves out, data-hv: js/features/history.js, and those a session being read leaves out, data-run)
+      var fa = ["data-pf", "data-xf", "data-hv", "data-run"].map(function (a) {
           var v = root.getAttribute(a);
           root.removeAttribute(a);
           return [a, v];

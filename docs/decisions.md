@@ -31,7 +31,9 @@ aarti-v1.13.
   takes it off first, and the text is fitted to the screen again then. The Home buttons, the end of a session and Back
   to the bare address put it back. Scrolling up from a piece back to
   Home (once the session switch is on screen) or picking a session puts it back too, so Home never shows the whole
-  Library below it, even with nothing planned (v1.13.2). Print copies the pieces with
+  Library below it, even with nothing planned (v1.13.2).
+  Reading a session (Start, or a text of its list) shows only that session's texts on the reading page, without the
+  पूजा / आरती rows (`data-run`, v1.13.3); going to a text from the Library, search or the side menu shows every piece. Print copies the pieces with
   `data-hv` off, so printing everything works from Home as before; search and the Library read the page as before.
 - The picture beside the date still follows the session picked (as in Home v2); the mockup kept the clock's picture.
 
