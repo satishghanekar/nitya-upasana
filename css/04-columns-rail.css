@@ -315,11 +315,11 @@
   --ww: 76rem;
 }
 /* With the side menu (iPad landscape, desktop) the whole layout spans 85% of the screen (Desktop A, docs/decisions.md;
-   at least 1000px, never closer than 24px to the edges): the menu (300px) on the left, the page beside it */
+   at least 1000px, never closer than 24px to the edges): the menu (360px) on the left, the page beside it */
 @media screen and (min-width: 1100px) {
   [data-rail="1"] {
     --T: min(calc(var(--vw, 100vw) - 48px), max(1000px, calc(var(--vw, 100vw) * 0.85)));
-    --S: 340px;
+    --S: 400px;
     --W: calc(var(--T) - var(--S));
     --L: calc((var(--vw, 100vw) - var(--T)) / 2);
   }
@@ -338,7 +338,7 @@
     z-index: 4;
     left: var(--L);
     top: 72px;
-    width: 300px;
+    width: calc(var(--S) - 40px);
     max-height: calc(100vh - 96px);
     overflow: auto;
     padding: 4px 6px 12px 0;
