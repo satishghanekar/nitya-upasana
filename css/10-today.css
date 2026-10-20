@@ -545,9 +545,9 @@
   :root[data-hv="1"][data-rail="1"] #home {
     max-width: none;
     display: grid;
-    grid-template-columns: minmax(340px, 400px) 1fr;
+    grid-template-columns: calc(var(--S) - 40px) 1fr;
     grid-template-rows: repeat(9, auto) 1fr;
-    column-gap: 56px;
+    column-gap: 40px;
     align-items: start;
   }
   :root[data-hv="1"][data-rail="1"] #home > * {
@@ -735,6 +735,67 @@
   }
   #rail #rrun .rlib:lang(mr) {
     font-family: var(--head);
+  }
+}
+
+/* ==== Desktop B (docs/decisions.md): the Vedic calendar (#cal) and Settings (#panel) open in the right-hand area, under
+   the top bar, beside today on the left (Home's left column, or the side menu while reading), not over the whole page.
+   The button that opened each one stays marked while it is open ==== */
+@media screen and (min-width: 1100px) {
+  :root[data-rail="1"] #cal,
+  :root[data-rail="1"] #panel {
+    top: var(--bb, 69px) !important;
+    left: calc(var(--L) + var(--S) - 1px);
+    right: 0;
+    bottom: 0;
+    padding: 0 var(--L) 24px 40px;
+    border-left: 1px solid var(--rule);
+    z-index: 6;
+  }
+  :root[data-rail="1"][data-sp] {
+    overflow: visible;
+  }
+  :root[data-rail="1"] #cal .calin {
+    grid-template-columns: 1fr minmax(320px, 380px);
+    gap: 18px 28px;
+    max-width: none;
+    margin: 0;
+  }
+  :root[data-rail="1"] #cal #calm {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  :root[data-rail="1"] #cal #cald {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  :root[data-rail="1"] #panel .sp-pg {
+    max-width: none;
+    margin: 0;
+  }
+  :root[data-rail="1"] #panel .sp-hd {
+    box-shadow: 0 1px 0 var(--rule);
+    clip-path: none;
+  }
+  /* Settings' groups as cards across the width */
+  :root[data-rail="1"] #sp-home .sp-body {
+    columns: 2 380px;
+    column-gap: 24px;
+  }
+  :root[data-rail="1"] #sp-home .sp-h {
+    break-after: avoid;
+  }
+  :root[data-rail="1"] #sp-home .sp-card {
+    break-inside: avoid;
+  }
+  :root[data-rail="1"] #panb[aria-expanded="true"] {
+    border-color: var(--accent);
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+  :root[data-rail="1"] #aa[aria-expanded="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
   }
 }
 

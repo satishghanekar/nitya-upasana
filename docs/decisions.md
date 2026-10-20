@@ -212,3 +212,10 @@ layout spans 85% of the screen (at least 1000px). Home on its own shows today on
 session's texts with ticks, Start, More, Library line) and the day's picture large on the right with the date. While a
 session is read, the side menu is the session panel: its name, how many are done, its texts with ticks (the one on
 screen highlighted) and "Another text? Open the Library". Reading from the Library keeps the full contents menu.
+
+## Desktop B (v1.15)
+
+- On desktop (≥1100px, side menu shown) the Vedic calendar and Settings open in the right-hand area, beside the left column, instead of as a full-screen layer. The left column (today panel or the session's side menu) stays in view.
+- The calendar shows the month on the left and the day card on the right. Settings home lays its cards in two columns.
+- The left column is now 360px (--S 400px with the gap) so session names fit on one line.
+- The gear and calendar buttons stay highlighted while their area is open. Phones are unchanged.
