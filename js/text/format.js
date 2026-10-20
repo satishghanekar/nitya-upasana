@@ -26,7 +26,7 @@
  * @typedef {{
  *   id: string, title: string, titleEn: string, category: string, language: string,
  *   legacyId?: string, lineIds?: string, lineIdExceptions?: Record<string, string>,
- *   refrain: "every-verse" | "always" | "none", refrainFirst?: boolean, layout?: "prose",
+ *   refrain: "every-verse" | "always" | "none", refrainFirst?: boolean, layout?: "prose", stanzaNumbers?: "as-written",
  *   credit?: string, creditEn?: string, creditNote?: string, creditNoteEn?: string, source?: string,
  *   blocks: Block[]
  * }} Text
@@ -46,6 +46,7 @@ const FIELDS = [
   ["refrain", "refrain", false],
   ["refrain-before-first", "refrainFirst", false],
   ["layout", "layout", false],
+  ["stanza-numbers", "stanzaNumbers", false],
   ["credit", "credit", false],
   ["credit-en", "creditEn", false],
   ["credit-note", "creditNote", false],
@@ -105,6 +106,7 @@ export function parseText(raw, name) {
     if (key === "language" && LANGUAGES.indexOf(val) < 0) fail(at, "language must be one of " + LANGUAGES.join(", "));
     if (key === "refrain" && REFRAINS.indexOf(val) < 0) fail(at, "refrain must be one of " + REFRAINS.join(", "));
     if (key === "layout" && val !== "prose") fail(at, 'layout can only be "prose"');
+    if (key === "stanza-numbers" && val !== "as-written") fail(at, 'stanza-numbers can only be "as-written"');
     if (key === "refrain-before-first") {
       if (val !== "yes") fail(at, 'refrain-before-first can only be "yes"');
       t[prop] = true;

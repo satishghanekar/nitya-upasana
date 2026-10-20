@@ -17,38 +17,45 @@
    "sun": [
     "sukhkarta",
     "durge-durghat-bhari",
-    "ghalin-lotangan"
+    "ghalin-lotangan",
+    "ashtak-sunday"
    ],
    "mon": [
     "sukhkarta",
     "durge-durghat-bhari",
     "lavathavati-vikrala",
-    "ghalin-lotangan"
+    "ghalin-lotangan",
+    "ashtak-monday"
    ],
    "tue": [
     "sukhkarta",
     "durge-durghat-bhari",
-    "ghalin-lotangan"
+    "ghalin-lotangan",
+    "ashtak-tuesday"
    ],
    "wed": [
     "sukhkarta",
     "durge-durghat-bhari",
-    "ghalin-lotangan"
+    "ghalin-lotangan",
+    "ashtak-wednesday"
    ],
    "thu": [
     "sukhkarta",
     "durge-durghat-bhari",
-    "ghalin-lotangan"
+    "ghalin-lotangan",
+    "ashtak-thursday"
    ],
    "fri": [
     "sukhkarta",
     "durge-durghat-bhari",
-    "ghalin-lotangan"
+    "ghalin-lotangan",
+    "ashtak-friday"
    ],
    "sat": [
     "sukhkarta",
     "durge-durghat-bhari",
-    "ghalin-lotangan"
+    "ghalin-lotangan",
+    "ashtak-saturday"
    ]
   }
  }
