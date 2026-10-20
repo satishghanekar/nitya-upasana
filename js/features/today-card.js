@@ -350,6 +350,25 @@ function openText(id) {
   document.dispatchEvent(new Event("nitya-session"));
 }
 
+/**
+ * While a session is being read (Start, or a text of the list), the reading page shows only that session's texts
+ * (data-run on <html>, .inrun on each of its pieces: css/10-today.css), not the whole Library; going to a text another
+ * way (the Library, search, the side menu) leaves the session and shows every piece again.
+ */
+function runMark() {
+  var r = document.documentElement,
+    on = {};
+  if (run)
+    run.ids.forEach(function (id) {
+      if (info[id]) on[info[id].sec] = 1;
+    });
+  [].forEach.call(document.querySelectorAll(".ash"), function (/** @type {HTMLElement} */ x) {
+    x.classList.toggle("inrun", !!on[x.id]);
+  });
+  if (run) r.setAttribute("data-run", "1");
+  else r.removeAttribute("data-run");
+}
+
 /** Read the session shown from this text on */
 /** @param {string} id */
 function startAt(id) {
@@ -358,6 +377,7 @@ function startAt(id) {
   try {
     sessionStorage.setItem(RUN_KEY, JSON.stringify(run));
   } catch (e) {}
+  runMark();
   openText(id);
 }
 
@@ -453,6 +473,7 @@ export function init() {
     var r = JSON.parse(sessionStorage.getItem(RUN_KEY) || "null");
     if (r && Array.isArray(r.ids)) run = r;
   } catch (e) {}
+  runMark();
   ticks.prune(dateKey(new Date()));
   var tabs = /** @type {HTMLElement} */ (document.getElementById("tss")),
     list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
@@ -562,6 +583,7 @@ export function init() {
       try {
         sessionStorage.removeItem(RUN_KEY);
       } catch (x) {}
+      runMark();
       setTimeout(function () {
         document.dispatchEvent(new Event("nitya-session"));
       });
