@@ -8,5 +8,6 @@ Static pages for choosing a design. **Not app code**: no logic, sample data only
 | `reading-a.html`, `reading-b.html` | Reading view: A one text at a time, B whole session in one scroll |
 | `recital.html` | Recital mode (goes with either reading view) |
 | `builder-a.html`, `builder-b.html` | Routine builder: A list with move buttons, B week grid |
+| `desktop-a.html` | Desktop A: today beside the text, 85% of the screen width (`?read` while reading) |
 
 Add `?dark` to an address for the dark theme. Live at nitya-upasana.pages.dev/mockups/ (not linked from the app). They will be deleted once a design is chosen and built.

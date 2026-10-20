@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup · Desktop A · Today beside the text</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  /* Desktop A: two panes. Left: today (what phone Home shows). Right: the text being read, or the day's picture and Start. */
+  body { min-width: 1100px; }
+  .top { padding: 10px 24px; }
+  /* the whole layout spans 85% of the screen width (Satish: at least 75 to 85%) */
+  #app { display: grid; grid-template-columns: 360px 1fr; grid-template-rows: auto 1fr; min-height: 100vh; width: 85vw; margin: 0 auto; }
+  .top { grid-column: 1 / -1; }
+  .side { border-right: 1px solid var(--rule); padding: 18px 18px 24px; position: sticky; top: 65px; height: calc(100vh - 65px); overflow: auto; display: flex; flex-direction: column; gap: 12px; }
+  .dt { display: flex; gap: 12px; align-items: center; }
+  .dt img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
+  .dt b { display: block; font-size: 15px; }
+  .pan { padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); font-size: 13px; }
+  .pan .h { font: 18px/1.3 var(--head); color: var(--accent); }
+  .fst { padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; font-size: 13px; }
+  .sh { display: flex; align-items: baseline; justify-content: space-between; margin-top: 4px; }
+  .sh h2 { margin: 0; font: 22px/1.2 var(--head); color: var(--accent); }
+  .sh span { font-size: 13px; color: var(--muted); }
+  .side .row { min-height: 52px; border-radius: 10px; padding: 4px 8px; }
+  .side .row.cur { background: var(--card); box-shadow: inset 3px 0 0 var(--accent); }
+  .side .t1 { font-size: 17px; }
+  .side .t2 { font-size: 12px; }
+  .lib { margin-top: auto; font-size: 13px; color: var(--muted); padding-top: 10px; border-top: 1px solid var(--rule); }
+  .lib a { color: var(--accent); font-weight: 600; }
+  main { padding: 26px 40px 120px; }
+  .ph { margin: 0 0 6px; display: flex; align-items: baseline; gap: 12px; }
+  .ph .of { margin-left: auto; font-size: 13px; color: var(--muted); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; column-gap: 56px; }
+  .nb { position: fixed; left: calc(7.5vw + 360px); right: 7.5vw; bottom: 0; display: flex; justify-content: center; gap: 14px; padding: 12px; background: var(--bg); border-top: 1px solid var(--rule); }
+  .nb .btn { min-width: 220px; }
+  .welcome { max-width: 560px; margin: 30px auto; text-align: center; }
+  .welcome img { width: 360px; height: 360px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); }
+  .welcome .btn { margin-top: 22px; width: 100%; }
+  .note { max-width: 980px; margin: 0 auto 18px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<span class="mk">Desktop A · today beside the text</span>
+<script src="../tests/unit/fixtures/pieces.js"></script>
+<script src="mock.js"></script>
+<script>
+var reading = /[?&]read\b/.test(location.search);
+var MORNING = [0, 1, 3];
+var side =
+  '<aside class="side" aria-label="Today">' +
+  '<div class="dt"><img src="../picture-sunrise-360.webp" alt=""><span><b>मंगळवार, २० ऑक्टोबर</b><span class="muted">Tuesday, 20 October 2026</span></span></div>' +
+  '<div class="pan"><div class="h">आश्विन शुद्ध दशमी</div>नक्षत्र श्रवण · शके १९४८ · पराभव संवत्सर</div>' +
+  '<div class="fst">★ Today: <b class="dev">दसरा</b> · Dasara (Vijayadashami)</div>' +
+  seg("Morning") +
+  '<div class="sh"><h2>सकाळ · Morning</h2><span>' + (reading ? "1 of 3 done" : "0 of 3 done") + " · Edit</span></div>" +
+  rows(MORNING, reading ? [0] : [], { num: true }).replace(reading ? /(<li class="row)(?![^]*<li class="row done)/ : /^$/, "$1") +
+  '<div class="lib">Another text? <a>Open the Library</a> · More: App, Share, Print, Help</div>' +
+  "</aside>";
+if (reading) side = side.replace('<li class="row"', '<li class="row cur"');
+var mainH;
+if (reading) {
+  var body = renderPiece(1, {});
+  mainH = '<main><div class="ph"><span class="n">२.</span><h2 class="head" style="margin:0;font-size:26px;color:var(--accent)">गणपतीची आरती</h2><span class="tag">मराठी</span><span class="of">सकाळ · 2 of 3</span></div>' +
+    '<div class="two-wrap">' + body + "</div>" + LOTUS + "</main>" +
+    '<nav class="nb"><button class="btn sec">' + I.prev + " Prev: Atharvashirsha</button><button class=\"btn\">" + I.check + " Done · Next: Devi Aarti " + I.next + "</button></nav>";
+} else {
+  mainH = '<main><div class="welcome"><img src="../picture-sunrise.webp" alt=""><button class="btn">' + I.play + " Start: Ganapati Atharvashirsha</button>" +
+    '<p class="muted">Only this session’s 3 texts. The full Library opens from the book button or the link on the left.</p></div></main>';
+}
+document.getElementById("app").innerHTML =
+  topbar('<span class="chip"><span class="av">M</span>Me</span>') + side + mainH;
+if (reading) {
+  var w = document.querySelector(".two-wrap"), sts = [].slice.call(w.querySelectorAll(".st, .rmk"));
+  var g = document.createElement("div"); g.className = "two";
+  var col = [document.createElement("div"), document.createElement("div")], c = -1;
+  sts.forEach(function (el) { if (el.classList.contains("st")) c++; col[c % 2].appendChild(el); });
+  g.appendChild(col[0]); g.appendChild(col[1]); w.appendChild(g);
+}
+</script>
+</body>
+</html>
