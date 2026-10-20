@@ -16,6 +16,7 @@ import { P, dfs } from "../core/state.js";
 import { flash } from "../core/page.js";
 import { ovDone, ovPush } from "./history.js";
 import { applyPrefs } from "./profiles.js";
+import { refresh as refreshLibrary } from "./library.js";
 import { describeRestore, fileName, makeBackup, needsReminder, parseBackup, serialise } from "../store/backup.js";
 import { exportData, getMeta, kind, list, markBackup, onChange, restore, snooze } from "../store/store.js";
 
@@ -322,6 +323,7 @@ function doRestore() {
   pendingData = null;
   restore(data).then(function (prefs) {
     applyPrefs(prefs);
+    refreshLibrary();
     persist();
     closeDialog();
     flash(W.mr.done, W.en.done, 2500);

@@ -25,8 +25,10 @@ There is no build step: the browser loads these files as they are.
 | `core/features.js` | Features held back for a later release |
 | `features/day-picture.js` | The app's picture follows the time of day (sunrise, midday, sunset) with today's weekday star ringed; checks again at 12:00, 17:00, midnight and when the page comes back into view |
 | `core/time-of-day.js` | Which picture and which star for a given moment (pure functions, unit-tested; no `init()`: used by `features/day-picture.js`) |
-| `text/iast.js` | IAST transliteration (Devanagari → Latin with diacritics, Vedic accents as marks) |
-| `text/layout.js` | Layout helpers that run once |
+| `features/library.js` | The Library by category (version 1.8): builds the Library's list (`#jl`) from `content/library.json` and `content/categories.json` with this phone's changes, one `.tocg` per category with texts (empty ones left out), each text with its reading-page number; "Edit categories" / "विभाग बदला" (`#lbb`) opens the categories sheet (`#lbm`, over the Library, with its own Back step, focus trap, Escape, live announcements): add, rename (built-in ones only on this phone; Use the original name), delete a family category, move a text. Words in the menu language, names in the reading languages as in `features/vedic-calendar.js`. Saves with `setLibrary()` (`store/store.js`, `meta.library`, per phone, in backups) and rebuilds the side menu, titles and search index; `refresh()` after a restore; `textsForSearch()` and `categoryOfSection()` for search |
+| `core/library.js` | The category model (pure, unit-tested in `tests/unit/library.test.mjs`; no `init()`): bundled categories merged with the family's (`added`, `renames`, `moves`), `shelves()`, `addCategory`, `renameCategory`, `resetName`, `removeCategory`, `moveText`, and `cleanLocal()` for whatever IndexedDB or a backup file holds |
+| `text/iast.js` | IAST transliteration (Devanagari → Latin with diacritics, Vedic accents as marks); `titlesSet()` puts the titles in the English style again after the Library's list is rebuilt |
+| `text/layout.js` | Layout helpers that run once; `buildRail()` builds the side menu (`#rail`) from the Library's list, again when the categories change |
 | `features/astronomy.js` | Astronomy: sun and moon positions, tithi, moonrise and the Sankashti rule (worked out on this device) |
 | `features/sankashti.js` | Sankashti: the place (the reader's own from Settings → Place for moonrise, else the time zone's city), the next Sankashti (kept in `shared.skCache` for the Share message), and on a Sankashti day only one line on the home page (`#skt`) with moonrise and the place |
 | `features/today-card.js` | Home (Home v2): the picture beside today's date in Marathi and English, the session for the time now with its texts and a tick each, "Not this time?" (the other sessions), Start / Continue; while a session is being read, ‹ Prev and Next › follow it (`sessionStep()`, read by `features/bottom-bar.js`), and Next ticks the text it leaves |
@@ -51,10 +53,11 @@ There is no build step: the browser loads these files as they are.
 | `features/overlays.js` | Overlays: settings panel (setP), the Library (setJ) and the Vedic calendar page (setC); opening one closes the others (no `init()`: used by bars, clicks, pinch, help and history) |
 | `features/history.js` | Back button |
 | `features/languages.js` | Settings page: languages |
-| `features/contents-list.js` | The Library page (`#jump`): every text, grouped, with search; its Back button. The list is written in `index.html` and also feeds the side menu and the printout's contents |
+| `features/contents-list.js` | The Library page (`#jump`): its Back button, and the list (`#jl`, built by `features/library.js`) that search hides while results show |
 | `features/clicks.js` | Clicks: Library and side-menu links (data-go) jump to a piece; tapping a verse line highlights it |
 | `features/pinch.js` | Pinch with two fingers to change the text size (the page itself never zooms; on the home page a pinch does nothing) |
-| `text/search.js` | Search: every Marathi line with its English line; matches ignore svara marks and punctuation |
+| `text/search.js` | Search across the library (version 1.8): builds the index from the page (titles, ids, first lines, categories from `features/library.js`, every line in the original and both English spellings) and shows the results: "Texts" ("रचना") first, then "Lines" ("ओळी"), with matches in bold, ↑ ↓ Enter, and the count announced |
+| `text/search-core.js` | The search rules (pure, unit-tested in `tests/unit/search.test.mjs`; no `init()`): folding (IAST, svara marks, punctuation, Kannada letters), loose spellings, Devanagari typed matched through its English letters, one typo per four letters, and the ranking (title, id, first line, category, then lines) |
 | `core/startup.js` | Start-up |
 | `features/picture-viewer.js` | Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move |
 | `features/help.js` | Help: opens over the page; the phone's Back button closes it |

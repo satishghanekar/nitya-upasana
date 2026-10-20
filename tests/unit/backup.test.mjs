@@ -46,6 +46,26 @@ describe("a backup file", () => {
     expect(serialise(makeBackup({ profiles: r.data.profiles, activeProfile: r.data.activeProfile, device: r.data.settings }, { app: "aarti-v1.4", created: NOW }))).toBe(file());
   });
 
+  test("from version 1.8 it carries the family's categories (checked when read); an older file has none", () => {
+    const library = {
+      added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }],
+      renames: { aarti: { mr: "आरत्या", en: "Aartis" } },
+      moves: { "ghalin-lotangan": "bhajan" },
+    };
+    const text = serialise(makeBackup({ ...DATA, library }, { app: "aarti-v1.8", created: NOW }));
+    const r = parseBackup(text, ENV);
+    expect(r.ok).toBe(true);
+    expect(r.data.library).toEqual(library);
+    // a damaged part is dropped, never trusted as it is (the checksum is made again, as an editor would)
+    const b = JSON.parse(text);
+    b.payload.library = { added: [{ id: "Bad Id!", name: { mr: "x", en: "x" } }, { id: "ok", name: {} }], renames: { aarti: 5 }, moves: { sukhkarta: "<b>" } };
+    b.sha256 = sha256(JSON.stringify(b.payload));
+    expect(parseBackup(JSON.stringify(b), ENV).data.library).toEqual({ added: [], renames: {}, moves: {} });
+    // a file from 1.7 or before: no library, so a restore leaves this phone's categories alone
+    expect(JSON.parse(file()).payload.library).toBeUndefined();
+    expect(parseBackup(file(), ENV).data.library).toBeUndefined();
+  });
+
   test("re-indented by an editor (or with a byte-order mark), it still reads", () => {
     const b = JSON.parse(file());
     expect(parseBackup(JSON.stringify(b), ENV).ok).toBe(true);
