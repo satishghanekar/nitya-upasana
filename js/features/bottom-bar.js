@@ -106,9 +106,10 @@ export function init() {
   // asShow() keeps ▶ in step with the settings, and Prev / Next with the piece on screen.
   asc.hidden = false;
   root.setAttribute("data-asb", "1");
-  // the bar steps aside while Settings (#panel), the Library (#jump) or the Vedic calendar (#cal) is open
+  // the bar steps aside while Settings (#panel), the Library (#jump), the Vedic calendar (#cal) or the routine builder
+  // (#rtb) is open
   (function () {
-    var ms = [document.getElementById("panel"), document.getElementById("jump"), document.getElementById("cal")];
+    var ms = [document.getElementById("panel"), document.getElementById("jump"), document.getElementById("cal"), document.getElementById("rtb")];
     function menu() {
       if (ms.some(function (m) { return m && !m.hidden; })) root.setAttribute("data-menu", "1");
       else root.removeAttribute("data-menu");

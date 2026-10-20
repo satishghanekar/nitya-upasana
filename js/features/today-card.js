@@ -6,13 +6,17 @@
 // in the Library (#jump, js/features/contents-list.js).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
-// What it reads: the routine (content/routines.json) and the titles (content/library.json), both loaded by
+// What it reads: the reading person's routine (their own, made in the routine builder, js/features/routine-builder.js,
+// or else content/routines.json) and the titles (content/library.json), both loaded by
 // js/text/load.js; which texts a session has and the walk through it: js/core/routine.js; the ticks, kept on this
 // device for today only, per person (in their profile, js/store/store.js): js/core/ticks.js. Titles are always the
 // library's, never typed here. Switching person re-draws the list with their ticks (profileChanged()).
 // Reading a session: Start / Continue (or a title in the list) opens the text in the reading page, and while the
 // reader is on a text of that session, ‹ Prev and Next › in the bottom bar follow the session (sessionStep(), read by
 // js/features/bottom-bar.js); Next after the last text comes back here.
+// Changing the routine: "Edit" beside the session's heading (#tsed), and "Add texts" when a session is empty (#tsea),
+// open the routine builder for this session (the event "nitya-routine-edit"); the builder says "nitya-routine" after
+// each change, and the list is drawn again (a removed text's tick just no longer shows).
 
 import { P } from "../core/state.js";
 import { flash } from "../core/page.js";
@@ -23,7 +27,7 @@ import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, firstUndone, stepInSession, textsFor } from "../core/routine.js";
 import { createTicks } from "../core/ticks.js";
-import { active, ticksStorage } from "../store/store.js";
+import { active, routine, ticksStorage } from "../store/store.js";
 
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
@@ -52,7 +56,16 @@ const W = {
       return n + (n === 1 ? " text" : " texts");
     },
     none: "Nothing planned",
-    empty: "Nothing is planned for this session. Any text can be opened from the Library at any time.",
+    /** @param {string} s */
+    empty: function (s) {
+      return "Nothing is planned for " + s.toLowerCase() + " yet. ";
+    },
+    add: "Add texts",
+    edit: "Edit",
+    /** @param {string} s */
+    editL: function (s) {
+      return "Edit routine: " + s;
+    },
     end: "Today",
     ended: "End of the session",
   },
@@ -75,7 +88,16 @@ const W = {
       return dv(n) + " रचना";
     },
     none: "काही ठरलेले नाही",
-    empty: "या वेळेसाठी काही ठरलेले नाही. कोणतीही रचना संग्रहातून केव्हाही उघडता येईल.",
+    /** @param {string} s */
+    empty: function (s) {
+      return s + "साठी अजून काही ठरवलेले नाही. ";
+    },
+    add: "रचना जोडा",
+    edit: "बदला",
+    /** @param {string} s */
+    editL: function (s) {
+      return "बदला: " + s + "चा दिनक्रम";
+    },
     end: "आज",
     ended: "या वेळेची उपासना पूर्ण",
   },
@@ -149,10 +171,10 @@ function current() {
   return { today: today, day: today, session: pick.session || sessionAt(now) };
 }
 
-/** The texts of a session on a day, keeping only those in the library */
+/** The texts of a session on a day, from the reading person's routine, keeping only those in the library */
 /** @param {string} day @param {Session} session */
 function idsFor(day, session) {
-  return textsFor(loaded.routine, fromKey(day).getDay(), session).filter(function (id) {
+  return textsFor(routine() || loaded.routine, fromKey(day).getDay(), session).filter(function (id) {
     return !!info[id];
   });
 }
@@ -219,6 +241,11 @@ export function render() {
   var head = /** @type {HTMLElement} */ (document.getElementById("tsh"));
   head.innerHTML = '<span lang="' + (scrKey() || "mr") + '">' + scr(MR_SESSION[c.session]) + '</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">' + EN_SESSION[c.session] + "</span>";
   /** @type {HTMLElement} */ (document.getElementById("tsn")).textContent = !ids.length ? w.none : w.count(nDone, ids.length);
+  var ed = document.getElementById("tsed");
+  if (ed) {
+    ed.textContent = w.edit;
+    ed.setAttribute("aria-label", w.editL(w.sessions[c.session]));
+  }
   var list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
   list.innerHTML = ids
     .map(function (id, i) {
@@ -238,7 +265,8 @@ export function render() {
     .join("");
   var empty = /** @type {HTMLElement} */ (document.getElementById("tse"));
   empty.hidden = ids.length > 0;
-  empty.textContent = w.empty;
+  /** @type {HTMLElement} */ (document.getElementById("tset")).textContent = w.empty(w.sessions[c.session]);
+  /** @type {HTMLElement} */ (document.getElementById("tsea")).textContent = w.add;
   // "Not this time?" and the two other sessions
   var so = /** @type {HTMLElement} */ (document.getElementById("tso"));
   so.lang = ui;
@@ -371,6 +399,11 @@ function check() {
   timer = setTimeout(check, nextChange(now).getTime() - now.getTime() + 1000);
 }
 
+/** The session Home shows (the routine builder opens at it from Settings) @returns {Session} */
+export function shownSession() {
+  return current().session;
+}
+
 /** Re-draw when the menu language or the script changes (called by apply(), js/features/bars.js) */
 export function todayLang() {
   var ui = P.ui === "mr" ? "mr" : "en";
@@ -422,6 +455,17 @@ export function init() {
     render();
     var again = /** @type {HTMLElement | null} */ (list.querySelector('input[data-t="' + id + '"]'));
     if (again) again.focus();
+  });
+  // Edit (beside the heading) and Add texts (an empty session): the routine builder, at this session
+  [document.getElementById("tsed"), document.getElementById("tsea")].forEach(function (b) {
+    if (!b) return;
+    b.addEventListener("click", function () {
+      document.dispatchEvent(new CustomEvent("nitya-routine-edit", { detail: { session: current().session, add: b.id === "tsea", from: b } }));
+    });
+  });
+  // the routine changed (the builder) or another person's was restored: draw the list again
+  document.addEventListener("nitya-routine", function () {
+    render();
   });
   // a title opens its text, reading the session from there
   list.addEventListener("click", function (e) {

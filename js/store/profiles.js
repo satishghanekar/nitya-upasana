@@ -10,13 +10,16 @@
 // becomes the first person ("Me"), with today's ticks.
 
 import { cleanPerson, devicePart, migratePrefs, profilePart } from "./migrate.js";
+import { cleanRoutine } from "../core/routine.js";
 
 /**
  * @typedef {import("./migrate.js").Env} Env
  * @typedef {import("./migrate.js").Prefs} Prefs
  * @typedef {{ date: string, done: Record<string, string[]> }} Checklist
+ * @typedef {import("../core/routine.js").Routine} Routine
  * @typedef {{ id: string, name: string, initials: string, colour: string, settings: Prefs,
- *   checklist: Checklist | null, created: string, updated: string }} Profile
+ *   checklist: Checklist | null, routine: Routine | null, created: string, updated: string }} Profile
+ *   routine: their own (the routine builder, version 1.8), or null to follow content/routines.json (Q5)
  * @typedef {{ activeProfile: string, device: Prefs, since: string, lastBackup: string, snooze: string,
  *   schema: number, order?: string[] }} Meta   order: the people's ids in the order they were added
  */
@@ -149,7 +152,8 @@ export function nameProblem(name, list, self) {
 }
 
 /**
- * @param {{ id: string, name: string, initials?: string, colour?: string, settings: Prefs, checklist?: Checklist | null, now: string }} o
+ * @param {{ id: string, name: string, initials?: string, colour?: string, settings: Prefs, checklist?: Checklist | null,
+ *   routine?: Routine | null, now: string }} o
  * @returns {Profile}
  */
 export function newProfile(o) {
@@ -161,6 +165,8 @@ export function newProfile(o) {
     colour: cleanColour(o.colour || ""),
     settings: o.settings,
     checklist: o.checklist || null,
+    // a new person follows content/routines.json until they change their routine (Q5)
+    routine: cleanRoutine(o.routine),
     created: o.now,
     updated: o.now,
   };
@@ -218,6 +224,8 @@ export function cleanProfile(p, env) {
     colour: cleanColour(p.colour),
     settings: cleanPerson(p.settings, env),
     checklist: cleanChecklist(p.checklist),
+    // a profile saved before version 1.8 (or a backup file from then) has none: the default routine
+    routine: cleanRoutine(p.routine),
     created: typeof p.created === "string" ? p.created : "",
     updated: typeof p.updated === "string" ? p.updated : "",
   };
