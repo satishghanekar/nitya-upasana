@@ -2,7 +2,9 @@
  "morning": {
   "mode": "fixed",
   "texts": [
-   "atharvashirsha"
+   "atharvashirsha",
+   "sukhkarta",
+   "durge-durghat-bhari"
   ]
  },
  "afternoon": {
@@ -10,18 +12,44 @@
   "texts": []
  },
  "evening": {
-  "mode": "fixed",
-  "texts": [
-   "sukhkarta",
-   "shendur-lal-chadhayo",
-   "durge-durghat-bhari",
-   "lavathavati-vikrala",
-   "trigunatmak-traimurti",
-   "aarti-dnyanaraja",
-   "yei-o-vitthale",
-   "ghalin-lotangan",
-   "jai-ganesh-deva",
-   "jai-jagdish-hare"
-  ]
+  "mode": "weekday",
+  "days": {
+   "sun": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan"
+   ],
+   "mon": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "lavathavati-vikrala",
+    "ghalin-lotangan"
+   ],
+   "tue": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan"
+   ],
+   "wed": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan"
+   ],
+   "thu": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan"
+   ],
+   "fri": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan"
+   ],
+   "sat": [
+    "sukhkarta",
+    "durge-durghat-bhari",
+    "ghalin-lotangan"
+   ]
+  }
  }
 }
