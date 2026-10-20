@@ -6,7 +6,7 @@
 <title>Nitya Upasana</title>
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.8">
+<meta name="version" content="aarti-v1.9">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -43,6 +43,7 @@
 <link rel="stylesheet" href="css/11-profiles.css">
 <link rel="stylesheet" href="css/12-calendar.css">
 <link rel="stylesheet" href="css/13-library.css">
+<link rel="stylesheet" href="css/14-builder.css">
 <link rel="stylesheet" href="css/99-fallbacks.css">
 <!-- The list of the site's files, for Check for updates and the offline copy. In the head: in the body it would
      sit between elements that the styles expect to be neighbours (#home + .grp) -->
@@ -106,6 +107,8 @@
 <link rel="modulepreload" href="js/store/backup.js">
 <link rel="modulepreload" href="js/features/profiles.js">
 <link rel="modulepreload" href="js/features/backup.js">
+<link rel="modulepreload" href="js/features/text-picker.js">
+<link rel="modulepreload" href="js/features/routine-builder.js">
 </head>
 
 <body>
@@ -232,6 +235,8 @@
       <div class="sp-card">
         <p class="sp-row sp-warn" id="stw2" hidden><span class="sp-l"><span class="mr">हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.</span><span class="en" lang="en">This browser can't save here. Use Save a backup file before closing.</span></span></p>
         <button type="button" class="sp-row sp-go" id="spf"><span class="sp-l"><span class="mr">कोण वाचत आहे</span><span class="en" lang="en">Who is reading</span></span><span class="sp-v" id="spfv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        <!-- the reading person's routine: the routine builder (#rtb, js/features/routine-builder.js) -->
+        <button type="button" class="sp-row sp-go" id="sprt" aria-haspopup="dialog" aria-controls="rtb"><span class="sp-l"><span class="mr">दिनक्रम</span><span class="en" lang="en">Routine</span><small><span class="mr">प्रत्येक वेळेच्या रचना आणि त्यांचा क्रम</span><span class="en" lang="en">The texts for each session, in order</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         <button type="button" class="sp-row sp-go" id="bks"><span class="sp-l"><span class="mr">बॅकअप फाइल जतन करा</span><span class="en" lang="en">Save a backup file</span><small id="bksv"></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
         <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span class="mr">फाइलमधून परत आणा</span><span class="en" lang="en">Restore from a file</span><small><span class="mr">आधी जतन केलेली .nitya फाइल</span><span class="en" lang="en">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
       </div>
@@ -266,6 +271,34 @@
   <p id="call" class="sr" aria-live="polite"></p>
   </div>
 </div>
+<!-- ==== Routine builder (js/features/routine-builder.js; Satish chose design A, "List per day", 2026-10-19): opened by
+     Edit beside the session on Home, Add texts in an empty session, and Settings → Routine. Like the Library: under the
+     top bar, over the page, with Back (or the phone's Back, or Escape). The reading person's routine: the session
+     (Morning / Afternoon / Evening), the same every day or different by weekday (then a day row and Copy to other
+     days…), the list with ↑ ↓ ✕ (and Alt+↑/↓, Delete; drag by the grip), and Add texts: the picker (#tpk,
+     js/features/text-picker.js), beside the list on wide screens, a sheet on phones. Words written in by the script. ==== -->
+<div id="rtb" hidden role="dialog" aria-labelledby="rtbt" tabindex="-1">
+  <div class="rtin">
+  <div class="rtmain">
+  <div class="libhd">
+    <button type="button" id="rbk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागे</span><span class="en" lang="en">Back</span></button>
+    <h2 id="rtbt"><span class="pfa" id="rtba" aria-hidden="true"></span><span id="rtbn"></span></h2>
+  </div>
+  <div id="rtss" class="rtseg" role="radiogroup"></div>
+  <div id="rtmd" class="rtseg" role="radiogroup"></div>
+  <div id="rtwk" role="radiogroup" hidden></div>
+  <div class="rtcp"><span id="rtsum"></span><button type="button" id="rtcpb" aria-expanded="false" aria-controls="rtcpf" hidden></button></div>
+  <fieldset id="rtcpf" hidden><legend id="rtcpl"></legend><div id="rtcpd"></div><div class="rtcpbs"><button type="button" id="rtcpo" class="pri"></button><button type="button" id="rtcpx"></button></div></fieldset>
+  <ol id="rtl"></ol>
+  <p id="rte" hidden></p>
+  <!-- what changed (said aloud), and how to move a text with a keyboard -->
+  <p id="rtnote"><span id="rtlive" aria-live="polite"></span><span id="rthk"></span></p>
+  <button type="button" id="rtadd" aria-haspopup="dialog" aria-controls="tpk" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span id="rtaddw"></span></button>
+  </div>
+  <!-- Add texts: every text in the library, with search and a checkbox each (filled in by js/features/text-picker.js) -->
+  <div id="tpk" aria-labelledby="tpkt"></div>
+  </div>
+</div>
 <!-- ==== Left menu on wide screens (filled in by the script); placed here so keyboard users reach it before the page ==== -->
 <nav id="rail" aria-label="Contents"></nav>
 <!-- ==== Page: home, then every piece ==== -->
@@ -297,9 +330,11 @@
          this device for today only) and its title, which opens it; in the reading page Prev and Next then follow the
          session -->
     <section id="tsc" aria-labelledby="tsh">
-      <div class="tshd"><h2 id="tsh" tabindex="-1"></h2><span id="tsn"></span></div>
+      <!-- Edit (बदला): the routine builder (#rtb) at this session -->
+      <div class="tshd"><h2 id="tsh" tabindex="-1"></h2><span id="tsn"></span><button type="button" id="tsed" aria-haspopup="dialog" aria-controls="rtb"></button></div>
       <ol id="tsl"></ol>
-      <p id="tse" hidden></p>
+      <!-- an empty session: a friendly line and Add texts (the builder, with the picker open) -->
+      <p id="tse" hidden><span id="tset"></span><button type="button" id="tsea" aria-haspopup="dialog" aria-controls="rtb"></button></p>
       <p id="tlive" class="sr" aria-live="polite"></p>
     </section>
     <!-- Another session: "Not this time? Morning · Afternoon" (the two sessions not shown; the words are written in by
@@ -464,13 +499,23 @@
       <h3>Today</h3>
       <p>The home page is what to chant now: the picture follows the time of day (sunrise, midday, sunset) with the day's star ringed, beside today's date in Marathi and English, then the texts for this time of day.</p>
       <ul>
-        <li><b>The session</b> is the one for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. <b>Not this time?</b> under the list shows another session instead; the next day starts again from the clock. For now every day has the same routine: Morning is the Ganapati Atharvashirsha, Evening the ten aartis, and the Afternoon is free.</li>
+        <li><b>The session</b> is the one for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. <b>Not this time?</b> under the list shows another session instead; the next day starts again from the clock. To start with, Morning is the Ganapati Atharvashirsha, Evening the ten aartis, and the Afternoon is free; each person can change theirs (see Your routine below).</li>
         <li><b>The list</b> has the session's texts in order. Tap the round tick when you have finished one; the ticks are kept on this phone for today, for the person reading, and start fresh tomorrow. Tap a title to open it.</li>
         <li><b>Start</b> (or <b>Continue</b>, once some are ticked) opens the first text not yet ticked. On a phone it stays at the bottom of the screen while the home page is in view. While you read, <b>Next ›</b> in the bottom bar ticks the text you were reading as done for today, then goes to the next text of the session; after the last one it brings you back here. <b>‹ Prev</b> goes back without ticking. To take a tick off, tap it on the list.</li>
         <li>The row of <b>App</b>, <b>Share</b>, <b>QR</b>, <b>Print</b> and <b>Help</b> buttons sits under the list.</li>
         <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home says so, "Today: Dasara"). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
         <li><b>On a Sankashti day</b> a line under the date gives tonight's <b>moonrise</b> for where you are (Angaraki, on a Tuesday, is marked). The place is your phone's time zone until you choose <b>Place for moonrise</b> under About in Settings, which uses your phone's location; the town is worked out on the phone and your location is never sent anywhere.</li>
+      </ul>
+
+      <h3>Your routine</h3>
+      <p>Each person chooses their own texts for each session, and their order. Tap <b>Edit</b> beside the session on the home page (or Settings → Profiles and backup → <b>Routine</b>; <b>Add texts</b> when a session is empty).</p>
+      <ul>
+        <li>Pick <b>Morning</b>, <b>Afternoon</b> or <b>Evening</b> at the top. <b>Same every day</b> keeps one list; <b>Different by weekday</b> gives each day its own, with a row of days (this week's dates) to choose which day you are changing. <b>Copy to other days…</b> gives the day's list to the days you tick.</li>
+        <li><b>↑</b> and <b>↓</b> move a text, <b>✕</b> removes it. With a keyboard, Alt+↑ and Alt+↓ move the text whose button has focus, and Delete removes it. You can also drag a text by its dotted handle. Each change is read out by screen readers ("घालीन लोटांगण moved to 3 of 5").</li>
+        <li><b>Add texts</b> lists every text, with a search box: tick one to add it at the end, untick it to remove it. On a computer the list is beside yours; on a phone it slides up, and <b>Done</b> (or Back) closes it.</li>
+        <li>Changes are kept at once, for the person reading, and go into backup files. The home page follows your routine for today and the time of day. Taking a text out of a session also takes away its tick for today.</li>
+        <li>The titles follow your reading languages (Settings → Languages): English first shows the English names.</li>
       </ul>
 
       <h3>Library</h3>
@@ -483,7 +528,7 @@
       </ul>
 
       <h3>People on one phone</h3>
-      <p>Several people can read on the same phone, each with their own text size, languages, letters, English spelling, font, theme, high contrast and today's ticks. Location, Keep screen on, the layout and print choices belong to the phone and are shared.</p>
+      <p>Several people can read on the same phone, each with their own text size, languages, letters, English spelling, font, theme, high contrast, routine and today's ticks. Location, Keep screen on, the layout and print choices belong to the phone and are shared.</p>
       <ul>
         <li><b>The badge</b> at the top (letters on a colour, with the name on a wider screen) shows who is reading. Tap it to see everyone on this phone.</li>
         <li><b>Switch:</b> tap a name. The page changes to that person's settings straight away.</li>
@@ -495,7 +540,7 @@
       <h3>Backup</h3>
       <p>Everything is kept on this phone only. A backup file keeps a copy you can bring back after a new phone, a reset or cleared browser data.</p>
       <ul>
-        <li><b>Save a backup file</b> (Settings → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and today's ticks, nothing else.</li>
+        <li><b>Save a backup file</b> (Settings → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings, routine and today's ticks, nothing else. A file saved before version 1.9 has no routines in it: restoring it leaves everyone on the usual routine.</li>
         <li><b>Restore from a file:</b> pick a <i>.nitya</i> file. The site checks it, then shows who will be added, replaced or removed before anything changes; tap <b>Restore</b> to go ahead. Restoring replaces the people on this phone with the ones in the file.</li>
         <li>A short reminder to save a backup shows on the home page now and then (two weeks after you start, then a month after each backup). <b>Not now</b> hides it for two weeks.</li>
         <li>If the browser can't save anything (some private windows), a note says so: everything works, but is forgotten when the page closes, so save a backup file first.</li>
@@ -529,8 +574,8 @@
         <li><b>Layout</b> (wide screens only): one or two columns of stanzas.</li>
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off. Keep screen on starts on for phones and tablets and off on computers.</li>
-        <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
-        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.8), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
+        <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Routine</b> (see Your routine above), <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
+        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line: the version (v1.9), whether the site is saved for offline use, and <b>Check for updates</b>; tap it to check (see Good to know below).</li>
       </ul>
 
       <h3>While reading</h3>

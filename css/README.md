@@ -29,6 +29,7 @@ Each file starts with a comment that lists its sections. Every section begins wi
 | `11-profiles.css` | Profiles and backup: the profile chip in the top bar (`#who`, the badge alone below 600px; on phones up to 420px without its frame, and the title without its small Ganesha), the round badges, the profile sheet (`#pfm`: the people on this phone, Add / Edit / Delete, the colour swatches), the Restore dialog (`#bkm`) and the notes on the home page (`#pfnt`: this browser can't save here, the backup reminder). |
 | `12-calendar.css` | The Vedic calendar: the line on Home (`#panb`), the calendar page (`#cal`, under the top bar like the Library), the day card (`#cald`), the month table (`#calm`: day buttons, shukla and krishna shading with `--ck`, full and new moon marks, Ekadashi and Sankashti labels, festival labels (`.fs`) and tags (`.tag.fest`), today and the day shown, the key), two columns from 820px. |
 | `13-library.css` | The Library by category (version 1.8): the "Edit categories" button at the end of the list (`#lbr`, `#lbb`), the categories sheet (`#lbm`: the categories with their counts and Rename, Add, the form, Delete, the category of each text), the search results' groups (`#res li.rh`: Texts, then Lines). |
+| `14-builder.css` | The routine builder: Edit beside the session on Home (`#tsed`) and an empty session's Add texts (`#tse`, `#tsea`); the builder page (`#rtb`, under the top bar like the Library), the session / which-days radio groups (`.rtseg`), the weekday row (`#rtwk`), Copy to other days… (`#rtcpf`), the list with grip, ↑ ↓ ✕ (`#rtl`, `.mv`), and Add texts (`#tpk`): a sheet from the bottom on phones and tablets, beside the list from 1100px. |
 | `99-fallbacks.css` | Plain colours for browsers without `color-mix()` (iOS 15). **Keep it last**, because it replaces colours set in every file above. |
 
 ## Switches the styles read
@@ -62,7 +63,7 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
 | `(max-width: 819px)` | Phones and small tablets: Start / Continue is pinned to the bottom of the screen on the home page |
 | `(min-width: 820px)` | Tablets and up: wider spacing; the Vedic calendar shows the day card beside the month |
-| `(min-width: 1100px)` | Desktop: the left contents menu (`#rail`) |
+| `(min-width: 1100px)` | Desktop: the left contents menu (`#rail`); the routine builder's Add texts picker sits beside its list |
 | `(orientation: landscape) and (max-height: 520px)` | Phones held sideways: tighter line spacing and headers |
 
 The same test keeps the number of `!important` (70) and `:root:root` (11) from growing: they only win over earlier rules, and each new one makes the next change harder.

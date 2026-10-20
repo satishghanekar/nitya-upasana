@@ -21,6 +21,7 @@ var SITE_PARTS = (function () {
     "11-profiles",
     "12-calendar",
     "13-library",
+    "14-builder",
     "99-fallbacks",
   ].map(function (f) {
     return "css/" + f + ".css";
@@ -86,6 +87,8 @@ var SITE_PARTS = (function () {
     "store/backup",
     "features/profiles",
     "features/backup",
+    "features/text-picker",
+    "features/routine-builder",
   ].map(function (f) {
     return "js/" + f + ".js";
   });
