@@ -2,6 +2,37 @@
 
 Newest first. Each entry: the decision, who made it, and where it came from.
 
+## 2026-10-20: Home v3, option A (session switch, More, no full list on Home)
+
+Satish picked option A of the Home v3 mockup (`mockups/home-v3.html` on `mockup-home-v3`, frames 1–5; picture
+`home-v3.png`) on 2026-10-20. He had asked: "The share, qr, print, help can be made collapsable. The table of contents
+from main page need to be dynamic just show stuff that is relevant to that day and session. With ability to quickly
+switch between morning, afternoon and evening. If there is no content for a session you can grey that out." Version
+aarti-v1.13.
+
+- **Morning | Afternoon | Evening**, a segmented switch right above the list, replaces "Not this time?". It opens at
+  the session for the time now; a tap shows that session's texts for today in place (the reading person's routine for
+  today's weekday), with its heading, "N of M done", Edit and Start / Continue. Tabs (`role="tablist"`): arrow keys,
+  Home and End move between them, Enter or Space picks (as in the mockup). A pick lasts until the next day; picking the
+  clock's session follows the clock again.
+- **A session with nothing set today is greyed**: dashed edge, muted words, "Nothing set" ("काहीच नाही") under its
+  name. It stays focusable (`aria-disabled="true"`); picking it shows the empty state with Add texts. The clock's
+  session stays picked when it is empty (frame 3). Muted on the switch is 5.5:1 (light), 6.8:1 (dark), 4.8:1 (sepia).
+- **More** ("आणखी") folds App / Share / QR / Print / Help into one disclosure button (`aria-expanded`,
+  `aria-controls="shr"`), closed by default, with "App · Share · QR · Print · Help" as its hint. The five buttons are
+  the same ones, and work as before.
+- **"Another text? Open the Library"** ("दुसरी रचना? संग्रह उघडा", संग्रह being the Library's Marathi name in the app)
+  after More opens the Library as the top bar's book button does.
+- **The full list of every text is gone from Home.** That list was the reading page itself: every piece, in its
+  पूजा / आरती groups, sits right under Home in one long page, and reading a text is scrolling to it. So nothing was
+  deleted. `data-hv` on `<html>` ("Home on its own", `homeView()` in `js/features/history.js`) hides the pieces
+  under Home on screen only (`css/10-today.css`); going to a piece (the list, Start, the Library, search, the side
+  menu, ‹ Prev / Next ›, Back to a piece's address, a link such as `#a5`, the reading position kept for 12 hours)
+  takes it off first, and the text is fitted to the screen again then. The Home buttons, the end of a session and Back
+  to the bare address put it back. Scrolling up from a piece to Home keeps the pieces. Print copies the pieces with
+  `data-hv` off, so printing everything works from Home as before; search and the Library read the page as before.
+- The picture beside the date still follows the session picked (as in Home v2); the mockup kept the clock's picture.
+
 ## 2026-10-19: routine builder (design A, "List per day")
 
 Satish chose design A, "List per day" (`mockups/builder-a.html` on `mockup-home-v2`; picture `builder.png`, panels "A · List with move buttons", "A · dark theme" and "A · with the Add texts picker beside it"), on 2026-10-19. Built to fit today's app (the Home redesign came after the mockup): a page like the Library and the Vedic calendar, under the top bar with Back. Version aarti-v1.9 (merged after the Library by category, which took 1.8).

@@ -1,12 +1,14 @@
-// Home (Home v2, docs/decisions.md 2026-10-18): the time-of-day picture beside today's date, the session's texts with
-// a tick each, "Not this time?" with the other sessions, the App / Share / QR / Print / Help row and Start /
-// Continue (pinned to the bottom on phones). On a Sankashti day only, one line with moonrise. Every text is in the
-// Library (the book button). Default routine (content/routines.json): Morning = Atharvashirsha, Evening = the ten
+// Home (Home v2, docs/decisions.md 2026-10-18; Home v3 option A, 2026-10-20): the time-of-day picture beside today's
+// date, the Morning | Afternoon | Evening switch (a session with nothing set greyed), the session's texts with a tick
+// each, Start / Continue (pinned to the bottom on phones), More (App / Share / QR / Print / Help, closed by default) and
+// "Another text? Open the Library". Home ends there: the pieces show once a text is opened. On a Sankashti day only,
+// one line with moonrise. Every text is in the Library (the book button). Default routine (content/routines.json): Morning = Atharvashirsha, Evening = the ten
 // aartis. 15 Oct 2026 is a Thursday, 18 Oct a Sunday, 28 Oct a Sankashti (Wednesday).
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import { openSite, settle, SETUPS } from "./helpers.mjs";
+import { textsFor } from "../js/core/routine.js";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 const TITLE = Object.fromEntries(LIB.texts.map((t) => [t.id, t]));
@@ -14,8 +16,13 @@ const AARTIS = LIB.groups.find((g) => g.id === "g-aarti").texts;
 const MORNING = new Date("2026-10-15T10:00:00-04:00"); // Thursday
 const EVENING = new Date("2026-10-18T19:00:00-04:00"); // Sunday
 
+const ROUTINE = JSON.parse(readFileSync(new URL("../content/routines.json", import.meta.url), "utf8"));
 const rows = (page) => page.locator("#tsl li");
-const other = (page, s) => page.locator(`#tso button[data-s="${s}"]`);
+// a session's tab in the Morning | Afternoon | Evening switch; a greyed one is aria-disabled, so it is clicked with force
+const tab = (page, s) => page.locator(`#tss-${s}`);
+const pickTab = (page, s) => tab(page, s).click({ force: true });
+// the texts the default routine gives a session on a weekday (0 Sunday), as Home shows them
+const planned = (day, s) => textsFor(ROUTINE, day, s).filter((id) => TITLE[id]);
 const hash = (page) => page.evaluate(() => location.hash);
 // the piece the reader is on: the last one whose top has passed just under the top bar (js/core/apply.js cur())
 const onPiece = (page) =>
@@ -42,9 +49,12 @@ test("in the morning Home shows Thursday's Morning: the Atharvashirsha, with Sta
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunrise");
   await expect(page.locator("#iconb")).toHaveAttribute("data-day", "4");
   await expect(page.locator("#skt")).toBeHidden();
-  // the other two sessions are offered
-  await expect(page.locator("#tso")).toHaveText("Not this time? Afternoon · Evening", { useInnerText: true });
-  await expect(other(page, "morning")).toBeHidden();
+  // the switch opens at Morning; Afternoon has nothing set, so it is greyed (Home v3: no "Not this time?")
+  await expect(page.locator("#tso")).toHaveCount(0);
+  await expect(tab(page, "morning")).toHaveAttribute("aria-selected", "true");
+  await expect(tab(page, "afternoon")).toHaveAttribute("aria-disabled", "true");
+  await expect(tab(page, "afternoon")).toContainText("Nothing set");
+  await expect(tab(page, "evening")).not.toHaveAttribute("aria-disabled", "true");
 });
 
 test("in the evening Home shows Sunday's Evening: the ten aartis in order @mobile", async ({ page }) => {
@@ -56,26 +66,63 @@ test("in the evening Home shows Sunday's Evening: the ten aartis in order @mobil
   await expect(page.locator("#tsh")).toHaveText("सायंकाळ · Evening");
   await expect(page.locator("#tst")).toHaveText("Start: Ganapati Aarti");
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunset");
-  await expect(page.locator("#tso")).toHaveText("Not this time? Morning · Afternoon", { useInnerText: true });
+  await expect(tab(page, "evening")).toHaveAttribute("aria-selected", "true");
 });
 
-test("Not this time? changes the list, the picture and what screen readers hear @mobile", async ({ page }) => {
+test("the session switch changes the list, the picture and what screen readers hear @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
-  await other(page, "afternoon").click();
+  await pickTab(page, "afternoon");
   await expect(page.locator("#tsh")).toHaveText("दुपार · Afternoon");
-  await expect(page.locator("#tsh")).toBeFocused();
-  await expect(page.locator("#tso")).toHaveText("Not this time? Morning · Evening", { useInnerText: true });
+  await expect(tab(page, "afternoon")).toBeFocused();
+  await expect(tab(page, "afternoon")).toHaveAttribute("aria-selected", "true");
+  await expect(tab(page, "morning")).toHaveAttribute("aria-selected", "false");
+  await expect(page.locator("#tsp")).toHaveAttribute("aria-labelledby", "tss-afternoon");
   await expect(rows(page)).toHaveCount(0);
   await expect(page.locator("#tse")).toBeVisible();
+  await expect(page.locator("#tse")).toContainText("Nothing is planned for afternoon yet.");
   await expect(page.locator("#tst")).toBeHidden();
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "midday");
   await expect(page.locator("#tlive")).toContainText("Afternoon");
-  await other(page, "evening").click();
-  await expect(rows(page)).toHaveCount(10);
+  await pickTab(page, "evening");
+  const n = planned(4, "evening").length;
+  await expect(rows(page)).toHaveCount(n);
+  await expect(page.locator("#tsn")).toHaveText(`0 of ${n} done`);
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunset");
-  await expect(page.locator("#tlive")).toContainText("10 texts");
+  await expect(page.locator("#tlive")).toContainText(`${n} texts`);
   // the browser tab icon still follows the clock
   await expect(page.locator('link[rel="icon"][sizes="32x32"]')).toHaveAttribute("href", "icon-32.png");
+});
+
+test("Home v3: Monday 7:00 and 19:00, Tuesday 14:00 (the clock's session stays picked when empty) @mobile", async ({ page }) => {
+  for (const [now, day, s] of [
+    ["2026-10-19T07:00:00-04:00", 1, "morning"],
+    ["2026-10-19T19:00:00-04:00", 1, "evening"],
+    ["2026-10-20T14:00:00-04:00", 2, "afternoon"],
+  ]) {
+    await page.clock.setFixedTime(new Date(now));
+    if (s === "morning") await openSite(page, SETUPS.marathi, { now: new Date(now) });
+    else {
+      await page.reload();
+      await settle(page);
+    }
+    await expect(tab(page, s), now).toHaveAttribute("aria-selected", "true");
+    await expect(tab(page, s)).toHaveAttribute("tabindex", "0");
+    for (const x of ["morning", "afternoon", "evening"]) {
+      const n = planned(day, x).length;
+      if (n) await expect(tab(page, x), `${now} ${x}`).not.toHaveAttribute("aria-disabled", "true");
+      else await expect(tab(page, x), `${now} ${x}`).toHaveAttribute("aria-disabled", "true");
+      if (x !== s) await expect(tab(page, x)).toHaveAttribute("tabindex", "-1");
+    }
+    const ids = planned(day, s);
+    expect(await rows(page).locator(".t2").allTextContents()).toEqual(ids.map((id) => TITLE[id].titleEn));
+    await expect(page.locator("#tse")).toBeVisible({ visible: !ids.length });
+    // each session, tapped, shows its texts for that day in place
+    for (const x of ["morning", "afternoon", "evening"]) {
+      await pickTab(page, x);
+      await expect(page.locator("#tsh")).toContainText({ morning: "Morning", afternoon: "Afternoon", evening: "Evening" }[x]);
+      expect(await rows(page).locator(".t2").allTextContents()).toEqual(planned(day, x).map((id) => TITLE[id].titleEn));
+    }
+  }
 });
 
 test("ticks are kept after a reload and cleared the next day @mobile", async ({ page }) => {
@@ -92,10 +139,10 @@ test("ticks are kept after a reload and cleared the next day @mobile", async ({ 
   await expect(rows(page).nth(1)).toHaveClass(/\bdone\b/);
   await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
   // the morning's list has its own ticks
-  await other(page, "morning").click();
+  await pickTab(page, "morning");
   await expect(page.locator("#tsn")).toHaveText("0 of 1 done");
   // untick one
-  await other(page, "evening").click();
+  await pickTab(page, "evening");
   await rows(page).nth(0).locator("input").uncheck();
   await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
   await expect(page.locator("#tst")).toHaveText("Continue: Ganapati Aarti");
@@ -188,7 +235,7 @@ test("Next on the last text of the session ticks it too, then returns to Today @
   await expect(rows(page).nth(0).locator("input")).toBeChecked();
 });
 
-test("keyboard: Space ticks, Not this time? and Start are buttons, focus is drawn @mobile", async ({ page, browserName }) => {
+test("keyboard: Space ticks, the switch moves with arrow keys, Start is a button, focus is drawn @mobile", async ({ page, browserName }) => {
   test.skip(browserName === "webkit", "Safari's default Tab skips buttons");
   await openSite(page, SETUPS.marathi, { now: EVENING });
   // a tick with the keyboard
@@ -196,26 +243,53 @@ test("keyboard: Space ticks, Not this time? and Start are buttons, focus is draw
   await box.focus();
   await page.keyboard.press("Space");
   await expect(box).toBeChecked();
-  await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
+  await expect(page.locator("#tsn")).toHaveText(`1 of ${planned(0, "evening").length} done`);
   // focus is drawn (WCAG 2.4.7)
   const outline = await box.evaluate((e) => {
     const s = getComputedStyle(e.parentElement.querySelector(".tkc"));
     return s.outlineStyle !== "none" && parseFloat(s.outlineWidth) >= 2;
   });
   expect(outline).toBe(true);
-  // Enter on another session shows it
-  await other(page, "morning").focus();
+  // the switch: Tab reaches the session shown; arrow keys move between the three (wrapping), Enter or Space picks
+  await tab(page, "evening").focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(tab(page, "morning")).toBeFocused();
+  await expect(page.locator("#tsh")).toHaveText("सायंकाळ · Evening");
+  await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("ArrowLeft");
+  await expect(tab(page, "afternoon")).toBeFocused();
+  await page.keyboard.press("Home");
+  await expect(tab(page, "morning")).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
-  await expect(page.locator("#tsh")).toBeFocused();
+  await expect(tab(page, "morning")).toBeFocused();
+  await expect(tab(page, "morning")).toHaveAttribute("aria-selected", "true");
+  await page.keyboard.press("End");
+  await page.keyboard.press(" ");
+  await expect(page.locator("#tsh")).toHaveText("सायंकाळ · Evening");
+  // the greyed session stays focusable and can be picked
+  await page.keyboard.press("ArrowLeft");
+  await expect(tab(page, "afternoon")).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#tse")).toBeVisible();
+  const ring = await tab(page, "afternoon").evaluate((e) => {
+    const s = getComputedStyle(e);
+    return s.outlineStyle !== "none" && parseFloat(s.outlineWidth) >= 2;
+  });
+  expect(ring).toBe(true);
 });
 
 test("each tick, session and Start control has a name and a 44px target @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await expect(rows(page).nth(2).locator("input")).toHaveAccessibleName("Done: Devi Aarti");
-  await expect(other(page, "morning")).toHaveAccessibleName("Show Morning");
+  await expect(rows(page).nth(2).locator("input")).toHaveAccessibleName("Done: " + TITLE[planned(0, "evening")[2]].titleEn);
+  await expect(page.locator("#tss")).toHaveAttribute("role", "tablist");
+  await expect(page.locator("#tss")).toHaveAccessibleName("Session");
+  await expect(tab(page, "morning")).toHaveAccessibleName("Morning");
+  await expect(tab(page, "afternoon")).toHaveAccessibleName("Afternoon Nothing set");
+  await expect(page.locator("#tmb")).toHaveAccessibleName("More");
+  await page.locator("#tmb").click();
   const small = await page.evaluate(() =>
-    [...document.querySelectorAll("#tso button:not([hidden]), #tsl .ttk, #tsl a, #tst, #shr button:not([hidden]), #iconb")]
+    [...document.querySelectorAll("#tss [role=tab], #tmb, #tlibb, #tsl .ttk, #tsl a, #tst, #shr button:not([hidden]), #iconb")]
       .map((b) => ({ c: b.className || b.id || b.dataset.s, ...b.getBoundingClientRect().toJSON() }))
       .filter((r) => r.width < 44 || r.height < 44)
       .map((r) => `${r.c} ${Math.round(r.width)}×${Math.round(r.height)}`),
@@ -248,8 +322,12 @@ test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ 
   await expect(page.locator("#tdd .d1")).toHaveText("रविवार, १८ ऑक्टोबर २०२६");
   await expect(page.locator("#tdd .d2")).toHaveText("Sunday, 18 October 2026");
   await expect(page.locator("#tst")).toHaveText("सुरू करा: गणपतीची आरती");
-  await expect(page.locator("#tso")).toHaveText("दुसरी वेळ: सकाळ · दुपार", { useInnerText: true });
-  await expect(other(page, "morning")).toHaveAccessibleName("दाखवा: सकाळ");
+  await expect(page.locator("#tss")).toHaveAccessibleName("वेळ");
+  await expect(tab(page, "morning")).toHaveText("सकाळ");
+  await expect(tab(page, "afternoon")).toHaveText("दुपारकाहीच नाही");
+  await expect(page.locator("#tmbw")).toHaveText("आणखी");
+  await expect(page.locator("#tmbh")).toHaveText("ॲप · शेअर · QR · प्रिंट · मदत");
+  await expect(page.locator("#tlib")).toHaveText("दुसरी रचना? संग्रह उघडा", { useInnerText: true });
   await expect(rows(page).nth(1).locator(".t1")).toHaveText(TITLE["shendur-lal-chadhayo"].title);
 });
 
@@ -261,8 +339,11 @@ test("Kannada letters: the titles in the list are shown in Kannada", async ({ pa
 
 test("Home has no date card, week row or contents list: the Library has every text", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  for (const sel of ["#skc", "#skmore", "#skall", "#twk", "#tss", "#tfb", "#cvb", "#home .tocg", "#home a[data-go]"])
+  for (const sel of ["#skc", "#skmore", "#skall", "#twk", "#tso", "#tfb", "#cvb", "#home .tocg", "#home a[data-go]"])
     await expect(page.locator(sel), sel).toHaveCount(0);
+  // Home v3: Home ends after More and the Library line; the reading page's groups and pieces are not shown under it
+  await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
+  await expect(page.locator(".wrap > .grp:visible, section.ash:visible")).toHaveCount(0);
   await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(11);
 });
 
@@ -282,15 +363,101 @@ test("Marathi menus: the Sankashti line in Marathi", async ({ page }) => {
   await expect(page.locator("#skt")).toHaveText(/^संकष्टी चतुर्थी आज · चंद्रोदय .+ · कोलंबस$/);
 });
 
-test("the App / Share / QR / Print / Help row sits under the list, at every width", async ({ browser }) => {
+test("More, under the list, opens the App / Share / QR / Print / Help row, at every width", async ({ browser }) => {
   for (const width of [390, 820, 1280]) {
     const context = await browser.newContext({ viewport: { width, height: 844 }, serviceWorkers: "block" });
     const page = await context.newPage();
     await openSite(page, SETUPS.marathi, { now: EVENING });
-    for (const b of ["#shb", "#qrb", "#prb", "#hlpb"]) await expect(page.locator(b), `${b} ${width}px`).toBeAttached();
+    // closed by default, its hint naming the five
+    await expect(page.locator("#tmb")).toHaveAttribute("aria-expanded", "false");
+    await expect(page.locator("#tmb")).toHaveAttribute("aria-controls", "shr");
+    await expect(page.locator("#tmbh")).toHaveText("App · Share · QR · Print · Help");
+    await expect(page.locator("#shr")).toBeHidden();
     const list = await page.locator("#tsc").boundingBox();
+    const more = await page.locator("#tmb").boundingBox();
+    expect(more.y, `${width}px`).toBeGreaterThanOrEqual(list.y + list.height - 1);
+    expect(more.height).toBeGreaterThanOrEqual(44);
+    await page.locator("#tmb").click();
+    await expect(page.locator("#tmb")).toHaveAttribute("aria-expanded", "true");
+    for (const b of ["#shb", "#qrb", "#prb", "#hlpb"]) await expect(page.locator(b), `${b} ${width}px`).toBeVisible();
     const row = await page.locator("#shr").boundingBox();
-    expect(row.y, `${width}px`).toBeGreaterThanOrEqual(list.y + list.height - 1);
+    expect(row.y, `${width}px`).toBeGreaterThanOrEqual(more.y + more.height - 1);
+    // the buttons work as before: QR opens its pop-up
+    await page.locator("#qrb").click();
+    await expect(page.locator("#qrm")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await page.locator("#tmb").click();
+    await expect(page.locator("#shr")).toBeHidden();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1)).toBe(false);
+    await context.close();
+  }
+});
+
+test("Another text? Open the Library opens the Library, as the book button does @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await expect(page.locator("#tlib")).toHaveText("Another text? Open the Library", { useInnerText: true });
+  const more = await page.locator("#tmo").boundingBox();
+  const lib = await page.locator("#tlib").boundingBox();
+  expect(lib.y).toBeGreaterThanOrEqual(more.y + more.height - 1);
+  await page.locator("#tlibb").click();
+  await expect(page.locator("#jump")).toBeVisible();
+  await expect(page.locator("#hm")).toHaveAttribute("aria-expanded", "true");
+});
+
+test("Home on its own: the pieces show once a text is opened, and go again on the way home @mobile", async ({ page }) => {
+  const errors = [];
+  await openSite(page, SETUPS.marathi, { now: EVENING, errors });
+  await expect(page.locator("section.ash:visible")).toHaveCount(0);
+  // a title in the list opens its text (the reading page, every piece)
+  await rows(page).first().locator("a").click();
+  await expect(page.locator("html")).not.toHaveAttribute("data-hv", "1");
+  await expect.poll(() => onPiece(page)).not.toBe("");
+  await expect(page.locator(".wrap > .grp").first()).toBeVisible();
+  // the phone's Back: Home on its own again
+  await page.goBack();
+  await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
+  await expect(page.locator("section.ash:visible")).toHaveCount(0);
+  // the Library: a text opens
+  await page.locator("#hm").click();
+  await page.locator('#jl a[data-go="a5"]').click();
+  await expect.poll(() => onPiece(page)).toBe("a5");
+  // the top bar's title: Home on its own
+  await page.locator("#bt").click();
+  await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
+  // a link to a piece opens the reading page there
+  await page.goto("./#a5");
+  await settle(page);
+  await expect.poll(() => onPiece(page)).toBe("a5");
+  // printing from Home still prints every piece
+  await page.locator("#bt").click();
+  const pv = await page.evaluate(() => {
+    dispatchEvent(new Event("beforeprint"));
+    const n = document.querySelectorAll("#pv .pvs").length;
+    dispatchEvent(new Event("afterprint"));
+    return n;
+  });
+  expect(pv).toBe(await page.locator("section.ash").count());
+  expect(errors).toEqual([]);
+});
+
+test("the greyed session's words are at least 4.5:1 on the switch, in every theme @mobile", async ({ browser }) => {
+  for (const th of ["light", "dark", "sepia"]) {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: "block" });
+    const page = await context.newPage();
+    await openSite(page, { ...SETUPS.marathi, th }, { now: EVENING });
+    const ratio = await page.evaluate(() => {
+      const rgb = (c) => c.match(/[\d.]+/g).slice(0, 3).map(Number);
+      const lum = (c) => {
+        const [r, g, b] = rgb(c).map((v) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      };
+      const fg = getComputedStyle(document.querySelector("#tss-afternoon .tshn")).color,
+        bg = getComputedStyle(document.getElementById("tss")).backgroundColor,
+        a = lum(fg),
+        b = lum(bg);
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    });
+    expect(ratio, th).toBeGreaterThanOrEqual(4.5);
     await context.close();
   }
 });

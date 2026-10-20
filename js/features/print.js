@@ -145,8 +145,9 @@ export function init() {
     // Build the print view (#pv) from the page: contents, then every piece in the text language.
     // mode: "one" (one column) or "side" (Marathi and English side by side)
     function build(mode) {
-      // Folded sections and pieces are printed in full: open them while the text is copied
-      var fa = ["data-pf", "data-xf"].map(function (a) {
+      // Folded sections and pieces are printed in full: open them while the text is copied (and the pieces Home on
+      // its own leaves out, data-hv: js/features/history.js)
+      var fa = ["data-pf", "data-xf", "data-hv"].map(function (a) {
           var v = root.getAttribute(a);
           root.removeAttribute(a);
           return [a, v];
