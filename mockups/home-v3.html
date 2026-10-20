@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mockup · Home v3 · Session switch</title>
+<link rel="stylesheet" href="mock.css">
+<style>
+  /* ---------- One phone page (?f=…) ---------- */
+  main { max-width: 560px; margin: 0 auto; padding: 14px 16px 28px; display: grid; gap: 14px; }
+  main > * { min-width: 0; }
+  .day1 { display: flex; align-items: center; gap: 14px; }
+  .day1 .d1 { font: 22px/1.25 var(--head); }
+  .day1 .d2 { color: var(--muted); font-size: 13.5px; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  /* Option A: Morning | Afternoon | Evening, a segmented switch (tabs) */
+  .sw { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 14px;
+    background: var(--surface); border: 1px solid var(--line); }
+  .sw [role="tab"] { min-width: 0; min-height: 52px; padding: 4px 2px; border: 1px solid transparent; border-radius: 10px; background: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+    color: var(--ink); font-weight: 550; font-size: 14.5px; cursor: pointer; }
+  .sw .nm { display: inline-flex; align-items: center; gap: 6px; }
+  .sw [aria-selected="true"] { background: var(--bg); color: var(--accent); font-weight: 700; box-shadow: 0 1px 3px #0002, inset 0 -3px 0 var(--accent); }
+  .sw [aria-disabled="true"] { color: var(--muted); font-weight: 500; border: 1px dashed var(--rule); }
+  .sw [aria-disabled="true"][aria-selected="true"] { box-shadow: inset 0 -3px 0 var(--muted); }
+  .sw .hint, .chips .hint { font-size: 11.5px; line-height: 1.2; font-weight: 500; color: var(--muted); }
+
+  /* Option B: three chips with counts */
+  .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .chips [role="tab"] { min-width: 0; min-height: 48px; padding: 0 6px; border-radius: 24px; border: 1px solid var(--line); background: var(--soft);
+    display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--ink); cursor: pointer; }
+  .chips .ct { min-width: 24px; height: 24px; padding: 0 6px; border-radius: 12px; display: grid; place-items: center;
+    background: var(--surface); border: 1px solid var(--line); font-size: 13px; font-weight: 700; }
+  .chips [aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .chips [aria-selected="true"] .ct { background: var(--on-accent); color: var(--accent); border-color: var(--on-accent); }
+  .chips [aria-disabled="true"] { border-style: dashed; border-color: var(--rule); background: none; color: var(--muted); font-weight: 500; }
+  .chips [aria-disabled="true"] .ct { background: none; border-color: transparent; }
+  .chips [aria-disabled="true"][aria-selected="true"] { background: var(--surface); border: 2px dashed var(--muted); color: var(--ink); }
+  .chips [aria-disabled="true"][aria-selected="true"] .ct { color: var(--muted); background: none; }
+
+  /* The session's list, as today */
+  .sh { display: flex; align-items: baseline; gap: 12px; padding: 0 2px; }
+  .sh h2 { margin: 0 auto 0 0; font: 22px/1.3 var(--head); color: var(--accent); }
+  .sh .muted { font-size: 13.5px; }
+  .sh a { color: var(--accent); font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+  .row .tk { cursor: pointer; }
+  .empty { border: 1px dashed var(--line); border-radius: 14px; padding: 14px 16px; background: var(--soft); }
+  .empty p { margin: 0 0 6px; }
+  .empty a { color: var(--accent); font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+  .go { width: 100%; min-height: 54px; font-size: 17px; }
+
+  /* More: App / Share / QR / Print / Help behind one disclosure */
+  .more { width: 100%; min-height: 48px; display: flex; align-items: center; gap: 10px; padding: 0 14px; border-radius: 12px;
+    border: 1px solid var(--line); background: var(--soft); text-align: left; cursor: pointer; }
+  .more b { font-weight: 650; }
+  .more .pv { flex: 1; min-width: 0; color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .more .cv { transition: transform .2s; color: var(--muted); }
+  .more[aria-expanded="true"] .cv { transform: rotate(180deg); }
+  .morep { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 8px; }
+  .morep[hidden] { display: none; }
+  .morep button { min-width: 0; min-height: 60px; border-radius: 12px; border: 1px solid var(--line); background: var(--soft);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 13px; }
+  .lib { margin: 0; text-align: center; font-size: 14px; color: var(--muted); }
+  .lib a { color: var(--accent); font-weight: 600; display: inline-flex; min-height: 44px; align-items: center; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  /* ---------- The sheet (no ?f) ---------- */
+  body.sheet-page { background: #ece6dd; }
+  .sheet-in { max-width: 1900px; margin: 0 auto; padding: 28px 24px 60px; }
+  .sheet-in h1 { margin: 0 0 6px; font: 700 26px var(--ui); color: #391a0e; }
+  .sheet-in .lead { margin: 0 0 6px; color: #4a382c; max-width: 1100px; }
+  .sheet-in ul { margin: 6px 0 22px; padding-left: 20px; color: #4a382c; max-width: 1100px; font-size: 14px; }
+  .frames { display: flex; flex-wrap: wrap; gap: 28px 24px; align-items: flex-start; }
+  figure { margin: 0; width: 414px; }
+  figcaption { font: 13px/1.4 var(--ui); color: #4a382c; min-height: 56px; margin-bottom: 8px; }
+  figcaption b { display: block; font-size: 15px; color: #391a0e; }
+  .phone { width: 414px; padding: 12px; border-radius: 44px; background: #1d1714; box-shadow: 0 10px 30px #0003; }
+  .phone iframe { display: block; width: 390px; height: 844px; border: 0; border-radius: 32px; background: #fff; }
+  @media (max-width: 460px) { .sheet-in { padding: 16px; } figure, .phone { width: 100%; } .phone iframe { width: 100%; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="mock.js"></script>
+<script src="home-v2.js"></script>
+<script>
+// Mockups only. Titles and the day's lists are read from content/library.json and content/routines.json (never retyped);
+// the list for a day and session follows textsFor() in js/core/routine.js. Menu words are the app's own (js/features/today-card.js).
+// The Vedic calendar line, sunrise and sunset are what the live app shows for that date in Columbus, OH.
+var Q = new URLSearchParams(location.search), F = Q.get("f");
+var SES = ["morning", "afternoon", "evening"];
+var NAME = { morning: { mr: "सकाळ", en: "Morning", i: I.sun }, afternoon: { mr: "दुपार", en: "Afternoon", i: I.noon }, evening: { mr: "सायंकाळ", en: "Evening", i: I.lamp } };
+var DAY_KEYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+var LANG = { sa: "Sanskrit", mr: "Marathi", hi: "Hindi" };
+I.qr = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg>';
+I.dots = '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+var STAR = { sunrise: [[14.1, 40.5], [20.9, 26.6], [32.8, 16.8]], midday: [[16.0, 44.3], [22.0, 30.0], [33.6, 19.9]], sunset: [[13.8, 39.3], [21.1, 25.6], [33.7, 15.8]] }; // js/core/time-of-day.js, Sun–Tue
+var DAY = {
+  1: { mr: "सोमवार, १९ ऑक्टोबर २०२६", en: "Monday, 19 October 2026", p1: "आश्विन शुद्ध नवमी", p2: "नक्षत्र श्रवण · शके १९४८ · पराभव संवत्सर", rise: "7:46 am", set: "6:46 pm" },
+  2: { mr: "मंगळवार, २० ऑक्टोबर २०२६", en: "Tuesday, 20 October 2026", p1: "आश्विन शुद्ध दशमी", p2: "नक्षत्र श्रवण · शके १९४८ · पराभव संवत्सर", rise: "7:47 am", set: "6:45 pm", fest: "dasara" },
+};
+// day: 1 Monday, 2 Tuesday; now: the session of the clock; pick: the session shown; done: texts ticked; v: "A" switch or "B" chips
+var FRAMES = {
+  "mon-am": { day: 1, now: "morning", done: 0, v: "A", t: "Monday 7:00 · Morning", d: "Current session picked by default. Afternoon is greyed: nothing set on Monday." },
+  "mon-pm": { day: 1, now: "evening", done: 2, v: "A", t: "Monday 19:00 · Evening", d: "Evening's five texts from routines.json, two ticked, so Start becomes Continue." },
+  "tue-noon": { day: 2, now: "afternoon", done: 0, v: "A", t: "Tuesday 14:00 · Afternoon (empty)", d: "The clock's session stays picked even when empty: it shows Add texts. Morning and Evening are one tap away." },
+  "tue-am-more": { day: 2, now: "afternoon", pick: "morning", done: 0, more: true, v: "A", t: "Tuesday · Morning tapped, More open", d: "Tuesday's morning has three texts (no Shree Rudra). More expanded shows App, Share, QR, Print, Help." },
+  "mon-pm-dark": { day: 1, now: "evening", done: 2, v: "A", dark: true, t: "Dark · Monday 19:00 · Evening", d: "Same as frame 2 in the dark theme." },
+  "b-mon-am": { day: 1, now: "morning", done: 0, v: "B", t: "Option B · Monday 7:00 · chips with counts", d: "Morning 4 · Afternoon — · Evening 5. The count says what each session holds before you tap." },
+  "b-tue-noon": { day: 2, now: "afternoon", done: 0, v: "B", t: "Option B · Tuesday 14:00 · Afternoon (empty)", d: "Empty and picked: dashed outline, no fill, so it never looks like a full session." },
+};
+var ORDER = ["mon-am", "mon-pm", "tue-noon", "tue-am-more", "mon-pm-dark", "b-mon-am", "b-tue-noon"];
+
+function textsFor(routine, day, session) { // as js/core/routine.js
+  var plan = routine && routine[session], list = null, out = [];
+  if (plan && plan.mode === "fixed") list = plan.texts;
+  else if (plan && plan.mode === "weekday" && plan.days) list = plan.days[DAY_KEYS[day]];
+  if (!Array.isArray(list)) return [];
+  list.forEach(function (id) { if (typeof id === "string" && out.indexOf(id) < 0) out.push(id); });
+  return out;
+}
+
+function sheet() {
+  document.body.className = "sheet-page";
+  document.getElementById("app").innerHTML = '<div class="sheet-in"><h1>Home v3 · pick the session, only today\'s texts, tools under “More”</h1>' +
+    '<p class="lead">Satish (verbatim): “The share, qr, print, help can be made collapaable,, The table of contents from main page need to be dynamic just show stuff that is relevant to that day and seasion. With abilty to quickly swith between morning, afternoon and evening. If tgere is no content for a session you can grey that out”</p>' +
+    "<ul><li>A Morning | Afternoon | Evening switch sits right above the list. The session of the clock is picked when Home opens; tapping another shows that session's texts for today (replaces “Not this time?”).</li>" +
+    "<li>A session with nothing set today is greyed (dashed, muted, “Nothing set”). It stays focusable (aria-disabled), and tapping it says “Nothing set for afternoon” and offers Add texts.</li>" +
+    "<li>Home ends after More. The full list of every text (the पूजा / आरती sections under Home today) is gone from Home; every text stays one tap away in the Library (book button), and a session's texts open from its list.</li>" +
+    "<li>App / Share / QR / Print / Help fold into one “More” row, closed by default (aria-expanded).</li>" +
+    "<li>Option A (frames 1–5): a segmented switch. Option B (frames 6–7): three chips with counts. Tap the switch, ticks and More in any frame; arrow keys move between sessions.</li></ul>" +
+    '<div class="frames">' + ORDER.map(function (k, i) {
+      var f = FRAMES[k];
+      return '<figure id="fr-' + k + '"><figcaption><b>' + (i + 1) + ". " + f.t + "</b>" + f.d + '</figcaption><div class="phone"><iframe title="' + f.t + '" src="home-v3.html?f=' + k + (f.dark ? "&dark" : "") + '"></iframe></div></figure>';
+    }).join("") + "</div></div>";
+  // each phone as tall as its page (at least one 844px screen)
+  [].forEach.call(document.querySelectorAll("iframe"), function (fr) {
+    fr.addEventListener("load", function fit() {
+      var d = fr.contentDocument;
+      function set() { fr.style.height = Math.max(844, d.documentElement.scrollHeight) + "px"; }
+      set(); setTimeout(set, 400);
+      new MutationObserver(set).observe(d.body, { subtree: true, childList: true, attributes: true });
+    });
+  });
+}
+
+function phone(lib, rt, fest) {
+  var f = FRAMES[F], by = {};
+  lib.texts.forEach(function (t) { by[t.id] = t; });
+  var day = DAY[f.day], pick = f.pick || f.now, done = {};
+  var lists = {};
+  SES.forEach(function (s) { lists[s] = textsFor(rt, f.day, s).filter(function (id) { return by[id]; }); });
+  lists[f.now].slice(0, f.done).forEach(function (id) { done[id] = 1; });
+  var picName = { morning: "sunrise", afternoon: "midday", evening: "sunset" }[f.now], st = STAR[picName][f.day];
+  var fe = day.fest && fest.festivals.filter(function (x) { return x.id === day.fest; })[0];
+
+  function tabs() {
+    var A = f.v === "A";
+    return '<div class="' + (A ? "sw" : "chips") + '" role="tablist" aria-label="Session">' + SES.map(function (s) {
+      var n = lists[s].length, on = s === pick, nm = NAME[s];
+      var lab = A ? '<span class="nm">' + nm.i + nm.en + "</span>" + (n ? "" : '<span class="hint">Nothing set</span>')
+                  : "<span>" + nm.en + '</span><span class="ct" aria-hidden="true">' + (n || "—") + "</span>" + '<span class="sr">' + (n ? ", " + n + " texts" : ", nothing set") + "</span>";
+      return '<button type="button" role="tab" id="tab-' + s + '" data-s="' + s + '" aria-controls="panel" aria-selected="' + on + '" tabindex="' + (on ? 0 : -1) + '"' +
+        (n ? "" : ' aria-disabled="true"') + ">" + lab + "</button>";
+    }).join("") + "</div>";
+  }
+  function panel() {
+    var L = lists[pick], nm = NAME[pick], d = L.filter(function (id) { return done[id]; }).length;
+    var h = '<div id="panel" role="tabpanel" aria-labelledby="tab-' + pick + '" style="display:grid;gap:10px">' +
+      '<div class="sh"><h2>' + nm.mr + " · " + nm.en + '</h2><span class="muted">' + (L.length ? d + " of " + L.length + " done" : "Nothing planned") +
+      '</span><a href="#" aria-label="Edit routine: ' + nm.en + '">Edit</a></div>';
+    if (!L.length) return h + '<div class="empty"><p>Nothing is planned for ' + nm.en.toLowerCase() + ' yet.</p><a href="#">Add texts</a></div></div>';
+    h += '<ol class="list">' + L.map(function (id, i) {
+      var t = by[id], k = !!done[id];
+      return '<li class="row' + (k ? " done" : "") + '"><span class="tk" role="checkbox" tabindex="0" data-id="' + id + '" aria-checked="' + k + '" aria-label="Done: ' + t.titleEn + '">' + (k ? I.check : "") + "</span>" +
+        '<span class="no">' + dn(i + 1) + '.</span><span class="tt"><span class="t1" lang="mr">' + t.title + '</span><span class="t2">' + t.titleEn + "</span></span>" +
+        '<span class="tag">' + (LANG[t.language] || t.language) + "</span></li>";
+    }).join("") + "</ol>";
+    var nx = L.filter(function (id) { return !done[id]; })[0];
+    h += '<button class="btn go">' + I.play + (nx ? (d ? "Continue: " : "Start: ") + by[nx].titleEn : "Start again: " + by[L[0]].titleEn) + "</button>";
+    return h + "</div>";
+  }
+  function more() {
+    var open = !!f.more;
+    return '<div><button type="button" class="more" aria-expanded="' + open + '" aria-controls="morep">' + I.dots + "<b>More</b>" +
+      '<span class="pv" aria-hidden="true">App · Share · QR · Print · Help</span><span class="cv">' + I.down + "</span></button>" +
+      '<div class="morep" id="morep"' + (open ? "" : " hidden") + ">" +
+      "<button>" + I.app + "App</button><button>" + I.share + "Share</button><button>" + I.qr + 'QR<span class="sr"> code</span></button><button>' + I.print + "Print</button><button>" + I.help + "Help</button></div></div>";
+  }
+  function draw() {
+    document.getElementById("app").innerHTML = topbar2() + "<main>" +
+      '<div class="day1"><span class="pic" style="width:76px;height:76px;background-image:url(../picture-' + picName + '-360.webp)" role="img" aria-label="' + picName + '"><span class="star" style="left:' + st[0] + "%;top:" + st[1] + '%"></span></span>' +
+      '<div><div class="d1" lang="mr">' + day.mr + '</div><div class="d2">' + day.en + "</div></div></div>" +
+      '<button class="pan" aria-label="Today in the Vedic calendar. Open the calendar">' + I.cal + '<span class="pt">' +
+        '<span class="p1" lang="mr">' + day.p1 + '</span><span class="p2" lang="mr">' + day.p2 + "</span>" +
+        '<span class="p3"><span>' + I.sunUp + day.rise + "</span><span>" + I.sunDn + day.set + "</span><span>Columbus, OH</span></span></span>" + I.chev + "</button>" +
+      (fe ? '<div class="spl"><span class="dot">★</span><span>Today: <b lang="mr">' + fe.mr + "</b> · " + fe.en + "</span></div>" : "") +
+      tabs() + panel() + more() +
+      '<p class="lib">Another text? <a href="#">' + I.book + "&nbsp;Open the Library</a></p>" +
+      '<div class="live" role="status" id="live"></div></main>';
+  }
+  draw();
+  var msg = "";
+  document.getElementById("app").addEventListener("click", function (e) {
+    var tab = e.target.closest('[role="tab"]'), tk = e.target.closest(".tk"), mb = e.target.closest(".more");
+    if (tab) { e.preventDefault(); choose(tab.dataset.s, true); }
+    if (tk) { done[tk.dataset.id] = !done[tk.dataset.id]; draw(); }
+    if (mb) { f.more = !f.more; draw(); document.querySelector(".more").focus(); }
+  });
+  document.getElementById("app").addEventListener("keydown", function (e) {
+    var tab = e.target.closest('[role="tab"]');
+    if (tab && /Arrow(Left|Right)|Home|End/.test(e.key)) {
+      e.preventDefault();
+      var i = SES.indexOf(tab.dataset.s), j = e.key === "Home" ? 0 : e.key === "End" ? 2 : (i + (e.key === "ArrowRight" ? 1 : 2)) % 3;
+      document.getElementById("tab-" + SES[j]).focus(); // focus moves; Enter or Space picks (manual activation)
+    }
+    if (e.target.classList.contains("tk") && (e.key === " " || e.key === "Enter")) { e.preventDefault(); e.target.click(); }
+  });
+  function choose(s, focus) {
+    if (!lists[s].length && s !== f.now) { msg = "Nothing set for " + NAME[s].en.toLowerCase() + " today. Use Edit to add texts."; }
+    else msg = "";
+    pick = lists[s].length || s === f.now ? s : pick;
+    draw();
+    if (focus) document.getElementById("tab-" + s).focus();
+    document.getElementById("live").textContent = msg;
+  }
+}
+
+if (!F || !FRAMES[F]) sheet();
+else Promise.all(["library", "routines", "festivals"].map(function (n) { return fetch("../content/" + n + ".json").then(function (r) { return r.json(); }); }))
+  .then(function (a) { phone(a[0], a[1], a[2]); });
+</script>
+</body>
+</html>
