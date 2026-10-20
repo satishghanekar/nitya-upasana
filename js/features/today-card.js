@@ -367,6 +367,43 @@ function runMark() {
   });
   if (run) r.setAttribute("data-run", "1");
   else r.removeAttribute("data-run");
+  railRun();
+}
+
+/**
+ * The side menu on wide screens (#rail) while a session is read: the session's name and its texts in the session's
+ * order, numbered 1, 2, 3 (#rrun); css/10-today.css hides the rest of the Library there. Its links keep the session.
+ */
+export function railRun() {
+  var rail = document.getElementById("rail"),
+    old = document.getElementById("rrun");
+  if (old) old.remove();
+  if (!rail || !run) return;
+  var d = document.createElement("div"),
+    ul = document.createElement("ul"),
+    n = 0;
+  d.id = "rrun";
+  d.innerHTML =
+    '<div class="rg"><span class="mr">' + W.mr.sessions[run.session] + '</span><span class="en" lang="en">' + W.en.sessions[run.session] + "</span></div>";
+  run.ids.forEach(function (id) {
+    var t = info[id],
+      a = t && rail.querySelector('a[data-go="' + t.sec + '"]');
+    if (!a) return;
+    n++;
+    var li = document.createElement("li"),
+      b = /** @type {HTMLElement} */ (a.cloneNode(true)),
+      nm = b.querySelector(".no .nm"),
+      ne = b.querySelector(".no .ne");
+    b.classList.remove("on");
+    b.removeAttribute("aria-current");
+    if (nm) nm.textContent = scr(String(n).replace(/[0-9]/g, function (x) { return "०१२३४५६७८९".charAt(+x); })) + ".";
+    if (ne) ne.textContent = n + ".";
+    li.appendChild(b);
+    ul.appendChild(li);
+  });
+  d.appendChild(ul);
+  var home = rail.querySelector(".rhome");
+  rail.insertBefore(d, home ? home.nextSibling : rail.firstChild);
 }
 
 /** Read the session shown from this text on */
@@ -474,6 +511,7 @@ export function init() {
     if (r && Array.isArray(r.ids)) run = r;
   } catch (e) {}
   runMark();
+  document.addEventListener("nitya-rail", railRun);
   ticks.prune(dateKey(new Date()));
   var tabs = /** @type {HTMLElement} */ (document.getElementById("tss")),
     list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
@@ -578,7 +616,7 @@ export function init() {
     "click",
     function (e) {
       var a = /** @type {HTMLElement} */ (e.target).closest && /** @type {HTMLElement} */ (e.target).closest("a[data-go]");
-      if (!a || !run) return;
+      if (!a || !run || a.closest("#rrun")) return;
       run = null;
       try {
         sessionStorage.removeItem(RUN_KEY);
