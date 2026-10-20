@@ -460,10 +460,12 @@
 }
 
 /* ==== A session being read (data-run, js/features/today-card.js): only its texts (.inrun) are on the reading page,
-   not the rest of the Library nor the पूजा / आरती rows; folded sections don't hide them. Screen only ==== */
+   not the rest of the Library nor the पूजा / आरती rows; folded sections don't hide them. The side menu on wide
+   screens lists only the session too (#rrun). Screen only ==== */
 @media screen {
   :root[data-run="1"] .ash:not(.inrun),
-  :root[data-run="1"] .grp {
+  :root[data-run="1"] .grp,
+  :root[data-run="1"] #rail > :not(.rhome, #rrun) {
     display: none !important;
   }
 }

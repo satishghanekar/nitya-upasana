@@ -138,6 +138,8 @@ export function buildRail() {
   r.innerHTML =
     '<a class="rhome" href="#home" data-go="home"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7\"/><path d=\"M8.4 5.6h7.2\"/><path d=\"M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6\"/><path d=\"M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2\"/><path d=\"M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3\"/><path d=\"M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3\"/><path d=\"M12 7v1.8\"/><path d=\"M9.3 13.6l-.9 1.6\"/></svg><span class="mr">' + SCR.to("मुखपृष्ठ") + '</span><span class="en" lang="en">Home</span></a>' +
     h;
+  // a session being read keeps its own list at the top (js/features/today-card.js)
+  document.dispatchEvent(new Event("nitya-rail"));
 }
 
 // The group row (पूजा, आरती) a piece sits under on the reading page
