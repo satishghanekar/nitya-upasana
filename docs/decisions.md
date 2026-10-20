@@ -29,7 +29,8 @@ aarti-v1.13.
   under Home on screen only (`css/10-today.css`); going to a piece (the list, Start, the Library, search, the side
   menu, ‹ Prev / Next ›, Back to a piece's address, a link such as `#a5`, the reading position kept for 12 hours)
   takes it off first, and the text is fitted to the screen again then. The Home buttons, the end of a session and Back
-  to the bare address put it back. Scrolling up from a piece to Home keeps the pieces. Print copies the pieces with
+  to the bare address put it back. Scrolling up from a piece all the
+  way to Home (once no piece is left on screen) puts it back too, so Home never shows the whole Library below it (v1.13.1). Print copies the pieces with
   `data-hv` off, so printing everything works from Home as before; search and the Library read the page as before.
 - The picture beside the date still follows the session picked (as in Home v2); the mockup kept the clock's picture.
 

@@ -6,6 +6,7 @@ import { fontsN } from "../text/autofit.js";
 import { cur, pjOpen } from "./apply.js";
 import { apply, mark } from "../features/bars.js";
 import { wake } from "../features/wake-lock.js";
+import { homeView } from "../features/history.js";
 
 var tk, rzT, h, el, PK, posT, sp, moved, goPos;
 
@@ -100,7 +101,8 @@ export function init() {
       goPos = function () {
           if (moved) return;
           var el = sp.id && document.getElementById(sp.id);
-          if (el && el.offsetParent === null) return; // a folded Pooja piece: stay at the top
+          // a folded Pooja piece: stay at the top, on Home on its own
+          if (el && el.offsetParent === null) return homeView(true);
           scrollTo(0, el ? el.getBoundingClientRect().top + scrollY + sp.y : sp.y);
         };
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
@@ -116,6 +118,9 @@ export function init() {
           ev,
           function () {
             moved = true;
+            // touched before the page got back to the piece: it stays on Home, on its own
+            var hm = document.getElementById("home");
+            if (hm && hm.getBoundingClientRect().bottom >= innerHeight) homeView(true);
           },
           { once: true, passive: true },
         );
