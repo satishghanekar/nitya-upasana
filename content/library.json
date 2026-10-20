@@ -190,6 +190,15 @@
    "lines": 28
   },
   {
+   "id": "lalita-sahasranama",
+   "file": "texts/lalita-sahasranama.txt",
+   "title": "श्रीललितासहस्रनामस्तोत्रम्",
+   "titleEn": "Shri Lalita Sahasranama",
+   "category": "stotra",
+   "language": "sa",
+   "lines": 369
+  },
+  {
    "id": "sadguru-padukashtak",
    "file": "texts/sadguru-padukashtak.txt",
    "title": "श्रीसद्गुरुपादुकाष्टक",
@@ -359,7 +368,8 @@
     "ashtak-sunday",
     "haachi-subodh",
     "brahmachaitanya-sarikha",
-    "swami-majha-pahila"
+    "swami-majha-pahila",
+    "lalita-sahasranama"
    ]
   }
  ],
