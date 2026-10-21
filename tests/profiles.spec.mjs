@@ -3,22 +3,15 @@
 // the first person, Save a backup file and Restore from a file (download, or the share sheet on a phone), the
 // warning when IndexedDB can't be opened, the backup reminder, and accessibility of the new dialogs.
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
-import { FIXED_NOW, openSite, PREFS_KEY, settle, SETUPS } from "./helpers.mjs";
+import { FIXED_NOW, openSite, PREFS_KEY, settle, SETUPS, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
 
 const EVENING = new Date("2026-10-18T19:00:00-04:00"); // Sunday evening: the ten aartis
-const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
 const fs = (page) => page.evaluate(() => parseFloat(document.documentElement.style.getPropertyValue("--fs")));
 const textLang = (page) => page.locator(".wrap > .ash").first().getAttribute("data-lang");
 const chipName = (page) => page.locator("#who");
 const people = (page) => page.locator("#pfl .pfnm");
 const rows = (page) => page.locator("#tsl li");
-
-async function axe(page, sel) {
-  const r = await new AxeBuilder({ page }).include(sel).withTags(TAGS).disableRules(["label-content-name-mismatch"]).analyze();
-  return r.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).slice(0, 5).join(", ")}`);
-}
 
 async function addPerson(page, name, opt = {}) {
   if (await page.locator("#pfm").isHidden()) await page.locator("#who").click();
@@ -481,32 +474,32 @@ test("44px targets in the sheet and on the chip @mobile", async ({ page }) => {
   expect(small).toEqual([]);
 });
 
-for (const [name, prefs] of [
-  ["light", SETUPS.marathi],
-  ["dark", { ...SETUPS.marathi, th: "dark" }],
-  ["sepia", { ...SETUPS.marathi, th: "sepia" }],
-  ["high contrast", { ...SETUPS.marathi, hc: 1 }],
+// Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); Marathi menus in full
+for (const [name, prefs, themes] of [
+  ["light, and every other theme", SETUPS.marathi, true],
   ["Marathi menus", SETUPS["marathi-menus"]],
 ]) {
   test(`axe: the profile sheet, its edit view and the Restore dialog, ${name} @mobile`, async ({ page }, info) => {
+    const scan = async (sel) => (themes ? axeEveryTheme(page, sel) : axeScan(page, sel));
+    const ok = themes ? noViolations() : [];
     await openSite(page, prefs);
     await page.locator("#who").click();
     await addPerson(page, "Baba");
-    expect(await axe(page, "#pfm")).toEqual([]);
+    expect(await scan("#pfm")).toEqual(ok);
     await page.locator("#pfl .pfe").nth(1).click();
-    expect(await axe(page, "#pfm")).toEqual([]);
+    expect(await scan("#pfm")).toEqual(ok);
     await page.locator("#pfdel").click();
-    expect(await axe(page, "#pfm")).toEqual([]);
+    expect(await scan("#pfm")).toEqual(ok);
     await page.keyboard.press("Escape");
     await page.keyboard.press("Escape");
-    expect(await axe(page, ".bar")).toEqual([]);
+    expect(await scan(".bar")).toEqual(ok);
     await page.locator("#aa").click();
     const [dl] = await Promise.all([page.waitForEvent("download"), page.locator("#bks").click()]);
     const file = info.outputPath("a.nitya");
     await dl.saveAs(file);
     await page.locator("#bkf").setInputFiles(file);
     await expect(page.locator("#bkm")).toBeVisible();
-    expect(await axe(page, "#bkm")).toEqual([]);
+    expect(await scan("#bkm")).toEqual(ok);
   });
 }
 
@@ -514,5 +507,5 @@ test("axe: the home page notes (can't save here, the reminder) @mobile", async (
   await page.addInitScript(() => Object.defineProperty(window, "indexedDB", { value: undefined, configurable: true }));
   await openSite(page, SETUPS.marathi);
   await expect(page.locator("#stw")).toBeVisible();
-  expect(await axe(page, "#home")).toEqual([]);
+  expect(await axeScan(page, "#home")).toEqual([]);
 });
