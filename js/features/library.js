@@ -304,7 +304,8 @@ function listHtml() {
             ),
             lt = langs[e.language];
           return (
-            '<li><a href="#' + e.sec + '" data-go="' + e.sec + '"><span class="m"><span class="no"><span class="nm">' + dv(i + 1) + '.</span><span class="ne">' + (i + 1) + ".</span></span> " +
+            // ("./#a3": the piece is built when opened, js/core/page.js, so a bare "#a3" may point at nothing yet)
+            '<li><a href="./#' + e.sec + '" data-go="' + e.sec + '"><span class="m"><span class="no"><span class="nm">' + dv(i + 1) + '.</span><span class="ne">' + (i + 1) + ".</span></span> " +
             '<span class="mr">' + esc(to(e.title)) + '</span><span class="en" lang="en">' + esc(e.titleEn) + "</span></span>" +
             (lt ? '<span class="lt"><span class="mr">' + esc(to(lt.mr)) + '</span><span class="en" lang="en">' + esc(lt.en) + "</span></span>" : "") +
             "</a></li>"

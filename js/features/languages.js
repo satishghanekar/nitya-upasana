@@ -8,6 +8,7 @@ import { apply } from "./bars.js";
 import { trPick } from "./settings-panel.js";
 import { buildIX } from "../text/search.js";
 import { refToggle } from "./dhrupad-button.js";
+import { pieceEl } from "../core/page.js";
 
 var PICK;
 
@@ -57,7 +58,8 @@ export function spSet() {
   // line spacing come from the CSS (.sp-p1 / .sp-p2 in css/09-settings-page.css, which follow the same text size
   // and font as the pieces), so A−, A+, reset and the font buttons change it at once.
   var q = function (l, cls) {
-    var ps = [].slice.call(document.querySelectorAll("#a1 .items .verse > ." + l + " p"), 0, 2);
+    var a1 = pieceEl("a1"), // (built if not opened yet: js/core/page.js)
+      ps = a1 ? [].slice.call(a1.querySelectorAll(".items .verse > ." + l + " p"), 0, 2) : [];
     return ps.length
       ? '<div class="' + cls + '" lang="' + LK(l) + '">' +
           ps.map(function (p) {

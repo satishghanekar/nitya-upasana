@@ -1,6 +1,6 @@
-// Builds the HTML of every piece from CONTENT (made from the text files in content/texts/ by js/text/content.js).
-// js/text/load.js calls it before the site script starts, at the place the pieces belong, so the page
-// the rest of the script sees is the same as when the pieces were written into index.html.
+// Builds the HTML of a piece from CONTENT (made from the text files in content/texts/ by js/text/content.js): for the
+// reading page the first time the piece is opened (js/core/page.js), for the printout (js/print/compose.js) and
+// for the search index (js/text/search.js).
 // Each line keeps its two languages side by side in the data; this file decides how they are shown.
 (function () {
   "use strict";
@@ -35,7 +35,8 @@
   function navLink(cls, p, label, iconFirst) {
     if (!p) return "      <span></span>\n";
     var small = iconFirst ? ICON_PREV + two(label) : two(label) + ICON_NEXT;
-    return '      <a class="' + cls + '" href="#' + p.id + '" data-go="' + p.id + '"><small>' + small + "</small>" + two(p.title) + "</a>\n";
+    // ("./#a3", not "#a3": the piece may not be built yet, js/core/page.js, and a bare "#a3" would point at nothing)
+    return '      <a class="' + cls + '" href="./#' + p.id + '" data-go="' + p.id + '"><small>' + small + "</small>" + two(p.title) + "</a>\n";
   }
   function piece(p, prev, next, ui) {
     var h =
@@ -121,6 +122,10 @@
         SCR.el(r, OLD);
       });
     },
+    // A piece just built on the reading page (js/core/page.js): in the chosen script, put back by SCR.set like the rest
+    add: function (r) {
+      SCR.el(r, OLD);
+    },
     // Rewrite one element (a piece, a heading) in the chosen script. old: where to note what was there, so
     // SCR.set can put it back (the page's own copy); a printout's copy (js/print/compose.js) passes none.
     el: function (r, old) {
@@ -190,21 +195,9 @@
     },
   };
 
-  // One piece on its own, for the printout (js/print/compose.js): the same HTML as on the reading page
-  window.renderPiece = function (p, C) {
-    return piece(p, null, null, C.ui);
-  };
-
-  // Every piece, in reading order: by category, as the Library lists them (js/text/content.js)
-  window.renderPieces = function (C) {
-    var all = [];
-    C.categories.forEach(function (c) {
-      c.pieces.forEach(function (p) { all.push(p); });
-    });
-    return all
-      .map(function (p, i) {
-        return piece(p, all[i - 1], all[i + 1], C.ui);
-      })
-      .join("");
+  // One piece: for the reading page when it is first opened (js/core/page.js), with the pieces before and after it in
+  // reading order for its Previous / Next; for the printout (js/print/compose.js) without them
+  window.renderPiece = function (p, C, prev, next) {
+    return piece(p, prev || null, next || null, C.ui);
   };
 })();

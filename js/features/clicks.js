@@ -2,6 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { change } from "../core/state.js";
+import { pieceEl } from "../core/page.js";
 import { jp, unfold, pn } from "../core/apply.js";
 import { setJ, setP } from "./overlays.js";
 import { goHomeNav, jumpTo } from "./history.js";
@@ -12,7 +13,7 @@ export function init() {
     var a = e.target.closest && e.target.closest("a[data-go]");
     if (a) {
       e.preventDefault();
-      var el = document.getElementById(a.getAttribute("data-go"));
+      var el = pieceEl(a.getAttribute("data-go"));
       if (el && el.id === "home" && a.closest("#rail")) return goHomeNav();
       unfold(el);
       if (el)

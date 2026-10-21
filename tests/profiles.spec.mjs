@@ -8,7 +8,8 @@ import { FIXED_NOW, openSite, PREFS_KEY, settle, SETUPS, axeScan, axeEveryTheme,
 
 const EVENING = new Date("2026-10-18T19:00:00-04:00"); // Sunday evening: the ten aartis
 const fs = (page) => page.evaluate(() => parseFloat(document.documentElement.style.getPropertyValue("--fs")));
-const textLang = (page) => page.locator(".wrap > .ash").first().getAttribute("data-lang");
+// the text language, as apply() sets it on the pieces and the Library (#jl; a piece is built only when opened)
+const textLang = (page) => page.locator("#jl").getAttribute("data-lang");
 const chipName = (page) => page.locator("#who");
 const people = (page) => page.locator("#pfl .pfnm");
 const rows = (page) => page.locator("#tsl li");

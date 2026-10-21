@@ -11,6 +11,8 @@
 import { P } from "../core/state.js";
 import { dv, esc, lead } from "../core/words.js";
 import { runAt, sessionStep } from "./today-card.js";
+import { pieceData } from "../core/page.js";
+import { titleText } from "../text/iast.js";
 
 const W = {
   en: {
@@ -53,15 +55,15 @@ const HOME = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke
 /** @type {HTMLElement | null} */
 var card = null;
 
-/** A text's title as its heading shows it, in the first reading language, with its number (४. शंकराची आरती) */
+/** A text's title as its heading shows it, in the first reading language, with its number (४. शंकराची आरती), even
+ * when it has not been opened yet (js/core/page.js) */
 /** @param {string} sec @param {boolean} num */
 function title(sec, num) {
-  var h = document.querySelector("#" + sec + " h2");
-  if (!h) return "";
-  var en = lead() === "en",
-    t = h.querySelector(en ? ":scope > .en" : ":scope > .mr"),
-    n = num && h.querySelector(en ? ".ne" : ".nm");
-  return (n ? n.textContent + " " : "") + (t ? t.textContent : "");
+  /** @type {any} */
+  var p = pieceData(sec);
+  if (!p) return "";
+  var en = lead() === "en";
+  return (num ? (en ? p.no.en : /** @type {any} */ (window).SCR.to(p.no.mr)) + " " : "") + titleText(sec, en);
 }
 
 /**
