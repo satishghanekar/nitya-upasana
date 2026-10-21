@@ -34,6 +34,7 @@ import { buildRail } from "../text/layout.js";
 import { apply } from "./bars.js";
 import { IA, titlesSet } from "../text/iast.js";
 import { buildIX } from "../text/search.js";
+import { dv, esc, lead, mrLang, scr as to, second, ui } from "../core/words.js";
 
 /**
  * @typedef {import("../core/library.js").Category} Category
@@ -44,13 +45,6 @@ import { buildIX } from "../text/search.js";
  *   no: { mr: string, en: string } }} Entry   a text as listed: its section on the reading page (a1) and number there
  * @typedef {"list" | "edit" | "delete"} View
  */
-
-/** @param {number | string} n Devanagari digits */
-function dv(n) {
-  return String(n).replace(/[0-9]/g, function (d) {
-    return "०१२३४५६७८९"[+d];
-  });
-}
 
 // The sheet's words, in the menu language (P.ui). Marathi: रचना for a text, विभाग for a category.
 const W = {
@@ -191,27 +185,8 @@ var ownStep = false,
 
 // ---- small helpers ----
 
-function ui() {
-  return P && P.ui === "mr" ? "mr" : "en";
-}
 function words() {
   return W[ui()];
-}
-/** @param {string} s */
-function esc(s) {
-  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-// Marathi in the chosen script (Kannada letters through SCR, js/render.js)
-/** @param {string} s */
-function to(s) {
-  /** @type {any} */
-  var w = window;
-  return w.SCR && w.SCR.k ? w.SCR.to(s) : s;
-}
-function mrLang() {
-  /** @type {any} */
-  var w = window;
-  return (w.SCR && w.SCR.k) || "mr";
 }
 /** @param {string} id */
 function el(id) {
@@ -223,16 +198,6 @@ function focus(x) {
     try {
       x.focus({ preventScroll: true });
     } catch (e) {}
-}
-// The reading languages (Settings → Languages), as the Vedic calendar reads them
-/** @returns {"mr" | "en"} */
-function lead() {
-  return P && P.lead === "en" ? "en" : "mr";
-}
-/** @returns {"mr" | "en" | ""} */
-function second() {
-  var s = P && P.l2;
-  return (s === "mr" || s === "en") && s !== lead() ? s : "";
 }
 /** @param {"mr" | "en"} l */
 function langOf(l) {

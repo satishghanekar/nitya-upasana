@@ -40,6 +40,7 @@ var SITE_PARTS = (function () {
     "store/store",
     "core/page",
     "core/state",
+    "core/words",
     "core/features",
     "core/time-of-day",
     "features/day-picture",
