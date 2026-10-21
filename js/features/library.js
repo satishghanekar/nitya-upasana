@@ -336,8 +336,9 @@ function listHtml() {
       return s.texts.length;
     })
     .map(function (s) {
+      // numbered from 1 in each category (Satish, 2026-10-21), not by the text's place on the reading page
       var items = s.texts
-        .map(function (id) {
+        .map(function (id, i) {
           var e = /** @type {Entry} */ (
               entries.filter(function (x) {
                 return x.id === id;
@@ -345,7 +346,7 @@ function listHtml() {
             ),
             lt = langs[e.language];
           return (
-            '<li><a href="#' + e.sec + '" data-go="' + e.sec + '"><span class="m"><span class="no"><span class="nm">' + esc(e.no.mr) + '</span><span class="ne">' + esc(e.no.en) + "</span></span> " +
+            '<li><a href="#' + e.sec + '" data-go="' + e.sec + '"><span class="m"><span class="no"><span class="nm">' + dv(i + 1) + '.</span><span class="ne">' + (i + 1) + ".</span></span> " +
             '<span class="mr">' + esc(to(e.title)) + '</span><span class="en" lang="en">' + esc(e.titleEn) + "</span></span>" +
             (lt ? '<span class="lt"><span class="mr">' + esc(to(lt.mr)) + '</span><span class="en" lang="en">' + esc(lt.en) + "</span></span>" : "") +
             "</a></li>"
