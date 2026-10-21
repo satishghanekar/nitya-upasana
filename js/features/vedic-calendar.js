@@ -29,6 +29,7 @@ import { skLoc, skNext, skFmt, skMid } from "./sankashti.js";
 import { setC } from "./overlays.js";
 import { IA } from "../text/iast.js";
 import { PAKSHA } from "../core/panchang-names.js";
+import { DAYS, MONTHS, dv, esc, lead, mrLang, num, scr, second, ui } from "../core/words.js";
 
 /**
  * @typedef {import("../core/panchang.js").DayPanchang} DayPanchang
@@ -38,10 +39,6 @@ import { PAKSHA } from "../core/panchang-names.js";
  * @typedef {{ lat: number, lon: number, mr: string, en: string }} Where
  */
 
-const MR_MONTHS = ["जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"];
-const EN_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const MR_DAYS = ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"];
-const EN_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const MR_WD = ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"];
 /** Words said with the names, in each reading language (ia: the scholarly English, when not worked out from mr) */
 const N = {
@@ -147,37 +144,8 @@ var homeT;
 
 // ----- small helpers -----
 
-function ui() {
-  return P && P.ui === "mr" ? "mr" : "en";
-}
 function words() {
   return W[ui()];
-}
-/** @param {number | string} n Devanagari digits */
-function dv(n) {
-  return String(n).replace(/[0-9]/g, function (d) {
-    return "०१२३४५६७८९"[+d];
-  });
-}
-/** Digits as the menu language writes them @param {number | string} n */
-function num(n) {
-  return ui() === "mr" ? dv(n) : String(n);
-}
-/** @param {string} s */
-function esc(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-// Marathi shown in Kannada letters when that is the chosen script (SCR in js/render.js)
-/** @param {string} s */
-function scr(s) {
-  /** @type {any} */
-  var w = window;
-  return w.SCR && w.SCR.k ? w.SCR.to(s) : s;
-}
-function mrLang() {
-  /** @type {any} */
-  var w = window;
-  return (w.SCR && w.SCR.k) || "mr";
 }
 /** A Marathi name, escaped, in the chosen script, marked with its language @param {string} s @param {string} [cls] */
 function mr(s, cls) {
@@ -190,16 +158,6 @@ function en(s, cls) {
 /** Text in the menu language, marked with it @param {string} s */
 function say(s) {
   return ui() === "mr" ? mr(s) : en(s);
-}
-// The reading languages (Settings): the names follow the first, and the second where there is room for it
-/** @returns {"mr" | "en"} */
-function lead() {
-  return P && P.lead === "en" ? "en" : "mr";
-}
-/** @returns {"mr" | "en" | ""} */
-function second() {
-  var s = P && P.l2;
-  return (s === "mr" || s === "en") && s !== lead() ? s : "";
 }
 /** @param {"mr" | "en"} l */
 function langOf(l) {
@@ -285,8 +243,8 @@ function clock(t) {
 function until(t, day) {
   var other = keyOf(t) !== day,
     w = words();
-  if (ui() === "en") return w.until + (other ? EN_DAYS[t.getDay()].slice(0, 3) + " " : "") + clock(t);
-  return (other ? MR_DAYS[t.getDay()] + "ी " : "") + clock(t) + " पर्यंत";
+  if (ui() === "en") return w.until + (other ? DAYS.en[t.getDay()].slice(0, 3) + " " : "") + clock(t);
+  return (other ? DAYS.mr[t.getDay()] + "ी " : "") + clock(t) + " पर्यंत";
 }
 /** The place's name in the menu language @param {Where} L */
 function placeName(L) {
@@ -484,8 +442,8 @@ function dayRender() {
     src = pic ? pic.getAttribute("src") || "" : "",
     s = p.samvatsara,
     dateLine = E
-      ? EN_DAYS[d.getDay()] + ", " + d.getDate() + " " + EN_MONTHS[d.getMonth()] + " " + d.getFullYear()
-      : MR_DAYS[d.getDay()] + ", " + dv(d.getDate()) + " " + MR_MONTHS[d.getMonth()] + " " + dv(d.getFullYear());
+      ? DAYS.en[d.getDay()] + ", " + d.getDate() + " " + MONTHS.en[d.getMonth()] + " " + d.getFullYear()
+      : DAYS.mr[d.getDay()] + ", " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()] + " " + dv(d.getFullYear());
   // the small lines: the name in the second reading language and when it ends; the tithi's also has kshaya / vriddhi /
   // borderline notes
   var two = !!second();
@@ -654,19 +612,19 @@ function monthRender() {
     var nmM = nameH(cat(" ", (d.masa.adhika ? [{ mr: "अधिक", en: "Adhika" }] : []).concat([d.masa.name])));
     if (i === 0) sub = nmM;
     else if (d.masa.n !== days[i - 1].masa.n || d.masa.adhika !== days[i - 1].masa.adhika)
-      sub += " → " + nmM + say(E ? " from " + d.day + " " + EN_MONTHS[m - 1].slice(0, 3) : " (" + dv(d.day) + " " + MR_MONTHS[m - 1] + "पासून)");
+      sub += " → " + nmM + say(E ? " from " + d.day + " " + MONTHS.en[m - 1].slice(0, 3) : " (" + dv(d.day) + " " + MONTHS.mr[m - 1] + "पासून)");
   });
-  var mName = E ? EN_MONTHS[m - 1] + " " + y : MR_MONTHS[m - 1] + " " + dv(y);
+  var mName = E ? MONTHS.en[m - 1] + " " + y : MONTHS.mr[m - 1] + " " + dv(y);
   var html =
     '<div class="cmh">' +
-    '<button type="button" class="cnav" id="calp" data-y="' + py + '" data-m="' + pm + '">' + ICON.prev + '<span class="sr">' + esc(w.prev) + ": " + esc(E ? EN_MONTHS[pm - 1] + " " + py : MR_MONTHS[pm - 1] + " " + dv(py)) + "</span></button>" +
+    '<button type="button" class="cnav" id="calp" data-y="' + py + '" data-m="' + pm + '">' + ICON.prev + '<span class="sr">' + esc(w.prev) + ": " + esc(E ? MONTHS.en[pm - 1] + " " + py : MONTHS.mr[pm - 1] + " " + dv(py)) + "</span></button>" +
     '<h3 id="cmt">' + say(mName) + '<span class="cms">' + sub + "</span></h3>" +
-    '<button type="button" class="cnav" id="caln" data-y="' + ny + '" data-m="' + nm + '">' + ICON.next + '<span class="sr">' + esc(w.nextM) + ": " + esc(E ? EN_MONTHS[nm - 1] + " " + ny : MR_MONTHS[nm - 1] + " " + dv(ny)) + "</span></button>" +
+    '<button type="button" class="cnav" id="caln" data-y="' + ny + '" data-m="' + nm + '">' + ICON.next + '<span class="sr">' + esc(w.nextM) + ": " + esc(E ? MONTHS.en[nm - 1] + " " + ny : MONTHS.mr[nm - 1] + " " + dv(ny)) + "</span></button>" +
     "</div>" +
     '<table class="cgr" aria-labelledby="cmt"><thead><tr>' +
     MR_WD.map(function (x, i) {
-      var wd = { mr: x, en: EN_DAYS[i].slice(0, 3), ia: EN_DAYS[i].slice(0, 3) };
-      return '<th scope="col"><span aria-hidden="true" lang="' + langOf(lead()) + '">' + esc(txt(wd, lead())) + '</span><span class="sr">' + esc(E ? EN_DAYS[i] : scr(MR_DAYS[i])) + "</span></th>";
+      var wd = { mr: x, en: DAYS.en[i].slice(0, 3), ia: DAYS.en[i].slice(0, 3) };
+      return '<th scope="col"><span aria-hidden="true" lang="' + langOf(lead()) + '">' + esc(txt(wd, lead())) + '</span><span class="sr">' + esc(E ? DAYS.en[i] : scr(DAYS.mr[i])) + "</span></th>";
     }).join("") +
     "</tr></thead><tbody><tr>";
   var col = 0;
@@ -700,7 +658,7 @@ function monthRender() {
       skl = d.sankashti ? (d.vara === 2 ? N.angaraki : N.sankashti) : null,
       moon = d.purnima ? "full" : d.amavasya ? "new" : "",
       // what a screen reader hears beyond what is shown: the date, the paksha, today, the marks
-      srBefore = E ? " " + EN_MONTHS[m - 1] + ", " + EN_DAYS[d.vara] + ", " : " " + MR_MONTHS[m - 1] + ", " + MR_DAYS[d.vara] + ", ",
+      srBefore = E ? " " + MONTHS.en[m - 1] + ", " + DAYS.en[d.vara] + ", " : " " + MONTHS.mr[m - 1] + ", " + DAYS.mr[d.vara] + ", ",
       srAfter = [E ? tithiText(t, "en") : t.n === 15 || t.n === 30 ? "" : t.pakshaName.mr + " पक्ष"]
         .concat(d.purnima && t.n !== 15 ? [E ? "Purnima" : "पौर्णिमा"] : [])
         .concat(d.amavasya && t.n !== 30 ? [E ? "Amavasya" : "अमावास्या"] : [])
@@ -803,7 +761,7 @@ function pick(k, focus) {
     var p = /** @type {HTMLElement | null} */ (document.getElementById("cdt"));
     live.textContent =
       words().showing +
-      (ui() === "en" ? d.getDate() + " " + EN_MONTHS[d.getMonth()] : dv(d.getDate()) + " " + MR_MONTHS[d.getMonth()]) +
+      (ui() === "en" ? d.getDate() + " " + MONTHS.en[d.getMonth()] : dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()]) +
       ": " +
       (p ? p.textContent : "");
   }

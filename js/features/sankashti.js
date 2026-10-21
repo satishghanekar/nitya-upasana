@@ -12,6 +12,7 @@
 import { flash } from "../core/page.js";
 import { shared, P, save } from "../core/state.js";
 import { SK } from "./astronomy.js";
+import { DAYS, MONTHS, dv } from "../core/words.js";
 
 /** The values shared with other parts: the next Sankashti (read by js/features/share.js) and when it was drawn */
 /** @type {{ skCache: { key: string, list: Sankashti[], ni: number, sel: number } | null, skKey: string }} */
@@ -208,8 +209,6 @@ const CITY = [
   [25.32, 82.97, "वाराणसी", "Varanasi, Uttar Pradesh"],
   [22.57, 88.36, "कोलकाता", "Kolkata, West Bengal"]
 ];
-const WM = ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"];
-const MM = ["जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"];
 const MOON = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" fill="currentColor"/></svg>';
 
 /**
@@ -270,13 +269,6 @@ export function skLoc() {
   return c ? { lat: c[0], lon: c[1], mr: c[2], en: c[3] } : null;
 }
 
-/** @param {number | string} n Devanagari digits */
-function dv(n) {
-  return String(n).replace(/[0-9]/g, function (d) {
-    return "०१२३४५६७८९"[+d];
-  });
-}
-
 /**
  * Midnight at the start of a day (today when t is left out)
  * @param {number} [t]
@@ -301,7 +293,7 @@ export function skFmt(o) {
   return {
     d: d,
     ang: d.getDay() === 2,
-    dmr: WM[d.getDay()] + ", " + dv(d.getDate()) + " " + MM[d.getMonth()] + (yr ? " " + dv(d.getFullYear()) : ""),
+    dmr: DAYS.mr[d.getDay()] + ", " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()] + (yr ? " " + dv(d.getFullYear()) : ""),
     den: d.toLocaleDateString(
       "en-US",
       yr ? { weekday: "short", day: "numeric", month: "short", year: "numeric" } : { weekday: "short", day: "numeric", month: "short" },
