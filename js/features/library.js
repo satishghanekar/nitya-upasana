@@ -1,8 +1,8 @@
 // @ts-check
 // The Library by category (slice 3, docs/decisions.md 2026-10-19): the Library page's list of texts (#jl, opened by
 // the book button in the top bar) grouped by category: Vedic Chant, Aarti and any the family added, in the order of
-// content/categories.json; a category with no texts is left out of the list. Each text keeps its number on the reading
-// page. The side menu on wide screens (js/text/layout.js) is built from this list. "Edit categories" ("विभाग बदला") at
+// content/categories.json; a category with no texts is left out of the list. Each category is numbered from 1
+// (2026-10-21). The side menu on wide screens (js/text/layout.js) is built from this list. "Edit categories" ("विभाग बदला") at
 // the end of the list opens the categories sheet (#lbm) over the Library: add a category, rename one (a built-in one
 // only on this phone; it can't be deleted), delete one the family added, and move a text to another category. What
 // the family changes is kept on this phone for everyone on it (js/store/store.js, meta.library) and in backup files;
@@ -336,8 +336,9 @@ function listHtml() {
       return s.texts.length;
     })
     .map(function (s) {
+      // numbered from 1 in each category (Satish, 2026-10-21), not by the text's place on the reading page
       var items = s.texts
-        .map(function (id) {
+        .map(function (id, i) {
           var e = /** @type {Entry} */ (
               entries.filter(function (x) {
                 return x.id === id;
@@ -345,7 +346,7 @@ function listHtml() {
             ),
             lt = langs[e.language];
           return (
-            '<li><a href="#' + e.sec + '" data-go="' + e.sec + '"><span class="m"><span class="no"><span class="nm">' + esc(e.no.mr) + '</span><span class="ne">' + esc(e.no.en) + "</span></span> " +
+            '<li><a href="#' + e.sec + '" data-go="' + e.sec + '"><span class="m"><span class="no"><span class="nm">' + dv(i + 1) + '.</span><span class="ne">' + (i + 1) + ".</span></span> " +
             '<span class="mr">' + esc(to(e.title)) + '</span><span class="en" lang="en">' + esc(e.titleEn) + "</span></span>" +
             (lt ? '<span class="lt"><span class="mr">' + esc(to(lt.mr)) + '</span><span class="en" lang="en">' + esc(lt.en) + "</span></span>" : "") +
             "</a></li>"
