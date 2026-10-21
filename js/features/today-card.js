@@ -23,7 +23,7 @@
 // each change, and the list is drawn again (a removed text's tick just no longer shows).
 
 import { P } from "../core/state.js";
-import { flash } from "../core/page.js";
+import { flash, onPiece, pieceEl } from "../core/page.js";
 import { unfold } from "../core/apply.js";
 import { homeAlone, jumpTo } from "./history.js";
 import { setView } from "./day-picture.js";
@@ -237,7 +237,7 @@ export function render() {
       return (
         '<li class="' + (on ? "done" : "") + '">' +
         '<label class="ttk"><input type="checkbox" data-t="' + id + '"' + (on ? " checked" : "") + ' aria-label="' + esc(w.done + name) + '"><span class="tkc" aria-hidden="true">' + CHECK + "</span></label>" +
-        '<a class="tgo" href="#' + t.sec + '" data-t="' + id + '">' +
+        '<a class="tgo" href="./#' + t.sec + '" data-t="' + id + '">' +
         '<span class="tno" aria-hidden="true">' + scr(dv(i + 1)) + ".</span>" +
         '<span class="tt"><span class="t1" lang="' + (scrKey() || t.language) + '">' + esc(scr(t.title)) + '</span><span class="t2" lang="en">' + esc(t.titleEn) + "</span></span>" +
         '<span class="ttg">' + esc(langName(t.language, ui)) + "</span>" +
@@ -306,7 +306,7 @@ function announce() {
  */
 function openText(id) {
   var t = info[id],
-    el = t && document.getElementById(t.sec);
+    el = t && pieceEl(t.sec);
   if (!el) return;
   unfold(el);
   jumpTo(function () {
@@ -321,19 +321,22 @@ function openText(id) {
  * way (the Library, search, the side menu) leaves the session and shows every piece again.
  */
 function runMark() {
-  var r = document.documentElement,
-    /** @type {Record<string, number>} */
-    on = {};
-  if (run)
-    run.ids.forEach(function (id) {
-      if (info[id]) on[info[id].sec] = 1;
-    });
+  var r = document.documentElement;
   [].forEach.call(document.querySelectorAll(".ash"), function (/** @type {HTMLElement} */ x) {
-    x.classList.toggle("inrun", !!on[x.id]);
+    runOne(x);
   });
   if (run) r.setAttribute("data-run", "1");
   else r.removeAttribute("data-run");
   railRun();
+}
+
+/**
+ * A piece in the session being read is marked .inrun (also one built later: js/core/page.js)
+ * @param {HTMLElement} x
+ */
+function runOne(x) {
+  var id = bySec[x.id];
+  x.classList.toggle("inrun", !!run && !!id && run.ids.indexOf(id) >= 0);
 }
 
 /**
@@ -515,6 +518,7 @@ export function init() {
     return a ? a.id : "";
   });
   buildInfo();
+  onPiece(runOne);
   try {
     var r = JSON.parse(sessionStorage.getItem(RUN_KEY) || "null");
     if (r && Array.isArray(r.ids)) run = r;

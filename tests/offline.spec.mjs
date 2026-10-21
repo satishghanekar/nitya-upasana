@@ -1,6 +1,6 @@
 // Offline: once opened, the site works with no internet (service worker sw.js).
 import { test, expect } from "@playwright/test";
-import { FIXED_NOW, PREFS_KEY, BASE_PREFS, TEXT_COUNT } from "./helpers.mjs";
+import { FIXED_NOW, PREFS_KEY, BASE_PREFS, TEXT_COUNT, buildAll } from "./helpers.mjs";
 
 test.use({ serviceWorkers: "allow" });
 
@@ -22,6 +22,8 @@ test("works offline after the first visit @chromium-only", async ({ page, contex
   });
   await context.setOffline(true);
   await page.reload();
+  await expect(page.locator("#jl a[data-go]")).toHaveCount(TEXT_COUNT);
+  await buildAll(page);
   await expect(page.locator("section.ash")).toHaveCount(TEXT_COUNT);
   await expect(page.locator("#ofb")).toBeVisible();
   // the main fonts came from the saved copy

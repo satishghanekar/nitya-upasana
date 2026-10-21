@@ -13,9 +13,11 @@
    part needs at start-up (reads the page, adds listeners), and the
    parts start in the order below, which is the order they ran in when
    they were one file. Moving a line changes which part is ready first.
-   The pieces themselves are put into the page first: text/load.js
-   fetches the text files (content/texts/) and has render.js (a plain
-   script) build them, and only then do the parts start. The page is
+   The texts are loaded first: text/load.js fetches the text files
+   (content/texts/) into CONTENT, and only then do the parts start. A
+   piece is put into the page the first time it is opened
+   (core/page.js has render.js, a plain script, build it), and each
+   part's steps for a piece (onPiece) are run on it then. The page is
    kept hidden until every part has started (data-ready, below), so it
    never jumps while settling. The store (IndexedDB) is opened at the
    same time as the texts load; if it can't be opened within its time
@@ -65,7 +67,7 @@ import { init as startRoutineBuilder } from "./features/routine-builder.js";
 
 function start() {
   try {
-    startPage(); // Page basics: the <html> element and the short message (flash)
+    startPage(); // Page basics: the <html> element, the short message (flash), and the pieces on the reading page
     startState(); // Settings (P), loaded from this device
     startFeatures(); // Features held back for a later release
     startDayPicture(); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed
@@ -109,7 +111,7 @@ function start() {
   }
 }
 
-// The texts first (the parts read them from the page) and the store (who is reading, their settings), then the
+// The texts first (the parts read them from CONTENT) and the store (who is reading, their settings), then the
 // parts. If the texts can't be loaded, the parts still start, so the home page, Settings and Help work; the store
 // never fails (it falls back to memory).
 Promise.all([

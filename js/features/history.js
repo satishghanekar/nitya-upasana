@@ -1,7 +1,7 @@
 // Back button
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { bt } from "../core/page.js";
+import { bt, onPiece, pieceEl } from "../core/page.js";
 import { aa, cur, jp, unfold, pn } from "../core/apply.js";
 import { TK, apply, goHome, mark, tuckHold } from "./bars.js";
 import { anyOpen, closeForBack, pageEls, setC, setJ, setP, setR, trapped } from "./overlays.js";
@@ -50,7 +50,7 @@ export function init() {
     }
     if (was) return;
     var st = e.state,
-      el = location.hash && document.getElementById(location.hash.slice(1));
+      el = location.hash && pieceEl(location.hash.slice(1));
     // back on the bare address: Home on its own; on a piece's address: the reading page
     homeView(!el || el.id === "home");
     solo(el ? el.id : "");
@@ -105,14 +105,16 @@ export function init() {
     if (!jp.hidden && matchMedia("(hover: hover) and (pointer: fine)").matches) document.getElementById("q").focus();
   };
   // Home and Search at the end of each piece do exactly what the top bar's buttons do
-  [].forEach.call(document.querySelectorAll(".pnh"), function (h) {
-    h.addEventListener("click", function (e) {
-      e.preventDefault();
-      goHomeNav();
+  onPiece(function (sec) {
+    [].forEach.call(sec.querySelectorAll(".pnh"), function (h) {
+      h.addEventListener("click", function (e) {
+        e.preventDefault();
+        goHomeNav();
+      });
     });
-  });
-  [].forEach.call(document.querySelectorAll(".pns"), function (b) {
-    b.onclick = hmb.onclick;
+    [].forEach.call(sec.querySelectorAll(".pns"), function (b) {
+      b.onclick = hmb.onclick;
+    });
   });
   // Skip link: focus goes to the first text on screen (a piece, or the page), without changing the address
   document.getElementById("skip").addEventListener("click", function (e) {
@@ -220,7 +222,7 @@ export function jumpTo(go, url) {
     if (NAV) history[ov ? "replaceState" : "pushState"]({ y: scrollY }, "", url);
   } catch (e) {}
   // Focus follows to the piece's heading, so the next Tab or screen reader line starts there
-  var el = url && url.charAt(0) === "#" && document.getElementById(url.slice(1)),
+  var el = url && url.charAt(0) === "#" && pieceEl(url.slice(1)),
     h = el && el.querySelector("h2");
   if (h) {
     h.tabIndex = -1;
@@ -231,8 +233,7 @@ export function jumpTo(go, url) {
 }
 
 // Home on its own (Home v3, docs/decisions.md): while data-hv is on <html>, the page ends after Home (More and the
-// Library line) and the pieces below it are not shown (css/10-today.css, screen only). They are still in the page:
-// the Library, search, print and the reading position read them as before. It is set by going home (the top-bar
+// Library line) and the pieces below it are not shown (css/10-today.css, screen only). It is set by going home (the top-bar
 // title, Home in the side menu or the bottom bar, the end of a session, Back to the bare address) and at start-up
 // with no piece to open (js/core/startup.js), and taken off before the page goes to a piece (jumpTo(), Back to a
 // piece's address, a link such as #a3, the reading position), so reading a text, ‹ Prev and Next ›, and scrolling
@@ -259,7 +260,7 @@ export function homeView(on) {
 // leaves it where it was.
 /** @param {string} id  the piece's id (a3) */
 export function solo(id) {
-  var el = id && document.getElementById(id);
+  var el = id && pieceEl(id);
   if (!el || !el.classList.contains("ash")) return;
   [].forEach.call(document.querySelectorAll(".ash.solo"), function (/** @type {HTMLElement} */ x) {
     if (x !== el) x.classList.remove("solo");

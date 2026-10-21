@@ -3,11 +3,14 @@
 // first line and category first, under "Texts" ("रचना"), then every line, original and English, under "Lines"
 // ("ओळी"); matches ignore svara marks and punctuation, forgive the spellings people type and a typo, and Devanagari
 // typed also finds what is written in English letters. The rules and the ranking are in ./search-core.js
-// (unit-tested); this part builds the index from the page and shows the results.
+// (unit-tested); this part builds the index from the texts, as the pieces show them, and shows the results.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { P } from "../core/state.js";
-import { ENS, IA } from "./iast.js";
+import { IA, englishStyle, titleText } from "./iast.js";
+import { numberStanzas } from "./stanza-numbers.js";
+import { breakLines } from "./line-breaks.js";
+import { pieceEl } from "../core/page.js";
 import { jp, unfold } from "../core/apply.js";
 import { buildIndex, fold, marks, search } from "./search-core.js";
 import { categoryOfSection, textsForSearch } from "../features/library.js";
@@ -17,8 +20,8 @@ import { ul } from "../features/contents-list.js";
 
 /** @typedef {import("./search-core.js").Index} Index */
 
-/** @type {Index} */
-var IX;
+/** @type {Index | null} */
+var IX = null;
 /** @type {HTMLInputElement} */
 var q;
 /** @type {HTMLElement} */
@@ -37,7 +40,6 @@ function scr() {
 }
 
 export function init() {
-  buildIX();
   q = /** @type {HTMLInputElement} */ (document.getElementById("q"));
   res = /** @type {HTMLElement} */ (document.getElementById("res"));
   none = /** @type {HTMLElement} */ (document.getElementById("none"));
@@ -104,7 +106,7 @@ function find() {
   var v = q.value;
   res.innerHTML = "";
   none.hidden = true;
-  var found = search(IX, v);
+  var found = search(ix(), v);
   ul.hidden = Array.from(fold(v, scr().from).replace(/ /g, "")).length >= 2;
   if (!ul.hidden) return say(-1, 0, false);
   var n = found.texts.length + found.lines.length;
@@ -120,7 +122,7 @@ function find() {
    */
   function mk(el, txt) {
     txt.split(/(\s+)/).forEach(function (w) {
-      if (w && marks(IX, w, v)) {
+      if (w && marks(ix(), w, v)) {
         var bb = document.createElement("mark");
         bb.textContent = w;
         el.appendChild(bb);
@@ -163,7 +165,7 @@ function find() {
     b.appendChild(span("rl", LL, sectionTitle(r.sec, L), true));
     if (P.lang === "both") b.appendChild(span("rl2", "en", sectionTitle(r.sec, "en"), true));
     b.onclick = function () {
-      var el = document.getElementById(r.sec);
+      var el = pieceEl(r.sec);
       unfold(el);
       jumpTo(function () {
         if (el) el.scrollIntoView();
@@ -192,8 +194,48 @@ function find() {
   res.appendChild(frag);
 }
 
-/** The index, built again when the script, the English spelling or the categories change */
+/** The index, built again when the script, the English spelling or the categories change: on the next search */
 export function buildIX() {
+  IX = null;
+}
+
+/**
+ * The index, built the first time it is needed, from every piece as the reading page shows it (only the pieces opened
+ * so far are on the page, js/core/page.js): a copy of them, out of the page, in the chosen script and English
+ * style, with their stanza numbers and line breaks
+ * @returns {Index}
+ */
+function ix() {
+  if (IX) return IX;
+  /** @type {any} */
+  var w = window,
+    C = w.CONTENT,
+    all = document.createElement("div");
+  all.innerHTML = C
+    ? C.categories
+        .map(function (/** @type {any} */ g) {
+          return g.pieces
+            .map(function (/** @type {any} */ p) {
+              return w.renderPiece(p, C);
+            })
+            .join("");
+        })
+        .join("")
+    : "";
+  /** @type {HTMLElement[]} */
+  var secs = [].slice.call(all.children);
+  secs.forEach(function (s) {
+    w.SCR.el(s);
+  });
+  // the everyday English is searched too while the scholarly one is shown, so "sukhakarta" still finds it
+  /** @type {Record<string, string>} */
+  var ens = {};
+  [].forEach.call(all.querySelectorAll(".verse > .en > p[data-l]"), function (/** @type {HTMLElement} */ p) {
+    ens[p.getAttribute("data-l") || ""] = p.textContent || "";
+  });
+  englishStyle(all);
+  numberStanzas(all);
+  breakLines(all);
   /** @type {Record<string, number>} */
   var seen = {};
   /** @type {import("./search-core.js").LineIn[]} */
@@ -201,9 +243,7 @@ export function buildIX() {
   /** @type {Record<string, string[]>} */
   var first = {};
   var from = scr().from;
-  // only the lines in the pieces themselves: not the copies in the print view or the dhrupad bubble
-  [].forEach.call(document.querySelectorAll(".ash .mr p[data-l]"), function (/** @type {HTMLElement} */ p) {
-    if (p.closest("#pv, .rmkpop")) return;
+  [].forEach.call(all.querySelectorAll(".ash .mr p[data-l]"), function (/** @type {HTMLElement} */ p) {
     var id = p.getAttribute("data-l") || "",
       sec = /** @type {HTMLElement} */ (p.closest(".ash")),
       en = sec.querySelector('.en p[data-l="' + id + '"]'),
@@ -212,11 +252,10 @@ export function buildIX() {
       k = sec.id + "|" + fold(m, from);
     if (seen[k]) return;
     seen[k] = 1;
-    // the everyday English is searched too while the scholarly one is shown, so "sukhakarta" still finds it
-    lines.push({ id: id, sec: sec.id, text: sec.id, m: m, e: e, extra: ENS && ENS[id] && ENS[id] !== e ? ENS[id] : "" });
+    lines.push({ id: id, sec: sec.id, text: sec.id, m: m, e: e, extra: ens[id] && ens[id] !== e ? ens[id] : "" });
   });
   // each text's first line: the first line on its page (its dhrupad, when said first)
-  [].forEach.call(document.querySelectorAll(".wrap > .ash"), function (/** @type {HTMLElement} */ sec) {
+  secs.forEach(function (sec) {
     var m = sec.querySelector(".verse > .mr > p"),
       e = sec.querySelector(".verse > .en > p");
     if (m) first[sec.id] = [txt(m), e ? txt(e) : ""];
@@ -229,6 +268,7 @@ export function buildIX() {
     roman: IA,
     from: from,
   });
+  return IX;
 }
 
 /** A line's text as shown, with its line breaks as spaces @param {Element} p */
@@ -244,9 +284,5 @@ function txt(p) {
 
 /** A text's title as its heading shows it (script, English style) @param {string} id @param {string} L */
 function sectionTitle(id, L) {
-  var sec = document.getElementById(id),
-    h = sec && sec.querySelector("h2");
-  if (!h) return "";
-  var s = h.querySelector(L === "en" ? ".en" : ".mr");
-  return (s || h).textContent || "";
+  return titleText(id, L === "en");
 }

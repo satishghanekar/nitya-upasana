@@ -2,6 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { P, dfs } from "../core/state.js";
+import { onPiece } from "../core/page.js";
 
 export var ZW;
 
@@ -12,7 +13,7 @@ export function init() {
   // Browsers fill a row greedily and may break at any later space instead, so each part is wrapped in an
   // inline-block span (.zs): the row then breaks between parts. The text itself is not changed.
   ZW = "\u200b";
-  breakLines(document);
+  onPiece(breakLines);
   if (!P.fsu) P.fs = dfs();
 }
 
