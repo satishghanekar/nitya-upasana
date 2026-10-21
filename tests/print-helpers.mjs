@@ -213,6 +213,17 @@ export function checkPrintout(r, paper) {
     expect(t.page, `contents has a page number for ${t.id}`).not.toBe("");
     expect(at[t.id + ":0:s"], `${t.id} starts on the page the contents says (${paper})`).toBe(toInt(t.page));
   }
+  checkPages(r);
+  return { pages: pdf.pages.length, contents: Object.fromEntries(pv.toc.map((t) => [t.id, toInt(t.page)])), ...(pv.tall.length ? { tall: pv.tall } : {}) };
+}
+
+/**
+ * The checks every page of every printout must pass, whatever it holds: no block cut across a page break or lost, the
+ * page footers, nothing screen-only printed, every English line there.
+ */
+export function checkPages(r) {
+  const { pv, pdf } = r;
+  const at = markerPages(pdf.pages);
   // no block is cut across a page break
   const cut = [];
   for (const key of Object.keys(at)) {
@@ -237,7 +248,6 @@ export function checkPrintout(r, paper) {
     const missing = pv.english.filter((l) => !flat.includes(squash(l)));
     expect(missing, "English lines missing from the PDF").toEqual([]);
   }
-  return { pages: n, contents: Object.fromEntries(pv.toc.map((t) => [t.id, toInt(t.page)])), ...(pv.tall.length ? { tall: pv.tall } : {}) };
 }
 
 /** Where each marker landed: { "a1:0:s": 5, … } (page numbers from 1). */
@@ -257,3 +267,36 @@ export function markerPages(pages) {
 // (also without zero-width joiners and with plain quotes: a PDF's text layer may drop the one and straighten the other, or read a closing quote as the letter ʼ)
 export const squash = (s) =>
   s.normalize("NFD").replace(/\p{M}/gu, "").replace(/ı/g, "i").replace(/[‘’ʼ]/g, "'").replace(/[“”]/g, '"').replace(/[\s​­‌‍]+/g, "");
+
+/**
+ * Print one text on its own, as a print link for just that text does (?print=…&t=<id>, see js/render.js), and read the
+ * PDF back with every block and every line marked (see print-audit-helpers.mjs). The PDF's pages are then that text's
+ * alone: they depend only on the text and the print choices, never on what else a printout holds.
+ * Returns what printOnce does, plus the text's piece id on the page (sids) and how the fitting set it: the scale of the whole piece (zoom, 1 when unchanged) and,
+ * side by side, the original's share of the width (split, in %).
+ */
+export async function printText(browser, { id, prefs, mode, paper, locale, save }) {
+  const context = await browser.newContext({ locale, viewport: { width: 1280, height: 900 }, serviceWorkers: "block" });
+  const page = await context.newPage();
+  const errors = [];
+  await stubPrint(page);
+  await openSite(page, { por: "up", ...prefs }, { errors, hash: `?print=${mode === "side" ? "side" : "as"}&t=${id}` });
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
+  await page.emulateMedia({ media: "print" });
+  const pv = await readPrintView(page);
+  const set = await page.evaluate((id) => {
+    const s = document.querySelector("#pv .pvs"),
+      c = s && s.querySelector("col.pvcm");
+    return {
+      // the text's piece on the page (its id there: "a3", "p1"…)
+      sids: window.CONTENT.categories.flatMap((g) => g.pieces).filter((p) => p.text === id).map((p) => p.id),
+      zoom: s ? Number(s.style.zoom || 1) : 0,
+      split: c && c.style.width ? parseFloat(c.style.width) : null,
+    };
+  }, id);
+  await addMarkers(page);
+  const marked = await addLineMarkers(page);
+  const pdf = await pdfPages(page, paper, save);
+  await context.close();
+  return { pv, pdf, errors, mode, marked, ...set };
+}

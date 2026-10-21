@@ -17,6 +17,7 @@ npm run unit                         # Vitest: the logic tests in unit/ (no brow
 npm run types                        # TypeScript checks the JavaScript files that start with // @ts-check (nothing is compiled)
 PW_PROJECTS=chromium,firefox,webkit,iphone,ipad,pixel npm test   # every engine, as CI runs it
 npx playwright test print.spec.mjs   # one suite
+npx playwright test print-items.spec.mjs --grep "@text:sukhkarta "   # one text's print tests
 npx playwright test -g "kannada"     # tests whose name matches
 SAVE_PDFS=1 npx playwright test print.spec.mjs   # also keep every printed PDF in tests/pdfs/ to look at
 npm run print:audit                  # every printout a reader can make, as PDFs in tests/pdfs/, with a report
@@ -35,7 +36,7 @@ Until GitHub Actions runs again (Satish, 2026-10-21), every suite is run in a Cl
 | Full run | Before every pull request is merged: every change is fully tested | `npm run full` | about 23 min |
 | Release check | Before a version bump | `npm run release`, then every engine (`PW_PROJECTS=chromium,firefox,webkit,iphone,ipad,pixel npm test`) once GitHub Actions runs again | 5 to 10 min more |
 
-The quick check (`quick.mjs`) compares the checkout with `origin/main` (commits, uncommitted edits and new files) and runs only the browser suites that test the changed files: `css/12-calendar.css` or `js/core/panchang.js` runs `calendar.spec.mjs`, a text in `content/texts/` runs `content.spec.mjs`, a change to `tests/helpers.mjs` runs everything, and so on (the list is `SUITES` in `quick.mjs`). Smoke always runs, and a site file the list doesn't know runs interactions and the screenshots. `npm run quick -- --list` only prints what it would run. Lint, types and the logic tests come first and stop the run at the first failure, so most mistakes show in seconds. The quick check never replaces the full run.
+The quick check (`quick.mjs`) compares the checkout with `origin/main` (commits, uncommitted edits and new files) and runs only the browser suites that test the changed files: `css/12-calendar.css` or `js/core/panchang.js` runs `calendar.spec.mjs`, a text in `content/texts/` runs `content.spec.mjs` and that text's own print tests (`print-items.spec.mjs --grep "@text:<id> "`), a change to `tests/helpers.mjs` runs everything, and so on (the list is `SUITES` in `quick.mjs`). Smoke always runs, and a site file the list doesn't know runs interactions and the screenshots. `npm run quick -- --list` only prints what it would run. Lint, types and the logic tests come first and stop the run at the first failure, so most mistakes show in seconds. The quick check never replaces the full run.
 
 ## The suites
 
@@ -44,7 +45,8 @@ The quick check (`quick.mjs`) compares the checkout with `origin/main` (commits,
 | `unit/*.test.mjs` | Logic tests with Vitest, no browser: the 12 IAST reference lines from TRANSLITERATION.md against `js/text/iast.js`. New v2 code (text format, storage, search) gets its tests here. |
 | `smoke.spec.mjs` | The site opens with no script errors in every language set-up. |
 | `content.spec.mjs` | Every line of every piece, exactly, in Marathi, English (both spellings), Kannada and Both; the home page text; every line has a unique id and a partner in the other language. |
-| `print.spec.mjs` | **Print and PDF** (see below). |
+| `print-items.spec.mjs` | **Print, text by text**: every text printed on its own, page by page and line by line (see below). |
+| `print.spec.mjs` | **Print and PDF**: how a printout is put together (see below). |
 | `layout.spec.mjs` | 13 screens from a 320 px phone to a 2560 px monitor, portrait and landscape, × 3 language set-ups: no sideways scroll, bars on screen, readable text, no line wider than the screen; 44 px tap targets. The Vedic chants (Rudra, Atharvashirsha, Purusha Suktam) in one language run on as indented paragraphs on phone, iPad and desktop, no row starts with a danda (also after switching to IAST), and with both languages their lines stay in pairs. |
 | `visual.spec.mjs` | 42 screenshots compared pixel by pixel: home, pieces, two columns on wide screens, side menu, Settings, search, Help, dialogs, every theme, font and language arrangement, and the print layouts. |
 | `interactions.spec.mjs` | Language button, dhrupad, contents, search (Marathi and English letters, forgiving spelling), Settings (theme, contrast, font, size, languages, IAST), folds remembered, line highlight, Prev / Next, dialogs, picture viewer, date card, reopening where you were. |
@@ -57,18 +59,22 @@ The quick check (`quick.mjs`) compares the checkout with `origin/main` (commits,
 
 ### Print tests
 
-Printing is checked the way a reader does it: the site's own Print button, then a choice in the pop-up. The test stops the real print dialog, prints the page to PDF in Chromium at the reader's paper size (Letter in the US, Canada, Mexico and the Philippines, A4 elsewhere), and reads the PDF back. Before printing it adds invisible markers at the start and end of every unbroken block, so it can see exactly where each piece and block landed.
+Printing is checked the way a reader does it: the site's own Print button (or a print link), then a choice in the pop-up. The test stops the real print dialog, prints the page to PDF in Chromium at the reader's paper size (Letter in the US, Canada, Mexico and the Philippines, A4 elsewhere), and reads the PDF back. Before printing it adds invisible markers at the start and end of every unbroken block, so it can see exactly where each piece and block landed.
 
-The grid is every **Portrait** printout (Marathi, English) × every **text font** (Standard, Classic, Bold, Handwritten) × **Letter and A4**: 16 PDFs. **Landscape** (Marathi, English, Marathi and English side by side, Kannada and English side by side) × every text font, on Letter or A4 by turns, with the same checks. On top of that: the scholarly spelling (IAST), English as the main language, Kannada (single column, also on A4 and sideways), dhrupad after every verse, Marathi menus, everything folded on screen, printing from the browser's own menu (Ctrl/⌘ P), and Safari's page plan. In each PDF:
+A text prints the same on its own as inside any printout (`js/print/compose.js` builds each piece from the texts and `js/print/fit.js` sizes each piece by itself), so the print tests come in two parts.
 
-- the contents page gives the page each piece really starts on;
-- no block (a heading with its dhrupad and first stanza, or a stanza) is split across pages, unless it is taller than a page even at its smallest (the print view marks it, and it breaks between lines);
-- every block of every piece is printed, even when folded on screen;
-- every page has its "N / total" footer;
-- screen-only controls (Open all, Settings, …) never print;
-- every English line is in the PDF (Devanagari and Kannada text can't be read back reliably from a PDF, so for those the block markers show nothing was lost);
-- the page count and contents numbers match the recorded baseline;
-- in the layout × font grid, upright and sideways: no line runs past its column, no text is missing, and side by side at most a few rows are out of step or lines broken mid-phrase.
+**Text by text** (`print-items.spec.mjs`). Every text in `content/library.json` is printed on its own, through the print link for just that text (`?print=…&t=<id>`), in Marathi Portrait, English Portrait and both languages side by side on Landscape, in the standard font on A4. The other three fonts, and Kannada letters and IAST, are printed on the hardest texts only: Yei O Vitthale (the longest aarti lines) and Shree Rudra side by side, and Atharvashirsha. That is 122 PDFs, in about 2 minutes. In each:
+
+- that text alone is printed, with no contents page, on upright or sideways pages as chosen;
+- no block (a heading with its dhrupad and first stanza, or a stanza) is split across pages, unless it is taller than a page even at its smallest (the print view marks it, and it breaks between lines), and every block is printed;
+- every page has its "N / total" footer, screen-only controls never print, and every English line is in the PDF (Devanagari and Kannada text can't be read back reliably from a PDF, so for those the block markers show nothing was lost);
+- no line is lost and none runs past its column (the print audit's line markers, `print-audit-helpers.mjs`);
+- no line is set smaller than the fitting allows;
+- its result matches the saved one in `__snapshots__/print-items.spec.mjs/chromium/cloud/<id>/`: pages, the size of its smallest line, the whole piece's scale, side by side the original's share of the width, and the audit's counts (lines wrapped, broken mid-phrase, rows out of step, pages mostly empty).
+
+Each test is tagged `@text:<id>`, so a changed text runs only its own tests in the quick check. A new text gets its tests from `library.json`, and its first run saves its result: look at its PDF once (`SAVE_PDFS=1`) before committing it.
+
+**How a printout is put together** (`print.spec.mjs`). The whole Library in each layout (Portrait Marathi on Letter and English on A4; Landscape Marathi, English, and both languages side by side with Marathi or Kannada letters), and a few texts only (a print link naming three). On top of that: the scholarly spelling (IAST), English as the main language, Kannada (single column, also on A4 and sideways), dhrupad after every verse, Marathi menus, everything folded on screen, the same printout whatever the reading page shows, printing from the browser's own menu (Ctrl/⌘ P), Safari's page plan, the Print pop-up and the iPhone's Print now and Open in Safari. In each PDF the contents page gives the page each piece really starts on, the checks above for blocks, footers and English hold, and the page count and contents numbers match the recorded baseline.
 
 ### Print audit
 
@@ -86,7 +92,7 @@ Text, screenshots and print summaries are kept in `__snapshots__/`. They are the
 npx playwright test --update-snapshots
 ```
 
-Screenshots and print summaries depend a little on the machine (font smoothing, and the odd line that lands one page later in a PDF), so each machine type keeps its own set in `__snapshots__/visual.spec.mjs/chromium/` and `__snapshots__/print.spec.mjs/chromium/`. The text snapshots are the same everywhere and are shared.
+Screenshots and print summaries depend a little on the machine (font smoothing, and the odd line that lands one page later in a PDF), so each machine type keeps its own set in `__snapshots__/visual.spec.mjs/chromium/`, `__snapshots__/print.spec.mjs/chromium/` and `__snapshots__/print-items.spec.mjs/chromium/`. The text snapshots are the same everywhere and are shared.
 
 - **`cloud/`** is the reference set (Satish, 2026-10-21). It is recorded in a Claude session in the cloud (Linux, the pre-installed Chromium: `PW_CHROMIUM_PATH=/opt/pw-browsers/chromium`), where every suite is run until GitHub Actions runs again. It is the default whenever `CI` is not set. Refresh it there with `--update-snapshots`, and look at the changed pictures before committing them.
 - The sets once recorded on Satish's Mac (`local/`) and by GitHub (`ci/`) were removed on 2026-10-21 as out of date. When GitHub Actions runs again, the first run records `ci/` (push a commit with `[update-snapshots]` in its message: the *Update CI snapshots* workflow, `.github/workflows/update-snapshots.yml`, commits them to that branch).
