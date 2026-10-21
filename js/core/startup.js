@@ -3,7 +3,7 @@
 
 import { P } from "./state.js";
 import { fontsNow } from "../text/autofit.js";
-import { cur, pjOpen } from "./apply.js";
+import { cur } from "./apply.js";
 import { apply, mark } from "../features/bars.js";
 import { wake } from "../features/wake-lock.js";
 import { homeAlone, homeInView, homeView, solo } from "../features/history.js";
@@ -68,7 +68,6 @@ export function init() {
   if (h) {
     el = document.getElementById(h);
     // (a folded piece stays folded here: the address follows the piece you read, so a reload would open it)
-    if (el && el.classList.contains("ash")) pjOpen(el, true);
     if (el && el.classList.contains("ash"))
       setTimeout(function () {
         el.scrollIntoView();
@@ -102,7 +101,7 @@ export function init() {
       goPos = function () {
           if (moved) return;
           var el = sp.id && document.getElementById(sp.id);
-          // a folded Pooja piece: stay at the top, on Home on its own
+          // a piece not shown: stay at the top, on Home on its own
           if (el && el.offsetParent === null) return homeView(true);
           scrollTo(0, el ? el.getBoundingClientRect().top + scrollY + sp.y : sp.y);
         };

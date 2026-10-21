@@ -105,8 +105,7 @@ export function gridItems(/** @type {ParentNode} */ r) {
 }
 
 // The left menu on wide screens (#rail), built from the Library's list (js/features/library.js), so it lists the texts
-// by category too; built again when the categories change. A category's name links to its row on the reading page
-// (पूजा, आरती) when every text in it sits under that row, as the group names did before categories.
+// by category too; built again when the categories change. A category's name is a heading, not a link.
 export function buildRail() {
   var r = document.getElementById("rail");
   if (!r) return;
@@ -114,20 +113,8 @@ export function buildRail() {
   [].forEach.call(document.querySelectorAll("#jl .tocg"), function (g) {
     var as = g.querySelectorAll("ol.toc li a");
     if (!as.length) return;
-    var gh = g.querySelector(".gh"),
-      grps = [].map.call(as, function (a) {
-        return grpOf(document.getElementById(a.getAttribute("data-go")));
-      }),
-      gid =
-        grps[0] &&
-        grps.every(function (x) {
-          return x === grps[0];
-        })
-          ? grps[0].id
-          : "";
-    h += gid
-      ? '<a class="rg" href="#' + gid + '" data-go="' + gid + '">' + gh.innerHTML + "</a><ul>"
-      : '<div class="rg">' + gh.innerHTML + "</div><ul>";
+    var gh = g.querySelector(".gh");
+    h += '<div class="rg">' + gh.innerHTML + "</div><ul>";
     [].forEach.call(as, function (a) {
       var m = a.querySelector(".m");
       h +=
@@ -146,12 +133,6 @@ export function buildRail() {
     h;
   // a session being read keeps its own list at the top (js/features/today-card.js)
   document.dispatchEvent(new Event("nitya-rail"));
-}
-
-// The group row (पूजा, आरती) a piece sits under on the reading page
-function grpOf(sec) {
-  for (var e = sec; e; e = e.previousElementSibling) if (e.classList.contains("grp")) return e;
-  return null;
 }
 
 // Two-column screens read across: stanza 1 | stanza 2, then 3 | 4. Each stanza keeps its own dhrupad marker/repeat under it.

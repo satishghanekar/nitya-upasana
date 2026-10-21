@@ -59,7 +59,9 @@ describe("settings from every older version are upgraded as js/core/state.js alw
 
   test("v4: the reader's dhrupad and screen choices stay; folds, location and the highlighted line carry over", () => {
     const p = migratePrefs(SHAPES.v4, PHONE).prefs;
-    expect([p.ref, p.wake, p.tr, p.hl, p.fold, p.pf, p.tf]).toEqual([1, 1, "iast", "s1l3", 1, 1, 1]);
+    expect([p.ref, p.wake, p.tr, p.hl, p.fold, p.tf]).toEqual([1, 1, "iast", "s1l3", 1, 1]);
+    // the Pooja / Aarti section folds were removed (v1.20.3): their saved values are dropped
+    expect([p.pf, p.xf]).toEqual([undefined, undefined]);
     expect(p.loc).toEqual({ lat: 40.1, lon: -83.1 });
     expect(p.af).toEqual(["a3"]);
     expect(migratePrefs(SHAPES.v4, DESK).prefs.wake).toBe(0); // v5 on a computer
@@ -67,7 +69,7 @@ describe("settings from every older version are upgraded as js/core/state.js alw
 
   test("v5: autoscroll speeds kept, dhrupad after every verse kept", () => {
     const p = migratePrefs(SHAPES.v5, DESK).prefs;
-    expect([p.ref, p.as, p.ason, p.wake, p.cols, p.xf]).toEqual([0, 5, 1, 0, 1, 1]);
+    expect([p.ref, p.as, p.ason, p.wake, p.cols]).toEqual([0, 5, 1, 0, 1]);
     expect(p.asp).toEqual({ a1: 4 });
     expect([p.lead, p.l2, p.lang]).toEqual(["mr", "en", "both"]);
   });

@@ -7,8 +7,8 @@
 // It also fetches content/routines.json, the default routine the Today card shows (js/features/today-card.js),
 // at the same time; without it the texts still load and the card shows empty sessions. And content/festivals.json, the
 // festival rules the Vedic calendar marks (js/core/festivals.js); without it no festivals are marked. And
-// content/categories.json, the library's categories (js/core/library.js, js/features/library.js); without it the
-// Library lists the texts in the reading page's groups (पूजा, आरती).
+// content/categories.json, the library's categories, which also set the reading order and the numbers
+// (js/text/content.js, js/core/library.js, js/features/library.js); without it each category is named by its id.
 
 import { buildContent } from "./content.js";
 
@@ -80,6 +80,7 @@ export function load() {
     })
     .then(function (/** @type {import("./content.js").Library} */ lib) {
       loaded.library = lib;
+      // the categories set the reading order and the numbers (js/text/content.js), so they are waited for
       return Promise.all(
         lib.texts.map(function (t) {
           return get("content/" + t.file).then(function (r) {
@@ -87,6 +88,10 @@ export function load() {
           });
         }),
       ).then(function (raw) {
+        return categories.then(function () {
+          return raw;
+        });
+      }).then(function (raw) {
         /** @type {Record<string, string>} */
         var files = {};
         lib.texts.forEach(function (t, i) {
@@ -94,7 +99,7 @@ export function load() {
         });
         /** @type {any} */
         var w = window;
-        w.CONTENT = buildContent(lib, files);
+        w.CONTENT = buildContent(lib, files, loaded.categories);
         var at = /** @type {HTMLElement} */ (document.getElementById("pieces"));
         at.insertAdjacentHTML("beforebegin", w.renderPieces(w.CONTENT));
         at.parentNode && at.parentNode.removeChild(at);

@@ -144,9 +144,6 @@
   #jl .tocg[data-lang="both"] ol.toc .lt .en {
     display: none;
   }
-  #home + .grp {
-    margin-top: 28px;
-  }
 }
 /* The language tags are only for the home list on screen */
 .lt {

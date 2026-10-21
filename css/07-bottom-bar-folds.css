@@ -281,73 +281,8 @@
     padding-inline: 14px;
   }
 }
-/* ==== Fold headings (Contents, Pooja, Aarti): one look, full-width rows lined up with the folded pieces ==== */
-@media screen {
-  .grp,
-  #home + .grp {
-    display: block;
-    max-width: 46rem;
-    margin: 10px auto 0;
-  }
-  .grp,
-  #home + .grp {
-    padding: 0;
-    border: 0;
-  }
-
-  #pfb,
-  #xfb {
-    display: flex;
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 52px;
-    margin: 0;
-    padding: 0 10px 0 16px;
-    gap: 10px;
-    align-items: center;
-    justify-content: flex-start;
-    border: 1px solid var(--hdrl);
-    border-top: 3px solid var(--accent);
-    border-radius: 12px;
-    background: var(--hdr);
-    color: var(--accent);
-    text-align: left;
-  }
-  #pfb .mr,
-  #xfb .mr {
-    font: 600 20px/1.2 var(--head);
-    color: var(--accent);
-  }
-  #pfb .en,
-  #xfb .en {
-    font: 600 14px/1.2 var(--lat);
-    color: var(--muted);
-  }
-  #g-pooja[data-lang="en"] #pfb .en,
-  #g-aarti[data-lang="en"] #xfb .en {
-    font: 700 17px/1.2 var(--lat);
-    color: var(--accent);
-  }
-  #pfb svg,
-  #xfb svg {
-    margin-left: auto;
-    box-sizing: border-box;
-    width: 36px;
-    height: 36px;
-    padding: 8px;
-    border-radius: 50%;
-    border: 1px solid var(--hdrl);
-    color: var(--muted);
-  }
-  .grp + .ash header {
-    margin-top: 10px;
-  }
-}
-
 @media screen and (min-width: 1024px) {
   [data-rail="1"] #home,
-  [data-rail="1"] .grp,
-  [data-rail="1"] #home + .grp,
   [data-rail="1"] .ash header,
   [data-rail="1"] .rftop {
     max-width: none;
@@ -518,16 +453,10 @@
 /* and the home page, the section bars (पूजा, आरती) and the piece title cards: their font names point to the
    chosen font first. The home page's buttons and offline line, and the Open all / Fold all pill, stay in the site's own fonts (they are controls). */
 :root[data-font]:not([data-font="std"]) #home,
-:root[data-font]:not([data-font="std"]) .grp,
 :root[data-font]:not([data-font="std"]) .ash header {
   --head: var(--tf), "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
   --body: var(--tf), "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
   --lat: var(--tf), "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
-}
-:root[data-font]:not([data-font="std"]) .grp .allb {
-  --head: "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
-  --body: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
-  --lat: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
 }
 /* and the home page's Table of Contents: piece names, numbers and languages */
 :root[data-font]:not([data-font="std"]) #jl .tocg ol.toc .m,
@@ -540,39 +469,6 @@
 /* the font row: label on top, the four choices across the full width */
 
 /* English style choices: example on top, a small caption (Simple / Standard (IAST)) under it, same row height */
-
-/* Open all / Fold all pill in a section row, just left of the section's arrow */
-.grp {
-  position: relative;
-}
-.allb {
-  position: absolute;
-  top: 50%;
-  right: 60px;
-  transform: translateY(calc(-50% + 1px));
-  height: 30px;
-  min-height: 0;
-  padding: 0 12px;
-  border: 1px solid var(--hdrl);
-  border-radius: 15px;
-  background: var(--surface);
-  color: var(--accent);
-  font: 600 13px/1 var(--lat);
-  cursor: pointer;
-}
-.allb[lang="mr"] {
-  font: 500 14px/1 var(--body);
-}
-.allb::after {
-  content: "";
-  position: absolute;
-  inset: -7px -4px;
-}
-@media print {
-  .allb {
-    display: none !important;
-  }
-}
 
 /* ==== Bigger tap areas, same look (2026-10-14 accessibility review) ====
    Small controls get an invisible touch area of about 44 px (Apple and Google's guide) from a transparent

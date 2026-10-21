@@ -2,7 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { change } from "../core/state.js";
-import { jp, pjOpen, pn } from "../core/apply.js";
+import { jp, unfold, pn } from "../core/apply.js";
 import { setJ, setP } from "./overlays.js";
 import { goHomeNav, jumpTo } from "./history.js";
 import { hlMark } from "../core/startup.js";
@@ -14,7 +14,7 @@ export function init() {
       e.preventDefault();
       var el = document.getElementById(a.getAttribute("data-go"));
       if (el && el.id === "home" && a.closest("#rail")) return goHomeNav();
-      pjOpen(el);
+      unfold(el);
       if (el)
         jumpTo(
           function () {

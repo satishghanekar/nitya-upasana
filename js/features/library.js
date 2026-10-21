@@ -242,20 +242,15 @@ function readData() {
   lib.texts.forEach(function (/** @type {any} */ t) {
     byId[t.id] = t;
   });
-  // If content/categories.json could not be loaded, the reading page's groups (पूजा, आरती) stand in
-  var cj = loaded.categories || [],
-    fallback = !cj.length;
-  bundled = fallback
-    ? lib.groups.map(function (/** @type {any} */ g, /** @type {number} */ i) {
-        return { id: g.id, name: { mr: g.name.mr, en: g.name.en }, order: i + 1 };
-      })
-    : cj;
-  lib.groups.forEach(function (/** @type {any} */ g, /** @type {number} */ gi) {
-    g.texts.forEach(function (/** @type {string} */ id, /** @type {number} */ i) {
-      var t = byId[id],
-        p = C.groups[gi] && C.groups[gi].pieces[i];
-      if (!t || !p) return;
-      entries.push({ id: id, sec: p.id, category: fallback ? g.id : t.category, title: t.title, titleEn: t.titleEn, language: t.language, no: p.no });
+  // The bundled categories as CONTENT has them (content/categories.json, or each named by its id without it), and
+  // the texts in reading order
+  bundled = C.categories.map(function (/** @type {any} */ c, /** @type {number} */ i) {
+    return { id: c.id, name: { mr: c.name.mr, en: c.name.en }, order: i + 1 };
+  });
+  C.categories.forEach(function (/** @type {any} */ c) {
+    c.pieces.forEach(function (/** @type {any} */ p) {
+      var t = byId[p.text];
+      if (t) entries.push({ id: t.id, sec: p.id, category: t.category, title: t.title, titleEn: t.titleEn, language: t.language, no: p.no });
     });
   });
   local = getLibrary();

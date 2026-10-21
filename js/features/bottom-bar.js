@@ -94,8 +94,8 @@ function asGo(sel) {
   if (ss) ss.go();
   else if (a) a.click();
   else if (!c && sel === ".next") {
-    // from the home page: the first piece (the Pooja, or Aarti 1 when the Pooja is folded)
-    var f = /** @type {HTMLElement | null} */ (document.querySelector('#jl a[data-go="' + (P.pf ? "a1" : "p1") + '"]'));
+    // from the home page: the first text in the Library
+    var f = /** @type {HTMLElement | null} */ (document.querySelector("#jl a[data-go]"));
     if (f) f.click();
   }
 }
