@@ -39,8 +39,12 @@ export function fit(w, d, mode, pv) {
     mp = pv.querySelectorAll("p.pvpr");
   if (pr.length === mp.length)
     [].forEach.call(pr, function (el, i) {
-      var f = sizeOf(SCRIPTS[scriptOf(el.textContent)] || OTHER, fnt);
-      if (Math.abs(f - 1) >= 0.005) el.style.fontSize = mp[i].style.fontSize = parseFloat(w.getComputedStyle(el).fontSize) * f + "px";
+      var sc = SCRIPTS[scriptOf(el.textContent)] || OTHER,
+        f = sizeOf(sc, fnt),
+        px = parseFloat(w.getComputedStyle(el).fontSize);
+      if (Math.abs(f - 1) >= 0.005) el.style.fontSize = mp[i].style.fontSize = px * f + "px";
+      // running paragraphs fit any width: the piece may grow as far as its pages allow (no line limit)
+      if (el === el.closest(".pvs").querySelector("p.pvpr")) room(d, pv, el.closest(".pvs").getAttribute("data-sid"), { fit: 1, grow: 9, pt: (px * f * 0.75) / (sc.steps || 1) });
     });
   if (!lines.length || lines.length !== mine.length) return;
   lines.forEach(function (el, i) {
@@ -88,6 +92,24 @@ export function fit(w, d, mode, pv) {
         at.get(ln.el).style.fontSize = px;
       });
     });
+    // how far the piece could be set larger as a whole and keep every line as planned: none if a line wraps,
+    // otherwise as far as its widest line has room. Its size is its first column's (the original side by side)
+    var grow = Infinity,
+      fitMin = 1;
+    g.cols.forEach(function (c, k) {
+      fitMin = Math.min(fitMin, s[k]);
+      c.lines.forEach(function (ln) {
+        var W = width(ln, shares && shares[k], geo),
+          f = c.size * s[k];
+        if (predict(ln, W, f).lines > ln.segs.length) grow = 1;
+        ln.segs.forEach(function (seg) {
+          var need = (seg[seg.length - 1].r - seg[0].l) * f;
+          if (need > 0) grow = Math.min(grow, (W * LAYOUT.margin) / need);
+        });
+      });
+    });
+    var c0 = g.cols[0];
+    room(d, pv, g.sid, { fit: fitMin, grow: grow, pt: (c0.lines[0].base * c0.size * s[0] * 0.75) / c0.steps });
   });
   if (side)
     [d.querySelectorAll("#pv col.pvcm"), pv.querySelectorAll("col.pvcm")].forEach(function (cs) {
@@ -96,6 +118,19 @@ export function fit(w, d, mode, pv) {
         if (x) c.style.width = Math.round(x * 1000) / 10 + "%";
       });
     });
+}
+
+// What the page plan (js/features/print.js paginate) needs to know of how a piece was fitted, written on the piece
+// in the page-sized copy and in the print view: fit, the smallest scale its lines were set at (against their size
+// before fitting); grow, how much larger the whole piece could be set with every line still as planned; pt, the size
+// of its first column's lines in points, against the Devanagari steps (LAYOUT.grow; Latin's are smaller: SCRIPTS)
+function room(d, pv, sid, r) {
+  [d.querySelector('#pv .pvs[data-sid="' + sid + '"]'), pv.querySelector('.pvs[data-sid="' + sid + '"]')].forEach(function (e) {
+    if (!e) return;
+    e.setAttribute("data-fit", String(Math.round(r.fit * 1000) / 1000));
+    e.setAttribute("data-grow", String(Math.round(Math.min(r.grow, 9) * 1000) / 1000));
+    e.setAttribute("data-pt", String(Math.round(r.pt * 100) / 100));
+  });
 }
 
 // A line break (<br>) the fitting writes in: .pvfb, so the print audit can tell it from the text's own
@@ -241,7 +276,9 @@ function measure(w, d, groups, side, fnt) {
   var st = d.createElement("style"),
     r = d.createRange(),
     geo = null;
-  st.textContent = "#pv .verse p, #pv td.pvm, #pv td.pve { white-space: nowrap !important }";
+  // (the dhrupad at the top is a box only as wide as its lines, centred: measured as wide as the page it is centred
+  // on, which is the room its lines have, or they would always seem to fill it)
+  st.textContent = "#pv .verse p, #pv td.pvm, #pv td.pve { white-space: nowrap !important } #pv .pvref { display: block !important }";
   d.head.appendChild(st);
   groups.forEach(function (g) {
     g.cols.forEach(function (c) {
@@ -257,7 +294,7 @@ function measure(w, d, groups, side, fnt) {
           )
         ] || OTHER;
       c.size = sizeOf(sc, fnt);
-      c.minFit = sc.minFit;
+      c.steps = sc.steps || 1;
       c.lines.forEach(function (ln) {
         var cs = w.getComputedStyle(ln.el);
         ln.base = parseFloat(cs.fontSize);
@@ -374,7 +411,7 @@ function candidates(c, share, geo) {
     ln.segs.forEach(function (seg) {
       var need = (seg[seg.length - 1].r - seg[0].l) * c.size,
         s = (W / need) * 0.999;
-      if (s < 1 && s >= c.minFit) out.push(s);
+      if (s < 1 && s >= LAYOUT.lineFloor) out.push(s);
     });
   });
   return out;

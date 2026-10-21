@@ -20,13 +20,14 @@
 //           larger than Devanagari, about 70 (its letters read better a little larger); the handwritten
 //           one is drawn small but wide, so it stays at its own size: any larger and its lines no longer
 //           fit beside their English (checked with npm run print:audit).
-//   minFit: the smallest the fitting may set a piece in it, against that size, to keep a line whole
-//           (0.85: never more than 15% smaller). A line that would need more wraps instead, at a
-//           preferred break where it has one.
+//   steps:  the size steps a piece may grow to (LAYOUT.grow), against Devanagari's: Latin letters look larger at
+//           the same point size, so English grows to about 0.85 of the Devanagari steps (SIZES.md in the print
+//           redesign plan, 2026-10-21)
+// How far any of them may be set smaller is LAYOUT.floor (and lineFloor), the same for every script.
 export var SCRIPTS = {
-  deva: { size: 1, minFit: 0.85 }, // Devanagari: Marathi, Hindi, Sanskrit
-  knda: { size: 0.9, font: { classic: 0.86, hand: 1 }, minFit: 0.85 }, // Kannada letters (Settings → Main language → ಕನ್ನಡ)
-  latn: { size: 1, minFit: 0.85 }, // English, in either spelling (simple or IAST)
+  deva: { size: 1 }, // Devanagari: Marathi, Hindi, Sanskrit
+  knda: { size: 0.9, font: { classic: 0.86, hand: 1 } }, // Kannada letters (Settings → Main language → ಕನ್ನಡ)
+  latn: { size: 1, steps: 0.85 }, // English, in either spelling (simple or IAST)
 };
 
 // The size a script is set at in a text font (std, classic, bold or hand)
@@ -53,7 +54,7 @@ export function scriptOf(text) {
 }
 
 // A script with no entry above
-export var OTHER = { size: 1, minFit: 0.85 };
+export var OTHER = { size: 1 };
 
 // The Print pop-up offers Portrait and Landscape for one language, which prints in a column (prose pieces as
 // running paragraphs) on either. The original with its English prints side by side on Landscape only: stacked
@@ -83,9 +84,23 @@ export var LAYOUT = {
   // text-rendering: geometricPrecision: with it on, Linux printed the same words up to 3% wider or narrower,
   // depending on the computer's font settings, while the copy measured the same everywhere.)
   margin: 0.98,
-  // Pages: a piece is set smaller as a whole (to no less than this) when that makes it take fewer pages:
-  // when it would spill a little onto another page, or its stanzas are too big to share a page.
-  page: { minZoom: 0.8 },
+  // The smallest any line is set, against its size before fitting (its script's size in the print styles), for
+  // every reason together: to keep a line whole (js/print/fit.js) and then to take fewer pages (the whole piece set
+  // smaller: js/features/print.js paginate), when it would spill a little onto another page or its stanzas are too
+  // big to share a page. A line that would need more wraps instead, at a preferred break where it has one.
+  // (Satish, 2026-10-21: one floor of 80%, in place of 85% for lines and then 80% of that for the piece.)
+  floor: 0.8,
+  // Within the floor, the fitting alone sets lines no smaller than this, so a piece keeps some room to be set smaller
+  // for its pages: a line it would have to set smaller wraps instead (allowed 80% for its lines, Yei O Vitthale side by
+  // side on Letter had its lines set at 81% and then no room left to be set smaller, and took two pages; with lines
+  // at 96% and the piece at 96% it takes one)
+  lineFloor: 0.85,
+  // Growing: a piece whose lines all fit with room to spare is set larger, at the largest of these sizes (in points,
+  // for Devanagari: SCRIPTS steps) that still fits its lines and takes no more pages than at its own size. A fixed
+  // scale, so that the texts of a printout come out at a few even sizes, with a cap, so a page never looks like a
+  // poster (Satish, 2026-10-21, SIZES.md in the print redesign plan): aartis and ashtaks (verse) to 20pt, Vedic
+  // texts (layout: prose) to 17pt, as their svara marks need room between the lines.
+  grow: { verse: [14, 16, 18, 20], prose: [15, 16, 17] },
   // How bad each outcome is, when choosing sizes. A row out of step side by side is the worst (the reader
   // loses their place), then a line broken in the middle of a phrase, then a line that wraps at a
   // preferred break; setting a piece smaller costs a little for every 1% (shrink, per 1%).

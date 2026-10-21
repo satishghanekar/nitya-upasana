@@ -193,6 +193,8 @@ export function init() {
         var box = document.createElement("section");
         box.className = "pvs";
         box.setAttribute("data-sid", sec.id);
+        // a Vedic text (layout: prose) grows to its own, smaller cap (LAYOUT.grow)
+        if (sec.classList.contains("prose")) box.classList.add("pvved");
         var hd = document.createElement("h2");
         hd.innerHTML = sec.querySelector("h2").innerHTML;
         // the category headings are on the contents page only, not above a piece (Satish, 2026-10)
@@ -556,6 +558,7 @@ export function init() {
         C = H * (root.classList.contains("wk") ? 0.9 : 0.96),
         plan = {},
         z = {},
+        grown = {}, // a piece's heights, and the smaller sizes to fall back on if it takes more pages than planned (step 2)
         out = { z: z, b: {}, t: {} };
       if (!secs.length) return out;
       function pack(hs, k, fl) {
@@ -605,14 +608,15 @@ export function init() {
             return c.classList.contains("pvflow");
           }),
           r = pack(hs, 1, fl);
-        // a piece that would take fewer pages a little smaller is set at the largest size that does (no
-        // smaller than LAYOUT.page.minZoom): one that spills a little onto another page, or one whose
-        // blocks are too big to share a page and leave half of each page empty. (Not prose, which fills
-        // its pages anyway: it keeps its size.)
+        // a piece that would take fewer pages a little smaller is set at the largest size that does (with its
+        // lines no smaller than LAYOUT.floor, counting what the fitting took off: low): one that spills a little
+        // onto another page, or one whose blocks are too big to share a page and leave half of each page empty.
+        // (Not prose, which fills its pages anyway: it keeps its size.)
+        var low = LAYOUT.floor / (Number(e.getAttribute("data-fit")) || 1);
         if (r.n > 1 && fl.indexOf(true) < 0) {
           var fewest = r,
             at = 1;
-          for (var t = 98; t >= LAYOUT.page.minZoom * 100; t -= 2) {
+          for (var t = 98; t >= low * 100 - 1e-9; t -= 2) {
             var q = pack(hs, t / 100);
             if (q.n < fewest.n) {
               fewest = q;
@@ -624,6 +628,40 @@ export function init() {
             z[id] = at;
           }
         }
+        // a piece with room to spare is set larger, at the largest size step (LAYOUT.grow) that keeps its lines
+        // as planned and takes no more pages than at its own size: most aartis then print at 20pt on one page
+        // (Not prose in Safari: its prose plan is the one checked against Satish's PDFs.)
+        if (!z[id] && !(root.classList.contains("wk") && fl.indexOf(true) >= 0)) {
+          // the pages it takes at its own size: prose that only just spills onto a page is set a little smaller in
+          // step 2 so it does not, so that page does not count
+          var most = fl.indexOf(true) >= 0 && r.n > 1 && r.f < 0.15 ? r.n - 1 : r.n,
+            pt = Number(e.getAttribute("data-pt")),
+            room = Number(e.getAttribute("data-grow")) || 1,
+            steps = LAYOUT.grow[e.classList.contains("pvved") ? "prose" : "verse"];
+          for (var j = steps.length - 1; pt && j >= 0; j--) {
+            var g = steps[j] / pt;
+            if (g < 1.01 || g > room) continue;
+            var big = pack(hs, g, fl);
+            // prose's heights at another size are only estimated (its lines rewrap), and Safari keeps this plan
+            // unchecked (no step 2): each keeps a fifth of its last page spare
+            if (big.n <= most && !((fl.indexOf(true) >= 0 || root.classList.contains("wk")) && big.f > 0.8)) {
+              r = big;
+              z[id] = Math.round(g * 1000) / 1000;
+              // the smaller steps, largest first, then its own size
+              var back = steps
+                .slice(0, j)
+                .map(function (x) {
+                  return x / pt;
+                })
+                .filter(function (x) {
+                  return x >= 1.01;
+                })
+                .reverse();
+              grown[id] = { hs: hs, fl: fl, n: r.n, back: back.concat([1]) };
+              break;
+            }
+          }
+        }
         // Safari keeps this plan (step 2 is Chrome's): prose that spills onto a page is set at the largest size
         // that takes a page fewer, as step 2 does for Chrome (in Satish's Safari PDFs the last line or two of the
         // Atharvashirsha printed alone on a page). Safari prints prose shorter than this plan (in his October
@@ -631,7 +669,7 @@ export function init() {
         // planned onto a third page fitted in two), so a spill of up to 45% of a page counts. The 90% packing
         // is its spare room.
         if (root.classList.contains("wk") && fl.indexOf(true) >= 0 && r.n > 1 && r.f < 0.45) {
-          for (var u = 98; u >= LAYOUT.page.minZoom * 100; u -= 2) {
+          for (var u = 98; u >= low * 100 - 1e-9; u -= 2) {
             var v = pack(hs, u / 100, fl);
             if (v.n < r.n) {
               r = v;
@@ -641,6 +679,13 @@ export function init() {
           }
         }
         plan[id] = r;
+        // a piece of blocks (not prose) that the browser lays out on more pages than planned (step 2) is set smaller
+        // a step at a time, as far as the floor allows, until it takes the pages planned
+        if (!grown[id] && fl.indexOf(true) < 0) {
+          var down = [];
+          for (var dz = Math.round((z[id] || 1) * 100) - 2; dz >= low * 100 - 1e-9 && down.length < 8; dz -= 2) down.push(dz / 100);
+          grown[id] = { hs: hs, fl: fl, n: r.n, back: down };
+        }
         if (r.b.length) out.b[id] = r.b;
         // a block taller than a page even at the size chosen may break inside, between its lines
         var tall = [];
@@ -695,14 +740,17 @@ export function init() {
           var ks = [].filter.call(e.children, function (c) {
               return !c.classList.contains("pvbr");
             }),
-            last = col(ks[0]),
             br = [];
           // a block that starts a page gets a forced break there; not a paragraph of prose, which runs on
           // from the page before
-          ks.forEach(function (c, i) {
-            if (i && col(c) !== last && !c.classList.contains("pvflow")) br.push(i);
-            last = endCol(c);
-          });
+          var breaks = function () {
+            var last = col(ks[0]);
+            br = [];
+            ks.forEach(function (c, i) {
+              if (i && col(c) !== last && !c.classList.contains("pvflow")) br.push(i);
+              last = endCol(c);
+            });
+          };
           // the pages the piece takes, and how far down its last page it ends
           var measure = function () {
             var l = e.lastElementChild,
@@ -710,8 +758,49 @@ export function init() {
               b = rr[rr.length - 1] || l.getBoundingClientRect();
             return { n: endCol(l) + 1 - col(ks[0]), f: (b.bottom - y0) / H };
           };
+          breaks();
           var r = measure(),
             k = 0;
+          // prose set larger: the pages it really takes at its own size, which the heights only estimate, are the
+          // most it may take larger (one that only just spills onto a page is set smaller below, so not counting it)
+          if (grown[id] && z[id] > 1 && ks[0].classList.contains("pvflow")) {
+            e.style.zoom = "";
+            var own = measure();
+            grown[id].n = Math.min(grown[id].n, own.n > 1 && own.f < 0.15 ? own.n - 1 : own.n);
+            e.style.zoom = z[id];
+            r = measure();
+          }
+          // a piece the browser lays out on more pages than planned is set smaller: one set larger goes back a size
+          // step at a time, until it takes no more pages than at its own size; any other a little at a time
+          var gw = grown[id],
+            over = function () {
+              // prose set larger keeps some of its last page spare, as the printer may end it a few lines later
+              return r.n > gw.n || (ks[0].classList.contains("pvflow") && z[id] > 1 && r.f > 0.85);
+            };
+          while (gw && over() && gw.back.length) {
+            var g2 = gw.back.shift(),
+              q = pack(gw.hs, g2, gw.fl);
+            if (Math.abs(g2 - 1) > 0.001) z[id] = Math.round(g2 * 1000) / 1000;
+            else delete z[id];
+            e.style.zoom = z[id] || "";
+            [].forEach.call(e.querySelectorAll(":scope > .pvbr"), function (x) {
+              e.removeChild(x);
+            });
+            q.b.forEach(function (i) {
+              var x = d.createElement("div");
+              x.className = "pvbr";
+              e.insertBefore(x, ks[i]);
+            });
+            var tl = [];
+            gw.hs.forEach(function (h, i) {
+              ks[i].classList.toggle("pvtall", h * g2 > C || !!gw.fl[i]);
+              if (h * g2 > C || gw.fl[i]) tl.push(i);
+            });
+            if (tl.length) out.t[id] = tl;
+            else delete out.t[id];
+            breaks();
+            r = measure();
+          }
           // prose runs on to wherever it ends, and the printer may end it a line or so from where it ends
           // here: one that only just spills onto a page, or only just fills one, is set slightly smaller so
           // it ends well inside a page (and the contents numbers after it hold)
@@ -719,7 +808,7 @@ export function init() {
             if (r.n > 1 && r.f < 0.15) k = (0.94 * (r.n - 1)) / (r.n - 1 + r.f);
             else if (r.f > 0.94) k = (r.n - 1 + 0.9) / (r.n - 1 + r.f);
             k *= z[id] || 1;
-            if (k >= LAYOUT.page.minZoom && k < (z[id] || 1)) {
+            if (k >= LAYOUT.floor / (Number(e.getAttribute("data-fit")) || 1) && k < (z[id] || 1)) {
               z[id] = Math.round(k * 100) / 100;
               e.style.zoom = z[id];
               r = measure();

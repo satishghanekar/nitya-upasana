@@ -1,7 +1,8 @@
 {
  "pages": 1,
- "size": 1,
- "zoom": 1,
+ "pt": 14,
+ "size": 1.08,
+ "zoom": 1.077,
  "split": 50,
  "lines": 16,
  "resized": 0,

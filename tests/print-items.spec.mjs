@@ -44,9 +44,9 @@ const HARD = [
   { id: "atharvashirsha", name: "iast-portrait", prefs: SETUPS["english-iast"], mode: "one" },
 ];
 const FONTS = ["std", "classic", "bold", "hand"];
-// The smallest a line may be set, against its size before fitting: js/print/fit.js shrinks a piece's lines to 85% at
-// most (LAYOUT.minFit) and then the whole piece to 80% (LAYOUT.minZoom), in js/print/profiles.js
-const SMALLEST = 0.85 * 0.8;
+// The smallest a line may be set, against its size before fitting, for every reason together (LAYOUT.floor in
+// js/print/profiles.js)
+const SMALLEST = 0.8;
 
 const CASES = [
   ...LIBRARY.flatMap((t) => VIEWS.map((v) => ({ ...v, id: t.id, fnt: "std" }))),
@@ -73,6 +73,8 @@ for (const c of CASES) {
     expect(size, "the smallest line's size against its size before fitting").toBeGreaterThanOrEqual(SMALLEST - 0.005);
     const result = {
       pages: r.pdf.pages.length,
+      // its first column's size as printed, in points (Latin's against the Devanagari steps: SCRIPTS in profiles.js)
+      pt: Math.round(r.pt * r.zoom * 10) / 10,
       size,
       zoom: r.zoom,
       ...(r.split ? { split: r.split } : {}),
