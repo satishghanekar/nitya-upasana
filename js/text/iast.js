@@ -129,6 +129,30 @@ export function trSet(st, fin) {
   titlesSet(ia);
 }
 
+// A printout's copy of the pieces (js/print/compose.js), built after the page, in the English style chosen: the
+// same as init() and trSet() do to the page's own lines and headings (before stanza numbers and line breaks)
+export function englishStyle(/** @type {ParentNode} */ r) {
+  if (P.tr !== "iast") return;
+  [].forEach.call(r.querySelectorAll(".verse"), function (v) {
+    var ms = v.querySelectorAll(":scope>.mr>p");
+    [].forEach.call(v.querySelectorAll(":scope>.en>p"), function (p, i) {
+      var m = ms[i];
+      if (!m) return;
+      p.innerHTML = m.innerHTML.split(/<br\s*\/?>/).map(IA).join("<br>");
+      p.classList.add("ia");
+    });
+  });
+  [].forEach.call(r.querySelectorAll(".ash"), function (sec) {
+    var h = sec.querySelector("header h2"),
+      m = h && h.querySelector(":scope > .mr"),
+      e = h && h.querySelector(":scope > .en");
+    if (m && e)
+      e.textContent = IA(m.textContent).replace(/(^|[\s(])([^\s(])/g, function (x, a, c) {
+        return a + c.toUpperCase();
+      });
+  });
+}
+
 // Piece titles in the chosen English style: headings, contents, Previous/Next, and the left menu and search list
 // (copies of the contents). Called again when the contents lists are built anew (js/features/library.js).
 export function titlesSet(ia) {

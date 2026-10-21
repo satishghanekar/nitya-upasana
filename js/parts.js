@@ -81,6 +81,7 @@ var SITE_PARTS = (function () {
     "features/picture-viewer",
     "features/help",
     "print/profiles",
+    "print/compose",
     "print/fit",
     "features/print",
     "features/share",

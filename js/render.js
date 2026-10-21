@@ -122,39 +122,46 @@
       if (!S) return;
       document.documentElement.setAttribute("data-scr", ind);
       [].forEach.call(document.querySelectorAll(ROOTS), function (r) {
-        var w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT), n;
-        while ((n = w.nextNode())) if (/[ऀ-ॿ]/.test(n.data)) {
-          OLD.push([n, "", n.data]);
-          n.data = SCR.to(n.data);
-        }
-        [].forEach.call(r.querySelectorAll("[title], [aria-label]"), function (e) {
-          ["title", "aria-label"].forEach(function (a) {
-            var v = e.getAttribute(a);
-            if (v && /[ऀ-ॿ]/.test(v)) {
-              OLD.push([e, a, v]);
-              e.setAttribute(a, SCR.to(v));
-            }
-          });
+        SCR.el(r, OLD);
+      });
+    },
+    // Rewrite one element (a piece, a group row) in the chosen script. old: where to note what was there, so
+    // SCR.set can put it back (the page's own copy); a printout's copy (js/print/compose.js) passes none.
+    el: function (r, old) {
+      if (!S) return;
+      var OLD = old || [];
+      var w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT), n;
+      while ((n = w.nextNode())) if (/[ऀ-ॿ]/.test(n.data)) {
+        OLD.push([n, "", n.data]);
+        n.data = SCR.to(n.data);
+      }
+      [].forEach.call(r.querySelectorAll("[title], [aria-label]"), function (e) {
+        ["title", "aria-label"].forEach(function (a) {
+          var v = e.getAttribute(a);
+          if (v && /[ऀ-ॿ]/.test(v)) {
+            OLD.push([e, a, v]);
+            e.setAttribute(a, SCR.to(v));
+          }
         });
-        // the language of the text, for screen readers (the English parts keep lang="en")
-        [].forEach.call((r.matches(".ash[lang]") ? [r] : []).concat([].slice.call(r.querySelectorAll(".mr, .ash [lang]:not([lang='en'])"))), function (e) {
-          OLD.push([e, "lang", e.getAttribute("lang")]);
-          e.lang = ind;
-        });
-        // Poet links: the Kannada Wikipedia page when there is one, else the English page beside it
-        [].forEach.call(r.querySelectorAll(".cr"), function (c) {
-          var en = c.querySelectorAll(".en a[href]"), W = (window.CONTENT && CONTENT.wiki && CONTENT.wiki[ind]) || {};
-          [].forEach.call(c.querySelectorAll(".mr a[href]"), function (a, i) {
-            var h = decodeURI(a.getAttribute("href")), to = W[h] || (en[i] && en[i].getAttribute("href"));
-            if (!to) return;
-            ["href", "hreflang", "aria-label"].forEach(function (x) {
-              OLD.push([a, x, a.getAttribute(x)]);
-            });
-            a.href = to;
-            a.hreflang = W[h] ? ind : "en";
-            var l = a.getAttribute("aria-label") || "";
-            a.setAttribute("aria-label", l.replace(/ — .*$/, "") + (W[h] ? " — ವಿಕಿಪೀಡಿಯ" : " — Wikipedia (English)") + " ↗");
+      });
+      // the language of the text, for screen readers (the English parts keep lang="en")
+      [].forEach.call((r.matches(".ash[lang]") ? [r] : []).concat([].slice.call(r.querySelectorAll(".mr, .ash [lang]:not([lang='en'])"))), function (e) {
+        OLD.push([e, "lang", e.getAttribute("lang")]);
+        e.lang = ind;
+      });
+      // Poet links: the Kannada Wikipedia page when there is one, else the English page beside it
+      [].forEach.call(r.querySelectorAll(".cr"), function (c) {
+        var en = c.querySelectorAll(".en a[href]"), W = (window.CONTENT && CONTENT.wiki && CONTENT.wiki[ind]) || {};
+        [].forEach.call(c.querySelectorAll(".mr a[href]"), function (a, i) {
+          var h = decodeURI(a.getAttribute("href")), to = W[h] || (en[i] && en[i].getAttribute("href"));
+          if (!to) return;
+          ["href", "hreflang", "aria-label"].forEach(function (x) {
+            OLD.push([a, x, a.getAttribute(x)]);
           });
+          a.href = to;
+          a.hreflang = W[h] ? ind : "en";
+          var l = a.getAttribute("aria-label") || "";
+          a.setAttribute("aria-label", l.replace(/ — .*$/, "") + (W[h] ? " — ವಿಕಿಪೀಡಿಯ" : " — Wikipedia (English)") + " ↗");
         });
       });
     },
@@ -185,6 +192,11 @@
         });
       }
     },
+  };
+
+  // One piece on its own, for the printout (js/print/compose.js): the same HTML as on the reading page
+  window.renderPiece = function (p, C) {
+    return piece(p, null, null, C.ui);
   };
 
   // The whole run of groups and pieces, in reading order

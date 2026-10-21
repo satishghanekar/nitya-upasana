@@ -190,7 +190,13 @@ function leadSet() {
   else root.removeAttribute("data-lead");
   setLead(L);
   // (checked every time: the contents lists are built after the first call)
-  [].forEach.call(document.querySelectorAll(".wrap .verse, .wrap .ash header h2, #jl ol.toc .m, #jl .gh, #rail ul a, #rail .rg"), function (v) {
+  leadOrder(document.querySelectorAll(".wrap .verse, .wrap .ash header h2, #jl ol.toc .m, #jl .gh, #rail ul a, #rail .rg"), L);
+}
+
+// Each of els with its two languages in the order L ("en": English first): the page, or a printout's copy of the
+// pieces (js/print/compose.js)
+export function leadOrder(/** @type {ArrayLike<Element>} */ els, /** @type {string} */ L) {
+  [].forEach.call(els, function (/** @type {Element} */ v) {
     var m = v.querySelector(":scope > .mr"),
       e = v.querySelector(":scope > .en");
     if (!m || !e) return;
