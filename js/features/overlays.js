@@ -25,7 +25,14 @@ function ovFocus(el, o) {
   el._ret = null;
 }
 
+// Desktop B: the calendar and Settings sit under the top bar in the right-hand area (css/10-today.css reads --bb)
+function barBottom() {
+  var b = document.querySelector(".bar");
+  if (b) root.style.setProperty("--bb", Math.round(b.getBoundingClientRect().bottom) + "px");
+}
+
 export function setP(o) {
+  if (o) barBottom();
   if (!o) fsFlush();
   if (o) ovPush();
   ovFocus(pn, o);
@@ -97,6 +104,7 @@ export function setC(o) {
   if (o) ovPush();
   if (o) {
     mark();
+    barBottom();
     var bb = document.querySelector(".bar").getBoundingClientRect();
     c.style.top = Math.round(bb.bottom) + "px";
   }
