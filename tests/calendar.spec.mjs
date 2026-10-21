@@ -3,8 +3,7 @@
 // 7 pm in Columbus (the browser's time zone is America/New_York, whose default place is Columbus, OH).
 // Expected values: the panchang engine, checked against the Swiss Ephemeris in tests/unit/panchang.test.mjs.
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
-import { openSite, SETUPS } from "./helpers.mjs";
+import { openSite, SETUPS, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
 
 const NOW = new Date("2026-10-18T19:00:00-04:00");
 const COLUMBUS = { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 } };
@@ -419,12 +418,10 @@ test("festivals: Marathi only says आज दसरा; no line the day before o
 test("axe: the festival line on Home and Dasara in the calendar @mobile", async ({ page }) => {
   await openSite(page, COLUMBUS, { now: DASARA });
   await expect(page.locator("#fst")).toBeVisible();
-  const tags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
-  const fmt = (r) => r.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).slice(0, 5).join(", ")}`);
-  expect(fmt(await new AxeBuilder({ page }).include("#fst").include("#pan").withTags(tags).analyze())).toEqual([]);
+  expect(await axeScan(page, ["#fst", "#pan"], { mismatch: true })).toEqual([]);
   await page.locator("#panb").click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
-  expect(fmt(await new AxeBuilder({ page }).include("#cal").withTags(tags).analyze())).toEqual([]);
+  expect(await axeScan(page, "#cal", { mismatch: true })).toEqual([]);
 });
 
 test("festivals in English only: Home says Today: Dasara, the month and the day card have no Devanagari @mobile", async ({ page }) => {
@@ -451,24 +448,22 @@ test("festivals in Marathi only: आज दसरा, and no English line in the
   await expect(row(page, "सण")).toHaveText("दसरा");
 });
 
-for (const [name, prefs] of [
-  ["light", COLUMBUS],
-  ["dark", { ...COLUMBUS, th: "dark" }],
-  ["sepia", { ...COLUMBUS, th: "sepia" }],
-  ["high contrast", { ...COLUMBUS, hc: 1 }],
+// Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); each language set-up in full
+for (const [name, prefs, themes] of [
+  ["light", COLUMBUS, true],
   ["Marathi menus", { ...SETUPS["marathi-menus"], loc: { lat: 39.96, lon: -83.0 } }],
   ["English only", ENGLISH_ONLY],
   ["English and Marathi", ENGLISH_MARATHI],
   ["Kannada letters", KANNADA],
 ]) {
-  test(`axe: the calendar line and page, ${name} @mobile`, async ({ page }) => {
+  test(`axe: the calendar line and page, ${name}${themes ? ", and every other theme" : ""} @mobile`, async ({ page }) => {
+    const scan = async (sel) => (themes ? axeEveryTheme(page, sel, { mismatch: true }) : axeScan(page, sel, { mismatch: true }));
+    const ok = themes ? noViolations() : [];
     await openSite(page, prefs, { now: NOW });
-    const tags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
-    const fmt = (r) => r.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).slice(0, 5).join(", ")}`);
-    expect(fmt(await new AxeBuilder({ page }).include("#pan").withTags(tags).analyze())).toEqual([]);
+    expect(await scan("#pan")).toEqual(ok);
     await page.locator("#panb").click();
     await expect(page.locator("#calm button.cd")).toHaveCount(31);
     await page.locator('#calm button[data-d="2026-10-28"]').click();
-    expect(fmt(await new AxeBuilder({ page }).include("#cal").withTags(tags).analyze())).toEqual([]);
+    expect(await scan("#cal")).toEqual(ok);
   });
 }

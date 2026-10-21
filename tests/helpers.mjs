@@ -6,6 +6,7 @@
 
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
+import { createRequire } from "node:module";
 
 export const PREFS_KEY = "aarti2-prefs";
 
@@ -114,6 +115,84 @@ export async function openMore(page) {
 export async function tapMore(page, id) {
   await openMore(page);
   await page.locator(id).click();
+}
+
+// Accessibility (axe-core, WCAG 2.2 A/AA + best practice). A theme changes only colours (and high contrast's text
+// weight), so a screen is scanned in full once, then switched to each other theme in place, on the same page, and
+// checked for the colour rules only (axeEveryTheme). Every screen is still checked in every theme, without opening
+// the site and running every rule again for each.
+export const AXE_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
+export const CONTRAST_RULES = ["color-contrast", "link-in-text-block"];
+const AXE_SOURCE = readFileSync(createRequire(import.meta.url).resolve("axe-core/axe.min.js"), "utf8");
+// What Settings sets for each theme (Theme and High contrast), the way a reader switches it
+export const THEMES = {
+  dark: { th: "dark", hc: 0 },
+  sepia: { th: "sepia", hc: 0 },
+  "high contrast": { th: "auto", hc: 1 },
+};
+
+/**
+ * axe on the page, or on the parts `include` names. Returns the violations as short lines (an empty list passes).
+ * @param {object} [opt]  { rules: only these rules; mismatch: keep label-content-name-mismatch on (it is off by default:
+ *                        axe 4.14 counts the letters drawn inside aria-hidden SVG icons; a11y.spec.mjs checks
+ *                        WCAG 2.5.3 on the visible text instead) }
+ */
+export async function axeScan(page, include = [], opt = {}) {
+  // axe-core itself, run in the page (the version @axe-core/playwright uses). AxeBuilder re-injects it and merges
+  // the results in a second blank page on every scan, which doubled the time of a scan. The page's only frame is the
+  // print view's hidden layout frame (aria-hidden, off screen), so frames are left out.
+  if (!(await page.evaluate(() => "axe" in window))) await page.evaluate(AXE_SOURCE);
+  const sel = [].concat(include);
+  const options = opt.rules
+    ? { iframes: false, runOnly: { type: "rule", values: opt.rules } }
+    : { iframes: false, runOnly: { type: "tag", values: AXE_TAGS }, rules: opt.mismatch ? {} : { "label-content-name-mismatch": { enabled: false } } };
+  const violations = await page.evaluate(
+    ([sel, options]) =>
+      // @ts-ignore axe is injected above
+      window.axe.run(sel.length ? { include: sel.map((s) => [s]) } : document, options).then((r) =>
+        r.violations.map((v) => ({ id: v.id, impact: v.impact, targets: v.nodes.map((n) => n.target.join(" ")) })),
+      ),
+    [sel, options],
+  );
+  return violations.map((v) => `${v.id} (${v.impact}): ${v.targets.slice(0, 5).join(", ")}`);
+}
+
+/** Switch theme and high contrast in place, through Settings' own buttons (Settings itself can stay closed). */
+export async function setTheme(page, { th, hc }) {
+  await page.evaluate(
+    async ({ th, hc }) => {
+      /** @type {HTMLElement} */ (document.querySelector(`#st button[data-v="${th}"]`)).click();
+      if (document.documentElement.getAttribute("data-hc") !== String(hc)) /** @type {HTMLElement} */ (document.getElementById("tc")).click();
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    },
+    { th, hc },
+  );
+  // Settings' switches fade their colour over 0.2 s
+  await page.waitForTimeout(250);
+}
+
+/**
+ * Every rule in the theme the page opened in, then the colour rules in each other theme. Returns
+ * { "<theme>": violations } for every theme checked, so a failure names the theme. The page goes back to the theme it
+ * was in, so a test can carry on.
+ * @param {string[]} [themes]  names from THEMES (default: all three)
+ */
+export async function axeEveryTheme(page, include = [], opt = {}, themes = Object.keys(THEMES)) {
+  const was = await page.evaluate(() => ({
+    th: document.documentElement.getAttribute("data-pref") || "auto",
+    hc: Number(document.documentElement.getAttribute("data-hc") || 0),
+  }));
+  const found = { "as opened": await axeScan(page, include, opt) };
+  for (const name of themes) {
+    await setTheme(page, THEMES[name]);
+    found[name] = await axeScan(page, include, { rules: CONTRAST_RULES });
+  }
+  await setTheme(page, was);
+  return found;
+}
+/** What axeEveryTheme returns when nothing is wrong. */
+export function noViolations(themes = Object.keys(THEMES)) {
+  return Object.fromEntries(["as opened", ...themes].map((t) => [t, []]));
 }
 
 /** Home shows only what to chant now; a text is read by opening it, here from the Library (as a reader would). */
