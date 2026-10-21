@@ -253,9 +253,10 @@ export function homeView(on) {
   }
 }
 
-// The text being read (.solo on its piece): on wide screens a session shows only that one text on the right, and
-// ‹ Prev / Next › or the side menu change it (css/10-today.css). Set wherever the page goes to a piece: jumpTo(),
-// Back, and start-up (js/core/startup.js). Another address (Home, a group) leaves it where it was.
+// The text being read (.solo on its piece): the page shows only that one text, on every screen (css/10-today.css),
+// with the card at its end (js/features/end-card.js); ‹ Prev / Next ›, the card or the side menu change it. Set
+// wherever the page goes to a piece: jumpTo(), Back, and start-up (js/core/startup.js). Another address (Home, a
+// group) leaves it where it was.
 /** @param {string} id  the piece's id (a3) */
 export function solo(id) {
   var el = id && document.getElementById(id);
