@@ -385,14 +385,109 @@
     display: none !important;
   }
 }
-/* Wide screens (data-rail): only the text being read (.solo, js/features/history.js) is on the right, scrolling there
-   beside the side menu; ‹ Prev / Next › and the menu change it, so the next text never runs on below. Home is not
-   above it either (a short text would show Home's end over it); मुखपृष्ठ in the menu or the bottom bar goes back */
-@media screen and (min-width: 1024px) {
-  :root[data-run="1"][data-rail="1"]:not([data-hv]) #home,
-  :root[data-run="1"][data-rail="1"] .ash.inrun:not(.solo) {
+/* One text at a time (stage 4 of docs/refactor-plan.md): only the text being read (.solo, js/features/history.js) is
+   shown, on every screen, from a session, the Library, search or the side menu. The next text never runs on below it
+   (the card at its end, #endc, and ‹ Prev / Next › change it), and Home is not above it; Home in the bottom bar or the
+   side menu goes back. Only the page's own pieces (#main > .ash): Print copies them elsewhere, without .solo.
+   data-one (on <html> in index.html) is lifted by Print while it copies every piece (build(), js/features/print.js) */
+@media screen {
+  :root[data-one]:not([data-hv]) #main > #home,
+  :root[data-one]:not([data-hv]) #main > .grp,
+  :root[data-one]:not([data-hv]) #main > .ash:not(.solo) {
     display: none !important;
   }
+}
+
+/* ==== The card at the end of the text (#endc, js/features/end-card.js): Next / Previous, or in a session where
+   you are and Done · next. Screen only; Home on its own hides it ==== */
+#endc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 46rem;
+  margin: 28px auto 0;
+  padding: 0 0 24px;
+}
+#endc[hidden],
+:root[data-hv] #endc {
+  display: none;
+}
+@media print {
+  #endc {
+    display: none;
+  }
+}
+#endc .ecpos {
+  margin: 0;
+  text-align: center;
+  font: 400 15px/1.4 var(--body);
+  color: var(--muted);
+}
+#endc .ecpos b {
+  color: var(--ink);
+  font-weight: 600;
+}
+#endc .ecpips {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+#endc .ecpips i {
+  width: 22px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--rule);
+}
+#endc .ecpips i.d {
+  background: var(--ok);
+}
+#endc .ecpips i.c {
+  background: var(--accent);
+}
+#endc .ecb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 500 18px/1.3 var(--head);
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+#endc .ecb.ecm {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+#endc .ect {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+#endc .ect small {
+  display: block;
+  font: 500 13px/1.3 var(--body);
+  color: var(--muted);
+}
+#endc .ecm .ect small {
+  color: inherit;
+  opacity: 0.85;
+}
+#endc .ecb svg {
+  flex: none;
+}
+#endc .ecb:active {
+  background: var(--hdr);
+}
+#endc .ecm:active {
+  opacity: 0.85;
+  background: var(--accent);
 }
 
 /* ==== Start / Continue: below the list; on phones pinned to the bottom of the screen while the home page is in

@@ -107,6 +107,8 @@ for (const s of SCREENS.filter((x) => ["iphone-15", "ipad-air", "ipad-landscape"
       await openSite(page, SETUPS[setup], { hash: "#shree-rudra" });
       const lang = setup === "english" ? "en" : "mr";
       for (const id of PROSE) {
+        // one text at a time (.solo): each is opened before it is measured
+        if (id !== "shree-rudra") await openSite(page, SETUPS[setup], { hash: "#" + id });
         const st = await page.evaluate(
           ([id, lang]) => {
             const sec = document.getElementById(id),

@@ -12,6 +12,7 @@ import { wake, wl } from "./wake-lock.js";
 import { goHomeNav } from "./history.js";
 import { pageEls } from "./overlays.js";
 import { sessionStep } from "./today-card.js";
+import { endCard } from "./end-card.js";
 
 export var asc, asb;
 var AS, ASPD;
@@ -191,6 +192,8 @@ export function asLabel() {
   });
   // Home, Library and Reading are named by the word under each icon (in the menu language, data-lang on #asc)
   tlLabel();
+  // the card at the end of the text follows the same changes (js/features/end-card.js)
+  endCard();
 }
 
 // The steps to scroll through: each open piece's heading, its dhrupad at the top, every sung line in order,
