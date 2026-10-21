@@ -17,6 +17,7 @@
    - Phones held sideways
    - Group headings (पूजा / भजने / आरती) in the contents; "coming soon"; section dividers
    - Atharvashirsha: Vedic text in Tiro Devanagari Sanskrit
+   - Vedic chants in one language: running paragraphs, as in a printed booklet
 */
 
 /* ==== Page, top bar and buttons ==== */
@@ -847,4 +848,62 @@ ol.toc li.soon .m {
 }
 #p1 .verse .mr {
   font-size: 1.05em;
+}
+
+/* ==== Vedic chants in one language: running paragraphs, as in a printed booklet ==== */
+/* A piece with "layout: prose" in its text file (Rudra, Atharvashirsha, Purusha Suktam) shown in one language:
+   its lines run on, each after the last with its । or ॥, and each stanza is a paragraph whose first line is
+   indented; the dhrupad (the opening and closing peace chants) is a centred paragraph of its own. Each line stays
+   its own <p> (shown inline), so tapping, highlighting and search still find it. With both languages the lines
+   stay in pairs, one under or beside the other. A danda never starts a row: it is glued to the word before it
+   (.nb, js/text/line-breaks.js), and a line written on two rows (" // ") runs on with a space (.brs). */
+.brs {
+  display: none;
+}
+@media screen {
+  /* a booklet's measure: on a wide screen the rows stay short enough to follow */
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items {
+    display: block;
+    max-width: 52rem;
+    margin-inline: auto;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items > .item {
+    translate: none;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse {
+    text-align: start;
+    margin-bottom: 1.1em;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse > :is(.mr, .en) {
+    display: block;
+    text-indent: 2em;
+    line-height: 2;
+  }
+  .ash.prose[data-lang="en"] .verse > .en {
+    line-height: 1.75;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse p {
+    display: inline;
+    padding-inline: 0;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .zs {
+    display: inline;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .nb {
+    white-space: nowrap;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse p br {
+    display: none;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .brs {
+    display: inline;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse {
+    text-align: center;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse > :is(.mr, .en) {
+    text-indent: 0;
+  }
 }

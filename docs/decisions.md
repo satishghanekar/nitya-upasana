@@ -252,3 +252,18 @@ the iPad looked squeezed. These replace the 85% frame of Desktop A and the 1100p
   (pushing every contents page number out by one in Kannada on A4), and the transliteration missed ḷ (कॢप्त) and a
   zero-width joiner inside श‍ृ. All three are fixed. Shree Rudra's passages are wider than half a sideways page with
   Kannada beside them, so they wrap mid-phrase; the print test's limit of 12 such lines counts the other texts.
+
+## Vedic chants run on as paragraphs (v1.17, 2026-10-21)
+
+Satish asked for the Vedic chants to read like his booklets (the Rudra and Atharvashirsha PDFs) on every device,
+whenever one language is shown. Approved from the mockup (branch `mockup-vedic-flow`, sheets in the project's
+`v2/vedic-flow/`).
+
+- Pieces marked `layout: prose` (Shree Rudra, Ganapati Atharvashirsha, Purusha Suktam) shown in Marathi/Sanskrit
+  only or English only: the lines run on, each after the last with its । or ॥, as running paragraphs. A `[para]`
+  stanza starts a paragraph, indented; the dhrupad (opening and closing peace chants) is a centred paragraph.
+- A danda never starts a row (it is glued to the word before it). Rows are no wider than 52rem on wide screens.
+- Each line is still its own element, so tapping a line, the highlight, search and reading position work as before.
+- The automatic text size no longer counts these pieces' long lines (they run on), so they never make it smaller.
+- With both languages the lines stay in pairs, as before. Shri Sukta (numbered verses) keeps its verse layout.
+  Printing already used running paragraphs for these pieces and is unchanged.
