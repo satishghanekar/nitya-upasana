@@ -11,21 +11,29 @@ Sunset
 6:52 pm
 Columbus, OH
 (open the Vedic calendar)
+Morning
+Afternoon
+Nothing set
+Evening
 सकाळ · Morning
-0 of 1 done
+0 of 3 done
 Edit
 १.
 गणपत्यथर्वशीर्षोपनिषत्
 Ganapati Atharvashirsha
 Sanskrit
-
-Not this time? Afternoon · Evening
+२.
+गणपतीची आरती
+Ganapati Aarti
+Marathi
+३.
+देवीची आरती
+Devi Aarti
+Marathi
 
 Start: Ganapati Atharvashirsha
-App
-(add to Home Screen)
-Share
-QR
-code
-Print
-Help
+More
+App · Share · QR · Print · Help
+
+Another text?
+Open the Library

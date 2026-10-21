@@ -10,14 +10,17 @@ import vm from "node:vm";
 export const PREFS_KEY = "aarti2-prefs";
 
 // Screenshots and printed page counts depend on the machine's font rendering, so each machine type keeps
-// its own: "ci" (GitHub Actions, in the Playwright Docker image) and "local" (a developer's computer).
+// its own: "cloud" (the Claude cloud session, the reference set) and "ci" (GitHub Actions, in the Playwright Docker image).
 // Text snapshots are the same everywhere and are shared.
-export const SNAP_ENV = process.env.SNAPSHOT_ENV || (process.env.CI ? "ci" : "local");
+export const SNAP_ENV = process.env.SNAPSHOT_ENV || (process.env.CI ? "ci" : "cloud");
 // 2026-10-15 10:00 in Columbus: a normal day, a few days before the next Sankashti
 export const FIXED_NOW = new Date("2026-10-15T10:00:00-04:00");
 
 // Settings that make a run repeatable: current settings version (so no migration runs), screen
 // wake off, no saved reading position (the reading position lives under its own key and is cleared).
+// How many texts the site builds (one section.ash each): every text in content/library.json
+export const TEXT_COUNT = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8")).texts.length;
+
 export const BASE_PREFS = { sv: 6, wake: 0 };
 
 /** Named reader set-ups used across suites. Each is merged over BASE_PREFS. */
@@ -77,11 +80,17 @@ export async function settle(page) {
 
 /** The text a reader sees in every piece, piece by piece (hidden parts excluded). */
 export async function pieceText(page) {
-  return page.evaluate(() =>
-    [...document.querySelectorAll("section.ash")]
+  // Home on its own (data-hv) hides the reading page: shown for the read, as opening a text would
+  return page.evaluate(() => {
+    const r = document.documentElement,
+      hv = r.getAttribute("data-hv");
+    r.removeAttribute("data-hv");
+    const t = [...document.querySelectorAll("section.ash")]
       .map((s) => "### " + s.id + "\n" + s.innerText.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim())
-      .join("\n\n"),
-  );
+      .join("\n\n");
+    if (hv !== null) r.setAttribute("data-hv", hv);
+    return t;
+  });
 }
 
 /** True when the page is wider than the window (a sideways scroll appears). */
@@ -94,4 +103,37 @@ export function siteParts() {
   const ctx = {};
   vm.runInNewContext(readFileSync(new URL("../js/parts.js", import.meta.url), "utf8"), ctx);
   return ctx.SITE_PARTS;
+}
+
+/** Share, QR, Print, Help (and Add to Home Screen) sit under More on the home page: open it (as a reader would), then
+ *  tap the button. */
+export async function openMore(page) {
+  if (!(await page.locator("#shr").isVisible())) await page.locator("#tmb").click();
+}
+export async function tapMore(page, id) {
+  await openMore(page);
+  await page.locator(id).click();
+}
+
+/** Home shows only what to chant now; a text is read by opening it, here from the Library (as a reader would). */
+export async function readText(page, sec) {
+  await page.locator("#hm").click();
+  await page.locator(`#jl a[data-go="${sec}"]`).click();
+  await page.locator(`#${sec}`).waitFor({ state: "visible" });
+}
+
+// The routine the behaviour tests of Home and the routine builder run on, whatever Satish's schedule is today
+// (content/routines.json changes as texts are added): the first default, v1.10 (Morning = the Ganapati Atharvashirsha,
+// Evening = the ten aartis in the Library's order, Afternoon empty). The bundled default has its own tests
+// (unit/today.test.mjs and "the bundled default" in today.spec.mjs).
+export const TEST_AARTIS = ["sukhkarta", "shendur-lal-chadhayo", "durge-durghat-bhari", "lavathavati-vikrala", "trigunatmak-traimurti",
+  "aarti-dnyanaraja", "yei-o-vitthale", "ghalin-lotangan", "jai-ganesh-deva", "jai-jagdish-hare"];
+export const TEST_ROUTINE = {
+  morning: { mode: "fixed", texts: ["atharvashirsha"] },
+  afternoon: { mode: "fixed", texts: [] },
+  evening: { mode: "fixed", texts: TEST_AARTIS },
+};
+/** Serve TEST_ROUTINE in place of content/routines.json (call before openSite). */
+export async function useTestRoutine(page) {
+  await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(TEST_ROUTINE) }));
 }

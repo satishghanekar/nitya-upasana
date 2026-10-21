@@ -30,3 +30,14 @@ describe("IAST", () => {
     expect(IA(dev)).toBe(iast);
   });
 });
+
+// found by the print tests on the newer texts (Shree Rudra, Lalita)
+describe("IAST edge letters", () => {
+  test("vocalic ḷ: कॢप्तं", () => {
+    expect(IA("कॢप्तं")).toBe("kḷptaṃ");
+  });
+  test("a zero-width joiner before a vowel sign changes nothing: श‍ृङ्ग", () => {
+    expect(IA("श‍ृङ्ग")).toBe(IA("शृङ्ग"));
+    expect(IA("शृङ्ग")).toBe("śṛṅga");
+  });
+});

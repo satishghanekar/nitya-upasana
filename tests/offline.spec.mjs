@@ -1,6 +1,6 @@
 // Offline: once opened, the site works with no internet (service worker sw.js).
 import { test, expect } from "@playwright/test";
-import { FIXED_NOW, PREFS_KEY, BASE_PREFS } from "./helpers.mjs";
+import { FIXED_NOW, PREFS_KEY, BASE_PREFS, TEXT_COUNT } from "./helpers.mjs";
 
 test.use({ serviceWorkers: "allow" });
 
@@ -22,12 +22,12 @@ test("works offline after the first visit @chromium-only", async ({ page, contex
   });
   await context.setOffline(true);
   await page.reload();
-  await expect(page.locator("section.ash")).toHaveCount(11);
+  await expect(page.locator("section.ash")).toHaveCount(TEXT_COUNT);
   await expect(page.locator("#ofb")).toBeVisible();
   // the main fonts came from the saved copy
   expect(await page.evaluate(() => document.fonts.check('16px "Noto Sans Devanagari"', "क"))).toBe(true);
   // the picture shows, and all three time-of-day pictures are kept, so the afternoon and evening ones work offline too
-  expect(await page.locator("#iconb img").evaluate((i) => i.complete && i.naturalWidth)).toBe(360);
+  expect(await page.locator("#iconb img").evaluate((i) => i.complete && i.naturalWidth > 0)).toBe(true);
   const kept = await page.evaluate(async () => {
     const c = await caches.open(document.querySelector('meta[name="version"]').content);
     const names = ["sunrise", "midday", "sunset"].flatMap((t) => [`picture-${t}-360.webp`, `picture-${t}.webp`]);

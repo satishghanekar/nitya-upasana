@@ -1,18 +1,22 @@
 // Visual regression: screenshots compared pixel by pixel with the ones recorded before the refactor.
 // A curated set (not every combination) chosen so that every CSS section is on at least one shot:
-// the home page, the Library, a piece with its dhrupad, two columns, the side menu, Settings, search,
-// Help, the dialogs, every theme and every language arrangement.
+// the home page, the Library, the calendar, a piece with its dhrupad, two columns, the side menu, Settings, search,
+// Help, the dialogs, every theme and every language arrangement, on phones (upright and sideways), iPads (both ways),
+// desktops and 2K / 4K monitors.
 // Recorded in Chromium; the site's fonts are its own files, so shots are the same on any Linux machine.
 import { test, expect } from "@playwright/test";
-import { openSite, settle, SETUPS } from "./helpers.mjs";
+import { openSite, settle, SETUPS, readText, tapMore } from "./helpers.mjs";
 import { printFromButton } from "./print-helpers.mjs";
 
 const SIZES = {
   phone: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },
   small: { viewport: { width: 320, height: 640 }, isMobile: true, hasTouch: true },
+  "phone-land": { viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true },
   tablet: { viewport: { width: 820, height: 1180 }, isMobile: true, hasTouch: true },
+  "tablet-land": { viewport: { width: 1180, height: 820 }, isMobile: true, hasTouch: true },
   desktop: { viewport: { width: 1440, height: 900 } },
   wide: { viewport: { width: 2560, height: 1440 } },
+  "4k": { viewport: { width: 3840, height: 2160 } },
 };
 
 async function shoot(browser, name, size, prefs, prepare, now) {
@@ -27,13 +31,16 @@ async function shoot(browser, name, size, prefs, prepare, now) {
   await context.close();
 }
 
+// Home shows only what to chant now: a text is opened from the Library, then scrolled to just below its title
 const goTo = (id) => async (page) => {
+  await readText(page, id);
   await page.evaluate((id) => {
     const el = document.getElementById(id);
     scrollTo(0, el.getBoundingClientRect().top + scrollY - 60);
   }, id);
   await page.waitForTimeout(300);
 };
+const calendar = (p) => p.locator("#panb").click();
 
 const CASES = [
   // home page at every size
@@ -42,6 +49,9 @@ const CASES = [
   ["home-tablet", "tablet", SETUPS.marathi],
   ["home-desktop", "desktop", SETUPS.marathi],
   ["home-wide", "wide", SETUPS.marathi],
+  ["home-4k", "4k", SETUPS.marathi],
+  ["home-phone-land", "phone-land", SETUPS.marathi],
+  ["home-tablet-land", "tablet-land", SETUPS.marathi],
   ["home-sankashti-phone", "phone", SETUPS.marathi, null, new Date("2026-10-28T19:00:00-04:00")],
   ["home-marathi-menus", "phone", SETUPS["marathi-menus"]],
   // a piece in every language arrangement
@@ -71,11 +81,12 @@ const CASES = [
   ["font-classic", "phone", { ...SETUPS.both, fnt: "classic" }, goTo("a1")],
   ["font-bold", "phone", { ...SETUPS.both, fnt: "bold" }, goTo("a1")],
   ["font-hand", "phone", { ...SETUPS.both, fnt: "hand" }, goTo("a1")],
-  // folds
-  ["folded-sections", "phone", { ...SETUPS.marathi, pf: 1, af: ["a1", "a2"] }],
+  // folds: a folded text shows only its title
+  ["folded-sections", "phone", { ...SETUPS.marathi, af: ["a1", "a2"] }, goTo("a1")],
   // overlays
   ["settings-phone", "phone", SETUPS.marathi, (p) => p.locator("#aa").click()],
   ["settings-desktop", "desktop", SETUPS.marathi, (p) => p.locator("#aa").click()],
+  ["settings-tablet", "tablet", SETUPS.marathi, (p) => p.locator("#aa").click()],
   ["settings-dark", "phone", { ...SETUPS.marathi, th: "dark" }, (p) => p.locator("#aa").click()],
   ["search-phone", "phone", SETUPS.marathi, async (p) => {
     await p.locator("#hm").click();
@@ -83,9 +94,16 @@ const CASES = [
   }],
   ["library-phone", "phone", SETUPS.marathi, (p) => p.locator("#hm").click()],
   ["library-desktop", "desktop", SETUPS.marathi, (p) => p.locator("#hm").click()],
-  ["help-phone", "phone", SETUPS.marathi, (p) => p.locator("#hlpb").click()],
-  ["qr-phone", "phone", SETUPS.marathi, (p) => p.locator("#qrb").click()],
-  ["print-dialog", "phone", SETUPS.marathi, (p) => p.locator("#prb").click()],
+  ["library-tablet", "tablet", SETUPS.marathi, (p) => p.locator("#hm").click()],
+  ["library-tablet-land", "tablet-land", SETUPS.marathi, (p) => p.locator("#hm").click()],
+  // the Vedic calendar
+  ["calendar-phone", "phone", SETUPS.marathi, calendar],
+  ["calendar-tablet", "tablet", SETUPS.marathi, calendar],
+  ["calendar-desktop", "desktop", SETUPS.marathi, calendar],
+  ["calendar-wide", "wide", SETUPS.marathi, calendar],
+  ["help-phone", "phone", SETUPS.marathi, (p) => tapMore(p, "#hlpb")],
+  ["qr-phone", "phone", SETUPS.marathi, (p) => tapMore(p, "#qrb")],
+  ["print-dialog", "phone", SETUPS.marathi, (p) => tapMore(p, "#prb")],
 ];
 
 for (const [name, size, prefs, prep, now] of CASES) {

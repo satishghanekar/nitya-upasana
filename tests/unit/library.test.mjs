@@ -38,16 +38,14 @@ describe("the bundled library (decisions Q2)", () => {
     expect(cats[1].name).toEqual({ mr: "आरती", en: "Aarti" });
     expect(cats.every((c) => c.origin === "bundled" && c.original === null)).toBe(true);
   });
-  test("Atharvashirsha is Vedic Chant; all eighteen aartis, Ghalin Lotangan too, are Aarti; Stotra and Ashtak are empty", () => {
+  test("every text is on its own category's shelf, in reading order; Atharvashirsha is Vedic Chant, Ghalin Lotangan is Aarti", () => {
     const sh = shelves(TEXTS, cats, emptyLocal());
-    expect(sh.map((s) => [s.category.id, s.texts])).toEqual([
-      ["vedic-chant", ["atharvashirsha"]],
-      ["aarti", lib.groups.find((g) => g.id === "g-aarti").texts],
-      ["stotra", []],
-      ["ashtak", []],
-    ]);
+    expect(sh.map((s) => [s.category.id, s.texts])).toEqual(
+      ["vedic-chant", "aarti", "stotra", "ashtak"].map((c) => [c, TEXTS.filter((t) => t.category === c).map((t) => t.id)]),
+    );
+    expect(shelf(emptyLocal(), "vedic-chant")[0]).toBe("atharvashirsha");
     expect(shelf(emptyLocal(), "aarti")).toContain("ghalin-lotangan");
-    expect(counts(sh)).toEqual({ "vedic-chant": 1, aarti: 18, stotra: 0, ashtak: 0 });
+    expect(Object.values(counts(sh)).reduce((a, b) => a + b, 0)).toBe(lib.texts.length);
   });
   test("every text in library.json names a bundled category", () => {
     for (const t of lib.texts) expect(ids(cats)).toContain(t.category);
@@ -106,7 +104,7 @@ describe("adding, renaming and deleting a category", () => {
     const c = categoriesOf(BUNDLED, r.local)[0];
     expect(c).toMatchObject({ id: "vedic-chant", name: { mr: "वेद", en: "Veda" }, original: { mr: "वैदिक मंत्र", en: "Vedic Chant" } });
     // the texts stay where they were
-    expect(shelf(r.local, "vedic-chant")).toEqual(["atharvashirsha"]);
+    expect(shelf(r.local, "vedic-chant")).toEqual(shelf(emptyLocal(), "vedic-chant"));
     expect(categoriesOf(BUNDLED, resetName(r.local, "vedic-chant"))[0].name.en).toBe("Vedic Chant");
     // typing the original name again forgets the rename
     const back = renameCategory(r.local, BUNDLED, "vedic-chant", { mr: "वैदिक मंत्र", en: "Vedic Chant" });
@@ -138,9 +136,10 @@ describe("moving a text", () => {
     let l = moveText(emptyLocal(), categoriesOf(BUNDLED, emptyLocal()), gl, "stotra").local;
     const atv = TEXTS.find((t) => t.id === "atharvashirsha");
     l = moveText(l, categoriesOf(BUNDLED, l), atv, "stotra").local;
-    expect(shelf(l, "stotra")).toEqual(["atharvashirsha", "ghalin-lotangan"]);
+    // in reading order among the Stotra already there
+    expect(shelf(l, "stotra")).toEqual(ORDER.filter((id) => ["atharvashirsha", "ghalin-lotangan"].includes(id) || shelf(emptyLocal(), "stotra").includes(id)));
     expect(shelf(l, "aarti")).not.toContain("ghalin-lotangan");
-    expect(shelf(l, "vedic-chant")).toEqual([]);
+    expect(shelf(l, "vedic-chant")).toEqual(shelf(emptyLocal(), "vedic-chant").filter((id) => id !== "atharvashirsha"));
     expect(categoryOf(gl, categoriesOf(BUNDLED, l), l)).toBe("stotra");
   });
   test("back to its own category forgets the move; an unknown category is refused", () => {

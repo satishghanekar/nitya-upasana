@@ -628,7 +628,7 @@
 }
 
 /* ==== Wide screens: the picker beside the list (no Add texts button: the picker is always there) ==== */
-@media (min-width: 1100px) {
+@media (min-width: 1024px) {
   #rtb .rtin {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 380px;

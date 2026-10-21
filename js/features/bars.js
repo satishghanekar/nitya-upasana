@@ -15,7 +15,7 @@ import { setJ, setP } from "./overlays.js";
 import { spSet } from "./languages.js";
 
 export var TK;
-var tkStrip, MQ900, MQ1000, MQ1100, tailF;
+var tkStrip, MQ900, MQ1000, MQ1024, tailF;
 
 export function init() {
   // Phones and tablets without the side menu. Scrolling down past the top of the page tucks the top and
@@ -76,7 +76,7 @@ export function init() {
   // Apply every setting in P to the page
   MQ900 = matchMedia("(min-width: 900px)");
   MQ1000 = matchMedia("(min-width: 1000px)");
-  MQ1100 = matchMedia("(min-width: 1100px)");
+  MQ1024 = matchMedia("(min-width: 1024px)");
   // The parts of apply() that read where things are on screen (the current piece for the top bar title,
   // the menus and the autoscroll speed) wait for the next frame, when the browser lays the page out
   // anyway; reading them straight away cost one extra full-page layout per change.
@@ -237,7 +237,7 @@ export function apply() {
   var wide = MQ900.matches,
     two = wide && (P.cols === 2 || (P.cols !== 1 && MQ1000.matches));
   root.setAttribute("data-cols", two ? "2" : "1");
-  if (MQ1100.matches) root.setAttribute("data-rail", "1");
+  if (MQ1024.matches) root.setAttribute("data-rail", "1");
   else root.removeAttribute("data-rail");
   document.getElementById("colrow").hidden = !wide;
   [].forEach.call(document.querySelectorAll("#sc button"), function (b) {

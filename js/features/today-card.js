@@ -358,6 +358,7 @@ function openText(id) {
  */
 function runMark() {
   var r = document.documentElement,
+    /** @type {Record<string, number>} */
     on = {};
   if (run)
     run.ids.forEach(function (id) {
@@ -380,6 +381,7 @@ export function railRun() {
     old = document.getElementById("rrun");
   if (old) old.remove();
   if (!rail || !run) return;
+  var rl = rail;
   var d = document.createElement("div"),
     ul = document.createElement("ul"),
     n = 0,
@@ -394,7 +396,7 @@ export function railRun() {
     '<div class="rg"><span class="mr">' + W.mr.sessions[run.session] + '</span><span class="en" lang="en">' + W.en.sessions[run.session] + '</span><span class="rcnt">' + w.count(nd, run.ids.length) + "</span></div>";
   run.ids.forEach(function (id) {
     var t = info[id],
-      a = t && rail.querySelector('a[data-go="' + t.sec + '"]');
+      a = t && rl.querySelector('a[data-go="' + t.sec + '"]');
     if (!a) return;
     n++;
     var li = document.createElement("li"),

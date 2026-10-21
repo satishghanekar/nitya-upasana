@@ -88,7 +88,8 @@ test("first visit from an older version (settings version 4) and version 1.3's t
   expect(await fs(page)).toBe(28);
   expect(await textLang(page)).toBe("en");
   await expect(page.locator("html")).toHaveAttribute("data-ref", "0");
-  await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
+  // Sunday evening is four texts now; of the two ticked in 1.3, Shendur Lal is no longer in it
+  await expect(page.locator("#tsn")).toHaveText("1 of 4 done");
   const boot = await page.evaluate(() => JSON.parse(localStorage.getItem("aarti2-prefs")));
   expect([boot.sv, boot.l2]).toEqual([6, "en"]);
 });
@@ -223,21 +224,21 @@ test("delete asks first, never removes the last person, and moves to another per
 test("ticks are per person, and kept after a reload @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await rows(page).nth(0).locator("input").check();
-  await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
+  await expect(page.locator("#tsn")).toHaveText("1 of 4 done");
   await addPerson(page, "Baba");
   await page.locator("#pfx").click();
   await switchTo(page, "Baba");
-  await expect(page.locator("#tsn")).toHaveText("0 of 10 done");
+  await expect(page.locator("#tsn")).toHaveText("0 of 4 done");
   await rows(page).nth(1).locator("input").check();
   await rows(page).nth(2).locator("input").check();
   await switchTo(page, "Me");
-  await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
+  await expect(page.locator("#tsn")).toHaveText("1 of 4 done");
   await expect(rows(page).nth(0).locator("input")).toBeChecked();
   await page.reload();
   await settle(page);
-  await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
+  await expect(page.locator("#tsn")).toHaveText("1 of 4 done");
   await switchTo(page, "Baba");
-  await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
+  await expect(page.locator("#tsn")).toHaveText("2 of 4 done");
 });
 
 test("Save a backup file → Restore from it: every person, setting and tick comes back", async ({ page }, info) => {
@@ -247,7 +248,7 @@ test("Save a backup file → Restore from it: every person, setting and tick com
   await page.locator("#pfx").click();
   await switchTo(page, "Aai");
   await page.locator("#home-btn").evaluate((b) => b.click()); // English (the button is in the top bar while reading)
-  await rows(page).nth(4).locator("input").check();
+  await rows(page).nth(3).locator("input").check();
   await page.locator("#aa").click();
   await expect(page.locator("#bksv")).toHaveText("Not saved yet");
   const [dl] = await Promise.all([page.waitForEvent("download"), page.locator("#bks").click()]);
@@ -255,7 +256,9 @@ test("Save a backup file → Restore from it: every person, setting and tick com
   const file = info.outputPath("backup.nitya");
   await dl.saveAs(file);
   const json = JSON.parse(readFileSync(file, "utf8"));
-  expect([json.format, json.kind, json.app]).toEqual(["nitya", "backup", "aarti-v1.9"]);
+  // the app's version, as index.html names it
+  const version = readFileSync(new URL("../index.html", import.meta.url), "utf8").match(/<meta name="version" content="([^"]+)"/)[1];
+  expect([json.format, json.kind, json.app]).toEqual(["nitya", "backup", version]);
   expect(json.payload.profiles.map((p) => p.name)).toEqual(["Me", "Aai"]);
   await expect(page.locator("#bksv")).toHaveText("Last saved 18 October 2026");
   await page.locator("#xc").click();
@@ -284,8 +287,8 @@ test("Save a backup file → Restore from it: every person, setting and tick com
   await expect(page.locator("#bkm")).toBeHidden();
   await expect(chipName(page)).toHaveAccessibleName("Profile: Aai");
   expect(await textLang(page)).toBe("en");
-  await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
-  await expect(rows(page).nth(4).locator("input")).toBeChecked();
+  await expect(page.locator("#tsn")).toHaveText("1 of 4 done");
+  await expect(rows(page).nth(3).locator("input")).toBeChecked();
   await switchTo(page, "Me");
   expect(await textLang(page)).toBe("mr");
   expect(await fs(page)).toBe(30);

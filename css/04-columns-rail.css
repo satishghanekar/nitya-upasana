@@ -9,7 +9,7 @@
    - Share / QR / Print use the Latin font
    - Button rows (final rules), styled like the top menu: home page (#shr: App, Share, QR, Print, Help) and the …
    - Both languages on wide screens: each Marathi line with its transliteration beside it
-   - Left menu (contents) on screens 1100px and wider
+   - Left menu (contents) on screens 1024px and wider
    - Reading progress line under the top bar
    - Dhrupad markers (↻ ध्रुपद) as small pills
 */
@@ -304,7 +304,7 @@
 }
 
 
-/* ==== Left menu (contents) on screens 1100px and wider ==== */
+/* ==== Left menu (contents) on screens 1024px and wider ==== */
 #rail {
   display: none;
 }
@@ -314,15 +314,24 @@
 [data-cols="2"] {
   --ww: 76rem;
 }
-/* With the side menu (iPad landscape, desktop) the whole layout spans 85% of the screen (Desktop A, docs/decisions.md;
-   at least 1000px, never closer than 24px to the edges): the menu (360px) on the left, the page beside it */
-@media screen and (min-width: 1100px) {
+/* With the side menu (iPad landscape, desktop) the layout uses the whole width (Full screen, docs/decisions.md): 24px
+   from the edges on iPads (the left column 340px), 32px on desktops (420px), and from 1920px it stops growing at 2200px,
+   centred, so lines never get too long; the menu on the left, the page beside it */
+@media screen and (min-width: 1024px) {
   [data-rail="1"] {
-    --T: min(calc(var(--vw, 100vw) - 48px), max(1000px, calc(var(--vw, 100vw) * 0.85)));
-    --S: 400px;
+    --T: calc(var(--vw, 100vw) - 48px);
+    --S: 380px;
     --W: calc(var(--T) - var(--S));
     --L: calc((var(--vw, 100vw) - var(--T)) / 2);
   }
+}
+@media screen and (min-width: 1400px) {
+  [data-rail="1"] {
+    --T: min(calc(var(--vw, 100vw) - 64px), 2200px);
+    --S: 460px;
+  }
+}
+@media screen and (min-width: 1024px) {
   [data-rail="1"] .wrap {
     max-width: var(--W);
     margin-left: calc(var(--L) + var(--S));
@@ -330,7 +339,7 @@
   }
   [data-rail="1"] .bar {
     padding-left: calc(var(--L) - 8px);
-    padding-right: max(16px, calc(var(--L) - 8px));
+    padding-right: calc(var(--L) - 8px);
   }
   [data-rail="1"] #rail {
     display: block;
