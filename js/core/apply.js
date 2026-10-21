@@ -5,14 +5,13 @@ import { root, secs } from "./page.js";
 import { P, save } from "./state.js";
 import { apply, mark } from "../features/bars.js";
 
-export var pn, aa, jp, hb, LANGS;
+export var pn, aa, jp, LANGS;
 var allB;
 
 export function init() {
   pn = document.getElementById("panel");
   aa = document.getElementById("aa");
   jp = document.getElementById("jump");
-  hb = document.getElementById("home-btn");
   // The languages a piece can be read in: n is the name in its own script
   LANGS = {
     mr: { n: "मराठी" },

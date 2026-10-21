@@ -176,7 +176,8 @@ test("print pop-up offers the right choices and closes cleanly @chromium-only", 
   await expect(page.locator("#prgp")).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.locator("#prm")).toBeHidden();
-  await expect(page.locator("#prb")).toBeFocused();
+  // Print is in the ⋯ More menu, closed by then: focus comes back to ⋯
+  await expect(page.locator("#tmb")).toBeFocused();
   await tapMore(page, "#prb");
   await page.locator("#prx").click();
   await expect(page.locator("#prm")).toBeHidden();

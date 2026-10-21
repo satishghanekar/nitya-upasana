@@ -10,7 +10,7 @@
 // js/store/profiles.js.
 
 import { P, setAll } from "../core/state.js";
-import { flash, liSet } from "../core/page.js";
+import { flash } from "../core/page.js";
 import { cur } from "../core/apply.js";
 import { hlMark } from "../core/startup.js";
 import { apply } from "./bars.js";
@@ -345,7 +345,6 @@ export function applyPrefs(next) {
   if (P.tr !== old.tr) trSet(P.tr, true);
   if (P.ind !== old.ind) {
     w.SCR.set(P.ind);
-    liSet();
   }
   if (P.tr !== old.tr || P.ind !== old.ind) buildIX();
   if (P.hl !== old.hl) {

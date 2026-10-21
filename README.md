@@ -260,7 +260,7 @@ To change a rule, edit `IA` in `js/text/iast.js` and check the Atharvashirsha an
 
 The texts are the point of the site, so after any edit:
 
-- Open the changed piece on the live site in Marathi, English and Both (the language button in the top bar), and in both English styles (Settings).
+- Open the changed piece on the live site in Marathi, English and Both (Language under Aa in the bottom bar), and in both English styles (Settings).
 - Check it on a phone and on a computer, and try **Print** if the layout changed.
 - If a line or a mark looks wrong, compare it with the source booklet before changing anything.
 

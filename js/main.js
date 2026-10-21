@@ -44,7 +44,6 @@ import { init as startBottomBar } from "./features/bottom-bar.js";
 import { init as startTilt } from "./features/tilt.js";
 import { init as startBars } from "./features/bars.js";
 import { init as startSettingsPanel } from "./features/settings-panel.js";
-import { init as startDhrupadButton } from "./features/dhrupad-button.js";
 import { init as startReadingSheet } from "./features/reading-sheet.js";
 import { init as startWakeLock } from "./features/wake-lock.js";
 import { init as startHistory } from "./features/history.js";
@@ -58,6 +57,7 @@ import { init as startPictureViewer } from "./features/picture-viewer.js";
 import { init as startHelp } from "./features/help.js";
 import { init as startPrint } from "./features/print.js";
 import { init as startShare } from "./features/share.js";
+import { init as startMoreMenu } from "./features/more-menu.js";
 import { init as startOffline } from "./features/offline.js";
 import { init as startProfiles } from "./features/profiles.js";
 import { init as startBackup } from "./features/backup.js";
@@ -65,7 +65,7 @@ import { init as startRoutineBuilder } from "./features/routine-builder.js";
 
 function start() {
   try {
-    startPage(); // Page basics: the <html> element, the language button icons, the short message (flash)
+    startPage(); // Page basics: the <html> element and the short message (flash)
     startState(); // Settings (P), loaded from this device
     startFeatures(); // Features held back for a later release
     startDayPicture(); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed
@@ -85,7 +85,6 @@ function start() {
     startTilt(); // Tilt to scroll (bottom bar, phones and tablets)
     startBars(); // Bars tuck away while reading (CSS: "Bars tuck away while reading")
     startSettingsPanel(); // Settings panel
-    startDhrupadButton(); // Dhrupad button: toggle once / after every stanza, keeping the reader's place
     startReadingSheet(); // Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad
     startWakeLock(); // Keep the screen on (Wake Lock). Browsers drop the lock when the page is hidden, so it is re-requested.
     startHistory(); // Back button
@@ -99,6 +98,7 @@ function start() {
     startHelp(); // Help: opens over the page; the phone's Back button closes it
     startPrint(); // Print
     startShare(); // Share, QR code and the Add to Home Screen buttons
+    startMoreMenu(); // More (⋯ in the top bar): App, Share, QR, Print and Help in a small menu
     startOffline(); // Offline use: home-screen app details and the service worker (sw.js)
     startProfiles(); // People on this phone: the profile chip in the top bar and its sheet (switch, add, edit, delete)
     startBackup(); // Save a backup file / Restore from a file, the backup reminder, keeping the data (storage.persist)

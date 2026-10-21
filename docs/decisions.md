@@ -282,3 +282,16 @@ text size setting as the reading page, and that the numbering restart after each
 - **Numbers:** each category is numbered 1, 2, 3… in the Library and in the side menu on wide screens; a text moved
   to another category takes its place there. The headings on the reading page keep their running numbers.
 
+## Navigation: one place for each button (v1.19, 2026-10-21)
+
+Satish asked (2026-10-21) for the Dhrupad button to leave the top bar, a clearer Home and Library icon, and a better
+place for the More row. He approved the review "Navigation and menus review" as recommended (screenshots in the
+project's `v2/navigation/`).
+
+- **Top bar:** the name (home), who is reading, Library (on the home page only), ⋯ More and Settings. The धृ Dhrupad
+  and अ/A Language buttons are gone: both are in the Reading sheet (Aa in the bottom bar) and in Settings.
+- **⋯ More:** App, Share, QR, Print and Help in a small menu under the button, on every page. The More row on the home
+  page is gone.
+- **Bottom bar:** ‹ Prev, Home (a house with a lamp), Library (an open book), Reading (Aa), Next ›, each middle button
+  with its word under the icon in the menu language; on a phone on its side the words are kept for screen readers
+  only. The open book is the Library's icon everywhere; the Ganapati drawing stays as the logo beside the name.

@@ -6,8 +6,7 @@
    for the Vedic calendar line (#pan), the festival line on the day (#fst, js/features/vedic-calendar.js), the Sankashti
    line on the day (#skt, js/features/sankashti.js), the session's
    texts with their ticks (#tsc) under the Morning | Afternoon | Evening switch (#tss, Home v3 option A, 2026-10-20),
-   Start / Continue (#tsb), pinned to the bottom of the screen on phones, More (#tmb) over the App / Share / QR /
-   Print / Help row (#shr), and "Another text? Open the Library" (#tlib). The Library (#jump) holds every text; the
+   Start / Continue (#tsb), pinned to the bottom of the screen on phones, and "Another text? Open the Library" (#tlib). The Library (#jump) holds every text; the
    pieces are not shown under Home on its own (data-hv).
    Sizes are in px: the home page keeps its size when the reader enlarges the verses.
    Sections:
@@ -15,10 +14,10 @@
    - The festival and Sankashti lines (on the day only) and the Vedic calendar line's place
    - The session: texts, ticks
    - Morning | Afternoon | Evening
-   - More, and the Library line
+   - The Library line
    - Home on its own: no pieces under it
    - Start / Continue, pinned on phones
-   - On the home page: Language and Dhrupad step aside, the bottom bar gives way to Start, the side menu waits
+   - On the home page: the bottom bar gives way to Start, the side menu waits; while reading, Library is in the bottom bar
    - The Library page
    - Print
 */
@@ -335,90 +334,7 @@
   outline-offset: 2px;
 }
 
-/* ==== More (#tmb): App, Share, QR, Print and Help (#shr) behind one disclosure, closed by default; then the quiet
-   line "Another text? Open the Library" (#tlib) ==== */
-#tmo {
-  margin: 14px 0 0;
-}
-#tmb {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  min-height: 48px;
-  height: auto;
-  margin: 0;
-  padding: 0 14px;
-  border: 1px solid var(--hdrl);
-  border-radius: 12px;
-  background: var(--hdrt);
-  color: var(--ink);
-  font: 400 15px/1.3 var(--lat);
-  text-align: left;
-  cursor: pointer;
-}
-#tmo[lang="mr"] #tmb {
-  font-family: var(--body);
-}
-#tmbw {
-  flex: none;
-  font-weight: 650;
-}
-#tmbh {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  color: var(--muted);
-  font-size: 13px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-#tmb .tmcv {
-  display: flex;
-  flex: none;
-  color: var(--muted);
-  transition: transform 0.2s;
-}
-#tmb[aria-expanded="true"] .tmcv {
-  transform: rotate(180deg);
-}
-@media (prefers-reduced-motion: reduce) {
-  #tmb .tmcv {
-    transition: none;
-  }
-}
-#tmb:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
-/* (the row's own look is in css/03 and css/04; here it opens under More, each word under its icon) */
-#tmo #shr {
-  display: flex;
-  gap: 6px;
-  margin: 8px 0 0;
-}
-#tmo #shr[hidden],
-#tmo #shr button[hidden] {
-  display: none;
-}
-#tmo #shr button {
-  flex: 1 1 0;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-  max-width: none;
-  height: auto;
-  min-height: 60px;
-  padding: 4px 2px;
-  border-color: var(--hdrl);
-  border-radius: 12px;
-  background: var(--hdrt);
-  font-size: 13px;
-}
-#tmo #shr button:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
+/* ==== The quiet line "Another text? Open the Library" (#tlib) ==== */
 #tlib {
   margin: 6px 0 0;
   color: var(--muted);
@@ -531,11 +447,10 @@
   }
 }
 
-/* ==== On the home page (data-home, set by js/features/bars.js while no piece is at the top): the top bar keeps the
-   name, the profile, Library and Settings; the bottom bar gives way to Start / Continue ==== */
-[data-home="1"] .bar #home-btn,
-[data-home="1"] .bar #rb,
-[data-home="1"] #asc {
+/* ==== On the home page (data-home, set by js/features/bars.js while no piece is at the top): the bottom bar gives way
+   to Start / Continue, so the top bar has Library. While reading, Library is in the bottom bar (one place each) ==== */
+[data-home="1"] #asc,
+:root:not([data-home="1"]) .bar #hm {
   display: none;
 }
 /* wide screens: the side menu of texts is for reading; the home page stays one quiet column (the Library has them) */
@@ -666,7 +581,6 @@
   #fst,
   #pan,
   #tsc,
-  #tmo,
   #tlib,
   #tsb {
     display: none;
@@ -901,7 +815,6 @@
   :root[data-hv="1"] #home > #fst,
   :root[data-hv="1"] #home > #skt,
   :root[data-hv="1"] #home > #pfnt,
-  :root[data-hv="1"] #home > #tmo,
   :root[data-hv="1"] #home > #tlib {
     grid-column: 1;
   }
