@@ -2,7 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root } from "../core/page.js";
-import { shared, P } from "../core/state.js";
+import { P, setLead } from "../core/state.js";
 import { skLang } from "./sankashti.js";
 import { todayLang } from "./today-card.js";
 import { calLang } from "./vedic-calendar.js";
@@ -72,7 +72,7 @@ export function init() {
   // title's English part are moved in front of the Marathi, so the page, screen readers, the dhrupad bubble and
   // the printout all read English first; data-lead="en" on the page gives English the reading size (CSS below).
   // Outside Both, or with Marathi first, everything is in its original order.
-  shared.LEAD = "mr";
+  setLead("mr");
   // Apply every setting in P to the page
   MQ900 = matchMedia("(min-width: 900px)");
   MQ1000 = matchMedia("(min-width: 1000px)");
@@ -188,7 +188,7 @@ function leadSet() {
   var L = P.lang === "both" && P.lead === "en" ? "en" : "mr";
   if (L === "en") root.setAttribute("data-lead", "en");
   else root.removeAttribute("data-lead");
-  shared.LEAD = L;
+  setLead(L);
   // (checked every time: the contents lists are built after the first call)
   [].forEach.call(document.querySelectorAll(".wrap .verse, .wrap .ash header h2, #jl ol.toc .m, #jl .gh, #rail ul a, #rail .rg"), function (v) {
     var m = v.querySelector(":scope > .mr"),

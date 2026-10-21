@@ -1,7 +1,8 @@
 // Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad, within thumb reach
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { shared, P, dfs, save } from "../core/state.js";
+import { P, change, dfs } from "../core/state.js";
+import { FSA } from "../text/autofit.js";
 import { LANGS, LK, cur } from "../core/apply.js";
 import { apply } from "./bars.js";
 import { szSet } from "./settings-panel.js";
@@ -38,9 +39,7 @@ export function init() {
     if (b.dataset.v === "+") return rsSettings("sl2s");
     if (b.dataset.v === P.lang) return;
     var c = cur();
-    P.lang = b.dataset.v;
-    apply();
-    save();
+    change({ lang: b.dataset.v }, apply);
     if (c) c.scrollIntoView();
     rsSet();
   };
@@ -116,14 +115,12 @@ function rsSet() {
 }
 
 function rsPct() {
-  document.getElementById("rsv").textContent = Math.round((P.fs / (shared.FSA || dfs())) * 100) + "%";
+  document.getElementById("rsv").textContent = Math.round((P.fs / (FSA || dfs())) * 100) + "%";
 }
 
 function rsSize(fs, fsu) {
   if (!fsT) fsA = rsAnchor();
-  P.fs = fs;
-  P.fsu = fsu;
-  save();
+  change({ fs: fs, fsu: fsu });
   rsPct();
   szSet();
   clearTimeout(fsT);

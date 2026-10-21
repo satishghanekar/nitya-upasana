@@ -4,10 +4,10 @@
 import { active, saveSettings, start } from "../store/store.js";
 import { TICKS_KEY } from "./ticks.js";
 
-// Values that more than one part changes (an imported variable can only be changed by its own module)
-export const shared = {};
-
 export var P;
+// The language that leads, "en" or "mr": English only with both languages shown and English first. Set by apply()
+// (js/features/bars.js, setLead()), read by the auto-fit and print.
+export var LEAD = "mr";
 var K, DESK;
 
 // The settings: who is reading (js/store/store.js, which has opened IndexedDB before this runs) and their settings,
@@ -58,9 +58,27 @@ export function save() {
   saveSettings(P);
 }
 
+// Change settings the reader chose: the one way the parts write P. The values are put into P, then (when given) the
+// page is brought up to date (then: apply() in js/features/bars.js, or the part's own update), then everything is
+// saved. Bringing the page up to date is left to the caller because some changes deliberately wait: a text size
+// from A− / A+ is laid out once the taps stop. A few writes stay direct, as none is a choice to keep yet: the text
+// size while a pinch is under way (saved with change() when the fingers lift), the size the auto-fit measures
+// (js/text/autofit.js), and the start-up repairs of a saved value that is missing or no longer offered.
+/** @param {Record<string, any>} changes @param {() => void} [then] */
+export function change(changes, then) {
+  for (var k in changes) P[k] = changes[k];
+  if (then) then();
+  save();
+}
+
 // Another person's settings (a switch, a delete or a restore; js/features/profiles.js): P is changed in place, so
 // every part that holds it sees the new values
 export function setAll(prefs) {
   for (var k in prefs) P[k] = prefs[k];
   save();
+}
+
+/** @param {"mr" | "en"} l */
+export function setLead(l) {
+  LEAD = l;
 }
