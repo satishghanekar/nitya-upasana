@@ -15,7 +15,7 @@
 // PW_CHROMIUM_PATH points Chromium at a pre-installed browser instead of Playwright's own download.
 import { defineConfig, devices } from "@playwright/test";
 // Same rule as SNAP_ENV in helpers.mjs (kept here so the config does not load the test helpers)
-const SNAP_ENV = process.env.SNAPSHOT_ENV || (process.env.CI ? "ci" : "local");
+const SNAP_ENV = process.env.SNAPSHOT_ENV || (process.env.CI ? "ci" : "cloud");
 
 // PW_PORT serves this checkout on another port, so a server left running by another checkout on 4173 is never reused
 const PORT = Number(process.env.PW_PORT || 4173);

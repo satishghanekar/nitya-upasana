@@ -247,3 +247,20 @@
     display: none !important;
   }
 }
+
+/* ==== Tablets held upright: the categories in two columns ==== */
+@media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
+  #jump .libin {
+    max-width: 46rem;
+  }
+  #jl {
+    columns: 2;
+    column-gap: 36px;
+  }
+  #jl .tocg {
+    break-inside: avoid;
+  }
+  #jl #lbr {
+    column-span: all;
+  }
+}

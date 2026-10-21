@@ -37,21 +37,24 @@ const MON = 1,
   TUE = 2,
   THU = 4,
   SUN = 0;
-const AARTIS = ROUTINE.evening.texts;
+// The rules below are shown on a simple routine of the shape the builder starts from: one list each session, every day
+// (the bundled default, content/routines.json, now differs by weekday; its own tests are in today.test.mjs)
+const AARTIS = ["sukhkarta", "durge-durghat-bhari", "lavathavati-vikrala", "ghalin-lotangan"];
+const SIMPLE = { morning: { mode: "fixed", texts: ["atharvashirsha"] }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: AARTIS } };
 
 describe("the rules for a person's lists", () => {
   test("a person with no routine of their own edits a copy of the default (content/routines.json), unchanged", () => {
     const r = editable(null, ROUTINE);
     expect(r).toEqual(ROUTINE);
-    r.evening.texts.push("x");
-    expect(ROUTINE.evening.texts).not.toContain("x");
+    r.evening.days.mon.push("x");
+    expect(ROUTINE.evening.days.mon).not.toContain("x");
     // their own wins when they have one; nothing at all gives three empty sessions
     expect(editable({ morning: { mode: "fixed", texts: ["sukhkarta"] } }, ROUTINE).morning.texts).toEqual(["sukhkarta"]);
     expect(editable(null, null)).toEqual({ morning: { mode: "fixed", texts: [] }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: [] } });
   });
 
   test("Same every day → Different by weekday: every day starts with the one list; back again takes the day shown", () => {
-    let r = editable(null, ROUTINE);
+    let r = editable(null, SIMPLE);
     expect(byWeekday(r, "evening")).toBe(false);
     r = setMode(r, "evening", "weekday", MON);
     expect(byWeekday(r, "evening")).toBe(true);
@@ -66,11 +69,11 @@ describe("the rules for a person's lists", () => {
     const fixed = setMode(r, "evening", "fixed", THU);
     expect(fixed.evening).toEqual({ mode: "fixed", texts: ["ghalin-lotangan", "sukhkarta"] });
     // the shape stays what content/routines.json uses
-    expect(fixed.morning).toEqual(ROUTINE.morning);
+    expect(fixed.morning).toEqual(SIMPLE.morning);
   });
 
   test("Copy to other days…: the day's list given to the days chosen, never to itself; a one-list session is unchanged", () => {
-    let r = setMode(editable(null, ROUTINE), "morning", "weekday", MON);
+    let r = setMode(editable(null, SIMPLE), "morning", "weekday", MON);
     r = setList(r, "morning", MON, ["atharvashirsha", "sukhkarta"]);
     const c = copyDays(r, "morning", MON, [TUE, THU, MON, 9, -1]);
     expect(textsFor(c, TUE, "morning")).toEqual(["atharvashirsha", "sukhkarta"]);
@@ -81,7 +84,7 @@ describe("the rules for a person's lists", () => {
     expect(textsFor(c2, MON, "morning")).toEqual(["atharvashirsha", "sukhkarta"]);
     // nothing changes in what was given
     expect(textsFor(r, TUE, "morning")).toEqual(["atharvashirsha"]);
-    const f = editable(null, ROUTINE);
+    const f = editable(null, SIMPLE);
     expect(copyDays(f, "evening", MON, [TUE])).toEqual(f);
   });
 

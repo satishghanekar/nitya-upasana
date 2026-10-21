@@ -95,9 +95,11 @@ describe("ranking", () => {
     expect(top("vithal").id).toBe("yei-o-vitthale");
   });
   test("a category name finds its texts", () => {
-    expect(textIds("vedic chant")).toEqual(["atharvashirsha"]);
-    expect(textIds("वैदिक")).toEqual(["atharvashirsha"]);
-    expect(textIds("aarti").length).toBe(18);
+    const vedic = lib.texts.filter((t) => t.category === "vedic-chant").map((t) => t.id);
+    expect(textIds("vedic chant")).toEqual(vedic);
+    expect(textIds("वैदिक")).toEqual(vedic);
+    // every Aarti, and a text with aarti in its title too
+    expect(textIds("aarti")).toEqual(expect.arrayContaining(lib.texts.filter((t) => t.category === "aarti").map((t) => t.id)));
   });
   test("an exact title outranks one it merely starts", () => {
     const r = search(ix, "ganapati aarti").texts;
