@@ -43,6 +43,8 @@ const SUITES = [
   [/^css\/99-fallbacks\.css$/, () => ["compat"]],
   // the script, area by area
   [/^js\/print\/|^js\/features\/print\.js$/, () => ["print"]],
+  // the printout builds its own copy of the pieces with these (js/print/compose.js)
+  [/^js\/render\.js$|^js\/text\/(iast|layout|line-breaks|stanza-numbers|dhrupad-markers)\.js$|^js\/features\/bars\.js$/, () => ["print"]],
   [/^js\/text\/(iast|format|content|load|dhrupad-markers|stanza-numbers)\.js$/, () => ["content", "interactions"]],
   [/^js\/text\/search/, () => ["library", "interactions"]],
   [/^js\/text\/(layout|line-breaks|autofit)\.js$/, () => ["layout", "visual"]],

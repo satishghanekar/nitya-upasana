@@ -1,7 +1,7 @@
 // Print
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { flash, root, secs } from "../core/page.js";
+import { flash, root } from "../core/page.js";
 import { LEAD, P, change } from "../core/state.js";
 import { DV } from "../text/line-breaks.js";
 import { fit } from "../print/fit.js";
@@ -10,6 +10,7 @@ import { ovDone, ovDrop, ovPush } from "./history.js";
 import { focusBack } from "./more-menu.js";
 import { FEAT_SW } from "../core/features.js";
 import { CHOICE } from "../print/profiles.js";
+import { compose } from "../print/compose.js";
 
 export function init() {
   // Print: single column (as on screen; running paragraphs for a prose piece in one language), or, with both
@@ -143,35 +144,18 @@ export function init() {
       });
       return t;
     }
-    // Build the print view (#pv) from the page: contents, then every piece in the text language.
+    // Build the print view (#pv): contents, then every piece in the text language, from a copy of the pieces made
+    // for it (js/print/compose.js), so whatever the reading page has folded or hidden is printed in full.
     // mode: "one" (one column) or "side" (Marathi and English side by side)
     function build(mode) {
-      // Folded sections and pieces are printed in full: open them while the text is copied (and the pieces Home on
-      // its own leaves out, data-hv: js/features/history.js, those a session being read leaves out, data-run, and those
-      // one text at a time leaves out, data-one: css/10-today.css)
-      var fa = ["data-pf", "data-xf", "data-hv", "data-run", "data-one"].map(function (a) {
-          var v = root.getAttribute(a);
-          root.removeAttribute(a);
-          return [a, v];
-        }),
-        fs = secs.filter(function (x) {
-          return x.classList.contains("af");
-        });
-      fs.forEach(function (x) {
-        x.classList.remove("af");
-      });
+      var src = compose();
       try {
-        build2(mode);
+        build2(mode, src);
       } finally {
-        fa.forEach(function (a) {
-          if (a[1] !== null) root.setAttribute(a[0], a[1]);
-        });
-        fs.forEach(function (x) {
-          x.classList.add("af");
-        });
+        src.el.remove();
       }
     }
-    function build2(mode) {
+    function build2(mode, src) {
       pv.innerHTML = "";
       var h = document.createElement("h1");
       h.className = "pvh";
@@ -181,13 +165,11 @@ export function init() {
       tc.className = "pvtoc";
       // The contents page follows the printout: the reading page's groups (पूजा, आरती) and their pieces in order,
       // whatever categories the home list shows (js/features/library.js)
-      [].forEach.call(document.querySelectorAll(".wrap > .grp"), function (g) {
-        var ps = [];
-        for (var e = g.nextElementSibling; e && !e.classList.contains("grp"); e = e.nextElementSibling) if (e.matches("section.ash")) ps.push(e);
+      src.groups.forEach(function (g) {
+        var ps = g.secs;
         if (!ps.length) return;
-        var h3 = document.createElement("h3"),
-          b = g.querySelector("button");
-        [].forEach.call((b || g).querySelectorAll(":scope > .mr, :scope > .en"), function (x) {
+        var h3 = document.createElement("h3");
+        g.name.forEach(function (x) {
           h3.appendChild(x.cloneNode(true));
         });
         tc.appendChild(h3);
@@ -202,7 +184,7 @@ export function init() {
         tc.appendChild(ol);
       });
       pv.appendChild(tc);
-      secs.forEach(function (sec) {
+      src.secs.forEach(function (sec) {
         var box = document.createElement("section");
         box.className = "pvs";
         box.setAttribute("data-sid", sec.id);
