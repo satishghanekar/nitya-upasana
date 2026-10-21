@@ -145,7 +145,7 @@ async function openSheet(page) {
   await expect(page.locator("#lbm")).toBeVisible();
 }
 
-test("the Library lists the texts by category; empty categories are left out; the reading-page numbers stay @mobile", async ({ page }) => {
+test("the Library lists the texts by category; empty categories are left out; each category is numbered from 1 @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#hm").click();
   expect(await groups(page)).toEqual(GROUPS);
@@ -153,10 +153,54 @@ test("the Library lists the texts by category; empty categories are left out; th
   expect(await inGroup(page, "aarti")).toEqual(["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10",
     "jaydeva-jaydeva-samartha", "jay-jay-aarti-shrigururaya", "ovaloon-aarti-chaitanyabrahma", "aarti-kariton-guruvar",
     "dhanya-jagin-guruvarya", "aarti-belaguve", "svastha-karin-shayan", "ovaloo-sapreme-aarti"]);
+  // numbered from 1 in each category (Satish, 2026-10-21), in Marathi and English digits
+  for (const g of await page.locator("#jl .tocg").all()) {
+    const n = await g.locator("a[data-go]").count();
+    await expect(g.locator(".nm")).toHaveText(Array.from({ length: n }, (_, i) => String(i + 1).replace(/[0-9]/g, (d) => "०१२३४५६७८९"[+d]) + "."));
+    await expect(g.locator(".ne")).toHaveText(Array.from({ length: n }, (_, i) => i + 1 + "."));
+  }
   await expect(page.locator('#jl a[data-go="a5"] .nm')).toHaveText("५.");
   await expect(page.locator("#lbb")).toHaveAccessibleName("Edit categories");
   // the side menu on wide screens follows the same categories
   await expect(page.locator("#rail .rg .mr")).toHaveText(GROUPS);
+});
+
+// A pinch on the Library (on a computer: Ctrl/⌘ + and −, or a trackpad pinch) makes the list bigger or smaller by the
+// same share as the reading page (one text size); the top bar, Back, the title and the search box keep their size, and
+// the browser never zooms the whole page there (Satish, 2026-10-21)
+test("a pinch on the Library resizes only its list, with the reading page's text size @mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await page.locator("#hm").click();
+  await expect(page.locator("#jump")).toBeVisible();
+  await expect(page.locator("#jump")).toHaveCSS("touch-action", "pan-y");
+  const fixed = ["#jlt", "#jbk", "#q", "#hm", ".bar .t"];
+  const look = () =>
+    page.evaluate((fixed) => {
+      const px = (s) => parseFloat(getComputedStyle(document.querySelector(s)).fontSize);
+      return {
+        fs: parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--fs")),
+        fsa: parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--fsa")) || 24,
+        list: px("#jl ol.toc a"),
+        head: px("#jl .tocg:first-child .gh"),
+        fixed: fixed.map((s) => {
+          const r = document.querySelector(s).getBoundingClientRect();
+          return [s, px(s), Math.round(r.top), Math.round(r.height)];
+        }),
+      };
+    }, fixed);
+  const a = await look();
+  expect(a.list).toBeCloseTo(15, 0); // the book-index size at the automatic text size
+  for (let i = 0; i < 4; i++) await page.keyboard.press("Control+Equal");
+  const b = await look();
+  expect(b.fs).toBeGreaterThan(a.fs);
+  expect(b.list).toBeCloseTo((15 * b.fs) / b.fsa, 1);
+  expect(b.head).toBeCloseTo((15 * b.fs) / b.fsa, 1);
+  expect(b.fixed).toEqual(a.fixed);
+  await expect(page.locator("#szt")).toContainText("Text size");
+  // the reading page has the same size
+  await page.locator("#jbk").click();
+  expect(parseFloat(await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--fs")))).toBe(b.fs);
 });
 
 test("add a category, move a text into it, rename it: the list follows, and it is kept after a reload @mobile", async ({ page }) => {
@@ -176,6 +220,8 @@ test("add a category, move a text into it, rename it: the list follows, and it i
   await expect(page.locator("#lblive")).toHaveText("घालीन लोटांगण: now in भजन");
   expect(await groups(page)).toEqual([...GROUPS, "भजन"]);
   expect(await inGroup(page, "bhajan")).toEqual(["a8"]);
+  // numbered in its new category
+  await expect(page.locator('#jl a[data-go="a8"] .nm')).toHaveText("१.");
   // rename a built-in one (on this phone only)
   await page.locator('.lbe[data-id="aarti"]').click();
   await page.locator("#lbmr").fill("आरत्या");

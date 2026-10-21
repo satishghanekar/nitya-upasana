@@ -264,3 +264,55 @@
     column-span: all;
   }
 }
+
+/* ==== The list follows the text size (Satish, 2026-10-21) ====
+   A pinch (or Ctrl + / −) on the Library makes its list bigger or smaller, by the same share as the reading page
+   (one setting, P.fs): 15px at the automatic size (--fsa, set by js/text/autofit.js), 150% gives 22.5px. The top
+   bar, Back, the title and the search box keep their size. The sizes below are 08-contents-book.css's and
+   06-help-polish.css's, in ems of that 15px. */
+@media screen {
+  #jl {
+    font-size: calc(var(--fs) * 15 / var(--fsa, 24));
+  }
+  #jl .tocg ol.toc a,
+  #jl .tocg ol.toc .lt,
+  #jl .tocg .gh,
+  #jl .tocg:first-child .gh {
+    font-size: 1em;
+  }
+  #jl .tocg[data-lang="en"] ol.toc .lt,
+  #jl .tocg[data-lang="both"] .gh .en {
+    font-size: 0.867em;
+  }
+  #jl .tocg[data-lang="en"] .gh {
+    font-size: 0.933em;
+  }
+  #jl .tocg[data-lang="both"] ol.toc .en {
+    font-size: 0.833em;
+  }
+  #jl .tocg[data-lang="both"] ol.toc .lt .en {
+    font-size: 0.962em;
+  }
+  html[data-lead="en"] #jl .tocg[data-lang="both"] ol.toc .m > .en {
+    font-size: 0.86em;
+  }
+  html[data-lead="en"] #jl .tocg[data-lang="both"] ol.toc .lt {
+    font-size: 0.867em;
+  }
+  html[data-lead="en"] #jl .tocg[data-lang="both"] ol.toc .m > .mr {
+    font-size: 0.9em;
+  }
+}
+
+/* the search box on a line of its own, so the text size can't move it (an inline box sits on a line as tall as the text) */
+#jump #q {
+  display: block;
+}
+
+/* A two-finger pinch anywhere on the Library (or its categories sheet) resizes the list (js/features/pinch.js),
+   never zooms the whole page: the Library scrolls on its own, so the page's own touch-action (02-core.css) does
+   not reach inside it, as on the Settings preview (09-settings-page.css) */
+#jump,
+#lbm {
+  touch-action: pan-y;
+}
