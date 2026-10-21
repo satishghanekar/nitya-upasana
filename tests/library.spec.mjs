@@ -35,7 +35,7 @@ test("the Library button opens every text, grouped, with search @mobile", async 
   await expect(page.locator("#q")).toBeVisible();
   // by category (content/categories.json): वैदिक मंत्र, आरती, …, every text of the library in order
   await expect(page.locator("#jl .tocg .gh .mr")).toHaveText(GROUPS);
-  const ids = LIB.groups.flatMap((g) => g.texts);
+  const ids = LIB.texts.map((t) => t.id);
   await expect(page.locator("#jl a[data-go]")).toHaveCount(ids.length);
   // the bottom bar steps aside
   await expect(page.locator("#asc")).toBeHidden();

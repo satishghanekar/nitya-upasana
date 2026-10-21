@@ -37,6 +37,15 @@
    "lines": 106
   },
   {
+   "id": "lalita-sahasranama",
+   "file": "texts/lalita-sahasranama.txt",
+   "title": "श्रीललितासहस्रनामस्तोत्रम्",
+   "titleEn": "Shri Lalita Sahasranama",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 369
+  },
+  {
    "id": "sukhkarta",
    "file": "texts/sukhkarta.txt",
    "title": "गणपतीची आरती",
@@ -199,15 +208,6 @@
    "lines": 28
   },
   {
-   "id": "lalita-sahasranama",
-   "file": "texts/lalita-sahasranama.txt",
-   "title": "श्रीललितासहस्रनामस्तोत्रम्",
-   "titleEn": "Shri Lalita Sahasranama",
-   "category": "vedic-chant",
-   "language": "sa",
-   "lines": 369
-  },
-  {
    "id": "sadguru-padukashtak",
    "file": "texts/sadguru-padukashtak.txt",
    "title": "श्रीसद्गुरुपादुकाष्टक",
@@ -323,64 +323,6 @@
    "category": "ashtak",
    "language": "mr",
    "lines": 22
-  }
- ],
- "groups": [
-  {
-   "id": "g-pooja",
-   "btn": "pfb",
-   "name": {
-    "mr": "पूजा",
-    "en": "Pooja"
-   },
-   "texts": [
-    "atharvashirsha",
-    "shree-rudra",
-    "shri-sukta",
-    "purusha-suktam"
-   ]
-  },
-  {
-   "id": "g-aarti",
-   "btn": "xfb",
-   "name": {
-    "mr": "आरती",
-    "en": "Aarti"
-   },
-   "texts": [
-    "sukhkarta",
-    "shendur-lal-chadhayo",
-    "durge-durghat-bhari",
-    "lavathavati-vikrala",
-    "trigunatmak-traimurti",
-    "aarti-dnyanaraja",
-    "yei-o-vitthale",
-    "ghalin-lotangan",
-    "jai-ganesh-deva",
-    "jai-jagdish-hare",
-    "jaydeva-jaydeva-samartha",
-    "jay-jay-aarti-shrigururaya",
-    "ovaloon-aarti-chaitanyabrahma",
-    "aarti-kariton-guruvar",
-    "dhanya-jagin-guruvarya",
-    "aarti-belaguve",
-    "svastha-karin-shayan",
-    "ovaloo-sapreme-aarti",
-    "sadguru-padukashtak",
-    "ananyata-maj-ghado",
-    "anudin-anutapen",
-    "ashtak-monday",
-    "ashtak-tuesday",
-    "ashtak-wednesday",
-    "ashtak-thursday",
-    "ashtak-friday",
-    "ashtak-saturday",
-    "ashtak-sunday",
-    "haachi-subodh",
-    "brahmachaitanya-sarikha",
-    "swami-majha-pahila",
-    "lalita-sahasranama"
-   ]
   }
  ],
  "pageLanguage": "mr",

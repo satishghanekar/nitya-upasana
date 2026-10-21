@@ -2,7 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { bt } from "../core/page.js";
-import { aa, cur, jp, pjOpen, pn } from "../core/apply.js";
+import { aa, cur, jp, unfold, pn } from "../core/apply.js";
 import { TK, apply, goHome, mark, tuckHold } from "./bars.js";
 import { anyOpen, closeForBack, pageEls, setC, setJ, setP, setR, trapped } from "./overlays.js";
 
@@ -54,7 +54,7 @@ export function init() {
     // back on the bare address: Home on its own; on a piece's address: the reading page
     homeView(!el || el.id === "home");
     solo(el ? el.id : "");
-    pjOpen(el);
+    unfold(el);
     if (st && typeof st.y === "number") scrollTo(0, st.y);
     else if (el) el.scrollIntoView();
     else scrollTo(0, 0);
@@ -255,8 +255,8 @@ export function homeView(on) {
 
 // The text being read (.solo on its piece): the page shows only that one text, on every screen (css/10-today.css),
 // with the card at its end (js/features/end-card.js); ‹ Prev / Next ›, the card or the side menu change it. Set
-// wherever the page goes to a piece: jumpTo(), Back, and start-up (js/core/startup.js). Another address (Home, a
-// group) leaves it where it was.
+// wherever the page goes to a piece: jumpTo(), Back, and start-up (js/core/startup.js). Another address (Home)
+// leaves it where it was.
 /** @param {string} id  the piece's id (a3) */
 export function solo(id) {
   var el = id && document.getElementById(id);

@@ -8,7 +8,7 @@
 
 import { P } from "../core/state.js";
 import { ENS, IA } from "./iast.js";
-import { jp, pjOpen } from "../core/apply.js";
+import { jp, unfold } from "../core/apply.js";
 import { buildIndex, fold, marks, search } from "./search-core.js";
 import { categoryOfSection, textsForSearch } from "../features/library.js";
 import { goLine } from "../features/bars.js";
@@ -164,7 +164,7 @@ function find() {
     if (P.lang === "both") b.appendChild(span("rl2", "en", sectionTitle(r.sec, "en"), true));
     b.onclick = function () {
       var el = document.getElementById(r.sec);
-      pjOpen(el);
+      unfold(el);
       jumpTo(function () {
         if (el) el.scrollIntoView();
       }, "#" + r.sec);

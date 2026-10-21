@@ -24,8 +24,8 @@ import {
 const read = (p) => readFileSync(new URL("../../" + p, import.meta.url), "utf8");
 const BUNDLED = JSON.parse(read("content/categories.json"));
 const lib = JSON.parse(read("content/library.json"));
-// the texts in reading order (library.json's groups), with their own category
-const ORDER = lib.groups.flatMap((g) => g.texts);
+// the texts in library.json's order, with their own category
+const ORDER = lib.texts.map((t) => t.id);
 const TEXTS = ORDER.map((id) => ({ id, category: lib.texts.find((t) => t.id === id).category }));
 const ids = (cats) => cats.map((c) => c.id);
 const shelf = (local, id) => shelves(TEXTS, categoriesOf(BUNDLED, local), local).find((s) => s.category.id === id).texts;

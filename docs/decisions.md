@@ -318,3 +318,17 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - Both were built and held back (switched off in `js/core/features.js`) but still loaded on every page. Satish chose to remove them for now; they are in git history up to v1.20 and could come back, for example with Recital mode.
 - Gone: `js/features/tilt.js`, the autoscroll half of `js/features/bottom-bar.js`, their buttons in the bottom bar, the Settings switch, the Help entries and their CSS. The bottom bar is now ‹ Prev, Home, Library, Aa, Next ›.
 - The saved settings `as`, `ason` and `asp` are still read and kept on each person, so nothing saved is lost if they come back.
+
+## The पूजा / आरती groups removed: the Library's categories are the only grouping (v1.20.3, 2026-10-21)
+
+- Satish's decision on stage 4 ("Remove the old groups"). `content/library.json` no longer has `groups`; its texts are
+  listed in reading order within each category.
+- `CONTENT` (js/text/content.js) is now `categories`: every category of `content/categories.json` in its order, each
+  with its texts numbered from 1, as the Library lists them. So the page, Previous / Next and the printed contents
+  follow the Library: Vedic Chant १–५ (Lalita Sahasranama is ५, no longer Aarti ३२), Aarti १–१८, Ashtak १–१३ (no longer
+  Aarti १९–३१). The ten first aartis and the Atharvashirsha keep their numbers.
+- Gone: the पूजा and आरती rows, their folds (settings `pf`, `xf`, dropped from saved settings), the Open all / Fold all
+  pill, the side menu's links to the rows, and their CSS. Folding a single piece stays.
+- A family's own category changes (js/core/library.js) still change the Library's list only; the page's numbers follow
+  the bundled categories until texts are built when opened (next PR).
+

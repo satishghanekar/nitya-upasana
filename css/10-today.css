@@ -376,11 +376,9 @@
 }
 
 /* ==== A session being read (data-run, js/features/today-card.js): only its texts (.inrun) are on the reading page,
-   not the rest of the Library nor the पूजा / आरती rows; folded sections don't hide them. The side menu on wide
-   screens lists only the session too (#rrun). Screen only ==== */
+   not the rest of the Library. The side menu on wide screens lists only the session too (#rrun). Screen only ==== */
 @media screen {
   :root[data-run="1"] .ash:not(.inrun),
-  :root[data-run="1"] .grp,
   :root[data-run="1"] #rail > :not(.rhome, #rrun) {
     display: none !important;
   }
@@ -388,12 +386,11 @@
 /* One text at a time (stage 4 of docs/refactor-plan.md): only the text being read (.solo, js/features/history.js) is
    shown, on every screen, from a session, the Library, search or the side menu. The next text never runs on below it
    (the card at its end, #endc, and ‹ Prev / Next › change it), and Home is not above it; Home in the bottom bar or the
-   side menu goes back. Only the page's own pieces (#main > .ash): Print copies them elsewhere, without .solo.
-   data-one (on <html> in index.html) is lifted by Print while it copies every piece (build(), js/features/print.js) */
+   side menu goes back. Only the page's own pieces (#main > .ash): Print builds its own from the texts
+   (js/print/compose.js) */
 @media screen {
-  :root[data-one]:not([data-hv]) #main > #home,
-  :root[data-one]:not([data-hv]) #main > .grp,
-  :root[data-one]:not([data-hv]) #main > .ash:not(.solo) {
+  :root:not([data-hv]) #main > #home,
+  :root:not([data-hv]) #main > .ash:not(.solo) {
     display: none !important;
   }
 }

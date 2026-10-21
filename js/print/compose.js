@@ -17,7 +17,7 @@ import { breakLines } from "../text/line-breaks.js";
 import { leadOrder } from "../features/bars.js";
 
 /**
- * Every piece, in reading order, and the groups they are listed under in the printed contents.
+ * Every piece, in reading order, and the Library categories they are listed under in the printed contents.
  * @returns {{ el: HTMLElement, secs: HTMLElement[], groups: { name: HTMLElement[], secs: HTMLElement[] }[] }}
  */
 export function compose() {
@@ -29,7 +29,7 @@ export function compose() {
   el.setAttribute("aria-hidden", "true");
   // out of sight and out of the page's flow, but laid out, so the print styles' choices can be read from it
   el.style.cssText = "position:absolute;left:-10000px;top:0;width:800px;visibility:hidden;pointer-events:none";
-  el.innerHTML = C.groups
+  el.innerHTML = C.categories
     .map(function (/** @type {any} */ g) {
       return g.pieces
         .map(function (/** @type {any} */ p) {
@@ -53,8 +53,8 @@ export function compose() {
     s.setAttribute("data-lang", P.lang);
   });
   var at = 0,
-    groups = C.groups.map(function (/** @type {any} */ g) {
-      // the group's name as the reading page's group row shows it (js/render.js group())
+    groups = C.categories.map(function (/** @type {any} */ g) {
+      // the category's name in both languages, as a piece's title is shown
       var row = document.createElement("div");
       row.innerHTML = '<span class="mr">' + g.name.mr + '</span><span class="en" lang="en">' + g.name.en + "</span>";
       w.SCR.el(row);

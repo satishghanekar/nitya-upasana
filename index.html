@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="mr" data-one="1">
+<html lang="mr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.20.2">
+<meta name="version" content="aarti-v1.20.3">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -48,8 +48,7 @@
 <link rel="stylesheet" href="css/13-library.css">
 <link rel="stylesheet" href="css/14-builder.css">
 <link rel="stylesheet" href="css/99-fallbacks.css">
-<!-- The list of the site's files, for Check for updates and the offline copy. In the head: in the body it would
-     sit between elements that the styles expect to be neighbours (#home + .grp) -->
+<!-- The list of the site's files, for Check for updates and the offline copy -->
 <script src="js/parts.js"></script>
 <!-- The site script (js/main.js) and its parts, fetched now in parallel instead of one after another
      when main.js asks for them. Same list as "modules" in js/parts.js. -->
@@ -369,9 +368,8 @@
     <!-- Another text: the Library (the top bar's book button) -->
     <p id="tlib"><span id="tlibw"></span> <button type="button" id="tlibb" aria-haspopup="dialog" aria-controls="jump"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5C5.6 4.6 8.9 4.9 12 7c3.1-2.1 6.4-2.4 9.5-1.5v13.3c-3.1-.9-6.4-.6-9.5 1.5-3.1-2.1-6.4-2.4-9.5-1.5z"/><path d="M12 7v13.3"/></svg><span id="tlibbw"></span></button></p>
   </section>
-  <!-- ==== Pooja and Aarti: every piece, from the text files in content/texts/. js/text/load.js (started by js/main.js)
-       fetches them and has js/render.js build the pieces here, in place of #pieces (right after #home: the styles
-       space "#home + .grp") ==== -->
+  <!-- ==== Every piece, from the text files in content/texts/. js/text/load.js (started by js/main.js) fetches them
+       and has js/render.js build the pieces here, in place of #pieces, in the Library's order ==== -->
   <div id="pieces" hidden></div>
   <script src="js/render.js"></script>
 </main>
@@ -534,8 +532,7 @@
       <ul>
         <li>The <b>book</b> button at the top opens the Library: every text by category (वैदिक मंत्र / Vedic Chant, आरती / Aarti), each with its number on the reading page, with a search box. Tap a title to open it; <b>Back</b> (or your phone's Back) returns.</li>
         <li><b>Edit categories</b> (विभाग बदला), at the end of the Library's list: add a category of your own (a name in Marathi, English or both), rename any category, delete one you added (its texts go back where they came from), and choose the category each text is listed under. A category with no texts is not shown in the list. The built-in categories can be renamed but not deleted, and <b>Use the original name</b> brings their name back. These changes stay on this phone for everyone who reads here and are saved in backup files; the words of the texts never change. ✕, Escape or your phone's Back closes it and leaves the Library open.</li>
-        <li><b>Fold what you don't need:</b> a tap anywhere on a piece's heading (or its round ⌃) folds that piece down to its heading; tap it again to open it. The <b>Fold all</b> / <b>Open all</b> button on the <b>आरती / Aarti</b> heading folds or opens every aarti at once. Your phone remembers these. Going to a folded piece from the Library or search opens it.</li>
-        <li><b>Only here for the aartis?</b> Tap the <b>पूजा / Pooja</b> heading above the Atharvashirsha to fold the Pooja section away; tap it again (the arrow points down while folded) to bring it back. Your phone remembers this. Going to the Atharvashirsha from the Library, search or Previous opens it again. The <b>आरती / Aarti</b> heading folds the aartis the same way.</li>
+        <li><b>Fold what you don't need:</b> a tap anywhere on a piece's heading (or its round ⌃) folds that piece down to its heading; tap it again to open it. Your phone remembers these. Going to a folded piece from the Library or search opens it.</li>
       </ul>
 
       <h3>People on one phone</h3>

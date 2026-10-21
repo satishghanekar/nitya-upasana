@@ -19,20 +19,26 @@ vm.runInNewContext(readFileSync(new URL("fixtures/pieces.js", import.meta.url), 
 const OLD = JSON.parse(JSON.stringify(win.CONTENT));
 
 const count = (s, re) => (s.match(re) || []).length;
-const pieces = (C) => C.groups.flatMap((g) => g.pieces);
+// the old file had the reading page's groups (पूजा, आरती); CONTENT now has the Library's categories (2026-10-21)
+const pieces = (C) => (C.categories || C.groups).flatMap((g) => g.pieces);
 const allLines = (C) => pieces(C).flatMap((p) => [...(p.refrain ? p.refrain.lines : []), ...p.items.flatMap((i) => i.lines || [])]);
 
 describe("CONTENT from the text files", () => {
-  const C = buildContent(lib, files);
+  const C = buildContent(lib, files, categories);
   // The texts added since (Shree Rudra, Shri Sukta, the Gondavalekar Maharaj aartis and ashtaks, …) are left out of the
-  // comparison: every text the old file had must come out of the text files exactly as it was, in the same order
+  // comparison: every text the old file had must come out of the text files exactly as it was, in the same order.
+  // Each piece now also names its text (text: its id in library.json), which the old file did not have.
   const OLD_IDS = new Set(pieces(OLD).map((p) => p.id));
-  const OLD_C = { ...C, groups: C.groups.map((g) => ({ ...g, pieces: g.pieces.filter((p) => OLD_IDS.has(p.id)) })).filter((g) => g.pieces.length) };
+  const same = pieces(C)
+    .filter((p) => OLD_IDS.has(p.id))
+    .map(({ text, ...p }) => p); // eslint-disable-line no-unused-vars
+  const OLD_C = { categories: [{ pieces: same }] };
   const byId = (Cx, id) => pieces(Cx).find((p) => p.id === id);
   test("is identical to the old content/pieces.js", () => {
-    expect(OLD_C).toStrictEqual(OLD);
+    expect(same).toStrictEqual(pieces(OLD));
     // and in the same key order, so even the order the page meets things in is unchanged
-    expect(JSON.stringify(OLD_C)).toBe(JSON.stringify(OLD));
+    expect(JSON.stringify(same)).toBe(JSON.stringify(pieces(OLD)));
+    expect([C.ui, C.wiki]).toStrictEqual([OLD.ui, OLD.wiki]);
   });
   test("the marks that matter are all there: 53 <br>, 42 zero-width spaces, svara marks", () => {
     const s = JSON.stringify(allLines(OLD_C));
@@ -42,8 +48,8 @@ describe("CONTENT from the text files", () => {
     expect(count(s, /॑/g)).toBeGreaterThan(0);
   });
   test.each(pieces(OLD).map((p) => [p.id]))("%s: every line identical", (id) => {
-    const a = allLines({ groups: [{ pieces: [byId(C, id)] }] });
-    const b = allLines({ groups: [{ pieces: [byId(OLD, id)] }] });
+    const a = allLines({ categories: [{ pieces: [byId(C, id)] }] });
+    const b = allLines({ categories: [{ pieces: [byId(OLD, id)] }] });
     expect(a.length).toBe(b.length);
     a.forEach((l, k) => expect(l).toStrictEqual(b[k]));
   });
@@ -58,8 +64,18 @@ describe("content checks", () => {
     expect(lib.texts.map((t) => t.file).sort()).toEqual(names.map((f) => "texts/" + f).sort());
     expect(new Set(lib.texts.map((t) => t.id)).size).toBe(lib.texts.length);
   });
-  test("every text is in exactly one group", () => {
-    expect(lib.groups.flatMap((g) => g.texts).sort()).toEqual(lib.texts.map((t) => t.id).sort());
+  test("the reading order is the Library's: by category, each numbered from 1, every text once", () => {
+    const C = buildContent(lib, files, categories);
+    expect(C.categories.map((c) => c.id)).toEqual([...categories].sort((a, b) => a.order - b.order).map((c) => c.id));
+    expect(pieces(C).map((p) => p.text).sort()).toEqual(lib.texts.map((t) => t.id).sort());
+    for (const c of C.categories) {
+      expect(c.pieces.map((p) => p.no.en)).toEqual(c.pieces.map((_, i) => i + 1 + "."));
+      for (const p of c.pieces) expect(lib.texts.find((t) => t.id === p.text).category).toBe(c.id);
+    }
+    // without categories.json: the categories in the order the texts name them, called by their ids
+    const bare = buildContent(lib, files, null);
+    expect(bare.categories.map((c) => c.name)).toEqual(bare.categories.map((c) => ({ mr: c.id, en: c.id })));
+    expect(pieces(bare).length).toBe(lib.texts.length);
   });
   test.each(lib.texts.map((t) => [t.id, t]))("%s: library.json agrees with the file", (id, entry) => {
     const t = parseText(files[id], entry.file);

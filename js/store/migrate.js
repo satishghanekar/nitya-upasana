@@ -19,7 +19,7 @@
 export const SETTINGS_VERSION = 6;
 
 // what each person keeps in their profile
-export const PROFILE_KEYS = ["lang", "lead", "l2", "ui", "ind", "tr", "fs", "fsu", "fnt", "ref", "th", "hc", "as", "ason", "asp", "af", "pf", "xf", "tf", "hl"];
+export const PROFILE_KEYS = ["lang", "lead", "l2", "ui", "ind", "tr", "fs", "fsu", "fnt", "ref", "th", "hc", "as", "ason", "asp", "af", "tf", "hl"];
 // what stays with the device, whoever is reading
 export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "fold"];
 
@@ -51,8 +51,6 @@ export function defaults(env) {
     pfn: "", // font of the printout: "" the text font | std | classic | bold | hand
     tr: "simple", // English style: simple | iast
     fold: 0, // home card folded
-    pf: 0, // Pooja section folded
-    xf: 0, // Aarti section folded
     tf: 0, // home contents list folded
     af: [], // ids of folded pieces
     as: 3, // autoscroll speed for a piece not yet adjusted, 1–10

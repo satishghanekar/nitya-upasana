@@ -163,8 +163,8 @@ export function init() {
       pv.appendChild(h);
       var tc = document.createElement("div");
       tc.className = "pvtoc";
-      // The contents page follows the printout: the reading page's groups (पूजा, आरती) and their pieces in order,
-      // whatever categories the home list shows (js/features/library.js)
+      // The contents page follows the printout: the bundled Library categories and their pieces in order
+      // (js/print/compose.js)
       src.groups.forEach(function (g) {
         var ps = g.secs;
         if (!ps.length) return;
@@ -190,7 +190,7 @@ export function init() {
         box.setAttribute("data-sid", sec.id);
         var hd = document.createElement("h2");
         hd.innerHTML = sec.querySelector("h2").innerHTML;
-        // the Pooja and Aarti headings are on the contents page only, not above a piece (Satish, 2026-10)
+        // the category headings are on the contents page only, not above a piece (Satish, 2026-10)
         var pre = [];
         pre.push(hd);
         var units = [],
