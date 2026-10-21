@@ -59,11 +59,9 @@ describe("the default routine (content/routines.json)", () => {
       expect(textsFor(ROUTINE, d, "morning"), DAYS[d]).toEqual(["atharvashirsha", ...(vedic[d] || []), "sukhkarta", "durge-durghat-bhari"]);
     }
   });
-  test("Evening: the Ganapati and Devi aartis, Shankar's on Monday only, Ghalin Lotangan, then the day's ashtak last", () => {
-    const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+  test("Evening, the same every day: the Ganapati and Devi aartis, Ghalin Lotangan, then the Wednesday ashtak last", () => {
     for (let d = 0; d < 7; d++) {
-      const shankar = d === 1 ? ["lavathavati-vikrala"] : [];
-      expect(textsFor(ROUTINE, d, "evening"), DAYS[d]).toEqual(["sukhkarta", "durge-durghat-bhari", ...shankar, "ghalin-lotangan", "ashtak-" + days[d]]);
+      expect(textsFor(ROUTINE, d, "evening"), DAYS[d]).toEqual(["sukhkarta", "durge-durghat-bhari", "ghalin-lotangan", "ashtak-wednesday"]);
     }
   });
   test("Afternoon is empty", () => {
