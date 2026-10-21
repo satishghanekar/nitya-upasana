@@ -11,6 +11,7 @@
    "mon": [
     "atharvashirsha",
     "shree-rudra",
+    "purusha-suktam",
     "sukhkarta",
     "durge-durghat-bhari"
    ],
@@ -21,6 +22,8 @@
    ],
    "wed": [
     "atharvashirsha",
+    "purusha-suktam",
+    "shri-sukta",
     "sukhkarta",
     "durge-durghat-bhari"
    ],
@@ -47,51 +50,12 @@
   "texts": []
  },
  "evening": {
-  "mode": "weekday",
-  "days": {
-   "sun": [
-    "sukhkarta",
-    "durge-durghat-bhari",
-    "ghalin-lotangan",
-    "ashtak-sunday"
-   ],
-   "mon": [
-    "sukhkarta",
-    "durge-durghat-bhari",
-    "lavathavati-vikrala",
-    "ghalin-lotangan",
-    "ashtak-monday"
-   ],
-   "tue": [
-    "sukhkarta",
-    "durge-durghat-bhari",
-    "ghalin-lotangan",
-    "ashtak-tuesday"
-   ],
-   "wed": [
-    "sukhkarta",
-    "durge-durghat-bhari",
-    "ghalin-lotangan",
-    "ashtak-wednesday"
-   ],
-   "thu": [
-    "sukhkarta",
-    "durge-durghat-bhari",
-    "ghalin-lotangan",
-    "ashtak-thursday"
-   ],
-   "fri": [
-    "sukhkarta",
-    "durge-durghat-bhari",
-    "ghalin-lotangan",
-    "ashtak-friday"
-   ],
-   "sat": [
-    "sukhkarta",
-    "durge-durghat-bhari",
-    "ghalin-lotangan",
-    "ashtak-saturday"
-   ]
-  }
+  "mode": "fixed",
+  "texts": [
+   "sukhkarta",
+   "durge-durghat-bhari",
+   "ghalin-lotangan",
+   "ashtak-wednesday"
+  ]
  }
 }

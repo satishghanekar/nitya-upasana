@@ -46,8 +46,10 @@ describe("the rules for a person's lists", () => {
   test("a person with no routine of their own edits a copy of the default (content/routines.json), unchanged", () => {
     const r = editable(null, ROUTINE);
     expect(r).toEqual(ROUTINE);
-    r.evening.days.mon.push("x");
-    expect(ROUTINE.evening.days.mon).not.toContain("x");
+    r.morning.days.mon.push("x");
+    expect(ROUTINE.morning.days.mon).not.toContain("x");
+    r.evening.texts.push("x");
+    expect(ROUTINE.evening.texts).not.toContain("x");
     // their own wins when they have one; nothing at all gives three empty sessions
     expect(editable({ morning: { mode: "fixed", texts: ["sukhkarta"] } }, ROUTINE).morning.texts).toEqual(["sukhkarta"]);
     expect(editable(null, null)).toEqual({ morning: { mode: "fixed", texts: [] }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: [] } });

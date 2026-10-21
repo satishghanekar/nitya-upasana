@@ -53,17 +53,15 @@ describe("the picture for the day and session picked on the card", () => {
 
 describe("the default routine (content/routines.json)", () => {
   const DAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-  test("Morning: Ganapati Atharvashirsha first, Shree Rudra after it on Saturday, Sunday and Monday, then the Ganapati and Devi aartis", () => {
+  test("Morning: Ganapati Atharvashirsha first, then Shree Rudra (Sat, Sun, Mon), Purusha Suktam (Mon, Wed) and Shri Sukta (Wed), then the Ganapati and Devi aartis", () => {
+    const vedic = { 0: ["shree-rudra"], 1: ["shree-rudra", "purusha-suktam"], 3: ["purusha-suktam", "shri-sukta"], 6: ["shree-rudra"] };
     for (let d = 0; d < 7; d++) {
-      const rudra = [0, 1, 6].includes(d) ? ["shree-rudra"] : [];
-      expect(textsFor(ROUTINE, d, "morning"), DAYS[d]).toEqual(["atharvashirsha", ...rudra, "sukhkarta", "durge-durghat-bhari"]);
+      expect(textsFor(ROUTINE, d, "morning"), DAYS[d]).toEqual(["atharvashirsha", ...(vedic[d] || []), "sukhkarta", "durge-durghat-bhari"]);
     }
   });
-  test("Evening: the Ganapati and Devi aartis, Shankar's on Monday only, Ghalin Lotangan, then the day's ashtak last", () => {
-    const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+  test("Evening, the same every day: the Ganapati and Devi aartis, Ghalin Lotangan, then the Wednesday ashtak last", () => {
     for (let d = 0; d < 7; d++) {
-      const shankar = d === 1 ? ["lavathavati-vikrala"] : [];
-      expect(textsFor(ROUTINE, d, "evening"), DAYS[d]).toEqual(["sukhkarta", "durge-durghat-bhari", ...shankar, "ghalin-lotangan", "ashtak-" + days[d]]);
+      expect(textsFor(ROUTINE, d, "evening"), DAYS[d]).toEqual(["sukhkarta", "durge-durghat-bhari", "ghalin-lotangan", "ashtak-wednesday"]);
     }
   });
   test("Afternoon is empty", () => {

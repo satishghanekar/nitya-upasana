@@ -1,7 +1,7 @@
 id: lalita-sahasranama
 title: श्रीललितासहस्रनामस्तोत्रम्
 title-en: Shri Lalita Sahasranama
-category: stotra
+category: vedic-chant
 language: sa
 stanza-numbers: as-written
 credit: [ब्रह्माण्डपुराण](https://en.wikipedia.org/wiki/Lalita_Sahasranama)
