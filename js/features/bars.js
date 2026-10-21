@@ -1,14 +1,14 @@
 // Bars tuck away while reading (CSS: "Bars tuck away while reading")
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { LI, RB_LOOP, RB_ONCE, root } from "../core/page.js";
+import { root } from "../core/page.js";
 import { shared, P } from "../core/state.js";
 import { skLang } from "./sankashti.js";
 import { todayLang } from "./today-card.js";
 import { calLang } from "./vedic-calendar.js";
 import { libLang } from "./library.js";
 import { autoFs, pullSoon } from "../text/autofit.js";
-import { cur, hb, pfSet, pjOpen } from "../core/apply.js";
+import { cur, pfSet, pjOpen } from "../core/apply.js";
 import { asLabel, asShow, asb, asc } from "./bottom-bar.js";
 import { szSet } from "./settings-panel.js";
 import { setJ, setP } from "./overlays.js";
@@ -216,7 +216,7 @@ export function apply() {
   [].forEach.call(document.querySelectorAll(".grp,.wrap > .ash,#pv,#jl,#rail"), function (e) {
     e.setAttribute("data-lang", P.lang);
   });
-  [].forEach.call(document.querySelectorAll(".bar,#none,.libhd,#panel,#home > *,#qrm,#prm,#inm,#rsh,#szt,#szr,#fl"), function (e) {
+  [].forEach.call(document.querySelectorAll(".bar,#shr,#asc,#none,.libhd,#panel,#home > *,#qrm,#prm,#inm,#rsh,#szt,#szr,#fl"), function (e) {
     e.setAttribute("data-lang", P.ui);
   });
   root.lang = SCR.k || "mr"; // the page is Marathi (or Kannada); English parts carry lang="en" themselves (screen readers pick the voice from this)
@@ -243,30 +243,8 @@ export function apply() {
   [].forEach.call(document.querySelectorAll("#sc button"), function (b) {
     b.setAttribute("aria-pressed", String(b.dataset.v === (two ? "2" : "1")));
   });
-  // Dhrupad button: icon and label show the current setting
-  var rbb = document.getElementById("rb");
-  var rOn = !P.ref;
-  if (rbb.getAttribute("data-s") !== String(rOn)) {
-    rbb.innerHTML = rOn ? RB_LOOP : RB_ONCE;
-    rbb.setAttribute("data-s", String(rOn));
-  }
-  rbb.setAttribute("aria-pressed", String(rOn));
-  rbb.setAttribute(
-    "aria-label",
-    rOn
-      ? "Refrain (dhrupad) after every verse. Tap to show it once"
-      : "Refrain (dhrupad) shown once. Tap to repeat after every verse",
-  );
   leadSet();
   spSet();
-  var IN = P.ind === "kn" ? "Kannada" : "Marathi",
-    LB = { mr: [LI.mr, IN], en: [LI.en, "English"], both: shared.LEAD === "en" ? [LI.bothEn, "English and " + IN] : [LI.both, IN + " and English"] }[P.lang],
-    lk = P.lang + shared.LEAD + SCR.k;
-  if (hb.getAttribute("data-l") !== lk) {
-    hb.innerHTML = LB[0];
-    hb.setAttribute("data-l", lk);
-  }
-  hb.setAttribute("aria-label", "Language: " + LB[1] + ". Tap to change");
   pfSet();
   autoFs();
   root.style.setProperty("--fs", P.fs + "px");

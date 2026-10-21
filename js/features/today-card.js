@@ -4,9 +4,9 @@
 // English; a Morning | Afternoon | Evening switch (#tss, tabs: arrow keys move between them, Enter or Space picks),
 // opened at the session for the time now; a session with nothing set today is greyed ("Nothing set", aria-disabled,
 // still focusable, and picking it shows the empty state with Add texts); the picked session's texts, each with a tick
-// and its title; Start / Continue, pinned to the bottom of the screen on phones; More (#tmb), a disclosure over the
-// App / Share / QR / Print / Help buttons (#shr, closed by default); and "Another text? Open the Library" (#tlibb,
-// as the top bar's book button). Every text, with search, is in the Library (#jump, js/features/contents-list.js);
+// and its title; Start / Continue, pinned to the bottom of the screen on phones; and "Another text? Open the Library"
+// (#tlibb, as the top bar's book button). App, Share, QR, Print and Help are under More (⋯) in the top bar
+// (js/features/more-menu.js). Every text, with search, is in the Library (#jump, js/features/contents-list.js);
 // the reading page's pieces are not shown under Home (data-hv, js/features/history.js).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
@@ -47,8 +47,6 @@ const W = {
     sessions: { morning: "Morning", afternoon: "Afternoon", evening: "Evening" },
     tabs: "Session",
     unset: "Nothing set",
-    more: "More",
-    moreHint: "App · Share · QR · Print · Help",
     another: "Another text?",
     library: "Open the Library",
     done: "Done: ",
@@ -83,8 +81,6 @@ const W = {
     sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
     tabs: "वेळ",
     unset: "काहीच नाही",
-    more: "आणखी",
-    moreHint: "ॲप · शेअर · QR · प्रिंट · मदत",
     another: "दुसरी रचना?",
     library: "संग्रह उघडा",
     done: "झाले: ",
@@ -296,13 +292,7 @@ export function render() {
     /** @type {HTMLElement} */ (b.querySelector(".tshn")).textContent = n ? "" : w.unset;
   });
   /** @type {HTMLElement} */ (document.getElementById("tsp")).setAttribute("aria-labelledby", "tss-" + c.session);
-  // More, and the Library line
-  var mo = /** @type {HTMLElement} */ (document.getElementById("tmo"));
-  if (mo) {
-    mo.lang = ui;
-    /** @type {HTMLElement} */ (document.getElementById("tmbw")).textContent = w.more;
-    /** @type {HTMLElement} */ (document.getElementById("tmbh")).textContent = w.moreHint;
-  }
+  // the Library line
   var lb = document.getElementById("tlib");
   if (lb) {
     lb.lang = ui;
@@ -576,18 +566,6 @@ export function init() {
       x.tabIndex = x.getAttribute("aria-selected") === "true" ? 0 : -1;
     });
   });
-  // More: App, Share, QR, Print and Help, closed by default
-  var mb = document.getElementById("tmb"),
-    shr = document.getElementById("shr");
-  if (mb && shr) {
-    var more = mb,
-      row = shr;
-    more.addEventListener("click", function () {
-      var open = more.getAttribute("aria-expanded") !== "true";
-      more.setAttribute("aria-expanded", String(open));
-      row.hidden = !open;
-    });
-  }
   // Another text? Open the Library: as the top bar's book button
   var lbb = document.getElementById("tlibb");
   if (lbb)

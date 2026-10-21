@@ -6,8 +6,7 @@
    - Two columns on wide screens (data-cols="2"); the script assigns each stanza its grid row
    - Piece numbers (.no) and stanza numbers (.sn, added by the script)
    - Print: page border, contents on its own page, page breaks (final rules)
-   - Share / QR / Print use the Latin font
-   - Button rows (final rules), styled like the top menu: home page (#shr: App, Share, QR, Print, Help) and the …
+   - The print pop-up uses the Latin font
    - Both languages on wide screens: each Marathi line with its transliteration beside it
    - Left menu (contents) on screens 1024px and wider
    - Reading progress line under the top bar
@@ -185,77 +184,11 @@
   }
 }
 
-/* ==== Share / QR / Print use the Latin font ==== */
-#shr button,
+/* ==== The print pop-up uses the Latin font ==== */
 #prm .qrt,
 #prm .prn,
 #prm button {
   font-family: var(--lat);
-}
-#shr {
-  align-items: stretch;
-}
-#shr button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  margin: 0;
-}
-#shr button svg {
-  margin-right: 8px !important;
-  vertical-align: 0 !important;
-}
-
-/* ==== Button rows (final rules), styled like the top menu: home page (#shr: App, Share, QR, Print, Help)
-   and the bottom of Settings (#shr2: App, Help) ==== */
-#shr {
-  display: flex;
-  gap: 6px;
-  justify-content: center;
-  margin: 18px 0 6px;
-}
-#shr button {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 128px;
-  height: 44px;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  margin: 0;
-  padding: 0 2px;
-  border: 1px solid var(--rule);
-  border-radius: 10px;
-  background: var(--surface);
-  color: var(--ink);
-  font: 500 13.5px/1 var(--lat);
-  text-decoration: none;
-  white-space: nowrap;
-}
-#shr button[hidden] {
-  display: none;
-}
-#shr button .mr {
-  font-family: var(--body);
-}
-#shr button svg {
-  flex: none;
-  width: 18px;
-  height: 18px;
-  margin: 0 !important;
-}
-/* Narrow phones: the word sits under its icon, smaller, so the five buttons still fit and a first-time reader
-   can tell what each does (an icon alone, a phone with an arrow for App, was too hard to guess) */
-@media (max-width: 379px) {
-  #shr button {
-    flex-direction: column;
-    gap: 3px;
-    height: 52px;
-    font-size: 11px;
-  }
 }
 
 /* ==== Both languages on wide screens: each Marathi line with its transliteration beside it ==== */

@@ -20,7 +20,7 @@ There is no build step: the browser loads these files as they are.
 
 | File | What it does |
 |---|---|
-| `core/page.js` | Page basics: the <html> element, the language button icons, the short message (flash) |
+| `core/page.js` | Page basics: the <html> element and the short message (flash) |
 | `core/state.js` | Settings (P): the boot copy in localStorage and the person's profile (`store/store.js`, opened by `main.js` before the parts start) |
 | `core/features.js` | Features held back for a later release |
 | `features/day-picture.js` | The app's picture follows the time of day (sunrise, midday, sunset) with today's weekday star ringed; checks again at 12:00, 17:00, midnight and when the page comes back into view |
@@ -31,7 +31,7 @@ There is no build step: the browser loads these files as they are.
 | `text/layout.js` | Layout helpers that run once; `buildRail()` builds the side menu (`#rail`) from the Library's list, again when the categories change |
 | `features/astronomy.js` | Astronomy: sun and moon positions, tithi, moonrise and the Sankashti rule (worked out on this device) |
 | `features/sankashti.js` | Sankashti: the place (the reader's own from Settings → Place for moonrise, else the time zone's city), the next Sankashti (kept in `shared.skCache` for the Share message), and on a Sankashti day only one line on the home page (`#skt`) with moonrise and the place |
-| `features/today-card.js` | Home (Home v3 option A): the picture beside today's date in Marathi and English, the Morning / Afternoon / Evening switch (tabs, opened at the session for the time now; a session with nothing set today greyed, aria-disabled) with the picked session's texts (from the reading person's routine) and a tick each, Edit beside the session's heading and Add texts in an empty session (they open the routine builder), Start / Continue, More (App / Share / QR / Print / Help) and "Another text? Open the Library"; while a session is being read, ‹ Prev and Next › follow it (`sessionStep()`, read by `features/bottom-bar.js`), and Next ticks the text it leaves |
+| `features/today-card.js` | Home (Home v3 option A): the picture beside today's date in Marathi and English, the Morning / Afternoon / Evening switch (tabs, opened at the session for the time now; a session with nothing set today greyed, aria-disabled) with the picked session's texts (from the reading person's routine) and a tick each, Edit beside the session's heading and Add texts in an empty session (they open the routine builder), Start / Continue, "Another text? Open the Library"; while a session is being read, ‹ Prev and Next › follow it (`sessionStep()`, read by `features/bottom-bar.js`), and Next ticks the text it leaves |
 | `core/panchang.js` | The Vedic calendar (panchang), worked out on this device from `features/astronomy.js`: `dayPanchang(date, place)` (tithi, nakshatra, yoga, karana with their end times, sunrise, sunset, moonrise, amanta month with adhika, Shaka year and samvatsara, ritu, ayana, as at that day's sunrise) and `monthPanchang(year, month, place)` (each day's tithi at sunrise, kshaya and vriddhi, purnima, amavasya, Ekadashi, Sankashti). Lahiri ayanamsha, Kalnirnay / Drik convention; pure functions, unit-tested against the Swiss Ephemeris (`tests/unit/panchang.test.mjs`); no `init()` |
 | `core/festivals.js` | Festival days from the rules in `content/festivals.json`: `festivalsFor(date, place, list)`, `festivalsInMonth(year, month, place, list)`, `festivalsBetween(from, to, place, list)`. A lunar festival is the nija month's paksha and tithi current at its part of the day (sunrise, madhyahna, aparahna, pradosh, nishita or moonrise), with the rule's first / second day when that is so on two days or none; Makar Sankranti is the day the sun enters sidereal Makara (sunset to sunset). Uses `core/panchang.js` (`dayTimes`, `panchangDay`, `masaOf`, `tithiAt`, `sunSidereal`); pure functions, unit-tested (`tests/unit/festivals.test.mjs`); no `init()` |
 | `core/panchang-names.js` | The panchang's names in Marathi and plain English (IAST comes from the Marathi; tithis, months, nakshatras, yogas, karanas, weekdays, samvatsaras, ritus, ayanas); plain data |
@@ -47,7 +47,7 @@ There is no build step: the browser loads these files as they are.
 | `features/tilt.js` | Tilt to scroll (bottom bar, phones and tablets) |
 | `features/bars.js` | Bars tuck away while reading (CSS: "Bars tuck away while reading"), and apply() |
 | `features/settings-panel.js` | Settings panel |
-| `features/dhrupad-button.js` | Dhrupad button: toggle once / after every stanza, keeping the reader's place |
+| `features/dhrupad-button.js` | Dhrupad: toggle once / after every stanza, keeping the reader's place (Reading sheet and Settings) |
 | `features/reading-sheet.js` | Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad, within thumb reach |
 | `features/wake-lock.js` | Keep the screen on (Wake Lock). Browsers drop the lock when the page is hidden, so it is re-requested. |
 | `features/overlays.js` | Overlays: settings panel (setP), the Library (setJ), the Vedic calendar page (setC) and the routine builder (setR); opening one closes the others (no `init()`: used by bars, clicks, pinch, help and history) |
@@ -65,6 +65,7 @@ There is no build step: the browser loads these files as they are.
 | `print/fit.js` | Print layout: sets each stanza's size (and side by side, the column widths) so lines stay whole and in step (no `init()`: called by `features/print.js`) |
 | `features/print.js` | Print |
 | `features/share.js` | Share, QR code and the Add to Home Screen buttons |
+| `features/more-menu.js` | More (⋯ in the top bar): App, Share, QR, Print and Help in a small menu under the button |
 | `features/offline.js` | Offline use: home-screen app details and the service worker (sw.js) |
 | `features/profiles.js` | The badge in the top bar and the profile sheet (#pfm): switch, add, rename, colour and letters, delete with a confirm; `applyPrefs()` changes the page to another person's settings in place |
 | `features/text-picker.js` | Add texts: every text in the library with search and a checkbox each (ticked = in the list being edited); beside the routine builder's list from 1024px, a sheet (modal dialog, Tab kept inside, Done / Escape / the phone's Back) on phones and tablets. On its own so it can later gain category filters; its tags name each text's category on this phone (`core/library.js`, given by `features/routine-builder.js`); its search (`searchKey`, `matches`) is unit-tested (no `init()`: created by `features/routine-builder.js`) |

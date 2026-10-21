@@ -5,33 +5,73 @@ import { openSite, settle, SETUPS, PREFS_KEY , openMore, tapMore, readText } fro
 const prefs = (page) => page.evaluate((k) => JSON.parse(localStorage.getItem(k)), PREFS_KEY);
 const rootAttr = (page, a) => page.evaluate((a) => document.documentElement.getAttribute(a), a);
 
-// (the Language and Dhrupad buttons are in the top bar while reading; on the home page they step aside)
-test("language button cycles main → second → both and is remembered @mobile", async ({ page }) => {
+// Opened at a piece on a phone, the bars start tucked away (a tap on the page brings them back)
+const untuck = (page) => page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
+
+// The top bar while reading: the name, who is reading, ⋯ More and Settings. Language and Dhrupad are in the reading
+// sheet (Aa), and Library is in the bottom bar
+test("while reading the top bar has no Language, Dhrupad or Library button; the bottom bar has Home, Library and Reading @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a1" });
-  const btn = page.locator("#home-btn");
-  const lang = () => page.locator("#a1").getAttribute("data-lang");
-  expect(await lang()).toBe("mr");
-  await btn.click();
-  expect(await lang()).toBe("en");
-  await btn.click();
-  expect(await lang()).toBe("both");
-  await btn.click();
-  expect(await lang()).toBe("mr");
-  await btn.click();
-  expect((await prefs(page)).lang).toBe("en");
-  await page.reload();
-  await settle(page);
-  expect(await lang()).toBe("en");
+  await untuck(page);
+  expect(await page.locator("#home-btn, #rb").count()).toBe(0);
+  await expect(page.locator("#hm")).toBeHidden();
+  for (const b of ["#who", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  await expect(page.locator("#tmb")).toHaveAccessibleName("More");
+  // the bottom bar's middle buttons are named by the word under each icon, in the menu language
+  await expect(page.locator("#ash")).toHaveAccessibleName("Home");
+  await expect(page.locator("#asq")).toHaveAccessibleName("Library");
+  await expect(page.locator("#rsb")).toHaveAccessibleName("Reading");
 });
 
-test("dhrupad button switches between once and after every verse @mobile", async ({ page }) => {
+test("the bottom bar's words follow the menu language @mobile", async ({ page }) => {
+  await openSite(page, SETUPS["marathi-menus"], { hash: "#a1" });
+  await untuck(page);
+  await expect(page.locator("#ash")).toHaveAccessibleName("मुख्यपृष्ठ");
+  await expect(page.locator("#asq")).toHaveAccessibleName("संग्रह");
+  await expect(page.locator("#rsb")).toHaveAccessibleName("वाचन");
+});
+
+test("⋯ More opens App, Share, QR, Print and Help under it while reading; a tap outside or Escape closes it @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a1" });
-  expect(await rootAttr(page, "data-ref")).toBe("1");
-  await page.locator("#rb").click();
-  expect(await rootAttr(page, "data-ref")).toBe("0");
-  expect(await page.locator("#a1 .item.rf").first().isVisible()).toBe(true);
-  await page.locator("#rb").click();
-  expect(await rootAttr(page, "data-ref")).toBe("1");
+  await untuck(page);
+  const more = page.locator("#tmb"),
+    menu = page.locator("#shr");
+  await expect(menu).toBeHidden();
+  await more.click();
+  await expect(menu).toBeVisible();
+  await expect(more).toHaveAttribute("aria-expanded", "true");
+  for (const id of ["#shb", "#qrb", "#prb", "#hlpb"]) await expect(page.locator(id)).toBeVisible();
+  // under the button, on screen
+  const b = await more.boundingBox(),
+    m = await menu.boundingBox(),
+    vw = page.viewportSize().width;
+  expect(m.y).toBeGreaterThanOrEqual(b.y + b.height);
+  expect(m.x).toBeGreaterThanOrEqual(0);
+  expect(m.x + m.width).toBeLessThanOrEqual(vw + 0.5);
+  await page.locator("main").click({ position: { x: 5, y: 300 } });
+  await expect(menu).toBeHidden();
+  await expect(more).toHaveAttribute("aria-expanded", "false");
+  await more.click();
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeHidden();
+  await expect(more).toBeFocused();
+});
+
+test("a choice in ⋯ More closes the menu, and focus comes back to ⋯ when its pop-up closes", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  await page.locator("#tmb").click();
+  await page.locator("#qrb").click();
+  await expect(page.locator("#shr")).toBeHidden();
+  await expect(page.locator("#qrm")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#qrm")).toBeHidden();
+  await expect(page.locator("#tmb")).toBeFocused();
+  await page.locator("#tmb").click();
+  await page.locator("#hlpb").click();
+  await expect(page.locator("#help")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#help")).toBeHidden();
+  await expect(page.locator("#tmb")).toBeFocused();
 });
 
 test("a Library link jumps to a piece and moves focus to its heading", async ({ page }) => {
