@@ -144,6 +144,8 @@ export function autoFs() {
   if (!r || !cw) return;
   var f = Math.max(18, Math.min(dfs(), Math.floor((cw * 0.98) / r)));
   shared.FSA = f;
+  // the Library's list is sized from it: the same share of its own size as the text is of this one (13-library.css)
+  root.style.setProperty("--fsa", String(f));
   if (P.fsu) return;
   if (f !== P.fs) {
     P.fs = f;
