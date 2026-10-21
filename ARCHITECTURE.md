@@ -27,7 +27,7 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files. **There
 - **`apply()`** (`js/features/bars.js`) is the only place that turns `P` into the page.
   - It sets the `data-*` switches the styles react to: `data-lang` on each region, and `data-ref`, `data-cols`, `data-rail`, `data-font`, `data-pref` and `data-hc` on `<html>`.
   - It sets `--fs`, the text size.
-  - Anything that changes a setting updates `P`, calls `save()`, then calls `apply()`.
+  - Anything that changes a setting calls `change({ key: value }, apply)` (`js/core/state.js`): the values go into `P`, `apply()` brings the page up to date, then it is saved.
 - **Auto-fit** (`js/text/autofit.js`) works out the largest text size at which every verse line fits the screen on one row.
   - It measures all lines at once in a hidden copy, so the page is laid out only once.
   - It remembers each result per language, font, layout and window size.

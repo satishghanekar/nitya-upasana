@@ -34,6 +34,7 @@ import { buildRail } from "../text/layout.js";
 import { apply } from "./bars.js";
 import { IA, titlesSet } from "../text/iast.js";
 import { buildIX } from "../text/search.js";
+import { ovSub, ovSubDone } from "./history.js";
 import { dv, esc, lead, mrLang, scr as to, second, ui } from "../core/words.js";
 
 /**
@@ -179,9 +180,6 @@ var ret = null;
 /** @type {View} */
 var view = "list";
 var editing = "";
-// the sheet's own Back step (over the Library's), and a Back the sheet took itself, not the phone's
-var ownStep = false,
-  popSkip = 0;
 
 // ---- small helpers ----
 
@@ -379,23 +377,14 @@ export function libLang() {
 }
 
 // ---- the categories sheet ----
-/** @returns {any} */
-function hs() {
-  return history.state || {};
-}
-
 /** @param {Element | null} [from] */
 export function openSheet(from) {
   if (!sheet || !sheet.hidden) return;
   ret = from || document.activeElement;
   // its own Back step, over the Library's: the phone's Back closes the sheet and leaves the Library open
-  ownStep = false;
-  try {
-    if (history.pushState) {
-      history.pushState({ ov: 1, lbm: 1, y: scrollY }, "", location.href);
-      ownStep = true;
-    }
-  } catch (e) {}
+  ovSub(function () {
+    closeSheet(true);
+  });
   sheet.hidden = false;
   el("lbb").setAttribute("aria-expanded", "true");
   show("list");
@@ -406,11 +395,7 @@ export function closeSheet(fromPop) {
   if (!sheet || sheet.hidden) return;
   sheet.hidden = true;
   el("lbb").setAttribute("aria-expanded", "false");
-  if (!fromPop && ownStep && hs().lbm) {
-    popSkip++;
-    history.back();
-  }
-  ownStep = false;
+  if (!fromPop) ovSubDone();
   var r = /** @type {HTMLElement | null} */ (ret);
   ret = null;
   if (r && r.isConnected && r.getClientRects().length) focus(r);
@@ -607,19 +592,6 @@ export function init() {
     e.stopImmediatePropagation();
     if (view === "list") closeSheet();
     else show(view === "delete" ? "edit" : "list", editing);
-  });
-  addEventListener("popstate", function (e) {
-    // the sheet's own Back (✕, Escape, a tap outside): nothing else to close
-    if (popSkip) {
-      popSkip--;
-      e.stopImmediatePropagation();
-      return;
-    }
-    // the phone's Back: the sheet closes, the Library under it stays
-    if (!sh.hidden) {
-      closeSheet(true);
-      e.stopImmediatePropagation();
-    }
   });
   el("lbcl").addEventListener("click", function (e) {
     var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest(".lbe"));

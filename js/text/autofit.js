@@ -2,10 +2,14 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root, secs } from "../core/page.js";
-import { shared, P, dfs } from "../core/state.js";
+import { LEAD, P, dfs } from "../core/state.js";
 import { ZW } from "./line-breaks.js";
 
 var VW, MQL, FR, CW, MQP;
+// FSA: the automatic size for this screen (read by the size readouts in Settings, the reading sheet and the pinch);
+// fontN: how many web fonts had loaded at the last fit
+export var FSA = 0;
+var fontN = -1;
 
 export function init() {
   // Performance: the window size, read once and kept until the window is resized. On phones the browser has to
@@ -20,12 +24,12 @@ export function init() {
   FR = {};
   // FSA: the automatic size for this screen, worked out even when the reader has chosen a size,
   // so the pinch bubble can show sizes as a percentage of it (100% = default)
-  shared.FSA = 0;
+  FSA = 0;
   // The column width depends only on the window and layout, not on the text size or language,
   // so it is remembered: reading it would make the browser lay out the whole page an extra time
   CW = {};
   addEventListener("resize", pullSoon);
-  shared.fontN = -1;
+  fontN = -1;
   MQP = matchMedia("print");
   addEventListener("afterprint", function () {
     setTimeout(fontsIn, 0);
@@ -72,7 +76,7 @@ function ratio() {
   // cached per language / dhrupad / layout / orientation
   var k = [
     P.lang,
-    shared.LEAD,
+    LEAD,
     P.ind,
     P.fnt,
     P.tr,
@@ -99,7 +103,7 @@ function ratio() {
     W = w ? w.clientWidth : vw() - 32,
     r = 0,
     rows = [];
-  [].forEach.call(document.querySelectorAll(P.lang === "en" || shared.LEAD === "en" ? ".verse .en p" : ".verse .mr p"), function (p) {
+  [].forEach.call(document.querySelectorAll(P.lang === "en" || LEAD === "en" ? ".verse .en p" : ".verse .mr p"), function (p) {
     if (!p.offsetParent) return;
     // a Vedic chant in one language runs on as paragraphs, so its long lines need not fit on one row
     if (P.lang !== "both" && p.closest(".ash.prose")) return;
@@ -143,7 +147,7 @@ export function autoFs() {
     cw = CW[wk] || (CW[wk] = w ? w.clientWidth : vw() - 32);
   if (!r || !cw) return;
   var f = Math.max(18, Math.min(dfs(), Math.floor((cw * 0.98) / r)));
-  shared.FSA = f;
+  FSA = f;
   // the Library's list is sized from it: the same share of its own size as the text is of this one (13-library.css)
   root.style.setProperty("--fsa", String(f));
   if (P.fsu) return;
@@ -212,8 +216,14 @@ function fontsIn() {
   // to the printed page's layout. Wait until printing is over (afterprint below).
   if (MQP.matches) return;
   var n = fontsN();
-  if (n === shared.fontN) return;
-  shared.fontN = n;
+  if (n === fontN) return;
+  fontN = n;
   autoFs();
   pullSoon();
+}
+
+// The fonts in place at start-up (a repeat visit) need no second fit (js/core/startup.js); fontsIn() handles any that
+// arrive later
+export function fontsNow() {
+  fontN = fontsN();
 }

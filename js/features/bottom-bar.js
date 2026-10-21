@@ -2,14 +2,15 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root, secs } from "../core/page.js";
-import { shared, P, save } from "../core/state.js";
+import { P, change } from "../core/state.js";
 import { FEAT_AS } from "../core/features.js";
-import { rmkClose, rmkOpen } from "../text/dhrupad-markers.js";
+import { rmkClose, rmkOpen, rmkPop } from "../text/dhrupad-markers.js";
 import { cur } from "../core/apply.js";
 import { TL, tlLabel, tlStop } from "./tilt.js";
 import { apply } from "./bars.js";
-import { wake } from "./wake-lock.js";
+import { wake, wl } from "./wake-lock.js";
 import { goHomeNav } from "./history.js";
+import { pageEls } from "./overlays.js";
 import { sessionStep } from "./today-card.js";
 
 export var asc, asb;
@@ -97,19 +98,19 @@ export function init() {
     document.getElementById("hm").onclick();
   };
   document.getElementById("tas").onclick = function () {
-    P.ason = P.ason ? 0 : 1;
-    if (!P.ason) asStop();
-    save();
-    apply();
+    change({ ason: P.ason ? 0 : 1 }, function () {
+      if (!P.ason) asStop();
+      apply();
+    });
   };
   // The bar is always there, like the top bar (data-asb leaves room for it under the text).
   // asShow() keeps ▶ in step with the settings, and Prev / Next with the piece on screen.
   asc.hidden = false;
   root.setAttribute("data-asb", "1");
-  // the bar steps aside while Settings (#panel), the Library (#jump), the Vedic calendar (#cal) or the routine builder
-  // (#rtb) is open
+  // the bar steps aside while one of the pages is open: Settings, the Library, the Vedic calendar or the routine
+  // builder (pageEls(), js/features/overlays.js)
   (function () {
-    var ms = [document.getElementById("panel"), document.getElementById("jump"), document.getElementById("cal"), document.getElementById("rtb")];
+    var ms = pageEls();
     function menu() {
       if (ms.some(function (m) { return m && !m.hidden; })) root.setAttribute("data-menu", "1");
       else root.removeAttribute("data-menu");
@@ -269,15 +270,15 @@ function asStep(now) {
   }
   if (a.hold && !a.shown) {
     a.shown = 1;
-    if (!shared.rmkPop || shared.rmkPop.m !== a.el) rmkOpen(a.el);
-    if (shared.rmkPop) {
+    if (!rmkPop || rmkPop.m !== a.el) rmkOpen(a.el);
+    if (rmkPop) {
       clearTimeout(rmkClose.t);
       rmkClose.t = setTimeout(rmkClose, T * 1000 + 600);
       var h = document.createElement("div");
       h.className = "ash-h";
       h.lang = P.ui === "mr" ? "mr" : "en";
       h.textContent = P.ui === "mr" ? "ध्रुपद म्हणा, मग पुढे" : "Sing the dhrupad, then on";
-      shared.rmkPop.el.appendChild(h);
+      rmkPop.el.appendChild(h);
     }
   }
   // a hold keeps the page still while the dhrupad is sung, then moves on
@@ -307,10 +308,7 @@ function asStart() {
     t0 = c0 && c0.getBoundingClientRect().top;
   // open every piece; a folded section (Pooja / Aarti) stays folded and is skipped, unless every section is folded,
   // then all open again
-  if (P.pf && P.xf) P.pf = P.xf = 0;
-  P.af = [];
-  save();
-  apply();
+  change(P.pf && P.xf ? { pf: 0, xf: 0, af: [] } : { af: [] }, apply);
   if (c0 && c0.offsetParent !== null) scrollBy(0, c0.getBoundingClientRect().top - t0);
   asRun();
 }
@@ -348,7 +346,7 @@ function asRun() {
   AS.on = 1;
   asc.classList.add("on");
   asLabel();
-  if (!shared.wl) wake(true);
+  if (!wl) wake(true);
   AS.raf = requestAnimationFrame(asStep);
 }
 
@@ -375,8 +373,9 @@ function asSpeed(d) {
   if (v === o || !id) return;
   // keep the same point in the current line
   if (AS.on && AS.u[AS.i]) AS.t *= ASPD[v] / ASPD[o];
-  P.asp[id] = v;
-  save();
+  var asp = Object.assign({}, P.asp);
+  asp[id] = v;
+  change({ asp: asp });
   asLabel();
 }
 

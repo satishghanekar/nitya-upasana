@@ -2,7 +2,8 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root } from "../core/page.js";
-import { shared, P, dfs, save } from "../core/state.js";
+import { P, change, dfs } from "../core/state.js";
+import { FSA } from "../text/autofit.js";
 import { pn } from "../core/apply.js";
 import { apply } from "./bars.js";
 import { fsTap, szSet } from "./settings-panel.js";
@@ -21,10 +22,7 @@ export function init() {
   szr = document.getElementById("szr");
   szr.onclick = function () {
     szr.hidden = true;
-    P.fsu = 0;
-    P.fs = dfs();
-    apply();
-    save();
+    change({ fsu: 0, fs: dfs() }, apply);
     showSz();
   };
   // Pinch changes the text size, never the page zoom. The two-finger touch is cancelled as soon as it
@@ -82,10 +80,10 @@ export function init() {
       if (e.touches.length < 2) unzoom();
       if (pz && e.touches.length < 2) {
         pz = null;
-        save();
+        change({}); // the size the fingers set (written to P as they moved)
         szSet();
         // Offer a one-tap way back to the default size for a few seconds (Settings has its own reset)
-        if (P.fs !== (shared.FSA || dfs()) && pn.hidden) {
+        if (P.fs !== (FSA || dfs()) && pn.hidden) {
           clearTimeout(szTm);
           szTm = setTimeout(function () {
             szt.classList.remove("on");
@@ -161,7 +159,7 @@ function dist(e) {
 }
 
 function showSz() {
-  var m = (P.ui === "mr" ? "अक्षरांचा आकार " : "Text size ") + Math.round((P.fs / (shared.FSA || dfs())) * 100) + "%";
+  var m = (P.ui === "mr" ? "अक्षरांचा आकार " : "Text size ") + Math.round((P.fs / (FSA || dfs())) * 100) + "%";
   szt.textContent = m;
   // The bubble changes with every move of the fingers, so screen readers don't read it;
   // the size is announced once, when the fingers (or the wheel) stop
@@ -207,19 +205,14 @@ function unzoom() {
 function deskSz(v, fsu) {
   v = Math.max(14, Math.min(52, v));
   if (!pn.hidden) return fsTap(v, fsu);
-  P.fsu = fsu;
-  if (fsu) {
-    P.fs = v;
+  change({ fsu: fsu, fs: fsu ? v : dfs() }, function () {
+    if (!fsu) return apply();
     if (!pzF)
       pzF = requestAnimationFrame(function () {
         pzF = 0;
         root.style.setProperty("--fs", P.fs + "px");
       });
-  } else {
-    P.fs = dfs();
-    apply();
-  }
-  save();
+  });
   szSet();
   showSz();
 }
