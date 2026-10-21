@@ -1,0 +1,248 @@
+/* mockups/responsive.css: MOCKUP ONLY (branch mockup-responsive). Injected over the live site by
+   mockups/shoot-responsive.mjs to show the proposed full-screen layouts; not loaded by index.html.
+   Proposal, by screen:
+   - Wide (iPad landscape and desktop, 1024px and wider): the layout uses the whole width, 24px from each edge
+     (32px on desktop); today on the left, the page beside it. The calendar's month gets the larger share.
+     The Library opens beside today too, its categories in columns.
+   - Tablet portrait (600–1023px wide, taller than wide): Home is one larger column with the picture on top,
+     so the screen is filled without adding anything to Home; the calendar is month on top, day below;
+     the Library in two columns.
+   - Phone landscape (height 500px or less): a slim top bar; Home in two columns (day on the left, session on
+     the right); reading keeps more lines on screen.
+*/
+
+/* ==== Wide: whole width ==== */
+@media screen and (min-width: 1024px) {
+  [data-rail="1"] {
+    --T: calc(var(--vw, 100vw) - 48px);
+    --S: 400px;
+  }
+}
+@media screen and (min-width: 1400px) {
+  [data-rail="1"] {
+    --T: calc(var(--vw, 100vw) - 64px);
+    --S: 460px;
+  }
+  /* a larger today column on big screens */
+  :root[data-rail="1"] #home .tsl,
+  :root[data-rail="1"] #tsl a,
+  :root[data-rail="1"] #tsl li {
+    font-size: 1.06em;
+  }
+}
+@media screen and (min-width: 1024px) {
+  :root[data-rail="1"] .bar {
+    padding-left: calc(var(--L) - 8px);
+    padding-right: calc(var(--L) - 8px);
+  }
+  /* Home: the picture fills the rest of the width, as large as the height allows */
+  :root[data-hv="1"][data-rail="1"] #tdy #iconb {
+    width: min(560px, calc(100vh - 260px), calc(var(--W) - 120px));
+    height: min(560px, calc(100vh - 260px), calc(var(--W) - 120px));
+  }
+  :root[data-hv="1"][data-rail="1"] #home > #tdy {
+    margin-top: max(6px, calc((100vh - 260px - min(560px, calc(100vh - 260px))) / 2));
+  }
+  /* the right-hand area: calendar, Settings and now the Library */
+  :root[data-rail="1"] #cal,
+  :root[data-rail="1"] #panel,
+  :root[data-rail="1"] #jump {
+    padding: 0 var(--L) 24px 32px !important;
+  }
+  :root[data-rail="1"] #jump {
+    position: fixed;
+    top: var(--bb, 69px) !important;
+    left: calc(var(--L) + var(--S) - 1px);
+    right: 0;
+    bottom: 0;
+    border-left: 1px solid var(--rule);
+    z-index: 6;
+  }
+  :root[data-rail="1"] #jump .libin {
+    max-width: none;
+  }
+  :root[data-rail="1"] #jump #q {
+    max-width: 34rem;
+  }
+  :root[data-rail="1"] #jl {
+    columns: 2 300px;
+    column-gap: 40px;
+  }
+  :root[data-rail="1"] #jl .tocg {
+    break-inside: avoid;
+  }
+  :root[data-rail="1"] #jl #lbr {
+    column-span: all;
+  }
+  /* calendar: the month takes the larger share, the day card a fixed column */
+  :root[data-rail="1"] #cal .calin {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px) !important;
+    gap: 16px 24px !important;
+  }
+  :root[data-rail="1"] .cgr {
+    border-spacing: 4px;
+  }
+  :root[data-rail="1"] .cd {
+    min-height: calc((100vh - 330px) / 6);
+    justify-content: flex-start;
+    padding: 6px 2px;
+  }
+  :root[data-rail="1"] .cd b {
+    font-size: 17px;
+  }
+  :root[data-rail="1"] .cd .t,
+  :root[data-rail="1"] .cd .f,
+  :root[data-rail="1"] .cd .fs {
+    overflow-wrap: normal;
+    word-break: keep-all;
+    font-size: 11.5px;
+  }
+  /* Settings: three columns of cards when there is room */
+  :root[data-rail="1"] #sp-home .sp-body {
+    columns: 3 340px !important;
+  }
+}
+/* iPad landscape: a narrower today column so the page beside it has room */
+@media screen and (min-width: 1024px) and (max-width: 1399px) {
+  [data-rail="1"] {
+    --S: 380px;
+  }
+  :root[data-rail="1"] #cal .calin {
+    grid-template-columns: minmax(0, 1fr) 300px !important;
+  }
+}
+
+/* ==== Tablet portrait ==== */
+@media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
+  /* Home: the picture on top, then today in a larger column */
+  :root[data-hv="1"] #home {
+    max-width: 40rem;
+    font-size: 1.08em;
+  }
+  :root[data-hv="1"] #tdy {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+    margin: 16px 0 22px;
+  }
+  :root[data-hv="1"] #tdy #iconb {
+    width: min(340px, 34vh);
+    height: min(340px, 34vh);
+  }
+  :root[data-hv="1"] #tdd .d1 {
+    font-size: 26px;
+  }
+  :root[data-hv="1"] #tdd .d2 {
+    font-size: 16px;
+  }
+  :root[data-hv="1"] #tsl li {
+    padding-block: 4px;
+  }
+  /* calendar: month across the width on top, the day underneath */
+  #cal .calin {
+    grid-template-columns: 1fr !important;
+    max-width: 44rem !important;
+  }
+  #cal #calm {
+    grid-row: 2;
+  }
+  #cal #cald {
+    grid-row: 3;
+  }
+  #cal #cald dl {
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr;
+    column-gap: 14px;
+  }
+  .cd {
+    min-height: 84px;
+  }
+  .cd b {
+    font-size: 17px;
+  }
+  .cd .t,
+  .cd .f {
+    font-size: 12px;
+    overflow-wrap: normal;
+  }
+  /* Library: two columns of categories */
+  #jump .libin {
+    max-width: 46rem;
+  }
+  #jl {
+    columns: 2;
+    column-gap: 36px;
+  }
+  #jl .tocg {
+    break-inside: avoid;
+  }
+  #jl #lbr {
+    column-span: all;
+  }
+  /* Settings: two columns of cards */
+  #panel .sp-pg {
+    max-width: 46rem !important;
+  }
+  #sp-home .sp-body {
+    columns: 2 !important;
+    column-gap: 18px !important;
+  }
+  #sp-home .sp-h {
+    break-after: avoid;
+  }
+  #sp-home .sp-card {
+    break-inside: avoid;
+  }
+}
+
+/* ==== Phone landscape ==== */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .bar {
+    min-height: 0;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+  .bar button,
+  .bar a {
+    height: 34px !important;
+    min-height: 34px !important;
+  }
+  :root[data-hv="1"] #home {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-auto-flow: row dense;
+    column-gap: 28px;
+    align-items: start;
+  }
+  :root[data-hv="1"] #home > * {
+    grid-column: 2;
+    min-width: 0;
+  }
+  :root[data-hv="1"] #home > #tdy,
+  :root[data-hv="1"] #home > #pan,
+  :root[data-hv="1"] #home > #fst,
+  :root[data-hv="1"] #home > #skt,
+  :root[data-hv="1"] #home > #tmo,
+  :root[data-hv="1"] #home > #tlib {
+    grid-column: 1;
+  }
+  :root[data-hv="1"] #home > #tsc {
+    grid-row: 1 / span 6;
+  }
+  :root[data-hv="1"] #tsb {
+    position: static !important;
+    grid-column: 2;
+    padding: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    border: 0 !important;
+  }
+  /* reading: smaller title row, so more lines show */
+  .ash header {
+    margin-block: 4px !important;
+  }
+  .ash header button {
+    min-height: 36px;
+  }
+}
