@@ -350,3 +350,21 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
   shows exactly what it did. Print already did this (P1 of the print redesign, `js/print/compose.js`).
 - Not in this step: the hash routes (`#/read/...`) and making `render.js` a module stay on the plan; the `data-hv`,
   `data-run` and `.solo` switches stay, as they still say what the screen shows.
+
+## Print tests text by text; a print link can name the texts (v1.20.5, 2026-10-21)
+
+- Step P2 of the print redesign (`/mnt/project-files/prompt-review/print-redesign/PLAN.md` §5, approved by Satish). A
+  text's printed pages depend only on the text and the print choices (P1, v1.20.2, builds each piece from `CONTENT`,
+  and the fitting sizes each piece by itself), so each text is tested on its own: `tests/print-items.spec.mjs`, made
+  from `content/library.json`, prints every text alone in Marathi Portrait, English Portrait and Both Landscape
+  (standard font, A4), and the other fonts, Kannada letters and IAST on the hardest texts. Each test is tagged
+  `@text:<id>`; `npm run quick` runs a changed text's tests only.
+- To print one text, `compose(ids)` builds just those texts and the print link takes `&t=<id>,<id>` (`window.PRT`).
+  One text on its own prints without the title and contents page (PLAN §3.2: the contents list is for printouts of
+  more than one text). The print builder (P4) will choose texts the same way.
+- `print.spec.mjs` keeps how a printout is put together: the whole Library once per layout (contents numbers), a
+  few texts, the special cases, the browser menu, Safari and the iPhone. The whole-Library grid of every font × both
+  papers went: every font is still printed text by text on the hard texts, and all texts in every font are in the
+  print audit (`npm run release`).
+- The per-text snapshots record the size of the smallest line: P3 (sizing) raises the floor to 80% and grows sizes,
+  and these snapshots then show every text's change.

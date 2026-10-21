@@ -146,17 +146,17 @@ export function init() {
     }
     // Build the print view (#pv): contents, then every piece in the text language, from a copy of the pieces made
     // for it (js/print/compose.js), so whatever the reading page has folded or hidden is printed in full.
-    // mode: "one" (one column) or "side" (Marathi and English side by side)
+    // mode: "one" (one column) or "side" (Marathi and English side by side). What is printed: sel
     function build(mode) {
-      var src = compose();
+      var src = compose(sel);
       try {
         build2(mode, src);
       } finally {
         src.el.remove();
       }
     }
-    function build2(mode, src) {
-      pv.innerHTML = "";
+    // the title and the contents page: the categories and their pieces in order (js/print/compose.js)
+    function contents(src) {
       var h = document.createElement("h1");
       h.className = "pvh";
       h.innerHTML = lbl(SCR.to("नित्य उपासना"), "Nitya Upasana");
@@ -184,6 +184,11 @@ export function init() {
         tc.appendChild(ol);
       });
       pv.appendChild(tc);
+    }
+    function build2(mode, src) {
+      pv.innerHTML = "";
+      // one text on its own prints as just that text: no title or contents page
+      if (src.secs.length > 1) contents(src);
       src.secs.forEach(function (sec) {
         var box = document.createElement("section");
         box.className = "pvs";
@@ -341,7 +346,11 @@ export function init() {
     // breaks pages.
     var LTR = /-(US|CA|MX|PH)$/i.test(navigator.language || ""),
       PAPER = LTR ? [215.9, 279.4] : [210, 297], // upright, in mm
-      pcache = {}; // page plans laid out ahead, by pkey()
+      pcache = {}, // page plans laid out ahead, by pkey()
+      // the texts to print (their Library ids), or null for the whole Library. Only a print link sets it so far
+      // (?print=…&t=…, read in js/render.js), for one printout: it is put back to null when that printout is done
+      /** @type {string[] | null} */
+      sel = null;
     // The pop-up's two choices, Portrait and Landscape, for what is printed (CHOICE in js/print/profiles.js):
     // one language in a column, upright or sideways; both languages side by side on sideways pages only (stacked,
     // upright, only while Landscape is held back)
@@ -380,7 +389,7 @@ export function init() {
       root.setAttribute("data-ref", String(P.ref));
     }
     function pkey(mode) {
-      return [mode, P.lang, LEAD, pref(), P.tr, P.ui, pfn(), land(mode)].join("|");
+      return [mode, P.lang, LEAD, pref(), P.tr, P.ui, pfn(), land(mode), sel ? sel.join(",") : ""].join("|");
     }
     // The page as it prints: the browser is told with @page, set as each printout is made (Chrome, Edge and
     // Firefox follow it; Safari keeps the sheet the reader picks in its dialog, so the pop-up tells them to
@@ -837,7 +846,7 @@ export function init() {
       ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "tr", "por"].forEach(function (k) {
         s[k] = P[k];
       });
-      return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s));
+      return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (sel ? "&t=" + sel.join(",") : "");
     }
     // open: the pop-up is already open (its Back step is in place); tapped: Print now was tapped and the
     // dialog still did not open (not the Home Screen app: another app's browser, or Safari holding it back),
@@ -901,6 +910,7 @@ export function init() {
     function unready() {
       if (!busy) return;
       busy = false;
+      sel = null;
       poff();
     }
     function go(mode) {
@@ -997,6 +1007,7 @@ export function init() {
     });
     window.addEventListener("afterprint", function () {
       busy = false;
+      sel = null;
       poff();
     });
     // Opened by the Home Screen app's Open in Safari (see js/render.js): lay the printout out once the fonts
@@ -1004,6 +1015,7 @@ export function init() {
     if (window.PRQ) {
       var mode = window.PRQ;
       window.PRQ = "";
+      sel = window.PRT || null;
       (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () {
         setTimeout(function () {
           go(mode);

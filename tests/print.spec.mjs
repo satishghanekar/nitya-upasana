@@ -1,48 +1,38 @@
-// Print and PDF: the most thorough suite, because the printout is what the group hands round.
-//
-// For every combination of layout × text font × paper size (and a set of special cases) it checks:
-//   - the contents page lists the page each piece really starts on in the PDF
+// Print and PDF: how a printout is put together. How each text prints, line by line in every layout, is checked text
+// by text in print-items.spec.mjs; this suite checks the rest:
+//   - the contents page lists the page each piece really starts on in the PDF (the whole Library in each layout, and
+//     a few texts only)
 //   - every unbroken block (heading with its dhrupad and first stanza, each stanza) sits on one page
-//   - every piece is printed, even when it or its section is folded on screen
+//   - every piece is printed, even when it or its section is folded on screen, and whatever the reading page shows
 //   - the screen-only controls (Open all, settings, etc.) never print
 //   - in layouts with English, every English line of the print view is in the PDF
 //   - the page count and contents numbers match the recorded baseline
-//   - no line is lost, side by side rows stay in step and lines break mid-phrase only rarely (see the print audit)
+//   - printing from the browser's menu, Safari's print layout, the Print pop-up and the iPhone's Print now and
+//     Open in Safari
 // PDFs can only be made by Chromium, so this suite is Chromium-only.
 import { test, expect, devices } from "@playwright/test";
 import { openSite, SETUPS, SNAP_ENV, TEXT_COUNT, openMore, tapMore } from "./helpers.mjs";
-import { pdfMarks, auditLines } from "./print-audit-helpers.mjs";
 import { printOnce, checkPrintout, stubPrint, printFromButton, readPrintView, addMarkers, pdfPages, markerPages, toInt, trackWarmUp, waitForWarmUp } from "./print-helpers.mjs";
 
 test.describe.configure({ mode: "parallel" });
 
-// The Print pop-up's choices: Portrait (pr1) and Landscape (pr2). One language prints in a column either way;
-// both languages print side by side, on Landscape only (stacked is no longer offered).
-const LAYOUTS = [
-  { name: "marathi-single-column", setup: "marathi", choice: "pr1", mode: "one" },
-  { name: "english-single-column", setup: "english", choice: "pr1", mode: "one" },
-];
-const SIDEWAYS = [
-  { name: "marathi-single-column", setup: "marathi", choice: "pr2", mode: "one" },
-  { name: "english-single-column", setup: "english", choice: "pr2", mode: "one" },
-  { name: "both-side-by-side", setup: "both", choice: "pr2", mode: "side" },
-  { name: "kannada-side-by-side", setup: "kannada-both", choice: "pr2", mode: "side" },
+// The whole Library, as the Print button prints it: the contents page and its numbers, every piece in reading order.
+// How each text itself prints (every line, in every layout, the other fonts) is checked text by text in
+// print-items.spec.mjs: a text prints the same inside the whole Library as on its own, so these check how the printout
+// is put together. Portrait (pr1) and Landscape (pr2): one language prints in a column either way; both languages
+// print side by side, on Landscape only.
+const WHOLE = [
+  { name: "marathi-single-column-std-Letter", prefs: SETUPS.marathi, choice: "pr1", mode: "one", paper: "Letter", locale: "en-US" },
+  { name: "english-single-column-std-A4", prefs: SETUPS.english, choice: "pr1", mode: "one", paper: "A4", locale: "en-IN" },
+  { name: "sideways-marathi-single-column-std-Letter", prefs: { ...SETUPS.marathi, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
+  { name: "sideways-english-single-column-std-Letter", prefs: { ...SETUPS.english, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
+  { name: "sideways-both-side-by-side-std-Letter", prefs: { ...SETUPS.both, por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
+  { name: "sideways-kannada-side-by-side-std-Letter", prefs: { ...SETUPS["kannada-both"], por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
 ];
 // iPhone 13 emulation in Chromium (the device entry names WebKit as its browser, which newContext does not take)
 const { defaultBrowserType: _bt, ...IPHONE } = devices["iPhone 13"];
-const FONTS = ["std", "classic", "bold", "hand"];
-// Shree Rudra's lines are whole passages: side by side on a sideways page they are wider than half the page even
-// at their smallest, so they wrap mid-phrase however they are set (Satish, 2026-10-21). Every other check still
-// covers them; the mid-phrase count is for the other texts.
-const LONG_LINES = ["shree-rudra"];
-const midPhrase = (a) => a.findings.filter((f) => f.kind.startsWith("line broken mid-phrase") && !LONG_LINES.includes(f.sid)).length;
-// Letter is chosen for US / Canada / Mexico / Philippines, A4 everywhere else (see LTR in js/features/print.js)
-const PAPERS = [
-  { paper: "Letter", locale: "en-US" },
-  { paper: "A4", locale: "en-IN" },
-];
 
-// Special cases beyond the main grid (standard font, Letter unless stated)
+// Special cases beyond those (standard font, Letter unless stated)
 const EXTRAS = [
   { name: "iast-english-single-column", prefs: SETUPS["english-iast"], choice: "pr1", mode: "one" },
   { name: "iast-both-side-by-side", prefs: SETUPS["both-iast"], choice: "pr2", mode: "side" },
@@ -55,43 +45,36 @@ const EXTRAS = [
   { name: "a4-kannada-single-column", prefs: SETUPS.kannada, choice: "pr1", mode: "one", paper: "A4", locale: "en-GB" },
 ];
 
-for (const L of LAYOUTS)
-  for (const fnt of FONTS)
-    for (const P of PAPERS) {
-      test(`${L.name} · ${fnt} font · ${P.paper} @chromium-only`, async ({ browser }) => {
-        const r = await printOnce(browser, { prefs: { ...SETUPS[L.setup], fnt }, choice: L.choice, mode: L.mode, ...P, lines: true });
-        const summary = checkPrintout(r, P.paper);
-        expect(JSON.stringify(summary, null, 1)).toMatchSnapshot([SNAP_ENV, `${L.name}-${fnt}-${P.paper}.json`]);
-        // the lines themselves (js/print/fit.js): nothing lost, side by side in step, lines broken mid-phrase only
-        // where a line is too long even at its smallest (npm run print:audit shows every case)
-        const a = auditLines(r.marked, await pdfMarks(r.pdf.buf), L.mode);
-        // a failure names the lines, so it can be understood from the log alone (CI keeps no PDFs)
-        const which = (kind) => kind + ": " + a.findings.filter((f) => f.kind.startsWith(kind)).slice(0, 12).map((f) => `\n  ${f.sid} ${f.lines || ""} ${f.text}`).join("");
-        expect(a.missing, which("text missing")).toBe(0);
-        expect(a.overflow, which("runs past its column")).toBe(0);
-        expect(a.outOfStep, which("side by side out of step")).toBeLessThanOrEqual(6);
-        expect(a.brokeMidPhrase, which("line broken mid-phrase")).toBeLessThanOrEqual(12);
-      });
-    }
-
-// Landscape: every layout in every font, on Letter or A4 by turns, with the same checks. The text is fitted to
-// the wider line and the pages planned for the shorter page.
-for (const L of SIDEWAYS)
-  FONTS.forEach((fnt, i) => {
-    const P = PAPERS[i % 2];
-    test(`sideways · ${L.name} · ${fnt} font · ${P.paper} @chromium-only`, async ({ browser }) => {
-      const r = await printOnce(browser, { prefs: { ...SETUPS[L.setup], fnt, por: "land" }, choice: L.choice, mode: L.mode, ...P, lines: true });
-      expect(r.pdf.landscape, "the PDF pages are sideways").toBe(true);
-      const summary = checkPrintout(r, P.paper);
-      expect(JSON.stringify(summary, null, 1)).toMatchSnapshot([SNAP_ENV, `sideways-${L.name}-${fnt}-${P.paper}.json`]);
-      const a = auditLines(r.marked, await pdfMarks(r.pdf.buf), L.mode);
-      const which = (kind) => kind + ": " + a.findings.filter((f) => f.kind.startsWith(kind)).slice(0, 12).map((f) => `\n  ${f.sid} ${f.lines || ""} ${f.text}`).join("");
-      expect(a.missing, which("text missing")).toBe(0);
-      expect(a.overflow, which("runs past its column")).toBe(0);
-      expect(a.outOfStep, which("side by side out of step")).toBeLessThanOrEqual(6);
-      expect(midPhrase(a), which("line broken mid-phrase")).toBeLessThanOrEqual(12);
-    });
+for (const W of WHOLE) {
+  test(`whole Library · ${W.name} @chromium-only`, async ({ browser }) => {
+    const r = await printOnce(browser, { prefs: W.prefs, choice: W.choice, mode: W.mode, paper: W.paper, locale: W.locale });
+    if (W.choice === "pr2") expect(r.pdf.landscape, "the PDF pages are sideways").toBe(true);
+    const summary = checkPrintout(r, W.paper);
+    expect(JSON.stringify(summary, null, 1)).toMatchSnapshot([SNAP_ENV, `${W.name}.json`]);
   });
+}
+
+// Some texts only (a print link naming them, ?print=…&t=…): the contents page lists just those, in reading order,
+// each with the page it starts on
+test("a few texts: their own contents page @chromium-only", async ({ browser }) => {
+  const ids = ["sukhkarta", "shree-rudra", "ashtak-monday"];
+  const context = await browser.newContext({ locale: "en-US", viewport: { width: 1280, height: 900 }, serviceWorkers: "block" });
+  const page = await context.newPage();
+  const errors = [];
+  await stubPrint(page);
+  await openSite(page, { ...SETUPS.marathi, por: "up" }, { errors, hash: `?print=as&t=${ids.join(",")}` });
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
+  await page.emulateMedia({ media: "print" });
+  // reading order is the Library's (content/categories.json), whatever order the link names them in
+  const onScreen = await page.evaluate((ids) => window.CONTENT.categories.flatMap((g) => g.pieces).filter((p) => ids.includes(p.text)).map((p) => p.id), ids);
+  expect(onScreen).toHaveLength(3);
+  const pv = await readPrintView(page);
+  await addMarkers(page);
+  const pdf = await pdfPages(page, "Letter");
+  await context.close();
+  const summary = checkPrintout({ pv, pdf, errors, onScreen, mode: "one" }, "Letter");
+  expect(JSON.stringify(summary, null, 1)).toMatchSnapshot([SNAP_ENV, "a-few-texts.json"]);
+});
 
 // Sideways special cases: the dhrupad after every verse, and Kannada
 for (const X of [
