@@ -1,16 +1,18 @@
 // Tappable dhrupad markers (Aartis 1–5, 7 and 9)
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { shared } from "../core/state.js";
 import { topEdge } from "../features/bottom-bar.js";
 
 var RMKTAP;
+// The open bubble, { m: its marker, el: the bubble }, or null (read by js/features/bottom-bar.js)
+/** @type {any} */
+export var rmkPop = null;
 
 export function init() {
   // Tapping ↻ ध्रुपद shows the dhrupad in a bubble just above the marker, over the stanza just sung,
   // so the next stanza stays clear. Tap again, tap elsewhere or press Escape to close; it also closes by itself.
   RMKTAP = ["a1", "a2", "a3", "a4", "a5", "a7", "a9"];
-  shared.rmkPop = null;
+  rmkPop = null;
   RMKTAP.forEach(function (id) {
     [].forEach.call(document.querySelectorAll("#" + id + " .items > .rmk"), function (m) {
       m.classList.add("rmkt");
@@ -27,7 +29,7 @@ export function init() {
     } else rmkClose();
   }, true);
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && shared.rmkPop) return rmkClose();
+    if (e.key === "Escape" && rmkPop) return rmkClose();
     var m = e.target.closest && e.target.closest(".rmkt");
     if (m && (e.key === "Enter" || e.key === " ")) {
       e.preventDefault();
@@ -35,23 +37,23 @@ export function init() {
     }
   });
   addEventListener("scroll", function () {
-    if (shared.rmkPop && !shared.rmkPop.m.getBoundingClientRect().height) rmkClose();
+    if (rmkPop && !rmkPop.m.getBoundingClientRect().height) rmkClose();
   }, { passive: true });
   addEventListener("resize", function () {
-    if (shared.rmkPop) shared.rmkPop.el.place();
+    if (rmkPop) rmkPop.el.place();
   });
 }
 
 export function rmkClose() {
-  if (!shared.rmkPop) return;
-  shared.rmkPop.m.setAttribute("aria-expanded", "false");
-  if (shared.rmkPop.el.ro) shared.rmkPop.el.ro.disconnect();
-  shared.rmkPop.el.remove();
-  shared.rmkPop = null;
+  if (!rmkPop) return;
+  rmkPop.m.setAttribute("aria-expanded", "false");
+  if (rmkPop.el.ro) rmkPop.el.ro.disconnect();
+  rmkPop.el.remove();
+  rmkPop = null;
 }
 
 export function rmkOpen(m) {
-  var was = shared.rmkPop && shared.rmkPop.m === m;
+  var was = rmkPop && rmkPop.m === m;
   rmkClose();
   if (was) return;
   var src = m.closest("section.ash").querySelector(".rftop .verse");
@@ -98,5 +100,5 @@ export function rmkOpen(m) {
   }
   // no time limit (WCAG 2.2.1): a refrain can take longer to sing than any timer; it closes on a second tap,
   // a tap elsewhere, Escape, or when its marker scrolls out of sight
-  shared.rmkPop = { m: m, el: el };
+  rmkPop = { m: m, el: el };
 }

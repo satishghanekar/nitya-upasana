@@ -5,18 +5,20 @@
 // Home v2 (docs/decisions.md, 2026-10-18): the home page no longer has the date card. On a Sankashti day only, one
 // small line under the date says so, with tonight's moonrise and the place (#skt): "Sankashti Chaturthi today ·
 // Moonrise 8:09 pm · Columbus, OH". The next Sankashti is still worked out on every visit for the Share message
-// (js/features/share.js reads shared.skCache), which is unchanged.
+// (js/features/share.js reads skCache), which is unchanged.
 // The place: the reader's own (Settings → Place for moonrise, "Use my location", kept on this device as P.loc and
 // named from the built-in list below), else a city for the phone's time zone.
 
 import { flash } from "../core/page.js";
-import { shared, P, save } from "../core/state.js";
+import { P, change } from "../core/state.js";
 import { SK } from "./astronomy.js";
 import { DAYS, MONTHS, dv } from "../core/words.js";
 
-/** The values shared with other parts: the next Sankashti (read by js/features/share.js) and when it was drawn */
-/** @type {{ skCache: { key: string, list: Sankashti[], ni: number, sel: number } | null, skKey: string }} */
-const sh = /** @type {any} */ (shared);
+/** The next Sankashti, worked out once a day for the place (read by js/features/share.js), or null */
+/** @type {{ key: string, list: Sankashti[], ni: number, sel: number } | null} */
+export var skCache = null;
+// the day and place the Home line was last drawn for
+var skKey = "";
 
 /**
  * @typedef {{ lat: number, lon: number, mr: string, en: string, own?: number }} Place
@@ -316,23 +318,23 @@ export function skTemple(L) {
 
 /**
  * The next Sankashti (today's, on the day) for the place, worked out once per place and day and kept in
- * sh.skCache as { key, list, ni, sel } (the shape js/features/share.js reads)
+ * skCache as { key, list, ni, sel } (the shape js/features/share.js reads)
  * @returns {Sankashti | null}
  */
 export function skNext() {
   var L = skLoc();
   if (!L) return null;
   var key = L.lat + "," + L.lon + "," + new Date().toDateString();
-  if (!sh.skCache || sh.skCache.key !== key) {
+  if (!skCache || skCache.key !== key) {
     try {
       var first = SK.upcoming(Date.now(), L.lat, L.lon, 1);
     } catch (e) {
       return null;
     }
     if (!first[0]) return null;
-    sh.skCache = { key: key, list: first, ni: 0, sel: 0 };
+    skCache = { key: key, list: first, ni: 0, sel: 0 };
   }
-  return sh.skCache.list[sh.skCache.ni] || null;
+  return skCache.list[skCache.ni] || null;
 }
 
 /** The Sankashti line on the home page (#skt): shown on the day only; re-drawn when the day or menu language changes */
@@ -374,14 +376,14 @@ function placeShow() {
 export function skLang() {
   var k = P.ui + new Date().toDateString() + JSON.stringify(P.loc || null);
   placeShow();
-  if (k === sh.skKey) return;
-  sh.skKey = k;
+  if (k === skKey) return;
+  skKey = k;
   skRender();
 }
 
 export function init() {
-  sh.skCache = null;
-  sh.skKey = "";
+  skCache = null;
+  skKey = "";
   // the day can change while the page is open: check again when it comes back into view
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) skLang();
@@ -396,9 +398,8 @@ export function init() {
       }
       navigator.geolocation.getCurrentPosition(
         function (p) {
-          P.loc = { lat: Math.round(p.coords.latitude * 100) / 100, lon: Math.round(p.coords.longitude * 100) / 100 };
-          save();
-          sh.skCache = null;
+          change({ loc: { lat: Math.round(p.coords.latitude * 100) / 100, lon: Math.round(p.coords.longitude * 100) / 100 } });
+          skCache = null;
           skLang();
           flash("ठिकाण: " + ((skLoc() || { mr: "" }).mr), "Place: " + ((skLoc() || { en: "" }).en));
         },

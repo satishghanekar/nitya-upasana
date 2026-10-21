@@ -2,7 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { flash, root, secs } from "../core/page.js";
-import { shared, P, save } from "../core/state.js";
+import { LEAD, P, change } from "../core/state.js";
 import { DV } from "../text/line-breaks.js";
 import { fit } from "../print/fit.js";
 import { LAYOUT } from "../print/profiles.js";
@@ -243,7 +243,7 @@ export function init() {
               t.className = "pvt pvside";
               // column widths (the English line is longer than its Devanagari, so its column is wider)
               var cg = document.createElement("colgroup");
-              (shared.LEAD === "en" ? ["pvce", "pvcm"] : ["pvcm", "pvce"]).forEach(function (c) {
+              (LEAD === "en" ? ["pvce", "pvcm"] : ["pvcm", "pvce"]).forEach(function (c) {
                 var col = document.createElement("col");
                 col.className = c;
                 cg.appendChild(col);
@@ -289,8 +289,8 @@ export function init() {
                 tr.classList.add("rfl");
               }
               // English first (Settings → In Both, show first): English on the left
-              tr.appendChild(shared.LEAD === "en" ? b : a);
-              tr.appendChild(shared.LEAD === "en" ? a : b);
+              tr.appendChild(LEAD === "en" ? b : a);
+              tr.appendChild(LEAD === "en" ? a : b);
               t.appendChild(tr);
             });
           });
@@ -397,7 +397,7 @@ export function init() {
       root.setAttribute("data-ref", String(P.ref));
     }
     function pkey(mode) {
-      return [mode, P.lang, shared.LEAD, pref(), P.tr, P.ui, pfn(), land(mode)].join("|");
+      return [mode, P.lang, LEAD, pref(), P.tr, P.ui, pfn(), land(mode)].join("|");
     }
     // The page as it prints: the browser is told with @page, set as each printout is made (Chrome, Edge and
     // Firefox follow it; Safari keeps the sheet the reader picks in its dialog, so the pop-up tells them to
@@ -418,8 +418,7 @@ export function init() {
     fn.onclick = function (e) {
       var b = e.target.closest("button");
       if (!b) return;
-      P.pfn = b.dataset.v;
-      save();
+      change({ pfn: b.dataset.v });
       rows();
     };
     // the sample line in the printout's font (set here: the page's own font rules follow the text font)
@@ -440,7 +439,7 @@ export function init() {
     }
     function rows() {
       var or = P.ind === "kn" ? "kn" : "mr",
-        ks = P.lang === "both" ? (shared.LEAD === "en" ? ["en", "mr"] : ["mr", "en"]) : [P.lang === "en" ? "en" : "mr"];
+        ks = P.lang === "both" ? (LEAD === "en" ? ["en", "mr"] : ["mr", "en"]) : [P.lang === "en" ? "en" : "mr"];
       [].forEach.call(dh.children, function (b) {
         b.setAttribute("aria-pressed", b.dataset.v === String(pref()) ? "true" : "false");
       });
@@ -470,8 +469,7 @@ export function init() {
     dh.onclick = function (e) {
       var b = e.target.closest("button");
       if (!b) return;
-      P.pref = +b.dataset.v;
-      save();
+      change({ pref: +b.dataset.v });
       rows();
       warmSoon(1500);
     };
@@ -958,15 +956,14 @@ export function init() {
       var M = P.ui === "mr",
         en = M ? "इंग्रजी" : "English",
         or = (NAMES[P.ind] || NAMES.mr)[M ? 0 : 1],
-        l1 = shared.LEAD === "en" ? en : or,
-        l2 = shared.LEAD === "en" ? or : en;
+        l1 = LEAD === "en" ? en : or,
+        l2 = LEAD === "en" ? or : en;
       // the page: Portrait or Landscape (one language), a tap picks it; both languages: Landscape, side by side
       function opt(b, page) {
         b.textContent = page === "land" ? (M ? "आडवे" : "Landscape") : M ? "उभे" : "Portrait";
         b.setAttribute("data-page", page);
         b.onclick = function () {
-          P.por = page;
-          save();
+          change({ por: page });
           wm = dm();
           pages1();
           warmSoon(1500);

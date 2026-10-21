@@ -2,7 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root, secs } from "./page.js";
-import { P, save } from "./state.js";
+import { P, change } from "./state.js";
 import { apply, mark } from "../features/bars.js";
 
 export var pn, aa, jp, LANGS;
@@ -47,13 +47,13 @@ export function init() {
     b.onclick = function () {
       var y = g.getBoundingClientRect().top,
         open = b.dataset.open === "1";
+      var af = P.af.slice();
       ps.forEach(function (x) {
-        var i = P.af.indexOf(x.id);
-        if (open && i >= 0) P.af.splice(i, 1);
-        if (!open && i < 0) P.af.push(x.id);
+        var i = af.indexOf(x.id);
+        if (open && i >= 0) af.splice(i, 1);
+        if (!open && i < 0) af.push(x.id);
       });
-      save();
-      pfSet();
+      change({ af: af }, pfSet);
       scrollBy(0, g.getBoundingClientRect().top - y);
       mark();
     };
@@ -71,11 +71,11 @@ export function init() {
     b.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>';
     b.onclick = function () {
       var y = h.getBoundingClientRect().top,
-        i = P.af.indexOf(x.id);
-      if (i >= 0) P.af.splice(i, 1);
-      else P.af.push(x.id);
-      save();
-      pfSet();
+        af = P.af.slice(),
+        i = af.indexOf(x.id);
+      if (i >= 0) af.splice(i, 1);
+      else af.push(x.id);
+      change({ af: af }, pfSet);
       // keep the heading where it was on screen
       scrollBy(0, h.getBoundingClientRect().top - y);
       mark();
@@ -92,9 +92,10 @@ export function init() {
     document.getElementById(a[0]).onclick = function () {
       var g = document.getElementById(a[1]),
         y = g.getBoundingClientRect().top;
-      P[a[2]] = P[a[2]] ? 0 : 1;
-      save();
-      apply();
+      /** @type {Record<string, number>} */
+      var ch = {};
+      ch[a[2]] = P[a[2]] ? 0 : 1;
+      change(ch, apply);
       // keep the heading where it was on screen
       scrollBy(0, g.getBoundingClientRect().top - y);
     };
@@ -162,35 +163,17 @@ export function pfSet() {
 // Going to a piece (or a line in it) opens it if it is folded, and the Pooja section if that is folded
 export function pjOpen(el, onlyPooja) {
   // a section row (side menu पूजा / आरती): open that section if it is folded
-  if (el && el.id === "g-pooja" && P.pf) {
-    P.pf = 0;
-    save();
-    pfSet();
-  }
-  if (el && el.id === "g-aarti" && P.xf) {
-    P.xf = 0;
-    save();
-    pfSet();
-  }
+  if (el && el.id === "g-pooja" && P.pf) change({ pf: 0 }, pfSet);
+  if (el && el.id === "g-aarti" && P.xf) change({ xf: 0 }, pfSet);
   var sec = el && el.closest && el.closest(".ash");
   if (!sec) return;
-  var ch = false;
-  if (P.pf && sec.classList.contains("pj")) {
-    P.pf = 0;
-    ch = true;
-  }
-  if (P.xf && sec.classList.contains("ar")) {
-    P.xf = 0;
-    ch = true;
-  }
-  if (!onlyPooja && P.af.indexOf(sec.id) >= 0) {
-    P.af = P.af.filter(function (x) {
+  /** @type {Record<string, any>} */
+  var ch = {};
+  if (P.pf && sec.classList.contains("pj")) ch.pf = 0;
+  if (P.xf && sec.classList.contains("ar")) ch.xf = 0;
+  if (!onlyPooja && P.af.indexOf(sec.id) >= 0)
+    ch.af = P.af.filter(function (x) {
       return x !== sec.id;
     });
-    ch = true;
-  }
-  if (ch) {
-    save();
-    pfSet();
-  }
+  if (Object.keys(ch).length) change(ch, pfSet);
 }
