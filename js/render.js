@@ -66,8 +66,9 @@
   };
   var KEEP = /[॒॑।॥]/;
   // ---- Print handed over from the iPhone Home Screen app (js/features/print.js, "Open in Safari") ----
-  // The app cannot print, so it opens Safari at …/?print=as&s={…}: the reader's print choices (language, dhrupad,
-  // font, page) are saved here first, before anything reads them, and the address is put back to the plain one.
+  // The app cannot print, so it opens Safari at …/?print=as&s={…} (and &t=…, when only some texts are printed): the
+  // reader's print choices (language, dhrupad, font, page) are saved here first, before anything reads them, and the
+  // address is put back to the plain one.
   // js/features/print.js then lays the printout out and offers Print now (window.PRQ is the chosen layout).
   try {
     var q = /[?&]print=(two|as|side)(?:&s=([^&#]*))?/.exec(location.search);
@@ -82,6 +83,9 @@
       if (!prefs.sv) prefs.sv = 6;
       localStorage.setItem("aarti2-prefs", JSON.stringify(prefs));
       window.PRQ = q[1] === "two" ? "as" : q[1]; // two columns (no longer offered): a link from before
+      // only some texts (their Library ids, comma separated): js/features/print.js prints just those
+      var t = /[?&]t=([a-z0-9,-]+)/.exec(location.search);
+      if (t) window.PRT = t[1].split(",").filter(Boolean);
       history.replaceState(null, "", location.pathname + location.hash);
     }
   } catch (e) {}

@@ -18,18 +18,37 @@ import { leadOrder } from "../features/bars.js";
 
 /**
  * Every piece, in reading order, and the Library categories they are listed under in the printed contents.
+ * @param {string[] | null} [ids]  only these texts (their Library ids), still in reading order; without it, every text
  * @returns {{ el: HTMLElement, secs: HTMLElement[], groups: { name: HTMLElement[], secs: HTMLElement[] }[] }}
  */
-export function compose() {
+export function compose(ids) {
   /** @type {any} */
   var w = window,
     C = w.CONTENT,
     el = document.createElement("div");
+  // a list naming no text in the Library (an old print link) prints everything
+  if (
+    ids &&
+    !C.categories.some(function (/** @type {any} */ g) {
+      return g.pieces.some(function (/** @type {any} */ p) {
+        return ids.indexOf(p.text) >= 0;
+      });
+    })
+  )
+    ids = null;
+  var cats = C.categories.map(function (/** @type {any} */ g) {
+    return {
+      name: g.name,
+      pieces: g.pieces.filter(function (/** @type {any} */ p) {
+        return !ids || ids.indexOf(p.text) >= 0;
+      }),
+    };
+  });
   el.id = "pvsrc";
   el.setAttribute("aria-hidden", "true");
   // out of sight and out of the page's flow, but laid out, so the print styles' choices can be read from it
   el.style.cssText = "position:absolute;left:-10000px;top:0;width:800px;visibility:hidden;pointer-events:none";
-  el.innerHTML = C.categories
+  el.innerHTML = cats
     .map(function (/** @type {any} */ g) {
       return g.pieces
         .map(function (/** @type {any} */ p) {
@@ -53,7 +72,7 @@ export function compose() {
     s.setAttribute("data-lang", P.lang);
   });
   var at = 0,
-    groups = C.categories.map(function (/** @type {any} */ g) {
+    groups = cats.map(function (/** @type {any} */ g) {
       // the category's name in both languages, as a piece's title is shown
       var row = document.createElement("div");
       row.innerHTML = '<span class="mr">' + g.name.mr + '</span><span class="en" lang="en">' + g.name.en + "</span>";
