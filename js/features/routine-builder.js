@@ -287,16 +287,19 @@ function nameHtml(t) {
 function buildInfo() {
   info = {};
   all = [];
-  var lib = loaded.library;
-  if (!lib) return;
+  var lib = loaded.library,
+    /** @type {any} */ w = window;
+  if (!lib || !w.CONTENT) return;
   /** @type {Record<string, any>} */
   var byId = {};
   lib.texts.forEach(function (x) {
     byId[x.id] = x;
   });
-  lib.groups.forEach(function (g) {
-    g.texts.forEach(function (id) {
-      var x = byId[id];
+  // in reading order (js/text/content.js)
+  w.CONTENT.categories.forEach(function (/** @type {import("../text/content.js").Content["categories"][0]} */ c) {
+    c.pieces.forEach(function (p) {
+      var id = p.text,
+        x = byId[id];
       if (!x || info[id]) return;
       baseCat[id] = /** @type {any} */ (x).category || "";
       info[id] = { id: id, title: x.title, titleEn: x.titleEn, language: x.language, category: baseCat[id] };

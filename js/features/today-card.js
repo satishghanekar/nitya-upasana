@@ -24,7 +24,7 @@
 
 import { P } from "../core/state.js";
 import { flash } from "../core/page.js";
-import { pjOpen } from "../core/apply.js";
+import { unfold } from "../core/apply.js";
 import { homeAlone, jumpTo } from "./history.js";
 import { setView } from "./day-picture.js";
 import { loaded } from "../text/load.js";
@@ -174,12 +174,12 @@ function buildInfo() {
   lib.texts.forEach(function (x) {
     t[x.id] = x;
   });
-  lib.groups.forEach(function (g, gi) {
-    var pieces = w.CONTENT.groups[gi] ? w.CONTENT.groups[gi].pieces : [];
-    g.texts.forEach(function (id, i) {
-      if (!t[id] || !pieces[i]) return;
-      info[id] = { id: id, sec: pieces[i].id, title: t[id].title, titleEn: t[id].titleEn, language: t[id].language };
-      bySec[pieces[i].id] = id;
+  w.CONTENT.categories.forEach(function (/** @type {import("../text/content.js").Content["categories"][0]} */ c) {
+    c.pieces.forEach(function (p) {
+      var id = p.text;
+      if (!t[id]) return;
+      info[id] = { id: id, sec: p.id, title: t[id].title, titleEn: t[id].titleEn, language: t[id].language };
+      bySec[p.id] = id;
     });
   });
 }
@@ -308,7 +308,7 @@ function openText(id) {
   var t = info[id],
     el = t && document.getElementById(t.sec);
   if (!el) return;
-  pjOpen(el);
+  unfold(el);
   jumpTo(function () {
     /** @type {HTMLElement} */ (el).scrollIntoView();
   }, "#" + t.sec);

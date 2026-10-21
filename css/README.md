@@ -46,7 +46,6 @@ Each file starts with a comment that lists its sections. Every section begins wi
   - `data-font`: the text font.
   - `data-tuck`: the bars are tucked away.
   - `data-lead="en"`: English is the main language; `data-scr`: Kannada letters.
-  - `data-pf`, `data-xf`: the Pooja and Aarti folds.
   - `data-home`: the home page is on screen (no piece at the top yet): Language and Dhrupad step aside, the bottom bar gives way to Start.
   - `data-hv`: Home on its own (js/features/history.js): the pieces under Home are not shown (screen only) until a text is opened.
   - `data-menu`: Settings or the Library is open; the bottom bar steps aside.

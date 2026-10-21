@@ -286,8 +286,7 @@
     padding: 4px 6px 12px 0;
     scrollbar-width: thin;
   }
-  #rail .rg,
-  #rail a.rg {
+  #rail .rg {
     display: block;
     font: 600 13px/1.3 var(--head);
     color: var(--accent);
@@ -296,18 +295,6 @@
     border: 0;
     border-bottom: 1px solid var(--rule);
     border-radius: 0;
-  }
-  #rail a.rg {
-    padding-top: 6px;
-    margin-top: 8px;
-  }
-  @media (hover: hover) {
-    #rail a.rg:hover {
-      background: var(--surface);
-    }
-  }
-  #rail[data-lang="both"] a.rg .en {
-    display: none;
   }
   #rail .rg:first-child {
     margin-top: 0;
