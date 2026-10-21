@@ -32,6 +32,7 @@ import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, firstUndone, stepInSession, textsFor } from "../core/routine.js";
 import { createTicks } from "../core/ticks.js";
 import { active, routine, ticksStorage } from "../store/store.js";
+import { DAYS, MONTHS, dv, esc, scr, scrKey } from "../core/words.js";
 
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
@@ -42,8 +43,8 @@ import { active, routine, ticksStorage } from "../store/store.js";
 // The menu words, in English and Marathi (the menu language, P.ui)
 const W = {
   en: {
-    days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    days: DAYS.en,
+    months: MONTHS.en,
     sessions: { morning: "Morning", afternoon: "Afternoon", evening: "Evening" },
     tabs: "Session",
     unset: "Nothing set",
@@ -76,8 +77,8 @@ const W = {
     ended: "End of the session",
   },
   mr: {
-    days: ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
-    months: ["जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"],
+    days: DAYS.mr,
+    months: MONTHS.mr,
     sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
     tabs: "वेळ",
     unset: "काहीच नाही",
@@ -134,33 +135,6 @@ var shownToday = "",
   langKey = "";
 /** @type {ReturnType<typeof setTimeout> | undefined} */
 var timer;
-
-/** @param {number | string} n Devanagari digits */
-function dv(n) {
-  return String(n).replace(/[0-9]/g, function (d) {
-    return "०१२३४५६७८९"[+d];
-  });
-}
-
-/** @param {string} s */
-function esc(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-
-// Devanagari shown in Kannada letters when that is the chosen script (SCR in js/render.js)
-/** @param {string} s */
-function scr(s) {
-  /** @type {any} */
-  var w = window;
-  return w.SCR && w.SCR.k ? w.SCR.to(s) : s;
-}
-
-// The script the texts are shown in: "" as written, or "kn" (Kannada letters)
-function scrKey() {
-  /** @type {any} */
-  var w = window;
-  return (w.SCR && w.SCR.k) || "";
-}
 
 function words() {
   return P && P.ui === "mr" ? W.mr : W.en;

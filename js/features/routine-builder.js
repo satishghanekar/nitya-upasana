@@ -17,7 +17,6 @@
 // lists (pure, unit-tested): js/core/routine.js. Titles follow the reading languages (Settings → Languages), as the
 // Vedic calendar's names do: the first language large, the second under it; the words around them follow the menus.
 
-import { P } from "../core/state.js";
 import { loaded } from "../text/load.js";
 import { sessionAt } from "../core/time-of-day.js";
 import {
@@ -40,6 +39,7 @@ import { setR } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { shownSession } from "./today-card.js";
 import { createPicker } from "./text-picker.js";
+import { DAYS, dv, esc, lead, num, scr, scrKey, second, ui } from "../core/words.js";
 
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
@@ -58,7 +58,7 @@ const W = {
     sessionG: "Session",
     modes: { fixed: "Same every day", weekday: "Different by weekday" },
     modeG: "Which days",
-    days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    days: DAYS.en,
     short: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     dayG: "Day",
     /** @param {number} n */
@@ -136,7 +136,7 @@ const W = {
     sessionG: "वेळ",
     modes: { fixed: "रोज तेच", weekday: "वारानुसार वेगळे" },
     modeG: "कोणते दिवस",
-    days: ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
+    days: DAYS.mr,
     short: ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"],
     dayG: "वार",
     /** @param {number} n */
@@ -249,51 +249,12 @@ var opener = null;
 
 // ----- small helpers -----
 
-/** @param {number | string} n Devanagari digits */
-function dv(n) {
-  return String(n).replace(/[0-9]/g, function (d) {
-    return "०१२३४५६७८९"[+d];
-  });
-}
-/** @param {string} s */
-function esc(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
 /** @param {string} id */
 function el(id) {
   return /** @type {HTMLElement} */ (document.getElementById(id));
 }
-function ui() {
-  return P && P.ui === "mr" ? "mr" : "en";
-}
 function words() {
   return W[ui()];
-}
-/** Digits as the menu language writes them @param {number} n */
-function num(n) {
-  return ui() === "mr" ? dv(n) : String(n);
-}
-// Marathi in Kannada letters when that is the chosen script (SCR in js/render.js)
-/** @param {string} s */
-function scr(s) {
-  /** @type {any} */
-  var w = window;
-  return w.SCR && w.SCR.k ? w.SCR.to(s) : s;
-}
-function scrKey() {
-  /** @type {any} */
-  var w = window;
-  return (w.SCR && w.SCR.k) || "";
-}
-// The reading languages (Settings): the first, and the second when there is one
-/** @returns {"mr" | "en"} */
-function lead() {
-  return P && P.lead === "en" ? "en" : "mr";
-}
-/** @returns {"mr" | "en" | ""} */
-function second() {
-  var s = P && P.l2;
-  return (s === "mr" || s === "en") && s !== lead() ? s : "";
 }
 /** A text's title in a reading language: as written (Kannada letters when chosen), or its English name */
 /** @param {PickText} t @param {"mr" | "en"} l */

@@ -20,12 +20,13 @@ import { applyPrefs } from "./profiles.js";
 import { refresh as refreshLibrary } from "./library.js";
 import { describeRestore, fileName, makeBackup, needsReminder, parseBackup, serialise } from "../store/backup.js";
 import { exportData, getMeta, kind, list, markBackup, onChange, restore, snooze } from "../store/store.js";
+import { MONTHS, dv, esc } from "../core/words.js";
 
 /** @typedef {import("../store/backup.js").Payload} Payload */
 
 const W = {
   en: {
-    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    months: MONTHS.en,
     never: "Not saved yet",
     /** @param {string} d */
     last: function (d) {
@@ -67,7 +68,7 @@ const W = {
     },
   },
   mr: {
-    months: ["जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"],
+    months: MONTHS.mr,
     never: "अजून जतन केलेली नाही",
     /** @param {string} d */
     last: function (d) {
@@ -124,13 +125,6 @@ function words() {
 /** @param {string} id */
 function el(id) {
   return /** @type {HTMLElement} */ (document.getElementById(id));
-}
-
-/** @param {number | string} n Devanagari digits */
-function dv(n) {
-  return String(n).replace(/[0-9]/g, function (d) {
-    return "०१२३४५६७८९"[+d];
-  });
 }
 
 /** A date as the menus write it: 18 October 2026, or १८ ऑक्टोबर २०२६ */
@@ -279,11 +273,6 @@ function showProblem(problem) {
   el("bkok").hidden = true;
   el("bkno").textContent = w.ok;
   openDialog();
-}
-
-/** @param {string} s */
-function esc(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 function openDialog() {
