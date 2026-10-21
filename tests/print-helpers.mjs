@@ -36,6 +36,23 @@ export async function stubPrint(page) {
   });
 }
 
+/**
+ * Count the print warm-ups (js/features/print.js lays out what the Print button and the browser's menu print a few
+ * seconds after load, in a hidden frame it removes when done). Call before the site loads; waitForWarmUp then waits
+ * for the first one, instead of a fixed number of seconds.
+ */
+export async function trackWarmUp(page) {
+  await page.addInitScript(() => {
+    window.__warmed = 0;
+    new MutationObserver((list) => {
+      for (const m of list) for (const n of m.removedNodes) if (n.nodeName === "IFRAME") window.__warmed++;
+    }).observe(document, { childList: true, subtree: true });
+  });
+}
+export async function waitForWarmUp(page, n = 1) {
+  await page.waitForFunction((n) => window.__warmed >= n, n, { timeout: 20_000 });
+}
+
 /** Press Print on the home page, then the given choice ("pr1" = first button, "pr2" = second). */
 export async function printFromButton(page, choice) {
   await page.evaluate(() => scrollTo(0, 0));

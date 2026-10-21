@@ -11,6 +11,7 @@
 // Lighthouse CI (lighthouserc.json) checks the Core Web Vitals on top of this.
 import { test, expect } from "@playwright/test";
 import { openSite, SETUPS } from "./helpers.mjs";
+import { trackWarmUp, waitForWarmUp } from "./print-helpers.mjs";
 
 // Recorded before the refactor (load / one language tap): 1,277 / 286 layouts.
 // After the performance work: 21 / 5. The budgets leave room for new features, and for slower machines
@@ -34,6 +35,8 @@ async function metrics(cdp) {
 const diff = (a, b) => Object.fromEntries(Object.keys(a).map((k) => [k, Math.round(b[k] - a[k])]));
 
 test("load and the language choices lay the page out only a few times @chromium-only", async ({ browser }) => {
+  // the slowed CPU (4×) makes this the longest test: about a minute, so the usual 60 s limit was too close
+  test.setTimeout(120_000);
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, serviceWorkers: "block" });
   const page = await context.newPage();
   const cdp = await context.newCDPSession(page);
@@ -49,11 +52,13 @@ test("load and the language choices lay the page out only a few times @chromium-
       });
     } catch (e) {}
   });
+  await trackWarmUp(page);
   const t0 = await metrics(cdp);
   // on a piece: the language button is in the top bar while reading (on the home page it steps aside)
   await openSite(page, { ...SETUPS.marathi, lead: "mr", l2: "en" }, { hash: "#a1" });
   // fonts arrive and the print warm-up runs (3 s after load, when idle); all of it counts as load
-  await page.waitForTimeout(5500);
+  await waitForWarmUp(page);
+  await page.waitForTimeout(300);
   const load = diff(t0, await metrics(cdp));
 
   // Marathi → English → both: each is a first visit to that language, so the text is fitted again

@@ -12,7 +12,7 @@
 import { test, expect, devices } from "@playwright/test";
 import { openSite, SETUPS, SNAP_ENV, TEXT_COUNT, openMore, tapMore } from "./helpers.mjs";
 import { pdfMarks, auditLines } from "./print-audit-helpers.mjs";
-import { printOnce, checkPrintout, stubPrint, printFromButton, readPrintView, addMarkers, pdfPages, markerPages, toInt } from "./print-helpers.mjs";
+import { printOnce, checkPrintout, stubPrint, printFromButton, readPrintView, addMarkers, pdfPages, markerPages, toInt, trackWarmUp, waitForWarmUp } from "./print-helpers.mjs";
 
 test.describe.configure({ mode: "parallel" });
 
@@ -121,9 +121,10 @@ for (const X of EXTRAS) {
 test("browser menu print gives the single-column print view @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
+  await trackWarmUp(page);
   await openSite(page, SETUPS.marathi);
   // the contents numbers for the menu print are worked out in the background ~3 s after load
-  await page.waitForTimeout(4000);
+  await waitForWarmUp(page);
   // page.pdf() fires beforeprint exactly as the browser's Print menu does; the markers go in after
   // the site's own handler has built the print view
   await addMarkers(page, "beforeprint");
@@ -289,8 +290,9 @@ test("iPhone: a printout laid out ahead prints on the first tap @chromium-only",
       dispatchEvent(new Event("beforeprint"));
     };
   });
+  await trackWarmUp(page);
   await openSite(page, SETUPS.english);
-  await page.waitForTimeout(9000);
+  await waitForWarmUp(page);
   await tapMore(page, "#prb");
   await page.locator("#pr1").click();
   await page.locator("#prgp").click();
