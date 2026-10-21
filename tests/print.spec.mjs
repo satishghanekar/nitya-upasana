@@ -142,6 +142,26 @@ test("browser menu print gives the single-column print view @chromium-only", asy
   await context.close();
 });
 
+// The printout is built from the texts themselves (js/print/compose.js), not copied from the reading page, so it is
+// the same whatever the page shows: Home, one text open, everything folded
+test("the printout does not depend on what the reading page shows @chromium-only", async ({ browser }) => {
+  async function printView(prefs, hash) {
+    const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
+    const page = await context.newPage();
+    await stubPrint(page);
+    await openSite(page, prefs, { hash });
+    await printFromButton(page, "pr1");
+    const html = await page.evaluate(() => document.getElementById("pv").innerHTML);
+    // the copy it was built from is gone again
+    expect(await page.locator("#pvsrc").count()).toBe(0);
+    await context.close();
+    return html;
+  }
+  const home = await printView(SETUPS.marathi, "");
+  expect(await printView(SETUPS.marathi, "#a5")).toBe(home);
+  expect(await printView({ ...SETUPS.marathi, pf: 1, xf: 1, af: ["a3", "a7"], tf: 1, fold: 1 }, "#p1")).toBe(home);
+});
+
 // Safari and iOS (class "wk") keep the page plan worked out from the heights (see paginate in
 // js/features/print.js). Chromium can take that path too: nothing lost, contents numbers present.
 for (const [setup, por] of [["marathi", "up"], ["english", "up"], ["marathi", "land"]]) {

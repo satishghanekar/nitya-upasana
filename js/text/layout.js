@@ -2,7 +2,45 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 export function init() {
-  [].forEach.call(document.querySelectorAll(".items"), function (b) {
+  gridItems(document);
+  // Contents rail (wide screens), built from the Library's list
+  buildRail();
+  // Gentle fade-in for verses that scroll into view (never for content already on screen; skipped if the device asks for less motion)
+  (function () {
+    if (
+      !("IntersectionObserver" in window) ||
+      (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)
+    )
+      return;
+    var ready = false;
+    var io = new IntersectionObserver(
+      function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          io.unobserve(e.target);
+          if (!ready) return;
+          var t = e.target;
+          t.classList.add("fx-in");
+          setTimeout(function () {
+            t.classList.remove("fx-in");
+          }, 700);
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px" },
+    );
+    [].forEach.call(document.querySelectorAll(".ash header,.ash .item,.rftop,.fin"), function (x) {
+      io.observe(x);
+    });
+    setTimeout(function () {
+      ready = true;
+    }, 400);
+  })();
+}
+
+// Where each stanza and line sits in the grid of every piece inside r (the page, or a printout's copy:
+// js/print/compose.js): two stanzas side by side when the screen is wide, each Marathi line beside its English
+export function gridItems(/** @type {ParentNode} */ r) {
+  [].forEach.call(r.querySelectorAll(".items"), function (b) {
     var row = 1,
       pair = [],
       lone = false,
@@ -55,7 +93,7 @@ export function init() {
     flush();
   });
   // Desktop + Both: each Marathi line sits beside its English line (rows matched by position)
-  [].forEach.call(document.querySelectorAll(".verse"), function (v) {
+  [].forEach.call(r.querySelectorAll(".verse"), function (v) {
     [".mr", ".en"].forEach(function (c) {
       var b = v.querySelector(":scope>" + c);
       if (b)
@@ -64,38 +102,6 @@ export function init() {
         });
     });
   });
-  // Contents rail (wide screens), built from the Library's list
-  buildRail();
-  // Gentle fade-in for verses that scroll into view (never for content already on screen; skipped if the device asks for less motion)
-  (function () {
-    if (
-      !("IntersectionObserver" in window) ||
-      (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)
-    )
-      return;
-    var ready = false;
-    var io = new IntersectionObserver(
-      function (es) {
-        es.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          io.unobserve(e.target);
-          if (!ready) return;
-          var t = e.target;
-          t.classList.add("fx-in");
-          setTimeout(function () {
-            t.classList.remove("fx-in");
-          }, 700);
-        });
-      },
-      { rootMargin: "0px 0px -8% 0px" },
-    );
-    [].forEach.call(document.querySelectorAll(".ash header,.ash .item,.rftop,.fin"), function (x) {
-      io.observe(x);
-    });
-    setTimeout(function () {
-      ready = true;
-    }, 400);
-  })();
 }
 
 // The left menu on wide screens (#rail), built from the Library's list (js/features/library.js), so it lists the texts
