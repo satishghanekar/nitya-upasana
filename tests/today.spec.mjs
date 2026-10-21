@@ -2,21 +2,24 @@
 // date, the Morning | Afternoon | Evening switch (a session with nothing set greyed), the session's texts with a tick
 // each, Start / Continue (pinned to the bottom on phones), More (App / Share / QR / Print / Help, closed by default) and
 // "Another text? Open the Library". Home ends there: the pieces show once a text is opened. On a Sankashti day only,
-// one line with moonrise. Every text is in the Library (the book button). Default routine (content/routines.json): Morning = Atharvashirsha, Evening = the ten
-// aartis. 15 Oct 2026 is a Thursday, 18 Oct a Sunday, 28 Oct a Sankashti (Wednesday).
+// one line with moonrise. Every text is in the Library (the book button). These tests run on a fixed routine (TEST_ROUTINE
+// in helpers.mjs: Morning = Atharvashirsha, Evening = the ten aartis), so they don't change with Satish's schedule; the
+// bundled default (content/routines.json) has its own test below. 15 Oct 2026 is a Thursday, 18 Oct a Sunday, 28 Oct a
+// Sankashti (Wednesday).
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
-import { openSite, settle, SETUPS } from "./helpers.mjs";
+import { openSite, settle, SETUPS, openMore, tapMore, useTestRoutine, TEST_AARTIS, TEST_ROUTINE } from "./helpers.mjs";
 import { textsFor } from "../js/core/routine.js";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 const TITLE = Object.fromEntries(LIB.texts.map((t) => [t.id, t]));
-const AARTIS = LIB.groups.find((g) => g.id === "g-aarti").texts;
+const AARTIS = TEST_AARTIS;
 const MORNING = new Date("2026-10-15T10:00:00-04:00"); // Thursday
 const EVENING = new Date("2026-10-18T19:00:00-04:00"); // Sunday
 
-const ROUTINE = JSON.parse(readFileSync(new URL("../content/routines.json", import.meta.url), "utf8"));
+const BUNDLED = JSON.parse(readFileSync(new URL("../content/routines.json", import.meta.url), "utf8"));
+const ROUTINE = TEST_ROUTINE;
 const rows = (page) => page.locator("#tsl li");
 // a session's tab in the Morning | Afternoon | Evening switch; a greyed one is aria-disabled, so it is clicked with force
 const tab = (page, s) => page.locator(`#tss-${s}`);
@@ -33,6 +36,18 @@ const onPiece = (page) =>
     });
     return c;
   });
+
+test.beforeEach(async ({ page }, info) => {
+  if (!info.title.startsWith("the bundled default")) await useTestRoutine(page);
+});
+
+test("the bundled default: Home shows the day's lists from content/routines.json @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: MORNING });
+  const ids = textsFor(BUNDLED, 4, "morning");
+  expect(await rows(page).locator(".t1").allTextContents()).toEqual(ids.map((id) => TITLE[id].title));
+  await pickTab(page, "evening");
+  expect(await rows(page).locator(".t1").allTextContents()).toEqual(textsFor(BUNDLED, 4, "evening").map((id) => TITLE[id].title));
+});
 
 test("in the morning Home shows Thursday's Morning: the Atharvashirsha, with Start @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
@@ -191,7 +206,8 @@ test("in the morning, Next after the Atharvashirsha ends the session and returns
   // reading outside a session (a Library link): Next follows the library again
   await page.locator("#hm").click();
   await page.locator('#jl a[data-go="p1"]').click();
-  await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: Ganapati Aarti");
+  const order = LIB.groups.flatMap((g) => g.texts);
+  await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: " + TITLE[order[order.indexOf("atharvashirsha") + 1]].titleEn);
 });
 
 test("a text's title in the list opens it, in the session", async ({ page }) => {
@@ -216,6 +232,8 @@ test("in a session, Next ticks the text as done for today before moving on; Prev
   await expect.poll(() => onPiece(page)).toBe("a3");
   await page.goto(page.url().split("#")[0]);
   await settle(page);
+  // on a wide screen the reading page reopens where you were: the top bar's title goes Home
+  if (!(await page.locator("#tsl").isVisible())) await page.locator("#bt").click();
   await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
   await expect(rows(page).nth(0).locator("input")).toBeChecked();
   await expect(rows(page).nth(1).locator("input")).toBeChecked();
@@ -344,7 +362,7 @@ test("Home has no date card, week row or contents list: the Library has every te
   // Home v3: Home ends after More and the Library line; the reading page's groups and pieces are not shown under it
   await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
   await expect(page.locator(".wrap > .grp:visible, section.ash:visible")).toHaveCount(0);
-  await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(11);
+  await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(LIB.texts.length);
 });
 
 test("on a Sankashti day only, one line gives tonight's moonrise and the place @mobile", async ({ page }) => {
@@ -380,10 +398,12 @@ test("More, under the list, opens the App / Share / QR / Print / Help row, at ev
     await page.locator("#tmb").click();
     await expect(page.locator("#tmb")).toHaveAttribute("aria-expanded", "true");
     for (const b of ["#shb", "#qrb", "#prb", "#hlpb"]) await expect(page.locator(b), `${b} ${width}px`).toBeVisible();
+    // measured again: on a tall Home the tap scrolls the row into view
+    const more2 = await page.locator("#tmb").boundingBox();
     const row = await page.locator("#shr").boundingBox();
-    expect(row.y, `${width}px`).toBeGreaterThanOrEqual(more.y + more.height - 1);
+    expect(row.y, `${width}px`).toBeGreaterThanOrEqual(more2.y + more2.height - 1);
     // the buttons work as before: QR opens its pop-up
-    await page.locator("#qrb").click();
+    await tapMore(page, "#qrb");
     await expect(page.locator("#qrm")).toBeVisible();
     await page.keyboard.press("Escape");
     await page.locator("#tmb").click();
@@ -412,7 +432,7 @@ test("Home on its own: the pieces show once a text is opened, and go again on th
   await rows(page).first().locator("a").click();
   await expect(page.locator("html")).not.toHaveAttribute("data-hv", "1");
   await expect.poll(() => onPiece(page)).not.toBe("");
-  await expect(page.locator(".wrap > .grp").first()).toBeVisible();
+  expect(await page.locator("section.ash:visible").count()).toBeGreaterThan(0);
   // the phone's Back: Home on its own again
   await page.goBack();
   await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
@@ -485,15 +505,23 @@ test("on a phone Start stays at the bottom of the screen, clear of the safe area
   expect(await page.evaluate(() => [...document.styleSheets].some((s) => [...s.cssRules].some((r) => /#tsb/.test(r.cssText) && /safe-area-inset-bottom/.test(r.cssText))))).toBe(true);
 });
 
-test("on a wide screen Home is one centred column", async ({ browser }) => {
-  const context = await browser.newContext({ viewport: { width: 1280, height: 820 }, serviceWorkers: "block" });
-  const page = await context.newPage();
-  await openSite(page, SETUPS.marathi, { now: EVENING });
-  const h = await page.locator("#home").boundingBox();
-  expect(h.width).toBeLessThanOrEqual(560);
-  expect(Math.abs(h.x + h.width / 2 - 640)).toBeLessThan(40);
-  await expect(page.locator("#rail")).toBeHidden();
-  await context.close();
+test("on a wide screen Home uses the whole width: today on the left, the picture large beside it (Full screen)", async ({ browser }) => {
+  for (const [width, height] of [[1024, 768], [1280, 820], [1920, 1080]]) {
+    const context = await browser.newContext({ viewport: { width, height }, serviceWorkers: "block" });
+    const page = await context.newPage();
+    await openSite(page, SETUPS.marathi, { now: EVENING });
+    const h = await page.locator("#home").boundingBox();
+    const edge = width >= 1400 ? 32 : 24;
+    expect(Math.abs(h.x - edge), `${width}px left edge`).toBeLessThan(2);
+    expect(Math.abs(h.x + h.width - (width - edge)), `${width}px right edge`).toBeLessThan(10);
+    const list = await page.locator("#tsc").boundingBox(),
+      pic = await page.locator("#iconb").boundingBox();
+    expect(pic.x, `${width}px picture beside today`).toBeGreaterThan(list.x + list.width);
+    expect(pic.width, `${width}px picture size`).toBeGreaterThanOrEqual(Math.min(400, height - 300));
+    expect(pic.y + pic.height, `${width}px picture on screen`).toBeLessThanOrEqual(height);
+    await expect(page.locator("#rail")).toBeHidden();
+    await context.close();
+  }
 });
 
 test("with no routine file the card still works and the texts still load", async ({ page }) => {

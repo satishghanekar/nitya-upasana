@@ -24,26 +24,26 @@ const allLines = (C) => pieces(C).flatMap((p) => [...(p.refrain ? p.refrain.line
 
 describe("CONTENT from the text files", () => {
   const C = buildContent(lib, files);
-  // The texts added since (the Gondavalekar Maharaj aartis) come after the old ones in their group
-  const ADDED = ["jaydeva-jaydeva-samartha", "jay-jay-aarti-shrigururaya", "ovaloon-aarti-chaitanyabrahma", "aarti-kariton-guruvar",
-    "dhanya-jagin-guruvarya", "aarti-belaguve", "svastha-karin-shayan", "ovaloo-sapreme-aarti"];
-  const OLD_C = { ...C, groups: C.groups.map((g) => ({ ...g, pieces: g.pieces.filter((p) => !ADDED.includes(p.id)) })) };
+  // The texts added since (Shree Rudra, Shri Sukta, the Gondavalekar Maharaj aartis and ashtaks, …) are left out of the
+  // comparison: every text the old file had must come out of the text files exactly as it was, in the same order
+  const OLD_IDS = new Set(pieces(OLD).map((p) => p.id));
+  const OLD_C = { ...C, groups: C.groups.map((g) => ({ ...g, pieces: g.pieces.filter((p) => OLD_IDS.has(p.id)) })).filter((g) => g.pieces.length) };
+  const byId = (Cx, id) => pieces(Cx).find((p) => p.id === id);
   test("is identical to the old content/pieces.js", () => {
     expect(OLD_C).toStrictEqual(OLD);
     // and in the same key order, so even the order the page meets things in is unchanged
     expect(JSON.stringify(OLD_C)).toBe(JSON.stringify(OLD));
-    expect(pieces(C).map((p) => p.id).slice(-ADDED.length)).toEqual(ADDED);
   });
   test("the marks that matter are all there: 53 <br>, 42 zero-width spaces, svara marks", () => {
-    const s = JSON.stringify(allLines(C));
+    const s = JSON.stringify(allLines(OLD_C));
     expect(count(s, /<br>/g)).toBe(53);
     expect(count(s, /​/g)).toBe(42);
     for (const m of [/॑/g, /॒/g, /᳚/g]) expect(count(s, m)).toBe(count(JSON.stringify(allLines(OLD)), m));
     expect(count(s, /॑/g)).toBeGreaterThan(0);
   });
-  test.each(pieces(OLD).map((p, i) => [p.id, i]))("%s: every line identical", (id, i) => {
-    const a = allLines({ groups: [{ pieces: [pieces(C)[i]] }] });
-    const b = allLines({ groups: [{ pieces: [pieces(OLD)[i]] }] });
+  test.each(pieces(OLD).map((p) => [p.id]))("%s: every line identical", (id) => {
+    const a = allLines({ groups: [{ pieces: [byId(C, id)] }] });
+    const b = allLines({ groups: [{ pieces: [byId(OLD, id)] }] });
     expect(a.length).toBe(b.length);
     a.forEach((l, k) => expect(l).toStrictEqual(b[k]));
   });

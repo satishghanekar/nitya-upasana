@@ -10,7 +10,7 @@
 //   - no line is lost, side by side rows stay in step and lines break mid-phrase only rarely (see the print audit)
 // PDFs can only be made by Chromium, so this suite is Chromium-only.
 import { test, expect, devices } from "@playwright/test";
-import { openSite, SETUPS, SNAP_ENV } from "./helpers.mjs";
+import { openSite, SETUPS, SNAP_ENV, TEXT_COUNT, openMore, tapMore } from "./helpers.mjs";
 import { pdfMarks, auditLines } from "./print-audit-helpers.mjs";
 import { printOnce, checkPrintout, stubPrint, printFromButton, readPrintView, addMarkers, pdfPages, markerPages, toInt } from "./print-helpers.mjs";
 
@@ -31,6 +31,11 @@ const SIDEWAYS = [
 // iPhone 13 emulation in Chromium (the device entry names WebKit as its browser, which newContext does not take)
 const { defaultBrowserType: _bt, ...IPHONE } = devices["iPhone 13"];
 const FONTS = ["std", "classic", "bold", "hand"];
+// Shree Rudra's lines are whole passages: side by side on a sideways page they are wider than half the page even
+// at their smallest, so they wrap mid-phrase however they are set (Satish, 2026-10-21). Every other check still
+// covers them; the mid-phrase count is for the other texts.
+const LONG_LINES = ["shree-rudra"];
+const midPhrase = (a) => a.findings.filter((f) => f.kind.startsWith("line broken mid-phrase") && !LONG_LINES.includes(f.sid)).length;
 // Letter is chosen for US / Canada / Mexico / Philippines, A4 everywhere else (see LTR in js/features/print.js)
 const PAPERS = [
   { paper: "Letter", locale: "en-US" },
@@ -84,7 +89,7 @@ for (const L of SIDEWAYS)
       expect(a.missing, which("text missing")).toBe(0);
       expect(a.overflow, which("runs past its column")).toBe(0);
       expect(a.outOfStep, which("side by side out of step")).toBeLessThanOrEqual(6);
-      expect(a.brokeMidPhrase, which("line broken mid-phrase")).toBeLessThanOrEqual(12);
+      expect(midPhrase(a), which("line broken mid-phrase")).toBeLessThanOrEqual(12);
     });
   });
 
@@ -125,7 +130,7 @@ test("browser menu print gives the single-column print view @chromium-only", asy
   const pdf = await pdfPages(page, "Letter");
   await page.emulateMedia({ media: "print" });
   const pv = await readPrintView(page);
-  expect(pv.pieces).toHaveLength(11);
+  expect(pv.pieces).toHaveLength(TEXT_COUNT);
   expect(pv.toc.every((t) => t.page)).toBe(true);
   const at = markerPages(pdf.pages);
   for (const t of pv.toc) expect(at[t.id + ":0:s"], `${t.id} page`).toBe(toInt(t.page));
@@ -148,7 +153,7 @@ for (const [setup, por] of [["marathi", "up"], ["english", "up"], ["marathi", "l
     await printFromButton(page, por === "land" ? "pr2" : "pr1");
     const pv = await readPrintView(page);
     expect(pv.mode).toBe("one");
-    expect(pv.pieces).toHaveLength(11);
+    expect(pv.pieces).toHaveLength(TEXT_COUNT);
     expect(pv.toc.every((t) => t.page)).toBe(true);
     await addMarkers(page);
     const pdf = await pdfPages(page, "Letter");
@@ -164,7 +169,7 @@ for (const [setup, por] of [["marathi", "up"], ["english", "up"], ["marathi", "l
 test("print pop-up offers the right choices and closes cleanly @chromium-only", async ({ page }) => {
   await stubPrint(page);
   await openSite(page, SETUPS.both);
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await expect(page.locator("#prpg")).toBeHidden();
   await expect(page.locator("#prpv")).toHaveText("Landscape, side by side");
   await expect(page.locator("#prq")).toHaveText("Letter");
@@ -172,7 +177,7 @@ test("print pop-up offers the right choices and closes cleanly @chromium-only", 
   await page.keyboard.press("Escape");
   await expect(page.locator("#prm")).toBeHidden();
   await expect(page.locator("#prb")).toBeFocused();
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await page.locator("#prx").click();
   await expect(page.locator("#prm")).toBeHidden();
   expect(await page.evaluate(() => window.__printed)).toBe(0);
@@ -192,7 +197,7 @@ test("iPhone: an ignored print offers Print now @chromium-only", async ({ browse
     };
   });
   await openSite(page, SETUPS.english);
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await page.locator("#pr1").click();
   await page.locator("#prgp").click();
   await expect(page.locator("#prgo")).toBeVisible({ timeout: 15_000 });
@@ -205,7 +210,7 @@ test("iPhone: an ignored print offers Print now @chromium-only", async ({ browse
   expect(await page.evaluate(() => document.documentElement.getAttribute("data-print"))).toBe("one");
   // the next Print shows the layout choices again
   await page.evaluate(() => dispatchEvent(new Event("afterprint")));
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await expect(page.locator("#pr1")).toBeVisible();
   await expect(page.locator("#prgo")).toBeHidden();
   await expect(page.locator("#prw")).toBeHidden();
@@ -222,7 +227,7 @@ test("iPhone: when Print now does not print either, Share → Print and Open in 
     window.print = () => window.__printed++;
   });
   await openSite(page, SETUPS.english);
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await page.locator("#pr1").click();
   await page.locator("#prgp").click();
   await expect(page.locator("#prgo")).toBeVisible({ timeout: 15_000 });
@@ -236,7 +241,7 @@ test("iPhone: when Print now does not print either, Share → Print and Open in 
   expect(await page.evaluate(() => window.__printed)).toBe(2);
   // the next Print shows the layout choices again
   await page.locator("#prx").click();
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await expect(page.locator("#pr1")).toBeVisible();
   await expect(page.locator("#prv")).toBeHidden();
   await context.close();
@@ -253,7 +258,7 @@ test("iPhone Home Screen app: a layout choice goes straight to Open in Safari @c
     window.print = () => window.__printed++;
   });
   await openSite(page, SETUPS.english);
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await page.locator("#pr1").click();
   await page.locator("#prgp").click();
   await expect(page.locator("#prsf")).toBeVisible();
@@ -265,7 +270,7 @@ test("iPhone Home Screen app: a layout choice goes straight to Open in Safari @c
   expect(await page.evaluate(() => document.documentElement.hasAttribute("data-print"))).toBe(false);
   await page.locator("#prx").click();
   await expect(page.locator("#prm")).toBeHidden();
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await expect(page.locator("#pr1")).toBeVisible();
   await expect(page.locator("#prw")).toBeHidden();
   await context.close();
@@ -285,7 +290,7 @@ test("iPhone: a printout laid out ahead prints on the first tap @chromium-only",
   });
   await openSite(page, SETUPS.english);
   await page.waitForTimeout(9000);
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await page.locator("#pr1").click();
   await page.locator("#prgp").click();
   await page.waitForTimeout(300);
@@ -315,7 +320,7 @@ test("iPhone Home Screen app: Open in Safari carries the print choices @chromium
     localStorage.setItem("aarti2-prefs", JSON.stringify(p));
   });
   await page.reload();
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await page.locator("#pr2").click();
   await page.locator("#prgp").click();
   await expect(page.locator("#prsf")).toBeVisible();
@@ -359,7 +364,7 @@ for (const [setup, words] of [
   test(`print pop-up offers Portrait and Landscape: ${setup} @chromium-only`, async ({ page }) => {
     await stubPrint(page);
     await openSite(page, SETUPS[setup]);
-    await page.locator("#prb").click();
+    await tapMore(page, "#prb");
     await expect(page.locator("#pr1")).toHaveText("Portrait");
     await expect(page.locator("#pr2")).toHaveText("Landscape");
     await expect(page.locator("#pr1")).toHaveAttribute("aria-pressed", "true");
@@ -377,7 +382,7 @@ for (const [setup, a, b] of [
   test(`print pop-up offers only Landscape side by side: ${setup} @chromium-only`, async ({ page }) => {
     await stubPrint(page);
     await openSite(page, { ...SETUPS[setup], por: "up" });
-    await page.locator("#prb").click();
+    await tapMore(page, "#prb");
     await expect(page.locator("#prpg")).toBeHidden();
     await expect(page.locator("#prpv")).toHaveText("Landscape, side by side");
     const t = await page.locator("#prfs").textContent();
@@ -418,7 +423,7 @@ test("print pop-up: the page chosen is remembered and printed that way @chromium
     const page = await context.newPage();
     await stubPrint(page);
     await openSite(page, SETUPS.marathi);
-    await page.locator("#prb").click();
+    await tapMore(page, "#prb");
     await expect(page.locator("#prl")).toBeHidden();
     await expect(page.locator("#prc")).toBeVisible({ visible: !!ua });
     const sizes = () =>
@@ -433,7 +438,7 @@ test("print pop-up: the page chosen is remembered and printed that way @chromium
     expect((await sizes()).pop()).toBe("landscape");
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem("aarti2-prefs")).por)).toBe("land");
     await page.evaluate(() => dispatchEvent(new Event("afterprint")));
-    await page.locator("#prb").click();
+    await tapMore(page, "#prb");
     await expect(page.locator("#pr2")).toHaveAttribute("aria-pressed", "true");
     await context.close();
   }
@@ -449,7 +454,7 @@ test("print pop-up: a saved Landscape choice is kept @chromium-only", async ({ p
     localStorage.setItem("aarti2-prefs", JSON.stringify(p));
   });
   await page.reload();
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await expect(page.locator("#pr2")).toHaveAttribute("aria-pressed", "true");
 });
 
@@ -459,7 +464,7 @@ test("print pop-up scrolls when taller than the screen @chromium-only", async ({
   await page.setViewportSize({ width: 844, height: 390 });
   await stubPrint(page);
   await openSite(page, SETUPS.marathi);
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await page.evaluate(() => ["prw", "prsf", "prcp"].forEach((i) => (document.getElementById(i).hidden = false)));
   expect(await page.locator("#prm .qrc").evaluate((e) => e.getBoundingClientRect().top)).toBeGreaterThanOrEqual(0);
   await page.locator("#prx").scrollIntoViewIfNeeded();
@@ -471,7 +476,7 @@ test("print pop-up scrolls when taller than the screen @chromium-only", async ({
 test("print pop-up shows the dhrupad and font settings @chromium-only", async ({ page }) => {
   await stubPrint(page);
   await openSite(page, { ...SETUPS.marathi, fnt: "classic" });
-  await page.locator("#prb").click();
+  await tapMore(page, "#prb");
   await expect(page.locator("#prdg [aria-pressed=true]")).toHaveText("Once", { useInnerText: true });
   await expect(page.locator("#prfs")).toHaveCSS("text-align", "center");
   await expect(page.locator("#prfn [aria-pressed=true]")).toHaveText("Classic", { useInnerText: true });

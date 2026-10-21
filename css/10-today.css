@@ -472,7 +472,7 @@
 /* Wide screens (data-rail): only the text being read (.solo, js/features/history.js) is on the right, scrolling there
    beside the side menu; ‹ Prev / Next › and the menu change it, so the next text never runs on below. Home is not
    above it either (a short text would show Home's end over it); मुखपृष्ठ in the menu or the bottom bar goes back */
-@media screen and (min-width: 1100px) {
+@media screen and (min-width: 1024px) {
   :root[data-run="1"][data-rail="1"]:not([data-hv]) #home,
   :root[data-run="1"][data-rail="1"] .ash.inrun:not(.solo) {
     display: none !important;
@@ -542,14 +542,15 @@
 [data-home="1"] #rail {
   visibility: hidden;
 }
-/* ==== Desktop A (screens 1100px and wider, docs/decisions.md): Home on its own uses the whole layout width (85% of the
+/* ==== Desktop A (screens 1024px and wider, docs/decisions.md): Home on its own uses the whole layout width (85% of the
    screen): today on the left (the Vedic calendar line, the festival line, Morning / Afternoon / Evening, the session's
    texts with their ticks, Start, More, the Library line), the day's picture large on the right with the date under it.
    The rows are auto-sized and the last one takes the rest, so the picture spanning them all leaves no gaps ==== */
-@media screen and (min-width: 1100px) {
+@media screen and (min-width: 1024px) {
+  /* the body's 16px and Home's own 8px taken back, so today's column starts where the side menu does while reading */
   :root[data-hv="1"][data-rail="1"] .wrap {
-    max-width: var(--T);
-    margin-left: var(--L);
+    max-width: calc(var(--T) + 24px);
+    margin-left: calc(var(--L) - 24px);
   }
   :root[data-hv="1"][data-rail="1"] #home {
     max-width: none;
@@ -564,17 +565,19 @@
     min-width: 0;
   }
   :root[data-hv="1"][data-rail="1"] #home > #tdy {
+    --pic: min(560px, calc(100vh - 260px), calc(var(--W) - 120px));
     grid-column: 2;
     grid-row: 1 / -1;
     flex-direction: column;
     justify-content: flex-start;
     gap: 18px;
-    margin: 6px 0 0;
+    /* the picture and the date centred in the height of the screen */
+    margin: max(6px, calc((100vh - 260px - var(--pic)) / 2)) 0 0;
     text-align: center;
   }
   :root[data-hv="1"][data-rail="1"] #tdy #iconb {
-    width: min(440px, 30vw);
-    height: min(440px, 30vw);
+    width: var(--pic);
+    height: var(--pic);
   }
   :root[data-hv="1"][data-rail="1"] #tdd .d1 {
     font-size: 26px;
@@ -672,7 +675,7 @@
 
 /* ==== Desktop A: the side menu while a session is read (#rrun, js/features/today-card.js): the session's name with how
    many are done, its texts with a tick mark on those done, and the Library at the end ==== */
-@media screen and (min-width: 1100px) {
+@media screen and (min-width: 1024px) {
   #rail #rrun .rg {
     display: flex;
     align-items: baseline;
@@ -747,28 +750,68 @@
   }
 }
 
-/* ==== Desktop B (docs/decisions.md): the Vedic calendar (#cal) and Settings (#panel) open in the right-hand area, under
-   the top bar, beside today on the left (Home's left column, or the side menu while reading), not over the whole page.
-   The button that opened each one stays marked while it is open ==== */
-@media screen and (min-width: 1100px) {
+/* ==== Desktop B (docs/decisions.md): the Vedic calendar (#cal), Settings (#panel) and the Library (#jump) open in the
+   right-hand area, under the top bar, beside today on the left (Home's left column, or the side menu while reading), not
+   over the whole page. The button that opened each one stays marked while it is open ==== */
+@media screen and (min-width: 1024px) {
   :root[data-rail="1"] #cal,
   :root[data-rail="1"] #panel {
     top: var(--bb, 69px) !important;
+  }
+  :root[data-rail="1"] #cal,
+  :root[data-rail="1"] #panel,
+  :root[data-rail="1"] #jump {
     left: calc(var(--L) + var(--S) - 1px);
     right: 0;
     bottom: 0;
-    padding: 0 var(--L) 24px 40px;
+    padding: 0 var(--L) 24px 32px;
     border-left: 1px solid var(--rule);
     z-index: 6;
+  }
+  /* the Library: the search box a comfortable width, the categories in columns */
+  :root[data-rail="1"] #jump .libin {
+    max-width: none;
+  }
+  :root[data-rail="1"] #jump #q {
+    max-width: 34rem;
+  }
+  :root[data-rail="1"] #jl {
+    columns: 2 300px;
+    column-gap: 40px;
+  }
+  :root[data-rail="1"] #jl .tocg {
+    break-inside: avoid;
+  }
+  :root[data-rail="1"] #jl #lbr {
+    column-span: all;
   }
   :root[data-rail="1"][data-sp] {
     overflow: visible;
   }
+  /* the month takes the room the day card leaves; its days fill the height of the screen, names kept whole */
   :root[data-rail="1"] #cal .calin {
-    grid-template-columns: 1fr minmax(320px, 380px);
-    gap: 18px 28px;
+    grid-template-columns: minmax(0, 1fr) clamp(290px, 26vw, 360px);
+    gap: 16px 24px;
     max-width: none;
     margin: 0;
+  }
+  :root[data-rail="1"] #cal .cgr {
+    border-spacing: 4px;
+  }
+  :root[data-rail="1"] #cal .cd {
+    min-height: max(76px, calc((100vh - 330px) / 6));
+    justify-content: flex-start;
+    padding: 6px 2px;
+  }
+  :root[data-rail="1"] #cal .cd b {
+    font-size: 17px;
+  }
+  :root[data-rail="1"] #cal .cd .t,
+  :root[data-rail="1"] #cal .cd .f,
+  :root[data-rail="1"] #cal .cd .fs {
+    overflow-wrap: normal;
+    word-break: keep-all;
+    font-size: 11.5px;
   }
   :root[data-rail="1"] #cal #calm {
     grid-column: 1;
@@ -788,7 +831,7 @@
   }
   /* Settings' groups as cards across the width */
   :root[data-rail="1"] #sp-home .sp-body {
-    columns: 2 380px;
+    columns: 3 340px;
     column-gap: 24px;
   }
   :root[data-rail="1"] #sp-home .sp-h {
@@ -808,3 +851,111 @@
   }
 }
 
+
+/* ==== Tablets held upright (Full screen, docs/decisions.md): Home is one larger column with the day's picture large on
+   top and the date under it, so the screen is filled without adding anything to Home ==== */
+@media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
+  :root[data-hv="1"] #home {
+    max-width: 40rem;
+    font-size: 1.08em;
+  }
+  :root[data-hv="1"] #tdy {
+    flex-direction: column;
+    gap: 14px;
+    margin: 16px 0 22px;
+    text-align: center;
+  }
+  :root[data-hv="1"] #tdy #iconb {
+    width: min(340px, 34vh);
+    height: min(340px, 34vh);
+  }
+  :root[data-hv="1"] #tdd .d1 {
+    font-size: 26px;
+  }
+  :root[data-hv="1"] #tdd .d2 {
+    font-size: 16px;
+  }
+  :root[data-hv="1"] #tsl li {
+    padding-block: 4px;
+  }
+}
+
+/* ==== Phones held sideways: Home in two columns, the day on the left (picture and date, the Vedic calendar line, the
+   festival, More, the Library line), the session on the right (Morning / Afternoon / Evening, its texts, Start), so the
+   whole session shows without scrolling ==== */
+@media screen and (orientation: landscape) and (max-height: 520px) {
+  :root[data-hv="1"] #home {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-auto-flow: row dense;
+    column-gap: 28px;
+    align-items: start;
+  }
+  :root[data-hv="1"] #home > * {
+    grid-column: 2;
+    min-width: 0;
+  }
+  :root[data-hv="1"] #home > #tdy,
+  :root[data-hv="1"] #home > #pan,
+  :root[data-hv="1"] #home > #fst,
+  :root[data-hv="1"] #home > #skt,
+  :root[data-hv="1"] #home > #pfnt,
+  :root[data-hv="1"] #home > #tmo,
+  :root[data-hv="1"] #home > #tlib {
+    grid-column: 1;
+  }
+  :root[data-hv="1"] #home > #tsc {
+    grid-row: 1 / span 6;
+  }
+  /* Start sits under the list, not pinned to the bottom of a screen this short */
+  :root[data-hv="1"] #home > #tsb {
+    position: static;
+    margin: 14px 0 0;
+    padding: 0;
+    border-top: 0;
+    background: none;
+  }
+}
+
+/* ==== Large monitors (2K at 100%, 4K at low scaling): the layout stops growing at 2200px (css/04-columns-rail.css) and
+   today's column, the left menu and the pages beside them are drawn larger instead, so nothing looks lost on the
+   screen. zoom on the parts in the page's flow only: the fixed areas keep their place, their contents grow ==== */
+@media screen and (min-width: 2200px) {
+  [data-rail="1"] {
+    --Z: 1.25;
+    --S: 560px;
+  }
+}
+@media screen and (min-width: 3000px) {
+  [data-rail="1"] {
+    --Z: 1.6;
+    --S: 700px;
+    --T: min(calc(var(--vw, 100vw) - 96px), 3000px);
+  }
+}
+@media screen and (min-width: 2200px) {
+  :root[data-rail="1"] #home > :not(#tdy),
+  :root[data-rail="1"] #rail > *,
+  :root[data-rail="1"] #cal .calin,
+  :root[data-rail="1"] #panel .sp-pg,
+  :root[data-rail="1"] #jump .libin,
+  :root[data-rail="1"] .bar > *,
+  :root[data-rail="1"] #asc > *,
+  :root[data-rail="1"] .wrap > :not(#home) {
+    zoom: var(--Z);
+  }
+  :root[data-hv="1"][data-rail="1"] #home > #tdy {
+    --pic: min(900px, calc(100vh - 300px), calc(var(--W) - 160px));
+  }
+  :root[data-hv="1"][data-rail="1"] #tdd {
+    zoom: var(--Z);
+  }
+  :root[data-rail="1"] #cal .cd {
+    min-height: max(76px, calc((100vh - 330px * var(--Z)) / 6 / var(--Z)));
+  }
+  :root[data-rail="1"] #rail {
+    top: calc(72px * var(--Z));
+    max-height: calc(100vh - 96px * var(--Z));
+  }
+}

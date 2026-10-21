@@ -1,6 +1,6 @@
 // @ts-check
 // "Add texts": every text in the library, with search and a checkbox each (ticked = in the list being edited). Used by
-// the routine builder (js/features/routine-builder.js): beside its list on wide screens (from 1100px), and on phones
+// the routine builder (js/features/routine-builder.js): beside its list on wide screens (from 1024px), and on phones
 // and tablets a sheet over it (a dialog: focus moves in, Tab stays inside, Done, Escape, the phone's Back or a tap
 // outside closes it and focus returns to Add texts). A tick adds the text at the end of the list at once; taking it
 // off removes it.
@@ -30,7 +30,7 @@
  */
 
 // Beside the list from this width (css/14-builder.css); below it, a sheet
-const WIDE = "(min-width: 1100px)";
+const WIDE = "(min-width: 1024px)";
 
 /** @param {string} s */
 function esc(s) {

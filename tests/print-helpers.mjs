@@ -39,8 +39,8 @@ export async function stubPrint(page) {
 /** Press Print on the home page, then the given choice ("pr1" = first button, "pr2" = second). */
 export async function printFromButton(page, choice) {
   await page.evaluate(() => scrollTo(0, 0));
-  // a folded home card hides its buttons: open it first, as a reader would (tap the slim line)
-  if (!(await page.locator("#prb").isVisible())) await page.locator("#slim").click();
+  // Print is under More on the home page: open it first, as a reader would
+  if (!(await page.locator("#prb").isVisible())) await page.locator("#tmb").click();
   await page.locator("#prb").click();
   await page.locator("#prm").waitFor({ state: "visible" });
   // the page (Portrait pr1 or Landscape pr2; both languages have only Landscape, so no choice shows), then Print
@@ -93,7 +93,7 @@ export async function readPrintView(page) {
 export async function addMarkers(page, when = "now") {
   await page.evaluate((when) => {
     const run = () => {
-    const mk = (t) => {
+    const mk = (t, end) => {
       const s = document.createElement("span");
       s.className = "__pm";
       s.textContent = " [[" + t + "]] ";
@@ -101,6 +101,9 @@ export async function addMarkers(page, when = "now") {
       // !important: the site's own !important font rules (Kannada letters set every .mr element's font) must not
       // reach the marker, or it is drawn in whatever font the machine falls back to and may not read back
       s.style.cssText = ["position:absolute", "font:1px/1 monospace", "letter-spacing:0", "word-spacing:0", "text-transform:none", "color:#fff", "white-space:nowrap"].map((d) => d + " !important").join(";");
+      // an end marker reaches back over its line instead of past it: after a line that fills the page width it
+      // would run off the page and be cut
+      if (end) s.style.setProperty("transform", "translateX(-100%)", "important");
       return s;
     };
     const shown = (n) => {
@@ -118,7 +121,7 @@ export async function addMarkers(page, when = "now") {
         let last = first, n;
         while ((n = w.nextNode())) last = n;
         first.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":s"), first);
-        last.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":e"), last.nextSibling);
+        last.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":e", true), last.nextSibling);
       });
     });
     };
@@ -153,7 +156,7 @@ export async function pdfPages(page, paper, save) {
   return { pages: out, bytes: buf.length, buf, landscape: v[2] > v[3] };
 }
 
-const SCREEN_ONLY = ["Open all", "Fold all", "Check for updates", "Settings", "Add to Home Screen"];
+const SCREEN_ONLY = ["Open all", "Fold all", "Check for updates", "Settings", "Add to Home Screen", "Choose File", "No file chosen"];
 
 /**
  * Open the site with the given settings, print from the Print button and read the PDF back.
@@ -234,4 +237,6 @@ export function markerPages(pages) {
 // fallback font the machine has, and PDF text extraction places them differently from one machine to
 // the next. The letters they sit on are still compared. Some fonts (macOS) draw an "i" carrying a mark
 // above as a dotless "ı", and the PDF text then reads "ı", so it counts as "i".
-export const squash = (s) => s.normalize("NFD").replace(/\p{M}/gu, "").replace(/ı/g, "i").replace(/[\s​­]+/g, "");
+// (also without zero-width joiners and with plain quotes: a PDF's text layer may drop the one and straighten the other, or read a closing quote as the letter ʼ)
+export const squash = (s) =>
+  s.normalize("NFD").replace(/\p{M}/gu, "").replace(/ı/g, "i").replace(/[‘’ʼ]/g, "'").replace(/[“”]/g, '"').replace(/[\s​­‌‍]+/g, "");

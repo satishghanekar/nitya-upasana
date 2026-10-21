@@ -27,9 +27,9 @@ test("Home: the calendar line under the date, with sunrise, sunset and the place
     "आश्विन शुद्ध अष्टमी नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर Sunrise 7:45 am Sunset 6:47 pm Columbus, OH (open the Vedic calendar)",
   );
   await expect(b).toHaveAttribute("aria-expanded", "false");
-  // it sits between the date and the session's texts
+  // it sits between the date and the session's texts (on wide screens the date is under the picture, on the right)
   const y = async (s) => (await page.locator(s).boundingBox()).y;
-  expect(await y("#tdy")).toBeLessThan(await y("#pan"));
+  if ((page.viewportSize()?.width ?? 0) < 1024) expect(await y("#tdy")).toBeLessThan(await y("#pan"));
   expect(await y("#pan")).toBeLessThan(await y("#tsc"));
   // the month is not worked out until the page opens
   await expect(page.locator("#calm")).toBeEmpty();
@@ -215,13 +215,17 @@ test("targets: the page's buttons are 44px; days are at least 24px wide even on 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test("desktop: the day card beside the month", async ({ page }) => {
+test("desktop: the month, then the day card beside it, the month the larger (Desktop B, Full screen)", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 820 });
   await open(page);
-  const a = await page.locator("#cald").boundingBox(),
-    b = await page.locator("#calm").boundingBox();
+  const a = await page.locator("#calm").boundingBox(),
+    b = await page.locator("#cald").boundingBox();
   expect(Math.abs(a.y - b.y)).toBeLessThan(2);
   expect(a.x + a.width).toBeLessThan(b.x);
+  expect(a.width).toBeGreaterThan(b.width);
+  // tithi names stay whole words: no day is taller than its row's tallest by a letter-per-line wrap
+  const cells = await page.locator("#calm .cd").evaluateAll((d) => d.map((x) => x.getBoundingClientRect().width));
+  expect(Math.min(...cells)).toBeGreaterThan(50);
 });
 
 // ----- the reading languages (Settings → Languages): the names follow the first, and the second where there is room -----

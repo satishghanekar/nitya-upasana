@@ -436,3 +436,20 @@ html[data-scr="kn"][data-font]:not([data-font="std"]) #pv .pvs[data-sid="p1"] .m
 html[data-scr="kn"][data-font]:not([data-font="std"]) #pv .pvs[data-sid="p1"] .mr * {
   font-family: var(--kv, "Noto Sans Kannada"), "Noto Sans Kannada", var(--body) !important;
 }
+
+/* ==== Tablets held upright: Settings' cards in two columns ==== */
+@media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
+  .sp-pg {
+    max-width: 46rem;
+  }
+  #sp-home .sp-body {
+    columns: 2;
+    column-gap: 18px;
+  }
+  #sp-home .sp-h {
+    break-after: avoid;
+  }
+  #sp-home .sp-card {
+    break-inside: avoid;
+  }
+}

@@ -3,17 +3,20 @@
 // Settings → Routine; the same every day or different by weekday, Copy to other days…, ↑ ↓ ✕ and Alt+↑/↓, the picker
 // (a sheet on phones, beside the list on wide screens); Home follows the reading person's routine for the weekday and
 // session; it is kept after a reload and in backups; axe in every theme; names follow the reading languages.
-// 19 Oct 2026 is a Monday, 22 Oct a Thursday, 20 Oct a Tuesday.
+// 19 Oct 2026 is a Monday, 22 Oct a Thursday, 20 Oct a Tuesday. The tests run on a fixed routine (TEST_ROUTINE in
+// helpers.mjs: Morning = Atharvashirsha, Evening = the ten aartis, the same every day), whatever Satish's schedule is.
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
-import { openSite, settle, SETUPS } from "./helpers.mjs";
+import { openSite, settle, SETUPS, useTestRoutine } from "./helpers.mjs";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 const T = Object.fromEntries(LIB.texts.map((t) => [t.id, t]));
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
 const MON_EVENING = new Date("2026-10-19T19:00:00-04:00");
 const PHONE = { width: 390, height: 844 };
+
+test.beforeEach(async ({ page }) => useTestRoutine(page));
 
 const rows = (page) => page.locator("#tsl li");
 const items = (page) => page.locator("#rtl li");
@@ -130,13 +133,13 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await page.locator('#rtwk [data-v="2"]').click();
   expect(await ids(page)).toEqual(["atharvashirsha"]);
 
-  // Home: Monday's morning is the new list (picked with "Not this time?")
+  // Home: Monday's morning is the new list (picked with the Morning | Afternoon | Evening switch)
   await page.locator("#rbk").click();
-  await page.locator('#tso button[data-s="morning"]').click();
+  await page.locator("#tss-morning").click();
   expect(await homeIds(page)).toEqual(["ghalin-lotangan", "sukhkarta"]);
   await expect(page.locator("#tst")).toHaveText("Start: Ghalin Lotangan");
   // the evening is as it was
-  await page.locator('#tso button[data-s="evening"]').click();
+  await page.locator("#tss-evening").click();
   await expect(rows(page)).toHaveCount(10);
 
   // after a reload, on Thursday morning and on Tuesday morning
@@ -278,7 +281,7 @@ test("each person has their own routine; Save a backup file → Restore brings i
   const file = info.outputPath("backup.nitya");
   await dl.saveAs(file);
   const json = JSON.parse(readFileSync(file, "utf8"));
-  expect(json.app).toBe("aarti-v1.9");
+  expect(json.app).toBe(readFileSync(new URL("../index.html", import.meta.url), "utf8").match(/<meta name="version" content="([^"]+)"/)[1]);
   expect(json.payload.profiles.map((p) => [p.name, p.routine && p.routine.evening.texts])).toEqual([
     ["Me", ["sukhkarta", "ghalin-lotangan"]],
     ["Aai", null],
@@ -356,7 +359,7 @@ for (const [name, prefs, w] of [
     await page.waitForTimeout(200);
     expect(await axe(page, "#rtb")).toEqual([]);
     await page.locator("#rtcpx").click();
-    if (w.width < 1100) await page.locator("#rtadd").click();
+    if (w.width < 1024) await page.locator("#rtadd").click();
     await page.waitForTimeout(200);
     expect(await axe(page, "#rtb")).toEqual([]);
   });
