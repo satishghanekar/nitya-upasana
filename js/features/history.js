@@ -4,7 +4,7 @@
 import { bt } from "../core/page.js";
 import { aa, cur, jp, pjOpen, pn } from "../core/apply.js";
 import { TK, apply, goHome, mark, tuckHold } from "./bars.js";
-import { setC, setJ, setP, setR } from "./overlays.js";
+import { anyOpen, closeForBack, pageEls, setC, setJ, setP, setR, trapped } from "./overlays.js";
 
 var NAV, popSkip, adT, hmb, ovFrom, sub, subSkip;
 
@@ -34,15 +34,7 @@ export function init() {
     setJ(false);
     setC(false);
     setR(false);
-    var shut = 0;
-    ["qrm", "prm", "inm", "pzv", "rsh", "bkm"].forEach(function (i) {
-      var d = document.getElementById(i);
-      if (d && !d.hidden) {
-        d.hidden = true;
-        shut = 1;
-        if (i === "rsh") document.getElementById("rsb").setAttribute("aria-expanded", "false");
-      }
-    });
+    var shut = closeForBack();
     // Closed with the phone's Back: focus goes back to the button that opened it, as with ✕ or Escape, so a
     // screen reader doesn't start again from the top of the page (WCAG 2.4.3)
     if (shut) {
@@ -67,17 +59,11 @@ export function init() {
     else if (el) el.scrollIntoView();
     else scrollTo(0, 0);
   });
-  // Keyboard: Tab stays inside an open dialog (Restore, the profile sheet, the categories sheet, QR, Print, Add to Home
-  // Screen, Help, Settings)
+  // Keyboard: Tab stays inside an open dialog (those marked trap in LAYERS, js/features/overlays.js: Restore, the
+  // profile sheet, the categories sheet, Help, QR, Print, Add to Home Screen, the picture, the reading sheet, Settings)
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Tab") return;
-    var d = ["bkm", "pfm", "lbm", "help", "qrm", "prm", "inm", "pzv", "rsh", "panel"]
-      .map(function (i) {
-        return document.getElementById(i);
-      })
-      .filter(function (x) {
-        return x && !x.hidden;
-      })[0];
+    var d = trapped();
     if (!d) return;
     // Everything Tab can land on, dropdowns included: leaving <select> out made Tab from the language dropdowns
     // jump back to the top of Settings, so the rest of the page could not be reached by keyboard (WCAG 2.1.1).
@@ -140,8 +126,7 @@ export function init() {
     } catch (x) {}
   });
   // Tabbing out of an open panel closes it, so it doesn't stay over the page you have moved on to
-  [pn, jp, document.getElementById("cal"), document.getElementById("rtb")].forEach(function (el) {
-    if (!el) return;
+  pageEls().forEach(function (el) {
     el.addEventListener("focusout", function (e) {
       var t = e.relatedTarget;
       // (not into the categories sheet, which opens over the Library, nor the profile sheet, over the routine builder)
@@ -165,15 +150,9 @@ function hs() {
   return history.state || {};
 }
 
+// Something is open over the page (LAYERS in js/features/overlays.js)
 function ovOpen() {
-  return (
-    !pn.hidden ||
-    !jp.hidden ||
-    ["cal", "rtb", "qrm", "prm", "inm", "help", "pzv", "rsh", "pfm", "bkm", "lbm"].some(function (i) {
-      var e = document.getElementById(i);
-      return e && !e.hidden;
-    })
-  );
+  return anyOpen();
 }
 
 export function ovPush() {

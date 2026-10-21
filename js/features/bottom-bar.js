@@ -10,6 +10,7 @@ import { TL, tlLabel, tlStop } from "./tilt.js";
 import { apply } from "./bars.js";
 import { wake } from "./wake-lock.js";
 import { goHomeNav } from "./history.js";
+import { pageEls } from "./overlays.js";
 import { sessionStep } from "./today-card.js";
 
 export var asc, asb;
@@ -106,10 +107,10 @@ export function init() {
   // asShow() keeps ▶ in step with the settings, and Prev / Next with the piece on screen.
   asc.hidden = false;
   root.setAttribute("data-asb", "1");
-  // the bar steps aside while Settings (#panel), the Library (#jump), the Vedic calendar (#cal) or the routine builder
-  // (#rtb) is open
+  // the bar steps aside while one of the pages is open: Settings, the Library, the Vedic calendar or the routine
+  // builder (pageEls(), js/features/overlays.js)
   (function () {
-    var ms = [document.getElementById("panel"), document.getElementById("jump"), document.getElementById("cal"), document.getElementById("rtb")];
+    var ms = pageEls();
     function menu() {
       if (ms.some(function (m) { return m && !m.hidden; })) root.setAttribute("data-menu", "1");
       else root.removeAttribute("data-menu");
