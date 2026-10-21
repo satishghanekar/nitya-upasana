@@ -1,7 +1,7 @@
 // Settings page: languages
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { P, save } from "../core/state.js";
+import { P, change } from "../core/state.js";
 import { refit } from "../text/autofit.js";
 import { LANGS, LK, cur, pn } from "../core/apply.js";
 import { apply } from "./bars.js";
@@ -99,20 +99,24 @@ function spPick(w, k) {
   // Marathi and Kannada share the original's place: switching between them rewrites the text in place
   var ind = v === "en" || !v ? P.ind : v;
   v = v === "en" || !v ? v : "mr";
+  var lead = P.lead,
+    l2 = P.l2;
   if (w === 1) {
-    if (v === P.l2) P.l2 = P.lead;
-    P.lead = v;
-  } else P.l2 = v;
-  if (P.lead === "en" || ind !== "mr") P.ui = "en";
-  P.lang = !P.l2 || role === 1 ? P.lead : role === 2 ? P.l2 : "both";
+    if (v === l2) l2 = lead;
+    lead = v;
+  } else l2 = v;
+  /** @type {Record<string, any>} */
+  var ch = { lead: lead, l2: l2, lang: !l2 || role === 1 ? lead : role === 2 ? l2 : "both" };
+  if (lead === "en" || ind !== "mr") ch.ui = "en";
   var sw = ind !== P.ind;
-  if (sw) {
-    P.ind = ind;
-    SCR.set(ind);
-    buildIX();
-  }
-  apply();
-  save();
+  if (sw) ch.ind = ind;
+  change(ch, function () {
+    if (sw) {
+      SCR.set(ind);
+      buildIX();
+    }
+    apply();
+  });
   if (sw) refit(); // Kannada lines are wider or narrower than Marathi ones
   if (c) c.scrollIntoView();
 }

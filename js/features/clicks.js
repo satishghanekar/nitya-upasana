@@ -1,7 +1,7 @@
 // Clicks: contents links (data-go) jump to a piece; tapping a verse line highlights it
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { P, save } from "../core/state.js";
+import { change } from "../core/state.js";
 import { jp, pjOpen, pn } from "../core/apply.js";
 import { setJ, setP } from "./overlays.js";
 import { goHomeNav, jumpTo } from "./history.js";
@@ -33,13 +33,8 @@ export function init() {
       [].forEach.call(document.querySelectorAll("p.hl, .hli"), function (x) {
         x.classList.remove("hl", "hli");
       });
-      if (!was) {
-        hlMark(id);
-        P.hl = id;
-      } else {
-        P.hl = "";
-      }
-      save();
+      if (!was) hlMark(id);
+      change({ hl: was ? "" : id });
     }
   });
   // A click outside an open overlay closes it (not the page's own clicks on a hidden download link or file
