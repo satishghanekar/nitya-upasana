@@ -6,7 +6,7 @@ import { fontsN } from "../text/autofit.js";
 import { cur, pjOpen } from "./apply.js";
 import { apply, mark } from "../features/bars.js";
 import { wake } from "../features/wake-lock.js";
-import { homeAlone, homeInView, homeView } from "../features/history.js";
+import { homeAlone, homeInView, homeView, solo } from "../features/history.js";
 
 var tk, rzT, h, el, PK, posT, sp, moved, goPos;
 
@@ -49,6 +49,7 @@ export function init() {
     el && el.id !== "home"
       ? true
       : !h && !!(sp && sp.id && Date.now() - sp.t < 12 * 3600000 && document.getElementById(sp.id));
+  solo(el && el.id !== "home" ? el.id : !h && sp && sp.id ? sp.id : "");
   if (reading) document.documentElement.removeAttribute("data-hv");
   else document.documentElement.setAttribute("data-hv", "1");
   apply();
