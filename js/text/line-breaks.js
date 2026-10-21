@@ -25,6 +25,7 @@ export function init() {
   [].forEach.call(document.querySelectorAll(".verse .en p"), function (p) {
     zsplit(p, enCut, "");
   });
+  [].forEach.call(document.querySelectorAll(".ash.prose .verse p"), glue);
   if (!P.fsu) P.fs = dfs();
 }
 
@@ -58,6 +59,41 @@ export function zsplit(p, cut, sep) {
     last = sn && sn.previousSibling;
   while (last && last.nodeType === 3 && !last.data.trim()) last = last.previousSibling;
   if (sn && sn.className === "sn" && last && last.className === "zs") last.appendChild(sn);
+}
+
+// A Vedic chant shown in one language runs on as paragraphs (css/02-core.css, "Vedic chants in one language"):
+// there a row may break at any space, so each danda (। ॥ |), with a verse number between two of them, is glued
+// to the word before it (a nowrap span, .nb), and a line written on two rows (<br>) gets a space beside it
+// (.brs, shown only while the line runs on). The words themselves are not changed.
+export function glue(p) {
+  var w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT),
+    ns = [],
+    n;
+  while ((n = w.nextNode())) ns.push(n);
+  ns.forEach(function (n) {
+    var re = /\S+(?: +(?:[।॥|]+|[0-9०-९೦-೯]+(?= +[॥|])))+/g,
+      t = n.data,
+      f = document.createDocumentFragment(),
+      at = 0,
+      m;
+    while ((m = re.exec(t))) {
+      var s = document.createElement("span");
+      s.className = "nb";
+      s.textContent = m[0];
+      f.appendChild(document.createTextNode(t.slice(at, m.index)));
+      f.appendChild(s);
+      at = m.index + m[0].length;
+    }
+    if (!at) return;
+    f.appendChild(document.createTextNode(t.slice(at)));
+    n.parentNode.replaceChild(f, n);
+  });
+  [].forEach.call(p.querySelectorAll("br"), function (b) {
+    var s = document.createElement("span");
+    s.className = "brs";
+    s.textContent = " ";
+    b.parentNode.insertBefore(s, b);
+  });
 }
 
 // Latin digits → Devanagari digits
