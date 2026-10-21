@@ -22,6 +22,7 @@ There is no build step: the browser loads these files as they are.
 |---|---|
 | `core/page.js` | Page basics: the <html> element and the short message (flash) |
 | `core/state.js` | Settings (P): the boot copy in localStorage and the person's profile (`store/store.js`, opened by `main.js` before the parts start) |
+| `core/words.js` | Helpers for writing words on the page, shared by the parts that build their own HTML: `esc`, Devanagari digits (`dv`, `num`), the menu language (`ui`), the reading languages (`lead`, `second`), Marathi in the chosen script (`scr`, `scrKey`, `mrLang`) and the month and weekday names (`MONTHS`, `DAYS`). Pure, unit-tested in `tests/unit/words.test.mjs`; no `init()`. Use these rather than writing a copy in a part (`text/content.js` keeps its own `esc`, so the text parser does not depend on the settings) |
 | `core/features.js` | Features held back for a later release |
 | `features/day-picture.js` | The app's picture follows the time of day (sunrise, midday, sunset) with today's weekday star ringed; checks again at 12:00, 17:00, midnight and when the page comes back into view |
 | `core/time-of-day.js` | Which picture and which star for a given moment (pure functions, unit-tested; no `init()`: used by `features/day-picture.js`) |

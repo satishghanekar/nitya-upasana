@@ -10,6 +10,8 @@
 // (ovSub / ovSubDone in js/features/history.js), so this file touches no other part and its search is unit-tested in
 // Node (tests/unit/routine.test.mjs).
 
+import { esc } from "../core/words.js";
+
 /**
  * @typedef {{ id: string, title: string, titleEn: string, language: string, category: string }} PickText
  * @typedef {{
@@ -31,11 +33,6 @@
 
 // Beside the list from this width (css/14-builder.css); below it, a sheet
 const WIDE = "(min-width: 1024px)";
-
-/** @param {string} s */
-function esc(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
 
 /**
  * What a search compares: lower case, without accents (ā → a), Devanagari vowel signs and nukta kept, spaces and

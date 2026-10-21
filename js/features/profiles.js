@@ -22,6 +22,7 @@ import { refit } from "../text/autofit.js";
 import { buildIX } from "../text/search.js";
 import { active, add, list, onChange, remove, switchTo, update } from "../store/store.js";
 import { canAdd, canDelete, COLOURS, initialsOf, INITIALS_MAX, MAX_PROFILES } from "../store/profiles.js";
+import { esc } from "../core/words.js";
 
 /**
  * @typedef {import("../store/profiles.js").Profile} Profile
@@ -118,11 +119,6 @@ var editing = "",
 
 function words() {
   return P && P.ui === "mr" ? W.mr : W.en;
-}
-
-/** @param {string} s */
-function esc(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 /** The language a name is written in, for screen readers: English for Latin letters, else Marathi */
