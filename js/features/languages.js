@@ -1,13 +1,13 @@
 // Settings page: languages
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { liSet } from "../core/page.js";
 import { P, save } from "../core/state.js";
 import { refit } from "../text/autofit.js";
 import { LANGS, LK, cur, pn } from "../core/apply.js";
 import { apply } from "./bars.js";
 import { trPick } from "./settings-panel.js";
 import { buildIX } from "../text/search.js";
+import { refToggle } from "./dhrupad-button.js";
 
 var PICK;
 
@@ -23,7 +23,7 @@ export function init() {
   };
   document.getElementById("srf").onclick = function (e) {
     var b = e.target.closest("button");
-    if (b && b.dataset.v !== String(P.ref)) document.getElementById("rb").click();
+    if (b && b.dataset.v !== String(P.ref)) refToggle();
   };
 }
 
@@ -109,7 +109,6 @@ function spPick(w, k) {
   if (sw) {
     P.ind = ind;
     SCR.set(ind);
-    liSet();
     buildIX();
   }
   apply();

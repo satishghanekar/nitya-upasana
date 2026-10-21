@@ -58,6 +58,15 @@ const idb = (page) =>
       }),
   );
 
+
+/** Language in the reading sheet (Aa in the bottom bar): 0 main, 1 second, 2 both. Clicked by script, as the
+ *  bottom bar steps aside on the home page, where these tests are. */
+async function pickLanguage(page, n) {
+  await page.locator("#rsb").evaluate((b) => b.click());
+  await page.locator("#rsl button").nth(n).evaluate((b) => b.click());
+  await page.locator("#rsx").evaluate((b) => b.click());
+}
+
 test("first visit: version 1.3's settings become the first person, 'Me', shown on the chip @mobile", async ({ page }) => {
   await openSite(page, { ...SETUPS.both, fs: 30, fsu: 1, th: "sepia" });
   await expect(chipName(page)).toHaveAccessibleName("Profile: Me");
@@ -103,7 +112,7 @@ test("switching person changes the text size and language at once, and each keep
   await switchTo(page, "Baba");
   // Baba starts with the defaults; he picks English and a larger size
   expect(await textLang(page)).toBe("mr");
-  await page.locator("#home-btn").evaluate((b) => b.click()); // Marathi → English (the button is in the top bar while reading)
+  await pickLanguage(page, 1); // English, in the reading sheet (Aa)
   expect(await textLang(page)).toBe("en");
   await page.locator("#aa").click();
   for (let i = 0; i < 5; i++) await page.locator("#lg").click();
@@ -247,7 +256,7 @@ test("Save a backup file → Restore from it: every person, setting and tick com
   await addPerson(page, "Aai", { initials: "आई", colour: 2 });
   await page.locator("#pfx").click();
   await switchTo(page, "Aai");
-  await page.locator("#home-btn").evaluate((b) => b.click()); // English (the button is in the top bar while reading)
+  await pickLanguage(page, 1); // English, in the reading sheet (Aa)
   await rows(page).nth(3).locator("input").check();
   await page.locator("#aa").click();
   await expect(page.locator("#bksv")).toHaveText("Not saved yet");

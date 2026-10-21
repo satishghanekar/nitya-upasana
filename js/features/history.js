@@ -1,9 +1,8 @@
 // Back button
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { bt, flash } from "../core/page.js";
-import { P, save } from "../core/state.js";
-import { LANGS, LK, aa, cur, hb, jp, pjOpen, pn } from "../core/apply.js";
+import { bt } from "../core/page.js";
+import { aa, cur, jp, pjOpen, pn } from "../core/apply.js";
 import { TK, apply, goHome, mark, tuckHold } from "./bars.js";
 import { setC, setJ, setP, setR } from "./overlays.js";
 
@@ -159,29 +158,6 @@ export function init() {
   };
   aa.onclick = function () {
     setP(pn.hidden);
-  };
-  // Language button cycles main → second → both (only the two chosen languages ever show). With no second
-  // language chosen it opens Settings at the second language's list.
-  hb.onclick = function () {
-    if (!P.l2) {
-      setP(true);
-      document.getElementById("sl2s").focus();
-      return;
-    }
-    var c = cur(),
-      o = [P.lead, P.l2, "both"];
-    P.lang = o[(o.indexOf(P.lang) + 1) % 3];
-    apply();
-    save();
-    if (c) c.scrollIntoView();
-    function nm(l) {
-      return l === "both" ? LANGS[LK(P.lead)].n + " + " + LANGS[LK(P.l2)].n : LANGS[LK(l)].n;
-    }
-    // what is shown now, and what the next tap shows, long enough to read: a tap by mistake mid-aarti is then
-    // easy to undo
-    var L = nm(P.lang),
-      N = nm(o[(o.indexOf(P.lang) + 1) % 3]);
-    flash(L + " · पुढे: " + N, L + " · Next tap: " + N, 3500);
   };
 }
 

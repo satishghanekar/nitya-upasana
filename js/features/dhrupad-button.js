@@ -1,15 +1,9 @@
-// Dhrupad button: toggle once / after every stanza, keeping the reader's place
-// One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
+// Dhrupad: toggle once / after every stanza, keeping the reader's place (the Reading sheet and Settings)
+// One part of the site script, used by the parts that offer the choice. See js/README.md.
 
 import { flash } from "../core/page.js";
 import { P, save } from "../core/state.js";
 import { apply } from "./bars.js";
-
-export function init() {
-  document.getElementById("rb").onclick = function () {
-    refToggle();
-  };
-}
 
 // quiet: from the reading sheet, which shows the new choice itself (a note would cover the sheet)
 export function refToggle(quiet) {

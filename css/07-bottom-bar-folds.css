@@ -74,6 +74,40 @@
   display: grid;
   place-items: center;
 }
+/* Home, Library and Reading: the icon with its word under it, in the menu language (the word is the button's name).
+   The button keeps the bar's 44px height. */
+#ash,
+#asq,
+#rsb {
+  align-content: center;
+  row-gap: 3px;
+  min-width: 58px;
+  padding: 0 6px;
+}
+.asil {
+  font: 600 11px/1.1 var(--lat);
+  white-space: nowrap;
+}
+.asil .mr {
+  font-family: var(--body);
+  font-size: 11.5px;
+}
+/* a phone on its side: the bar stays as low as it was; the words are kept for screen readers only */
+@media (orientation: landscape) and (max-height: 520px) {
+  .asil {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  #ash,
+  #asq,
+  #rsb {
+    min-width: 44px;
+  }
+}
 #asb {
   padding: 0;
   display: grid;
@@ -645,7 +679,6 @@
   --body: var(--tf), "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
   --lat: var(--tf), "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
 }
-:root[data-font]:not([data-font="std"]) #home #shr,
 :root[data-font]:not([data-font="std"]) .grp .allb {
   --head: "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
   --body: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;

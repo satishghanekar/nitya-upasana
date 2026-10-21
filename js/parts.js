@@ -83,6 +83,7 @@ var SITE_PARTS = (function () {
     "print/fit",
     "features/print",
     "features/share",
+    "features/more-menu",
     "features/offline",
     "store/backup",
     "features/profiles",

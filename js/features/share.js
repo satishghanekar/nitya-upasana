@@ -5,6 +5,7 @@ import { flash } from "../core/page.js";
 import { shared, P } from "../core/state.js";
 import { skFmt, skLoc, skMid, skNext, skTemple } from "./sankashti.js";
 import { ovDone, ovPush } from "./history.js";
+import { focusBack } from "./more-menu.js";
 
 export function init() {
   (function () {
@@ -18,7 +19,7 @@ export function init() {
       if (o) {
         document.getElementById("qrx").focus();
       } else {
-        document.getElementById("qrb").focus();
+        focusBack(document.getElementById("qrb"));
       }
     }
     document.getElementById("qrb").onclick = function () {
@@ -132,7 +133,7 @@ export function init() {
           document.getElementById(id).hidden = id !== which;
         });
         document.getElementById("inx").focus();
-      } else if (ibFrom) ibFrom.focus();
+      } else if (ibFrom) focusBack(ibFrom);
     }
     function install(e) {
       ibFrom = e && e.currentTarget;

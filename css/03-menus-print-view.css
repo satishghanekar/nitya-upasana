@@ -4,11 +4,11 @@
    Includes the print view (#pv) built by the script for the Print button.
    Sections:
    - Top-bar title, heading for screen readers, contents overlay refinements
-   - Share / QR / Print buttons, QR pop-up
+   - More menu (App, Share, QR, Print, Help); Share / QR / Print buttons, QR pop-up
    - Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm)
    - Top-bar title with Ganesha (home) icon; Home button in the contents overlay
    - Contents headings (refined)
-   - Share / QR / Print row; print pop-up (#prm); print view (#pv, built by the script just before printing)
+   - Print pop-up (#prm); print view (#pv, built by the script just before printing)
    - Piece header card (saffron, maroon top edge)
    - Dhrupad at the top: small label above, thin rule on the left (final look below)
 */
@@ -59,10 +59,6 @@ ol.toc a {
   box-sizing: border-box;
   justify-content: center;
 }
-.bar .lb {
-  font: 600 17px/1 var(--body);
-  min-width: 48px;
-}
 #jump {
   /* vh first for browsers without dvh (Chrome < 108); dvh follows the phone's moving address bar */
   max-height: calc(100vh - 90px);
@@ -109,12 +105,8 @@ ol.toc a {
   padding: 6px 4px 10px;
 }
 
-#rb {
-  font: 600 19px/1 var(--head);
-  min-width: 44px;
-}
-
-#aa svg {
+#aa svg,
+#tmb svg {
   display: block;
   margin: auto;
 }
@@ -127,13 +119,6 @@ ol.toc a {
 a.t {
   text-decoration: none;
   display: block;
-}
-#rb {
-  padding: 0 4px;
-}
-#rb svg {
-  display: block;
-  margin: auto;
 }
 /* short notes keep their place under the top bar (02-core) and wrap on narrow phones instead of running off the sides */
 #fl {
@@ -156,42 +141,69 @@ a.t {
   text-align: center;
   font-size: 14px;
 }
-.bar .lb {
-  padding: 0 3px;
-}
-.bar .lb svg {
-  display: block;
-  margin: auto;
-}
 
 
-/* ==== Share / QR / Print buttons, QR pop-up ==== */
+/* ==== More menu (App, Share, QR, Print, Help); Share / QR / Print buttons, QR pop-up ==== */
+/* More (⋯ in the top bar, js/features/more-menu.js): App, Share, QR, Print and Help in a small menu under the button.
+   The script sets top and right from the button when it opens. Sizes in px: the menu keeps its size when the reader
+   enlarges the verses. */
 #shr {
-  margin: 22px 0 0;
+  position: fixed;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  max-width: calc(100vw - 16px);
+  padding: 6px;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: 0 10px 32px rgb(0 0 0 / 0.28);
 }
-#shb {
+#shr[hidden],
+#shr button[hidden] {
+  display: none;
+}
+#shr button {
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 48px;
-  font-size: 16px;
+  gap: 14px;
+  width: 100%;
+  height: auto;
+  min-height: 48px;
+  margin: 0;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--ink);
+  font: 500 16px/1.2 var(--lat);
+  text-align: left;
+}
+#shr button .mr {
+  font-family: var(--body);
+}
+#shr button svg {
+  flex: none;
+  color: var(--accent);
+}
+#shr button:hover {
+  background: var(--surface);
+}
+#shr button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+/* Help sits apart from the four sharing choices */
+#shr #hlpb {
+  margin-top: 4px;
+  border-top: 1px solid var(--rule);
+  border-radius: 0 0 10px 10px;
 }
 @media print {
   #shr {
     display: none !important;
   }
-}
-
-#shr {
-  display: grid;
-  gap: 10px;
-}
-#qrb {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-  font-size: 16px;
 }
 /* centred while it fits; taller than the screen (a phone on its side, 400% zoom) it starts at the top and the
    pop-up scrolls, so Close is always reachable (WCAG 1.4.10) */
@@ -268,9 +280,6 @@ a.t {
 }
 .inb[hidden] {
   display: none;
-}
-#inb:not([hidden]) + #shr {
-  margin-top: 10px;
 }
 .inl {
   text-align: left;
@@ -386,14 +395,7 @@ h2[tabindex="-1"]:focus {
 }
 
 
-/* ==== Share / QR / Print row; print pop-up (#prm); print view (#pv, built by the script just before printing) ==== */
-#shr {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-#shr button {
-  font-size: 15px;
-  padding: 0 6px;
-}
+/* ==== Print pop-up (#prm); print view (#pv, built by the script just before printing) ==== */
 .prs {
   display: grid;
   gap: 10px;

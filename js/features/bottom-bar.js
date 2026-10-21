@@ -188,9 +188,8 @@ export function asLabel() {
     b.setAttribute("aria-label", (mr ? x[1] : x[2]).replace(/[‹›]/g, "").trim() + (name ? ": " + name : ""));
     b.disabled = !a && !ss;
   });
-  document.getElementById("ash").setAttribute("aria-label", mr ? "मुख्य पान: अनुक्रमणिका" : "Home: contents");
+  // Home, Library and Reading are named by the word under each icon (in the menu language, data-lang on #asc)
   tlLabel();
-  document.getElementById("asq").setAttribute("aria-label", mr ? "अनुक्रमणिका आणि शोध" : "Contents and search");
 }
 
 // The steps to scroll through: each open piece's heading, its dhrupad at the top, every sung line in order,

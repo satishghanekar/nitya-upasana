@@ -33,7 +33,7 @@ async function metrics(cdp) {
 }
 const diff = (a, b) => Object.fromEntries(Object.keys(a).map((k) => [k, Math.round(b[k] - a[k])]));
 
-test("load and the language button lay the page out only a few times @chromium-only", async ({ browser }) => {
+test("load and the language choices lay the page out only a few times @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, serviceWorkers: "block" });
   const page = await context.newPage();
   const cdp = await context.newCDPSession(page);
@@ -63,7 +63,8 @@ test("load and the language button lay the page out only a few times @chromium-o
     await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
     await page.evaluate(() => (window.__slow = 0));
     const t = await metrics(cdp);
-    await page.locator("#home-btn").click();
+    // Language in the reading sheet (Aa): English, both, then Marathi again
+    await page.locator("#rsl button").nth((i + 1) % 3).evaluate((b) => b.click());
     await page.waitForTimeout(1000);
     taps.push({ ...diff(t, await metrics(cdp)), responseMs: Math.round(await page.evaluate(() => window.__slow)) });
   }

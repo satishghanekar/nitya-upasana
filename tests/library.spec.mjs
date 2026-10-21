@@ -92,15 +92,15 @@ test("the bottom bar's search button opens the Library while reading", async ({ 
   await expect.poll(() => onPiece(page)).toBe("a7");
 });
 
-test("on the home page the top bar has the name, profile, Library and Settings; reading adds Language and Dhrupad @mobile", async ({ page }) => {
+test("on the home page the top bar has the name, profile, Library, More and Settings; while reading Library moves to the bottom bar @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await expect(page.locator("#home-btn")).toBeHidden();
-  await expect(page.locator("#rb")).toBeHidden();
-  for (const b of ["#who", "#hm", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  await expect(page.locator("#asq")).toBeHidden();
   await page.locator("#tst").click();
   await expect.poll(() => onPiece(page)).toBe("a1");
-  await expect(page.locator("#home-btn")).toBeVisible();
-  await expect(page.locator("#rb")).toBeVisible();
+  await expect(page.locator("#hm")).toBeHidden();
+  await expect(page.locator("#asq")).toBeVisible();
+  for (const b of ["#who", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
 });
 
 for (const [name, prefs] of [
