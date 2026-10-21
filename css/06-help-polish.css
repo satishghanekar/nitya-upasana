@@ -149,10 +149,6 @@
 /* ==== Settings panel (final rules): like phone settings. Two rounded cards with hairlines between rows,
    label on the left, a small sliding control on the right; switches for High contrast and Keep screen on;
    App and Help as quiet links at the bottom ==== */
-/* a feature held back for a later release (see FEAT_AS in the script) */
-[data-feat][hidden] {
-  display: none !important;
-}
 /* Header: Settings v1.0 … App, Help, ✕ (App and Help as small outlined pills, always in view) */
 /* compact rows (44px, still a comfortable tap) so the panel fits on a phone without scrolling */
 

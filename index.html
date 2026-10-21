@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.19.3">
+<meta name="version" content="aarti-v1.20.1">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -86,7 +86,6 @@
 <link rel="modulepreload" href="js/text/autofit.js">
 <link rel="modulepreload" href="js/core/apply.js">
 <link rel="modulepreload" href="js/features/bottom-bar.js">
-<link rel="modulepreload" href="js/features/tilt.js">
 <link rel="modulepreload" href="js/features/bars.js">
 <link rel="modulepreload" href="js/features/settings-panel.js">
 <link rel="modulepreload" href="js/features/dhrupad-button.js">
@@ -242,7 +241,6 @@
         </div>
         <button id="tc" class="sp-row sp-sw" type="button"><span class="sp-l"><span class="mr">अधिक ठळक</span><span class="en" lang="en">High contrast</span></span></button>
         <button id="tw" class="sp-row sp-sw" type="button"><span class="sp-l"><span class="mr">स्क्रीन चालू ठेवा</span><span class="en" lang="en">Keep screen on</span></span></button>
-        <button id="tas" class="sp-row sp-sw" type="button" data-feat="as" hidden><span class="sp-l"><span class="mr">आपोआप पुढे सरकवा</span><span class="en" lang="en">Autoscroll</span></span></button>
       </div>
       <!-- Profiles and backup (js/features/profiles.js, js/features/backup.js): who is reading (opens the profile sheet),
            Save a backup file, Restore from a file, and a warning when this browser can't save here -->
@@ -536,7 +534,6 @@
         <li><b>Edit categories</b> (विभाग बदला), at the end of the Library's list: add a category of your own (a name in Marathi, English or both), rename any category, delete one you added (its texts go back where they came from), and choose the category each text is listed under. A category with no texts is not shown in the list. The built-in categories can be renamed but not deleted, and <b>Use the original name</b> brings their name back. These changes stay on this phone for everyone who reads here and are saved in backup files; the words of the texts never change. ✕, Escape or your phone's Back closes it and leaves the Library open.</li>
         <li><b>Fold what you don't need:</b> a tap anywhere on a piece's heading (or its round ⌃) folds that piece down to its heading; tap it again to open it. The <b>Fold all</b> / <b>Open all</b> button on the <b>आरती / Aarti</b> heading folds or opens every aarti at once. Your phone remembers these. Going to a folded piece from the Library or search opens it.</li>
         <li><b>Only here for the aartis?</b> Tap the <b>पूजा / Pooja</b> heading above the Atharvashirsha to fold the Pooja section away; tap it again (the arrow points down while folded) to bring it back. Your phone remembers this. Going to the Atharvashirsha from the Library, search or Previous opens it again. The <b>आरती / Aarti</b> heading folds the aartis the same way.</li>
-        <li data-feat="as" hidden><b>Autoscroll:</b> turn it on in ⚙ Settings (<b>Autoscroll</b>); it is off until you do. A round ▶ then appears in the bottom bar; tap it and the page scrolls by itself through the Pooja and the aartis. It opens every piece, and starts from the piece on screen (or the first one). A section you have folded (Pooja or Aarti) is skipped. Each sung line gets the same time; − and + set the speed (1–10) of the piece you are on, and each piece remembers its own speed, since each has its own tempo. <b>‹ Prev</b> and <b>Next ›</b> go to the previous or next piece. With the dhrupad shown once, it waits at each <b>↻ ध्रुपद</b> while the dhrupad is sung and shows it in the bubble. While it runs, Prev and Next make way for the speed, so one piece flows into the next. Scroll by hand any time, or hold a finger still to pause; when you let go it carries on from there. In Marathi + English it moves through each whole stanza, both languages, in the time the Marathi takes. ⏸ stops it. The screen stays on while it runs.</li>
       </ul>
 
       <h3>People on one phone</h3>
@@ -597,7 +594,6 @@
         <li><b>Back:</b> your phone's Back button (or swipe) closes an open menu or box, then goes back to where you were before the last jump, for example from an aarti back to the home page.</li>
         <li><b>Bottom bar (while reading; on the home page Start takes its place):</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring pieces; <b>Home</b> (a house with a lamp) goes back to the start, and <b>Library</b> (open book) opens every text, with search. Each has its word under the icon; on a phone on its side the words are left out to keep the bar low. On the smallest phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch, and it steps aside while Settings or the Library is open.</li>
         <li><b>Reading</b> (Aa, bottom bar): slides up the reading choices within reach of your thumb: <b>Language</b> (main, second or both), <b>Text size</b> (A− and A+, with ↺ to go back to the normal size) and <b>Dhrupad</b> (once at the top, or after every verse; in “once” mode, tap <b>↻ ध्रुपद</b> under a stanza to see the refrain, and tap anywhere to close it), plus <b>All settings</b>. Your place stays put as you change them. Tap outside it, ✕ or your phone's Back to close it.</li>
-        <li data-feat="tl" hidden><b>Tilt to scroll</b> (phones and tablets): tap the tilted-phone button in the bottom bar, holding the phone however is comfortable. Lean the top of the phone away from you and the page moves down; lean it back towards you and it moves up. The further you lean, the faster it goes; hold it still and the page stays put. The dot in the bar shows the lean. Touch the page to hold it; when you let go, the way you are holding the phone then becomes the new "still". ⏸ stops it. On an iPhone, tap <b>Allow</b> when it asks for motion access (only the first time). The tilt is read on the phone; nothing is sent anywhere.</li>
         <li>The screen stays on while the site is open (you can turn this off in Settings).</li>
       </ul>
 
@@ -623,9 +619,7 @@
 <div id="szt" aria-hidden="true"></div>
 <div id="sza" class="sr" role="status"></div>
 <div id="fl" role="status" aria-live="polite"></div>
-<!-- ==== Bottom bar (footer menu, reading pages; Start takes its place on the home page): ‹ Previous, Home, Library + search, (tilt, phones and tablets), Aa (reading sheet), (autoscroll ▶), Next ›.
-     While tilt to scroll runs (#asc.tl) the bar shows only the tilt meter, its label and ⏸.
-     ▶ shows only once autoscroll is released (FEAT_AS) and switched on; while it runs: Home, Search, speed, ⏸. ==== -->
+<!-- ==== Bottom bar (footer menu, reading pages; Start takes its place on the home page): ‹ Previous, Home, Library + search, Aa (reading sheet), Next ›. ==== -->
 <!-- slim strip with the piece name, shown while the bars are tucked away on phones and tablets (data-tuck) -->
 <div id="tuck" aria-hidden="true"><span id="tkt"></span><i id="tkp"></i></div>
 <div id="asc" hidden role="navigation" aria-label="Previous, home, library, next">
@@ -633,11 +627,7 @@
     <button type="button" id="asv" class="asx"></button>
     <button type="button" id="ash" class="asi"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.6 12 3.5l9 7.1"/><path d="M5.2 9v11h13.6V9"/><path d="M12 11.2c1.3 1.5 1.6 2.8 0 4.3-1.6-1.5-1.3-2.8 0-4.3z"/><path d="M9.3 17.6h5.4"/></svg><span class="asil"><span class="mr">मुख्यपृष्ठ</span><span class="en" lang="en">Home</span></span></button>
     <button type="button" id="asq" class="asi" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2.5 5.5C5.6 4.6 8.9 4.9 12 7c3.1-2.1 6.4-2.4 9.5-1.5v13.3c-3.1-.9-6.4-.6-9.5 1.5-3.1-2.1-6.4-2.4-9.5-1.5z"/><path d="M12 7v13.3"/></svg><span class="asil"><span class="mr">संग्रह</span><span class="en" lang="en">Library</span></span></button>
-    <button type="button" id="tlb" class="asi" aria-label="Tilt to scroll" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="8" height="15" rx="1.6" transform="rotate(-18 12 10.5)"/><path d="M4 15c0 3 2 5 5 5.5"/><path d="M7.5 18.6 9 20.5l-2 1"/></svg></button>
     <button type="button" id="rsb" class="asi" aria-expanded="false" aria-controls="rsh"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 19l3.6-9 3.6 9M3.9 15.6h4.4"/><path d="M11.5 19l5-13 5 13M13.4 14h6.2"/></svg><span class="asil"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></span></button>
-    <div id="tls"><span id="tlm" aria-hidden="true"><b></b><i></i></span><span id="tlt"><span id="tll"></span><span id="tlh"></span></span><button type="button" id="tlx"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg></button></div>
-    <div id="ass"><button type="button" id="asm" aria-label="Slower">−</button><span id="asl" aria-live="polite"></span><button type="button" id="asp" aria-label="Faster">+</button></div>
-    <button type="button" id="asb" aria-label="Autoscroll" aria-pressed="false"><svg class="ip" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg><svg class="ia" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg></button>
     <button type="button" id="asn" class="asx"></button>
   </div>
 </div>

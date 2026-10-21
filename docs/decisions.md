@@ -295,3 +295,9 @@ project's `v2/navigation/`).
 - **Bottom bar:** ‹ Prev, Home (a house with a lamp), Library (an open book), Reading (Aa), Next ›, each middle button
   with its word under the icon in the menu language; on a phone on its side the words are kept for screen readers
   only. The open book is the Library's icon everywhere; the Ganapati drawing stays as the logo beside the name.
+
+## Autoscroll and Tilt to scroll removed for now (v1.20.1, 2026-10-21)
+
+- Both were built and held back (switched off in `js/core/features.js`) but still loaded on every page. Satish chose to remove them for now; they are in git history up to v1.20 and could come back, for example with Recital mode.
+- Gone: `js/features/tilt.js`, the autoscroll half of `js/features/bottom-bar.js`, their buttons in the bottom bar, the Settings switch, the Help entries and their CSS. The bottom bar is now ‹ Prev, Home, Library, Aa, Next ›.
+- The saved settings `as`, `ason` and `asp` are still read and kept on each person, so nothing saved is lost if they come back.

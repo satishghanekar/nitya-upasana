@@ -134,7 +134,7 @@ How tests are added and run follows the [Faster testing approach] thread.
 1. **Approve stages 1 to 3** (no visible change)? They can start straight away.
 2. **Stage 4: is one text (or one session) at a time what you want?** Today you can scroll from the end of one text into the next. After stage 4, ‹ Prev / Next › do that instead. A mockup comes before any code.
 3. **Groups vs categories:** should the Pooja/Aarti reading-book groups go, so that the Library's categories (Vedic Chant, Aarti, Stotra, Ashtak) are the only grouping?
-4. **Autoscroll and Tilt to scroll:** release them, or remove them (they can come back from git)?
+4. **Autoscroll and Tilt to scroll:** release them, or remove them (they can come back from git)? **Answered 2026-10-21: remove them for now** (v1.20.1).
 
 ## 6. Not doing, and why
 

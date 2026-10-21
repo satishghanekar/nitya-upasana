@@ -4,9 +4,9 @@
 import { P, change } from "../core/state.js";
 import { apply } from "./bars.js";
 
-// The screen lock while it is held, else null (read by the bottom bar and tilt, which keep the screen on while they scroll)
+// The screen lock while it is held, else null
 /** @type {any} */
-export var wl = null;
+var wl = null;
 
 export function init() {
   wl = null;
