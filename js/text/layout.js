@@ -1,8 +1,10 @@
 // Layout helpers that run once
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
+import { onPiece } from "../core/page.js";
+
 export function init() {
-  gridItems(document);
+  onPiece(gridItems);
   // Contents rail (wide screens), built from the Library's list
   buildRail();
   // Gentle fade-in for verses that scroll into view (never for content already on screen; skipped if the device asks for less motion)
@@ -28,8 +30,10 @@ export function init() {
       },
       { rootMargin: "0px 0px -8% 0px" },
     );
-    [].forEach.call(document.querySelectorAll(".ash header,.ash .item,.rftop,.fin"), function (x) {
-      io.observe(x);
+    onPiece(function (sec) {
+      [].forEach.call(sec.querySelectorAll("header,.item,.rftop,.fin"), function (x) {
+        io.observe(x);
+      });
     });
     setTimeout(function () {
       ready = true;

@@ -19,7 +19,7 @@ export const FIXED_NOW = new Date("2026-10-15T10:00:00-04:00");
 
 // Settings that make a run repeatable: current settings version (so no migration runs), screen
 // wake off, no saved reading position (the reading position lives under its own key and is cleared).
-// How many texts the site builds (one section.ash each): every text in content/library.json
+// How many texts the site can build (one section.ash each, when it is opened): every text in content/library.json
 export const TEXT_COUNT = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8")).texts.length;
 
 export const BASE_PREFS = { sv: 6, wake: 0 };
@@ -79,8 +79,20 @@ export async function settle(page) {
   await page.waitForTimeout(250);
 }
 
+/**
+ * Build every piece on the page, as opening each one would (js/core/page.js builds a piece the first time it is
+ * opened). The page's own module is imported again, which gives the same copy the site runs on.
+ */
+export async function buildAll(page) {
+  await page.evaluate(async () => {
+    const m = await import(new URL("js/core/page.js", document.baseURI).href);
+    window.CONTENT.categories.forEach((c) => c.pieces.forEach((p) => m.pieceEl(p.id)));
+  });
+}
+
 /** The text a reader sees in every piece, piece by piece (hidden parts excluded). */
 export async function pieceText(page) {
+  await buildAll(page);
   // Home on its own (data-hv) hides the reading page, and the page shows one text at a time (.solo): each piece is
   // shown for the read, as opening it would
   return page.evaluate(() => {

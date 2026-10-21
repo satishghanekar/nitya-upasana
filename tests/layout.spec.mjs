@@ -2,7 +2,7 @@
 // Checks the things that break first on an unfamiliar screen: a sideways scroll, a bar that is off
 // screen, text that is too small to read, and controls too small to tap.
 import { test, expect } from "@playwright/test";
-import { openSite, hasSidewaysScroll, SETUPS } from "./helpers.mjs";
+import { openSite, hasSidewaysScroll, SETUPS, buildAll, readText } from "./helpers.mjs";
 
 export const SCREENS = [
   { name: "phone-320", width: 320, height: 640, mobile: true },
@@ -39,7 +39,7 @@ for (const s of SCREENS)
       expect(bar.y).toBeGreaterThanOrEqual(0);
       expect(bar.x + bar.width).toBeLessThanOrEqual(s.width + 1);
       // open a piece: still no sideways scroll, and the text is readable
-      await page.evaluate(() => document.getElementById("a1").scrollIntoView());
+      await readText(page, "a1");
       await page.waitForTimeout(150);
       expect(await hasSidewaysScroll(page), "no sideways scroll in a piece").toBe(false);
       const size = await page.evaluate(() => parseFloat(getComputedStyle(document.querySelector("#a1 .verse p")).fontSize));
@@ -144,6 +144,7 @@ for (const s of SCREENS.filter((x) => ["iphone-15", "ipad-air", "ipad-landscape"
 
 test("Vedic chants keep their lines in pairs with both languages", async ({ page }) => {
   await openSite(page, SETUPS.both, { hash: "#shree-rudra" });
+  await buildAll(page);
   const shown = await page.evaluate(
     (ids) => ids.map((id) => getComputedStyle(document.querySelector("#" + id + " .item.para .verse .mr p")).display),
     PROSE,

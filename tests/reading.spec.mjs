@@ -45,7 +45,7 @@ test("the first text in the Library has no Previous; the last has no Next", asyn
   await readText(page, "p1");
   await expect(card(page).locator('[data-ec="prev"]')).toHaveCount(0);
   await expect(card(page).locator('[data-ec="next"]')).toHaveCount(1);
-  const lastSec = await page.evaluate(() => [...document.querySelectorAll("#main > .ash")].pop().id);
+  const lastSec = await page.evaluate(() => window.CONTENT.categories.flatMap((c) => c.pieces.map((p) => p.id)).pop());
   await readText(page, lastSec);
   await expect(card(page).locator('[data-ec="next"]')).toHaveCount(0);
   await expect(card(page).locator('[data-ec="prev"]')).toHaveCount(1);

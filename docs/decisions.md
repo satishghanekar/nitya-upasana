@@ -330,5 +330,23 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - Gone: the पूजा and आरती rows, their folds (settings `pf`, `xf`, dropped from saved settings), the Open all / Fold all
   pill, the side menu's links to the rows, and their CSS. Folding a single piece stays.
 - A family's own category changes (js/core/library.js) still change the Library's list only; the page's numbers follow
-  the bundled categories until texts are built when opened (next PR).
+  the bundled categories (still so after v1.20.4, below).
 
+## Each text is built when it is first opened, not all at start-up (v1.20.4, 2026-10-21)
+
+- Stage 4 of `docs/refactor-plan.md`, the last step agreed for it ("build it as shown"). The page shows one text at a
+  time, so it no longer builds all 36 at start-up: Home opens with no pieces in the page, and a piece is built the
+  first time it is opened (the Library, search, the side menu, Prev / Next, the end card, a session, a link such as
+  `#a3`, Back, or the reading position kept from last time). Nothing looks different.
+- `js/core/page.js` keeps them: `pieceEl(id)` returns the piece, building it from `CONTENT` (`renderPiece` in
+  `js/render.js`, with the pieces before and after it for Previous / Next) before `#pieces`, in reading order; `secs`
+  is the pieces built so far. Each part's start-up pass over every piece became a step (`onPiece`) run on each piece
+  when it is built, in the order the parts start: the Kannada letters (`SCR.add`), the English style, grid places,
+  fade-in, tappable dhrupad markers, stanza numbers, line breaks, the fold button and fold, the text language and
+  language order, Home / Search at its end, the highlighted line, the poet links offline and the session mark.
+- What read every piece from the page reads `CONTENT` now: the titles (`titleText` in `js/text/iast.js`, for the end
+  card and search), and search, whose index is built the first time something is searched, from a copy of every piece
+  out of the page, put through the same steps (script, English style, stanza numbers, line breaks), so it finds and
+  shows exactly what it did. Print already did this (P1 of the print redesign, `js/print/compose.js`).
+- Not in this step: the hash routes (`#/read/...`) and making `render.js` a module stay on the plan; the `data-hv`,
+  `data-run` and `.solo` switches stay, as they still say what the screen shows.
