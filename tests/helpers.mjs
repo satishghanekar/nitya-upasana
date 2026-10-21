@@ -81,13 +81,20 @@ export async function settle(page) {
 
 /** The text a reader sees in every piece, piece by piece (hidden parts excluded). */
 export async function pieceText(page) {
-  // Home on its own (data-hv) hides the reading page: shown for the read, as opening a text would
+  // Home on its own (data-hv) hides the reading page, and the page shows one text at a time (.solo): each piece is
+  // shown for the read, as opening it would
   return page.evaluate(() => {
     const r = document.documentElement,
       hv = r.getAttribute("data-hv");
     r.removeAttribute("data-hv");
     const t = [...document.querySelectorAll("section.ash")]
-      .map((s) => "### " + s.id + "\n" + s.innerText.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim())
+      .map((s) => {
+        const was = s.classList.contains("solo");
+        s.classList.add("solo");
+        const x = "### " + s.id + "\n" + s.innerText.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+        if (!was) s.classList.remove("solo");
+        return x;
+      })
       .join("\n\n");
     if (hv !== null) r.setAttribute("data-hv", hv);
     return t;

@@ -7,6 +7,7 @@ import { cur } from "../core/apply.js";
 import { goHomeNav } from "./history.js";
 import { pageEls } from "./overlays.js";
 import { sessionStep } from "./today-card.js";
+import { endCard } from "./end-card.js";
 
 export var asc;
 
@@ -79,6 +80,8 @@ export function asLabel() {
     b.setAttribute("aria-label", (mr ? x[1] : x[2]).replace(/[‹›]/g, "").trim() + (name ? ": " + name : ""));
     b.disabled = !a && !ss;
   });
+  // the card at the end of the text follows the same changes (js/features/end-card.js)
+  endCard();
 }
 
 // Previous / Next follow the links in each piece's .pn block (kept in the page but never shown on screen,
