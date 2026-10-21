@@ -79,6 +79,7 @@ old home list to the Library (`#jump`). Version aarti-v1.8.
   1. A category with no texts is **hidden from the Library's list** but **shown in the sheet** ("No texts yet (not shown
      in the Library)"), so it can be filled.
   2. Texts **keep their reading-page numbers** in the Library (आरती ५ stays ५ in whichever category it is listed).
+     *Changed 2026-10-21 (v1.18): each category is numbered from 1; see below.*
   3. Marathi wording: **रचना** for a text, **विभाग** for a category, the search box says **"रचना किंवा ओळ शोधा"**
      (English: "Find a text or a line").
 - **Back:** the sheet has its own Back step over the Library's, so the phone's Back (or ✕, Escape, a tap outside)
@@ -267,3 +268,17 @@ whenever one language is shown. Approved from the mockup (branch `mockup-vedic-f
 - The automatic text size no longer counts these pieces' long lines (they run on), so they never make it smaller.
 - With both languages the lines stay in pairs, as before. Shri Sukta (numbered verses) keeps its verse layout.
   Printing already used running paragraphs for these pieces and is unchanged.
+
+## Library: pinch resizes the list, numbers restart in each category (v1.18, 2026-10-21)
+
+Satish asked (2026-10-21) that a pinch on the Library zoom only the list of texts, not the title bar, with the same
+text size setting as the reading page, and that the numbering restart after each section. Approved from screenshots
+(the project's `v2/library-zoom/`).
+
+- **Pinch:** the list (#jl) follows the text size: 15px at the automatic size, by the same share as the reading page
+  (150% there is 150% here). The top bar, Back, the title and the search box keep their size. The Library scrolls on
+  its own, so it (and the categories sheet) now has `touch-action: pan-y`, as the Settings preview has: iPhones
+  zoomed the whole page there before. Ctrl/⌘ + and − on a computer do the same.
+- **Numbers:** each category is numbered 1, 2, 3… in the Library and in the side menu on wide screens; a text moved
+  to another category takes its place there. The headings on the reading page keep their running numbers.
+
