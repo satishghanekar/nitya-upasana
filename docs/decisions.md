@@ -295,3 +295,21 @@ project's `v2/navigation/`).
 - **Bottom bar:** ‹ Prev, Home (a house with a lamp), Library (an open book), Reading (Aa), Next ›, each middle button
   with its word under the icon in the menu language; on a phone on its side the words are kept for screen readers
   only. The open book is the Library's icon everywhere; the Ganapati drawing stays as the logo beside the name.
+
+## One text at a time on every screen (v1.20, 2026-10-21)
+
+Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`, sheet in the project's
+`v2/reading-view/`), stage 4 of `docs/refactor-plan.md`.
+
+- The page shows only the text being read (`.solo`), on phones too, from a session, the Library, search or the side
+  menu. Scrolling past its end no longer runs into the next text, and scrolling up stops at its title (Home is not
+  above it). This extends "Desktop reading: one text at a time" (v1.15.1) to every screen and every way in.
+- A card at the end of the text (`#endc`, `js/features/end-card.js`): from the Library, a large Next and a smaller
+  Previous in the Library's order, with the texts' numbers; in a session, the session's place ("Evening session ·
+  2 of 4", with a bar per text, green when ticked) and Done · next, which ticks the text and opens the next one as
+  Next › does; after the last text, Back to Home. The bottom bar is unchanged.
+- Not yet: building only the text being read (the page still holds every text); that waits for the print redesign's
+  P1, which builds print from the texts instead of the page. Also decided on 2026-10-21: the old पूजा / आरती groups
+  go (the Library's categories are the only grouping), and Autoscroll and Tilt to scroll are removed for now (they stay
+  in git). Each is its own PR.
+

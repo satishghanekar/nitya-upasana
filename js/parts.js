@@ -62,6 +62,7 @@ var SITE_PARTS = (function () {
     "text/line-breaks",
     "text/autofit",
     "core/apply",
+    "features/end-card",
     "features/bottom-bar",
     "features/tilt",
     "features/bars",
