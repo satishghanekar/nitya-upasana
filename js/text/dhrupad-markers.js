@@ -13,14 +13,7 @@ export function init() {
   // so the next stanza stays clear. Tap again, tap elsewhere or press Escape to close; it also closes by itself.
   RMKTAP = ["a1", "a2", "a3", "a4", "a5", "a7", "a9"];
   rmkPop = null;
-  RMKTAP.forEach(function (id) {
-    [].forEach.call(document.querySelectorAll("#" + id + " .items > .rmk"), function (m) {
-      m.classList.add("rmkt");
-      m.setAttribute("role", "button");
-      m.setAttribute("tabindex", "0");
-      m.setAttribute("aria-expanded", "false");
-    });
-  });
+  markTappable(document);
   document.addEventListener("click", function (e) {
     var m = e.target.closest && e.target.closest(".rmkt");
     if (m) {
@@ -41,6 +34,19 @@ export function init() {
   }, { passive: true });
   addEventListener("resize", function () {
     if (rmkPop) rmkPop.el.place();
+  });
+}
+
+// The tappable markers in the pieces inside r (the page, or a printout's copy: js/print/compose.js, which keeps them
+// as the page has them, so the printout is laid out the same)
+export function markTappable(/** @type {ParentNode} */ r) {
+  RMKTAP.forEach(function (id) {
+    [].forEach.call(r.querySelectorAll("#" + id + " .items > .rmk"), function (m) {
+      m.classList.add("rmkt");
+      m.setAttribute("role", "button");
+      m.setAttribute("tabindex", "0");
+      m.setAttribute("aria-expanded", "false");
+    });
   });
 }
 
