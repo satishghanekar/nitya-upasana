@@ -2,7 +2,8 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { flash } from "../core/page.js";
-import { shared, P, dfs, save } from "../core/state.js";
+import { P, change, dfs } from "../core/state.js";
+import { FSA } from "../text/autofit.js";
 import { trSet } from "../text/iast.js";
 import { refit } from "../text/autofit.js";
 import { cur, pn } from "../core/apply.js";
@@ -28,47 +29,35 @@ export function init() {
   document.getElementById("sfn").onclick = function (e) {
     var v = (e.target.closest("button") || { dataset: {} }).dataset.v;
     if (!v || v === P.fnt) return;
-    P.fnt = v;
-    save();
-    apply();
+    change({ fnt: v }, apply);
     refit();
   };
   document.getElementById("su").onclick = function (e) {
     var v = (e.target.closest("button") || { dataset: {} }).dataset.v;
     if (v) {
-      P.ui = v;
-      apply();
-      save();
+      change({ ui: v }, apply);
     }
   };
   document.getElementById("st").onclick = function (e) {
     var v = (e.target.closest("button") || { dataset: {} }).dataset.v;
     if (v) {
-      P.th = v;
-      apply();
-      save();
+      change({ th: v }, apply);
     }
   };
   document.getElementById("tc").onclick = function () {
-    P.hc = P.hc ? 0 : 1;
-    apply();
-    save();
+    change({ hc: P.hc ? 0 : 1 }, apply);
   };
   document.getElementById("sc").onclick = function (e) {
     var v = (e.target.closest("button") || { dataset: {} }).dataset.v;
     if (!v) return;
     var c = cur();
-    P.cols = +v;
-    apply();
-    save();
+    change({ cols: +v }, apply);
     if (c) c.scrollIntoView();
   };
 }
 
 export function fsTap(fs, fsu) {
-  P.fs = fs;
-  P.fsu = fsu;
-  save();
+  change({ fs: fs, fsu: fsu });
   pn.style.setProperty("--fs", P.fs + "px");
   szSet();
   clearTimeout(fsT);
@@ -77,7 +66,7 @@ export function fsTap(fs, fsu) {
 
 // The size shown between A− and A+: a share of the size Reset gives (the fitted size), as the pinch shows it
 export function szSet() {
-  document.getElementById("szv").textContent = Math.round((P.fs / (shared.FSA || dfs())) * 100) + "%";
+  document.getElementById("szv").textContent = Math.round((P.fs / (FSA || dfs())) * 100) + "%";
 }
 
 export function fsFlush() {
@@ -92,8 +81,7 @@ export function fsFlush() {
 // then the text size is fitted again
 export function trPick(v) {
   if (v && v !== P.tr) {
-    P.tr = v;
-    save();
+    change({ tr: v });
     // each step runs on its own, so a failure in one (named with the browser's message, so it can be traced)
     // can't stop the others or leave the switch showing the old choice; apply() below always runs
     var bad = [];

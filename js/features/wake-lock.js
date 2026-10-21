@@ -1,27 +1,29 @@
 // Keep the screen on (Wake Lock). Browsers drop the lock when the page is hidden, so it is re-requested.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { shared, P, save } from "../core/state.js";
+import { P, change } from "../core/state.js";
 import { apply } from "./bars.js";
 
+// The screen lock while it is held, else null (read by the bottom bar and tilt, which keep the screen on while they scroll)
+/** @type {any} */
+export var wl = null;
+
 export function init() {
-  shared.wl = null;
+  wl = null;
   if (!("wakeLock" in navigator)) document.getElementById("tw").hidden = true;
   document.getElementById("tw").onclick = function () {
-    P.wake = P.wake ? 0 : 1;
-    apply();
-    save();
+    change({ wake: P.wake ? 0 : 1 }, apply);
     wake(!!P.wake);
   };
   document.addEventListener("visibilitychange", function () {
-    if (P.wake && document.visibilityState === "visible" && !shared.wl) wake(true);
+    if (P.wake && document.visibilityState === "visible" && !wl) wake(true);
   });
   // Some browsers only grant the lock after a tap
   ["touchend", "click"].forEach(function (n) {
     document.addEventListener(
       n,
       function () {
-        if (P.wake && !shared.wl) wake(true);
+        if (P.wake && !wl) wake(true);
       },
       { passive: true },
     );
@@ -34,16 +36,16 @@ export function wake(on) {
     navigator.wakeLock
       .request("screen")
       .then(function (l) {
-        shared.wl = l;
+        wl = l;
         l.addEventListener("release", function () {
-          shared.wl = null;
+          wl = null;
         });
       })
       .catch(function () {});
-  } else if (shared.wl) {
+  } else if (wl) {
     try {
-      shared.wl.release();
+      wl.release();
     } catch (e) {}
-    shared.wl = null;
+    wl = null;
   }
 }

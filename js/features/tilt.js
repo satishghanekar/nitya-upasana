@@ -2,10 +2,10 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { flash, root } from "../core/page.js";
-import { shared, P } from "../core/state.js";
+import { P } from "../core/state.js";
 import { FEAT_TL } from "../core/features.js";
 import { asStop, asc } from "./bottom-bar.js";
-import { wake } from "./wake-lock.js";
+import { wake, wl } from "./wake-lock.js";
 
 export var TL;
 var tlb, tlDot;
@@ -148,7 +148,7 @@ function tlStart() {
   addEventListener("deviceorientation", tlRead);
   asc.classList.add("tl");
   tlLabel();
-  if (!shared.wl) wake(true);
+  if (!wl) wake(true);
   TL.raf = requestAnimationFrame(tlStep);
   // some phones and tablets have no motion sensor, or the browser keeps it from the page
   setTimeout(function () {
