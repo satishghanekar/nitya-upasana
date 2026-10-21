@@ -2,9 +2,8 @@
 // the home page had them (पूजा, आरती), with search. A title opens its text; Back (the button or the browser's) returns
 // to Home. The bottom bar's search button and the one at the end of each piece open the same page.
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
-import { openSite, SETUPS } from "./helpers.mjs";
+import { openSite, SETUPS, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 // the bundled categories that have texts, in order (an empty one is left out of the list)
@@ -103,23 +102,17 @@ test("on the home page the top bar has the name, profile, Library, More and Sett
   for (const b of ["#who", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
 });
 
-for (const [name, prefs] of [
-  ["light", SETUPS.marathi],
-  ["dark", { ...SETUPS.marathi, th: "dark" }],
-  ["sepia", { ...SETUPS.marathi, th: "sepia" }],
-  ["high contrast", { ...SETUPS.marathi, hc: 1 }],
+// Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); Marathi menus in full
+for (const [name, prefs, themes] of [
+  ["light, and every other theme", SETUPS.marathi, true],
   ["Marathi menus, both languages", { ...SETUPS["marathi-menus"], lang: "both" }],
 ]) {
   test(`axe: the Library, ${name} @mobile`, async ({ page }) => {
     await openSite(page, prefs, { now: EVENING });
     await page.locator("#hm").click();
     await expect(page.locator("#jump")).toBeVisible();
-    const r = await new AxeBuilder({ page })
-      .include("#jump")
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"])
-      .disableRules(["label-content-name-mismatch"])
-      .analyze();
-    expect(r.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).slice(0, 5).join(", ")}`)).toEqual([]);
+    if (themes) expect(await axeEveryTheme(page, "#jump")).toEqual(noViolations());
+    else expect(await axeScan(page, "#jump")).toEqual([]);
   });
 }
 
@@ -381,26 +374,24 @@ test("English first with Marathi second: the sheet names in English with the Mar
   expect(await page.locator("#jl .tocg .gh").first().evaluate((h) => h.firstElementChild.className)).toBe("en");
 });
 
-for (const [name, prefs] of [
-  ["light", SETUPS.marathi],
-  ["dark", { ...SETUPS.marathi, th: "dark" }],
-  ["sepia", { ...SETUPS.marathi, th: "sepia" }],
-  ["high contrast", { ...SETUPS.marathi, hc: 1 }],
+for (const [name, prefs, themes] of [
+  ["light, and every other theme", SETUPS.marathi, true],
   ["Marathi menus", SETUPS["marathi-menus"]],
 ]) {
   test(`axe: the categories sheet and search results, ${name} @mobile`, async ({ page }) => {
+    // the categories sheet is scanned with label-content-name-mismatch on, as it always was
+    const scan = async (sel, opt = {}) => (themes ? axeEveryTheme(page, sel, opt) : axeScan(page, sel, opt));
+    const ok = themes ? noViolations() : [];
     await openSite(page, prefs, { now: EVENING });
     await page.locator("#hm").click();
     await page.locator("#q").fill("sukhakarta");
     await expect(page.locator("#res li.rt")).toHaveCount(1);
-    const tags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
-    const fmt = (r) => r.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).slice(0, 5).join(", ")}`);
-    expect(fmt(await new AxeBuilder({ page }).include("#jump").withTags(tags).disableRules(["label-content-name-mismatch"]).analyze())).toEqual([]);
+    expect(await scan("#jump")).toEqual(ok);
     await page.locator("#q").fill("");
     await page.locator("#lbb").click();
-    expect(fmt(await new AxeBuilder({ page }).include("#lbm").withTags(tags).analyze())).toEqual([]);
+    expect(await scan("#lbm", { mismatch: true })).toEqual(ok);
     await page.locator('.lbe[data-id="aarti"]').click();
-    expect(fmt(await new AxeBuilder({ page }).include("#lbm").withTags(tags).analyze())).toEqual([]);
+    expect(await scan("#lbm", { mismatch: true })).toEqual(ok);
   });
 }
 

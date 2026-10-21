@@ -6,13 +6,11 @@
 // 19 Oct 2026 is a Monday, 22 Oct a Thursday, 20 Oct a Tuesday. The tests run on a fixed routine (TEST_ROUTINE in
 // helpers.mjs: Morning = Atharvashirsha, Evening = the ten aartis, the same every day), whatever Satish's schedule is.
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
-import { openSite, settle, SETUPS, useTestRoutine } from "./helpers.mjs";
+import { openSite, settle, SETUPS, useTestRoutine, axeEveryTheme, noViolations } from "./helpers.mjs";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 const T = Object.fromEntries(LIB.texts.map((t) => [t.id, t]));
-const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
 const MON_EVENING = new Date("2026-10-19T19:00:00-04:00");
 const PHONE = { width: 390, height: 844 };
 
@@ -25,14 +23,6 @@ const btn = (page, id, a) => page.locator(`#rtl li[data-id="${id}"] button[data-
 const ids = (page) => items(page).evaluateAll((l) => l.map((x) => x.dataset.id));
 const homeIds = (page) =>
   rows(page).evaluateAll((l) => l.map((x) => x.querySelector("input").dataset.t));
-
-// the builder is a page over Home: what is under it is checked by the Home tests
-async function axe(page, sel) {
-  const b = new AxeBuilder({ page });
-  if (sel) b.include(sel);
-  const r = await b.withTags(TAGS).disableRules(["label-content-name-mismatch"]).analyze();
-  return r.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(" ")).slice(0, 5).join(", ")}`);
-}
 
 async function openBuilder(page) {
   await page.locator("#tsed").click();
@@ -341,36 +331,35 @@ test("Marathi menus: बदला, and the builder's words in Marathi @mobile", 
   await expect(page.locator("#rbk")).toHaveText("मागे", { useInnerText: true });
 });
 
-for (const [name, prefs, w] of [
-  ["light, phone", SETUPS.marathi, PHONE],
-  ["dark, phone", { ...SETUPS.marathi, th: "dark" }, PHONE],
-  ["sepia, phone", { ...SETUPS.marathi, th: "sepia" }, PHONE],
-  ["high contrast, phone", { ...SETUPS.marathi, hc: 1 }, PHONE],
-  ["light, wide", SETUPS.marathi, { width: 1280, height: 820 }],
-  ["dark, wide", { ...SETUPS.marathi, th: "dark" }, { width: 1280, height: 820 }],
-  ["high contrast, wide, English only", { lang: "en", lead: "en", l2: "", hc: 1 }, { width: 1280, height: 820 }],
+// The builder is a page over Home: what is under it is checked by the Home tests. Each set-up is scanned in full, then
+// in every other theme for colour (axeEveryTheme), with the picker open and with the list.
+const WIDE = { width: 1280, height: 820 };
+for (const [name, prefs, w, themes] of [
+  ["phone", SETUPS.marathi, PHONE, true],
+  ["wide", SETUPS.marathi, WIDE, true],
+  ["wide, English only", { lang: "en", lead: "en", l2: "" }, WIDE, ["high contrast"]],
 ]) {
-  test(`axe: the builder and the picker, ${name}`, async ({ page }) => {
+  test(`axe: the builder and the picker, ${name}, in every theme`, async ({ page }) => {
+    const scan = () => (themes === true ? axeEveryTheme(page, "#rtb") : axeEveryTheme(page, "#rtb", {}, themes));
+    const ok = themes === true ? noViolations() : noViolations(themes);
     await page.setViewportSize(w);
     await openSite(page, prefs, { now: MON_EVENING });
     await openBuilder(page);
     await page.locator('#rtmd [data-v="weekday"]').click();
     await page.locator("#rtcpb").click();
     await page.waitForTimeout(200);
-    expect(await axe(page, "#rtb")).toEqual([]);
+    expect(await scan()).toEqual(ok);
     await page.locator("#rtcpx").click();
     if (w.width < 1024) await page.locator("#rtadd").click();
     await page.waitForTimeout(200);
-    expect(await axe(page, "#rtb")).toEqual([]);
+    expect(await scan()).toEqual(ok);
   });
 }
 
-test("axe: an empty session on Home, dark and sepia @mobile", async ({ page }) => {
-  for (const th of ["dark", "sepia"]) {
-    await openSite(page, { ...SETUPS.marathi, th }, { now: new Date("2026-10-19T14:00:00-04:00") });
-    await expect(page.locator("#tse")).toBeVisible();
-    expect(await axe(page)).toEqual([]);
-  }
+test("axe: an empty session on Home, in every theme @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: new Date("2026-10-19T14:00:00-04:00") });
+  await expect(page.locator("#tse")).toBeVisible();
+  expect(await axeEveryTheme(page)).toEqual(noViolations());
 });
 
 test("44px targets in the builder and the picker @mobile", async ({ page }) => {

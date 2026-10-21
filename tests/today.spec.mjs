@@ -7,9 +7,8 @@
 // bundled default (content/routines.json) has its own test below. 15 Oct 2026 is a Thursday, 18 Oct a Sunday, 28 Oct a
 // Sankashti (Wednesday).
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
-import { openSite, settle, SETUPS, useTestRoutine, TEST_AARTIS, TEST_ROUTINE } from "./helpers.mjs";
+import { openSite, settle, SETUPS, useTestRoutine, TEST_AARTIS, TEST_ROUTINE, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
 import { textsFor } from "../js/core/routine.js";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
@@ -315,23 +314,17 @@ test("each tick, session and Start control has a name and a 44px target @mobile"
   expect(small).toEqual([]);
 });
 
-for (const [name, prefs] of [
-  ["light", SETUPS.marathi],
-  ["dark", { ...SETUPS.marathi, th: "dark" }],
-  ["sepia", { ...SETUPS.marathi, th: "sepia" }],
-  ["high contrast", { ...SETUPS.marathi, hc: 1 }],
+// Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); Marathi menus in full
+for (const [name, prefs, themes] of [
+  ["light, and every other theme", SETUPS.marathi, true],
   ["Marathi menus", SETUPS["marathi-menus"]],
 ]) {
   test(`axe: Home with ticks, ${name} @mobile`, async ({ page }) => {
     await openSite(page, prefs, { now: EVENING });
     await rows(page).nth(0).locator("input").check();
     await rows(page).nth(1).locator("input").check();
-    const r = await new AxeBuilder({ page })
-      .include("#home")
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"])
-      .disableRules(["label-content-name-mismatch"])
-      .analyze();
-    expect(r.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).slice(0, 5).join(", ")}`)).toEqual([]);
+    if (themes) expect(await axeEveryTheme(page, "#home")).toEqual(noViolations());
+    else expect(await axeScan(page, "#home")).toEqual([]);
   });
 }
 
