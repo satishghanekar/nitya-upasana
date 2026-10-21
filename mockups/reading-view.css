@@ -1,0 +1,90 @@
+/* Stage 4 mockup: one text at a time on the phone. Injected over the real app by mockups/shoot-reading.mjs.
+   Not app code: it only hides the other texts and adds the end-of-text card, to show how it would look. */
+
+html[data-mock1] section.ash:not(.mockcur),
+html[data-mock1]:not([data-hv]) #home,
+html[data-mock1]:not([data-hv]) #tsc,
+html[data-mock1] .grp {
+  display: none !important;
+}
+
+.mkend {
+  margin: 28px 0 0;
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.mkend .mkpos {
+  text-align: center;
+  font-size: 15px;
+  color: var(--muted);
+}
+.mkend .mkpos b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.mkend button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 18px;
+  text-align: left;
+}
+.mkend button small {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  font-family: system-ui, sans-serif;
+}
+.mkend button.mknext {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.mkend button.mknext small {
+  color: var(--bg);
+  opacity: 0.85;
+}
+.mkend button .mkt {
+  flex: 1;
+}
+.mkend button svg {
+  flex: none;
+}
+.mkend .mkpips {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+.mkend .mkpips i {
+  width: 22px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--rule);
+}
+.mkend .mkpips i.d {
+  background: #2e7d4f;
+}
+.mkend .mkpips i.c {
+  background: var(--accent);
+}
+.mkbadge {
+  position: fixed;
+  right: 8px;
+  top: 72px;
+  z-index: 99;
+  font: 600 11px system-ui, sans-serif;
+  background: #1d4ed8;
+  color: #fff;
+  padding: 3px 7px;
+  border-radius: 6px;
+}
