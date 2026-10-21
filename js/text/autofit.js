@@ -101,6 +101,8 @@ function ratio() {
     rows = [];
   [].forEach.call(document.querySelectorAll(P.lang === "en" || shared.LEAD === "en" ? ".verse .en p" : ".verse .mr p"), function (p) {
     if (!p.offsetParent) return;
+    // a Vedic chant in one language runs on as paragraphs, so its long lines need not fit on one row
+    if (P.lang !== "both" && p.closest(".ash.prose")) return;
     var cs = getComputedStyle(p),
       avail = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     if (!avail) return;
@@ -164,7 +166,8 @@ function pull() {
   var on = root.getAttribute("data-cols") === "2" && P.lang !== "both";
   secs.forEach(function (sec) {
     var v = 0;
-    if (on && sec.offsetParent !== null) {
+    // (not a Vedic chant running on as paragraphs: one column)
+    if (on && sec.offsetParent !== null && !sec.classList.contains("prose")) {
       var lw = 0,
         cw = 0,
         rg = document.createRange();
