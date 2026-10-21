@@ -14,7 +14,7 @@ const STATES = [
   ["both languages", SETUPS.both],
   ["Kannada", SETUPS["kannada-both"]],
   ["English main", SETUPS["english-main-both"]],
-  ["everything folded", { ...SETUPS.marathi, pf: 1, xf: 1 }],
+  ["pieces folded", { ...SETUPS.marathi, af: ["p1", "a1", "a2"] }],
   ["Settings open", SETUPS.marathi, (p) => p.locator("#aa").click(), true],
   ["Print open", SETUPS.marathi, (p) => tapMore(p, "#prb"), true],
   ["Library open", SETUPS.marathi, (p) => p.locator("#hm").click(), true],

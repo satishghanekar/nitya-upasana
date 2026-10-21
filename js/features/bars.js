@@ -8,7 +8,7 @@ import { todayLang } from "./today-card.js";
 import { calLang } from "./vedic-calendar.js";
 import { libLang } from "./library.js";
 import { autoFs, pullSoon } from "../text/autofit.js";
-import { cur, pfSet, pjOpen } from "../core/apply.js";
+import { cur, foldSet, unfold } from "../core/apply.js";
 import { asLabel, asShow, asc } from "./bottom-bar.js";
 import { szSet } from "./settings-panel.js";
 import { setJ, setP } from "./overlays.js";
@@ -93,17 +93,8 @@ export function tuckHold() {
 
 // Highlight the current piece in the menus; update the progress line
 export function mark() {
-  var c = cur(),
-    ct = c ? c.getBoundingClientRect().top : -1e9;
-  // a section row (पूजा / आरती) at the top, below the last piece passed: that section is current, not the piece above it
-  [].forEach.call(document.querySelectorAll(".grp"), function (g) {
-    var t = g.getBoundingClientRect().top;
-    if (g.offsetParent !== null && t <= 90 && t > ct) {
-      c = g;
-      ct = t;
-    }
-  });
-  // On the home page (no piece or section row at the top yet): Language and Dhrupad step aside in the top bar, and
+  var c = cur();
+  // On the home page (no piece at the top yet): Language and Dhrupad step aside in the top bar, and
   // the bottom bar gives way to Start / Continue (css/10-today.css)
   if (c) root.removeAttribute("data-home");
   else if (!root.hasAttribute("data-home")) root.setAttribute("data-home", "1");
@@ -159,7 +150,7 @@ function lineEl(id) {
 
 // Scroll to a line (from search) and flash it
 export function goLine(id, flash) {
-  pjOpen(document.querySelector('[data-l="' + id + '"]'));
+  unfold(document.querySelector('[data-l="' + id + '"]'));
   var el = lineEl(id);
   if (!el) return;
   // A line that is hidden in the current dhrupad mode: go to the start of its piece instead
@@ -214,7 +205,7 @@ export function apply() {
   if (P.th === "auto") root.removeAttribute("data-pref");
   else root.setAttribute("data-pref", P.th);
   // Text language on the pieces and the printout; menu language on the bar, menus, home page and dialogs
-  [].forEach.call(document.querySelectorAll(".grp,.wrap > .ash,#pv,#jl,#rail"), function (e) {
+  [].forEach.call(document.querySelectorAll(".wrap > .ash,#pv,#jl,#rail"), function (e) {
     e.setAttribute("data-lang", P.lang);
   });
   [].forEach.call(document.querySelectorAll(".bar,#shr,#asc,#none,.libhd,#panel,#home > *,#qrm,#prm,#inm,#rsh,#szt,#szr,#fl"), function (e) {
@@ -246,7 +237,7 @@ export function apply() {
   });
   leadSet();
   spSet();
-  pfSet();
+  foldSet();
   autoFs();
   root.style.setProperty("--fs", P.fs + "px");
   pullSoon();

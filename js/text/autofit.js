@@ -81,8 +81,6 @@ function ratio() {
     P.fnt,
     P.tr,
     P.ref,
-    P.pf,
-    P.xf,
     root.getAttribute("data-cols"),
     root.getAttribute("data-rail"),
     MQL.matches ? "l" : "p",

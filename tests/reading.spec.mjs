@@ -41,7 +41,7 @@ test("from the Library only the text opened is on the page, with Next and Previo
 
 test("the first text in the Library has no Previous; the last has no Next", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
-  const order = LIB.groups.flatMap((g) => g.texts);
+  const order = LIB.texts.map((t) => t.id);
   await readText(page, "p1");
   await expect(card(page).locator('[data-ec="prev"]')).toHaveCount(0);
   await expect(card(page).locator('[data-ec="next"]')).toHaveCount(1);

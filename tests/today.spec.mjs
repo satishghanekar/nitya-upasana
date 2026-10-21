@@ -205,7 +205,7 @@ test("in the morning, Next after the Atharvashirsha ends the session and returns
   // reading outside a session (a Library link): Next follows the library again
   await page.locator("#hm").click();
   await page.locator('#jl a[data-go="p1"]').click();
-  const order = LIB.groups.flatMap((g) => g.texts);
+  const order = LIB.texts.map((t) => t.id);
   await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: " + TITLE[order[order.indexOf("atharvashirsha") + 1]].titleEn);
 });
 
@@ -352,9 +352,9 @@ test("Home has no date card, week row or contents list: the Library has every te
   await openSite(page, SETUPS.marathi, { now: EVENING });
   for (const sel of ["#skc", "#skmore", "#skall", "#twk", "#tso", "#tfb", "#cvb", "#tmo", "#home #shr", "#home .tocg", "#home a[data-go]"])
     await expect(page.locator(sel), sel).toHaveCount(0);
-  // Home ends after Start and the Library line (App, Share, QR, Print and Help are under ⋯ More in the top bar); the reading page's groups and pieces are not shown under it
+  // Home ends after Start and the Library line (App, Share, QR, Print and Help are under ⋯ More in the top bar); the reading page's pieces are not shown under it
   await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
-  await expect(page.locator(".wrap > .grp:visible, section.ash:visible")).toHaveCount(0);
+  await expect(page.locator("section.ash:visible")).toHaveCount(0);
   await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(LIB.texts.length);
 });
 

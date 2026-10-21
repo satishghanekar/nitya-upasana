@@ -50,8 +50,8 @@ const EXTRAS = [
   { name: "kannada-single-column", prefs: SETUPS.kannada, choice: "pr1", mode: "one" },
   { name: "dhrupad-every-verse-single", prefs: SETUPS["marathi-every-verse"], choice: "pr1", mode: "one" },
   { name: "marathi-menus-single-column", prefs: SETUPS["marathi-menus"], choice: "pr1", mode: "one" },
-  // Folded on screen: the Pooja section, the Aarti section and two pieces. All must still print.
-  { name: "everything-folded", prefs: { ...SETUPS.marathi, pf: 1, xf: 1, af: ["a3", "a7"], tf: 1, fold: 1 }, choice: "pr1", mode: "one" },
+  // Folded on screen: two pieces. They must still print.
+  { name: "everything-folded", prefs: { ...SETUPS.marathi, af: ["a3", "a7"], tf: 1, fold: 1 }, choice: "pr1", mode: "one" },
   { name: "a4-kannada-single-column", prefs: SETUPS.kannada, choice: "pr1", mode: "one", paper: "A4", locale: "en-GB" },
 ];
 
@@ -159,7 +159,7 @@ test("the printout does not depend on what the reading page shows @chromium-only
   }
   const home = await printView(SETUPS.marathi, "");
   expect(await printView(SETUPS.marathi, "#a5")).toBe(home);
-  expect(await printView({ ...SETUPS.marathi, pf: 1, xf: 1, af: ["a3", "a7"], tf: 1, fold: 1 }, "#p1")).toBe(home);
+  expect(await printView({ ...SETUPS.marathi, af: ["a3", "a7"], tf: 1, fold: 1 }, "#p1")).toBe(home);
 });
 
 // Safari and iOS (class "wk") keep the page plan worked out from the heights (see paginate in

@@ -17,7 +17,7 @@ beforeAll(async () => {
   ({ IA } = await import("../../js/text/iast.js"));
   const texts = [],
     lines = [];
-  for (const id of lib.groups.flatMap((g) => g.texts)) {
+  for (const id of lib.texts.map((t) => t.id)) {
     const t = parseText(read("content/texts/" + id + ".txt"), id);
     const cat = CATS.find((c) => c.id === t.category);
     const all = t.blocks.flatMap((b) => b.lines);
