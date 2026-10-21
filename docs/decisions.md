@@ -368,3 +368,20 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
   print audit (`npm run release`).
 - The per-text snapshots record the size of the smallest line: P3 (sizing) raises the floor to 80% and grows sizes,
   and these snapshots then show every text's change.
+
+## Print sizes: one 80% floor, and each text grown to a size step (v1.20.6, 2026-10-21)
+
+- Step P3 (first part) of the print redesign; the rules are Satish's (PLAN §3.3, SIZES.md, 21 Oct).
+- **Floor:** a printed line is never smaller than 80% of its size, counting the fitting's shrink and the whole
+  piece's shrink for its pages together (`LAYOUT.floor`). Before, lines could go to 85% and then the piece to 80% of
+  that (68%). The fitting alone still stops at 85% (`LAYOUT.lineFloor`): allowed 80%, it used up the whole floor on
+  one line and left no room to fit the pages (Yei O Vitthale side by side on Letter went from one page to two).
+  Cost: side by side, Shree Rudra, Shri Sukta and the Lalita Sahasranama, which were set at about 72%, take 2 to 3
+  pages more (a Both printout of the whole Library: 88 to 94 pages on Letter). Their side-by-side layout is redone in
+  the next part (Vedic paragraphs side by side).
+- **Growing:** a text whose lines all fit with room is set at the largest step of 14, 16, 18, 20pt (aartis,
+  ashtaks) or 15, 16, 17pt (Vedic) that takes no more pages than at its own size; English to 0.85 of the steps.
+  Most aartis in Marathi Portrait now print at 18 to 20pt on one page.
+- **A measuring slip fixed:** the dhrupad at the top of an aarti is a box as wide as its lines, centred; the fitting
+  measured its lines against that box, so they always seemed to fill it, and every such aarti was set about 7%
+  smaller (13.7pt instead of 14pt) and could never grow. It is now measured against the page width.
