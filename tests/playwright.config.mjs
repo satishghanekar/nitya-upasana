@@ -42,6 +42,8 @@ export default defineConfig({
       maxDiffPixelRatio: 0.002,
       animations: "disabled",
       caret: "hide",
+      // hides the short note that comes and goes on a timer (see screenshot.css)
+      stylePath: "./screenshot.css",
       // Pixels differ slightly between machines (font smoothing), so each machine type keeps its own set
       pathTemplate: `__snapshots__/{testFilePath}/{projectName}/${SNAP_ENV}/{arg}{ext}`,
     },

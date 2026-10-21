@@ -1,0 +1,7 @@
+/* Applied to every screenshot (playwright.config.mjs, toHaveScreenshot.stylePath).
+   The short note near the top (#fl) comes and goes on timers: on a first visit "Ready to use offline" shows 8 s after
+   the page opens (js/features/offline.js) even with the service worker blocked, so a test that runs slowly on a busy
+   machine caught it in a screenshot. It is hidden in every shot; the tests that need it check it by its text. */
+#fl {
+  visibility: hidden !important;
+}
