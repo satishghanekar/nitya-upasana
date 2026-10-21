@@ -224,3 +224,31 @@ screen highlighted) and "Another text? Open the Library". Reading from the Libra
 
 - On desktop (≥1100px), reading a session shows only the text you are on, on the right, scrolling there beside the session's list. The next text no longer runs on below it, and Home is not above it.
 - ‹ Prev / Next ›, the session's list on the left, and Back change the text. मुखपृष्ठ (Home) in the list or the bottom bar goes back to Home. Phones still read the session as one page.
+
+## Full screen on every device (v1.16, 2026-10-21)
+
+Satish approved the layout review (mockup branch `mockup-responsive`, sheets in the project's `v2/responsive/`) after
+the iPad looked squeezed. These replace the 85% frame of Desktop A and the 1100px start of Desktop B:
+
+- The side-by-side layout (left column + page beside it) starts at 1024px, so every iPad held sideways has it.
+- It uses the whole width: 24px from the edges up to 1399px (left column with its gap 380px), 32px from 1400px (460px);
+  it stops growing at 2200px, centred.
+- Large monitors (2200px and wider, 3000px and wider: a 2K screen at 100%, a 4K one at low scaling): the left column,
+  the bars, the reading text and the pages beside them are drawn 1.25× and 1.6× larger (CSS `zoom` on the parts in the
+  page's flow; the fixed areas keep their place).
+- Home: the day's picture as large as the screen allows, centred in the height beside today.
+- The calendar's month takes the room the day card (290–360px) leaves; its days fill the screen's height and tithi
+  names stay whole words.
+- The Library opens in the right-hand area too, beside today, its categories in columns. Settings' cards go to three
+  columns where there is room.
+- Tablets held upright (600–1023px wide): Home is one larger column with the picture large on top; the calendar's
+  month on top across the width and the day card under it, its rows in two columns; the Library and Settings in two
+  columns.
+- Phones held sideways: Home in two columns, the day on the left, the session (its texts and Start) on the right.
+- iPhones held upright are unchanged. Home still shows only what to chant now.
+- Tests: all suites run in the cloud session until GitHub Actions is available again; the screenshots made on
+  Satish's Mac and on GitHub were removed and a fresh set was made there (Satish, 2026-10-21).
+- Found by the tests once they ran again: the hidden Restore file picker printed "Choose File" above the contents
+  (pushing every contents page number out by one in Kannada on A4), and the transliteration missed ḷ (कॢप्त) and a
+  zero-width joiner inside श‍ृ. All three are fixed. Shree Rudra's passages are wider than half a sideways page with
+  Kannada beside them, so they wrap mid-phrase; the print test's limit of 12 such lines counts the other texts.

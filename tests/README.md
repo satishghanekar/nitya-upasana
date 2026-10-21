@@ -22,7 +22,7 @@ npm run lhci                         # Lighthouse CI: CLS fails the run; score, 
 
 `npm test` starts a small static server (`serve.mjs`, port 4173) by itself. On a failure, `npx playwright show-report` opens the details, with a trace of every step.
 
-On GitHub every pull request and every push to `main` runs everything (`.github/workflows/tests.yml`, in the `mcr.microsoft.com/playwright:v1.64.1-noble` image, kept in step with `@playwright/test` in `package.json`): lint, Chromium, Firefox, WebKit (Safari's engine), iPhone, iPad and Pixel emulation, and Lighthouse.
+Until GitHub Actions runs again (Satish, 2026-10-21), every suite is run in a Claude session in the cloud before a pull request is merged, and the results are posted on the pull request. Only Chromium is installed there, so the Firefox, WebKit, iPhone and iPad projects wait for GitHub. On GitHub every pull request and every push to `main` runs everything (`.github/workflows/tests.yml`, in the `mcr.microsoft.com/playwright:v1.64.1-noble` image, kept in step with `@playwright/test` in `package.json`): lint, Chromium, Firefox, WebKit (Safari's engine), iPhone, iPad and Pixel emulation, and Lighthouse.
 
 ## The suites
 
@@ -73,13 +73,12 @@ Text, screenshots and print summaries are kept in `__snapshots__/`. They are the
 npx playwright test --update-snapshots
 ```
 
-Screenshots and print summaries depend a little on the machine (font smoothing, and the odd line that lands one page later in a PDF), so there are two sets, `local/` and `ci/`, in `__snapshots__/visual.spec.mjs/chromium/` and `__snapshots__/print.spec.mjs/chromium/`. The text snapshots are the same everywhere and are shared.
+Screenshots and print summaries depend a little on the machine (font smoothing, and the odd line that lands one page later in a PDF), so each machine type keeps its own set in `__snapshots__/visual.spec.mjs/chromium/` and `__snapshots__/print.spec.mjs/chromium/`. The text snapshots are the same everywhere and are shared.
 
-- **`local/`** is used on a computer. `--update-snapshots` above refreshes it. It is recorded on the maintainer's Mac, so record it only there.
-- **Claude sessions in the cloud** (started from the Claude mobile app or claude.ai/code) run on Linux, where `local/` screenshots won't match. There, run the tests with `SNAPSHOT_ENV=ci` (or skip the screenshots with `--grep-invert screenshot`), and never run `--update-snapshots`: it would replace the Mac's pictures with Linux ones.
-- **`ci/`** is used by the GitHub test run, which runs in Playwright's Docker image. To refresh it, push a commit to a branch with `[update-snapshots]` in its message. The *Update CI snapshots* workflow (`.github/workflows/update-snapshots.yml`) then takes new screenshots on GitHub and commits them to that branch. Look at the changed pictures in the pull request before merging.
-- The print tests check page numbers against the PDF on every machine, so a summary that differs between the two sets is still a correct printout.
-- `SNAPSHOT_ENV=ci` or `SNAPSHOT_ENV=local` picks a set by hand.
+- **`cloud/`** is the reference set (Satish, 2026-10-21). It is recorded in a Claude session in the cloud (Linux, the pre-installed Chromium: `PW_CHROMIUM_PATH=/opt/pw-browsers/chromium`), where every suite is run until GitHub Actions runs again. It is the default whenever `CI` is not set. Refresh it there with `--update-snapshots`, and look at the changed pictures before committing them.
+- The sets once recorded on Satish's Mac (`local/`) and by GitHub (`ci/`) were removed on 2026-10-21 as out of date. When GitHub Actions runs again, the first run records `ci/` (push a commit with `[update-snapshots]` in its message: the *Update CI snapshots* workflow, `.github/workflows/update-snapshots.yml`, commits them to that branch).
+- The print tests check page numbers against the PDF on every machine, so a summary that differs between sets is still a correct printout.
+- `SNAPSHOT_ENV=cloud` or `SNAPSHOT_ENV=ci` picks a set by hand.
 
 ## What automation can't cover
 

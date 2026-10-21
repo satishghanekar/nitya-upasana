@@ -7,6 +7,13 @@ import { readFileSync } from "node:fs";
 import { openSite, SETUPS } from "./helpers.mjs";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
+// the bundled categories that have texts, in order (an empty one is left out of the list)
+const CATS = JSON.parse(readFileSync(new URL("../content/categories.json", import.meta.url), "utf8")).filter((c) =>
+  LIB.texts.some((t) => t.category === c.id),
+);
+const GROUPS = CATS.map((c) => c.name.mr);
+const GROUPS_EN = CATS.map((c) => c.name.en);
+const VEDIC = LIB.texts.filter((t) => t.category === "vedic-chant");
 const EVENING = new Date("2026-10-18T19:00:00-04:00");
 const onPiece = (page) =>
   page.evaluate(() => {
@@ -27,8 +34,8 @@ test("the Library button opens every text, grouped, with search @mobile", async 
   await expect(btn).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator("#jump")).toHaveAccessibleName("संग्रह Library");
   await expect(page.locator("#q")).toBeVisible();
-  // by category (content/categories.json): वैदिक मंत्र then आरती, every text of the library in order
-  await expect(page.locator("#jl .tocg .gh .mr")).toHaveText(["वैदिक मंत्र", "आरती"]);
+  // by category (content/categories.json): वैदिक मंत्र, आरती, …, every text of the library in order
+  await expect(page.locator("#jl .tocg .gh .mr")).toHaveText(GROUPS);
   const ids = LIB.groups.flatMap((g) => g.texts);
   await expect(page.locator("#jl a[data-go]")).toHaveCount(ids.length);
   // the bottom bar steps aside
@@ -141,15 +148,15 @@ async function openSheet(page) {
 test("the Library lists the texts by category; empty categories are left out; the reading-page numbers stay @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#hm").click();
-  expect(await groups(page)).toEqual(["वैदिक मंत्र", "आरती"]);
-  expect(await inGroup(page, "vedic-chant")).toEqual(["p1"]);
+  expect(await groups(page)).toEqual(GROUPS);
+  expect(await inGroup(page, "vedic-chant")).toEqual(["p1", ...VEDIC.slice(1).map((t) => t.id)]);
   expect(await inGroup(page, "aarti")).toEqual(["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10",
     "jaydeva-jaydeva-samartha", "jay-jay-aarti-shrigururaya", "ovaloon-aarti-chaitanyabrahma", "aarti-kariton-guruvar",
     "dhanya-jagin-guruvarya", "aarti-belaguve", "svastha-karin-shayan", "ovaloo-sapreme-aarti"]);
   await expect(page.locator('#jl a[data-go="a5"] .nm')).toHaveText("५.");
   await expect(page.locator("#lbb")).toHaveAccessibleName("Edit categories");
   // the side menu on wide screens follows the same categories
-  await expect(page.locator("#rail .rg .mr")).toHaveText(["वैदिक मंत्र", "आरती"]);
+  await expect(page.locator("#rail .rg .mr")).toHaveText(GROUPS);
 });
 
 test("add a category, move a text into it, rename it: the list follows, and it is kept after a reload @mobile", async ({ page }) => {
@@ -164,10 +171,10 @@ test("add a category, move a text into it, rename it: the list follows, and it i
   await expect(page.locator("#lbcl li")).toHaveCount(5);
   await expect(page.locator("#lblive")).toHaveText("भजन added");
   // still empty: not in the list yet
-  expect(await groups(page)).toEqual(["वैदिक मंत्र", "आरती"]);
+  expect(await groups(page)).toEqual(GROUPS);
   await page.locator("#lbs-ghalin-lotangan").selectOption("bhajan");
   await expect(page.locator("#lblive")).toHaveText("घालीन लोटांगण: now in भजन");
-  expect(await groups(page)).toEqual(["वैदिक मंत्र", "आरती", "भजन"]);
+  expect(await groups(page)).toEqual([...GROUPS, "भजन"]);
   expect(await inGroup(page, "bhajan")).toEqual(["a8"]);
   // rename a built-in one (on this phone only)
   await page.locator('.lbe[data-id="aarti"]').click();
@@ -175,7 +182,7 @@ test("add a category, move a text into it, rename it: the list follows, and it i
   await page.locator("#lben").fill("Aartis");
   await page.locator("#lbsave").click();
   await expect(page.locator('.lbe[data-id="aarti"]')).toBeFocused();
-  expect(await groups(page)).toEqual(["वैदिक मंत्र", "आरत्या", "भजन"]);
+  expect(await groups(page)).toEqual([...GROUPS.map((g) => (g === "आरती" ? "आरत्या" : g)), "भजन"]);
   // a name already used is refused, and said so
   await page.locator('.lbe[data-id="bhajan"]').click();
   await page.locator("#lben").fill("Aartis");
@@ -192,7 +199,7 @@ test("add a category, move a text into it, rename it: the list follows, and it i
   await page.reload();
   await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
   await page.locator("#hm").click();
-  expect(await groups(page)).toEqual(["वैदिक मंत्र", "आरत्या", "भजन"]);
+  expect(await groups(page)).toEqual([...GROUPS.map((g) => (g === "आरती" ? "आरत्या" : g)), "भजन"]);
   // search finds a text by its category's new name
   await page.locator("#q").fill("bhajan");
   await expect(page.locator("#res li.rt .rl")).toHaveText(["घालीन लोटांगण"]);
@@ -217,7 +224,7 @@ test("delete a family category: its texts go back; a built-in one can only be re
   await page.locator("#lbdy").click();
   await expect(page.locator("#lblive")).toHaveText("Bhajan deleted");
   await expect(page.locator("#lbcl li")).toHaveCount(4);
-  expect(await groups(page)).toEqual(["वैदिक मंत्र", "आरती"]);
+  expect(await groups(page)).toEqual(GROUPS);
   expect(await inGroup(page, "aarti")).toContain("a10");
 });
 
@@ -235,7 +242,7 @@ test("search across the library: Devanagari and English find texts (first) and l
   await page.locator("#q").fill("vithal aarti");
   await expect(page.locator("#res li.rt .rl").first()).toHaveText("विठ्ठलाची आरती");
   await page.locator("#q").fill("vedic");
-  await expect(page.locator("#res li.rt .rl")).toHaveText(["गणपत्यथर्वशीर्षोपनिषत्"]);
+  await expect(page.locator("#res li.rt .rl")).toHaveText(VEDIC.map((t) => t.title));
   // a line only: no Texts group
   await page.locator("#q").fill("विघ्नाची");
   await expect(page.locator("#res li.rh h3")).toHaveText(["Lines"]);
@@ -257,7 +264,8 @@ test("Marathi menus: the sheet and search speak Marathi (विभाग, रच
   await page.locator("#lbb").click();
   await expect(page.locator("#lbmt")).toHaveText("विभाग");
   await expect(page.locator("#lbth")).toHaveText("रचना");
-  await expect(page.locator("#lbcl .lbk").first()).toHaveText("१ रचना");
+  // वैदिक मंत्र: its count in Marathi digits
+  await expect(page.locator("#lbcl .lbk").first()).toHaveText(String(VEDIC.length).replace(/\d/g, (d) => "०१२३४५६७८९"[d]) + " रचना");
 });
 
 test("keyboard: the sheet traps Tab, Escape steps back then closes it, the phone's Back closes it and the Library stays", async ({ page }) => {
@@ -303,7 +311,7 @@ test("keyboard: the sheet traps Tab, Escape steps back then closes it, the phone
 test("English only (Settings → Languages): English titles and category names, English words @mobile", async ({ page }) => {
   await openSite(page, { lang: "en", lead: "en", l2: "", ui: "en" }, { now: EVENING });
   await page.locator("#hm").click();
-  await expect(page.locator("#jl .tocg .gh .en")).toHaveText(["Vedic Chant", "Aarti"]);
+  await expect(page.locator("#jl .tocg .gh .en")).toHaveText(GROUPS_EN);
   await expect(page.locator("#jl .tocg .gh .mr").first()).toBeHidden();
   expect(await page.locator('#jl a[data-go="a1"] .m').innerText()).toMatch(/^1\.\s*Ganapati Aarti$/);
   await page.locator("#lbb").click();

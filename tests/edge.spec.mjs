@@ -4,7 +4,7 @@
 // keyboard alone. Each test names the audit item it guards (H1–H4, M1–M6, T4–T8).
 import { test, expect } from "@playwright/test";
 import { readFileSync, readdirSync } from "node:fs";
-import { openSite, settle, SETUPS } from "./helpers.mjs";
+import { openSite, settle, SETUPS , openMore, tapMore, readText } from "./helpers.mjs";
 import { stubPrint } from "./print-helpers.mjs";
 
 // ---- Notched iPhones (H2, H4) -------------------------------------------------------------------------
@@ -57,7 +57,7 @@ test.describe("notched iPhone @chromium-only", () => {
     };
     await clear("body > .bar button");
     await clear("#asc button");
-    await page.locator("#hlpb").click();
+    await tapMore(page, "#hlpb");
     await clear("#hlpx");
     await page.keyboard.press("Escape");
     await page.locator("#aa").click();
@@ -164,7 +164,8 @@ for (const width of [390, 1280]) {
       seen.add(r.key);
       if (r.frac < 0.5) hidden.push(`${r.key} ${Math.round(r.frac * 100)}% visible`);
     }
-    expect(seen.size).toBeGreaterThan(20);
+    // Home's own controls: the Vedic calendar line, the sessions, the texts with their ticks, Start, More, the Library
+    expect(seen.size).toBeGreaterThan(8);
     expect(hidden).toEqual([]);
   });
 }
@@ -189,7 +190,7 @@ for (const [w, h] of [
     await openSite(page, SETUPS.marathi);
     await page.waitForTimeout(2500);
     // open and close Help, fold the first piece: nothing should move on its own afterwards
-    await page.locator("#hlpb").click();
+    await tapMore(page, "#hlpb");
     await page.keyboard.press("Escape");
     await page.waitForTimeout(800);
     const sum = await page.evaluate(() => window.__cls.reduce((a, b) => a + b, 0));
@@ -256,6 +257,7 @@ test("screen readers: the size bubble is silent while pinching, the final size i
   await openSite(page, SETUPS.marathi);
   await expect(page.locator("#szt")).toHaveAttribute("aria-hidden", "true");
   await expect(page.locator("#sza")).toHaveAttribute("role", "status");
+  await readText(page, "a1");
   await page.locator("#a1 .items .verse p").first().scrollIntoViewIfNeeded();
   await page.locator("#a1 .items .verse p").first().evaluate((el) => {
     const r = el.getBoundingClientRect();
@@ -344,6 +346,9 @@ test("keyboard only: Tab to Print, choose a layout, print, and focus comes back 
   let found = false;
   for (let i = 0; i < 60 && !found; i++) {
     await page.keyboard.press("Tab");
+    // Print is under More: Enter on More opens it, and Tab goes on into its buttons
+    if (await page.evaluate(() => document.activeElement.id === "tmb" && document.activeElement.getAttribute("aria-expanded") === "false"))
+      await page.keyboard.press("Enter");
     found = await page.evaluate(() => document.activeElement.id === "prb");
   }
   expect(found, "Tab never reached the Print button").toBe(true);
@@ -366,6 +371,7 @@ for (const size of [{ width: 667, height: 375 }, { width: 320, height: 256 }]) {
     await page.setViewportSize(size);
     await openSite(page, SETUPS.marathi);
     for (const [open, close] of [["#qrb", "#qrx"], ["#inb", "#inx"]]) {
+      await openMore(page);
       if (!(await page.locator(open).isVisible())) continue;
       await page.locator(open).click();
       const x = page.locator(close);
@@ -381,6 +387,7 @@ for (const size of [{ width: 667, height: 375 }, { width: 320, height: 256 }]) {
 test("the phone's Back closes QR, Print and the picture and returns focus to their button (WCAG 2.4.3) @chromium-only", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   for (const [open, dlg] of [["#qrb", "#qrm"], ["#prb", "#prm"], ["#iconb", "#pzv"]]) {
+    if (open !== "#iconb") await openMore(page);
     await page.locator(open).focus();
     await page.keyboard.press("Enter");
     await expect(page.locator(dlg)).toBeVisible();
@@ -393,6 +400,7 @@ test("the phone's Back closes QR, Print and the picture and returns focus to the
 
 test("the ↻ ध्रुपद bubble stays open until the next tap (WCAG 2.2.1)", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
+  await readText(page, "a1");
   const m = page.locator(".rmkt").first();
   await m.scrollIntoViewIfNeeded();
   await m.click();
@@ -406,6 +414,7 @@ test("the ↻ ध्रुपद bubble stays open until the next tap (WCAG 2.2.
 test("a 320px phone: the home buttons show their words, and a note sits under the top bar, on screen @chromium-only", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await openSite(page, SETUPS.both);
+  await openMore(page);
   for (const id of ["#shb", "#qrb", "#prb"]) {
     const w = page.locator(id + " > span.en");
     await expect(w).toBeVisible();

@@ -50,6 +50,10 @@
     text-align: center;
     margin: 0 0 10pt;
   }
+  /* the hidden file picker for Restore shares .sr, but is not a heading: it printed "Choose File" above the contents */
+  #bkf {
+    display: none;
+  }
 }
 ol.toc a {
   box-sizing: border-box;

@@ -17,7 +17,7 @@ export var IA = (function () {
   };
   var NK = { ड: "ṛ", ढ: "ṛh", क: "q", ख: "x", ग: "ġ", ज: "z", फ: "f" }; // with nukta (Hindi)
   var V = { अ: "a", आ: "ā", इ: "i", ई: "ī", उ: "u", ऊ: "ū", ऋ: "ṛ", ॠ: "ṝ", ऌ: "ḷ", ए: "e", ऐ: "ai", ओ: "o", औ: "au" };
-  var M = { "ा": "ā", "ि": "i", "ी": "ī", "ु": "u", "ू": "ū", "ृ": "ṛ", "ॄ": "ṝ", "े": "e", "ै": "ai", "ो": "o", "ौ": "au" };
+  var M = { "ा": "ā", "ि": "i", "ी": "ī", "ु": "u", "ू": "ū", "ृ": "ṛ", "ॄ": "ṝ", "ॢ": "ḷ", "ॣ": "ḹ", "े": "e", "ै": "ai", "ो": "o", "ौ": "au" };
   var S = { "॑": "̍", "॒": "̱", "᳚": "̎" }; // svarita, anudatta, dirgha svarita
   var O = { "ॐ": "om̐", "ऽ": "'", "।": "|", "॥": "||" };
   return function (t) {
@@ -37,6 +37,8 @@ export var IA = (function () {
           k = NK[c] || k;
           i++;
         }
+        // a zero-width joiner or non-joiner before a vowel sign or virama (श‍ृ, a font hint) changes nothing
+        if ((t[i] === "\u200d" || t[i] === "\u200c") && (M[t[i + 1]] || t[i + 1] === "्")) i++;
         if (t[i] === "्") {
           o += k;
           i++;
