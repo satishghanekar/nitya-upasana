@@ -8,7 +8,10 @@ Automated checks for the site. The site itself has no build step; everything her
 cd tests
 npm ci                               # once
 npx playwright install chromium      # once (add firefox webkit for the other engines)
-npm test                             # Chromium only, the default on a computer
+npm run quick                        # the quick check: lint, types, logic tests, and the browser suites for what changed (about 2 min)
+npm run full                         # the full run, before every merge: lint, types, logic tests and every browser suite
+npm run release                      # the release check: the print audit and Lighthouse (before a version bump)
+npm test                             # every browser suite (Chromium only, the default on a computer)
 npm run lint                         # stylelint and eslint, as CI runs it
 npm run unit                         # Vitest: the logic tests in unit/ (no browser, a second or two)
 npm run types                        # TypeScript checks the JavaScript files that start with // @ts-check (nothing is compiled)
@@ -23,6 +26,16 @@ npm run lhci                         # Lighthouse CI: CLS fails the run; score, 
 `npm test` starts a small static server (`serve.mjs`, port 4173) by itself. On a failure, `npx playwright show-report` opens the details, with a trace of every step.
 
 Until GitHub Actions runs again (Satish, 2026-10-21), every suite is run in a Claude session in the cloud before a pull request is merged, and the results are posted on the pull request. Only Chromium is installed there, so the Firefox, WebKit, iPhone and iPad projects wait for GitHub. On GitHub every pull request and every push to `main` runs everything (`.github/workflows/tests.yml`, in the `mcr.microsoft.com/playwright:v1.64.1-noble` image, kept in step with `@playwright/test` in `package.json`): lint, Chromium, Firefox, WebKit (Safari's engine), iPhone, iPad and Pixel emulation, and Lighthouse.
+
+## Three levels
+
+| Level | When | Command | Time (cloud session) |
+|---|---|---|---|
+| Quick check | While working, after each edit | `npm run quick` | 10 s to about 2 min |
+| Full run | Before every pull request is merged: every change is fully tested | `npm run full` | about 23 min |
+| Release check | Before a version bump | `npm run release`, then every engine (`PW_PROJECTS=chromium,firefox,webkit,iphone,ipad,pixel npm test`) once GitHub Actions runs again | 5 to 10 min more |
+
+The quick check (`quick.mjs`) compares the checkout with `origin/main` (commits, uncommitted edits and new files) and runs only the browser suites that test the changed files: `css/12-calendar.css` or `js/core/panchang.js` runs `calendar.spec.mjs`, a text in `content/texts/` runs `content.spec.mjs`, a change to `tests/helpers.mjs` runs everything, and so on (the list is `SUITES` in `quick.mjs`). Smoke always runs, and a site file the list doesn't know runs interactions and the screenshots. `npm run quick -- --list` only prints what it would run. Lint, types and the logic tests come first and stop the run at the first failure, so most mistakes show in seconds. The quick check never replaces the full run.
 
 ## The suites
 
