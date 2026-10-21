@@ -115,6 +115,10 @@ export function cur() {
   secs.forEach(function (x) {
     if (x.offsetParent !== null && x.getBoundingClientRect().top <= y) c = x;
   });
+  // a short text read on its own on a wide screen (.solo, css/10-today.css) may never reach the top: it is still the one
+  var s = !c && document.querySelector(".ash.solo"),
+    h = document.getElementById("home");
+  if (s && s.offsetParent !== null && h && h.offsetParent === null) c = s;
   return c;
 }
 

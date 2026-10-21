@@ -4,7 +4,7 @@
 import { bt, flash } from "../core/page.js";
 import { P, save } from "../core/state.js";
 import { LANGS, LK, aa, cur, hb, jp, pjOpen, pn } from "../core/apply.js";
-import { TK, apply, goHome, tuckHold } from "./bars.js";
+import { TK, apply, goHome, mark, tuckHold } from "./bars.js";
 import { setC, setJ, setP, setR } from "./overlays.js";
 
 var NAV, popSkip, adT, hmb, ovFrom, sub, subSkip;
@@ -62,6 +62,7 @@ export function init() {
       el = location.hash && document.getElementById(location.hash.slice(1));
     // back on the bare address: Home on its own; on a piece's address: the reading page
     homeView(!el || el.id === "home");
+    solo(el ? el.id : "");
     pjOpen(el);
     if (st && typeof st.y === "number") scrollTo(0, st.y);
     else if (el) el.scrollIntoView();
@@ -255,8 +256,11 @@ export function jumpTo(go, url) {
   setP(false);
   setJ(false);
   // a piece (#a3): the reading page with every piece; the bare address: Home on its own
+  solo(url && url.charAt(0) === "#" ? url.slice(1) : "");
   homeView(!(url && url.charAt(0) === "#" && url !== "#home"));
   go();
+  // the page may not have scrolled (a short text read on its own, css/10-today.css): the bars follow anyway
+  mark();
   try {
     if (NAV) history[ov ? "replaceState" : "pushState"]({ y: scrollY }, "", url);
   } catch (e) {}
@@ -285,11 +289,26 @@ export function jumpTo(go, url) {
 export function homeView(on) {
   var r = document.documentElement;
   if (on === r.hasAttribute("data-hv")) return;
-  if (on) r.setAttribute("data-hv", "1");
-  else {
+  if (on) {
+    r.setAttribute("data-hv", "1");
+    mark();
+  } else {
     r.removeAttribute("data-hv");
     apply();
   }
+}
+
+// The text being read (.solo on its piece): on wide screens a session shows only that one text on the right, and
+// ‹ Prev / Next › or the side menu change it (css/10-today.css). Set wherever the page goes to a piece: jumpTo(),
+// Back, and start-up (js/core/startup.js). Another address (Home, a group) leaves it where it was.
+/** @param {string} id  the piece's id (a3) */
+export function solo(id) {
+  var el = id && document.getElementById(id);
+  if (!el || !el.classList.contains("ash")) return;
+  [].forEach.call(document.querySelectorAll(".ash.solo"), function (/** @type {HTMLElement} */ x) {
+    if (x !== el) x.classList.remove("solo");
+  });
+  el.classList.add("solo");
 }
 
 // Scrolling up from a piece back to Home: once the Morning / Afternoon / Evening switch is on screen, Home is on its

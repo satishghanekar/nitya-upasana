@@ -219,3 +219,8 @@ screen highlighted) and "Another text? Open the Library". Reading from the Libra
 - The calendar shows the month on the left and the day card on the right. Settings home lays its cards in two columns.
 - The left column is now 360px (--S 400px with the gap) so session names fit on one line.
 - The gear and calendar buttons stay highlighted while their area is open. Phones are unchanged.
+
+## Desktop reading: one text at a time (v1.15.1)
+
+- On desktop (≥1100px), reading a session shows only the text you are on, on the right, scrolling there beside the session's list. The next text no longer runs on below it, and Home is not above it.
+- ‹ Prev / Next ›, the session's list on the left, and Back change the text. मुखपृष्ठ (Home) in the list or the bottom bar goes back to Home. Phones still read the session as one page.
