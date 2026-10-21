@@ -7,6 +7,7 @@ import { DV } from "../text/line-breaks.js";
 import { fit } from "../print/fit.js";
 import { LAYOUT } from "../print/profiles.js";
 import { ovDone, ovDrop, ovPush } from "./history.js";
+import { focusBack } from "./more-menu.js";
 import { FEAT_SW } from "../core/features.js";
 import { CHOICE } from "../print/profiles.js";
 
@@ -928,7 +929,7 @@ export function init() {
       pm.hidden = true;
       ovDrop();
       // the chosen button has just been hidden: keyboard focus goes back to Print, not to the top of the page
-      document.getElementById("prb").focus();
+      focusBack(document.getElementById("prb"));
       busy = true;
       if (mode === "as") mode = "one";
       wm = mode;
@@ -992,7 +993,7 @@ export function init() {
       unready();
       pm.hidden = true;
       ovDone();
-      document.getElementById("prb").focus();
+      focusBack(document.getElementById("prb"));
     }
     document.getElementById("prx").onclick = pmClose;
     document.addEventListener("keydown", function (e) {

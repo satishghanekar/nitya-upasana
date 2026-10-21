@@ -360,7 +360,8 @@ test("keyboard only: Tab to Print, choose a layout, print, and focus comes back 
   expect(await page.evaluate(() => document.documentElement.getAttribute("data-print"))).toBeTruthy();
   await page.evaluate(() => dispatchEvent(new Event("afterprint")));
   await expect(page.locator("#prm")).toBeHidden();
-  await expect(page.locator("#prb")).toBeFocused();
+  // Print is in the ⋯ More menu, closed by then: focus comes back to ⋯
+  await expect(page.locator("#tmb")).toBeFocused();
 });
 
 // ---- Keeping the cascade from getting harder to change (L1, L2) ----------------------------------------
@@ -393,7 +394,8 @@ test("the phone's Back closes QR, Print and the picture and returns focus to the
     await expect(page.locator(dlg)).toBeVisible();
     await page.goBack();
     await expect(page.locator(dlg)).toBeHidden();
-    expect(await page.evaluate(() => "#" + document.activeElement.id), `focus after Back from ${dlg}`).toBe(open);
+    // QR and Print are in the ⋯ More menu, closed by then: focus comes back to ⋯
+    expect(await page.evaluate(() => "#" + document.activeElement.id), `focus after Back from ${dlg}`).toBe(open === "#iconb" ? open : "#tmb");
     expect(await page.evaluate(() => document.documentElement.style.overflow), "page scrolls again").toBe("");
   }
 });
@@ -421,13 +423,16 @@ test("a 320px phone: the home buttons show their words, and a note sits under th
     const b = await page.locator(id).boundingBox(), t = await w.boundingBox();
     expect(t.x >= b.x - 0.5 && t.x + t.width <= b.x + b.width + 0.5, `${id} word inside its button`).toBe(true);
   }
-  // the language button is in the top bar while reading
+  // a long note while reading
+  await page.keyboard.press("Escape");
   await page.locator("#hm").click();
   await page.locator('#jl a[data-go="a1"]').click();
-  await page.locator("#home-btn").click();
+  await page.evaluate(() =>
+    import("./js/core/page.js").then((m) => m.flash("ध्रुपद प्रत्येक कडव्यानंतर", "Dhrupad after every verse · English and Marathi together", 3500)),
+  );
   const fl = page.locator("#fl");
   await expect(fl).toHaveClass(/\bon\b/);
-  await expect(fl).toContainText("Next tap:");
+  await expect(fl).toContainText("Dhrupad after every verse");
   const f = await fl.boundingBox(), bar = await page.locator("body > .bar").first().boundingBox();
   expect(f.x).toBeGreaterThanOrEqual(0);
   expect(f.x + f.width).toBeLessThanOrEqual(320);

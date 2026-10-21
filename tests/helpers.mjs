@@ -107,6 +107,7 @@ export function siteParts() {
 
 /** Share, QR, Print, Help (and Add to Home Screen) sit under More on the home page: open it (as a reader would), then
  *  tap the button. */
+/** ⋯ More in the top bar: App, Share, QR, Print and Help. A choice closes it, and focus comes back to ⋯. */
 export async function openMore(page) {
   if (!(await page.locator("#shr").isVisible())) await page.locator("#tmb").click();
 }
@@ -117,7 +118,8 @@ export async function tapMore(page, id) {
 
 /** Home shows only what to chant now; a text is read by opening it, here from the Library (as a reader would). */
 export async function readText(page, sec) {
-  await page.locator("#hm").click();
+  // the top bar's book on the home page; while reading, the bottom bar's
+  await page.locator((await page.locator("#hm").isVisible()) ? "#hm" : "#asq").click();
   await page.locator(`#jl a[data-go="${sec}"]`).click();
   await page.locator(`#${sec}`).waitFor({ state: "visible" });
 }

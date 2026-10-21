@@ -9,7 +9,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
-import { openSite, settle, SETUPS, openMore, tapMore, useTestRoutine, TEST_AARTIS, TEST_ROUTINE } from "./helpers.mjs";
+import { openSite, settle, SETUPS, useTestRoutine, TEST_AARTIS, TEST_ROUTINE } from "./helpers.mjs";
 import { textsFor } from "../js/core/routine.js";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
@@ -343,8 +343,8 @@ test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ 
   await expect(page.locator("#tss")).toHaveAccessibleName("वेळ");
   await expect(tab(page, "morning")).toHaveText("सकाळ");
   await expect(tab(page, "afternoon")).toHaveText("दुपारकाहीच नाही");
-  await expect(page.locator("#tmbw")).toHaveText("आणखी");
-  await expect(page.locator("#tmbh")).toHaveText("ॲप · शेअर · QR · प्रिंट · मदत");
+  await page.locator("#tmb").click();
+  for (const [id, w] of [["#shb", "शेअर"], ["#prb", "प्रिंट"], ["#hlpb", "मदत"]]) await expect(page.locator(id)).toHaveText(w, { useInnerText: true });
   await expect(page.locator("#tlib")).toHaveText("दुसरी रचना? संग्रह उघडा", { useInnerText: true });
   await expect(rows(page).nth(1).locator(".t1")).toHaveText(TITLE["shendur-lal-chadhayo"].title);
 });
@@ -357,9 +357,9 @@ test("Kannada letters: the titles in the list are shown in Kannada", async ({ pa
 
 test("Home has no date card, week row or contents list: the Library has every text", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  for (const sel of ["#skc", "#skmore", "#skall", "#twk", "#tso", "#tfb", "#cvb", "#home .tocg", "#home a[data-go]"])
+  for (const sel of ["#skc", "#skmore", "#skall", "#twk", "#tso", "#tfb", "#cvb", "#tmo", "#home #shr", "#home .tocg", "#home a[data-go]"])
     await expect(page.locator(sel), sel).toHaveCount(0);
-  // Home v3: Home ends after More and the Library line; the reading page's groups and pieces are not shown under it
+  // Home ends after Start and the Library line (App, Share, QR, Print and Help are under ⋯ More in the top bar); the reading page's groups and pieces are not shown under it
   await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
   await expect(page.locator(".wrap > .grp:visible, section.ash:visible")).toHaveCount(0);
   await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(LIB.texts.length);
@@ -381,31 +381,33 @@ test("Marathi menus: the Sankashti line in Marathi", async ({ page }) => {
   await expect(page.locator("#skt")).toHaveText(/^संकष्टी चतुर्थी आज · चंद्रोदय .+ · कोलंबस$/);
 });
 
-test("More, under the list, opens the App / Share / QR / Print / Help row, at every width", async ({ browser }) => {
+test("⋯ More in the top bar opens App / Share / QR / Print / Help under it, at every width", async ({ browser }) => {
   for (const width of [390, 820, 1280]) {
     const context = await browser.newContext({ viewport: { width, height: 844 }, serviceWorkers: "block" });
     const page = await context.newPage();
     await openSite(page, SETUPS.marathi, { now: EVENING });
-    // closed by default, its hint naming the five
+    // closed by default
     await expect(page.locator("#tmb")).toHaveAttribute("aria-expanded", "false");
     await expect(page.locator("#tmb")).toHaveAttribute("aria-controls", "shr");
-    await expect(page.locator("#tmbh")).toHaveText("App · Share · QR · Print · Help");
     await expect(page.locator("#shr")).toBeHidden();
-    const list = await page.locator("#tsc").boundingBox();
+    const bar = await page.locator("body > .bar").boundingBox();
     const more = await page.locator("#tmb").boundingBox();
-    expect(more.y, `${width}px`).toBeGreaterThanOrEqual(list.y + list.height - 1);
-    expect(more.height).toBeGreaterThanOrEqual(44);
+    expect(more.y + more.height, `${width}px: in the top bar`).toBeLessThanOrEqual(bar.y + bar.height + 1);
+    expect(more.height).toBeGreaterThanOrEqual(38);
     await page.locator("#tmb").click();
     await expect(page.locator("#tmb")).toHaveAttribute("aria-expanded", "true");
     for (const b of ["#shb", "#qrb", "#prb", "#hlpb"]) await expect(page.locator(b), `${b} ${width}px`).toBeVisible();
-    // measured again: on a tall Home the tap scrolls the row into view
-    const more2 = await page.locator("#tmb").boundingBox();
-    const row = await page.locator("#shr").boundingBox();
-    expect(row.y, `${width}px`).toBeGreaterThanOrEqual(more2.y + more2.height - 1);
+    // under the button, on screen, its right edge at the button's
+    const menu = await page.locator("#shr").boundingBox();
+    expect(menu.y, `${width}px`).toBeGreaterThanOrEqual(more.y + more.height);
+    expect(menu.x, `${width}px`).toBeGreaterThanOrEqual(0);
+    expect(Math.abs(menu.x + menu.width - (more.x + more.width)), `${width}px`).toBeLessThanOrEqual(1);
     // the buttons work as before: QR opens its pop-up
-    await tapMore(page, "#qrb");
+    await page.locator("#qrb").click();
+    await expect(page.locator("#shr")).toBeHidden();
     await expect(page.locator("#qrm")).toBeVisible();
     await page.keyboard.press("Escape");
+    await page.locator("#tmb").click();
     await page.locator("#tmb").click();
     await expect(page.locator("#shr")).toBeHidden();
     expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1)).toBe(false);
@@ -416,9 +418,9 @@ test("More, under the list, opens the App / Share / QR / Print / Help row, at ev
 test("Another text? Open the Library opens the Library, as the book button does @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(page.locator("#tlib")).toHaveText("Another text? Open the Library", { useInnerText: true });
-  const more = await page.locator("#tmo").boundingBox();
+  const list = await page.locator("#tsc").boundingBox();
   const lib = await page.locator("#tlib").boundingBox();
-  expect(lib.y).toBeGreaterThanOrEqual(more.y + more.height - 1);
+  expect(lib.y).toBeGreaterThanOrEqual(list.y + list.height - 1);
   await page.locator("#tlibb").click();
   await expect(page.locator("#jump")).toBeVisible();
   await expect(page.locator("#hm")).toHaveAttribute("aria-expanded", "true");
