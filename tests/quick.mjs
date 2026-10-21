@@ -6,27 +6,31 @@
 //
 // "What changed" is every file that differs from origin/main: commits on this branch, edits not yet committed
 // and new files. Each changed file picks the browser suites that test it (SUITES below); smoke always runs. A file
-// the list doesn't know picks interactions and visual, the broadest quick pair.
+// the list doesn't know picks interactions and visual, the broadest quick pair. A changed text runs the print tests of
+// that text only (print-items.spec.mjs --grep @text:<id>), unless all of print-items runs anyway.
 //
 // The quick check never replaces the full run (npm run full): every change is still fully tested before it is
 // merged. It only finds most mistakes sooner.
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const BASE = process.env.QUICK_BASE || "origin/main";
 const listOnly = process.argv.includes("--list");
+// a text's file → its id in the Library, for its own print tests ("text:<id>" below)
+const TEXT_IDS = Object.fromEntries(JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8")).texts.map((t) => ["content/" + t.file, t.id]));
 
 // Changed file (path from the repository root) → the suites that test it. Every matching rule adds its suites.
 const SUITES = [
   // the tests themselves: a changed spec runs itself; shared test code runs everything
   [/^tests\/(\w[\w-]*)\.spec\.mjs$/, (m) => [m[1]]],
   [/^tests\/(helpers|print-helpers|playwright\.config|serve)\.mjs$|^tests\/package/, () => ["ALL"]],
+  [/^tests\/print-audit-helpers\.mjs$/, () => ["print", "print-items", "print-audit"]],
   [/^tests\/__snapshots__\/(\w[\w-]*)\.spec\.mjs\//, (m) => [m[1]]],
-  // texts and lists
-  [/^content\/texts\//, () => ["content"]],
-  [/^content\/library\.json$|^content\/categories\.json$/, () => ["content", "library"]],
+  // texts and lists: a text's own print tests ("text:<id>": print-items.spec.mjs, that text only)
+  [/^content\/texts\//, (m) => ["content", ...(TEXT_IDS[m.input] ? ["text:" + TEXT_IDS[m.input]] : [])]],
+  [/^content\/library\.json$|^content\/categories\.json$/, () => ["content", "library", "print-items"]],
   [/^content\/festivals\.json$/, () => ["calendar"]],
   [/^content\/routines\.json$/, () => ["today"]],
   // the offline copy and the files Cloudflare serves
@@ -34,7 +38,7 @@ const SUITES = [
   // styles: each area's own sheet runs that area's suite; the shared sheets run the layout and screenshot suites
   [/^css\/0[0-9]-/, () => ["layout", "visual", "compat"]],
   [/^css\/01-theme\.css$/, () => ["a11y"]],
-  [/^css\/03-menus-print-view\.css$/, () => ["print"]],
+  [/^css\/03-menus-print-view\.css$/, () => ["print", "print-items"]],
   [/^css\/10-today\.css$/, () => ["today", "reading"]],
   [/^css\/11-profiles\.css$/, () => ["profiles"]],
   [/^css\/12-calendar\.css$/, () => ["calendar"]],
@@ -42,9 +46,9 @@ const SUITES = [
   [/^css\/14-builder\.css$/, () => ["builder"]],
   [/^css\/99-fallbacks\.css$/, () => ["compat"]],
   // the script, area by area
-  [/^js\/print\/|^js\/features\/print\.js$/, () => ["print"]],
+  [/^js\/print\/|^js\/features\/print\.js$/, () => ["print", "print-items"]],
   // the printout builds its own copy of the pieces with these (js/print/compose.js)
-  [/^js\/render\.js$|^js\/text\/(iast|layout|line-breaks|stanza-numbers|dhrupad-markers)\.js$|^js\/features\/bars\.js$/, () => ["print"]],
+  [/^js\/render\.js$|^js\/text\/(iast|layout|line-breaks|stanza-numbers|dhrupad-markers)\.js$|^js\/features\/bars\.js$/, () => ["print", "print-items"]],
   [/^js\/text\/(iast|format|content|load|dhrupad-markers|stanza-numbers)\.js$/, () => ["content", "interactions"]],
   [/^js\/text\/search/, () => ["library", "interactions"]],
   [/^js\/text\/(layout|line-breaks|autofit)\.js$/, () => ["layout", "visual"]],
@@ -94,7 +98,10 @@ function suitesFor(files) {
     if (!matched) for (const s of ["interactions", "visual"]) picked.add(s);
   }
   if (picked.has("ALL")) return ["ALL"];
-  return [...picked].filter((s) => existsSync(new URL(`./${s}.spec.mjs`, import.meta.url))).sort();
+  // one text's print tests: only when print-items does not run whole
+  const texts = [...picked].filter((s) => s.startsWith("text:")).map((s) => s.slice(5));
+  const suites = [...picked].filter((s) => existsSync(new URL(`./${s}.spec.mjs`, import.meta.url))).sort();
+  return suites.includes("print-items") ? suites : suites.concat(texts.map((t) => "text:" + t));
 }
 
 const files = changedFiles();
@@ -116,5 +123,9 @@ function run(label, cmd, args) {
 run("lint", "npm", ["run", "--silent", "lint"]);
 run("types", "npm", ["run", "--silent", "types"]);
 run("logic tests", "npm", ["run", "--silent", "unit"]);
-run("browser", "npx", ["playwright", "test", ...(suites[0] === "ALL" ? [] : suites.map((s) => `${s}.spec.mjs`))]);
+const whole = suites.filter((s) => !s.startsWith("text:")),
+  texts = suites.filter((s) => s.startsWith("text:")).map((s) => s.slice(5));
+run("browser", "npx", ["playwright", "test", ...(whole[0] === "ALL" ? [] : whole.map((s) => `${s}.spec.mjs`))]);
+// the print tests of each changed text (the space ends the tag, so @text:aarti does not pick @text:aarti-belaguve)
+if (texts.length) run("print tests of the changed texts", "npx", ["playwright", "test", "print-items.spec.mjs", "--grep", `@text:(${texts.join("|")}) `]);
 console.log("\nquick: all passed. Run npm run full before merging.");
