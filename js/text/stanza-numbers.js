@@ -2,9 +2,10 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { DV } from "./line-breaks.js";
+import { onPiece } from "../core/page.js";
 
 export function init() {
-  numberStanzas(document);
+  onPiece(numberStanzas);
 }
 
 // The numbers in every piece inside r (the page, or a printout's copy: js/print/compose.js)

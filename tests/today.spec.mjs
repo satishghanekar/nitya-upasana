@@ -8,7 +8,7 @@
 // Sankashti (Wednesday).
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { openSite, settle, SETUPS, useTestRoutine, TEST_AARTIS, TEST_ROUTINE, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
+import { openSite, settle, SETUPS, useTestRoutine, TEST_AARTIS, TEST_ROUTINE, TEXT_COUNT, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
 import { textsFor } from "../js/core/routine.js";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
@@ -451,7 +451,7 @@ test("Home on its own: the pieces show once a text is opened, and go again on th
     dispatchEvent(new Event("afterprint"));
     return n;
   });
-  expect(pv).toBe(await page.locator("section.ash").count());
+  expect(pv).toBe(TEXT_COUNT);
   expect(errors).toEqual([]);
 });
 
@@ -525,7 +525,7 @@ test("with no routine file the card still works and the texts still load", async
   await openSite(page, SETUPS.marathi, { now: EVENING, errors });
   await expect(page.locator("#tse")).toBeVisible();
   await expect(page.locator("#tst")).toBeHidden();
-  await expect(page.locator("#a1")).toBeAttached();
+  await expect(page.locator('#jl a[data-go="a1"]')).toBeAttached();
   // only the missing file itself is reported, by the browser
   expect(errors.filter((e) => !/Failed to load resource/.test(e))).toEqual([]);
 });

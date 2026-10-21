@@ -1,7 +1,7 @@
 // Current piece, menus and apply()
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { secs } from "./page.js";
+import { onPiece, secs } from "./page.js";
 import { P, change } from "./state.js";
 import { mark } from "../features/bars.js";
 
@@ -19,7 +19,7 @@ export function init() {
   };
   // Each piece has a ⌃ button in its heading that folds it down to the heading
   if (!Array.isArray(P.af)) P.af = [];
-  secs.forEach(function (x) {
+  onPiece(function (x) {
     var h = x.querySelector("header");
     if (!h) return;
     var b = document.createElement("button");
@@ -44,6 +44,7 @@ export function init() {
       if (e.target.closest("a,button,input") || String(getSelection()).trim()) return;
       b.onclick();
     });
+    foldOne(x);
   });
 }
 
@@ -68,17 +69,20 @@ export function cur() {
 }
 
 export function foldSet() {
-  var mr = P.ui === "mr";
   // each piece's ⌃ is named by what it does, with aria-expanded giving the state
-  secs.forEach(function (x) {
-    var f = P.af.indexOf(x.id) >= 0,
-      ab = x.querySelector(".afb");
-    x.classList.toggle("af", f);
-    if (ab) {
-      ab.setAttribute("aria-expanded", String(!f));
-      ab.setAttribute("aria-label", f ? (mr ? "उघडा" : "Show this piece") : mr ? "मिटवा" : "Fold this piece");
-    }
-  });
+  secs.forEach(foldOne);
+}
+
+/** @param {HTMLElement} x */
+function foldOne(x) {
+  var mr = P.ui === "mr",
+    f = P.af.indexOf(x.id) >= 0,
+    ab = x.querySelector(".afb");
+  x.classList.toggle("af", f);
+  if (ab) {
+    ab.setAttribute("aria-expanded", String(!f));
+    ab.setAttribute("aria-label", f ? (mr ? "उघडा" : "Show this piece") : mr ? "मिटवा" : "Fold this piece");
+  }
 }
 
 // Going to a piece (or a line in it) opens it if it is folded

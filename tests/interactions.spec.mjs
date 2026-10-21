@@ -316,7 +316,7 @@ test("coming back to the page shows the picture for the time now", async ({ page
 });
 
 test("IAST spelling switches in place without a reload", async ({ page }) => {
-  await openSite(page, SETUPS.english);
+  await openSite(page, SETUPS.english, { hash: "#a1" });
   const first = () => page.locator("#a1 .items .verse .en p").first().textContent();
   expect(await first()).toContain("Sukhkarta");
   await page.evaluate((k) => {
@@ -328,6 +328,10 @@ test("IAST spelling switches in place without a reload", async ({ page }) => {
   }, PREFS_KEY);
   await page.waitForTimeout(300);
   expect(await first()).toMatch(/sukhakartā/);
+  // a text opened after the switch is built in the new spelling, title and lines (js/core/page.js)
+  await readText(page, "a2");
+  await expect(page.locator("#a2 .items .verse .en p.ia").first()).toBeAttached();
+  await expect(page.locator("#a2 header h2 > .en")).toHaveText(/[āīūṃṇṣś]/);
 });
 
 test("reopens where the reader was (within 12 hours)", async ({ page }) => {
@@ -393,7 +397,7 @@ test.describe("pinch @chromium-only", () => {
     expect(box.y + box.height).toBeLessThanOrEqual(844);
   });
   test("on a verse it resizes the text instead of zooming", async ({ page }) => {
-    await openSite(page, SETUPS.marathi);
+    await openSite(page, SETUPS.marathi, { hash: "#a1" });
     expect(await pinchStart(page, "#a1 .items .verse p")).toBe(true);
   });
   test("on the home page, Settings and Help the page does not zoom either", async ({ page }) => {

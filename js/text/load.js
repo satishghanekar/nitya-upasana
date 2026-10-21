@@ -1,8 +1,8 @@
 // @ts-check
 // Loading the texts: fetches content/library.json and every text file it lists (content/texts/), builds CONTENT
-// from them (js/text/content.js), then has js/render.js write the pieces into the page where index.html keeps
-// their place (#pieces), in Kannada letters when that is the chosen language. js/main.js waits for this before it
-// starts the other parts, so they find the page as it was when the pieces were written into index.html.
+// from them (js/text/content.js), and puts the rest of the page in Kannada letters when that is the chosen language.
+// js/main.js waits for this before it starts the other parts. The pieces themselves are built one at a time, the
+// first time each is opened (js/core/page.js, with js/render.js).
 // The files are on the offline list (js/parts.js), so this works without internet too.
 // It also fetches content/routines.json, the default routine the Today card shows (js/features/today-card.js),
 // at the same time; without it the texts still load and the card shows empty sessions. And content/festivals.json, the
@@ -100,9 +100,6 @@ export function load() {
         /** @type {any} */
         var w = window;
         w.CONTENT = buildContent(lib, files, loaded.categories);
-        var at = /** @type {HTMLElement} */ (document.getElementById("pieces"));
-        at.insertAdjacentHTML("beforebegin", w.renderPieces(w.CONTENT));
-        at.parentNode && at.parentNode.removeChild(at);
         w.SCR.page();
       });
     });

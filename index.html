@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.20.3">
+<meta name="version" content="aarti-v1.20.4">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -368,8 +368,8 @@
     <!-- Another text: the Library (the top bar's book button) -->
     <p id="tlib"><span id="tlibw"></span> <button type="button" id="tlibb" aria-haspopup="dialog" aria-controls="jump"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5C5.6 4.6 8.9 4.9 12 7c3.1-2.1 6.4-2.4 9.5-1.5v13.3c-3.1-.9-6.4-.6-9.5 1.5-3.1-2.1-6.4-2.4-9.5-1.5z"/><path d="M12 7v13.3"/></svg><span id="tlibbw"></span></button></p>
   </section>
-  <!-- ==== Every piece, from the text files in content/texts/. js/text/load.js (started by js/main.js) fetches them
-       and has js/render.js build the pieces here, in place of #pieces, in the Library's order ==== -->
+  <!-- ==== The pieces, from the text files in content/texts/ (fetched by js/text/load.js). Each is built here, before
+       #pieces, the first time it is opened (js/core/page.js with js/render.js), in the Library's order ==== -->
   <div id="pieces" hidden></div>
   <script src="js/render.js"></script>
 </main>

@@ -1,7 +1,7 @@
 // Bottom bar (#asc): ‹ Prev, Home, Library, Aa (the reading sheet), Next ›
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { root, secs } from "../core/page.js";
+import { root } from "../core/page.js";
 import { P } from "../core/state.js";
 import { cur } from "../core/apply.js";
 import { goHomeNav } from "./history.js";
@@ -69,8 +69,9 @@ export function asLabel() {
     ["asn", "पुढील ›", "Next ›", ".next"],
   ].forEach(function (x) {
     var b = document.getElementById(x[0]),
-      a = c ? c.querySelector(".pn " + x[3]) : x[3] === ".next" && !document.getElementById("p1").hidden ? secs[0] : null,
-      t = a && a.querySelector(mr ? ":scope > .mr" : ":scope > .en"),
+      // from the home page, Next opens the first text in the Library (asGo)
+      a = c ? c.querySelector(".pn " + x[3]) : x[3] === ".next" ? document.querySelector("#jl a[data-go]") : null,
+      t = c && a && a.querySelector(mr ? ":scope > .mr" : ":scope > .en"),
       // reading a session from the Today card: Prev and Next follow it (js/features/today-card.js)
       ss = c && sessionStep(c.id, x[3] === ".next" ? 1 : -1),
       name = ss ? ss.label : t ? t.textContent : "";

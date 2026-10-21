@@ -2,7 +2,7 @@
 // The snapshots were recorded from the site before the refactor, so any change to a line, a Vedic
 // mark, a stanza number or a dhrupad marker shows up here as a text diff.
 import { test, expect } from "@playwright/test";
-import { openSite, pieceText, SETUPS } from "./helpers.mjs";
+import { openSite, pieceText, SETUPS, buildAll } from "./helpers.mjs";
 
 for (const name of Object.keys(SETUPS)) {
   test(`piece text: ${name} @chromium-only`, async ({ page }) => {
@@ -32,6 +32,7 @@ test("the Library's list of texts @chromium-only", async ({ page }) => {
 
 test("every line has a unique id and a partner in the other language @chromium-only", async ({ page }) => {
   await openSite(page, SETUPS.both);
+  await buildAll(page);
   const r = await page.evaluate(() => {
     const ids = [...document.querySelectorAll(".verse .mr p[data-l]")].map((p) => p.dataset.l);
     const dup = ids.filter((x, i) => ids.indexOf(x) !== i);
