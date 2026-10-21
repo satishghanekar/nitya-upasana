@@ -64,7 +64,6 @@ var SITE_PARTS = (function () {
     "core/apply",
     "features/end-card",
     "features/bottom-bar",
-    "features/tilt",
     "features/bars",
     "features/settings-panel",
     "features/dhrupad-button",

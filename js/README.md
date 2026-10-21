@@ -12,7 +12,7 @@ There is no build step: the browser loads these files as they are.
 
 - Loading a part only defines its functions and variables. Each part's `init()` does its start-up work (reads the page, adds listeners), and `main.js` calls the `init()`s in a fixed order. That is the order the code ran in when it was one file (`app.js`), so a part can rely on everything above it in `main.js` being ready.
 - A part imports what it uses from other parts by name, for example `import { P, save } from "../core/state.js"`. Functions can be imported in any order. A variable belongs to the part that sets it, and other parts only read it.
-- A value several parts read belongs to the one part that sets it, and the others import it (an imported variable can be read, not changed): `FSA` (the fitted text size) in `text/autofit.js`, `rmkPop` (the open dhrupad bubble) in `text/dhrupad-markers.js`, `wl` (the screen lock) in `features/wake-lock.js`, `skCache` (the next Sankashti) in `features/sankashti.js`, and `LEAD` (the leading language, set by `apply()` through `setLead()`) in `core/state.js`.
+- A value several parts read belongs to the one part that sets it, and the others import it (an imported variable can be read, not changed): `FSA` (the fitted text size) in `text/autofit.js`, `rmkPop` (the open dhrupad bubble) in `text/dhrupad-markers.js`, `skCache` (the next Sankashti) in `features/sankashti.js`, and `LEAD` (the leading language, set by `apply()` through `setLead()`) in `core/state.js`.
 - The settings are `P` (`core/state.js`): the person reading's settings joined with the device's. `change({ key: value }, then)` is the one way a part changes them: it puts the values into `P`, runs `then` (usually `apply()`), and saves (`save()`). `save()` writes them at once to localStorage (`aarti2-prefs`, with `pid`, the person's id: the boot copy, read first at the next start and by `render.js` before the scripts run) and, a moment later, into that person's profile in IndexedDB (`store/store.js`). Switching person replaces `P` in place (`setAll()`, then `applyPrefs()` in `features/profiles.js`). `apply()` (`features/bars.js`) turns `P` into the `data-*` switches on `<html>` that the styles react to (see `../css/README.md`).
 - A new file must also be added to `parts.js`, so it is kept for offline use. `tests/site-files.spec.mjs` checks this.
 
@@ -45,8 +45,7 @@ There is no build step: the browser loads these files as they are.
 | `text/autofit.js` | Auto-fit text size |
 | `core/apply.js` | Current piece, folds and menus |
 | `features/end-card.js` | The card at the end of the text being read (`#endc`, after the piece, so Print never copies it): Next / Previous in the Library's order, or in a session where you are ("Evening session · 2 of 4") and Done · next (ticks it, as Next › does), Back to Home after the last text. Drawn by `endCard()` from `features/bottom-bar.js` `asLabel()` |
-| `features/bottom-bar.js` | Bottom bar (#asc) and autoscroll |
-| `features/tilt.js` | Tilt to scroll (bottom bar, phones and tablets) |
+| `features/bottom-bar.js` | Bottom bar (#asc): Prev, Home, Library, Aa, Next |
 | `features/bars.js` | Bars tuck away while reading (CSS: "Bars tuck away while reading"), and apply() |
 | `features/settings-panel.js` | Settings panel |
 | `features/dhrupad-button.js` | Dhrupad: toggle once / after every stanza, keeping the reader's place (Reading sheet and Settings) |
