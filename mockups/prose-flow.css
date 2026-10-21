@@ -1,0 +1,32 @@
+/* Mockup: a Vedic chant (layout: prose) in one language runs on as paragraphs, like Satish's booklets */
+.ash.prose:is([data-lang="mr"], [data-lang="en"]) .items {
+  display: block !important;
+  max-width: 52rem;
+  margin-inline: auto;
+}
+.ash.prose:is([data-lang="mr"], [data-lang="en"]) .items > .item {
+  grid-area: auto !important;
+  translate: none !important;
+}
+.ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse {
+  text-align: start;
+  margin-bottom: 1.1em;
+}
+.ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse > .mr,
+.ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse > .en {
+  display: block;
+  text-indent: 2em;
+  line-height: 2.05;
+}
+.ash.prose[data-lang="en"] .verse > .en { line-height: 1.75; }
+.ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse p {
+  display: inline;
+  padding-inline: 0;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.ash.prose:is([data-lang="mr"], [data-lang="en"]) .zs { display: inline !important; }
+/* the opening and closing peace chants: a paragraph of their own, centred, no indent */
+.ash.prose:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse { text-align: center; text-align-last: center; }
+.ash.prose:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse > div { text-indent: 0; }
+.ash.prose:is([data-lang="mr"], [data-lang="en"]) .nb { white-space: nowrap; }
