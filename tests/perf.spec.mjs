@@ -57,6 +57,11 @@ test("load and the language choices lay the page out only a few times @chromium-
   const load = diff(t0, await metrics(cdp));
 
   // Marathi → English → both: each is a first visit to that language, so the text is fitted again
+  // The language choices are in the reading sheet (Aa in the bottom bar), built when it opens; it stays open for the
+  // three taps, as it does for a reader
+  await page.locator("#rsb").evaluate((b) => b.click());
+  await expect(page.locator("#rsl button")).toHaveCount(3);
+  await page.waitForTimeout(1000);
   const taps = [];
   for (let i = 0; i < 3; i++) {
     // opened at a piece, the bars start tucked away (a tap on the page brings them back)

@@ -1,53 +1,41 @@
 // Accessibility (WCAG 2.2 AA): axe-core on every screen state, plus the things axe can't see —
 // keyboard-only use of every dialog, and accessible names that contain the visible label.
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
-import { openSite, SETUPS , openMore, tapMore } from "./helpers.mjs";
+import { openSite, SETUPS, openMore, tapMore, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
 
-const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
+// axeScan leaves label-content-name-mismatch off: axe 4.14 counts the letters drawn inside aria-hidden SVG icons
+// (अ / A, धृ) and joins the date chip's stacked lines without a space ("28Oct"); the "label in name" test below
+// checks WCAG 2.5.3 on the text people actually see.
 
-async function axe(page) {
-  // axe 4.14's label-content-name-mismatch counts the letters drawn inside aria-hidden SVG icons (अ / A, धृ)
-  // and joins the date chip's stacked lines without a space ("28Oct"); the "label in name" test below
-  // checks WCAG 2.5.3 on the text people actually see.
-  const r = await new AxeBuilder({ page }).withTags(TAGS).disableRules(["label-content-name-mismatch"]).analyze();
-  return r.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(" ")).slice(0, 5).join(", ")}`);
-}
-
+// [name, settings, what to open, true: also every other theme (axeEveryTheme)]
 const STATES = [
-  ["home", SETUPS.marathi],
-  ["home dark", { ...SETUPS.marathi, th: "dark" }],
-  ["home sepia", { ...SETUPS.marathi, th: "sepia" }],
-  ["home high contrast", { ...SETUPS.marathi, hc: 1 }],
+  ["home", SETUPS.marathi, null, true],
   ["home Marathi menus", SETUPS["marathi-menus"]],
   ["both languages", SETUPS.both],
   ["Kannada", SETUPS["kannada-both"]],
   ["English main", SETUPS["english-main-both"]],
   ["everything folded", { ...SETUPS.marathi, pf: 1, xf: 1 }],
-  ["Settings open", SETUPS.marathi, (p) => p.locator("#aa").click()],
-  ["Settings open, dark", { ...SETUPS.marathi, th: "dark" }, (p) => p.locator("#aa").click()],
-  ["Settings open, sepia", { ...SETUPS.marathi, th: "sepia" }, (p) => p.locator("#aa").click()],
-  ["Print open, sepia", { ...SETUPS.marathi, th: "sepia" }, (p) => tapMore(p, "#prb")],
-  ["Library open", SETUPS.marathi, (p) => p.locator("#hm").click()],
-  ["Library open, dark", { ...SETUPS.marathi, th: "dark" }, (p) => p.locator("#hm").click()],
+  ["Settings open", SETUPS.marathi, (p) => p.locator("#aa").click(), true],
+  ["Print open", SETUPS.marathi, (p) => tapMore(p, "#prb"), true],
+  ["Library open", SETUPS.marathi, (p) => p.locator("#hm").click(), true],
   ["search open", SETUPS.marathi, async (p) => {
     await p.locator("#hm").click();
     await p.locator("#q").fill("deva");
   }],
   ["Help open", SETUPS.marathi, (p) => tapMore(p, "#hlpb")],
   ["QR open", SETUPS.marathi, (p) => tapMore(p, "#qrb")],
-  ["Print open", SETUPS.marathi, (p) => tapMore(p, "#prb")],
   ["picture open", SETUPS.marathi, (p) => p.locator("#iconb").click()],
 ];
 
-for (const [name, prefs, prep] of STATES) {
-  test(`axe: ${name} @mobile`, async ({ page }) => {
+for (const [name, prefs, prep, themes] of STATES) {
+  test(`axe: ${name}${themes ? ", in every theme" : ""} @mobile`, async ({ page }) => {
     await openSite(page, prefs);
     if (prep) {
       await prep(page);
       await page.waitForTimeout(300);
     }
-    expect(await axe(page)).toEqual([]);
+    if (themes) expect(await axeEveryTheme(page)).toEqual(noViolations());
+    else expect(await axeScan(page)).toEqual([]);
   });
 }
 
