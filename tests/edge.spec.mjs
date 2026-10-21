@@ -401,13 +401,14 @@ test("the phone's Back closes QR, Print and the picture and returns focus to the
 });
 
 test("the ↻ ध्रुपद bubble stays open until the next tap (WCAG 2.2.1)", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
+  // the page's clock is moved on by hand, so the 7.5 s pass at once
+  await openSite(page, SETUPS.marathi, { running: true });
   await readText(page, "a1");
   const m = page.locator(".rmkt").first();
   await m.scrollIntoViewIfNeeded();
   await m.click();
   await expect(m).toHaveAttribute("aria-expanded", "true");
-  await page.waitForTimeout(7500); // longer than the 7 s it used to close after
+  await page.clock.runFor(7500); // longer than the 7 s it used to close after
   await expect(m).toHaveAttribute("aria-expanded", "true");
   await page.locator("main").click({ position: { x: 5, y: 5 } });
   await expect(m).toHaveAttribute("aria-expanded", "false");
