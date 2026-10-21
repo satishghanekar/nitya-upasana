@@ -32,17 +32,21 @@ export async function addLineMarkers(page) {
     };
     const side = !!pv.querySelector(".pvside");
     const els = [...pv.querySelectorAll(side ? ".pvside td.pvm, .pvside td.pve" : ".verse p")].filter(shown);
-    const out = [];
-    els.forEach((el, n) => {
+    const rowOf = new Map([...pv.querySelectorAll(".pvside tr")].map((tr, i) => [tr, i]));
+    // Everything measured first, before any marker goes in: a style read after the page has changed makes the browser
+    // work the styles out again, which took seconds on a long side-by-side printout
+    const scales = els.map((el) => {
       // the size the line was set at, against the size it would have without the fitting
       const fitted = el.style.fontSize;
-      let scale = 1;
-      if (fitted) {
-        el.style.fontSize = "";
-        const base = parseFloat(getComputedStyle(el).fontSize);
-        el.style.fontSize = fitted;
-        scale = parseFloat(getComputedStyle(el).fontSize) / base;
-      }
+      if (!fitted) return 1;
+      el.style.fontSize = "";
+      const base = parseFloat(getComputedStyle(el).fontSize);
+      el.style.fontSize = fitted;
+      return parseFloat(getComputedStyle(el).fontSize) / base;
+    });
+    const out = [];
+    els.forEach((el, n) => {
+      const scale = scales[n];
       // parts: each .zs span on its own, and each run of other content between them; <br> starts a segment
       const parts = [];
       let run = [],
@@ -79,7 +83,7 @@ export async function addLineMarkers(page) {
         sid: el.closest(".pvs")?.dataset.sid || "",
         lang: el.closest("[lang]")?.getAttribute("lang") || "",
         cell: side ? (el.classList.contains("pvm") ? "orig" : "en") : "",
-        row: side ? [...pv.querySelectorAll(".pvside tr")].indexOf(tr) : -1,
+        row: side ? (rowOf.has(tr) ? rowOf.get(tr) : -1) : -1,
         text: el.textContent.replace(/\s*(\{\{[^}]*\}\}|\[\[[^\]]*\]\])\s*/g, " ").replace(/\s+/g, " ").trim(),
         parts: parts.length,
         segs: (parts.length ? parts[parts.length - 1].seg : 0) + 1,
