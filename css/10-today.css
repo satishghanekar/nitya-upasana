@@ -469,6 +469,15 @@
     display: none !important;
   }
 }
+/* Wide screens (data-rail): only the text being read (.solo, js/features/history.js) is on the right, scrolling there
+   beside the side menu; ‹ Prev / Next › and the menu change it, so the next text never runs on below. Home is not
+   above it either (a short text would show Home's end over it); मुखपृष्ठ in the menu or the bottom bar goes back */
+@media screen and (min-width: 1100px) {
+  :root[data-run="1"][data-rail="1"]:not([data-hv]) #home,
+  :root[data-run="1"][data-rail="1"] .ash.inrun:not(.solo) {
+    display: none !important;
+  }
+}
 
 /* ==== Start / Continue: below the list; on phones pinned to the bottom of the screen while the home page is in
    view. position: sticky keeps it in the page's flow, so at the end of the home page it sits after the row above and
