@@ -408,7 +408,7 @@
 }
 /* One text at a time: only the text being read (.solo, js/features/history.js) is
    shown, on every screen, from a session, the Library or search. The next text never runs on below it
-   (the card at its end, #endc, and ‹ Prev / Next › change it), and Home is not above it; Home in the bottom bar or the
+   (‹ Prev / Next › in the bottom bar change it), and Home is not above it; Home in the bottom bar or the
    top bar goes back. Only the page's own pieces (#main > .ash): Print builds its own from the texts
    (js/print/compose.js). On wide screens Home's column stays beside the text (Desktop: Home beside the text, below) */
 @media screen {
@@ -416,98 +416,6 @@
   :root:not([data-hv]) #main > .ash:not(.solo) {
     display: none !important;
   }
-}
-
-/* ==== The card at the end of the text (#endc, js/features/end-card.js): Next / Previous, or in a session where
-   you are and Done · next. Screen only; Home on its own hides it ==== */
-#endc {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 46rem;
-  margin: 28px auto 0;
-  padding: 0 0 24px;
-}
-#endc[hidden],
-:root[data-hv] #endc {
-  display: none;
-}
-@media print {
-  #endc {
-    display: none;
-  }
-}
-#endc .ecpos {
-  margin: 0;
-  text-align: center;
-  font: 400 15px/1.4 var(--body);
-  color: var(--muted);
-}
-#endc .ecpos b {
-  color: var(--ink);
-  font-weight: 600;
-}
-#endc .ecpips {
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-}
-#endc .ecpips i {
-  width: 22px;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--rule);
-}
-#endc .ecpips i.d {
-  background: var(--ok);
-}
-#endc .ecpips i.c {
-  background: var(--accent);
-}
-#endc .ecb {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  min-height: 64px;
-  padding: 10px 16px;
-  border: 1px solid var(--rule);
-  border-radius: 14px;
-  background: var(--surface);
-  color: var(--ink);
-  font: 500 18px/1.3 var(--head);
-  text-align: start;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-#endc .ecb.ecm {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--bg);
-}
-#endc .ect {
-  flex: 1;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-#endc .ect small {
-  display: block;
-  font: 500 13px/1.3 var(--body);
-  color: var(--muted);
-}
-#endc .ecm .ect small {
-  color: inherit;
-  opacity: 0.85;
-}
-#endc .ecb svg {
-  flex: none;
-}
-#endc .ecb:active {
-  background: var(--hdr);
-}
-#endc .ecm:active {
-  opacity: 0.85;
-  background: var(--accent);
 }
 
 /* ==== On the home page (data-home, set by js/features/bars.js while no piece is at the top): no bottom bar, so the top

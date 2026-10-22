@@ -30,13 +30,13 @@ test.describe.configure({ mode: "parallel" });
 const LIBRARY = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8")).texts;
 
 // How each text is printed: Marathi and English on upright pages, both languages side by side on sideways pages,
-// in the printout's default font (Best for each text: Classic, and Tiro Devanagari Sanskrit for a Vedic text) on A4
+// in the printout's default font (Traditional: Tiro Devanagari Marathi, and Tiro Devanagari Sanskrit for a Vedic text) on A4
 const VIEWS = [
   { name: "marathi-portrait", prefs: SETUPS.marathi, mode: "one" },
   { name: "english-portrait", prefs: SETUPS.english, mode: "one" },
   { name: "both-landscape", prefs: { ...SETUPS.both, por: "land" }, mode: "side" },
 ];
-// The four fonts the Print pop-up offers besides, and the other scripts, on the hardest texts only (all texts in every font: npm run print:audit):
+// The two other fonts the Print pop-up offers (Modern and Bold), and the other scripts, on the hardest texts only (all texts in every font: npm run print:audit):
 // the longest aarti lines side by side, Shree Rudra side by side, a Vedic text in Kannada letters and in IAST
 const HARD = [
   { id: "yei-o-vitthale", name: "both-landscape", prefs: { ...SETUPS.both, por: "land" }, mode: "side" },
@@ -44,7 +44,7 @@ const HARD = [
   { id: "atharvashirsha", name: "kannada-portrait", prefs: SETUPS.kannada, mode: "one" },
   { id: "atharvashirsha", name: "iast-portrait", prefs: SETUPS["english-iast"], mode: "one" },
 ];
-const FONTS = ["std", "classic", "bold", "hand"];
+const FONTS = ["std", "bold"];
 // The smallest a line may be set, against its size before fitting, for every reason together (LAYOUT.floor in
 // js/print/profiles.js)
 const SMALLEST = 0.8;

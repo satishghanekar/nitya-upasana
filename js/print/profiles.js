@@ -15,22 +15,21 @@
 //   font:   the same, for the other text fonts (Settings → Text font) where they differ from size: the
 //           fonts of one script are not all drawn the same size. Measured, not guessed: the height of the
 //           script's ordinary letters at one point size (tests/print-audit.spec.mjs prints the table:
-//           "font sizes"). At the same point size Devanagari is about 63 in every font, while Kannada is
-//           80 (standard), 82 (classic), 74 (bold) and 54 (handwritten). Kannada is set to look a little
-//           larger than Devanagari, about 70 (its letters read better a little larger); the handwritten
-//           one is drawn small but wide, so it stays at its own size: any larger and its lines no longer
-//           fit beside their English (checked with npm run print:audit).
+//           "font sizes"). At the same point size Devanagari is about 63 in every font (Noto Sans, Tiro and Noto
+//           Serif SemiBold alike), while Kannada is 81 in Modern (Noto Sans Kannada) and 84 in Traditional and Bold
+//           (Noto Serif Kannada). Kannada is set to look a little larger than Devanagari, about 72 (its letters read
+//           better a little larger).
 //   steps:  the size steps a piece may grow to (LAYOUT.grow), against Devanagari's: Latin letters look larger at
 //           the same point size, so English grows to about 0.85 of the Devanagari steps (SIZES.md in the print
 //           redesign plan, 2026-10-21)
 // How far any of them may be set smaller is LAYOUT.floor (and lineFloor), the same for every script.
 export var SCRIPTS = {
   deva: { size: 1 }, // Devanagari: Marathi, Hindi, Sanskrit
-  knda: { size: 0.9, font: { classic: 0.86, hand: 1 } }, // Kannada letters (Settings → Main language → ಕನ್ನಡ)
+  knda: { size: 0.9, font: { classic: 0.86, bold: 0.86 } }, // Kannada letters (Settings → Main language → ಕನ್ನಡ)
   latn: { size: 1, steps: 0.85 }, // English, in either spelling (simple or IAST)
 };
 
-// The size a script is set at in a text font (std, classic, bold or hand)
+// The size a script is set at in a text font (std, classic or bold)
 export function sizeOf(sc, fnt) {
   return (sc.font && sc.font[fnt]) || sc.size;
 }

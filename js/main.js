@@ -42,7 +42,6 @@ import { init as startStanzaNumbers } from "./text/stanza-numbers.js";
 import { init as startLineBreaks } from "./text/line-breaks.js";
 import { init as startAutofit } from "./text/autofit.js";
 import { init as startApply } from "./core/apply.js";
-import { init as startEndCard } from "./features/end-card.js";
 import { init as startBottomBar } from "./features/bottom-bar.js";
 import { init as startBars } from "./features/bars.js";
 import { init as startSettingsPanel } from "./features/settings-panel.js";
@@ -83,7 +82,6 @@ function start() {
     startLineBreaks(); // Preferred line breaks
     startAutofit(); // Auto-fit text size
     startApply(); // Current piece, menus and apply()
-    startEndCard(); // The card at the end of the text being read: Next / Previous, or Done · next in a session
     startBottomBar(); // Bottom bar (#asc): ‹ Prev, Home, Library, Aa, Next ›
     startBars(); // Bars tuck away while reading (CSS: "Bars tuck away while reading")
     startSettingsPanel(); // Settings panel

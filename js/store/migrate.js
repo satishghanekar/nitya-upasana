@@ -46,9 +46,9 @@ export function defaults(env) {
     loc: null, // { lat, lon } from "Use my location"
     hl: "", // data-l id of the highlighted line
     por: "", // the page last chosen in the Print pop-up: "" | "up" | "land"
-    fnt: "std", // text font: std | classic | bold | hand
+    fnt: "classic", // text font: std (Modern) | classic (Traditional) | bold (Bold)
     pref: "", // dhrupad in the printout: "" as on the page | 0 | 1
-    pfn: "", // font of the printout: "" or best (Best for each text) | std | classic | bold | hand
+    pfn: "", // font of the printout: "" as the text font (fnt) | std | classic | bold
     plang: "", // language of the printout: "" as the page shows it | mr (the original) | en | both
     ppr: "", // paper of the printout: "" as the device's region suggests (Letter in the US and Canada) | letter | a4
     tr: "simple", // English style: simple | iast
@@ -129,7 +129,9 @@ export function tidy(P) {
   if (P.lead === "en" || P.ind !== "mr") P.ui = "en";
   if (!P.l2 || [P.lead, P.l2, "both"].indexOf(P.lang) < 0) P.lang = P.lead;
   if (["auto", "light", "sepia", "dark"].indexOf(P.th) < 0) P.th = "auto";
-  if (["std", "classic", "bold", "hand"].indexOf(P.fnt) < 0) P.fnt = "std";
+  // three text fonts since v1.23: Handwritten and the printout's Best are gone (Traditional now does what Best did)
+  if (["std", "classic", "bold"].indexOf(P.fnt) < 0) P.fnt = "classic";
+  if (["std", "classic", "bold"].indexOf(P.pfn) < 0) P.pfn = "";
   if (P.tr !== "iast") P.tr = "simple";
   if (P.ui !== "mr") P.ui = "en";
   return P;

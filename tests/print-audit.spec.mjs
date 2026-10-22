@@ -37,7 +37,7 @@ export const VIEWS = {
   "english-marathi": [{ lang: "both", lead: "en", l2: "mr" }, BOTH],
   "english-kannada": [{ lang: "both", lead: "en", l2: "mr", ind: "kn" }, BOTH],
 };
-const FONTS = { best: "best", standard: "std", classic: "classic", bold: "bold", handwritten: "hand" };
+const FONTS = { traditional: "classic", modern: "std", bold: "bold" };
 const DHRUPAD = { "dhrupad-once": 1, "dhrupad-every-verse": 0 };
 const PAPERS = { letter: ["Letter", "en-US"], a4: ["A4", "en-IN"] };
 
@@ -60,9 +60,9 @@ for (const [view, [prefs, layouts]] of Object.entries(VIEWS))
 // js/print/profiles.js. When adding a script or a font, add its families and sample text here and set its
 // size so its letters come out about as tall as the others (tests/pdfs/FONT-SIZES.md).
 const FAMILIES = {
-  deva: { std: '"Noto Sans Devanagari"', classic: '"SC Classic"', bold: '"SC Bold"', hand: '"SC Hand"' },
-  knda: { std: '"Noto Sans Kannada"', classic: '"SC Kn Classic"', bold: '"SC Kn Bold"', hand: '"SC Kn Hand"' },
-  latn: { std: "Inter", classic: '"SC Classic"', bold: '"SC Bold"', hand: '"SC Hand"' },
+  deva: { std: '"Noto Sans Devanagari"', classic: '"SC Classic"', "classic-vedic": '"Tiro Devanagari Sanskrit"', bold: '600 "SC Bold"' },
+  knda: { std: '"Noto Sans Kannada"', classic: '"SC Kn Classic"', bold: '600 "SC Kn Classic"' },
+  latn: { std: "Inter", classic: '"SC Classic"', bold: '600 "SC Bold"' },
 };
 // ordinary letters, without tall or deep marks: their height is how big the script looks
 const LETTERS = { deva: "कमन", knda: "ಕಮನ", latn: "xzu" };
@@ -74,8 +74,11 @@ test("font sizes", async ({ page }) => {
         out = [];
       for (const [sc, fs] of Object.entries(FAMILIES))
         for (const [f, fam] of Object.entries(fs)) {
-          await document.fonts.load(`100px ${fam}`, LETTERS[sc]);
-          c.font = `100px ${fam}`;
+          // (a family may start with its weight: Bold is set SemiBold)
+          const m0 = /^(\d+) (.*)$/.exec(fam),
+            font = m0 ? `${m0[1]} 100px ${m0[2]}` : `100px ${fam}`;
+          await document.fonts.load(font, LETTERS[sc]);
+          c.font = font;
           const m = c.measureText(LETTERS[sc]);
           out.push([sc, f, Math.round(m.actualBoundingBoxAscent + m.actualBoundingBoxDescent)]);
         }

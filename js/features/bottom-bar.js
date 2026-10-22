@@ -7,7 +7,6 @@ import { cur } from "../core/apply.js";
 import { goHomeNav } from "./history.js";
 import { pageEls } from "./overlays.js";
 import { sessionStep } from "./today-card.js";
-import { endCard } from "./end-card.js";
 
 export var asc;
 
@@ -49,10 +48,17 @@ export function init() {
     menu();
   })();
   addEventListener("scroll", asShow, { passive: true });
-  // a session started on the Today card: Prev and Next now follow it, even on the piece already on screen
-  document.addEventListener("nitya-session", function () {
+  // a session started on the Today card: Prev and Next now follow it, even on the piece already on screen; and
+  // another text opened (js/features/history.js solo()), which may leave the page where it was, with no scroll
+  function again() {
     asShow.id = undefined;
     asShow();
+  }
+  document.addEventListener("nitya-session", again);
+  document.addEventListener("nitya-solo", function () {
+    again();
+    // once the page has gone to the text (the jump may come after)
+    requestAnimationFrame(again);
   });
 }
 
@@ -83,8 +89,6 @@ export function asLabel() {
     b.setAttribute("aria-label", (mr ? x[1] : x[2]).replace(/[‹›]/g, "").trim() + (name ? ": " + name : ""));
     b.disabled = !a && !ss;
   });
-  // the card at the end of the text follows the same changes (js/features/end-card.js)
-  endCard();
 }
 
 // Previous / Next follow the links in each piece's .pn block (kept in the page but never shown on screen,

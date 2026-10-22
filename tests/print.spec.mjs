@@ -22,17 +22,17 @@ test.describe.configure({ mode: "parallel" });
 // is put together. Portrait (pr1) and Landscape (pr2): one language prints in a column either way; both languages
 // print side by side, on Landscape only.
 const WHOLE = [
-  { name: "marathi-single-column-best-Letter", prefs: SETUPS.marathi, choice: "pr1", mode: "one", paper: "Letter", locale: "en-US" },
-  { name: "english-single-column-best-A4", prefs: SETUPS.english, choice: "pr1", mode: "one", paper: "A4", locale: "en-IN" },
-  { name: "sideways-marathi-single-column-best-Letter", prefs: { ...SETUPS.marathi, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
-  { name: "sideways-english-single-column-best-Letter", prefs: { ...SETUPS.english, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
-  { name: "sideways-both-side-by-side-best-Letter", prefs: { ...SETUPS.both, por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
-  { name: "sideways-kannada-side-by-side-best-Letter", prefs: { ...SETUPS["kannada-both"], por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
+  { name: "marathi-single-column-default-Letter", prefs: SETUPS.marathi, choice: "pr1", mode: "one", paper: "Letter", locale: "en-US" },
+  { name: "english-single-column-default-A4", prefs: SETUPS.english, choice: "pr1", mode: "one", paper: "A4", locale: "en-IN" },
+  { name: "sideways-marathi-single-column-default-Letter", prefs: { ...SETUPS.marathi, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
+  { name: "sideways-english-single-column-default-Letter", prefs: { ...SETUPS.english, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
+  { name: "sideways-both-side-by-side-default-Letter", prefs: { ...SETUPS.both, por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
+  { name: "sideways-kannada-side-by-side-default-Letter", prefs: { ...SETUPS["kannada-both"], por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
 ];
 // iPhone 13 emulation in Chromium (the device entry names WebKit as its browser, which newContext does not take)
 const { defaultBrowserType: _bt, ...IPHONE } = devices["iPhone 13"];
 
-// Special cases beyond those (the default font, Best for each text; Letter unless stated)
+// Special cases beyond those (the default font, Traditional; Letter unless stated)
 const EXTRAS = [
   { name: "iast-english-single-column", prefs: SETUPS["english-iast"], choice: "pr1", mode: "one" },
   { name: "iast-both-side-by-side", prefs: SETUPS["both-iast"], choice: "pr2", mode: "side" },
@@ -416,8 +416,8 @@ for (const [setup, words] of [
     await expect(page.locator("#pr2")).toHaveText("Landscape");
     await expect(page.locator("#pr1")).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator("#prpv")).toBeHidden();
-    // each font's tile shows the text's first word in that font, in the language printed
-    await expect(page.locator("#prfn .prfx")).toHaveText(Array(5).fill(words.split(" ")[0]));
+    // each font's tile (the three of Settings → Text font) shows the text's first word in that font, in the language printed
+    await expect(page.locator("#prfn .prfx")).toHaveText(Array(3).fill(words.split(" ")[0]));
     await expect(page.locator("#prgp")).toBeFocused();
   });
 }
@@ -525,28 +525,28 @@ test("print pop-up scrolls when taller than the screen @chromium-only", async ({
 });
 
 // How: the printout's dhrupad and font (a tap picks another, for the printout only: the reading page keeps its own),
-// the fonts as tiles, each with a word of the text in it
+// the fonts as tiles, each with a word of the text in it. The fonts are the same three as Settings → Text font
 test("print pop-up shows the dhrupad and font settings @chromium-only", async ({ page }) => {
   await stubPrint(page);
-  await openSite(page, { ...SETUPS.marathi, fnt: "classic" });
+  await openSite(page, { ...SETUPS.marathi, fnt: "bold" });
   await tapMore(page, "#prb");
   await howStep(page);
   await expect(page.locator("#prdg [aria-pressed=true]")).toHaveText("Once", { useInnerText: true });
-  // the printout's font starts as Best for each text, whatever the text font; each tile shows a word in its font
-  await expect(page.locator("#prfn [aria-pressed=true] .prfm")).toHaveText("Best", { useInnerText: true });
-  await expect(page.locator("#prfn .prfm")).toHaveText(["Best", "Standard", "Classic", "Bold", "Handwritten"], { useInnerText: true });
-  await expect(page.locator('#prfn [data-v="best"] .prfx')).toHaveText("सुखकर्ता");
+  // the same three fonts as Settings, in the same order; the printout's starts as the text font (Bold here)
+  await expect(page.locator("#prfn .prfm")).toHaveText(["Traditional", "Modern", "Bold"], { useInnerText: true });
+  await expect(page.locator("#prfn [aria-pressed=true] .prfm")).toHaveText("Bold", { useInnerText: true });
+  await expect(page.locator('#prfn [data-v="classic"] .prfx')).toHaveText("सुखकर्ता");
   const font = (v) => page.locator(`#prfn [data-v="${v}"] .prfx`).evaluate((e) => getComputedStyle(e).fontFamily);
-  expect(await font("best")).toContain("SC Classic");
+  expect(await font("classic")).toContain("SC Classic");
   expect(await font("bold")).toContain("SC Bold");
-  expect(await font("hand")).toContain("SC Hand");
+  expect(await font("std")).not.toContain("SC ");
   // a font picked here is the printout's only: the reading page keeps its own,
   // and the page takes it just while it prints
-  await page.locator('#prfn [data-v="bold"]').click();
-  await expect(page.locator("#prfn [aria-pressed=true] .prfm")).toHaveText("Bold", { useInnerText: true });
+  await page.locator('#prfn [data-v="classic"]').click();
+  await expect(page.locator("#prfn [aria-pressed=true] .prfm")).toHaveText("Traditional", { useInnerText: true });
   const prefs = await page.evaluate(() => JSON.parse(localStorage.getItem("aarti2-prefs")));
-  expect([prefs.pfn, prefs.fnt]).toEqual(["bold", "classic"]);
-  expect(await page.evaluate(() => document.documentElement.getAttribute("data-font"))).toBe("classic");
+  expect([prefs.pfn, prefs.fnt]).toEqual(["classic", "bold"]);
+  expect(await page.evaluate(() => document.documentElement.getAttribute("data-font"))).toBe("bold");
   expect(
     await page.evaluate(() => {
       window.dispatchEvent(new Event("beforeprint"));
@@ -554,7 +554,7 @@ test("print pop-up shows the dhrupad and font settings @chromium-only", async ({
       window.dispatchEvent(new Event("afterprint"));
       return [f, document.documentElement.getAttribute("data-font")];
     }),
-  ).toEqual(["bold", "classic"]);
+  ).toEqual(["classic", "bold"]);
   // the dhrupad likewise: every verse in the printout, once on the reading page
   await page.locator('#prdg [data-v="0"]').click();
   await expect(page.locator("#prdg [aria-pressed=true]")).toHaveText("Every verse", { useInnerText: true });
