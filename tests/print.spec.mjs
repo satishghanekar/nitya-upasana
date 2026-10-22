@@ -592,8 +592,8 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await expect(page.locator("#prsum")).toContainText(`${TEXT_COUNT} texts`);
   // the pages come from the whole Library's plan, laid out in the background: each text's, and the total (with the
   // contents page)
-  await expect(page.locator("#prwl .prpc").first()).toHaveText(/^~\d+ pages?$/, { timeout: 20_000 });
-  const each = await page.locator("#prwl .prpc").allTextContents();
+  await expect(page.locator("#prwl .tpkl .prpc").first()).toHaveText(/^~\d+ pages?$/, { timeout: 20_000 });
+  const each = await page.locator("#prwl .tpkl .prpc").allTextContents();
   const sum = each.reduce((a, t) => a + Number(t.replace(/\D/g, "")), 0);
   const pagesIn = async () => Number((await page.locator("#prsum span").nth(1).textContent()).replace(/\D/g, ""));
   await expect(page.locator("#prsum span").nth(1)).toHaveText(/^~\d+ pages$/);
@@ -608,9 +608,9 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await expect(page.locator("#prwl .tpkl li:visible")).toHaveCount(1);
   await page.locator("#prwl .tpkl li:visible input").check();
   await page.locator(".prwq").fill("");
-  await page.locator('#prwl li[data-id="atharvashirsha"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="atharvashirsha"] input').check();
   await expect(page.locator("#prsum span").first()).toHaveText("2 texts");
-  const two = await page.locator('#prwl li[data-id="atharvashirsha"] .prpc, #prwl li[data-id="sukhkarta"] .prpc').allTextContents();
+  const two = await page.locator('#prwl .tpkl li[data-id="atharvashirsha"] .prpc, #prwl .tpkl li[data-id="sukhkarta"] .prpc').allTextContents();
   expect(await pagesIn()).toBe(two.reduce((a, t) => a + Number(t.replace(/\D/g, "")), 0) + 1);
   // Next, and back
   await page.locator("#prnx").click();
@@ -619,7 +619,7 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await expect(page.locator("#prgp")).toBeFocused();
   await page.locator("#prbk").click();
   await expect(page.locator("#prwh")).toBeVisible();
-  await expect(page.locator('#prwl li[data-id="atharvashirsha"] input')).toBeChecked();
+  await expect(page.locator('#prwl .tpkl li[data-id="atharvashirsha"] input')).toBeChecked();
   await page.locator("#prnx").click();
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
@@ -665,7 +665,7 @@ test("print builder: a category's Select all and Clear, and one text alone @chro
   await expect(page.locator('.prcb[data-cat=""]')).toHaveText("Clear");
   // one text alone
   await page.locator('.prcb[data-cat=""]').click();
-  await page.locator('#prwl li[data-id="sukhkarta"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="sukhkarta"] input').check();
   await expect(page.locator("#prsum span").first()).toHaveText("गणपतीची आरती");
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
@@ -683,7 +683,7 @@ test("print builder: Marathi menus @chromium-only", async ({ browser }) => {
   await expect(page.locator(".prwq")).toHaveAttribute("placeholder", "संग्रहात शोधा");
   await expect(page.locator('.prcb[data-cat=""]')).toHaveText("सर्व काढा");
   await expect(page.locator("#prsum span").first()).toHaveText(/^[०-९]+ रचना$/);
-  await expect(page.locator("#prwl .prpc").first()).toHaveText(/^~[०-९]+ (पान|पाने)$/, { timeout: 20_000 });
+  await expect(page.locator("#prwl .tpkl .prpc").first()).toHaveText(/^~[०-९]+ (पान|पाने)$/, { timeout: 20_000 });
   await expect(page.locator("#prx")).toHaveAttribute("aria-label", "रद्द");
   await context.close();
 });
@@ -700,8 +700,8 @@ test("print builder: Open in Safari carries the texts ticked @chromium-only", as
   await openSite(page, SETUPS.english);
   await tapMore(page, "#prb");
   await page.locator('.prcb[data-cat=""]').click();
-  await page.locator('#prwl li[data-id="sukhkarta"] input').check();
-  await page.locator('#prwl li[data-id="purusha-suktam"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="sukhkarta"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="purusha-suktam"] input').check();
   await howStep(page);
   await page.locator("#prgp").click();
   await page.locator("#prsf").click();
@@ -811,7 +811,7 @@ test("print builder: the printout's language @chromium-only", async ({ browser }
   // just one text, in English; the reading page stays in Marathi
   await page.locator("#prbk").click();
   await page.locator('.prcb[data-cat=""]').click();
-  await page.locator('#prwl li[data-id="sukhkarta"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="sukhkarta"] input').check();
   await page.locator("#prnx").click();
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
@@ -857,7 +857,7 @@ test("print builder: the preview and the paper @chromium-only", async ({ browser
   // one aarti ticked: the preview shows it
   await page.locator("#prbk").click();
   await page.locator('.prcb[data-cat=""]').click();
-  await page.locator('#prwl li[data-id="sukhkarta"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="sukhkarta"] input').check();
   await page.locator("#prnx").click();
   await expect(title()).toContainText("Ganapati Aarti", { timeout: 20_000 });
   await page.locator("#prgp").click();
