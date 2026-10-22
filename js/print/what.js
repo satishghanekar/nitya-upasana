@@ -4,6 +4,8 @@
 // category and for everything, and next to each text the pages it takes on paper as the How step has it now. Every
 // text starts on a new page, so a text's pages are read off the plan of the whole Library (js/features/print.js lays
 // it out ahead, as for the browser's own Print menu) and the total is the contents page plus the texts chosen.
+// A second tab, Today, offers today's sessions from the reading person's routine (and all of today), one tap each:
+// a tap ticks just that session's texts (P4b).
 // Ticking changes nothing on the reading page; js/features/print.js reads pick() when Print is tapped.
 // The words follow the menu language (P.ui); the titles follow the reading languages, as in the routine builder: the
 // first language large, the second under it.
@@ -15,7 +17,8 @@ import { searchKey } from "../features/text-picker.js";
 /**
  * @typedef {{ id: string, sec: string, title: string, titleEn: string, language: string }} WhatText
  * @typedef {{ category: { id: string, name: { mr: string, en: string } }, texts: WhatText[] }} WhatShelf
- * @typedef {{ shelves: () => WhatShelf[], onChange: () => void }} WhatOptions
+ * @typedef {{ session: string, name: string, ids: string[] }} WhatSession  one of today's sessions and its texts
+ * @typedef {{ shelves: () => WhatShelf[], today: () => WhatSession[], onChange: () => void }} WhatOptions
  */
 
 const W = {
@@ -35,6 +38,10 @@ const W = {
       return n + (n === 1 ? " text" : " texts");
     },
     pick: "Pick at least one text",
+    tabs: { texts: "Texts", today: "Today" },
+    todayInfo: "Tap a session to print its texts.",
+    allToday: "All of today",
+    empty: "No texts",
   },
   mr: {
     what: "काय प्रिंट करायचे",
@@ -52,6 +59,10 @@ const W = {
       return num(n) + " रचना";
     },
     pick: "किमान एक रचना निवडा",
+    tabs: { texts: "रचना", today: "आज" },
+    todayInfo: "सत्र निवडा: त्यातील रचना प्रिंट होतील.",
+    allToday: "आजचे सर्व",
+    empty: "एकही रचना नाही",
   },
 };
 
@@ -100,7 +111,8 @@ export function createWhat(el, o) {
     counts = null,
     toc = 1,
     /** @type {string[] | null | undefined} ticks given before the Library was read (a print link), put in place once it is */
-    pending;
+    pending,
+    tab = "texts";
 
   function all() {
     /** @type {WhatText[]} */
@@ -148,6 +160,15 @@ export function createWhat(el, o) {
       s2 = second();
     el.lang = ui();
     el.innerHTML =
+      '<div class="prtabs" role="tablist">' +
+      ["texts", "today"]
+        .map(function (k) {
+          return '<button type="button" role="tab" id="prtab-' + k + '" data-tab="' + k + '" aria-controls="prtp-' + k + '">' + esc(w.tabs[/** @type {"texts" | "today"} */ (k)]) + "</button>";
+        })
+        .join("") +
+      "</div>" +
+      '<div class="prtp" id="prtp-today" role="tabpanel" aria-labelledby="prtab-today"><p class="prti">' + esc(w.todayInfo) + "</p>" + todayHtml() + "</div>" +
+      '<div class="prtp" id="prtp-texts" role="tabpanel" aria-labelledby="prtab-texts">' +
       '<input type="search" class="tpkq prwq" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="' + esc(w.search) + '" aria-label="' + esc(w.search) + '">' +
       '<div class="prcg prcga"><span>' + esc(w.all) + '</span><button type="button" class="prcb" data-cat=""></button></div>' +
       o
@@ -173,15 +194,101 @@ export function createWhat(el, o) {
           );
         })
         .join("") +
-      '<p class="tpkn" hidden>' + esc(w.none) + "</p>";
+      '<p class="tpkn" hidden>' + esc(w.none) + "</p></div>";
+    showTab();
     /** @type {HTMLInputElement} */ (el.querySelector(".prwq")).value = q;
     filter();
     sync();
   }
 
+  /** Today's sessions with texts, and all of today when more than one has texts */
+  function sessions() {
+    var ss = o.today(),
+      full = ss.filter(function (x) {
+        return x.ids.length;
+      });
+    if (full.length > 1) {
+      /** @type {string[]} */
+      var ids = [];
+      full.forEach(function (x) {
+        x.ids.forEach(function (id) {
+          if (ids.indexOf(id) < 0) ids.push(id);
+        });
+      });
+      ss = ss.concat([{ session: "all", name: whatWords().allToday, ids: ids }]);
+    }
+    return ss;
+  }
+  function todayHtml() {
+    var l = lead();
+    return (
+      '<ul class="prtd">' +
+      sessions()
+        .map(function (x) {
+          var names = x.ids
+            .map(function (id) {
+              var t = byId(id);
+              return t ? titleIn(t, l) : "";
+            })
+            .filter(Boolean)
+            .join(" · ");
+          return (
+            '<li><button type="button" class="prses" data-s="' + esc(x.session) + '"' + (x.ids.length ? "" : " disabled") + '><span class="prsn">' + esc(x.name) + '</span><span class="prsc"></span>' +
+            '<span class="prsl" lang="' + (l === "mr" ? scrKey() || "mr" : "en") + '">' + esc(names || whatWords().empty) + "</span></button></li>"
+          );
+        })
+        .join("") +
+      "</ul>"
+    );
+  }
+  /** @param {string} id */
+  function byId(id) {
+    return (
+      all().filter(function (t) {
+        return t.id === id;
+      })[0] || null
+    );
+  }
+  /** @param {string[]} ids */
+  function secsOf(ids) {
+    return ids
+      .map(function (id) {
+        var t = byId(id);
+        return t ? t.sec : "";
+      })
+      .filter(Boolean);
+  }
+  /** Whether exactly these texts are ticked @param {string[]} ids */
+  function same(ids) {
+    var on = chosen();
+    return (
+      on.length === ids.length &&
+      on.every(function (t) {
+        return ids.indexOf(t.id) >= 0;
+      })
+    );
+  }
+  function showTab() {
+    [].forEach.call(el.querySelectorAll(".prtabs button"), function (/** @type {HTMLElement} */ b) {
+      var on = b.dataset.tab === tab;
+      b.setAttribute("aria-selected", String(on));
+      b.tabIndex = on ? 0 : -1;
+    });
+    [].forEach.call(el.querySelectorAll(".prtp"), function (/** @type {HTMLElement} */ p) {
+      p.hidden = p.id !== "prtp-" + tab;
+    });
+  }
+
   /** The ticks, the Select all / Clear buttons and the page counts follow the choice */
   function sync() {
     var w = whatWords();
+    sessions().forEach(function (x) {
+      var b = /** @type {HTMLElement | null} */ (el.querySelector('.prses[data-s="' + x.session + '"]'));
+      if (!b) return;
+      b.setAttribute("aria-pressed", String(!!x.ids.length && same(x.ids)));
+      var n = x.ids.length ? pagesFor(secsOf(x.ids), counts, toc) : null;
+      /** @type {HTMLElement} */ (b.querySelector(".prsc")).textContent = x.ids.length ? w.texts(x.ids.length) + (n ? " · " + w.pages(n) : "") : "";
+    });
     [].forEach.call(el.querySelectorAll(".tpkl input"), function (/** @type {HTMLInputElement} */ x) {
       x.checked = !off[x.value];
     });
@@ -234,7 +341,24 @@ export function createWhat(el, o) {
     filter();
   });
   el.addEventListener("click", function (e) {
-    var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest(".prcb"));
+    var t = /** @type {HTMLElement} */ (e.target),
+      tb = /** @type {HTMLElement | null} */ (t.closest(".prtabs button")),
+      ss = /** @type {HTMLElement | null} */ (t.closest(".prses"));
+    if (tb) {
+      tab = tb.dataset.tab || "texts";
+      showTab();
+      return;
+    }
+    if (ss) {
+      var at = ss.dataset.s,
+        x = sessions().filter(function (y) {
+          return y.session === at;
+        })[0];
+      if (x) set(x.ids);
+      o.onChange();
+      return;
+    }
+    var b = /** @type {HTMLElement | null} */ (t.closest(".prcb"));
     if (!b) return;
     var clear = b.getAttribute("data-on") === "1",
       cat = b.dataset.cat;
@@ -249,8 +373,24 @@ export function createWhat(el, o) {
     o.onChange();
   });
 
+  // the tabs: ← and → move between them (WAI-ARIA tabs)
+  el.addEventListener("keydown", function (e) {
+    var b = /** @type {HTMLElement} */ (e.target);
+    if (!b.closest || !b.closest(".prtabs") || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
+    tab = tab === "texts" ? "today" : "texts";
+    showTab();
+    var nb = /** @type {HTMLElement | null} */ (el.querySelector('.prtabs [data-tab="' + tab + '"]'));
+    if (nb) nb.focus();
+    e.preventDefault();
+  });
+
   return {
     render: render,
+    /** The tab shown: "texts" or "today" @param {string} t */
+    tab: function (t) {
+      tab = t;
+      if (el.firstChild) showTab();
+    },
     pick: pick,
     set: set,
     /** The chosen texts' sections, in the Library's order */
@@ -271,7 +411,8 @@ export function createWhat(el, o) {
       var s = chosen().map(function (t) {
         return t.sec;
       });
-      return { texts: s.length, pages: pagesFor(s, counts, toc) };
+      var c = chosen();
+      return { texts: s.length, pages: pagesFor(s, counts, toc), one: c.length === 1 ? titleIn(c[0], lead()) : "", oneLang: c.length === 1 ? langIn(c[0], lead()) : "" };
     },
   };
 }
