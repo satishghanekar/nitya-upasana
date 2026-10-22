@@ -402,3 +402,24 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
   in one language takes 2 to 5 pages fewer.
 - The tests check that no line runs past its column (`past` in `printText`), and the per-text snapshots record
   `cols: 2`.
+
+## Vedic paragraphs side by side (v1.20.8, 2026-10-22)
+
+- Step P3 (third part) of the print redesign: PLAN mockup D, which Satish agreed on 21 Oct.
+- With both languages, a Vedic text (`layout: prose`) prints as its paragraphs, each beside its English paragraph,
+  both running on from page to page: the paragraphs start level, and the lines inside them are free. Before, it
+  printed line by line in a table like an aarti, and Shree Rudra's long lines broke mid-phrase.
+- Sizes are the Vedic ones (SIZES.md): 15pt, English 0.85 of that (12.75pt), growing to 17pt where the pages allow.
+  Shree Rudra side by side takes 20 pages on A4 (14 before, at about 11pt); the Atharvashirsha 5 (as before, at
+  15pt instead of 10.9pt); the Purusha Suktam 4 (6 before). A Both printout of the whole Library takes 4 to 8 pages
+  more.
+- The two columns are floats, which Chrome and Safari both break across pages (a flex row or a table row may not
+  break in Safari). The original's share of the width is the one that makes the piece shortest (36% to 62%).
+- **Lines written in:** a paragraph left to wrap on paper took a line more or less here and there, and Shree Rudra
+  ended up to a third of a page away from its page plan on Letter, so the contents numbers after it were wrong.
+  Each line's end, as laid out in the page plan with 2% of its column spare, is now written in (a `<br>`), so the
+  printout has the lines the plan counted (checked on A4 and Letter in four language settings: every text ended on
+  its planned page).
+- The tests read each English line back from the PDF even with the original's words between its parts (a paragraph
+  is read row by row), and check that no paragraph line runs past its column (`past`).
+
