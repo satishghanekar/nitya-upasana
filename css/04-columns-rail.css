@@ -141,6 +141,10 @@
     grid-auto-flow: column;
     column-gap: 28pt;
   }
+  /* a routine printout's contents: one column, in printing order (each line has its tag under it) */
+  #pv .pvtoc ol.pvone {
+    display: block;
+  }
   /* page number at the right of each contents line */
   #pv .pvtoc li[data-sid] {
     position: relative;

@@ -15,14 +15,17 @@ import { markTappable } from "../text/dhrupad-markers.js";
 import { numberStanzas } from "../text/stanza-numbers.js";
 import { breakLines } from "../text/line-breaks.js";
 import { leadOrder } from "../features/bars.js";
+import { dv } from "../core/words.js";
 
 /**
  * Every piece, in reading order, and the Library categories they are listed under in the printed contents.
  * @param {string[] | null} [ids]  only these texts (their Library ids), still in reading order; without it, every text
  * @param {string} [lang]  the language printed (P.lang's values: mr, en or both); without it, as the page shows it
+ * @param {boolean} [ordered]  a routine printout (print redesign P5): the texts in the order given, not the Library's,
+ *   numbered 1, 2, 3… in that order, as one group
  * @returns {{ el: HTMLElement, secs: HTMLElement[], groups: { name: HTMLElement[], secs: HTMLElement[] }[] }}
  */
-export function compose(ids, lang) {
+export function compose(ids, lang, ordered) {
   /** @type {any} */
   var w = window,
     C = w.CONTENT,
@@ -45,6 +48,31 @@ export function compose(ids, lang) {
       }),
     };
   });
+  if (ordered && ids) {
+    /** @type {any[]} */
+    var all = [];
+    cats.forEach(function (/** @type {any} */ g) {
+      all = all.concat(g.pieces);
+    });
+    var list = /** @type {string[]} */ (ids);
+    cats = [
+      {
+        name: { mr: "", en: "" },
+        pieces: list
+          .map(function (id) {
+            return all.filter(function (p) {
+              return p.text === id;
+            })[0];
+          })
+          .filter(Boolean)
+          .map(function (/** @type {any} */ p, /** @type {number} */ i) {
+            // its number in this printout (the copy only: CONTENT keeps the Library's)
+            var n = i + 1;
+            return Object.assign({}, p, { no: { mr: dv(n) + ".", en: n + "." } });
+          }),
+      },
+    ];
+  }
   el.id = "pvsrc";
   el.setAttribute("aria-hidden", "true");
   // out of sight and out of the page's flow, but laid out, so the print styles' choices can be read from it

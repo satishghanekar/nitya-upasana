@@ -6,19 +6,32 @@
 // it out ahead, as for the browser's own Print menu) and the total is the contents page plus the texts chosen.
 // A second tab, Today, offers today's sessions from the reading person's routine (and all of today), one tap each:
 // a tap ticks just that session's texts (P4b).
-// Ticking changes nothing on the reading page; js/features/print.js reads pick() when Print is tapped.
+// A third tab, Routine (P5, mockup 1 panel 2), prints a person's routine: the whole week or one day, the days and the
+// sessions chosen, each text once in routine order with a tag saying when it is said (js/print/select.js). The tab on
+// show is what prints: Texts and Today print the ticks, Routine its own list (plan() gives its page 1 too).
+// Ticking changes nothing on the reading page; js/features/print.js reads pick() and plan() when Print is tapped.
 // The words follow the menu language (P.ui); the titles follow the reading languages, as in the routine builder: the
 // first language large, the second under it.
 // No init(): js/features/print.js creates it (createWhat) when it starts.
 
 import { esc, lead, num, scr, scrKey, second, ui } from "../core/words.js";
 import { searchKey } from "../features/text-picker.js";
+import { SESSIONS } from "../core/routine.js";
+import { TAG_WORDS, selectRoutine, tagFor, weekGrid, weekOrder } from "./select.js";
 
 /**
  * @typedef {{ id: string, sec: string, title: string, titleEn: string, language: string }} WhatText
  * @typedef {{ category: { id: string, name: { mr: string, en: string } }, texts: WhatText[] }} WhatShelf
  * @typedef {{ session: string, name: string, ids: string[] }} WhatSession  one of today's sessions and its texts
- * @typedef {{ shelves: () => WhatShelf[], today: () => WhatSession[], onChange: () => void }} WhatOptions
+ * @typedef {{ id: string, name: string, routine: import("../core/routine.js").Routine | null }} WhatPerson  a person and
+ *   their routine (their own, or the default one)
+ * @typedef {{ shelves: () => WhatShelf[], today: () => WhatSession[], people: () => WhatPerson[], me: () => string,
+ *   onChange: () => void }} WhatOptions
+ * @typedef {{ who: string, span: "week" | "day", days: number[], day: number, sessions: string[] }} RoutineChoice  the
+ *   Routine tab's choices (a print link carries them)
+ * @typedef {{ name: string, routine: import("../core/routine.js").Routine | null, days: number[], sessions: string[],
+ *   ids: string[], where: import("./select.js").Where, grid: import("./select.js").GridRow[], key: string }} RoutinePlan
+ *   what a routine printout holds: page 1's name, grid and tags, and its texts in order
  */
 
 const W = {
@@ -38,10 +51,18 @@ const W = {
       return n + (n === 1 ? " text" : " texts");
     },
     pick: "Pick at least one text",
-    tabs: { texts: "Texts", today: "Today" },
+    tabs: { texts: "Texts", today: "Today", routine: "Routine" },
     todayInfo: "Tap a session to print its texts.",
     allToday: "All of today",
     empty: "No texts",
+    who: "Whose routine",
+    week: "Whole week",
+    oneDay: "One day",
+    days: "Days",
+    sessions: "Sessions",
+    order: "Printed once each, in routine order",
+    noTexts: "no texts",
+    nothing: "No texts on the days and at the times chosen",
   },
   mr: {
     what: "काय प्रिंट करायचे",
@@ -59,12 +80,23 @@ const W = {
       return num(n) + " रचना";
     },
     pick: "किमान एक रचना निवडा",
-    tabs: { texts: "रचना", today: "आज" },
+    tabs: { texts: "रचना", today: "आज", routine: "दिनक्रम" },
     todayInfo: "सत्र निवडा: त्यातील रचना प्रिंट होतील.",
     allToday: "आजचे सर्व",
     empty: "एकही रचना नाही",
+    who: "कोणाचा दिनक्रम",
+    week: "पूर्ण आठवडा",
+    oneDay: "एक दिवस",
+    days: "वार",
+    sessions: "वेळ",
+    order: "प्रत्येक रचना एकदाच, दिनक्रमाच्या क्रमाने",
+    noTexts: "रचना नाहीत",
+    nothing: "निवडलेल्या वारी आणि वेळी एकही रचना नाही",
   },
 };
+
+/** The tabs, in order */
+const TABS = ["texts", "today", "routine"];
 
 /** The words in the menu language */
 export function whatWords() {
@@ -112,7 +144,11 @@ export function createWhat(el, o) {
     toc = 1,
     /** @type {string[] | null | undefined} ticks given before the Library was read (a print link), put in place once it is */
     pending,
-    tab = "texts";
+    tab = "texts",
+    /** @type {RoutineChoice} the Routine tab's choices: whose, the whole week or one day (today at first), the sessions */
+    rc = { who: "", span: "week", days: [0, 1, 2, 3, 4, 5, 6], day: new Date().getDay(), sessions: SESSIONS.slice() },
+    /** @type {WhatPerson | null} a person a print link carries (Safari keeps its own storage: Open in Safari) */
+    carried = null;
 
   function all() {
     /** @type {WhatText[]} */
@@ -131,8 +167,12 @@ export function createWhat(el, o) {
     }
     return out;
   }
-  /** The chosen texts' Library ids, or null for every text */
+  /** The chosen texts' Library ids, or null for every text; on the Routine tab, the routine's texts in routine order */
   function pick() {
+    if (tab === "routine") {
+      var r = rplan();
+      return r ? r.ids : [];
+    }
     var a = all(),
       on = a.filter(function (t) {
         return !off[t.id];
@@ -141,11 +181,174 @@ export function createWhat(el, o) {
       return t.id;
     });
   }
-  /** The chosen texts */
+  /** The chosen texts (on the Routine tab, in routine order) */
   function chosen() {
+    if (tab === "routine")
+      return /** @type {WhatText[]} */ (
+        /** @type {string[]} */ (pick())
+          .map(byId)
+          .filter(Boolean)
+      );
     return all().filter(function (t) {
       return !off[t.id];
     });
+  }
+
+  // ---- The Routine tab ----
+  /** The people, a person carried by a print link first */
+  function people() {
+    var ps = o.people();
+    return carried
+      ? [carried].concat(
+          ps.filter(function (p) {
+            return p.id !== /** @type {WhatPerson} */ (carried).id;
+          }),
+        )
+      : ps;
+  }
+  /** Whose routine prints: as picked, else the person reading */
+  function person() {
+    var ps = people();
+    function find(/** @type {string} */ id) {
+      return ps.filter(function (p) {
+        return p.id === id;
+      })[0];
+    }
+    return find(rc.who) || find(o.me()) || ps[0] || null;
+  }
+  function rdays() {
+    return rc.span === "day" ? [rc.day] : rc.days.slice();
+  }
+  /** @param {string} id */
+  function known(id) {
+    return !!byId(id);
+  }
+  /** Whether a session has a text on the days chosen (else its chip is greyed and it is left out) @param {WhatPerson} p @param {string} s */
+  function hasTexts(p, s) {
+    return selectRoutine(p.routine, rdays(), /** @type {any} */ ([s]), known).ids.length > 0;
+  }
+  /** What the routine printout holds, or null when there is nobody @returns {RoutinePlan | null} */
+  function rplan() {
+    var p = person();
+    if (!p) return null;
+    var pp = p,
+      d = rdays(),
+      ses = /** @type {any[]} */ (
+        rc.sessions.filter(function (s) {
+          return hasTexts(pp, s);
+        })
+      ),
+      sel = selectRoutine(p.routine, d, ses, known);
+    return {
+      name: p.name,
+      routine: p.routine,
+      days: weekOrder(d),
+      sessions: ses,
+      ids: sel.ids,
+      where: sel.where,
+      grid: weekGrid(p.routine, d, ses, sel.ids),
+      key: [p.id, p.name, weekOrder(d).join(""), ses.join(",")].join("/"),
+    };
+  }
+  /** The tag in the menu language (Marathi in the chosen script) @param {RoutinePlan} r @param {string} id */
+  function tagIn(r, id) {
+    return ui() === "mr" ? scr(tagFor(r.where[id], "mr")) : tagFor(r.where[id], "en");
+  }
+  /** Draw the Routine tab's choices and list (again after each tap, keeping the focus on the button tapped) */
+  function drawRoutine() {
+    var box = /** @type {HTMLElement | null} */ (el.querySelector(".prrt"));
+    if (!box) return;
+    var a = /** @type {HTMLElement | null} */ (document.activeElement),
+      at = a && box.contains(a) ? a.getAttribute("data-rk") : null,
+      w = whatWords(),
+      tw = TAG_WORDS[ui()],
+      l = lead(),
+      s2 = second(),
+      ps = people(),
+      p = person(),
+      r = rplan(),
+      d = rdays(),
+      me = p ? p.id : "";
+    var h =
+      '<div class="prrw">' +
+      (ps.length > 1
+        ? '<select class="prwho" data-rk="who" aria-label="' + esc(w.who) + '">' +
+          ps
+            .map(function (x) {
+              return '<option value="' + esc(x.id) + '"' + (x.id === me ? " selected" : "") + ">" + esc(x.name) + "</option>";
+            })
+            .join("") +
+          "</select>"
+        : '<span class="prwho" title="' + esc(w.who) + '">' + esc(p ? p.name : "") + "</span>") +
+      '<span class="prrs">' +
+      ["week", "day"]
+        .map(function (k) {
+          return '<button type="button" data-rk="span-' + k + '" data-rspan="' + k + '" aria-pressed="' + (rc.span === k) + '">' + esc(k === "week" ? w.week : w.oneDay) + "</button>";
+        })
+        .join("") +
+      "</span></div>" +
+      '<div class="prchips" role="group" aria-label="' + esc(w.days) + '">' +
+      [1, 2, 3, 4, 5, 6, 0]
+        .map(function (n) {
+          return (
+            '<button type="button" class="prchip' + (n === new Date().getDay() ? " prtoday" : "") + '" data-rk="day-' + n + '" data-rday="' + n + '" aria-pressed="' + (d.indexOf(n) >= 0) + '">' + esc(ui() === "mr" ? scr(tw.days[n]) : tw.days[n]) + "</button>"
+          );
+        })
+        .join("") +
+      "</div>" +
+      '<div class="prchips" role="group" aria-label="' + esc(w.sessions) + '">' +
+      SESSIONS.map(function (s) {
+        var any = !!p && hasTexts(p, s),
+          nm = ui() === "mr" ? scr(tw.sessions[s]) : tw.sessions[s];
+        return (
+          '<button type="button" class="prchip" data-rk="ses-' + s + '" data-rses="' + s + '" aria-pressed="' + (any && rc.sessions.indexOf(s) >= 0) + '"' + (any ? "" : " disabled") + ">" + esc(nm) + (any ? "" : ' <small>· ' + esc(w.noTexts) + "</small>") + "</button>"
+        );
+      }).join("") +
+      "</div>" +
+      '<div class="prcg"><span>' + esc(w.order) + "</span></div>";
+    if (r && r.ids.length) {
+      var rr = r;
+      h +=
+        '<ol class="prrl">' +
+        r.ids
+          .map(function (id, i) {
+            var t = /** @type {WhatText} */ (byId(id)),
+              n = counts && counts[t.sec];
+            return (
+              '<li data-id="' + esc(id) + '" data-sec="' + esc(t.sec) + '"><span class="prrn">' + num(i + 1) + '.</span><span class="tt"><span class="t1" lang="' + langIn(t, l) + '">' + esc(titleIn(t, l)) + "</span>" +
+              (s2 ? '<span class="t2" lang="' + langIn(t, s2) + '">' + esc(titleIn(t, s2)) + "</span>" : "") +
+              '<span class="prtag">' + esc(tagIn(rr, id)) + '</span></span><span class="prpc">' + (n ? esc(w.pages(n)) : "") + "</span></li>"
+            );
+          })
+          .join("") +
+        "</ol>";
+    } else h += '<p class="prre">' + esc(w.nothing) + "</p>";
+    box.innerHTML = h;
+    var f = at && /** @type {HTMLElement | null} */ (box.querySelector('[data-rk="' + at + '"]'));
+    if (f) f.focus();
+  }
+  /** A tap on the Routine tab @param {HTMLElement} t */
+  function routineTap(t) {
+    var b = /** @type {HTMLElement | null} */ (t.closest(".prrt button"));
+    if (!b) return false;
+    if (b.dataset.rspan) rc.span = b.dataset.rspan === "day" ? "day" : "week";
+    else if (b.dataset.rday) {
+      var n = Number(b.dataset.rday),
+        i = rc.days.indexOf(n);
+      if (rc.span === "day") rc.day = n;
+      // (the last day stays: a week of no days prints nothing)
+      else if (i >= 0) {
+        if (rc.days.length > 1) rc.days.splice(i, 1);
+      } else rc.days.push(n);
+    } else if (b.dataset.rses) {
+      var s = b.dataset.rses,
+        j = rc.sessions.indexOf(s);
+      if (j >= 0) rc.sessions.splice(j, 1);
+      else rc.sessions.push(s);
+    } else return false;
+    drawRoutine();
+    o.onChange();
+    return true;
   }
   /** The ticks as given (a print link carries them): null for every text @param {string[] | null} ids */
   function set(ids) {
@@ -161,13 +364,13 @@ export function createWhat(el, o) {
     el.lang = ui();
     el.innerHTML =
       '<div class="prtabs" role="tablist">' +
-      ["texts", "today"]
-        .map(function (k) {
-          return '<button type="button" role="tab" id="prtab-' + k + '" data-tab="' + k + '" aria-controls="prtp-' + k + '">' + esc(w.tabs[/** @type {"texts" | "today"} */ (k)]) + "</button>";
+      TABS.map(function (k) {
+          return '<button type="button" role="tab" id="prtab-' + k + '" data-tab="' + k + '" aria-controls="prtp-' + k + '">' + esc(w.tabs[/** @type {"texts" | "today" | "routine"} */ (k)]) + "</button>";
         })
         .join("") +
       "</div>" +
       '<div class="prtp" id="prtp-today" role="tabpanel" aria-labelledby="prtab-today"><p class="prti">' + esc(w.todayInfo) + "</p>" + todayHtml() + "</div>" +
+      '<div class="prtp" id="prtp-routine" role="tabpanel" aria-labelledby="prtab-routine"><div class="prrt"></div></div>' +
       '<div class="prtp" id="prtp-texts" role="tabpanel" aria-labelledby="prtab-texts">' +
       '<input type="search" class="tpkq prwq" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="' + esc(w.search) + '" aria-label="' + esc(w.search) + '">' +
       '<div class="prcg prcga"><span>' + esc(w.all) + '</span><button type="button" class="prcb" data-cat=""></button></div>' +
@@ -196,6 +399,7 @@ export function createWhat(el, o) {
         .join("") +
       '<p class="tpkn" hidden>' + esc(w.none) + "</p></div>";
     showTab();
+    drawRoutine();
     /** @type {HTMLInputElement} */ (el.querySelector(".prwq")).value = q;
     filter();
     sync();
@@ -300,7 +504,7 @@ export function createWhat(el, o) {
       b.textContent = full ? w.clear : w.selectAll;
       b.setAttribute("data-on", full ? "1" : "0");
     });
-    [].forEach.call(el.querySelectorAll(".tpkl li"), function (/** @type {HTMLElement} */ li) {
+    [].forEach.call(el.querySelectorAll(".tpkl li, .prrl li"), function (/** @type {HTMLElement} */ li) {
       var n = counts && counts[li.dataset.sec || ""];
       /** @type {HTMLElement} */ (li.querySelector(".prpc")).textContent = n ? w.pages(n) : "";
     });
@@ -328,6 +532,12 @@ export function createWhat(el, o) {
 
   el.addEventListener("change", function (e) {
     var x = /** @type {HTMLInputElement} */ (e.target);
+    if (x.classList.contains("prwho")) {
+      rc.who = x.value;
+      drawRoutine();
+      o.onChange();
+      return;
+    }
     if (x.type !== "checkbox") return;
     if (x.checked) delete off[x.value];
     else off[x.value] = true;
@@ -347,8 +557,11 @@ export function createWhat(el, o) {
     if (tb) {
       tab = tb.dataset.tab || "texts";
       showTab();
+      // the tab on show is what prints
+      o.onChange();
       return;
     }
+    if (routineTap(t)) return;
     if (ss) {
       var at = ss.dataset.s,
         x = sessions().filter(function (y) {
@@ -377,8 +590,9 @@ export function createWhat(el, o) {
   el.addEventListener("keydown", function (e) {
     var b = /** @type {HTMLElement} */ (e.target);
     if (!b.closest || !b.closest(".prtabs") || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
-    tab = tab === "texts" ? "today" : "texts";
+    tab = TABS[(TABS.indexOf(tab) + (e.key === "ArrowRight" ? 1 : TABS.length - 1)) % TABS.length];
     showTab();
+    o.onChange();
     var nb = /** @type {HTMLElement | null} */ (el.querySelector('.prtabs [data-tab="' + tab + '"]'));
     if (nb) nb.focus();
     e.preventDefault();
@@ -386,13 +600,36 @@ export function createWhat(el, o) {
 
   return {
     render: render,
-    /** The tab shown: "texts" or "today" @param {string} t */
+    /** The tab shown: "texts", "today" or "routine" @param {string} t */
     tab: function (t) {
-      tab = t;
+      tab = TABS.indexOf(t) >= 0 ? t : "texts";
       if (el.firstChild) showTab();
     },
     pick: pick,
     set: set,
+    /** What a routine printout holds (the Routine tab on show), else null */
+    plan: function () {
+      return tab === "routine" ? rplan() : null;
+    },
+    /** The Routine tab's choices, for a print link */
+    routine: function () {
+      var p = person();
+      return { who: p ? p.id : "", span: rc.span, days: rdays(), day: rc.day, sessions: rc.sessions.slice() };
+    },
+    /**
+     * The Routine tab as a print link gives it (Open in Safari): the person (name and routine; Safari keeps its own
+     * storage) and the choices
+     * @param {WhatPerson} p @param {RoutineChoice} c
+     */
+    carry: function (p, c) {
+      carried = p;
+      rc = { who: p.id, span: c.span === "day" ? "day" : "week", days: c.days.slice(), day: c.days[0], sessions: c.sessions.slice() };
+      tab = "routine";
+      if (el.firstChild) {
+        showTab();
+        drawRoutine();
+      }
+    },
     /** The chosen texts' sections, in the Library's order */
     secs: function () {
       return chosen().map(function (t) {
@@ -411,8 +648,11 @@ export function createWhat(el, o) {
       var s = chosen().map(function (t) {
         return t.sec;
       });
-      var c = chosen();
-      return { texts: s.length, pages: pagesFor(s, counts, toc), one: c.length === 1 ? titleIn(c[0], lead()) : "", oneLang: c.length === 1 ? langIn(c[0], lead()) : "" };
+      var c = chosen(),
+        pg = pagesFor(s, counts, toc);
+      // a routine printout always has its page 1 (the week at a glance), even for one text
+      if (pg && tab === "routine" && s.length === 1) pg += toc;
+      return { texts: s.length, pages: pg, one: c.length === 1 ? titleIn(c[0], lead()) : "", oneLang: c.length === 1 ? langIn(c[0], lead()) : "" };
     },
   };
 }
