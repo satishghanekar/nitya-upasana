@@ -145,6 +145,32 @@ test("the printout does not depend on what the reading page shows @chromium-only
   expect(await printView({ ...SETUPS.marathi, af: ["a3", "a7"], tf: 1, fold: 1 }, "#p1")).toBe(home);
 });
 
+// While a session is being read (Start on Home: data-run), the printout still has every text in full. Before
+// version 1.21.2 the page's rule for a session hid the copy the printout is built from: titles only (Satish's PDF)
+test("a session being read: Print this session prints the texts in full @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await useTestRoutine(page);
+  await openSite(page, SETUPS.marathi);
+  // read the Morning session to its end (Next after its last text comes back Home, the session still marked)
+  await page.locator("#tst").click();
+  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
+  await page.locator("#asn").click();
+  await expect(page.locator("#tsn")).toHaveText("1 of 1 done");
+  await expect(page.locator("#tspr")).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
+  await page.locator("#tspr").click();
+  await page.locator("#prgp").click();
+  await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
+  if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
+  const secs = await page.evaluate(() => [...document.querySelectorAll("#pv .pvs")].map((s) => s.querySelectorAll(".verse p, p.pvpr").length));
+  expect(secs.length).toBeGreaterThan(0);
+  for (const n of secs) expect(n).toBeGreaterThan(2);
+  await context.close();
+});
+
 // Safari and iOS (class "wk") keep the page plan worked out from the heights (see paginate in
 // js/features/print.js). Chromium can take that path too: nothing lost, contents numbers present.
 for (const [setup, por] of [["marathi", "up"], ["english", "up"], ["marathi", "land"]]) {

@@ -398,9 +398,11 @@
 }
 
 /* ==== A session being read (data-run, js/features/today-card.js): only its texts (.inrun) are on the reading page,
-   not the rest of the Library. The side menu on wide screens lists only the session too (#rrun). Screen only ==== */
+   not the rest of the Library. The side menu on wide screens lists only the session too (#rrun). Screen only, and
+   only the page's own pieces (#main > .ash): Print builds its own from the texts (js/print/compose.js), and it reads
+   what is shown of them, so a broader rule printed every text empty, title only (Satish, 2026-10-22) ==== */
 @media screen {
-  :root[data-run="1"] .ash:not(.inrun),
+  :root[data-run="1"] #main > .ash:not(.inrun),
   :root[data-run="1"] #rail > :not(.rhome, #rrun) {
     display: none !important;
   }
