@@ -8,7 +8,7 @@
    - Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm)
    - Top-bar title with Ganesha (home) icon; Home button in the contents overlay
    - Contents headings (refined)
-   - Print pop-up (#prm); print view (#pv, built by the script just before printing)
+   - Print builder (#prm: What, then How); print view (#pv, built by the script just before printing)
    - Piece header card (saffron, maroon top edge)
    - Dhrupad at the top: small label above, thin rule on the left (final look below)
 */
@@ -395,7 +395,7 @@ h2[tabindex="-1"]:focus {
 }
 
 
-/* ==== Print pop-up (#prm); print view (#pv, built by the script just before printing) ==== */
+/* ==== Print builder (#prm: What, then How); print view (#pv, built by the script just before printing) ==== */
 .prs {
   display: grid;
   gap: 10px;
@@ -519,36 +519,43 @@ h2[tabindex="-1"]:focus {
   font-size: 12px;
   line-height: 1.4;
 }
-.prx {
-  border-color: var(--rule);
-  color: var(--ink);
-}
-/* Cancel and Print side by side */
-/* Cancel and Print stay in reach at the bottom of the screen while a tall pop-up scrolls (a phone on its side) */
+/* The bottom bar: the running total ("5 texts · ~8 pages") and Next (a phone's What step) or Print, always in view
+   under the steps (they scroll) */
 .pract {
-  position: sticky;
-  bottom: 0;
   margin: 0 -18px -18px;
   padding: 10px 18px 18px;
+  border-top: 1px solid var(--rule);
   border-radius: 0 0 16px 16px;
   background: var(--bg);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
 }
 .pract button {
   margin: 0;
 }
-.pract #prgp {
+.pract #prgp,
+.pract #prnx {
   background: var(--accent);
   color: var(--bg);
   font-weight: 600;
 }
-.pract #prgp[hidden] {
+.pract #prgp[hidden],
+.pract #prnx[hidden],
+.prsum[hidden],
+.prst[hidden] {
   display: none;
 }
-.pract:has(#prgp[hidden]) {
-  grid-template-columns: 1fr;
+.prsum {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0;
+  font: 400 14px/1.35 var(--lat);
+  color: var(--muted);
+}
+.prsum b {
+  font-weight: 600;
+  color: var(--ink);
 }
 /* the card is centred while it fits; taller than the screen (a phone on its side, or the iPhone's Open in
    Safari state), it starts at the top and the pop-up scrolls */
@@ -569,6 +576,170 @@ h2[tabindex="-1"]:focus {
 }
 #prm[hidden] {
   display: none;
+}
+/* ---- The print builder (print redesign P4, mockup 1): the title with Cancel (✕), then What and How. On a phone one
+   step at a time (data-step on #prm: Next, and ‹ What to print back); from 760px the two side by side ---- */
+/* The card is as tall as its content, up to the screen: then the steps scroll between the title and the bottom bar */
+#prm > .prc {
+  display: flex;
+  flex-direction: column;
+  width: min(440px, 100%);
+  /* vh first for browsers without dvh (Chrome < 108); dvh follows the phone's moving address bar */
+  max-height: calc(100vh - 40px);
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- vh fallback on the line above */
+  max-height: calc(100dvh - 40px);
+  padding-top: 0;
+  text-align: start;
+}
+#prm > .prc > * {
+  flex: none;
+}
+#prm > .prc > .prst {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0 -18px;
+  padding: 0 18px;
+}
+.prhd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 -18px 4px;
+  padding: 10px 10px 6px 18px;
+  border-radius: 16px 16px 0 0;
+  background: var(--bg);
+}
+.prhd .qrt {
+  flex: 1;
+  margin: 0;
+}
+.prbk {
+  flex: none;
+  min-height: 44px;
+  margin: 0 0 0 -8px;
+  padding: 0 8px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 600;
+}
+@media (max-width: 759.98px) {
+  #prm:not([data-step="how"]) .prbk,
+  #prm[data-step="how"] .prhd .qrt,
+  #prm[data-step="what"] .prhw,
+  #prm[data-step="what"] #prgp,
+  #prm[data-step="how"] .prwh,
+  #prm[data-step="how"] #prnx {
+    display: none;
+  }
+}
+.prsh {
+  margin: 6px 0 8px;
+  font: 600 13px/1.3 var(--lat);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* What: search, then each category with Select all or Clear, and its texts with a tick and their pages */
+.prwq {
+  margin-bottom: 4px;
+}
+.prcg {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  border-bottom: 1px solid var(--rule);
+  font: 600 13px/1.3 var(--lat);
+  color: var(--muted);
+}
+.prcg span[lang="mr"],
+.prcg span[lang="kn"] {
+  font-family: var(--body);
+  font-size: 14px;
+}
+.prcga {
+  margin-top: 6px;
+}
+.prcb {
+  flex: none;
+  min-height: 40px;
+  margin: 0;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+}
+.prgr[hidden] {
+  display: none;
+}
+#prwl .tt {
+  flex: 1;
+  min-width: 0;
+}
+#prwl .tt .t1 {
+  display: block;
+  font: 400 17px/23px var(--head);
+  overflow-wrap: anywhere;
+}
+#prwl .tt .t1[lang="en"] {
+  font-family: var(--lat);
+  font-size: 16px;
+  line-height: 22px;
+}
+#prwl .tt .t2 {
+  display: block;
+  color: var(--muted);
+  font: 400 12.5px/17px var(--lat);
+}
+#prwl .tt .t2[lang="mr"],
+#prwl .tt .t2[lang="kn"] {
+  font-family: var(--body);
+  font-size: 13.5px;
+}
+.prpc {
+  flex: none;
+  color: var(--muted);
+  font: 400 13px/1.3 var(--lat);
+}
+#prwl[lang="mr"] .prpc,
+#prwl[lang="mr"] .prcb,
+#prwl[lang="mr"] .prwq {
+  font-family: var(--body);
+}
+@media (min-width: 760px) {
+  #prm > .prc {
+    width: min(880px, 100%);
+  }
+  .prst {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  /* both steps on screen: the list scrolls on its own, the choices stay in view */
+  #prwl {
+    max-height: calc(100vh - 230px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 6px;
+  }
+  #prm .prbk,
+  #prm .pract #prnx {
+    display: none;
+  }
+  .pract {
+    grid-template-columns: 1fr minmax(200px, 40%);
+    align-items: center;
+  }
 }
 #pv {
   display: none;

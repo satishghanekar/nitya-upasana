@@ -83,6 +83,7 @@ var SITE_PARTS = (function () {
     "print/profiles",
     "print/compose",
     "print/fit",
+    "print/what",
     "features/print",
     "features/share",
     "features/more-menu",
