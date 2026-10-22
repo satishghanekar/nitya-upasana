@@ -53,6 +53,12 @@ export async function waitForWarmUp(page, n = 1) {
   await page.waitForFunction((n) => window.__warmed >= n, n, { timeout: 20_000 });
 }
 
+/** The print builder on a phone shows What first: Next goes on to How (from 760px wide both are on screen) */
+export async function howStep(page) {
+  if (await page.locator("#prnx").isVisible()) await page.locator("#prnx").click();
+  await page.locator("#prgp").waitFor({ state: "visible" });
+}
+
 /** Press Print on the home page, then the given choice ("pr1" = first button, "pr2" = second). */
 export async function printFromButton(page, choice) {
   await page.evaluate(() => scrollTo(0, 0));
@@ -60,6 +66,7 @@ export async function printFromButton(page, choice) {
   if (!(await page.locator("#prb").isVisible())) await page.locator("#tmb").click();
   await page.locator("#prb").click();
   await page.locator("#prm").waitFor({ state: "visible" });
+  await howStep(page);
   // the page (Portrait pr1 or Landscape pr2; both languages have only Landscape, so no choice shows), then Print
   if (await page.locator("#" + choice).isVisible()) await page.locator("#" + choice).click();
   await page.locator("#prgp").click();

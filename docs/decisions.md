@@ -423,6 +423,20 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - The tests read each English line back from the PDF even with the original's words between its parts (a paragraph
   is read row by row), and check that no paragraph line runs past its column (`past`).
 
+## Print builder: What, then How (v1.21.0, 2026-10-22)
+
+- Step P4 (first part) of the print redesign (PLAN §3.1, mockup 1, approved with the plan).
+- Print opens the builder instead of the pop-up. **What**: the Library's categories (the family's own too), a tick
+  per text with its pages, search, Select all or Clear per category and for all. Everything is ticked at first, so
+  Next then Print prints the whole Library as before. **How**: the dhrupad, page and font rows, unchanged.
+- One step at a time on a phone (Next, and ‹ What to print back); side by side from 760px wide.
+- The pages are read off the whole Library's page plan (each text starts on a new page), which the app lays out ahead
+  for the browser's own Print menu anyway; then what is ticked is laid out too, so the Print tap still prints at once
+  on an iPhone. The total adds the contents page when more than one text is ticked (one text prints without it).
+- The ticks last until the page is reloaded (not saved). The browser's own Print menu still prints the whole Library.
+- Still to come in P4: Print this text (reading view), the Today tab and Print today's session on Home; then the
+  preview, the font tiles and the Language row.
+
 ## Print font: Best for each text (v1.20.9, 2026-10-22)
 
 - Step P3 (last part) of the print redesign (PLAN §3.3, SIZES.md "Typeface by kind of text", agreed 21 Oct).

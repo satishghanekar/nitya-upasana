@@ -263,6 +263,30 @@ export function categories() {
 }
 
 /**
+ * The Library as listed, for the print builder's What step (js/print/what.js): each category that has texts, with
+ * its texts in the order the Library lists them
+ * @returns {{ category: Category, texts: Entry[] }[]}
+ */
+export function shelvesNow() {
+  return shelves(entries, cats, local)
+    .filter(function (s) {
+      return s.texts.length;
+    })
+    .map(function (s) {
+      return {
+        category: s.category,
+        texts: s.texts.map(function (id) {
+          return /** @type {Entry} */ (
+            entries.filter(function (x) {
+              return x.id === id;
+            })[0]
+          );
+        }),
+      };
+    });
+}
+
+/**
  * Every text for search (js/text/search.js): id, section, titles and its category's names
  * @returns {{ id: string, sec: string, title: string, titleEn: string, categories: string[] }[]}
  */
