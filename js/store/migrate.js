@@ -129,7 +129,7 @@ export function tidy(P) {
   if (P.lead === "en" || P.ind !== "mr") P.ui = "en";
   if (!P.l2 || [P.lead, P.l2, "both"].indexOf(P.lang) < 0) P.lang = P.lead;
   if (["auto", "light", "sepia", "dark"].indexOf(P.th) < 0) P.th = "auto";
-  // three text fonts since v1.23: Handwritten and the printout's Best are gone (Traditional now does what Best did)
+  // three text fonts since v1.24: Handwritten and the printout's Best are gone (Traditional now does what Best did)
   if (["std", "classic", "bold"].indexOf(P.fnt) < 0) P.fnt = "classic";
   if (["std", "classic", "bold"].indexOf(P.pfn) < 0) P.pfn = "";
   if (P.tr !== "iast") P.tr = "simple";

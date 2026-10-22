@@ -74,7 +74,7 @@ describe("settings from every older version are upgraded as js/core/state.js alw
     expect([p.lead, p.l2, p.lang]).toEqual(["mr", "en", "both"]);
   });
 
-  test("v5 with fonts: Handwritten (gone in v1.23) becomes Traditional, the rest kept", () => {
+  test("v5 with fonts: Handwritten (gone in v1.24) becomes Traditional, the rest kept", () => {
     const p = migratePrefs(SHAPES.v5font, PHONE).prefs;
     expect([p.fnt, p.th, p.ui, p.lang]).toEqual(["classic", "dark", "mr", "mr"]);
   });
@@ -98,11 +98,11 @@ describe("settings from every older version are upgraded as js/core/state.js alw
     expect([prefs.l2, prefs.lang, prefs.ref, prefs.pref, prefs.pfn, prefs.por, prefs.fold]).toEqual(["", "mr", 0, 1, "classic", "up", 1]);
   });
 
-  test("three text fonts (version 1.23): Modern, Traditional and Bold kept; anything else Traditional", () => {
+  test("three text fonts (version 1.24): Modern, Traditional and Bold kept; anything else Traditional", () => {
     for (const [v, want] of [["std", "std"], ["classic", "classic"], ["bold", "bold"], ["hand", "classic"], ["best", "classic"], ["", "classic"], [undefined, "classic"]])
       expect(migratePrefs({ ...SHAPES.v6print, fnt: v }, PHONE).prefs.fnt).toBe(want);
   });
-  test("the printout's font (version 1.23): one of the three, else as the text font (Best and Handwritten are gone)", () => {
+  test("the printout's font (version 1.24): one of the three, else as the text font (Best and Handwritten are gone)", () => {
     for (const [v, want] of [["std", "std"], ["classic", "classic"], ["bold", "bold"], ["best", ""], ["hand", ""], ["", ""], [3, ""], [undefined, ""]])
       expect(migratePrefs({ ...SHAPES.v6print, pfn: v }, PHONE).prefs.pfn).toBe(want);
   });
