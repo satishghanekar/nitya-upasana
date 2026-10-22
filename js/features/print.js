@@ -352,12 +352,12 @@ export function init() {
     }
     // ---- Page numbers in the printed contents ----
     // A browser cannot print "page N" for a heading, so the print view is laid out once in a hidden
-    // frame the size of a printed page (Letter in the US and Canada, A4 elsewhere, upright or sideways
-    // as the reader chose) and each piece's first page is worked out from the heights, as the browser
-    // breaks pages.
+    // frame the size of a printed page (the paper picked under How, else Letter in the US and Canada and A4
+    // elsewhere; upright or sideways as the reader chose) and each piece's first page is worked out from the
+    // heights, as the browser breaks pages.
     var LTR = /-(US|CA|MX|PH)$/i.test(navigator.language || ""),
-      PAPER = LTR ? [215.9, 279.4] : [210, 297], // upright, in mm
       pcache = {}, // page plans laid out ahead, by pkey()
+      shots = {}, // the How step's preview: the first page of the first text ticked, by pkey(), as laid out ahead
       // the texts being printed (their Library ids), or null for the whole Library: what the builder's What step
       // has ticked (chosen()), set as Print is tapped, for that printout only. It is put back to null when the printout
       // is done, so the browser's own Print menu prints the whole Library
@@ -376,9 +376,14 @@ export function init() {
       if (plang() === "both") return mode === "side";
       return (P.por || choice().page) === "land";
     }
+    // Letter paper: as picked under How (P.ppr), else as the device's region suggests
+    function letter() {
+      return P.ppr ? P.ppr === "letter" : LTR;
+    }
     // the sheet as it prints, [width, height] in mm
     function sheet(mode) {
-      return land(mode) ? [PAPER[1], PAPER[0]] : PAPER;
+      var pp = letter() ? [215.9, 279.4] : [210, 297]; // upright
+      return land(mode) ? [pp[1], pp[0]] : pp;
     }
     // The printout's font: picked in the pop-up, else "best" (Best for each text: Classic for aartis and ashtaks, Tiro
     // Devanagari Sanskrit for a Vedic text's original; SIZES.md in the print redesign plan, Satish 2026-10-21). It is
@@ -409,7 +414,7 @@ export function init() {
     // the page plan's key: the layout, the choices that change it, and the texts (null: every text)
     /** @param {string} mode @param {string[] | null} ids */
     function pkey(mode, ids) {
-      return [mode, plang(), LEAD, pref(), P.tr, P.ui, pfn(), land(mode), ids ? ids.join(",") : ""].join("|");
+      return [mode, plang(), LEAD, pref(), P.tr, P.ui, pfn(), land(mode), letter(), ids ? ids.join(",") : ""].join("|");
     }
     // ---- The print builder (print redesign P4, mockup 1): What (js/print/what.js), then How (the rows below) ----
     // On a phone one step at a time (data-step on #prm: Next, and ‹ What to print back); from 760px side by side
@@ -419,6 +424,7 @@ export function init() {
         today: todaySessions,
         onChange: function () {
           summary();
+          preview();
         },
       }),
       bnx = document.getElementById("prnx"),
@@ -432,7 +438,81 @@ export function init() {
       var pg = pcache[pkey(dm(), null)];
       what.counts(pg ? pg.n : null, pg ? pg.toc : 1);
       summary();
+      preview();
     }
+    // The preview under How (mockup 1): the first page of the first text ticked, as it prints, made small. Laid out
+    // ahead like the page plans (warm); until it is, an empty sheet the paper's shape
+    var shv = document.getElementById("prsheet"),
+      pshown = "";
+    // the first text ticked, in the Library's order (as it prints)
+    function first() {
+      var c = chosen(),
+        f = null;
+      /** @type {any} */ (window).CONTENT.categories.forEach(function (/** @type {any} */ g) {
+        g.pieces.forEach(function (/** @type {any} */ p) {
+          if (!f && (!c || c.indexOf(p.text) >= 0)) f = p.text;
+        });
+      });
+      return f ? [f] : null;
+    }
+    function preview() {
+      var M = P.ui === "mr",
+        ids = first(),
+        k = ids ? pkey(dm(), ids) : "",
+        sh = sheet(dm()),
+        w = 120; // its width (css/03-menus-print-view.css .prsheet)
+      shv.setAttribute("aria-label", M ? "पहिल्या पानाची झलक" : "Preview of the first page");
+      shv.style.height = Math.round((w * sh[1]) / sh[0]) + "px";
+      if (k === pshown && shv.firstChild) return;
+      pshown = k;
+      shv.textContent = "";
+      shv.classList.toggle("prsw", !shots[k]);
+      if (!shots[k]) return warmSoon(300);
+      var mm = 96 / 25.4,
+        f = document.createElement("iframe");
+      f.setAttribute("aria-hidden", "true");
+      f.tabIndex = -1;
+      f.title = "Preview";
+      f.style.cssText = "border:0;width:" + sh[0] * mm + "px;height:" + sh[1] * mm + "px;transform-origin:0 0;transform:scale(" + w / (sh[0] * mm) + ")";
+      shv.appendChild(f);
+      try {
+        var d = /** @type {Document} */ (f.contentDocument);
+        d.open();
+        d.write('<!doctype html><html data-print="' + dm() + '"' + attrs() + '><head><base href="' + location.href.replace(/"/g, "%22") + '"><style>' + pcss() + "\nhtml,body{margin:0;overflow:hidden;background:#fff}body{padding:9mm 9mm 0}.prpg{height:" + (sh[1] - 23) + "mm;overflow:hidden}</style></head><body><div class=\"prpg\">" + shots[k] + "</div></body></html>");
+        d.close();
+      } catch (e) {}
+    }
+    // the print view (#pv) cut after its first page (the page plan's first forced break, or a two-column piece's
+    // first page)
+    function page1() {
+      var c = /** @type {HTMLElement} */ (pv.cloneNode(true)),
+        cut = c.querySelector(".pvbr, .pv2p + .pv2p"),
+        n = cut;
+      while (n && n !== c) {
+        while (n.nextSibling) n.parentNode.removeChild(n.nextSibling);
+        n = n.parentNode;
+      }
+      if (cut) cut.remove();
+      return c.outerHTML;
+    }
+    // the paper, and the button that changes it (Letter or A4)
+    function paperRow() {
+      var M = P.ui === "mr",
+        o = letter() ? "A4" : "Letter";
+      document.getElementById("prp").textContent = document.getElementById("prq").textContent = letter() ? "Letter" : "A4";
+      document.getElementById("prpa").textContent = M ? o + " वापरा" : "Use " + o;
+      // Safari keeps the paper picked in its own dialog: when it is not the region's, it is told to pick it there
+      [].forEach.call(document.querySelectorAll(".przp"), function (/** @type {HTMLElement} */ x) {
+        x.textContent = letter() ? "Letter" : "A4";
+      });
+      document.getElementById("prz").hidden = !(root.classList.contains("wk") && letter() !== LTR);
+    }
+    document.getElementById("prpa").onclick = function () {
+      change({ ppr: letter() ? "a4" : "letter" });
+      paperRow();
+      counts();
+      warmSoon(1500);
+    };
     // the bottom bar: "5 texts · ~8 pages", or that a text must be picked (Next and Print wait for one)
     function summary() {
       var w = whatWords(),
@@ -469,7 +549,9 @@ export function init() {
     pst.media = "print";
     document.head.appendChild(pst);
     function setPage(mode) {
-      pst.textContent = land(mode) ? "@page { size: landscape }" : "";
+      // the paper only when picked under How: otherwise the printer's own, as before
+      var sz = P.ppr ? (letter() ? "letter " : "A4 ") : "";
+      pst.textContent = sz || land(mode) ? "@page { size: " + sz + (land(mode) ? "landscape" : "portrait") + " }" : "";
     }
     // Above the choices: the dhrupad setting for the printout and its font
     // (Best for each text, then the four of Settings → Text font), with a line of the text in it; neither changes the
@@ -568,6 +650,15 @@ export function init() {
       });
       return (pcss.t = out.join("\n"));
     }
+    // the page's own attributes as the printout has them (its font and dhrupad), for a copy of it in a frame
+    function attrs() {
+      var at = "";
+      [].forEach.call(root.attributes, function (a) {
+        var v = a.name === "data-font" ? pfn() : a.name === "data-ref" ? String(pref()) : a.value;
+        if (a.name !== "data-print") at += " " + a.name + '="' + v.replace(/&/g, "&amp;").replace(/"/g, "&quot;") + '"';
+      });
+      return at;
+    }
     // lay out the current print view (#pv) and call back with { piece id: first page }
     function pages(mode, cb) {
       var mm = 96 / 25.4,
@@ -581,10 +672,7 @@ export function init() {
       var sf = root.classList.contains("wk") ? 15 / 16 : 1,
         sh = sheet(mode);
       f.style.cssText = "position:fixed;left:-10000px;top:0;border:0;visibility:hidden;width:" + ((sh[0] - 18) * mm * sf - (pfn() !== "std" ? 16 : 12)) + "px;height:" + (sh[1] - 23) * mm * sf + "px";
-      [].forEach.call(root.attributes, function (a) {
-        var v = a.name === "data-font" ? pfn() : a.name === "data-ref" ? String(pref()) : a.value;
-        if (a.name !== "data-print") at += " " + a.name + '="' + v.replace(/&/g, "&amp;").replace(/"/g, "&quot;") + '"';
-      });
+      at = attrs();
       document.body.appendChild(f);
       function end(r) {
         if (done) return;
@@ -1062,23 +1150,32 @@ export function init() {
     function dm() {
       return plang() === "both" && FEAT_SW ? "side" : "one";
     }
-    // First the whole Library as the browser's menu prints it (the builder's page counts are read from it), then
-    // what the builder has ticked, as the Print button prints it
+    // While the builder is open, first the preview's page (one text: quick); then the whole Library as the browser's
+    // menu prints it (the builder's page counts are read from it), then what the builder has ticked, as the Print
+    // button prints it
     function warm() {
       var c = chosen(),
-        todo = [
-          [dm(), null],
-          [wm, c],
-        ].filter(function (x) {
-          return !pcache[pkey(/** @type {string} */ (x[0]), /** @type {string[] | null} */ (x[1]))];
+        f = pm.hidden ? null : first(),
+        todo = /** @type {[string, string[] | null, boolean][]} */ ([
+          [dm(), f, true],
+          [dm(), null, false],
+          [wm, c, false],
+        ]).filter(function (x, i) {
+          var k = pkey(x[0], x[1]);
+          return i ? !pcache[k] : f && !shots[k];
         });
       if (!todo.length || busy) return;
-      var m = /** @type {string} */ (todo[0][0]),
-        ids = /** @type {string[] | null} */ (todo[0][1]),
+      var m = todo[0][0],
+        ids = todo[0][1],
+        shot = todo[0][2],
         k = pkey(m, ids);
       build(m, ids);
       pages(m, function (pg) {
         if (pg) pcache[k] = pg;
+        if (shot) {
+          pnums(pg);
+          shots[k] = page1();
+        }
         if (!pm.hidden) counts();
         if (todo.length > 1) warmSoon(500);
       });
@@ -1093,8 +1190,9 @@ export function init() {
         else warm();
       }, ms);
     }
-    document.addEventListener("click", function () {
-      warmSoon(2500);
+    // (in the builder sooner: the preview and the page counts wait for it)
+    document.addEventListener("click", function (e) {
+      warmSoon(pm.contains(/** @type {Node} */ (e.target)) ? 800 : 2500);
     });
     warmSoon(3000);
     // ---- Opening the print dialog ----
@@ -1140,7 +1238,7 @@ export function init() {
     // app goes straight to this step once a layout is chosen.
     function link(mode) {
       var s = {};
-      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "tr", "por"].forEach(function (k) {
+      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "ppr", "tr", "por"].forEach(function (k) {
         s[k] = P[k];
       });
       return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (chosen() ? "&t=" + /** @type {string[]} */ (chosen()).join(",") : "");
@@ -1302,7 +1400,7 @@ export function init() {
           : "Landscape, side by side";
       pages1();
       rows();
-      document.getElementById("prp").textContent = document.getElementById("prq").textContent = LTR ? "Letter" : "A4";
+      paperRow();
       document.getElementById("prx").setAttribute("aria-label", M ? "रद्द" : "Cancel");
       // What, drawn afresh (the Library's categories, the reading languages and the menu language may have changed),
       // with the page counts as far as they are laid out; the rest are laid out soon
