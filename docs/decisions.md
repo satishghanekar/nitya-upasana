@@ -423,7 +423,7 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - The tests read each English line back from the PDF even with the original's words between its parts (a paragraph
   is read row by row), and check that no paragraph line runs past its column (`past`).
 
-## Print: the printout's language, and font tiles (v1.21.2, 2026-10-22)
+## Print: the printout's language, and font tiles (v1.21.3, 2026-10-22)
 
 - Step P4 (third part) of the print redesign (PLAN §3.1, mockup 1).
 - **Language** is the first row of How: the original (Marathi, or Kannada in Kannada letters), English, or Both, the
@@ -433,6 +433,15 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - **Print font tiles:** each font shows the text's first word in that font over its name, Best across the top; the
   separate sample line is gone.
 - Still to come in P4: the small preview of the first page and a way to change the paper (Letter or A4).
+## Fix: printing after reading a session (v1.21.2, 2026-10-22)
+
+- Satish's Morning printout (Mac Safari) had each text's title and author line and nothing else. Cause: while a
+  session is being read (`data-run`, kept after its last text brings you back Home), `css/10-today.css` hid every
+  `.ash` not in the session, and that matched the copy `js/print/compose.js` builds the printout from (its pieces are
+  `.ash` too, without `.inrun`). The print view keeps only what is shown of that copy, so every text was empty. Every
+  browser was affected, not only Safari.
+- The rule is now `#main > .ash`, like the one-text-at-a-time rule beside it. `print.spec` reads a session to its end
+  and checks that Print this session prints every text in full (it failed before the fix: no lines).
 
 ## Print this text, Print this session, Today (v1.21.1, 2026-10-22)
 
