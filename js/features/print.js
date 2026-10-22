@@ -210,7 +210,10 @@ export function init() {
         [].forEach.call(sec.querySelectorAll(".items > .item, .items > .rmk"), function (u) {
           if (shown(u)) units.push(cl(u));
         });
-        if (mode === "side") {
+        // a Vedic text side by side: each paragraph beside its English one, both running on (PLAN mockup D)
+        var pair = mode === "side" && sec.classList.contains("prose");
+        if (pair) box.classList.add("pvpair");
+        if (mode === "side" && !pair) {
           var first = true,
             t,
             hold = null;
@@ -295,7 +298,7 @@ export function init() {
           if (units[0] && units[0].classList.contains("pvref")) head.push(units.shift());
           var gs = [],
             wait = [],
-            flow = P.lang !== "both" && sec.classList.contains("prose");
+            flow = (P.lang !== "both" || pair) && sec.classList.contains("prose");
           if (flow)
             gs = prose(units).map(function (u) {
               return [u];

@@ -70,7 +70,7 @@ A text prints the same on its own as inside any printout (`js/print/compose.js` 
 - every page has its "N / total" footer, screen-only controls never print, and every English line is in the PDF (Devanagari and Kannada text can't be read back reliably from a PDF, so for those the block markers show nothing was lost);
 - no line is lost and none runs past its column (the print audit's line markers, `print-audit-helpers.mjs`);
 - no line is set smaller than the fitting allows;
-- its result matches the saved one in `__snapshots__/print-items.spec.mjs/chromium/cloud/<id>/`: pages, its size in points, the size of its smallest line, the whole piece's scale, two columns (`cols: 2`, where no line may run past its column), side by side the original's share of the width, and the audit's counts (lines wrapped, broken mid-phrase, rows out of step, pages mostly empty).
+- its result matches the saved one in `__snapshots__/print-items.spec.mjs/chromium/cloud/<id>/`: pages, its size in points, the size of its smallest line, the whole piece's scale, two columns (`cols: 2`, where no line may run past its column; nor may a line of a Vedic paragraph side by side), side by side the original's share of the width, and the audit's counts (lines wrapped, broken mid-phrase, rows out of step, pages mostly empty).
 
 Each test is tagged `@text:<id>`, so a changed text runs only its own tests in the quick check. A new text gets its tests from `library.json`, and its first run saves its result: look at its PDF once (`SAVE_PDFS=1`) before committing it.
 

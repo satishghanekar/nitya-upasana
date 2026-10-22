@@ -46,6 +46,7 @@ export function fit(w, d, mode, pv) {
       // running paragraphs fit any width: the piece may grow as far as its pages allow (no line limit)
       if (el === el.closest(".pvs").querySelector("p.pvpr")) room(d, pv, el.closest(".pvs").getAttribute("data-sid"), { fit: 1, grow: 9, pt: (px * f * 0.75) / (sc.steps || 1), steps: sc.steps });
     });
+  if (side) pairs(d, pv);
   if (!lines.length || lines.length !== mine.length) return;
   lines.forEach(function (el, i) {
     at.set(el, mine[i]);
@@ -490,4 +491,122 @@ function chooseSplit(groups, geo) {
     if (!pick || cost < pick.cost - 1e-9 || (Math.abs(cost - pick.cost) < 1e-9 && Math.abs(x - 0.5) < Math.abs(pick.x - 0.5))) pick = { x: x, cost: cost };
   }
   return pick.x;
+}
+
+// A Vedic text side by side (.pvpair, js/features/print.js): each paragraph beside its English one. Their lines run
+// on, so nothing is fitted: the original's share of the width (in LAYOUT.side, in steps of 2%) is the one that
+// makes the piece shortest, each paragraph taking as much height as the taller of its two columns (ties: nearest an
+// even split). The rule between them is drawn down the taller one (.pvtl), so it runs the whole paragraph.
+function pairs(d, pv) {
+  var L = LAYOUT.side;
+  [].forEach.call(d.querySelectorAll("#pv .pvpair"), function (sec) {
+    var sid = sec.getAttribute("data-sid"),
+      mine = pv.querySelector('.pvs[data-sid="' + sid + '"]'),
+      ps = [].slice.call(sec.querySelectorAll(".pvprose")),
+      qs = mine ? [].slice.call(mine.querySelectorAll(".pvprose")) : [];
+    if (!ps.length || ps.length !== qs.length) return;
+    function cols(p) {
+      return [p.querySelector(":scope > .mr"), p.querySelector(":scope > .en")];
+    }
+    function set(p, x) {
+      var c = cols(p);
+      if (!c[0] || !c[1]) return;
+      c[0].style.width = Math.round(x * 1000) / 10 + "%";
+      c[1].style.width = Math.round((1 - x) * 1000) / 10 + "%";
+    }
+    var pick = null;
+    for (var x = L.min; x <= L.max + 1e-9; x += 0.02) {
+      var h = 0;
+      ps.forEach(function (p) {
+        set(p, x);
+      });
+      ps.forEach(function (p) {
+        var c = cols(p);
+        if (c[0] && c[1]) h += Math.max(c[0].getBoundingClientRect().height, c[1].getBoundingClientRect().height);
+      });
+      if (!pick || h < pick.h - 0.5 || (Math.abs(h - pick.h) <= 0.5 && Math.abs(x - 0.5) < Math.abs(pick.x - 0.5))) pick = { x: x, h: h };
+    }
+    ps.forEach(function (p, i) {
+      set(p, pick.x);
+      set(qs[i], pick.x);
+    });
+    // each line ends where it ends here, written in (<br>), so paper takes as many lines and the pages come out as
+    // planned: a paragraph left to wrap on paper took a line more or less here and there, and Shree Rudra ended a
+    // third of a page from its plan (Letter). Planned with 2% of each column spare, as a line may print a little wider.
+    var st = d.createElement("style");
+    st.textContent = "#pv .pvpair .pvpr { margin-right: 2% }";
+    d.head.appendChild(st);
+    var cut = ps.map(function (p) {
+      return [].map.call(p.querySelectorAll("p.pvpr"), wraps);
+    });
+    d.head.removeChild(st);
+    ps.forEach(function (p, i) {
+      [p, qs[i]].forEach(function (e) {
+        [].forEach.call(e.querySelectorAll("p.pvpr"), function (el, j) {
+          if (cut[i][j]) writeBreaks(el, cut[i][j]);
+        });
+      });
+    });
+    ps.forEach(function (p, i) {
+      var c = cols(p),
+        t = c[0] && c[1] && c[1].getBoundingClientRect().height > c[0].getBoundingClientRect().height ? 1 : 0;
+      [c, cols(qs[i])].forEach(function (cc) {
+        if (cc[t]) cc[t].classList.add("pvtl");
+      });
+    });
+    [sec, mine].forEach(function (e) {
+      e.setAttribute("data-split", String(Math.round(pick.x * 100)));
+    });
+  });
+}
+
+// The text nodes of a paragraph, in order
+function texts(el) {
+  var w = el.ownerDocument.createTreeWalker(el, NodeFilter.SHOW_TEXT),
+    out = [],
+    n;
+  while ((n = w.nextNode())) out.push(n);
+  return out;
+}
+
+// Where a paragraph's lines wrap, as laid out: before each word that starts a line below the one before it, as
+// a place in its text (the copies' text nodes may be split differently, but their text is the same)
+function wraps(el) {
+  var r = el.ownerDocument.createRange(),
+    out = [],
+    top = null,
+    done = 0;
+  texts(el).forEach(function (n) {
+    var re = /\S+/g,
+      m;
+    while ((m = re.exec(n.data))) {
+      r.setStart(n, m.index);
+      r.setEnd(n, m.index + m[0].length);
+      var y = r.getBoundingClientRect().top;
+      if (top !== null && y > top + 2) out.push(done + m.index);
+      top = y;
+    }
+    done += n.data.length;
+  });
+  return out;
+}
+
+// A line break (.pvfb, see fitBreak) at each of those places, in the same paragraph in either copy
+function writeBreaks(el, at) {
+  var ns = texts(el),
+    starts = [],
+    done = 0;
+  ns.forEach(function (n) {
+    starts.push(done);
+    done += n.data.length;
+  });
+  at.slice()
+    .reverse()
+    .forEach(function (x) {
+      for (var i = ns.length - 1; i >= 0 && starts[i] > x; i--);
+      if (i < 0) return;
+      var n = ns[i];
+      if (x > starts[i]) n = n.splitText(x - starts[i]);
+      n.parentNode.insertBefore(fitBreak(el.ownerDocument, false), n);
+    });
 }
