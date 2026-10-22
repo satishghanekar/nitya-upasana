@@ -1,9 +1,10 @@
 {
  "pages": 1,
- "size": 0.98,
- "zoom": 1,
+ "pt": 20,
+ "size": 1.41,
+ "zoom": 1.412,
  "lines": 10,
- "resized": 10,
+ "resized": 0,
  "wrapped": 0,
  "brokeMidPhrase": 0,
  "outOfStep": 0,
