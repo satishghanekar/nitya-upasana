@@ -15,6 +15,11 @@ import { createWhat, whatWords } from "../print/what.js";
 import { shelvesNow } from "./library.js";
 import { todaySessions, shownSession } from "./today-card.js";
 import { cur } from "../core/apply.js";
+import { active, list as people } from "../store/store.js";
+import { loaded } from "../text/load.js";
+import { MONTHS, dv } from "../core/words.js";
+import { TAG_WORDS, tagFor } from "../print/select.js";
+import { cleanRoutine } from "../core/routine.js";
 
 export function init() {
   // Print: single column (as on screen; running paragraphs for a prose piece in one language), or, with both
@@ -151,15 +156,114 @@ export function init() {
     // Build the print view (#pv): contents, then every piece in the text language, from a copy of the pieces made
     // for it (js/print/compose.js), so whatever the reading page has folded or hidden is printed in full.
     // mode: "one" (one column) or "side" (Marathi and English side by side). ids: the texts printed (their Library
-    // ids), or null for every text
-    function build(mode, ids) {
-      var src = compose(ids, plang());
+    // ids), or null for every text. rp: a routine printout (the builder's Routine tab, P5): its texts in routine order,
+    // page 1 with the week at a glance, and each text's tag under its title
+    /** @param {string} mode @param {string[] | null} ids @param {import("../print/what.js").RoutinePlan | null} [rp] */
+    function build(mode, ids, rp) {
+      var src = compose(ids, plang(), !!rp);
       try {
-        build2(mode, src);
+        build2(mode, src, rp || null);
       } finally {
         src.el.remove();
       }
     }
+    // A routine printout's words are in the language printed (with both, the main one): Marathi in the chosen script
+    function rlang() {
+      return plang() === "both" ? (LEAD === "en" ? "en" : "mr") : plang() === "en" ? "en" : "mr";
+    }
+    /** @param {string} s */
+    function rmr(s) {
+      return rlang() === "mr" ? SCR.to(s) : s;
+    }
+    /** @param {number} n */
+    function rnum(n) {
+      return rlang() === "mr" ? SCR.to(dv(n)) : String(n);
+    }
+    /** A piece's text id (content/library.json) from its section's id on the page @param {string} sid */
+    function textOf(sid) {
+      var id = sid;
+      /** @type {any} */ (window).CONTENT.categories.forEach(function (/** @type {any} */ g) {
+        g.pieces.forEach(function (/** @type {any} */ p) {
+          if (p.id === sid) id = p.text;
+        });
+      });
+      return id;
+    }
+    /** A text's tag in a routine printout @param {import("../print/what.js").RoutinePlan} rp @param {string} id */
+    function rtag(rp, id) {
+      return rmr(tagFor(rp.where[id], rlang()));
+    }
+    // Page 1 of a routine printout (PLAN §3 A, mockup 3): whose routine and the month, the week at a glance (days ×
+    // sessions, each cell the numbers of its texts), then the contents in printing order, each text with its tag
+    /** @param {{ secs: HTMLElement[] }} src @param {import("../print/what.js").RoutinePlan} rp */
+    function routinePage(src, rp) {
+      var L = rlang(),
+        tw = TAG_WORDS[L],
+        now = new Date(),
+        h = document.createElement("h1");
+      h.className = "pvh pvrh";
+      h.textContent = rp.name;
+      pv.appendChild(h);
+      var sub = document.createElement("p");
+      sub.className = "pvsub";
+      sub.textContent = L === "mr" ? rmr("नित्य उपासना · " + MONTHS.mr[now.getMonth()] + " " + dv(now.getFullYear())) : "Nitya Upasana · " + MONTHS.en[now.getMonth()] + " " + now.getFullYear();
+      pv.appendChild(sub);
+      var tc = document.createElement("div");
+      tc.className = "pvtoc pvrt";
+      if (rp.grid.length) {
+        var h3 = document.createElement("h3");
+        h3.textContent = L === "mr" ? rmr("आठवडा एका नजरेत") : "The week at a glance";
+        if (rp.days.length === 1) h3.textContent = L === "mr" ? rmr(DAYS_MR[rp.days[0]]) : DAYS_EN[rp.days[0]];
+        tc.appendChild(h3);
+        var tb = document.createElement("table"),
+          hr = document.createElement("tr");
+        tb.className = "pvgrid";
+        hr.appendChild(document.createElement("th"));
+        rp.days.forEach(function (d) {
+          var th = document.createElement("th");
+          th.textContent = rmr(tw.days[d]);
+          hr.appendChild(th);
+        });
+        var th0 = document.createElement("thead");
+        th0.appendChild(hr);
+        tb.appendChild(th0);
+        var bd = document.createElement("tbody");
+        rp.grid.forEach(function (row) {
+          var tr = document.createElement("tr"),
+            th = document.createElement("th");
+          th.textContent = rmr(tw.sessions[row.session]);
+          tr.appendChild(th);
+          row.cells.forEach(function (c) {
+            var td = document.createElement("td");
+            td.textContent = c.nums.length ? c.nums.map(rnum).join(" ") : "–";
+            if (!c.nums.length) td.className = "pvnone";
+            tr.appendChild(td);
+          });
+          bd.appendChild(tr);
+        });
+        tb.appendChild(bd);
+        tc.appendChild(tb);
+      }
+      var h4 = document.createElement("h3");
+      h4.textContent = L === "mr" ? rmr("अनुक्रमणिका") : "Contents";
+      tc.appendChild(h4);
+      var ol = document.createElement("ol");
+      ol.className = "pvone";
+      src.secs.forEach(function (sec) {
+        var li = document.createElement("li"),
+          tg = document.createElement("span");
+        li.innerHTML = sec.querySelector("header h2").innerHTML;
+        li.setAttribute("data-sid", sec.id);
+        tg.className = "pvtag";
+        tg.textContent = rtag(rp, textOf(sec.id));
+        li.appendChild(tg);
+        ol.appendChild(li);
+      });
+      tc.appendChild(ol);
+      pv.appendChild(tc);
+    }
+    var DAYS_MR = ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
+      DAYS_EN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     // the title and the contents page: the categories and their pieces in order (js/print/compose.js)
     function contents(src) {
       var h = document.createElement("h1");
@@ -190,11 +294,13 @@ export function init() {
       });
       pv.appendChild(tc);
     }
-    function build2(mode, src) {
+    /** @param {string} mode @param {any} src @param {import("../print/what.js").RoutinePlan | null} rp */
+    function build2(mode, src, rp) {
       pv.innerHTML = "";
       pv.setAttribute("data-lang", plang());
-      // one text on its own prints as just that text: no title or contents page
-      if (src.secs.length > 1) contents(src);
+      // one text on its own prints as just that text: no title or contents page (a routine's page 1 always prints)
+      if (rp && !(/** @type {any} */ (rp).only)) routinePage(src, rp);
+      else if (src.secs.length > 1) contents(src);
       src.secs.forEach(function (sec) {
         var box = document.createElement("section");
         box.className = "pvs";
@@ -203,6 +309,13 @@ export function init() {
         if (sec.classList.contains("prose")) box.classList.add("pvved");
         var hd = document.createElement("h2");
         hd.innerHTML = sec.querySelector("h2").innerHTML;
+        // a routine printout: the text's tag under its title (PLAN §3 B), inside the title so it always stays with it
+        if (rp) {
+          var tg = document.createElement("span");
+          tg.className = "pvtag";
+          tg.textContent = rtag(rp, textOf(sec.id));
+          hd.appendChild(tg);
+        }
         // the category headings are on the contents page only, not above a piece (Satish, 2026-10)
         var pre = [];
         pre.push(hd);
@@ -412,9 +525,10 @@ export function init() {
       root.setAttribute("data-ref", String(P.ref));
     }
     // the page plan's key: the layout, the choices that change it, and the texts (null: every text)
-    /** @param {string} mode @param {string[] | null} ids */
-    function pkey(mode, ids) {
-      return [mode, plang(), LEAD, pref(), P.tr, P.ui, pfn(), land(mode), letter(), ids ? ids.join(",") : ""].join("|");
+    // (a routine printout's own key: whose, the days and sessions, as its page 1 and tags differ)
+    /** @param {string} mode @param {string[] | null} ids @param {import("../print/what.js").RoutinePlan | null} [rp] */
+    function pkey(mode, ids, rp) {
+      return [mode, plang(), LEAD, pref(), P.tr, P.ui, pfn(), land(mode), letter(), ids ? ids.join(",") : "", rp ? rp.key : ""].join("|");
     }
     // ---- The print builder (print redesign P4, mockup 1): What (js/print/what.js), then How (the rows below) ----
     // On a phone one step at a time (data-step on #prm: Next, and ‹ What to print back); from 760px side by side
@@ -422,6 +536,16 @@ export function init() {
     var what = createWhat(/** @type {HTMLElement} */ (document.getElementById("prwl")), {
         shelves: shelvesNow,
         today: todaySessions,
+        // each person's routine: their own, else the default one (content/routines.json)
+        people: function () {
+          return people().map(function (p) {
+            return { id: p.id, name: p.name, routine: p.routine || loaded.routine || null };
+          });
+        },
+        me: function () {
+          var a = active();
+          return a ? a.id : "";
+        },
         onChange: function () {
           summary();
           preview();
@@ -429,9 +553,13 @@ export function init() {
       }),
       bnx = document.getElementById("prnx"),
       wide = window.matchMedia ? matchMedia("(min-width: 760px)") : null;
-    // the texts ticked (their Library ids), or null for every text
+    // the texts ticked (their Library ids), or null for every text; on the Routine tab, the routine's in routine order
     function chosen() {
       return what.pick();
+    }
+    // a routine printout's plan (the Routine tab on show), else null
+    function rplan() {
+      return what.plan();
     }
     // each text's pages in the whole Library's plan as the Print button prints it (laid out ahead: warm)
     function counts() {
@@ -444,10 +572,11 @@ export function init() {
     // ahead like the page plans (warm); until it is, an empty sheet the paper's shape
     var shv = document.getElementById("prsheet"),
       pshown = "";
-    // the first text ticked, in the Library's order (as it prints)
+    // the first text ticked, in the Library's order (as it prints); a routine's first text
     function first() {
       var c = chosen(),
         f = null;
+      if (rplan()) return c && c.length ? [c[0]] : null;
       /** @type {any} */ (window).CONTENT.categories.forEach(function (/** @type {any} */ g) {
         g.pieces.forEach(function (/** @type {any} */ p) {
           if (!f && (!c || c.indexOf(p.text) >= 0)) f = p.text;
@@ -458,7 +587,7 @@ export function init() {
     function preview() {
       var M = P.ui === "mr",
         ids = first(),
-        k = ids ? pkey(dm(), ids) : "",
+        k = ids ? pkey(dm(), ids, rplan()) : "",
         sh = sheet(dm()),
         w = 120; // its width (css/03-menus-print-view.css .prsheet)
       shv.setAttribute("aria-label", M ? "पहिल्या पानाची झलक" : "Preview of the first page");
@@ -1142,6 +1271,11 @@ export function init() {
         li.appendChild(s);
       });
     }
+    // A routine's plan for the preview of its first text alone: its tag, but no page 1
+    /** @param {import("../print/what.js").RoutinePlan} rp */
+    function onlyTags(rp) {
+      return Object.assign({}, rp, { only: true });
+    }
     // Printing from the browser's own menu cannot wait, so the numbers for what it prints (dm) are kept ready, and so
     // are those of the layout last chosen in the pop-up: then the Print button prints at once, while the tap
     // still counts on an iPhone, instead of asking for a second tap (Print now)
@@ -1155,21 +1289,24 @@ export function init() {
     // button prints it
     function warm() {
       var c = chosen(),
+        rp = rplan(),
         f = pm.hidden ? null : first(),
-        todo = /** @type {[string, string[] | null, boolean][]} */ ([
-          [dm(), f, true],
-          [dm(), null, false],
-          [wm, c, false],
+        todo = /** @type {[string, string[] | null, boolean, any][]} */ ([
+          [dm(), f, true, rp],
+          [dm(), null, false, null],
+          [wm, c, false, rp],
         ]).filter(function (x, i) {
-          var k = pkey(x[0], x[1]);
+          var k = pkey(x[0], x[1], x[3]);
           return i ? !pcache[k] : f && !shots[k];
         });
       if (!todo.length || busy) return;
       var m = todo[0][0],
         ids = todo[0][1],
         shot = todo[0][2],
-        k = pkey(m, ids);
-      build(m, ids);
+        wr = todo[0][3],
+        k = pkey(m, ids, wr);
+      // (the preview's one text, from a routine, with its tag but without page 1)
+      build(m, ids, shot && wr ? onlyTags(wr) : wr);
       pages(m, function (pg) {
         if (pg) pcache[k] = pg;
         if (shot) {
@@ -1241,7 +1378,14 @@ export function init() {
       ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "ppr", "tr", "por"].forEach(function (k) {
         s[k] = P[k];
       });
-      return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (chosen() ? "&t=" + /** @type {string[]} */ (chosen()).join(",") : "");
+      var rp = rplan(),
+        r = "";
+      // a routine printout: whose (name and routine: Safari keeps its own storage) and the days and sessions chosen
+      if (rp) {
+        var c = what.routine();
+        r = "&r=" + encodeURIComponent(JSON.stringify({ n: rp.name, r: rp.routine, w: c.span, d: rp.days, s: c.sessions }));
+      }
+      return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (chosen() ? "&t=" + /** @type {string[]} */ (chosen()).join(",") : "") + r;
     }
     // open: the pop-up is already open (its Back step is in place); tapped: Print now was tapped and the
     // dialog still did not open (not the Home Screen app: another app's browser, or Safari holding it back),
@@ -1321,9 +1465,10 @@ export function init() {
       if (mode === "as") mode = "one";
       wm = mode;
       sel = chosen();
+      var rp = rplan();
       setPage(mode);
-      build(mode, sel);
-      var k = pkey(mode, sel);
+      build(mode, sel, rp);
+      var k = pkey(mode, sel, rp);
       // laid out ahead (warm): print straight away
       if (pcache[k]) return done(pcache[k]);
       pages(mode, done);
@@ -1479,6 +1624,9 @@ export function init() {
       var mode = window.PRQ;
       window.PRQ = "";
       what.set(window.PRT || null);
+      // a routine printout (Open in Safari carries it: js/render.js reads it)
+      var rr = /** @type {any} */ (window).PRR;
+      if (rr && rr.days.length) what.carry({ id: "link", name: rr.name, routine: cleanRoutine(rr.routine) }, { who: "link", span: rr.span, days: rr.days, day: rr.days[0], sessions: rr.sessions });
       (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () {
         setTimeout(function () {
           go(mode);

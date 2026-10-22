@@ -86,6 +86,24 @@
       // only some texts (their Library ids, comma separated): js/features/print.js prints just those
       var t = /[?&]t=([a-z0-9,-]+)/.exec(location.search);
       if (t) window.PRT = t[1].split(",").filter(Boolean);
+      // a routine printout (the print builder's Routine tab): whose (name and routine) and the days and sessions;
+      // js/features/print.js cleans the routine before using it
+      var r = /[?&]r=([^&#]*)/.exec(location.search);
+      if (r) {
+        var rr = JSON.parse(decodeURIComponent(r[1]));
+        if (rr && typeof rr.n === "string" && Array.isArray(rr.d) && Array.isArray(rr.s))
+          window.PRR = {
+            name: rr.n.slice(0, 40),
+            routine: rr.r,
+            span: rr.w === "day" ? "day" : "week",
+            days: rr.d.filter(function (x) {
+              return x === +x && x >= 0 && x <= 6;
+            }),
+            sessions: rr.s.filter(function (x) {
+              return x === "morning" || x === "afternoon" || x === "evening";
+            }),
+          };
+      }
       history.replaceState(null, "", location.pathname + location.hash);
     }
   } catch (e) {}

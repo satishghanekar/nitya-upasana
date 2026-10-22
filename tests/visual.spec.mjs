@@ -107,6 +107,12 @@ const CASES = [
   ["print-dialog", "phone", SETUPS.marathi, printBuilder],
   ["print-how-phone", "phone", SETUPS.marathi, async (p) => (await printBuilder(p), p.locator("#prnx").click())],
   ["print-builder-desktop", "desktop", SETUPS.marathi, printBuilder],
+  // the Routine tab: the default routine, the whole week, each text once with its tag
+  ["print-routine-phone", "phone", SETUPS.marathi, async (p) => {
+    await printBuilder(p);
+    await p.locator("#prtab-routine").click();
+    await expect(p.locator(".prrl .prpc").first()).toHaveText(/\d/);
+  }],
 ];
 
 // Print, open at What once the page counts and the first-page preview (with its fonts) are in

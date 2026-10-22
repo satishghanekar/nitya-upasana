@@ -866,3 +866,154 @@ test("print builder: the preview and the paper @chromium-only", async ({ browser
   expect(rules).toContain("@page { size: A4 portrait }");
   await context.close();
 });
+
+// ---- Routine printouts (print redesign P5) ----
+// A routine of its own, so the tests do not change when content/routines.json does: the Atharvashirsha on Monday
+// mornings, the Ganapati aarti every morning and evening, the Devi aarti every evening, Ghalin Lotangan on Saturday
+// mornings. Routine order is Monday first, then Morning, Afternoon and Evening.
+const P5_ROUTINE = {
+  morning: {
+    mode: "weekday",
+    days: { mon: ["atharvashirsha", "sukhkarta"], tue: ["sukhkarta"], wed: ["sukhkarta"], thu: ["sukhkarta"], fri: ["sukhkarta"], sat: ["sukhkarta", "ghalin-lotangan"], sun: ["sukhkarta"] },
+  },
+  afternoon: { mode: "fixed", texts: [] },
+  evening: { mode: "fixed", texts: ["durge-durghat-bhari", "sukhkarta"] },
+};
+const P5_ORDER = ["atharvashirsha", "sukhkarta", "durge-durghat-bhari", "ghalin-lotangan"];
+const P5_TAGS = ["Mon · Morning", "Daily · Morning, Evening", "Daily · Evening", "Sat · Morning"];
+async function useP5Routine(page) {
+  await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(P5_ROUTINE) }));
+}
+async function openRoutineTab(page) {
+  await tapMore(page, "#prb");
+  await page.locator("#prtab-routine").click();
+  await expect(page.locator("#prtp-routine")).toBeVisible();
+}
+async function printNow(page) {
+  if (await page.locator("#prnx").isVisible()) await page.locator("#prnx").click();
+  await page.locator("#prgp").click();
+  await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
+  if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
+}
+
+// The Routine tab: the whole week at first, each text once in routine order with its tag; One day is today (the
+// fixed test date is a Thursday); a session with no texts is greyed; a day or session taken off leaves its texts out
+test("print builder: the Routine tab lists each text once, in routine order, with its tag @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await useP5Routine(page);
+  await openSite(page, SETUPS.english);
+  await openRoutineTab(page);
+  const ids = () => page.locator(".prrl li").evaluateAll((l) => l.map((x) => x.dataset.id));
+  expect(await ids()).toEqual(P5_ORDER);
+  await expect(page.locator(".prrl .prtag")).toHaveText(P5_TAGS);
+  await expect(page.locator("#prsum span").first()).toHaveText("4 texts");
+  await expect(page.locator('[data-rses="afternoon"]')).toBeDisabled();
+  await expect(page.locator(".prwho")).toHaveText("Me");
+  // one day: today, Thursday
+  await page.locator('[data-rspan="day"]').click();
+  await expect(page.locator(".prchip[data-rday][aria-pressed=true]")).toHaveText(["Thu"]);
+  expect(await ids()).toEqual(["sukhkarta", "durge-durghat-bhari"]);
+  await expect(page.locator(".prrl .prtag")).toHaveText(["Thu · Morning, Evening", "Thu · Evening"]);
+  await page.locator('[data-rday="6"]').click();
+  expect(await ids()).toEqual(["sukhkarta", "ghalin-lotangan", "durge-durghat-bhari"]);
+  // the whole week, without Monday, and mornings only
+  await page.locator('[data-rspan="week"]').click();
+  await page.locator('[data-rday="1"]').click();
+  await page.locator('[data-rses="evening"]').click();
+  expect(await ids()).toEqual(["sukhkarta", "ghalin-lotangan"]);
+  await expect(page.locator(".prrl .prtag")).toHaveText(["Tue–Sun · Morning", "Sat · Morning"]);
+  // the arrow keys move through the three tabs
+  await page.locator("#prtab-routine").focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator("#prtab-texts")).toBeFocused();
+  await page.keyboard.press("ArrowLeft");
+  await expect(page.locator("#prtab-routine")).toBeFocused();
+  await context.close();
+});
+
+// The printout (PLAN §3 A and B): page 1 has whose routine, the week at a glance and the contents with each text's tag
+// and the page it really starts on; then the texts in routine order, numbered 1, 2, 3…, each with its tag under its
+// title. A Library printout has no tags and keeps its plain contents.
+test("print: a routine printout, its week at a glance and tags @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "en-US", viewport: { width: 1280, height: 900 }, serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await useP5Routine(page);
+  await openSite(page, SETUPS.english);
+  await openRoutineTab(page);
+  await printNow(page);
+  expect(await page.evaluate(() => [...document.querySelectorAll("#pv .pvs")].map((e) => e.getAttribute("data-sid")))).toEqual(
+    await page.evaluate((o) => o.map((id) => window.CONTENT.categories.flatMap((g) => g.pieces).find((p) => p.text === id).id), P5_ORDER),
+  );
+  // the grid: Monday first; Morning and Evening (Afternoon has nothing); each cell the texts' numbers
+  expect(await page.locator("#pv .pvgrid thead th").allTextContents()).toEqual(["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
+  expect(await page.locator("#pv .pvgrid tbody th").allTextContents()).toEqual(["Morning", "Evening"]);
+  expect(await page.locator("#pv .pvgrid tbody tr").first().locator("td").allTextContents()).toEqual(["1 2", "2", "2", "2", "2", "2 4", "2"]);
+  expect(await page.locator("#pv .pvgrid tbody tr").last().locator("td").allTextContents()).toEqual(Array(7).fill("3 2"));
+  await expect(page.locator("#pv .pvrh")).toHaveText("Me");
+  await expect(page.locator("#pv .pvtoc .pvtag")).toHaveText(P5_TAGS);
+  await expect(page.locator("#pv .pvs h2 .pvtag")).toHaveText(P5_TAGS);
+  await expect(page.locator("#pv .pvs h2 .ne")).toHaveText(["1.", "2.", "3.", "4."]);
+  // the PDF: page 1, then each text where the contents say
+  await page.emulateMedia({ media: "print" });
+  const pdf = await pdfPages(page, "Letter");
+  expect(pdf.pages[0]).toContain("The week at a glance");
+  expect(pdf.pages[0]).toContain("Daily · Morning, Evening");
+  const starts = await page.locator("#pv .pvtoc li[data-sid] .pgn").allTextContents();
+  const titles = await page.locator("#pv .pvs h2 .en").allTextContents();
+  starts.forEach((n, i) => expect(pdf.pages[toInt(n) - 1], `${titles[i]} on page ${n}`).toContain(P5_TAGS[i]));
+  await context.close();
+});
+
+test("print: a Library printout has no tags or week grid @chromium-only", async ({ page }) => {
+  await stubPrint(page);
+  await useP5Routine(page);
+  await openSite(page, SETUPS.english);
+  await printFromButton(page, "pr1");
+  expect(await page.locator("#pv .pvtag, #pv .pvgrid").count()).toBe(0);
+  expect(await page.locator("#pv .pvtoc h3").count()).toBeGreaterThan(1);
+});
+
+// Open in Safari carries the routine printout: Safari keeps its own storage, so the link holds whose routine (name and
+// routine) and the days and sessions; Safari opens at the Routine tab's printout, ready to print
+test("iPhone Home Screen app: Open in Safari carries a routine printout @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await page.addInitScript(() => {
+    if (!location.search) Object.defineProperty(navigator, "standalone", { value: true });
+    window.__printed = 0;
+    window.print = () => {
+      window.__printed++;
+    };
+  });
+  await useP5Routine(page);
+  await openSite(page, SETUPS.english);
+  await openRoutineTab(page);
+  await page.locator('[data-rses="evening"]').click();
+  await page.locator("#prnx").click();
+  await page.locator("#prgp").click();
+  await expect(page.locator("#prsf")).toBeVisible();
+  await page.locator("#prsf").click();
+  const href = await page.locator("#prsf").getAttribute("data-to");
+  expect(href).toMatch(/&r=/);
+  // Safari: a fresh browser, with the default routine (the link brings the person's own)
+  const sf = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const sp = await sf.newPage();
+  await sp.addInitScript(() => {
+    window.__printed = 0;
+    window.print = () => {
+      if (window.__printed++) dispatchEvent(new Event("beforeprint"));
+    };
+  });
+  await sp.goto(href.replace(/^x-safari-/, ""));
+  await expect(sp.locator("#prgo")).toBeVisible({ timeout: 15_000 });
+  expect(await sp.evaluate(() => location.search)).toBe("");
+  await expect(sp.locator("#pv .pvrh")).toHaveText("Me");
+  await expect(sp.locator("#pv .pvtoc .pvtag")).toHaveText(["Mon · Morning", "Daily · Morning", "Sat · Morning"]);
+  await expect(sp.locator("#pv .pvgrid tbody th")).toHaveText(["Morning"]);
+  await sf.close();
+  await context.close();
+});
