@@ -16,7 +16,7 @@
    - Search box and results, status message (#szt), settings panel details
    - Phones held sideways
    - Group headings (पूजा / भजने / आरती) in the contents; "coming soon"; section dividers
-   - Atharvashirsha: Vedic text in Tiro Devanagari Sanskrit
+   - Atharvashirsha: room for the Vedic svara marks
    - Vedic chants in one language: running paragraphs, as in a printed booklet
 */
 
@@ -814,9 +814,10 @@ ol.toc li.soon .m {
   }
 }
 
-/* ==== Atharvashirsha: Vedic text in Tiro Devanagari Sanskrit ==== */
+/* ==== Atharvashirsha: room for the Vedic svara marks ====
+   Its font follows Settings → Text font like every Vedic chant (Tiro Devanagari Sanskrit in Traditional:
+   css/07-bottom-bar-folds.css) */
 #p1 .mr p {
-  font-family: "Tiro Devanagari Sanskrit", "Noto Serif Devanagari", "Sanskrit 2003", "Kohinoor Devanagari", var(--body);
   line-height: 2.1;
 }
 #p1 .verse .mr {

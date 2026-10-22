@@ -424,18 +424,14 @@
 }
 
 
-/* Text font (Settings): Standard keeps the site's own fonts; the others change the texts (Marathi and English).
-   The Atharvashirsha's Marathi lines keep their Sanskrit font, which has the Vedic accent marks. */
-/* Best for each text (the printout only, js/features/print.js) is Classic, but for a Vedic text's original (below) */
-:root[data-font="classic"],
-:root[data-font="best"] {
+/* Text font (Settings → Text font, and the same three in the Print pop-up: css/00-fonts.css):
+   Modern (std) keeps the site's own fonts; Traditional and Bold change the texts (Marathi and English), on screen
+   and in print alike. */
+:root[data-font="classic"] {
   --tf: "SC Classic";
 }
 :root[data-font="bold"] {
   --tf: "SC Bold";
-}
-:root[data-font="hand"] {
-  --tf: "SC Hand";
 }
 :root[data-font]:not([data-font="std"]) .ash .items,
 :root[data-font]:not([data-font="std"]) .ash .rftop {
@@ -459,11 +455,32 @@
 :root[data-font]:not([data-font="std"]) #pv .pvs h2 .en {
   font-family: inherit;
 }
-/* Best for each text: a Vedic text's original (.pvved) in Tiro Devanagari Sanskrit, the font that draws its svara marks
-   (SIZES.md in the print redesign plan) */
-:root[data-font="best"] #pv .pvved .mr,
-:root[data-font="best"] #pv .pvved .mr p {
+/* Traditional: the Vedic chants (layout: prose; .pvved in print) in Tiro Devanagari Sanskrit, the Sanskrit cut of the
+   same design, made for the Vedic svara marks */
+:root[data-font="classic"] .ash.prose .items .mr,
+:root[data-font="classic"] .ash.prose .items .mr p,
+:root[data-font="classic"] #pv .pvved .mr,
+:root[data-font="classic"] #pv .pvved .mr p,
+:root[data-font="classic"] #pv .pvved td.pvm {
   font-family: "Tiro Devanagari Sanskrit", var(--tf), var(--body);
+}
+/* Bold: Noto Serif set SemiBold, so it reads strongly in low light and on paper; lines styled lighter (the repeated
+   dhrupad) or bolder keep their own weight */
+:root[data-font="bold"] .ash .items,
+:root[data-font="bold"] .ash .rftop,
+:root[data-font="bold"] #pv .pvs,
+:root[data-font="bold"] .sp-pw > div,
+:root[data-font="bold"] .sp-pw > [lang="en"] {
+  font-weight: 600;
+}
+/* ...and what is bold in every font (the dhrupad, a [dhrupad bold] block, its row side by side in print) a step
+   further, so it still stands out from the stanzas (the repeated dhrupad in print keeps its lighter weight) */
+:root[data-font="bold"] .item.rf p,
+:root[data-font="bold"] .verse p.rf,
+:root[data-font="bold"] .rftop p,
+:root[data-font="bold"] .verse.bold p,
+:root[data-font="bold"] #pv .pvside tr.pvb td {
+  font-weight: 800;
 }
 /* and the home page, the section bars (पूजा, आरती) and the piece title cards: their font names point to the
    chosen font first. The home page's buttons and offline line, and the Open all / Fold all pill, stay in the site's own fonts (they are controls). */

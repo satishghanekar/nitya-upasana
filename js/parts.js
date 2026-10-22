@@ -62,7 +62,6 @@ var SITE_PARTS = (function () {
     "text/line-breaks",
     "text/autofit",
     "core/apply",
-    "features/end-card",
     "features/bottom-bar",
     "features/bars",
     "features/settings-panel",
@@ -143,7 +142,7 @@ var SITE_PARTS = (function () {
   ].map(function (f) {
     return "content/" + f;
   });
-  // Font files kept for offline use (the rest download only when a font choice needs them)
+  // Font files kept for offline use: Modern and Traditional, the default (Bold's Noto Serif downloads when picked)
   var fonts = [
     "inter-latin",
     "inter-latin-ext",
@@ -157,6 +156,7 @@ var SITE_PARTS = (function () {
     "tiro-sanskrit-latin",
     "tiro-sanskrit-latin-ext",
     "noto-sans-kannada-kannada",
+    "noto-serif-kannada-kannada",
   ].map(function (f) {
     return "fonts/" + f + ".woff2";
   });

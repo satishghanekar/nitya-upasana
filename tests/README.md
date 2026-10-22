@@ -55,7 +55,7 @@ The quick check (`quick.mjs`) compares the checkout with `origin/main` (commits,
 | `edge.spec.mjs` | Edge cases: an iPhone 16 Pro notch upright and sideways; pressed and hovered text readable in all 5 themes; keyboard focus never hidden behind the bars; layout shift after the page appears; 360 to 7680 px wide; what screen readers are told (size, search results, notes); Windows High Contrast focus rings; WCAG text spacing; printing with the keyboard alone; limits on `!important` and breakpoints. |
 | `compat.spec.mjs` | The oldest supported browsers (iOS 15.4): fallbacks for `color-mix()` and what a linter can't check. |
 | `today.spec.mjs` | Home: the picture and date, the Morning / Afternoon / Evening switch, the session's texts and ticks, reading a session (Next ticks), the festival and Sankashti lines, ⋯ More on every width, Marathi menus, and the bundled default routine. |
-| `reading.spec.mjs` | One text at a time from every way in, and the end card (Next / Previous, Done · next in a session, Back to Home). |
+| `reading.spec.mjs` | One text at a time from every way in, ‹ Prev / Next › in the bottom bar going through the Library, and no card at the end of a text. |
 | `library.spec.mjs` | The Library: categories, numbers, search results, Edit categories (add, rename, delete, move a text), pinch on the list, Back. |
 | `calendar.spec.mjs` | The Vedic calendar: the line on Home, the day card and the month, festivals, the reading languages, keyboard. |
 | `builder.spec.mjs` | The routine builder and its Add texts picker; Home follows the routine; kept after a reload and in backups. |

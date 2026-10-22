@@ -363,31 +363,6 @@ function endSession() {
 }
 
 /**
- * Where a piece sits in the session being read, for the card at the end of the text (js/features/end-card.js): its
- * place (from 0), the session's name in the menu language, and which of its texts are ticked today; null when the
- * piece is not in the session (or no session is read). secs: the session's pieces on the page, in order.
- * @param {string} sec  the piece's id on the page (a3)
- * @returns {{ i: number, n: number, name: string, secs: string[], done: boolean[] } | null}
- */
-export function runAt(sec) {
-  var id = bySec[sec],
-    i = run && id ? run.ids.indexOf(id) : -1;
-  if (!run || i < 0) return null;
-  var d = ticks && run.day === dateKey(new Date()) ? ticks.done(run.day, run.session) : [];
-  return {
-    i: i,
-    n: run.ids.length,
-    name: (P.ui === "mr" ? MR_SESSION : EN_SESSION)[run.session],
-    secs: run.ids.map(function (x) {
-      return info[x] ? info[x].sec : "";
-    }),
-    done: run.ids.map(function (x) {
-      return d.indexOf(x) >= 0;
-    }),
-  };
-}
-
-/**
  * ‹ Prev (-1) or Next › (1) from the piece on screen, while reading a session: where it goes and the title for its
  * label, or null to keep the library order (js/features/bottom-bar.js).
  * @param {string} sec  the piece's id on the page (a3)

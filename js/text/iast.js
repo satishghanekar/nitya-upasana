@@ -196,7 +196,7 @@ function enTitle(t, ia) {
 }
 
 // A piece's title as its heading shows it, built or not: in English (en) in the chosen style, else in the chosen
-// script (js/features/end-card.js, js/text/search.js)
+// script (js/text/search.js)
 export function titleText(id, en) {
   var t = TRT && TRT[id];
   return !t ? "" : en ? enTitle(t, P.tr === "iast") : SCR.to(t.m);

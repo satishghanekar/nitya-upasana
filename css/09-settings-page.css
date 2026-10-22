@@ -240,7 +240,7 @@ html[data-sp] {
 .sp-stk .sp-seg button {
   flex: 1 1 0;
 }
-/* the four text fonts on one line: each button as wide as its name; on the narrowest phones they wrap rather than
+/* the three text fonts on one line: each button as wide as its name; on the narrowest phones they wrap rather than
    let a long name spill out of its button */
 .sp #sfn {
   flex-wrap: wrap;
@@ -405,35 +405,18 @@ html[data-scr="kn"] #bt[data-tl="mr"] #btt,
 [lang="kn"]:not(html):not(.ash) {
   font-family: "Noto Sans Kannada", var(--body) !important;
 }
-/* the chosen text font (Settings → Text font) for the Kannada texts, the home page and the Settings preview; the
-   Atharvashirsha keeps a font with its Vedic accent marks (Noto Sans Kannada, or Noto Serif Kannada for Classic) */
+/* the chosen text font (Settings → Text font) for the Kannada texts, the home page and the Settings preview:
+   Noto Serif Kannada for Traditional and Bold (SemiBold, css/07-bottom-bar-folds.css). Like Noto Sans Kannada, it
+   draws the Vedic accent marks itself */
 :root[data-font="classic"],
-:root[data-font="best"] {
-  --kf: "SC Kn Classic";
-  --kv: "SC Kn Classic";
-}
 :root[data-font="bold"] {
-  --kf: "SC Kn Bold";
-}
-:root[data-font="hand"] {
-  --kf: "SC Kn Hand";
+  --kf: "SC Kn Classic";
 }
 html[data-scr="kn"][data-font]:not([data-font="std"]) .mr,
 html[data-scr="kn"][data-font]:not([data-font="std"]) .mr *,
 html[data-scr="kn"][data-font]:not([data-font="std"]) #home .nm,
 html[data-scr="kn"][data-font]:not([data-font="std"]) .sp-pw [lang="kn"] {
   font-family: var(--kf), "Noto Sans Kannada", var(--body) !important;
-}
-/* Baloo Tamma at its regular weight is no heavier than the standard font; a step up keeps Bold looking bold */
-html[data-scr="kn"][data-font="bold"] .mr,
-html[data-scr="kn"][data-font="bold"] .sp-pw [lang="kn"] {
-  font-weight: 500;
-}
-html[data-scr="kn"][data-font]:not([data-font="std"]) #p1 .mr,
-html[data-scr="kn"][data-font]:not([data-font="std"]) #p1 .mr *,
-html[data-scr="kn"][data-font]:not([data-font="std"]) #pv .pvs[data-sid="p1"] .mr,
-html[data-scr="kn"][data-font]:not([data-font="std"]) #pv .pvs[data-sid="p1"] .mr * {
-  font-family: var(--kv, "Noto Sans Kannada"), "Noto Sans Kannada", var(--body) !important;
 }
 
 /* ==== Tablets held upright: Settings' cards in two columns ==== */

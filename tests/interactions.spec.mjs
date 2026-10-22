@@ -115,12 +115,18 @@ test("Settings opens, changes theme, high contrast and font, and closes with Bac
   expect(await rootAttr(page, "data-pref")).toBe("sepia");
   await page.locator("#tc").click();
   expect(await rootAttr(page, "data-hc")).toBe("1");
-  await page.locator('#sfn button[data-v="classic"]').click();
+  // three fonts, Traditional first (the default), then Modern and Bold
+  await expect(page.locator("#sfn button")).toHaveText(["Traditional", "Modern", "Bold"], { useInnerText: true });
   expect(await rootAttr(page, "data-font")).toBe("classic");
+  await expect(page.locator('#sfn button[data-v="classic"]')).toHaveAttribute("aria-pressed", "true");
+  await page.locator('#sfn button[data-v="bold"]').click();
+  expect(await rootAttr(page, "data-font")).toBe("bold");
+  await page.locator('#sfn button[data-v="std"]').click();
+  expect(await rootAttr(page, "data-font")).toBe("std");
   await page.locator("#xc").click();
   await expect(page.locator("#panel")).toBeHidden();
   const p = await prefs(page);
-  expect([p.th, p.hc, p.fnt]).toEqual(["sepia", 1, "classic"]);
+  expect([p.th, p.hc, p.fnt]).toEqual(["sepia", 1, "std"]);
 });
 
 test("text size A+ / A− / reset", async ({ page }) => {
