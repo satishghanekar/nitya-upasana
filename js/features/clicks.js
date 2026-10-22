@@ -5,7 +5,7 @@ import { change } from "../core/state.js";
 import { pieceEl } from "../core/page.js";
 import { jp, unfold, pn } from "../core/apply.js";
 import { setJ, setP } from "./overlays.js";
-import { goHomeNav, jumpTo } from "./history.js";
+import { jumpTo } from "./history.js";
 import { hlMark } from "../core/startup.js";
 
 export function init() {
@@ -14,7 +14,6 @@ export function init() {
     if (a) {
       e.preventDefault();
       var el = pieceEl(a.getAttribute("data-go"));
-      if (el && el.id === "home" && a.closest("#rail")) return goHomeNav();
       unfold(el);
       if (el)
         jumpTo(
