@@ -498,12 +498,12 @@ export function init() {
       var pp = letter() ? [215.9, 279.4] : [210, 297]; // upright
       return land(mode) ? [pp[1], pp[0]] : pp;
     }
-    // The printout's font: picked in the pop-up, else "best" (Best for each text: Classic for aartis and ashtaks, Tiro
-    // Devanagari Sanskrit for a Vedic text's original; SIZES.md in the print redesign plan, Satish 2026-10-21). It is
-    // the page's font (data-font) only while printing, so picking one for the printout leaves the reading page as it is
-    var FONTS = ["best", "std", "classic", "bold", "hand"];
+    // The printout's font: one of the same three as Settings → Text font (Modern, Traditional, Bold), picked in the
+    // pop-up, else the text font the page is read in. It is the page's font (data-font) only while printing, so
+    // picking one for the printout leaves the reading page as it is
+    var FONTS = ["std", "classic", "bold"];
     function pfn() {
-      return FONTS.indexOf(P.pfn) >= 0 ? P.pfn : "best";
+      return FONTS.indexOf(P.pfn) >= 0 ? P.pfn : FONTS.indexOf(P.fnt) >= 0 ? P.fnt : "classic";
     }
     // The printout's language: picked under How (the original, English or both), else as the page shows it (P.lang).
     // Like the font, it is the printout's only: the reading page keeps its own
@@ -682,17 +682,10 @@ export function init() {
       var sz = P.ppr ? (letter() ? "letter " : "A4 ") : "";
       pst.textContent = sz || land(mode) ? "@page { size: " + sz + (land(mode) ? "landscape" : "portrait") + " }" : "";
     }
-    // Above the choices: the dhrupad setting for the printout and its font
-    // (Best for each text, then the four of Settings → Text font), with a line of the text in it; neither changes the
-    // reading page
+    // Above the choices: the dhrupad setting for the printout and its font (the three of Settings → Text font), with
+    // a word of the text in each; neither changes the reading page
     var fn = document.getElementById("prfn"),
-      dh = document.getElementById("prdg"),
-      bst = document.createElement("button");
-    bst.type = "button";
-    bst.setAttribute("data-v", "best");
-    bst.innerHTML = '<span class="mr">सर्वोत्तम</span><span class="en" lang="en">Best</span>';
-    bst.title = "Best for each text";
-    fn.appendChild(bst);
+      dh = document.getElementById("prdg");
     [].forEach.call(document.querySelectorAll("#sfn button"), function (b) {
       fn.appendChild(b.cloneNode(true));
     });
@@ -715,7 +708,7 @@ export function init() {
       counts();
     };
     // the sample line in the printout's font (set here: the page's own font rules follow the text font)
-    var FAM = { best: "SC Classic", classic: "SC Classic", bold: "SC Bold", hand: "SC Hand" };
+    var FAM = { classic: "SC Classic", bold: "SC Bold" };
     // the sample: the first words of the first verse, in each language printed (the main one first), in the
     // printout's font. Set here: the page's own font rules follow the text font
     /** @param {string} lang @param {string} [font] (else the printout's) */
@@ -723,7 +716,8 @@ export function init() {
       var f = font || pfn(),
         kn = lang === "kn",
         base = kn ? '"Noto Sans Kannada", var(--body)' : lang === "en" ? "var(--lat)" : "var(--body)";
-      return f === "std" ? base : '"' + (kn ? FAM[f].replace("SC ", "SC Kn ") : FAM[f]) + '", ' + base;
+      // (Kannada letters: Noto Serif Kannada for Traditional and Bold alike, css/09-settings-page.css)
+      return f === "std" ? base : '"' + (kn ? "SC Kn Classic" : FAM[f]) + '", ' + base;
     }
     function words(k) {
       var a1 = pieceEl("a1"), // (built if not opened yet: js/core/page.js)
@@ -748,7 +742,7 @@ export function init() {
         x.textContent = w;
         x.setAttribute("lang", lang);
         x.style.setProperty("font-family", fam(lang, b.dataset.v), "important");
-        x.style.setProperty("font-weight", lang === "kn" && b.dataset.v === "bold" ? "500" : "400", "important");
+        x.style.setProperty("font-weight", b.dataset.v === "bold" ? "600" : "400", "important");
       });
     }
     dh.onclick = function (e) {

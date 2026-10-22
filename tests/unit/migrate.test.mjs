@@ -74,9 +74,9 @@ describe("settings from every older version are upgraded as js/core/state.js alw
     expect([p.lead, p.l2, p.lang]).toEqual(["mr", "en", "both"]);
   });
 
-  test("v5 with fonts: the font kept", () => {
+  test("v5 with fonts: Handwritten (gone in v1.23) becomes Traditional, the rest kept", () => {
     const p = migratePrefs(SHAPES.v5font, PHONE).prefs;
-    expect([p.fnt, p.th, p.ui, p.lang]).toEqual(["hand", "dark", "mr", "mr"]);
+    expect([p.fnt, p.th, p.ui, p.lang]).toEqual(["classic", "dark", "mr", "mr"]);
   });
 
   test("v5 with English first in Both: English becomes the main language, Marathi the second, menus English", () => {
@@ -98,6 +98,18 @@ describe("settings from every older version are upgraded as js/core/state.js alw
     expect([prefs.l2, prefs.lang, prefs.ref, prefs.pref, prefs.pfn, prefs.por, prefs.fold]).toEqual(["", "mr", 0, 1, "classic", "up", 1]);
   });
 
+  test("three text fonts (version 1.23): Modern, Traditional and Bold kept; anything else Traditional", () => {
+    for (const [v, want] of [["std", "std"], ["classic", "classic"], ["bold", "bold"], ["hand", "classic"], ["best", "classic"], ["", "classic"], [undefined, "classic"]])
+      expect(migratePrefs({ ...SHAPES.v6print, fnt: v }, PHONE).prefs.fnt).toBe(want);
+  });
+  test("the printout's font (version 1.23): one of the three, else as the text font (Best and Handwritten are gone)", () => {
+    for (const [v, want] of [["std", "std"], ["classic", "classic"], ["bold", "bold"], ["best", ""], ["hand", ""], ["", ""], [3, ""], [undefined, ""]])
+      expect(migratePrefs({ ...SHAPES.v6print, pfn: v }, PHONE).prefs.pfn).toBe(want);
+  });
+  test("a new reader starts in Traditional, with the printout following it", () => {
+    expect([defaults(PHONE).fnt, defaults(PHONE).pfn]).toEqual(["classic", ""]);
+  });
+
   test("the printout's language (version 1.21.3): kept when it is the original, English or both, else as the page", () => {
     for (const [v, want] of [["en", "en"], ["mr", "mr"], ["both", "both"], ["", ""], ["kn", ""], [3, ""], [undefined, ""]])
       expect(migratePrefs({ ...SHAPES.v6print, plang: v }, PHONE).prefs.plang).toBe(want);
@@ -115,7 +127,7 @@ describe("settings from every older version are upgraded as js/core/state.js alw
 
   test("damaged values are replaced by defaults, never trusted", () => {
     const p = migratePrefs({ sv: 6, fs: "huge", th: "neon", fnt: 3, af: "a1", asp: [1], loc: { lat: "x" }, lang: "fr", l2: "de", pref: "1", tr: "other" }, PHONE).prefs;
-    expect([p.fs, p.th, p.fnt, p.lang, p.l2, p.pref, p.tr]).toEqual([24, "auto", "std", "mr", "en", "", "simple"]);
+    expect([p.fs, p.th, p.fnt, p.lang, p.l2, p.pref, p.tr]).toEqual([24, "auto", "classic", "mr", "en", "", "simple"]);
     expect(p.af).toEqual([]);
     expect(p.asp).toEqual({});
     expect(p.loc).toBeNull();
