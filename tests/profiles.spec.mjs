@@ -1,4 +1,4 @@
-// Profiles and backup (docs/architecture.md slice 2): the profile chip and its sheet (switch, add, rename, colour,
+// Profiles and backup: the profile chip and its sheet (switch, add, rename, colour,
 // delete, never the last), each person's own text size, languages and ticks, the move of version 1.3's settings into
 // the first person, Save a backup file and Restore from a file (download, or the share sheet on a phone), the
 // warning when IndexedDB can't be opened, the backup reminder, and accessibility of the new dialogs.

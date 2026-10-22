@@ -1,5 +1,5 @@
 // Which picture the app shows, and which weekday star is ringed, for a given moment (js/core/time-of-day.js).
-// Sessions as in docs/decisions.md: Morning before 12:00, Afternoon 12:00–17:00, Evening from 17:00.
+// The sessions: Morning before 12:00, Afternoon 12:00–17:00, Evening from 17:00.
 // Dates are made with the local-time constructor, so the tests mean the same in any time zone.
 import { describe, expect, test } from "vitest";
 import { nextChange, pictureAt, sessionAt, STARS } from "../../js/core/time-of-day.js";

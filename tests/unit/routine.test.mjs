@@ -1,4 +1,4 @@
-// Each person's own routine (the routine builder, js/features/routine-builder.js; docs/decisions.md 2026-10-19): the
+// Each person's own routine (the routine builder, js/features/routine-builder.js): the
 // rules for the lists (js/core/routine.js: the same every day or different by weekday, copying a day's list to other
 // days, moving, adding and removing texts, cleaning what is read back), the routine kept in the profile
 // (js/store/profiles.js, js/store/store.js on fake-indexeddb), and backups: a file with routines restores them, a file

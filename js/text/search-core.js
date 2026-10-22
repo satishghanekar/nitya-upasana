@@ -1,5 +1,5 @@
 // @ts-check
-// Search across the whole library (docs/architecture.md §4.10, slice 3): the rules, without the page.
+// Search across the whole library: the rules, without the page.
 // - Texts are found by their title (Marathi, English, and the scholarly spelling of the Marathi one), their id
 //   ("sukhkarta", "jai-ganesh-deva"), their first line and their category's name. They rank first.
 // - Lines are found in the original (svara marks and punctuation ignored) and in both English spellings.

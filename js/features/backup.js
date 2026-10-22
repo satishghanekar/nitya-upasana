@@ -1,5 +1,5 @@
 // @ts-check
-// Backup and restore (docs/architecture.md §3.7, §4.2; risk R4: an iPhone can clear a website's data):
+// Backup and restore (an iPhone can clear a website's data):
 // - Save a backup file (Settings, and the reminder on the home page): every person on this phone with their settings,
 //   routine and today's ticks, and the device's settings, as a .nitya file (plain JSON with a checksum,
 //   js/store/backup.js).

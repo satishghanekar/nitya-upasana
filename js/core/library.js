@@ -1,5 +1,5 @@
 // @ts-check
-// The library's categories (docs/architecture.md §3.2, slice 3): the bundled ones from content/categories.json
+// The library's categories: the bundled ones from content/categories.json
 // (Vedic Chant, Aarti, Stotra, Ashtak), plus what the family changed on this phone: categories they added, new names
 // for any category (a bundled one can be renamed here but never deleted) and texts moved to another category.
 // Pure: no page, no storage. js/store/store.js keeps the family's part (LibraryLocal) in IndexedDB (meta.library,

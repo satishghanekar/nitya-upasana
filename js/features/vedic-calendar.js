@@ -1,7 +1,7 @@
 // @ts-check
 // The Vedic calendar (panchang), worked out on this phone by js/core/panchang.js for the place moonrise uses
 // (skLoc() in js/features/sankashti.js); nothing is fetched or sent anywhere. Approved design: mockups/home-v2-a.html
-// (the line on Home) and mockups/vedic-calendar.html (the calendar page) on branch mockup-home-v2; docs/decisions.md.
+// (the line on Home) and mockups/vedic-calendar.html (the calendar page) on branch mockup-home-v2.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
 // - Home (#pan): one button under the date, "आश्विन शुद्ध अष्टमी" / "नक्षत्र … · शके १९४८ · पराभव संवत्सर" / sunrise,

@@ -1,12 +1,12 @@
 // @ts-check
 // The reader's settings (P), as plain data: the defaults, the upgrade of settings saved by every older version of
-// the site (settings versions 0 to 6, docs/architecture.md §3.8), the tidy-up that keeps the language choices
+// the site (settings versions 0 to 6), the tidy-up that keeps the language choices
 // consistent, and which settings belong to a person (a profile) and which to the device.
 // Pure: no page and no storage, so the unit tests (tests/unit/migrate.test.mjs) run it in Node. js/core/state.js
 // uses it at start-up; js/store/store.js and js/store/backup.js use it to clean settings read from IndexedDB or a
 // backup file.
 //
-// Per person (Q4 in docs/decisions.md): text size, languages, English style, font, dhrupad, theme, high contrast,
+// Per person: text size, languages, English style, font, dhrupad, theme, high contrast,
 // autoscroll, folds and the highlighted line. Per device: keep the screen on, location, layout on wide screens, the
 // Print pop-up's choices and the folded home card.
 

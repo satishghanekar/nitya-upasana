@@ -1,7 +1,7 @@
 // @ts-check
 // People (profiles) on a shared phone: each keeps their own settings (text size, languages, theme…) and today's
-// ticks. Profiles are a convenience, not security: no PINs, anyone holding the phone can switch (docs/architecture.md
-// A2). Pure: the unit tests (tests/unit/profiles.test.mjs) run it in Node; js/store/store.js keeps the profiles in
+// ticks. Profiles are a convenience, not security: no PINs, anyone holding the phone can switch.
+// Pure: the unit tests (tests/unit/profiles.test.mjs) run it in Node; js/store/store.js keeps the profiles in
 // IndexedDB and js/features/profiles.js shows them.
 //
 // The start-up rule (startPlan): the settings saved under localStorage["aarti2-prefs"] are the active person's
@@ -37,7 +37,7 @@ export const COLOURS = [
   { v: "#8a2f5d", en: "Rose", mr: "गुलाबी" },
   { v: "#4a4a4a", en: "Grey", mr: "राखाडी" },
 ];
-// a shared phone usually has four or five people (docs/decisions.md); room for a few more
+// a shared phone usually has four or five people; room for a few more
 export const MAX_PROFILES = 8;
 export const NAME_MAX = 24;
 export const INITIALS_MAX = 4;

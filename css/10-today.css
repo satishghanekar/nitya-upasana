@@ -1,7 +1,7 @@
 /* 10-today.css: Home and the Library page
    Part 11 of 16 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
-   Home v2 (approved by Satish 2026-10-18, mockup A "Simple list"; docs/decisions.md): the home page is what to chant
+   Home v2 (approved by Satish 2026-10-18, mockup A "Simple list"): the home page is what to chant
    now, in one column. Built by js/features/today-card.js: the time-of-day picture beside today's date (#tdy), a slot
    for the Vedic calendar line (#pan), the festival line on the day (#fst, js/features/vedic-calendar.js), the Sankashti
    line on the day (#skt, js/features/sankashti.js), the session's
@@ -406,7 +406,7 @@
     display: none !important;
   }
 }
-/* One text at a time (stage 4 of docs/refactor-plan.md): only the text being read (.solo, js/features/history.js) is
+/* One text at a time: only the text being read (.solo, js/features/history.js) is
    shown, on every screen, from a session, the Library or search. The next text never runs on below it
    (the card at its end, #endc, and ‹ Prev / Next › change it), and Home is not above it; Home in the bottom bar or the
    top bar goes back. Only the page's own pieces (#main > .ash): Print builds its own from the texts
@@ -516,7 +516,7 @@
 :root:not([data-home="1"]) .bar #hm {
   display: none;
 }
-/* ==== Desktop A (screens 1024px and wider, docs/decisions.md): Home on its own uses the whole layout width (85% of the
+/* ==== Desktop A (screens 1024px and wider): Home on its own uses the whole layout width (85% of the
    screen): today on the left (the Vedic calendar line, the festival line, Morning / Afternoon / Evening, the session's
    texts with their ticks, More, the Library line), the day's picture large on the right with the date under it.
    The rows are auto-sized and the last one takes the rest, so the picture spanning them all leaves no gaps ==== */
@@ -682,7 +682,7 @@
   }
 }
 
-/* ==== Desktop B (docs/decisions.md): the Vedic calendar (#cal), Settings (#panel) and the Library (#jump) open in the
+/* ==== Desktop B: the Vedic calendar (#cal), Settings (#panel) and the Library (#jump) open in the
    right-hand area, under the top bar, beside Home's column on the left, not over the whole page, with the bottom bar
    under them. The button that opened each one stays marked while it is open ==== */
 @media screen and (min-width: 1024px) {
@@ -789,7 +789,7 @@
 }
 
 
-/* ==== Tablets held upright (Full screen, docs/decisions.md): Home is one larger column with the day's picture large on
+/* ==== Tablets held upright: Home is one larger column with the day's picture large on
    top and the date under it, so the screen is filled without adding anything to Home ==== */
 @media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
   :root[data-hv="1"] #home {

@@ -6,22 +6,23 @@ Automation covers the engines (Chromium, Firefox, WebKit) and emulated phones an
 
 | Device | Browser | Check |
 |---|---|---|
-| iPhone (current iOS) | Safari | Open, Add to Home Screen, open from the icon, turn on Airplane mode and reopen. Print → Save as PDF in Portrait and in Landscape; the contents numbers match. From the Home Screen app, Print goes to Open in Safari, and the choices carry over. |
-| iPhone with a notch or Dynamic Island | Safari | **Pinch** (the tests can only simulate it in Chromium): on a verse the text grows and shrinks and the page never zooms; on the home card nothing happens; the size bubble and then Default size appear below the top bar, also at the very end of a piece, and Default size can be tapped. Turn the phone sideways: Help's ✕, the picture's ✕ and the bottom bar buttons are clear of the notch. |
+| iPhone (current iOS) | Safari | Open, Add to Home Screen, open from the icon, turn on Airplane mode and reopen. Print (⋯ More) → pick a few texts → Save as PDF in Portrait and in Landscape; the contents numbers match. From the Home Screen app, Print goes to Open in Safari, and the choices carry over. |
+| iPhone with a notch or Dynamic Island | Safari | **Pinch** (the tests can only simulate it in Chromium): on a verse the text grows and shrinks and the page never zooms; on Home nothing happens; the size bubble and then Default size appear below the top bar, also at the very end of a piece, and Default size can be tapped. Turn the phone sideways: Help's ✕, the picture's ✕ and the bottom bar buttons are clear of the notch, and Home is in two columns. |
 | iPhone | WhatsApp link preview and in-app viewer | The preview shows the picture and title; the page opens and reads. |
-| Older iPad or iPhone on iOS 15 | Safari | Home card, Settings switches (on/off visible), date strip, search highlight all show their colours. |
-| Android phone | Chrome | Install from the App button; reopen offline; pinch; Print → Save as PDF (A4). Settings → About shows "v1.3 · Offline ready"; a tap on it shows Checking…, then Up to date. |
+| Older iPad or iPhone on iOS 15 | Safari | Home, the session switch and ticks, Settings switches (on/off visible), the calendar and the search highlight all show their colours. |
+| Android phone | Chrome | Install from the App button; reopen offline; pinch; Print → Save as PDF (A4). Settings → About shows the version and "Offline ready"; a tap on it shows Checking…, then Up to date. |
 | Android phone | Samsung Internet | Opens and reads; Settings; dark theme. |
-| Windows PC | Edge | Two columns and the side menu sit centred (the scrollbar doesn't push them); Ctrl + / −; Print (Letter) in Portrait and in Landscape. Settings → Accessibility → Contrast themes on: buttons, icons and the focus ring stay visible. |
-| Mac | Safari | Print → PDF in Portrait and in Landscape (pick Landscape in Safari's dialog too); a changed Print font or Dhrupad prints, and the reading page keeps its own; File → Add to Dock. |
+| Windows PC | Edge | Home's column and the text beside it sit right (the scrollbar doesn't push them); Ctrl + / −; Print (Letter) in Portrait and in Landscape. Settings → Accessibility → Contrast themes on: buttons, icons and the focus ring stay visible. |
+| Mac | Safari | Print → PDF in Portrait and in Landscape (pick Landscape in Safari's dialog too); a changed print Language, Font or Dhrupad prints, and the reading page keeps its own; File → Add to Dock. |
+| iPad | Safari | Upright: Home with the picture large on top. Sideways: Home stays on the left while a text is read on the right. Print from the Home Screen app goes to Open in Safari. |
 | Large monitor (≥ 2560 px) | any | The page uses the width without stretching lines. |
 
 ## Screen readers
 
 | Reader | Check |
 |---|---|
-| VoiceOver (iPhone) | Swipe through the home card and an aarti: Marathi lines read in a Marathi or Hindi voice, English lines in English. Fold states are announced ("collapsed / expanded"). |
-| VoiceOver (iPhone) | Today card: the days and the sessions are read as radio buttons ("Sun 18, today, selected, 7 of 7"); picking one is announced ("Evening, Sunday: 10 texts, 2 done"); each tick reads "Done: Devi Aarti, checkbox"; Start opens the text and Next goes on through the session. |
+| VoiceOver (iPhone) | Swipe through Home and an aarti: Marathi lines read in a Marathi or Hindi voice, English lines in English. Fold states are announced ("collapsed / expanded"). |
+| VoiceOver (iPhone) | Home: Morning, Afternoon and Evening are read as tabs, the one picked as selected; each tick reads "Done: Devi Aarti, checkbox"; a title opens the text and Next goes on through the session. |
 | TalkBack (Android) | Same as above; the bottom bar buttons have names. |
 | VoiceOver (Mac) or NVDA (Windows) | Tab through Settings to the end and back; Escape closes it and returns to the ⚙ button. Search: results are announced. |
 

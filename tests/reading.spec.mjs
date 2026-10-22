@@ -1,4 +1,4 @@
-// One text at a time (v1.20, docs/decisions.md; stage 4 of docs/refactor-plan.md): the page shows only the text being
+// One text at a time: the page shows only the text being
 // read, on every screen and from every way in, and a card at its end (#endc, js/features/end-card.js) goes on: Next /
 // Previous in the Library's order, or in a session where you are and Done · next (which ticks), Back to Home after the
 // last text. These tests run on the fixed routine (TEST_ROUTINE in helpers.mjs: Evening = the ten aartis).
