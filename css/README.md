@@ -62,6 +62,7 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
 | `(min-width: 760px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own |
+| `(max-width: 819px)` | Phones and small tablets: English names in the Vedic calendar's days a step smaller |
 | `(min-width: 820px)` | Tablets and up: wider spacing; the Vedic calendar shows the day card beside the month |
 | `(min-width: 600px) and (max-width: 1023px) and (orientation: portrait)` | Tablets held upright: Home with the picture large on top, the calendar's month above the day card, the Library and Settings in two columns |
 | `(min-width: 1024px)` | iPads held sideways and desktops: Home's column on the left (on Home, and fixed beside the text being read) and the page beside it across the whole width; the calendar, Settings and Library open beside it; the routine builder's Add texts picker sits beside its list |
