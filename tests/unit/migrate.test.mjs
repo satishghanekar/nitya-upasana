@@ -98,11 +98,11 @@ describe("settings from every older version are upgraded as js/core/state.js alw
     expect([prefs.l2, prefs.lang, prefs.ref, prefs.pref, prefs.pfn, prefs.por, prefs.fold]).toEqual(["", "mr", 0, 1, "classic", "up", 1]);
   });
 
-  test("the printout's language (version 1.21.2): kept when it is the original, English or both, else as the page", () => {
+  test("the printout's language (version 1.21.3): kept when it is the original, English or both, else as the page", () => {
     for (const [v, want] of [["en", "en"], ["mr", "mr"], ["both", "both"], ["", ""], ["kn", ""], [3, ""], [undefined, ""]])
       expect(migratePrefs({ ...SHAPES.v6print, plang: v }, PHONE).prefs.plang).toBe(want);
   });
-  test("the printout's paper (version 1.21.3): kept when Letter or A4, else as the device's region suggests", () => {
+  test("the printout's paper (version 1.21.4): kept when Letter or A4, else as the device's region suggests", () => {
     for (const [v, want] of [["letter", "letter"], ["a4", "a4"], ["", ""], ["A4", ""], ["legal", ""], [4, ""], [undefined, ""]])
       expect(migratePrefs({ ...SHAPES.v6print, ppr: v }, PHONE).prefs.ppr).toBe(want);
   });
