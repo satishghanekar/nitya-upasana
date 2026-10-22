@@ -32,8 +32,7 @@ export function fit(w, d, mode, pv) {
     lines = [].slice.call(d.querySelectorAll("#pv " + sel[1].replace(", ", ", #pv "))),
     mine = pv.querySelectorAll(sel[1]),
     at = new Map(),
-    // (Best for each text sets aartis and ashtaks in Classic, and its sizes are Classic's)
-    fnt = (d.documentElement.getAttribute("data-font") || "std").replace("best", "classic");
+    fnt = d.documentElement.getAttribute("data-font") || "classic";
   // a prose piece printed in one language (running paragraphs, .pvpr) is not fitted, as its lines run on: it is
   // set at its script's size in the reader's font, so it looks as large in every font
   var pr = d.querySelectorAll("#pv p.pvpr"),

@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.23.0">
+<meta name="version" content="aarti-v1.24.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -84,7 +84,6 @@
 <link rel="modulepreload" href="js/text/line-breaks.js">
 <link rel="modulepreload" href="js/text/autofit.js">
 <link rel="modulepreload" href="js/core/apply.js">
-<link rel="modulepreload" href="js/features/end-card.js">
 <link rel="modulepreload" href="js/features/bottom-bar.js">
 <link rel="modulepreload" href="js/features/bars.js">
 <link rel="modulepreload" href="js/features/settings-panel.js">
@@ -210,10 +209,9 @@
         <div class="sp-row sp-stk">
           <span class="sp-l"><span class="mr">अक्षरशैली</span><span class="en" lang="en">Text font</span></span>
           <div class="sp-seg" id="sfn" role="group" aria-label="Text font">
-            <button type="button" data-v="std"><span class="mr">नेहमीची</span><span class="en" lang="en">Standard</span></button>
-            <button type="button" data-v="classic"><span class="mr">पारंपरिक</span><span class="en" lang="en">Classic</span></button>
+            <button type="button" data-v="classic"><span class="mr">पारंपरिक</span><span class="en" lang="en">Traditional</span></button>
+            <button type="button" data-v="std"><span class="mr">आधुनिक</span><span class="en" lang="en">Modern</span></button>
             <button type="button" data-v="bold"><span class="mr">ठळक</span><span class="en" lang="en">Bold</span></button>
-            <button type="button" data-v="hand"><span class="mr">हस्तलिखित</span><span class="en" lang="en">Handwritten</span></button>
           </div>
         </div>
         <div class="sp-row">
@@ -511,7 +509,7 @@
       <ul>
         <li><b>Morning, Afternoon, Evening:</b> Home opens at the session for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. Tap another to see its texts for today; the next day starts again from the clock. A session with nothing set today is greyed out ("Nothing set"); tap it to add texts. To start with, everyone has the usual routine: Vedic chants and the Ganapati and Devi aartis in the morning, aartis and an ashtak in the evening, and a free afternoon. Each person can change theirs (see Your routine below).</li>
         <li><b>The list</b> has the session's texts in order. Tap the round tick when you have finished one; the ticks are kept on this phone for today, for the person reading, and start fresh tomorrow.</li>
-        <li><b>Reading the session:</b> tap a title to start there. While you read, <b>Next ›</b> in the bottom bar (or <b>Done · next</b> at the end of the text) ticks the text you were reading as done for today, then opens the next text of the session; after the last one it brings you back here. <b>‹ Prev</b> goes back without ticking. To take a tick off, tap it on the list.</li>
+        <li><b>Reading the session:</b> tap a title to start there. While you read, <b>Next ›</b> in the bottom bar ticks the text you were reading as done for today, then opens the next text of the session; after the last one it brings you back here. <b>‹ Prev</b> goes back without ticking. To take a tick off, tap it on the list.</li>
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
         <li><b>Print this session</b>, under the list, prints the session's texts (see Print below). <b>Another text? Open the Library</b> opens every text.</li>
         <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
@@ -538,7 +536,7 @@
 
       <h3>While reading</h3>
       <ul>
-        <li><b>One text at a time:</b> the page shows the text you opened. At its end a card offers the next text: in a session, where you are ("Evening session · 2 of 4") and <b>Done · next</b>; from the Library, the next and previous texts in the Library.</li>
+        <li><b>One text at a time:</b> the page shows the text you opened. <b>‹ Prev</b> and <b>Next ›</b> in the bottom bar go on: in a session, to the session's texts; from the Library, to the next and previous texts in the Library.</li>
         <li><b>Tap a line</b> to highlight it, so everyone can keep their place; its whole stanza gets a soft band too, so you find it again at a glance. Tap again to clear.</li>
         <li><b>Vedic chants</b> (Shree Rudra, the Atharvashirsha, the Purusha Suktam) in one language run on as paragraphs, like a printed booklet. With both languages the lines stay in pairs.</li>
         <li><b>Fold a text:</b> a tap anywhere on its heading (or its round ⌃) folds it down to its heading; tap it again to open it. Your phone remembers this, and going to a folded text from the Library or search opens it.</li>
@@ -593,7 +591,7 @@
           </ul>
           It changes straight away and keeps your place.</li>
         <li><b>Text size</b> (A− / A+ / ↺ to reset).</li>
-        <li><b>Text font:</b> how the texts look on screen. <b>Standard</b> (clean, already on your phone), <b>Classic</b> (book style, like a printed pothi), <b>Bold</b> (strong strokes, good in low light) or <b>Handwritten</b>. A new font downloads once when you pick it and then works offline. The Atharvashirsha keeps its Sanskrit lettering. The printout has its own font (see Print).</li>
+        <li><b>Text font:</b> how the texts look, on screen and in print. <b>Traditional</b> (book style, like a printed pothi; the Vedic chants in its Sanskrit lettering), <b>Modern</b> (clean and simple) or <b>Bold</b> (heavier strokes, easy to read in low light or from a distance). All three draw the Vedic swara marks. Bold downloads once when you pick it and then works offline.</li>
         <li><b>Dhrupad:</b> the refrain once at the top, or after every verse (the same as Dhrupad under <b>Aa</b> in the bottom bar). The printout has its own choice.</li>
         <li><b>Layout</b> (wide screens only): one or two columns of stanzas.</li>
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
@@ -607,7 +605,7 @@
       <ul>
         <li><b>What to print:</b> the Library's texts by category, each with a tick and the pages it takes, a search box, and <b>Select all</b> or <b>Clear</b> for a category or for everything. The <b>Today</b> tab has today's sessions from your routine and <b>All of today</b>: one tap ticks exactly those texts. The <b>Routine</b> tab prints a routine: pick whose (when more than one person reads on this phone), <b>Whole week</b> or <b>One day</b> (today at first), and the days and sessions to include. It lists each text once, in routine order, with when it is said ("Daily · Morning, Evening"). The tab on show is what prints.</li>
         <li><b>Print this text</b> (⋯ More, while you read) and <b>Print this session</b> (on Home) open Print with just those texts ticked, at How to print.</li>
-        <li><b>How to print:</b> the <b>Language</b> (the original, English, or Both), the <b>Dhrupad</b> (Once or Every verse), the <b>Page</b> (Portrait or Landscape; Both always prints side by side on Landscape) and the <b>Print font</b>. <b>Best</b> picks for each text: Classic for the aartis and ashtaks, and the Sanskrit lettering with its swara marks for the Vedic chants. These start as you read, are remembered for your next printout, and leave the reading page as it is. Then tap <b>Print</b>.</li>
+        <li><b>How to print:</b> the <b>Language</b> (the original, English, or Both), the <b>Dhrupad</b> (Once or Every verse), the <b>Page</b> (Portrait or Landscape; Both always prints side by side on Landscape) and the <b>Print font</b>: the same three as Text font (Traditional, Modern or Bold). These start as you read, are remembered for your next printout, and leave the reading page as it is. Then tap <b>Print</b>.</li>
         <li><b>Preview and paper:</b> beside these, a small picture shows the first page as it will print. Under it is the paper: Letter in the US, Canada, Mexico and the Philippines, A4 elsewhere; tap <b>Use A4</b> or <b>Use Letter</b> to change it (in Safari, pick the same paper in its print dialog too).</li>
         <li><b>The printout:</b> each text starts on a new page, as large as its pages allow; in one language a long aarti or ashtak may go into two columns to fit one page, and the Vedic chants run on as paragraphs. More than one text gets a contents page with the page each starts on. A routine's first page has your name and the month, the week at a glance (each day's texts by their numbers) and the contents, and each text's title has a small line saying when it is said.</li>
         <li><b>Safari:</b> for Landscape, also choose Landscape in Safari's print dialog, or the printout comes out small; on a Mac, Chrome prints it best. On an iPhone, if it asks, tap <b>Ready: Print now</b>. The Home Screen app on an iPhone can't print: tap <b>Open in Safari</b> (or <b>Copy link</b> and paste it into Safari), and your choices go with it.</li>

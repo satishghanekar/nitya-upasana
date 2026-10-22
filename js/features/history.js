@@ -255,8 +255,8 @@ export function homeView(on) {
   }
 }
 
-// The text being read (.solo on its piece): the page shows only that one text, on every screen (css/10-today.css),
-// with the card at its end (js/features/end-card.js); ‹ Prev / Next ›, the card or the side menu change it. Set
+// The text being read (.solo on its piece): the page shows only that one text, on every screen (css/10-today.css);
+// ‹ Prev / Next › in the bottom bar or the side menu change it. Set
 // wherever the page goes to a piece: jumpTo(), Back, and start-up (js/core/startup.js). Another address (Home)
 // leaves it where it was.
 /** @param {string} id  the piece's id (a3) */
@@ -266,7 +266,11 @@ export function solo(id) {
   [].forEach.call(document.querySelectorAll(".ash.solo"), function (/** @type {HTMLElement} */ x) {
     if (x !== el) x.classList.remove("solo");
   });
+  if (el.classList.contains("solo")) return;
   el.classList.add("solo");
+  // another text is being read: the bottom bar names where ‹ Prev / Next › go from it now, even when the page did not
+  // scroll (js/features/bottom-bar.js)
+  document.dispatchEvent(new CustomEvent("nitya-solo"));
 }
 
 // Scrolling up from a piece back to Home: once the Morning / Afternoon / Evening switch is on screen, Home is on its

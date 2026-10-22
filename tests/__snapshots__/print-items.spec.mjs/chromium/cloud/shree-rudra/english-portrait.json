@@ -1,13 +1,13 @@
 {
  "pages": 9,
- "pt": 14,
- "size": 0.93,
- "zoom": 0.93,
+ "pt": 15,
+ "size": 1,
+ "zoom": 1,
  "lines": 0,
  "resized": 0,
  "wrapped": 0,
  "brokeMidPhrase": 0,
  "outOfStep": 0,
- "lowFill": 1,
+ "lowFill": 0,
  "tall": 29
 }

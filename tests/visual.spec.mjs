@@ -77,10 +77,12 @@ const CASES = [
   ["aarti-high-contrast", "phone", { ...SETUPS.marathi, hc: 1 }, goTo("a1")],
   ["home-dark", "phone", { ...SETUPS.marathi, th: "dark" }],
   ["home-sepia-desktop", "desktop", { ...SETUPS.marathi, th: "sepia" }],
-  // text fonts
-  ["font-classic", "phone", { ...SETUPS.both, fnt: "classic" }, goTo("a1")],
+  // text fonts (Traditional, the default, is in every other screenshot)
+  ["font-modern", "phone", { ...SETUPS.both, fnt: "std" }, goTo("a1")],
   ["font-bold", "phone", { ...SETUPS.both, fnt: "bold" }, goTo("a1")],
-  ["font-hand", "phone", { ...SETUPS.both, fnt: "hand" }, goTo("a1")],
+  ["font-vedic-traditional", "phone", { ...SETUPS.marathi }, goTo("p1")],
+  ["font-vedic-modern", "phone", { ...SETUPS.marathi, fnt: "std" }, goTo("p1")],
+  ["font-vedic-bold", "phone", { ...SETUPS.marathi, fnt: "bold" }, goTo("p1")],
   // folds: a folded text shows only its title
   ["folded-sections", "phone", { ...SETUPS.marathi, af: ["a1", "a2"] }, goTo("a1")],
   // overlays

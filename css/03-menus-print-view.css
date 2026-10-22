@@ -498,9 +498,10 @@ h2[tabindex="-1"]:focus {
 }
 /* The print font as tiles (mockup 1): a word of the text in each font over its name, Best across the top; the chosen
    one outlined in the accent colour (filled, the word would lose its look) */
+/* the three fonts of Settings → Text font, side by side */
 .prrow #prfn {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   padding: 0;
   background: none;
@@ -516,9 +517,6 @@ h2[tabindex="-1"]:focus {
   background: var(--bg);
   color: var(--ink);
   text-align: start;
-}
-#prfn button[data-v="best"] {
-  grid-column: 1 / -1;
 }
 #prfn button[aria-pressed="true"] {
   border-color: var(--accent);
@@ -1414,7 +1412,6 @@ span.prwho {
   }
 
   #pv .pvs[data-sid="p1"] .mr p {
-    font-family: "Tiro Devanagari Sanskrit", "Noto Serif Devanagari", var(--body);
     line-height: 1.9;
   }
 }
@@ -1468,9 +1465,6 @@ span.prwho {
   }
   #pv .pvside tr.rfl td.pve {
     font-size: 0.73em;
-  }
-  #pv .pvs[data-sid="p1"] td.pvm {
-    font-family: "Tiro Devanagari Sanskrit", "Noto Serif Devanagari", var(--body);
   }
   #pv .pvside td.mr,
   #pv .pvside td.en {
