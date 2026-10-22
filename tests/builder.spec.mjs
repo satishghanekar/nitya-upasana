@@ -127,7 +127,6 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await page.locator("#rbk").click();
   await page.locator("#tss-morning").click();
   expect(await homeIds(page)).toEqual(["ghalin-lotangan", "sukhkarta"]);
-  await expect(page.locator("#tst")).toHaveText("Start: Ghalin Lotangan");
   // the evening is as it was
   await page.locator("#tss-evening").click();
   await expect(rows(page)).toHaveCount(10);

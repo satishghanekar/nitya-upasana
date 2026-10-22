@@ -153,8 +153,8 @@ test("a session being read: Print this session prints the texts in full @chromiu
   await stubPrint(page);
   await useTestRoutine(page);
   await openSite(page, SETUPS.marathi);
-  // read the Morning session to its end (Next after its last text comes back Home, the session still marked)
-  await page.locator("#tst").click();
+  // read the Morning session from its first title to its end (Next after its last text comes back Home, the session still marked)
+  await page.locator("#tsl a.tgo").first().click();
   await expect(page.locator("html")).toHaveAttribute("data-run", "1");
   await page.locator("#asn").click();
   await expect(page.locator("#tsn")).toHaveText("1 of 1 done");

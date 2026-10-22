@@ -4,7 +4,7 @@
 import { onPiece, root } from "../core/page.js";
 import { P, setLead } from "../core/state.js";
 import { skLang } from "./sankashti.js";
-import { todayLang } from "./today-card.js";
+import { markNow, todayLang } from "./today-card.js";
 import { calLang } from "./vedic-calendar.js";
 import { libLang } from "./library.js";
 import { autoFs, pullSoon } from "../text/autofit.js";
@@ -96,7 +96,7 @@ export function tuckHold() {
   tuck(false);
 }
 
-// Highlight the current piece in the menus; update the progress line
+// Highlight the current piece in the Library and in Home's list; update the progress line
 export function mark() {
   var c = cur();
   // On the home page (no piece at the top yet): Language and Dhrupad step aside in the top bar, and
@@ -123,13 +123,10 @@ export function mark() {
   if (tkt.textContent !== tt) tkt.textContent = tt;
   tkt.lang = en ? "en" : SCR.k || "mr";
   bt0.setAttribute("data-tl", en ? "en" : "mr");
-  [].forEach.call(document.querySelectorAll("#jump a,#rail a"), function (a) {
-    var g = a.getAttribute("data-go"),
-      on = c ? g === c.id : g === "home" && !!a.closest("#rail");
-    a.classList.toggle("on", on);
-    if (on && a.closest("#rail")) a.setAttribute("aria-current", "true");
-    else a.removeAttribute("aria-current");
+  [].forEach.call(document.querySelectorAll("#jump a"), function (a) {
+    a.classList.toggle("on", !!c && a.getAttribute("data-go") === c.id);
   });
+  markNow(c);
   var pg = document.getElementById("prog");
   if (pg) {
     var dh = document.documentElement.scrollHeight - innerHeight;
@@ -186,7 +183,7 @@ function leadSet() {
   else root.removeAttribute("data-lead");
   setLead(L);
   // (checked every time: the contents lists are built after the first call)
-  leadOrder(document.querySelectorAll(".wrap .verse, .wrap .ash header h2, #jl ol.toc .m, #jl .gh, #rail ul a, #rail .rg"), L);
+  leadOrder(document.querySelectorAll(".wrap .verse, .wrap .ash header h2, #jl ol.toc .m, #jl .gh"), L);
 }
 
 // Each of els with its two languages in the order L ("en": English first): the page, or a printout's copy of the
@@ -215,7 +212,7 @@ export function apply() {
   if (P.th === "auto") root.removeAttribute("data-pref");
   else root.setAttribute("data-pref", P.th);
   // Text language on the pieces and the printout; menu language on the bar, menus, home page and dialogs
-  [].forEach.call(document.querySelectorAll(".wrap > .ash,#pv,#jl,#rail"), function (e) {
+  [].forEach.call(document.querySelectorAll(".wrap > .ash,#pv,#jl"), function (e) {
     e.setAttribute("data-lang", P.lang);
   });
   [].forEach.call(document.querySelectorAll(".bar,#shr,#asc,#none,.libhd,#panel,#home > *,#qrm,#prm,#inm,#rsh,#szt,#szr,#fl"), function (e) {

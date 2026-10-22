@@ -22,8 +22,8 @@ test("from the Library only the text opened is on the page, with Next and Previo
   await openSite(page, SETUPS.marathi);
   await readText(page, "a3");
   expect(await shown(page)).toEqual(["a3"]);
-  // Home is not above it
-  await expect(page.locator("#home")).toBeHidden();
+  // Home is not above it (on wide screens its column is beside the text, out of the page's flow)
+  expect(await page.locator("#home").evaluate((h) => getComputedStyle(h).display === "none" || getComputedStyle(h).position === "fixed")).toBe(true);
   const next = card(page).locator('[data-ec="next"]'),
     prev = card(page).locator('[data-ec="prev"]');
   await expect(next).toContainText("Next");
@@ -55,7 +55,7 @@ test("the first text in the Library has no Previous; the last has no Next", asyn
 test("in a session the card says where you are, and Done · next ticks the text and opens the next one @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await rows(page).nth(0).locator("input").check();
-  await page.locator("#tst").click();
+  await rows(page).nth(1).locator("a.tgo").click();
   await expect.poll(() => shown(page)).toEqual(["a2"]);
   await expect(card(page).locator(".ecpos")).toHaveText("Evening session · 2 of 10");
   await expect(card(page).locator(".ecpips i")).toHaveCount(10);
@@ -73,7 +73,7 @@ test("in a session the card says where you are, and Done · next ticks the text 
 
 test("on the session's last text, Done goes back to Home and ticks it @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
-  await page.locator("#tst").click();
+  await rows(page).nth(0).locator("a.tgo").click();
   await expect.poll(() => shown(page)).toEqual(["p1"]);
   await expect(card(page).locator(".ecpos")).toHaveText("Morning session · 1 of 1");
   await expect(card(page).locator('[data-ec="prev"]')).toHaveCount(0);
@@ -88,7 +88,7 @@ test("on the session's last text, Done goes back to Home and ticks it @mobile", 
 
 test("Marathi menus: the card speaks Marathi", async ({ page }) => {
   await openSite(page, SETUPS["marathi-menus"], { now: EVENING });
-  await page.locator("#tst").click();
+  await rows(page).nth(0).locator("a.tgo").click();
   await expect(card(page).locator(".ecpos")).toHaveText("सायंकाळ · १० पैकी १");
   await expect(card(page).locator('[data-ec="next"]')).toContainText("झाले · पुढील");
   await expect(card(page)).toHaveAttribute("lang", "mr");
@@ -106,7 +106,7 @@ test("Home has no end card, and Back from a text shows Home again", async ({ pag
 
 test("the card's buttons have a 44px target and a name @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await page.locator("#tst").click();
+  await rows(page).nth(0).locator("a.tgo").click();
   await page.locator('#endc [data-ec="next"]').waitFor();
   const sizes = await page.locator("#endc button").evaluateAll((bs) => bs.map((b) => [b.getBoundingClientRect().height, b.textContent.trim().length]));
   for (const [h, n] of sizes) {
@@ -117,7 +117,7 @@ test("the card's buttons have a 44px target and a name @mobile", async ({ page }
 
 test("axe: the end of a text in a session, every theme @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await page.locator("#tst").click();
+  await rows(page).nth(0).locator("a.tgo").click();
   await page.locator('#endc [data-ec="next"]').scrollIntoViewIfNeeded();
   expect(await axeEveryTheme(page, "#endc")).toEqual(noViolations());
 });
