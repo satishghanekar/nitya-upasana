@@ -16,7 +16,7 @@ What a reader sees and can do is described in the site's own **Help** (⋯ More 
 - **Vedic calendar** (panchang): tithi, nakshatra, yoga, sunrise, sunset, moonrise, month and samvatsara for the reader's place, a month view, and 25 Maharashtrian festivals, all worked out on the phone.
 - **Routine builder:** each person's texts for each session, the same every day or by weekday. A new person follows `content/routines.json`.
 - **People on one phone:** up to eight profiles, each with their own settings, routine and ticks, and `.nitya` backup files to save and restore them.
-- **Print:** a print builder (what to print, then how: language, dhrupad, page, font, paper, with a preview of the first page) that makes a printout or PDF of any texts, a session or the whole Library. Each text is sized to its pages, with a contents page when more than one text is printed.
+- **Print:** a print builder (what to print, then how: language, dhrupad, page, font, paper, with a preview of the first page) that makes a printout or PDF of any texts, a session, a person's routine (the whole week or one day) or the whole Library. Each text is sized to its pages, with a contents page when more than one text is printed. A routine prints each text once, in routine order, with a week-at-a-glance page and a tag on each text saying when it is said ("Daily · Morning, Evening").
 - **Share** (a ready message with the link and the next Sankashti), a **QR** code of the site, and **Add to Home Screen** help for every phone and browser.
 
 ## What is in this repository

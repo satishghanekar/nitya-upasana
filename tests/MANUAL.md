@@ -6,7 +6,7 @@ Automation covers the engines (Chromium, Firefox, WebKit) and emulated phones an
 
 | Device | Browser | Check |
 |---|---|---|
-| iPhone (current iOS) | Safari | Open, Add to Home Screen, open from the icon, turn on Airplane mode and reopen. Print (⋯ More) → pick a few texts → Save as PDF in Portrait and in Landscape; the contents numbers match. From the Home Screen app, Print goes to Open in Safari, and the choices carry over. |
+| iPhone (current iOS) | Safari | Open, Add to Home Screen, open from the icon, turn on Airplane mode and reopen. Print (⋯ More) → pick a few texts → Save as PDF in Portrait and in Landscape; the contents numbers match. From the Home Screen app, Print goes to Open in Safari, and the choices carry over (a Routine printout too: page 1 shows the week at a glance). |
 | iPhone with a notch or Dynamic Island | Safari | **Pinch** (the tests can only simulate it in Chromium): on a verse the text grows and shrinks and the page never zooms; on Home nothing happens; the size bubble and then Default size appear below the top bar, also at the very end of a piece, and Default size can be tapped. Turn the phone sideways: Help's ✕, the picture's ✕ and the bottom bar buttons are clear of the notch, and Home is in two columns. |
 | iPhone | WhatsApp link preview and in-app viewer | The preview shows the picture and title; the page opens and reads. |
 | Older iPad or iPhone on iOS 15 | Safari | Home, the session switch and ticks, Settings switches (on/off visible), the calendar and the search highlight all show their colours. |
