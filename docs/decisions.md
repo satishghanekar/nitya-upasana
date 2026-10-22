@@ -435,7 +435,9 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - Page counts barely change: the whole Library in one language takes 5 pages fewer to 1 more, side by side 0 to 1
   fewer (Safari's plan for English: 4 more).
 - **Lines left-aligned:** v1.20.7 centred an aarti's block on the page but its lines stayed centred each (the screen's
-  style), not left-aligned inside the block as agreed. They now start level.
+  style), not left-aligned inside the block as agreed. They now start level, with the dhrupad at the top and the
+  "↻ ध्रुपद" notes (Satish: the first try, with those still centred, looked misaligned); the dhrupad's bar hangs
+  just left of the shared edge.
 - The tests print the Library's texts in the default font (Best), and the hard cases in each of the other four
   (`pfn`); the whole-Library cases are now named `-best-`.
 
