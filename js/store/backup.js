@@ -1,6 +1,5 @@
 // @ts-check
-// The backup file (.nitya, docs/architecture.md §3.7): plain JSON with a SHA-256 checksum of its contents (Q10 in
-// docs/decisions.md), holding every person on this phone with their settings, their routine (from version 1.9; a
+// The backup file (.nitya): plain JSON with a SHA-256 checksum of its contents, holding every person on this phone with their settings, their routine (from version 1.9; a
 // file without one leaves that person on the default routine) and today's ticks, and the device's
 // settings. Pure (no page, no storage): writing a file, reading one back with every check, saying what a restore
 // would change, and when to remind about a backup. Unit-tested in tests/unit/backup.test.mjs; js/features/backup.js

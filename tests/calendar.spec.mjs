@@ -1,4 +1,4 @@
-// The Vedic calendar (docs/decisions.md, 2026-10-19): one line on Home under the date, and the calendar page it opens
+// The Vedic calendar: one line on Home under the date, and the calendar page it opens
 // (day card and month), worked out on the phone by js/core/panchang.js. The clock is fixed at Sunday 18 October 2026,
 // 7 pm in Columbus (the browser's time zone is America/New_York, whose default place is Columbus, OH).
 // Expected values: the panchang engine, checked against the Swiss Ephemeris in tests/unit/panchang.test.mjs.

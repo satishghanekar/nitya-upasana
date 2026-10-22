@@ -1,10 +1,10 @@
 // @ts-check
-// Home (Home v2, approved by Satish 2026-10-18; Home v3 option A, 2026-10-20; docs/decisions.md): what to chant now.
+// Home: what to chant now.
 // The time-of-day picture with today's weekday star (js/features/day-picture.js) beside today's date in Marathi and
 // English; a Morning | Afternoon | Evening switch (#tss, tabs: arrow keys move between them, Enter or Space picks),
 // opened at the session for the time now; a session with nothing set today is greyed ("Nothing set", aria-disabled,
 // still focusable, and picking it shows the empty state with Add texts); the picked session's texts, each with a tick
-// and its title; Start / Continue, pinned to the bottom of the screen on phones; and "Another text? Open the Library"
+// and its title (a title starts the session there); Print this session (#tspr); and "Another text? Open the Library"
 // (#tlibb, as the top bar's book button). App, Share, QR, Print and Help are under More (⋯) in the top bar
 // (js/features/more-menu.js). Every text, with search, is in the Library (#jump, js/features/contents-list.js);
 // the reading page's pieces are not shown under Home (data-hv, js/features/history.js).
@@ -15,7 +15,7 @@
 // js/text/load.js; which texts a session has and the walk through it: js/core/routine.js; the ticks, kept on this
 // device for today only, per person (in their profile, js/store/store.js): js/core/ticks.js. Titles are always the
 // library's, never typed here. Switching person re-draws the list with their ticks (profileChanged()).
-// Reading a session: Start / Continue (or a title in the list) opens the text in the reading page, and while the
+// Reading a session: a title in the list opens the text in the reading page, and while the
 // reader is on a text of that session, ‹ Prev and Next › in the bottom bar follow the session (sessionStep(), read by
 // js/features/bottom-bar.js); Next after the last text comes back here.
 // Changing the routine: "Edit" beside the session's heading (#tsed), and "Add texts" when a session is empty (#tsea),
@@ -122,7 +122,7 @@ var bySec = {};
 // clock; a new day starts again from the clock
 /** @type {{ session: Session | null }} */
 var pick = { session: null };
-// The session being read (Start / Continue), so Prev and Next follow it
+// The session being read (started from a title in the list), so Prev and Next follow it
 /** @type {Run | null} */
 var run = null;
 var shownToday = "",
@@ -191,7 +191,7 @@ function titleOf(id) {
   return !t ? "" : P.ui === "mr" ? scr(t.title) : t.titleEn;
 }
 
-// Draw the date, the session switch, the session's texts with their ticks, Start / Continue, More and the Library line
+// Draw the date, the session switch, the session's texts with their ticks, Print this session and the Library line
 export function render() {
   var c = current(),
     w = words(),
@@ -315,7 +315,7 @@ function openText(id) {
 }
 
 /**
- * While a session is being read (Start, or a text of the list), the reading page shows only that session's texts
+ * While a session is being read (started from a text of the list), the reading page shows only that session's texts
  * (data-run on <html>, .inrun on each of its pieces: css/10-today.css), not the whole Library; going to a text another
  * way (the Library, search, the side menu) leaves the session and shows every piece again.
  */

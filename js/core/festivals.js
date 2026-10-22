@@ -1,6 +1,6 @@
 // @ts-check
 // Festival days (सण) for the Vedic calendar, worked out on this device from the rules in content/festivals.json
-// (Satish said yes to marking festivals such as Dasara, 2026-10-19; docs/decisions.md). Pure functions, no page:
+// (Satish said yes to marking festivals such as Dasara, 2026-10-19). Pure functions, no page:
 // the list is passed in (js/text/load.js fetches the file; the unit tests read it), so tests/unit/festivals.test.mjs
 // runs them in Node.
 //

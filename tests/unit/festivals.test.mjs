@@ -1,4 +1,4 @@
-// Festival days (js/core/festivals.js, rules in content/festivals.json; docs/decisions.md 2026-10-19).
+// Festival days (js/core/festivals.js, rules in content/festivals.json).
 // Expected dates: Maharashtra (Pune, IST) as Kalnirnay / Drik Panchang print them, each also worked through by hand from
 // the engine's tithi times (which agree with the Swiss Ephemeris within a minute or two; see panchang.test.mjs). The
 // tithi times in the comments are IST from the Swiss Ephemeris (Lahiri).

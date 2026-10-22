@@ -1,5 +1,5 @@
 // @ts-check
-// People on this phone (docs/architecture.md slice 2, mockup A): the profile chip in the top bar (#who: round badge
+// People on this phone: the profile chip in the top bar (#who: round badge
 // and name) opens the profile sheet (#pfm), where a tap on a person switches to them, and Add a person / Edit (name,
 // badge letters, colour, Delete with a confirmation, never the last person) keep the list. Settings → Who is reading
 // opens the same sheet. Each person keeps their own text size, languages, English style, font, dhrupad, theme and

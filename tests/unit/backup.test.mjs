@@ -1,4 +1,4 @@
-// The backup file (.nitya, docs/architecture.md §3.7, Q10: plain JSON with a checksum): SHA-256 against known
+// The backup file (.nitya: plain JSON with a checksum): SHA-256 against known
 // answers and Node's own, a file written and read back unchanged, every way a file is refused (not JSON, not ours,
 // newer, damaged), what a restore would change, the file's name, and when the reminder shows.
 import { createHash } from "node:crypto";

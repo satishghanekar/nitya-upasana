@@ -4,7 +4,7 @@
 // js/features/day-picture.js puts the answer on the page.
 //
 // The pictures are Satish's: ॐ, a palm-leaf book and a rosary under an arch of seven stars, one for each
-// weekday (र सो मं बु गु शु श = Sunday … Saturday). They follow the default sessions (docs/decisions.md):
+// weekday (र सो मं बु गु शु श = Sunday … Saturday). They follow the default sessions:
 // Morning before 12:00 → sunrise, Afternoon 12:00–17:00 → midday, Evening from 17:00 → sunset.
 // The time is the phone's own clock and time zone.
 
