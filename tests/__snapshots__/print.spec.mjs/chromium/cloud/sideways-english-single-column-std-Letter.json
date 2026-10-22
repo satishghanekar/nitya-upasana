@@ -1,5 +1,5 @@
 {
- "pages": 81,
+ "pages": 75,
  "contents": {
   "p1": 3,
   "shree-rudra": 6,
@@ -25,18 +25,18 @@
   "svastha-karin-shayan": 55,
   "ovaloo-sapreme-aarti": 56,
   "sadguru-padukashtak": 57,
-  "ananyata-maj-ghado": 59,
-  "anudin-anutapen": 64,
-  "ashtak-monday": 67,
-  "ashtak-tuesday": 68,
-  "ashtak-wednesday": 70,
-  "ashtak-thursday": 72,
-  "ashtak-friday": 74,
-  "ashtak-saturday": 75,
-  "ashtak-sunday": 76,
-  "haachi-subodh": 78,
-  "brahmachaitanya-sarikha": 80,
-  "swami-majha-pahila": 81
+  "ananyata-maj-ghado": 58,
+  "anudin-anutapen": 63,
+  "ashtak-monday": 65,
+  "ashtak-tuesday": 66,
+  "ashtak-wednesday": 67,
+  "ashtak-thursday": 68,
+  "ashtak-friday": 69,
+  "ashtak-saturday": 70,
+  "ashtak-sunday": 71,
+  "haachi-subodh": 72,
+  "brahmachaitanya-sarikha": 74,
+  "swami-majha-pahila": 75
  },
  "tall": [
   "p1:0",

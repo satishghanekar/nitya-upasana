@@ -291,8 +291,19 @@ export async function printText(browser, { id, prefs, mode, paper, locale, save 
       // the text's piece on the page (its id there: "a3", "p1"…)
       sids: window.CONTENT.categories.flatMap((g) => g.pieces).filter((p) => p.text === id).map((p) => p.id),
       zoom: s ? Number(s.style.zoom || 1) : 0,
-      // the size of its first column's lines before the page plan's zoom, in points (js/print/fit.js)
-      pt: s ? Number(s.getAttribute("data-pt") || 0) : 0,
+      // in two columns (js/features/print.js twoCols), and how many lines run past their column's right edge there
+      cols: s && s.classList.contains("pvtwo") ? 2 : 1,
+      past: [...document.querySelectorAll("#pv .pv2c")].reduce((n, c) => {
+        const edge = c.getBoundingClientRect().right + 1,
+          r = document.createRange();
+        return n + [...c.querySelectorAll(".verse p")].filter((p) => {
+          r.selectNodeContents(p);
+          return r.getBoundingClientRect().right > edge;
+        }).length;
+      }, 0),
+      // the size of its first column's lines before the page plan's zoom, in points (js/print/fit.js; data-pt is set
+      // against the Devanagari steps, so English's is its own size over its steps)
+      pt: s ? Number(s.getAttribute("data-pt") || 0) * Number(s.getAttribute("data-steps") || 1) : 0,
       split: c && c.style.width ? parseFloat(c.style.width) : null,
     };
   }, id);
