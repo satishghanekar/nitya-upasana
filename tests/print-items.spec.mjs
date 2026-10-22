@@ -11,7 +11,8 @@
 //   - every unbroken block sits on one page and was printed, every page has its footer, every English line is there
 //   - no line is lost and none runs past its column (the print audit, print-audit-helpers.mjs)
 //   - nothing is set smaller than the fitting allows
-//   - its pages, size, column split and audit counts match its saved result (__snapshots__/print-items.spec.mjs/)
+//   - in two columns, no line runs past its column
+//   - its pages, size, columns, column split and audit counts match its saved result (__snapshots__/print-items.spec.mjs/)
 //
 // The tests are generated from content/library.json, so a new text gets its tests, and the first run saves its result
 // (look at its PDF once: SAVE_PDFS=1 keeps it in tests/pdfs/). Every test is tagged @text:<id>, so one text's tests
@@ -69,14 +70,16 @@ for (const c of CASES) {
     const which = (kind) => kind + ": " + a.findings.filter((f) => f.kind.startsWith(kind)).slice(0, 12).map((f) => `\n  ${f.lines || ""} ${f.text}`).join("");
     expect(a.missing, which("text missing")).toBe(0);
     expect(a.overflow, which("runs past its column")).toBe(0);
+    expect(r.past, "lines running past their column in two columns").toBe(0);
     const size = Math.round((a.smallest / 100) * r.zoom * 100) / 100;
     expect(size, "the smallest line's size against its size before fitting").toBeGreaterThanOrEqual(SMALLEST - 0.005);
     const result = {
       pages: r.pdf.pages.length,
-      // its first column's size as printed, in points (Latin's against the Devanagari steps: SCRIPTS in profiles.js)
+      // its first column's size as printed, in points
       pt: Math.round(r.pt * r.zoom * 10) / 10,
       size,
       zoom: r.zoom,
+      ...(r.cols === 2 ? { cols: 2 } : {}),
       ...(r.split ? { split: r.split } : {}),
       lines: a.lines,
       resized: a.resized,

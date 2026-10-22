@@ -760,8 +760,34 @@ h2[tabindex="-1"]:focus {
   #pv[data-lang="en"] .pvtoc h3 {
     font-family: var(--lat);
   }
-  :root[data-print="one"] #pv .verse {
-    text-align: center;
+  /* Aartis and ashtaks in one language are centred on the page as a whole (Satish, 2026-10-21): the block of stanzas
+     sits in the middle, as wide as its longest line, and its lines start level with each other, as in a printed aarti
+     book. Vedic texts (pvved) run full width, as paragraphs. */
+  :root[data-print="one"] #pv .pvs:not(.pvved):not(.pvtwo) {
+    width: -webkit-fit-content;
+    width: fit-content;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Two columns (a long aarti or ashtak: js/features/print.js twoCols): the title across the top, then each page's
+     stanzas down the left column and on down the right, with a thin rule between (LAYOUT.cols.gap: 10mm) */
+  #pv .pv2p {
+    display: flex;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .wk #pv .pv2p {
+    width: 100%;
+  }
+  #pv .pv2c {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  #pv .pv2c + .pv2c {
+    margin-left: 5mm;
+    padding-left: 5mm;
+    border-left: 0.5pt solid #bbb;
   }
   #pv .pvk > table {
     margin-bottom: 0;

@@ -1,8 +1,9 @@
 {
- "pages": 2,
- "pt": 20,
- "size": 1.41,
- "zoom": 1.412,
+ "pages": 1,
+ "pt": 10.1,
+ "size": 0.84,
+ "zoom": 0.84,
+ "cols": 2,
  "lines": 40,
  "resized": 0,
  "wrapped": 0,
