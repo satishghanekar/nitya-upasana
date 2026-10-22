@@ -64,6 +64,7 @@ There is no build step: the browser loads these files as they are.
 | `features/help.js` | Help: opens over the page; the phone's Back button closes it |
 | `print/profiles.js` | Print typography: per script, how far print may adjust a line's size; the side-by-side column range; the pop-up's default page (`CHOICE`) (no `init()`: read by `print/fit.js`) |
 | `print/compose.js` | The pieces to print, built from `CONTENT` (`renderPiece` in `render.js`) with the page's own start-up steps run on that copy (`SCR.el`, `englishStyle`, `gridItems`, `markTappable`, `numberStanzas`, `breakLines`, `leadOrder`), so print never copies the reading page; `compose(ids)` builds just those texts (no `init()`: called by `features/print.js`) |
+| `print/what.js` | The print builder's What step: the Library's texts by category with ticks, search, Select all / Clear, each text's pages and the total (no `init()`: created by `features/print.js`) |
 | `print/fit.js` | Print layout: sets each stanza's size (and side by side, the column widths) so lines stay whole and in step (no `init()`: called by `features/print.js`) |
 | `features/print.js` | Print |
 | `features/share.js` | Share, QR code and the Add to Home Screen buttons |

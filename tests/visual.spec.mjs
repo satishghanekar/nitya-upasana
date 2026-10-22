@@ -103,8 +103,17 @@ const CASES = [
   ["calendar-wide", "wide", SETUPS.marathi, calendar],
   ["help-phone", "phone", SETUPS.marathi, (p) => tapMore(p, "#hlpb")],
   ["qr-phone", "phone", SETUPS.marathi, (p) => tapMore(p, "#qrb")],
-  ["print-dialog", "phone", SETUPS.marathi, (p) => tapMore(p, "#prb")],
+  // the print builder: What (with each text's pages, once laid out), How, and both side by side on a computer
+  ["print-dialog", "phone", SETUPS.marathi, printBuilder],
+  ["print-how-phone", "phone", SETUPS.marathi, async (p) => (await printBuilder(p), p.locator("#prnx").click())],
+  ["print-builder-desktop", "desktop", SETUPS.marathi, printBuilder],
 ];
+
+// Print, open at What once the page counts are in
+async function printBuilder(p) {
+  await tapMore(p, "#prb");
+  await expect(p.locator("#prsum span").nth(1)).toHaveText(/\d/, { timeout: 20_000 });
+}
 
 for (const [name, size, prefs, prep, now] of CASES) {
   test(`screenshot ${name} @chromium-only`, async ({ browser }) => {

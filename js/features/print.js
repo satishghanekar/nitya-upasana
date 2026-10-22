@@ -11,6 +11,8 @@ import { focusBack } from "./more-menu.js";
 import { FEAT_SW } from "../core/features.js";
 import { CHOICE } from "../print/profiles.js";
 import { compose } from "../print/compose.js";
+import { createWhat, whatWords } from "../print/what.js";
+import { shelvesNow } from "./library.js";
 
 export function init() {
   // Print: single column (as on screen; running paragraphs for a prose piece in one language), or, with both
@@ -146,9 +148,10 @@ export function init() {
     }
     // Build the print view (#pv): contents, then every piece in the text language, from a copy of the pieces made
     // for it (js/print/compose.js), so whatever the reading page has folded or hidden is printed in full.
-    // mode: "one" (one column) or "side" (Marathi and English side by side). What is printed: sel
-    function build(mode) {
-      var src = compose(sel);
+    // mode: "one" (one column) or "side" (Marathi and English side by side). ids: the texts printed (their Library
+    // ids), or null for every text
+    function build(mode, ids) {
+      var src = compose(ids);
       try {
         build2(mode, src);
       } finally {
@@ -352,8 +355,9 @@ export function init() {
     var LTR = /-(US|CA|MX|PH)$/i.test(navigator.language || ""),
       PAPER = LTR ? [215.9, 279.4] : [210, 297], // upright, in mm
       pcache = {}, // page plans laid out ahead, by pkey()
-      // the texts to print (their Library ids), or null for the whole Library. Only a print link sets it so far
-      // (?print=…&t=…, read in js/render.js), for one printout: it is put back to null when that printout is done
+      // the texts being printed (their Library ids), or null for the whole Library: what the builder's What step
+      // has ticked (chosen()), set as Print is tapped, for that printout only. It is put back to null when the printout
+      // is done, so the browser's own Print menu prints the whole Library
       /** @type {string[] | null} */
       sel = null;
     // The pop-up's two choices, Portrait and Landscape, for what is printed (CHOICE in js/print/profiles.js):
@@ -394,9 +398,59 @@ export function init() {
       root.setAttribute("data-font", P.fnt);
       root.setAttribute("data-ref", String(P.ref));
     }
-    function pkey(mode) {
-      return [mode, P.lang, LEAD, pref(), P.tr, P.ui, pfn(), land(mode), sel ? sel.join(",") : ""].join("|");
+    // the page plan's key: the layout, the choices that change it, and the texts (null: every text)
+    /** @param {string} mode @param {string[] | null} ids */
+    function pkey(mode, ids) {
+      return [mode, P.lang, LEAD, pref(), P.tr, P.ui, pfn(), land(mode), ids ? ids.join(",") : ""].join("|");
     }
+    // ---- The print builder (print redesign P4, mockup 1): What (js/print/what.js), then How (the rows below) ----
+    // On a phone one step at a time (data-step on #prm: Next, and ‹ What to print back); from 760px side by side
+    // (css/03-menus-print-view.css). The bottom bar keeps the running total and Next or Print.
+    var what = createWhat(/** @type {HTMLElement} */ (document.getElementById("prwl")), {
+        shelves: shelvesNow,
+        onChange: function () {
+          summary();
+        },
+      }),
+      bnx = document.getElementById("prnx"),
+      wide = window.matchMedia ? matchMedia("(min-width: 760px)") : null;
+    // the texts ticked (their Library ids), or null for every text
+    function chosen() {
+      return what.pick();
+    }
+    // each text's pages in the whole Library's plan as the Print button prints it (laid out ahead: warm)
+    function counts() {
+      var pg = pcache[pkey(dm(), null)];
+      what.counts(pg ? pg.n : null, pg ? pg.toc : 1);
+      summary();
+    }
+    // the bottom bar: "5 texts · ~8 pages", or that a text must be picked (Next and Print wait for one)
+    function summary() {
+      var w = whatWords(),
+        t = what.total(),
+        el = document.getElementById("prsum");
+      el.textContent = "";
+      el.lang = P.ui === "mr" ? "mr" : "en";
+      var a = document.createElement("span"),
+        b = document.createElement("span");
+      a.textContent = t.texts ? w.texts(t.texts) : w.pick;
+      b.textContent = t.texts && t.pages ? w.pages(t.pages) : "";
+      el.appendChild(a);
+      el.appendChild(b);
+      bpr.disabled = bnx.disabled = !t.texts;
+    }
+    function step(s) {
+      pm.setAttribute("data-step", s);
+      pm.scrollTop = 0;
+    }
+    bnx.onclick = function () {
+      step("how");
+      bpr.focus({ preventScroll: true });
+    };
+    document.getElementById("prbk").onclick = function () {
+      step("what");
+      bnx.focus({ preventScroll: true });
+    };
     // The page as it prints: the browser is told with @page, set as each printout is made (Chrome, Edge and
     // Firefox follow it; Safari keeps the sheet the reader picks in its dialog, so the pop-up tells them to
     // pick Landscape there)
@@ -594,7 +648,9 @@ export function init() {
         plan = {},
         z = {},
         grown = {}, // a piece's heights, and the smaller sizes to fall back on if it takes more pages than planned (step 2)
-        out = { z: z, b: {}, t: {}, c: {} };
+        // n: the pages each piece takes, toc: the pages before the first piece (the contents), for the print builder's
+        // page counts (js/print/what.js)
+        out = { z: z, b: {}, t: {}, c: {}, n: {}, toc: 0 };
       if (!secs.length) return out;
       function pack(hs, k, fl) {
         var n = 1,
@@ -941,10 +997,12 @@ export function init() {
           else delete out.b[id];
         });
       }
+      out.toc = page;
       secs.forEach(function (e) {
         var id = e.getAttribute("data-sid");
         out[id] = page + 1;
-        page += (plan[id] && plan[id].n) || 1;
+        out.n[id] = (plan[id] && plan[id].n) || 1;
+        page += out.n[id];
       });
       return out;
     }
@@ -989,16 +1047,25 @@ export function init() {
     function dm() {
       return P.lang === "both" && FEAT_SW ? "side" : "one";
     }
+    // First the whole Library as the browser's menu prints it (the builder's page counts are read from it), then
+    // what the builder has ticked, as the Print button prints it
     function warm() {
-      var m = [dm(), wm].filter(function (x) {
-        return !pcache[pkey(x)];
-      })[0];
-      if (!m || busy) return;
-      var k = pkey(m);
-      build(m);
+      var c = chosen(),
+        todo = [
+          [dm(), null],
+          [wm, c],
+        ].filter(function (x) {
+          return !pcache[pkey(/** @type {string} */ (x[0]), /** @type {string[] | null} */ (x[1]))];
+        });
+      if (!todo.length || busy) return;
+      var m = /** @type {string} */ (todo[0][0]),
+        ids = /** @type {string[] | null} */ (todo[0][1]),
+        k = pkey(m, ids);
+      build(m, ids);
       pages(m, function (pg) {
         if (pg) pcache[k] = pg;
-        if (m !== wm) warmSoon(500);
+        if (!pm.hidden) counts();
+        if (todo.length > 1) warmSoon(500);
       });
     }
     // Performance: the warm-up lays out a hidden copy of every piece, so it waits until the reader has
@@ -1036,6 +1103,9 @@ export function init() {
     // the pop-up: the choices (ready false), or Print now (ready true)
     function pmMode(ready) {
       bpr.hidden = pn.hidden = po.hidden = ready;
+      document.getElementById("prst").hidden = document.getElementById("prsum").hidden = bnx.hidden = ready;
+      // (neither step: the title shows, without ‹ What to print)
+      if (ready) pm.setAttribute("data-step", "ready");
       // both languages print side by side on Landscape only (stacked took a third more paper): no choice to
       // make, the row just says so; upright only while Landscape is held back (FEAT_SW)
       var one = !FEAT_SW || P.lang === "both";
@@ -1058,7 +1128,7 @@ export function init() {
       ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "tr", "por"].forEach(function (k) {
         s[k] = P[k];
       });
-      return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (sel ? "&t=" + sel.join(",") : "");
+      return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (chosen() ? "&t=" + /** @type {string[]} */ (chosen()).join(",") : "");
     }
     // open: the pop-up is already open (its Back step is in place); tapped: Print now was tapped and the
     // dialog still did not open (not the Home Screen app: another app's browser, or Safari holding it back),
@@ -1137,9 +1207,10 @@ export function init() {
       busy = true;
       if (mode === "as") mode = "one";
       wm = mode;
+      sel = chosen();
       setPage(mode);
-      build(mode);
-      var k = pkey(mode);
+      build(mode, sel);
+      var k = pkey(mode, sel);
       // laid out ahead (warm): print straight away
       if (pcache[k]) return done(pcache[k]);
       pages(mode, done);
@@ -1187,10 +1258,17 @@ export function init() {
       pages1();
       rows();
       document.getElementById("prp").textContent = document.getElementById("prq").textContent = LTR ? "Letter" : "A4";
+      document.getElementById("prx").setAttribute("aria-label", M ? "रद्द" : "Cancel");
+      // What, drawn afresh (the Library's categories, the reading languages and the menu language may have changed),
+      // with the page counts as far as they are laid out; the rest are laid out soon
+      what.render();
+      counts();
+      warmSoon(300);
+      step("what");
       ovPush();
       pm.hidden = false;
-      // (a card taller than the screen stays at its top: the Print button is below)
-      bpr.focus({ preventScroll: true });
+      // (a card taller than the screen stays at its top: Next or Print is in the bar at the bottom)
+      (wide && wide.matches ? bpr : bnx).focus({ preventScroll: true });
     };
     function pmClose() {
       unready();
@@ -1212,8 +1290,8 @@ export function init() {
       if (!busy) {
         var m = dm();
         setPage(m);
-        build(m);
-        if (pcache[pkey(m)]) pnums(pcache[pkey(m)]);
+        build(m, null);
+        if (pcache[pkey(m, null)]) pnums(pcache[pkey(m, null)]);
         pon(m);
       }
     });
@@ -1227,7 +1305,7 @@ export function init() {
     if (window.PRQ) {
       var mode = window.PRQ;
       window.PRQ = "";
-      sel = window.PRT || null;
+      what.set(window.PRT || null);
       (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () {
         setTimeout(function () {
           go(mode);
