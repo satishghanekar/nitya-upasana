@@ -214,6 +214,9 @@ export function init() {
         }
         [].forEach.call(sec.querySelectorAll(".items > .item, .items > .rmk"), function (u) {
           if (shown(u)) units.push(cl(u));
+          if (!dbgU[sec.id]) dbgU[sec.id] = { all: 0, shown: 0, first: "op=" + (u.offsetParent ? u.offsetParent.tagName + "#" + u.offsetParent.id : "null") + " disp=" + getComputedStyle(u).display + " rects=" + u.getClientRects().length + " vis=" + getComputedStyle(u).visibility };
+          dbgU[sec.id].all++;
+          if (shown(u)) dbgU[sec.id].shown++;
         });
         // a Vedic text side by side: each paragraph beside its English one, both running on (PLAN mockup D)
         var pair = mode === "side" && sec.classList.contains("prose");
@@ -354,6 +357,22 @@ export function init() {
     // frame the size of a printed page (Letter in the US and Canada, A4 elsewhere, upright or sideways
     // as the reader chose) and each piece's first page is worked out from the heights, as the browser
     // breaks pages.
+    // ---- TEMPORARY Safari debug (branch claude/print-safari-debug, never merged) ----
+    var DBG = [],
+      dbgU = {};
+    function dbgShow() {
+      var b = document.getElementById("pdbg");
+      if (!b) {
+        b = document.createElement("pre");
+        b.id = "pdbg";
+        b.style.cssText = "position:fixed;left:8px;bottom:8px;right:8px;max-height:45vh;overflow:auto;z-index:99999;background:#fff;color:#000;font:11px/1.3 monospace;padding:8px;border:2px solid red;white-space:pre-wrap;margin:0";
+        var st = document.createElement("style");
+        st.textContent = "@media print { #pdbg { display: none !important } }";
+        document.head.appendChild(st);
+        document.body.appendChild(b);
+      }
+      b.textContent = navigator.userAgent + "\n" + DBG.slice(-80).join("\n");
+    }
     var LTR = /-(US|CA|MX|PH)$/i.test(navigator.language || ""),
       PAPER = LTR ? [215.9, 279.4] : [210, 297], // upright, in mm
       pcache = {}, // page plans laid out ahead, by pkey()
@@ -1214,13 +1233,24 @@ export function init() {
       wm = mode;
       sel = chosen();
       setPage(mode);
+      DBG = [];
+      dbgU = {};
       build(mode, sel);
+      DBG.push("units " + JSON.stringify(dbgU));
       var k = pkey(mode, sel);
       // laid out ahead (warm): print straight away
       if (pcache[k]) return done(pcache[k]);
       pages(mode, done);
+      DBG.push("go " + mode + " sel=" + (sel ? sel.join(",") : "all") + " cached=false");
       function done(pg) {
         pnums(pg);
+        DBG.push("plan " + (pg ? JSON.stringify({ n: pg.n, z: pg.z, toc: pg.toc }) : "null"));
+        [].forEach.call(pv.querySelectorAll(".pvs"), function (e) {
+          var ps = e.querySelectorAll(".verse p, p.pvpr"),
+            p0 = ps[0];
+          DBG.push(e.getAttribute("data-sid") + ": pvk=" + e.querySelectorAll(".pvk").length + " p=" + ps.length + " zoom=" + e.style.zoom + (p0 ? " inline=" + p0.style.fontSize + " comp=" + getComputedStyle(p0).fontSize : ""));
+        });
+        dbgShow();
         if (pg) pcache[k] = pg;
         pon(mode);
         // the tap no longer counts: ask for another one rather than have the print quietly ignored
