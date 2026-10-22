@@ -102,6 +102,10 @@ describe("settings from every older version are upgraded as js/core/state.js alw
     for (const [v, want] of [["en", "en"], ["mr", "mr"], ["both", "both"], ["", ""], ["kn", ""], [3, ""], [undefined, ""]])
       expect(migratePrefs({ ...SHAPES.v6print, plang: v }, PHONE).prefs.plang).toBe(want);
   });
+  test("the printout's paper (version 1.21.3): kept when Letter or A4, else as the device's region suggests", () => {
+    for (const [v, want] of [["letter", "letter"], ["a4", "a4"], ["", ""], ["A4", ""], ["legal", ""], [4, ""], [undefined, ""]])
+      expect(migratePrefs({ ...SHAPES.v6print, ppr: v }, PHONE).prefs.ppr).toBe(want);
+  });
   test("every shape comes out with every setting, and nothing else", () => {
     for (const [name, s] of Object.entries(SHAPES)) {
       const p = migratePrefs({ ...s, junk: 1, pid: "p1" }, PHONE).prefs;

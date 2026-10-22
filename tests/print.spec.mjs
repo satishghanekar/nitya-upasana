@@ -802,3 +802,41 @@ test("print builder: the printout's language @chromium-only", async ({ browser }
   expect(await page.evaluate(() => document.querySelector(".wrap > .ash").getAttribute("data-lang"))).toBe("mr");
   await context.close();
 });
+
+// The preview under How: the first page of the first text ticked, made small; it follows the ticks. The paper: Letter
+// in the US (this locale), A4 a tap away; the choice is kept and the printout asks the browser for that paper
+test("print builder: the preview and the paper @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await openSite(page, SETUPS.english);
+  await tapMore(page, "#prb");
+  await howStep(page);
+  await expect(page.locator("#prsheet")).toHaveAttribute("aria-label", "Preview of the first page");
+  const title = () => page.frameLocator("#prsheet iframe").locator("#pv .pvs h2").first();
+  await expect(title()).toContainText("Ganapati Atharvashirsha", { timeout: 20_000 });
+  // the first page only: one piece, and nothing after its first page break
+  expect(await page.frameLocator("#prsheet iframe").locator("#pv .pvs, #pv .pvbr").count()).toBe(1);
+  await expect(page.locator("#prq")).toHaveText("Letter");
+  await expect(page.locator("#prpa")).toHaveText("Use A4");
+  // Letter is taller for its width than A4
+  const ratio = () => page.locator("#prsheet").evaluate((e) => e.offsetHeight / e.offsetWidth);
+  expect(await ratio()).toBeCloseTo(279.4 / 215.9, 1);
+  await page.locator("#prpa").click();
+  await expect(page.locator("#prq")).toHaveText("A4");
+  await expect(page.locator("#prpa")).toHaveText("Use Letter");
+  expect(await ratio()).toBeCloseTo(297 / 210, 1);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("aarti2-prefs")).ppr)).toBe("a4");
+  await expect(title()).toContainText("Ganapati Atharvashirsha", { timeout: 20_000 });
+  // one aarti ticked: the preview shows it
+  await page.locator("#prbk").click();
+  await page.locator('.prcb[data-cat=""]').click();
+  await page.locator('#prwl li[data-id="sukhkarta"] input').check();
+  await page.locator("#prnx").click();
+  await expect(title()).toContainText("Ganapati Aarti", { timeout: 20_000 });
+  await page.locator("#prgp").click();
+  await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
+  const rules = await page.evaluate(() => [...document.querySelectorAll("style[media=print]")].map((s) => s.textContent).join(" "));
+  expect(rules).toContain("@page { size: A4 portrait }");
+  await context.close();
+});
