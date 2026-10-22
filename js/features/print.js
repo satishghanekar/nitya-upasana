@@ -153,7 +153,7 @@ export function init() {
     // mode: "one" (one column) or "side" (Marathi and English side by side). ids: the texts printed (their Library
     // ids), or null for every text
     function build(mode, ids) {
-      var src = compose(ids);
+      var src = compose(ids, plang());
       try {
         build2(mode, src);
       } finally {
@@ -192,6 +192,7 @@ export function init() {
     }
     function build2(mode, src) {
       pv.innerHTML = "";
+      pv.setAttribute("data-lang", plang());
       // one text on its own prints as just that text: no title or contents page
       if (src.secs.length > 1) contents(src);
       src.secs.forEach(function (sec) {
@@ -303,7 +304,7 @@ export function init() {
           if (units[0] && units[0].classList.contains("pvref")) head.push(units.shift());
           var gs = [],
             wait = [],
-            flow = (P.lang !== "both" || pair) && sec.classList.contains("prose");
+            flow = (plang() !== "both" || pair) && sec.classList.contains("prose");
           if (flow)
             gs = prose(units).map(function (u) {
               return [u];
@@ -366,13 +367,13 @@ export function init() {
     // one language in a column, upright or sideways; both languages side by side on sideways pages only (stacked,
     // upright, only while Landscape is held back)
     function choice() {
-      return CHOICE[P.lang === "both" ? "both" : "one"];
+      return CHOICE[plang() === "both" ? "both" : "one"];
     }
     // Sideways pages for a layout ("one" or "side"): with both languages, side by side; with one, as the reader
     // last chose in the pop-up (P.por), or its default; upright only while Landscape is held back (FEAT_SW)
     function land(mode) {
       if (!FEAT_SW) return false;
-      if (P.lang === "both") return mode === "side";
+      if (plang() === "both") return mode === "side";
       return (P.por || choice().page) === "land";
     }
     // the sheet as it prints, [width, height] in mm
@@ -385,6 +386,11 @@ export function init() {
     var FONTS = ["best", "std", "classic", "bold", "hand"];
     function pfn() {
       return FONTS.indexOf(P.pfn) >= 0 ? P.pfn : "best";
+    }
+    // The printout's language: picked under How (the original, English or both), else as the page shows it (P.lang).
+    // Like the font, it is the printout's only: the reading page keeps its own
+    function plang() {
+      return ["mr", "en", "both"].indexOf(P.plang) >= 0 ? P.plang : P.lang;
     }
     // The printout's dhrupad (once, or after every verse) likewise: picked in the pop-up, else as the page shows it
     function pref() {
@@ -403,7 +409,7 @@ export function init() {
     // the page plan's key: the layout, the choices that change it, and the texts (null: every text)
     /** @param {string} mode @param {string[] | null} ids */
     function pkey(mode, ids) {
-      return [mode, P.lang, LEAD, pref(), P.tr, P.ui, pfn(), land(mode), ids ? ids.join(",") : ""].join("|");
+      return [mode, plang(), LEAD, pref(), P.tr, P.ui, pfn(), land(mode), ids ? ids.join(",") : ""].join("|");
     }
     // ---- The print builder (print redesign P4, mockup 1): What (js/print/what.js), then How (the rows below) ----
     // On a phone one step at a time (data-step on #prm: Next, and ‹ What to print back); from 760px side by side
@@ -479,18 +485,31 @@ export function init() {
     [].forEach.call(document.querySelectorAll("#sfn button"), function (b) {
       fn.appendChild(b.cloneNode(true));
     });
+    // each font a tile: a word of the text in that font (set in rows), over the font's name (mockup 1)
+    [].forEach.call(fn.children, function (b) {
+      var nm = document.createElement("span"),
+        x = document.createElement("span");
+      nm.className = "prfm";
+      x.className = "prfx";
+      x.setAttribute("aria-hidden", "true");
+      while (b.firstChild) nm.appendChild(b.firstChild);
+      b.appendChild(x);
+      b.appendChild(nm);
+    });
     fn.onclick = function (e) {
       var b = e.target.closest("button");
       if (!b) return;
       change({ pfn: b.dataset.v });
       rows();
+      counts();
     };
     // the sample line in the printout's font (set here: the page's own font rules follow the text font)
     var FAM = { best: "SC Classic", classic: "SC Classic", bold: "SC Bold", hand: "SC Hand" };
     // the sample: the first words of the first verse, in each language printed (the main one first), in the
     // printout's font. Set here: the page's own font rules follow the text font
-    function fam(lang) {
-      var f = pfn(),
+    /** @param {string} lang @param {string} [font] (else the printout's) */
+    function fam(lang, font) {
+      var f = font || pfn(),
         kn = lang === "kn",
         base = kn ? '"Noto Sans Kannada", var(--body)' : lang === "en" ? "var(--lat)" : "var(--body)";
       return f === "std" ? base : '"' + (kn ? FAM[f].replace("SC ", "SC Kn ") : FAM[f]) + '", ' + base;
@@ -504,31 +523,21 @@ export function init() {
     }
     function rows() {
       var or = P.ind === "kn" ? "kn" : "mr",
-        ks = P.lang === "both" ? (LEAD === "en" ? ["en", "mr"] : ["mr", "en"]) : [P.lang === "en" ? "en" : "mr"];
+        ks = plang() === "both" ? (LEAD === "en" ? ["en", "mr"] : ["mr", "en"]) : [plang() === "en" ? "en" : "mr"];
       [].forEach.call(dh.children, function (b) {
         b.setAttribute("aria-pressed", b.dataset.v === String(pref()) ? "true" : "false");
       });
+      // each tile: the first word of the text in the main language printed, in that tile's font (in the language of
+      // the word, not as .mr or .en: those follow the menus' language here)
+      var lang = ks[0] === "en" ? "en" : or,
+        w = words(ks[0]).split(" ")[0].replace(/…$/, "");
       [].forEach.call(fn.children, function (b) {
         b.setAttribute("aria-pressed", b.dataset.v === pfn() ? "true" : "false");
-      });
-      var fs = document.getElementById("prfs");
-      fs.textContent = "";
-      fs.classList.toggle("one", ks.length === 1);
-      ks.forEach(function (k, i) {
-        // (in the language of the line, not as .mr or .en: those follow the menus' language here)
-        var lang = k === "en" ? "en" : or,
-          e = i ? document.createElement("span") : fs;
-        if (i) {
-          fs.appendChild(document.createTextNode(" · "));
-          e.setAttribute("lang", lang);
-          e.textContent = words(k);
-          fs.appendChild(e);
-        } else {
-          fs.setAttribute("lang", lang);
-          fs.appendChild(document.createTextNode(words(k)));
-        }
-        e.style.setProperty("font-family", fam(lang), "important");
-        e.style.setProperty("font-weight", lang === "kn" && pfn() === "bold" ? "500" : "400", "important");
+        var x = b.querySelector(".prfx");
+        x.textContent = w;
+        x.setAttribute("lang", lang);
+        x.style.setProperty("font-family", fam(lang, b.dataset.v), "important");
+        x.style.setProperty("font-weight", lang === "kn" && b.dataset.v === "bold" ? "500" : "400", "important");
       });
     }
     dh.onclick = function (e) {
@@ -536,6 +545,7 @@ export function init() {
       if (!b) return;
       change({ pref: +b.dataset.v });
       rows();
+      counts();
       warmSoon(1500);
     };
     // the site's CSS as the printer sees it: print rules on, screen-only rules off, no @page
@@ -1040,7 +1050,7 @@ export function init() {
         if (!n) return;
         s = document.createElement("span");
         s.className = "pgn";
-        s.textContent = P.lang !== "mr" ? n : DV(n);
+        s.textContent = plang() !== "mr" ? n : DV(n);
         li.appendChild(s);
       });
     }
@@ -1050,7 +1060,7 @@ export function init() {
     var wm = "one";
     // the browser's own menu prints what the pop-up offers first: one language in a column, both side by side
     function dm() {
-      return P.lang === "both" && FEAT_SW ? "side" : "one";
+      return plang() === "both" && FEAT_SW ? "side" : "one";
     }
     // First the whole Library as the browser's menu prints it (the builder's page counts are read from it), then
     // what the builder has ticked, as the Print button prints it
@@ -1113,7 +1123,7 @@ export function init() {
       if (ready) pm.setAttribute("data-step", "ready");
       // both languages print side by side on Landscape only (stacked took a third more paper): no choice to
       // make, the row just says so; upright only while Landscape is held back (FEAT_SW)
-      var one = !FEAT_SW || P.lang === "both";
+      var one = !FEAT_SW || plang() === "both";
       document.getElementById("prpg").hidden = one;
       document.getElementById("prpv").hidden = !one;
       // Safari keeps the sheet picked in its own dialog: it is told to pick Landscape there
@@ -1130,7 +1140,7 @@ export function init() {
     // app goes straight to this step once a layout is chosen.
     function link(mode) {
       var s = {};
-      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "tr", "por"].forEach(function (k) {
+      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "tr", "por"].forEach(function (k) {
         s[k] = P[k];
       });
       return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (chosen() ? "&t=" + /** @type {string[]} */ (chosen()).join(",") : "");
@@ -1258,6 +1268,31 @@ export function init() {
       }
       opt(b1, "up");
       opt(b2, "land");
+      // the language: the main one, the other, or both (the main one first, as on the page). Both prints side by side
+      // on Landscape, so the page row then says so instead of offering a choice
+      var lg = document.getElementById("prlg"),
+        LV = LEAD === "en" ? ["en", "mr", "both"] : ["mr", "en", "both"];
+      lg.textContent = "";
+      LV.forEach(function (v) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.setAttribute("data-v", v);
+        b.textContent = v === "both" ? (M ? "दोन्ही" : "Both") : v === "en" ? en : or;
+        lg.appendChild(b);
+      });
+      lg.onclick = function (e) {
+        var b = /** @type {HTMLElement} */ (e.target).closest("button");
+        if (!b) return;
+        change({ plang: b.getAttribute("data-v") });
+        wm = dm();
+        langRow();
+        pmMode(false);
+        pages1();
+        rows();
+        counts();
+        warmSoon(1500);
+      };
+      langRow();
       document.getElementById("prpv").textContent = !FEAT_SW
         ? M
           ? "उभे: वर " + l1 + ", खाली " + l2
@@ -1283,6 +1318,11 @@ export function init() {
       (o.ids || (wide && wide.matches) ? bpr : bnx).focus({ preventScroll: true });
     }
     var opener = /** @type {HTMLElement | null} */ (null);
+    function langRow() {
+      [].forEach.call(document.getElementById("prlg").children, function (b) {
+        b.setAttribute("aria-pressed", String(b.getAttribute("data-v") === plang()));
+      });
+    }
     document.getElementById("prb").onclick = function () {
       openPrint();
     };
