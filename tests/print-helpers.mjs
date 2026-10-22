@@ -222,7 +222,7 @@ export function checkPrintout(r, paper) {
  * page footers, nothing screen-only printed, every English line there.
  */
 export function checkPages(r) {
-  const { pv, pdf } = r;
+  const { pv, pdf, mode } = r;
   const at = markerPages(pdf.pages);
   // no block is cut across a page break
   const cut = [];
@@ -245,7 +245,12 @@ export function checkPages(r) {
   if (pv.english.length) {
     // without the page footers, so a line of prose that runs on to the next page reads whole
     const flat = pdf.pages.map((t, i) => squash(t.replace(/\[\[[^\]]+\]\]|\{\{[^}]+\}\}/g, "")).replace(`${i + 1}/${n}`, "")).join("");
-    const missing = pv.english.filter((l) => !flat.includes(squash(l)));
+    // A Vedic paragraph side by side is read back row by row, with its original's words (and, at a page's end, the
+    // next piece's heading) between the English ones: there, a line is all there when its words come in order with
+    // only other scripts between them (Devanagari or Kannada, and the odd number or mark: never an English word)
+    const other = "[^A-Za-z]{0,3000}?";
+    const words = (l) => new RegExp(l.split(/\s+/).filter((w) => squash(w)).map((w) => squash(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join(other));
+    const missing = pv.english.filter((l) => !flat.includes(squash(l)) && !(mode === "side" && words(l).test(flat)));
     expect(missing, "English lines missing from the PDF").toEqual([]);
   }
 }
@@ -293,10 +298,11 @@ export async function printText(browser, { id, prefs, mode, paper, locale, save 
       zoom: s ? Number(s.style.zoom || 1) : 0,
       // in two columns (js/features/print.js twoCols), and how many lines run past their column's right edge there
       cols: s && s.classList.contains("pvtwo") ? 2 : 1,
-      past: [...document.querySelectorAll("#pv .pv2c")].reduce((n, c) => {
+      // (and in a Vedic text side by side, how many paragraph lines run past their column: .pvpair)
+      past: [...document.querySelectorAll("#pv .pv2c, #pv .pvpair .pvprose > div")].reduce((n, c) => {
         const edge = c.getBoundingClientRect().right + 1,
           r = document.createRange();
-        return n + [...c.querySelectorAll(".verse p")].filter((p) => {
+        return n + [...c.querySelectorAll(".verse p, .pvln")].filter((p) => {
           r.selectNodeContents(p);
           return r.getBoundingClientRect().right > edge;
         }).length;
@@ -304,7 +310,7 @@ export async function printText(browser, { id, prefs, mode, paper, locale, save 
       // the size of its first column's lines before the page plan's zoom, in points (js/print/fit.js; data-pt is set
       // against the Devanagari steps, so English's is its own size over its steps)
       pt: s ? Number(s.getAttribute("data-pt") || 0) * Number(s.getAttribute("data-steps") || 1) : 0,
-      split: c && c.style.width ? parseFloat(c.style.width) : null,
+      split: c && c.style.width ? parseFloat(c.style.width) : s && s.hasAttribute("data-split") ? Number(s.getAttribute("data-split")) : null,
     };
   }, id);
   await addMarkers(page);
