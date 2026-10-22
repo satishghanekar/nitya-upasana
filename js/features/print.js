@@ -373,11 +373,12 @@ export function init() {
     function sheet(mode) {
       return land(mode) ? [PAPER[1], PAPER[0]] : PAPER;
     }
-    // The printout's font: picked in the pop-up, else the text font. It is the page's font (data-font) only while
-    // printing, so picking one for the printout leaves the reading page as it is (Satish, 2026-10)
-    var FONTS = ["std", "classic", "bold", "hand"];
+    // The printout's font: picked in the pop-up, else "best" (Best for each text: Classic for aartis and ashtaks, Tiro
+    // Devanagari Sanskrit for a Vedic text's original; SIZES.md in the print redesign plan, Satish 2026-10-21). It is
+    // the page's font (data-font) only while printing, so picking one for the printout leaves the reading page as it is
+    var FONTS = ["best", "std", "classic", "bold", "hand"];
     function pfn() {
-      return FONTS.indexOf(P.pfn) >= 0 ? P.pfn : P.fnt;
+      return FONTS.indexOf(P.pfn) >= 0 ? P.pfn : "best";
     }
     // The printout's dhrupad (once, or after every verse) likewise: picked in the pop-up, else as the page shows it
     function pref() {
@@ -406,9 +407,16 @@ export function init() {
       pst.textContent = land(mode) ? "@page { size: landscape }" : "";
     }
     // Above the choices: the dhrupad setting for the printout and its font
-    // (the four of Settings → Text font), with a line of the text in it; neither changes the reading page
+    // (Best for each text, then the four of Settings → Text font), with a line of the text in it; neither changes the
+    // reading page
     var fn = document.getElementById("prfn"),
-      dh = document.getElementById("prdg");
+      dh = document.getElementById("prdg"),
+      bst = document.createElement("button");
+    bst.type = "button";
+    bst.setAttribute("data-v", "best");
+    bst.innerHTML = '<span class="mr">सर्वोत्तम</span><span class="en" lang="en">Best</span>';
+    bst.title = "Best for each text";
+    fn.appendChild(bst);
     [].forEach.call(document.querySelectorAll("#sfn button"), function (b) {
       fn.appendChild(b.cloneNode(true));
     });
@@ -419,7 +427,7 @@ export function init() {
       rows();
     };
     // the sample line in the printout's font (set here: the page's own font rules follow the text font)
-    var FAM = { classic: "SC Classic", bold: "SC Bold", hand: "SC Hand" };
+    var FAM = { best: "SC Classic", classic: "SC Classic", bold: "SC Bold", hand: "SC Hand" };
     // the sample: the first words of the first verse, in each language printed (the main one first), in the
     // printout's font. Set here: the page's own font rules follow the text font
     function fam(lang) {

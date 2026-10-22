@@ -22,17 +22,17 @@ test.describe.configure({ mode: "parallel" });
 // is put together. Portrait (pr1) and Landscape (pr2): one language prints in a column either way; both languages
 // print side by side, on Landscape only.
 const WHOLE = [
-  { name: "marathi-single-column-std-Letter", prefs: SETUPS.marathi, choice: "pr1", mode: "one", paper: "Letter", locale: "en-US" },
-  { name: "english-single-column-std-A4", prefs: SETUPS.english, choice: "pr1", mode: "one", paper: "A4", locale: "en-IN" },
-  { name: "sideways-marathi-single-column-std-Letter", prefs: { ...SETUPS.marathi, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
-  { name: "sideways-english-single-column-std-Letter", prefs: { ...SETUPS.english, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
-  { name: "sideways-both-side-by-side-std-Letter", prefs: { ...SETUPS.both, por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
-  { name: "sideways-kannada-side-by-side-std-Letter", prefs: { ...SETUPS["kannada-both"], por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
+  { name: "marathi-single-column-best-Letter", prefs: SETUPS.marathi, choice: "pr1", mode: "one", paper: "Letter", locale: "en-US" },
+  { name: "english-single-column-best-A4", prefs: SETUPS.english, choice: "pr1", mode: "one", paper: "A4", locale: "en-IN" },
+  { name: "sideways-marathi-single-column-best-Letter", prefs: { ...SETUPS.marathi, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
+  { name: "sideways-english-single-column-best-Letter", prefs: { ...SETUPS.english, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
+  { name: "sideways-both-side-by-side-best-Letter", prefs: { ...SETUPS.both, por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
+  { name: "sideways-kannada-side-by-side-best-Letter", prefs: { ...SETUPS["kannada-both"], por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
 ];
 // iPhone 13 emulation in Chromium (the device entry names WebKit as its browser, which newContext does not take)
 const { defaultBrowserType: _bt, ...IPHONE } = devices["iPhone 13"];
 
-// Special cases beyond those (standard font, Letter unless stated)
+// Special cases beyond those (the default font, Best for each text; Letter unless stated)
 const EXTRAS = [
   { name: "iast-english-single-column", prefs: SETUPS["english-iast"], choice: "pr1", mode: "one" },
   { name: "iast-both-side-by-side", prefs: SETUPS["both-iast"], choice: "pr2", mode: "side" },
@@ -485,7 +485,9 @@ test("print pop-up shows the dhrupad and font settings @chromium-only", async ({
   await tapMore(page, "#prb");
   await expect(page.locator("#prdg [aria-pressed=true]")).toHaveText("Once", { useInnerText: true });
   await expect(page.locator("#prfs")).toHaveCSS("text-align", "center");
-  await expect(page.locator("#prfn [aria-pressed=true]")).toHaveText("Classic", { useInnerText: true });
+  // the printout's font starts as Best for each text (its sample in Classic), whatever the text font
+  await expect(page.locator("#prfn [aria-pressed=true]")).toHaveText("Best", { useInnerText: true });
+  await expect(page.locator("#prfn button")).toHaveText(["Best", "Standard", "Classic", "Bold", "Handwritten"], { useInnerText: true });
   await expect(page.locator("#prfs")).toContainText("सुखकर्ता");
   expect(await page.locator("#prfs").evaluate((e) => getComputedStyle(e).fontFamily)).toContain("SC Classic");
   // a font picked here is the printout's only: the sample line follows it, the reading page keeps its own,

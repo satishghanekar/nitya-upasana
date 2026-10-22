@@ -63,7 +63,7 @@ Printing is checked the way a reader does it: the site's own Print button (or a 
 
 A text prints the same on its own as inside any printout (`js/print/compose.js` builds each piece from the texts and `js/print/fit.js` sizes each piece by itself), so the print tests come in two parts.
 
-**Text by text** (`print-items.spec.mjs`). Every text in `content/library.json` is printed on its own, through the print link for just that text (`?print=…&t=<id>`), in Marathi Portrait, English Portrait and both languages side by side on Landscape, in the standard font on A4. The other three fonts, and Kannada letters and IAST, are printed on the hardest texts only: Yei O Vitthale (the longest aarti lines) and Shree Rudra side by side, and Atharvashirsha. That is 122 PDFs, in about 2 minutes. In each:
+**Text by text** (`print-items.spec.mjs`). Every text in `content/library.json` is printed on its own, through the print link for just that text (`?print=…&t=<id>`), in Marathi Portrait, English Portrait and both languages side by side on Landscape, in the printout's default font (Best for each text) on A4. The four other fonts, and Kannada letters and IAST, are printed on the hardest texts only: Yei O Vitthale (the longest aarti lines) and Shree Rudra side by side, and Atharvashirsha. That is 124 PDFs, in about 2 minutes. In each:
 
 - that text alone is printed, with no contents page, on upright or sideways pages as chosen;
 - no block (a heading with its dhrupad and first stanza, or a stanza) is split across pages, unless it is taller than a page even at its smallest (the print view marks it, and it breaks between lines), and every block is printed;
