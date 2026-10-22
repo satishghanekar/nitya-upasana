@@ -1,6 +1,6 @@
 // Home (Home v2, docs/decisions.md 2026-10-18; Home v3 option A, 2026-10-20): the time-of-day picture beside today's
 // date, the Morning | Afternoon | Evening switch (a session with nothing set greyed), the session's texts with a tick
-// each, Start / Continue (pinned to the bottom on phones), More (App / Share / QR / Print / Help, closed by default) and
+// each (a title starts the session there; no Start button: Satish, 2026-10-22), More (App / Share / QR / Print / Help, closed by default) and
 // "Another text? Open the Library". Home ends there: the pieces show once a text is opened. On a Sankashti day only,
 // one line with moonrise. Every text is in the Library (the book button). These tests run on a fixed routine (TEST_ROUTINE
 // in helpers.mjs: Morning = Atharvashirsha, Evening = the ten aartis), so they don't change with Satish's schedule; the
@@ -48,7 +48,7 @@ test("the bundled default: Home shows the day's lists from content/routines.json
   expect(await rows(page).locator(".t1").allTextContents()).toEqual(textsFor(BUNDLED, 4, "evening").map((id) => TITLE[id].title));
 });
 
-test("in the morning Home shows Thursday's Morning: the Atharvashirsha, with Start @mobile", async ({ page }) => {
+test("in the morning Home shows Thursday's Morning: the Atharvashirsha, with no Start button @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
   await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
   await expect(page.locator("#tdd .d1")).toHaveText("गुरुवार, १५ ऑक्टोबर २०२६");
@@ -58,7 +58,7 @@ test("in the morning Home shows Thursday's Morning: the Atharvashirsha, with Sta
   await expect(rows(page).first().locator(".t2")).toHaveText(TITLE.atharvashirsha.titleEn);
   await expect(rows(page).first().locator(".ttg")).toHaveText("Sanskrit");
   await expect(page.locator("#tsn")).toHaveText("0 of 1 done");
-  await expect(page.locator("#tst")).toHaveText("Start: Ganapati Atharvashirsha");
+  await expect(page.locator("#tst, #tsb")).toHaveCount(0);
   // the picture is the sunrise one, Thursday's star ringed; not a Sankashti, so no moonrise line
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunrise");
   await expect(page.locator("#iconb")).toHaveAttribute("data-day", "4");
@@ -78,7 +78,6 @@ test("in the evening Home shows Sunday's Evening: the ten aartis in order @mobil
   expect(await rows(page).locator(".t2").allTextContents()).toEqual(AARTIS.map((id) => TITLE[id].titleEn));
   expect(await rows(page).locator(".tno").allTextContents()).toEqual(["१.", "२.", "३.", "४.", "५.", "६.", "७.", "८.", "९.", "१०."]);
   await expect(page.locator("#tsh")).toHaveText("सायंकाळ · Evening");
-  await expect(page.locator("#tst")).toHaveText("Start: Ganapati Aarti");
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunset");
   await expect(tab(page, "evening")).toHaveAttribute("aria-selected", "true");
 });
@@ -94,7 +93,6 @@ test("the session switch changes the list, the picture and what screen readers h
   await expect(rows(page)).toHaveCount(0);
   await expect(page.locator("#tse")).toBeVisible();
   await expect(page.locator("#tse")).toContainText("Nothing is planned for afternoon yet.");
-  await expect(page.locator("#tst")).toBeHidden();
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "midday");
   await expect(page.locator("#tlive")).toContainText("Afternoon");
   await pickTab(page, "evening");
@@ -144,7 +142,6 @@ test("ticks are kept after a reload and cleared the next day @mobile", async ({ 
   await rows(page).nth(0).locator("input").check();
   await rows(page).nth(1).locator("input").check();
   await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
-  await expect(page.locator("#tst")).toHaveText("Continue: Devi Aarti");
   await page.reload();
   await settle(page);
   await expect(rows(page).nth(0).locator("input")).toBeChecked();
@@ -159,7 +156,6 @@ test("ticks are kept after a reload and cleared the next day @mobile", async ({ 
   await pickTab(page, "evening");
   await rows(page).nth(0).locator("input").uncheck();
   await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
-  await expect(page.locator("#tst")).toHaveText("Continue: Ganapati Aarti");
   // Monday evening: a new day, no ticks
   await page.clock.setFixedTime(new Date("2026-10-19T19:00:00-04:00"));
   await page.reload();
@@ -178,11 +174,11 @@ test("a page left open overnight starts the new day with no ticks", async ({ pag
   await expect(page.locator("#tsl input:checked")).toHaveCount(0);
 });
 
-test("Start opens the first unticked text, and Next walks through the session in order @mobile", async ({ page }) => {
+test("a title opens its text in the session, and Next walks through the session in order @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await rows(page).nth(0).locator("input").check();
   await rows(page).nth(1).locator("input").check();
-  await page.locator("#tst").click();
+  await rows(page).nth(2).locator("a.tgo").click();
   await expect.poll(() => hash(page)).toBe("#a3");
   await expect.poll(() => onPiece(page)).toBe("a3");
   await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: Shankar Aarti");
@@ -194,7 +190,7 @@ test("Start opens the first unticked text, and Next walks through the session in
 
 test("in the morning, Next after the Atharvashirsha ends the session and returns to Today @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
-  await page.locator("#tst").click();
+  await rows(page).nth(0).locator("a.tgo").click();
   await expect.poll(() => onPiece(page)).toBe("p1");
   // the library order would go on to Aarti 1; the session ends here
   await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: Today");
@@ -218,7 +214,7 @@ test("a text's title in the list opens it, in the session", async ({ page }) => 
 
 test("in a session, Next ticks the text as done for today before moving on; Prev doesn't; a tick can still be taken off @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await page.locator("#tst").click();
+  await rows(page).nth(0).locator("a.tgo").click();
   await expect.poll(() => onPiece(page)).toBe("a1");
   await page.locator("#asn").click();
   await expect.poll(() => onPiece(page)).toBe("a2");
@@ -244,7 +240,7 @@ test("in a session, Next ticks the text as done for today before moving on; Prev
 
 test("Next on the last text of the session ticks it too, then returns to Today @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
-  await page.locator("#tst").click();
+  await rows(page).nth(0).locator("a.tgo").click();
   await expect.poll(() => onPiece(page)).toBe("p1");
   await page.locator("#asn").click();
   await expect.poll(() => onPiece(page)).toBe("");
@@ -252,7 +248,7 @@ test("Next on the last text of the session ticks it too, then returns to Today @
   await expect(rows(page).nth(0).locator("input")).toBeChecked();
 });
 
-test("keyboard: Space ticks, the switch moves with arrow keys, Start is a button, focus is drawn @mobile", async ({ page, browserName }) => {
+test("keyboard: Space ticks, the switch moves with arrow keys, focus is drawn @mobile", async ({ page, browserName }) => {
   test.skip(browserName === "webkit", "Safari's default Tab skips buttons");
   await openSite(page, SETUPS.marathi, { now: EVENING });
   // a tick with the keyboard
@@ -296,7 +292,7 @@ test("keyboard: Space ticks, the switch moves with arrow keys, Start is a button
   expect(ring).toBe(true);
 });
 
-test("each tick, session and Start control has a name and a 44px target @mobile", async ({ page }) => {
+test("each tick and session control has a name and a 44px target @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(rows(page).nth(2).locator("input")).toHaveAccessibleName("Done: " + TITLE[planned(0, "evening")[2]].titleEn);
   await expect(page.locator("#tss")).toHaveAttribute("role", "tablist");
@@ -306,7 +302,7 @@ test("each tick, session and Start control has a name and a 44px target @mobile"
   await expect(page.locator("#tmb")).toHaveAccessibleName("More");
   await page.locator("#tmb").click();
   const small = await page.evaluate(() =>
-    [...document.querySelectorAll("#tss [role=tab], #tmb, #tlibb, #tsl .ttk, #tsl a, #tst, #shr button:not([hidden]), #iconb")]
+    [...document.querySelectorAll("#tss [role=tab], #tmb, #tlibb, #tsl .ttk, #tsl a, #shr button:not([hidden]), #iconb")]
       .filter((b) => b.getClientRects().length) // (Print this text is not shown on Home)
       .map((b) => ({ c: b.className || b.id || b.dataset.s, ...b.getBoundingClientRect().toJSON() }))
       .filter((r) => r.width < 44 || r.height < 44)
@@ -333,7 +329,6 @@ test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ 
   await openSite(page, SETUPS["marathi-menus"], { now: EVENING });
   await expect(page.locator("#tdd .d1")).toHaveText("रविवार, १८ ऑक्टोबर २०२६");
   await expect(page.locator("#tdd .d2")).toHaveText("Sunday, 18 October 2026");
-  await expect(page.locator("#tst")).toHaveText("सुरू करा: गणपतीची आरती");
   await expect(page.locator("#tss")).toHaveAccessibleName("वेळ");
   await expect(tab(page, "morning")).toHaveText("सकाळ");
   await expect(tab(page, "afternoon")).toHaveText("दुपारकाहीच नाही");
@@ -353,7 +348,7 @@ test("Home has no date card, week row or contents list: the Library has every te
   await openSite(page, SETUPS.marathi, { now: EVENING });
   for (const sel of ["#skc", "#skmore", "#skall", "#twk", "#tso", "#tfb", "#cvb", "#tmo", "#home #shr", "#home .tocg", "#home a[data-go]"])
     await expect(page.locator(sel), sel).toHaveCount(0);
-  // Home ends after Start and the Library line (App, Share, QR, Print and Help are under ⋯ More in the top bar); the reading page's pieces are not shown under it
+  // Home ends after the session's texts and the Library line (App, Share, QR, Print and Help are under ⋯ More in the top bar); the reading page's pieces are not shown under it
   await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
   await expect(page.locator("section.ash:visible")).toHaveCount(0);
   await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(LIB.texts.length);
@@ -478,27 +473,19 @@ test("the greyed session's words are at least 4.5:1 on the switch, in every them
   }
 });
 
-test("on a phone Start stays at the bottom of the screen, clear of the safe area, and never covers the last text @mobile", async ({ page }) => {
+test("on a phone Home ends with the session's texts and the Library line, with no Start button and no bottom bar @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  const vh = 844;
-  const bar = await page.locator("#tsb").boundingBox();
-  expect(Math.round(bar.y + bar.height)).toBe(vh);
-  // the bottom bar gives way to Start on the home page
+  await expect(page.locator("#tst, #tsb")).toHaveCount(0);
   await expect(page.locator("#asc")).toBeHidden();
-  // scrolled to the end of the home page, the last text sits above Start
-  await page.evaluate(() => {
-    const h = document.getElementById("home");
-    scrollTo(0, h.offsetTop + h.offsetHeight - innerHeight);
-  });
-  await page.waitForTimeout(100);
-  const last = await rows(page).last().boundingBox();
-  const bar2 = await page.locator("#tsb").boundingBox();
-  expect(last.y + last.height).toBeLessThanOrEqual(bar2.y + 1);
-  // the safe area is added below the button
-  const pad = await page.locator("#tsb").evaluate((e) => getComputedStyle(e).paddingBottom);
-  expect(pad).toBe("10px");
-  expect(await page.evaluate(() => [...document.styleSheets].some((s) => [...s.cssRules].some((r) => /#tsb/.test(r.cssText) && /safe-area-inset-bottom/.test(r.cssText))))).toBe(true);
+  // scrolled to the end of the home page, the last text and the Library line are on screen
+  await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+  await expect(rows(page).last()).toBeInViewport();
+  await expect(page.locator("#tlib")).toBeInViewport();
+  // a title starts the session there
+  await rows(page).nth(1).locator("a.tgo").click();
+  await expect.poll(() => onPiece(page)).toBe("a2");
+  await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: " + TITLE[AARTIS[2]].titleEn);
 });
 
 test("on a wide screen Home uses the whole width: today on the left, the picture large beside it (Full screen)", async ({ browser }) => {
@@ -515,9 +502,119 @@ test("on a wide screen Home uses the whole width: today on the left, the picture
     expect(pic.x, `${width}px picture beside today`).toBeGreaterThan(list.x + list.width);
     expect(pic.width, `${width}px picture size`).toBeGreaterThanOrEqual(Math.min(400, height - 300));
     expect(pic.y + pic.height, `${width}px picture on screen`).toBeLessThanOrEqual(height);
-    await expect(page.locator("#rail")).toBeHidden();
+    await expect(page.locator("#rail")).toHaveCount(0);
     await context.close();
   }
+});
+
+// Satish, 2026-10-22: on a wide screen a text opened from Home opens on the right, and Home's column stays on the left
+// as it is on Home (without the picture), the text being read highlighted; the bottom bar stays the way around
+const WIDE = { viewport: { width: 1280, height: 820 }, serviceWorkers: "block" };
+const nowRows = (page) => page.locator("#tsl li.now");
+
+test("on a wide screen a text opened from Home opens beside Home's column, with the text being read highlighted", async ({ browser }) => {
+  const context = await browser.newContext(WIDE);
+  const page = await context.newPage();
+  await useTestRoutine(page);
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await expect(nowRows(page)).toHaveCount(0);
+  await rows(page).nth(1).locator("a.tgo").click();
+  await expect.poll(() => onPiece(page)).toBe("a2");
+  // Home's column stays, fixed on the left, without the picture and the Library line; the text is beside it
+  await expect(page.locator("#tsc")).toBeVisible();
+  await expect(page.locator("#pan")).toBeVisible();
+  await expect(page.locator("#tdy")).toBeHidden();
+  await expect(page.locator("#tlib")).toBeHidden();
+  expect(await page.locator("#home").evaluate((h) => getComputedStyle(h).position)).toBe("fixed");
+  const home = await page.locator("#home").boundingBox(),
+    text = await page.locator("#a2 header").boundingBox();
+  expect(text.x).toBeGreaterThan(home.x + home.width);
+  // the text being read is marked, and only that one
+  await expect(nowRows(page)).toHaveCount(1);
+  await expect(rows(page).nth(1)).toHaveClass(/\bnow\b/);
+  await expect(rows(page).nth(1).locator("a.tgo")).toHaveAttribute("aria-current", "true");
+  await expect(page.locator("#tsl a[aria-current]")).toHaveCount(1);
+  // the old side menus are gone
+  await expect(page.locator("#rail, #rrun")).toHaveCount(0);
+  // Next ticks the text and moves the mark
+  await page.locator("#asn").click();
+  await expect.poll(() => onPiece(page)).toBe("a3");
+  await expect(rows(page).nth(2)).toHaveClass(/\bnow\b/);
+  await expect(rows(page).nth(1).locator("input")).toBeChecked();
+  await expect(nowRows(page)).toHaveCount(1);
+  // a tick beside the text works as on Home, and the text stays open
+  await rows(page).nth(5).locator("input").check();
+  await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
+  await expect.poll(() => onPiece(page)).toBe("a3");
+  // scrolling the text down and back up stays on the text (Home's column is always on screen)
+  await page.mouse.wheel(0, 600);
+  await page.waitForTimeout(150);
+  await page.mouse.wheel(0, -2000);
+  await page.waitForTimeout(150);
+  await expect(page.locator("html")).not.toHaveAttribute("data-hv", "1");
+  await expect.poll(() => onPiece(page)).toBe("a3");
+  // another session only changes the list; the text stays open
+  await pickTab(page, "morning");
+  await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
+  await expect(page.locator("html")).not.toHaveAttribute("data-hv", "1");
+  await expect.poll(() => hash(page)).toBe("#a3");
+  await expect(nowRows(page)).toHaveCount(0);
+  await pickTab(page, "evening");
+  await expect(rows(page).nth(2)).toHaveClass(/\bnow\b/);
+  // Home in the bottom bar brings the picture back, and nothing is marked
+  await page.locator("#ash").click();
+  await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
+  await expect(page.locator("#tdy")).toBeVisible();
+  await expect(page.locator("#tlib")).toBeVisible();
+  await expect(nowRows(page)).toHaveCount(0);
+  await context.close();
+});
+
+test("on a wide screen the Library opens beside Home's column, with the bottom bar under it", async ({ browser }) => {
+  const context = await browser.newContext(WIDE);
+  const page = await context.newPage();
+  await useTestRoutine(page);
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await rows(page).nth(0).locator("a.tgo").click();
+  await expect.poll(() => onPiece(page)).toBe("a1");
+  await page.locator("#asq").click();
+  await expect(page.locator("#jump")).toBeVisible();
+  // Home's column stays on the left with the text being read marked; the bottom bar stays under the Library
+  await expect(page.locator("#tsc")).toBeVisible();
+  await expect(rows(page).nth(0)).toHaveClass(/\bnow\b/);
+  await expect(page.locator("#asc")).toBeVisible();
+  const home = await page.locator("#home").boundingBox(),
+    lib = await page.locator("#jump").boundingBox(),
+    bar = await page.locator("#asc").boundingBox();
+  expect(lib.x).toBeGreaterThanOrEqual(home.x + home.width);
+  expect(lib.y + lib.height).toBeLessThanOrEqual(bar.y + 1);
+  expect(home.y + home.height).toBeLessThanOrEqual(bar.y + 1);
+  // a text from the Library opens on the right; it is not in the session, so nothing is marked
+  await page.locator('#jl a[data-go="p1"]').click();
+  await expect(page.locator("#jump")).toBeHidden();
+  await expect.poll(() => onPiece(page)).toBe("p1");
+  await expect(page.locator("#tsc")).toBeVisible();
+  await expect(nowRows(page)).toHaveCount(0);
+  // the Vedic calendar opens beside it too, with the bottom bar; Next closes it and goes on
+  await page.locator("#pan").click();
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator("#asc")).toBeVisible();
+  await page.locator("#asn").click();
+  await expect(page.locator("#cal")).toBeHidden();
+  await expect.poll(() => onPiece(page)).not.toBe("p1");
+  await context.close();
+});
+
+test("axe: Home's column beside the text being read, every theme", async ({ browser }) => {
+  const context = await browser.newContext(WIDE);
+  const page = await context.newPage();
+  await useTestRoutine(page);
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await rows(page).nth(0).locator("input").check();
+  await rows(page).nth(1).locator("a.tgo").click();
+  await expect(rows(page).nth(1)).toHaveClass(/\bnow\b/);
+  expect(await axeEveryTheme(page, "#home")).toEqual(noViolations());
+  await context.close();
 });
 
 test("with no routine file the card still works and the texts still load", async ({ page }) => {
@@ -525,7 +622,6 @@ test("with no routine file the card still works and the texts still load", async
   const errors = [];
   await openSite(page, SETUPS.marathi, { now: EVENING, errors });
   await expect(page.locator("#tse")).toBeVisible();
-  await expect(page.locator("#tst")).toBeHidden();
   await expect(page.locator('#jl a[data-go="a1"]')).toBeAttached();
   // only the missing file itself is reported, by the browser
   expect(errors.filter((e) => !/Failed to load resource/.test(e))).toEqual([]);

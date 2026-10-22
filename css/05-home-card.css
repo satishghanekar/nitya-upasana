@@ -137,7 +137,6 @@
   }
 }
 @media print {
-  #rail,
   #prog,
   .fin {
     display: none !important;
@@ -153,37 +152,6 @@
 
 
 /* ==== Next Sankashti card (home page) ==== */
-
-
-/* ==== Desktop: the left menu's Home link ==== */
-@media screen and (min-width: 1024px) {
-  #rail .rhome {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 0 10px;
-    font: 600 15px/1.35 var(--head);
-    color: var(--accent);
-  }
-  #rail[data-lang="en"] .rhome {
-    font: 600 14px/1.35 var(--lat);
-  }
-  #rail .rhome .en {
-    display: none;
-  }
-  #rail[data-lang="en"] .rhome .en {
-    display: inline;
-  }
-  #rail[data-lang="en"] .rhome .mr {
-    display: none;
-  }
-  #rail[data-lang="both"] .rhome .en {
-    display: inline;
-    font: 400 12px var(--lat);
-    color: var(--muted);
-    margin-left: 4px;
-  }
-}
 
 
 /* ==== Tappable dhrupad marker (Aartis 1–5, 7 and 9): sits right under the stanza; tap shows the dhrupad above ==== */

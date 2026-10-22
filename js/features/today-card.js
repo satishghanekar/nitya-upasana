@@ -24,12 +24,12 @@
 
 import { P } from "../core/state.js";
 import { flash, onPiece, pieceEl } from "../core/page.js";
-import { unfold } from "../core/apply.js";
+import { cur, unfold } from "../core/apply.js";
 import { homeAlone, jumpTo } from "./history.js";
 import { setView } from "./day-picture.js";
 import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
-import { dateKey, firstUndone, stepInSession, textsFor } from "../core/routine.js";
+import { dateKey, stepInSession, textsFor } from "../core/routine.js";
 import { createTicks } from "../core/ticks.js";
 import { active, routine, ticksStorage } from "../store/store.js";
 import { DAYS, MONTHS, dv, esc, scr, scrKey } from "../core/words.js";
@@ -51,9 +51,6 @@ const W = {
     another: "Another text?",
     library: "Open the Library",
     done: "Done: ",
-    start: "Start: ",
-    cont: "Continue: ",
-    again: "Start again: ",
     /** @param {number} d @param {number} n */
     count: function (d, n) {
       return d + " of " + n + " done";
@@ -85,9 +82,6 @@ const W = {
     another: "दुसरी रचना?",
     library: "संग्रह उघडा",
     done: "झाले: ",
-    start: "सुरू करा: ",
-    cont: "पुढे चालू: ",
-    again: "पुन्हा सुरू करा: ",
     /** @param {number} d @param {number} n */
     count: function (d, n) {
       return dv(n) + " पैकी " + dv(d) + " झाले";
@@ -273,17 +267,22 @@ export function render() {
     /** @type {HTMLElement} */ (document.getElementById("tlibw")).textContent = w.another;
     /** @type {HTMLElement} */ (document.getElementById("tlibbw")).textContent = w.library;
   }
-  // Start / Continue
-  var start = /** @type {HTMLElement} */ (document.getElementById("tst")),
-    k = firstUndone(ids, done);
-  start.hidden = !ids.length;
-  /** @type {HTMLElement} */ (document.getElementById("tsb")).hidden = !ids.length;
-  /** @type {HTMLElement} */ (document.getElementById("tsb")).lang = ui;
-  if (ids.length)
-    /** @type {HTMLElement} */ (document.getElementById("tstw")).textContent =
-      (k < 0 ? w.again : nDone ? w.cont : w.start) + titleOf(ids[k < 0 ? 0 : k]);
   setView(pick.session ? { session: c.session, day: d.getDay() } : null);
-  railRun();
+  markNow(/** @type {HTMLElement | null} */ (cur()));
+}
+
+/**
+ * The text being read, marked in the list (aria-current): on wide screens Home's column stays beside the text
+ * (css/10-today.css), so the list shows where you are. Called by mark() (js/features/bars.js) as the reader moves.
+ * @param {HTMLElement | null} c  the piece being read, or null on Home
+ */
+export function markNow(c) {
+  [].forEach.call(document.querySelectorAll("#tsl a.tgo"), function (/** @type {HTMLElement} */ a) {
+    var on = !!c && !!info[a.dataset.t || ""] && info[a.dataset.t || ""].sec === c.id;
+    /** @type {HTMLElement} */ (a.parentElement).classList.toggle("now", on);
+    if (on) a.setAttribute("aria-current", "true");
+    else a.removeAttribute("aria-current");
+  });
 }
 
 /** Say what the card now shows (after a day or session is picked) */
@@ -327,7 +326,6 @@ function runMark() {
   });
   if (run) r.setAttribute("data-run", "1");
   else r.removeAttribute("data-run");
-  railRun();
 }
 
 /**
@@ -337,60 +335,6 @@ function runMark() {
 function runOne(x) {
   var id = bySec[x.id];
   x.classList.toggle("inrun", !!run && !!id && run.ids.indexOf(id) >= 0);
-}
-
-/**
- * The side menu on wide screens (#rail) while a session is read: the session's name and its texts in the session's
- * order, numbered 1, 2, 3 (#rrun); css/10-today.css hides the rest of the Library there. Its links keep the session.
- */
-export function railRun() {
-  var rail = document.getElementById("rail"),
-    old = document.getElementById("rrun");
-  if (old) old.remove();
-  if (!rail || !run) return;
-  var rl = rail;
-  var d = document.createElement("div"),
-    ul = document.createElement("ul"),
-    n = 0,
-    done = ticks ? ticks.done(run.day, run.session) : [],
-    nd = run.ids.filter(function (id) {
-      return done.indexOf(id) >= 0;
-    }).length,
-    w = words();
-  d.id = "rrun";
-  // Desktop A: the session's name, how many are done, the texts with their ticks, and the Library at the end
-  d.innerHTML =
-    '<div class="rg"><span class="mr">' + W.mr.sessions[run.session] + '</span><span class="en" lang="en">' + W.en.sessions[run.session] + '</span><span class="rcnt">' + w.count(nd, run.ids.length) + "</span></div>";
-  run.ids.forEach(function (id) {
-    var t = info[id],
-      a = t && rl.querySelector('a[data-go="' + t.sec + '"]');
-    if (!a) return;
-    n++;
-    var li = document.createElement("li"),
-      b = /** @type {HTMLElement} */ (a.cloneNode(true)),
-      nm = b.querySelector(".no .nm"),
-      ne = b.querySelector(".no .ne");
-    b.classList.remove("on");
-    b.removeAttribute("aria-current");
-    if (nm) nm.textContent = scr(String(n).replace(/[0-9]/g, function (x) { return "०१२३४५६७८९".charAt(+x); })) + ".";
-    if (ne) ne.textContent = n + ".";
-    if (done.indexOf(id) >= 0) li.className = "done";
-    li.appendChild(b);
-    ul.appendChild(li);
-  });
-  d.appendChild(ul);
-  var lb = document.createElement("button");
-  lb.type = "button";
-  lb.className = "rlib";
-  lb.lang = P.ui === "mr" ? "mr" : "en";
-  lb.textContent = w.another + " " + w.library;
-  lb.addEventListener("click", function () {
-    var b = document.getElementById("tlibb");
-    if (b) b.click();
-  });
-  d.appendChild(lb);
-  var home = rail.querySelector(".rhome");
-  rail.insertBefore(d, home ? home.nextSibling : rail.firstChild);
 }
 
 /** Read the session shown from this text on */
@@ -537,7 +481,6 @@ export function init() {
     if (r && Array.isArray(r.ids)) run = r;
   } catch (e) {}
   runMark();
-  document.addEventListener("nitya-rail", railRun);
   ticks.prune(dateKey(new Date()));
   var tabs = /** @type {HTMLElement} */ (document.getElementById("tss")),
     list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
@@ -546,8 +489,9 @@ export function init() {
   // picked until the next day (then the clock again). Picking the session of the clock follows the clock again.
   /** @param {Session} s */
   function choose(s) {
-    // picking a session is being on Home: only that session's texts, no pieces below (Home on its own)
-    homeAlone();
+    // picking a session is being on Home: only that session's texts, no pieces below (Home on its own); on wide
+    // screens Home's column is beside the text being read, so the text stays open and only the list changes
+    if (!document.documentElement.hasAttribute("data-rail")) homeAlone();
     pick.session = s === sessionAt(new Date()) ? null : s;
     render();
     announce();
@@ -618,19 +562,13 @@ export function init() {
     e.preventDefault();
     startAt(/** @type {string} */ (/** @type {HTMLElement} */ (a).dataset.t));
   });
-  /** @type {HTMLElement} */ (document.getElementById("tst")).addEventListener("click", function () {
-    var c = current(),
-      ids = idsFor(c.day, c.session),
-      k = firstUndone(ids, ticks.done(c.today, c.session));
-    if (ids.length) startAt(ids[k < 0 ? 0 : k]);
-  });
-  // going to a text another way (the Library, the side menu, the hidden Previous / Next links) leaves the session:
+  // going to a text another way (the Library, the hidden Previous / Next links) leaves the session:
   // Prev and Next follow the library order again
   document.addEventListener(
     "click",
     function (e) {
       var a = /** @type {HTMLElement} */ (e.target).closest && /** @type {HTMLElement} */ (e.target).closest("a[data-go]");
-      if (!a || !run || a.closest("#rrun")) return;
+      if (!a || !run) return;
       run = null;
       try {
         sessionStorage.removeItem(RUN_KEY);

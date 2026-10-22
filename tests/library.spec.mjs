@@ -95,7 +95,7 @@ test("on the home page the top bar has the name, profile, Library, More and Sett
   await openSite(page, SETUPS.marathi, { now: EVENING });
   for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   await expect(page.locator("#asq")).toBeHidden();
-  await page.locator("#tst").click();
+  await page.locator("#tsl a.tgo").first().click();
   await expect.poll(() => onPiece(page)).toBe("a1");
   await expect(page.locator("#hm")).toBeHidden();
   await expect(page.locator("#asq")).toBeVisible();
@@ -154,8 +154,6 @@ test("the Library lists the texts by category; empty categories are left out; ea
   }
   await expect(page.locator('#jl a[data-go="a5"] .nm')).toHaveText("५.");
   await expect(page.locator("#lbb")).toHaveAccessibleName("Edit categories");
-  // the side menu on wide screens follows the same categories
-  await expect(page.locator("#rail .rg .mr")).toHaveText(GROUPS);
 });
 
 // A pinch on the Library (on a computer: Ctrl/⌘ + and −, or a trackpad pinch) makes the list bigger or smaller by the
