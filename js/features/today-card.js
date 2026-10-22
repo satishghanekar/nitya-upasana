@@ -499,6 +499,19 @@ export function shownSession() {
   return current().session;
 }
 
+/**
+ * Today's sessions and their texts (Library ids, in routine order), named in the menu language: Print's Today tab and
+ * Home's Print this session (js/features/print.js)
+ * @returns {{ session: Session, name: string, ids: string[] }[]}
+ */
+export function todaySessions() {
+  var d = dateKey(new Date()),
+    names = P.ui === "mr" ? MR_SESSION : EN_SESSION;
+  return /** @type {Session[]} */ (["morning", "afternoon", "evening"]).map(function (s) {
+    return { session: s, name: names[s], ids: idsFor(d, s) };
+  });
+}
+
 /** Re-draw when the menu language or the script changes (called by apply(), js/features/bars.js) */
 export function todayLang() {
   var ui = P.ui === "mr" ? "mr" : "en";

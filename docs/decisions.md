@@ -423,6 +423,17 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - The tests read each English line back from the PDF even with the original's words between its parts (a paragraph
   is read row by row), and check that no paragraph line runs past its column (`past`).
 
+## Print this text, Print this session, Today (v1.21.1, 2026-10-22)
+
+- Step P4 (second part) of the print redesign (PLAN §3.1).
+- **Print this text** is in ⋯ More while a text is read (not on Home), so it is in one place on every screen size.
+- **Print this session** is a quiet link under the session's texts on Home (not for an empty session).
+- Both open the builder at How with just those texts ticked (the bar names a single text); ‹ What to print shows the
+  choice. The ticks then stay for the next Print, as any ticks do, until changed or the page is reloaded.
+- **Today** is What's second tab: Morning, Afternoon, Evening (from the reading person's routine) and All of today,
+  each with its texts and pages; a tap ticks exactly those. A session's texts print in reading order for now; routine
+  order and the week grid come with P5 (routine print).
+
 ## Print builder: What, then How (v1.21.0, 2026-10-22)
 
 - Step P4 (first part) of the print redesign (PLAN §3.1, mockup 1, approved with the plan).

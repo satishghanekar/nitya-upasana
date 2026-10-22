@@ -362,6 +362,28 @@
   text-underline-offset: 3px;
   cursor: pointer;
 }
+/* Print this session (js/features/print.js): a quiet link under the session's texts; not for an empty session */
+#tspr {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  height: auto;
+  margin: 2px 0 0 auto;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--accent);
+  font: 600 14px/1.3 var(--lat);
+}
+#tspr .mr {
+  font-family: var(--body);
+}
+#tse:not([hidden]) + #tspr {
+  display: none;
+}
+#tspr:focus-visible,
 #tlibb:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 0;

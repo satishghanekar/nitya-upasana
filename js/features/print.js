@@ -13,6 +13,8 @@ import { CHOICE } from "../print/profiles.js";
 import { compose } from "../print/compose.js";
 import { createWhat, whatWords } from "../print/what.js";
 import { shelvesNow } from "./library.js";
+import { todaySessions, shownSession } from "./today-card.js";
+import { cur } from "../core/apply.js";
 
 export function init() {
   // Print: single column (as on screen; running paragraphs for a prose piece in one language), or, with both
@@ -408,6 +410,7 @@ export function init() {
     // (css/03-menus-print-view.css). The bottom bar keeps the running total and Next or Print.
     var what = createWhat(/** @type {HTMLElement} */ (document.getElementById("prwl")), {
         shelves: shelvesNow,
+        today: todaySessions,
         onChange: function () {
           summary();
         },
@@ -433,7 +436,9 @@ export function init() {
       el.lang = P.ui === "mr" ? "mr" : "en";
       var a = document.createElement("span"),
         b = document.createElement("span");
-      a.textContent = t.texts ? w.texts(t.texts) : w.pick;
+      // one text: its name
+      a.textContent = t.one || (t.texts ? w.texts(t.texts) : w.pick);
+      if (t.one) a.lang = t.oneLang;
       b.textContent = t.texts && t.pages ? w.pages(t.pages) : "";
       el.appendChild(a);
       el.appendChild(b);
@@ -1203,7 +1208,7 @@ export function init() {
       pm.hidden = true;
       ovDrop();
       // the chosen button has just been hidden: keyboard focus goes back to Print, not to the top of the page
-      focusBack(document.getElementById("prb"));
+      focusBack(opener || document.getElementById("prb"));
       busy = true;
       if (mode === "as") mode = "one";
       wm = mode;
@@ -1225,7 +1230,12 @@ export function init() {
         }, 60);
       }
     }
-    document.getElementById("prb").onclick = function () {
+    // Open the builder: from Print (More), at What with the ticks as last left; from Print this text or Print this
+    // session, with just those texts ticked and at How (on a phone; ‹ What to print shows the choice)
+    /** @param {{ ids?: string[], tab?: string, from?: HTMLElement | null }} [o] */
+    function openPrint(o) {
+      o = o || {};
+      opener = o.from || document.getElementById("prb");
       unready();
       pmMode(false);
       // the language names follow what is printed: the original's place holds Marathi or Kannada, and with
@@ -1261,20 +1271,45 @@ export function init() {
       document.getElementById("prx").setAttribute("aria-label", M ? "रद्द" : "Cancel");
       // What, drawn afresh (the Library's categories, the reading languages and the menu language may have changed),
       // with the page counts as far as they are laid out; the rest are laid out soon
+      if (o.ids) what.set(o.ids);
+      what.tab(o.tab || "texts");
       what.render();
       counts();
       warmSoon(300);
-      step("what");
+      step(o.ids ? "how" : "what");
       ovPush();
       pm.hidden = false;
       // (a card taller than the screen stays at its top: Next or Print is in the bar at the bottom)
-      (wide && wide.matches ? bpr : bnx).focus({ preventScroll: true });
+      (o.ids || (wide && wide.matches) ? bpr : bnx).focus({ preventScroll: true });
+    }
+    var opener = /** @type {HTMLElement | null} */ (null);
+    document.getElementById("prb").onclick = function () {
+      openPrint();
+    };
+    // Print this text (More, while a text is read): the text on screen (js/core/apply.js cur)
+    document.getElementById("prt").onclick = function () {
+      var sec = cur(),
+        t = null;
+      shelvesNow().forEach(function (s) {
+        s.texts.forEach(function (x) {
+          if (sec && x.sec === sec.id) t = x;
+        });
+      });
+      openPrint(t ? { ids: [t.id], from: document.getElementById("prt") } : {});
+    };
+    // Print this session (Home, under the session's texts): its texts, at the Today tab
+    document.getElementById("tspr").onclick = function () {
+      var s = shownSession(),
+        x = todaySessions().filter(function (y) {
+          return y.session === s;
+        })[0];
+      if (x && x.ids.length) openPrint({ ids: x.ids, tab: "today", from: document.getElementById("tspr") });
     };
     function pmClose() {
       unready();
       pm.hidden = true;
       ovDone();
-      focusBack(document.getElementById("prb"));
+      focusBack(opener || document.getElementById("prb"));
     }
     document.getElementById("prx").onclick = pmClose;
     document.addEventListener("keydown", function (e) {
