@@ -307,6 +307,7 @@ test("each tick, session and Start control has a name and a 44px target @mobile"
   await page.locator("#tmb").click();
   const small = await page.evaluate(() =>
     [...document.querySelectorAll("#tss [role=tab], #tmb, #tlibb, #tsl .ttk, #tsl a, #tst, #shr button:not([hidden]), #iconb")]
+      .filter((b) => b.getClientRects().length) // (Print this text is not shown on Home)
       .map((b) => ({ c: b.className || b.id || b.dataset.s, ...b.getBoundingClientRect().toJSON() }))
       .filter((r) => r.width < 44 || r.height < 44)
       .map((r) => `${r.c} ${Math.round(r.width)}×${Math.round(r.height)}`),

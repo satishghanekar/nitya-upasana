@@ -31,6 +31,8 @@
   .sp .sp-go:active,
   .sp-seg,
   .prrow .prseg,
+  .prtabs,
+  .prses[aria-pressed="true"],
   .sp-prev {
     background: var(--surface);
   }

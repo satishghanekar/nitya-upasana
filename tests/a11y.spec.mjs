@@ -56,7 +56,8 @@ for (const [name, opener, dialog] of DIALOGS) {
     await page.keyboard.press("Enter");
     await page.waitForTimeout(200);
     const expected = await page.locator(dialog).evaluate((d) =>
-      [...d.querySelectorAll("button, a[href], input, select, textarea, [tabindex]:not([tabindex='-1'])")]
+      // (a tab list's other tabs are reached with the arrow keys, not Tab: tabindex -1)
+      [...d.querySelectorAll("button:not([tabindex='-1']), a[href], input, select, textarea, [tabindex]:not([tabindex='-1'])")]
         .filter((x) => !x.disabled && x.getClientRects().length && getComputedStyle(x).visibility !== "hidden")
         .map((x) => x.id || x.textContent.trim().slice(0, 30)),
     );

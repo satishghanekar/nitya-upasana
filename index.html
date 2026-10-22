@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.21.0">
+<meta name="version" content="aarti-v1.21.1">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -145,6 +145,7 @@
   <button type="button" id="shb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span class="mr">शेअर</span><span class="en" lang="en">Share</span></button>
   <button type="button" id="qrb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg><span class="mr">QR<span class="sr"> कोड</span></span><span class="en" lang="en">QR<span class="sr"> code</span></span></button>
   <button type="button" id="prb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg><span class="mr">प्रिंट</span><span class="en" lang="en">Print</span></button>
+  <button type="button" id="prt"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="9" rx="2"/><path d="M6 14h12v7H6z"/></svg><span class="mr">ही रचना प्रिंट करा</span><span class="en" lang="en">Print this text</span></button>
   <button type="button" id="hlpb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.3-2.5 3.9"/><path d="M12 17.2v.01"/></svg><span class="mr">मदत</span><span class="en" lang="en">Help</span></button>
 </div>
 <!-- ==== Library (js/features/contents-list.js): opened by the book button in the top bar on the home page (and the book
@@ -358,6 +359,8 @@
         <ol id="tsl"></ol>
         <!-- an empty session: a friendly line and Add texts (the builder, with the picker open) -->
         <p id="tse" hidden><span id="tset"></span><button type="button" id="tsea" aria-haspopup="dialog" aria-controls="rtb"></button></p>
+        <!-- Print this session: the print builder (js/features/print.js) with the session's texts ticked -->
+        <button type="button" id="tspr" aria-haspopup="dialog" aria-controls="prm"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="9" rx="2"/><path d="M6 14h12v7H6z"/></svg><span class="mr">हे सत्र प्रिंट करा</span><span class="en" lang="en">Print this session</span></button>
       </div>
       <p id="tlive" class="sr" aria-live="polite"></p>
     </section>
