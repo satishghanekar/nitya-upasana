@@ -724,6 +724,57 @@ h2[tabindex="-1"]:focus {
     text-align: center;
     text-indent: 0;
   }
+  /* A Vedic text side by side (.pvpair): each paragraph beside its English one, both running on from page to
+     page, so the paragraphs start level and the lines inside them are free (PLAN mockup D). Floats, which every
+     browser breaks across pages. js/print/fit.js sets the widths (the original's share, as for the other texts
+     side by side) and draws the rule down the taller of the two (.pvtl), so it runs the whole paragraph. */
+  #pv .pvpair .pvpara {
+    margin: 0;
+  }
+  #pv .pvpair .pvprose::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  #pv .pvpair .pvprose > .mr,
+  #pv .pvpair .pvprose > .en {
+    display: block !important;
+    box-sizing: border-box;
+    width: 50%;
+    padding: 0 10pt 9pt;
+  }
+  #pv .pvpair .pvprose > .mr {
+    float: left;
+  }
+  #pv .pvpair .pvprose > .en {
+    float: right;
+    color: #000 !important;
+  }
+  #pv .pvpair .pvprose > .mr.pvtl {
+    border-right: 0.5pt solid #bbb;
+  }
+  #pv .pvpair .pvprose > .en.pvtl {
+    border-left: 0.5pt solid #bbb;
+  }
+  /* English about 0.85 of the Devanagari size, so the two look the same size (SIZES.md in the print redesign plan) */
+  #pv .pvpair .en .pvpr {
+    font-family: var(--lat);
+    font-size: 12.75pt;
+  }
+  html[data-lead="en"] #pv .pvpair .pvprose > .mr {
+    float: right;
+  }
+  html[data-lead="en"] #pv .pvpair .pvprose > .en {
+    float: left;
+  }
+  html[data-lead="en"] #pv .pvpair .pvprose > .mr.pvtl {
+    border-right: 0;
+    border-left: 0.5pt solid #bbb;
+  }
+  html[data-lead="en"] #pv .pvpair .pvprose > .en.pvtl {
+    border-left: 0;
+    border-right: 0.5pt solid #bbb;
+  }
   /* Contents on page 1 (it gets a page to itself: see the final print rules) */
   #pv .pvtoc {
     margin: 10pt 0 14pt;
