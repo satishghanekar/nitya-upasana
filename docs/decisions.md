@@ -423,6 +423,16 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - The tests read each English line back from the PDF even with the original's words between its parts (a paragraph
   is read row by row), and check that no paragraph line runs past its column (`past`).
 
+## Print: the printout's language, and font tiles (v1.21.3, 2026-10-22)
+
+- Step P4 (third part) of the print redesign (PLAN §3.1, mockup 1).
+- **Language** is the first row of How: the original (Marathi, or Kannada in Kannada letters), English, or Both, the
+  main language first. It is the printout's own, like the print font and dhrupad: picking English to print leaves the
+  reading page in Marathi. It starts as the page shows it, and is kept on the device (`plang`). Both prints side by
+  side on Landscape, and the page row then says so.
+- **Print font tiles:** each font shows the text's first word in that font over its name, Best across the top; the
+  separate sample line is gone.
+- Still to come in P4: the small preview of the first page and a way to change the paper (Letter or A4).
 ## Fix: printing after reading a session (v1.21.2, 2026-10-22)
 
 - Satish's Morning printout (Mac Safari) had each text's title and author line and nothing else. Cause: while a

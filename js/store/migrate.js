@@ -21,7 +21,7 @@ export const SETTINGS_VERSION = 6;
 // what each person keeps in their profile
 export const PROFILE_KEYS = ["lang", "lead", "l2", "ui", "ind", "tr", "fs", "fsu", "fnt", "ref", "th", "hc", "as", "ason", "asp", "af", "tf", "hl"];
 // what stays with the device, whoever is reading
-export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "fold"];
+export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "plang", "fold"];
 
 /**
  * Every setting with its default (the same list and meanings as js/core/state.js has always had)
@@ -49,6 +49,7 @@ export function defaults(env) {
     fnt: "std", // text font: std | classic | bold | hand
     pref: "", // dhrupad in the printout: "" as on the page | 0 | 1
     pfn: "", // font of the printout: "" or best (Best for each text) | std | classic | bold | hand
+    plang: "", // language of the printout: "" as the page shows it | mr (the original) | en | both
     tr: "simple", // English style: simple | iast
     fold: 0, // home card folded
     tf: 0, // home contents list folded
@@ -122,6 +123,7 @@ export function tidy(P) {
   if (P.l2 === P.lead || ["mr", "en", ""].indexOf(P.l2) < 0) P.l2 = P.lead === "en" ? "mr" : "en";
   if (P.ind !== "kn") P.ind = "mr";
   if (P.por !== "land" && P.por !== "up") P.por = "";
+  if (["mr", "en", "both"].indexOf(P.plang) < 0) P.plang = "";
   if (P.lead === "en" || P.ind !== "mr") P.ui = "en";
   if (!P.l2 || [P.lead, P.l2, "both"].indexOf(P.lang) < 0) P.lang = P.lead;
   if (["auto", "light", "sepia", "dark"].indexOf(P.th) < 0) P.th = "auto";
