@@ -101,6 +101,11 @@ export var LAYOUT = {
   // poster (Satish, 2026-10-21, SIZES.md in the print redesign plan): aartis and ashtaks (verse) to 20pt, Vedic
   // texts (layout: prose) to 17pt, as their svara marks need room between the lines.
   grow: { verse: [14, 16, 18, 20], prose: [15, 16, 17] },
+  // Two columns, for an aarti or ashtak in one language that is too long for one page in one column (Satish,
+  // 2026-10-21): down the left column, then the right, then the next page, a stanza never split between columns,
+  // the columns balanced on the last page. Only when every line fits in a column's width at the size chosen, so two
+  // columns never make a line wrap. gap: between the columns, in mm (a thin rule runs down the middle of it).
+  cols: { gap: 10 },
   // How bad each outcome is, when choosing sizes. A row out of step side by side is the worst (the reader
   // loses their place), then a line broken in the middle of a phrase, then a line that wraps at a
   // preferred break; setting a piece smaller costs a little for every 1% (shrink, per 1%).

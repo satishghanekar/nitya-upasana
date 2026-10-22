@@ -540,6 +540,30 @@ export function init() {
         end(null);
       }
     }
+    // A piece in two columns, as the page plan laid it out (cols: for each page, the blocks of its left and right
+    // column): its title across the top, then a box for each page holding its two columns (css/03-menus-print-view.css)
+    function twoCols(e, cols) {
+      var doc = e.ownerDocument,
+        kids = [].filter.call(e.children, function (c) {
+          return !c.classList.contains("pvbr");
+        }),
+        h = kids[0] && kids[0].querySelector("h2");
+      e.classList.add("pvtwo");
+      if (h) e.insertBefore(h, kids[0]);
+      cols.forEach(function (pg) {
+        var box = doc.createElement("div");
+        box.className = "pv2p";
+        pg.forEach(function (list) {
+          var c = doc.createElement("div");
+          c.className = "pv2c";
+          list.forEach(function (i) {
+            c.appendChild(kids[i]);
+          });
+          box.appendChild(c);
+        });
+        e.appendChild(box);
+      });
+    }
     // The site decides every page break, because a forced break ("start a new page here") is the one
     // page rule Chrome and Safari both follow. Each piece starts on a new page; its blocks (stanzas,
     // verse groups) are packed onto pages with 4% to spare, and a break is forced before each block
@@ -559,7 +583,7 @@ export function init() {
         plan = {},
         z = {},
         grown = {}, // a piece's heights, and the smaller sizes to fall back on if it takes more pages than planned (step 2)
-        out = { z: z, b: {}, t: {} };
+        out = { z: z, b: {}, t: {}, c: {} };
       if (!secs.length) return out;
       function pack(hs, k, fl) {
         var n = 1,
@@ -588,6 +612,47 @@ export function init() {
           }
         });
         return { n: n, b: br, f: used / H };
+      }
+      // Two columns (LAYOUT.cols): blocks of heights hs at scale k, below a title of height ht that runs across the
+      // top of the first page, down the left column and on down the right, then the next page; the last page's
+      // blocks shared out so its columns end level. A block taller than a column cannot be laid out this way.
+      // Returns the pages, each [left blocks, right blocks], how many there are, and how full the last page is.
+      function pack2(hs, k, ht) {
+        var pages = [[[], []]],
+          col = 0,
+          used = ht * k,
+          ok = true;
+        hs.forEach(function (h, i) {
+          h *= k;
+          var top = pages.length === 1 ? ht * k : 0;
+          if (h > C - top) ok = false;
+          if (pages[pages.length - 1][col].length && used + h > C) {
+            if (col === 0) col = 1;
+            else {
+              pages.push([[], []]);
+              col = 0;
+            }
+            used = pages.length === 1 ? ht * k : 0;
+          }
+          pages[pages.length - 1][col].push(i);
+          used += h;
+        });
+        if (!ok) return { n: Infinity };
+        // the last page: the split that makes its taller column shortest (ties: the left one the longer)
+        var last = pages[pages.length - 1],
+          all = last[0].concat(last[1]),
+          sum = function (l) {
+            return l.reduce(function (a, i) {
+              return a + hs[i] * k;
+            }, 0);
+          },
+          best = null;
+        for (var j = 1; j <= all.length; j++) {
+          var m = Math.max(sum(all.slice(0, j)), sum(all.slice(j)));
+          if (!best || m < best.m - 1e-6) best = { m: m, j: j };
+        }
+        pages[pages.length - 1] = [all.slice(0, best.j), all.slice(best.j)];
+        return { n: pages.length, cols: pages, f: ((pages.length === 1 ? ht * k : 0) + best.m) / H };
       }
       // 1. pieces made of blocks: measure each block and pack them onto pages. Measured 20px narrower
       // than the frame (a near-full line then wraps here first), so heights err on the tall side.
@@ -678,10 +743,55 @@ export function init() {
             }
           }
         }
+        // Two columns (Satish, 2026-10-21): an aarti or ashtak in one language whose lines all fit in half the width
+        // (data-half, from js/print/fit.js) is set in two columns when that puts it on one page at a larger size than
+        // one column does (or at all); and when neither puts it on one page, it runs on in two columns at its own
+        // size. The size: the largest size step that fits, else its own size, else smaller as far as the floor allows.
+        var half = Number(e.getAttribute("data-half")) || 0,
+          title = kids[0].querySelector("h2");
+        if (half >= low && title && fl.indexOf(true) < 0 && !e.classList.contains("pvved") && d.documentElement.getAttribute("data-print") === "one") {
+          var ht = (title.nextElementSibling ? title.nextElementSibling.getBoundingClientRect().top : title.getBoundingClientRect().bottom) - top,
+            hs2 = hs.slice(),
+            one1 = r.n === 1 ? z[id] || 1 : 0,
+            pt2 = Number(e.getAttribute("data-pt")),
+            sizes = LAYOUT.grow.verse
+              .map(function (x) {
+                return pt2 ? x / pt2 : 0;
+              })
+              .filter(function (x) {
+                return x >= 1.01;
+              })
+              .reverse()
+              .concat([1]);
+          hs2[0] -= ht;
+          for (var dn = 98; dn >= low * 100 - 1e-9; dn -= 2) sizes.push(dn / 100);
+          var two = null;
+          for (var si = 0; si < sizes.length && !two; si++) {
+            if (sizes[si] > half) continue;
+            var q2 = pack2(hs2, sizes[si], ht);
+            if (q2.n === 1) two = { k: sizes[si], q: q2 };
+          }
+          if (!two && !one1 && half >= 1) two = { k: 1, q: pack2(hs2, 1, ht) };
+          if (two && two.q.n < Infinity && two.k > one1 + 1e-6) {
+            if (Math.abs(two.k - 1) > 0.001) z[id] = Math.round(two.k * 1000) / 1000;
+            else delete z[id];
+            out.c[id] = two.q.cols;
+            // the title, then a block for each page, each after the first starting a new page
+            r = {
+              n: two.q.n,
+              b: two.q.cols.slice(1).map(function (x, i) {
+                return i + 2;
+              }),
+              f: two.q.f,
+            };
+            hs = [];
+            grown[id] = null; // (its own plan: no step back in step 2)
+          }
+        }
         plan[id] = r;
         // a piece of blocks (not prose) that the browser lays out on more pages than planned (step 2) is set smaller
         // a step at a time, as far as the floor allows, until it takes the pages planned
-        if (!grown[id] && fl.indexOf(true) < 0) {
+        if (grown[id] === undefined && fl.indexOf(true) < 0) {
           var down = [];
           for (var dz = Math.round((z[id] || 1) * 100) - 2; dz >= low * 100 - 1e-9 && down.length < 8; dz -= 2) down.push(dz / 100);
           grown[id] = { hs: hs, fl: fl, n: r.n, back: down };
@@ -713,6 +823,7 @@ export function init() {
             kids = [].slice.call(e.children);
           if (!plan[id]) return;
           if (z[id]) e.style.zoom = z[id];
+          if (out.c[id]) return twoCols(e, out.c[id]);
           (out.t[id] || []).forEach(function (i) {
             kids[i].classList.add("pvtall");
           });
@@ -835,8 +946,9 @@ export function init() {
       });
       [].forEach.call(pv.querySelectorAll(".pvs"), function (e) {
         var id = e.getAttribute("data-sid");
-        var kids = [].slice.call(e.children);
         e.style.zoom = (pg && pg.z && pg.z[id]) || "";
+        if (pg && pg.c && pg.c[id] && !e.classList.contains("pvtwo")) twoCols(e, pg.c[id]);
+        var kids = [].slice.call(e.children);
         var tall = (pg && pg.t && pg.t[id]) || [];
         kids.forEach(function (k, i) {
           k.classList.toggle("pvtall", tall.indexOf(i) >= 0);
