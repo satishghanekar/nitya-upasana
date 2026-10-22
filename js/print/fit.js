@@ -44,7 +44,7 @@ export function fit(w, d, mode, pv) {
         px = parseFloat(w.getComputedStyle(el).fontSize);
       if (Math.abs(f - 1) >= 0.005) el.style.fontSize = mp[i].style.fontSize = px * f + "px";
       // running paragraphs fit any width: the piece may grow as far as its pages allow (no line limit)
-      if (el === el.closest(".pvs").querySelector("p.pvpr")) room(d, pv, el.closest(".pvs").getAttribute("data-sid"), { fit: 1, grow: 9, pt: (px * f * 0.75) / (sc.steps || 1) });
+      if (el === el.closest(".pvs").querySelector("p.pvpr")) room(d, pv, el.closest(".pvs").getAttribute("data-sid"), { fit: 1, grow: 9, pt: (px * f * 0.75) / (sc.steps || 1), steps: sc.steps });
     });
   if (!lines.length || lines.length !== mine.length) return;
   lines.forEach(function (el, i) {
@@ -94,22 +94,27 @@ export function fit(w, d, mode, pv) {
     });
     // how far the piece could be set larger as a whole and keep every line as planned: none if a line wraps,
     // otherwise as far as its widest line has room. Its size is its first column's (the original side by side)
+    // In one language, also how large it could be set in two columns (half: none if a line wraps)
     var grow = Infinity,
+      half = side ? 0 : Infinity,
+      gap = (LAYOUT.cols.gap * 96) / 25.4,
       fitMin = 1;
     g.cols.forEach(function (c, k) {
       fitMin = Math.min(fitMin, s[k]);
       c.lines.forEach(function (ln) {
         var W = width(ln, shares && shares[k], geo),
           f = c.size * s[k];
-        if (predict(ln, W, f).lines > ln.segs.length) grow = 1;
+        if (predict(ln, W, f).lines > ln.segs.length) grow = half = 0;
         ln.segs.forEach(function (seg) {
           var need = (seg[seg.length - 1].r - seg[0].l) * f;
-          if (need > 0) grow = Math.min(grow, (W * LAYOUT.margin) / need);
+          if (need <= 0) return;
+          grow = Math.min(grow, (W * LAYOUT.margin) / need);
+          half = Math.min(half, (((W - gap) / 2) * LAYOUT.margin) / need);
         });
       });
     });
     var c0 = g.cols[0];
-    room(d, pv, g.sid, { fit: fitMin, grow: grow, pt: (c0.lines[0].base * c0.size * s[0] * 0.75) / c0.steps });
+    room(d, pv, g.sid, { fit: fitMin, grow: Math.max(grow, 1), half: half, pt: (c0.lines[0].base * c0.size * s[0] * 0.75) / c0.steps, steps: c0.steps });
   });
   if (side)
     [d.querySelectorAll("#pv col.pvcm"), pv.querySelectorAll("col.pvcm")].forEach(function (cs) {
@@ -122,7 +127,8 @@ export function fit(w, d, mode, pv) {
 
 // What the page plan (js/features/print.js paginate) needs to know of how a piece was fitted, written on the piece
 // in the page-sized copy and in the print view: fit, the smallest scale its lines were set at (against their size
-// before fitting); grow, how much larger the whole piece could be set with every line still as planned; pt, the size
+// before fitting); grow, how much larger the whole piece could be set with every line still as planned; half, the same
+// in two columns (one language: 0 when it cannot); steps, its first column's script's steps (SCRIPTS); pt, the size
 // of its first column's lines in points, against the Devanagari steps (LAYOUT.grow; Latin's are smaller: SCRIPTS)
 function room(d, pv, sid, r) {
   [d.querySelector('#pv .pvs[data-sid="' + sid + '"]'), pv.querySelector('.pvs[data-sid="' + sid + '"]')].forEach(function (e) {
@@ -130,6 +136,8 @@ function room(d, pv, sid, r) {
     e.setAttribute("data-fit", String(Math.round(r.fit * 1000) / 1000));
     e.setAttribute("data-grow", String(Math.round(Math.min(r.grow, 9) * 1000) / 1000));
     e.setAttribute("data-pt", String(Math.round(r.pt * 100) / 100));
+    if (r.steps && r.steps !== 1) e.setAttribute("data-steps", String(r.steps));
+    e.setAttribute("data-half", String(Math.round(Math.min(r.half || 0, 9) * 1000) / 1000));
   });
 }
 
@@ -278,7 +286,8 @@ function measure(w, d, groups, side, fnt) {
     geo = null;
   // (the dhrupad at the top is a box only as wide as its lines, centred: measured as wide as the page it is centred
   // on, which is the room its lines have, or they would always seem to fill it)
-  st.textContent = "#pv .verse p, #pv td.pvm, #pv td.pve { white-space: nowrap !important } #pv .pvref { display: block !important }";
+  // (likewise a piece centred on the page: a box only as wide as its lines)
+  st.textContent = "#pv .verse p, #pv td.pvm, #pv td.pve { white-space: nowrap !important } #pv .pvref { display: block !important } #pv .pvs { width: auto !important }";
   d.head.appendChild(st);
   groups.forEach(function (g) {
     g.cols.forEach(function (c) {

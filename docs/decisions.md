@@ -385,3 +385,20 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - **A measuring slip fixed:** the dhrupad at the top of an aarti is a box as wide as its lines, centred; the fitting
   measured its lines against that box, so they always seemed to fill it, and every such aarti was set about 7%
   smaller (13.7pt instead of 14pt) and could never grow. It is now measured against the page width.
+
+## Print in two columns, and aartis centred (v1.20.7, 2026-10-21)
+
+- Step P3 (second part) of the print redesign; the rules are Satish's (PLAN §3.3, SIZES.md, 21 Oct).
+- **Centred:** in one language an aarti or ashtak is a block centred on the page, its lines left-aligned (before,
+  each line was centred, so the line starts zigzagged). Vedic texts and side by side are as before.
+- **Two columns:** for an aarti or ashtak in one language, when every line fits half the page width at 80% or more.
+  Of all the sizes (the steps, its own size, smaller to the floor), the largest that gives one page in one or two
+  columns wins, and a tie goes to one column. When neither gives one page, it runs on in two columns at its own size
+  if its lines allow, else in one column. Down the left column, then the right; a stanza is never split; the last
+  page is balanced (its taller column as short as it can be); a 0.5pt rule in a 10mm gap.
+- Results, A4 Marathi Portrait: Thursday's ashtak 2 pages at 20pt became 1 page at 16pt; Anudin Anutapen and
+  Wednesday's ashtak 2 pages became 1 page at 12.9pt; Monday and Tuesday's ashtaks at 18pt, Sunday's and the
+  Padukashtak at 16pt, each on one page. In English, Thursday and the Padukashtak go to two columns. The whole Library
+  in one language takes 2 to 5 pages fewer.
+- The tests check that no line runs past its column (`past` in `printText`), and the per-text snapshots record
+  `cols: 2`.
