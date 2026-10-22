@@ -821,6 +821,10 @@ h2[tabindex="-1"]:focus {
     margin-left: auto;
     margin-right: auto;
   }
+  /* (on screen a stanza's lines are each centred: css/02-core.css) */
+  :root[data-print="one"] #pv .pvs:not(.pvved) .verse {
+    text-align: start;
+  }
   /* Two columns (a long aarti or ashtak: js/features/print.js twoCols): the title across the top, then each page's
      stanzas down the left column and on down the right, with a thin rule between (LAYOUT.cols.gap: 10mm) */
   #pv .pv2p {

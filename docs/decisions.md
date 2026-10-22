@@ -423,3 +423,19 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - The tests read each English line back from the PDF even with the original's words between its parts (a paragraph
   is read row by row), and check that no paragraph line runs past its column (`past`).
 
+## Print font: Best for each text (v1.20.9, 2026-10-22)
+
+- Step P3 (last part) of the print redesign (PLAN §3.3, SIZES.md "Typeface by kind of text", agreed 21 Oct).
+- A new print font, **Best**, is the printout's default and the first choice in the Print pop-up: Classic for aartis and
+  ashtaks (it looks like a printed aarti book; English in Noto Serif, Kannada letters in Noto Serif Kannada), and Tiro
+  Devanagari Sanskrit for the original of a Vedic text (`layout: prose`: Shree Rudra, the Atharvashirsha, the Purusha
+  Suktam), the font that draws the svara marks. Shri Sukta and the Lalita Sahasranama have no svara marks and print
+  in Classic. Before, the printout followed the text font (Settings), unless one was picked in the pop-up; a font
+  picked there is kept.
+- Page counts barely change: the whole Library in one language takes 5 pages fewer to 1 more, side by side 0 to 1
+  fewer (Safari's plan for English: 4 more).
+- **Lines left-aligned:** v1.20.7 centred an aarti's block on the page but its lines stayed centred each (the screen's
+  style), not left-aligned inside the block as agreed. They now start level.
+- The tests print the Library's texts in the default font (Best), and the hard cases in each of the other four
+  (`pfn`); the whole-Library cases are now named `-best-`.
+

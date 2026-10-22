@@ -37,7 +37,7 @@ export const VIEWS = {
   "english-marathi": [{ lang: "both", lead: "en", l2: "mr" }, BOTH],
   "english-kannada": [{ lang: "both", lead: "en", l2: "mr", ind: "kn" }, BOTH],
 };
-const FONTS = { standard: "std", classic: "classic", bold: "bold", handwritten: "hand" };
+const FONTS = { best: "best", standard: "std", classic: "classic", bold: "bold", handwritten: "hand" };
 const DHRUPAD = { "dhrupad-once": 1, "dhrupad-every-verse": 0 };
 const PAPERS = { letter: ["Letter", "en-US"], a4: ["A4", "en-IN"] };
 
@@ -48,7 +48,7 @@ for (const [view, [prefs, layouts]] of Object.entries(VIEWS))
         for (const [pp, [paper, locale]] of Object.entries(PAPERS)) {
           const name = `${view}/${layout}/${font}-${dh}-${pp}`;
           test(name, async ({ browser }) => {
-            const r = await printOnce(browser, { prefs: { ...prefs, fnt, ref }, choice, mode, paper, locale, save: name + ".pdf", lines: true });
+            const r = await printOnce(browser, { prefs: { ...prefs, pfn: fnt, ref }, choice, mode, paper, locale, save: name + ".pdf", lines: true });
             const a = auditLines(r.marked, await pdfMarks(r.pdf.buf), mode);
             const out = { name, view, layout, font, dhrupad: dh, paper: pp, pages: r.pdf.pages.length, ...a };
             writeFileSync(fileURLToPath(new URL(`./pdfs/${name}.json`, import.meta.url)), JSON.stringify(out, null, 1));

@@ -407,7 +407,8 @@ html[data-scr="kn"] #bt[data-tl="mr"] #btt,
 }
 /* the chosen text font (Settings → Text font) for the Kannada texts, the home page and the Settings preview; the
    Atharvashirsha keeps a font with its Vedic accent marks (Noto Sans Kannada, or Noto Serif Kannada for Classic) */
-:root[data-font="classic"] {
+:root[data-font="classic"],
+:root[data-font="best"] {
   --kf: "SC Kn Classic";
   --kv: "SC Kn Classic";
 }
