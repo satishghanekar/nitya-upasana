@@ -2,7 +2,7 @@
 // IndexedDB, small: open the database with a time limit and one retry, then simple promise helpers. Safari has had
 // IndexedDB bugs (early iOS 15: the first open could hang forever; private windows in older browsers refuse it), so
 // when it can't be opened the app keeps its data in memory for this visit, and js/features/profiles.js shows a
-// warning with "Save a backup file" (docs/architecture.md §4.2, risk R5).
+// warning with "Save a backup file".
 // No page work here; the unit tests (tests/unit/store.test.mjs) run it in Node with fake-indexeddb.
 //
 // Database "nitya", version 1. Stores:

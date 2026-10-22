@@ -233,7 +233,7 @@ export function jumpTo(go, url) {
   }
 }
 
-// Home on its own (Home v3, docs/decisions.md): while data-hv is on <html>, the page ends after Home (More and the
+// Home on its own: while data-hv is on <html>, the page ends after Home (More and the
 // Library line) and the pieces below it are not shown (css/10-today.css, screen only). It is set by going home (the top-bar
 // title, Home in the side menu or the bottom bar, the end of a session, Back to the bare address) and at start-up
 // with no piece to open (js/core/startup.js), and taken off before the page goes to a piece (jumpTo(), Back to a

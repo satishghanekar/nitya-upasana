@@ -1,4 +1,4 @@
-// Home (Home v2, docs/decisions.md 2026-10-18; Home v3 option A, 2026-10-20): the time-of-day picture beside today's
+// Home: the time-of-day picture beside today's
 // date, the Morning | Afternoon | Evening switch (a session with nothing set greyed), the session's texts with a tick
 // each (a title starts the session there; no Start button: Satish, 2026-10-22), More (App / Share / QR / Print / Help, closed by default) and
 // "Another text? Open the Library". Home ends there: the pieces show once a text is opened. On a Sankashti day only,

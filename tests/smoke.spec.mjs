@@ -9,7 +9,7 @@ test("opens without errors and builds every text in the library when opened @mob
   // Home on its own: no piece is built until it is opened (js/core/page.js)
   await expect(page.locator("section.ash")).toHaveCount(0);
   await expect(page.locator("#jl a[data-go]").first()).toBeAttached();
-  // so Home stays light (stage 4 of docs/refactor-plan.md: about 11,000 elements when every text was built)
+  // so Home stays light (about 11,000 elements when every text was built)
   expect(await page.evaluate(() => document.querySelectorAll("*").length)).toBeLessThan(3000);
   await buildAll(page);
   await expect(page.locator("section.ash")).toHaveCount(TEXT_COUNT);

@@ -1,5 +1,5 @@
 // @ts-check
-// The Library by category (slice 3, docs/decisions.md 2026-10-19): the Library page's list of texts (#jl, opened by
+// The Library by category: the Library page's list of texts (#jl, opened by
 // the book button in the top bar) grouped by category: Vedic Chant, Aarti and any the family added, in the order of
 // content/categories.json; a category with no texts is left out of the list. Each category is numbered from 1
 // (2026-10-21). "Edit categories" ("विभाग बदला") at

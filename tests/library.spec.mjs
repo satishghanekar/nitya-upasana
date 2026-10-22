@@ -1,4 +1,4 @@
-// The Library (Home v2, docs/decisions.md 2026-10-18): the book button in the top bar opens every text, grouped as
+// The Library: the book button in the top bar opens every text, grouped as
 // the home page had them (पूजा, आरती), with search. A title opens its text; Back (the button or the browser's) returns
 // to Home. The bottom bar's search button and the one at the end of each piece open the same page.
 import { test, expect } from "@playwright/test";
