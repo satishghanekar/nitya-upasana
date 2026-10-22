@@ -19,9 +19,10 @@ import { leadOrder } from "../features/bars.js";
 /**
  * Every piece, in reading order, and the Library categories they are listed under in the printed contents.
  * @param {string[] | null} [ids]  only these texts (their Library ids), still in reading order; without it, every text
+ * @param {string} [lang]  the language printed (P.lang's values: mr, en or both); without it, as the page shows it
  * @returns {{ el: HTMLElement, secs: HTMLElement[], groups: { name: HTMLElement[], secs: HTMLElement[] }[] }}
  */
-export function compose(ids) {
+export function compose(ids, lang) {
   /** @type {any} */
   var w = window,
     C = w.CONTENT,
@@ -69,7 +70,7 @@ export function compose(ids) {
   breakLines(el);
   leadOrder(el.querySelectorAll(".verse, .ash header h2"), LEAD);
   secs.forEach(function (s) {
-    s.setAttribute("data-lang", P.lang);
+    s.setAttribute("data-lang", lang || P.lang);
   });
   var at = 0,
     groups = cats.map(function (/** @type {any} */ g) {

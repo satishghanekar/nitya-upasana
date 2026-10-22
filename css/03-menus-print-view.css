@@ -492,26 +492,56 @@ h2[tabindex="-1"]:focus {
 .prseg2 button {
   padding: 4px 12px;
 }
-/* a line of the text in the chosen font, as it prints */
-.prrow .prfs {
+/* the language: three equal choices */
+.prseg3 button {
+  flex: 1 1 0;
+}
+/* The print font as tiles (mockup 1): a word of the text in each font over its name, Best across the top; the chosen
+   one outlined in the accent colour (filled, the word would lose its look) */
+.prrow #prfn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 0;
+  background: none;
+}
+#prfn button {
+  display: grid;
+  justify-items: start;
+  gap: 2px;
+  min-height: 64px;
+  padding: 8px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+  text-align: start;
+}
+#prfn button[data-v="best"] {
   grid-column: 1 / -1;
-  font: 400 15px/1.4 var(--body);
-  overflow: hidden;
+}
+#prfn button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+  box-shadow: inset 0 0 0 1px var(--accent);
+  color: var(--ink);
+}
+.prfx {
+  font-size: 22px;
+  line-height: 1.3;
   white-space: nowrap;
-  text-overflow: ellipsis;
 }
-.prrow .prfs[lang="en"] {
-  font-family: var(--lat);
+.prfx[lang="en"] {
+  font-size: 19px;
 }
-/* one language: a few words, centred under the fonts */
-.prrow .prfs.one {
-  text-align: center;
+.prfm {
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 500;
 }
-:root[data-font]:not([data-font="std"]) .prrow .prfs {
-  font-family: var(--tf), var(--body);
-}
-:root[data-font]:not([data-font="std"]) .prrow .prfs[lang="en"] {
-  font-family: var(--tf), var(--lat);
+#prfn button[aria-pressed="true"] .prfm {
+  color: var(--accent);
+  font-weight: 600;
 }
 .prn {
   font-size: 13px;

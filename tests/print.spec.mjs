@@ -374,8 +374,8 @@ test("iPhone Home Screen app: Open in Safari carries the print choices @chromium
 });
 
 // What the pop-up offers (CHOICE in js/print/profiles.js): one language, Portrait or Landscape on one line,
-// Portrait until the reader has chosen a page, and the sample in that language; both languages, Landscape (side
-// by side) only, with a few words of each language in the sample. The focus is on Print.
+// Portrait until the reader has chosen a page, and the font tiles' word in that language; both languages, Landscape
+// (side by side) only, the language row with the main language first. The focus is on Print.
 for (const [setup, words] of [
   ["marathi", "सुखकर्ता दुःखहर्ता"],
   ["english", "Sukhkarta Dukhharta"],
@@ -390,15 +390,15 @@ for (const [setup, words] of [
     await expect(page.locator("#pr2")).toHaveText("Landscape");
     await expect(page.locator("#pr1")).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator("#prpv")).toBeHidden();
-    await expect(page.locator("#prfs")).toContainText(words);
-    await expect(page.locator("#prfs")).not.toContainText("·");
+    // each font's tile shows the text's first word in that font, in the language printed
+    await expect(page.locator("#prfn .prfx")).toHaveText(Array(5).fill(words.split(" ")[0]));
     await expect(page.locator("#prgp")).toBeFocused();
   });
 }
-for (const [setup, a, b] of [
-  ["both", "सुखकर्ता", "Sukhkarta"],
-  ["kannada-both", "ಸುಖಕರ್ತಾ", "Sukhkarta"],
-  ["english-main-both", "Sukhkarta", "सुखकर्ता"],
+for (const [setup, a] of [
+  ["both", "सुखकर्ता"],
+  ["kannada-both", "ಸುಖಕರ್ತಾ"],
+  ["english-main-both", "Sukhkarta"],
 ]) {
   test(`print pop-up offers only Landscape side by side: ${setup} @chromium-only`, async ({ page }) => {
     await stubPrint(page);
@@ -407,9 +407,10 @@ for (const [setup, a, b] of [
     await howStep(page);
     await expect(page.locator("#prpg")).toBeHidden();
     await expect(page.locator("#prpv")).toHaveText("Landscape, side by side");
-    const t = await page.locator("#prfs").textContent();
-    expect(t.indexOf(a)).toBeGreaterThanOrEqual(0);
-    expect(t.indexOf(b)).toBeGreaterThan(t.indexOf(a));
+    // the language row: the main language first, then the other, then Both (chosen); the tiles show the main language
+    await expect(page.locator("#prlg [aria-pressed=true]")).toHaveAttribute("data-v", "both");
+    expect(await page.locator("#prlg button").evaluateAll((l) => l.map((x) => x.dataset.v))).toEqual(setup === "english-main-both" ? ["en", "mr", "both"] : ["mr", "en", "both"]);
+    await expect(page.locator("#prfn .prfx").first()).toHaveText(a);
     await expect(page.locator("#prgp")).toBeFocused();
   });
 }
@@ -497,27 +498,28 @@ test("print pop-up scrolls when taller than the screen @chromium-only", async ({
   await expect(page.locator("#prx")).toBeInViewport();
 });
 
-// Above the choices: the printout's dhrupad and font (a tap picks another, for the printout only: the reading
-// page keeps its own), with a line of the text in it, centred for one language
+// How: the printout's dhrupad and font (a tap picks another, for the printout only: the reading page keeps its own),
+// the fonts as tiles, each with a word of the text in it
 test("print pop-up shows the dhrupad and font settings @chromium-only", async ({ page }) => {
   await stubPrint(page);
   await openSite(page, { ...SETUPS.marathi, fnt: "classic" });
   await tapMore(page, "#prb");
   await howStep(page);
   await expect(page.locator("#prdg [aria-pressed=true]")).toHaveText("Once", { useInnerText: true });
-  await expect(page.locator("#prfs")).toHaveCSS("text-align", "center");
-  // the printout's font starts as Best for each text (its sample in Classic), whatever the text font
-  await expect(page.locator("#prfn [aria-pressed=true]")).toHaveText("Best", { useInnerText: true });
-  await expect(page.locator("#prfn button")).toHaveText(["Best", "Standard", "Classic", "Bold", "Handwritten"], { useInnerText: true });
-  await expect(page.locator("#prfs")).toContainText("सुखकर्ता");
-  expect(await page.locator("#prfs").evaluate((e) => getComputedStyle(e).fontFamily)).toContain("SC Classic");
-  // a font picked here is the printout's only: the sample line follows it, the reading page keeps its own,
+  // the printout's font starts as Best for each text, whatever the text font; each tile shows a word in its font
+  await expect(page.locator("#prfn [aria-pressed=true] .prfm")).toHaveText("Best", { useInnerText: true });
+  await expect(page.locator("#prfn .prfm")).toHaveText(["Best", "Standard", "Classic", "Bold", "Handwritten"], { useInnerText: true });
+  await expect(page.locator('#prfn [data-v="best"] .prfx')).toHaveText("सुखकर्ता");
+  const font = (v) => page.locator(`#prfn [data-v="${v}"] .prfx`).evaluate((e) => getComputedStyle(e).fontFamily);
+  expect(await font("best")).toContain("SC Classic");
+  expect(await font("bold")).toContain("SC Bold");
+  expect(await font("hand")).toContain("SC Hand");
+  // a font picked here is the printout's only: the reading page keeps its own,
   // and the page takes it just while it prints
   await page.locator('#prfn [data-v="bold"]').click();
-  await expect(page.locator("#prfn [aria-pressed=true]")).toHaveText("Bold", { useInnerText: true });
+  await expect(page.locator("#prfn [aria-pressed=true] .prfm")).toHaveText("Bold", { useInnerText: true });
   const prefs = await page.evaluate(() => JSON.parse(localStorage.getItem("aarti2-prefs")));
   expect([prefs.pfn, prefs.fnt]).toEqual(["bold", "classic"]);
-  expect(await page.locator("#prfs").evaluate((e) => getComputedStyle(e).fontFamily)).toContain("SC Bold");
   expect(await page.evaluate(() => document.documentElement.getAttribute("data-font"))).toBe("classic");
   expect(
     await page.evaluate(() => {
@@ -757,5 +759,46 @@ test("print builder: Print this text @chromium-only", async ({ browser }) => {
   if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
   expect(await page.evaluate(() => [...document.querySelectorAll("#pv .pvs")].map((e) => e.getAttribute("data-sid")))).toEqual(["a7"]);
+  await context.close();
+});
+
+// The printout's language is its own (like its font): picked under How, it changes what prints, not the reading page;
+// it is carried to Safari; Both turns the page row into "Landscape, side by side"
+test("print builder: the printout's language @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await openSite(page, SETUPS.marathi);
+  await tapMore(page, "#prb");
+  await howStep(page);
+  await expect(page.locator("#prlg button")).toHaveText(["Marathi", "English", "Both"]);
+  await expect(page.locator("#prlg [aria-pressed=true]")).toHaveText("Marathi");
+  await expect(page.locator("#prpg")).toBeVisible();
+  await page.locator('#prlg [data-v="both"]').click();
+  await expect(page.locator("#prpg")).toBeHidden();
+  await expect(page.locator("#prpv")).toHaveText("Landscape, side by side");
+  await page.locator('#prlg [data-v="en"]').click();
+  await expect(page.locator("#prpg")).toBeVisible();
+  await expect(page.locator("#prfn .prfx").first()).toHaveText("Sukhkarta");
+  const prefs = await page.evaluate(() => JSON.parse(localStorage.getItem("aarti2-prefs")));
+  expect([prefs.plang, prefs.lang]).toEqual(["en", "mr"]);
+  // just one text, in English; the reading page stays in Marathi
+  await page.locator("#prbk").click();
+  await page.locator('.prcb[data-cat=""]').click();
+  await page.locator('#prwl li[data-id="sukhkarta"] input').check();
+  await page.locator("#prnx").click();
+  await page.locator("#prgp").click();
+  await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
+  if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
+  await page.emulateMedia({ media: "print" });
+  const shown = await page.evaluate(() => {
+    const s = document.querySelector("#pv .pvs");
+    const vis = (sel) => [...s.querySelectorAll(sel)].some((e) => e.getClientRects().length && getComputedStyle(e).display !== "none");
+    return { lang: document.getElementById("pv").getAttribute("data-lang"), en: vis(".verse .en p"), mr: vis(".verse .mr p") };
+  });
+  expect(shown).toEqual({ lang: "en", en: true, mr: false });
+  await page.emulateMedia({ media: "screen" });
+  expect(await page.evaluate(() => document.querySelector(".wrap > .ash").getAttribute("data-lang"))).toBe("mr");
   await context.close();
 });
