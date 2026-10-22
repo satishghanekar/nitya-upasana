@@ -508,6 +508,9 @@
 .bar .t.site {
   padding-block: 9px;
   margin-block: -9px;
+  /* a tap target at least 44px high (the title alone is 42px on some phones) */
+  min-height: 44px;
+  box-sizing: border-box;
 }
 
 
