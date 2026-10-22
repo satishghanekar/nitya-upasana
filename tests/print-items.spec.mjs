@@ -30,13 +30,13 @@ test.describe.configure({ mode: "parallel" });
 const LIBRARY = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8")).texts;
 
 // How each text is printed: Marathi and English on upright pages, both languages side by side on sideways pages,
-// in the standard font on A4
+// in the printout's default font (Best for each text: Classic, and Tiro Devanagari Sanskrit for a Vedic text) on A4
 const VIEWS = [
   { name: "marathi-portrait", prefs: SETUPS.marathi, mode: "one" },
   { name: "english-portrait", prefs: SETUPS.english, mode: "one" },
   { name: "both-landscape", prefs: { ...SETUPS.both, por: "land" }, mode: "side" },
 ];
-// The other fonts, and the other scripts, on the hardest texts only (all texts in every font: npm run print:audit):
+// The four fonts the Print pop-up offers besides, and the other scripts, on the hardest texts only (all texts in every font: npm run print:audit):
 // the longest aarti lines side by side, Shree Rudra side by side, a Vedic text in Kannada letters and in IAST
 const HARD = [
   { id: "yei-o-vitthale", name: "both-landscape", prefs: { ...SETUPS.both, por: "land" }, mode: "side" },
@@ -50,14 +50,14 @@ const FONTS = ["std", "classic", "bold", "hand"];
 const SMALLEST = 0.8;
 
 const CASES = [
-  ...LIBRARY.flatMap((t) => VIEWS.map((v) => ({ ...v, id: t.id, fnt: "std" }))),
-  ...HARD.flatMap((h) => FONTS.map((fnt) => ({ ...h, fnt }))).filter((c) => !(c.fnt === "std" && VIEWS.some((v) => v.name === c.name))),
+  ...LIBRARY.flatMap((t) => VIEWS.map((v) => ({ ...v, id: t.id, fnt: "" }))),
+  ...HARD.flatMap((h) => FONTS.map((fnt) => ({ ...h, fnt }))),
 ];
 
 for (const c of CASES) {
-  const name = c.fnt === "std" ? c.name : `${c.name}-${c.fnt}`;
+  const name = c.fnt ? `${c.name}-${c.fnt}` : c.name;
   test(`${c.id} · ${name} @text:${c.id} @chromium-only`, async ({ browser }) => {
-    const r = await printText(browser, { id: c.id, prefs: { ...c.prefs, fnt: c.fnt }, mode: c.mode, paper: "A4", locale: "en-IN" });
+    const r = await printText(browser, { id: c.id, prefs: c.fnt ? { ...c.prefs, pfn: c.fnt } : c.prefs, mode: c.mode, paper: "A4", locale: "en-IN" });
     expect(r.errors, "no script errors").toEqual([]);
     expect(r.pv.mode, "print mode set on the page").toBe(c.mode);
     expect(r.pv.pieces, "that text alone").toEqual(r.sids);

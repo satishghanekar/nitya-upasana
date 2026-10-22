@@ -48,7 +48,7 @@ export function defaults(env) {
     por: "", // the page last chosen in the Print pop-up: "" | "up" | "land"
     fnt: "std", // text font: std | classic | bold | hand
     pref: "", // dhrupad in the printout: "" as on the page | 0 | 1
-    pfn: "", // font of the printout: "" the text font | std | classic | bold | hand
+    pfn: "", // font of the printout: "" or best (Best for each text) | std | classic | bold | hand
     tr: "simple", // English style: simple | iast
     fold: 0, // home card folded
     tf: 0, // home contents list folded

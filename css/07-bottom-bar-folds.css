@@ -419,7 +419,9 @@
 
 /* Text font (Settings): Standard keeps the site's own fonts; the others change the texts (Marathi and English).
    The Atharvashirsha's Marathi lines keep their Sanskrit font, which has the Vedic accent marks. */
-:root[data-font="classic"] {
+/* Best for each text (the printout only, js/features/print.js) is Classic, but for a Vedic text's original (below) */
+:root[data-font="classic"],
+:root[data-font="best"] {
   --tf: "SC Classic";
 }
 :root[data-font="bold"] {
@@ -449,6 +451,12 @@
 }
 :root[data-font]:not([data-font="std"]) #pv .pvs h2 .en {
   font-family: inherit;
+}
+/* Best for each text: a Vedic text's original (.pvved) in Tiro Devanagari Sanskrit, the font that draws its svara marks
+   (SIZES.md in the print redesign plan) */
+:root[data-font="best"] #pv .pvved .mr,
+:root[data-font="best"] #pv .pvved .mr p {
+  font-family: "Tiro Devanagari Sanskrit", var(--tf), var(--body);
 }
 /* and the home page, the section bars (पूजा, आरती) and the piece title cards: their font names point to the
    chosen font first. The home page's buttons and offline line, and the Open all / Fold all pill, stay in the site's own fonts (they are controls). */
