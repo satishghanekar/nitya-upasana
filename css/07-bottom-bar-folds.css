@@ -35,10 +35,17 @@
 #asc[hidden] {
   display: none;
 }
-/* out of the way while Settings or Contents is open (data-menu is set by the script; a CSS :has() rule
-   here made every style change on the page several times slower) */
-[data-menu="1"] #asc {
+/* out of the way while one of the pages is open (data-menu names it, set by the script; a CSS :has() rule here made
+   every style change on the page several times slower). On wide screens the Library and the Vedic calendar open beside
+   Home's column (css/10-today.css), so while reading the bar stays as the way around */
+[data-menu] #asc {
   display: none;
+}
+@media screen and (min-width: 1024px) {
+  :root[data-rail="1"][data-menu="jump"]:not([data-home="1"]) #asc,
+  :root[data-rail="1"][data-menu="cal"]:not([data-home="1"]) #asc {
+    display: block;
+  }
 }
 [data-asb="1"] body {
   padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)));

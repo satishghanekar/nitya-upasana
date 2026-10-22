@@ -169,21 +169,6 @@
   .ash[data-lang="both"] header h2 > .en {
     grid-column: 2;
   }
-  /* the same in the desktop left menu and the contents list of the search panel */
-  #rail[data-lang="both"] ul a {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    column-gap: 0.3em;
-    align-items: baseline;
-    justify-items: start;
-  }
-  #rail[data-lang="both"] ul a > .no {
-    grid-row: 1;
-  }
-  #rail[data-lang="both"] ul a > .mr,
-  #rail[data-lang="both"] ul a > .en {
-    grid-column: 2;
-  }
 }
 /* ==== Author line under the lotus at the end of each piece (who wrote it, with a Wikipedia link) ==== */
 .cr {
@@ -327,16 +312,6 @@ html[data-lead="en"] #pv[data-lang="both"] .pvcr .mr {
     display: block;
     margin-top: 2px;
     font: 400 13.5px/1.3 var(--body);
-    color: var(--muted);
-  }
-  html[data-lead="en"] #rail[data-lang="both"] ul a > .en {
-    display: block;
-    font: 500 14px/1.35 var(--lat);
-    color: inherit;
-  }
-  html[data-lead="en"] #rail[data-lang="both"] ul a > .mr {
-    display: block;
-    font: 400 12.5px/1.3 var(--head);
     color: var(--muted);
   }
 

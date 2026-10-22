@@ -6,8 +6,9 @@
    for the Vedic calendar line (#pan), the festival line on the day (#fst, js/features/vedic-calendar.js), the Sankashti
    line on the day (#skt, js/features/sankashti.js), the session's
    texts with their ticks (#tsc) under the Morning | Afternoon | Evening switch (#tss, Home v3 option A, 2026-10-20),
-   Start / Continue (#tsb), pinned to the bottom of the screen on phones, and "Another text? Open the Library" (#tlib). The Library (#jump) holds every text; the
-   pieces are not shown under Home on its own (data-hv).
+   and "Another text? Open the Library" (#tlib); a title starts the session there. The Library (#jump) holds every
+   text; the pieces are not shown under Home on its own (data-hv). On wide screens Home's column stays on the left
+   while a text, the Library, the calendar or Settings is open beside it.
    Sizes are in px: the home page keeps its size when the reader enlarges the verses.
    Sections:
    - The home page: picture and date
@@ -16,8 +17,7 @@
    - Morning | Afternoon | Evening
    - The Library line
    - Home on its own: no pieces under it
-   - Start / Continue, pinned on phones
-   - On the home page: the bottom bar gives way to Start, the side menu waits; while reading, Library is in the bottom bar
+   - On the home page: no bottom bar, Library in the top bar; while reading, Library is in the bottom bar
    - The Library page
    - Print
 */
@@ -398,22 +398,21 @@
 }
 
 /* ==== A session being read (data-run, js/features/today-card.js): only its texts (.inrun) are on the reading page,
-   not the rest of the Library. The side menu on wide screens lists only the session too (#rrun). Screen only, and
-   only the page's own pieces (#main > .ash): Print builds its own from the texts (js/print/compose.js), and it reads
-   what is shown of them, so a broader rule printed every text empty, title only (Satish, 2026-10-22) ==== */
+   not the rest of the Library. Screen only, and only the page's own pieces (#main > .ash): Print builds its own from
+   the texts (js/print/compose.js), and it reads what is shown of them, so a broader rule printed every text empty,
+   title only (Satish, 2026-10-22) ==== */
 @media screen {
-  :root[data-run="1"] #main > .ash:not(.inrun),
-  :root[data-run="1"] #rail > :not(.rhome, #rrun) {
+  :root[data-run="1"] #main > .ash:not(.inrun) {
     display: none !important;
   }
 }
 /* One text at a time (stage 4 of docs/refactor-plan.md): only the text being read (.solo, js/features/history.js) is
-   shown, on every screen, from a session, the Library, search or the side menu. The next text never runs on below it
+   shown, on every screen, from a session, the Library or search. The next text never runs on below it
    (the card at its end, #endc, and ‹ Prev / Next › change it), and Home is not above it; Home in the bottom bar or the
-   side menu goes back. Only the page's own pieces (#main > .ash): Print builds its own from the texts
-   (js/print/compose.js) */
+   top bar goes back. Only the page's own pieces (#main > .ash): Print builds its own from the texts
+   (js/print/compose.js). On wide screens Home's column stays beside the text (Desktop: Home beside the text, below) */
 @media screen {
-  :root:not([data-hv]) #main > #home,
+  :root:not([data-hv]):not([data-rail]) #main > #home,
   :root:not([data-hv]) #main > .ash:not(.solo) {
     display: none !important;
   }
@@ -511,74 +510,18 @@
   background: var(--accent);
 }
 
-/* ==== Start / Continue: below the list; on phones pinned to the bottom of the screen while the home page is in
-   view. position: sticky keeps it in the page's flow, so at the end of the home page it sits after the row above and
-   never covers the last text; the phone's home indicator gets its room (safe area) ==== */
-#tsb {
-  margin: 14px 0 0;
-}
-#tsb[hidden] {
-  display: none;
-}
-#tst {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  min-height: 54px;
-  margin: 0;
-  padding: 6px 16px;
-  border: 0;
-  border-radius: 14px;
-  background: var(--accent);
-  color: var(--bg);
-  font: 650 17px/1.3 var(--lat);
-  text-align: center;
-  cursor: pointer;
-}
-#tsb[lang="mr"] #tst {
-  font-family: var(--body);
-}
-#tst[hidden] {
-  display: none;
-}
-#tst svg {
-  flex: none;
-}
-#tst:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
-@media screen and (max-width: 819px) {
-  #tsb {
-    position: sticky;
-    bottom: 0;
-    z-index: 4;
-    margin: 14px -16px 0;
-    padding: 10px 16px;
-    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid var(--rule);
-    background: var(--bg);
-  }
-}
-
-/* ==== On the home page (data-home, set by js/features/bars.js while no piece is at the top): the bottom bar gives way
-   to Start / Continue, so the top bar has Library. While reading, Library is in the bottom bar (one place each) ==== */
+/* ==== On the home page (data-home, set by js/features/bars.js while no piece is at the top): no bottom bar, so the top
+   bar has Library. While reading, Library is in the bottom bar (one place each) ==== */
 [data-home="1"] #asc,
 :root:not([data-home="1"]) .bar #hm {
   display: none;
 }
-/* wide screens: the side menu of texts is for reading; the home page stays one quiet column (the Library has them) */
-[data-home="1"] #rail {
-  visibility: hidden;
-}
 /* ==== Desktop A (screens 1024px and wider, docs/decisions.md): Home on its own uses the whole layout width (85% of the
    screen): today on the left (the Vedic calendar line, the festival line, Morning / Afternoon / Evening, the session's
-   texts with their ticks, Start, More, the Library line), the day's picture large on the right with the date under it.
+   texts with their ticks, More, the Library line), the day's picture large on the right with the date under it.
    The rows are auto-sized and the last one takes the rest, so the picture spanning them all leaves no gaps ==== */
 @media screen and (min-width: 1024px) {
-  /* the body's 16px and Home's own 8px taken back, so today's column starts where the side menu does while reading */
+  /* the body's 16px and Home's own 8px taken back, so today's column starts where it stays while reading */
   :root[data-hv="1"][data-rail="1"] .wrap {
     max-width: calc(var(--T) + 24px);
     margin-left: calc(var(--L) - 24px);
@@ -615,6 +558,43 @@
   }
   :root[data-hv="1"][data-rail="1"] #tdd .d2 {
     font-size: 16px;
+  }
+}
+
+/* ==== Desktop: Home beside the text (screens 1024px and wider, Satish 2026-10-22): a text opened from Home (or the
+   Library) opens on the right, and Home's column stays on the left as it is on Home, without the picture: the Vedic
+   calendar line, Morning / Afternoon / Evening, the session's texts with their ticks and the one being read marked
+   (li.now, aria-current: markNow() in js/features/today-card.js), Print this session. The Library line steps aside
+   (Library is in the bottom bar). Home's column is fixed, so it stays put while the text scrolls ==== */
+@media screen and (min-width: 1024px) {
+  :root[data-rail="1"] {
+    /* the bottom bar's height, which Home's column and the pages beside it stop above */
+    --asbh: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)));
+  }
+  :root[data-rail="1"]:not([data-hv]) #main > #home {
+    position: fixed;
+    z-index: 4;
+    left: var(--L);
+    top: 72px;
+    width: calc(var(--S) - 40px);
+    max-width: none;
+    max-height: calc(100vh - var(--asbh) - 88px);
+    margin: 0;
+    padding: 4px 6px 12px 0;
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+  :root[data-rail="1"]:not([data-hv]) #home > #tdy,
+  :root[data-rail="1"]:not([data-hv]) #home > #tlib {
+    display: none;
+  }
+  #tsl li.now {
+    border-radius: 0 10px 10px 0;
+    background: var(--hdr);
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+  #tsl li.now .t1 {
+    color: var(--accent);
   }
 }
 
@@ -697,92 +677,14 @@
   #fst,
   #pan,
   #tsc,
-  #tlib,
-  #tsb {
+  #tlib {
     display: none;
   }
 }
 
-/* ==== Desktop A: the side menu while a session is read (#rrun, js/features/today-card.js): the session's name with how
-   many are done, its texts with a tick mark on those done, and the Library at the end ==== */
-@media screen and (min-width: 1024px) {
-  #rail #rrun .rg {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    font-size: 20px;
-  }
-  #rail #rrun .rg .en {
-    display: inline;
-  }
-  #rail #rrun .rg .en::before {
-    content: "· ";
-  }
-  #rail #rrun .rcnt {
-    margin-left: auto;
-    font: 400 12.5px/1.3 var(--lat);
-    color: var(--muted);
-  }
-  #rail #rrun a {
-    position: relative;
-    font-size: 17px;
-    padding-top: 9px;
-    padding-bottom: 9px;
-    padding-left: 34px;
-    font-size: 17px;
-  }
-  #rail #rrun a::before {
-    content: "";
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    width: 16px;
-    height: 16px;
-    margin-top: -9px;
-    border: 1.5px solid var(--gold);
-    border-radius: 50%;
-  }
-  #rail #rrun li.done a::before {
-    border-color: var(--ok);
-    background: var(--ok);
-  }
-  #rail #rrun li.done a::after {
-    content: "";
-    position: absolute;
-    left: 13px;
-    top: 50%;
-    width: 4px;
-    height: 8px;
-    margin-top: -6px;
-    border: solid var(--bg);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-  #rail #rrun li.done a {
-    color: var(--muted);
-  }
-  #rail #rrun .rlib {
-    display: block;
-    margin: 18px 0 0;
-    padding: 10px 8px 0;
-    width: 100%;
-    border: 0;
-    border-top: 1px solid var(--rule);
-    border-radius: 0;
-    background: none;
-    color: var(--accent);
-    font: 600 13.5px/1.4 var(--lat);
-    text-align: left;
-    cursor: pointer;
-  }
-  #rail #rrun .rlib:lang(mr) {
-    font-family: var(--head);
-  }
-}
-
 /* ==== Desktop B (docs/decisions.md): the Vedic calendar (#cal), Settings (#panel) and the Library (#jump) open in the
-   right-hand area, under the top bar, beside today on the left (Home's left column, or the side menu while reading), not
-   over the whole page. The button that opened each one stays marked while it is open ==== */
+   right-hand area, under the top bar, beside Home's column on the left, not over the whole page, with the bottom bar
+   under them. The button that opened each one stays marked while it is open ==== */
 @media screen and (min-width: 1024px) {
   :root[data-rail="1"] #cal,
   :root[data-rail="1"] #panel {
@@ -797,6 +699,11 @@
     padding: 0 var(--L) 24px 32px;
     border-left: 1px solid var(--rule);
     z-index: 6;
+  }
+  /* while reading, the bottom bar stays under the Library and the calendar (css/07-bottom-bar-folds.css) */
+  :root[data-rail="1"]:not([data-home="1"]) #cal,
+  :root[data-rail="1"]:not([data-home="1"]) #jump {
+    bottom: var(--asbh);
   }
   /* the Library: the search box a comfortable width, the categories in columns */
   :root[data-rail="1"] #jump .libin {
@@ -911,7 +818,7 @@
 }
 
 /* ==== Phones held sideways: Home in two columns, the day on the left (picture and date, the Vedic calendar line, the
-   festival, More, the Library line), the session on the right (Morning / Afternoon / Evening, its texts, Start), so the
+   festival, More, the Library line), the session on the right (Morning / Afternoon / Evening, its texts), so the
    whole session shows without scrolling ==== */
 @media screen and (orientation: landscape) and (max-height: 520px) {
   :root[data-hv="1"] #home {
@@ -937,18 +844,10 @@
   :root[data-hv="1"] #home > #tsc {
     grid-row: 1 / span 6;
   }
-  /* Start sits under the list, not pinned to the bottom of a screen this short */
-  :root[data-hv="1"] #home > #tsb {
-    position: static;
-    margin: 14px 0 0;
-    padding: 0;
-    border-top: 0;
-    background: none;
-  }
 }
 
 /* ==== Large monitors (2K at 100%, 4K at low scaling): the layout stops growing at 2200px (css/04-columns-rail.css) and
-   today's column, the left menu and the pages beside them are drawn larger instead, so nothing looks lost on the
+   today's column and the pages beside them are drawn larger instead, so nothing looks lost on the
    screen. zoom on the parts in the page's flow only: the fixed areas keep their place, their contents grow ==== */
 @media screen and (min-width: 2200px) {
   [data-rail="1"] {
@@ -965,7 +864,6 @@
 }
 @media screen and (min-width: 2200px) {
   :root[data-rail="1"] #home > :not(#tdy),
-  :root[data-rail="1"] #rail > *,
   :root[data-rail="1"] #cal .calin,
   :root[data-rail="1"] #panel .sp-pg,
   :root[data-rail="1"] #jump .libin,
@@ -983,8 +881,8 @@
   :root[data-rail="1"] #cal .cd {
     min-height: max(76px, calc((100vh - 330px * var(--Z)) / 6 / var(--Z)));
   }
-  :root[data-rail="1"] #rail {
+  :root[data-rail="1"]:not([data-hv]) #main > #home {
     top: calc(72px * var(--Z));
-    max-height: calc(100vh - 96px * var(--Z));
+    max-height: calc(100vh - var(--asbh) - 88px * var(--Z));
   }
 }

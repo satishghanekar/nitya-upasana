@@ -486,3 +486,19 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - The tests print the Library's texts in the default font (Best), and the hard cases in each of the other four
   (`pfn`); the whole-Library cases are now named `-best-`.
 
+## Desktop: Home beside the text, no Start button (v1.22, 2026-10-22)
+
+- Satish (with screenshots): on desktop, tapping a text on Home jumped to a reading page with a short side list; he
+  expected the text on the right and the left to stay as Home with the current text highlighted. The Library while
+  reading showed every text twice (the side menu and the Library page).
+- From 1024px (iPad held sideways, desktop) Home's column stays on the left, fixed, exactly as on Home but without
+  the picture: the Vedic calendar line, Morning / Afternoon / Evening, the session's texts with ticks and the one
+  being read highlighted, Print this session. The text, the Library and the Vedic calendar open on the right. Picking
+  another session there only changes the list; the text stays open. Home in the top or bottom bar brings the picture
+  back. The side menu of every text (`#rail`) and the session side list (`#rrun`) are gone; the Library has them.
+- The bottom bar (‹ Prev, Home, Library, Aa, Next ›) stays as the navigation bar, also under the Library and the
+  calendar on wide screens (Settings and the routine builder still cover it).
+- The big Start / Continue button is gone on every screen, phones too (Satish: "we don't need it anywhere"): a title
+  in the list starts the session there. The "Another text? Open the Library" line stays on Home and steps aside
+  while reading on wide screens.
+- Mockups: /mnt/project-files/v2/home-reading-panel/.
