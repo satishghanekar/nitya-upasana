@@ -5,8 +5,6 @@ import { onPiece } from "../core/page.js";
 
 export function init() {
   onPiece(gridItems);
-  // Contents rail (wide screens), built from the Library's list
-  buildRail();
   // Gentle fade-in for verses that scroll into view (never for content already on screen; skipped if the device asks for less motion)
   (function () {
     if (
@@ -106,37 +104,6 @@ export function gridItems(/** @type {ParentNode} */ r) {
         });
     });
   });
-}
-
-// The left menu on wide screens (#rail), built from the Library's list (js/features/library.js), so it lists the texts
-// by category too; built again when the categories change. A category's name is a heading, not a link.
-export function buildRail() {
-  var r = document.getElementById("rail");
-  if (!r) return;
-  var h = "";
-  [].forEach.call(document.querySelectorAll("#jl .tocg"), function (g) {
-    var as = g.querySelectorAll("ol.toc li a");
-    if (!as.length) return;
-    var gh = g.querySelector(".gh");
-    h += '<div class="rg">' + gh.innerHTML + "</div><ul>";
-    [].forEach.call(as, function (a) {
-      var m = a.querySelector(".m");
-      h +=
-        '<li><a href="' +
-        a.getAttribute("href") +
-        '" data-go="' +
-        a.getAttribute("data-go") +
-        '">' +
-        (m ? m.innerHTML : a.innerHTML) +
-        "</a></li>";
-    });
-    h += "</ul>";
-  });
-  r.innerHTML =
-    '<a class="rhome" href="#home" data-go="home"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 10.6 12 3.5l9 7.1\"/><path d=\"M5.2 9v11h13.6V9\"/><path d=\"M12 11.2c1.3 1.5 1.6 2.8 0 4.3-1.6-1.5-1.3-2.8 0-4.3z\"/><path d=\"M9.3 17.6h5.4\"/></svg><span class="mr">' + SCR.to("मुखपृष्ठ") + '</span><span class="en" lang="en">Home</span></a>' +
-    h;
-  // a session being read keeps its own list at the top (js/features/today-card.js)
-  document.dispatchEvent(new Event("nitya-rail"));
 }
 
 // Two-column screens read across: stanza 1 | stanza 2, then 3 | 4. Each stanza keeps its own dhrupad marker/repeat under it.

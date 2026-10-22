@@ -33,11 +33,13 @@ export function init() {
   asc.hidden = false;
   root.setAttribute("data-asb", "1");
   // the bar steps aside while one of the pages is open: Settings, the Library, the Vedic calendar or the routine
-  // builder (pageEls(), js/features/overlays.js)
+  // builder (pageEls(), js/features/overlays.js); data-menu names the page, since on wide screens the Library and the
+  // calendar open beside Home's column with the bar still under them (css/07-bottom-bar-folds.css)
   (function () {
     var ms = pageEls();
     function menu() {
-      if (ms.some(function (m) { return m && !m.hidden; })) root.setAttribute("data-menu", "1");
+      var m = ms.filter(function (m) { return m && !m.hidden; })[0];
+      if (m) root.setAttribute("data-menu", m.id);
       else root.removeAttribute("data-menu");
     }
     var mo = new MutationObserver(menu);

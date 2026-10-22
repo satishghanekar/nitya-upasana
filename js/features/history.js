@@ -212,6 +212,7 @@ export function jumpTo(go, url) {
   } catch (e) {}
   setP(false);
   setJ(false);
+  setC(false);
   // a piece (#a3): the reading page with every piece; the bare address: Home on its own
   solo(url && url.charAt(0) === "#" ? url.slice(1) : "");
   homeView(!(url && url.charAt(0) === "#" && url !== "#home"));
@@ -292,6 +293,10 @@ function homeOnScroll() {
 
 // The Morning / Afternoon / Evening switch is on screen: the reader is on Home
 export function homeInView() {
+  // on wide screens Home's column stays beside the text being read (css/10-today.css): always on screen, never a
+  // reason to leave the text
+  var h = document.documentElement;
+  if (h.hasAttribute("data-rail") && !h.hasAttribute("data-hv")) return false;
   var t = document.getElementById("tss"),
     r = t && t.getBoundingClientRect();
   return !!r && r.bottom > 0 && r.top < innerHeight;
@@ -305,7 +310,7 @@ export function homeAlone() {
   } catch (e) {}
 }
 
-// Home buttons (top-bar title, Ganesha in the bottom bar, the rail's Home): back to the top of the home page
+// Home buttons (top-bar title, Home in the bottom bar): back to the top of the home page
 export function goHomeNav() {
   jumpTo(goHome, location.pathname);
 }
