@@ -2,7 +2,7 @@
 // Sankashti (Sankathara Chaturthi), worked out on this device (js/features/astronomy.js; nothing is sent anywhere).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
-// Home v2 (docs/decisions.md, 2026-10-18): the home page no longer has the date card. On a Sankashti day only, one
+// Home v2: the home page no longer has the date card. On a Sankashti day only, one
 // small line under the date says so, with tonight's moonrise and the place (#skt): "Sankashti Chaturthi today ·
 // Moonrise 8:09 pm · Columbus, OH". The next Sankashti is still worked out on every visit for the Share message
 // (js/features/share.js reads skCache), which is unchanged.

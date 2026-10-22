@@ -1,4 +1,4 @@
-// Moving today's settings (docs/architecture.md §3.8): settings saved by every older version of the site, in the
+// Moving today's settings: settings saved by every older version of the site, in the
 // shapes found in the git history of js/core/state.js (and, before the code was split into files, of the settings
 // script in index.html), upgraded by js/store/migrate.js exactly as js/core/state.js always did, and split into the
 // person's part and the device's part.

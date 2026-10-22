@@ -3,9 +3,9 @@
 // in order. Pure functions only (no page), so the unit tests (tests/unit/today.test.mjs) run them in Node;
 // js/features/today-card.js puts the answer on the page.
 //
-// The routine comes from content/routines.json (docs/architecture.md §3.5): for each session, either the same
+// The routine comes from content/routines.json: for each session, either the same
 // list every day ({ mode: "fixed", texts }) or one list per weekday ({ mode: "weekday", days: { mon: […], … } }).
-// The default (docs/decisions.md): Morning = Ganapati Atharvashirsha, Evening = the ten aartis, Afternoon empty.
+// The default is content/routines.json (Satish's own routine), for a person who has not changed theirs.
 // Which session it is now: sessionAt() in js/core/time-of-day.js.
 
 /**
@@ -96,7 +96,7 @@ export function stepInSession(ids, id, dir) {
   return j < 0 ? null : { to: ids[j] };
 }
 
-// ---- Each person's own routine (the routine builder, js/features/routine-builder.js; docs/decisions.md 2026-10-19) ----
+// ---- Each person's own routine (the routine builder, js/features/routine-builder.js) ----
 // A person's routine is kept in their profile (Profile.routine, js/store/profiles.js), in the same shape as
 // content/routines.json. null means "never changed": they follow content/routines.json (Q5), so a new person starts
 // from it. The functions below never change what they are given: each returns a new routine or list.

@@ -2,8 +2,8 @@
 // The Today card's ticks: which texts of each session were ticked today, kept on this device only.
 // Pure (the storage is passed in), so the unit tests (tests/unit/today.test.mjs) run it in Node with a stand-in.
 // Each person keeps their own ticks: js/features/today-card.js passes the store's stand-in for localStorage
-// (ticksStorage() in js/store/store.js), which keeps them in each profile in IndexedDB (Profile.checklist,
-// docs/architecture.md §3.4), and who() names the person reading. Ticks are for one day: on a new day the card starts
+// (ticksStorage() in js/store/store.js), which keeps them in each profile in IndexedDB (Profile.checklist),
+// and who() names the person reading. Ticks are for one day: on a new day the card starts
 // with none, and the first tick of the day drops the day before's.
 //
 // The shape read and written: { "v": 1, "profiles": { "<profile id>": { "date": "2026-10-18", "done": { "evening":

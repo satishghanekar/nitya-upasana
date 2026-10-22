@@ -10,12 +10,12 @@ Each font is split by script the way Google serves it (`-devanagari`, `-kannada`
 | `inter-*` | Inter (variable, weights 400–700) | English text, menus |
 | `noto-sans-deva-*` | Noto Sans Devanagari (variable, 400–700) | Marathi menus and buttons |
 | `tiro-marathi-*` | Tiro Devanagari Marathi | Marathi and Hindi texts, headings |
-| `tiro-sanskrit-*` | Tiro Devanagari Sanskrit | Atharvashirsha (Vedic swara marks) |
-| `noto-serif-*` | Noto Serif Devanagari + Noto Serif (variable) | Text font: Classic (loaded only when picked) |
+| `tiro-sanskrit-*` | Tiro Devanagari Sanskrit | The Atharvashirsha on screen, and the Vedic chants in print with the Best font (it draws the Vedic swara marks) |
+| `noto-serif-*` | Noto Serif Devanagari + Noto Serif (variable) | Text font Classic, and the aartis and ashtaks in print with the Best font (loaded only when used) |
 | `sura-*` | Sura (400, 700) | Text font: Bold (loaded only when picked) |
 | `kalam-*` | Kalam (400, 700) | Text font: Handwritten (loaded only when picked) |
 | `noto-sans-kannada-kannada` | Noto Sans Kannada (variable), Kannada letters only | Kannada letters in the Standard font, and the dandas and Vedic marks in every font |
-| `noto-serif-kannada-kannada` | Noto Serif Kannada (variable) | Text font Classic, in Kannada (loaded only when picked) |
+| `noto-serif-kannada-kannada` | Noto Serif Kannada (variable) | Text font Classic in Kannada, and Kannada letters in print with the Best font (loaded only when used) |
 | `baloo-tamma-kannada` | Baloo Tamma 2 (variable, 400–800) | Text font Bold, in Kannada (loaded only when picked) |
 | `hubballi-kannada` | Hubballi (400) | Text font Handwritten, in Kannada (loaded only when picked) |
 

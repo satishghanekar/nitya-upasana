@@ -9,7 +9,7 @@ Rules are in the order they were added, and a later rule for the same element re
 1. Search all of `css/` for the selector, for example `.rftop` or `#home`.
 2. Edit the **last** rule that sets the property. That is the match in the highest-numbered file, and the lowest one in that file.
 
-The files are cut from what used to be one `site.css`, at its section boundaries and without reordering anything. Moving rules between files changes which one wins, so new rules go at the end of the file that fits them, or in a new numbered file.
+Moving rules between files changes which one wins, so new rules go at the end of the file that fits them, or in a new numbered file. A new file is added to `index.html` and `js/parts.js` together.
 
 Each file starts with a comment that lists its sections. Every section begins with `/* ==== Title ==== */`.
 
@@ -18,17 +18,17 @@ Each file starts with a comment that lists its sections. Every section begins wi
 | `00-fonts.css` | `@font-face` rules for `fonts/`. `unicode-range` makes the browser download only the parts a page uses. |
 | `01-theme.css` | Colour and font variables on `:root` for the light, sepia and dark themes and high contrast. |
 | `02-core.css` | The first full set of rules for the reading page: page, top bar, contents, pieces, language switching, search, phones held sideways, section headings. Also the first print rules. |
-| `03-menus-print-view.css` | Top-bar title, the More menu (`#shr`: App, Share, QR, Print, Help), the Print pop-up (`#prm`), Add to Home Screen, the print view (`#pv`) built for the Print button, the piece header card, and the dhrupad at the top of a piece. |
-| `04-columns-rail.css` | Wide screens: two stanza columns, piece and stanza numbers, button rows, both languages side by side, and the room the wide layout keeps for Home's column on the left (`data-rail`). |
-| `05-home-card.css` | The home page "paper sheet", the next Sankashti card, the offline cloud, the lotus ornament, fade-in, and the dhrupad markers. |
-| `06-help-polish.css` | Help, the review rounds after 1.0, folding the Ganesha card, and folding the Pooja / Aarti sections. |
-| `07-bottom-bar-folds.css` | Bottom bar, bars tucking away while reading, folding each piece, fold headings, bigger tap areas and the reading sheet (Aa). |
+| `03-menus-print-view.css` | Top-bar title, the ⋯ More menu (`#shr`: App, Share, QR, Print, Print this text, Help), the QR pop-up, Add to Home Screen and its steps (`#inm`), the print builder (`#prm`: What, then How), the print view (`#pv`) built just before printing, the piece header card, and the dhrupad at the top of a piece. |
+| `04-columns-rail.css` | Two stanza columns (`data-cols`), piece and stanza numbers, the last print rules (page border, page breaks), both languages side by side on wide screens, the wide layout (`data-rail`), the reading progress line and the dhrupad markers as pills. |
+| `05-home-card.css` | The "paper sheet" under Home, the offline cloud in the top bar (`#ofb`), the lotus ornament at the end of each piece, quieter piece numbers, the fade-in, the tappable dhrupad markers and the repeated dhrupad. |
+| `06-help-polish.css` | Help (`#help`), the final rules for the Settings rows, and general polish rules that refine the earlier files. |
+| `07-bottom-bar-folds.css` | The bottom bar (`#asc`), the bars tucking away while reading (`data-tuck`), folding each piece and its heading row, bigger tap areas, the reading sheet (`#rsh`), and the Best print font. |
 | `08-contents-book.css` | The Library's list of texts (`#jl`) as a book index, author lines, and Both languages with English first. |
 | `09-settings-page.css` | The Settings page and Kannada letters. |
-| `10-today.css` | Home (Home v2) and the Library page: the picture beside the date (`#tdy`), the Vedic calendar line's place (`#pan`), the festival-day line (`#fst`) and the Sankashti-day line (`#skt`), the Morning / Afternoon / Evening switch (`#tss`) and the session's texts with their ticks (`#tsc`), the Library line (`#tlib`), Home's column beside the text being read on wide screens (`li.now` marks that text), Home on its own (`data-hv`: no pieces under Home), the top bar and bottom bar on the home page (`data-home`), and the Library (`#jump`). |
+| `10-today.css` | Home and the Library page: the picture beside the date (`#tdy`), the Vedic calendar line's place (`#pan`), the festival-day line (`#fst`) and the Sankashti-day line (`#skt`), the Morning / Afternoon / Evening switch (`#tss`) and the session's texts with their ticks (`#tsc`), the Library line (`#tlib`), Home's column beside the text being read on wide screens (`li.now` marks that text), Home on its own (`data-hv`: no pieces under Home), one text at a time (`.solo`) and its end card (`#endc`), the top bar and bottom bar on Home (`data-home`), the Library (`#jump`), and the layouts for desktops, large monitors and tablets held upright. |
 | `11-profiles.css` | Profiles and backup: the profile chip in the top bar (`#who`, the badge alone below 600px; on phones up to 420px without its frame, and the title without its small Ganesha), the round badges, the profile sheet (`#pfm`: the people on this phone, Add / Edit / Delete, the colour swatches), the Restore dialog (`#bkm`) and the notes on the home page (`#pfnt`: this browser can't save here, the backup reminder). |
 | `12-calendar.css` | The Vedic calendar: the line on Home (`#panb`), the calendar page (`#cal`, under the top bar like the Library), the day card (`#cald`), the month table (`#calm`: day buttons, shukla and krishna shading with `--ck`, full and new moon marks, Ekadashi and Sankashti labels, festival labels (`.fs`) and tags (`.tag.fest`), today and the day shown, the key), two columns from 820px. |
-| `13-library.css` | The Library by category (version 1.8): the "Edit categories" button at the end of the list (`#lbr`, `#lbb`), the categories sheet (`#lbm`: the categories with their counts and Rename, Add, the form, Delete, the category of each text), the search results' groups (`#res li.rh`: Texts, then Lines). |
+| `13-library.css` | The Library by category: the "Edit categories" button at the end of the list (`#lbr`, `#lbb`), the categories sheet (`#lbm`: the categories with their counts and Rename, Add, the form, Delete, the category of each text), the search results' groups (`#res li.rh`: Texts, then Lines). |
 | `14-builder.css` | The routine builder: Edit beside the session on Home (`#tsed`) and an empty session's Add texts (`#tse`, `#tsea`); the builder page (`#rtb`, under the top bar like the Library), the session / which-days radio groups (`.rtseg`), the weekday row (`#rtwk`), Copy to other days… (`#rtcpf`), the list with grip, ↑ ↓ ✕ (`#rtl`, `.mv`), and Add texts (`#tpk`): a sheet from the bottom on phones and tablets, beside the list from 1024px. |
 | `99-fallbacks.css` | Plain colours for browsers without `color-mix()` (iOS 15). **Keep it last**, because it replaces colours set in every file above. |
 
@@ -42,12 +42,13 @@ Each file starts with a comment that lists its sections. Every section begins wi
   - `data-ref`: the dhrupad, `1` = once, `0` = after every stanza.
   - `data-cols`: `1` or `2` columns.
   - `data-rail`: the wide layout (1024px and wider): Home's column on the left, the page beside it.
-  - `data-print`: `one` or `side`, only while printing; then `data-font` and `data-ref` take the Print pop-up's font and dhrupad.
+  - `data-print`: `one` or `side`, only while printing; then `data-font` and `data-ref` take the printout's font and dhrupad (`data-font="best"`: Best for each text).
   - `data-font`: the text font.
   - `data-tuck`: the bars are tucked away.
   - `data-lead="en"`: English is the main language; `data-scr`: Kannada letters.
-  - `data-home`: the home page is on screen (no piece at the top yet): Language and Dhrupad step aside, the bottom bar gives way to Start.
-  - `data-hv`: Home on its own (js/features/history.js): the pieces under Home are not shown (screen only) until a text is opened.
+  - `data-home`: Home is on screen (no text open): the reading-only controls (bottom bar, Print this text) step aside.
+  - `data-hv`: Home on its own (`js/features/history.js`): the reading page under Home is not shown (screen only) until a text is opened.
+  - `data-run`: a session from Home is being read.
   - `data-menu`: the page that is open (`panel`, `jump`, `cal`, `rtb`); the bottom bar steps aside, except beside the Library and the calendar on wide screens.
   - `data-ready`: the site script has started. Until then the page is hidden, so it never shows half set up.
 
@@ -76,4 +77,3 @@ The same test keeps the number of `!important` (70) and `:root:root` (11) from g
 
 - `npm run lint` in `tests/` runs stylelint. It flags any CSS feature that the oldest supported browsers (`tests/.browserslistrc`, iOS 15.4 and up) lack.
 - The screenshot and print tests catch visual changes.
-- When files were split, every element's computed style was compared before and after the split in 34 page, dialog and print states.

@@ -62,7 +62,7 @@ const SUITES = [
   [/\.(png|jpg|webp|svg|woff2)$/, () => ["visual"]],
 ];
 // Changes that no browser test can see
-const NO_BROWSER = /\.md$|^docs\/|^mockups\/|^originals\/|^\.github\/|^tests\/unit\/|^tests\/tools\/|^\.gitignore$/;
+const NO_BROWSER = /\.md$|^originals\/|^\.github\/|^tests\/unit\/|^tests\/tools\/|^\.gitignore$/;
 // Lint, types and logic tests only: these run anyway
 const CHECKED_ELSEWHERE = /^tests\/(eslint|stylelint|vitest)\.config\.mjs$|^tests\/tsconfig\.json$|^tests\/quick\.mjs$/;
 

@@ -22,7 +22,7 @@ function memory() {
   };
 }
 
-describe("which session it is now (docs/decisions.md: Morning < 12:00, Afternoon 12:00–17:00, Evening ≥ 17:00)", () => {
+describe("which session it is now (Morning < 12:00, Afternoon 12:00–17:00, Evening ≥ 17:00)", () => {
   test.each([
     [5, 0, "morning"],
     [11, 59, "morning"],
