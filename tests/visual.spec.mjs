@@ -109,10 +109,14 @@ const CASES = [
   ["print-builder-desktop", "desktop", SETUPS.marathi, printBuilder],
 ];
 
-// Print, open at What once the page counts are in
+// Print, open at What once the page counts and the first-page preview (with its fonts) are in
 async function printBuilder(p) {
   await tapMore(p, "#prb");
   await expect(p.locator("#prsum span").nth(1)).toHaveText(/\d/, { timeout: 20_000 });
+  await p.waitForFunction(() => {
+    const f = document.querySelector("#prsheet iframe");
+    return f && f.contentDocument && f.contentDocument.fonts.status === "loaded";
+  }, null, { timeout: 20_000 });
 }
 
 for (const [name, size, prefs, prep, now] of CASES) {

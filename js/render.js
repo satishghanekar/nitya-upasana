@@ -75,7 +75,7 @@
     if (q) {
       var got = JSON.parse(decodeURIComponent(q[2] || "") || "{}"),
         prefs = JSON.parse(localStorage.getItem("aarti2-prefs") || "{}");
-      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "tr", "por"].forEach(function (k) {
+      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "ppr", "tr", "por"].forEach(function (k) {
         if (typeof got[k] === "string" || typeof got[k] === "number") prefs[k] = got[k];
       });
       // a first visit in Safari: these choices are already up to date, so the start-up changes for older settings
