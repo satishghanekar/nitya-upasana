@@ -6,7 +6,7 @@ import { aa, cur, jp, unfold, pn } from "../core/apply.js";
 import { TK, apply, goHome, mark, tuckHold } from "./bars.js";
 import { anyOpen, closeForBack, pageEls, setC, setJ, setP, setR, trapped } from "./overlays.js";
 
-var NAV, popSkip, adT, hmb, ovFrom, sub, subSkip;
+var NAV, popSkip, adT, hmb, ovFrom, sub, subSkip, keep;
 
 export function init() {
   // Opening a panel or dialog adds a Back step, so the phone's Back closes it instead of leaving the site.
@@ -46,6 +46,21 @@ export function init() {
     }
     if (popSkip) {
       popSkip--;
+      // Firefox moves focus when it steps back to an address with a #piece in it: the close (✕, Escape) had put it
+      // back on the button that opened the pop-up, so it goes back there
+      var k = keep;
+      keep = null;
+      var back = function () {
+        if (k && k !== document.activeElement && k.isConnected && k.getClientRects().length)
+          try {
+            k.focus({ preventScroll: true });
+          } catch (x) {}
+      };
+      back();
+      // (and once more after the browser has finished stepping back, unless focus has gone somewhere on purpose)
+      requestAnimationFrame(function () {
+        if (document.activeElement === document.body) back();
+      });
       return;
     }
     if (was) return;
@@ -68,11 +83,16 @@ export function init() {
     // Everything Tab can land on, dropdowns included: leaving <select> out made Tab from the language dropdowns
     // jump back to the top of Settings, so the rest of the page could not be reached by keyboard (WCAG 2.1.1).
     // Visibility is tested with getClientRects, which (unlike offsetParent) also works inside fixed layers.
+    // (a tab list's other tabs, tabindex -1, are reached with the arrow keys, not Tab)
     var f = [].filter.call(d.querySelectorAll("button,a[href],input,select,textarea,summary,[tabindex]:not([tabindex='-1'])"), function (x) {
-      return !x.disabled && x.getClientRects().length > 0 && getComputedStyle(x).visibility !== "hidden";
+      return !x.disabled && x.tabIndex >= 0 && x.getClientRects().length > 0 && getComputedStyle(x).visibility !== "hidden";
     });
     if (!f.length) return;
-    var i = f.indexOf(document.activeElement);
+    var a = document.activeElement,
+      i = f.indexOf(a);
+    // Firefox also stops on a box that scrolls (the print builder's list): that is still inside, so Tab goes on from
+    // it as usual rather than back to the top
+    if (i < 0 && a && d.contains(a)) return;
     if (e.shiftKey ? i <= 0 : i === f.length - 1 || i < 0) {
       e.preventDefault();
       f[e.shiftKey ? f.length - 1 : 0].focus();
@@ -190,6 +210,11 @@ export function ovSubDone() {
 export function ovDone() {
   if (!NAV || !hs().ov || ovOpen() || popSkip) return;
   popSkip++;
+  // where the close puts focus (some put it back after this call, so it is read once the close has finished)
+  keep = /** @type {HTMLElement | null} */ (document.activeElement);
+  Promise.resolve().then(function () {
+    if (popSkip) keep = /** @type {HTMLElement | null} */ (document.activeElement);
+  });
   history.back();
 }
 
