@@ -19,13 +19,13 @@ Each file starts with a comment that lists its sections. Every section begins wi
 | `01-theme.css` | Colour and font variables on `:root` for the light, sepia and dark themes and high contrast. |
 | `02-core.css` | The first full set of rules for the reading page: page, top bar, contents, pieces, language switching, search, phones held sideways, section headings. Also the first print rules. |
 | `03-menus-print-view.css` | Top-bar title, the More menu (`#shr`: App, Share, QR, Print, Help), the Print pop-up (`#prm`), Add to Home Screen, the print view (`#pv`) built for the Print button, the piece header card, and the dhrupad at the top of a piece. |
-| `04-columns-rail.css` | Wide screens: two stanza columns, piece and stanza numbers, button rows, both languages side by side, and the left contents menu (`#rail`). |
+| `04-columns-rail.css` | Wide screens: two stanza columns, piece and stanza numbers, button rows, both languages side by side, and the room the wide layout keeps for Home's column on the left (`data-rail`). |
 | `05-home-card.css` | The home page "paper sheet", the next Sankashti card, the offline cloud, the lotus ornament, fade-in, and the dhrupad markers. |
 | `06-help-polish.css` | Help, the review rounds after 1.0, folding the Ganesha card, and folding the Pooja / Aarti sections. |
 | `07-bottom-bar-folds.css` | Bottom bar, bars tucking away while reading, folding each piece, fold headings, bigger tap areas and the reading sheet (Aa). |
 | `08-contents-book.css` | The Library's list of texts (`#jl`) as a book index, author lines, and Both languages with English first. |
 | `09-settings-page.css` | The Settings page and Kannada letters. |
-| `10-today.css` | Home (Home v2) and the Library page: the picture beside the date (`#tdy`), the Vedic calendar line's place (`#pan`), the festival-day line (`#fst`) and the Sankashti-day line (`#skt`), the Morning / Afternoon / Evening switch (`#tss`) and the session's texts with their ticks (`#tsc`), Start / Continue (`#tsb`, pinned on phones), the Library line (`#tlib`), Home on its own (`data-hv`: no pieces under Home), the top bar and bottom bar on the home page (`data-home`), and the Library (`#jump`). |
+| `10-today.css` | Home (Home v2) and the Library page: the picture beside the date (`#tdy`), the Vedic calendar line's place (`#pan`), the festival-day line (`#fst`) and the Sankashti-day line (`#skt`), the Morning / Afternoon / Evening switch (`#tss`) and the session's texts with their ticks (`#tsc`), the Library line (`#tlib`), Home's column beside the text being read on wide screens (`li.now` marks that text), Home on its own (`data-hv`: no pieces under Home), the top bar and bottom bar on the home page (`data-home`), and the Library (`#jump`). |
 | `11-profiles.css` | Profiles and backup: the profile chip in the top bar (`#who`, the badge alone below 600px; on phones up to 420px without its frame, and the title without its small Ganesha), the round badges, the profile sheet (`#pfm`: the people on this phone, Add / Edit / Delete, the colour swatches), the Restore dialog (`#bkm`) and the notes on the home page (`#pfnt`: this browser can't save here, the backup reminder). |
 | `12-calendar.css` | The Vedic calendar: the line on Home (`#panb`), the calendar page (`#cal`, under the top bar like the Library), the day card (`#cald`), the month table (`#calm`: day buttons, shukla and krishna shading with `--ck`, full and new moon marks, Ekadashi and Sankashti labels, festival labels (`.fs`) and tags (`.tag.fest`), today and the day shown, the key), two columns from 820px. |
 | `13-library.css` | The Library by category (version 1.8): the "Edit categories" button at the end of the list (`#lbr`, `#lbb`), the categories sheet (`#lbm`: the categories with their counts and Rename, Add, the form, Delete, the category of each text), the search results' groups (`#res li.rh`: Texts, then Lines). |
@@ -41,14 +41,14 @@ Each file starts with a comment that lists its sections. Every section begins wi
 - **Other switches on `<html>`:**
   - `data-ref`: the dhrupad, `1` = once, `0` = after every stanza.
   - `data-cols`: `1` or `2` columns.
-  - `data-rail`: the left menu is shown.
+  - `data-rail`: the wide layout (1024px and wider): Home's column on the left, the page beside it.
   - `data-print`: `one` or `side`, only while printing; then `data-font` and `data-ref` take the Print pop-up's font and dhrupad.
   - `data-font`: the text font.
   - `data-tuck`: the bars are tucked away.
   - `data-lead="en"`: English is the main language; `data-scr`: Kannada letters.
   - `data-home`: the home page is on screen (no piece at the top yet): Language and Dhrupad step aside, the bottom bar gives way to Start.
   - `data-hv`: Home on its own (js/features/history.js): the pieces under Home are not shown (screen only) until a text is opened.
-  - `data-menu`: Settings or the Library is open; the bottom bar steps aside.
+  - `data-menu`: the page that is open (`panel`, `jump`, `cal`, `rtb`); the bottom bar steps aside, except beside the Library and the calendar on wide screens.
   - `data-ready`: the site script has started. Until then the page is hidden, so it never shows half set up.
 
 ## Breakpoints
@@ -62,10 +62,9 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
 | `(min-width: 760px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own |
-| `(max-width: 819px)` | Phones and small tablets: Start / Continue is pinned to the bottom of the screen on the home page |
 | `(min-width: 820px)` | Tablets and up: wider spacing; the Vedic calendar shows the day card beside the month |
 | `(min-width: 600px) and (max-width: 1023px) and (orientation: portrait)` | Tablets held upright: Home with the picture large on top, the calendar's month above the day card, the Library and Settings in two columns |
-| `(min-width: 1024px)` | iPads held sideways and desktops: the left column (`#rail`, Home's today) and the page beside it across the whole width; the calendar, Settings and Library open beside it; the routine builder's Add texts picker sits beside its list |
+| `(min-width: 1024px)` | iPads held sideways and desktops: Home's column on the left (on Home, and fixed beside the text being read) and the page beside it across the whole width; the calendar, Settings and Library open beside it; the routine builder's Add texts picker sits beside its list |
 | `(min-width: 1400px)` | Desktops: a wider left column and 32px edges; the layout stops growing at 2200px, centred |
 | `(min-width: 2200px)`, `(min-width: 3000px)` | Large monitors (2K at 100%, 4K at low scaling): the left column, the bars and the pages beside it drawn 1.25× / 1.6× larger (`zoom`) |
 | `(orientation: landscape) and (max-height: 520px)` | Phones held sideways: tighter line spacing and headers; Home in two columns (the day left, the session right); the bottom bar's words under Home, Library and Reading are left out |

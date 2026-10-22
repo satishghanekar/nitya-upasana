@@ -83,7 +83,7 @@ const STATES = [
   [".pnq button", "active"],
   ["ol.toc a", "active"],
   [".cr a[href]", "hover"],
-  ["#rail a", "hover"],
+  ["#tsl a", "hover"],
 ];
 for (const [name, prefs] of THEMES) {
   test(`contrast: pressed and hovered text stays readable in ${name} (H1) @chromium-only`, async ({ page }) => {

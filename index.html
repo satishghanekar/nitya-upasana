@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.21.3">
+<meta name="version" content="aarti-v1.22">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -164,8 +164,7 @@
   <div id="srs" class="sr" role="status"></div>
   <!-- Every text by category (js/features/library.js): Vedic Chant, Aarti and any the family added, each with its texts
        in reading order and their numbers on the reading page, built from content/library.json and content/categories.json
-       with this phone's changes; categories with no texts are left out. The side menu (js/text/layout.js) is built from
-       it. Last, the button that opens the categories sheet (#lbm). -->
+       with this phone's changes; categories with no texts are left out. Last, the button that opens the categories sheet (#lbm). -->
   <div id="jl">
   <div id="lbr"><button type="button" id="lbb" aria-haspopup="dialog" aria-expanded="false" aria-controls="lbm"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h4v16H4zM10 4h4v16h-4z"/><path d="M15 5.2l3.9-1 3.6 14.6-3.9 1z"/></svg><span id="lbbw" lang="en">Edit categories</span></button></div>
   </div>
@@ -315,8 +314,6 @@
   <div id="tpk" aria-labelledby="tpkt"></div>
   </div>
 </div>
-<!-- ==== Left menu on wide screens (filled in by the script); placed here so keyboard users reach it before the page ==== -->
-<nav id="rail" aria-label="Contents"></nav>
 <!-- ==== Page: home, then every piece ==== -->
 <main class="wrap" id="main" tabindex="-1">
   <!-- ==== Home page ==== -->
@@ -364,11 +361,6 @@
       </div>
       <p id="tlive" class="sr" aria-live="polite"></p>
     </section>
-    <!-- Start / Continue: opens the first text not yet ticked. On phones it stays pinned to the bottom of the screen
-         while the home page is in view (position: sticky, so it never covers the last row) -->
-    <div id="tsb">
-      <button type="button" id="tst" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span id="tstw"></span></button>
-    </div>
     <!-- Another text: the Library (the top bar's book button) -->
     <p id="tlib"><span id="tlibw"></span> <button type="button" id="tlibb" aria-haspopup="dialog" aria-controls="jump"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5C5.6 4.6 8.9 4.9 12 7c3.1-2.1 6.4-2.4 9.5-1.5v13.3c-3.1-.9-6.4-.6-9.5 1.5-3.1-2.1-6.4-2.4-9.5-1.5z"/><path d="M12 7v13.3"/></svg><span id="tlibbw"></span></button></p>
   </section>
@@ -518,7 +510,7 @@
       <ul>
         <li><b>The session</b> is the one for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. <b>Not this time?</b> under the list shows another session instead; the next day starts again from the clock. To start with, Morning is the Ganapati Atharvashirsha, Evening the ten aartis, and the Afternoon is free; each person can change theirs (see Your routine below).</li>
         <li><b>The list</b> has the session's texts in order. Tap the round tick when you have finished one; the ticks are kept on this phone for today, for the person reading, and start fresh tomorrow. Tap a title to open it.</li>
-        <li><b>Start</b> (or <b>Continue</b>, once some are ticked) opens the first text not yet ticked. On a phone it stays at the bottom of the screen while the home page is in view. While you read, <b>Next ›</b> in the bottom bar ticks the text you were reading as done for today, then goes to the next text of the session; after the last one it brings you back here. <b>‹ Prev</b> goes back without ticking. To take a tick off, tap it on the list.</li>
+        <li><b>Reading the session:</b> tap a title to start there. On a computer or an iPad held sideways, the list stays on the left with the text you are reading marked, and the text opens on the right. While you read, <b>Next ›</b> in the bottom bar ticks the text you were reading as done for today, then goes to the next text of the session; after the last one it brings you back here. <b>‹ Prev</b> goes back without ticking. To take a tick off, tap it on the list.</li>
         <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home says so, "Today: Dasara"). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
         <li><b>On a Sankashti day</b> a line under the date gives tonight's <b>moonrise</b> for where you are (Angaraki, on a Tuesday, is marked). The place is your phone's time zone until you choose <b>Place for moonrise</b> under About in Settings, which uses your phone's location; the town is worked out on the phone and your location is never sent anywhere.</li>
@@ -597,7 +589,7 @@
         <li><b>More room to read:</b> on phones and tablets, the top and bottom bars slide away as you scroll down, leaving a thin strip with the name of the piece. Scroll up a little, tap a blank part of the page or the strip, or reach the end of the page to bring them back.</li>
         <li><b>Pinch</b> (on a computer: a trackpad pinch, or Ctrl + / Ctrl − and Ctrl 0 to reset; ⌘ on a Mac) or use A− / A+ (under <b>Aa</b> in the bottom bar, or in Settings) to change the text size. The page itself never zooms. On the top card of the home page a pinch does nothing, and the rest of the home page grows only a little. The bubble shows the size (100% is the normal size for your screen); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
         <li><b>Back:</b> your phone's Back button (or swipe) closes an open menu or box, then goes back to where you were before the last jump, for example from an aarti back to the home page.</li>
-        <li><b>Bottom bar (while reading; on the home page Start takes its place):</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring pieces; <b>Home</b> (a house with a lamp) goes back to the start, and <b>Library</b> (open book) opens every text, with search. Each has its word under the icon; on a phone on its side the words are left out to keep the bar low. On the smallest phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch, and it steps aside while Settings or the Library is open.</li>
+        <li><b>Bottom bar (while reading):</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring pieces; <b>Home</b> (a house with a lamp) goes back to the start, and <b>Library</b> (open book) opens every text, with search. Each has its word under the icon; on a phone on its side the words are left out to keep the bar low. On the smallest phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch, and on a phone it steps aside while Settings or the Library is open.</li>
         <li><b>Reading</b> (Aa, bottom bar): slides up the reading choices within reach of your thumb: <b>Language</b> (main, second or both), <b>Text size</b> (A− and A+, with ↺ to go back to the normal size) and <b>Dhrupad</b> (once at the top, or after every verse; in “once” mode, tap <b>↻ ध्रुपद</b> under a stanza to see the refrain, and tap anywhere to close it), plus <b>All settings</b>. Your place stays put as you change them. Tap outside it, ✕ or your phone's Back to close it.</li>
         <li>The screen stays on while the site is open (you can turn this off in Settings).</li>
       </ul>
@@ -624,7 +616,7 @@
 <div id="szt" aria-hidden="true"></div>
 <div id="sza" class="sr" role="status"></div>
 <div id="fl" role="status" aria-live="polite"></div>
-<!-- ==== Bottom bar (footer menu, reading pages; Start takes its place on the home page): ‹ Previous, Home, Library + search, Aa (reading sheet), Next ›. ==== -->
+<!-- ==== Bottom bar (footer menu, reading pages; not on the home page): ‹ Previous, Home, Library + search, Aa (reading sheet), Next ›. ==== -->
 <!-- slim strip with the piece name, shown while the bars are tucked away on phones and tablets (data-tuck) -->
 <div id="tuck" aria-hidden="true"><span id="tkt"></span><i id="tkp"></i></div>
 <div id="asc" hidden role="navigation" aria-label="Previous, home, library, next">
