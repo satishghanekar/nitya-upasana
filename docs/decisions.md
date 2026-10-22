@@ -423,6 +423,18 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
 - The tests read each English line back from the PDF even with the original's words between its parts (a paragraph
   is read row by row), and check that no paragraph line runs past its column (`past`).
 
+## Print: preview of the first page, and the paper (v1.21.3, 2026-10-22)
+
+- Step P4 (last part) of the print redesign (PLAN §3.1, mockup 1). This completes the builder.
+- **Preview:** a small picture of the printout's first page beside the paper line under How: the first text ticked,
+  in its size, font, language and page shape as it prints. Only the first page, and only that text, so it is laid
+  out in a moment even on a phone. It follows the ticks and every choice under How. The bigger live preview of
+  every page on a computer (mockup 2) is left for later.
+- **Paper:** "Every text starts on a new page. Paper: Letter" with *Use A4* (or the other way round). It starts as
+  before (Letter in the US and Canada, A4 elsewhere) and the choice is kept on the device (`ppr`) and carried by
+  Open in Safari. Once picked, the printout asks the browser for that paper (Chrome and Edge follow it); Safari keeps
+  its own dialog's paper, so in Safari a line says to pick it there too.
+
 ## Print: the printout's language, and font tiles (v1.21.2, 2026-10-22)
 
 - Step P4 (third part) of the print redesign (PLAN §3.1, mockup 1).
@@ -432,7 +444,6 @@ Satish approved the stage 4 mockup ("build it as shown"; branch `mockup-reading`
   side on Landscape, and the page row then says so.
 - **Print font tiles:** each font shows the text's first word in that font over its name, Best across the top; the
   separate sample line is gone.
-- Still to come in P4: the small preview of the first page and a way to change the paper (Letter or A4).
 
 ## Print this text, Print this session, Today (v1.21.1, 2026-10-22)
 

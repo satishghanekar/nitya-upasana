@@ -553,6 +553,46 @@ h2[tabindex="-1"]:focus {
   font-size: 12px;
   line-height: 1.4;
 }
+/* the preview of the first page (js/features/print.js preview: a page-sized frame made small), beside the note */
+.prpre {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 4px;
+}
+.prpre .prnote {
+  flex: 1;
+  margin: 0;
+}
+.prsheet {
+  flex: none;
+  width: 120px;
+  height: 170px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 12%);
+}
+.prsheet iframe {
+  display: block;
+  pointer-events: none;
+}
+/* not laid out yet: an empty sheet, faded */
+.prsheet.prsw {
+  opacity: 0.6;
+}
+/* Use A4 / Use Letter */
+.prnote .prpa {
+  height: 32px;
+  min-width: 0;
+  margin: 6px 0 0;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  display: block;
+}
 /* The bottom bar: the running total ("5 texts · ~8 pages") and Next (a phone's What step) or Print, always in view
    under the steps (they scroll) */
 .pract {
