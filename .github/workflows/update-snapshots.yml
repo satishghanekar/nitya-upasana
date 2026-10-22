@@ -1,4 +1,4 @@
-# Makes the screenshots and printed page counts that the GitHub test run compares against.
+# Makes the screenshots, printed page counts and per-text print results that the GitHub test run compares against.
 #
 # They are taken on GitHub's machines (in the same Playwright Docker image as tests.yml), because pixels
 # and page breaks differ slightly from one computer to another. To refresh them, push a commit to a
@@ -33,7 +33,7 @@ jobs:
           node-version: 22
       - run: npm ci
       - name: Take new screenshots and print snapshots
-        run: npx playwright test --update-snapshots=all --retries=0 print.spec.mjs visual.spec.mjs || true
+        run: npx playwright test --update-snapshots=all --retries=0 print.spec.mjs print-items.spec.mjs visual.spec.mjs || true
         env:
           PW_PROJECTS: chromium
       - name: Commit them to the branch
