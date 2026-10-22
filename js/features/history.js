@@ -210,7 +210,11 @@ export function ovSubDone() {
 export function ovDone() {
   if (!NAV || !hs().ov || ovOpen() || popSkip) return;
   popSkip++;
+  // where the close puts focus (some put it back after this call, so it is read once the close has finished)
   keep = /** @type {HTMLElement | null} */ (document.activeElement);
+  Promise.resolve().then(function () {
+    if (popSkip) keep = /** @type {HTMLElement | null} */ (document.activeElement);
+  });
   history.back();
 }
 
