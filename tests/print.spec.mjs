@@ -11,7 +11,7 @@
 //     Open in Safari
 // PDFs can only be made by Chromium, so this suite is Chromium-only.
 import { test, expect, devices } from "@playwright/test";
-import { openSite, SETUPS, SNAP_ENV, TEXT_COUNT, openMore, tapMore } from "./helpers.mjs";
+import { openSite, SETUPS, SNAP_ENV, TEXT_COUNT, openMore, tapMore, readText, useTestRoutine, TEST_AARTIS } from "./helpers.mjs";
 import { printOnce, checkPrintout, stubPrint, printFromButton, howStep, readPrintView, addMarkers, pdfPages, markerPages, toInt, trackWarmUp, waitForWarmUp } from "./print-helpers.mjs";
 
 test.describe.configure({ mode: "parallel" });
@@ -638,7 +638,7 @@ test("print builder: a category's Select all and Clear, and one text alone @chro
   // one text alone
   await page.locator('.prcb[data-cat=""]').click();
   await page.locator('#prwl li[data-id="sukhkarta"] input').check();
-  await expect(page.locator("#prsum span").first()).toHaveText("1 text");
+  await expect(page.locator("#prsum span").first()).toHaveText("गणपतीची आरती");
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
   const pv = await page.evaluate(() => ({ pieces: document.querySelectorAll("#pv .pvs").length, toc: !!document.querySelector("#pv .pvtoc") }));
@@ -694,5 +694,68 @@ test("print builder: Open in Safari carries the texts ticked @chromium-only", as
   await sp.waitForTimeout(1300);
   expect(await sp.evaluate(() => document.querySelectorAll("#pv .pvs").length)).toBe(2);
   await sf.close();
+  await context.close();
+});
+
+// Print this session (Home): the builder opens at How with just the session's texts ticked; ‹ What to print shows the
+// Today tab with that session chosen. Today offers each session and all of today, one tap each (the test routine:
+// Morning the Atharvashirsha, Afternoon empty, Evening ten aartis; 10 am, so Home shows Morning).
+test("print builder: Print this session, and the Today tab @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await useTestRoutine(page);
+  await openSite(page, SETUPS.english);
+  await page.locator("#tspr").click();
+  await expect(page.locator("#prhw")).toBeVisible();
+  await expect(page.locator("#prgp")).toBeFocused();
+  await expect(page.locator("#prsum span").first()).toHaveText("गणपत्यथर्वशीर्षोपनिषत्");
+  await page.locator("#prbk").click();
+  await expect(page.locator("#prtab-today")).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator('.prses[data-s="morning"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator('.prses[data-s="afternoon"]')).toBeDisabled();
+  // Evening, then all of today
+  await page.locator('.prses[data-s="evening"]').click();
+  await expect(page.locator("#prsum span").first()).toHaveText(`${TEST_AARTIS.length} texts`);
+  await expect(page.locator('.prses[data-s="morning"]')).toHaveAttribute("aria-pressed", "false");
+  await page.locator('.prses[data-s="all"]').click();
+  await expect(page.locator("#prsum span").first()).toHaveText(`${TEST_AARTIS.length + 1} texts`);
+  // the Texts tab shows the same ticks
+  await page.locator("#prtab-texts").click();
+  await expect(page.locator("#prtp-texts")).toBeVisible();
+  await expect(page.locator("#prtp-today")).toBeHidden();
+  expect(await page.locator("#prwl .tpkl input:checked").evaluateAll((l) => l.map((x) => x.value).sort())).toEqual(["atharvashirsha", ...TEST_AARTIS].sort());
+  // Evening prints just its texts
+  await page.locator("#prtab-today").click();
+  await page.locator('.prses[data-s="evening"]').click();
+  await page.locator("#prnx").click();
+  await page.locator("#prgp").click();
+  await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
+  if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
+  expect(await page.evaluate(() => document.querySelectorAll("#pv .pvs").length)).toBe(TEST_AARTIS.length);
+  await context.close();
+});
+
+// Print this text (More, while a text is read; not on Home): just that text, at How, named in the bar
+test("print builder: Print this text @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await openSite(page, SETUPS.marathi);
+  await openMore(page);
+  await expect(page.locator("#prt")).toBeHidden();
+  await page.keyboard.press("Escape");
+  await readText(page, "a7");
+  await tapMore(page, "#prt");
+  await expect(page.locator("#prhw")).toBeVisible();
+  const name = await page.evaluate(() => document.querySelector("#a7 header h2 .mr").textContent.replace(/^[०-९0-9.\s]+/, "").trim());
+  await expect(page.locator("#prsum span").first()).toHaveText(name);
+  await expect(page.locator("#prsum span").first()).toHaveAttribute("lang", "mr");
+  await page.locator("#prgp").click();
+  await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
+  if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
+  expect(await page.evaluate(() => [...document.querySelectorAll("#pv .pvs")].map((e) => e.getAttribute("data-sid")))).toEqual(["a7"]);
   await context.close();
 });

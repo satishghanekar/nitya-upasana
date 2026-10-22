@@ -164,6 +164,10 @@ a.t {
 #shr button[hidden] {
   display: none;
 }
+/* Print this text: only while a text is read, not on Home (data-home, js/features/bars.js) */
+:root[data-home] #shr #prt {
+  display: none;
+}
 #shr button {
   display: flex;
   align-items: center;
@@ -553,6 +557,12 @@ h2[tabindex="-1"]:focus {
   font: 400 14px/1.35 var(--lat);
   color: var(--muted);
 }
+.prsum [lang="mr"],
+.prsum [lang="kn"] {
+  font-family: var(--body);
+  font-size: 15px;
+  color: var(--ink);
+}
 .prsum b {
   font-weight: 600;
   color: var(--ink);
@@ -618,7 +628,7 @@ h2[tabindex="-1"]:focus {
 .prbk {
   flex: none;
   min-height: 44px;
-  margin: 0 0 0 -8px;
+  margin: 0 auto 0 -8px;
   padding: 0 8px;
   border: 0;
   background: none;
@@ -643,6 +653,92 @@ h2[tabindex="-1"]:focus {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
+}
+/* What has two tabs, Texts and Today (the chosen one filled, like the choices under How) */
+.prtabs {
+  display: flex;
+  gap: 2px;
+  margin: 0 0 10px;
+  padding: 3px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ink) 9%, var(--bg));
+}
+.prtabs button {
+  flex: 1;
+  min-height: 36px;
+  margin: 0;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  box-shadow: none;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+.prtabs button[aria-selected="true"] {
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  box-shadow: 0 1px 3px #0003;
+}
+.prtp[hidden] {
+  display: none;
+}
+/* Today: each session a card, a tap ticks just its texts (pressed when exactly those are ticked) */
+.prti {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font: 400 13px/1.4 var(--lat);
+}
+#prwl[lang="mr"] .prti,
+#prwl[lang="mr"] .prtabs button,
+#prwl[lang="mr"] .prsn {
+  font-family: var(--body);
+}
+.prtd {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.prses {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 10px;
+  width: 100%;
+  height: auto;
+  min-height: 56px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: none;
+  color: var(--ink);
+  text-align: start;
+}
+.prses[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+  box-shadow: inset 0 0 0 1px var(--accent);
+  color: var(--ink);
+}
+.prses:disabled {
+  opacity: 0.6;
+}
+.prsn {
+  font: 600 16px/1.3 var(--lat);
+}
+.prsl {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font: 400 13.5px/1.4 var(--body);
+}
+.prsl[lang="en"] {
+  font-family: var(--lat);
+  font-size: 13px;
 }
 /* What: search, then each category with Select all or Clear, and its texts with a tick and their pages */
 .prwq {
@@ -705,12 +801,14 @@ h2[tabindex="-1"]:focus {
   font-family: var(--body);
   font-size: 13.5px;
 }
-.prpc {
+.prpc,
+.prsc {
   flex: none;
   color: var(--muted);
   font: 400 13px/1.3 var(--lat);
 }
 #prwl[lang="mr"] .prpc,
+#prwl[lang="mr"] .prsc,
 #prwl[lang="mr"] .prcb,
 #prwl[lang="mr"] .prwq {
   font-family: var(--body);
