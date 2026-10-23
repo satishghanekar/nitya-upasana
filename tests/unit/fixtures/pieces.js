@@ -1703,7 +1703,6 @@ window.CONTENT = {
     },
     {
      "id": "a6",
-     "cls": "norf",
      "no": {
       "mr": "६.",
       "en": "6."
@@ -1716,9 +1715,20 @@ window.CONTENT = {
       "mr": "मराठी",
       "en": "Marathi"
      },
+     "refrain": {
+      "label": {
+       "mr": "ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)",
+       "en": "Refrain (sung after every verse)"
+      },
+      "lines": [
+       {
+        "mr": "आरती ज्ञानराजा ॥ धृ. ॥",
+        "en": "Aarti Dnyanaraja || Dhr. ||"
+       }
+      ]
+     },
      "items": [
       {
-       "kind": "dh",
        "lines": [
         {
          "l": "s6l1",
@@ -1727,9 +1737,20 @@ window.CONTENT = {
         },
         {
          "l": "s6l2",
-         "mr": "सेविती साधुसंत ।​<br>हो मनु वेधला माझा, वेधला माझा ।",
-         "en": "Seviti Sadhusant | Ho Manu Vedhala Majha, Vedhala Majha |"
-        },
+         "mr": "सेविती साधुसंत ।​<br>हो मनु वेधला माझा, वेधला माझा ॥",
+         "en": "Seviti Sadhusant | Ho Manu Vedhala Majha, Vedhala Majha ||"
+        }
+       ]
+      },
+      {
+       "rmk": {
+        "mr": "↻ ध्रुपद",
+        "en": "Refrain"
+       }
+      },
+      {
+       "kind": "rf",
+       "lines": [
         {
          "l": "s6l3",
          "rf": true,
@@ -1749,7 +1770,18 @@ window.CONTENT = {
          "l": "s6l5",
          "mr": "अवतार पांडुरंग ।​<br>नाम ठेविलें ज्ञानी, ठेविलें ज्ञानी ॥",
          "en": "Avatar Pandurang | Nam Thevile Dnyani, Thevile Dnyani ||"
-        },
+        }
+       ]
+      },
+      {
+       "rmk": {
+        "mr": "↻ ध्रुपद",
+        "en": "Refrain"
+       }
+      },
+      {
+       "kind": "rf",
+       "lines": [
         {
          "l": "s6l6",
          "rf": true,
@@ -1769,7 +1801,18 @@ window.CONTENT = {
          "l": "s6l8",
          "mr": "नारद तुंबरु हो ।​<br>साम गायन करी, गायन करी ॥",
          "en": "Narad Tumbaru Ho | Saama Gaayan Kari, Gaayan Kari ||"
-        },
+        }
+       ]
+      },
+      {
+       "rmk": {
+        "mr": "↻ ध्रुपद",
+        "en": "Refrain"
+       }
+      },
+      {
+       "kind": "rf",
+       "lines": [
         {
          "l": "s6l9",
          "rf": true,
@@ -1789,7 +1832,18 @@ window.CONTENT = {
          "l": "s6l11",
          "mr": "रामा जनार्दनी ।​<br>पायीं मस्तक ठेविलें, मस्तक ठेविलें ॥",
          "en": "Rama Janardani | Paayi Mastak Thevile, Mastak Thevile ||"
-        },
+        }
+       ]
+      },
+      {
+       "rmk": {
+        "mr": "↻ ध्रुपद",
+        "en": "Refrain"
+       }
+      },
+      {
+       "kind": "rf",
+       "lines": [
         {
          "l": "s6l12",
          "rf": true,

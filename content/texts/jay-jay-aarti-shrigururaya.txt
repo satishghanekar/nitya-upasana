@@ -1,30 +1,30 @@
 id: jay-jay-aarti-shrigururaya
 title: आरती श्रीमहाराजांची
-title-en: Aaratee shreemahaaraajaanchee
+title-en: Aarti Shrimaharajanchi
 category: aarti
 language: mr
 refrain: every-verse
 ---
 [dhrupad]
-जय जय आरति श्रीगुरुराया । सद्‌गुरुराया ।
-Jay jay aarati shreegururaayaa | sadgururaayaa |
+जय जय आरती श्रीगुरुराया । सद्‌गुरुराया ।
+Jay Jay Aarti Shrigururaya | Sadgururaya |
 नमितों तव पदिं संहरि माया ॥ धृ. ॥
-Namiton tav padin sanhari maayaa || dhru. ||
+Namiton Tav Padin Sanhari Maya || Dhr. ||
 
 [1]
 मी जीव हा भ्रम द्वैतपसारा । द्वैतपसारा ।
-Mee jeev haa bhram dvaitapasaaraa | dvaitapasaaraa |
+Mi Jiv Ha Bhram Dvaitapasara | Dvaitapasara |
 वारुनि दिधला अद्वैतसारा ॥
-Vaaruni didhalaa advaitasaaraa ||
+Varuni Didhala Advaitasara ||
 
 [2]
 परम परात्पर चिन्मयखाणी । चिन्मयखाणी ।
-Param paraatpar chinmayakhaanee | chinmayakhaanee |
+Param Paratpar Chinmayakhani | Chinmayakhani |
 शतमुख स्तवितां मंदलि वाणी ॥
-Shatamukh stavitaan mandali vaanee ||
+Shatamukh Stavitan Mandali Vani ||
 
 [3]
 जगज्जीवन प्रभु मंगलधामा । मंगलधामा ।
-Jagajjeevan prabhu mangaladhaamaa | mangaladhaamaa |
+Jagajjivan Prabhu Mangaladhama | Mangaladhama |
 नामरूपातीत तूं अभिरामा ॥
-Naamaroopaateet toon abhiraamaa ||
+Namarupatit Tun Abhirama ||
