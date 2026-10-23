@@ -158,7 +158,9 @@ export function init() {
       if (!v) return [];
       return [].filter
         .call(v.querySelectorAll(":scope > ." + k + " > p"), function (/** @type {HTMLElement} */ p) {
-          return pref() !== 1 || !p.classList.contains("rf");
+          // (with the dhrupad once, a stanza's refrain lines are left out, unless the text always shows them:
+          // refrain: always, section class norf)
+          return pref() !== 1 || !p.classList.contains("rf") || !!u.closest(".norf");
         })
         .map(function (/** @type {HTMLElement} */ p) {
           return { html: p.innerHTML, rf: p.classList.contains("rf") || u.classList.contains("rf") };
