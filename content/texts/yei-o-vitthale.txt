@@ -14,12 +14,12 @@ credit-note: ([संत नामदेवांची](https://mr.wikipedia.or
 credit-note-en: (also credited to [Sant Namdev](https://en.wikipedia.org/wiki/Namdev))
 ---
 [dhrupad]
-येई ओ विठ्ठले माझी माऊली ये । ¦येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥
-Yei O Vitthale Majhi Maauli Ye | Yei O Vitthale Majhi Maauli Ye || Dhr. ||
+येई ओ विठ्ठले माझी माऊली ये ।¦ // येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥
+Yei O Vitthale Majhi Maauli Ye | // Yei O Vitthale Majhi Maauli Ye || Dhr. ||
 
 [dhrupad repeated]
 येई ओ विठ्ठले माझी माऊली ये ।¦ // येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥
-Yei O Vitthale Majhi Maauli Ye | Yei O Vitthale Majhi Maauli Ye || Dhr. ||
+Yei O Vitthale Majhi Maauli Ye | // Yei O Vitthale Majhi Maauli Ye || Dhr. ||
 
 [1]
 निढळावरी कर, ¦निढळावरी कर ठेवुनी वाट मी पाहे ।

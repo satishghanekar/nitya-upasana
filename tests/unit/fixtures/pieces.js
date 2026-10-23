@@ -1822,8 +1822,8 @@ window.CONTENT = {
       },
       "lines": [
        {
-        "mr": "येई ओ विठ्ठले माझी माऊली ये । ​येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥",
-        "en": "Yei O Vitthale Majhi Maauli Ye | Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
+        "mr": "येई ओ विठ्ठले माझी माऊली ये ।​<br>येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥",
+        "en": "Yei O Vitthale Majhi Maauli Ye |<br>Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
        }
       ]
      },
@@ -1841,7 +1841,7 @@ window.CONTENT = {
          "l": "s7l1",
          "rf": true,
          "mr": "येई ओ विठ्ठले माझी माऊली ये ।​<br>येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥",
-         "en": "Yei O Vitthale Majhi Maauli Ye | Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
+         "en": "Yei O Vitthale Majhi Maauli Ye |<br>Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
         }
        ]
       },
@@ -1872,7 +1872,7 @@ window.CONTENT = {
          "l": "s7l4r",
          "rf": true,
          "mr": "येई ओ विठ्ठले माझी माऊली ये ।​<br>येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥",
-         "en": "Yei O Vitthale Majhi Maauli Ye | Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
+         "en": "Yei O Vitthale Majhi Maauli Ye |<br>Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
         }
        ]
       },
@@ -1913,7 +1913,7 @@ window.CONTENT = {
          "l": "s7l9",
          "rf": true,
          "mr": "येई ओ विठ्ठले माझी माऊली ये ।​<br>येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥",
-         "en": "Yei O Vitthale Majhi Maauli Ye | Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
+         "en": "Yei O Vitthale Majhi Maauli Ye |<br>Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
         }
        ]
       },
@@ -1954,7 +1954,7 @@ window.CONTENT = {
          "l": "s7l14",
          "rf": true,
          "mr": "येई ओ विठ्ठले माझी माऊली ये ।​<br>येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥",
-         "en": "Yei O Vitthale Majhi Maauli Ye | Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
+         "en": "Yei O Vitthale Majhi Maauli Ye |<br>Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
         }
        ]
       },
@@ -1995,7 +1995,7 @@ window.CONTENT = {
          "l": "s7l19",
          "rf": true,
          "mr": "येई ओ विठ्ठले माझी माऊली ये ।​<br>येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥",
-         "en": "Yei O Vitthale Majhi Maauli Ye | Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
+         "en": "Yei O Vitthale Majhi Maauli Ye |<br>Yei O Vitthale Majhi Maauli Ye || Dhr. ||"
         }
        ]
       }

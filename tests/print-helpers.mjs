@@ -4,7 +4,7 @@
 //  1. window.print is replaced with a stub, so the site's own Print button runs exactly as for a
 //     reader (build the print view #pv, then call print()).
 //  2. When print() is called, invisible markers are added at the start and end of every unbroken
-//     block (.pvk) of every piece. They are absolutely positioned, so they take no space and the
+//     block (.pvk) of every piece. Each is a box of no width (its text runs over the block), so they take no space and the
 //     page breaks are the ones a reader gets.
 //  3. Chromium prints the page to PDF at the reader's paper size (Letter for US/Canada, A4 elsewhere)
 //     and pdf.js reads the text of every page back, so the test can check where each piece and each
@@ -94,18 +94,19 @@ export async function addMarkers(page, when = "now") {
   await page.evaluate((when) => {
     const run = () => {
     const mk = (t, end) => {
-      const s = document.createElement("span");
-      s.className = "__pm";
-      s.textContent = " [[" + t + "]] ";
-      // white 1px text: printed (so pdf.js can read it) but invisible and taking no space
+      // A box of no width at the start or end of the block, its text (white, 1px) running out of it over the block's
+      // own letters: to the right from the start, to the left from the end (the box is right-to-left, its text inside
+      // still left-to-right). So it takes no space, moves nothing, and never reaches past the block into the page's
+      // margin, where Chrome cuts what it prints. (Absolutely placed, a marker ran off a line at the page's edge.)
       // !important: the site's own !important font rules (Kannada letters set every .mr element's font) must not
       // reach the marker, or it is drawn in whatever font the machine falls back to and may not read back
-      s.style.cssText = ["position:absolute", "font:1px/1 monospace", "letter-spacing:0", "word-spacing:0", "text-transform:none", "color:#fff", "white-space:nowrap", "text-indent:0"].map((d) => d + " !important").join(";");
-      // (text-indent 0: a line's hanging indent (.pvl, td.pve) would shrink the marker to nothing and move it)
-      // an end marker reaches back over its line instead of past it
-      // (by a fixed 32px, longer than any marker: near the page edge the marker can be laid out 0 wide, and -100% of
-      // that does not move it)
-      if (end) s.style.setProperty("transform", "translateX(-32px)", "important");
+      const s = document.createElement("span"),
+        i = document.createElement("span");
+      s.className = "__pm";
+      s.style.cssText = ["display:inline-block", "width:0", "font:1px/1 monospace", "letter-spacing:0", "word-spacing:0", "text-transform:none", "text-indent:0", "color:#fff", "white-space:nowrap", "vertical-align:baseline", "direction:" + (end ? "rtl" : "ltr")].map((d) => d + " !important").join(";");
+      i.style.cssText = "direction:ltr !important;unicode-bidi:isolate !important";
+      i.textContent = " [[" + t + "]] ";
+      s.appendChild(i);
       return s;
     };
     const shown = (n) => {
@@ -123,11 +124,7 @@ export async function addMarkers(page, when = "now") {
         let last = first, n;
         while ((n = w.nextNode())) last = n;
         first.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":s"), first);
-        // the end marker goes just before the block's last letter and reaches back from there: placed after it, a
-        // line that ends at the page's edge would leave the marker past the edge, cut off
-        const lastAt = last.data.trimEnd().length - 1,
-          tail = lastAt > 0 ? last.splitText(lastAt) : last;
-        tail.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":e", true), tail);
+        last.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":e", true), last.nextSibling);
       });
     });
     };
