@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Safari print spacing test</title>
+<link rel="stylesheet" href="css/00-fonts.css">
+<style>
+  @page { size: letter portrait; margin: 15mm; }
+  body { margin: 0; padding: 12px; font: 15pt/1.6 "SC Classic", serif; color: #000; background: #fff; }
+  h1 { font: 600 13pt/1.3 system-ui, sans-serif; margin: 14pt 0 4pt; }
+  p { margin: 0 0 3pt; }
+  .k { font: 9pt system-ui, sans-serif; color: #666; }
+  .nb { white-space: nowrap; }
+  .noto { font-family: "SC Bold", serif; font-weight: 400; }
+  .ser { font-family: Georgia, serif; }
+  .sb { font-synthesis: none; }
+</style>
+</head>
+<body>
+<p class="k">Print this page from Safari (Save as PDF) and send the PDF back. Each line ends "… Ishave Namah | Te Namah |". Which lines show the gap before "Namah" as wide as the other gaps?</p>
+
+<h1>Font: Traditional (Tiro, the printout's English font)</h1>
+<p class="k">A · plain spaces</p>
+<p>Om Namaste Rudra Manyava Utota Ishave Namah | Bahubhyamuta Te Namah |</p>
+<p class="k">B · word and danda in a nowrap span (the old way)</p>
+<p>Om Namaste Rudra Manyava Utota Ishave <span class="nb">Namah |</span> Bahubhyamuta Te <span class="nb">Namah |</span></p>
+<p class="k">C · no-break space between word and danda (PR #82)</p>
+<p>Om Namaste Rudra Manyava Utota Ishave Namah&nbsp;| Bahubhyamuta Te Namah&nbsp;|</p>
+<p class="k">D · word joiner before the danda</p>
+<p>Om Namaste Rudra Manyava Utota Ishave Namah &#x2060;| Bahubhyamuta Te Namah &#x2060;|</p>
+<p class="k">E · the line split in two spans at a space</p>
+<p><span>Om Namaste Rudra Manyava Utota Ishave</span> <span>Namah | Bahubhyamuta Te</span> <span>Namah |</span></p>
+<p class="k">F · as C, with font-synthesis: none (as the printout)</p>
+<p class="sb">Om Namaste Rudra Manyava Utota Ishave Namah&nbsp;| Bahubhyamuta Te Namah&nbsp;|</p>
+
+<h1>Font: Bold face (Noto Serif)</h1>
+<p class="k noto">A · plain</p>
+<p class="noto">Om Namaste Rudra Manyava Utota Ishave Namah | Bahubhyamuta Te Namah |</p>
+<p class="k">C · no-break space</p>
+<p class="noto">Om Namaste Rudra Manyava Utota Ishave Namah&nbsp;| Bahubhyamuta Te Namah&nbsp;|</p>
+
+<h1>Font: Georgia (a system font)</h1>
+<p class="k">A · plain</p>
+<p class="ser">Om Namaste Rudra Manyava Utota Ishave Namah | Bahubhyamuta Te Namah |</p>
+<p class="k">C · no-break space</p>
+<p class="ser">Om Namaste Rudra Manyava Utota Ishave Namah&nbsp;| Bahubhyamuta Te Namah&nbsp;|</p>
+</body>
+</html>
