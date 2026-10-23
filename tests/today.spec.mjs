@@ -212,9 +212,12 @@ test("a session runs on in one scroll, in session order, with only its texts @mo
   await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: " + TITLE[AARTIS[1]].titleEn);
   await expect(page.locator("#asv")).toHaveAttribute("aria-label", "Prev: " + TITLE[AARTIS[2]].titleEn);
   // scrolling up and down never brings in a text from outside the session
+  // (scrollBy, not the mouse wheel: phones' WebKit has no wheel)
   for (let i = 0; i < 3; i++) {
-    await page.mouse.wheel(0, -3000);
-    await page.mouse.wheel(0, 3000);
+    await page.evaluate(() => scrollBy(0, -3000));
+    await page.waitForTimeout(100);
+    await page.evaluate(() => scrollBy(0, 3000));
+    await page.waitForTimeout(100);
   }
   expect(await shown(page)).toEqual(["a3", "a1", "a2"]);
   // a reload in the middle of the session carries on with the whole session in one scroll
