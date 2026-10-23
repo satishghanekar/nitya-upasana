@@ -1,5 +1,5 @@
 // Profiles and backup: the profile chip and its sheet (switch, add, rename, colour,
-// delete, never the last), each person's own text size, languages and ticks, the move of version 1.3's settings into
+// delete, never the last), each person's own text size and languages, the move of version 1.3's settings into
 // the first person, Save a backup file and Restore from a file (download, or the share sheet on a phone), the
 // warning when IndexedDB can't be opened, the backup reminder, and accessibility of the new dialogs.
 import { test, expect } from "@playwright/test";
@@ -77,7 +77,7 @@ test("first visit: version 1.3's settings become the first person, 'Me', shown o
   expect([boot.pid, boot.sv, boot.fs]).toEqual([db.profiles[0].id, 6, 30]);
 });
 
-test("first visit from an older version (settings version 4) and version 1.3's ticks", async ({ page }) => {
+test("first visit from an older version (settings version 4), with version 1.3's ticks left in storage", async ({ page }) => {
   await page.clock.setFixedTime(EVENING);
   await page.addInitScript(() => {
     if (sessionStorage.getItem("__seeded")) return;
@@ -91,8 +91,8 @@ test("first visit from an older version (settings version 4) and version 1.3's t
   expect(await fs(page)).toBe(28);
   expect(await textLang(page)).toBe("en");
   await expect(page.locator("html")).toHaveAttribute("data-ref", "0");
-  // Sunday evening is four texts now; of the two ticked in 1.3, Shendur Lal is no longer in it
-  await expect(page.locator("#tsn")).toHaveText("1 of 4 done");
+  // Home has no ticks now: the old ones are simply not shown
+  await expect(page.locator("#tsn")).toHaveText("4 texts");
   const boot = await page.evaluate(() => JSON.parse(localStorage.getItem("aarti2-prefs")));
   expect([boot.sv, boot.l2]).toEqual([6, "en"]);
 });
@@ -224,34 +224,12 @@ test("delete asks first, never removes the last person, and moves to another per
   await expect(people(page)).toHaveText(["Me"]);
 });
 
-test("ticks are per person, and kept after a reload @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi, { now: EVENING });
-  await rows(page).nth(0).locator("input").check();
-  await expect(page.locator("#tsn")).toHaveText("1 of 4 done");
-  await addPerson(page, "Baba");
-  await page.locator("#pfx").click();
-  await switchTo(page, "Baba");
-  await expect(page.locator("#tsn")).toHaveText("0 of 4 done");
-  await rows(page).nth(1).locator("input").check();
-  await rows(page).nth(2).locator("input").check();
-  await switchTo(page, "Me");
-  await expect(page.locator("#tsn")).toHaveText("1 of 4 done");
-  await expect(rows(page).nth(0).locator("input")).toBeChecked();
-  await page.reload();
-  await settle(page);
-  await expect(page.locator("#tsn")).toHaveText("1 of 4 done");
-  await switchTo(page, "Baba");
-  await expect(page.locator("#tsn")).toHaveText("2 of 4 done");
-});
-
-test("Save a backup file → Restore from it: every person, setting and tick comes back", async ({ page }, info) => {
+test("Save a backup file → Restore from it: every person and setting comes back", async ({ page }, info) => {
   await openSite(page, { ...SETUPS.marathi, fs: 30, fsu: 1 }, { now: EVENING });
-  await rows(page).nth(0).locator("input").check();
   await addPerson(page, "Aai", { initials: "आई", colour: 2 });
   await page.locator("#pfx").click();
   await switchTo(page, "Aai");
   await pickLanguage(page, 1); // English, in the reading sheet (Aa)
-  await rows(page).nth(3).locator("input").check();
   await page.locator("#aa").click();
   await expect(page.locator("#bksv")).toHaveText("Not saved yet");
   const [dl] = await Promise.all([page.waitForEvent("download"), page.locator("#bks").click()]);
@@ -266,9 +244,8 @@ test("Save a backup file → Restore from it: every person, setting and tick com
   await expect(page.locator("#bksv")).toHaveText("Last saved 18 October 2026");
   await page.locator("#xc").click();
 
-  // things change after the backup: Aai is deleted, someone else is added, Me's ticks change
+  // things change after the backup: Aai is deleted, someone else is added
   await switchTo(page, "Me");
-  await rows(page).nth(0).locator("input").uncheck();
   await page.locator("#who").click();
   await page.locator("#pfl .pfe").nth(1).click();
   await page.locator("#pfdel").click();
@@ -290,12 +267,9 @@ test("Save a backup file → Restore from it: every person, setting and tick com
   await expect(page.locator("#bkm")).toBeHidden();
   await expect(chipName(page)).toHaveAccessibleName("Profile: Aai");
   expect(await textLang(page)).toBe("en");
-  await expect(page.locator("#tsn")).toHaveText("1 of 4 done");
-  await expect(rows(page).nth(3).locator("input")).toBeChecked();
   await switchTo(page, "Me");
   expect(await textLang(page)).toBe("mr");
   expect(await fs(page)).toBe(30);
-  await expect(rows(page).nth(0).locator("input")).toBeChecked();
   await page.locator("#who").click();
   await expect(people(page)).toHaveText(["Me", "Aai"]);
   // and after a reload

@@ -25,7 +25,7 @@ Each file starts with a comment that lists its sections. Every section begins wi
 | `07-bottom-bar-folds.css` | The bottom bar (`#asc`), the bars tucking away while reading (`data-tuck`), folding each piece and its heading row, bigger tap areas, the reading sheet (`#rsh`), and the Best print font. |
 | `08-contents-book.css` | The Library's list of texts (`#jl`) as a book index, author lines, and Both languages with English first. |
 | `09-settings-page.css` | The Settings page and Kannada letters. |
-| `10-today.css` | Home and the Library page: the picture beside the date (`#tdy`), the Vedic calendar line's place (`#pan`), the festival-day line (`#fst`) and the Sankashti-day line (`#skt`), the Morning / Afternoon / Evening switch (`#tss`) and the session's texts with their ticks (`#tsc`), the Library line (`#tlib`), Home's column beside the text being read on wide screens (`li.now` marks that text), Home on its own (`data-hv`: no pieces under Home), one text at a time (`.solo`), the top bar and bottom bar on Home (`data-home`), the Library (`#jump`), and the layouts for desktops, large monitors and tablets held upright. |
+| `10-today.css` | Home and the Library page: the picture beside the date (`#tdy`), the Vedic calendar line's place (`#pan`), the festival-day line (`#fst`) and the Sankashti-day line (`#skt`), the Morning / Afternoon / Evening switch (`#tss`) and the session's texts (`#tsc`), a session in one scroll (`data-run`: `#main` a flex column, each `.inrun` piece in session order), Home's column beside the text being read on wide screens (`li.now` marks that text), Home on its own (`data-hv`: no pieces under Home), one text at a time (`.solo`), the top bar and bottom bar on Home (`data-home`), the Library (`#jump`), and the layouts for desktops, large monitors and tablets held upright. |
 | `11-profiles.css` | Profiles and backup: the profile chip in the top bar (`#who`, the badge alone below 600px; on phones up to 420px without its frame, and the title without its small Ganesha), the round badges, the profile sheet (`#pfm`: the people on this phone, Add / Edit / Delete, the colour swatches), the Restore dialog (`#bkm`) and the notes on the home page (`#pfnt`: this browser can't save here, the backup reminder). |
 | `12-calendar.css` | The Vedic calendar: the line on Home (`#panb`), the calendar page (`#cal`, under the top bar like the Library), the day card (`#cald`), the month table (`#calm`: day buttons, shukla and krishna shading with `--ck`, full and new moon marks, Ekadashi and Sankashti labels, festival labels (`.fs`) and tags (`.tag.fest`), today and the day shown, the key), two columns from 820px. |
 | `13-library.css` | The Library by category: the "Edit categories" button at the end of the list (`#lbr`, `#lbb`), the categories sheet (`#lbm`: the categories with their counts and Rename, Add, the form, Delete, the category of each text), the search results' groups (`#res li.rh`: Texts, then Lines). |
@@ -58,8 +58,10 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 
 | Query | What changes |
 |---|---|
-| `(max-width: 359px)` | The smallest phones: the bottom bar drops the words of Prev and Next and narrows its buttons; Settings tightens |
-| `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon; the bottom bar closes its gaps |
+| `(max-width: 359px)` | The smallest phones: Settings tightens |
+| `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon |
+| `(max-width: 399px)` | Phones up to 399px: the bottom bar's six buttons fit by showing only the arrows of Prev and Next |
+| `(max-width: 439px)` | Phones: the bottom bar's six buttons (Prev, Home, Library, Print, Reading, Next) close their gaps and slim the icon buttons |
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
 | `(min-width: 760px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own |
