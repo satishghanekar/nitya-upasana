@@ -98,11 +98,12 @@ export async function addMarkers(page, when = "now") {
       // white 1px text: printed (so pdf.js can read it) but invisible and taking no space
       // !important: the site's own !important font rules (Kannada letters set every .mr element's font) must not
       // reach the marker, or it is drawn in whatever font the machine falls back to and may not read back
-      s.style.cssText = ["position:absolute", "font:1px/1 monospace", "letter-spacing:0", "word-spacing:0", "text-transform:none", "color:#fff", "white-space:nowrap", "text-indent:0"].map((d) => d + " !important").join(";");
-      // (text-indent 0: a hanging-indent line (.pvl) would pull the marker back over the one before it)
+      s.style.cssText = ["position:absolute", "font:1px/1 monospace", "letter-spacing:0", "word-spacing:0", "text-transform:none", "color:#fff", "white-space:nowrap"].map((d) => d + " !important").join(";");
       // an end marker reaches back over its line instead of past it: after a line that fills the page width it
       // would run off the page and be cut
       if (end) s.style.setProperty("transform", "translateX(-100%)", "important");
+      // a start marker ignores the line's hanging indent (.pvl), which would pull it back over the marker before it
+      else s.style.setProperty("text-indent", "0", "important");
       return s;
     };
     const shown = (n) => {
