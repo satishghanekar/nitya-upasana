@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.24.1">
+<meta name="version" content="aarti-v1.25.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -355,13 +355,9 @@
         <ol id="tsl"></ol>
         <!-- an empty session: a friendly line and Add texts (the builder, with the picker open) -->
         <p id="tse" hidden><span id="tset"></span><button type="button" id="tsea" aria-haspopup="dialog" aria-controls="rtb"></button></p>
-        <!-- Print this session: the print builder (js/features/print.js) with the session's texts ticked -->
-        <button type="button" id="tspr" aria-haspopup="dialog" aria-controls="prm"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="9" rx="2"/><path d="M6 14h12v7H6z"/></svg><span class="mr">हे सत्र प्रिंट करा</span><span class="en" lang="en">Print this session</span></button>
       </div>
       <p id="tlive" class="sr" aria-live="polite"></p>
     </section>
-    <!-- Another text: the Library (the top bar's book button) -->
-    <p id="tlib"><span id="tlibw"></span> <button type="button" id="tlibb" aria-haspopup="dialog" aria-controls="jump"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5C5.6 4.6 8.9 4.9 12 7c3.1-2.1 6.4-2.4 9.5-1.5v13.3c-3.1-.9-6.4-.6-9.5 1.5-3.1-2.1-6.4-2.4-9.5-1.5z"/><path d="M12 7v13.3"/></svg><span id="tlibbw"></span></button></p>
   </section>
   <!-- ==== The pieces, from the text files in content/texts/ (fetched by js/text/load.js). Each is built here, before
        #pieces, the first time it is opened (js/core/page.js with js/render.js), in the Library's order ==== -->
@@ -475,7 +471,7 @@
 
       <h3>Put it on your phone</h3>
       <p>Tap <b>⋯ More</b> in the top bar, then <b>App</b>, or <b>Add to Home Screen</b> under About in Settings. On Android and in Chrome or Edge on a computer this usually installs it in one tap; otherwise it shows the steps for your phone or browser (on a Mac in Safari: Share or File → Add to Dock).</p>
-      <p>On an iPhone, the Home Screen app also keeps your people, settings and ticks safer: Safari can clear a website's saved data after some weeks without a visit, but not an app on the Home Screen.</p>
+      <p>On an iPhone, the Home Screen app also keeps your people and settings safer: Safari can clear a website's saved data after some weeks without a visit, but not an app on the Home Screen.</p>
       <h4>iPhone (Safari or Chrome)</h4>
       <ol>
         <li>Open the site in <b>Safari</b>. If you opened it from WhatsApp, Mail or Messages, tap the compass or ⋯ icon to open it in Safari first; those built-in viewers don't have the option.</li>
@@ -508,11 +504,10 @@
       <p>Home is what to chant now: the picture for the time of day (sunrise, midday, sunset) with the day's star ringed, today's date in Marathi and English, the Vedic calendar line, and the texts for this session.</p>
       <ul>
         <li><b>Morning, Afternoon, Evening:</b> Home opens at the session for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. Tap another to see its texts for today; the next day starts again from the clock. A session with nothing set today is greyed out ("Nothing set"); tap it to add texts. To start with, everyone has the usual routine: Vedic chants and the Ganapati and Devi aartis in the morning, aartis and an ashtak in the evening, and a free afternoon. Each person can change theirs (see Your routine below).</li>
-        <li><b>The list</b> has the session's texts in order. Tap the round tick when you have finished one; the ticks are kept on this phone for today, for the person reading, and start fresh tomorrow.</li>
-        <li><b>Reading the session:</b> tap a title to start there. While you read, <b>Next ›</b> in the bottom bar ticks the text you were reading as done for today, then opens the next text of the session; after the last one it brings you back here. <b>‹ Prev</b> goes back without ticking. To take a tick off, tap it on the list.</li>
+        <li><b>The list</b> has the session's texts in order.</li>
+        <li><b>Reading the session:</b> tap a title to start there. The session's texts follow one another in one scroll, in the session's order, and nothing else is in between. <b>Next ›</b> and <b>‹ Prev</b> in the bottom bar jump to the next or previous text of the session; <b>Next ›</b> after the last one, or <b>‹ Prev</b> on the first, brings you back here. <b>Print</b> in the bottom bar prints the session.</li>
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
-        <li><b>Print this session</b>, under the list, prints the session's texts (see Print below). <b>Another text? Open the Library</b> opens every text.</li>
-        <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
+                <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home says so, "Today: Dasara"). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
         <li><b>On a Sankashti day</b> a line under the date gives tonight's <b>moonrise</b> for where you are (Angaraki, on a Tuesday, is marked). The place is your phone's time zone until you choose <b>Place for moonrise</b> under About in Settings, which uses your phone's location; the town is worked out on the phone and your location is never sent anywhere.</li>
       </ul>
@@ -523,7 +518,7 @@
         <li>Pick <b>Morning</b>, <b>Afternoon</b> or <b>Evening</b> at the top. <b>Same every day</b> keeps one list; <b>Different by weekday</b> gives each day its own, with a row of days (this week's dates) to choose which day you are changing. <b>Copy to other days…</b> gives the day's list to the days you tick.</li>
         <li><b>↑</b> and <b>↓</b> move a text, <b>✕</b> removes it. With a keyboard, Alt+↑ and Alt+↓ move the text whose button has focus, and Delete removes it. You can also drag a text by its dotted handle. Each change is read out by screen readers ("घालीन लोटांगण moved to 3 of 5").</li>
         <li><b>Add texts</b> lists every text, with a search box: tick one to add it at the end, untick it to remove it. On a computer the list is beside yours; on a phone or tablet it slides up, and <b>Done</b> (or Back) closes it.</li>
-        <li>Changes are kept at once, for the person reading, and go into backup files. Home follows your routine for today and the time of day. Taking a text out of a session also takes away its tick for today.</li>
+        <li>Changes are kept at once, for the person reading, and go into backup files. Home follows your routine for today and the time of day.</li>
         <li>The titles follow your reading languages (Settings → Languages): English first shows the English names.</li>
       </ul>
 
@@ -536,7 +531,7 @@
 
       <h3>While reading</h3>
       <ul>
-        <li><b>One text at a time:</b> the page shows the text you opened. <b>‹ Prev</b> and <b>Next ›</b> in the bottom bar go on: in a session, to the session's texts; from the Library, to the next and previous texts in the Library.</li>
+        <li><b>One text at a time</b> from the Library or search: the page shows the text you opened, and <b>‹ Prev</b> and <b>Next ›</b> in the bottom bar go to the previous and next texts in the Library. A session runs on in one scroll instead (see Home).</li>
         <li><b>Tap a line</b> to highlight it, so everyone can keep their place; its whole stanza gets a soft band too, so you find it again at a glance. Tap again to clear.</li>
         <li><b>Vedic chants</b> (Shree Rudra, the Atharvashirsha, the Purusha Suktam) in one language run on as paragraphs, like a printed booklet. With both languages the lines stay in pairs.</li>
         <li><b>Fold a text:</b> a tap anywhere on its heading (or its round ⌃) folds it down to its heading; tap it again to open it. Your phone remembers this, and going to a folded text from the Library or search opens it.</li>
@@ -559,7 +554,7 @@
       </ul>
 
       <h3>People on one phone</h3>
-      <p>Several people can read on the same phone, each with their own text size, languages, letters, English spelling, font, theme, high contrast, routine and today's ticks. Location, Keep screen on, the layout and print choices belong to the phone and are shared.</p>
+      <p>Several people can read on the same phone, each with their own text size, languages, letters, English spelling, font, theme, high contrast and routine. Location, Keep screen on, the layout and print choices belong to the phone and are shared.</p>
       <ul>
         <li><b>The badge</b> at the top (letters on a colour, with the name on a wider screen) shows who is reading. Tap it to see everyone on this phone.</li>
         <li><b>Switch:</b> tap a name. The page changes to that person's settings straight away.</li>
@@ -571,7 +566,7 @@
       <h3>Backup</h3>
       <p>Everything is kept on this phone only. A backup file keeps a copy you can bring back after a new phone, a reset or cleared browser data.</p>
       <ul>
-        <li><b>Save a backup file</b> (Settings → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings, routines and today's ticks, and this phone's Library categories, nothing else.</li>
+        <li><b>Save a backup file</b> (Settings → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and routines, and this phone's Library categories, nothing else.</li>
         <li><b>Restore from a file:</b> pick a <i>.nitya</i> file. The site checks it, then shows who will be added, replaced or removed before anything changes; tap <b>Restore</b> to go ahead. Restoring replaces the people on this phone with the ones in the file.</li>
         <li>A short reminder to save a backup shows on Home now and then (two weeks after you start, then a month after each backup). <b>Not now</b> hides it for two weeks.</li>
         <li>If the browser can't save anything (some private windows), a note says so: everything works, but is forgotten when the page closes, so save a backup file first.</li>
@@ -604,7 +599,7 @@
       <p><b>Print</b> (under <b>⋯ More</b>) makes a printout or a PDF in two steps. On a phone they come one after the other (<b>Next</b>, and <b>‹ What to print</b> to go back); on an iPad or a computer they sit side by side. The bar at the bottom keeps the total ("5 texts · ~8 pages").</p>
       <ul>
         <li><b>What to print:</b> the Library's texts by category, each with a tick and the pages it takes, a search box, and <b>Select all</b> or <b>Clear</b> for a category or for everything. The <b>Today</b> tab has today's sessions from your routine and <b>All of today</b>: one tap ticks exactly those texts. The <b>Routine</b> tab prints a routine: pick whose (when more than one person reads on this phone), <b>Whole week</b> or <b>One day</b> (today at first), and the days and sessions to include. It lists each text once, in routine order, with when it is said ("Daily · Morning, Evening"). The tab on show is what prints.</li>
-        <li><b>Print this text</b> (⋯ More, while you read) and <b>Print this session</b> (on Home) open Print with just those texts ticked, at How to print.</li>
+        <li><b>Print this text</b> (⋯ More, while you read) and <b>Print</b> in the bottom bar while reading (the session you are reading, else the text on screen) open Print with just those texts ticked, at How to print.</li>
         <li><b>How to print:</b> the <b>Language</b> (the original, English, or Both), the <b>Dhrupad</b> (Once or Every verse), the <b>Page</b> (Portrait or Landscape; Both always prints side by side on Landscape) and the <b>Print font</b>: the same three as Text font (Traditional, Modern or Bold). These start as you read, are remembered for your next printout, and leave the reading page as it is. Then tap <b>Print</b>.</li>
         <li><b>Preview and paper:</b> beside these, a small picture shows the first page as it will print. Under it is the paper: Letter in the US, Canada, Mexico and the Philippines, A4 elsewhere; tap <b>Use A4</b> or <b>Use Letter</b> to change it (in Safari, pick the same paper in its print dialog too).</li>
         <li><b>The printout:</b> each text starts on a new page, as large as its pages allow; in one language a long aarti or ashtak may go into two columns to fit one page, and the Vedic chants run on as paragraphs. More than one text gets a contents page with the page each starts on. A routine's first page has your name and the month, the week at a glance (each day's texts by their numbers) and the contents, and each text's title has a small line saying when it is said.</li>
@@ -621,7 +616,7 @@
       <ul>
         <li><b>Works without internet:</b> the first time you open the site it is saved on your phone, and a short “Ready to use offline” note shows. Settings → About shows “Offline ready” beside the version once it is saved. With no internet, a small cloud with a line through it shows in the top bar: the saved copy is in use, and everything still works.</li>
         <li><b>Getting updates:</b> new changes load by themselves whenever you are online. To look straight away, open Settings and tap the version line under About: it shows “Checking…”, then “Up to date” (or “No internet”), or reloads with the new version.</li>
-        <li><b>Privacy:</b> your people, settings, ticks and location stay on your phone. Nothing is sent anywhere; a backup file goes only where you save or send it.</li>
+        <li><b>Privacy:</b> your people, settings and location stay on your phone. Nothing is sent anywhere; a backup file goes only where you save or send it.</li>
         <li>Moonrise times are calculated on your phone and may differ by a few minutes from printed calendars.</li>
       </ul>
     </div>
@@ -634,11 +629,12 @@
 <!-- ==== Bottom bar (footer menu, reading pages; not on the home page): ‹ Previous, Home, Library + search, Aa (reading sheet), Next ›. ==== -->
 <!-- slim strip with the piece name, shown while the bars are tucked away on phones and tablets (data-tuck) -->
 <div id="tuck" aria-hidden="true"><span id="tkt"></span><i id="tkp"></i></div>
-<div id="asc" hidden role="navigation" aria-label="Previous, home, library, next">
+<div id="asc" hidden role="navigation" aria-label="Previous, home, library, print, reading, next">
   <div id="asi">
     <button type="button" id="asv" class="asx"></button>
     <button type="button" id="ash" class="asi"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.6 12 3.5l9 7.1"/><path d="M5.2 9v11h13.6V9"/><path d="M12 11.2c1.3 1.5 1.6 2.8 0 4.3-1.6-1.5-1.3-2.8 0-4.3z"/><path d="M9.3 17.6h5.4"/></svg><span class="asil"><span class="mr">मुख्यपृष्ठ</span><span class="en" lang="en">Home</span></span></button>
     <button type="button" id="asq" class="asi" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2.5 5.5C5.6 4.6 8.9 4.9 12 7c3.1-2.1 6.4-2.4 9.5-1.5v13.3c-3.1-.9-6.4-.6-9.5 1.5-3.1-2.1-6.4-2.4-9.5-1.5z"/><path d="M12 7v13.3"/></svg><span class="asil"><span class="mr">संग्रह</span><span class="en" lang="en">Library</span></span></button>
+      <button type="button" id="asp" class="asi" aria-haspopup="dialog" aria-controls="prm"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg><span class="asil"><span class="mr">प्रिंट</span><span class="en" lang="en">Print</span></span></button>
     <button type="button" id="rsb" class="asi" aria-expanded="false" aria-controls="rsh"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 19l3.6-9 3.6 9M3.9 15.6h4.4"/><path d="M11.5 19l5-13 5 13M13.4 14h6.2"/></svg><span class="asil"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></span></button>
     <button type="button" id="asn" class="asx"></button>
   </div>

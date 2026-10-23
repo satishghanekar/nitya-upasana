@@ -50,7 +50,8 @@ test("no card at the end of a text, from the Library or in a session @mobile", a
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(page.locator("#endc")).toHaveCount(0);
   await rows(page).nth(1).locator("a.tgo").click();
-  await expect.poll(() => shown(page)).toEqual(["a2"]);
+  // (a session runs on: its texts are all on the page, one after another)
+  await expect.poll(() => shown(page)).toContain("a2");
   await expect(page.locator("#endc")).toHaveCount(0);
   await expect(page.locator("#main")).not.toContainText("Done · next");
   await readText(page, "a3");

@@ -26,15 +26,28 @@ const pickTab = (page, s) => tab(page, s).click({ force: true });
 // the texts the default routine gives a session on a weekday (0 Sunday), as Home shows them
 const planned = (day, s) => textsFor(ROUTINE, day, s).filter((id) => TITLE[id]);
 const hash = (page) => page.evaluate(() => location.hash);
-// the piece the reader is on: the last one whose top has passed just under the top bar (js/core/apply.js cur())
+// the piece the reader is on: the lowest one whose top has passed just under the top bar (js/core/apply.js cur())
 const onPiece = (page) =>
   page.evaluate(() => {
-    let c = "";
+    let c = "",
+      best = -Infinity;
     document.querySelectorAll(".ash").forEach((x) => {
-      if (x.offsetParent !== null && x.getBoundingClientRect().top <= 90) c = x.id;
+      const top = x.offsetParent !== null ? x.getBoundingClientRect().top : Infinity;
+      if (top <= 90 && top > best) {
+        best = top;
+        c = x.id;
+      }
     });
     return c;
   });
+// the texts on the reading page, top to bottom
+const shown = (page) =>
+  page.evaluate(() =>
+    [...document.querySelectorAll("#main > .ash")]
+      .filter((x) => x.offsetParent !== null)
+      .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)
+      .map((x) => x.id),
+  );
 
 test.beforeEach(async ({ page }, info) => {
   if (!info.title.startsWith("the bundled default")) await useTestRoutine(page);
@@ -57,7 +70,9 @@ test("in the morning Home shows Thursday's Morning: the Atharvashirsha, with no 
   await expect(rows(page).first().locator(".t1")).toHaveText(TITLE.atharvashirsha.title);
   await expect(rows(page).first().locator(".t2")).toHaveText(TITLE.atharvashirsha.titleEn);
   await expect(rows(page).first().locator(".ttg")).toHaveText("Sanskrit");
-  await expect(page.locator("#tsn")).toHaveText("0 of 1 done");
+  await expect(page.locator("#tsn")).toHaveText("1 text");
+  // no ticks (Satish, 2026-10-22)
+  await expect(page.locator("#tsl input, #tsl .ttk")).toHaveCount(0);
   await expect(page.locator("#tst, #tsb")).toHaveCount(0);
   // the picture is the sunrise one, Thursday's star ringed; not a Sankashti, so no moonrise line
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunrise");
@@ -98,7 +113,7 @@ test("the session switch changes the list, the picture and what screen readers h
   await pickTab(page, "evening");
   const n = planned(4, "evening").length;
   await expect(rows(page)).toHaveCount(n);
-  await expect(page.locator("#tsn")).toHaveText(`0 of ${n} done`);
+  await expect(page.locator("#tsn")).toHaveText(`${n} texts`);
   await expect(page.locator("#iconb")).toHaveAttribute("data-picture", "sunset");
   await expect(page.locator("#tlive")).toContainText(`${n} texts`);
   // the browser tab icon still follows the clock
@@ -137,47 +152,15 @@ test("Home v3: Monday 7:00 and 19:00, Tuesday 14:00 (the clock's session stays p
   }
 });
 
-test("ticks are kept after a reload and cleared the next day @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi, { now: EVENING });
-  await rows(page).nth(0).locator("input").check();
-  await rows(page).nth(1).locator("input").check();
-  await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
-  await page.reload();
-  await settle(page);
-  await expect(rows(page).nth(0).locator("input")).toBeChecked();
-  await expect(rows(page).nth(1).locator("input")).toBeChecked();
-  await expect(rows(page).nth(2).locator("input")).not.toBeChecked();
-  await expect(rows(page).nth(1)).toHaveClass(/\bdone\b/);
-  await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
-  // the morning's list has its own ticks
-  await pickTab(page, "morning");
-  await expect(page.locator("#tsn")).toHaveText("0 of 1 done");
-  // untick one
-  await pickTab(page, "evening");
-  await rows(page).nth(0).locator("input").uncheck();
-  await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
-  // Monday evening: a new day, no ticks
-  await page.clock.setFixedTime(new Date("2026-10-19T19:00:00-04:00"));
-  await page.reload();
-  await settle(page);
-  await expect(page.locator("#tdd .d2")).toHaveText("Monday, 19 October 2026");
-  await expect(page.locator("#tsl input:checked")).toHaveCount(0);
-  await expect(page.locator("#tsn")).toHaveText("0 of 10 done");
-});
 
-test("a page left open overnight starts the new day with no ticks", async ({ page }) => {
+test("a page left open overnight starts the new day at its session", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: new Date("2026-10-18T23:58:00-04:00"), running: true });
-  await rows(page).nth(0).locator("input").check();
   await page.clock.runFor("03:00");
   await expect(page.locator("#tdd .d2")).toHaveText("Monday, 19 October 2026");
   await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
-  await expect(page.locator("#tsl input:checked")).toHaveCount(0);
 });
-
 test("a title opens its text in the session, and Next walks through the session in order @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await rows(page).nth(0).locator("input").check();
-  await rows(page).nth(1).locator("input").check();
   await rows(page).nth(2).locator("a.tgo").click();
   await expect.poll(() => hash(page)).toBe("#a3");
   await expect.poll(() => onPiece(page)).toBe("a3");
@@ -212,57 +195,52 @@ test("a text's title in the list opens it, in the session", async ({ page }) => 
   await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: Today");
 });
 
-test("in a session, Next ticks the text as done for today before moving on; Prev doesn't; a tick can still be taken off @mobile", async ({ page }) => {
+// A session is one scroll (Satish, 2026-10-22): its texts one after another, in session order, and nothing else
+test("a session runs on in one scroll, in session order, with only its texts @mobile", async ({ page }) => {
+  // a session whose order is not the Library's: the Ganapati aarti (a1) after the Devi aarti (a3)
+  await page.route("**/content/routines.json", (r) =>
+    r.fulfill({ contentType: "application/json", body: JSON.stringify({ ...ROUTINE, evening: { mode: "fixed", texts: [AARTIS[2], AARTIS[0], AARTIS[1]] } }) }),
+  );
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await rows(page).nth(0).locator("a.tgo").click();
+  await expect.poll(() => onPiece(page)).toBe("a3");
+  await expect.poll(() => shown(page)).toEqual(["a3", "a1", "a2"]);
+  // scrolling down reaches the next text without Next
+  const y = await page.locator("#a1").evaluate((e) => e.getBoundingClientRect().top + scrollY - 80);
+  await page.evaluate((y) => scrollTo(0, y), y);
+  await expect.poll(() => onPiece(page)).toBe("a1");
+  await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: " + TITLE[AARTIS[1]].titleEn);
+  await expect(page.locator("#asv")).toHaveAttribute("aria-label", "Prev: " + TITLE[AARTIS[2]].titleEn);
+  // scrolling up and down never brings in a text from outside the session
+  for (let i = 0; i < 3; i++) {
+    await page.mouse.wheel(0, -3000);
+    await page.mouse.wheel(0, 3000);
+  }
+  expect(await shown(page)).toEqual(["a3", "a1", "a2"]);
+  // a reload in the middle of the session carries on with the whole session in one scroll
+  await page.reload();
+  await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+  await expect.poll(() => shown(page)).toEqual(["a3", "a1", "a2"]);
+});
+
+// The bug Satish found (2026-10-22): ‹ Prev on a session's first text opened the Library's text before it, outside the
+// session, and Next then followed the Library
+test("‹ Prev on a session's first text goes back to Home, never out of the session @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await rows(page).nth(0).locator("a.tgo").click();
   await expect.poll(() => onPiece(page)).toBe("a1");
-  await page.locator("#asn").click();
-  await expect.poll(() => onPiece(page)).toBe("a2");
-  // Prev back to the first: the second is not ticked
+  await expect(page.locator("#asv")).toHaveAttribute("aria-label", "Prev: Today");
   await page.locator("#asv").click();
-  await expect.poll(() => onPiece(page)).toBe("a1");
-  await page.locator("#asn").click();
-  await expect.poll(() => onPiece(page)).toBe("a2");
-  await page.locator("#asn").click();
-  await expect.poll(() => onPiece(page)).toBe("a3");
-  await page.goto(page.url().split("#")[0]);
-  await settle(page);
-  // on a wide screen the reading page reopens where you were: the top bar's title goes Home
-  if (!(await page.locator("#tsl").isVisible())) await page.locator("#bt").click();
-  await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
-  await expect(rows(page).nth(0).locator("input")).toBeChecked();
-  await expect(rows(page).nth(1).locator("input")).toBeChecked();
-  await expect(rows(page).nth(2).locator("input")).not.toBeChecked();
-  // taking a tick off by hand still works
-  await rows(page).nth(1).locator("input").uncheck();
-  await expect(page.locator("#tsn")).toHaveText("1 of 10 done");
-});
-
-test("Next on the last text of the session ticks it too, then returns to Today @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi, { now: MORNING });
-  await rows(page).nth(0).locator("a.tgo").click();
-  await expect.poll(() => onPiece(page)).toBe("p1");
-  await page.locator("#asn").click();
   await expect.poll(() => onPiece(page)).toBe("");
-  await expect(page.locator("#tsn")).toHaveText("1 of 1 done");
-  await expect(rows(page).nth(0).locator("input")).toBeChecked();
+  await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
+  await expect(page.locator("html")).not.toHaveAttribute("data-run", "1");
+  await expect(page.locator("#tsh")).toBeFocused();
 });
 
-test("keyboard: Space ticks, the switch moves with arrow keys, focus is drawn @mobile", async ({ page, browserName }) => {
+test("keyboard: the switch moves with arrow keys, focus is drawn @mobile", async ({ page, browserName }) => {
   test.skip(browserName === "webkit", "Safari's default Tab skips buttons");
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  // a tick with the keyboard
-  const box = rows(page).nth(0).locator("input");
-  await box.focus();
-  await page.keyboard.press("Space");
-  await expect(box).toBeChecked();
-  await expect(page.locator("#tsn")).toHaveText(`1 of ${planned(0, "evening").length} done`);
-  // focus is drawn (WCAG 2.4.7)
-  const outline = await box.evaluate((e) => {
-    const s = getComputedStyle(e.parentElement.querySelector(".tkc"));
-    return s.outlineStyle !== "none" && parseFloat(s.outlineWidth) >= 2;
-  });
-  expect(outline).toBe(true);
+  await expect(page.locator("#tsn")).toHaveText(`${planned(0, "evening").length} texts`);
   // the switch: Tab reaches the session shown; arrow keys move between the three (wrapping), Enter or Space picks
   await tab(page, "evening").focus();
   await page.keyboard.press("ArrowRight");
@@ -292,9 +270,8 @@ test("keyboard: Space ticks, the switch moves with arrow keys, focus is drawn @m
   expect(ring).toBe(true);
 });
 
-test("each tick and session control has a name and a 44px target @mobile", async ({ page }) => {
+test("each text and session control has a name and a 44px target @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await expect(rows(page).nth(2).locator("input")).toHaveAccessibleName("Done: " + TITLE[planned(0, "evening")[2]].titleEn);
   await expect(page.locator("#tss")).toHaveAttribute("role", "tablist");
   await expect(page.locator("#tss")).toHaveAccessibleName("Session");
   await expect(tab(page, "morning")).toHaveAccessibleName("Morning");
@@ -302,7 +279,7 @@ test("each tick and session control has a name and a 44px target @mobile", async
   await expect(page.locator("#tmb")).toHaveAccessibleName("More");
   await page.locator("#tmb").click();
   const small = await page.evaluate(() =>
-    [...document.querySelectorAll("#tss [role=tab], #tmb, #tlibb, #tsl .ttk, #tsl a, #shr button:not([hidden]), #iconb")]
+    [...document.querySelectorAll("#tss [role=tab], #tmb, #tsl a, #shr button:not([hidden]), #iconb")]
       .filter((b) => b.getClientRects().length) // (Print this text is not shown on Home)
       .map((b) => ({ c: b.className || b.id || b.dataset.s, ...b.getBoundingClientRect().toJSON() }))
       .filter((r) => r.width < 44 || r.height < 44)
@@ -316,10 +293,8 @@ for (const [name, prefs, themes] of [
   ["light, and every other theme", SETUPS.marathi, true],
   ["Marathi menus", SETUPS["marathi-menus"]],
 ]) {
-  test(`axe: Home with ticks, ${name} @mobile`, async ({ page }) => {
+  test(`axe: Home, ${name} @mobile`, async ({ page }) => {
     await openSite(page, prefs, { now: EVENING });
-    await rows(page).nth(0).locator("input").check();
-    await rows(page).nth(1).locator("input").check();
     if (themes) expect(await axeEveryTheme(page, "#home")).toEqual(noViolations());
     else expect(await axeScan(page, "#home")).toEqual([]);
   });
@@ -334,7 +309,7 @@ test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ 
   await expect(tab(page, "afternoon")).toHaveText("दुपारकाहीच नाही");
   await page.locator("#tmb").click();
   for (const [id, w] of [["#shb", "शेअर"], ["#prb", "प्रिंट"], ["#hlpb", "मदत"]]) await expect(page.locator(id)).toHaveText(w, { useInnerText: true });
-  await expect(page.locator("#tlib")).toHaveText("दुसरी रचना? संग्रह उघडा", { useInnerText: true });
+  await expect(page.locator("#tsn")).toHaveText("१० रचना");
   await expect(rows(page).nth(1).locator(".t1")).toHaveText(TITLE["shendur-lal-chadhayo"].title);
 });
 
@@ -404,17 +379,20 @@ test("⋯ More in the top bar opens App / Share / QR / Print / Help under it, at
   }
 });
 
-test("Another text? Open the Library opens the Library, as the book button does @mobile", async ({ page }) => {
+// Home is just the session's texts (Satish, 2026-10-22): no Print this session and no Library line (the Library is the
+// top bar's book); Print is in the bottom bar while reading, and prints the session being read
+test("Home has no Print this session or Library line; the bottom bar's Print prints the session @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await expect(page.locator("#tlib")).toHaveText("Another text? Open the Library", { useInnerText: true });
-  const list = await page.locator("#tsc").boundingBox();
-  const lib = await page.locator("#tlib").boundingBox();
-  expect(lib.y).toBeGreaterThanOrEqual(list.y + list.height - 1);
-  await page.locator("#tlibb").click();
-  await expect(page.locator("#jump")).toBeVisible();
-  await expect(page.locator("#hm")).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#tspr, #tlib, #tlibb")).toHaveCount(0);
+  await expect(page.locator("#hm")).toBeVisible();
+  await rows(page).nth(1).locator("a.tgo").click();
+  await expect.poll(() => onPiece(page)).toBe("a2");
+  await expect(page.locator("#asp")).toBeVisible();
+  await expect(page.locator("#asp")).toHaveAccessibleName("Print");
+  await page.locator("#asp").click();
+  await expect(page.locator("#prm")).toBeVisible();
+  await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
 });
-
 test("Home on its own: the pieces show once a text is opened, and go again on the way home @mobile", async ({ page }) => {
   const errors = [];
   await openSite(page, SETUPS.marathi, { now: EVENING, errors });
@@ -473,15 +451,14 @@ test("the greyed session's words are at least 4.5:1 on the switch, in every them
   }
 });
 
-test("on a phone Home ends with the session's texts and the Library line, with no Start button and no bottom bar @mobile", async ({ page }) => {
+test("on a phone Home ends with the session's texts, with no Start button and no bottom bar @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(page.locator("#tst, #tsb")).toHaveCount(0);
   await expect(page.locator("#asc")).toBeHidden();
-  // scrolled to the end of the home page, the last text and the Library line are on screen
+  // scrolled to the end of the home page, the last text is on screen
   await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
   await expect(rows(page).last()).toBeInViewport();
-  await expect(page.locator("#tlib")).toBeInViewport();
   // a title starts the session there
   await rows(page).nth(1).locator("a.tgo").click();
   await expect.poll(() => onPiece(page)).toBe("a2");
@@ -520,11 +497,10 @@ test("on a wide screen a text opened from Home opens beside Home's column, with 
   await expect(nowRows(page)).toHaveCount(0);
   await rows(page).nth(1).locator("a.tgo").click();
   await expect.poll(() => onPiece(page)).toBe("a2");
-  // Home's column stays, fixed on the left, without the picture and the Library line; the text is beside it
+  // Home's column stays, fixed on the left, without the picture; the text is beside it
   await expect(page.locator("#tsc")).toBeVisible();
   await expect(page.locator("#pan")).toBeVisible();
   await expect(page.locator("#tdy")).toBeHidden();
-  await expect(page.locator("#tlib")).toBeHidden();
   expect(await page.locator("#home").evaluate((h) => getComputedStyle(h).position)).toBe("fixed");
   const home = await page.locator("#home").boundingBox(),
     text = await page.locator("#a2 header").boundingBox();
@@ -536,36 +512,32 @@ test("on a wide screen a text opened from Home opens beside Home's column, with 
   await expect(page.locator("#tsl a[aria-current]")).toHaveCount(1);
   // the old side menus are gone
   await expect(page.locator("#rail, #rrun")).toHaveCount(0);
-  // Next ticks the text and moves the mark
+  // Next moves the mark
   await page.locator("#asn").click();
   await expect.poll(() => onPiece(page)).toBe("a3");
   await expect(rows(page).nth(2)).toHaveClass(/\bnow\b/);
-  await expect(rows(page).nth(1).locator("input")).toBeChecked();
   await expect(nowRows(page)).toHaveCount(1);
-  // a tick beside the text works as on Home, and the text stays open
-  await rows(page).nth(5).locator("input").check();
-  await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
-  await expect.poll(() => onPiece(page)).toBe("a3");
-  // scrolling the text down and back up stays on the text (Home's column is always on screen)
+  // scrolling down and back up stays in the session (Home's column is always on screen)
   await page.mouse.wheel(0, 600);
   await page.waitForTimeout(150);
   await page.mouse.wheel(0, -2000);
   await page.waitForTimeout(150);
   await expect(page.locator("html")).not.toHaveAttribute("data-hv", "1");
-  await expect.poll(() => onPiece(page)).toBe("a3");
+  // (the session runs on in one scroll: scrolling up reaches its earlier texts, and nothing else)
+  expect(["a1", "a2", "a3"]).toContain(await onPiece(page));
   // another session only changes the list; the text stays open
   await pickTab(page, "morning");
   await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
   await expect(page.locator("html")).not.toHaveAttribute("data-hv", "1");
-  await expect.poll(() => hash(page)).toBe("#a3");
+  expect(["#a1", "#a2", "#a3"]).toContain(await hash(page));
   await expect(nowRows(page)).toHaveCount(0);
   await pickTab(page, "evening");
-  await expect(rows(page).nth(2)).toHaveClass(/\bnow\b/);
+  // the text on screen is marked again
+  await expect(nowRows(page)).toHaveCount(1);
   // Home in the bottom bar brings the picture back, and nothing is marked
   await page.locator("#ash").click();
   await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
   await expect(page.locator("#tdy")).toBeVisible();
-  await expect(page.locator("#tlib")).toBeVisible();
   await expect(nowRows(page)).toHaveCount(0);
   await context.close();
 });
@@ -610,7 +582,6 @@ test("axe: Home's column beside the text being read, every theme", async ({ brow
   const page = await context.newPage();
   await useTestRoutine(page);
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await rows(page).nth(0).locator("input").check();
   await rows(page).nth(1).locator("a.tgo").click();
   await expect(rows(page).nth(1)).toHaveClass(/\bnow\b/);
   expect(await axeEveryTheme(page, "#home")).toEqual(noViolations());

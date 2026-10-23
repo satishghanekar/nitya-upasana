@@ -147,20 +147,16 @@ test("the printout does not depend on what the reading page shows @chromium-only
 
 // While a session is being read (Start on Home: data-run), the printout still has every text in full. Before
 // version 1.21.2 the page's rule for a session hid the copy the printout is built from: titles only (Satish's PDF)
-test("a session being read: Print this session prints the texts in full @chromium-only", async ({ browser }) => {
+test("a session being read: Print in the bottom bar prints the texts in full @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
   await useTestRoutine(page);
   await openSite(page, SETUPS.marathi);
-  // read the Morning session from its first title to its end (Next after its last text comes back Home, the session still marked)
+  // reading the Morning session (data-run is on, hiding every other text on the page), Print in the bottom bar
   await page.locator("#tsl a.tgo").first().click();
   await expect(page.locator("html")).toHaveAttribute("data-run", "1");
-  await page.locator("#asn").click();
-  await expect(page.locator("#tsn")).toHaveText("1 of 1 done");
-  await expect(page.locator("#tspr")).toBeVisible();
-  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
-  await page.locator("#tspr").click();
+  await page.locator("#asp").click();
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
   if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
@@ -725,16 +721,17 @@ test("print builder: Open in Safari carries the texts ticked @chromium-only", as
   await context.close();
 });
 
-// Print this session (Home): the builder opens at How with just the session's texts ticked; ‹ What to print shows the
-// Today tab with that session chosen. Today offers each session and all of today, one tap each (the test routine:
+// Print in the bottom bar, while reading a session: the builder opens at How with just the session's texts ticked;
+// ‹ What to print shows the Today tab with that session chosen. Today offers each session and all of today, one tap each (the test routine:
 // Morning the Atharvashirsha, Afternoon empty, Evening ten aartis; 10 am, so Home shows Morning).
-test("print builder: Print this session, and the Today tab @chromium-only", async ({ browser }) => {
+test("print builder: the bottom bar's Print while reading a session, and the Today tab @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
   await useTestRoutine(page);
   await openSite(page, SETUPS.english);
-  await page.locator("#tspr").click();
+  await page.locator("#tsl a.tgo").first().click();
+  await page.locator("#asp").click();
   await expect(page.locator("#prhw")).toBeVisible();
   await expect(page.locator("#prgp")).toBeFocused();
   await expect(page.locator("#prsum span").first()).toHaveText("गणपत्यथर्वशीर्षोपनिषत्");

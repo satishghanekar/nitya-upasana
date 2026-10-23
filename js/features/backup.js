@@ -34,7 +34,7 @@ const W = {
     },
     saved: "Backup file saved",
     shared: "Backup file ready",
-    remindFirst: "Your settings and ticks are kept only on this phone. Save a backup file now and then, in case the phone clears website data.",
+    remindFirst: "Your settings and routine are kept only on this phone. Save a backup file now and then, in case the phone clears website data.",
     /** @param {string} d */
     remind: function (d) {
       return "Your last backup file was saved on " + d + ". Save a new one?";
@@ -46,7 +46,7 @@ const W = {
     },
     inFile: "People in the file: ",
     added: "New on this phone: ",
-    replaced: "Replaced by the file's copy (settings, routine and today's ticks): ",
+    replaced: "Replaced by the file's copy (settings and routine): ",
     removed: "Removed from this phone: ",
     /** @param {string} n */
     then: function (n) {
@@ -76,7 +76,7 @@ const W = {
     },
     saved: "बॅकअप फाइल जतन झाली",
     shared: "बॅकअप फाइल तयार",
-    remindFirst: "तुमची सेटिंग्ज आणि खुणा फक्त या फोनवर आहेत. फोनने वेबसाइटचा डेटा पुसला तर उपयोगी पडावी म्हणून अधूनमधून बॅकअप फाइल जतन करा.",
+    remindFirst: "तुमची सेटिंग्ज आणि दिनक्रम फक्त या फोनवर आहेत. फोनने वेबसाइटचा डेटा पुसला तर उपयोगी पडावी म्हणून अधूनमधून बॅकअप फाइल जतन करा.",
     /** @param {string} d */
     remind: function (d) {
       return "शेवटची बॅकअप फाइल " + d + " रोजी जतन केली होती. नवी जतन करायची?";
@@ -88,7 +88,7 @@ const W = {
     },
     inFile: "फाइलमधील व्यक्ती: ",
     added: "या फोनवर नव्या: ",
-    replaced: "फाइलमधील प्रतीने बदलल्या जातील (सेटिंग्ज, दिनक्रम आणि आजच्या खुणा): ",
+    replaced: "फाइलमधील प्रतीने बदलल्या जातील (सेटिंग्ज आणि दिनक्रम): ",
     removed: "या फोनवरून काढल्या जातील: ",
     /** @param {string} n */
     then: function (n) {
