@@ -126,16 +126,19 @@ for (const s of SCREENS.filter((x) => ["iphone-15", "ipad-air", "ipad-landscape"
                   b = all[i + 1].getClientRects()[0];
                 return Math.abs(a.top + a.height / 2 - (b.top + b.height / 2)) < a.height / 2;
               }),
-              wide: wrap.width,
+              // the row width in the text's own size (em)
+              wide: wrap.width / parseFloat(getComputedStyle(sec.querySelector(".items")).fontSize),
             };
           },
           [id, lang],
         );
         expect(st.line, id + " lines run on").toBe("inline");
         expect(st.items, id + " one column").toBe("block");
-        expect(st.indent, id + " paragraph indented").toBeGreaterThan(0);
+        // no indent: the paragraphs open with a gap, as on paper (css/15-print.css)
+        expect(st.indent, id + " paragraph not indented").toBe(0);
         expect(st.shared, id + " lines share a row").toBe(true);
-        expect(st.wide, id + " rows no wider than 52rem").toBeLessThanOrEqual(52 * 16 + 1);
+        // the printed page's measure (33.6em, css/15-print.css), so the rows break where the printout's do
+        expect(st.wide, id + " rows no wider than the printed page").toBeLessThanOrEqual(33.61);
         expect(await dandasStartingRows(page, id, lang), id + " rows starting with a danda").toEqual([]);
       }
       expect(await hasSidewaysScroll(page)).toBe(false);

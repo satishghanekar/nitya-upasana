@@ -198,6 +198,13 @@ export function leadOrder(/** @type {ArrayLike<Element>} */ els, /** @type {stri
   });
 }
 
+// A text size the reader chose (pinch, A− A+, Ctrl +), rather than the automatic one: data-fsu on the page. A Vedic chant
+// in one language is fitted to a printed page's measure only at the automatic size (css/02-core.css)
+export function fsuMark() {
+  if (P.fsu) root.setAttribute("data-fsu", "1");
+  else root.removeAttribute("data-fsu");
+}
+
 function applyTail() {
   tailF = 0;
   if (asc) {
@@ -209,6 +216,7 @@ function applyTail() {
 
 export function apply() {
   root.style.setProperty("--fs", P.fs + "px");
+  fsuMark();
   if (P.th === "auto") root.removeAttribute("data-pref");
   else root.setAttribute("data-pref", P.th);
   // Text language on the pieces and the printout; menu language on the bar, menus, home page and dialogs

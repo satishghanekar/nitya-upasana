@@ -313,6 +313,9 @@ ol.toc .m {
   .verse p {
     font-size: 1.05em;
   }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items {
+    font-size: 1.05em;
+  }
 }
 #home h1[data-lang="both"] .en {
   display: block;
@@ -818,47 +821,69 @@ ol.toc li.soon .m {
   }
 }
 
-/* ==== Atharvashirsha: room for the Vedic svara marks ====
-   Its font follows Settings → Text font like every Vedic chant (Tiro Devanagari Sanskrit in Traditional:
-   css/07-bottom-bar-folds.css) */
-#p1 .mr p {
-  line-height: 2.1;
-}
-#p1 .verse .mr {
-  font-size: 1.05em;
-}
 
-/* ==== Vedic chants in one language: running paragraphs, as in a printed booklet ==== */
-/* A piece with "layout: prose" in its text file (Rudra, Atharvashirsha, Purusha Suktam) shown in one language:
-   its lines run on, each after the last with its । or ॥, and each stanza is a paragraph whose first line is
-   indented; the dhrupad (the opening and closing peace chants) is a centred paragraph of its own. Each line stays
-   its own <p> (shown inline), so tapping, highlighting and search still find it. With both languages the lines
-   stay in pairs, one under or beside the other. A danda never starts a row: it is glued to the word before it
-   (.nb, js/text/line-breaks.js), and a line written on two rows (" // ") runs on with a space (.brs). */
+/* ==== Vedic chants in one language: running paragraphs, as on paper ====
+   A piece with "layout: prose" in its text file (Rudra, Atharvashirsha, Purusha Suktam) shown in one language reads
+   as its printout does (css/15-print.css, "One language, a Vedic text"): its lines run on, each after the last with
+   its । or ॥; a paragraph runs on from stanza to stanza and a new one starts only at a stanza marked para, or around a
+   stanza said once (the dhrupad: the opening and closing peace chants); no indent; a paragraph of one line said once
+   centred. Its measure is a printed page's (33.6 times the text size: Letter, 15pt), so on a computer or an iPad held
+   sideways the lines break where they do on paper; a narrower screen wraps them sooner. Each line stays its own <p>
+   (shown inline), so tapping, highlighting and search still find it. With both languages the lines stay in pairs.
+   A danda never starts a row: it is glued to the word before it (.nb, js/text/line-breaks.js), and a line written
+   on two rows (" // ") runs on with a space (.brs). */
 .brs {
   display: none;
 }
 @media screen {
-  /* a booklet's measure: on a wide screen the rows stay short enough to follow */
   .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items {
     display: block;
-    max-width: 52rem;
+    max-width: 33.6em;
     margin-inline: auto;
-  }
-  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items > .item {
-    translate: none;
-  }
-  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse {
     text-align: start;
-    margin-bottom: 1.1em;
-  }
-  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse > :is(.mr, .en) {
-    display: block;
-    text-indent: 2em;
     line-height: 2;
   }
-  .ash.prose[data-lang="en"] .verse > .en {
+  /* (the text's size is the list's, so the measure is in the text's size: on a wide screen a line of verse is set a
+     little larger, and here the list with it) */
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse .mr p {
+    font-size: 1em;
+  }
+  .ash.prose[data-lang="en"] .items {
     line-height: 1.75;
+  }
+  /* the stanzas run on: each one, its verse and its lines inline */
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items > .item:not(.dh),
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .item:not(.dh) .verse,
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .item:not(.dh) .verse > :is(.mr, .en) {
+    display: inline;
+    margin: 0;
+    translate: none;
+  }
+  /* a stanza marked para starts a new paragraph (a block inside the inline stanza breaks the line) */
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items > .item.para:not(.dh)::before {
+    content: "";
+    display: block;
+    height: 0.6em;
+  }
+  /* (after a paragraph of its own or a note the line has broken already, with its space) */
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items > :is(.item.dh, .rmk) + .item.para::before {
+    content: none;
+  }
+  /* a stanza said once is a paragraph of its own; one of a single line is centred */
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items > .item.dh {
+    display: block;
+    margin: 0.6em 0;
+    translate: none;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items > .item.dh:first-child {
+    margin-top: 0;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse {
+    margin: 0;
+    text-align: start;
+  }
+  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse > :is(.mr, .en):has(> p:only-child) {
+    text-align: center;
   }
   .ash.prose:is([data-lang="mr"], [data-lang="en"]) .verse p {
     display: inline;
@@ -878,10 +903,21 @@ ol.toc li.soon .m {
   .ash.prose:is([data-lang="mr"], [data-lang="en"]) .brs {
     display: inline;
   }
-  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse {
-    text-align: center;
+}
+/* On a computer, an iPad or a phone held sideways, at the automatic text size, the text is set just small enough for
+   the printed page's measure to fit the column: so the lines break exactly where they do on paper (the reading column
+   beside Home is narrower than a printed page). A size the reader chose (data-fsu) is kept, and the lines wrap. On a
+   phone held upright the lines simply wrap. (Browsers without container units, before Safari 16, wrap too.) */
+@media screen and (min-width: 600px) {
+  :root:not([data-fsu]) .ash.prose:is([data-lang="mr"], [data-lang="en"]) {
+    container-type: inline-size;
   }
-  .ash.prose:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse > :is(.mr, .en) {
-    text-indent: 0;
+  :root:not([data-fsu]) .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items {
+    font-size: min(1em, 100cqw / 33.6);
+  }
+}
+@media screen and (min-width: 820px) {
+  :root:not([data-fsu]) .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items {
+    font-size: min(1.05em, 100cqw / 33.6);
   }
 }

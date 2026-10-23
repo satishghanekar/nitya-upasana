@@ -16,7 +16,7 @@ What a reader sees and can do is described in the site's own **Help** (⋯ More 
 - **Vedic calendar** (panchang): tithi, nakshatra, yoga, sunrise, sunset, moonrise, month and samvatsara for the reader's place, a month view, and 25 Maharashtrian festivals, all worked out on the phone.
 - **Routine builder:** each person's texts for each session, the same every day or by weekday. A new person follows `content/routines.json`.
 - **People on one phone:** up to eight profiles, each with their own settings and routine, and `.nitya` backup files to save and restore them.
-- **Print:** a print builder (what to print, then how: language, dhrupad, page, font, paper, with a preview of the first page) that makes a printout or PDF of any texts, a session, a person's routine (the whole week or one day) or the whole Library. Each text is sized to its pages, with a contents page when more than one text is printed. A routine prints each text once, in routine order, with a week-at-a-glance page and a tag on each text saying when it is said ("Daily · Morning, Evening").
+- **Print:** a print builder (what to print, then how: language, dhrupad, page, font, paper, with a preview of the first page) that makes a printout or PDF of any texts, a session, a person's routine (the whole week or one day) or the whole Library. Every text starts on a new page, with a list of contents when more than one text is printed. A routine prints each text once, in routine order, with a week-at-a-glance page and a tag on each text saying when it is said ("Daily · Morning, Evening").
 - **Share** (a ready message with the link and the next Sankashti), a **QR** code of the site, and **Add to Home Screen** help for every phone and browser.
 
 ## What is in this repository
@@ -156,9 +156,9 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 2. In `content/library.json`, add it to `"texts"` (its `id`, `file`, `title`, `titleEn`, `category`, `language` and `lines`, the number of line pairs in the file) at the place in its category where it should appear. Its number in the Library and Previous / Next come from that order.
 3. In `js/parts.js`, add `texts/<id>.txt` to the `content` list, so the text is kept for offline use.
 4. To put it in the default routine, add its id to `content/routines.json`.
-5. Run the checks (`cd tests && npm run unit`): they read every text, check `library.json` and `js/parts.js` against the files and name any mistake with its line number. The text's print tests record its printout the first time they run (see `tests/README.md`).
+5. Run the checks (`cd tests && npm run unit`): they read every text, check `library.json` and `js/parts.js` against the files and name any mistake with its line number.
 
-Nothing in the print code names a text: a new text prints by the rules in `ARCHITECTURE.md` ("The rules every printout follows") as soon as its file exists: stanzas are never split between pages, the dhrupad follows the printout's choice, an aarti or ashtak is centred or set in two columns, a Vedic chant (`layout: prose`) runs on as paragraphs, and with both languages each line sits beside its English.
+Nothing in the print code names a text: a new text prints by the rules in `ARCHITECTURE.md` ("The rules every printout follows") as soon as its file exists: stanzas are never split between pages, the dhrupad follows the printout's choice, an aarti or ashtak is centred, a Vedic chant (`layout: prose`) runs on as paragraphs, and with both languages each line sits beside its English.
 
 When **editing** a text, only the file changes, unless a title or the number of lines changes (then update `content/library.json` too; the checks say so). Line ids follow the order of the lines, so a fix within a line keeps them; adding or removing a line renumbers the lines after it (a highlighted line saved on a phone may then point at its neighbour).
 
