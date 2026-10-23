@@ -99,8 +99,8 @@ export function tuckHold() {
 // Highlight the current piece in the Library and in Home's list; update the progress line
 export function mark() {
   var c = cur();
-  // On the home page (no piece at the top yet): Language and Dhrupad step aside in the top bar, and
-  // the bottom bar gives way to Start / Continue (css/10-today.css)
+  // On the home page (no piece at the top yet): Language and Dhrupad step aside in the top bar, and the bottom bar
+  // keeps only Print and Reading (css/10-today.css)
   if (c) root.removeAttribute("data-home");
   else if (!root.hasAttribute("data-home")) root.setAttribute("data-home", "1");
   // Top bar title: the site's name, or once a piece's heading has scrolled under the bar, that piece ("३. देवीची आरती")
