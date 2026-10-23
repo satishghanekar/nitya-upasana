@@ -5,7 +5,7 @@
 //
 // A file is a header, a line "---", then blocks separated by blank lines:
 //
-//   id: sukhkarta                       header: "name: value", one per line
+//   id: aarti-sukhkarta                 header: "name: value", one per line
 //   title: गणपतीची आरती
 //   …
 //   ---

@@ -45,7 +45,7 @@ test("a few texts: their own contents @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
-  await openSite(page, SETUPS.marathi, { hash: "?print=as&t=atharvashirsha,durge-durghat-bhari,ghalin-lotangan" });
+  await openSite(page, SETUPS.marathi, { hash: "?print=as&t=vedic-chant-atharvashirsha,aarti-durge-durghat-bhari,aarti-ghalin-lotangan" });
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
   await page.emulateMedia({ media: "print" });
   const pv = await readPrintView(page);
@@ -524,7 +524,7 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await expect(page.locator("#prwl .tpkl li:visible")).toHaveCount(1);
   await page.locator("#prwl .tpkl li:visible input").check();
   await page.locator(".prwq").fill("");
-  await page.locator('#prwl .tpkl li[data-id="atharvashirsha"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="vedic-chant-atharvashirsha"] input').check();
   await expect(page.locator("#prsum span").first()).toHaveText("2 texts");
   // Next, and back
   await page.locator("#prnx").click();
@@ -533,7 +533,7 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await expect(page.locator("#prgp")).toBeFocused();
   await page.locator("#prbk").click();
   await expect(page.locator("#prwh")).toBeVisible();
-  await expect(page.locator('#prwl .tpkl li[data-id="atharvashirsha"] input')).toBeChecked();
+  await expect(page.locator('#prwl .tpkl li[data-id="vedic-chant-atharvashirsha"] input')).toBeChecked();
   await page.locator("#prnx").click();
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
@@ -579,7 +579,7 @@ test("print builder: a category's Select all and Clear, and one text alone @chro
   await expect(page.locator('.prcb[data-cat=""]')).toHaveText("Clear");
   // one text alone
   await page.locator('.prcb[data-cat=""]').click();
-  await page.locator('#prwl .tpkl li[data-id="sukhkarta"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="aarti-sukhkarta"] input').check();
   await expect(page.locator("#prsum span").first()).toHaveText("गणपतीची आरती");
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
@@ -613,14 +613,14 @@ test("print builder: Open in Safari carries the texts ticked @chromium-only", as
   await openSite(page, SETUPS.english);
   await openPrintBuilder(page);
   await page.locator('.prcb[data-cat=""]').click();
-  await page.locator('#prwl .tpkl li[data-id="sukhkarta"] input').check();
-  await page.locator('#prwl .tpkl li[data-id="purusha-suktam"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="aarti-sukhkarta"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="vedic-chant-purusha-suktam"] input').check();
   await howStep(page);
   await page.locator("#prgp").click();
   await page.locator("#prsf").click();
   const href = await page.locator("#prsf").getAttribute("data-to");
   expect(href).toMatch(/&t=([a-z-]+,[a-z-]+)$/);
-  expect(href.split("&t=")[1].split(",").sort()).toEqual(["purusha-suktam", "sukhkarta"]);
+  expect(href.split("&t=")[1].split(",").sort()).toEqual(["aarti-sukhkarta", "vedic-chant-purusha-suktam"]);
   const sf = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const sp = await sf.newPage();
   await sp.addInitScript(() => {
@@ -666,7 +666,7 @@ test("print builder: the bottom bar's Print while reading a session, and the Tod
   await page.locator("#prtab-texts").click();
   await expect(page.locator("#prtp-texts")).toBeVisible();
   await expect(page.locator("#prtp-today")).toBeHidden();
-  expect(await page.locator("#prwl .tpkl input:checked").evaluateAll((l) => l.map((x) => x.value).sort())).toEqual(["atharvashirsha", ...TEST_AARTIS].sort());
+  expect(await page.locator("#prwl .tpkl input:checked").evaluateAll((l) => l.map((x) => x.value).sort())).toEqual(["vedic-chant-atharvashirsha", ...TEST_AARTIS].sort());
   // Evening prints just its texts
   await page.locator("#prtab-today").click();
   await page.locator('.prses[data-s="evening"]').click();
@@ -728,7 +728,7 @@ test("print builder: the printout's language @chromium-only", async ({ browser }
   // just one text, in English; the reading page stays in Marathi
   await page.locator("#prbk").click();
   await page.locator('.prcb[data-cat=""]').click();
-  await page.locator('#prwl .tpkl li[data-id="sukhkarta"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="aarti-sukhkarta"] input').check();
   await page.locator("#prnx").click();
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
@@ -774,7 +774,7 @@ test("print builder: the preview and the paper @chromium-only", async ({ browser
   // one aarti ticked: the preview shows it
   await page.locator("#prbk").click();
   await page.locator('.prcb[data-cat=""]').click();
-  await page.locator('#prwl .tpkl li[data-id="sukhkarta"] input').check();
+  await page.locator('#prwl .tpkl li[data-id="aarti-sukhkarta"] input').check();
   await page.locator("#prnx").click();
   await expect(title()).toContainText("Ganapati Aarti", { timeout: 20_000 });
   await page.locator("#prgp").click();
@@ -791,12 +791,12 @@ test("print builder: the preview and the paper @chromium-only", async ({ browser
 const P5_ROUTINE = {
   morning: {
     mode: "weekday",
-    days: { mon: ["atharvashirsha", "sukhkarta"], tue: ["sukhkarta"], wed: ["sukhkarta"], thu: ["sukhkarta"], fri: ["sukhkarta"], sat: ["sukhkarta", "ghalin-lotangan"], sun: ["sukhkarta"] },
+    days: { mon: ["vedic-chant-atharvashirsha", "aarti-sukhkarta"], tue: ["aarti-sukhkarta"], wed: ["aarti-sukhkarta"], thu: ["aarti-sukhkarta"], fri: ["aarti-sukhkarta"], sat: ["aarti-sukhkarta", "aarti-ghalin-lotangan"], sun: ["aarti-sukhkarta"] },
   },
   afternoon: { mode: "fixed", texts: [] },
-  evening: { mode: "fixed", texts: ["durge-durghat-bhari", "sukhkarta"] },
+  evening: { mode: "fixed", texts: ["aarti-durge-durghat-bhari", "aarti-sukhkarta"] },
 };
-const P5_ORDER = ["atharvashirsha", "sukhkarta", "durge-durghat-bhari", "ghalin-lotangan"];
+const P5_ORDER = ["vedic-chant-atharvashirsha", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"];
 const P5_TAGS = ["Mon · Morning", "Daily · Morning, Evening", "Daily · Evening", "Sat · Morning"];
 async function useP5Routine(page) {
   await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(P5_ROUTINE) }));
@@ -832,15 +832,15 @@ test("print builder: the Routine tab lists each text once, in routine order, wit
   // one day: today, Thursday
   await page.locator('[data-rspan="day"]').click();
   await expect(page.locator(".prchip[data-rday][aria-pressed=true]")).toHaveText(["Thu"]);
-  expect(await ids()).toEqual(["sukhkarta", "durge-durghat-bhari"]);
+  expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari"]);
   await expect(page.locator(".prrl .prtag")).toHaveText(["Thu · Morning, Evening", "Thu · Evening"]);
   await page.locator('[data-rday="6"]').click();
-  expect(await ids()).toEqual(["sukhkarta", "ghalin-lotangan", "durge-durghat-bhari"]);
+  expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan", "aarti-durge-durghat-bhari"]);
   // the whole week, without Monday, and mornings only
   await page.locator('[data-rspan="week"]').click();
   await page.locator('[data-rday="1"]').click();
   await page.locator('[data-rses="evening"]').click();
-  expect(await ids()).toEqual(["sukhkarta", "ghalin-lotangan"]);
+  expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
   await expect(page.locator(".prrl .prtag")).toHaveText(["Tue–Sun · Morning", "Sat · Morning"]);
   // the arrow keys move through the three tabs
   await page.locator("#prtab-routine").focus();

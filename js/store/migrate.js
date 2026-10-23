@@ -10,6 +10,8 @@
 // autoscroll, folds and the highlighted line. Per device: keep the screen on, location, layout on wide screens, the
 // Print pop-up's choices and the folded home card.
 
+import { lineId, textId } from "../text/renamed.js";
+
 /**
  * @typedef {{ desk: boolean, fs: number }} Env  desk: a computer (no touch screen); fs: the default text size here
  * @typedef {Record<string, any>} Prefs
@@ -108,6 +110,19 @@ export function migratePrefs(saved, env) {
     // v6: a main and a second language; "In Both, show first" became the main language
     P.l2 = P.lead === "en" ? "mr" : "en";
     P.sv = 6;
+    changed = true;
+  }
+  // a text renamed since (js/text/renamed.js): its highlighted line, fold and autoscroll speed under its new ids
+  var hl = lineId(P.hl),
+    af = P.af.map(textId),
+    asp = /** @type {Record<string, any>} */ ({});
+  Object.keys(P.asp).forEach(function (id) {
+    asp[textId(id)] = P.asp[id];
+  });
+  if (hl !== P.hl || JSON.stringify(af) !== JSON.stringify(P.af) || JSON.stringify(asp) !== JSON.stringify(P.asp)) {
+    P.hl = hl;
+    P.af = af;
+    P.asp = asp;
     changed = true;
   }
   tidy(P);

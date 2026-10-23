@@ -1,4 +1,4 @@
-id: jay-jay-aarti-shrigururaya
+id: aarti-jay-jay-aarti-shrigururaya
 title: आरती श्रीमहाराजांची
 title-en: Aarti Shrimaharajanchi
 category: aarti

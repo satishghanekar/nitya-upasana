@@ -59,7 +59,7 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await expect(page.locator('#rtwk [aria-checked="true"]')).toHaveAccessibleName("Monday 19");
   await expect(page.locator("#rtsum")).toHaveText("Monday morning · 1 text");
   await expect(page.locator("#rtcpb")).toHaveText("Copy to other days…");
-  expect(await ids(page)).toEqual(["atharvashirsha"]);
+  expect(await ids(page)).toEqual(["vedic-chant-atharvashirsha"]);
 
   // Add texts: a sheet on a phone, focus on its heading; ticks add at the end
   await page.locator("#rtadd").click();
@@ -67,45 +67,45 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await expect(page.locator("#tpk")).toHaveAttribute("aria-modal", "true");
   await expect(page.locator("#tpkt")).toBeFocused();
   await expect(page.locator("#tpkt")).toHaveText("Add texts to Monday morning");
-  await expect(pick(page, "atharvashirsha")).toBeChecked();
+  await expect(pick(page, "vedic-chant-atharvashirsha")).toBeChecked();
   await expect(page.locator("#tpk li")).toHaveCount(LIB.texts.length);
   // search narrows the list
   await page.locator("#tpk .tpkq").fill("ghalin");
   await expect(page.locator("#tpk li:visible")).toHaveCount(1);
   await expect(page.locator("#tpk .tpks")).toHaveText("1 text found");
-  await pick(page, "ghalin-lotangan").check();
+  await pick(page, "aarti-ghalin-lotangan").check();
   await page.locator("#tpk .tpkq").fill("");
-  await pick(page, "sukhkarta").check();
-  await expect(page.locator("#rtlive")).toHaveText(T.sukhkarta.title + " added, 3 of 3");
+  await pick(page, "aarti-sukhkarta").check();
+  await expect(page.locator("#rtlive")).toHaveText(T["aarti-sukhkarta"].title + " added, 3 of 3");
   await page.locator("#tpk .tpkx").click();
   await expect(page.locator("#tpk")).toBeHidden();
   await expect(page.locator("#rtadd")).toBeFocused();
-  expect(await ids(page)).toEqual(["atharvashirsha", "ghalin-lotangan", "sukhkarta"]);
+  expect(await ids(page)).toEqual(["vedic-chant-atharvashirsha", "aarti-ghalin-lotangan", "aarti-sukhkarta"]);
 
   // ↑ moves a text and says so; focus stays on the same button
-  await btn(page, "sukhkarta", "up").click();
-  expect(await ids(page)).toEqual(["atharvashirsha", "sukhkarta", "ghalin-lotangan"]);
-  await expect(page.locator("#rtlive")).toHaveText(T.sukhkarta.title + " moved to 2 of 3");
-  await expect(btn(page, "sukhkarta", "up")).toBeFocused();
+  await btn(page, "aarti-sukhkarta", "up").click();
+  expect(await ids(page)).toEqual(["vedic-chant-atharvashirsha", "aarti-sukhkarta", "aarti-ghalin-lotangan"]);
+  await expect(page.locator("#rtlive")).toHaveText(T["aarti-sukhkarta"].title + " moved to 2 of 3");
+  await expect(btn(page, "aarti-sukhkarta", "up")).toBeFocused();
   // at the top the ↑ can't be used, and focus goes to its ↓
-  await btn(page, "sukhkarta", "up").click();
-  expect(await ids(page)).toEqual(["sukhkarta", "atharvashirsha", "ghalin-lotangan"]);
-  await expect(btn(page, "sukhkarta", "up")).toHaveAttribute("aria-disabled", "true");
-  await expect(btn(page, "sukhkarta", "down")).toBeFocused();
+  await btn(page, "aarti-sukhkarta", "up").click();
+  expect(await ids(page)).toEqual(["aarti-sukhkarta", "vedic-chant-atharvashirsha", "aarti-ghalin-lotangan"]);
+  await expect(btn(page, "aarti-sukhkarta", "up")).toHaveAttribute("aria-disabled", "true");
+  await expect(btn(page, "aarti-sukhkarta", "down")).toBeFocused();
   // Alt+↓ and Alt+↑ with a keyboard
   await page.keyboard.press("Alt+ArrowDown");
   await page.keyboard.press("Alt+ArrowDown");
-  expect(await ids(page)).toEqual(["atharvashirsha", "ghalin-lotangan", "sukhkarta"]);
-  await expect(page.locator("#rtlive")).toHaveText(T.sukhkarta.title + " moved to 3 of 3");
-  await btn(page, "ghalin-lotangan", "down").focus();
+  expect(await ids(page)).toEqual(["vedic-chant-atharvashirsha", "aarti-ghalin-lotangan", "aarti-sukhkarta"]);
+  await expect(page.locator("#rtlive")).toHaveText(T["aarti-sukhkarta"].title + " moved to 3 of 3");
+  await btn(page, "aarti-ghalin-lotangan", "down").focus();
   await page.keyboard.press("Alt+ArrowUp");
-  expect(await ids(page)).toEqual(["ghalin-lotangan", "atharvashirsha", "sukhkarta"]);
-  await expect(page.locator("#rtlive")).toHaveText(T["ghalin-lotangan"].title + " moved to 1 of 3");
+  expect(await ids(page)).toEqual(["aarti-ghalin-lotangan", "vedic-chant-atharvashirsha", "aarti-sukhkarta"]);
+  await expect(page.locator("#rtlive")).toHaveText(T["aarti-ghalin-lotangan"].title + " moved to 1 of 3");
   // ✕ removes; focus goes to the next text's ✕
-  await btn(page, "atharvashirsha", "rm").click();
-  expect(await ids(page)).toEqual(["ghalin-lotangan", "sukhkarta"]);
-  await expect(page.locator("#rtlive")).toHaveText(T.atharvashirsha.title + " removed");
-  await expect(btn(page, "sukhkarta", "rm")).toBeFocused();
+  await btn(page, "vedic-chant-atharvashirsha", "rm").click();
+  expect(await ids(page)).toEqual(["aarti-ghalin-lotangan", "aarti-sukhkarta"]);
+  await expect(page.locator("#rtlive")).toHaveText(T["vedic-chant-atharvashirsha"].title + " removed");
+  await expect(btn(page, "aarti-sukhkarta", "rm")).toBeFocused();
 
   // Copy to other days…: Thursday gets Monday's list
   await page.locator("#rtcpb").click();
@@ -119,14 +119,14 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await expect(page.locator("#rtlive")).toHaveText("Copied to Thursday");
   await page.locator('#rtwk [data-v="4"]').click();
   await expect(page.locator("#rtsum")).toHaveText("Thursday morning · 2 texts");
-  expect(await ids(page)).toEqual(["ghalin-lotangan", "sukhkarta"]);
+  expect(await ids(page)).toEqual(["aarti-ghalin-lotangan", "aarti-sukhkarta"]);
   await page.locator('#rtwk [data-v="2"]').click();
-  expect(await ids(page)).toEqual(["atharvashirsha"]);
+  expect(await ids(page)).toEqual(["vedic-chant-atharvashirsha"]);
 
   // Home: Monday's morning is the new list (picked with the Morning | Afternoon | Evening switch)
   await page.locator("#rbk").click();
   await page.locator("#tss-morning").click();
-  expect(await homeIds(page)).toEqual(["ghalin-lotangan", "sukhkarta"]);
+  expect(await homeIds(page)).toEqual(["aarti-ghalin-lotangan", "aarti-sukhkarta"]);
   // the evening is as it was
   await page.locator("#tss-evening").click();
   await expect(rows(page)).toHaveCount(10);
@@ -136,11 +136,11 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await page.reload();
   await settle(page);
   await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
-  expect(await homeIds(page)).toEqual(["ghalin-lotangan", "sukhkarta"]);
+  expect(await homeIds(page)).toEqual(["aarti-ghalin-lotangan", "aarti-sukhkarta"]);
   await page.clock.setFixedTime(new Date("2026-10-20T09:00:00-04:00"));
   await page.reload();
   await settle(page);
-  expect(await homeIds(page)).toEqual(["atharvashirsha"]);
+  expect(await homeIds(page)).toEqual(["vedic-chant-atharvashirsha"]);
   // and the builder opens on Tuesday, different by weekday
   await openBuilder(page);
   await expect(page.locator('#rtmd [aria-checked="true"]')).toHaveText("Different by weekday");
@@ -151,7 +151,7 @@ test("same every day again: the day's list for every day; Escape closes the buil
   await openSite(page, SETUPS.marathi, { now: MON_EVENING });
   await openBuilder(page);
   await page.locator('#rtmd [data-v="weekday"]').click();
-  await btn(page, "sukhkarta", "rm").click();
+  await btn(page, "aarti-sukhkarta", "rm").click();
   await page.locator('#rtmd [data-v="fixed"]').click();
   await expect(page.locator("#rtlive")).toHaveText("Monday’s list is now used every day");
   await expect(page.locator("#rtwk")).toBeHidden();
@@ -178,7 +178,7 @@ test("an empty session on Home says so, with Add texts: the builder opens there 
   await expect(page.locator('#rtss [aria-checked="true"]')).toHaveText("Afternoon");
   await expect(page.locator("#rte")).toHaveText("No texts for Afternoon, every day yet. Add texts to start.");
   await expect(page.locator("#tpk")).toBeVisible();
-  await pick(page, "jai-jagdish-hare").check();
+  await pick(page, "aarti-jai-jagdish-hare").check();
   // Escape closes the sheet only, then the builder
   await page.keyboard.press("Escape");
   await expect(page.locator("#tpk")).toBeHidden();
@@ -187,7 +187,7 @@ test("an empty session on Home says so, with Add texts: the builder opens there 
   await page.keyboard.press("Escape");
   await expect(page.locator("#rtb")).toBeHidden();
   await expect(page.locator("#tse")).toBeHidden();
-  expect(await homeIds(page)).toEqual(["jai-jagdish-hare"]);
+  expect(await homeIds(page)).toEqual(["aarti-jai-jagdish-hare"]);
   // the button it came from has gone: focus is on the session's heading
   await expect(page.locator("#tsh")).toBeFocused();
 });
@@ -216,9 +216,9 @@ test("on a wide screen the picker is beside the list, and the sheet's Tab trap i
   const list = await page.locator("#rtl").boundingBox();
   const pk = await page.locator("#tpk").boundingBox();
   expect(pk.x).toBeGreaterThan(list.x + list.width);
-  await pick(page, "atharvashirsha").check();
+  await pick(page, "vedic-chant-atharvashirsha").check();
   await expect(items(page)).toHaveCount(11);
-  await expect(items(page).last()).toHaveAttribute("data-id", "atharvashirsha");
+  await expect(items(page).last()).toHaveAttribute("data-id", "vedic-chant-atharvashirsha");
 });
 
 test("Settings → Routine opens the builder at the session Home shows", async ({ page }) => {
@@ -238,11 +238,11 @@ test("each person has their own routine; Save a backup file → Restore brings i
   const errors = [];
   await openSite(page, SETUPS.marathi, { now: MON_EVENING, errors });
   await openBuilder(page);
-  for (const id of ["shendur-lal-chadhayo", "durge-durghat-bhari", "lavathavati-vikrala", "trigunatmak-traimurti", "aarti-dnyanaraja", "yei-o-vitthale", "jai-ganesh-deva", "jai-jagdish-hare"])
+  for (const id of ["aarti-shendur-lal-chadhayo", "aarti-durge-durghat-bhari", "aarti-lavathavati-vikrala", "aarti-trigunatmak-traimurti", "aarti-dnyanaraja", "aarti-yei-o-vitthale", "aarti-jai-ganesh-deva", "aarti-jai-jagdish-hare"])
     await btn(page, id, "rm").click();
-  expect(await ids(page)).toEqual(["sukhkarta", "ghalin-lotangan"]);
+  expect(await ids(page)).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
   await page.locator("#rbk").click();
-  expect(await homeIds(page)).toEqual(["sukhkarta", "ghalin-lotangan"]);
+  expect(await homeIds(page)).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
   // another person starts from the default routine
   await page.locator("#who").click();
   await page.locator("#pfadd").click();
@@ -259,7 +259,7 @@ test("each person has their own routine; Save a backup file → Restore brings i
   const json = JSON.parse(readFileSync(file, "utf8"));
   expect(json.app).toBe(readFileSync(new URL("../index.html", import.meta.url), "utf8").match(/<meta name="version" content="([^"]+)"/)[1]);
   expect(json.payload.profiles.map((p) => [p.name, p.routine && p.routine.evening.texts])).toEqual([
-    ["Me", ["sukhkarta", "ghalin-lotangan"]],
+    ["Me", ["aarti-sukhkarta", "aarti-ghalin-lotangan"]],
     ["Aai", null],
   ]);
   await page.locator("#xc").click();
@@ -267,9 +267,9 @@ test("each person has their own routine; Save a backup file → Restore brings i
   await page.locator("#who").click();
   await page.locator("#pfl .pfp", { hasText: "Me" }).click();
   await openBuilder(page);
-  await btn(page, "ghalin-lotangan", "rm").click();
+  await btn(page, "aarti-ghalin-lotangan", "rm").click();
   await page.locator("#rbk").click();
-  expect(await homeIds(page)).toEqual(["sukhkarta"]);
+  expect(await homeIds(page)).toEqual(["aarti-sukhkarta"]);
   // restore
   await page.locator("#aa").click();
   // (given as a buffer: the saved path, under a test-results folder named with "→", is not always accepted)
@@ -280,10 +280,10 @@ test("each person has their own routine; Save a backup file → Restore brings i
   await expect(page.locator("#bkm")).toBeHidden();
   await page.locator("#who").click();
   await page.locator("#pfl .pfp", { hasText: "Me" }).click();
-  expect(await homeIds(page)).toEqual(["sukhkarta", "ghalin-lotangan"]);
+  expect(await homeIds(page)).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
   await page.reload();
   await settle(page);
-  expect(await homeIds(page)).toEqual(["sukhkarta", "ghalin-lotangan"]);
+  expect(await homeIds(page)).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
 });
 
 test("English only: titles in English, with no second line; Marathi menus say बदला @mobile", async ({ page }) => {
@@ -293,10 +293,10 @@ test("English only: titles in English, with no second line; Marathi menus say �
   await expect(items(page).first().locator(".t1")).toHaveAttribute("lang", "en");
   await expect(items(page).locator(".t2")).toHaveCount(0);
   await expect(items(page).first().locator(".tno")).toHaveText("1.");
-  await expect(btn(page, "sukhkarta", "up")).toHaveAccessibleName("Move Ganapati Aarti up");
+  await expect(btn(page, "aarti-sukhkarta", "up")).toHaveAccessibleName("Move Ganapati Aarti up");
   await expect(page.locator("#tpk li").first().locator(".t1")).toHaveText("Ganapati Atharvashirsha");
   await expect(page.locator("#tpk .t2")).toHaveCount(0);
-  await btn(page, "ghalin-lotangan", "up").click();
+  await btn(page, "aarti-ghalin-lotangan", "up").click();
   await expect(page.locator("#rtlive")).toHaveText("Ghalin Lotangan moved to 7 of 10");
 });
 
@@ -304,7 +304,7 @@ test("English first, Marathi second: English titles with Marathi under them", as
   await openSite(page, SETUPS["english-main-both"], { now: MON_EVENING });
   await openBuilder(page);
   await expect(items(page).first().locator(".t1")).toHaveText("Ganapati Aarti");
-  await expect(items(page).first().locator(".t2")).toHaveText(T.sukhkarta.title);
+  await expect(items(page).first().locator(".t2")).toHaveText(T["aarti-sukhkarta"].title);
 });
 
 test("Marathi menus: बदला, and the builder's words in Marathi @mobile", async ({ page }) => {

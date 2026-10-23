@@ -1,4 +1,4 @@
-id: sukhkarta
+id: aarti-sukhkarta
 title: गणपतीची आरती
 title-en: Ganapati Aarti
 category: aarti

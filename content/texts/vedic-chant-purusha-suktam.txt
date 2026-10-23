@@ -1,4 +1,4 @@
-id: purusha-suktam
+id: vedic-chant-purusha-suktam
 title: पुरुषसूक्तम्
 title-en: Purusha Suktam
 category: vedic-chant

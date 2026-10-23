@@ -52,7 +52,7 @@ const printed = async (page, prefs, id) => {
 
 test("in print: the printout follows the text font when none is picked @chromium-only", async ({ page }) => {
   await stubPrint(page);
-  expect(await printed(page, { ...SETUPS.marathi, fnt: "std" }, "sukhkarta")).toEqual(["Noto Sans Devanagari", "400"]);
+  expect(await printed(page, { ...SETUPS.marathi, fnt: "std" }, "aarti-sukhkarta")).toEqual(["Noto Sans Devanagari", "400"]);
 });
 
 for (const [pfn, aarti, vedic] of [
@@ -64,8 +64,8 @@ for (const [pfn, aarti, vedic] of [
     await stubPrint(page);
     // the reading page in another font: the printout's own choice wins
     const other = pfn === "bold" ? "std" : "bold";
-    expect(await printed(page, { ...SETUPS.marathi, fnt: other, pfn }, "sukhkarta")).toEqual(aarti);
-    expect(await printed(page, { ...SETUPS.marathi, fnt: other, pfn }, "atharvashirsha")).toEqual(vedic);
+    expect(await printed(page, { ...SETUPS.marathi, fnt: other, pfn }, "aarti-sukhkarta")).toEqual(aarti);
+    expect(await printed(page, { ...SETUPS.marathi, fnt: other, pfn }, "vedic-chant-atharvashirsha")).toEqual(vedic);
   });
 
 // Kannada letters in print: their own face in each font, as on screen
@@ -75,7 +75,7 @@ for (const [pfn, want] of [
 ])
   test(`in print, Kannada letters, ${pfn} @chromium-only`, async ({ page }) => {
     await stubPrint(page);
-    expect(await printed(page, { ...SETUPS.kannada, pfn }, "sukhkarta")).toEqual(want);
+    expect(await printed(page, { ...SETUPS.kannada, pfn }, "aarti-sukhkarta")).toEqual(want);
   });
 
 // Kannada letters: Noto Sans Kannada in Modern, Noto Serif Kannada in Traditional and Bold (both draw the Vedic marks)

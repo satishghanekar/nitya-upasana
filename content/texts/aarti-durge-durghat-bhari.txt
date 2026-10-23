@@ -1,4 +1,4 @@
-id: durge-durghat-bhari
+id: aarti-durge-durghat-bhari
 title: देवीची आरती
 title-en: Devi Aarti
 category: aarti

@@ -67,7 +67,7 @@ describe("CONTENT from the text files", () => {
     expect(p.items.flatMap((i) => (i.lines || []).map((l) => l.l))).toEqual(["x.2", "x.3", "x.4"]);
   });
   test("a text missing from the files stops the build", () => {
-    expect(() => buildContent(lib, { ...files, sukhkarta: undefined })).toThrow("texts/sukhkarta.txt: not loaded");
+    expect(() => buildContent(lib, { ...files, "aarti-sukhkarta": undefined })).toThrow("texts/aarti-sukhkarta.txt: not loaded");
   });
 });
 

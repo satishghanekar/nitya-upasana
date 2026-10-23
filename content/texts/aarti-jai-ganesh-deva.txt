@@ -1,4 +1,4 @@
-id: jai-ganesh-deva
+id: aarti-jai-ganesh-deva
 title: आरती जय गणेश देवा
 title-en: Aarti Jai Ganesh Deva
 category: aarti

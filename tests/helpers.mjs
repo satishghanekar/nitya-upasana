@@ -237,10 +237,10 @@ export async function readText(page, sec) {
 // (content/routines.json changes as texts are added): the first default, v1.10 (Morning = the Ganapati Atharvashirsha,
 // Evening = the ten aartis in the Library's order, Afternoon empty). The bundled default has its own tests
 // (unit/today.test.mjs and "the bundled default" in today.spec.mjs).
-export const TEST_AARTIS = ["sukhkarta", "shendur-lal-chadhayo", "durge-durghat-bhari", "lavathavati-vikrala", "trigunatmak-traimurti",
-  "aarti-dnyanaraja", "yei-o-vitthale", "ghalin-lotangan", "jai-ganesh-deva", "jai-jagdish-hare"];
+export const TEST_AARTIS = ["aarti-sukhkarta", "aarti-shendur-lal-chadhayo", "aarti-durge-durghat-bhari", "aarti-lavathavati-vikrala", "aarti-trigunatmak-traimurti",
+  "aarti-dnyanaraja", "aarti-yei-o-vitthale", "aarti-ghalin-lotangan", "aarti-jai-ganesh-deva", "aarti-jai-jagdish-hare"];
 export const TEST_ROUTINE = {
-  morning: { mode: "fixed", texts: ["atharvashirsha"] },
+  morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha"] },
   afternoon: { mode: "fixed", texts: [] },
   evening: { mode: "fixed", texts: TEST_AARTIS },
 };

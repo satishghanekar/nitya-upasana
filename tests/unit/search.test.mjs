@@ -21,7 +21,8 @@ beforeAll(async () => {
     const t = parseText(read("content/texts/" + id + ".txt"), id);
     const cat = CATS.find((c) => c.id === t.category);
     const all = t.blocks.flatMap((b) => b.lines);
-    texts.push({ id, sec: t.legacyId, title: t.title, titleEn: t.titleEn, categories: [cat.name.mr, cat.name.en], first: [plain(all[0].orig), plain(all[0].en)] });
+    const name = id.startsWith(t.category + "-") ? id.slice(t.category.length + 1) : "";
+    texts.push({ id, name, sec: t.legacyId, title: t.title, titleEn: t.titleEn, categories: [cat.name.mr, cat.name.en], first: [plain(all[0].orig), plain(all[0].en)] });
     all.forEach((l, i) => lines.push({ id: id + "." + (i + 1), sec: t.legacyId, text: id, m: plain(l.orig), e: plain(l.en) }));
   }
   ix = buildIndex({ texts, lines, roman: IA });
@@ -60,39 +61,39 @@ describe("folding and loose spelling", () => {
 
 describe("ranking", () => {
   test('"sukhkarta" finds Ganapati Aarti first, by its id', () => {
-    expect(top("sukhkarta")).toMatchObject({ id: "sukhkarta", sec: "a1" });
+    expect(top("sukhkarta")).toMatchObject({ id: "aarti-sukhkarta", sec: "a1" });
     expect(top("sukhkarta").score).toBeGreaterThanOrEqual(SCORE.title);
     // and its lines
     const l = search(ix, "sukhkarta").lines;
     expect(l.length).toBeGreaterThan(0);
-    expect(l[0].text).toBe("sukhkarta");
+    expect(l[0].text).toBe("aarti-sukhkarta");
   });
   test('"सुखकर्ता" in Marathi letters finds the same text first, and its line', () => {
-    expect(top("सुखकर्ता")).toMatchObject({ id: "sukhkarta" });
+    expect(top("सुखकर्ता")).toMatchObject({ id: "aarti-sukhkarta" });
     const l = search(ix, "सुखकर्ता").lines;
-    expect(l[0]).toMatchObject({ text: "sukhkarta", score: SCORE.phrase });
+    expect(l[0]).toMatchObject({ text: "aarti-sukhkarta", score: SCORE.phrase });
     expect(l[0].m).toContain("सुखकर्ता");
   });
   test("the everyday spelling and a sloppy one both find it", () => {
-    expect(top("sukhakarta").id).toBe("sukhkarta");
-    expect(top("Sukhkarta Dukhharta").id).toBe("sukhkarta");
+    expect(top("sukhakarta").id).toBe("aarti-sukhkarta");
+    expect(top("Sukhkarta Dukhharta").id).toBe("aarti-sukhkarta");
   });
   test('"jai dev": Jai Ganesh Deva by its id first, then the aartis that begin "Jai Dev Jai Dev", then the lines', () => {
     const r = search(ix, "jai dev");
-    expect(r.texts[0].id).toBe("jai-ganesh-deva");
-    expect(r.texts.map((t) => t.id)).toEqual(expect.arrayContaining(["sukhkarta", "lavathavati-vikrala", "trigunatmak-traimurti"]));
+    expect(r.texts[0].id).toBe("aarti-jai-ganesh-deva");
+    expect(r.texts.map((t) => t.id)).toEqual(expect.arrayContaining(["aarti-sukhkarta", "aarti-lavathavati-vikrala", "aarti-trigunatmak-traimurti"]));
     expect(r.texts.slice(1).every((t) => t.score <= SCORE.first)).toBe(true);
     expect(r.lines[0].score).toBe(SCORE.phrase);
     expect(r.lines.every((l, i) => i === 0 || r.lines[i - 1].score >= l.score)).toBe(true);
   });
   test("titles in either language, with the Marathi title matched in English letters too", () => {
-    expect(top("Devi Aarti").id).toBe("durge-durghat-bhari");
-    expect(top("देवीची आरती").id).toBe("durge-durghat-bhari");
-    expect(top("devichi").id).toBe("durge-durghat-bhari");
+    expect(top("Devi Aarti").id).toBe("aarti-durge-durghat-bhari");
+    expect(top("देवीची आरती").id).toBe("aarti-durge-durghat-bhari");
+    expect(top("devichi").id).toBe("aarti-durge-durghat-bhari");
     expect(top("ghalin lotangan").score).toBe(SCORE.title);
-    expect(top("atharva").id).toBe("atharvashirsha");
+    expect(top("atharva").id).toBe("vedic-chant-atharvashirsha");
     expect(top("dnyaneshwar").id).toBe("aarti-dnyanaraja");
-    expect(top("vithal").id).toBe("yei-o-vitthale");
+    expect(top("vithal").id).toBe("aarti-yei-o-vitthale");
   });
   test("a category name finds its texts", () => {
     const vedic = lib.texts.filter((t) => t.category === "vedic-chant").map((t) => t.id);
@@ -103,13 +104,13 @@ describe("ranking", () => {
   });
   test("an exact title outranks one it merely starts", () => {
     const r = search(ix, "ganapati aarti").texts;
-    expect(r[0].id).toBe("sukhkarta");
+    expect(r[0].id).toBe("aarti-sukhkarta");
     expect(r[0].score).toBe(SCORE.title);
-    expect(r.find((t) => t.id === "shendur-lal-chadhayo").score).toBeLessThan(SCORE.title);
+    expect(r.find((t) => t.id === "aarti-shendur-lal-chadhayo").score).toBeLessThan(SCORE.title);
   });
   test("a typo is forgiven, but not in short words", () => {
-    expect(top("lotangn").id).toBe("ghalin-lotangan");
-    expect(top("vitthla").id).toBe("yei-o-vitthale");
+    expect(top("lotangn").id).toBe("aarti-ghalin-lotangan");
+    expect(top("vitthla").id).toBe("aarti-yei-o-vitthale");
     expect(search(ix, "zzzzqqq")).toEqual({ texts: [], lines: [], more: false });
     expect(search(ix, "zzqxw").texts).toEqual([]);
   });

@@ -1,4 +1,4 @@
-id: jaydeva-jaydeva-samartha
+id: aarti-jaydeva-jaydeva-samartha
 title: श्रीमहाराजांची आरती
 title-en: Shrimaharajanchi Aarti
 category: aarti

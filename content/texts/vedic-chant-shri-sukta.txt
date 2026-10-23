@@ -1,4 +1,4 @@
-id: shri-sukta
+id: vedic-chant-shri-sukta
 title: श्रीसूक्त
 title-en: Shri Sukta
 category: vedic-chant
