@@ -40,13 +40,14 @@ test("a new reader reads in Traditional", async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.getAttribute("data-font"))).toBe("classic");
 });
 
-// The printout, through a text's print link (as print-items.spec.mjs prints): the font picked in the pop-up, else the
-// text font the page is read in
+// The printout, through a text's print link: the font picked in the pop-up, else the text font the page is read in
 const printed = async (page, prefs, id) => {
   await openSite(page, { por: "up", ...prefs }, { hash: `?print=as&t=${id}` });
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
+  // as the printer sees the page (the printout's styles are print styles: css/15-print.css)
+  await page.emulateMedia({ media: "print" });
   // a stanza line (the dhrupad at the top is printed bold in every font)
-  return look(page, "#pv .pvs .item .mr p");
+  return look(page, "#pv .pvs .pvsz:not(.pvbold) .pvl.pvo, #pv .pvs .pvpr.pvo");
 };
 
 test("in print: the printout follows the text font when none is picked @chromium-only", async ({ page }) => {
@@ -65,6 +66,16 @@ for (const [pfn, aarti, vedic] of [
     const other = pfn === "bold" ? "std" : "bold";
     expect(await printed(page, { ...SETUPS.marathi, fnt: other, pfn }, "sukhkarta")).toEqual(aarti);
     expect(await printed(page, { ...SETUPS.marathi, fnt: other, pfn }, "atharvashirsha")).toEqual(vedic);
+  });
+
+// Kannada letters in print: their own face in each font, as on screen
+for (const [pfn, want] of [
+  ["std", ["Noto Sans Kannada", "400"]],
+  ["classic", ["SC Kn Classic", "400"]],
+])
+  test(`in print, Kannada letters, ${pfn} @chromium-only`, async ({ page }) => {
+    await stubPrint(page);
+    expect(await printed(page, { ...SETUPS.kannada, pfn }, "sukhkarta")).toEqual(want);
   });
 
 // Kannada letters: Noto Sans Kannada in Modern, Noto Serif Kannada in Traditional and Bold (both draw the Vedic marks)

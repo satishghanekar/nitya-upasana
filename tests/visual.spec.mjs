@@ -105,7 +105,7 @@ const CASES = [
   ["calendar-wide", "wide", SETUPS.marathi, calendar],
   ["help-phone", "phone", SETUPS.marathi, (p) => tapMore(p, "#hlpb")],
   ["qr-phone", "phone", SETUPS.marathi, (p) => tapMore(p, "#qrb")],
-  // the print builder: What (with each text's pages, once laid out), How, and both side by side on a computer
+  // the print builder: What, How, and both side by side on a computer
   ["print-dialog", "phone", SETUPS.marathi, printBuilder],
   ["print-how-phone", "phone", SETUPS.marathi, async (p) => (await printBuilder(p), p.locator("#prnx").click())],
   ["print-builder-desktop", "desktop", SETUPS.marathi, printBuilder],
@@ -113,14 +113,13 @@ const CASES = [
   ["print-routine-phone", "phone", SETUPS.marathi, async (p) => {
     await printBuilder(p);
     await p.locator("#prtab-routine").click();
-    await expect(p.locator(".prrl .prpc").first()).toHaveText(/\d/);
+    await expect(p.locator(".prrl .prtag").first()).toHaveText(/\w/);
   }],
 ];
 
-// Print, open at What once the page counts and the first-page preview (with its fonts) are in
+// Print, open at What once the first-page preview (with its fonts) is in
 async function printBuilder(p) {
   await openPrintBuilder(p);
-  await expect(p.locator("#prsum span").nth(1)).toHaveText(/\d/, { timeout: 20_000 });
   await p.waitForFunction(() => {
     const f = document.querySelector("#prsheet iframe");
     return f && f.contentDocument && f.contentDocument.fonts.status === "loaded";
