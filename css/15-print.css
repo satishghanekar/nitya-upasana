@@ -18,7 +18,8 @@
 @media print {
   @page {
     size: portrait;
-    margin: 12mm 12mm 14mm;
+    /* the side margins give the same measure as the screen's Vedic text (33.6 × 15pt on Letter, css/02-core.css) */
+    margin: 17mm 19mm 19mm;
     @bottom-center {
       content: counter(page) " / " counter(pages);
       font: 9pt sans-serif;
@@ -103,22 +104,7 @@
     font-weight: var(--pwb);
   }
 
-  /* ---- A page frame: a light line round every page, where the browser can repeat the space inside it on every page
-     (box-decoration-break: Chrome, Edge, Firefox; Safari prints without it) ---- */
-  @supports (box-decoration-break: clone) {
-    :root[data-print] #pv {
-      box-decoration-break: clone;
-      padding: 5mm 7mm;
-    }
-    :root[data-print] #pv::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      border: 0.75pt solid #c9ab7f;
-      border-radius: 2mm;
-      pointer-events: none;
-    }
-  }
+  /* (no page frame: Safari can't repeat one on every page, so no browser gets one; Satish, 2026-10-23) */
 
   /* ---- Pages: the four rules ---- */
   /* 1. every text (and the contents) starts on a new page */
@@ -211,23 +197,40 @@
     display: table-cell;
     padding: 0 0 11pt;
   }
-  #pv .pvcol + .pvcr {
-    break-before: avoid;
-    page-break-before: avoid;
+  /* the dhrupad (at the top, sung again, or said once between stanzas), a closing line (bold) and the credit: centred over the column, without
+     widening it (width 0, then the column's width: only the stanzas set where the column's left edge is), a line longer
+     than the stanzas reaching out on both sides */
+  #pv .pvsc > :is(.pvref, .pvrf, .pvbold, .pvdh),
+  #pv .pvsc > .pvcr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 0;
+    min-width: 100%;
+  }
+  #pv .pvsc > :is(.pvref, .pvrf, .pvbold, .pvdh) > .pvl {
+    width: max-content;
+    max-width: 177mm;
+  }
+  #pv .pvsc > .pvcr {
+    white-space: nowrap;
+  }
+  /* an empty line between a stanza and the dhrupad sung after it */
+  #pv .pvsc > .pvsz:not(.pvrf) + .pvsz.pvrf {
+    margin-top: 12pt;
   }
   #pv .pvsz {
     margin: 0;
   }
   #pv .pvl {
     margin: 0;
-    padding-inline-start: 1.4em;
-    text-indent: -1.4em;
   }
   #pv[data-lang="en"] .pvl {
     font-size: 13pt;
   }
   /* the dhrupad at the top: a line beside it */
   #pv .pvref {
+    box-sizing: border-box;
     margin: 0 0 8pt -9pt;
     padding-inline-start: 7pt;
     border-left: 1.5pt solid var(--accent);
@@ -317,6 +320,10 @@
   }
   #pv .pvt td:first-child {
     border-right: 0.5pt solid #bbb;
+  }
+  /* a cell is half the page: a line kept whole for the one-language page wraps here rather than run off the page */
+  #pv .pvt .pvnb {
+    white-space: normal;
   }
   #pv .pvt td.pvo {
     font-size: 13pt;
