@@ -71,6 +71,13 @@ export function init() {
       var x = host.querySelector(":scope > ." + k) || host.querySelector("." + k);
       return x ? x.innerHTML : "";
     }
+    // A note's text for the paper: in the original language without the ↻, which Safari draws from a Devanagari font
+    // as a mark that reads as ७ (Satish, 2026-10-23: just "ध्रुपद"); English keeps it
+    /** @param {Element} host @param {string} k */
+    function note(host, k) {
+      var h = part(host, k);
+      return k === "en" ? h : h.replace(/^\s*↻\s*/, "");
+    }
     // An element's text in a language, marked with its language (lang, for the fonts: css/15-print.css)
     /** @param {string} tag @param {string} cls @param {string} k "mr" or "en" @param {string} html */
     function inLang(tag, cls, k, html) {
@@ -87,7 +94,9 @@ export function init() {
         n;
       while ((n = w.nextNode())) ns.push(n);
       ns.forEach(function (n) {
-        var re = /\S+(?: +(?:[।॥|]+|[0-9०-९೦-೯]+(?= +[॥|])))+/g,
+        // (the space before the run goes inside it: Safari draws a space just before a nowrap span narrower, so the
+        // last two words of a line ran together)
+        var re = / ?\S+(?: +(?:[।॥|]+|[0-9०-९೦-೯]+(?= +[॥|])))+/g,
           t = n.data,
           f = document.createDocumentFragment(),
           at = 0,
@@ -182,17 +191,20 @@ export function init() {
         b = mk("div", "pvsc");
       row.appendChild(b);
       us.forEach(function (u) {
-        if (u.classList.contains("rmk")) return b.appendChild(inLang("p", "pvnote", k, part(u, k)));
+        if (u.classList.contains("rmk")) return b.appendChild(inLang("p", "pvnote", k, note(u, k)));
         var lab = u.querySelector(".lab");
         if (lab) b.appendChild(inLang("p", "pvlab", k, part(lab, k)));
         var st = mk("div", "pvsz" + look(u) + (u.classList.contains("rftop") ? " pvref" : "") + (u.classList.contains("dh") ? " pvdh" : "")),
           // a stanza's own refrain lines (आरती ज्ञानराजा ॥ धृ. ॥) are printed as a dhrupad sung again: after the stanza
           rf = mk("div", "pvsz pvrf");
+        // the dhrupad at the top: its lines in a box as wide as they are, the line beside it hugging them (.pvrefin)
+        var top = u.classList.contains("rftop") ? st.appendChild(mk("div", "pvrefin")) : st;
         linesOf(u, k).forEach(function (l) {
           var p = inLang("p", "pvl" + (l.rf ? " pvrf" : ""), k, l.html);
           glue(p);
-          (l.rf && !look(u) ? rf : st).appendChild(p);
+          (l.rf && !look(u) ? rf : top).appendChild(p);
         });
+        if (top !== st && !top.firstChild) st.removeChild(top);
         if (st.firstChild) b.appendChild(st);
         if (rf.firstChild) b.appendChild(rf);
       });
@@ -224,7 +236,7 @@ export function init() {
     // One language, a Vedic text: running paragraphs, as in a printed booklet (a line of verse runs on after the last)
     /** @param {HTMLElement[]} g @param {string} k */
     function proseBlock(g, k) {
-      if (g[0].classList.contains("rmk")) return mk("div", "pvk", "").appendChild(inLang("p", "pvnote", k, part(g[0], k))).parentNode;
+      if (g[0].classList.contains("rmk")) return mk("div", "pvk", "").appendChild(inLang("p", "pvnote", k, note(g[0], k))).parentNode;
       var p = inLang("p", "pvpr", k, "");
       g.forEach(function (u) {
         linesOf(u, k).forEach(function (l) {
@@ -259,7 +271,7 @@ export function init() {
           td = mk("td");
         td.colSpan = 2;
         order.forEach(function (k, i) {
-          var h = part(x, k);
+          var h = cls === "pvnoterow" ? note(x, k) : part(x, k);
           if (!h) return;
           if (i && td.firstChild) td.appendChild(document.createTextNode(" · "));
           td.appendChild(inLang("span", "", k, h));
@@ -358,13 +370,17 @@ export function init() {
           nm.appendChild(x.cloneNode(true));
         });
         cov.appendChild(title("h3", "pvcat", part(nm, "mr"), part(nm, "en")));
-        var ol = mk("ol", "pvtoc");
-        g.secs.forEach(function (/** @type {HTMLElement} */ sec) {
+        // two texts a row, each row a list of its own set as one unbreakable box (.pvtr): Safari split a row whose
+        // title ran to two lines across two pages, whatever "break-inside: avoid" said
+        var rows = mk("div", "pvtocw"),
+          ol = null;
+        g.secs.forEach(function (/** @type {HTMLElement} */ sec, i) {
           var li = titleOf(sec, "li", "");
           li.setAttribute("data-sid", sec.id);
+          if (i % 2 === 0) ol = rows.appendChild(mk("ol", "pvtoc pvtr"));
           ol.appendChild(li);
         });
-        cov.appendChild(ol);
+        cov.appendChild(rows);
       });
       into.appendChild(cov);
     }
