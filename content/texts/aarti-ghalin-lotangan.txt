@@ -1,4 +1,4 @@
-id: ghalin-lotangan
+id: aarti-ghalin-lotangan
 title: घालीन लोटांगण
 title-en: Ghalin Lotangan
 category: aarti

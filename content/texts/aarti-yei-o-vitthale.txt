@@ -1,4 +1,4 @@
-id: yei-o-vitthale
+id: aarti-yei-o-vitthale
 title: विठ्ठलाची आरती
 title-en: Vitthal Aarti
 category: aarti

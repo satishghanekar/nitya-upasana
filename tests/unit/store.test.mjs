@@ -13,7 +13,7 @@ import { migratePrefs } from "../../js/store/migrate.js";
 
 const ENV = { desk: false, fs: 24 };
 const V13 = { sv: 6, fs: 30, fsu: 1, th: "dark", lang: "both", lead: "mr", l2: "en", ui: "mr", wake: 0, fnt: "classic" };
-const TICKS = { v: 1, profiles: { family: { date: "2026-10-18", done: { evening: ["sukhkarta"] } } } };
+const TICKS = { v: 1, profiles: { family: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta"] } } } };
 
 // a page load: open the database, then start as js/core/state.js does
 async function load(idb, saved = null, ticks = null) {
@@ -152,16 +152,16 @@ describe("the store", () => {
   test("ticks are per person, kept in their profile", async () => {
     await load(idb, null, null);
     const ticks = createTicks(store.ticksStorage(), undefined, () => store.active().id);
-    ticks.set("2026-10-18", "evening", "sukhkarta", true);
+    ticks.set("2026-10-18", "evening", "aarti-sukhkarta", true);
     const b = store.add({ name: "Baba" }).profile;
     store.switchTo(b.id, migratePrefs(null, ENV).prefs);
     expect(ticks.done("2026-10-18", "evening")).toEqual([]);
-    ticks.set("2026-10-18", "evening", "jai-ganesh-deva", true);
+    ticks.set("2026-10-18", "evening", "aarti-jai-ganesh-deva", true);
     store.switchTo(store.list()[0].id, migratePrefs(null, ENV).prefs);
-    expect(ticks.done("2026-10-18", "evening")).toEqual(["sukhkarta"]);
+    expect(ticks.done("2026-10-18", "evening")).toEqual(["aarti-sukhkarta"]);
     await store.settled();
     await load(idb, null, null);
-    expect(store.list().map((p) => p.checklist.done.evening)).toEqual([["sukhkarta"], ["jai-ganesh-deva"]]);
+    expect(store.list().map((p) => p.checklist.done.evening)).toEqual([["aarti-sukhkarta"], ["aarti-jai-ganesh-deva"]]);
   });
 
   test("backup → restore into a fresh database: every person, setting and tick the same", async () => {
@@ -195,7 +195,7 @@ describe("the store", () => {
     const lib = {
       added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }],
       renames: { aarti: { mr: "आरत्या", en: "Aartis" } },
-      moves: { "ghalin-lotangan": "bhajan" },
+      moves: { "aarti-ghalin-lotangan": "bhajan" },
     };
     await store.setLibrary(lib);
     // another person reading sees the same library

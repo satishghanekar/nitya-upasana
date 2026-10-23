@@ -1,4 +1,4 @@
-id: haachi-subodh
+id: ashtak-haachi-subodh
 title: हाचि सुबोध गुरूंचा
 title-en: Hachi Subodh Guruncha
 category: ashtak

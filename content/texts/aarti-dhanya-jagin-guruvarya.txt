@@ -1,4 +1,4 @@
-id: dhanya-jagin-guruvarya
+id: aarti-dhanya-jagin-guruvarya
 title: धन्य जगीं या गुरुवर्य हे मारुतिअवतार
 title-en: Dhanya Jagin Ya Guruvarya He Marutiavatar
 category: aarti

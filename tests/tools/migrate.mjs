@@ -22,17 +22,17 @@ const C = JSON.parse(JSON.stringify(win.CONTENT));
 
 // Readable ids (decision Q1) and categories (Q2), by today's piece id
 const IDS = {
-  p1: ["atharvashirsha", "vedic-chant"],
-  a1: ["sukhkarta", "aarti"],
-  a2: ["shendur-lal-chadhayo", "aarti"],
-  a3: ["durge-durghat-bhari", "aarti"],
-  a4: ["lavathavati-vikrala", "aarti"],
-  a5: ["trigunatmak-traimurti", "aarti"],
+  p1: ["vedic-chant-atharvashirsha", "vedic-chant"],
+  a1: ["aarti-sukhkarta", "aarti"],
+  a2: ["aarti-shendur-lal-chadhayo", "aarti"],
+  a3: ["aarti-durge-durghat-bhari", "aarti"],
+  a4: ["aarti-lavathavati-vikrala", "aarti"],
+  a5: ["aarti-trigunatmak-traimurti", "aarti"],
   a6: ["aarti-dnyanaraja", "aarti"],
-  a7: ["yei-o-vitthale", "aarti"],
-  a8: ["ghalin-lotangan", "aarti"],
-  a9: ["jai-ganesh-deva", "aarti"],
-  a10: ["jai-jagdish-hare", "aarti"],
+  a7: ["aarti-yei-o-vitthale", "aarti"],
+  a8: ["aarti-ghalin-lotangan", "aarti"],
+  a9: ["aarti-jai-ganesh-deva", "aarti"],
+  a10: ["aarti-jai-jagdish-hare", "aarti"],
 };
 const CATEGORIES = [
   { id: "vedic-chant", name: { mr: "वैदिक मंत्र", en: "Vedic Chant" }, order: 1 },

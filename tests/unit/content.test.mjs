@@ -67,12 +67,15 @@ describe("CONTENT from the text files", () => {
     expect(p.items.flatMap((i) => (i.lines || []).map((l) => l.l))).toEqual(["x.2", "x.3", "x.4"]);
   });
   test("a text missing from the files stops the build", () => {
-    expect(() => buildContent(lib, { ...files, sukhkarta: undefined })).toThrow("texts/sukhkarta.txt: not loaded");
+    expect(() => buildContent(lib, { ...files, "aarti-sukhkarta": undefined })).toThrow("texts/aarti-sukhkarta.txt: not loaded");
   });
 });
 
 describe("content checks", () => {
   const names = readdirSync(new URL("../../content/texts/", import.meta.url)).filter((f) => !f.startsWith("."));
+  test("every text's id, and so its file name, starts with its category", () => {
+    for (const t of lib.texts) expect(t.id.startsWith(t.category + "-"), t.id).toBe(true);
+  });
   test("library.json lists every file in content/texts/, once", () => {
     expect(lib.texts.map((t) => t.file).sort()).toEqual(names.map((f) => "texts/" + f).sort());
     expect(new Set(lib.texts.map((t) => t.id)).size).toBe(lib.texts.length);

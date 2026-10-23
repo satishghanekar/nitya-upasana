@@ -1,4 +1,4 @@
-id: sadguru-padukashtak
+id: ashtak-sadguru-padukashtak
 title: श्रीसद्गुरुपादुकाष्टक
 title-en: Shrisadgurupadukashtak
 category: ashtak

@@ -67,8 +67,8 @@ test("in the morning Home shows Thursday's Morning: the Atharvashirsha, with no 
   await expect(page.locator("#tdd .d1")).toHaveText("गुरुवार, १५ ऑक्टोबर २०२६");
   await expect(page.locator("#tdd .d2")).toHaveText("Thursday, 15 October 2026");
   await expect(rows(page)).toHaveCount(1);
-  await expect(rows(page).first().locator(".t1")).toHaveText(TITLE.atharvashirsha.title);
-  await expect(rows(page).first().locator(".t2")).toHaveText(TITLE.atharvashirsha.titleEn);
+  await expect(rows(page).first().locator(".t1")).toHaveText(TITLE["vedic-chant-atharvashirsha"].title);
+  await expect(rows(page).first().locator(".t2")).toHaveText(TITLE["vedic-chant-atharvashirsha"].titleEn);
   await expect(rows(page).first().locator(".ttg")).toHaveText("Sanskrit");
   await expect(page.locator("#tsn")).toHaveText("1 text");
   // no ticks (Satish, 2026-10-22)
@@ -185,7 +185,7 @@ test("in the morning, Next after the Atharvashirsha ends the session and returns
   await page.locator("#hm").click();
   await page.locator('#jl a[data-go="p1"]').click();
   const order = LIB.texts.map((t) => t.id);
-  await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: " + TITLE[order[order.indexOf("atharvashirsha") + 1]].titleEn);
+  await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: " + TITLE[order[order.indexOf("vedic-chant-atharvashirsha") + 1]].titleEn);
 });
 
 test("a text's title in the list opens it, in the session", async ({ page }) => {
@@ -313,7 +313,7 @@ test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ 
   await page.locator("#tmb").click();
   for (const [id, w] of [["#shb", "शेअर"], ["#hlpb", "मदत"]]) await expect(page.locator(id)).toHaveText(w, { useInnerText: true });
   await expect(page.locator("#tsn")).toHaveText("१० रचना");
-  await expect(rows(page).nth(1).locator(".t1")).toHaveText(TITLE["shendur-lal-chadhayo"].title);
+  await expect(rows(page).nth(1).locator(".t1")).toHaveText(TITLE["aarti-shendur-lal-chadhayo"].title);
 });
 
 test("Kannada letters: the titles in the list are shown in Kannada", async ({ page }) => {

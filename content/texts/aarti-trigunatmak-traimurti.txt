@@ -1,4 +1,4 @@
-id: trigunatmak-traimurti
+id: aarti-trigunatmak-traimurti
 title: दत्ताची आरती
 title-en: Dattatreya Aarti
 category: aarti

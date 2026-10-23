@@ -1,4 +1,4 @@
-id: shree-rudra
+id: vedic-chant-shree-rudra
 title: श्री रुद्रप्रश्नः
 title-en: Shree Rudra
 category: vedic-chant

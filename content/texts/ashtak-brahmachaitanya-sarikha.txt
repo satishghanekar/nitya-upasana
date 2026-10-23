@@ -1,4 +1,4 @@
-id: brahmachaitanya-sarikha
+id: ashtak-brahmachaitanya-sarikha
 title: श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला
 title-en: Shribrahmachaitanyasarikha Nahin Pahila
 category: ashtak

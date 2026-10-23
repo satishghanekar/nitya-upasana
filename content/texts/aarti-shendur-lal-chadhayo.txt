@@ -1,4 +1,4 @@
-id: shendur-lal-chadhayo
+id: aarti-shendur-lal-chadhayo
 title: गणपति जी की आरती
 title-en: Ganapati Ji ki Aarti
 category: aarti

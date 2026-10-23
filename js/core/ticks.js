@@ -7,7 +7,7 @@
 // with none, and the first tick of the day drops the day before's.
 //
 // The shape read and written: { "v": 1, "profiles": { "<profile id>": { "date": "2026-10-18", "done": { "evening":
-// ["sukhkarta", …] } } } }. Before profiles (version 1.3) it was kept in localStorage["nitya-ticks"] under one
+// ["aarti-sukhkarta", …] } } } }. Before profiles (version 1.3) it was kept in localStorage["nitya-ticks"] under one
 // "family" profile; the first visit after moves those ticks to the first profile (startPlan, js/store/profiles.js).
 
 export const TICKS_KEY = "nitya-ticks";
