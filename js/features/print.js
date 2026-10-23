@@ -90,6 +90,17 @@ export function init() {
     // Safari printed the space beside such a span so narrow that the last two words of a line ran together.
     /** @param {Element} el */
     function glue(el) {
+      // First the reading page's own spans around words go: Safari prints a space at the edge of a span next to
+      // nothing, so the words ran together (tested in Safari, Satish 2026-10-23: a span edge at a space glues the
+      // words, a no-break space does not). A word kept with its danda (.nb) and, in a Vedic paragraph, the
+      // preferred-break parts (.zs) are unwrapped; a run-on line's space (.brs) becomes a plain space.
+      [].forEach.call(el.querySelectorAll(".brs"), function (/** @type {Element} */ b) {
+        b.replaceWith(" ");
+      });
+      [].forEach.call(el.querySelectorAll(el.classList.contains("pvpr") ? ".nb, .zs" : ".nb"), function (/** @type {Element} */ x) {
+        x.replaceWith.apply(x, [].slice.call(x.childNodes));
+      });
+      el.normalize();
       var w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT),
         n;
       while ((n = w.nextNode()))
@@ -165,9 +176,9 @@ export function init() {
       return u.classList.contains("rftop") || (v && v.classList.contains("bold")) ? " pvbold" : u.classList.contains("rf") ? " pvrf" : "";
     }
 
-    // One language: a stanza (with what goes with it), each line of verse a line on paper, none indented (Satish,
-    // 2026-10-23). A row of the text's column (.pvcol): every stanza starts at the same left edge; the dhrupad, a
-    // closing line and the credit are centred over the column (css/15-print.css)
+    // One language: a stanza (with what goes with it), each line of verse a line on paper, centred, as on the reading
+    // page (Satish, 2026-10-23: so the dhrupad, its markers and every stanza share one centre). A row of the text's
+    // column (.pvcol)
     /** @param {HTMLElement[]} us @param {string} k */
     function verseBlock(us, k) {
       var row = mk("div", "pvk pvst"),
@@ -191,14 +202,6 @@ export function init() {
         if (st.firstChild) b.appendChild(st);
         if (rf.firstChild) b.appendChild(rf);
       });
-      // With a stanza in the block, what is centred (the dhrupad, its label and marker, a repeat) is centred over that
-      // stanza, in a box as wide as it (.pvw), not over the whole column: under a short stanza the dhrupad looked
-      // pushed right (Satish, 2026-10-23). A block without one (a closing line) stays centred over the column.
-      if (b.querySelector(":scope > .pvsz:not(.pvref):not(.pvrf):not(.pvbold):not(.pvdh)")) {
-        var w = mk("div", "pvw");
-        while (b.firstChild) w.appendChild(b.firstChild);
-        b.appendChild(w);
-      }
       return row;
     }
     // the paragraphs of a Vedic text: a new one at a stanza marked para, and a stanza said once (dh) on its own; a note
