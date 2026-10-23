@@ -42,7 +42,8 @@ export function init() {
           return;
         }
         szr.hidden = true;
-        pz = { d: dist(e) || 1, fs: P.fs };
+        // the words between the fingers stay between them as the text grows or shrinks
+        pz = { d: dist(e) || 1, fs: P.fs, at: anchorAt((e.touches[0].clientX + e.touches[1].clientX) / 2, (e.touches[0].clientY + e.touches[1].clientY) / 2) };
       }
     },
     { passive: false },
@@ -67,6 +68,7 @@ export function init() {
             pzF = requestAnimationFrame(function () {
               pzF = 0;
               root.style.setProperty("--fs", P.fs + "px");
+              if (pz) keepAt(pz.at);
             });
         }
         showSz();
@@ -79,7 +81,15 @@ export function init() {
     function (e) {
       if (e.touches.length < 2) unzoom();
       if (pz && e.touches.length < 2) {
+        var at = pz.at;
         pz = null;
+        // (and once the last size is in, and again once anything that follows it has settled)
+        requestAnimationFrame(function () {
+          keepAt(at);
+        });
+        setTimeout(function () {
+          keepAt(at);
+        }, 300);
         change({}); // the size the fingers set (written to P as they moved)
         szSet();
         // Offer a one-tap way back to the default size for a few seconds (Settings has its own reset)
@@ -150,6 +160,67 @@ export function init() {
       setJ(false);
     }
   });
+}
+
+// A place in the text under a point on the screen, to keep there while the text is resized: the letter there (or, between
+// lines, the element there and how far down it the point is)
+/** @param {number} x @param {number} y */
+function anchorAt(x, y) {
+  var r = null,
+    d = /** @type {any} */ (document);
+  try {
+    if (d.caretRangeFromPoint) r = d.caretRangeFromPoint(x, y);
+    else if (d.caretPositionFromPoint) {
+      var c = d.caretPositionFromPoint(x, y);
+      if (c) {
+        r = document.createRange();
+        r.setStart(c.offsetNode, c.offset);
+      }
+    }
+  } catch (e) {
+    r = null;
+  }
+  if (r && r.startContainer.nodeType === 3) {
+    var n = /** @type {Text} */ (r.startContainer),
+      o = Math.min(r.startOffset, n.data.length - 1);
+    if (o >= 0) {
+      r.setStart(n, o);
+      r.setEnd(n, o + 1);
+      var b = r.getBoundingClientRect();
+      if (b.height) return { r: r, t: b.top };
+    }
+  }
+  var el = document.elementFromPoint(x, y);
+  if (!el) return null;
+  var eb = el.getBoundingClientRect();
+  return { el: el, y: y, f: eb.height ? (y - eb.top) / eb.height : 0 };
+}
+// Scroll so that place is back where it was on the screen (the page, or the list it is in when that scrolls itself)
+/** @param {any} a */
+function keepAt(a) {
+  if (!a) return;
+  var dy, node;
+  if (a.r) {
+    node = a.r.startContainer;
+    if (!node.isConnected) return;
+    var b = a.r.getBoundingClientRect();
+    if (!b.height) return;
+    dy = b.top - a.t;
+  } else {
+    node = a.el;
+    if (!node.isConnected) return;
+    var e = a.el.getBoundingClientRect();
+    dy = e.top + a.f * e.height - a.y;
+  }
+  if (Math.abs(dy) < 1) return;
+  for (var x = node.parentElement; x && x !== document.body && x !== document.documentElement; x = x.parentElement) {
+    var oy = getComputedStyle(x).overflowY;
+    if ((oy === "auto" || oy === "scroll") && x.scrollHeight > x.clientHeight) {
+      x.scrollTop += dy;
+      return;
+    }
+  }
+  window.scrollBy(0, dy);
 }
 
 function dist(e) {
