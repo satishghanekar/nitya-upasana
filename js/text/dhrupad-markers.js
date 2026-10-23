@@ -1,10 +1,9 @@
-// Tappable dhrupad markers (Aartis 1–5, 7 and 9)
+// Tappable dhrupad markers (every text with refrain: every-verse)
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { topEdge } from "../features/bottom-bar.js";
 import { onPiece } from "../core/page.js";
 
-var RMKTAP;
 // The open bubble, { m: its marker, el: the bubble }, or null (read by js/features/bottom-bar.js)
 /** @type {any} */
 export var rmkPop = null;
@@ -12,7 +11,6 @@ export var rmkPop = null;
 export function init() {
   // Tapping ↻ ध्रुपद shows the dhrupad in a bubble just above the marker, over the stanza just sung,
   // so the next stanza stays clear. Tap again, tap elsewhere or press Escape to close; it also closes by itself.
-  RMKTAP = ["a1", "a2", "a3", "a4", "a5", "a7", "a9"];
   rmkPop = null;
   onPiece(markTappable);
   document.addEventListener("click", function (e) {
@@ -40,14 +38,14 @@ export function init() {
 
 // The tappable markers in the pieces inside r (the page, or a printout's copy: js/print/compose.js, which keeps them
 // as the page has them, so the printout is laid out the same)
+// Every dhrupad marker (not a [note] of the text's own, .nt) in a piece with the dhrupad at the top (.rftop)
 export function markTappable(/** @type {ParentNode} */ r) {
-  RMKTAP.forEach(function (id) {
-    [].forEach.call(r.querySelectorAll("#" + id + " .items > .rmk"), function (m) {
-      m.classList.add("rmkt");
-      m.setAttribute("role", "button");
-      m.setAttribute("tabindex", "0");
-      m.setAttribute("aria-expanded", "false");
-    });
+  [].forEach.call(r.querySelectorAll(".ash .items > .rmk:not(.nt)"), function (m) {
+    if (!m.closest("section.ash").querySelector(".rftop .verse")) return;
+    m.classList.add("rmkt");
+    m.setAttribute("role", "button");
+    m.setAttribute("tabindex", "0");
+    m.setAttribute("aria-expanded", "false");
   });
 }
 

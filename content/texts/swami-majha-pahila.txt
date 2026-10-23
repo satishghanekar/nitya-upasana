@@ -1,88 +1,64 @@
 id: swami-majha-pahila
 title: स्वामी माझा पाहिला
-title-en: Svaamee maajhaa paahilaa
+title-en: Svami Majha Pahila
 category: ashtak
 language: mr
-refrain: always
+refrain: every-verse
 ---
 [dhrupad]
 माणगंगातीरीं प्रभु हा गोंदावलें पुरीं ।
-Maanagangaateereen prabhu haa gondaavalen pureen |
+Managangatirin Prabhu Ha Gondavalen Purin |
 माणगंगातीरीं प्रभु हा गोंदावलें पुरीं ।
-Maanagangaateereen prabhu haa gondaavalen pureen |
+Managangatirin Prabhu Ha Gondavalen Purin |
 स्वामी माझा पाहिला या माणगंगातीरीं ।
-Svaamee maajhaa paahilaa yaa maanagangaateereen |
-सद्‌गुरु तो देखिला या माणगंगातीरीं ॥ ध्रु० ॥
-Sadguru to dekhilaa yaa maanagangaateereen || dhru. ||
-
-[dhrupad]
-स्वामी माझा पाहिला या माणगंगातीरीं ।
-Svaamee maajhaa paahilaa yaa maanagangaateereen |
-सद्‌गुरु तो देखिला या माणगंगातीरीं ॥
-Sadguru to dekhilaa yaa maanagangaateereen ||
+Svami Majha Pahila Ya Managangatirin |
+सद्‌गुरु तो देखिला या माणगंगातीरीं ॥ धृ. ॥
+Sadguru To Dekhila Ya Managangatirin || Dhr. ||
 
 [1]
 ब्रह्मचैतन्याचा गाभा । ¦प्राप्त नोहे कमलनाभा ।
-Brahmachaitanyaachaa gaabhaa | praapta nohe kamalanaabhaa |
+Brahmachaitanyacha Gabha | Prapta Nohe Kamalanabha |
 भोळ्या भाविक भक्तलाभा । ¦भोळ्या भाविक भक्तलाभा ।
-Bholyaa bhaavik bhaktalaabhaa | bholyaa bhaavik bhaktalaabhaa |
+Bholya Bhavik Bhaktalabha | Bholya Bhavik Bhaktalabha |
 धावुनिया आला या माणगंगातीरीं ॥
-Dhaavuniyaa aalaa yaa maanagangaateereen ||
-[refrain]
-॥ ध्रु ॥
-|| Dhru ||
+Dhavuniya Aala Ya Managangatirin ||
 
 [2]
 गौरवर्ण कांति । ¦मूर्तिमंत शांति ।
-Gauravarna kaanti | moortimant shaanti |
+Gauravarna Kanti | Murtimant Shanti |
 दया क्षमा शोभे चित्तीं । ¦दया क्षमा शोभे चित्तीं ।
-Dayaa kshamaa shobhe chitteen | dayaa kshamaa shobhe chitteen |
+Daya Kshama Shobhe Chittin | Daya Kshama Shobhe Chittin |
 रामनामीं रंगला या माणगंगातीरीं ॥
-Raamanaameen rangalaa yaa maanagangaateereen ||
-[refrain]
-॥ ध्रु ॥
-|| Dhru ||
+Ramanamin Rangala Ya Managangatirin ||
 
 [3]
 केशरी त्रिपुण्ड्र भाळा । ¦गळां तुळशीच्या माळा ।
-Kesharee tripundra bhaalaa | galaan tulasheechyaa maalaa |
+Keshari Tripundra Bhala | Galan Tulashichya Mala |
 कफनी टोपी शोभे ज्याला । ¦कफनी टोपी शोभे ज्याला ।
-Kaphanee topee shobhe jyaalaa | kaphanee topee shobhe jyaalaa |
+Kaphani Topi Shobhe Jyala | Kaphani Topi Shobhe Jyala |
 पादुका पायांला या माणगंगातीरीं ॥
-Paadukaa paayaanlaa yaa maanagangaateereen ||
-[refrain]
-॥ ध्रु ॥
-|| Dhru ||
+Paduka Payanla Ya Managangatirin ||
 
 [4]
 गाई-ब्राह्मण-अनाथांचा । ¦कैवारी तो दीनांचा ।
-Gaaee-braahman-anaathaanchaa | kaivaaree to deenaanchaa |
+Gai-Brahman-Anathancha | Kaivari To Dinancha |
 विश्वास या नामाचा । ¦विश्वास या नामाचा ।
-Vishvaas yaa naamaachaa | vishvaas yaa naamaachaa |
+Vishvas Ya Namacha | Vishvas Ya Namacha |
 जगीं वाढविला या माणगंगातीरीं ॥
-Jageen vaadhavilaa yaa maanagangaateereen ||
-[refrain]
-॥ ध्रु ॥
-|| Dhru ||
+Jagin Vadhavila Ya Managangatirin ||
 
 [5]
 भवभार फार झाला । ¦जीव तळमळूं लागला ।
-Bhavabhaar phaar jhaalaa | jeev talamaloon laagalaa |
+Bhavabhar Phar Jhala | Jiv Talamalun Lagala |
 सगुणरूपें धावत आला । ¦सगुणरूपें धावत आला ।
-Sagunaroopen dhaavat aalaa | sagunaroopen dhaavat aalaa |
+Sagunarupen Dhavat Aala | Sagunarupen Dhavat Aala |
 अभयवर दिला या माणगंगातीरीं ॥
-Abhayavar dilaa yaa maanagangaateereen ||
-[refrain]
-॥ ध्रु ॥
-|| Dhru ||
+Abhayavar Dila Ya Managangatirin ||
 
 [6]
 आनंदसागर दास दीन । ¦पदीं घेतसे लोळण ।
-Aanandasaagar daas deen | padeen ghetase lolan |
+Aanandasagar Das Din | Padin Ghetase Lolan |
 तुझें रूप हें सगुण । ¦तुझें रूप हें सगुण ।
-Tujhen roop hen sagun | tujhen roop hen sagun |
+Tujhen Rup Hen Sagun | Tujhen Rup Hen Sagun |
 सदा राहो डोळा या माणगंगातीरीं ॥
-Sadaa raaho dolaa yaa maanagangaateereen ||
-[refrain]
-॥ ध्रु ॥
-|| Dhru ||
+Sada Raho Dola Ya Managangatirin ||

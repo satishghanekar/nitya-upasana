@@ -11,7 +11,7 @@
    - Gentle fade-in on scroll (class added and removed by the script)
    - Next Sankashti card (home page)
    - Desktop: the left menu's Home link
-   - Tappable dhrupad marker (Aartis 1–5, 7 and 9): sits right under the stanza; tap shows the dhrupad above
+   - Tappable dhrupad marker (every text with refrain: every-verse): sits right under the stanza; tap shows the dhrupad above
    - Aarti 6: one-line dhrupad, always shown at the end of each stanza (no top box, no ↻ markers)
    - Repeated dhrupad (repeat mode, and Aarti 6's always-shown line): lighter, smaller, thin gold rule; the …
 */
@@ -154,7 +154,7 @@
 /* ==== Next Sankashti card (home page) ==== */
 
 
-/* ==== Tappable dhrupad marker (Aartis 1–5, 7 and 9): sits right under the stanza; tap shows the dhrupad above ==== */
+/* ==== Tappable dhrupad marker (every text with refrain: every-verse): sits right under the stanza; tap shows the dhrupad above ==== */
 @media screen {
   [data-ref="1"] .items > .rmk.rmkt {
     position: relative;
