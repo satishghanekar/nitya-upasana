@@ -8,7 +8,7 @@
 //   each category numbered from 1 as the Library lists them, the texts in their order in library.json;
 // - the language tag (मराठी Marathi) from library.json's "languages";
 // - with "refrain: every-verse", the dhrupad label at the top and, after every stanza, the "↻ ध्रुपद" note and
-//   the dhrupad again (library.json's "refrain");
+//   the dhrupad again (library.json's "refrain"); [once] lines and [note]s before the dhrupad go above it (lead);
 // - line ids: the text's "line-ids" prefix and a count of the lines as shown (repeats included);
 // - the credit links: [name](address) becomes a link that opens in a new tab, with its label and ↗.
 
@@ -26,7 +26,8 @@ import { parseText, toHtml } from "./format.js";
  *   rmk: a small line between blocks: the dhrupad's marker (↻ ध्रुपद), or, with nt, a [note] from the text file (Phalashruti,
  *   ↻ ३ वेळा), which is part of the text and always shown, whatever the dhrupad setting
  * @typedef {{ id: string, text: string, lang?: string, cls?: string, prose?: true, no: Pair, title: Pair, tag: Pair,
- *   refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string }} Piece
+ *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string }} Piece
+ *   lead: what comes before the dhrupad at the top (refrain), [once] lines and [note]s, shown above it
  * @typedef {{ ui: Library["ui"], wiki: Library["wiki"], categories: { id: string, name: Pair, pieces: Piece[] }[] }} Content
  */
 
@@ -109,9 +110,13 @@ export function toPiece(t, n, lib) {
   var items = [];
   var blocks = t.blocks;
   if (t.refrain === "every-verse") {
-    var dh = blocks[0],
-      rep = blocks[1] && blocks[1].kind === "dhrupad-repeated" ? blocks[1] : dh;
-    blocks = blocks.slice(rep === dh ? 1 : 2);
+    // the dhrupad is the first block that is not [once] lines or a [note] (js/text/format.js checks there is one)
+    var d = 0;
+    while (blocks[d].kind === "once" || blocks[d].kind === "note") d++;
+    var lead = blocks.slice(0, d),
+      dh = blocks[d],
+      rep = blocks[d + 1] && blocks[d + 1].kind === "dhrupad-repeated" ? blocks[d + 1] : dh;
+    blocks = blocks.slice(rep === dh ? d + 1 : d + 2);
     p.refrain = {
       label: pair(lib.refrain.label),
       lines: dh.lines.map(function (x) {
@@ -127,9 +132,15 @@ export function toPiece(t, n, lib) {
         }),
       });
     };
+    // a [note] of the text's own, or [once] lines (shown as a line said once): where they stand, no dhrupad after them
+    /** @param {import("./format.js").Block} b @returns {Item} */
+    var own = function (b) {
+      return b.kind === "note" ? { rmk: pair(/** @type {Pair} */ (b.note)), nt: true } : { kind: "dh", lines: b.lines.map(line) };
+    };
+    if (lead.length) p.lead = lead.map(own);
     if (t.refrainFirst) again();
     blocks.forEach(function (b) {
-      if (b.kind === "note") items.push({ rmk: pair(/** @type {Pair} */ (b.note)), nt: true });
+      if (b.kind === "note" || b.kind === "once") items.push(own(b));
       else {
         items.push(b.para ? { para: true, lines: b.lines.map(line) } : { lines: b.lines.map(line) });
         again();

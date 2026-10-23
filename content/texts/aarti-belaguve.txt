@@ -5,6 +5,10 @@ category: aarti
 language: mr
 refrain: every-verse
 ---
+[once]
+॥ श्रीराम समर्थ ॥
+|| Shriram Samartha ||
+
 [dhrupad]
 आरती बेळगुवे सद्‌गुरु श्रीब्रह्मचैतन्या ।
 Aarti Belaguve Sadguru Shribrahmachaitanya |
