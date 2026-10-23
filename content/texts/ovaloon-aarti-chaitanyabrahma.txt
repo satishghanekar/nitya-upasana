@@ -1,36 +1,36 @@
 id: ovaloon-aarti-chaitanyabrahma
 title: ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा
-title-en: Ovaaloon aaratee sadguru chaitanyabrahmaa
+title-en: Ovalun Aarti Sadguru Chaitanyabrahma
 category: aarti
 language: mr
 refrain: every-verse
 ---
 [dhrupad]
 ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा ।
-Ovaaloon aaratee sadguru chaitanyabrahmaa |
+Ovalun Aarti Sadguru Chaitanyabrahma |
 निगमागम वर्णितां न कळे अगाध महिमा ॥ धृ. ॥
-Nigamaagam varnitaan na kale agaadh mahimaa || dhru. ||
+Nigamagam Varnitan Na Kale Agadh Mahima || Dhr. ||
 
 [1]
 निर्गुण निराकार तेंचि साकार झालें ।
-Nirgun niraakaar tenchi saakaar jhaalen |
+Nirgun Nirakar Tenchi Sakar Jhalen |
 जगदुद्धारासाठीं अगाध चरित्र केलें ।
-Jagaduddhaaraasaatheen agaadh charitra kelen |
+Jagaduddharasathin Agadh Charitra Kelen |
 नामीं रूपीं मिळुनी असंख्य जीव उद्धरिले ॥
-Naameen roopeen milunee asankhya jeev uddharile ||
+Namin Rupin Miluni Asankhya Jiv Uddharile ||
 
 [2]
 होतां दृष्टादृष्टी अवघी सृष्टी चाकाटे ।
-Hotaan drushtaadrushtee avaghee srushtee chaakaate |
+Hotan Drushtadrushti Avaghi Srushti Chakate |
 मोडुनि नास्तिकबुद्धी लावी भक्तीच्या वाटे ।
-Moduni naastikabuddhee laavee bhakteechyaa vaate |
+Moduni Nastikabuddhi Lavi Bhaktichya Vate |
 श्रीरामाच्या नामीं असंख्य समुदाय लिगटे ॥
-Shreeraamaachyaa naameen asankhya samudaay ligate ||
+Shriramachya Namin Asankhya Samuday Ligate ||
 
 [3]
 अद्‌भुत कलिप्राबल्यामाजीं भक्ति वाढविली ।
-Adbhut kalipraabalyaamaajeen bhakti vaadhavilee |
+Adbhut Kaliprabalyamajin Bhakti Vadhavili |
 स्थापुनि मूर्तिपूजा अवघी भ्रांति निरसीली ।
-Sthaapuni moortipoojaa avaghee bhraanti niraseelee |
+Sthapuni Murtipuja Avaghi Bhranti Nirasili |
 सच्चिदानंदमूर्ति डोळाभरि म्यां पाहिली ॥
-Sachchidaanandamoorti dolaabhari myaan paahilee ||
+Sachchidanandamurti Dolabhari Myan Pahili ||

@@ -123,7 +123,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 | `legacy-id` | Only the first eleven texts have one (`a1`, `p1`, …): their id on the page and in old links. New texts leave it out. |
 | `line-ids` | What each line's id starts with, for the same eleven texts (`s1l`: the lines are `s1l1`, `s1l2`, …). Without it, the `id` and a dot (`ashtak-monday.1`). |
 | `line-id-exceptions` | Only the Vitthal Aarti, whose 4th line has always been `s7l4r`: `s7l4=s7l4r`. |
-| `refrain` | `every-verse`: the `[dhrupad]` is shown once at the top, and after every stanza the app adds the "↻ ध्रुपद" note and the dhrupad again (when the reader picks "after every verse"). `always`: the refrain lines are written inside the stanzas and always shown (the Dnyaneshwar Aarti). Leave it out for none. |
+| `refrain` | `every-verse`: the `[dhrupad]` is shown once at the top, and after every stanza the app adds the "↻ ध्रुपद" note and the dhrupad again (when the reader picks "after every verse"; with "once", a tap on the note shows the dhrupad). Every aarti and ashtak with a dhrupad uses it. `always`: the refrain lines are written inside the stanzas and always shown (no text uses it now). Leave it out for none. |
 | `refrain-before-first` | `yes` when the dhrupad is also sung before the first stanza (Vitthal Aarti, Jai Ganesh Deva). |
 | `stanza-numbers` | `as-written`: the stanza numbers (॥ १ ॥) are typed in the text and the app adds none (ashtaks whose numbers restart, or are written differently in English). |
 | `layout` | `prose`: a Vedic chant (Shree Rudra, the Atharvashirsha, the Purusha Suktam). In one language it runs on as paragraphs, on screen and in print, and the Best print font uses Tiro Devanagari Sanskrit for it. |

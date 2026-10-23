@@ -39,7 +39,7 @@ There is no build step: the browser loads these files as they are.
 | `features/vedic-calendar.js` | The Vedic calendar: the line on Home (`#pan`: month, paksha, tithi, nakshatra, Shaka year, samvatsara, sunrise, sunset, place; today only, worked out just after the page shows) and the calendar page it opens (`#cal`, like the Library: Back, the phone's Back, Escape): the day card and the month as a table of day buttons (arrow keys, Page Up / Down); a month is worked out only when shown. Festivals (`core/festivals.js`): a short label on the day, a tag and a festival row in the day card, and on Home on the day only one line (`#fst`, "Today: Dasara" / "आज दसरा"), in the reading languages. Place from `skLoc()` (`features/sankashti.js`) |
 | `core/routine.js` | Which texts a session has on a weekday (the person's routine, else `content/routines.json`), the week row's days, the step to the next text of a session; and the routine builder's rules: cleaning a routine read back (`cleanRoutine`), same every day / by weekday (`setMode`), `copyDays`, `setList`, `moveItem`, `addTexts`, `removeText` (pure functions, unit-tested in `tests/unit/today.test.mjs` and `tests/unit/routine.test.mjs`; no `init()`) |
 | `core/ticks.js` | A profile's `checklist` (ticks by day and session), still read, kept and carried in backups; Home no longer shows or sets ticks (pure, unit-tested; no `init()`) |
-| `text/dhrupad-markers.js` | Tappable dhrupad markers (Aartis 1–5, 7 and 9) |
+| `text/dhrupad-markers.js` | Tappable dhrupad markers (every text with refrain: every-verse) |
 | `text/stanza-numbers.js` | Stanza numbers |
 | `text/line-breaks.js` | Preferred line breaks |
 | `text/autofit.js` | Auto-fit text size |

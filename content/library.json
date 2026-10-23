@@ -97,7 +97,7 @@
    "titleEn": "Dnyaneshwar Aarti",
    "category": "aarti",
    "language": "mr",
-   "lines": 12
+   "lines": 9
   },
   {
    "id": "yei-o-vitthale",
@@ -139,7 +139,7 @@
    "id": "jaydeva-jaydeva-samartha",
    "file": "texts/jaydeva-jaydeva-samartha.txt",
    "title": "श्रीमहाराजांची आरती",
-   "titleEn": "Shreemahaaraajaanchee aaratee",
+   "titleEn": "Shrimaharajanchi Aarti",
    "category": "aarti",
    "language": "mr",
    "lines": 14
@@ -148,7 +148,7 @@
    "id": "jay-jay-aarti-shrigururaya",
    "file": "texts/jay-jay-aarti-shrigururaya.txt",
    "title": "आरती श्रीमहाराजांची",
-   "titleEn": "Aaratee shreemahaaraajaanchee",
+   "titleEn": "Aarti Shrimaharajanchi",
    "category": "aarti",
    "language": "mr",
    "lines": 8
@@ -157,7 +157,7 @@
    "id": "ovaloon-aarti-chaitanyabrahma",
    "file": "texts/ovaloon-aarti-chaitanyabrahma.txt",
    "title": "ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा",
-   "titleEn": "Ovaaloon aaratee sadguru chaitanyabrahmaa",
+   "titleEn": "Ovalun Aarti Sadguru Chaitanyabrahma",
    "category": "aarti",
    "language": "mr",
    "lines": 11
@@ -165,8 +165,8 @@
   {
    "id": "aarti-kariton-guruvar",
    "file": "texts/aarti-kariton-guruvar.txt",
-   "title": "आरति करितों गुरुवर",
-   "titleEn": "Aarati kariton guruvar",
+   "title": "आरती करितों गुरुवर",
+   "titleEn": "Aarti Kariton Guruvar",
    "category": "aarti",
    "language": "mr",
    "lines": 11
@@ -175,7 +175,7 @@
    "id": "dhanya-jagin-guruvarya",
    "file": "texts/dhanya-jagin-guruvarya.txt",
    "title": "धन्य जगीं या गुरुवर्य हे मारुतिअवतार",
-   "titleEn": "Dhanya jageen yaa guruvarya he maarutiavataar",
+   "titleEn": "Dhanya Jagin Ya Guruvarya He Marutiavatar",
    "category": "aarti",
    "language": "mr",
    "lines": 18
@@ -183,17 +183,17 @@
   {
    "id": "aarti-belaguve",
    "file": "texts/aarti-belaguve.txt",
-   "title": "आरति बेळगुवे",
-   "titleEn": "Aarati belaguve",
+   "title": "आरती बेळगुवे",
+   "titleEn": "Aarti Belaguve",
    "category": "aarti",
    "language": "mr",
-   "lines": 18
+   "lines": 11
   },
   {
    "id": "svastha-karin-shayan",
    "file": "texts/svastha-karin-shayan.txt",
    "title": "स्वस्थ करीं शयन प्रभो मंचकावरी",
-   "titleEn": "Svastha kareen shayan prabho manchakaavaree",
+   "titleEn": "Svastha Karin Shayan Prabho Manchakavari",
    "category": "aarti",
    "language": "mr",
    "lines": 11
@@ -202,16 +202,16 @@
    "id": "ovaloo-sapreme-aarti",
    "file": "texts/ovaloo-sapreme-aarti.txt",
    "title": "आरती श्री नानामहाराजांची",
-   "titleEn": "Aaratee shree naanaamahaaraajaanchee",
+   "titleEn": "Aarti Shri Nana Maharajanchi",
    "category": "aarti",
    "language": "mr",
-   "lines": 28
+   "lines": 18
   },
   {
    "id": "sadguru-padukashtak",
    "file": "texts/sadguru-padukashtak.txt",
    "title": "श्रीसद्गुरुपादुकाष्टक",
-   "titleEn": "Shreesadgurupaadukaashtak",
+   "titleEn": "Shrisadgurupadukashtak",
    "category": "ashtak",
    "language": "mr",
    "lines": 41
@@ -220,7 +220,7 @@
    "id": "ananyata-maj-ghado",
    "file": "texts/ananyata-maj-ghado.txt",
    "title": "अनन्यता मज घडो स्वानंदरूपीं",
-   "titleEn": "Ananyataa maj ghado svaanandaroopeen",
+   "titleEn": "Ananyata Maj Ghado Svanandarupin",
    "category": "ashtak",
    "language": "mr",
    "lines": 103
@@ -229,7 +229,7 @@
    "id": "anudin-anutapen",
    "file": "texts/anudin-anutapen.txt",
    "title": "अनुदिन अनुतापें तापलों",
-   "titleEn": "Anudin anutaapen taapalon",
+   "titleEn": "Anudin Anutapen Tapalon",
    "category": "ashtak",
    "language": "mr",
    "lines": 60
@@ -238,7 +238,7 @@
    "id": "ashtak-monday",
    "file": "texts/ashtak-monday.txt",
    "title": "सोमवार – नसे भक्ति ना",
-   "titleEn": "Monday – Nase bhakti naa",
+   "titleEn": "Monday – Nase Bhakti Na",
    "category": "ashtak",
    "language": "mr",
    "lines": 24
@@ -247,7 +247,7 @@
    "id": "ashtak-tuesday",
    "file": "texts/ashtak-tuesday.txt",
    "title": "मंगळवार – उदासीन हे वृत्ति",
-   "titleEn": "Tuesday – Udaaseen he vrutti",
+   "titleEn": "Tuesday – Udasin He Vrutti",
    "category": "ashtak",
    "language": "mr",
    "lines": 36
@@ -256,7 +256,7 @@
    "id": "ashtak-wednesday",
    "file": "texts/ashtak-wednesday.txt",
    "title": "बुधवार – युक्ति नाहीं बुद्धि",
-   "titleEn": "Wednesday – Yukti naaheen buddhi",
+   "titleEn": "Wednesday – Yukti Nahin Buddhi",
    "category": "ashtak",
    "language": "mr",
    "lines": 36
@@ -265,7 +265,7 @@
    "id": "ashtak-thursday",
    "file": "texts/ashtak-thursday.txt",
    "title": "गुरुवार – समाधान साधूजनाचेनि योगें",
-   "titleEn": "Thursday – Samaadhaan saadhoojanaacheni yogen",
+   "titleEn": "Thursday – Samadhan Sadhujanacheni Yogen",
    "category": "ashtak",
    "language": "mr",
    "lines": 40
@@ -274,7 +274,7 @@
    "id": "ashtak-friday",
    "file": "texts/ashtak-friday.txt",
    "title": "शुक्रवार – उदासीन हा काळ",
-   "titleEn": "Friday – Udaaseen haa kaal",
+   "titleEn": "Friday – Udasin Ha Kal",
    "category": "ashtak",
    "language": "mr",
    "lines": 16
@@ -283,7 +283,7 @@
    "id": "ashtak-saturday",
    "file": "texts/ashtak-saturday.txt",
    "title": "शनिवार – तुझिया वियोगें जीवित्व",
-   "titleEn": "Saturday – Tujhiyaa viyogen jeevitva",
+   "titleEn": "Saturday – Tujhiya Viyogen Jivitva",
    "category": "ashtak",
    "language": "mr",
    "lines": 20
@@ -292,7 +292,7 @@
    "id": "ashtak-sunday",
    "file": "texts/ashtak-sunday.txt",
    "title": "रविवार – असंख्यात ते भक्त",
-   "titleEn": "Sunday – Asankhyaat te bhakta",
+   "titleEn": "Sunday – Asankhyat Te Bhakta",
    "category": "ashtak",
    "language": "mr",
    "lines": 32
@@ -301,7 +301,7 @@
    "id": "haachi-subodh",
    "file": "texts/haachi-subodh.txt",
    "title": "हाचि सुबोध गुरूंचा",
-   "titleEn": "Haachi subodh guroonchaa",
+   "titleEn": "Hachi Subodh Guruncha",
    "category": "ashtak",
    "language": "mr",
    "lines": 28
@@ -310,7 +310,7 @@
    "id": "brahmachaitanya-sarikha",
    "file": "texts/brahmachaitanya-sarikha.txt",
    "title": "श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला",
-   "titleEn": "Shreebrahmachaitanyaasaarikhaa naaheen paahilaa",
+   "titleEn": "Shribrahmachaitanyasarikha Nahin Pahila",
    "category": "ashtak",
    "language": "mr",
    "lines": 19
@@ -319,10 +319,10 @@
    "id": "swami-majha-pahila",
    "file": "texts/swami-majha-pahila.txt",
    "title": "स्वामी माझा पाहिला",
-   "titleEn": "Svaamee maajhaa paahilaa",
+   "titleEn": "Svami Majha Pahila",
    "category": "ashtak",
    "language": "mr",
-   "lines": 30
+   "lines": 22
   }
  ],
  "pageLanguage": "mr",
