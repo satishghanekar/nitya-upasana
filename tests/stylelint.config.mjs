@@ -23,6 +23,7 @@ export default {
           // progressive enhancement only: where unsupported the rule is skipped and the layout still works
           "css-has",
           "css-container-queries",
+          "css-container-query-units",
           "css-content-visibility",
           "css-text-wrap-balance",
           // vendor-prefixed duplicates are present where needed

@@ -5,7 +5,7 @@ import { root } from "../core/page.js";
 import { P, change, dfs } from "../core/state.js";
 import { FSA } from "../text/autofit.js";
 import { pn } from "../core/apply.js";
-import { apply } from "./bars.js";
+import { apply, fsuMark } from "./bars.js";
 import { fsTap, szSet } from "./settings-panel.js";
 import { setJ, setP } from "./overlays.js";
 
@@ -64,6 +64,7 @@ export function init() {
         if (v !== P.fs) {
           P.fs = v;
           P.fsu = 1;
+          fsuMark();
           if (!pzF)
             pzF = requestAnimationFrame(function () {
               pzF = 0;
@@ -278,6 +279,7 @@ function deskSz(v, fsu) {
   if (!pn.hidden) return fsTap(v, fsu);
   change({ fsu: fsu, fs: fsu ? v : dfs() }, function () {
     if (!fsu) return apply();
+    fsuMark();
     if (!pzF)
       pzF = requestAnimationFrame(function () {
         pzF = 0;

@@ -171,11 +171,13 @@ export function init() {
       return u.classList.contains("rftop") || (v && v.classList.contains("bold")) ? " pvbold" : u.classList.contains("rf") ? " pvrf" : "";
     }
 
-    // One language: a block of stanzas, each line of verse a line on paper (a line too long for the page wraps, the
-    // rest of it indented)
+    // One language: a stanza (with what goes with it), each line of verse a line on paper (a line too long for the page
+    // wraps, the rest of it indented). A row of the text's column (.pvcol): every stanza starts at the same left edge
     /** @param {HTMLElement[]} us @param {string} k */
     function verseBlock(us, k) {
-      var b = mk("div", "pvk pvst");
+      var row = mk("div", "pvk pvst"),
+        b = mk("div", "pvsc");
+      row.appendChild(b);
       us.forEach(function (u) {
         if (u.classList.contains("rmk")) return b.appendChild(inLang("p", "pvnote", k, part(u, k)));
         var lab = u.querySelector(".lab");
@@ -188,7 +190,7 @@ export function init() {
         });
         if (st.firstChild) b.appendChild(st);
       });
-      return b;
+      return row;
     }
     // the paragraphs of a Vedic text: a new one at a stanza marked para, and a stanza said once (dh) on its own; a note
     // of the text's own (फलश्रुति) between them
@@ -454,14 +456,24 @@ export function init() {
           ).forEach(function (g) {
             box.appendChild(side ? sideBlock(g, !g[0].classList.contains("rmk")) : proseBlock(g, k));
           });
-        else
+        else if (side)
           group(ps).forEach(function (g) {
-            box.appendChild(side ? sideBlock(g, false) : verseBlock(g, k));
+            box.appendChild(sideBlock(g, false));
           });
+        else {
+          // one column of stanzas, centred on the page as wide as its widest stanza (a table: the browser sizes it, and
+          // breaks pages between its rows, never inside one)
+          var col = mk("div", "pvcol");
+          group(ps).forEach(function (g) {
+            col.appendChild(verseBlock(g, k));
+          });
+          box.appendChild(col);
+        }
         var cr = /** @type {HTMLElement | null} */ (sec.querySelector(".cr"));
         if (cr) {
           // the author line in the language printed (with both, the main one's), as plain text: its Wikipedia link is
-          // for the screen. Inside the last block, so it never lands alone at the top of a page
+          // for the screen. Inside the last block, so it never lands alone at the top of a page (in one language,
+          // after the column, kept with it: inside a stanza it would widen it)
           var c = /** @type {HTMLElement} */ (cr.cloneNode(true)),
             cl = plang() === "both" ? (LEAD === "en" ? "en" : "mr") : k,
             other = c.querySelectorAll(cl === "en" ? ".mr" : ".en");
@@ -477,7 +489,8 @@ export function init() {
             var pc = mk("p", "pvcr");
             pc.textContent = t;
             var ks = box.querySelectorAll(".pvk");
-            (ks.length ? ks[ks.length - 1] : box).appendChild(pc);
+            if (box.querySelector(".pvcol") || !ks.length) box.appendChild(pc);
+            else ks[ks.length - 1].appendChild(pc);
           }
         }
         into.appendChild(box);
