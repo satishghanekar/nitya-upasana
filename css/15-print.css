@@ -228,12 +228,17 @@
   #pv[data-lang="en"] .pvl {
     font-size: 13pt;
   }
-  /* the dhrupad at the top: a line beside it */
+  /* the dhrupad at the top: a line beside it, hugging its lines however wide they are (Satish, 2026-10-23: the line
+     at the stanzas' edge cut through a dhrupad wider than them) */
   #pv .pvref {
-    box-sizing: border-box;
-    margin: 0 0 8pt -9pt;
-    padding-inline-start: 7pt;
+    margin: 0 0 8pt;
+  }
+  #pv .pvrefin {
+    width: max-content;
+    max-width: 177mm;
+    padding-left: 7pt;
     border-left: 1.5pt solid var(--accent);
+    text-align: center;
   }
   /* the dhrupad sung again after a stanza: lighter, so the stanza stays the focus */
   #pv .pvrf,
@@ -379,17 +384,28 @@
   #pv[data-lang="en"] .pvtoc li {
     font-family: var(--lat);
   }
-  /* in two columns, read across (a grid: Safari ignores CSS columns in print), one line each */
+  /* a list of texts: one column (a routine's), or the Library's two a row (.pvtr below; Safari ignores CSS columns in
+     print and splits grid rows between pages) */
   #pv .pvtoc {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 22pt;
+    display: block;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  #pv .pvrt .pvtoc {
-    display: block;
+  /* the Library's contents: a row of two at a time, each row one box that never splits between pages */
+  #pv .pvtocw {
+    line-height: 0;
+  }
+  #pv .pvtoc.pvtr {
+    display: inline-flex;
+    width: 100%;
+    column-gap: 22pt;
+    vertical-align: top;
+  }
+  #pv .pvtr > li {
+    flex: 0 0 calc(50% - 11pt);
+    box-sizing: border-box;
+    min-width: 0;
   }
   #pv .pvtoc li {
     margin: 0;
