@@ -85,6 +85,7 @@
    The button keeps the bar's 44px height. */
 #ash,
 #asq,
+#asp,
 #rsb {
   align-content: center;
   row-gap: 3px;
@@ -111,14 +112,9 @@
   }
   #ash,
   #asq,
+  #asp,
   #rsb {
     min-width: 44px;
-  }
-}
-/* the narrowest phones: Prev and Next a little slimmer */
-@media (max-width: 359px) {
-  #asc .asx {
-    padding: 0 9px;
   }
 }
 /* ==== Bars tuck away while reading (phones and tablets without the side menu) ====
@@ -542,17 +538,25 @@ html[data-asb="1"] {
   color: var(--bg);
   border-color: var(--accent);
 }
-/* With Aa the bar holds five buttons: narrow phones close the gaps, and the smallest show
-   only the arrows of Prev and Next (their names stay for screen readers and voice control) */
-@media (max-width: 379px) {
+/* The bar holds six buttons (Prev, Home, Library, Print, Reading, Next): phones close the gaps and slim the icon
+   buttons, and narrow ones show only the arrows of Prev and Next (their names stay for screen readers and voice
+   control) */
+@media (max-width: 439px) {
   #asi {
-    gap: 4px;
+    gap: 2px;
+  }
+  #ash,
+  #asq,
+  #asp,
+  #rsb {
+    min-width: 52px;
+    padding: 0 2px;
   }
   #asc .asx {
-    padding: 0 9px;
+    padding: 0 8px;
   }
 }
-@media (max-width: 359px) {
+@media (max-width: 399px) {
   #asc .asx {
     padding: 0;
   }

@@ -5,8 +5,8 @@
    now, in one column. Built by js/features/today-card.js: the time-of-day picture beside today's date (#tdy), a slot
    for the Vedic calendar line (#pan), the festival line on the day (#fst, js/features/vedic-calendar.js), the Sankashti
    line on the day (#skt, js/features/sankashti.js), the session's
-   texts with their ticks (#tsc) under the Morning | Afternoon | Evening switch (#tss, Home v3 option A, 2026-10-20),
-   and "Another text? Open the Library" (#tlib); a title starts the session there. The Library (#jump) holds every
+   texts (#tsc) under the Morning | Afternoon | Evening switch (#tss, Home v3 option A, 2026-10-20); a title starts
+   the session there. The Library (#jump) holds every
    text; the pieces are not shown under Home on its own (data-hv). On wide screens Home's column stays on the left
    while a text, the Library, the calendar or Settings is open beside it.
    Sizes are in px: the home page keeps its size when the reader enlarges the verses.
@@ -154,43 +154,6 @@
 #tsl li:last-child {
   border-bottom: 0;
 }
-/* the tick: a real checkbox over the round mark, with a 44px target */
-.ttk {
-  position: relative;
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 44px;
-  height: 44px;
-  cursor: pointer;
-}
-.ttk input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-.tkc {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border: 2px solid var(--gold);
-  border-radius: 50%;
-  color: transparent;
-}
-.ttk input:checked + .tkc {
-  border-color: var(--ok);
-  background: var(--ok);
-  color: var(--bg);
-}
-.ttk input:focus-visible + .tkc {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
 .tgo {
   display: flex;
   align-items: center;
@@ -223,9 +186,6 @@
   display: block;
   color: var(--muted);
   font: 400 12.5px/17px var(--lat);
-}
-#tsl li.done .t1 {
-  color: var(--muted);
 }
 .ttg {
   flex: none;
@@ -334,61 +294,6 @@
   outline-offset: 2px;
 }
 
-/* ==== The quiet line "Another text? Open the Library" (#tlib) ==== */
-#tlib {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font: 400 14px/1.4 var(--lat);
-  text-align: center;
-}
-#tlib[lang="mr"] {
-  font-family: var(--body);
-}
-#tlibb {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 44px;
-  height: auto;
-  margin: 0;
-  padding: 0 4px;
-  border: 0;
-  border-radius: 8px;
-  background: none;
-  color: var(--accent);
-  font: inherit;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-/* Print this session (js/features/print.js): a quiet link under the session's texts; not for an empty session */
-#tspr {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 44px;
-  height: auto;
-  margin: 2px 0 0 auto;
-  padding: 0 4px;
-  border: 0;
-  background: none;
-  box-shadow: none;
-  color: var(--accent);
-  font: 600 14px/1.3 var(--lat);
-}
-#tspr .mr {
-  font-family: var(--body);
-}
-#tse:not([hidden]) + #tspr {
-  display: none;
-}
-#tspr:focus-visible,
-#tlibb:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 0;
-}
-
 /* ==== Home on its own (data-hv, js/features/history.js): the page ends after Home; the pieces below it (every text,
    the पूजा / आरती rows) show once a text is opened. Screen only: print builds its own copy of the pieces ==== */
 @media screen {
@@ -398,22 +303,27 @@
 }
 
 /* ==== A session being read (data-run, js/features/today-card.js): only its texts (.inrun) are on the reading page,
-   not the rest of the Library. Screen only, and only the page's own pieces (#main > .ash): Print builds its own from
+   not the rest of the Library, one after another in one scroll, in session order (each piece's CSS order, set by
+   runOne(); the page itself keeps the Library's order). Screen only, and only the page's own pieces (#main > .ash): Print builds its own from
    the texts (js/print/compose.js), and it reads what is shown of them, so a broader rule printed every text empty,
    title only (Satish, 2026-10-22) ==== */
 @media screen {
   :root[data-run="1"] #main > .ash:not(.inrun) {
     display: none !important;
   }
+  :root[data-run="1"]:not([data-hv]) #main {
+    display: flex;
+    flex-direction: column;
+  }
 }
 /* One text at a time: only the text being read (.solo, js/features/history.js) is
-   shown, on every screen, from a session, the Library or search. The next text never runs on below it
-   (‹ Prev / Next › in the bottom bar change it), and Home is not above it; Home in the bottom bar or the
+   shown, on every screen, from the Library or search (a session runs on instead: above). The next text never runs
+   on below it (‹ Prev / Next › in the bottom bar change it), and Home is not above it; Home in the bottom bar or the
    top bar goes back. Only the page's own pieces (#main > .ash): Print builds its own from the texts
    (js/print/compose.js). On wide screens Home's column stays beside the text (Desktop: Home beside the text, below) */
 @media screen {
   :root:not([data-hv]):not([data-rail]) #main > #home,
-  :root:not([data-hv]) #main > .ash:not(.solo) {
+  :root:not([data-hv]):not([data-run]) #main > .ash:not(.solo) {
     display: none !important;
   }
 }
@@ -492,8 +402,7 @@
     overflow: auto;
     scrollbar-width: thin;
   }
-  :root[data-rail="1"]:not([data-hv]) #home > #tdy,
-  :root[data-rail="1"]:not([data-hv]) #home > #tlib {
+  :root[data-rail="1"]:not([data-hv]) #home > #tdy {
     display: none;
   }
   #tsl li.now {
@@ -584,8 +493,7 @@
   #skt,
   #fst,
   #pan,
-  #tsc,
-  #tlib {
+  #tsc {
     display: none;
   }
 }
@@ -745,8 +653,7 @@
   :root[data-hv="1"] #home > #pan,
   :root[data-hv="1"] #home > #fst,
   :root[data-hv="1"] #home > #skt,
-  :root[data-hv="1"] #home > #pfnt,
-  :root[data-hv="1"] #home > #tlib {
+  :root[data-hv="1"] #home > #pfnt {
     grid-column: 1;
   }
   :root[data-hv="1"] #home > #tsc {

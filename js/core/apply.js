@@ -57,9 +57,16 @@ export function LK(slot) {
 // The piece being read: the last one whose top has passed just under the top bar
 export function cur() {
   var c = null,
-    y = 90;
+    y = 90,
+    best = -Infinity;
+  // the lowest piece whose top has reached the top bar (a session shows its texts in session order, which may not be
+  // the page's: css/10-today.css)
   secs.forEach(function (x) {
-    if (x.offsetParent !== null && x.getBoundingClientRect().top <= y) c = x;
+    var top = x.offsetParent !== null ? x.getBoundingClientRect().top : Infinity;
+    if (top <= y && top > best) {
+      best = top;
+      c = x;
+    }
   });
   // a short text read on its own on a wide screen (.solo, css/10-today.css) may never reach the top: it is still the one
   var s = !c && document.querySelector(".ash.solo"),
