@@ -2,7 +2,7 @@
 //
 // How a print test works:
 //  1. window.print is replaced with a stub, so the site's own Print button runs exactly as for a
-//     reader (build the print view #pv, work out the contents page numbers, then call print()).
+//     reader (build the print view #pv, then call print()).
 //  2. When print() is called, invisible markers are added at the start and end of every unbroken
 //     block (.pvk) of every piece. They are absolutely positioned, so they take no space and the
 //     page breaks are the ones a reader gets.
@@ -15,7 +15,6 @@ import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test, expect } from "@playwright/test";
 import { openSite, openPrintBuilder } from "./helpers.mjs";
-import { addLineMarkers } from "./print-audit-helpers.mjs";
 
 const DIGITS = { "०": 0, "१": 1, "२": 2, "३": 3, "४": 4, "५": 5, "६": 6, "७": 7, "८": 8, "९": 9,
   "೦": 0, "೧": 1, "೨": 2, "೩": 3, "೪": 4, "೫": 5, "೬": 6, "೭": 7, "೮": 8, "೯": 9 };
@@ -36,23 +35,6 @@ export async function stubPrint(page) {
   });
 }
 
-/**
- * Count the print warm-ups (js/features/print.js lays out what the Print button and the browser's menu print a few
- * seconds after load, in a hidden frame it removes when done). Call before the site loads; waitForWarmUp then waits
- * for the first one, instead of a fixed number of seconds.
- */
-export async function trackWarmUp(page) {
-  await page.addInitScript(() => {
-    window.__warmed = 0;
-    new MutationObserver((list) => {
-      for (const m of list) for (const n of m.removedNodes) if (n.nodeName === "IFRAME") window.__warmed++;
-    }).observe(document, { childList: true, subtree: true });
-  });
-}
-export async function waitForWarmUp(page, n = 1) {
-  await page.waitForFunction((n) => window.__warmed >= n, n, { timeout: 20_000 });
-}
-
 /** The print builder on a phone shows What first: Next goes on to How (from 760px wide both are on screen) */
 export async function howStep(page) {
   if (await page.locator("#prnx").isVisible()) await page.locator("#prnx").click();
@@ -69,8 +51,7 @@ export async function printFromButton(page, choice) {
   // the page (Portrait pr1 or Landscape pr2; both languages have only Landscape, so no choice shows), then Print
   if (await page.locator("#" + choice).isVisible()) await page.locator("#" + choice).click();
   await page.locator("#prgp").click();
-  // Safari (class "wk"): when laying out took longer than a tap counts for, the pop-up asks for one more
-  // tap (Print now), as an iPhone reader sees it
+  // (should the browser ignore the print, the pop-up asks for one more tap: Print now)
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
   if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
@@ -78,26 +59,19 @@ export async function printFromButton(page, choice) {
   await page.emulateMedia({ media: "print" });
 }
 
-/** What the site built: contents numbers, the text of each piece in the print view, block count. */
+/** What the site built: the contents, the pieces, the blocks, the English lines shown. */
 export async function readPrintView(page) {
   return page.evaluate(() => {
     const pv = document.getElementById("pv");
     return {
       mode: document.documentElement.getAttribute("data-print"),
-      toc: [...pv.querySelectorAll(".pvtoc li[data-sid]")].map((li) => ({
-        id: li.dataset.sid,
-        page: (li.querySelector(".pgn") || {}).textContent || "",
-      })),
+      toc: [...pv.querySelectorAll(".pvtoc li[data-sid]")].map((li) => ({ id: li.dataset.sid })),
       pieces: [...pv.querySelectorAll(".pvs")].map((s) => s.dataset.sid),
-      // the pieces' blocks (the contents' lines are blocks too, js/print/pages.js, but carry no markers)
       blocks: pv.querySelectorAll(".pvs .pvk").length,
-      // blocks taller than a page, which may break between their lines ("p1:11", as the markers name them)
-      tall: [...pv.querySelectorAll(".pvs")].flatMap((s) => [...s.querySelectorAll(".pvk")].map((k, j) => (k.classList.contains("pvtall") ? s.dataset.sid + ":" + j : "")).filter(Boolean)),
-      // the English lines that are actually shown in the print view (for the text check); prose runs its
-      // lines on in paragraphs (.pvpr), so each of its lines (.pvln) is one
-      english: [...pv.querySelectorAll(".en p:not(.pvpr), .en .pvln, td.pve")]
-        // shown unless the line or a parent inside the print view is display:none (the print view
-        // itself is hidden on screen until printing, so it is not counted)
+      // the blocks that may run on from one page to the next (a Vedic paragraph: "p1:11", as the markers name them)
+      flow: [...pv.querySelectorAll(".pvs")].flatMap((s) => [...s.querySelectorAll(".pvk")].map((k, j) => (k.classList.contains("pvflow") ? s.dataset.sid + ":" + j : "")).filter(Boolean)),
+      // the English lines that are shown in the print view (for the text check)
+      english: [...pv.querySelectorAll(".pvl.pve, .pvpr.pve .pvln, td.pve")]
         .filter((e) => {
           for (let x = e; x && x !== pv; x = x.parentElement) if (getComputedStyle(x).display === "none") return false;
           return true;
@@ -184,9 +158,8 @@ const SCREEN_ONLY = ["Open all", "Fold all", "Check for updates", "Settings", "A
 
 /**
  * Open the site with the given settings, print from the Print button and read the PDF back.
- * lines: also mark every printed line for the print audit (see print-audit-helpers.mjs).
  */
-export async function printOnce(browser, { prefs, choice, mode, paper, locale, save, lines = false }) {
+export async function printOnce(browser, { prefs, choice, mode, paper, locale, save }) {
   const context = await browser.newContext({ locale, viewport: { width: 1280, height: 900 }, serviceWorkers: "block" });
   const page = await context.newPage();
   const errors = [];
@@ -199,30 +172,29 @@ export async function printOnce(browser, { prefs, choice, mode, paper, locale, s
   await printFromButton(page, choice);
   const pv = await readPrintView(page);
   await addMarkers(page);
-  const marked = lines ? await addLineMarkers(page) : null;
   const pdf = await pdfPages(page, paper, save);
   await context.close();
-  return { pv, pdf, errors, onScreen, mode, marked, source, tr: !!prefs.tr };
+  return { pv, pdf, errors, onScreen, mode, source, tr: !!prefs.tr };
 }
 
 /**
- * The checks every printout must pass (see print.spec.mjs). Returns the page count and the contents numbers.
+ * The checks every printout must pass (see print.spec.mjs): every piece printed, in reading order and listed in the
+ * contents; each starting on a new page; then the checks of every page (checkPages). Returns the page count.
  */
-export function checkPrintout(r, paper) {
+export function checkPrintout(r) {
   const { pv, pdf, errors, onScreen, mode } = r;
   const at = markerPages(pdf.pages);
   expect(errors, "no script errors").toEqual([]);
   expect(pv.mode, "print mode set on the page").toBe(mode);
-  // every piece is in the print view, in reading order
+  // every piece is in the print view, in reading order, and the contents lists each one
   expect(pv.pieces).toEqual(onScreen);
-  // contents numbers: one per piece, and each is the page the piece really starts on
   expect(pv.toc.map((t) => t.id)).toEqual(onScreen);
-  for (const t of pv.toc) {
-    expect(t.page, `contents has a page number for ${t.id}`).not.toBe("");
-    expect(at[t.id + ":0:s"], `${t.id} starts on the page the contents says (${paper})`).toBe(toInt(t.page));
-  }
+  // every piece starts on a page of its own: its first block below the last page of the one before
+  const last = (id) => Math.max(...Object.entries(at).filter(([k]) => k.startsWith(id + ":")).map(([, p]) => p));
+  for (let i = 1; i < onScreen.length; i++)
+    expect(at[onScreen[i] + ":0:s"], `${onScreen[i]} starts on a new page`).toBeGreaterThan(last(onScreen[i - 1]));
   checkPages(r);
-  return { pages: pdf.pages.length, contents: Object.fromEntries(pv.toc.map((t) => [t.id, toInt(t.page)])), ...(pv.tall.length ? { tall: pv.tall } : {}) };
+  return { pages: pdf.pages.length };
 }
 
 /**
@@ -235,7 +207,7 @@ export function checkPages(r) {
   // no block is cut across a page break
   const cut = [];
   for (const key of Object.keys(at)) {
-    if (!key.endsWith(":s") || pv.tall.includes(key.slice(0, -2))) continue;
+    if (!key.endsWith(":s") || pv.flow.includes(key.slice(0, -2))) continue;
     const end = key.replace(/:s$/, ":e");
     if (at[end] !== at[key]) cut.push(`${key.slice(0, -2)} (pages ${at[key]}–${at[end]})`);
   }
@@ -305,52 +277,4 @@ export function sourceLines(page) {
       ),
     ),
   );
-}
-
-/**
- * Print one text on its own, as a print link for just that text does (?print=…&t=<id>, see js/render.js), and read the
- * PDF back with every block and every line marked (see print-audit-helpers.mjs). The PDF's pages are then that text's
- * alone: they depend only on the text and the print choices, never on what else a printout holds.
- * Returns what printOnce does, plus the text's piece id on the page (sids) and how the fitting set it: the scale of the whole piece (zoom, 1 when unchanged) and,
- * side by side, the original's share of the width (split, in %).
- */
-export async function printText(browser, { id, prefs, mode, paper, locale, save }) {
-  const context = await browser.newContext({ locale, viewport: { width: 1280, height: 900 }, serviceWorkers: "block" });
-  const page = await context.newPage();
-  const errors = [];
-  await stubPrint(page);
-  await openSite(page, { por: "up", ...prefs }, { errors, hash: `?print=${mode === "side" ? "side" : "as"}&t=${id}` });
-  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
-  await page.emulateMedia({ media: "print" });
-  const pv = await readPrintView(page);
-  const source = await sourceLines(page);
-  const set = await page.evaluate((id) => {
-    const s = document.querySelector("#pv .pvs"),
-      c = s && s.querySelector("col.pvcm");
-    return {
-      // the text's piece on the page (its id there: "a3", "p1"…)
-      sids: window.CONTENT.categories.flatMap((g) => g.pieces).filter((p) => p.text === id).map((p) => p.id),
-      zoom: s ? Number(s.style.zoom || 1) : 0,
-      // in two columns (js/features/print.js twoCols), and how many lines run past their column's right edge there
-      cols: s && s.classList.contains("pvtwo") ? 2 : 1,
-      // (and in a Vedic text side by side, how many paragraph lines run past their column: .pvpair)
-      past: [...document.querySelectorAll("#pv .pv2c, #pv .pvpair .pvprose > div")].reduce((n, c) => {
-        const edge = c.getBoundingClientRect().right + 1,
-          r = document.createRange();
-        return n + [...c.querySelectorAll(".verse p, .pvln")].filter((p) => {
-          r.selectNodeContents(p);
-          return r.getBoundingClientRect().right > edge;
-        }).length;
-      }, 0),
-      // the size of its first column's lines before the page plan's zoom, in points (js/print/fit.js; data-pt is set
-      // against the Devanagari steps, so English's is its own size over its steps)
-      pt: s ? Number(s.getAttribute("data-pt") || 0) * Number(s.getAttribute("data-steps") || 1) : 0,
-      split: c && c.style.width ? parseFloat(c.style.width) : s && s.hasAttribute("data-split") ? Number(s.getAttribute("data-split")) : null,
-    };
-  }, id);
-  await addMarkers(page);
-  const marked = await addLineMarkers(page);
-  const pdf = await pdfPages(page, paper, save);
-  await context.close();
-  return { pv, pdf, errors, mode, marked, source, tr: !!prefs.tr, ...set };
 }

@@ -22,6 +22,7 @@ var SITE_PARTS = (function () {
     "12-calendar",
     "13-library",
     "14-builder",
+    "15-print",
     "99-fallbacks",
   ].map(function (f) {
     return "css/" + f + ".css";
@@ -79,10 +80,7 @@ var SITE_PARTS = (function () {
     "core/startup",
     "features/picture-viewer",
     "features/help",
-    "print/profiles",
     "print/compose",
-    "print/fit",
-    "print/pages",
     "print/what",
     "print/select",
     "features/print",
