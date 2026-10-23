@@ -1,4 +1,4 @@
-id: jai-jagdish-hare
+id: aarti-jai-jagdish-hare
 title: आरती जय जगदीश हरे
 title-en: Aarti Jai Jagdish Hare
 category: aarti

@@ -1,4 +1,4 @@
-id: lalita-sahasranama
+id: vedic-chant-lalita-sahasranama
 title: श्रीललितासहस्रनामस्तोत्रम्
 title-en: Shri Lalita Sahasranama
 category: vedic-chant

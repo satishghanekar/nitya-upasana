@@ -1,4 +1,4 @@
-id: ovaloon-aarti-chaitanyabrahma
+id: aarti-ovaloon-aarti-chaitanyabrahma
 title: ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा
 title-en: Ovalun Aarti Sadguru Chaitanyabrahma
 category: aarti

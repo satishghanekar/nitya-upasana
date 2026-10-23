@@ -10,7 +10,7 @@ import { defaults, devicePart, profilePart } from "../../js/store/migrate.js";
 const ENV = { desk: false, fs: 24 };
 const NOW = "2026-10-18T19:00:00.000Z";
 const settings = (o = {}) => ({ ...profilePart(defaults(ENV)), ...o });
-const AAI = newProfile({ id: "paai", name: "Aai", initials: "आई", colour: COLOURS[0].v, settings: settings({ fs: 32, fsu: 1, lang: "both", th: "dark" }), checklist: { date: "2026-10-18", done: { evening: ["sukhkarta"] } }, now: NOW });
+const AAI = newProfile({ id: "paai", name: "Aai", initials: "आई", colour: COLOURS[0].v, settings: settings({ fs: 32, fsu: 1, lang: "both", th: "dark" }), checklist: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta"] } }, now: NOW });
 const BABA = newProfile({ id: "pbaba", name: "बाबा", colour: COLOURS[1].v, settings: settings({ lead: "en", l2: "mr", lang: "en", ui: "en", hc: 1 }), now: NOW });
 const DEVICE = { ...devicePart({ ...defaults(ENV), sv: 6 }), loc: { lat: 40, lon: -83 } };
 const DATA = { profiles: [AAI, BABA], activeProfile: "pbaba", device: DEVICE };
@@ -50,7 +50,7 @@ describe("a backup file", () => {
     const library = {
       added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }],
       renames: { aarti: { mr: "आरत्या", en: "Aartis" } },
-      moves: { "ghalin-lotangan": "bhajan" },
+      moves: { "aarti-ghalin-lotangan": "bhajan" },
     };
     const text = serialise(makeBackup({ ...DATA, library }, { app: "aarti-v1.8", created: NOW }));
     const r = parseBackup(text, ENV);
@@ -58,7 +58,7 @@ describe("a backup file", () => {
     expect(r.data.library).toEqual(library);
     // a damaged part is dropped, never trusted as it is (the checksum is made again, as an editor would)
     const b = JSON.parse(text);
-    b.payload.library = { added: [{ id: "Bad Id!", name: { mr: "x", en: "x" } }, { id: "ok", name: {} }], renames: { aarti: 5 }, moves: { sukhkarta: "<b>" } };
+    b.payload.library = { added: [{ id: "Bad Id!", name: { mr: "x", en: "x" } }, { id: "ok", name: {} }], renames: { aarti: 5 }, moves: { "aarti-sukhkarta": "<b>" } };
     b.sha256 = sha256(JSON.stringify(b.payload));
     expect(parseBackup(JSON.stringify(b), ENV).data.library).toEqual({ added: [], renames: {}, moves: {} });
     // a file from 1.7 or before: no library, so a restore leaves this phone's categories alone

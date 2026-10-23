@@ -1,4 +1,4 @@
-id: ananyata-maj-ghado
+id: ashtak-ananyata-maj-ghado
 title: अनन्यता मज घडो स्वानंदरूपीं
 title-en: Ananyata Maj Ghado Svanandarupin
 category: ashtak

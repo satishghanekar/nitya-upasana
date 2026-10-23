@@ -417,7 +417,7 @@ ya e̍vaṃ ve̱da | ityu̍pa̱niṣa̍t || 14 ||
 
 अथर्ववेदीय उपनिषद ↗
 
-### shree-rudra
+### vedic-chant-shree-rudra
 2.
 श्री रुद्रप्रश्नः
 Śrī Rudrapraśnaḥ
@@ -1536,7 +1536,7 @@ om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 
 कृष्ण यजुर्वेद, तैत्तिरीय संहिता ↗
 
-### shri-sukta
+### vedic-chant-shri-sukta
 3.
 श्रीसूक्त
 Śrīsūkta
@@ -1885,7 +1885,7 @@ tanno lakṣmīḥ pracodayāt ||
 
 ऋग्वेद (खिलसूक्त)
 
-### purusha-suktam
+### vedic-chant-purusha-suktam
 4.
 पुरुषसूक्तम्
 Puruṣasūktam
@@ -2316,7 +2316,7 @@ sarva̍ṃ maniṣāṇa || 10 ||
 
 कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक ↗
 
-### lalita-sahasranama
+### vedic-chant-lalita-sahasranama
 5.
 श्रीललितासहस्रनामस्तोत्रम्
 Śrīlalitāsahasranāmastotram
@@ -4599,7 +4599,7 @@ om̐ jaya jagadīśa hare || 9 ||
 
 रचना : पं. श्रद्धाराम फिल्लौरी ↗ (सु. १८७०)
 
-### jaydeva-jaydeva-samartha
+### aarti-jaydeva-jaydeva-samartha
 11.
 श्रीमहाराजांची आरती
 Śrīmahārājāṃcī Āratī
@@ -4667,7 +4667,7 @@ ghyāvī sevā sadā hīca vinantī || 3 ||
 
 ↻ ध्रुपदRefrain
 
-### jay-jay-aarti-shrigururaya
+### aarti-jay-jay-aarti-shrigururaya
 12.
 आरती श्रीमहाराजांची
 Āratī Śrīmahārājāṃcī
@@ -4711,7 +4711,7 @@ nāmarūpātīta tūṃ abhirāmā || 3 ||
 
 ↻ ध्रुपदRefrain
 
-### ovaloon-aarti-chaitanyabrahma
+### aarti-ovaloon-aarti-chaitanyabrahma
 13.
 ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा
 Ovāḷūṃ Āratī Sad‌guru Caitanyabrahmā
@@ -4823,7 +4823,7 @@ nāthādināthā jaya jaya hovo bhāgavataprāṇa || 3 ||
 
 ↻ ध्रुपदRefrain
 
-### dhanya-jagin-guruvarya
+### aarti-dhanya-jagin-guruvarya
 15.
 धन्य जगीं या गुरुवर्य हे मारुतिअवतार
 Dhanya Jagīṃ Yā Guruvarya He Mārutiavatāra
@@ -4968,7 +4968,7 @@ gandhavāhapriya pāhi pāhi brahmānandanā || 3 ||
 
 ↻ ध्रुपदRefrain
 
-### svastha-karin-shayan
+### aarti-svastha-karin-shayan
 17.
 स्वस्थ करीं शयन प्रभो मंचकावरी
 Svastha Karīṃ Śayana Prabho Mañcakāvarī
@@ -5024,7 +5024,7 @@ mahābhāgavata prārthī kāṃhīṃ cākarī || 3 ||
 
 ↻ ध्रुपदRefrain
 
-### ovaloo-sapreme-aarti
+### aarti-ovaloo-sapreme-aarti
 18.
 आरती श्री नानामहाराजांची
 Āratī Śrī Nānāmahārājāṃcī
@@ -5119,7 +5119,7 @@ kṛpā kaṭākṣe dāsā āpulyā neī uddhārūni || 4 ||
 
 || avadhūta cintana śrī gurūdeva datta ||
 
-### sadguru-padukashtak
+### ashtak-sadguru-padukashtak
 1.
 श्रीसद्गुरुपादुकाष्टक
 Śrīsadgurupādukāṣṭaka
@@ -5288,7 +5288,7 @@ visarūṃ kasā mī gurupādukāṃlā || 10 ||
 
 || jaya jaya raghuvīra samartha ||
 
-### ananyata-maj-ghado
+### ashtak-ananyata-maj-ghado
 2.
 अनन्यता मज घडो स्वानंदरूपीं
 Ananyatā Maja Ghaḍo Svānandarūpīṃ
@@ -5705,7 +5705,7 @@ patitapāvana sītārāma ||
 
 || jānakī jīvana smaraṇa jaya jaya rāma ||
 
-### anudin-anutapen
+### ashtak-anudin-anutapen
 3.
 अनुदिन अनुतापें तापलों
 Anudina Anutāpeṃ Tāpaloṃ
@@ -6801,7 +6801,7 @@ bahu svārthabuddhīneṃ re kaṣṭavīloṃ |
 
 tujhā dāsa mī vyartha janmāsi āloṃ || 8 ||
 
-### haachi-subodh
+### ashtak-haachi-subodh
 11.
 हाचि सुबोध गुरूंचा
 Hāci Subodha Gurūñcā
@@ -6918,7 +6918,7 @@ hāci subodha gurūñcā, gururāyālā tahāna premācī || 13 ||
 
 || jaya jaya raghuvīra samartha ||
 
-### brahmachaitanya-sarikha
+### ashtak-brahmachaitanya-sarikha
 12.
 श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला
 Śrībrahmacaitanyāsārikhā Nāhīṃ Pāhilā
@@ -7016,7 +7016,7 @@ dāsadāsāceṃ māhera | aisā nāhīṃ pāhilā || 8 ||
 
 ↻ ध्रुपदRefrain
 
-### swami-majha-pahila
+### ashtak-swami-majha-pahila
 13.
 स्वामी माझा पाहिला
 Svāmī Mājhā Pāhilā

@@ -417,7 +417,7 @@ Ya Evam Veda | Ityupanishat || 14 ||
 
 ಅಥರ್ವವೇದೀಯ ಉಪನಿಷದ ↗
 
-### shree-rudra
+### vedic-chant-shree-rudra
 2.
 ಶ್ರೀ ರುದ್ರಪ್ರಶ್ನಃ
 Shree Rudra
@@ -1536,7 +1536,7 @@ Om Shantih Shantih Shantih ||
 
 ಕೃಷ್ಣ ಯಜುರ್ವೇದ, ತೈತ್ತಿರೀಯ ಸಂಹಿತಾ ↗
 
-### shri-sukta
+### vedic-chant-shri-sukta
 3.
 ಶ್ರೀಸೂಕ್ತ
 Shri Sukta
@@ -1885,7 +1885,7 @@ Tanno Lakshmih Prachodayat ||
 
 ಋಗ್ವೇದ (ಖಿಲಸೂಕ್ತ)
 
-### purusha-suktam
+### vedic-chant-purusha-suktam
 4.
 ಪುರುಷಸೂಕ್ತಮ್
 Purusha Suktam
@@ -2316,7 +2316,7 @@ Sarvam Manishana || 10 ||
 
 ಕೃಷ್ಣ ಯಜುರ್ವೇದ, ತೈತ್ತಿರೀಯ ಆರಣ್ಯಕ ↗
 
-### lalita-sahasranama
+### vedic-chant-lalita-sahasranama
 5.
 ಶ್ರೀಲಲಿತಾಸಹಸ್ರನಾಮಸ್ತೋತ್ರಮ್
 Shri Lalita Sahasranama
@@ -4591,7 +4591,7 @@ Om Jai Jagdish Hare || 9 ||
 
 ರಚನಾ : ಪಂ. ಶ್ರದ್ಧಾರಾಮ ಫಿಲ್ಲೌರೀ ↗ (ಸು. ೧೮೭೦)
 
-### jaydeva-jaydeva-samartha
+### aarti-jaydeva-jaydeva-samartha
 11.
 ಶ್ರೀಮಹಾರಾಜಾಂಚೀ ಆರತೀ
 Shrimaharajanchi Aarti
@@ -4659,7 +4659,7 @@ Ghyavi Seva Sada Hich Vinanti || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
 
-### jay-jay-aarti-shrigururaya
+### aarti-jay-jay-aarti-shrigururaya
 12.
 ಆರತೀ ಶ್ರೀಮಹಾರಾಜಾಂಚೀ
 Aarti Shrimaharajanchi
@@ -4703,7 +4703,7 @@ Namarupatit Tun Abhirama || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
 
-### ovaloon-aarti-chaitanyabrahma
+### aarti-ovaloon-aarti-chaitanyabrahma
 13.
 ಓವಾಳೂಂ ಆರತೀ ಸದ್‌ಗುರು ಚೈತನ್ಯಬ್ರಹ್ಮಾ
 Ovalun Aarti Sadguru Chaitanyabrahma
@@ -4815,7 +4815,7 @@ Nathadinatha Jay Jay Hovo Bhagavatapran || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
 
-### dhanya-jagin-guruvarya
+### aarti-dhanya-jagin-guruvarya
 15.
 ಧನ್ಯ ಜಗೀಂ ಯಾ ಗುರುವರ್ಯ ಹೇ ಮಾರುತಿಅವತಾರ
 Dhanya Jagin Ya Guruvarya He Marutiavatar
@@ -4960,7 +4960,7 @@ Gandhavahapriy Pahi Pahi Brahmanandana || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
 
-### svastha-karin-shayan
+### aarti-svastha-karin-shayan
 17.
 ಸ್ವಸ್ಥ ಕರೀಂ ಶಯನ ಪ್ರಭೋ ಮಂಚಕಾವರೀ
 Svastha Karin Shayan Prabho Manchakavari
@@ -5016,7 +5016,7 @@ Mahabhagavat Prarthi Kanhin Chakari || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
 
-### ovaloo-sapreme-aarti
+### aarti-ovaloo-sapreme-aarti
 18.
 ಆರತೀ ಶ್ರೀ ನಾನಾಮಹಾರಾಜಾಂಚೀ
 Aarti Shri Nana Maharajanchi
@@ -5111,7 +5111,7 @@ Krupa Katakshe Dasa Aapulya Nei Uddharuni || 4 ||
 
 || Avadhut Chintan Shri Gurudev Datta ||
 
-### sadguru-padukashtak
+### ashtak-sadguru-padukashtak
 1.
 ಶ್ರೀಸದ್ಗುರುಪಾದುಕಾಷ್ಟಕ
 Shrisadgurupadukashtak
@@ -5280,7 +5280,7 @@ Visarun Kasa Mi Gurupadukanla || 10 ||
 
 || Jay Jay Raghuvir Samartha ||
 
-### ananyata-maj-ghado
+### ashtak-ananyata-maj-ghado
 2.
 ಅನನ್ಯತಾ ಮಜ ಘಡೋ ಸ್ವಾನಂದರೂಪೀಂ
 Ananyata Maj Ghado Svanandarupin
@@ -5697,7 +5697,7 @@ Patitapavan Sitaram ||
 
 || Janaki Jivan Smaran Jay Jay Ram ||
 
-### anudin-anutapen
+### ashtak-anudin-anutapen
 3.
 ಅನುದಿನ ಅನುತಾಪೇಂ ತಾಪಲೋಂ
 Anudin Anutapen Tapalon
@@ -6793,7 +6793,7 @@ Bahu Svarthabuddhinen Re Kashtavilon |
 
 Tujha Das Mi Vyartha Janmasi Aalon || 8 ||
 
-### haachi-subodh
+### ashtak-haachi-subodh
 11.
 ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ
 Hachi Subodh Guruncha
@@ -6910,7 +6910,7 @@ Hachi Subodh Guruncha, Gururayala Tahan Premachi || 13 ||
 
 || Jay Jay Raghuvir Samartha ||
 
-### brahmachaitanya-sarikha
+### ashtak-brahmachaitanya-sarikha
 12.
 ಶ್ರೀಬ್ರಹ್ಮಚೈತನ್ಯಾಸಾರಿಖಾ ನಾಹೀಂ ಪಾಹಿಲಾ
 Shribrahmachaitanyasarikha Nahin Pahila
@@ -7008,7 +7008,7 @@ Dasadasachen Maher | Aisa Nahin Pahila || 8 ||
 
 ↻ ಧ್ರುಪದRefrain
 
-### swami-majha-pahila
+### ashtak-swami-majha-pahila
 13.
 ಸ್ವಾಮೀ ಮಾಝಾ ಪಾಹಿಲಾ
 Svami Majha Pahila

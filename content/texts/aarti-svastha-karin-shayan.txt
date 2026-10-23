@@ -1,4 +1,4 @@
-id: svastha-karin-shayan
+id: aarti-svastha-karin-shayan
 title: स्वस्थ करीं शयन प्रभो मंचकावरी
 title-en: Svastha Karin Shayan Prabho Manchakavari
 category: aarti

@@ -68,7 +68,7 @@ test("tap targets in the top and bottom bars are at least 44px @mobile", async (
 });
 
 // Vedic chants (layout: prose) in one language run on as paragraphs, as in Satish's booklets (v1.17)
-const PROSE = ["shree-rudra", "p1", "purusha-suktam"];
+const PROSE = ["vedic-chant-shree-rudra", "p1", "vedic-chant-purusha-suktam"];
 // Every danda (। ॥ |) sits on the same row as the character before it, so no row starts with one
 async function dandasStartingRows(page, id, lang) {
   return page.evaluate(
@@ -104,11 +104,11 @@ for (const s of SCREENS.filter((x) => ["iphone-15", "ipad-air", "ipad-landscape"
         serviceWorkers: "block",
       });
       const page = await context.newPage();
-      await openSite(page, SETUPS[setup], { hash: "#shree-rudra" });
+      await openSite(page, SETUPS[setup], { hash: "#vedic-chant-shree-rudra" });
       const lang = setup === "english" ? "en" : "mr";
       for (const id of PROSE) {
         // one text at a time (.solo): each is opened before it is measured
-        if (id !== "shree-rudra") await openSite(page, SETUPS[setup], { hash: "#" + id });
+        if (id !== "vedic-chant-shree-rudra") await openSite(page, SETUPS[setup], { hash: "#" + id });
         const st = await page.evaluate(
           ([id, lang]) => {
             const sec = document.getElementById(id),
@@ -146,7 +146,7 @@ for (const s of SCREENS.filter((x) => ["iphone-15", "ipad-air", "ipad-landscape"
     });
 
 test("Vedic chants keep their lines in pairs with both languages", async ({ page }) => {
-  await openSite(page, SETUPS.both, { hash: "#shree-rudra" });
+  await openSite(page, SETUPS.both, { hash: "#vedic-chant-shree-rudra" });
   await buildAll(page);
   const shown = await page.evaluate(
     (ids) => ids.map((id) => getComputedStyle(document.querySelector("#" + id + " .item.para .verse .mr p")).display),
@@ -157,14 +157,14 @@ test("Vedic chants keep their lines in pairs with both languages", async ({ page
 
 test("Vedic chants: the run-on paragraphs survive a switch to IAST", async ({ page }) => {
   await page.setViewportSize({ width: 393, height: 852 });
-  await openSite(page, SETUPS.english, { hash: "#shree-rudra" });
+  await openSite(page, SETUPS.english, { hash: "#vedic-chant-shree-rudra" });
   await page.evaluate(() => {
     const s = document.getElementById("sl2s");
     s.value = [...s.options].find((x) => /ā/.test(x.textContent)).value;
     s.dispatchEvent(new Event("change", { bubbles: true }));
   });
   await page.waitForTimeout(300);
-  const nb = await page.evaluate(() => document.querySelectorAll("#shree-rudra .verse .en p.ia .nb").length);
+  const nb = await page.evaluate(() => document.querySelectorAll("#vedic-chant-shree-rudra .verse .en p.ia .nb").length);
   expect(nb, "dandas glued again in IAST").toBeGreaterThan(100);
   for (const id of PROSE) expect(await dandasStartingRows(page, id, "en"), id).toEqual([]);
 });

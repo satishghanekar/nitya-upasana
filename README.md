@@ -26,7 +26,7 @@ There is no build step. The files in this repository are exactly what the site s
 | File or folder | What it is |
 |---|---|
 | `index.html` | The page: the top bar, Settings, Home, the Library, the dialogs and Help. |
-| `content/texts/` | The texts, one plain-text file each (`sukhkarta.txt`, …). **Edit the texts here** (see *How to add a text*). |
+| `content/texts/` | The texts, one plain-text file each (`aarti-sukhkarta.txt`, …). **Edit the texts here** (see *How to add a text*). |
 | `content/library.json` | The list of texts in reading order within each category, with the few words the app adds (language names, the dhrupad label, Kannada Wikipedia links). |
 | `content/categories.json` | The built-in categories and their order: Vedic Chant, Aarti, Stotra, Ashtak. A category with no texts is not shown. |
 | `content/routines.json` | The default routine: the texts for each session (`morning`, `afternoon`, `evening`), the same every day (`"mode": "fixed"`) or per weekday (`"mode": "weekday"`). Ids are those in `library.json`. |
@@ -85,12 +85,12 @@ Never use a word processor or an editor that "fixes" spelling or Unicode: the te
 
 ## How to add a text
 
-A text is one plain-text file in `content/texts/`, named after its id (`sukhkarta.txt`). The easiest start is a copy of a similar text.
+A text is one plain-text file in `content/texts/`, named after its id, which starts with its category (`aarti-sukhkarta.txt`, `vedic-chant-shree-rudra.txt`). The easiest start is a copy of a similar text.
 
 ### The file
 
 ```
-id: sukhkarta
+id: aarti-sukhkarta
 title: गणपतीची आरती
 title-en: Ganapati Aarti
 category: aarti
@@ -116,7 +116,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 
 | Field | |
 |---|---|
-| `id` | Required. Lower case and hyphens, the same as the file name. A link to the text is `#<id>`. |
+| `id` | Required. Lower case and hyphens, starting with its category (`aarti-`, `ashtak-`, `vedic-chant-`), the same as the file name. A link to the text is `#<id>`. Phones save routines, ticks and highlights by it, so once a text is published, change its id only by adding the old one to `js/text/renamed.js` (which turns what was saved under it into the new id). |
 | `title`, `title-en` | Required. The title in the original language and in English. |
 | `category` | Required. One of the ids in `content/categories.json`: `vedic-chant`, `aarti`, `stotra`, `ashtak`. |
 | `language` | Required. `mr` (Marathi), `hi` (Hindi) or `sa` (Sanskrit). The page shows the language name from `content/library.json`. |

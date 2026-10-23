@@ -1,4 +1,4 @@
-id: atharvashirsha
+id: vedic-chant-atharvashirsha
 title: गणपत्यथर्वशीर्षोपनिषत्
 title-en: Ganapati Atharvashirsha
 category: vedic-chant

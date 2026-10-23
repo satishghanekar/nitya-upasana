@@ -2,6 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { P } from "./state.js";
+import { textId } from "../text/renamed.js";
 
 /** @type {HTMLElement} */
 export var root;
@@ -70,6 +71,8 @@ export function pieceData(id) {
  */
 export function pieceEl(id) {
   if (!id) return null;
+  // (a link or reading position from before a text was renamed: js/text/renamed.js)
+  if (!(id in at) && textId(id) in at) id = textId(id);
   var el = document.getElementById(id);
   if (el || !(id in at)) return el;
   /** @type {any} */

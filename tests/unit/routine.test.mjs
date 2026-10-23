@@ -39,8 +39,8 @@ const MON = 1,
   SUN = 0;
 // The rules below are shown on a simple routine of the shape the builder starts from: one list each session, every day
 // (the bundled default, content/routines.json, now differs by weekday; its own tests are in today.test.mjs)
-const AARTIS = ["sukhkarta", "durge-durghat-bhari", "lavathavati-vikrala", "ghalin-lotangan"];
-const SIMPLE = { morning: { mode: "fixed", texts: ["atharvashirsha"] }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: AARTIS } };
+const AARTIS = ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-lavathavati-vikrala", "aarti-ghalin-lotangan"];
+const SIMPLE = { morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha"] }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: AARTIS } };
 
 describe("the rules for a person's lists", () => {
   test("a person with no routine of their own edits a copy of the default (content/routines.json), unchanged", () => {
@@ -51,7 +51,7 @@ describe("the rules for a person's lists", () => {
     r.evening.texts.push("x");
     expect(ROUTINE.evening.texts).not.toContain("x");
     // their own wins when they have one; nothing at all gives three empty sessions
-    expect(editable({ morning: { mode: "fixed", texts: ["sukhkarta"] } }, ROUTINE).morning.texts).toEqual(["sukhkarta"]);
+    expect(editable({ morning: { mode: "fixed", texts: ["aarti-sukhkarta"] } }, ROUTINE).morning.texts).toEqual(["aarti-sukhkarta"]);
     expect(editable(null, null)).toEqual({ morning: { mode: "fixed", texts: [] }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: [] } });
   });
 
@@ -63,37 +63,37 @@ describe("the rules for a person's lists", () => {
     expect(Object.keys(r.evening.days)).toEqual(DAY_KEYS);
     for (let d = 0; d < 7; d++) expect(textsFor(r, d, "evening")).toEqual(AARTIS);
     expect(allDaysSame(r, "evening")).toBe(true);
-    r = setList(r, "evening", THU, ["ghalin-lotangan", "sukhkarta"]);
-    expect(textsFor(r, THU, "evening")).toEqual(["ghalin-lotangan", "sukhkarta"]);
+    r = setList(r, "evening", THU, ["aarti-ghalin-lotangan", "aarti-sukhkarta"]);
+    expect(textsFor(r, THU, "evening")).toEqual(["aarti-ghalin-lotangan", "aarti-sukhkarta"]);
     expect(textsFor(r, MON, "evening")).toEqual(AARTIS);
     expect(allDaysSame(r, "evening")).toBe(false);
     // the same every day, from Thursday: Thursday's list for every day
     const fixed = setMode(r, "evening", "fixed", THU);
-    expect(fixed.evening).toEqual({ mode: "fixed", texts: ["ghalin-lotangan", "sukhkarta"] });
+    expect(fixed.evening).toEqual({ mode: "fixed", texts: ["aarti-ghalin-lotangan", "aarti-sukhkarta"] });
     // the shape stays what content/routines.json uses
     expect(fixed.morning).toEqual(SIMPLE.morning);
   });
 
   test("Copy to other days…: the day's list given to the days chosen, never to itself; a one-list session is unchanged", () => {
     let r = setMode(editable(null, SIMPLE), "morning", "weekday", MON);
-    r = setList(r, "morning", MON, ["atharvashirsha", "sukhkarta"]);
+    r = setList(r, "morning", MON, ["vedic-chant-atharvashirsha", "aarti-sukhkarta"]);
     const c = copyDays(r, "morning", MON, [TUE, THU, MON, 9, -1]);
-    expect(textsFor(c, TUE, "morning")).toEqual(["atharvashirsha", "sukhkarta"]);
-    expect(textsFor(c, THU, "morning")).toEqual(["atharvashirsha", "sukhkarta"]);
-    expect(textsFor(c, SUN, "morning")).toEqual(["atharvashirsha"]);
+    expect(textsFor(c, TUE, "morning")).toEqual(["vedic-chant-atharvashirsha", "aarti-sukhkarta"]);
+    expect(textsFor(c, THU, "morning")).toEqual(["vedic-chant-atharvashirsha", "aarti-sukhkarta"]);
+    expect(textsFor(c, SUN, "morning")).toEqual(["vedic-chant-atharvashirsha"]);
     // the lists are copies: changing Tuesday later leaves Monday alone
     const c2 = setList(c, "morning", TUE, []);
-    expect(textsFor(c2, MON, "morning")).toEqual(["atharvashirsha", "sukhkarta"]);
+    expect(textsFor(c2, MON, "morning")).toEqual(["vedic-chant-atharvashirsha", "aarti-sukhkarta"]);
     // nothing changes in what was given
-    expect(textsFor(r, TUE, "morning")).toEqual(["atharvashirsha"]);
+    expect(textsFor(r, TUE, "morning")).toEqual(["vedic-chant-atharvashirsha"]);
     const f = editable(null, SIMPLE);
     expect(copyDays(f, "evening", MON, [TUE])).toEqual(f);
   });
 
   test("a list in a session with one list is that list for every day", () => {
-    const r = setList(editable(null, ROUTINE), "afternoon", THU, ["jai-jagdish-hare"]);
-    expect(r.afternoon).toEqual({ mode: "fixed", texts: ["jai-jagdish-hare"] });
-    for (let d = 0; d < 7; d++) expect(textsFor(r, d, "afternoon")).toEqual(["jai-jagdish-hare"]);
+    const r = setList(editable(null, ROUTINE), "afternoon", THU, ["aarti-jai-jagdish-hare"]);
+    expect(r.afternoon).toEqual({ mode: "fixed", texts: ["aarti-jai-jagdish-hare"] });
+    for (let d = 0; d < 7; d++) expect(textsFor(r, d, "afternoon")).toEqual(["aarti-jai-jagdish-hare"]);
   });
 
   test("moving a text up and down (kept inside the list), as the ↑ ↓ buttons and Alt+↑/↓ do", () => {
@@ -131,15 +131,15 @@ describe("a routine read back (IndexedDB or a file) is cleaned, never trusted", 
 
   test("damaged parts are mended: unknown modes, missing days, repeats, non-ids, too many", () => {
     const r = cleanRoutine({
-      morning: { mode: "sometimes", texts: ["sukhkarta"] },
-      afternoon: { mode: "weekday", days: { mon: ["sukhkarta", "sukhkarta", 7, "<b>", ""], tue: "sukhkarta" } },
+      morning: { mode: "sometimes", texts: ["aarti-sukhkarta"] },
+      afternoon: { mode: "weekday", days: { mon: ["aarti-sukhkarta", "aarti-sukhkarta", 7, "<b>", ""], tue: "aarti-sukhkarta" } },
       evening: { mode: "fixed", texts: Array.from({ length: 80 }, (_, i) => "t" + i) },
       extra: { mode: "fixed", texts: ["x"] },
     });
-    expect(r.morning).toEqual({ mode: "fixed", texts: ["sukhkarta"] });
+    expect(r.morning).toEqual({ mode: "fixed", texts: ["aarti-sukhkarta"] });
     expect(r.afternoon.mode).toBe("weekday");
     expect(Object.keys(r.afternoon.days)).toEqual(DAY_KEYS);
-    expect(r.afternoon.days.mon).toEqual(["sukhkarta"]);
+    expect(r.afternoon.days.mon).toEqual(["aarti-sukhkarta"]);
     expect(r.afternoon.days.tue).toEqual([]);
     expect(r.evening.texts).toHaveLength(MAX_TEXTS);
     expect(r).not.toHaveProperty("extra");
@@ -147,14 +147,14 @@ describe("a routine read back (IndexedDB or a file) is cleaned, never trusted", 
   });
 
   test("a text no longer in the library stays in the list (Home shows only those it has)", () => {
-    const r = cleanRoutine({ evening: { mode: "fixed", texts: ["sukhkarta", "gone-text"] } });
-    expect(textsFor(r, MON, "evening")).toEqual(["sukhkarta", "gone-text"]);
+    const r = cleanRoutine({ evening: { mode: "fixed", texts: ["aarti-sukhkarta", "gone-text"] } });
+    expect(textsFor(r, MON, "evening")).toEqual(["aarti-sukhkarta", "gone-text"]);
   });
 });
 
 describe("the routine in a profile and in a backup file", () => {
   const settings = profilePart(defaults(ENV));
-  const MINE = setList(setMode(editable(null, ROUTINE), "evening", "weekday", MON), "evening", THU, ["ghalin-lotangan"]);
+  const MINE = setList(setMode(editable(null, ROUTINE), "evening", "weekday", MON), "evening", THU, ["aarti-ghalin-lotangan"]);
 
   test("a new person has none (they follow content/routines.json, Q5); a profile from before 1.9 reads as none", () => {
     expect(newProfile({ id: "p1", name: "Aai", settings, now: NOW }).routine).toBeNull();
@@ -176,7 +176,7 @@ describe("the routine in a profile and in a backup file", () => {
 
   test("a backup from version 1.7 (no routine in it) restores everyone on the default routine", () => {
     const old = {
-      profiles: [{ id: "paai", name: "Aai", initials: "A", colour: COLOURS[0].v, settings, checklist: { date: "2026-10-18", done: { evening: ["sukhkarta"] } }, created: NOW, updated: NOW }],
+      profiles: [{ id: "paai", name: "Aai", initials: "A", colour: COLOURS[0].v, settings, checklist: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta"] } }, created: NOW, updated: NOW }],
       activeProfile: "paai",
       settings: devicePart(defaults(ENV)),
     };
@@ -184,7 +184,7 @@ describe("the routine in a profile and in a backup file", () => {
     const r = parseBackup(text, ENV);
     expect(r.ok).toBe(true);
     expect(r.data.profiles[0].routine).toBeNull();
-    expect(r.data.profiles[0].checklist.done.evening).toEqual(["sukhkarta"]);
+    expect(r.data.profiles[0].checklist.done.evening).toEqual(["aarti-sukhkarta"]);
   });
 });
 
@@ -202,7 +202,7 @@ describe("the store keeps the reading person's routine", () => {
   test("none at first; a change is kept in IndexedDB for that person only, and null goes back to the default", async () => {
     await load(idb);
     expect(store.routine()).toBeNull();
-    const mine = setList(editable(null, ROUTINE), "afternoon", MON, ["jai-jagdish-hare"]);
+    const mine = setList(editable(null, ROUTINE), "afternoon", MON, ["aarti-jai-jagdish-hare"]);
     store.setRoutine(mine);
     expect(store.routine()).toEqual(mine);
     // a copy: changing what was returned changes nothing kept
@@ -238,7 +238,7 @@ describe("the store keeps the reading person's routine", () => {
 });
 
 describe("the Add texts picker's search", () => {
-  const T = { id: "ghalin-lotangan", title: "घालीन लोटांगण", titleEn: "Ghalin Lotangan", language: "mr", category: "aarti" };
+  const T = { id: "aarti-ghalin-lotangan", title: "घालीन लोटांगण", titleEn: "Ghalin Lotangan", language: "mr", category: "aarti" };
   test.each([["ghalin"], ["GHĀLIN"], ["lotan"], ["घालीन"], ["लोटांगण"], [""], ["ghalin lotangan"]])("“%s” finds घालीन लोटांगण", (q) => {
     expect(matches(T, searchKey(q))).toBe(true);
   });
