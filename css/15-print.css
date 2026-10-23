@@ -71,6 +71,7 @@
 
   :root[data-print] #pv {
     display: block !important;
+    container-type: inline-size;
     color: #000;
     font: 400 14pt/1.5 var(--po);
     font-synthesis: none;
@@ -156,11 +157,13 @@
     font: 400 17pt/1.3 var(--head);
     text-align: center;
   }
+  /* English in a title, the contents or a tag: the printout's English text font, as the verses (one family on the
+     page, Satish 2026-10-23) */
   #pv .pvh .pve,
   #pv .pvtitle .pve,
   #pv .pvcat .pve,
   #pv .pvtoc .pve {
-    font-family: var(--lat);
+    font-family: var(--pe);
   }
   #pv .pvnum {
     margin-right: 0.35em;
@@ -179,7 +182,7 @@
     font: 400 10pt/1.35 var(--body);
   }
   #pv[data-lang="en"] .pvtag {
-    font-family: var(--lat);
+    font-family: var(--pe);
   }
 
   /* ---- One language, verse: the stanzas one column, centred, as wide as the widest, every stanza starting at the
@@ -201,7 +204,7 @@
      widening it (width 0, then the column's width: only the stanzas set where the column's left edge is), a line longer
      than the stanzas reaching out on both sides */
   #pv .pvsc > :is(.pvref, .pvrf, .pvbold, .pvdh),
-  #pv .pvsc > .pvcr {
+  #pv .pvsc > :is(.pvcr, .pvlab) {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -210,9 +213,11 @@
   }
   #pv .pvsc > :is(.pvref, .pvrf, .pvbold, .pvdh) > .pvl {
     width: max-content;
-    max-width: 177mm;
+    /* never wider than the page: A4's text width, then the page's own (#pv is the container) */
+    max-width: 172mm;
+    max-width: 100cqw;
   }
-  #pv .pvsc > .pvcr {
+  #pv .pvsc > :is(.pvcr, .pvlab) {
     white-space: nowrap;
   }
   /* an empty line between a stanza and the dhrupad sung after it */
@@ -225,17 +230,16 @@
   #pv .pvl {
     margin: 0;
   }
-  #pv[data-lang="en"] .pvl {
-    font-size: 13pt;
-  }
   /* the dhrupad at the top: a line beside it, hugging its lines however wide they are (Satish, 2026-10-23: the line
      at the stanzas' edge cut through a dhrupad wider than them) */
   #pv .pvref {
-    margin: 0 0 8pt;
+    margin: 0 0 11pt;
   }
   #pv .pvrefin {
     width: max-content;
-    max-width: 177mm;
+    /* never wider than the page: A4's text width, then the page's own (#pv is the container) */
+    max-width: 172mm;
+    max-width: 100cqw;
     padding-left: 7pt;
     border-left: 1.5pt solid var(--accent);
     text-align: center;
@@ -287,7 +291,6 @@
     text-align: start;
   }
   #pv .pvpr.pve {
-    font-size: 13pt;
     line-height: 1.75;
   }
   #pv .pvpr .zs {
@@ -304,8 +307,11 @@
   #pv .pvcr {
     margin: 8pt 0 0;
     color: #555;
-    font: 400 9.5pt/1.4 var(--lat);
+    font: 400 9.5pt/1.4 var(--po);
     text-align: center;
+  }
+  #pv[data-lang="en"] .pvcr {
+    font-family: var(--pe);
   }
 
   /* ---- Both languages, side by side ---- */
@@ -382,7 +388,7 @@
   }
   #pv[data-lang="en"] .pvcat,
   #pv[data-lang="en"] .pvtoc li {
-    font-family: var(--lat);
+    font-family: var(--pe);
   }
   /* a list of texts: one column (a routine's), or the Library's two a row (.pvtr below; Safari ignores CSS columns in
      print and splits grid rows between pages) */
@@ -432,7 +438,7 @@
   }
   #pv[data-lang="en"] .pvsub,
   #pv[data-lang="en"] .pvgrid {
-    font-family: var(--lat);
+    font-family: var(--pe);
   }
   #pv .pvgrid {
     width: 100%;
