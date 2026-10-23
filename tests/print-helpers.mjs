@@ -71,12 +71,14 @@ export async function readPrintView(page) {
       // the blocks that may run on from one page to the next (a Vedic paragraph: "p1:11", as the markers name them)
       flow: [...pv.querySelectorAll(".pvs")].flatMap((s) => [...s.querySelectorAll(".pvk")].map((k, j) => (k.classList.contains("pvflow") ? s.dataset.sid + ":" + j : "")).filter(Boolean)),
       // the English lines that are shown in the print view (for the text check)
-      english: [...pv.querySelectorAll(".pvl.pve, .pvpr.pve .pvln, td.pve")]
+      // (a Vedic paragraph is one text: its lines are the paragraph's pvLines, js/features/print.js)
+      english: [...pv.querySelectorAll(".pvl.pve, .pvpr.pve, td.pve")]
         .filter((e) => {
           for (let x = e; x && x !== pv; x = x.parentElement) if (getComputedStyle(x).display === "none") return false;
           return true;
         })
-        .map((e) => e.textContent.trim())
+        .flatMap((e) => (e.pvLines ? e.pvLines : [e.textContent]))
+        .map((t) => t.trim())
         .filter(Boolean),
     };
   });

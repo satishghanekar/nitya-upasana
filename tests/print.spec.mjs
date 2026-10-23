@@ -114,7 +114,7 @@ test("a session being read: Print in the bottom bar prints the texts in full @ch
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
   if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
-  const secs = await page.evaluate(() => [...document.querySelectorAll("#pv .pvs")].map((s) => s.querySelectorAll(".pvl, .pvpr .pvln").length));
+  const secs = await page.evaluate(() => [...document.querySelectorAll("#pv .pvs")].map((s) => s.querySelectorAll(".pvl").length + [...s.querySelectorAll(".pvpr")].reduce((n, p) => n + (p.pvLines || []).length, 0)));
   expect(secs.length).toBeGreaterThan(0);
   for (const n of secs) expect(n).toBeGreaterThan(2);
   await context.close();
