@@ -73,8 +73,6 @@
     color: #000;
     font: 400 14pt/1.5 var(--po);
     font-synthesis: none;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
   }
   #pv .pvo {
     font-family: var(--po);
@@ -179,7 +177,7 @@
     font-family: var(--lat);
   }
   #pv .pvnum {
-    margin-inline-end: 0.35em;
+    margin-right: 0.35em;
   }
   /* with both languages, the English title under the original's (or the original's under the English) */
   #pv .pvsec {
@@ -219,7 +217,7 @@
   #pv .pvref {
     margin: 0 0 8pt -9pt;
     padding-inline-start: 7pt;
-    border-inline-start: 1.5pt solid var(--accent);
+    border-left: 1.5pt solid var(--accent);
   }
   /* the dhrupad sung again after a stanza: lighter, so the stanza stays the focus */
   #pv .pvrf,
@@ -305,7 +303,7 @@
     text-align: start;
   }
   #pv .pvt td:first-child {
-    border-inline-end: 0.5pt solid #bbb;
+    border-right: 0.5pt solid #bbb;
   }
   #pv .pvt td.pvo {
     font-size: 13pt;
@@ -330,7 +328,7 @@
     padding-bottom: 7pt;
   }
   #pv .pvt tr.pvref td:first-child {
-    border-inline-start: 1.5pt solid var(--accent);
+    border-left: 1.5pt solid var(--accent);
   }
   #pv .pvt tr.pvnoterow td,
   #pv .pvt tr.pvlabrow td {
@@ -385,12 +383,12 @@
   }
   #pv .pvtoc .pvsec {
     display: inline;
-    margin-inline-start: 0.4em;
+    margin-left: 0.4em;
     font-size: 0.78em;
   }
   #pv .pvcat .pvsec {
     display: inline;
-    margin-inline-start: 0.5em;
+    margin-left: 0.5em;
   }
 
   /* ---- A routine printout's page 1: whose routine and the month, the week at a glance ---- */
