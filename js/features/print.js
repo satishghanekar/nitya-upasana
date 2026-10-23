@@ -914,19 +914,21 @@ export function init() {
       function hgt(/** @type {Element} */ e) {
         return e.getBoundingClientRect().height;
       }
-      // how a box at zoom k measures: k where the browser measures it at its zoomed size, 1 where unzoomed
-      /** @type {Record<string, number>} */
-      var zrs = {};
+      // Every section is laid out at once, in rounds: in each round every section first reads what it needs of the
+      // layout (so the frame is laid out once for all of them), then makes its changes. Laid out one section and one
+      // block at a time, a whole Library took over 600 layouts of the frame, run while the page loads; this way it takes
+      // about as many as its longest text has pages. Each section's work is a generator (job): every `yield` ends a
+      // read or a write step, alternately, starting with a read.
+      //
+      // How a box at a zoom measures: at its zoomed size (Chrome), or unzoomed (a browser that measures it so). One probe
+      // tells which, for every size
+      var probe = d.createElement("div");
+      probe.style.cssText = "position:absolute;visibility:hidden;width:10px;height:1000px;zoom:0.5";
+      d.body.appendChild(probe);
+      var zoomed = Math.abs(hgt(probe) - 500) < 50;
+      d.body.removeChild(probe);
       function zr(/** @type {number} */ k) {
-        if (Math.abs(k - 1) < 0.001) return 1;
-        if (!zrs[k]) {
-          var z = d.createElement("div");
-          z.style.cssText = "position:absolute;visibility:hidden;width:10px;height:1000px;zoom:" + k;
-          d.body.appendChild(z);
-          zrs[k] = hgt(z) / 1000;
-          d.body.removeChild(z);
-        }
-        return zrs[k];
+        return zoomed ? k : 1;
       }
       // the widest line of a block, as set (its lines, markers and labels, in the language printed)
       function lineW(/** @type {HTMLElement} */ b) {
@@ -938,33 +940,60 @@ export function init() {
         });
         return m;
       }
-      // each block's height as stacked (the gap to the next one included), measured at width wd
-      function heights(/** @type {HTMLElement} */ sec, /** @type {HTMLElement[]} */ ks, /** @type {number} */ wd) {
-        sec.style.width = wd + "px";
+      // each block's height as stacked (the gap to the next one included), as the section is now set (read only)
+      function heights(/** @type {HTMLElement[]} */ ks) {
         var tops = ks.map(function (k) {
             return k.getBoundingClientRect().top;
           }),
           last = ks[ks.length - 1],
           lb = last.getBoundingClientRect().bottom + parseFloat(w.getComputedStyle(last).marginBottom || "0");
-        sec.style.width = "";
         return ks.map(function (k, i) {
           return (i + 1 < ks.length ? tops[i + 1] : lb) - tops[i];
         });
       }
+      /** @type {{ sec: HTMLElement, g: Generator<void, void, void>, res: { n: number, k: number }, done: boolean }[]} */
+      var jobs = [];
       [].forEach.call(p.children, function (/** @type {HTMLElement} */ sec) {
         var ks = /** @type {HTMLElement[]} */ ([].filter.call(sec.children, function (/** @type {HTMLElement} */ c) {
           return c.classList.contains("pvk");
         }));
         if (!ks.length) return;
-        var id = sec.getAttribute("data-sid") || "",
-          cov = sec.classList.contains("pvcov"),
+        var res = { n: 1, k: 1 };
+        jobs.push({ sec: sec, g: job(sec, ks, res), res: res, done: false });
+      });
+      while (
+        jobs.some(function (j) {
+          return !j.done;
+        })
+      ) {
+        // a read step for each, then a write step for each
+        for (var ph = 0; ph < 2; ph++)
+          jobs.forEach(function (j) {
+            if (!j.done) j.done = !!j.g.next().done;
+          });
+      }
+      jobs.forEach(function (j) {
+        var sec = j.sec,
+          id = sec.getAttribute("data-sid") || "";
+        if (sec.classList.contains("pvcov")) out.toc = j.res.n;
+        else {
+          out[id] = page + 1;
+          out.n[id] = j.res.n;
+          if (Math.abs(j.res.k - 1) > 0.001) out.z[id] = Math.round(j.res.k * 1000) / 1000;
+        }
+        page += j.res.n;
+      });
+      /**
+       * One section: measured, given its size and layout, then laid out in page boxes (see the rounds above)
+       * @param {HTMLElement} sec @param {HTMLElement[]} ks @param {{ n: number, k: number }} res
+       * @returns {Generator<void, void, void>}
+       */
+      function* job(sec, ks, res) {
+        var cov = sec.classList.contains("pvcov"),
           vedic = sec.classList.contains("pvved"),
           side = sec.classList.contains("pvsd"),
           // two columns: the Library's contents, and an aarti or ashtak in one language
           two = cov ? !sec.classList.contains("pvrt") : one && !vedic && !side,
-          hs = heights(sec, ks, W),
-          hc = cov ? heights(sec, ks, (W - G) / 2) : hs,
-          lw = ks.map(lineW),
           flow = ks.map(function (k) {
             return k.hasAttribute("data-flow");
           }),
@@ -978,6 +1007,20 @@ export function init() {
           verse = ks.map(function (k) {
             return k.classList.contains("pvst");
           });
+        // read: the blocks as set across the page
+        var hs = heights(ks),
+          lw = ks.map(lineW),
+          hc = hs;
+        yield;
+        if (cov) {
+          // the contents are also measured at a column's width (a line may wrap there)
+          sec.style.width = (W - G) / 2 + "px";
+          yield;
+          hc = heights(ks);
+          yield;
+          sec.style.width = "";
+        }
+        // (now in a write step)
         // its blocks at a size (k: a zoom on its pages) in one or two columns. At size k a page is C/k high and W/k wide in
         // the block's own units; a paragraph that runs on is about k times as tall there (its lines are shorter). In two
         // columns, a block with a line too wide for a column runs across both
@@ -1028,21 +1071,25 @@ export function init() {
         // tries the next size down, and the fewest pages win
         for (var q = 0; q < tries.length && q < 4; q++) {
           var k = q ? tries[q] : pick.k,
-            r = assemble(sec, ks, k, q ? choose(function (x, c) { return Math.abs(x - k) < 1e-6 ? at(x, c) : null; }, [k]).cols : pick.cols);
+            r = { n: 0 };
+          if (q) yield; // (from the read step that ended the last try, into a write step)
+          yield* assemble(k, q ? choose(function (x, c) { return Math.abs(x - k) < 1e-6 ? at(x, c) : null; }, [k]).cols : pick.cols, r);
+          // (a read step)
           if (!got || r.n < got.n) got = { n: r.n, k: k, html: sec.innerHTML };
           if (r.n <= pick.n) break;
         }
-        if (got && sec.innerHTML !== got.html) sec.innerHTML = got.html;
-        var n = got ? got.n : 1;
-        if (cov) out.toc = n;
-        else {
-          out[id] = page + 1;
-          out.n[id] = n;
-          if (got && Math.abs(got.k - 1) > 0.001) out.z[id] = Math.round(got.k * 1000) / 1000;
+        if (got) {
+          res.n = got.n;
+          res.k = got.k;
+          if (sec.innerHTML !== got.html) {
+            yield;
+            sec.innerHTML = got.html;
+          }
         }
-        page += n;
-        // one page box laid out: its blocks in rows (a block across the page, or a run in one or two columns)
-        function assemble(/** @type {HTMLElement} */ sec, /** @type {HTMLElement[]} */ ks, /** @type {number} */ k, /** @type {1 | 2} */ c) {
+
+        // The page boxes at size k in c columns, from a write step to a read step; r.n: the pages they take
+        /** @param {number} k @param {1 | 2} c @param {{ n: number }} r @returns {Generator<void, void, void>} */
+        function* assemble(k, c, r) {
           ks.forEach(function (b) {
             if (b.parentNode) b.parentNode.removeChild(b);
             b.classList.remove("pvtall");
@@ -1053,8 +1100,7 @@ export function init() {
             Ck = C / k,
             // each box is laid out at its size (its zoom) and measured so, as it prints: at a zoom, line heights round
             // to the pixel at the smaller size, and a page of 40 lines measured unzoomed came out a line short on paper.
-            // lim is a page's height as measured (Chrome measures a zoomed box at its zoomed size, so C; a browser that
-            // measures it unzoomed, C/k): a probe tells which
+            // lim is a page's height as measured
             lim = Ck * zr(k),
             extra = 0;
           function box() {
@@ -1069,7 +1115,7 @@ export function init() {
           if (c === 2) {
             // two columns: as planned, each page checked; a page that comes out taller than planned is planned again a
             // little shorter
-            for (var tryN = 0, fill = 1; tryN < 5; tryN++, fill *= 0.96) {
+            for (var tryN = 0, fill = 1; ; tryN++, fill *= 0.96) {
               boxes.forEach(function (b) {
                 b.remove();
               });
@@ -1077,11 +1123,11 @@ export function init() {
               var pl = plan(items(k, 2), Ck * fill, 2);
               pl.pages.forEach(function (rows) {
                 var bx = box();
-                rows.forEach(function (r) {
-                  if ("span" in r) return bx.appendChild(ks[r.span]);
+                rows.forEach(function (row) {
+                  if ("span" in row) return bx.appendChild(ks[row.span]);
                   var band = d.createElement("div");
                   band.className = "pv2b";
-                  r.cols.forEach(function (list) {
+                  row.cols.forEach(function (list) {
                     var cc = d.createElement("div");
                     cc.className = "pv2c";
                     list.forEach(function (i) {
@@ -1093,85 +1139,99 @@ export function init() {
                 });
               });
               extra = pl.n - pl.pages.length;
-              if (boxes.every(function (b) { return hgt(b) <= lim + 1; })) break;
+              yield;
+              if (tryN >= 4 || boxes.every(function (b) { return hgt(b) <= lim + 1; })) break;
+              yield;
             }
-          } else {
-            // one column: block by block on the page as the browser lays it out; a paragraph that does not fit runs on
-            // overleaf from a line end, any other block starts the next page. An aarti or ashtak in one language is
-            // centred as wide as its longest line
-            var centre = one && !vedic && !side && !cov,
-              cw = Math.min(
-                Wk,
-                4 +
-                  Math.max.apply(
-                    null,
-                    lw.filter(function (_, i) {
-                      return !span[i];
-                    }).concat([0]),
-                  ),
-              ),
-              bx = box(),
-              col = /** @type {HTMLElement | null} */ (null),
-              queue = ks.slice();
-            var colEl = function () {
+            r.n = boxes.length + extra;
+            return;
+          }
+          // one column: all that is left goes on the page, and what does not fit moves on to the next: a paragraph that
+          // runs past the foot from a line end, any other block (with the blocks kept with it) whole. An aarti or ashtak
+          // in one language is centred as wide as its longest line
+          var centre = one && !vedic && !side && !cov,
+            cw = Math.min(
+              Wk,
+              4 +
+                Math.max.apply(
+                  null,
+                  lw.filter(function (_, i) {
+                    return !span[i];
+                  }).concat([0]),
+                ),
+            ),
+            bx = box();
+          // blocks onto a box: those that run across the page as they are, the others in a column
+          function place(/** @type {HTMLElement} */ to, /** @type {HTMLElement[]} */ list) {
+            var col = /** @type {HTMLElement | null} */ (null);
+            list.forEach(function (b) {
+              if (b.hasAttribute("data-span")) {
+                col = null;
+                to.appendChild(b);
+                return;
+              }
               if (!col) {
                 col = d.createElement("div");
                 col.className = "pvcol";
                 if (centre) col.style.width = cw + "px";
-                bx.appendChild(col);
+                to.appendChild(col);
               }
-              return col;
-            };
-            var fresh = function () {
-              bx = box();
-              col = null;
-            };
-            while (queue.length) {
-              var grp = [/** @type {HTMLElement} */ (queue.shift())];
-              while (grp[grp.length - 1].hasAttribute("data-keep") && queue.length) grp.push(/** @type {HTMLElement} */ (queue.shift()));
-              var had = bx.childNodes.length > 0;
-              grp.forEach(function (b) {
-                if (b.hasAttribute("data-span")) {
-                  col = null;
-                  bx.appendChild(b);
-                } else colEl().appendChild(b);
-              });
-              if (hgt(bx) <= lim + 0.5) continue;
-              var last = grp[grp.length - 1];
-              if (last.hasAttribute("data-flow")) {
-                var sp = splitPoint(last, bx.getBoundingClientRect().top + lim - 2);
-                if (sp) {
-                  var rest = splitAt(last, sp);
-                  fresh();
-                  queue.unshift(rest);
-                  continue;
-                }
-              }
-              if (had) {
-                grp.forEach(function (b) {
-                  b.remove();
-                });
-                [].forEach.call(bx.querySelectorAll(".pvcol"), function (x) {
-                  if (!x.children.length) x.remove();
-                });
-                fresh();
-                queue = grp.concat(queue);
-                // (on the new page it is alone, so it is placed there even if it does not fit: below)
-                continue;
-              }
+              col.appendChild(b);
+            });
+          }
+          place(bx, ks.slice());
+          for (;;) {
+            yield;
+            // read: the first block that runs past the foot of the page
+            var kids = /** @type {HTMLElement[]} */ ([].slice.call(bx.querySelectorAll(".pvk"))).filter(function (x) {
+                return !x.parentElement || !x.parentElement.closest(".pvk");
+              }),
+              top = bx.getBoundingClientRect().top,
+              i = -1;
+            if (hgt(bx) > lim + 0.5) {
+              for (var m = 0; m < kids.length && i < 0; m++) if (kids[m].getBoundingClientRect().bottom - top > lim + 0.5) i = m;
+              // (only the last block's space below it runs over)
+              if (i < 0) i = kids.length - 1;
+            }
+            if (i < 0) break;
+            // the blocks kept together with it: from s to e
+            var s = i,
+              e = i;
+            while (s > 0 && kids[s - 1].hasAttribute("data-keep")) s--;
+            while (e < kids.length - 1 && kids[e].hasAttribute("data-keep")) e++;
+            var last = kids[e],
+              sp = last.hasAttribute("data-flow") ? splitPoint(last, top + lim - 2) : null,
+              tallH = sp || s > 0 ? 0 : kids[e].getBoundingClientRect().bottom - top;
+            yield;
+            // write: what moves on to the next page
+            var moved;
+            if (sp) moved = [splitAt(last, sp)].concat(kids.slice(e + 1));
+            else if (s > 0) moved = kids.slice(s);
+            else {
               // alone on a page and still taller than one: it runs on, between its lines, and counts for each page
-              grp.forEach(function (b) {
+              kids.slice(0, e + 1).forEach(function (b) {
                 b.classList.add("pvtall");
               });
               bx.classList.add("pvtallpg");
-              extra += Math.ceil(hgt(bx) / lim - 0.01) - 1;
-              if (queue.length) fresh();
+              extra += Math.max(0, Math.ceil(tallH / lim - 0.01) - 1);
+              moved = kids.slice(e + 1);
             }
-            if (!bx.childNodes.length) bx.remove(), boxes.pop();
+            if (!moved.length) {
+              yield;
+              break;
+            }
+            moved.forEach(function (b) {
+              b.remove();
+            });
+            [].forEach.call(bx.querySelectorAll(".pvcol"), function (/** @type {HTMLElement} */ x) {
+              if (!x.children.length) x.remove();
+            });
+            bx = box();
+            place(bx, moved);
           }
-          return { n: boxes.length + extra };
+          r.n = boxes.length + extra;
         }
-      });
+      }
       // the contents' page numbers, in the language printed
       [].forEach.call(p.querySelectorAll(".pvte li[data-sid]"), function (/** @type {HTMLElement} */ li) {
         var n = out[li.getAttribute("data-sid") || ""],
