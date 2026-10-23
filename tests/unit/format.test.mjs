@@ -53,6 +53,13 @@ describe("blocks", () => {
     expect(t.refrainFirst).toBe(true);
     expect(t.blocks.map((b) => b.kind)).toEqual(["dhrupad", "dhrupad-repeated", "stanza"]);
   });
+  test("every-verse: [once] lines and [note]s may come before the dhrupad, and [once] lines anywhere", () => {
+    const body = "[once]\nक\nK\n\n[note: अ | a]\n\n[dhrupad]\nख\nKh\n\n[dhrupad repeated]\nख // ख\nKh\n\n[1]\nग\nG\n\n[once]\nघ\nGh\n";
+    const t = parse(body, "refrain: every-verse\n");
+    expect(t.blocks.map((b) => b.kind)).toEqual(["once", "note", "dhrupad", "dhrupad-repeated", "stanza", "once"]);
+    expect(t.blocks[0].lines).toEqual([{ orig: "क", en: "K", rf: false }]);
+    expect(formatText(t)).toBe(HEAD + "refrain: every-verse\n---\n" + body);
+  });
   test.each([
     ["an English line missing", "[1]\nक\n\n", /an original line with no English line/],
     ["two original lines in a row", "[1]\nक\nख\n", /expected the everyday English line/],
@@ -72,6 +79,10 @@ describe("blocks", () => {
     ["a repeat of another length", "[dhrupad]\nक\nK\n\n[dhrupad repeated]\nक\nK\nख\nKh\n", "refrain: every-verse\n", /as many lines/],
     ["a repeat without every-verse", "[dhrupad]\nक\nK\n\n[dhrupad repeated]\nक\nK\n", "", /\[dhrupad repeated\] comes right after/],
     ["before-first without every-verse", "[1]\nक\nK\n", "refrain-before-first: yes\n", /needs refrain: every-verse/],
+    ["a stanza before the dhrupad", "[once]\nक\nK\n\n[1]\nख\nKh\n\n[dhrupad]\nग\nG\n", "refrain: every-verse\n", /needs a \[dhrupad\] block first/],
+    ["[once] lines and no dhrupad", "[once]\nक\nK\n", "refrain: every-verse\n", /needs a \[dhrupad\] block first/],
+    ["[once] without every-verse", "[once]\nक\nK\n\n[1]\nख\nKh\n", "", /\[once\] is for a text with refrain: every-verse/],
+    ["a repeat not right after the dhrupad", "[once]\nक\nK\n\n[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[dhrupad repeated]\nख\nKh\n", "refrain: every-verse\n", /\[dhrupad repeated\] comes right after/],
   ])("every-verse rules: refuses %s", (_, body, head, err) => {
     expect(() => parse(body, head)).toThrow(err);
   });
