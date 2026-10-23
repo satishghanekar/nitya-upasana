@@ -8,8 +8,6 @@
 //
 // Every function returns a new LibraryLocal and leaves the one passed in as it was.
 
-import { textId } from "../text/renamed.js";
-
 /**
  * @typedef {{ mr: string, en: string }} Name
  * @typedef {{ id: string, name: Name, order: number }} BundledCategory   one entry of content/categories.json
@@ -96,8 +94,7 @@ export function cleanLocal(x) {
     });
   if (x.moves && typeof x.moves === "object")
     Object.keys(x.moves).forEach(function (k) {
-      // (a text renamed since stays moved under its new id: js/text/renamed.js)
-      if (isId(k) && isId(x.moves[k])) out.moves[textId(k)] = x.moves[k];
+      if (isId(k) && isId(x.moves[k])) out.moves[k] = x.moves[k];
     });
   return out;
 }

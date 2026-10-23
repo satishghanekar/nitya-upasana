@@ -116,7 +116,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 
 | Field | |
 |---|---|
-| `id` | Required. Lower case and hyphens, starting with its category (`aarti-`, `ashtak-`, `vedic-chant-`), the same as the file name. A link to the text is `#<id>`. Phones save routines, ticks and highlights by it, so once a text is published, change its id only by adding the old one to `js/text/renamed.js` (which turns what was saved under it into the new id). |
+| `id` | Required. Lower case and hyphens, starting with its category (`aarti-`, `ashtak-`, `vedic-chant-`), the same as the file name. A link to the text is `#<id>`. |
 | `title`, `title-en` | Required. The title in the original language and in English. |
 | `category` | Required. One of the ids in `content/categories.json`: `vedic-chant`, `aarti`, `stotra`, `ashtak`. |
 | `language` | Required. `mr` (Marathi), `hi` (Hindi) or `sa` (Sanskrit). The page shows the language name from `content/library.json`. |
