@@ -1029,14 +1029,6 @@ span.prwho {
   }
 }
 
-@media print {
-  #p1 .mr p {
-    line-height: 1.75;
-  }
-  #p1 .verse {
-    margin-bottom: 0.6em;
-  }
-}
 #home h2.gh {
   margin-left: 0;
   margin-right: 0;

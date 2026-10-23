@@ -196,11 +196,24 @@
     font-family: var(--lat);
   }
 
-  /* ---- One language, verse: each stanza centred, as wide as its longest line ---- */
-  #pv .pvst {
+  /* ---- One language, verse: the stanzas one column, centred, as wide as the widest, every stanza starting at the
+     same left edge. A table (the browser sizes it, with nothing measured), each stanza a row: pages break between
+     rows, never inside one ---- */
+  #pv .pvcol {
     display: table;
-    margin: 0 auto 11pt;
+    margin: 0 auto;
     font-size: 15pt;
+  }
+  #pv .pvcol > .pvst {
+    display: table-row;
+  }
+  #pv .pvsc {
+    display: table-cell;
+    padding: 0 0 11pt;
+  }
+  #pv .pvcol + .pvcr {
+    break-before: avoid;
+    page-break-before: avoid;
   }
   #pv .pvsz {
     margin: 0;
@@ -342,10 +355,6 @@
   #pv .pvt tr.pvlabrow td {
     text-align: start;
     font-size: 9.5pt;
-  }
-  #pv[data-mode="side"] .pvst {
-    display: block;
-    margin: 0;
   }
 
   /* ---- The contents: the texts listed by category (no page numbers) ---- */
