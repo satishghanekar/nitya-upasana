@@ -179,33 +179,41 @@ export function choose(pagesAt, sizes, own) {
 /**
  * A block's lines that can end a page: the rows of its tables, or the words of its running paragraph. Returns a DOM
  * point to split at so that what comes before ends above `limit` (a y coordinate), keeping two lines on each side, or
- * null when the block cannot be split there.
- * @param {HTMLElement} k @param {number} limit
- * @returns {{ node: Node, offset: number } | null}
+ * null when the block cannot be split there. y: the top of the line (or row) that then starts the next page. A block
+ * already split above (from: the y its current page starts at) counts its two lines from there.
+ * @param {HTMLElement} k @param {number} limit @param {number} [from]
+ * @returns {{ node: Node, offset: number, y: number } | null}
  */
-export function splitPoint(k, limit) {
+export function splitPoint(k, limit, from) {
+  var f = from === undefined ? -Infinity : from - 1;
   var rows = [].filter.call(k.querySelectorAll("tr"), function (/** @type {HTMLElement} */ r) {
     return r.getClientRects().length > 0;
   });
   if (rows.length) {
-    var r = 0;
+    var r = 0,
+      r0 = 0;
+    while (r0 < rows.length && rows[r0].getBoundingClientRect().top < f) r0++;
+    r = r0;
     while (r < rows.length && rows[r].getBoundingClientRect().bottom <= limit) r++;
-    if (r < 2 || r > rows.length - 1) return r >= 1 && r < rows.length ? at(rows[r]) : null;
+    if (r - r0 < 2 || r > rows.length - 1) return r - r0 >= 1 && r < rows.length ? at(rows[r]) : null;
     return at(rows[r]);
   }
-  var p = [].filter.call(k.querySelectorAll("p"), function (/** @type {HTMLElement} */ x) {
+  // the words of its paragraphs, in order (a block may hold several: it splits in any of them)
+  var ps = [].filter.call(k.querySelectorAll("p"), function (/** @type {HTMLElement} */ x) {
     return x.getClientRects().length > 0;
-  })[0];
-  if (!p) return null;
-  var doc = p.ownerDocument,
-    walk = doc.createTreeWalker(p, 4),
+  });
+  if (!ps.length) return null;
+  var doc = k.ownerDocument,
     words = [],
     n;
-  while ((n = walk.nextNode())) {
-    var re = /\S+/g,
-      m;
-    while ((m = re.exec(n.data))) words.push({ node: n, offset: m.index });
-  }
+  ps.forEach(function (/** @type {HTMLElement} */ p) {
+    var walk = doc.createTreeWalker(p, 4);
+    while ((n = walk.nextNode())) {
+      var re = /\S+/g,
+        m;
+      while ((m = re.exec(n.data))) words.push({ node: n, offset: m.index });
+    }
+  });
   if (words.length < 4) return null;
   var rng = doc.createRange();
   function box(i) {
@@ -234,6 +242,7 @@ export function splitPoint(k, limit) {
     last = null;
   for (var i = 0; i < s; i++) {
     var t = Math.round(box(i).top);
+    if (t < f) continue;
     if (t !== last) before++, (last = t);
   }
   var after = 0;
@@ -244,10 +253,10 @@ export function splitPoint(k, limit) {
   }
   if (after < 2) s = s > 0 ? lineStart(s - 1) : 0, before--;
   if (before < 2 || s <= 0) return null;
-  return { node: words[s].node, offset: words[s].offset };
+  return { node: words[s].node, offset: words[s].offset, y: box(s).top };
 }
 function at(/** @type {HTMLElement} */ el) {
-  return { node: /** @type {Node} */ (el.parentNode), offset: [].indexOf.call(el.parentNode.childNodes, el) };
+  return { node: /** @type {Node} */ (el.parentNode), offset: [].indexOf.call(el.parentNode.childNodes, el), y: el.getBoundingClientRect().top };
 }
 
 /**
