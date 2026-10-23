@@ -33,4 +33,19 @@ export function numberStanzas(/** @type {ParentNode} */ r) {
       });
     });
   });
+  // A number written in the text (stanza-numbers: as-written) looks like the ones added: "॥ १ ॥" at the end of a line
+  [].forEach.call(r.querySelectorAll("section.ash.ownsn:not(.prose) .verse p"), function (p) {
+    var w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT),
+      t,
+      last = null;
+    while ((t = w.nextNode())) if (t.data.trim()) last = t;
+    var m = last && /\s*(॥|\|\|)\s*([०-९0-9]+)\s*(॥|\|\|)\s*$/.exec(last.data);
+    if (!m || (last.parentElement && last.parentElement.classList.contains("sn"))) return;
+    var e = document.createElement("span");
+    e.className = "sn";
+    // (the words kept exactly as written: only wrapped)
+    e.textContent = last.data.slice(m.index);
+    last.data = last.data.slice(0, m.index);
+    last.parentNode.insertBefore(e, last.nextSibling);
+  });
 }

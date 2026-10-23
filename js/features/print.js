@@ -171,8 +171,9 @@ export function init() {
       return u.classList.contains("rftop") || (v && v.classList.contains("bold")) ? " pvbold" : u.classList.contains("rf") ? " pvrf" : "";
     }
 
-    // One language: a stanza (with what goes with it), each line of verse a line on paper (a line too long for the page
-    // wraps, the rest of it indented). A row of the text's column (.pvcol): every stanza starts at the same left edge
+    // One language: a stanza (with what goes with it), each line of verse a line on paper, none indented (Satish,
+    // 2026-10-23). A row of the text's column (.pvcol): every stanza starts at the same left edge; the dhrupad, a
+    // closing line and the credit are centred over the column (css/15-print.css)
     /** @param {HTMLElement[]} us @param {string} k */
     function verseBlock(us, k) {
       var row = mk("div", "pvk pvst"),
@@ -182,13 +183,16 @@ export function init() {
         if (u.classList.contains("rmk")) return b.appendChild(inLang("p", "pvnote", k, part(u, k)));
         var lab = u.querySelector(".lab");
         if (lab) b.appendChild(inLang("p", "pvlab", k, part(lab, k)));
-        var st = mk("div", "pvsz" + look(u) + (u.classList.contains("rftop") ? " pvref" : ""));
+        var st = mk("div", "pvsz" + look(u) + (u.classList.contains("rftop") ? " pvref" : "") + (u.classList.contains("dh") ? " pvdh" : "")),
+          // a stanza's own refrain lines (आरती ज्ञानराजा ॥ धृ. ॥) are printed as a dhrupad sung again: after the stanza
+          rf = mk("div", "pvsz pvrf");
         linesOf(u, k).forEach(function (l) {
           var p = inLang("p", "pvl" + (l.rf ? " pvrf" : ""), k, l.html);
           glue(p);
-          st.appendChild(p);
+          (l.rf && !look(u) ? rf : st).appendChild(p);
         });
         if (st.firstChild) b.appendChild(st);
+        if (rf.firstChild) b.appendChild(rf);
       });
       return row;
     }
@@ -488,9 +492,12 @@ export function init() {
           if (t) {
             var pc = mk("p", "pvcr");
             pc.textContent = t;
-            var ks = box.querySelectorAll(".pvk");
-            if (box.querySelector(".pvcol") || !ks.length) box.appendChild(pc);
-            else ks[ks.length - 1].appendChild(pc);
+            // inside the last block, so it never goes to a page of its own (Safari doesn't keep a line with the one
+            // before it); in a text's column, in its last cell, centred under the column
+            var ks = box.querySelectorAll(".pvk"),
+              last = ks[ks.length - 1];
+            if (!last) box.appendChild(pc);
+            else (last.querySelector(".pvsc") || last).appendChild(pc);
           }
         }
         into.appendChild(box);
@@ -645,7 +652,7 @@ export function init() {
       try {
         var d = /** @type {Document} */ (f.contentDocument);
         d.open();
-        d.write('<!doctype html><html data-print="' + m + '"' + attrs() + '><head><base href="' + location.href.replace(/"/g, "%22") + '"><style>' + pcss() + "\nhtml,body{margin:0;overflow:hidden;background:#fff}body{box-sizing:content-box;padding:12mm 12mm 0;height:" + (sh[1] - 26) + "mm}</style></head><body>" + box.outerHTML + "</body></html>");
+        d.write('<!doctype html><html data-print="' + m + '"' + attrs() + '><head><base href="' + location.href.replace(/"/g, "%22") + '"><style>' + pcss() + "\nhtml,body{margin:0;overflow:hidden;background:#fff}body{box-sizing:content-box;padding:17mm 19mm 0;height:" + (sh[1] - 36) + "mm}</style></head><body>" + box.outerHTML + "</body></html>");
         d.close();
       } catch (e) {}
     }
