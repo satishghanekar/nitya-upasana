@@ -50,6 +50,8 @@
       '      <h2><span class="no"><span class="nm">' + p.no.mr + '</span><span class="ne">' + p.no.en + "</span></span> " + two(p.title) + "</h2>\n" +
       '      <div class="tag">' + two(p.tag) + "</div>\n" +
       "    </header>\n";
+    // [once] lines and [note]s that come before the dhrupad at the top (js/text/content.js)
+    if (p.lead) h += '    <div class="items lead">\n' + p.lead.map(item).join("") + "    </div>\n";
     if (p.refrain)
       h += '    <div class="rftop">\n      <div class="lab">' + two(p.refrain.label) + "</div>\n" + verse(p.refrain.lines, "      ") + "    </div>\n";
     h += '    <div class="items">\n' + p.items.map(item).join("") + "    </div>\n";

@@ -6,7 +6,7 @@ import { describe, expect, test } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import vm from "node:vm";
 import { parseText } from "../../js/text/format.js";
-import { buildContent } from "../../js/text/content.js";
+import { buildContent, toPiece } from "../../js/text/content.js";
 
 const read = (p) => readFileSync(new URL("../../" + p, import.meta.url), "utf8");
 const lib = JSON.parse(read("content/library.json"));
@@ -54,6 +54,17 @@ describe("CONTENT from the text files", () => {
     const b = allLines({ categories: [{ pieces: [byId(OLD, id)] }] });
     expect(a.length).toBe(b.length);
     a.forEach((l, k) => expect(l).toStrictEqual(b[k]));
+  });
+  // [once] lines and [note]s before the dhrupad go above it (lead); [once] lines later stay where they are, with no
+  // dhrupad after them; line ids follow the order shown
+  test("every-verse: [once] lines before the dhrupad lead, later ones stand where they are", () => {
+    const head = "id: x\ntitle: क\ntitle-en: K\ncategory: aarti\nlanguage: mr\nrefrain: every-verse\n---\n";
+    const t = parseText(head + "[once]\nक\nK\n\n[note: अ | a]\n\n[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[once]\nघ\nGh\n");
+    const p = toPiece(t, 1, lib);
+    expect(p.lead).toEqual([{ kind: "dh", lines: [{ l: "x.1", mr: "क", en: "K" }] }, { rmk: { mr: "अ", en: "a" }, nt: true }]);
+    expect(p.refrain.lines).toEqual([{ mr: "ख", en: "Kh" }]);
+    expect(p.items.map((i) => i.kind || (i.rmk ? "rmk" : "stanza"))).toEqual(["stanza", "rmk", "rf", "dh"]);
+    expect(p.items.flatMap((i) => (i.lines || []).map((l) => l.l))).toEqual(["x.2", "x.3", "x.4"]);
   });
   test("a text missing from the files stops the build", () => {
     expect(() => buildContent(lib, { ...files, sukhkarta: undefined })).toThrow("texts/sukhkarta.txt: not loaded");
