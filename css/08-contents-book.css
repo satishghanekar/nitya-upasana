@@ -37,7 +37,6 @@
     margin-inline: auto;
   }
 
-
   #jl .tocg {
     margin-block: 0;
     padding: 1px 4px 0;
@@ -199,25 +198,14 @@
 .cr a:not([href]) .crx {
   display: none;
 }
-.ash[data-lang="both"] .cr .en,
-#pv[data-lang="both"] .pvcr .en {
+.ash[data-lang="both"] .cr .en {
   display: none;
 }
 @media print {
   .cr {
     display: none;
   }
-  #pv .pvcr {
-    display: block;
-    margin: 6pt 0 0;
-    text-align: center;
-    font-size: 9.5pt;
-    color: #555;
-    break-before: avoid;
-  }
-  #pv .pvcr small {
-    font-size: 8.5pt;
-  }
+
 }
 /* ==== Both languages, English first (Settings → "In Both, show first": English) ====
    The script sets data-lead="en" on the page (only in Both) and moves each stanza's English block above its
@@ -269,16 +257,13 @@ html[data-lead="en"] .ash[data-lang="both"] header h2 .mr {
   color: var(--muted);
 }
 /* the author line follows the leading language */
-html[data-lead="en"] .ash[data-lang="both"] .cr .en,
-html[data-lead="en"] #pv[data-lang="both"] .pvcr .en {
+html[data-lead="en"] .ash[data-lang="both"] .cr .en {
   display: inline;
 }
-html[data-lead="en"] .ash[data-lang="both"] .cr small .en,
-html[data-lead="en"] #pv[data-lang="both"] .pvcr small .en {
+html[data-lead="en"] .ash[data-lang="both"] .cr small .en {
   display: block;
 }
-html[data-lead="en"] .ash[data-lang="both"] .cr .mr,
-html[data-lead="en"] #pv[data-lang="both"] .pvcr .mr {
+html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
   display: none;
 }
 /* contents lists (home, desktop menu, search panel): the English title leads, the Marathi one under it */
@@ -315,7 +300,6 @@ html[data-lead="en"] #pv[data-lang="both"] .pvcr .mr {
     color: var(--muted);
   }
 
-
 }
 /* wide screens, side by side: English on the left (right-aligned toward the centre), Marathi on the right */
 @media screen {
@@ -346,20 +330,5 @@ html[data-lead="en"] #pv[data-lang="both"] .pvcr .mr {
   [data-lead="en"] [data-lang="both"] .verse .mr {
     font-size: 0.78em;
   }
-  /* side by side: English is the left column, so the dividing rule and the dhrupad mark move with it */
-  html[data-lead="en"] #pv .pvside .pvm {
-    border-right: 0;
-  }
-  html[data-lead="en"] #pv .pvside .pve {
-    border-right: 0.5pt solid #bbb;
-  }
-  html[data-lead="en"] #pv .pvside tr.pvrefrow td.pvm {
-    box-shadow: none;
-    border-left: 0;
-    padding-left: 10pt;
-  }
-  html[data-lead="en"] #pv .pvside tr.pvrefrow td.pve {
-    box-shadow: inset 2.5pt 0 0 var(--accent);
-    padding-left: 12pt;
-  }
+
 }

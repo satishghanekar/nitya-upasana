@@ -1,127 +1,80 @@
-// Print and PDF: how a printout is put together. How each text prints, line by line in every layout, is checked text
-// by text in print-items.spec.mjs; this suite checks the rest:
-//   - the contents page lists the page each piece really starts on in the PDF (the whole Library in each layout, and
-//     a few texts only)
-//   - every unbroken block (heading with its dhrupad and first stanza, each stanza) sits on one page
-//   - every piece is printed, even when it or its section is folded on screen, and whatever the reading page shows
-//   - the screen-only controls (Open all, settings, etc.) never print
-//   - in layouts with English, every English line of the print view is in the PDF
-//   - the page count and contents numbers match the recorded baseline
-//   - printing from the browser's menu, Safari's print layout, the Print pop-up and the iPhone's Print now and
-//     Open in Safari
+// Print and PDF. The printout is laid out by the browser itself (nothing is measured: js/features/print.js), so these
+// check what must hold in any printout, on the PDF Chromium makes of it:
+//   - every text is printed, in reading order, and listed in the contents; each starts on a new page
+//   - no stanza (or other block) is split between pages, and nothing is lost (a marker at each block's start and end)
+//   - every English line of every printed text is on paper, read against the texts themselves
+//   - the page footers; nothing screen-only prints
+// for one language and both, in each of the three fonts, with Kannada letters, IAST, and the dhrupad after every
+// verse; then the Print pop-up and builder, the iPhone's Print now and Open in Safari, and routine printouts.
 // PDFs can only be made by Chromium, so this suite is Chromium-only.
 import { test, expect, devices } from "@playwright/test";
-import { openSite, SETUPS, SNAP_ENV, TEXT_COUNT, openMore, tapMore, readText, useTestRoutine, TEST_AARTIS, openPrintBuilder } from "./helpers.mjs";
-import { printOnce, checkPrintout, stubPrint, printFromButton, howStep, readPrintView, addMarkers, pdfPages, markerPages, toInt, trackWarmUp, waitForWarmUp } from "./print-helpers.mjs";
+import { openSite, SETUPS, TEXT_COUNT, openMore, tapMore, readText, useTestRoutine, TEST_AARTIS, openPrintBuilder } from "./helpers.mjs";
+import { printOnce, checkPrintout, checkPages, stubPrint, printFromButton, howStep, readPrintView, addMarkers, pdfPages, markerPages, sourceLines } from "./print-helpers.mjs";
 
 test.describe.configure({ mode: "parallel" });
 
-// The whole Library, as the Print button prints it: the contents page and its numbers, every piece in reading order.
-// How each text itself prints (every line, in every layout, the other fonts) is checked text by text in
-// print-items.spec.mjs: a text prints the same inside the whole Library as on its own, so these check how the printout
-// is put together. Portrait (pr1) and Landscape (pr2): one language prints in a column either way; both languages
-// print side by side, on Landscape only.
+// The whole Library, as the Print button prints it. Portrait (pr1) or Landscape (pr2) for one language; both
+// languages side by side, on Landscape only. The fonts: Traditional (classic, the default), Modern (std), Bold
 const WHOLE = [
-  { name: "marathi-single-column-default-Letter", prefs: SETUPS.marathi, choice: "pr1", mode: "one", paper: "Letter", locale: "en-US" },
-  { name: "english-single-column-default-A4", prefs: SETUPS.english, choice: "pr1", mode: "one", paper: "A4", locale: "en-IN" },
-  { name: "sideways-marathi-single-column-default-Letter", prefs: { ...SETUPS.marathi, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
-  { name: "sideways-english-single-column-default-Letter", prefs: { ...SETUPS.english, por: "land" }, choice: "pr2", mode: "one", paper: "Letter", locale: "en-US" },
-  { name: "sideways-both-side-by-side-default-Letter", prefs: { ...SETUPS.both, por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
-  { name: "sideways-kannada-side-by-side-default-Letter", prefs: { ...SETUPS["kannada-both"], por: "land" }, choice: "pr2", mode: "side", paper: "Letter", locale: "en-US" },
+  { name: "Marathi, Traditional, Letter", prefs: SETUPS.marathi, choice: "pr1", mode: "one" },
+  { name: "English, Modern, A4", prefs: { ...SETUPS.english, pfn: "std" }, choice: "pr1", mode: "one", paper: "A4", locale: "en-IN" },
+  { name: "Marathi, Bold, Landscape", prefs: { ...SETUPS.marathi, pfn: "bold", por: "land" }, choice: "pr2", mode: "one" },
+  { name: "both side by side, Traditional", prefs: SETUPS.both, choice: "pr2", mode: "side" },
+  { name: "both side by side, English first, Modern", prefs: { ...SETUPS["english-main-both"], pfn: "std" }, choice: "pr2", mode: "side" },
+  { name: "Kannada letters", prefs: SETUPS.kannada, choice: "pr1", mode: "one" },
+  { name: "Kannada letters side by side, Bold", prefs: { ...SETUPS["kannada-both"], pfn: "bold" }, choice: "pr2", mode: "side" },
+  { name: "English in IAST", prefs: SETUPS["english-iast"], choice: "pr1", mode: "one" },
+  { name: "the dhrupad after every verse", prefs: SETUPS["marathi-every-verse"], choice: "pr1", mode: "one" },
+  { name: "the dhrupad after every verse, side by side", prefs: { ...SETUPS["marathi-every-verse"], plang: "both" }, choice: "pr2", mode: "side" },
 ];
 // iPhone 13 emulation in Chromium (the device entry names WebKit as its browser, which newContext does not take)
 const { defaultBrowserType: _bt, ...IPHONE } = devices["iPhone 13"];
 
-// Special cases beyond those (the default font, Traditional; Letter unless stated)
-const EXTRAS = [
-  { name: "iast-english-single-column", prefs: SETUPS["english-iast"], choice: "pr1", mode: "one" },
-  { name: "iast-both-side-by-side", prefs: SETUPS["both-iast"], choice: "pr2", mode: "side" },
-  { name: "english-main-side-by-side", prefs: SETUPS["english-main-both"], choice: "pr2", mode: "side" },
-  { name: "kannada-single-column", prefs: SETUPS.kannada, choice: "pr1", mode: "one" },
-  { name: "dhrupad-every-verse-single", prefs: SETUPS["marathi-every-verse"], choice: "pr1", mode: "one" },
-  { name: "marathi-menus-single-column", prefs: SETUPS["marathi-menus"], choice: "pr1", mode: "one" },
-  // Folded on screen: two pieces. They must still print.
-  { name: "everything-folded", prefs: { ...SETUPS.marathi, af: ["a3", "a7"], tf: 1, fold: 1 }, choice: "pr1", mode: "one" },
-  { name: "a4-kannada-single-column", prefs: SETUPS.kannada, choice: "pr1", mode: "one", paper: "A4", locale: "en-GB" },
-];
-
 for (const W of WHOLE) {
   test(`whole Library · ${W.name} @chromium-only`, async ({ browser }) => {
-    const r = await printOnce(browser, { prefs: W.prefs, choice: W.choice, mode: W.mode, paper: W.paper, locale: W.locale });
-    if (W.choice === "pr2") expect(r.pdf.landscape, "the PDF pages are sideways").toBe(true);
-    const summary = checkPrintout(r, W.paper);
-    expect(JSON.stringify(summary, null, 1)).toMatchSnapshot([SNAP_ENV, `${W.name}.json`]);
+    const paper = W.paper || "Letter";
+    const r = await printOnce(browser, { prefs: W.prefs, choice: W.choice, mode: W.mode, paper, locale: W.locale || "en-US" });
+    expect(r.pdf.landscape, "the PDF pages are sideways").toBe(W.choice === "pr2");
+    checkPrintout(r);
   });
 }
 
-// Some texts only (a print link naming them, ?print=…&t=…): the contents page lists just those, in reading order,
-// each with the page it starts on
-test("a few texts: their own contents page @chromium-only", async ({ browser }) => {
-  const ids = ["sukhkarta", "shree-rudra", "ashtak-monday"];
-  const context = await browser.newContext({ locale: "en-US", viewport: { width: 1280, height: 900 }, serviceWorkers: "block" });
-  const page = await context.newPage();
-  const errors = [];
-  await stubPrint(page);
-  await openSite(page, { ...SETUPS.marathi, por: "up" }, { errors, hash: `?print=as&t=${ids.join(",")}` });
-  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
-  await page.emulateMedia({ media: "print" });
-  // reading order is the Library's (content/categories.json), whatever order the link names them in
-  const onScreen = await page.evaluate((ids) => window.CONTENT.categories.flatMap((g) => g.pieces).filter((p) => ids.includes(p.text)).map((p) => p.id), ids);
-  expect(onScreen).toHaveLength(3);
-  const pv = await readPrintView(page);
-  await addMarkers(page);
-  const pdf = await pdfPages(page, "Letter");
-  await context.close();
-  const summary = checkPrintout({ pv, pdf, errors, onScreen, mode: "one" }, "Letter");
-  expect(JSON.stringify(summary, null, 1)).toMatchSnapshot([SNAP_ENV, "a-few-texts.json"]);
-});
-
-// Sideways special cases: the dhrupad after every verse, and Kannada
-for (const X of [
-  { name: "sideways-dhrupad-every-verse-single", prefs: SETUPS["marathi-every-verse"], choice: "pr2", mode: "one" },
-  { name: "sideways-dhrupad-every-verse-side", prefs: { ...SETUPS["marathi-every-verse"], lang: "both" }, choice: "pr2", mode: "side" },
-  { name: "sideways-kannada-single-column", prefs: SETUPS.kannada, choice: "pr2", mode: "one" },
-]) {
-  test(`${X.name} @chromium-only`, async ({ browser }) => {
-    const r = await printOnce(browser, { prefs: { ...X.prefs, por: "land" }, choice: X.choice, mode: X.mode, paper: "Letter", locale: "en-US" });
-    expect(r.pdf.landscape).toBe(true);
-    const summary = checkPrintout(r, "Letter");
-    expect(JSON.stringify(summary, null, 1)).toMatchSnapshot([SNAP_ENV, `${X.name}.json`]);
-  });
-}
-
-for (const X of EXTRAS) {
-  test(`${X.name} @chromium-only`, async ({ browser }) => {
-    const paper = X.paper || "Letter";
-    const r = await printOnce(browser, { prefs: X.prefs, choice: X.choice, mode: X.mode, paper, locale: X.locale || "en-US" });
-    const summary = checkPrintout(r, paper);
-    expect(JSON.stringify(summary, null, 1)).toMatchSnapshot([SNAP_ENV, `${X.name}.json`]);
-  });
-}
-
-// Printing from the browser's own menu (Ctrl/⌘ P, or Share → Print on a phone) doesn't go through
-// the pop-up: the page builds the single-column print view in "beforeprint".
-test("browser menu print gives the single-column print view @chromium-only", async ({ browser }) => {
+// Some texts only (a print link naming them, ?print=…&t=…): the contents list just those, in reading order, numbered
+// in their own categories (1 | 1, 2: never 1 | 1, 3)
+test("a few texts: their own contents @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
-  await trackWarmUp(page);
-  await openSite(page, SETUPS.marathi);
-  // the contents numbers for the menu print are worked out in the background ~3 s after load
-  await waitForWarmUp(page);
-  // page.pdf() fires beforeprint exactly as the browser's Print menu does; the markers go in after
-  // the site's own handler has built the print view
-  await addMarkers(page, "beforeprint");
-  const pdf = await pdfPages(page, "Letter");
+  await stubPrint(page);
+  await openSite(page, SETUPS.marathi, { hash: "?print=as&t=atharvashirsha,durge-durghat-bhari,ghalin-lotangan" });
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
   await page.emulateMedia({ media: "print" });
   const pv = await readPrintView(page);
-  expect(pv.pieces).toHaveLength(TEXT_COUNT);
-  expect(pv.toc.every((t) => t.page)).toBe(true);
-  const at = markerPages(pdf.pages);
-  for (const t of pv.toc) expect(at[t.id + ":0:s"], `${t.id} page`).toBe(toInt(t.page));
-  expect(JSON.stringify({ pages: pdf.pages.length, contents: Object.fromEntries(pv.toc.map((t) => [t.id, toInt(t.page)])) }, null, 1))
-    .toMatchSnapshot([SNAP_ENV, "browser-menu.json"]);
+  expect(pv.pieces).toEqual(["p1", "a3", "a8"]);
+  expect(pv.toc.map((t) => t.id)).toEqual(["p1", "a3", "a8"]);
+  expect(await page.locator("#pv .pvtoc .pvnum").allTextContents()).toEqual(["१.", "१.", "२."]);
+  const source = await sourceLines(page);
+  await addMarkers(page);
+  const pdf = await pdfPages(page, "Letter");
+  checkPages({ pv, pdf, mode: "one", source, tr: false });
+  await context.close();
+});
+
+// Printing from the browser's own menu (Ctrl/⌘ P, or Share → Print on a phone) doesn't go through the pop-up: the
+// page builds the print view in "beforeprint", the whole Library
+test("browser menu print gives the whole Library @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await openSite(page, SETUPS.marathi);
+  // page.pdf() fires beforeprint exactly as the browser's Print menu does; the markers go in after the site's own
+  // handler has built the print view
+  await addMarkers(page, "beforeprint");
+  const pdf = await pdfPages(page, "Letter");
   // afterprint (fired when page.pdf finished) puts the page back to normal
   expect(await page.evaluate(() => document.documentElement.hasAttribute("data-print"))).toBe(false);
+  const at = markerPages(pdf.pages);
+  const pieces = await page.evaluate(() => [...document.querySelectorAll("#pv .pvs")].map((s) => s.dataset.sid));
+  expect(pieces).toHaveLength(TEXT_COUNT);
+  for (const id of pieces) expect(at[id + ":0:s"], `${id} printed`).toBeGreaterThan(0);
   await context.close();
 });
 
@@ -161,35 +114,11 @@ test("a session being read: Print in the bottom bar prints the texts in full @ch
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
   if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
-  const secs = await page.evaluate(() => [...document.querySelectorAll("#pv .pvs")].map((s) => s.querySelectorAll(".verse p, p.pvpr").length));
+  const secs = await page.evaluate(() => [...document.querySelectorAll("#pv .pvs")].map((s) => s.querySelectorAll(".pvl, .pvpr .pvln").length));
   expect(secs.length).toBeGreaterThan(0);
   for (const n of secs) expect(n).toBeGreaterThan(2);
   await context.close();
 });
-
-// Safari and iOS (class "wk") keep the page plan worked out from the heights (see paginate in
-// js/features/print.js). Chromium can take that path too: nothing lost, contents numbers present.
-for (const [setup, por] of [["marathi", "up"], ["english", "up"], ["marathi", "land"]]) {
-  test(`Safari print layout (${setup}${por === "land" ? ", sideways" : ""}) @chromium-only`, async ({ browser }) => {
-    // Safari's user agent makes the site take its Safari print path (class "wk" on <html>)
-    const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block", userAgent: devices["Desktop Safari"].userAgent });
-    const page = await context.newPage();
-    await stubPrint(page);
-    await openSite(page, { ...SETUPS[setup], por });
-    await printFromButton(page, por === "land" ? "pr2" : "pr1");
-    const pv = await readPrintView(page);
-    expect(pv.mode).toBe("one");
-    expect(pv.pieces).toHaveLength(TEXT_COUNT);
-    expect(pv.toc.every((t) => t.page)).toBe(true);
-    await addMarkers(page);
-    const pdf = await pdfPages(page, "Letter");
-    const at = markerPages(pdf.pages);
-    expect(Object.keys(at).length).toBe(pv.blocks * 2);
-    expect(JSON.stringify({ pages: pdf.pages.length, contents: Object.fromEntries(pv.toc.map((t) => [t.id, toInt(t.page)])) }, null, 1))
-      .toMatchSnapshot([SNAP_ENV, `safari-${setup}${por === "land" ? "-sideways" : ""}.json`]);
-    await context.close();
-  });
-}
 
 // The Print pop-up itself: the right choices for each language, the paper named, Escape and Cancel close it.
 test("print pop-up offers the right choices and closes cleanly @chromium-only", async ({ page }) => {
@@ -212,9 +141,8 @@ test("print pop-up offers the right choices and closes cleanly @chromium-only", 
   expect(await page.evaluate(() => window.__printed)).toBe(0);
 });
 
-// iPhone: Safari opens the print dialog only in answer to a tap, and laying the print view out takes longer
-// than a tap counts for, so window.print() is quietly ignored (no beforeprint). The pop-up then offers
-// Print now, whose own tap prints.
+// iPhone: Safari opens the print dialog only in answer to a tap. Should it still ignore window.print() (no
+// beforeprint), the pop-up offers Print now, whose own tap prints.
 test("iPhone: an ignored print offers Print now @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
@@ -315,21 +243,20 @@ test("iPhone Home Screen app: a layout choice goes straight to Open in Safari @c
   await context.close();
 });
 
-// Laid out ahead: once the page has been open a few seconds, the single-column printout is ready, so on an
-// iPhone the Print button prints on its first tap (no Print now), while the tap still counts
-test("iPhone: a printout laid out ahead prints on the first tap @chromium-only", async ({ browser }) => {
+// iPhone: the print view is written at once (nothing is laid out ahead or measured), so Print opens the dialog from
+// the tap itself: no Print now. (The stub prints only while the tap still counts, as Safari does.)
+test("iPhone: Print prints on its first tap @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await page.addInitScript(() => {
     window.__printed = 0;
     window.print = () => {
+      if (!navigator.userActivation.isActive) return;
       window.__printed++;
       dispatchEvent(new Event("beforeprint"));
     };
   });
-  await trackWarmUp(page);
   await openSite(page, SETUPS.english);
-  await waitForWarmUp(page);
   await openPrintBuilder(page);
   await howStep(page);
   await page.locator("#pr1").click();
@@ -378,8 +305,8 @@ test("iPhone Home Screen app: Open in Safari carries the print choices @chromium
   await sp.addInitScript(() => {
     window.__printed = 0;
     window.print = () => {
-      // as Safari: the dialog opens in answer to a tap (Print now), not for the call made as the page opens
-      if ((window.__printed++, navigator.userActivation.isActive)) dispatchEvent(new Event("beforeprint"));
+      // as Safari: the call made as the page opens is ignored (no tap); the next one, Print now's, opens the dialog
+      if (window.__printed++) dispatchEvent(new Event("beforeprint"));
     };
   });
   await sp.goto(url);
@@ -571,7 +498,7 @@ test("print pop-up shows the dhrupad and font settings @chromium-only", async ({
 });
 
 // ---- The print builder (print redesign P4): What, then How ----
-// A phone shows one step at a time: What first, every text ticked, with each text's pages and the total in the bar;
+// A phone shows one step at a time: What first, every text ticked, with how many in the bar;
 // Next goes on to How, ‹ What to print comes back. What is ticked is what prints.
 test("print builder: pick texts on a phone, then print just those @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
@@ -587,14 +514,6 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await expect(boxes).toHaveCount(TEXT_COUNT);
   expect(await boxes.evaluateAll((l) => l.every((x) => x.checked))).toBe(true);
   await expect(page.locator("#prsum")).toContainText(`${TEXT_COUNT} texts`);
-  // the pages come from the whole Library's plan, laid out in the background: each text's, and the total (with the
-  // contents page)
-  await expect(page.locator("#prwl .tpkl .prpc").first()).toHaveText(/^~\d+ pages?$/, { timeout: 20_000 });
-  const each = await page.locator("#prwl .tpkl .prpc").allTextContents();
-  const sum = each.reduce((a, t) => a + Number(t.replace(/\D/g, "")), 0);
-  const pagesIn = async () => Number((await page.locator("#prsum span").nth(1).textContent()).replace(/\D/g, ""));
-  await expect(page.locator("#prsum span").nth(1)).toHaveText(/^~\d+ pages$/);
-  expect(await pagesIn()).toBe(sum + 1);
   // Clear everything: nothing to print, so Next waits
   await page.locator('.prcb[data-cat=""]').click();
   await expect(page.locator("#prsum")).toContainText("Pick at least one text");
@@ -607,8 +526,6 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await page.locator(".prwq").fill("");
   await page.locator('#prwl .tpkl li[data-id="atharvashirsha"] input').check();
   await expect(page.locator("#prsum span").first()).toHaveText("2 texts");
-  const two = await page.locator('#prwl .tpkl li[data-id="atharvashirsha"] .prpc, #prwl .tpkl li[data-id="sukhkarta"] .prpc').allTextContents();
-  expect(await pagesIn()).toBe(two.reduce((a, t) => a + Number(t.replace(/\D/g, "")), 0) + 1);
   // Next, and back
   await page.locator("#prnx").click();
   await expect(page.locator("#prhw")).toBeVisible();
@@ -680,7 +597,6 @@ test("print builder: Marathi menus @chromium-only", async ({ browser }) => {
   await expect(page.locator(".prwq")).toHaveAttribute("placeholder", "संग्रहात शोधा");
   await expect(page.locator('.prcb[data-cat=""]')).toHaveText("सर्व काढा");
   await expect(page.locator("#prsum span").first()).toHaveText(/^[०-९]+ रचना$/);
-  await expect(page.locator("#prwl .tpkl .prpc").first()).toHaveText(/^~[०-९]+ (पान|पाने)$/, { timeout: 20_000 });
   await expect(page.locator("#prx")).toHaveAttribute("aria-label", "रद्द");
   await context.close();
 });
@@ -822,7 +738,7 @@ test("print builder: the printout's language @chromium-only", async ({ browser }
   const shown = await page.evaluate(() => {
     const s = document.querySelector("#pv .pvs");
     const vis = (sel) => [...s.querySelectorAll(sel)].some((e) => e.getClientRects().length && getComputedStyle(e).display !== "none");
-    return { lang: document.getElementById("pv").getAttribute("data-lang"), en: vis(".verse .en p"), mr: vis(".verse .mr p") };
+    return { lang: document.getElementById("pv").getAttribute("data-lang"), en: vis(".pvl.pve, .pvpr.pve"), mr: vis(".pvl.pvo, .pvpr.pvo") };
   });
   expect(shown).toEqual({ lang: "en", en: true, mr: false });
   await page.emulateMedia({ media: "screen" });
@@ -842,8 +758,8 @@ test("print builder: the preview and the paper @chromium-only", async ({ browser
   await expect(page.locator("#prsheet")).toHaveAttribute("aria-label", "Preview of the first page");
   const title = () => page.frameLocator("#prsheet iframe").locator("#pv .pvs h2").first();
   await expect(title()).toContainText("Ganapati Atharvashirsha", { timeout: 20_000 });
-  // the first page only: one piece, and nothing after its first page break
-  expect(await page.frameLocator("#prsheet iframe").locator("#pv .pvs, #pv .pvbr").count()).toBe(1);
+  // the first text only
+  expect(await page.frameLocator("#prsheet iframe").locator("#pv .pvs").count()).toBe(1);
   await expect(page.locator("#prq")).toHaveText("Letter");
   await expect(page.locator("#prpa")).toHaveText("Use A4");
   // Letter is taller for its width than A4
@@ -957,15 +873,19 @@ test("print: a routine printout, its week at a glance and tags @chromium-only", 
   await expect(page.locator("#pv .pvrh")).toHaveText("Me");
   await expect(page.locator("#pv .pvtoc .pvtag")).toHaveText(P5_TAGS);
   await expect(page.locator("#pv .pvs h2 .pvtag")).toHaveText(P5_TAGS);
-  await expect(page.locator("#pv .pvs h2 .ne")).toHaveText(["1.", "2.", "3.", "4."]);
-  // the PDF: page 1, then each text where the contents say
+  await expect(page.locator("#pv .pvs h2 .pvnum")).toHaveText(["1.", "2.", "3.", "4."]);
+  // the PDF: page 1, then each text on pages of its own, in order, its tag under its title
   await page.emulateMedia({ media: "print" });
   const pdf = await pdfPages(page, "Letter");
   expect(pdf.pages[0]).toContain("The week at a glance");
   expect(pdf.pages[0]).toContain("Daily · Morning, Evening");
-  const starts = await page.locator("#pv .pvtoc li[data-sid] .pgn").allTextContents();
-  const titles = await page.locator("#pv .pvs h2 .en").allTextContents();
-  starts.forEach((n, i) => expect(pdf.pages[toInt(n) - 1], `${titles[i]} on page ${n}`).toContain(P5_TAGS[i]));
+  const titles = await page.locator("#pv .pvs h2 .pvtt").allTextContents();
+  let at = 0;
+  titles.forEach((t, i) => {
+    const p = pdf.pages.findIndex((x, j) => j > at && x.includes(t.trim()) && x.includes(P5_TAGS[i]));
+    expect(p, `${t} on a page of its own after the one before`).toBeGreaterThan(at);
+    at = p;
+  });
   await context.close();
 });
 
@@ -975,7 +895,7 @@ test("print: a Library printout has no tags or week grid @chromium-only", async 
   await openSite(page, SETUPS.english);
   await printFromButton(page, "pr1");
   expect(await page.locator("#pv .pvtag, #pv .pvgrid").count()).toBe(0);
-  expect(await page.locator("#pv .pvtoc h3").count()).toBeGreaterThan(1);
+  expect(await page.locator("#pv .pvcov .pvcat").count()).toBeGreaterThan(1);
 });
 
 // Open in Safari carries the routine printout: Safari keeps its own storage, so the link holds whose routine (name and

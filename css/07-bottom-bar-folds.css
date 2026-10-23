@@ -181,7 +181,6 @@
 }
 /* ==== Folding the home contents list and each piece (the Contents button's look is in "Fold headings" below) ==== */
 
-
 .ash header {
   position: relative;
   padding-inline: 56px;
@@ -220,16 +219,16 @@
     display: none !important;
   }
   /* Piece headings are one row, open or folded, so folding never makes the heading jump: number and name
-     on the left, ⌃ on the right, the same height as the Contents, Pooja and Aarti rows (Satish's pick B,
-     2026-10-14). The language tag shows only in print. In Marathi + English the English name follows
-     the Marathi on the same line, small and muted, like the section rows; long names wrap. */
+     centred over the text, as on paper (Satish, 2026-10-23: an aarti's title centred over its stanzas), ⌃ on the
+     right, the same height as the Contents, Pooja and Aarti rows. The language tag shows only in print. In
+     Marathi + English the English name follows the Marathi, small and muted; long names wrap. */
   .ash header {
     box-sizing: border-box;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: nowrap;
-    text-align: left;
+    text-align: center;
     min-height: 52px;
-    padding: 8px 56px 8px 16px;
+    padding: 8px 56px;
     margin: 10px 0 14px;
     /* plain like the old section rows; the accent bar marks the sections (Contents, पूजा, आरती) instead */
     background: var(--surface);
@@ -414,11 +413,9 @@
   }
 }
 
-
 #iconb img {
   filter: drop-shadow(0 0 10px color-mix(in srgb, var(--gold) 55%, transparent));
 }
-
 
 /* Text font (Settings → Text font, and the same three in the Print pop-up: css/00-fonts.css):
    Modern (std) keeps the site's own fonts; Traditional and Bold change the texts (Marathi and English), on screen
@@ -439,32 +436,17 @@
 :root[data-font]:not([data-font="std"]) .ash .rftop .en p {
   font-family: var(--tf), var(--lat);
 }
-/* the chosen font also reaches the printed copy (#pv has no .ash wrapper); headings keep theirs */
-:root[data-font]:not([data-font="std"]) #pv .pvs {
-  font-family: var(--tf), var(--body);
-}
-:root[data-font]:not([data-font="std"]) #pv .pvs .en,
-:root[data-font]:not([data-font="std"]) #pv .pvs .en p,
-:root[data-font]:not([data-font="std"]) #pv .pvs td.pve {
-  font-family: var(--tf), var(--lat);
-}
-:root[data-font]:not([data-font="std"]) #pv .pvs h2 .en {
-  font-family: inherit;
-}
+
 /* Traditional: the Vedic chants (layout: prose; .pvved in print) in Tiro Devanagari Sanskrit, the Sanskrit cut of the
    same design, made for the Vedic svara marks */
 :root[data-font="classic"] .ash.prose .items .mr,
-:root[data-font="classic"] .ash.prose .items .mr p,
-:root[data-font="classic"] #pv .pvved .mr,
-:root[data-font="classic"] #pv .pvved .mr p,
-:root[data-font="classic"] #pv .pvved td.pvm {
+:root[data-font="classic"] .ash.prose .items .mr p {
   font-family: "Tiro Devanagari Sanskrit", var(--tf), var(--body);
 }
 /* Bold: Noto Serif set SemiBold, so it reads strongly in low light and on paper; lines styled lighter (the repeated
    dhrupad) or bolder keep their own weight */
 :root[data-font="bold"] .ash .items,
 :root[data-font="bold"] .ash .rftop,
-:root[data-font="bold"] #pv .pvs,
 :root[data-font="bold"] .sp-pw > div,
 :root[data-font="bold"] .sp-pw > [lang="en"] {
   font-weight: 600;
@@ -474,8 +456,7 @@
 :root[data-font="bold"] .item.rf p,
 :root[data-font="bold"] .verse p.rf,
 :root[data-font="bold"] .rftop p,
-:root[data-font="bold"] .verse.bold p,
-:root[data-font="bold"] #pv .pvside tr.pvb td {
+:root[data-font="bold"] .verse.bold p {
   font-weight: 800;
 }
 /* and the home page, the section bars (पूजा, आरती) and the piece title cards: their font names point to the
@@ -509,7 +490,6 @@
   box-sizing: border-box;
 }
 
-
 @media screen {
   .rmk.rmkt::after {
     inset: -10px -8px;
@@ -528,7 +508,6 @@ html[data-asb="1"] {
    (#skmore; #home.pmore while open). The calendar icon and the App / Share / QR / Print / Help row stay in sight.
    On Sankashti day itself (#home.pday) the moonrise time is large, the contents below are set larger, and the
    button row waits under More dates too. */
-
 
 /* ==== Reading sheet (Aa in the bottom bar): language, text size and dhrupad within thumb reach ====
    js/features/reading-sheet.js. The sheet sits on the bottom bar (--rsb: the bar's height); the page around it,
@@ -735,20 +714,5 @@ html[data-asb="1"] {
 @media print {
   #rsh {
     display: none;
-  }
-}
-
-/* Print, Traditional: Tiro has no bold, so what prints bold (the dhrupad at the top, a [dhrupad bold] block, its row
-   side by side) is set in Noto Serif Devanagari Bold, the serif closest to it, rather than a bold made up by the
-   browser (css/04-columns-rail.css, "the page boxes") */
-@media print {
-  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs .pvref p,
-  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs .pvref .en p,
-  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs .verse.bold p,
-  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs .verse.bold .en p,
-  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs tr.pvb td,
-  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs tr.pvb td.pve {
-    font-family: "SC Bold", var(--body);
-    font-weight: 700;
   }
 }

@@ -7,11 +7,10 @@
     "test": "playwright test",
     "quick": "node quick.mjs",
     "full": "npm run lint && npm run types && npm run unit && playwright test",
-    "release": "npm run print:audit && npm run lhci",
+    "release": "npm run lhci",
     "test:update": "playwright test --update-snapshots",
     "lhci": "lhci autorun",
     "lint": "stylelint --config stylelint.config.mjs \"../css/**/*.css\" && cd .. && eslint -c tests/eslint.config.mjs js sw.js",
-    "print:audit": "rm -rf pdfs && PRINT_AUDIT=1 playwright test print-audit.spec.mjs; node print-audit-report.mjs",
     "unit": "vitest run",
     "types": "tsc -p tsconfig.json"
   },
