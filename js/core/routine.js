@@ -8,8 +8,6 @@
 // The default is content/routines.json (Satish's own routine), for a person who has not changed theirs.
 // Which session it is now: sessionAt() in js/core/time-of-day.js.
 
-import { textId } from "../text/renamed.js";
-
 /**
  * @typedef {import("./time-of-day.js").Session} Session
  * @typedef {"sun" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat"} DayKey
@@ -119,8 +117,7 @@ export function cleanList(list) {
   var out = [];
   if (!Array.isArray(list)) return out;
   list.forEach(function (/** @type {unknown} */ id) {
-    // (a text renamed since keeps its place under its new id: js/text/renamed.js)
-    if (typeof id === "string" && ID.test(id) && out.indexOf(textId(id)) < 0 && out.length < MAX_TEXTS) out.push(textId(id));
+    if (typeof id === "string" && ID.test(id) && out.indexOf(id) < 0 && out.length < MAX_TEXTS) out.push(id);
   });
   return out;
 }

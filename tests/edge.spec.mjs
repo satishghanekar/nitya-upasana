@@ -455,9 +455,3 @@ test("CSS: no new !important, :root:root boosts or unlisted breakpoints (L1, L2)
   const unlisted = widths.filter((w) => !readme.includes(w + "px"));
   expect(unlisted, "breakpoints missing from css/README.md").toEqual([]);
 });
-
-// Texts renamed on 2026-10-23 (js/text/renamed.js): a link saved before still opens the text
-test("an old link (#shree-rudra, before the ids started with their category) opens the renamed text", async ({ page }) => {
-  await openSite(page, SETUPS.marathi, { hash: "#shree-rudra" });
-  await expect(page.locator("section#vedic-chant-shree-rudra")).toBeInViewport();
-});

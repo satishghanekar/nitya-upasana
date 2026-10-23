@@ -73,6 +73,9 @@ describe("CONTENT from the text files", () => {
 
 describe("content checks", () => {
   const names = readdirSync(new URL("../../content/texts/", import.meta.url)).filter((f) => !f.startsWith("."));
+  test("every text's id, and so its file name, starts with its category", () => {
+    for (const t of lib.texts) expect(t.id.startsWith(t.category + "-"), t.id).toBe(true);
+  });
   test("library.json lists every file in content/texts/, once", () => {
     expect(lib.texts.map((t) => t.file).sort()).toEqual(names.map((f) => "texts/" + f).sort());
     expect(new Set(lib.texts.map((t) => t.id)).size).toBe(lib.texts.length);

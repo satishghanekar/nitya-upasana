@@ -35,7 +35,6 @@ var SITE_PARTS = (function () {
     "text/load",
     "text/content",
     "text/format",
-    "text/renamed",
     "store/db",
     "store/migrate",
     "store/profiles",

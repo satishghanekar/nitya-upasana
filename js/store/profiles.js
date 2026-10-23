@@ -11,7 +11,6 @@
 
 import { cleanPerson, devicePart, migratePrefs, profilePart } from "./migrate.js";
 import { cleanRoutine } from "../core/routine.js";
-import { textId } from "../text/renamed.js";
 
 /**
  * @typedef {import("./migrate.js").Env} Env
@@ -203,12 +202,9 @@ export function cleanChecklist(c) {
   if (c.done && typeof c.done === "object")
     Object.keys(c.done).forEach(function (s) {
       if (Array.isArray(c.done[s]))
-        done[s] = c.done[s]
-          .filter(function (/** @type {any} */ x) {
-            return typeof x === "string";
-          })
-          // (a text renamed since stays ticked under its new id: js/text/renamed.js)
-          .map(textId);
+        done[s] = c.done[s].filter(function (/** @type {any} */ x) {
+          return typeof x === "string";
+        });
     });
   return { date: c.date, done: done };
 }
