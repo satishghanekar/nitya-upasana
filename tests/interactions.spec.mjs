@@ -404,6 +404,40 @@ test.describe("pinch @chromium-only", () => {
     expect(box.y).toBeGreaterThanOrEqual(0);
     expect(box.y + box.height).toBeLessThanOrEqual(844);
   });
+  // The words between the fingers stay where they were on the screen as the text grows (Satish, 2026-10-23: the page
+  // kept its top still, so the place being read ran off the bottom)
+  test("the words between the fingers stay under them", async ({ page }) => {
+    await openSite(page, SETUPS.marathi);
+    await readText(page, "p1");
+    // well into the text, a line in the middle of the screen
+    await page.evaluate(() => scrollTo(0, document.getElementById("p1").offsetTop + 1500));
+    await page.waitForTimeout(300);
+    const r = await page.evaluate(async () => {
+      const x = innerWidth / 2,
+        y = innerHeight / 2;
+      const el = document.elementFromPoint(x, y);
+      const rng = document.caretRangeFromPoint(x, y);
+      rng.setEnd(rng.startContainer, Math.min(rng.startOffset + 1, rng.startContainer.length));
+      const before = rng.getBoundingClientRect().top;
+      const t = (id, dx) => new Touch({ identifier: id, target: el, clientX: x + dx, clientY: y });
+      const fire = (type, touches, changed) =>
+        el.dispatchEvent(new TouchEvent(type, { touches, targetTouches: touches, changedTouches: changed || touches, bubbles: true, cancelable: true }));
+      const frame = () => new Promise((ok) => requestAnimationFrame(() => requestAnimationFrame(ok)));
+      const fs0 = getComputedStyle(document.documentElement).getPropertyValue("--fs");
+      fire("touchstart", [t(1, -30), t(2, 30)]);
+      fire("touchmove", [t(1, -60), t(2, 60)]);
+      await frame();
+      const during = rng.getBoundingClientRect().top;
+      fire("touchmove", [t(1, -90), t(2, 90)]);
+      await frame();
+      fire("touchend", [], [t(1, -90), t(2, 90)]);
+      await new Promise((ok) => setTimeout(ok, 500));
+      return { before, during, after: rng.getBoundingClientRect().top, fs0, fs1: getComputedStyle(document.documentElement).getPropertyValue("--fs") };
+    });
+    expect(parseFloat(r.fs1)).toBeGreaterThan(parseFloat(r.fs0));
+    expect(Math.abs(r.during - r.before), "while pinching").toBeLessThan(4);
+    expect(Math.abs(r.after - r.before), "after the fingers lift").toBeLessThan(4);
+  });
   test("on a verse it resizes the text instead of zooming", async ({ page }) => {
     await openSite(page, SETUPS.marathi, { hash: "#a1" });
     expect(await pinchStart(page, "#a1 .items .verse p")).toBe(true);
