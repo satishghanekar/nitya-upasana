@@ -77,7 +77,7 @@ function start() {
     startSankashti(); // Sankashti: the next one (for Share) and, on the day, one line on the home page with moonrise
     startTodayCard(); // Home: the picture and date, this session's texts, and the other sessions
     startVedicCalendar(); // the Vedic calendar: the line on Home (today only, after the page shows) and its page (#cal)
-    startDhrupadMarkers(); // Tappable dhrupad markers (Aartis 1–5, 7 and 9)
+    startDhrupadMarkers(); // Tappable dhrupad markers (every text with refrain: every-verse)
     startStanzaNumbers(); // Stanza numbers
     startLineBreaks(); // Preferred line breaks
     startAutofit(); // Auto-fit text size
