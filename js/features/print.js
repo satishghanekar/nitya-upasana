@@ -116,12 +116,12 @@ export function init() {
     /** @param {HTMLElement} sec @returns {{ el: HTMLElement, role: string }[]} */
     function parts(sec) {
       var once = pref() === 1,
-        out = [],
-        rt = /** @type {HTMLElement | null} */ (sec.querySelector(".rftop"));
-      if (rt && once) out.push({ el: rt, role: "refrain" });
-      [].forEach.call(sec.querySelectorAll(".items > .item, .items > .rmk"), function (/** @type {HTMLElement} */ u) {
+        out = [];
+      // in the page's order: [once] lines and [note]s before the dhrupad at the top come first (.items.lead)
+      [].forEach.call(sec.querySelectorAll(".rftop, .items > .item, .items > .rmk"), function (/** @type {HTMLElement} */ u) {
         var role = "";
-        if (u.classList.contains("rmk") && u.classList.contains("nt"))
+        if (u.classList.contains("rftop")) role = once ? "refrain" : "";
+        else if (u.classList.contains("rmk") && u.classList.contains("nt"))
           // a note of the text's own: "↻ ३ वेळा" (repeat the lines above) belongs to what is before it, a heading such
           // as फलश्रुति to what follows
           role = /^\s*↻/.test((u.querySelector(".mr") || u).textContent) ? "after" : "before";
