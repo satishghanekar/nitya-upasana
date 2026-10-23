@@ -3,61 +3,86 @@ title: स्वामी माझा पाहिला
 title-en: Svaamee maajhaa paahilaa
 category: ashtak
 language: mr
+refrain: always
 ---
+[dhrupad]
+माणगंगातीरीं प्रभु हा गोंदावलें पुरीं ।
+Maanagangaateereen prabhu haa gondaavalen pureen |
+माणगंगातीरीं प्रभु हा गोंदावलें पुरीं ।
+Maanagangaateereen prabhu haa gondaavalen pureen |
+स्वामी माझा पाहिला या माणगंगातीरीं ।
+Svaamee maajhaa paahilaa yaa maanagangaateereen |
+सद्‌गुरु तो देखिला या माणगंगातीरीं ॥ ध्रु० ॥
+Sadguru to dekhilaa yaa maanagangaateereen || dhru. ||
+
 [dhrupad]
 स्वामी माझा पाहिला या माणगंगातीरीं ।
 Svaamee maajhaa paahilaa yaa maanagangaateereen |
 सद्‌गुरु तो देखिला या माणगंगातीरीं ॥
 Sadguru to dekhilaa yaa maanagangaateereen ||
-माणगंगातीरीं प्रभु हा गोंदावलें पुरीं ।
-Maanagangaateereen prabhu haa gondaavalen pureen |
-स्वामी माझा० ॥ ध्रु० ॥
-Svaamee maajhaa. || dhru. ||
 
 [1]
-ब्रह्मचैतन्याचा गाभा । प्राप्त नोहे कमलनाभा ।
+ब्रह्मचैतन्याचा गाभा । ¦प्राप्त नोहे कमलनाभा ।
 Brahmachaitanyaachaa gaabhaa | praapta nohe kamalanaabhaa |
-भोळ्या भाविक भक्तलाभा । धावुनिया आला ॥
-Bholyaa bhaavik bhaktalaabhaa | dhaavuniyaa aalaa ||
-या माण०
-Yaa maan.
+भोळ्या भाविक भक्तलाभा । ¦भोळ्या भाविक भक्तलाभा ।
+Bholyaa bhaavik bhaktalaabhaa | bholyaa bhaavik bhaktalaabhaa |
+धावुनिया आला या माणगंगातीरीं ॥
+Dhaavuniyaa aalaa yaa maanagangaateereen ||
+[refrain]
+॥ ध्रु ॥
+|| Dhru ||
 
 [2]
-गौरवर्ण कांति । मूर्तिमंत शांति ।
+गौरवर्ण कांति । ¦मूर्तिमंत शांति ।
 Gauravarna kaanti | moortimant shaanti |
-दया क्षमा शोभे चित्तीं । रामनामीं रंगला ॥
-Dayaa kshamaa shobhe chitteen | raamanaameen rangalaa ||
-या माण०
-Yaa maan.
+दया क्षमा शोभे चित्तीं । ¦दया क्षमा शोभे चित्तीं ।
+Dayaa kshamaa shobhe chitteen | dayaa kshamaa shobhe chitteen |
+रामनामीं रंगला या माणगंगातीरीं ॥
+Raamanaameen rangalaa yaa maanagangaateereen ||
+[refrain]
+॥ ध्रु ॥
+|| Dhru ||
 
 [3]
-केशरी त्रिपुण्ड्र भाळा । गळां तुळशीच्या माळा ।
+केशरी त्रिपुण्ड्र भाळा । ¦गळां तुळशीच्या माळा ।
 Kesharee tripundra bhaalaa | galaan tulasheechyaa maalaa |
-कफनी टोपी शोभे ज्याला । पादुका पायांला ॥
-Kaphanee topee shobhe jyaalaa | paadukaa paayaanlaa ||
-या माण०
-Yaa maan.
+कफनी टोपी शोभे ज्याला । ¦कफनी टोपी शोभे ज्याला ।
+Kaphanee topee shobhe jyaalaa | kaphanee topee shobhe jyaalaa |
+पादुका पायांला या माणगंगातीरीं ॥
+Paadukaa paayaanlaa yaa maanagangaateereen ||
+[refrain]
+॥ ध्रु ॥
+|| Dhru ||
 
 [4]
-गाई-ब्राह्मण-अनाथांचा । कैवारी तो दीनांचा ।
+गाई-ब्राह्मण-अनाथांचा । ¦कैवारी तो दीनांचा ।
 Gaaee-braahman-anaathaanchaa | kaivaaree to deenaanchaa |
-विश्वास या नामाचा । जगीं वाढविला ॥
-Vishvaas yaa naamaachaa | jageen vaadhavilaa ||
-या माण०
-Yaa maan.
+विश्वास या नामाचा । ¦विश्वास या नामाचा ।
+Vishvaas yaa naamaachaa | vishvaas yaa naamaachaa |
+जगीं वाढविला या माणगंगातीरीं ॥
+Jageen vaadhavilaa yaa maanagangaateereen ||
+[refrain]
+॥ ध्रु ॥
+|| Dhru ||
 
 [5]
-भवभार फार झाला । जीव तळमळूं लागला ।
+भवभार फार झाला । ¦जीव तळमळूं लागला ।
 Bhavabhaar phaar jhaalaa | jeev talamaloon laagalaa |
-सगुणरूपें धावत आला । अभयवर दिला ॥
-Sagunaroopen dhaavat aalaa | abhayavar dilaa ||
-या माण०
-Yaa maan.
+सगुणरूपें धावत आला । ¦सगुणरूपें धावत आला ।
+Sagunaroopen dhaavat aalaa | sagunaroopen dhaavat aalaa |
+अभयवर दिला या माणगंगातीरीं ॥
+Abhayavar dilaa yaa maanagangaateereen ||
+[refrain]
+॥ ध्रु ॥
+|| Dhru ||
 
 [6]
-आनंदसागर दास दीन । पदीं घेतसे लोळण ।
+आनंदसागर दास दीन । ¦पदीं घेतसे लोळण ।
 Aanandasaagar daas deen | padeen ghetase lolan |
-तुझें रूप हें सगुण । सदा राहो डोळा ॥
-Tujhen roop hen sagun | sadaa raaho dolaa ||
-या माण०
-Yaa maan.
+तुझें रूप हें सगुण । ¦तुझें रूप हें सगुण ।
+Tujhen roop hen sagun | tujhen roop hen sagun |
+सदा राहो डोळा या माणगंगातीरीं ॥
+Sadaa raaho dolaa yaa maanagangaateereen ||
+[refrain]
+॥ ध्रु ॥
+|| Dhru ||
