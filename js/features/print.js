@@ -1065,36 +1065,89 @@ export function init() {
           pick = choose(at, sizes, own),
           tries = sizes.filter(function (k) {
             return k <= pick.k + 1e-6;
-          }),
-          got = null;
+          });
         // laid out for real, at the size chosen; one that takes more pages than planned (a paragraph's lines rewrap)
-        // tries the next size down, and the fewest pages win
-        for (var q = 0; q < tries.length && q < 4; q++) {
-          var k = q ? tries[q] : pick.k,
-            r = { n: 0 };
-          if (q) yield; // (from the read step that ended the last try, into a write step)
-          yield* assemble(k, q ? choose(function (x, c) { return Math.abs(x - k) < 1e-6 ? at(x, c) : null; }, [k]).cols : pick.cols, r);
-          // (a read step)
-          if (!got || r.n < got.n) got = { n: r.n, k: k, html: sec.innerHTML };
-          if (r.n <= pick.n) break;
+        // tries the next sizes down, and the first that takes no more pages than planned wins (else the fewest). The
+        // sizes are laid out side by side, each in a copy of the section beside it, in the same rounds: a text that runs
+        // on in paragraphs (whose lines rewrap) tries them all from the start, any other only once its own size fails
+        function colsAt(/** @type {number} */ k) {
+          return choose(function (x, c) {
+            return Math.abs(x - k) < 1e-6 ? at(x, c) : null;
+          }, [k]).cols;
         }
-        if (got) {
-          res.n = got.n;
-          res.k = got.k;
-          if (sec.innerHTML !== got.html) {
+        var wide = flow.some(Boolean),
+          runs = /** @type {{ k: number, S: HTMLElement, r: { n: number }, g: Generator<void, void, void>, done: boolean }[]} */ ([]);
+        function add(/** @type {number} */ k, /** @type {boolean} */ own) {
+          var S = own ? sec : /** @type {HTMLElement} */ (sec.cloneNode(false)),
+            r = { n: 0 };
+          if (!own) sec.parentNode.insertBefore(S, sec.nextSibling);
+          runs.push({
+            k: k,
+            S: S,
+            r: r,
+            g: assemble(k, own ? pick.cols : colsAt(k), r, S, own ? ks : ks.map(function (b) {
+              return /** @type {HTMLElement} */ (b.cloneNode(true));
+            })),
+            done: false,
+          });
+        }
+        // (from a write step, each run in step with the others: they end in a read step)
+        function* drive() {
+          for (;;) {
+            runs.forEach(function (x) {
+              if (!x.done) x.done = !!x.g.next().done;
+            });
+            if (
+              runs.every(function (x) {
+                return x.done;
+              })
+            )
+              return;
             yield;
-            sec.innerHTML = got.html;
           }
+        }
+        function best() {
+          var b = runs[0];
+          for (var q = 0; q < runs.length; q++) {
+            if (runs[q].r.n <= pick.n) return runs[q];
+            if (runs[q].r.n < b.r.n) b = runs[q];
+          }
+          return b;
+        }
+        (wide ? tries.slice(0, 4) : [pick.k]).forEach(function (k, q) {
+          add(k, !q);
+        });
+        yield* drive();
+        if (!wide && runs[0].r.n > pick.n && tries.length > 1) {
+          yield;
+          tries.slice(1, 4).forEach(function (k) {
+            add(k, false);
+          });
+          runs[0].done = true;
+          yield* drive();
+        }
+        var won = best();
+        res.n = won.r.n;
+        res.k = won.k;
+        if (runs.length > 1) {
+          yield;
+          if (won.S !== sec) sec.innerHTML = won.S.innerHTML;
+          runs.forEach(function (x) {
+            if (x.S !== sec) x.S.remove();
+          });
         }
 
         // The page boxes at size k in c columns, from a write step to a read step; r.n: the pages they take
-        /** @param {number} k @param {1 | 2} c @param {{ n: number }} r @returns {Generator<void, void, void>} */
-        function* assemble(k, c, r) {
-          ks.forEach(function (b) {
+        /**
+         * @param {number} k @param {1 | 2} c @param {{ n: number }} r @param {HTMLElement} S  the section (or a copy of it)
+         * @param {HTMLElement[]} K  its blocks @returns {Generator<void, void, void>}
+         */
+        function* assemble(k, c, r, S, K) {
+          K.forEach(function (b) {
             if (b.parentNode) b.parentNode.removeChild(b);
             b.classList.remove("pvtall");
           });
-          sec.innerHTML = "";
+          S.innerHTML = "";
           var boxes = /** @type {HTMLElement[]} */ ([]),
             Wk = W / k,
             Ck = C / k,
@@ -1102,13 +1155,16 @@ export function init() {
             // to the pixel at the smaller size, and a page of 40 lines measured unzoomed came out a line short on paper.
             // lim is a page's height as measured
             lim = Ck * zr(k),
+            // a page laid out a pixel or two over (rounding) still fits: a page is only filled to 96% (Safari 90%), and
+            // this is a small part of what is left
+            slack = lim * 0.004,
             extra = 0;
           function box() {
             var b = d.createElement("div");
             b.className = "pvpg";
             b.style.width = Wk + "px";
             if (Math.abs(k - 1) > 0.001) b.style.zoom = String(k);
-            sec.appendChild(b);
+            S.appendChild(b);
             boxes.push(b);
             return b;
           }
@@ -1124,14 +1180,14 @@ export function init() {
               pl.pages.forEach(function (rows) {
                 var bx = box();
                 rows.forEach(function (row) {
-                  if ("span" in row) return bx.appendChild(ks[row.span]);
+                  if ("span" in row) return bx.appendChild(K[row.span]);
                   var band = d.createElement("div");
                   band.className = "pv2b";
                   row.cols.forEach(function (list) {
                     var cc = d.createElement("div");
                     cc.className = "pv2c";
                     list.forEach(function (i) {
-                      cc.appendChild(ks[i]);
+                      cc.appendChild(K[i]);
                     });
                     band.appendChild(cc);
                   });
@@ -1140,7 +1196,7 @@ export function init() {
               });
               extra = pl.n - pl.pages.length;
               yield;
-              if (tryN >= 4 || boxes.every(function (b) { return hgt(b) <= lim + 1; })) break;
+              if (tryN >= 4 || boxes.every(function (b) { return hgt(b) <= lim + slack; })) break;
               yield;
             }
             r.n = boxes.length + extra;
@@ -1179,57 +1235,211 @@ export function init() {
               col.appendChild(b);
             });
           }
-          place(bx, ks.slice());
-          for (;;) {
-            yield;
-            // read: the first block that runs past the foot of the page
-            var kids = /** @type {HTMLElement[]} */ ([].slice.call(bx.querySelectorAll(".pvk"))).filter(function (x) {
-                return !x.parentElement || !x.parentElement.closest(".pvk");
-              }),
-              top = bx.getBoundingClientRect().top,
-              i = -1;
-            if (hgt(bx) > lim + 0.5) {
-              for (var m = 0; m < kids.length && i < 0; m++) if (kids[m].getBoundingClientRect().bottom - top > lim + 0.5) i = m;
-              // (only the last block's space below it runs over)
-              if (i < 0) i = kids.length - 1;
-            }
-            if (i < 0) break;
-            // the blocks kept together with it: from s to e
-            var s = i,
-              e = i;
-            while (s > 0 && kids[s - 1].hasAttribute("data-keep")) s--;
-            while (e < kids.length - 1 && kids[e].hasAttribute("data-keep")) e++;
-            var last = kids[e],
-              sp = last.hasAttribute("data-flow") ? splitPoint(last, top + lim - 2) : null,
-              tallH = sp || s > 0 ? 0 : kids[e].getBoundingClientRect().bottom - top;
-            yield;
-            // write: what moves on to the next page
-            var moved;
-            if (sp) moved = [splitAt(last, sp)].concat(kids.slice(e + 1));
-            else if (s > 0) moved = kids.slice(s);
-            else {
-              // alone on a page and still taller than one: it runs on, between its lines, and counts for each page
-              kids.slice(0, e + 1).forEach(function (b) {
-                b.classList.add("pvtall");
+          // a box's blocks, in order
+          function blocksOf(/** @type {HTMLElement} */ b) {
+            return /** @type {HTMLElement[]} */ ([].slice.call(b.querySelectorAll(".pvk"))).filter(function (x) {
+              return !x.parentElement || !x.parentElement.closest(".pvk");
+            });
+          }
+          // the margin at a block's top or foot as it lays out at the top or foot of a page: its own, or one of its first
+          // (last) child's that runs out through it, whichever is larger, as measured
+          function edge(/** @type {HTMLElement} */ b, /** @type {boolean} */ top) {
+            var mx = 0,
+              x = /** @type {Element | null} */ (b);
+            for (var dp = 0; x && dp < 6; dp++) {
+              var st = w.getComputedStyle(x);
+              mx = Math.max(mx, parseFloat(top ? st.marginTop : st.marginBottom) || 0);
+              if (dp && /flow-root|flex|grid|table|inline/.test(st.display)) break;
+              if ((parseFloat(top ? st.paddingTop : st.paddingBottom) || 0) + (parseFloat(top ? st.borderTopWidth : st.borderBottomWidth) || 0) > 0) break;
+              var kids2 = [].filter.call(x.children, function (/** @type {Element} */ c) {
+                return c.getClientRects().length > 0;
               });
-              bx.classList.add("pvtallpg");
-              extra += Math.max(0, Math.ceil(tallH / lim - 0.01) - 1);
-              moved = kids.slice(e + 1);
+              x = kids2.length ? kids2[top ? 0 : kids2.length - 1] : null;
             }
-            if (!moved.length) {
-              yield;
-              break;
-            }
-            moved.forEach(function (b) {
+            return mx * zr(k);
+          }
+          // the space a block (or the rest of it, pad) takes above its first line at the top of a page
+          function lead(/** @type {HTMLElement} */ b, /** @type {boolean} */ pad) {
+            return edge(b, true) + (pad ? (parseFloat(w.getComputedStyle(b).paddingTop) || 0) * zr(k) : 0);
+          }
+          // All of it is set down one tall page and laid out once; every page's end is found from that one layout, and
+          // the pages are then made in one go and checked. Should a page still run over (the space around a cut is a
+          // little different from where the block was), the pages from there on are planned again, a little shorter by
+          // as much as it ran over. A whole text so takes a few layouts, not one for each block or page
+          var first = 0,
+            limP = lim,
+            list = K.slice();
+          for (var pass = 0; ; pass++) {
+            // write: what is left, down one tall page
+            boxes.splice(first).forEach(function (b) {
               b.remove();
             });
-            [].forEach.call(bx.querySelectorAll(".pvcol"), function (/** @type {HTMLElement} */ x) {
+            list.forEach(function (b) {
+              b.classList.remove("pvtall");
+              if (b.parentNode) b.parentNode.removeChild(b);
+            });
+            [].forEach.call(S.querySelectorAll(".pvcol"), function (/** @type {HTMLElement} */ x) {
               if (!x.children.length) x.remove();
             });
             bx = box();
-            place(bx, moved);
+            place(bx, list);
+            yield;
+            // read: every page's end
+            var kids = blocksOf(bx),
+              n = kids.length,
+              tops = kids.map(function (x) {
+                return x.getBoundingClientRect().top;
+              }),
+              // (a block's space below it counts: the page holds it)
+              bottoms = kids.map(function (x) {
+                return x.getBoundingClientRect().bottom + edge(x, false);
+              }),
+              pageTop = bx.getBoundingClientRect().top,
+              ps = 0,
+              from = /** @type {number | undefined} */ (undefined),
+              /** @type {Record<number, boolean>} */ start = {},
+              /** @type {Record<number, { node: Node, offset: number, y: number }[]>} */ splits = {},
+              /** @type {Record<number, number>} */ tall = {},
+              // (only the page that ran over last time is planned shorter: the others take the full height)
+              cap = limP;
+            for (var guard = 0; ps < n && guard < 1000; guard++) {
+              // the first block that runs past the foot of this page, and the blocks kept together with it (s to e)
+              var i = -1;
+              for (var m = ps; m < n && i < 0; m++) if (bottoms[m] - pageTop > cap + 0.5) i = m;
+              if (i < 0) break;
+              var s = i,
+                e = i;
+              while (s > ps && kids[s - 1].hasAttribute("data-keep")) s--;
+              while (e < n - 1 && kids[e].hasAttribute("data-keep")) e++;
+              var last = kids[e],
+                // (the first part of a paragraph cut ends with the space below a paragraph)
+                sp = last.hasAttribute("data-flow") ? splitPoint(last, pageTop + cap - 2 - edge(last, false), ps === e ? from : undefined) : null;
+              if (sp) {
+                // a paragraph runs on from a line end: its rest starts the next page
+                (splits[e] = splits[e] || []).push(sp);
+                pageTop = sp.y - lead(last, true);
+                cap = lim;
+                from = sp.y;
+                ps = e;
+                continue;
+              }
+              from = undefined;
+              if (s > ps) {
+                start[s] = true;
+                pageTop = tops[s] - lead(kids[s], false);
+                cap = lim;
+                ps = s;
+                continue;
+              }
+              // alone on its page and still taller than one: it runs on, between its lines, and counts for each page
+              for (m = ps; m <= e; m++) tall[m] = Math.max(0, Math.ceil((bottoms[e] - pageTop) / lim - 0.01) - 1);
+              if (e + 1 < n) {
+                start[e + 1] = true;
+                pageTop = tops[e + 1] - lead(kids[e + 1], false);
+              }
+              cap = lim;
+              ps = e + 1;
+            }
+            yield;
+            // write: the pages, each a box
+            /** @type {HTMLElement[][]} */
+            var pgs = [[]],
+              tallPg = [-1];
+            kids.forEach(function (b, i) {
+              var pts = splits[i] || [],
+                pieces = [b];
+              // (the last split first, so the points before it stay where they were)
+              for (var j = pts.length - 1; j >= 0; j--) pieces.splice(1, 0, splitAt(b, pts[j]));
+              if (start[i] && pgs[pgs.length - 1].length) pgs.push([]), tallPg.push(-1);
+              pieces.forEach(function (x, j) {
+                if (j) pgs.push([]), tallPg.push(-1);
+                pgs[pgs.length - 1].push(x);
+              });
+              if (i in tall) {
+                pieces[pieces.length - 1].classList.add("pvtall");
+                tallPg[pgs.length - 1] = tall[i];
+              }
+            });
+            bx.remove();
+            boxes.pop();
+            pgs.forEach(function (list, j) {
+              var b = box();
+              if (tallPg[j] >= 0) b.classList.add("pvtallpg"), b.setAttribute("data-more", String(tallPg[j]));
+              place(b, list);
+            });
+            yield;
+            // read: each page checked
+            var bad = -1;
+            for (var q = first; q < boxes.length && bad < 0; q++) if (!boxes[q].classList.contains("pvtallpg") && hgt(boxes[q]) > lim + slack) bad = q;
+            if (bad < 0) break;
+            if (pass >= 3) {
+              // (still over after three plans: each page that runs over gives its last blocks a page of their own)
+              yield* mend();
+              break;
+            }
+            limP = (bad === first ? limP : lim) - (hgt(boxes[bad]) - lim + 1);
+            first = bad;
+            list = [].concat.apply(
+              [],
+              boxes.slice(bad).map(function (b) {
+                return blocksOf(b);
+              }),
+            );
+            yield;
           }
-          r.n = boxes.length + extra;
+          // from a read step to a read step: every page that runs over moves its last blocks (with those kept with them)
+          // on to a new page after it, a paragraph from a line end; one alone and too tall runs on
+          function* mend() {
+            for (var fix = 0; fix < 100; fix++) {
+              var b = -1;
+              for (var q = 0; q < boxes.length && b < 0; q++) if (!boxes[q].classList.contains("pvtallpg") && hgt(boxes[q]) > lim + slack) b = q;
+              if (b < 0) return;
+              var bb = boxes[b],
+                bk = blocksOf(bb),
+                top = bb.getBoundingClientRect().top,
+                i = -1;
+              for (var m = 0; m < bk.length && i < 0; m++) if (bk[m].getBoundingClientRect().bottom + edge(bk[m], false) - top > lim + 0.5) i = m;
+              if (i < 0) i = bk.length - 1;
+              var s = i,
+                e = i;
+              while (s > 0 && bk[s - 1].hasAttribute("data-keep")) s--;
+              while (e < bk.length - 1 && bk[e].hasAttribute("data-keep")) e++;
+              var last = bk[e],
+                sp = last.hasAttribute("data-flow") ? splitPoint(last, top + lim - 2) : null,
+                tallH = sp || s > 0 ? 0 : bk[e].getBoundingClientRect().bottom - top;
+              yield;
+              var moved;
+              if (sp) moved = [splitAt(last, sp)].concat(bk.slice(e + 1));
+              else if (s > 0) moved = bk.slice(s);
+              else {
+                bk.slice(0, e + 1).forEach(function (x) {
+                  x.classList.add("pvtall");
+                });
+                bb.classList.add("pvtallpg");
+                bb.setAttribute("data-more", String(Math.max(0, Math.ceil(tallH / lim - 0.01) - 1)));
+                moved = bk.slice(e + 1);
+              }
+              if (moved.length) {
+                moved.forEach(function (x) {
+                  x.remove();
+                });
+                [].forEach.call(bb.querySelectorAll(".pvcol"), function (/** @type {HTMLElement} */ x) {
+                  if (!x.children.length) x.remove();
+                });
+                var nb = box();
+                boxes.pop();
+                S.insertBefore(nb, bb.nextSibling);
+                boxes.splice(b + 1, 0, nb);
+                place(nb, moved);
+              }
+              yield;
+            }
+          }
+          r.n =
+            boxes.length +
+            boxes.reduce(function (a, b) {
+              return a + (Number(b.getAttribute("data-more")) || 0);
+            }, 0);
         }
       }
       // the contents' page numbers, in the language printed
@@ -1287,7 +1497,9 @@ export function init() {
       build(m, ids, shot && wr ? onlyTags(wr) : wr);
       pages(m, function (pg) {
         if (pg) pcache[k] = pg;
-        if (shot) {
+        // (the preview's page is taken from the print view, unless a print began while this was laid out: the print
+        // view is then that printout's, and must stay so; the preview is taken next time)
+        if (shot && !busy) {
           usePages(pg);
           shots[k] = page1();
         }
