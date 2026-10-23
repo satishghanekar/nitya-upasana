@@ -14,7 +14,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test, expect } from "@playwright/test";
-import { openSite } from "./helpers.mjs";
+import { openSite, openPrintBuilder } from "./helpers.mjs";
 import { addLineMarkers } from "./print-audit-helpers.mjs";
 
 const DIGITS = { "०": 0, "१": 1, "२": 2, "३": 3, "४": 4, "५": 5, "६": 6, "७": 7, "८": 8, "९": 9,
@@ -62,10 +62,9 @@ export async function howStep(page) {
 /** Press Print on the home page, then the given choice ("pr1" = first button, "pr2" = second). */
 export async function printFromButton(page, choice) {
   await page.evaluate(() => scrollTo(0, 0));
-  // Print is under More on the home page: open it first, as a reader would
-  if (!(await page.locator("#prb").isVisible())) await page.locator("#tmb").click();
-  await page.locator("#prb").click();
-  await page.locator("#prm").waitFor({ state: "visible" });
+  // (Print is in the bottom bar while a text is read; on Home the builder is opened as js/features/print.js lets
+  // another part open it, at What with everything ticked as last left)
+  await openPrintBuilder(page);
   await howStep(page);
   // the page (Portrait pr1 or Landscape pr2; both languages have only Landscape, so no choice shows), then Print
   if (await page.locator("#" + choice).isVisible()) await page.locator("#" + choice).click();
@@ -90,7 +89,8 @@ export async function readPrintView(page) {
         page: (li.querySelector(".pgn") || {}).textContent || "",
       })),
       pieces: [...pv.querySelectorAll(".pvs")].map((s) => s.dataset.sid),
-      blocks: pv.querySelectorAll(".pvk").length,
+      // the pieces' blocks (the contents' lines are blocks too, js/print/pages.js, but carry no markers)
+      blocks: pv.querySelectorAll(".pvs .pvk").length,
       // blocks taller than a page, which may break between their lines ("p1:11", as the markers name them)
       tall: [...pv.querySelectorAll(".pvs")].flatMap((s) => [...s.querySelectorAll(".pvk")].map((k, j) => (k.classList.contains("pvtall") ? s.dataset.sid + ":" + j : "")).filter(Boolean)),
       // the English lines that are actually shown in the print view (for the text check); prose runs its

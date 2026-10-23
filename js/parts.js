@@ -82,6 +82,7 @@ var SITE_PARTS = (function () {
     "print/profiles",
     "print/compose",
     "print/fit",
+    "print/pages",
     "print/what",
     "print/select",
     "features/print",

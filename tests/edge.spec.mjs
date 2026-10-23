@@ -343,13 +343,12 @@ test("keyboard only: Tab to Print, choose a layout, print, and focus comes back 
   await stubPrint(page);
   await page.setViewportSize({ width: 1280, height: 800 });
   await openSite(page, SETUPS.both);
+  // Print is in the bottom bar while a text is read
+  await readText(page, "a1");
   let found = false;
-  for (let i = 0; i < 60 && !found; i++) {
+  for (let i = 0; i < 80 && !found; i++) {
     await page.keyboard.press("Tab");
-    // Print is under More: Enter on More opens it, and Tab goes on into its buttons
-    if (await page.evaluate(() => document.activeElement.id === "tmb" && document.activeElement.getAttribute("aria-expanded") === "false"))
-      await page.keyboard.press("Enter");
-    found = await page.evaluate(() => document.activeElement.id === "prb");
+    found = await page.evaluate(() => document.activeElement.id === "asp");
   }
   expect(found, "Tab never reached the Print button").toBe(true);
   await page.keyboard.press("Enter");
@@ -360,8 +359,8 @@ test("keyboard only: Tab to Print, choose a layout, print, and focus comes back 
   expect(await page.evaluate(() => document.documentElement.getAttribute("data-print"))).toBeTruthy();
   await page.evaluate(() => dispatchEvent(new Event("afterprint")));
   await expect(page.locator("#prm")).toBeHidden();
-  // Print is in the ⋯ More menu, closed by then: focus comes back to ⋯
-  await expect(page.locator("#tmb")).toBeFocused();
+  // focus comes back to Print
+  await expect(page.locator("#asp")).toBeFocused();
 });
 
 // ---- Keeping the cascade from getting harder to change (L1, L2) ----------------------------------------
@@ -387,15 +386,18 @@ for (const size of [{ width: 667, height: 375 }, { width: 320, height: 256 }]) {
 
 test("the phone's Back closes QR, Print and the picture and returns focus to their button (WCAG 2.4.3) @chromium-only", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
-  for (const [open, dlg] of [["#qrb", "#qrm"], ["#prb", "#prm"], ["#iconb", "#pzv"]]) {
-    if (open !== "#iconb") await openMore(page);
+  // (Print last: it is in the bottom bar while a text is read, and the picture is on Home)
+  for (const [open, dlg] of [["#qrb", "#qrm"], ["#iconb", "#pzv"], ["#asp", "#prm"]]) {
+    // (Print is in the bottom bar while a text is read: focus comes back to it)
+    if (open === "#asp") await readText(page, "a1");
+    else if (open !== "#iconb") await openMore(page);
     await page.locator(open).focus();
     await page.keyboard.press("Enter");
     await expect(page.locator(dlg)).toBeVisible();
     await page.goBack();
     await expect(page.locator(dlg)).toBeHidden();
     // QR and Print are in the ⋯ More menu, closed by then: focus comes back to ⋯
-    expect(await page.evaluate(() => "#" + document.activeElement.id), `focus after Back from ${dlg}`).toBe(open === "#iconb" ? open : "#tmb");
+    expect(await page.evaluate(() => "#" + document.activeElement.id), `focus after Back from ${dlg}`).toBe(open === "#qrb" ? "#tmb" : open);
     expect(await page.evaluate(() => document.documentElement.style.overflow), "page scrolls again").toBe("");
   }
 });
@@ -418,7 +420,7 @@ test("a 320px phone: the home buttons show their words, and a note sits under th
   await page.setViewportSize({ width: 320, height: 568 });
   await openSite(page, SETUPS.both);
   await openMore(page);
-  for (const id of ["#shb", "#qrb", "#prb"]) {
+  for (const id of ["#shb", "#qrb", "#hlpb"]) {
     const w = page.locator(id + " > span.en");
     await expect(w).toBeVisible();
     const b = await page.locator(id).boundingBox(), t = await w.boundingBox();

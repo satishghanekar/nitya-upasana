@@ -28,7 +28,9 @@ import { SCRIPTS, OTHER, scriptOf, sizeOf, LAYOUT } from "./profiles.js";
 
 export function fit(w, d, mode, pv) {
   var side = mode === "side",
-    sel = side ? ["table.pvside", "td.pvm, td.pve"] : [".verse", ".verse p"],
+    // (a Vedic text side by side, table.pvprs, is not fitted: its lines are long sentences that wrap in their column,
+    // and its rows run on from page to page)
+    sel = side ? ["table.pvside:not(.pvprs)", "td.pvm, td.pve"] : [".verse", ".verse p"],
     lines = [].slice.call(d.querySelectorAll("#pv " + sel[1].replace(", ", ", #pv "))),
     mine = pv.querySelectorAll(sel[1]),
     at = new Map(),

@@ -40,7 +40,9 @@ test("⋯ More opens App, Share, QR, Print and Help under it while reading; a ta
   await more.click();
   await expect(menu).toBeVisible();
   await expect(more).toHaveAttribute("aria-expanded", "true");
-  for (const id of ["#shb", "#qrb", "#prb", "#hlpb"]) await expect(page.locator(id)).toBeVisible();
+  for (const id of ["#shb", "#qrb", "#hlpb"]) await expect(page.locator(id)).toBeVisible();
+  // (Print and Print this text are in the bottom bar now, not here)
+  await expect(page.locator("#shr #prb, #shr #prt")).toHaveCount(0);
   // under the button, on screen
   const b = await more.boundingBox(),
     m = await menu.boundingBox(),

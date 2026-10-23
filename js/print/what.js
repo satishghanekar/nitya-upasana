@@ -51,7 +51,7 @@ const W = {
       return n + (n === 1 ? " text" : " texts");
     },
     pick: "Pick at least one text",
-    tabs: { texts: "Texts", today: "Today", routine: "Routine" },
+    tabs: { texts: "Library", today: "Today", routine: "Routine" },
     todayInfo: "Tap a session to print its texts.",
     allToday: "All of today",
     empty: "No texts",
@@ -80,7 +80,7 @@ const W = {
       return num(n) + " रचना";
     },
     pick: "किमान एक रचना निवडा",
-    tabs: { texts: "रचना", today: "आज", routine: "दिनक्रम" },
+    tabs: { texts: "संग्रह", today: "आज", routine: "दिनक्रम" },
     todayInfo: "सत्र निवडा: त्यातील रचना प्रिंट होतील.",
     allToday: "आजचे सर्व",
     empty: "एकही रचना नाही",
