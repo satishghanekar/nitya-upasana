@@ -22,7 +22,7 @@ const pick = (page, id) => page.locator(`#tpk input[value="${id}"]`);
 const btn = (page, id, a) => page.locator(`#rtl li[data-id="${id}"] button[data-a="${a}"]`);
 const ids = (page) => items(page).evaluateAll((l) => l.map((x) => x.dataset.id));
 const homeIds = (page) =>
-  rows(page).evaluateAll((l) => l.map((x) => x.querySelector("input").dataset.t));
+  rows(page).evaluateAll((l) => l.map((x) => x.querySelector("a.tgo").dataset.t));
 
 async function openBuilder(page) {
   await page.locator("#tsed").click();
@@ -145,19 +145,6 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await openBuilder(page);
   await expect(page.locator('#rtmd [aria-checked="true"]')).toHaveText("Different by weekday");
   await expect(page.locator('#rtwk [aria-checked="true"]')).toHaveAccessibleName("Tuesday 20");
-});
-
-test("a tick on a removed text just goes; the others keep theirs", async ({ page }) => {
-  await openSite(page, SETUPS.marathi, { now: MON_EVENING });
-  await rows(page).nth(0).locator("input").check();
-  await rows(page).nth(1).locator("input").check();
-  await expect(page.locator("#tsn")).toHaveText("2 of 10 done");
-  await openBuilder(page);
-  await btn(page, "sukhkarta", "rm").click();
-  await page.locator("#rbk").click();
-  await expect(rows(page)).toHaveCount(9);
-  await expect(page.locator("#tsn")).toHaveText("1 of 9 done");
-  await expect(rows(page).nth(0).locator("input")).toBeChecked();
 });
 
 test("same every day again: the day's list for every day; Escape closes the builder", async ({ page }) => {
@@ -288,7 +275,7 @@ test("each person has their own routine; Save a backup file → Restore brings i
   // (given as a buffer: the saved path, under a test-results folder named with "→", is not always accepted)
   await page.locator("#bkf").setInputFiles({ name: "b.nitya", mimeType: "application/json", buffer: Buffer.from(readFileSync(file, "utf8")) });
   expect(errors).toEqual([]);
-  await expect(page.locator("#bkmd")).toContainText("Replaced by the file's copy (settings, routine and today's ticks): Me, Aai");
+  await expect(page.locator("#bkmd")).toContainText("Replaced by the file's copy (settings and routine): Me, Aai");
   await page.locator("#bkok").click();
   await expect(page.locator("#bkm")).toBeHidden();
   await page.locator("#who").click();

@@ -54,12 +54,12 @@ The quick check (`quick.mjs`) compares the checkout with `origin/main` (commits,
 | `offline.spec.mjs` | The site works with no internet after one visit; the version in `index.html` and `sw.js` match. |
 | `edge.spec.mjs` | Edge cases: an iPhone 16 Pro notch upright and sideways; pressed and hovered text readable in all 5 themes; keyboard focus never hidden behind the bars; layout shift after the page appears; 360 to 7680 px wide; what screen readers are told (size, search results, notes); Windows High Contrast focus rings; WCAG text spacing; printing with the keyboard alone; limits on `!important` and breakpoints. |
 | `compat.spec.mjs` | The oldest supported browsers (iOS 15.4): fallbacks for `color-mix()` and what a linter can't check. |
-| `today.spec.mjs` | Home: the picture and date, the Morning / Afternoon / Evening switch, the session's texts and ticks, reading a session (Next ticks), the festival and Sankashti lines, ⋯ More on every width, Marathi menus, and the bundled default routine. |
-| `reading.spec.mjs` | One text at a time from every way in, ‹ Prev / Next › in the bottom bar going through the Library, and no card at the end of a text. |
+| `today.spec.mjs` | Home: the picture and date, the Morning / Afternoon / Evening switch, the session's texts, reading a session in one scroll in session order (also after a reload), ‹ Prev / Next › never leaving it, the bottom bar's Print, the festival and Sankashti lines, ⋯ More on every width, Marathi menus, and the bundled default routine. |
+| `reading.spec.mjs` | One text at a time from the Library and search, ‹ Prev / Next › in the bottom bar going through the Library, and no card at the end of a text. |
 | `library.spec.mjs` | The Library: categories, numbers, search results, Edit categories (add, rename, delete, move a text), pinch on the list, Back. |
 | `calendar.spec.mjs` | The Vedic calendar: the line on Home, the day card and the month, festivals, the reading languages, keyboard. |
 | `builder.spec.mjs` | The routine builder and its Add texts picker; Home follows the routine; kept after a reload and in backups. |
-| `profiles.spec.mjs` | Profiles and backup: the badge and its sheet, each person's own settings and ticks, moving old settings into the first person, Save a backup file and Restore, the storage warning and the backup reminder. |
+| `profiles.spec.mjs` | Profiles and backup: the badge and its sheet, each person's own settings and routine, old ticks left in storage not shown, moving old settings into the first person, Save a backup file and Restore, the storage warning and the backup reminder. |
 | `site-files.spec.mjs` | `js/parts.js` matches the page's own `<link>` and `<script>` tags, and every listed file exists, so the offline copy is never missing a file. |
 | `perf.spec.mjs` | How many times the page is laid out during load, for each language-button tap and when Settings closes (4× slowed CPU). Layout counts are the same on every machine, so this never fails because a computer was busy; the milliseconds and the tap response time are attached to the result for comparison. |
 

@@ -3,7 +3,7 @@
 // and name) opens the profile sheet (#pfm), where a tap on a person switches to them, and Add a person / Edit (name,
 // badge letters, colour, Delete with a confirmation, never the last person) keep the list. Settings → Who is reading
 // opens the same sheet. Each person keeps their own text size, languages, English style, font, dhrupad, theme and
-// high contrast and today's ticks; switching puts theirs on the page at once, without a reload (applyPrefs()).
+// high contrast and their routine; switching puts theirs on the page at once, without a reload (applyPrefs()).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
 // The people are kept by js/store/store.js (IndexedDB); the rules (names, badge letters, colours) are in
@@ -34,7 +34,7 @@ const W = {
   en: {
     title: "Who is reading?",
     add: "Add a person",
-    info: "Each person keeps their own text size, languages, theme and today's ticks on this phone.",
+    info: "Each person keeps their own text size, languages, theme and routine on this phone.",
     now: "Reading now",
     edit: "Edit",
     addTitle: "Add a person",
@@ -48,7 +48,7 @@ const W = {
     del: "Delete this person",
     /** @param {string} n */
     ask: function (n) {
-      return "Delete " + n + "? Their settings and ticks will be removed from this phone. A backup file saved earlier still has them.";
+      return "Delete " + n + "? Their settings and routine will be removed from this phone. A backup file saved earlier still has them.";
     },
     yes: "Delete",
     close: "Close",
@@ -68,7 +68,7 @@ const W = {
   mr: {
     title: "कोण वाचत आहे?",
     add: "व्यक्ती जोडा",
-    info: "प्रत्येकाचा अक्षरांचा आकार, भाषा, रंगसंगती आणि आजच्या खुणा या फोनवर वेगळ्या राहतात.",
+    info: "प्रत्येकाचा अक्षरांचा आकार, भाषा, रंगसंगती आणि दिनक्रम या फोनवर वेगळ्या राहतात.",
     now: "आता वाचत आहे",
     edit: "बदला",
     addTitle: "व्यक्ती जोडा",
@@ -82,7 +82,7 @@ const W = {
     del: "ही व्यक्ती काढून टाका",
     /** @param {string} n */
     ask: function (n) {
-      return n + " यांना काढून टाकायचे? त्यांची सेटिंग्ज आणि खुणा या फोनवरून काढल्या जातील. आधी जतन केलेल्या बॅकअप फाइलमध्ये त्या राहतील.";
+      return n + " यांना काढून टाकायचे? त्यांची सेटिंग्ज आणि दिनक्रम या फोनवरून काढले जातील. आधी जतन केलेल्या बॅकअप फाइलमध्ये ते राहतील.";
     },
     yes: "काढून टाका",
     close: "बंद करा",
@@ -328,7 +328,7 @@ function saveEdit() {
 
 /**
  * Put another person's settings on the page, in place: languages and script, English style, highlighted line,
- * text size, theme and the rest, then the Today card with their ticks. Used for a switch, a delete and a restore.
+ * text size, theme and the rest, then the Today card with their routine. Used for a switch, a delete and a restore.
  * @param {Record<string, any>} next
  */
 export function applyPrefs(next) {

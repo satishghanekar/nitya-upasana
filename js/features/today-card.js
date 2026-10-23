@@ -3,21 +3,20 @@
 // The time-of-day picture with today's weekday star (js/features/day-picture.js) beside today's date in Marathi and
 // English; a Morning | Afternoon | Evening switch (#tss, tabs: arrow keys move between them, Enter or Space picks),
 // opened at the session for the time now; a session with nothing set today is greyed ("Nothing set", aria-disabled,
-// still focusable, and picking it shows the empty state with Add texts); the picked session's texts, each with a tick
-// and its title (a title starts the session there); Print this session (#tspr); and "Another text? Open the Library"
-// (#tlibb, as the top bar's book button). App, Share, QR, Print and Help are under More (⋯) in the top bar
-// (js/features/more-menu.js). Every text, with search, is in the Library (#jump, js/features/contents-list.js);
+// still focusable, and picking it shows the empty state with Add texts); the picked session's texts, numbered, each
+// title starting the session there. The Library is the top bar's book button; App, Share, QR, Print and Help are under
+// More (⋯) in the top bar (js/features/more-menu.js), and Print is in the bottom bar while reading. Every text, with search, is in the Library (#jump, js/features/contents-list.js);
 // the reading page's pieces are not shown under Home (data-hv, js/features/history.js).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
 // What it reads: the reading person's routine (their own, made in the routine builder, js/features/routine-builder.js,
 // or else content/routines.json) and the titles (content/library.json), both loaded by
-// js/text/load.js; which texts a session has and the walk through it: js/core/routine.js; the ticks, kept on this
-// device for today only, per person (in their profile, js/store/store.js): js/core/ticks.js. Titles are always the
-// library's, never typed here. Switching person re-draws the list with their ticks (profileChanged()).
-// Reading a session: a title in the list opens the text in the reading page, and while the
-// reader is on a text of that session, ‹ Prev and Next › in the bottom bar follow the session (sessionStep(), read by
-// js/features/bottom-bar.js); Next after the last text comes back here.
+// js/text/load.js; which texts a session has and the walk through it: js/core/routine.js. Titles are always the
+// library's, never typed here. Switching person re-draws the list with their routine (profileChanged()).
+// Reading a session: a title in the list opens the reading page with the session's texts one after another, in session
+// order, in one scroll (data-run, .inrun, css/10-today.css), at that text. ‹ Prev and Next › in the bottom bar stay in the
+// session (sessionStep(), read by js/features/bottom-bar.js): ‹ Prev on the first text and Next › after the last come
+// back here.
 // Changing the routine: "Edit" beside the session's heading (#tsed), and "Add texts" when a session is empty (#tsea),
 // open the routine builder for this session (the event "nitya-routine-edit"); the builder says "nitya-routine" after
 // each change, and the list is drawn again (a removed text's tick just no longer shows).
@@ -30,8 +29,7 @@ import { setView } from "./day-picture.js";
 import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, stepInSession, textsFor } from "../core/routine.js";
-import { createTicks } from "../core/ticks.js";
-import { active, routine, ticksStorage } from "../store/store.js";
+import { routine } from "../store/store.js";
 import { DAYS, MONTHS, dv, esc, scr, scrKey } from "../core/words.js";
 
 /**
@@ -48,13 +46,6 @@ const W = {
     sessions: { morning: "Morning", afternoon: "Afternoon", evening: "Evening" },
     tabs: "Session",
     unset: "Nothing set",
-    another: "Another text?",
-    library: "Open the Library",
-    done: "Done: ",
-    /** @param {number} d @param {number} n */
-    count: function (d, n) {
-      return d + " of " + n + " done";
-    },
     /** @param {number} n */
     texts: function (n) {
       return n + (n === 1 ? " text" : " texts");
@@ -79,13 +70,6 @@ const W = {
     sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
     tabs: "वेळ",
     unset: "काहीच नाही",
-    another: "दुसरी रचना?",
-    library: "संग्रह उघडा",
-    done: "झाले: ",
-    /** @param {number} d @param {number} n */
-    count: function (d, n) {
-      return dv(n) + " पैकी " + dv(d) + " झाले";
-    },
     /** @param {number} n */
     texts: function (n) {
       return dv(n) + " रचना";
@@ -109,11 +93,8 @@ const W = {
 const MR_SESSION = { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" };
 /** @type {Record<Session, string>} */
 const EN_SESSION = { morning: "Morning", afternoon: "Afternoon", evening: "Evening" };
-const CHECK = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 const RUN_KEY = "nitya-run";
 
-/** @type {import("../core/ticks.js").Ticks} */
-var ticks;
 /** @type {Record<string, TextInfo>} */
 var info = {};
 /** @type {Record<string, string>} section id → text id */
@@ -191,17 +172,13 @@ function titleOf(id) {
   return !t ? "" : P.ui === "mr" ? scr(t.title) : t.titleEn;
 }
 
-// Draw the date, the session switch, the session's texts with their ticks, Print this session and the Library line
+// Draw the date, the session switch and the session's texts
 export function render() {
   var c = current(),
     w = words(),
     ui = /** @type {"mr" | "en"} */ (P.ui === "mr" ? "mr" : "en"),
     d = fromKey(c.day),
     ids = idsFor(c.day, c.session),
-    done = ticks.done(c.today, c.session),
-    nDone = ids.filter(function (id) {
-      return done.indexOf(id) >= 0;
-    }).length,
     box = document.getElementById("tdy"),
     sc = document.getElementById("tsc");
   if (!box || !sc) return;
@@ -213,10 +190,10 @@ export function render() {
   /** @type {HTMLElement} */ (dd.querySelector(".d1")).textContent = scr(W.mr.days[d.getDay()] + ", " + dv(d.getDate()) + " " + W.mr.months[d.getMonth()] + " " + dv(d.getFullYear()));
   /** @type {HTMLElement} */ (dd.querySelector(".d1")).lang = scrKey() || "mr";
   /** @type {HTMLElement} */ (dd.querySelector(".d2")).textContent = W.en.days[d.getDay()] + ", " + d.getDate() + " " + W.en.months[d.getMonth()] + " " + d.getFullYear();
-  // the session's heading, in both languages, and how many are done
+  // the session's heading, in both languages, and how many texts it has
   var head = /** @type {HTMLElement} */ (document.getElementById("tsh"));
   head.innerHTML = '<span lang="' + (scrKey() || "mr") + '">' + scr(MR_SESSION[c.session]) + '</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">' + EN_SESSION[c.session] + "</span>";
-  /** @type {HTMLElement} */ (document.getElementById("tsn")).textContent = !ids.length ? w.none : w.count(nDone, ids.length);
+  /** @type {HTMLElement} */ (document.getElementById("tsn")).textContent = !ids.length ? w.none : w.texts(ids.length);
   var ed = document.getElementById("tsed");
   if (ed) {
     ed.textContent = w.edit;
@@ -225,12 +202,9 @@ export function render() {
   var list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
   list.innerHTML = ids
     .map(function (id, i) {
-      var t = info[id],
-        on = done.indexOf(id) >= 0,
-        name = ui === "mr" ? scr(t.title) : t.titleEn;
+      var t = info[id];
       return (
-        '<li class="' + (on ? "done" : "") + '">' +
-        '<label class="ttk"><input type="checkbox" data-t="' + id + '"' + (on ? " checked" : "") + ' aria-label="' + esc(w.done + name) + '"><span class="tkc" aria-hidden="true">' + CHECK + "</span></label>" +
+        "<li>" +
         '<a class="tgo" href="./#' + t.sec + '" data-t="' + id + '">' +
         '<span class="tno" aria-hidden="true">' + scr(dv(i + 1)) + ".</span>" +
         '<span class="tt"><span class="t1" lang="' + (scrKey() || t.language) + '">' + esc(scr(t.title)) + '</span><span class="t2" lang="en">' + esc(t.titleEn) + "</span></span>" +
@@ -260,13 +234,6 @@ export function render() {
     /** @type {HTMLElement} */ (b.querySelector(".tshn")).textContent = n ? "" : w.unset;
   });
   /** @type {HTMLElement} */ (document.getElementById("tsp")).setAttribute("aria-labelledby", "tss-" + c.session);
-  // the Library line
-  var lb = document.getElementById("tlib");
-  if (lb) {
-    lb.lang = ui;
-    /** @type {HTMLElement} */ (document.getElementById("tlibw")).textContent = w.another;
-    /** @type {HTMLElement} */ (document.getElementById("tlibbw")).textContent = w.library;
-  }
   setView(pick.session ? { session: c.session, day: d.getDay() } : null);
   markNow(/** @type {HTMLElement | null} */ (cur()));
 }
@@ -290,13 +257,9 @@ function announce() {
   var c = current(),
     w = words(),
     d = fromKey(c.day),
-    ids = idsFor(c.day, c.session),
-    done = ticks.done(c.today, c.session),
-    n = ids.filter(function (id) {
-      return done.indexOf(id) >= 0;
-    }).length;
+    ids = idsFor(c.day, c.session);
   /** @type {HTMLElement} */ (document.getElementById("tlive")).textContent =
-    w.sessions[c.session] + ", " + w.days[d.getDay()] + ": " + (ids.length ? w.texts(ids.length) + ", " + w.count(n, ids.length) : w.none);
+    w.sessions[c.session] + ", " + w.days[d.getDay()] + ": " + (ids.length ? w.texts(ids.length) : w.none);
 }
 
 /**
@@ -315,12 +278,14 @@ function openText(id) {
 }
 
 /**
- * While a session is being read (started from a text of the list), the reading page shows only that session's texts
- * (data-run on <html>, .inrun on each of its pieces: css/10-today.css), not the whole Library; going to a text another
- * way (the Library, search, the side menu) leaves the session and shows every piece again.
+ * While a session is being read (started from a text of the list), the reading page shows that session's texts, one
+ * after another in session order, in one scroll (data-run on <html>, .inrun and a CSS order on each of its pieces:
+ * css/10-today.css), and nothing else; going to a text another way (the Library, search, the side menu) leaves the
+ * session and shows one text at a time again.
  */
 function runMark() {
   var r = document.documentElement;
+  runBuild();
   [].forEach.call(document.querySelectorAll(".ash"), function (/** @type {HTMLElement} */ x) {
     runOne(x);
   });
@@ -333,8 +298,11 @@ function runMark() {
  * @param {HTMLElement} x
  */
 function runOne(x) {
-  var id = bySec[x.id];
-  x.classList.toggle("inrun", !!run && !!id && run.ids.indexOf(id) >= 0);
+  var id = bySec[x.id],
+    i = run && id ? run.ids.indexOf(id) : -1;
+  x.classList.toggle("inrun", i >= 0);
+  // its place in the session (the page keeps the Library's order)
+  x.style.order = i >= 0 ? String(i + 1) : "";
 }
 
 /** Read the session shown from this text on */
@@ -349,9 +317,35 @@ function startAt(id) {
   openText(id);
 }
 
-// After the last text of a session: back home, with the session's heading focused
-function endSession() {
+// every text of the session is on the page, open, so the scroll runs on from one to the next (also after a reload in
+// the middle of a session)
+function runBuild() {
+  if (!run) return;
+  run.ids.forEach(function (x) {
+    var el = info[x] && pieceEl(info[x].sec);
+    if (el) unfold(el);
+  });
+}
+
+/** Leave the session: the page shows one text at a time again */
+function runEnd() {
+  run = null;
+  try {
+    sessionStorage.removeItem(RUN_KEY);
+  } catch (x) {}
+  runMark();
+}
+
+/** The session being read (its Library ids, in order), or null: the bottom bar's Print (js/features/print.js) */
+export function runIds() {
+  return run ? run.ids.slice() : null;
+}
+
+// After the last text of a session (or ‹ Prev on its first): back home, with the session's heading focused
+/** @param {boolean} [done]  after the last text: say the session is over */
+function endSession(done) {
   var h = document.getElementById("tsh");
+  runEnd();
   jumpTo(function () {
     scrollTo(0, 0);
   }, location.pathname);
@@ -359,12 +353,13 @@ function endSession() {
     try {
       h.focus({ preventScroll: true });
     } catch (e) {}
-  flash(W.mr.ended, W.en.ended);
+  if (done) flash(W.mr.ended, W.en.ended);
 }
 
 /**
  * ‹ Prev (-1) or Next › (1) from the piece on screen, while reading a session: where it goes and the title for its
- * label, or null to keep the library order (js/features/bottom-bar.js).
+ * label, or null to keep the library order (js/features/bottom-bar.js). Inside a session they never leave it: ‹ Prev on
+ * the first text and Next › after the last go back to Home.
  * @param {string} sec  the piece's id on the page (a3)
  * @param {1 | -1} dir
  * @returns {{ label: string, go: () => void } | null}
@@ -372,21 +367,14 @@ function endSession() {
 export function sessionStep(sec, dir) {
   var id = bySec[sec];
   if (!run || !id) return null;
+  if (run.ids.indexOf(id) < 0) return null;
   var st = stepInSession(run.ids, id, dir);
-  if (!st) return null;
-  var r = run;
-  // Next › on a text of the session ticks it as done today (for the person reading) before moving on; ‹ Prev
-  // doesn't. A tick can still be taken off by hand on the card.
-  function tick() {
-    var today = dateKey(new Date());
-    if (dir === 1 && r && r.day === today && id) ticks.set(today, r.session, id, true);
-  }
-  if ("end" in st)
+  // (‹ Prev on the first text: Home, not the Library's text before it)
+  if (!st || "end" in st)
     return {
       label: words().end,
       go: function () {
-        tick();
-        endSession();
+        endSession(!!st);
         render();
       },
     };
@@ -394,19 +382,17 @@ export function sessionStep(sec, dir) {
   return {
     label: titleOf(to),
     go: function () {
-      tick();
       openText(to);
       render();
     },
   };
 }
 
-// A new day while the page is open: back to today and the session for the time now, and yesterday's ticks go
+// A new day while the page is open: back to today and the session for the time now
 function check() {
   var now = new Date();
   if (dateKey(now) !== shownToday) {
     pick = { session: null };
-    ticks.prune(dateKey(now));
     render();
   } else if (!pick.session) render();
   clearTimeout(timer);
@@ -437,18 +423,12 @@ export function todayLang() {
   if (ui + scrKey() !== langKey && document.getElementById("tdy")) render();
 }
 
-/** Another person is reading (js/features/profiles.js): their ticks, and their menu language */
+/** Another person is reading (js/features/profiles.js): their routine, and their menu language */
 export function profileChanged() {
-  if (!ticks) return;
-  ticks.prune(dateKey(new Date()));
   if (document.getElementById("tdy")) render();
 }
 
 export function init() {
-  ticks = createTicks(ticksStorage(), undefined, function () {
-    var a = active();
-    return a ? a.id : "";
-  });
   buildInfo();
   onPiece(runOne);
   try {
@@ -456,7 +436,6 @@ export function init() {
     if (r && Array.isArray(r.ids)) run = r;
   } catch (e) {}
   runMark();
-  ticks.prune(dateKey(new Date()));
   var tabs = /** @type {HTMLElement} */ (document.getElementById("tss")),
     list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
   if (!tabs || !list) return;
@@ -501,24 +480,6 @@ export function init() {
       x.tabIndex = x.getAttribute("aria-selected") === "true" ? 0 : -1;
     });
   });
-  // Another text? Open the Library: as the top bar's book button
-  var lbb = document.getElementById("tlibb");
-  if (lbb)
-    lbb.addEventListener("click", function () {
-      var hm = document.getElementById("hm");
-      if (hm) hm.click();
-    });
-  // a tick
-  list.addEventListener("change", function (e) {
-    var x = /** @type {HTMLInputElement} */ (e.target),
-      id = x.dataset.t,
-      c = current();
-    if (!id) return;
-    ticks.set(c.today, c.session, id, x.checked);
-    render();
-    var again = /** @type {HTMLElement | null} */ (list.querySelector('input[data-t="' + id + '"]'));
-    if (again) again.focus();
-  });
   // Edit (beside the heading) and Add texts (an empty session): the routine builder, at this session
   [document.getElementById("tsed"), document.getElementById("tsea")].forEach(function (b) {
     if (!b) return;
@@ -544,11 +505,7 @@ export function init() {
     function (e) {
       var a = /** @type {HTMLElement} */ (e.target).closest && /** @type {HTMLElement} */ (e.target).closest("a[data-go]");
       if (!a || !run) return;
-      run = null;
-      try {
-        sessionStorage.removeItem(RUN_KEY);
-      } catch (x) {}
-      runMark();
+      runEnd();
       setTimeout(function () {
         document.dispatchEvent(new Event("nitya-session"));
       });

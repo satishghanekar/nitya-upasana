@@ -13,7 +13,7 @@ import { CHOICE } from "../print/profiles.js";
 import { compose } from "../print/compose.js";
 import { createWhat, whatWords } from "../print/what.js";
 import { shelvesNow } from "./library.js";
-import { todaySessions, shownSession } from "./today-card.js";
+import { todaySessions, runIds } from "./today-card.js";
 import { cur } from "../core/apply.js";
 import { active, list as people } from "../store/store.js";
 import { loaded } from "../text/load.js";
@@ -1574,13 +1574,20 @@ export function init() {
       });
       openPrint(t ? { ids: [t.id], from: document.getElementById("prt") } : {});
     };
-    // Print this session (Home, under the session's texts): its texts, at the Today tab
-    document.getElementById("tspr").onclick = function () {
-      var s = shownSession(),
-        x = todaySessions().filter(function (y) {
-          return y.session === s;
-        })[0];
-      if (x && x.ids.length) openPrint({ ids: x.ids, tab: "today", from: document.getElementById("tspr") });
+    // Print in the bottom bar (while reading): the session being read (js/features/today-card.js runIds), else the text
+    // on screen, at How (the Today tab shows the session's choice)
+    document.getElementById("asp").onclick = function () {
+      var b = document.getElementById("asp"),
+        ids = runIds(),
+        sec = cur(),
+        t = null;
+      if (ids && ids.length) return openPrint({ ids: ids, tab: "today", from: b });
+      shelvesNow().forEach(function (s) {
+        s.texts.forEach(function (x) {
+          if (sec && x.sec === sec.id) t = x;
+        });
+      });
+      openPrint(t ? { ids: [t.id], from: b } : { from: b });
     };
     function pmClose() {
       unready();
