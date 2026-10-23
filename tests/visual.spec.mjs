@@ -5,7 +5,7 @@
 // desktops and 2K / 4K monitors.
 // Recorded in Chromium; the site's fonts are its own files, so shots are the same on any Linux machine.
 import { test, expect } from "@playwright/test";
-import { openSite, settle, SETUPS, readText, tapMore } from "./helpers.mjs";
+import { openSite, settle, SETUPS, readText, tapMore, openPrintBuilder } from "./helpers.mjs";
 import { printFromButton } from "./print-helpers.mjs";
 
 const SIZES = {
@@ -119,7 +119,7 @@ const CASES = [
 
 // Print, open at What once the page counts and the first-page preview (with its fonts) are in
 async function printBuilder(p) {
-  await tapMore(p, "#prb");
+  await openPrintBuilder(p);
   await expect(p.locator("#prsum span").nth(1)).toHaveText(/\d/, { timeout: 20_000 });
   await p.waitForFunction(() => {
     const f = document.querySelector("#prsheet iframe");

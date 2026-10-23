@@ -311,7 +311,7 @@ test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ 
   await expect(tab(page, "morning")).toHaveText("सकाळ");
   await expect(tab(page, "afternoon")).toHaveText("दुपारकाहीच नाही");
   await page.locator("#tmb").click();
-  for (const [id, w] of [["#shb", "शेअर"], ["#prb", "प्रिंट"], ["#hlpb", "मदत"]]) await expect(page.locator(id)).toHaveText(w, { useInnerText: true });
+  for (const [id, w] of [["#shb", "शेअर"], ["#hlpb", "मदत"]]) await expect(page.locator(id)).toHaveText(w, { useInnerText: true });
   await expect(page.locator("#tsn")).toHaveText("१० रचना");
   await expect(rows(page).nth(1).locator(".t1")).toHaveText(TITLE["shendur-lal-chadhayo"].title);
 });
@@ -363,7 +363,7 @@ test("⋯ More in the top bar opens App / Share / QR / Print / Help under it, at
     expect(more.height).toBeGreaterThanOrEqual(38);
     await page.locator("#tmb").click();
     await expect(page.locator("#tmb")).toHaveAttribute("aria-expanded", "true");
-    for (const b of ["#shb", "#qrb", "#prb", "#hlpb"]) await expect(page.locator(b), `${b} ${width}px`).toBeVisible();
+    for (const b of ["#shb", "#qrb", "#hlpb"]) await expect(page.locator(b), `${b} ${width}px`).toBeVisible();
     // under the button, on screen, its right edge at the button's
     const menu = await page.locator("#shr").boundingBox();
     expect(menu.y, `${width}px`).toBeGreaterThanOrEqual(more.y + more.height);

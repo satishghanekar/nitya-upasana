@@ -31,7 +31,8 @@ describe("CONTENT from the text files", () => {
   const OLD_IDS = new Set(pieces(OLD).map((p) => p.id));
   const same = pieces(C)
     .filter((p) => OLD_IDS.has(p.id))
-    .map(({ text, ...p }) => p); // eslint-disable-line no-unused-vars
+    // (and each [note] is now marked as one, nt, which the old file did not have either: Ghalin Lotangan's ↻ ३ वेळा)
+    .map(({ text, ...p }) => ({ ...p, items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
   const OLD_C = { categories: [{ pieces: same }] };
   const byId = (Cx, id) => pieces(Cx).find((p) => p.id === id);
   test("is identical to the old content/pieces.js", () => {
@@ -94,6 +95,21 @@ describe("content checks", () => {
   test.each(lib.texts.map((t) => [t.file]))("%s is not changed by Unicode normalisation", (f) => {
     const raw = files[f.slice(6, -4)];
     expect(raw === raw.normalize("NFC")).toBe(true);
+  });
+  // A verse number typed in a line (॥ १० ॥, || 10 ||) is the same in both languages and a whole number: a slip such as
+  // "|| 1. ||" for ॥ १० ॥ printed wrong in English and IAST (Satish's PDFs, 2026-10-22)
+  test.each(lib.texts.map((t) => [t.id]))("%s: verse numbers agree in both languages", (id) => {
+    const DV = "०१२३४५६७८९";
+    const nums = (s, re) => [...s.matchAll(re)].map((m) => m[1]);
+    const t = parseText(files[id], id);
+    t.blocks.forEach((b) =>
+      b.lines.forEach((l) => {
+        const mr = nums(l.orig, /॥\s*([०-९]+)\s*॥/g).map((d) => d.replace(/./g, (c) => DV.indexOf(c)));
+        const en = nums(l.en, /\|\|\s*([0-9.]+)\s*\|\|/g);
+        en.forEach((n) => expect(n, `${id}: "${l.en}"`).toMatch(/^[0-9]+$/));
+        if (mr.length && en.length) expect(en, `${id}: "${l.orig}" / "${l.en}"`).toEqual(mr);
+      }),
+    );
   });
   test("categories: Vedic Chant, Aarti, Stotra, Ashtak", () => {
     expect(categories.map((c) => c.id)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak"]);

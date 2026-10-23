@@ -29,7 +29,12 @@
     );
   }
   function item(x) {
-    if (x.rmk) return '      <div class="rmk"><span class="mr">' + x.rmk.mr + '</span><span class="en" lang="en"><i class="ra">↻ </i>' + x.rmk.en + "</span></div>\n";
+    // the dhrupad's marker (↻ ध्रुपद) or a note of the text's own (nt: Phalashruti, ↻ ३ वेळा); the English gets the ↻ when
+    // the original has one, so a note that is a heading (फलश्रुति) does not look like a repeat
+    if (x.rmk) {
+      var ra = !x.nt || /^↻/.test(x.rmk.mr) ? '<i class="ra">↻ </i>' : "";
+      return '      <div class="rmk' + (x.nt ? " nt" : "") + '"><span class="mr">' + x.rmk.mr + '</span><span class="en" lang="en">' + ra + x.rmk.en + "</span></div>\n";
+    }
     return '      <div class="item' + (x.kind ? " " + x.kind : "") + (x.para ? " para" : "") + '">\n' + verse(x.lines, "        ", x.bold) + "      </div>\n";
   }
   function navLink(cls, p, label, iconFirst) {

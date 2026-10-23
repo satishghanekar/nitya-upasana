@@ -136,6 +136,17 @@ export async function tapMore(page, id) {
   await page.locator(id).click();
 }
 
+/**
+ * Open the print builder at What, as last left (Print and Print this text are no longer in ⋯ More: Print in the bottom
+ * bar opens it while reading; js/features/print.js also opens it on the event "nitya-print", which these tests use)
+ * @param {import("@playwright/test").Page} page @param {{ ids?: string[], tab?: string }} [detail]
+ */
+export async function openPrintBuilder(page, detail = {}) {
+  await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+  await page.evaluate((d) => document.dispatchEvent(new CustomEvent("nitya-print", { detail: d })), detail);
+  await page.locator("#prm").waitFor({ state: "visible" });
+}
+
 // Accessibility (axe-core, WCAG 2.2 A/AA + best practice). A theme changes only colours (and high contrast's text
 // weight), so a screen is scanned in full once, then switched to each other theme in place, on the same page, and
 // checked for the colour rules only (axeEveryTheme). Every screen is still checked in every theme, without opening
