@@ -85,34 +85,17 @@ export function init() {
       e.setAttribute("lang", k === "en" ? "en" : olang());
       return e;
     }
-    // A danda (। ॥, | in English) stays at the end of the line with the word before it, and a verse number
-    // stays whole (॥ १ ॥): each such run is kept on one line (.pvnb).
+    // A danda (। ॥, | in English) stays at the end of the line with the word before it, and a verse number stays whole
+    // (॥ १ ॥): the spaces inside such a run become no-break spaces. In the text itself, not in a span of its own:
+    // Safari printed the space beside such a span so narrow that the last two words of a line ran together.
     /** @param {Element} el */
     function glue(el) {
       var w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT),
-        ns = [],
         n;
-      while ((n = w.nextNode())) ns.push(n);
-      ns.forEach(function (n) {
-        // (the space before the run goes inside it: Safari draws a space just before a nowrap span narrower, so the
-        // last two words of a line ran together)
-        var re = / ?\S+(?: +(?:[।॥|]+|[0-9०-९೦-೯]+(?= +[॥|])))+/g,
-          t = n.data,
-          f = document.createDocumentFragment(),
-          at = 0,
-          m;
-        while ((m = re.exec(t))) {
-          var s = document.createElement("span");
-          s.className = "pvnb";
-          s.textContent = m[0];
-          f.appendChild(document.createTextNode(t.slice(at, m.index)));
-          f.appendChild(s);
-          at = m.index + m[0].length;
-        }
-        if (!at) return;
-        f.appendChild(document.createTextNode(t.slice(at)));
-        n.parentNode.replaceChild(f, n);
-      });
+      while ((n = w.nextNode()))
+        n.data = n.data.replace(/\S+(?: +(?:[।॥|]+|[0-9०-९೦-೯]+(?= +[॥|])))+/g, function (run) {
+          return run.replace(/ +/g, "\u00a0");
+        });
     }
 
     // What a text prints, by what each part of it is (never by what the reading page happens to show): the dhrupad at
@@ -208,6 +191,14 @@ export function init() {
         if (st.firstChild) b.appendChild(st);
         if (rf.firstChild) b.appendChild(rf);
       });
+      // With a stanza in the block, what is centred (the dhrupad, its label and marker, a repeat) is centred over that
+      // stanza, in a box as wide as it (.pvw), not over the whole column: under a short stanza the dhrupad looked
+      // pushed right (Satish, 2026-10-23). A block without one (a closing line) stays centred over the column.
+      if (b.querySelector(":scope > .pvsz:not(.pvref):not(.pvrf):not(.pvbold):not(.pvdh)")) {
+        var w = mk("div", "pvw");
+        while (b.firstChild) w.appendChild(b.firstChild);
+        b.appendChild(w);
+      }
       return row;
     }
     // the paragraphs of a Vedic text: a new one at a stanza marked para, and a stanza said once (dh) on its own; a note
@@ -237,13 +228,18 @@ export function init() {
     /** @param {HTMLElement[]} g @param {string} k */
     function proseBlock(g, k) {
       if (g[0].classList.contains("rmk")) return mk("div", "pvk", "").appendChild(inLang("p", "pvnote", k, note(g[0], k))).parentNode;
-      var p = inLang("p", "pvpr", k, "");
+      // the lines run on as one text, not a span each: Safari printed the space between two such spans so narrow that
+      // the words ran together. (pvLines: the lines, for the tests)
+      var ls = [];
       g.forEach(function (u) {
         linesOf(u, k).forEach(function (l) {
-          var s = mk("span", "pvln", l.html.replace(/<br[^>]*>/gi, " "));
-          if (p.firstChild) p.appendChild(document.createTextNode(" "));
-          p.appendChild(s);
+          ls.push(l.html.replace(/<br[^>]*>/gi, " "));
         });
+      });
+      var p = inLang("p", "pvpr", k, ls.join(" "));
+      p.normalize();
+      /** @type {any} */ (p).pvLines = ls.map(function (h) {
+        return mk("span", "", h).textContent;
       });
       glue(p);
       // a paragraph of a single line said once (the closing peace chant) is centred, and never splits
@@ -369,15 +365,17 @@ export function init() {
         g.name.forEach(function (/** @type {Node} */ x) {
           nm.appendChild(x.cloneNode(true));
         });
-        cov.appendChild(title("h3", "pvcat", part(nm, "mr"), part(nm, "en")));
         // two texts a row, each row a list of its own set as one unbreakable box (.pvtr): Safari split a row whose
-        // title ran to two lines across two pages, whatever "break-inside: avoid" said
+        // title ran to two lines across two pages, whatever "break-inside: avoid" said. The category's heading and
+        // its first row are one such box too (.pvhead), so a heading never ends a page alone.
         var rows = mk("div", "pvtocw"),
+          head = rows.appendChild(mk("div", "pvhead")),
           ol = null;
+        head.appendChild(title("h3", "pvcat", part(nm, "mr"), part(nm, "en")));
         g.secs.forEach(function (/** @type {HTMLElement} */ sec, i) {
           var li = titleOf(sec, "li", "");
           li.setAttribute("data-sid", sec.id);
-          if (i % 2 === 0) ol = rows.appendChild(mk("ol", "pvtoc pvtr"));
+          if (i % 2 === 0) ol = (i ? rows : head).appendChild(mk("ol", "pvtoc pvtr"));
           ol.appendChild(li);
         });
         cov.appendChild(rows);

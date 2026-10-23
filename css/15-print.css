@@ -203,25 +203,29 @@
   /* the dhrupad (at the top, sung again, or said once between stanzas), a closing line (bold) and the credit: centred over the column, without
      widening it (width 0, then the column's width: only the stanzas set where the column's left edge is), a line longer
      than the stanzas reaching out on both sides */
-  #pv .pvsc > :is(.pvref, .pvrf, .pvbold, .pvdh),
-  #pv .pvsc > :is(.pvcr, .pvlab) {
+  #pv :is(.pvsc, .pvw) > :is(.pvref, .pvrf, .pvbold, .pvdh),
+  #pv :is(.pvsc, .pvw) > :is(.pvcr, .pvlab) {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 0;
     min-width: 100%;
   }
-  #pv .pvsc > :is(.pvref, .pvrf, .pvbold, .pvdh) > .pvl {
+  #pv :is(.pvsc, .pvw) > :is(.pvref, .pvrf, .pvbold, .pvdh) > .pvl {
     width: max-content;
     /* never wider than the page: A4's text width, then the page's own (#pv is the container) */
     max-width: 172mm;
     max-width: 100cqw;
   }
-  #pv .pvsc > :is(.pvcr, .pvlab) {
+  #pv :is(.pvsc, .pvw) > :is(.pvcr, .pvlab) {
     white-space: nowrap;
   }
+  /* a block with a stanza: a box as wide as the stanza, at the column's left edge, what is centred centred over it */
+  #pv .pvw {
+    display: table;
+  }
   /* an empty line between a stanza and the dhrupad sung after it */
-  #pv .pvsc > .pvsz:not(.pvrf) + .pvsz.pvrf {
+  #pv :is(.pvsc, .pvw) > .pvsz:not(.pvrf) + .pvsz.pvrf {
     margin-top: 12pt;
   }
   #pv .pvsz {
@@ -272,7 +276,6 @@
     display: inline-block;
     text-indent: 0;
   }
-  #pv .pvnb,
   #pv .nb {
     white-space: nowrap;
   }
@@ -333,7 +336,7 @@
     border-right: 0.5pt solid #bbb;
   }
   /* a cell is half the page: a line kept whole for the one-language page wraps here rather than run off the page */
-  #pv .pvt .pvnb {
+  #pv .pvt .nb {
     white-space: normal;
   }
   #pv .pvt td.pvo {
@@ -401,6 +404,11 @@
   /* the Library's contents: a row of two at a time, each row one box that never splits between pages */
   #pv .pvtocw {
     line-height: 0;
+  }
+  #pv .pvhead {
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
   }
   #pv .pvtoc.pvtr {
     display: inline-flex;
