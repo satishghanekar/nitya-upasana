@@ -1,4 +1,4 @@
-// Bottom bar (#asc): ‹ Prev, Home, Library, Aa (the reading sheet), Next ›
+// Bottom bar (#asc): ‹ Prev, Home, Library, Print, Aa (the reading sheet), Next ›; on Home only Print and Aa
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root } from "../core/page.js";

@@ -396,6 +396,17 @@ test("Home has no Print this session or Library line; the bottom bar's Print pri
   await expect(page.locator("#prm")).toBeVisible();
   await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
 });
+// on a phone it opens at What, on the Today tab with that session chosen, so another one is a tap away
+test("on Home, Print in the bottom bar prints the session Home shows, chosen on the Today tab @mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await page.locator("#asp").click();
+  await expect(page.locator("#prm")).toBeVisible();
+  await expect(page.locator("#prm")).toHaveAttribute("data-step", "what");
+  await expect(page.locator("#prtab-today")).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator('#prtp-today .prses[data-s="evening"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
+});
 test("Home on its own: the pieces show once a text is opened, and go again on the way home @mobile", async ({ page }) => {
   const errors = [];
   await openSite(page, SETUPS.marathi, { now: EVENING, errors });
@@ -454,11 +465,13 @@ test("the greyed session's words are at least 4.5:1 on the switch, in every them
   }
 });
 
-test("on a phone Home ends with the session's texts, with no Start button and no bottom bar @mobile", async ({ page }) => {
+test("on a phone Home ends with the session's texts, with no Start button; the bottom bar has only Print and Reading @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(page.locator("#tst, #tsb")).toHaveCount(0);
-  await expect(page.locator("#asc")).toBeHidden();
+  await expect(page.locator("#asc")).toBeVisible();
+  for (const id of ["#asp", "#rsb"]) await expect(page.locator(id)).toBeVisible();
+  for (const id of ["#asv", "#ash", "#asq", "#asn"]) await expect(page.locator(id)).toBeHidden();
   // scrolled to the end of the home page, the last text is on screen
   await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
   await expect(rows(page).last()).toBeInViewport();

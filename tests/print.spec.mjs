@@ -132,8 +132,8 @@ test("print pop-up offers the right choices and closes cleanly @chromium-only", 
   await expect(page.locator("#prgp")).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.locator("#prm")).toBeHidden();
-  // Print is in the ⋯ More menu, closed by then: focus comes back to ⋯
-  await expect(page.locator("#tmb")).toBeFocused();
+  // opened from elsewhere (no button named): focus comes back to Print in the bottom bar, on Home too
+  await expect(page.locator("#asp")).toBeFocused();
   await openPrintBuilder(page);
   await howStep(page);
   await page.locator("#prx").click();
@@ -638,8 +638,8 @@ test("print builder: Open in Safari carries the texts ticked @chromium-only", as
   await context.close();
 });
 
-// Print in the bottom bar, while reading a session: the builder opens at How with just the session's texts ticked;
-// ‹ What to print shows the Today tab with that session chosen. Today offers each session and all of today, one tap each (the test routine:
+// Print in the bottom bar, while reading a session: the builder opens at What, on the Today tab with that session
+// chosen (just its texts ticked), Next › going on to How. Today offers each session and all of today, one tap each (the test routine:
 // Morning the Atharvashirsha, Afternoon empty, Evening ten aartis; 10 am, so Home shows Morning).
 test("print builder: the bottom bar's Print while reading a session, and the Today tab @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
@@ -649,10 +649,9 @@ test("print builder: the bottom bar's Print while reading a session, and the Tod
   await openSite(page, SETUPS.english);
   await page.locator("#tsl a.tgo").first().click();
   await page.locator("#asp").click();
-  await expect(page.locator("#prhw")).toBeVisible();
-  await expect(page.locator("#prgp")).toBeFocused();
+  await expect(page.locator("#prm")).toHaveAttribute("data-step", "what");
+  await expect(page.locator("#prnx")).toBeFocused();
   await expect(page.locator("#prsum span").first()).toHaveText("गणपत्यथर्वशीर्षोपनिषत्");
-  await page.locator("#prbk").click();
   await expect(page.locator("#prtab-today")).toHaveAttribute("aria-selected", "true");
   await expect(page.locator('.prses[data-s="morning"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator('.prses[data-s="afternoon"]')).toBeDisabled();
