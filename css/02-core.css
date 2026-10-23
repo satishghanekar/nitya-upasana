@@ -577,6 +577,10 @@ p.fl {
 [data-ref="1"] .rmk {
   display: block;
 }
+/* a note of the text's own ([note: …] in its file: फलश्रुति, ↻ ३ वेळा) is part of the text: shown whatever the dhrupad setting */
+.rmk.nt {
+  display: block;
+}
 .rftop {
   text-align: center;
 }

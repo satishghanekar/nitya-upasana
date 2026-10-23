@@ -140,12 +140,13 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 | `[dhrupad bold]` | The same, shown in bold (Ghalin Lotangan's closing mantra). |
 | `[dhrupad repeated]` | Right after `[dhrupad]`, only when the repeats are written differently from the top (the Vitthal Aarti). |
 | `[refrain]` | Inside a block: the lines after it are refrain lines (shown as the refrain, or hidden with the dhrupad set to once). |
-| `[note: ↻ ३ वेळा \| 3 times]` | A small note between blocks, in both languages. |
+| `[note: ↻ ३ वेळा \| 3 times]` | A small note between blocks, in both languages, always shown (whatever the dhrupad setting). One that starts with ↻ is about the lines before it ("repeat 3 times") and prints with them; any other note (`[note: फलश्रुति \| Phalashruti]`) is a heading for what follows and prints with it. Only a note that starts with ↻ shows the ↻ in English too. |
 
 **Inside a line:**
 
 - `¦` marks a place where a long line may break on a narrow phone (it shows as nothing). Put it after the space: `निढळावरी कर, ¦निढळावरी कर`. English lines need none: on a phone they break after a single `|` or a comma by themselves.
 - ` // ` (a space, two slashes, a space) always breaks the line there. The spaces belong to the mark: `|  // ` (two spaces) keeps one real space before the break.
+- **Verse numbers typed in a line** (`॥ १० ॥` in the original, `|| 10 ||` in English) must be the same number in both; the checks name any line where they differ.
 - **Vedic svara marks** (॑ ॒ ᳚) must be kept exactly. A mark that belongs with a visarga goes **after** the ः, otherwise it shows as a dotted circle.
 - **Only the original line and the everyday English line are typed.** The scholarly English (IAST) is made from the original line, so a spelling fix there fixes the scholarly English too.
 
@@ -156,6 +157,8 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 3. In `js/parts.js`, add `texts/<id>.txt` to the `content` list, so the text is kept for offline use.
 4. To put it in the default routine, add its id to `content/routines.json`.
 5. Run the checks (`cd tests && npm run unit`): they read every text, check `library.json` and `js/parts.js` against the files and name any mistake with its line number. The text's print tests record its printout the first time they run (see `tests/README.md`).
+
+Nothing in the print code names a text: a new text prints by the rules in `ARCHITECTURE.md` ("The rules every printout follows") as soon as its file exists: stanzas are never split between pages, the dhrupad follows the printout's choice, an aarti or ashtak is centred or set in two columns, a Vedic chant (`layout: prose`) runs on as paragraphs, and with both languages each line sits beside its English.
 
 When **editing** a text, only the file changes, unless a title or the number of lines changes (then update `content/library.json` too; the checks say so). Line ids follow the order of the lines, so a fix within a line keeps them; adding or removing a line renumbers the lines after it (a highlighted line saved on a phone may then point at its neighbour).
 

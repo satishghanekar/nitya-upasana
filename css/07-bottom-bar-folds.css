@@ -737,3 +737,18 @@ html[data-asb="1"] {
     display: none;
   }
 }
+
+/* Print, Traditional: Tiro has no bold, so what prints bold (the dhrupad at the top, a [dhrupad bold] block, its row
+   side by side) is set in Noto Serif Devanagari Bold, the serif closest to it, rather than a bold made up by the
+   browser (css/04-columns-rail.css, "the page boxes") */
+@media print {
+  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs .pvref p,
+  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs .pvref .en p,
+  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs .verse.bold p,
+  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs .verse.bold .en p,
+  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs tr.pvb td,
+  :root[data-font="classic"]:not([data-font="std"]) #pv .pvs tr.pvb td.pve {
+    font-family: "SC Bold", var(--body);
+    font-weight: 700;
+  }
+}

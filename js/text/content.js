@@ -22,7 +22,9 @@ import { parseText, toHtml } from "./format.js";
  * @typedef {{ texts: LibraryText[], pageLanguage: string, languages: Record<string, Pair>,
  *   refrain: { label: Pair, note: Pair }, ui: { prev: Pair, next: Pair }, wiki: Record<string, Record<string, string>> }} Library
  * @typedef {{ l: string, rf?: true, mr: string, en: string }} Line
- * @typedef {{ kind?: string, bold?: true, para?: true, lines?: Line[], rmk?: Pair }} Item
+ * @typedef {{ kind?: string, bold?: true, para?: true, lines?: Line[], rmk?: Pair, nt?: true }} Item
+ *   rmk: a small line between blocks: the dhrupad's marker (↻ ध्रुपद), or, with nt, a [note] from the text file (Phalashruti,
+ *   ↻ ३ वेळा), which is part of the text and always shown, whatever the dhrupad setting
  * @typedef {{ id: string, text: string, lang?: string, cls?: string, prose?: true, no: Pair, title: Pair, tag: Pair,
  *   refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string }} Piece
  * @typedef {{ ui: Library["ui"], wiki: Library["wiki"], categories: { id: string, name: Pair, pieces: Piece[] }[] }} Content
@@ -127,7 +129,7 @@ export function toPiece(t, n, lib) {
     };
     if (t.refrainFirst) again();
     blocks.forEach(function (b) {
-      if (b.kind === "note") items.push({ rmk: pair(/** @type {Pair} */ (b.note)) });
+      if (b.kind === "note") items.push({ rmk: pair(/** @type {Pair} */ (b.note)), nt: true });
       else {
         items.push(b.para ? { para: true, lines: b.lines.map(line) } : { lines: b.lines.map(line) });
         again();
@@ -137,7 +139,10 @@ export function toPiece(t, n, lib) {
     blocks.forEach(function (b) {
       /** @type {Item} */
       var it = {};
-      if (b.kind === "note") it.rmk = pair(/** @type {Pair} */ (b.note));
+      if (b.kind === "note") {
+        it.rmk = pair(/** @type {Pair} */ (b.note));
+        it.nt = true;
+      }
       else {
         if (b.kind === "dhrupad") it.kind = "dh";
         if (b.bold) it.bold = true;

@@ -164,10 +164,6 @@ a.t {
 #shr button[hidden] {
   display: none;
 }
-/* Print this text: only while a text is read, not on Home (data-home, js/features/bars.js) */
-:root[data-home] #shr #prt {
-  display: none;
-}
 #shr button {
   display: flex;
   align-items: center;
@@ -1133,23 +1129,14 @@ span.prwho {
     line-height: 1.45;
     break-inside: avoid;
     page-break-inside: avoid;
-  } /* Safari splits table rows across pages and ignores keep-together on them; an inline-block cannot be split */
-  .wk #pv .pvs {
-    font-size: 0;
-    line-height: 0;
-  }
-  .wk #pv .pvk {
-    display: inline-block;
-    width: 100%;
-    vertical-align: top;
-  }
+  } /* (Safari once needed each block as an inline-block to keep it whole: the pages are now laid out as page boxes,
+       js/print/pages.js, so no block reaches a page's end) */
   :root[data-print="one"] #pv .pvk {
     font-size: 14pt;
   }
   /* a block taller than a page (js/features/print.js marks it; it happens on a sideways page) breaks between
      its lines rather than running off the page */
   #pv .pvk.pvtall,
-  .wk #pv .pvk.pvtall,
   #pv .pvtall .verse {
     display: block;
     break-inside: auto;
@@ -1331,13 +1318,8 @@ span.prwho {
   /* Aartis and ashtaks in one language are centred on the page as a whole (Satish, 2026-10-21): the block of stanzas
      sits in the middle, as wide as its longest line, and its lines start level with each other, as in a printed aarti
      book. Vedic texts (pvved) run full width, as paragraphs. */
-  :root[data-print="one"] #pv .pvs:not(.pvved):not(.pvtwo) {
-    width: -webkit-fit-content;
-    width: fit-content;
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  /* (centred by the page's column, .pvcol, set as wide as the piece's longest line: js/features/print.js layout. A
+     fit-content width came out full width in Safari, so its aartis printed against the left margin) */
   /* (on screen a stanza's lines are each centred: css/02-core.css) */
   :root[data-print="one"] #pv .pvs:not(.pvved) .verse,
   :root[data-print="one"] #pv .pvs:not(.pvved) .rmk,
@@ -1358,9 +1340,6 @@ span.prwho {
     display: flex;
     break-inside: avoid;
     page-break-inside: avoid;
-  }
-  .wk #pv .pv2p {
-    width: 100%;
   }
   #pv .pv2c {
     flex: 1 1 0;

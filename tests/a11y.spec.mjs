@@ -1,7 +1,7 @@
 // Accessibility (WCAG 2.2 AA): axe-core on every screen state, plus the things axe can't see —
 // keyboard-only use of every dialog, and accessible names that contain the visible label.
 import { test, expect } from "@playwright/test";
-import { openSite, SETUPS, openMore, tapMore, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
+import { openSite, SETUPS, openMore, tapMore, axeScan, axeEveryTheme, noViolations, openPrintBuilder, readText } from "./helpers.mjs";
 
 // axeScan leaves label-content-name-mismatch off: axe 4.14 counts the letters drawn inside aria-hidden SVG icons
 // (अ / A, धृ) and joins the date chip's stacked lines without a space ("28Oct"); the "label in name" test below
@@ -16,7 +16,7 @@ const STATES = [
   ["English main", SETUPS["english-main-both"]],
   ["pieces folded", { ...SETUPS.marathi, af: ["p1", "a1", "a2"] }],
   ["Settings open", SETUPS.marathi, (p) => p.locator("#aa").click(), true],
-  ["Print open", SETUPS.marathi, (p) => tapMore(p, "#prb"), true],
+  ["Print open", SETUPS.marathi, (p) => openPrintBuilder(p), true],
   ["Library open", SETUPS.marathi, (p) => p.locator("#hm").click(), true],
   ["search open", SETUPS.marathi, async (p) => {
     await p.locator("#hm").click();
@@ -44,14 +44,16 @@ const DIALOGS = [
   ["Settings", "#aa", "#panel"],
   ["Help", "#hlpb", "#help"],
   ["QR", "#qrb", "#qrm"],
-  ["Print", "#prb", "#prm"],
+  // Print: in the bottom bar while a text is read
+  ["Print", "#asp", "#prm"],
 ];
 for (const [name, opener, dialog] of DIALOGS) {
   test(`keyboard: every control in ${name} is reachable with Tab, and focus stays inside`, async ({ page, browserName }) => {
     // WebKit only tabs to links and form fields unless the "Press Tab to highlight each item" option is on
     test.skip(browserName === "webkit", "Safari's default Tab skips buttons");
     await openSite(page, SETUPS.marathi);
-    if (opener !== "#aa") await openMore(page);
+    if (opener === "#asp") await readText(page, "a1");
+    else if (opener !== "#aa") await openMore(page);
     await page.locator(opener).focus();
     await page.keyboard.press("Enter");
     await page.waitForTimeout(200);
