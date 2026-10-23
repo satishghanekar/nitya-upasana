@@ -98,12 +98,12 @@ export async function addMarkers(page, when = "now") {
       // white 1px text: printed (so pdf.js can read it) but invisible and taking no space
       // !important: the site's own !important font rules (Kannada letters set every .mr element's font) must not
       // reach the marker, or it is drawn in whatever font the machine falls back to and may not read back
-      s.style.cssText = ["position:absolute", "font:1px/1 monospace", "letter-spacing:0", "word-spacing:0", "text-transform:none", "color:#fff", "white-space:nowrap"].map((d) => d + " !important").join(";");
-      // an end marker reaches back over its line instead of past it: after a line that fills the page width it
-      // would run off the page and be cut
-      if (end) s.style.setProperty("transform", "translateX(-100%)", "important");
-      // a start marker ignores the line's hanging indent (.pvl), which would pull it back over the marker before it
-      else s.style.setProperty("text-indent", "0", "important");
+      s.style.cssText = ["position:absolute", "font:1px/1 monospace", "letter-spacing:0", "word-spacing:0", "text-transform:none", "color:#fff", "white-space:nowrap", "text-indent:0"].map((d) => d + " !important").join(";");
+      // (text-indent 0: a line's hanging indent (.pvl, td.pve) would shrink the marker to nothing and move it)
+      // an end marker reaches back over its line instead of past it
+      // (by a fixed 32px, longer than any marker: near the page edge the marker can be laid out 0 wide, and -100% of
+      // that does not move it)
+      if (end) s.style.setProperty("transform", "translateX(-32px)", "important");
       return s;
     };
     const shown = (n) => {
@@ -121,7 +121,11 @@ export async function addMarkers(page, when = "now") {
         let last = first, n;
         while ((n = w.nextNode())) last = n;
         first.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":s"), first);
-        last.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":e", true), last.nextSibling);
+        // the end marker goes just before the block's last letter and reaches back from there: placed after it, a
+        // line that ends at the page's edge would leave the marker past the edge, cut off
+        const lastAt = last.data.trimEnd().length - 1,
+          tail = lastAt > 0 ? last.splitText(lastAt) : last;
+        tail.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":e", true), tail);
       });
     });
     };
