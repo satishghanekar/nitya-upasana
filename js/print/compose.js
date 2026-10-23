@@ -40,12 +40,20 @@ export function compose(ids, lang, ordered) {
     })
   )
     ids = null;
+  // each category's texts numbered 1, 2, 3… in the printout (as its contents list them), whatever their numbers in the
+  // whole Library: three texts printed from two categories read 1 | 1, 2, never 1 | 1, 3 (Satish, 2026-10-22). The
+  // copy only: CONTENT keeps the Library's numbers
   var cats = C.categories.map(function (/** @type {any} */ g) {
     return {
       name: g.name,
-      pieces: g.pieces.filter(function (/** @type {any} */ p) {
-        return !ids || ids.indexOf(p.text) >= 0;
-      }),
+      pieces: g.pieces
+        .filter(function (/** @type {any} */ p) {
+          return !ids || ids.indexOf(p.text) >= 0;
+        })
+        .map(function (/** @type {any} */ p, /** @type {number} */ i) {
+          var n = i + 1;
+          return n === parseInt(p.no.en, 10) ? p : Object.assign({}, p, { no: { mr: dv(n) + ".", en: n + "." } });
+        }),
     };
   });
   if (ordered && ids) {

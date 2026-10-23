@@ -73,7 +73,7 @@ A text prints the same on its own as inside any printout (`js/print/compose.js` 
 
 - that text alone is printed, with no contents page, on upright or sideways pages as chosen;
 - no block (a heading with its dhrupad and first stanza, or a stanza) is split across pages, unless it is taller than a page even at its smallest (the print view marks it, and it breaks between lines), and every block is printed;
-- every page has its "N / total" footer, screen-only controls never print, and every English line is in the PDF (Devanagari and Kannada text can't be read back reliably from a PDF, so for those the block markers show nothing was lost);
+- every page has its "N / total" footer, screen-only controls never print, and every English line is in the PDF: both the lines the print view shows and every line of each printed text as the text file has it (`sourceLines`), so a line lost where a page is cut is caught even though the print view no longer holds it (Devanagari and Kannada text can't be read back reliably from a PDF, so for those the block markers show nothing was lost);
 - no line is lost and none runs past its column (the print audit's line markers, `print-audit-helpers.mjs`);
 - no line is set smaller than the fitting allows;
 - its result matches the saved one in `__snapshots__/print-items.spec.mjs/chromium/cloud/<id>/`: pages, its size in points, the size of its smallest line, the whole piece's scale, two columns (`cols: 2`, where no line may run past its column; nor may a line of a Vedic paragraph side by side), side by side the original's share of the width, and the audit's counts (lines wrapped, broken mid-phrase, rows out of step, pages mostly empty).

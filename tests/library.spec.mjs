@@ -183,6 +183,9 @@ test("a pinch on the Library resizes only its list, with the reading page's text
   const a = await look();
   expect(a.list).toBeCloseTo(15, 0); // the book-index size at the automatic text size
   for (let i = 0; i < 4; i++) await page.keyboard.press("Control+Equal");
+  // the size reaches the page on the next frame (js/features/pinch.js): read it after that frame, not before (WebKit
+  // on GitHub, busy laying the printout out in the background, read the size of three presses, then of four)
+  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r()))));
   const b = await look();
   expect(b.fs).toBeGreaterThan(a.fs);
   expect(b.list).toBeCloseTo((15 * b.fs) / b.fsa, 1);

@@ -312,3 +312,133 @@
     justify-self: center;
   }
 }
+
+/* ==== Print: the page boxes (js/print/pages.js, js/features/print.js layout) ==== */
+/* Each printed page is a box of its own, laid out ahead in a page-sized copy and checked there. A forced break before
+   each one is the one page rule every browser follows, so the printout has exactly the pages planned and the contents'
+   page numbers hold, in Safari as in Chrome. The size of a piece is a zoom on its boxes. */
+@media print {
+  #pv .pvpg {
+    display: flow-root;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #pv[data-paged] .pvpg {
+    break-before: page;
+    page-break-before: always;
+  }
+  #pv[data-paged] > :first-child > .pvpg:first-child {
+    break-before: auto;
+    page-break-before: auto;
+  }
+  /* laid out in page boxes, a section is only their holder: nothing of its own (a margin, a rule) may add to a page
+     the planning did not count (the contents' 10pt above them pushed its last line onto a page of its own) */
+  #pv[data-paged] .pvs,
+  #pv[data-paged] .pvtoc {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  /* (the pieces' own breaks, for a printout whose pages could not be laid out ahead, step aside) */
+  #pv[data-paged] .pvs + .pvs,
+  #pv[data-paged] .pvtoc {
+    break-before: auto;
+    page-break-before: auto;
+    break-after: auto;
+    page-break-after: auto;
+  }
+  /* a block taller than a page even at its smallest runs on between its lines */
+  #pv .pvpg.pvtallpg,
+  #pv .pvpg.pvtallpg .pvk {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  /* an aarti or ashtak in one language: a column as wide as its longest line, centred, its lines starting level */
+  #pv .pvcol {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* two columns: down the left, then the right, a thin rule between (LAYOUT.cols.gap: 10mm); a block too wide for
+     a column runs across both between them */
+  #pv .pv2b {
+    display: flex;
+    align-items: flex-start;
+  }
+  #pv .pv2c {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  #pv .pv2c + .pv2c {
+    margin-left: 5mm;
+    padding-left: 5mm;
+    border-left: 0.5pt solid #bbb;
+  }
+  /* the contents: each line a block of its own (so a line never splits between pages), in two columns that read
+     down; a heading kept with its first line */
+  #pv .pvte ol {
+    display: block;
+    margin: 0;
+  }
+  #pv .pvte li {
+    break-inside: avoid;
+  }
+  #pv .pvcov {
+    break-after: auto;
+  }
+  /* the number of a text in the language its title is shown in: the original's digits with both languages (१.), as
+     its title is the original's, and English digits when English leads */
+  #pv[data-lang="both"] .no .nm {
+    display: inline;
+  }
+  #pv[data-lang="both"] .no .ne {
+    display: none;
+  }
+  html[data-lead="en"] #pv[data-lang="both"] .no .nm {
+    display: none;
+  }
+  html[data-lead="en"] #pv[data-lang="both"] .no .ne {
+    display: inline;
+  }
+  /* a Vedic text's paragraphs: separated by a space, not indented (a deep first-line indent read as a gap before the
+     line), and a paragraph carried over to the next page (.pvcont) simply carries on */
+  #pv .pvpr {
+    text-indent: 0;
+  }
+  #pv .pvpara {
+    margin: 0 0 0.7em;
+  }
+  /* a Vedic text side by side: each line beside its English, in two equal columns, the rows running on from page to
+     page; room between the lines for the svara marks */
+  #pv .pvprs col.pvcm,
+  #pv .pvprs col.pvce {
+    width: 50%;
+  }
+  #pv .pvprs td {
+    vertical-align: top;
+    padding: 0 10pt 3pt;
+  }
+  #pv .pvprs td.pvm {
+    font-size: 1.04em;
+    line-height: 1.9;
+  }
+  #pv .pvprs td.pve {
+    font-size: 0.86em;
+    line-height: 1.6;
+  }
+  #pv .pvk + .pvk > .pvprs {
+    margin-top: 6pt;
+  }
+  /* Safari draws a bold it has to make up (a font with no bold of its own, as Tiro) as several copies of each line: on
+     paper it looks the same, but the PDF's text then reads every word two to four times over (copy, search, screen
+     readers). No made-up weights: a line that is bold uses a font that has one (css/07-bottom-bar-folds.css) */
+  #pv {
+    font-synthesis: none;
+  }
+}
+@media print {
+  /* a block run across both columns (a line said once, a closing line, a note) is centred between them */
+  #pv .pvpg > .pvk:not(.pvtitle) .verse p,
+  #pv .pvpg > .pvk:not(.pvtitle) .rmk {
+    text-align: center;
+  }
+}

@@ -14,7 +14,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test, expect } from "@playwright/test";
-import { openSite } from "./helpers.mjs";
+import { openSite, openPrintBuilder } from "./helpers.mjs";
 import { addLineMarkers } from "./print-audit-helpers.mjs";
 
 const DIGITS = { "०": 0, "१": 1, "२": 2, "३": 3, "४": 4, "५": 5, "६": 6, "७": 7, "८": 8, "९": 9,
@@ -62,10 +62,9 @@ export async function howStep(page) {
 /** Press Print on the home page, then the given choice ("pr1" = first button, "pr2" = second). */
 export async function printFromButton(page, choice) {
   await page.evaluate(() => scrollTo(0, 0));
-  // Print is under More on the home page: open it first, as a reader would
-  if (!(await page.locator("#prb").isVisible())) await page.locator("#tmb").click();
-  await page.locator("#prb").click();
-  await page.locator("#prm").waitFor({ state: "visible" });
+  // (Print is in the bottom bar while a text is read; on Home the builder is opened as js/features/print.js lets
+  // another part open it, at What with everything ticked as last left)
+  await openPrintBuilder(page);
   await howStep(page);
   // the page (Portrait pr1 or Landscape pr2; both languages have only Landscape, so no choice shows), then Print
   if (await page.locator("#" + choice).isVisible()) await page.locator("#" + choice).click();
@@ -90,7 +89,8 @@ export async function readPrintView(page) {
         page: (li.querySelector(".pgn") || {}).textContent || "",
       })),
       pieces: [...pv.querySelectorAll(".pvs")].map((s) => s.dataset.sid),
-      blocks: pv.querySelectorAll(".pvk").length,
+      // the pieces' blocks (the contents' lines are blocks too, js/print/pages.js, but carry no markers)
+      blocks: pv.querySelectorAll(".pvs .pvk").length,
       // blocks taller than a page, which may break between their lines ("p1:11", as the markers name them)
       tall: [...pv.querySelectorAll(".pvs")].flatMap((s) => [...s.querySelectorAll(".pvk")].map((k, j) => (k.classList.contains("pvtall") ? s.dataset.sid + ":" + j : "")).filter(Boolean)),
       // the English lines that are actually shown in the print view (for the text check); prose runs its
@@ -195,13 +195,14 @@ export async function printOnce(browser, { prefs, choice, mode, paper, locale, s
   await openSite(page, { por: "up", ...prefs }, { errors });
   // Every text in the Library, in reading order, for the completeness check (the page builds a text only when opened)
   const onScreen = await page.evaluate(() => window.CONTENT.categories.flatMap((c) => c.pieces.map((p) => p.id)));
+  const source = await sourceLines(page);
   await printFromButton(page, choice);
   const pv = await readPrintView(page);
   await addMarkers(page);
   const marked = lines ? await addLineMarkers(page) : null;
   const pdf = await pdfPages(page, paper, save);
   await context.close();
-  return { pv, pdf, errors, onScreen, mode, marked };
+  return { pv, pdf, errors, onScreen, mode, marked, source, tr: !!prefs.tr };
 }
 
 /**
@@ -259,6 +260,11 @@ export function checkPages(r) {
     const words = (l) => new RegExp(l.split(/\s+/).filter((w) => squash(w)).map((w) => squash(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join(other));
     const missing = pv.english.filter((l) => !flat.includes(squash(l)) && !(mode === "side" && words(l).test(flat)));
     expect(missing, "English lines missing from the PDF").toEqual([]);
+    // (in English letters as the texts have them: not with IAST, which prints other letters)
+    if (r.source && !r.tr) {
+      const lost = pv.pieces.flatMap((id) => r.source[id] || []).filter((l) => !flat.includes(squash(l)) && !(mode === "side" && words(l).test(flat)));
+      expect(lost, "lines of the texts missing from the PDF").toEqual([]);
+    }
   }
 }
 
@@ -281,6 +287,27 @@ export const squash = (s) =>
   s.normalize("NFD").replace(/\p{M}/gu, "").replace(/ı/g, "i").replace(/[‘’ʼ]/g, "'").replace(/[“”]/g, '"').replace(/[\s​­‌‍]+/g, "");
 
 /**
+ * Every English line of every text, by piece id, from the texts themselves (window.CONTENT), not from the print view:
+ * a fault in laying out the pages could lose lines from that. When English is printed each must be on paper.
+ */
+export function sourceLines(page) {
+  return page.evaluate(() =>
+    Object.fromEntries(
+      window.CONTENT.categories.flatMap((c) =>
+        c.pieces.map((p) => [
+          p.id,
+          // (a dhrupad line typed into a verse, rf, prints only with the dhrupad after every verse)
+          [...(p.refrain ? p.refrain.lines : []), ...p.items.flatMap((i) => i.lines || []).filter((l) => !l.rf)]
+            .flatMap((l) => String(l.en || "").split(/<br\s*\/?>/))
+            .map((t) => t.replace(/<[^>]+>/g, "").replace(/\u200b/g, "").trim())
+            .filter(Boolean),
+        ]),
+      ),
+    ),
+  );
+}
+
+/**
  * Print one text on its own, as a print link for just that text does (?print=…&t=<id>, see js/render.js), and read the
  * PDF back with every block and every line marked (see print-audit-helpers.mjs). The PDF's pages are then that text's
  * alone: they depend only on the text and the print choices, never on what else a printout holds.
@@ -296,6 +323,7 @@ export async function printText(browser, { id, prefs, mode, paper, locale, save 
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
   await page.emulateMedia({ media: "print" });
   const pv = await readPrintView(page);
+  const source = await sourceLines(page);
   const set = await page.evaluate((id) => {
     const s = document.querySelector("#pv .pvs"),
       c = s && s.querySelector("col.pvcm");
@@ -324,5 +352,5 @@ export async function printText(browser, { id, prefs, mode, paper, locale, save 
   const marked = await addLineMarkers(page);
   const pdf = await pdfPages(page, paper, save);
   await context.close();
-  return { pv, pdf, errors, mode, marked, ...set };
+  return { pv, pdf, errors, mode, marked, source, tr: !!prefs.tr, ...set };
 }
