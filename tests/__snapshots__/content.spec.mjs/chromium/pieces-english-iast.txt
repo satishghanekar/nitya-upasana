@@ -2120,39 +2120,41 @@ By Sant Eknath ↗ (1533–1599)
 
 ### a6
 6. Jñāneśvarāṃcī Āratī
+Refrain (sung after every verse)
+
+āratī jñānarājā || dhṛ. ||
 
 āratī jñānarājā |​
 ho mahākaivalyatejā, kaivalyatejā |
 
 sevitī sādhusanta |​
-ho manu vedhalā mājhā, vedhalā mājhā |
+ho manu vedhalā mājhā, vedhalā mājhā || 1 ||
 
-āratī jñānarājā || dhṛ. ||
+↻ Refrain
 
 lopaleṃ jñāna jagīṃ |​
 hita neṇatī koṇī, neṇatī koṇī |
 
 avatāra pāṇḍuraṅga |​
-nāma ṭhevileṃ jñānī, ṭhevileṃ jñānī || 1 ||
+nāma ṭhevileṃ jñānī, ṭhevileṃ jñānī || 2 ||
 
-āratī jñānarājā || dhṛ. ||
+↻ Refrain
 
 kanakāceṃ tāṭa karīṃ |​
 ubhyā gopikā nārī, gopikā nārī |
 
 nārada tumbaru ho |​
-sāma gāyana karī, gāyana karī || 2 ||
+sāma gāyana karī, gāyana karī || 3 ||
 
-āratī jñānarājā || dhṛ. ||
+↻ Refrain
 
 pragaṭa guhya bole |​
 viśva brahmacī keleṃ, brahmacī keleṃ |
 
 rāmā janārdanī |​
-pāyīṃ mastaka ṭhevileṃ, mastaka ṭhevileṃ || 3 ||
+pāyīṃ mastaka ṭhevileṃ, mastaka ṭhevileṃ || 4 ||
 
-āratī jñānarājā || dhṛ. ||
-
+↻ Refrain
 By Rama Janardan
 
 ### a7
@@ -2378,7 +2380,7 @@ ghyāvī sevā sadā hīca vinantī || 3 ||
 12. Āratī Śrīmahārājāṃcī
 Refrain (sung after every verse)
 
-jaya jaya ārati śrīgururāyā | sad‌gururāyā |
+jaya jaya āratī śrīgururāyā | sad‌gururāyā |
 
 namitoṃ tava padiṃ saṃhari māyā || dhṛ. ||
 
@@ -2433,10 +2435,10 @@ saccidānandamūrti ḍoḷābhari myāṃ pāhilī || 3 ||
 ↻ Refrain
 
 ### aarti-kariton-guruvar
-14. Ārati Karitoṃ Guruvara
+14. Āratī Karitoṃ Guruvara
 Refrain (sung after every verse)
 
-ārati karitoṃ guruvara bhagavan brahmacaitanyā |
+āratī karitoṃ guruvara bhagavan brahmacaitanyā |
 
 karuṇeneṃ svīkāra karāvā ananyasāmānyā || dhṛ. ||
 
@@ -2511,11 +2513,10 @@ rāmatanaya hā caraṇā vandī joḍuniyā kara || 3 ||
 ↻ Refrain
 
 ### aarti-belaguve
-16. Ārati Beḷaguve
+16. Āratī Beḷaguve
+Refrain (sung after every verse)
 
-|| śrīrāma samartha ||
-
-ārati beḷaguve sad‌guru śrībrahmacaitanyā |
+āratī beḷaguve sad‌guru śrībrahmacaitanyā |
 
 parabrahmā parātparā sanakādikamānyā || dhṛ. ||
 
@@ -2525,17 +2526,23 @@ nirañjanā niṣprapañcā nijajanabhavadāvā |
 
 nirīha nirmaḷa munigaṇanu tapadi kāyo rāghavā || 1 ||
 
+↻ Refrain
+
 vārāṇasī kṣetradi pretava badakisidātane |
 
 ihalliddū dūrina bhaktage darśana koṭṭavane |
 
 ondū pāvina annava sāvari mandiguṇisidavane || 2 ||
 
+↻ Refrain
+
 sundarānanā kundaradanā indīvaranayanā |
 
 mandasmita hanmandirasthāpita indirāramaṇā |
 
 gandhavāhapriya pāhi pāhi brahmānandanā || 3 ||
+
+↻ Refrain
 
 ### svastha-karin-shayan
 17. Svastha Karīṃ Śayana Prabho Mañcakāvarī
@@ -2571,8 +2578,7 @@ mahābhāgavata prārthī kāṃhīṃ cākarī || 3 ||
 
 ### ovaloo-sapreme-aarti
 18. Āratī Śrī Nānāmahārājāṃcī
-
-|| avadhūta cintana śrī gurūdeva datta ||
+Refrain (sung after every verse)
 
 ovāḷū sapreme āratī mārtaṇḍā tujalā |
 
@@ -2586,6 +2592,8 @@ dārādhana putrātaci āmucā jīva veḍā jhālā |
 
 ajñānī āmhī cukatacī gelo tārī tārī sakalā || 1 ||
 
+↻ Refrain
+
 yathāsāṅga te karma ājavarī nāhī āmhā ghaḍale |
 
 lobha moha he sāthī baḷakaṭa yāṃnī bahu paḍīle |
@@ -2593,6 +2601,8 @@ lobha moha he sāthī baḷakaṭa yāṃnī bahu paḍīle |
 dustara māyemadhye nirantara mana āmuce buḍale |
 
 rakṣaka tū bheṭalā dayāḷā citta padī jaḍale || 2 ||
+
+↻ Refrain
 
 kāṃhī sukṛta hote gāṭhīṃ tava darśana jhāle |
 
@@ -2602,6 +2612,8 @@ kāhī saṅkaṭa yetā sadanī prabhū dhāvūnī āle |
 
 aneka aise camatkāra kitī bhaktāṃnā disale || 3 ||
 
+↻ Refrain
+
 dayā kṣamā śānti yā vasati, sadaiva tava sadanī |
 
 datta datta jaya datta nāma he akhaṇḍa tava vadanī |
@@ -2610,7 +2622,7 @@ maṅgalamaya he caraṇa soḍūni kāṃ jāve rānī |
 
 kṛpā kaṭākṣe dāsā āpulyā neī uddhārūni || 4 ||
 
-|| avadhūta cintana śrī gurūdeva datta ||
+↻ Refrain
 
 ### sadguru-padukashtak
 1. Śrīsadgurupādukāṣṭaka
@@ -3519,47 +3531,65 @@ hāci subodha gurūñcā, gururāyālā tahāna premācī || 13 ||
 
 ### brahmachaitanya-sarikha
 12. Śrībrahmacaitanyāsārikhā Nāhīṃ Pāhilā
+Refrain (sung after every verse)
 
 śrībrahmacaitanyāsārikhā nāhīṃ pāhilā |
 
 mī nāhīṃ pāhilā | mī nāhīṃ dekhilā ||
 
-śrībrahma0 || dhru0 ||
+śrībrahmacaitanyāsārikhā nāhīṃ pāhilā || dhṛ. ||
 
 mī bahuta vāciyeleṃ | mī bahuta aikiyeleṃ |
 
 mī bahuta dhuṇḍiyeleṃ | aisā nāhīṃ pāhilā || 1 ||
 
+↻ Refrain
+
 to mulāmmadhyeṃ ase | to striyāmmadhyeṃ baise |
 
 paṇa aisā nirvikārī | jagīṃ mī nāhīṃ pāhilā || 2 ||
+
+↻ Refrain
 
 to māyā moha pāḷī | kāya karatīla lekuravāḷīṃ |
 
 paṇa kāmakrodhā jāḷī | aisā nāhīṃ pāhilā || 3 ||
 
+↻ Refrain
+
 kāṃhīṃ nase tyāce gharīṃ | paṇa kubera loḷe dārīṃ |
 
 to vāṭela teñci karī | aisā nāhīṃ pāhilā || 4 ||
+
+↻ Refrain
 
 to mhaṇavī ajñānī | paṇa jñāniyāṃcā jñānī |
 
 to vedagūḍha jāṇī | aisā nāhīṃ pāhilā || 5 ||
 
+↻ Refrain
+
 to jyāsī mhaṇe ghara | tetheṃ mokaḷā darabāra |
 
 paṇa nānde raghuvīra | aisā nāhīṃ pāhilā || 6 ||
+
+↻ Refrain
 
 jo jāī ekavāra | to visare gharadāra |
 
 tyāsi deī nāmasāra | aisā nāhīṃ pāhilā || 7 ||
 
+↻ Refrain
+
 to gondāvalekara | tyāce pāyīṃ mukti cāra |
 
 dāsadāsāceṃ māhera | aisā nāhīṃ pāhilā || 8 ||
 
+↻ Refrain
+
 ### swami-majha-pahila
 13. Svāmī Mājhā Pāhilā
+Refrain (sung after every verse)
 
 māṇagaṅgātīrīṃ prabhu hā gondāvaleṃ purīṃ |
 
@@ -3567,11 +3597,7 @@ māṇagaṅgātīrīṃ prabhu hā gondāvaleṃ purīṃ |
 
 svāmī mājhā pāhilā yā māṇagaṅgātīrīṃ |
 
-sad‌guru to dekhilā yā māṇagaṅgātīrīṃ || dhru0 ||
-
-svāmī mājhā pāhilā yā māṇagaṅgātīrīṃ |
-
-sad‌guru to dekhilā yā māṇagaṅgātīrīṃ ||
+sad‌guru to dekhilā yā māṇagaṅgātīrīṃ || dhṛ. ||
 
 brahmacaitanyācā gābhā | ​prāpta nohe kamalanābhā |
 
@@ -3579,7 +3605,7 @@ bhoḷyā bhāvika bhaktalābhā | ​bhoḷyā bhāvika bhaktalābhā |
 
 dhāvuniyā ālā yā māṇagaṅgātīrīṃ || 1 ||
 
-|| dhru ||
+↻ Refrain
 
 gauravarṇa kānti | ​mūrtimanta śānti |
 
@@ -3587,7 +3613,7 @@ dayā kṣamā śobhe cittīṃ | ​dayā kṣamā śobhe cittīṃ |
 
 rāmanāmīṃ raṅgalā yā māṇagaṅgātīrīṃ || 2 ||
 
-|| dhru ||
+↻ Refrain
 
 keśarī tripuṇḍra bhāḷā | ​gaḷāṃ tuḷaśīcyā māḷā |
 
@@ -3595,7 +3621,7 @@ kaphanī ṭopī śobhe jyālā | ​kaphanī ṭopī śobhe jyālā |
 
 pādukā pāyāṃlā yā māṇagaṅgātīrīṃ || 3 ||
 
-|| dhru ||
+↻ Refrain
 
 gāī-brāhmaṇa-anāthāṃcā | ​kaivārī to dīnāṃcā |
 
@@ -3603,7 +3629,7 @@ viśvāsa yā nāmācā | ​viśvāsa yā nāmācā |
 
 jagīṃ vāḍhavilā yā māṇagaṅgātīrīṃ || 4 ||
 
-|| dhru ||
+↻ Refrain
 
 bhavabhāra phāra jhālā | ​jīva taḷamaḷūṃ lāgalā |
 
@@ -3611,7 +3637,7 @@ saguṇarūpeṃ dhāvata ālā | ​saguṇarūpeṃ dhāvata ālā |
 
 abhayavara dilā yā māṇagaṅgātīrīṃ || 5 ||
 
-|| dhru ||
+↻ Refrain
 
 ānandasāgara dāsa dīna | ​padīṃ ghetase loḷaṇa |
 
@@ -3619,4 +3645,4 @@ tujheṃ rūpa heṃ saguṇa | ​tujheṃ rūpa heṃ saguṇa |
 
 sadā rāho ḍoḷā yā māṇagaṅgātīrīṃ || 6 ||
 
-|| dhru ||
+↻ Refrain
