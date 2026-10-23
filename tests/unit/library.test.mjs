@@ -43,8 +43,8 @@ describe("the bundled library (decisions Q2)", () => {
     expect(sh.map((s) => [s.category.id, s.texts])).toEqual(
       ["vedic-chant", "aarti", "stotra", "ashtak"].map((c) => [c, TEXTS.filter((t) => t.category === c).map((t) => t.id)]),
     );
-    expect(shelf(emptyLocal(), "vedic-chant")[0]).toBe("atharvashirsha");
-    expect(shelf(emptyLocal(), "aarti")).toContain("ghalin-lotangan");
+    expect(shelf(emptyLocal(), "vedic-chant")[0]).toBe("vedic-chant-atharvashirsha");
+    expect(shelf(emptyLocal(), "aarti")).toContain("aarti-ghalin-lotangan");
     expect(Object.values(counts(sh)).reduce((a, b) => a + b, 0)).toBe(lib.texts.length);
   });
   test("every text in library.json names a bundled category", () => {
@@ -121,25 +121,25 @@ describe("adding, renaming and deleting a category", () => {
     expect(removeCategory(emptyLocal(), BUNDLED, "aarti")).toEqual({ ok: false, problem: "bundled" });
     expect(removeCategory(emptyLocal(), BUNDLED, "nope")).toEqual({ ok: false, problem: "missing" });
     let l = addCategory(emptyLocal(), BUNDLED, { en: "Bhajan" }).local;
-    l = moveText(l, categoriesOf(BUNDLED, l), TEXTS.find((t) => t.id === "ghalin-lotangan"), "bhajan").local;
-    expect(shelf(l, "bhajan")).toEqual(["ghalin-lotangan"]);
+    l = moveText(l, categoriesOf(BUNDLED, l), TEXTS.find((t) => t.id === "aarti-ghalin-lotangan"), "bhajan").local;
+    expect(shelf(l, "bhajan")).toEqual(["aarti-ghalin-lotangan"]);
     const r = removeCategory(l, BUNDLED, "bhajan");
     expect(r.ok).toBe(true);
     expect(r.local).toEqual(emptyLocal());
-    expect(shelf(r.local, "aarti")).toContain("ghalin-lotangan");
+    expect(shelf(r.local, "aarti")).toContain("aarti-ghalin-lotangan");
   });
 });
 
 describe("moving a text", () => {
-  const gl = TEXTS.find((t) => t.id === "ghalin-lotangan");
+  const gl = TEXTS.find((t) => t.id === "aarti-ghalin-lotangan");
   test("to another category, keeping reading order there", () => {
     let l = moveText(emptyLocal(), categoriesOf(BUNDLED, emptyLocal()), gl, "stotra").local;
-    const atv = TEXTS.find((t) => t.id === "atharvashirsha");
+    const atv = TEXTS.find((t) => t.id === "vedic-chant-atharvashirsha");
     l = moveText(l, categoriesOf(BUNDLED, l), atv, "stotra").local;
     // in reading order among the Stotra already there
-    expect(shelf(l, "stotra")).toEqual(ORDER.filter((id) => ["atharvashirsha", "ghalin-lotangan"].includes(id) || shelf(emptyLocal(), "stotra").includes(id)));
-    expect(shelf(l, "aarti")).not.toContain("ghalin-lotangan");
-    expect(shelf(l, "vedic-chant")).toEqual(shelf(emptyLocal(), "vedic-chant").filter((id) => id !== "atharvashirsha"));
+    expect(shelf(l, "stotra")).toEqual(ORDER.filter((id) => ["vedic-chant-atharvashirsha", "aarti-ghalin-lotangan"].includes(id) || shelf(emptyLocal(), "stotra").includes(id)));
+    expect(shelf(l, "aarti")).not.toContain("aarti-ghalin-lotangan");
+    expect(shelf(l, "vedic-chant")).toEqual(shelf(emptyLocal(), "vedic-chant").filter((id) => id !== "vedic-chant-atharvashirsha"));
     expect(categoryOf(gl, categoriesOf(BUNDLED, l), l)).toBe("stotra");
   });
   test("back to its own category forgets the move; an unknown category is refused", () => {
@@ -149,7 +149,7 @@ describe("moving a text", () => {
     expect(moveText(l, cats, gl, "nope")).toEqual({ ok: false, problem: "missing" });
   });
   test("a move to a category that is gone is ignored", () => {
-    const l = { added: [], renames: {}, moves: { "ghalin-lotangan": "gone" } };
+    const l = { added: [], renames: {}, moves: { "aarti-ghalin-lotangan": "gone" } };
     expect(categoryOf(gl, categoriesOf(BUNDLED, l), l)).toBe("aarti");
   });
 });
@@ -161,12 +161,12 @@ describe("what storage or a backup file holds is checked", () => {
     const l = cleanLocal({
       added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }, { id: "bhajan", name: { en: "Twice" } }, { id: "Bad Id", name: { en: "x" } }, { id: "noname" }],
       renames: { aarti: { mr: "आरत्या", en: "" }, "vedic-chant": 3 },
-      moves: { "ghalin-lotangan": "bhajan", x: 5, "<b>": "aarti" },
+      moves: { "aarti-ghalin-lotangan": "bhajan", x: 5, "<b>": "aarti" },
     });
     expect(l).toEqual({
       added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }],
       renames: { aarti: { mr: "आरत्या", en: "आरत्या" } },
-      moves: { "ghalin-lotangan": "bhajan" },
+      moves: { "aarti-ghalin-lotangan": "bhajan" },
     });
   });
   test("a clean one comes back the same", () => {

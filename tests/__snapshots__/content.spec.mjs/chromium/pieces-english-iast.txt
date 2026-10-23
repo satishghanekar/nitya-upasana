@@ -193,7 +193,7 @@ ya e̍vaṃ ve̱da | ityu̍pa̱niṣa̍t || 14 ||
 
 An Atharva Veda Upanishad ↗
 
-### shree-rudra
+### vedic-chant-shree-rudra
 2. Śrī Rudrapraśnaḥ
 
 om̐ namo bhagavate̍ rudrā̱ya ||
@@ -754,7 +754,7 @@ om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 
 Krishna Yajurveda, Taittiriya Samhita ↗
 
-### shri-sukta
+### vedic-chant-shri-sukta
 3. Śrīsūkta
 
 om̐ || hiraṇyavarṇāṃ hariṇīṃ suvarṇarajatasrajām |
@@ -933,7 +933,7 @@ tanno lakṣmīḥ pracodayāt ||
 
 Rig Veda (Khila Sukta)
 
-### purusha-suktam
+### vedic-chant-purusha-suktam
 4. Puruṣasūktam
 
 om̐ taccha̱ṃ yorāvṛ̍ṇīmahe |
@@ -1150,7 +1150,7 @@ sarva̍ṃ maniṣāṇa || 10 ||
 
 Krishna Yajurveda, Taittiriya Aranyaka ↗
 
-### lalita-sahasranama
+### vedic-chant-lalita-sahasranama
 5. Śrīlalitāsahasranāmastotram
 
 || atha śrīlalitāsahasranāmastotram ||
@@ -2338,7 +2338,7 @@ om̐ jaya jagadīśa hare || 9 ||
 
 By Pt. Shardha Ram Phillauri ↗ (c. 1870)
 
-### jaydeva-jaydeva-samartha
+### aarti-jaydeva-jaydeva-samartha
 11. Śrīmahārājāṃcī Āratī
 Refrain (sung after every verse)
 
@@ -2376,7 +2376,7 @@ ghyāvī sevā sadā hīca vinantī || 3 ||
 
 ↻ Refrain
 
-### jay-jay-aarti-shrigururaya
+### aarti-jay-jay-aarti-shrigururaya
 12. Āratī Śrīmahārājāṃcī
 Refrain (sung after every verse)
 
@@ -2402,7 +2402,7 @@ nāmarūpātīta tūṃ abhirāmā || 3 ||
 
 ↻ Refrain
 
-### ovaloon-aarti-chaitanyabrahma
+### aarti-ovaloon-aarti-chaitanyabrahma
 13. Ovāḷūṃ Āratī Sad‌guru Caitanyabrahmā
 Refrain (sung after every verse)
 
@@ -2466,7 +2466,7 @@ nāthādināthā jaya jaya hovo bhāgavataprāṇa || 3 ||
 
 ↻ Refrain
 
-### dhanya-jagin-guruvarya
+### aarti-dhanya-jagin-guruvarya
 15. Dhanya Jagīṃ Yā Guruvarya He Mārutiavatāra
 Refrain (sung after every verse)
 
@@ -2547,7 +2547,7 @@ gandhavāhapriya pāhi pāhi brahmānandanā || 3 ||
 
 ↻ Refrain
 
-### svastha-karin-shayan
+### aarti-svastha-karin-shayan
 17. Svastha Karīṃ Śayana Prabho Mañcakāvarī
 Refrain (sung after every verse)
 
@@ -2579,7 +2579,7 @@ mahābhāgavata prārthī kāṃhīṃ cākarī || 3 ||
 
 ↻ Refrain
 
-### ovaloo-sapreme-aarti
+### aarti-ovaloo-sapreme-aarti
 18. Āratī Śrī Nānāmahārājāṃcī
 
 || avadhūta cintana śrī gurūdeva datta ||
@@ -2632,7 +2632,7 @@ kṛpā kaṭākṣe dāsā āpulyā neī uddhārūni || 4 ||
 
 || avadhūta cintana śrī gurūdeva datta ||
 
-### sadguru-padukashtak
+### ashtak-sadguru-padukashtak
 1. Śrīsadgurupādukāṣṭaka
 
 jyā saṅgatīneñca virāga jhālā |
@@ -2717,7 +2717,7 @@ visarūṃ kasā mī gurupādukāṃlā || 10 ||
 
 || jaya jaya raghuvīra samartha ||
 
-### ananyata-maj-ghado
+### ashtak-ananyata-maj-ghado
 2. Ananyatā Maja Ghaḍo Svānandarūpīṃ
 
 ananyatā maja ghaḍo svānandarūpīṃ |
@@ -2926,7 +2926,7 @@ patitapāvana sītārāma ||
 
 || jānakī jīvana smaraṇa jaya jaya rāma ||
 
-### anudin-anutapen
+### ashtak-anudin-anutapen
 3. Anudina Anutāpeṃ Tāpaloṃ
 
 anudina anutāpeṃ tāpaloṃ rāmarāyā |
@@ -3478,7 +3478,7 @@ bahu svārthabuddhīneṃ re kaṣṭavīloṃ |
 
 tujhā dāsa mī vyartha janmāsi āloṃ || 8 ||
 
-### haachi-subodh
+### ashtak-haachi-subodh
 11. Hāci Subodha Gurūñcā
 
 nāma sadā bolāveṃ, gāveṃ bhāveṃ, janāṃsi sāṅgāveṃ |
@@ -3537,7 +3537,7 @@ hāci subodha gurūñcā, gururāyālā tahāna premācī || 13 ||
 
 || jaya jaya raghuvīra samartha ||
 
-### brahmachaitanya-sarikha
+### ashtak-brahmachaitanya-sarikha
 12. Śrībrahmacaitanyāsārikhā Nāhīṃ Pāhilā
 Refrain (sung after every verse)
 
@@ -3595,7 +3595,7 @@ dāsadāsāceṃ māhera | aisā nāhīṃ pāhilā || 8 ||
 
 ↻ Refrain
 
-### swami-majha-pahila
+### ashtak-swami-majha-pahila
 13. Svāmī Mājhā Pāhilā
 Refrain (sung after every verse)
 

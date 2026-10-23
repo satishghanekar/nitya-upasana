@@ -144,8 +144,8 @@ test("the Library lists the texts by category; empty categories are left out; ea
   expect(await groups(page)).toEqual(GROUPS);
   expect(await inGroup(page, "vedic-chant")).toEqual(["p1", ...VEDIC.slice(1).map((t) => t.id)]);
   expect(await inGroup(page, "aarti")).toEqual(["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10",
-    "jaydeva-jaydeva-samartha", "jay-jay-aarti-shrigururaya", "ovaloon-aarti-chaitanyabrahma", "aarti-kariton-guruvar",
-    "dhanya-jagin-guruvarya", "aarti-belaguve", "svastha-karin-shayan", "ovaloo-sapreme-aarti"]);
+    "aarti-jaydeva-jaydeva-samartha", "aarti-jay-jay-aarti-shrigururaya", "aarti-ovaloon-aarti-chaitanyabrahma", "aarti-kariton-guruvar",
+    "aarti-dhanya-jagin-guruvarya", "aarti-belaguve", "aarti-svastha-karin-shayan", "aarti-ovaloo-sapreme-aarti"]);
   // numbered from 1 in each category (Satish, 2026-10-21), in Marathi and English digits
   for (const g of await page.locator("#jl .tocg").all()) {
     const n = await g.locator("a[data-go]").count();
@@ -210,7 +210,7 @@ test("add a category, move a text into it, rename it: the list follows, and it i
   await expect(page.locator("#lblive")).toHaveText("भजन added");
   // still empty: not in the list yet
   expect(await groups(page)).toEqual(GROUPS);
-  await page.locator("#lbs-ghalin-lotangan").selectOption("bhajan");
+  await page.locator("#lbs-aarti-ghalin-lotangan").selectOption("bhajan");
   await expect(page.locator("#lblive")).toHaveText("घालीन लोटांगण: now in भजन");
   expect(await groups(page)).toEqual([...GROUPS, "भजन"]);
   expect(await inGroup(page, "bhajan")).toEqual(["a8"]);
@@ -251,7 +251,7 @@ test("delete a family category: its texts go back; a built-in one can only be re
   await page.locator("#lbadd").click();
   await page.locator("#lben").fill("Bhajan");
   await page.locator("#lbsave").click();
-  await page.locator("#lbs-jai-jagdish-hare").selectOption("bhajan");
+  await page.locator("#lbs-aarti-jai-jagdish-hare").selectOption("bhajan");
   expect(await inGroup(page, "bhajan")).toEqual(["a10"]);
   await page.locator('.lbe[data-id="aarti"]').click();
   await expect(page.locator("#lbdel")).toBeHidden();
@@ -358,7 +358,7 @@ test("English only (Settings → Languages): English titles and category names, 
   await expect(page.locator("#lbcl .lbn")).toHaveText(["Vedic Chant", "Aarti", "Stotra", "Ashtak"]);
   await expect(page.locator("#lbcl .lbo")).toHaveCount(0); // no second language
   await expect(page.locator("#lbtl .lbtn").first()).toHaveText("Ganapati Atharvashirsha");
-  await expect(page.locator("#lbs-sukhkarta option:checked")).toHaveText("Aarti");
+  await expect(page.locator("#lbs-aarti-sukhkarta option:checked")).toHaveText("Aarti");
   await page.keyboard.press("Escape");
   await page.locator("#q").fill("sukhakarta");
   await expect(page.locator("#res li.rt .rs")).toHaveText(["Aarti"]);

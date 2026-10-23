@@ -1,8 +1,8 @@
 {
  "texts": [
   {
-   "id": "atharvashirsha",
-   "file": "texts/atharvashirsha.txt",
+   "id": "vedic-chant-atharvashirsha",
+   "file": "texts/vedic-chant-atharvashirsha.txt",
    "title": "गणपत्यथर्वशीर्षोपनिषत्",
    "titleEn": "Ganapati Atharvashirsha",
    "category": "vedic-chant",
@@ -10,8 +10,8 @@
    "lines": 95
   },
   {
-   "id": "shree-rudra",
-   "file": "texts/shree-rudra.txt",
+   "id": "vedic-chant-shree-rudra",
+   "file": "texts/vedic-chant-shree-rudra.txt",
    "title": "श्री रुद्रप्रश्नः",
    "titleEn": "Shree Rudra",
    "category": "vedic-chant",
@@ -19,8 +19,8 @@
    "lines": 278
   },
   {
-   "id": "shri-sukta",
-   "file": "texts/shri-sukta.txt",
+   "id": "vedic-chant-shri-sukta",
+   "file": "texts/vedic-chant-shri-sukta.txt",
    "title": "श्रीसूक्त",
    "titleEn": "Shri Sukta",
    "category": "vedic-chant",
@@ -28,8 +28,8 @@
    "lines": 84
   },
   {
-   "id": "purusha-suktam",
-   "file": "texts/purusha-suktam.txt",
+   "id": "vedic-chant-purusha-suktam",
+   "file": "texts/vedic-chant-purusha-suktam.txt",
    "title": "पुरुषसूक्तम्",
    "titleEn": "Purusha Suktam",
    "category": "vedic-chant",
@@ -37,8 +37,8 @@
    "lines": 106
   },
   {
-   "id": "lalita-sahasranama",
-   "file": "texts/lalita-sahasranama.txt",
+   "id": "vedic-chant-lalita-sahasranama",
+   "file": "texts/vedic-chant-lalita-sahasranama.txt",
    "title": "श्रीललितासहस्रनामस्तोत्रम्",
    "titleEn": "Shri Lalita Sahasranama",
    "category": "vedic-chant",
@@ -46,8 +46,8 @@
    "lines": 369
   },
   {
-   "id": "sukhkarta",
-   "file": "texts/sukhkarta.txt",
+   "id": "aarti-sukhkarta",
+   "file": "texts/aarti-sukhkarta.txt",
    "title": "गणपतीची आरती",
    "titleEn": "Ganapati Aarti",
    "category": "aarti",
@@ -55,8 +55,8 @@
    "lines": 15
   },
   {
-   "id": "shendur-lal-chadhayo",
-   "file": "texts/shendur-lal-chadhayo.txt",
+   "id": "aarti-shendur-lal-chadhayo",
+   "file": "texts/aarti-shendur-lal-chadhayo.txt",
    "title": "गणपति जी की आरती",
    "titleEn": "Ganapati Ji ki Aarti",
    "category": "aarti",
@@ -64,8 +64,8 @@
    "lines": 15
   },
   {
-   "id": "durge-durghat-bhari",
-   "file": "texts/durge-durghat-bhari.txt",
+   "id": "aarti-durge-durghat-bhari",
+   "file": "texts/aarti-durge-durghat-bhari.txt",
    "title": "देवीची आरती",
    "titleEn": "Devi Aarti",
    "category": "aarti",
@@ -73,8 +73,8 @@
    "lines": 15
   },
   {
-   "id": "lavathavati-vikrala",
-   "file": "texts/lavathavati-vikrala.txt",
+   "id": "aarti-lavathavati-vikrala",
+   "file": "texts/aarti-lavathavati-vikrala.txt",
    "title": "शंकराची आरती",
    "titleEn": "Shankar Aarti",
    "category": "aarti",
@@ -82,8 +82,8 @@
    "lines": 19
   },
   {
-   "id": "trigunatmak-traimurti",
-   "file": "texts/trigunatmak-traimurti.txt",
+   "id": "aarti-trigunatmak-traimurti",
+   "file": "texts/aarti-trigunatmak-traimurti.txt",
    "title": "दत्ताची आरती",
    "titleEn": "Dattatreya Aarti",
    "category": "aarti",
@@ -100,8 +100,8 @@
    "lines": 9
   },
   {
-   "id": "yei-o-vitthale",
-   "file": "texts/yei-o-vitthale.txt",
+   "id": "aarti-yei-o-vitthale",
+   "file": "texts/aarti-yei-o-vitthale.txt",
    "title": "विठ्ठलाची आरती",
    "titleEn": "Vitthal Aarti",
    "category": "aarti",
@@ -109,8 +109,8 @@
    "lines": 16
   },
   {
-   "id": "ghalin-lotangan",
-   "file": "texts/ghalin-lotangan.txt",
+   "id": "aarti-ghalin-lotangan",
+   "file": "texts/aarti-ghalin-lotangan.txt",
    "title": "घालीन लोटांगण",
    "titleEn": "Ghalin Lotangan",
    "category": "aarti",
@@ -118,8 +118,8 @@
    "lines": 18
   },
   {
-   "id": "jai-ganesh-deva",
-   "file": "texts/jai-ganesh-deva.txt",
+   "id": "aarti-jai-ganesh-deva",
+   "file": "texts/aarti-jai-ganesh-deva.txt",
    "title": "आरती जय गणेश देवा",
    "titleEn": "Aarti Jai Ganesh Deva",
    "category": "aarti",
@@ -127,8 +127,8 @@
    "lines": 10
   },
   {
-   "id": "jai-jagdish-hare",
-   "file": "texts/jai-jagdish-hare.txt",
+   "id": "aarti-jai-jagdish-hare",
+   "file": "texts/aarti-jai-jagdish-hare.txt",
    "title": "आरती जय जगदीश हरे",
    "titleEn": "Aarti Jai Jagdish Hare",
    "category": "aarti",
@@ -136,8 +136,8 @@
    "lines": 30
   },
   {
-   "id": "jaydeva-jaydeva-samartha",
-   "file": "texts/jaydeva-jaydeva-samartha.txt",
+   "id": "aarti-jaydeva-jaydeva-samartha",
+   "file": "texts/aarti-jaydeva-jaydeva-samartha.txt",
    "title": "श्रीमहाराजांची आरती",
    "titleEn": "Shrimaharajanchi Aarti",
    "category": "aarti",
@@ -145,8 +145,8 @@
    "lines": 14
   },
   {
-   "id": "jay-jay-aarti-shrigururaya",
-   "file": "texts/jay-jay-aarti-shrigururaya.txt",
+   "id": "aarti-jay-jay-aarti-shrigururaya",
+   "file": "texts/aarti-jay-jay-aarti-shrigururaya.txt",
    "title": "आरती श्रीमहाराजांची",
    "titleEn": "Aarti Shrimaharajanchi",
    "category": "aarti",
@@ -154,8 +154,8 @@
    "lines": 8
   },
   {
-   "id": "ovaloon-aarti-chaitanyabrahma",
-   "file": "texts/ovaloon-aarti-chaitanyabrahma.txt",
+   "id": "aarti-ovaloon-aarti-chaitanyabrahma",
+   "file": "texts/aarti-ovaloon-aarti-chaitanyabrahma.txt",
    "title": "ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा",
    "titleEn": "Ovalun Aarti Sadguru Chaitanyabrahma",
    "category": "aarti",
@@ -172,8 +172,8 @@
    "lines": 11
   },
   {
-   "id": "dhanya-jagin-guruvarya",
-   "file": "texts/dhanya-jagin-guruvarya.txt",
+   "id": "aarti-dhanya-jagin-guruvarya",
+   "file": "texts/aarti-dhanya-jagin-guruvarya.txt",
    "title": "धन्य जगीं या गुरुवर्य हे मारुतिअवतार",
    "titleEn": "Dhanya Jagin Ya Guruvarya He Marutiavatar",
    "category": "aarti",
@@ -190,8 +190,8 @@
    "lines": 12
   },
   {
-   "id": "svastha-karin-shayan",
-   "file": "texts/svastha-karin-shayan.txt",
+   "id": "aarti-svastha-karin-shayan",
+   "file": "texts/aarti-svastha-karin-shayan.txt",
    "title": "स्वस्थ करीं शयन प्रभो मंचकावरी",
    "titleEn": "Svastha Karin Shayan Prabho Manchakavari",
    "category": "aarti",
@@ -199,8 +199,8 @@
    "lines": 11
   },
   {
-   "id": "ovaloo-sapreme-aarti",
-   "file": "texts/ovaloo-sapreme-aarti.txt",
+   "id": "aarti-ovaloo-sapreme-aarti",
+   "file": "texts/aarti-ovaloo-sapreme-aarti.txt",
    "title": "आरती श्री नानामहाराजांची",
    "titleEn": "Aarti Shri Nana Maharajanchi",
    "category": "aarti",
@@ -208,8 +208,8 @@
    "lines": 20
   },
   {
-   "id": "sadguru-padukashtak",
-   "file": "texts/sadguru-padukashtak.txt",
+   "id": "ashtak-sadguru-padukashtak",
+   "file": "texts/ashtak-sadguru-padukashtak.txt",
    "title": "श्रीसद्गुरुपादुकाष्टक",
    "titleEn": "Shrisadgurupadukashtak",
    "category": "ashtak",
@@ -217,8 +217,8 @@
    "lines": 41
   },
   {
-   "id": "ananyata-maj-ghado",
-   "file": "texts/ananyata-maj-ghado.txt",
+   "id": "ashtak-ananyata-maj-ghado",
+   "file": "texts/ashtak-ananyata-maj-ghado.txt",
    "title": "अनन्यता मज घडो स्वानंदरूपीं",
    "titleEn": "Ananyata Maj Ghado Svanandarupin",
    "category": "ashtak",
@@ -226,8 +226,8 @@
    "lines": 103
   },
   {
-   "id": "anudin-anutapen",
-   "file": "texts/anudin-anutapen.txt",
+   "id": "ashtak-anudin-anutapen",
+   "file": "texts/ashtak-anudin-anutapen.txt",
    "title": "अनुदिन अनुतापें तापलों",
    "titleEn": "Anudin Anutapen Tapalon",
    "category": "ashtak",
@@ -298,8 +298,8 @@
    "lines": 32
   },
   {
-   "id": "haachi-subodh",
-   "file": "texts/haachi-subodh.txt",
+   "id": "ashtak-haachi-subodh",
+   "file": "texts/ashtak-haachi-subodh.txt",
    "title": "हाचि सुबोध गुरूंचा",
    "titleEn": "Hachi Subodh Guruncha",
    "category": "ashtak",
@@ -307,8 +307,8 @@
    "lines": 28
   },
   {
-   "id": "brahmachaitanya-sarikha",
-   "file": "texts/brahmachaitanya-sarikha.txt",
+   "id": "ashtak-brahmachaitanya-sarikha",
+   "file": "texts/ashtak-brahmachaitanya-sarikha.txt",
    "title": "श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला",
    "titleEn": "Shribrahmachaitanyasarikha Nahin Pahila",
    "category": "ashtak",
@@ -316,8 +316,8 @@
    "lines": 19
   },
   {
-   "id": "swami-majha-pahila",
-   "file": "texts/swami-majha-pahila.txt",
+   "id": "ashtak-swami-majha-pahila",
+   "file": "texts/ashtak-swami-majha-pahila.txt",
    "title": "स्वामी माझा पाहिला",
    "titleEn": "Svami Majha Pahila",
    "category": "ashtak",

@@ -1,4 +1,4 @@
-id: ovaloo-sapreme-aarti
+id: aarti-ovaloo-sapreme-aarti
 title: आरती श्री नानामहाराजांची
 title-en: Aarti Shri Nana Maharajanchi
 category: aarti

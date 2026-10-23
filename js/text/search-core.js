@@ -4,16 +4,16 @@
 //   ("sukhkarta", "jai-ganesh-deva"), their first line and their category's name. They rank first.
 // - Lines are found in the original (svara marks and punctuation ignored) and in both English spellings.
 // - Spellings people type still match ("sukhakarta" = "sukhkarta", "vithal" = "vitthal", "chi" = "ci"), Devanagari
-//   typed is also matched through its English letters ("सुखकर्ता" finds the text whose id is sukhkarta), and a typo
+//   typed is also matched through its English letters ("सुखकर्ता" finds the text whose id is aarti-sukhkarta), and a typo
 //   is forgiven: one wrong letter per four typed.
 // Pure: js/text/search.js gives it the texts and lines from the page and shows the results; the unit test
 // (tests/unit/search.test.mjs) gives it the text files and checks the ranking.
 
 /**
  * @typedef {(s: string) => string} Fn
- * @typedef {{ id: string, sec: string, title: string, titleEn: string, categories: string[], first?: string[] }} TextIn
- *   sec: the reading page's section id (a1); categories: the names of its category (Marathi, English); first: its
- *   first line, original and English
+ * @typedef {{ id: string, name?: string, sec: string, title: string, titleEn: string, categories: string[], first?: string[] }} TextIn
+ *   name: the id without its category (sukhkarta, of aarti-sukhkarta), found as the id is; sec: the reading page's
+ *   section id (a1); categories: the names of its category (Marathi, English); first: its first line, original and English
  * @typedef {{ id: string, sec: string, text: string, m: string, e: string, extra?: string }} LineIn
  *   id: the line id (s1l3); text: its text's id; m: the original line; e: its English as shown; extra: more English
  *   to search but not show (the everyday spelling while the scholarly one is shown)
@@ -169,7 +169,7 @@ export function buildIndex(o) {
     roman: roman,
     from: from,
     texts: o.texts.map(function (t) {
-      var latin = [f(t.id), f(t.titleEn), r(t.title)].filter(Boolean),
+      var latin = [f(t.id), t.name ? f(t.name) : "", f(t.titleEn), r(t.title)].filter(Boolean),
         names = [f(t.title)].concat(latin),
         first = (t.first || []).map(f).filter(Boolean),
         firstR = (t.first || []).map(r).filter(Boolean);

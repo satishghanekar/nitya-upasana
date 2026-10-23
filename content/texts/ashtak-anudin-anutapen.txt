@@ -1,4 +1,4 @@
-id: anudin-anutapen
+id: ashtak-anudin-anutapen
 title: अनुदिन अनुतापें तापलों
 title-en: Anudin Anutapen Tapalon
 category: ashtak

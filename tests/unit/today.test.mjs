@@ -54,14 +54,14 @@ describe("the picture for the day and session picked on the card", () => {
 describe("the default routine (content/routines.json)", () => {
   const DAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
   test("Morning: Ganapati Atharvashirsha first, then Shree Rudra (Sat, Sun, Mon), Purusha Suktam (Mon, Wed) and Shri Sukta (Wed), then the Ganapati and Devi aartis", () => {
-    const vedic = { 0: ["shree-rudra"], 1: ["shree-rudra", "purusha-suktam"], 3: ["purusha-suktam", "shri-sukta"], 6: ["shree-rudra"] };
+    const vedic = { 0: ["vedic-chant-shree-rudra"], 1: ["vedic-chant-shree-rudra", "vedic-chant-purusha-suktam"], 3: ["vedic-chant-purusha-suktam", "vedic-chant-shri-sukta"], 6: ["vedic-chant-shree-rudra"] };
     for (let d = 0; d < 7; d++) {
-      expect(textsFor(ROUTINE, d, "morning"), DAYS[d]).toEqual(["atharvashirsha", ...(vedic[d] || []), "sukhkarta", "durge-durghat-bhari"]);
+      expect(textsFor(ROUTINE, d, "morning"), DAYS[d]).toEqual(["vedic-chant-atharvashirsha", ...(vedic[d] || []), "aarti-sukhkarta", "aarti-durge-durghat-bhari"]);
     }
   });
   test("Evening, the same every day: the Ganapati and Devi aartis, Ghalin Lotangan, then the Wednesday ashtak last", () => {
     for (let d = 0; d < 7; d++) {
-      expect(textsFor(ROUTINE, d, "evening"), DAYS[d]).toEqual(["sukhkarta", "durge-durghat-bhari", "ghalin-lotangan", "ashtak-wednesday"]);
+      expect(textsFor(ROUTINE, d, "evening"), DAYS[d]).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan", "ashtak-wednesday"]);
     }
   });
   test("Afternoon is empty", () => {
@@ -146,15 +146,15 @@ describe("ticks: kept on this device for one day", () => {
   test("a tick is kept for its day and session", () => {
     const s = memory(),
       t = createTicks(s);
-    t.set("2026-10-18", "evening", "sukhkarta", true);
-    t.set("2026-10-18", "evening", "durge-durghat-bhari", true);
-    expect(t.done("2026-10-18", "evening")).toEqual(["sukhkarta", "durge-durghat-bhari"]);
+    t.set("2026-10-18", "evening", "aarti-sukhkarta", true);
+    t.set("2026-10-18", "evening", "aarti-durge-durghat-bhari", true);
+    expect(t.done("2026-10-18", "evening")).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari"]);
     expect(t.done("2026-10-18", "morning")).toEqual([]);
   });
   test("ticks survive a reload (a new reader of the same storage)", () => {
     const s = memory();
-    createTicks(s).set("2026-10-18", "morning", "atharvashirsha", true);
-    expect(createTicks(s).done("2026-10-18", "morning")).toEqual(["atharvashirsha"]);
+    createTicks(s).set("2026-10-18", "morning", "vedic-chant-atharvashirsha", true);
+    expect(createTicks(s).done("2026-10-18", "morning")).toEqual(["vedic-chant-atharvashirsha"]);
   });
   test("unticking removes it; ticking twice keeps one", () => {
     const t = createTicks(memory());

@@ -1,4 +1,4 @@
-id: lavathavati-vikrala
+id: aarti-lavathavati-vikrala
 title: शंकराची आरती
 title-en: Shankar Aarti
 category: aarti

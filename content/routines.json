@@ -3,45 +3,45 @@
   "mode": "weekday",
   "days": {
    "sun": [
-    "atharvashirsha",
-    "shree-rudra",
-    "sukhkarta",
-    "durge-durghat-bhari"
+    "vedic-chant-atharvashirsha",
+    "vedic-chant-shree-rudra",
+    "aarti-sukhkarta",
+    "aarti-durge-durghat-bhari"
    ],
    "mon": [
-    "atharvashirsha",
-    "shree-rudra",
-    "purusha-suktam",
-    "sukhkarta",
-    "durge-durghat-bhari"
+    "vedic-chant-atharvashirsha",
+    "vedic-chant-shree-rudra",
+    "vedic-chant-purusha-suktam",
+    "aarti-sukhkarta",
+    "aarti-durge-durghat-bhari"
    ],
    "tue": [
-    "atharvashirsha",
-    "sukhkarta",
-    "durge-durghat-bhari"
+    "vedic-chant-atharvashirsha",
+    "aarti-sukhkarta",
+    "aarti-durge-durghat-bhari"
    ],
    "wed": [
-    "atharvashirsha",
-    "purusha-suktam",
-    "shri-sukta",
-    "sukhkarta",
-    "durge-durghat-bhari"
+    "vedic-chant-atharvashirsha",
+    "vedic-chant-purusha-suktam",
+    "vedic-chant-shri-sukta",
+    "aarti-sukhkarta",
+    "aarti-durge-durghat-bhari"
    ],
    "thu": [
-    "atharvashirsha",
-    "sukhkarta",
-    "durge-durghat-bhari"
+    "vedic-chant-atharvashirsha",
+    "aarti-sukhkarta",
+    "aarti-durge-durghat-bhari"
    ],
    "fri": [
-    "atharvashirsha",
-    "sukhkarta",
-    "durge-durghat-bhari"
+    "vedic-chant-atharvashirsha",
+    "aarti-sukhkarta",
+    "aarti-durge-durghat-bhari"
    ],
    "sat": [
-    "atharvashirsha",
-    "shree-rudra",
-    "sukhkarta",
-    "durge-durghat-bhari"
+    "vedic-chant-atharvashirsha",
+    "vedic-chant-shree-rudra",
+    "aarti-sukhkarta",
+    "aarti-durge-durghat-bhari"
    ]
   }
  },
@@ -52,9 +52,9 @@
  "evening": {
   "mode": "fixed",
   "texts": [
-   "sukhkarta",
-   "durge-durghat-bhari",
-   "ghalin-lotangan",
+   "aarti-sukhkarta",
+   "aarti-durge-durghat-bhari",
+   "aarti-ghalin-lotangan",
    "ashtak-wednesday"
   ]
  }

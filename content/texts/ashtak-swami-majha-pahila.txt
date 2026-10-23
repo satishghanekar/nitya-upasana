@@ -1,4 +1,4 @@
-id: swami-majha-pahila
+id: ashtak-swami-majha-pahila
 title: स्वामी माझा पाहिला
 title-en: Svami Majha Pahila
 category: ashtak

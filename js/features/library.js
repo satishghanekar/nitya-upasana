@@ -286,13 +286,15 @@ export function shelvesNow() {
 }
 
 /**
- * Every text for search (js/text/search.js): id, section, titles and its category's names
- * @returns {{ id: string, sec: string, title: string, titleEn: string, categories: string[] }[]}
+ * Every text for search (js/text/search.js): id, its id without its category (sukhkarta, of aarti-sukhkarta),
+ * section, titles and its category's names
+ * @returns {{ id: string, name: string, sec: string, title: string, titleEn: string, categories: string[] }[]}
  */
 export function textsForSearch() {
   return entries.map(function (e) {
-    var c = catById(categoryOf(e, cats, local));
-    return { id: e.id, sec: e.sec, title: e.title, titleEn: e.titleEn, categories: c ? [c.name.mr, c.name.en] : [] };
+    var c = catById(categoryOf(e, cats, local)),
+      name = e.id.indexOf(e.category + "-") === 0 ? e.id.slice(e.category.length + 1) : "";
+    return { id: e.id, name: name, sec: e.sec, title: e.title, titleEn: e.titleEn, categories: c ? [c.name.mr, c.name.en] : [] };
   });
 }
 
