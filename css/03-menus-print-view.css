@@ -6,7 +6,7 @@
    - Top-bar title, heading for screen readers, contents overlay refinements
    - More menu (App, Share, QR, Print, Help); Share / QR / Print buttons, QR pop-up
    - Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm)
-   - Top-bar title with Ganesha (home) icon; Home button in the contents overlay
+   - Top-bar title with the app's picture; Home button in the contents overlay
    - Contents headings (refined)
    - Print builder (#prm: What, then How); print view (#pv, built by the script just before printing)
    - Piece header card (saffron, maroon top edge)
@@ -301,16 +301,21 @@ a.t {
   font-family: var(--body);
 }
 
-/* ==== Top-bar title with Ganesha (home) icon; Home button in the contents overlay ==== */
+/* ==== Top-bar title with the app's picture, small and round (Satish, 2026-10-24: in place of the Ganesha icon);
+   Home button in the contents overlay ==== */
 .bar .t.site {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 21px;
 }
-.bar .t.site svg {
+.bar .t.site .bti {
   flex: none;
-  opacity: 0.85;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--hdrl);
+  object-fit: cover;
 }
 .bar .t.site span {
   overflow: hidden;

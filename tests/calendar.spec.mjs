@@ -6,13 +6,24 @@ import { test, expect } from "@playwright/test";
 import { openSite, SETUPS, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
 
 const NOW = new Date("2026-10-18T19:00:00-04:00");
+// The calendar card is tapped near its corner: its middle can be the place's pin (#ploc), which sits over the card's
+// button on wider screens
+const CORNER = { position: { x: 12, y: 12 } };
 const COLUMBUS = { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 } };
+// The calendar at its Month tab (it opens at Day: on phones the day card alone, on wide screens beside the month)
 const open = async (page, prefs = COLUMBUS) => {
   await openSite(page, prefs, { now: NOW });
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
   await expect(page.locator("#cal")).toBeVisible();
+  await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
 };
+// Tap a day in the month (on phones that goes to the Day tab, so the Month tab first when it is not shown)
+const tap = async (page, k) => {
+  if (await page.locator("#calm").isHidden()) await page.locator('#calv [data-v="month"]').click();
+  await page.locator(`#calm button[data-d="${k}"]`).click();
+};
+const wide = (page) => (page.viewportSize()?.width ?? 0) >= 820;
 const row = (page, label) => page.locator("#cald dt", { hasText: label }).locator("xpath=following-sibling::dd[1]");
 
 test("Home: the calendar line under the date, with sunrise, sunset and the place @mobile", async ({ page }) => {
@@ -103,7 +114,7 @@ test("the month: weekdays, tithi at sunrise, paksha shading, moons, Ekadashi, Sa
 
 test("tapping a day shows it in the day card @mobile", async ({ page }) => {
   await open(page);
-  await page.locator('#calm button[data-d="2026-10-28"]').click();
+  await tap(page, "2026-10-28");
   await expect(page.locator("#cdt")).toHaveText("आश्विन वद्य तृतीया");
   await expect(page.locator("#cald .cdd")).toHaveText("Wednesday, 28 October 2026");
   await expect(page.locator("#cald .cdg")).toHaveText("संकष्टी");
@@ -113,7 +124,7 @@ test("tapping a day shows it in the day card @mobile", async ({ page }) => {
   await expect(page.locator('#calm button[data-d="2026-10-18"]')).toHaveAttribute("aria-pressed", "false");
   await expect(page.locator("#call")).toHaveText("Showing 28 October: आश्विन वद्य तृतीया");
   // purnima: no paksha in the title
-  await page.locator('#calm button[data-d="2026-10-25"]').click();
+  await tap(page, "2026-10-25");
   await expect(page.locator("#cdt")).toHaveText("आश्विन पौर्णिमा");
   await expect(page.locator("#cald .cdg")).toHaveText("कोजागिरी पौर्णिमा वाल्मीकि जयंती (कर्नाटक) पौर्णिमा");
 });
@@ -123,7 +134,7 @@ test("a public holiday shows in the month and the day card, with its country or 
   await open(page);
   await expect(page.locator('#calm button[data-d="2026-10-12"] .hs')).toHaveText("कोलंबस डे");
   await expect(page.locator('#calm button[data-d="2026-10-02"] .hs')).toHaveText("गांधी जयंती");
-  await page.locator('#calm button[data-d="2026-10-12"]').click();
+  await tap(page, "2026-10-12");
   await expect(page.locator("#cald .cdg .tag.hol")).toHaveText("कोलंबस डे (अमेरिका)");
   await expect(row(page, "सुट्टी")).toHaveText("कोलंबस डे (अमेरिका) ↗Columbus Day (US)");
   await expect(row(page, "सुट्टी").locator("a")).toHaveAttribute("href", "https://en.wikipedia.org/wiki/Columbus_Day");
@@ -132,7 +143,7 @@ test("a public holiday shows in the month and the day card, with its country or 
 // A festival's name links to its Wikipedia page (Satish, 2026-10-24): English with English menus, Marathi where there is one
 test("a festival's name in the day card links to its Wikipedia page @mobile", async ({ page }) => {
   await open(page);
-  await page.locator('#calm button[data-d="2026-10-20"]').click();
+  await tap(page, "2026-10-20");
   const a = row(page, "सण").locator("a");
   await expect(a).toHaveAttribute("href", "https://en.wikipedia.org/wiki/Vijayadashami");
   await expect(a).toHaveAttribute("target", "_blank");
@@ -154,7 +165,7 @@ test("previous and next month @mobile", async ({ page }) => {
   await page.locator("#calp").click();
   await expect(page.locator("#cmt")).toContainText("September 2026");
   await expect(page.locator("#calm button.cd")).toHaveCount(30);
-  await page.locator('#calm button[data-d="2026-09-01"]').click();
+  await tap(page, "2026-09-01");
   await expect(page.locator("#cald .cdd")).toHaveText("Tuesday, 1 September 2026");
 });
 
@@ -166,7 +177,7 @@ test("Back: the page's button and the browser's both close it, and focus returns
   await expect(page.locator("#panb")).toBeFocused();
   await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "false");
   expect(page.url()).toBe(url);
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
   await expect(page.locator("#cal")).toBeVisible();
   await page.goBack();
   await expect(page.locator("#cal")).toBeHidden();
@@ -180,6 +191,7 @@ test("keyboard: open, move through the month with the arrows, pick a day, Escape
   await page.locator("#panb").focus();
   await page.keyboard.press("Enter");
   await expect(page.locator("#cal")).toBeVisible();
+  await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   // one day in the month is in the Tab order: the day shown
   await expect(page.locator('#calm button.cd[tabindex="0"]')).toHaveCount(1);
@@ -221,7 +233,8 @@ test("targets: the page's buttons are 44px; days are at least 24px wide even on 
   await open(page);
   const sizes = async () =>
     page.evaluate(() =>
-      [...document.querySelectorAll("#cal button, #panb")].map((b) => {
+      // the buttons shown (on phones one tab at a time)
+      [...document.querySelectorAll("#cal button, #panb")].filter((b) => b.getClientRects().length).map((b) => {
         const r = b.getBoundingClientRect();
         return { id: b.id || b.dataset.d, w: r.width, h: r.height };
       }),
@@ -242,8 +255,11 @@ test("desktop: the month, then the day card beside it, the month the larger (Des
   await page.setViewportSize({ width: 1280, height: 820 });
   await open(page);
   const a = await page.locator("#calm").boundingBox(),
-    b = await page.locator("#cald").boundingBox();
-  expect(Math.abs(a.y - b.y)).toBeLessThan(2);
+    b = await page.locator("#cald").boundingBox(),
+    v = await page.locator("#calv").boundingBox();
+  // the tabs over the month, the day card beside both
+  expect(Math.abs(v.y - b.y)).toBeLessThan(2);
+  expect(a.y).toBeGreaterThan(v.y + v.height);
   expect(a.x + a.width).toBeLessThan(b.x);
   expect(a.width).toBeGreaterThan(b.width);
   // tithi names stay whole words: no day is taller than its row's tallest by a letter-per-line wrap
@@ -272,7 +288,8 @@ test("English first, no second: Home and the calendar are all in English, with L
     "Ashvin Shukla Ashtami Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava Sunrise 7:45 am Sunset 6:47 pm (open the Vedic calendar)",
   );
   expect(await page.locator("#pan").innerText()).not.toMatch(DEVANAGARI);
-  await b.click();
+  await b.click(CORNER);
+  await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Ashtami");
   await expect(row(page, "Tithi")).toHaveText("Shukla Ashtamiuntil Mon 1:21 am");
@@ -300,7 +317,7 @@ test("English first, no second: Home and the calendar are all in English, with L
   // a long name fits its day (it may break before its last part), and nothing scrolls sideways at 320px
   await page.setViewportSize({ width: 320, height: 640 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.locator('#calm button[data-d="2026-10-28"]').click();
+  await tap(page, "2026-10-28");
   await expect(page.locator("#cdt")).toHaveText("Ashvin Krishna Tritiya");
   await expect(page.locator("#cald .cdg")).toHaveText("Sankashti");
   await expect(page.locator("#call")).toHaveText("Showing 28 October: Ashvin Krishna Tritiya");
@@ -311,7 +328,8 @@ test("Marathi first, English second: Marathi names, English as the day card's sm
   // the Home line has the first language only
   await expect(page.locator("#pan .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
   await expect(page.locator("#pan .p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
+  await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(row(page, "तिथी").locator("small [lang=en]")).toHaveText("Shukla Ashtami");
   await expect(row(page, "वार")).toHaveText("रविवारSunday");
@@ -326,7 +344,8 @@ test("English first, Marathi second: English names, Marathi as the day card's sm
   await openSite(page, ENGLISH_MARATHI, { now: NOW });
   await expect(page.locator("#pan .p1")).toHaveText("Ashvin Shukla Ashtami");
   await expect(page.locator("#pan .p2")).toHaveText("Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava");
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
+  await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Ashtami");
   await expect(row(page, "Tithi")).toHaveText("Shukla Ashtamiशुद्ध अष्टमी · until Mon 1:21 am");
@@ -338,7 +357,7 @@ test("English first, Marathi second: English names, Marathi as the day card's sm
   await expect(row(page, "Ritu · Ayana")).toHaveText("Sharad · Dakshinayanaशरद ऋतु · दक्षिणायन");
   await expect(page.locator(".cgr thead th [aria-hidden]").first()).toHaveText("Sun");
   await expect(day(page, 18).locator(".t")).toHaveText("Ashtami");
-  await page.locator('#calm button[data-d="2026-10-30"]').click();
+  await tap(page, "2026-10-30");
   await expect(row(page, "Tithi")).toContainText("kshaya tithi: वद्य षष्ठी");
 });
 
@@ -346,7 +365,8 @@ test("Marathi first, no second: Marathi names without English lines @mobile", as
   await openSite(page, MARATHI_ONLY, { now: NOW });
   await expect(page.locator("#pan .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
   await expect(page.locator("#pan .p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
+  await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(page.locator("#cdt")).toHaveText("आश्विन शुद्ध अष्टमी");
   await expect(row(page, "तिथी")).toHaveText("शुद्ध अष्टमीuntil Mon 1:21 am");
@@ -359,7 +379,8 @@ test("Kannada letters: the Marathi names in Kannada script @mobile", async ({ pa
   await openSite(page, KANNADA, { now: NOW });
   await expect(page.locator("#pan .p1")).toHaveAttribute("lang", "kn");
   await expect(page.locator("#pan .p1")).toHaveText(/^[\u0C80-\u0CFF ]+$/);
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
+  await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(page.locator("#cdt")).toHaveText(/^[\u0C80-\u0CFF ]+$/);
   await expect(day(page, 18).locator(".t")).toHaveText(/^[\u0C80-\u0CFF]+$/);
@@ -372,7 +393,8 @@ test("English first in the scholarly style: the names in IAST @mobile", async ({
   await openSite(page, ENGLISH_IAST, { now: NOW });
   await expect(page.locator("#pan .p1")).toHaveText("Āśvina Śukla Aṣṭamī");
   await expect(page.locator("#pan .p2")).toHaveText("Nakṣatra Uttarāṣāḍhā · Śaka 1948 · Parābhava");
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
+  await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(day(page, 18).locator(".t")).toHaveText("Aṣṭamī");
   await expect(page.locator(".cgr thead th [aria-hidden]").first()).toHaveText("Sun");
@@ -385,7 +407,7 @@ test("changing the first language in Settings re-draws the Home line", async ({ 
   await page.locator("#sl1s").selectOption("en:simple");
   await page.locator("#xc").click();
   await expect(page.locator("#pan .p1")).toHaveText("Ashvin Shukla Ashtami");
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
   await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Ashtami");
   await expect(row(page, "Tithi")).toHaveText("Shukla Ashtamiशुद्ध अष्टमी · until Mon 1:21 am");
 });
@@ -404,12 +426,12 @@ test("festivals: दसरा on 20 October in the month, a tag and a row in the
   await expect(day(23).locator(".fs")).toHaveText("प्रदोष");
   await expect(page.locator("#calm .cd .fs")).toHaveCount(5);
   await expect(day(20)).toHaveAccessibleName("20 October, Tuesday, दशमी दसरा , Shukla Dashami, Dasara (Vijayadashami)");
-  await day(20).click();
+  await tap(page, "2026-10-20");
   await expect(page.locator("#cald .cdg")).toHaveText("दसरा");
   await expect(page.locator("#cald .cdg .tag.fest")).toHaveCount(1);
   await expect(row(page, "सण")).toHaveText("दसरा ↗Dasara (Vijayadashami)");
   // an ordinary day has no festival row
-  await day(19).click();
+  await tap(page, "2026-10-19");
   await expect(page.locator("#cald dt", { hasText: "सण" })).toHaveCount(0);
 });
 
@@ -444,7 +466,8 @@ test("axe: the festival line on Home and Dasara in the calendar @mobile", async 
   await openSite(page, COLUMBUS, { now: DASARA });
   await expect(page.locator("#fst")).toBeVisible();
   expect(await axeScan(page, ["#fst", "#pan"], { mismatch: true })).toEqual([]);
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
+  await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   expect(await axeScan(page, "#cal", { mismatch: true })).toEqual([]);
 });
@@ -454,7 +477,8 @@ test("festivals in English only: Home says Today: Dasara, the month and the day 
   const f = page.locator("#fst");
   await expect(f).toHaveText("Today: Dasara (Vijayadashami)");
   expect(await f.innerText()).not.toMatch(DEVANAGARI);
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
+  await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(day(page, 20).locator(".fs")).toHaveText("Dasara");
   await expect(day(page, 20).locator(".fs")).toHaveAttribute("lang", "en");
@@ -469,8 +493,152 @@ test("festivals in English only: Home says Today: Dasara, the month and the day 
 test("festivals in Marathi only: आज दसरा, and no English line in the day card", async ({ page }) => {
   await openSite(page, { ...SETUPS["marathi-menus"], lead: "mr", l2: "", loc: { lat: 39.96, lon: -83.0 } }, { now: DASARA });
   await expect(page.locator("#fst")).toHaveText("आज दसरा");
-  await page.locator("#panb").click();
+  await page.locator("#panb").click(CORNER);
   await expect(row(page, "सण")).toHaveText("दसरा ↗");
+});
+
+// Upcoming (Satish, 2026-10-24): on Home, the 7 days after today; in the calendar, the next 15 days. The clock is
+// Sunday 18 October 2026: Dasara on Tuesday 20, Pradosh on Friday 23, Kojagiri Purnima on Sunday 25, Sankashti on
+// Wednesday 28, then Pradosh on 6 November, Narak Chaturdashi on 7 and Lakshmi Pujan on 8
+const dates = (loc) => loc.evaluateAll((bs) => bs.map((b) => b.dataset.d + " " + b.className.replace("upr ", "")));
+test("Home: This week, the 7 days after today, each opening its day in the calendar @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: NOW });
+  const w = page.locator("#upw");
+  await expect(w.locator("h2")).toHaveText("This week");
+  expect(await dates(w.locator(".upr"))).toEqual(["2026-10-20 fest", "2026-10-23 pradosh", "2026-10-25 fest"]);
+  await expect(w.locator(".upr").first()).toHaveAccessibleName("Tuesday, 20 October: Dasara (Vijayadashami) , in 2 days");
+  await expect(w.locator(".upr .mn.full")).toHaveCount(1); // Kojagiri: a full moon
+  await expect(w.locator(".upx")).toHaveText("Next: Sankashti Chaturthi Wed 28 Oct");
+  // it sits under the calendar line, above the session's texts
+  const y = async (s) => (await page.locator(s).boundingBox()).y;
+  expect(await y("#pan")).toBeLessThan(await y("#upw"));
+  expect(await y("#upw")).toBeLessThan(await y("#tsc"));
+  // an entry opens its day: on phones the Day tab, on wide screens the day card beside the month
+  await w.locator('.upr[data-d="2026-10-23"]').click();
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Trayodashi");
+  await expect(page.locator("#calu")).toBeHidden();
+  if (wide(page)) {
+    await expect(page.locator('#calv [data-v="month"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('#calm button[data-d="2026-10-23"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('#calm button[data-d="2026-10-23"]')).toBeFocused();
+  } else {
+    await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator("#calm")).toBeHidden();
+  }
+  await page.locator("#cbk").click();
+  await expect(page.locator("#cal")).toBeHidden();
+  // Next 15 days opens the 15 days tab; Escape closes it, back to the button
+  await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "false");
+  await page.locator("#upwm").click();
+  await expect(page.locator("#calu")).toBeVisible();
+  await expect(page.locator("#calm")).toBeHidden();
+  await expect(page.locator("#cald")).toBeVisible({ visible: wide(page) });
+  await expect(page.locator('#calv [data-v="up"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "true");
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#upwm")).toBeFocused();
+});
+
+test("the calendar's tabs: Day, 15 days, Month on phones; 15 days and Month beside the day card on wide screens @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: NOW });
+  await page.locator("#panb").click(CORNER);
+  const tabs = page.locator("#calv button");
+  if (wide(page)) {
+    await expect(tabs).toHaveText(["15 days", "Month"]);
+    await expect(page.locator("#calm")).toBeVisible();
+    await expect(page.locator("#cald")).toBeVisible();
+    return;
+  }
+  await expect(tabs).toHaveText(["Day", "15 days", "Month"]);
+  await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#cald")).toBeVisible();
+  await expect(page.locator("#calm")).toBeHidden();
+  // ‹ › a day at a time, and Today
+  await page.locator('#cald [data-dd="1"]').click();
+  await expect(page.locator("#cald .cdd")).toHaveText("Monday, 19 October 2026");
+  await expect(page.locator('#cald [data-dd="1"]')).toBeFocused();
+  await expect(page.locator("#call")).toHaveText("Showing 19 October: Ashvin Shukla Navami");
+  await expect(page.locator("#cald .cdnt")).toHaveText("Mon 19 Oct");
+  await page.locator('#cald [data-dd="0"]').click();
+  await expect(page.locator("#cald .cdd")).toHaveText("Sunday, 18 October 2026 · today");
+  await expect(page.locator('#cald [data-dd="0"]')).toHaveCount(0);
+  // a day tapped in the month shows on the Day tab; Back returns to the month, at that day
+  await page.locator('#calv [data-v="month"]').click();
+  await page.locator('#calm button[data-d="2026-10-28"]').click();
+  await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#cdt")).toBeFocused();
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Krishna Tritiya");
+  await page.locator("#cbk").click();
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator('#calm button[data-d="2026-10-28"]')).toBeFocused();
+  // the phone's Back does the same: back to the month, then it closes the page
+  await page.locator('#calm button[data-d="2026-10-27"]').click();
+  await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
+  await page.goBack();
+  await expect(page.locator('#calv [data-v="month"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#cal")).toBeVisible();
+  await page.goBack();
+  await expect(page.locator("#cal")).toBeHidden();
+  await page.locator("#panb").click({ position: { x: 12, y: 12 } });
+  await page.locator('#calv [data-v="month"]').click();
+  // an entry in the 15 days, the same; Escape returns to the list
+  await page.locator('#calv [data-v="up"]').click();
+  await page.locator('#calu .upr[data-d="2026-10-20"]').click();
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Dashami");
+  await page.keyboard.press("Escape");
+  await expect(page.locator('#calu .upr[data-d="2026-10-20"]')).toBeFocused();
+  // Back from a tab chosen by itself closes the page
+  await page.locator("#cbk").click();
+  await expect(page.locator("#cal")).toBeHidden();
+});
+
+test("15 days: by week, ‹ › to the 15 before or after, and what it shows @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: NOW });
+  await page.locator("#upwm").click();
+  const u = page.locator("#calu");
+  await expect(u.locator("#cut")).toHaveText("The next 15 daysSun 18 Oct – Sun 1 Nov · Columbus, OH");
+  await expect(u.locator(".uph4")).toHaveText(["This week", "Next week"]);
+  expect(await dates(u.locator(".upr"))).toEqual(["2026-10-20 fest", "2026-10-23 pradosh", "2026-10-25 fest", "2026-10-28 sk"]);
+  await expect(u.locator('.upr[data-d="2026-10-28"]')).toHaveAccessibleName("Wednesday, 28 October: Sankashti Chaturthi Moonrise 8:09 pm , in 10 days");
+  // the next 15: Diwali
+  await u.locator('[data-u="15"]').click();
+  await expect(u.locator('[data-u="15"]')).toBeFocused();
+  await expect(u.locator("#cut")).toHaveText("Mon 2 Nov – Mon 16 NovColumbus, OH");
+  await expect(u.locator(".uph4")).toHaveText(["Mon 2 Nov – Sun 8 Nov", "Mon 9 Nov – Mon 16 Nov"]);
+  expect(await dates(u.locator(".upr"))).toEqual([
+    "2026-11-06 pradosh", "2026-11-07 fest", "2026-11-08 fest", "2026-11-09 fest", "2026-11-10 fest",
+  ]);
+  await expect(u.locator(".upr .mn.new")).toHaveCount(1); // Lakshmi Pujan, on the Amavasya
+  // back, past today: days ago
+  await u.locator('[data-u="-15"]').click();
+  await u.locator('[data-u="-15"]').click();
+  await expect(u.locator("#cut")).toHaveText("Sat 3 Oct – Sat 17 OctColumbus, OH");
+  await expect(u.locator('.upr[data-d="2026-10-11"] .upw')).toHaveText(", 7 days ago");
+  await u.locator('[data-u="0"]').click();
+  await expect(u.locator("#cut")).toBeFocused();
+  await expect(u.locator("#cut")).toContainText("The next 15 days");
+  // the buttons: Holidays adds the public holidays; Pradosh off leaves them out
+  await expect(u.locator(".upk button")).toHaveText(["Festivals", "Pradosh", "Sankashti", "Holidays"]);
+  await u.locator('.upk [data-k="hol"]').click();
+  await expect(page.locator('#calu .upk [data-k="hol"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator('#calu .upk [data-k="hol"]')).toBeFocused();
+  await expect(u.locator(".upr.hol")).toHaveCount(2); // Valmiki Jayanti, Karnataka Rajyotsava
+  await u.locator('.upk [data-k="pradosh"]').click();
+  await expect(u.locator(".upr.pradosh")).toHaveCount(0);
+});
+
+test("Upcoming: a festival of several days is one entry, Day 6–9 of the Utsav, and a day within it says so @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: new Date("2026-07-24T09:00:00-04:00") });
+  const w = page.locator("#upw");
+  expect(await dates(w.locator(".upr"))).toEqual(["2026-07-25 fest", "2026-07-26 pradosh", "2026-07-29 fest"]);
+  await expect(w.locator(".upr").first()).toHaveAccessibleName(
+    "Saturday, 25 July: Shri Gondhavlekar Maharaj Utsav Day 6–9 · until Tue 28 Jul , Tomorrow",
+  );
+  await expect(w.locator(".upr").nth(1).locator("small")).toHaveText("Utsav 7");
+  await expect(w.locator(".upx")).toHaveText("Next: Sankashti Chaturthi Sat 1 Aug");
+  // today's own are in the line above: the Utsav's Day 5 and Ashadhi Ekadashi
+  await expect(page.locator("#fst")).toContainText("Day 5");
 });
 
 // Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); each language set-up in full
@@ -486,9 +654,14 @@ for (const [name, prefs, themes] of [
     const ok = themes ? noViolations() : [];
     await openSite(page, prefs, { now: NOW });
     expect(await scan("#pan")).toEqual(ok);
-    await page.locator("#panb").click();
+    expect(await scan("#upw")).toEqual(ok);
+    await page.locator("#panb").click(CORNER);
+    await page.locator('#calv [data-v="month"]').click();
     await expect(page.locator("#calm button.cd")).toHaveCount(31);
-    await page.locator('#calm button[data-d="2026-10-28"]').click();
+    await tap(page, "2026-10-28");
+    expect(await scan("#cal")).toEqual(ok);
+    await page.locator('#calv [data-v="up"]').click();
+    await expect(page.locator("#calu .upr").first()).toBeVisible();
     expect(await scan("#cal")).toEqual(ok);
   });
 }
@@ -508,7 +681,10 @@ test("the place on the calendar line uses the phone's location @mobile", async (
 
 // No prompt (Satish, 2026-10-24): the place is the time zone's city until the pin is tapped; after that, each open
 // brings it up to date quietly while the phone allows it
-test("no prompt on opening; once the pin has set the place, a later open brings it up to date @mobile", async ({ page }) => {
+test("no prompt on opening; once the pin has set the place, a later open brings it up to date @mobile", async ({ page, browserName }) => {
+  // WebKit (Safari, and the iPhone and iPad runs) never reports the location as allowed to the Permissions API, so there
+  // the quiet update does not run and the place changes only with a tap on the pin
+  test.skip(browserName === "webkit", "WebKit does not report geolocation as granted");
   await page.context().grantPermissions(["geolocation"]);
   await page.context().setGeolocation({ latitude: 18.52, longitude: 73.86 });
   await openSite(page, SETUPS.english);

@@ -82,7 +82,7 @@ function start() {
     startLineBreaks(); // Preferred line breaks
     startAutofit(); // Auto-fit text size
     startApply(); // Current piece, menus and apply()
-    startBottomBar(); // Bottom bar (#asc): ‹ Prev, Home, Library, Aa, Next ›
+    startBottomBar(); // Bottom bar (#asc): ‹ Prev, Home, Print, Aa, Next ›
     startBars(); // Bars tuck away while reading (CSS: "Bars tuck away while reading")
     startSettingsPanel(); // Settings panel
     startReadingSheet(); // Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad

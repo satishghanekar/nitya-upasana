@@ -1,4 +1,4 @@
-// Bottom bar (#asc): ‹ Prev, Home, Library, Print, Aa (the reading sheet), Next ›; on Home only Print and Aa
+// Bottom bar (#asc): ‹ Prev, Home, Print, Aa (the reading sheet), Next ›; on Home only Print and Aa
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root } from "../core/page.js";
@@ -11,7 +11,7 @@ import { sessionStep } from "./today-card.js";
 export var asc;
 
 export function init() {
-  // The bottom bar is the footer menu on every page. Its parts share the "as" prefix (asc, asv, ash, asq, asn)
+  // The bottom bar is the footer menu on every page. Its parts share the "as" prefix (asc, asv, ash, asn)
   // because it began as the autoscroll bar (Autoscroll and Tilt to scroll were removed for now on 2026-10-21; they
   // are in git history up to v1.20).
   asc = document.getElementById("asc");
@@ -23,9 +23,6 @@ export function init() {
   };
   document.getElementById("ash").onclick = function () {
     goHomeNav();
-  };
-  document.getElementById("asq").onclick = function () {
-    document.getElementById("hm").onclick();
   };
   // The bar is always there, like the top bar (data-asb leaves room for it under the text).
   // asShow() keeps Prev / Next with the piece on screen.
