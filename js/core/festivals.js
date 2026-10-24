@@ -57,9 +57,9 @@ import { dayTimes, masaOf, panchangDay, sunSidereal, tithiAt } from "./panchang.
  *   vara: a word put before the names on a weekday (0 Sunday … 6 Saturday): Som Pradosh on a Monday
  *   mr / en the full names (the festival is itself a Name); short the label for a day in the month grid
  * @typedef {{ version: number, adhika: "nija", festivals: Festival[] }} FestivalList  content/festivals.json
- * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, date: string, from: Date, to: Date }} FestivalDay
+ * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, date: string, from: Date, to: Date, n?: number }} FestivalDay
  *   date "YYYY-MM-DD" on the place's clock; from / to: the tithi's start and end (a solar festival: the sankranti's
- *   moment, both)
+ *   moment, both); n: the day's number in a festival of several days (a BeforeRule's Day 1 … Day 9)
  */
 
 /** The parts of the day a rule may name */
@@ -159,7 +159,8 @@ export function festivalsBetween(from, to, place, list) {
       pre = function (/** @type {"mr" | "en"} */ l) {
         return v ? v[l] + " " : "";
       };
-    out.push({
+    /** @type {FestivalDay} */
+    var o = {
       id: f.id,
       mr: pre("mr") + nth(f.mr, d, true),
       en: pre("en") + nth(f.en, d, false),
@@ -168,7 +169,9 @@ export function festivalsBetween(from, to, place, list) {
       date: date,
       from: new Date(a),
       to: new Date(b),
-    });
+    };
+    if (d) o.n = d;
+    out.push(o);
   }
 
   // lunar festivals, by tithi: every tithi current at some time from `from`'s sunrise to the sunrise after `to`

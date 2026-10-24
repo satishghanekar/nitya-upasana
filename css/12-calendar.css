@@ -544,6 +544,250 @@
   margin: 0;
 }
 
+/* ==== Upcoming: Month | Upcoming (#calv), the next 15 days (#calu) and the next week on Home (#upw); an entry is a
+   button (.upr) to its day in the month ==== */
+#cald[hidden],
+#calm[hidden],
+#caln0[hidden],
+#calu[hidden],
+#upw[hidden] {
+  display: none;
+}
+#calv {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3px;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--hdrt);
+}
+#calv button {
+  height: auto;
+  min-height: 44px;
+  margin: 0;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--muted);
+  font: 400 15px/1.2 var(--lat);
+  font-family: inherit;
+  cursor: pointer;
+}
+#calv button[aria-pressed="true"] {
+  background: var(--bg);
+  color: var(--accent);
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+}
+#calu {
+  display: grid;
+  gap: 4px;
+  padding: 14px 14px 10px;
+  border: 1px solid var(--hdrl);
+  border-radius: 18px;
+  background: var(--hdr);
+}
+#cut {
+  margin: 0 0 6px;
+  font: 400 19px/1.35 var(--head);
+  text-align: center;
+}
+.upk {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 2px;
+}
+/* a 44px target around the pill */
+.upk button {
+  height: auto;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 2px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: 400 13px/1.3 var(--lat);
+  font-family: inherit;
+  cursor: pointer;
+}
+.upk button > span {
+  display: block;
+  padding: 5px 12px;
+  border: 1px solid var(--hdrl);
+  border-radius: 16px;
+}
+.upk button[aria-pressed="true"] > span {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+.uph4 {
+  margin: 10px 2px 0;
+  color: var(--muted);
+  font: 700 12px/1.4 var(--lat);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+#cal[lang="mr"] .uph4 {
+  font-family: var(--body);
+  letter-spacing: 0;
+}
+.upl {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.upl li + li {
+  border-top: 1px solid var(--hdrl);
+}
+.upr {
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 7px 4px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.upr:hover .un {
+  color: var(--accent);
+}
+.upd {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  width: 38px;
+  color: var(--muted);
+  font: 400 11px/1.15 var(--body);
+}
+.upd b {
+  color: var(--ink);
+  font: 700 19px/1.15 var(--lat);
+}
+.upi {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 22px;
+  color: var(--igold);
+}
+.upi .mn {
+  margin: 0;
+}
+.upr.pradosh .upi,
+.upr.hol .upi {
+  color: var(--muted);
+}
+.upn {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+.un {
+  font: 600 15.5px/1.35 var(--body);
+}
+.un[lang="en"] {
+  font-family: var(--lat);
+}
+.upn small {
+  color: var(--muted);
+  font: 400 12.5px/1.4 var(--body);
+}
+.upn small [lang="en"],
+.upn small[lang="en"] {
+  font-family: var(--lat);
+}
+.upw {
+  flex: none;
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.upw.soon {
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--hdrt);
+  color: var(--accent);
+  font-weight: 600;
+}
+.upe {
+  margin: 8px 0;
+  color: var(--muted);
+  text-align: center;
+}
+/* Home: a card under the today lines */
+#upw {
+  margin: 0 0 14px;
+  border: 1px solid var(--hdrl);
+  border-radius: 14px;
+  background: var(--hdr);
+  color: var(--ink);
+  font: 400 14px/1.45 var(--lat);
+  overflow: hidden;
+}
+#upw[lang="mr"] {
+  font-family: var(--body);
+}
+#upw .uph {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 4px 0 12px;
+}
+#upwh {
+  margin: 0;
+  color: var(--accent);
+  font: 700 15px/1.3 var(--lat);
+  font-family: inherit;
+}
+#upwm {
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 6px 0 10px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--accent);
+  font: 600 14px/1.2 var(--lat);
+  font-family: inherit;
+  cursor: pointer;
+}
+#upwm:focus-visible,
+#upw .upr:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+#upw .upl {
+  padding: 0 8px;
+  border-top: 1px solid var(--hdrl);
+}
+#upw .upx {
+  margin: 0;
+  padding: 7px 12px;
+  background: var(--hdrt);
+  color: var(--muted);
+  font-size: 13px;
+}
+#upw .upx b {
+  color: var(--ink);
+  font-weight: 650;
+}
+
 /* ==== Two columns on tablets and desktops: the day card beside the month ==== */
 @media (min-width: 820px) {
   #cal .calin {
@@ -552,9 +796,18 @@
     max-width: 980px;
   }
   #cal .libhd,
+  #calv,
+  #calu,
   #caln0,
   #call {
     grid-column: 1 / -1;
+  }
+  #calv,
+  #calu {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 34rem;
+    justify-self: center;
   }
   .cd {
     min-height: 76px;

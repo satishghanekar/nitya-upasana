@@ -163,13 +163,13 @@ const PAGES = {
       if (qq) qq.blur();
     },
   },
-  // The Vedic calendar page (#cal): opened by the line on Home (#panb), under the top bar like the Library; Back, the
+  // The Vedic calendar page (#cal): opened by the line on Home (#panb) or Next 15 days (#upwm), under the top bar like the Library; Back, the
   // phone's Back or Escape closes it and focus returns to that line
   cal: {
     el: function () {
       return document.getElementById("cal");
     },
-    openers: "#panb",
+    openers: "#panb, #upwm",
     below: true,
     bb: true,
     focus: "always",
