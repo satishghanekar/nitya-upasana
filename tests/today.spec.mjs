@@ -525,7 +525,9 @@ test("on a wide screen a text opened from Home opens beside Home's column, with 
   // Home's column stays, fixed on the left, without the picture; the text is beside it
   await expect(page.locator("#tsc")).toBeVisible();
   await expect(page.locator("#pan")).toBeVisible();
-  await expect(page.locator("#tdy")).toBeHidden();
+  // without the picture (it is in the top bar), but with today's date at the top of the card
+  await expect(page.locator("#iconb")).toBeHidden();
+  await expect(page.locator("#tdd")).toBeVisible();
   expect(await page.locator("#home").evaluate((h) => getComputedStyle(h).position)).toBe("fixed");
   const home = await page.locator("#home").boundingBox(),
     text = await page.locator("#a2 header").boundingBox();

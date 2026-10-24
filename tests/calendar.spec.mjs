@@ -23,7 +23,6 @@ const tap = async (page, k) => {
   if (await page.locator("#calm").isHidden()) await page.locator('#calv [data-v="month"]').click();
   await page.locator(`#calm button[data-d="${k}"]`).click();
 };
-const wide = (page) => (page.viewportSize()?.width ?? 0) >= 820;
 const row = (page, label) => page.locator("#cald dt", { hasText: label }).locator("xpath=following-sibling::dd[1]");
 
 test("Home: the calendar line under the date, with sunrise, sunset and the place @mobile", async ({ page }) => {
@@ -201,8 +200,11 @@ test("keyboard: open, move through the month with the arrows, pick a day, Escape
   await expect(page.locator('#calm button[data-d="2026-10-19"]')).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await expect(page.locator('#calm button[data-d="2026-10-26"]')).toBeFocused();
+  // Enter shows the day on the Day tab, its heading focused; Escape returns to the month, at that day
   await page.keyboard.press("Enter");
   await expect(page.locator("#cdt")).toHaveText("आश्विन वद्य प्रतिपदा");
+  await expect(page.locator("#cdt")).toBeFocused();
+  await page.keyboard.press("Escape");
   await expect(page.locator('#calm button[data-d="2026-10-26"]')).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await expect(page.locator('#calm button[data-d="2026-11-02"]')).toBeFocused();
@@ -211,6 +213,8 @@ test("keyboard: open, move through the month with the arrows, pick a day, Escape
   await expect(page.locator('#calm button[data-d="2026-10-02"]')).toBeFocused();
   await page.keyboard.press(" ");
   await expect(page.locator("#cald .cdd")).toHaveText("Friday, 2 October 2026");
+  await page.keyboard.press("Escape");
+  await expect(page.locator('#calm button[data-d="2026-10-02"]')).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.locator("#cal")).toBeHidden();
   await expect(page.locator("#panb")).toBeFocused();
@@ -251,17 +255,15 @@ test("targets: the page's buttons are 44px; days are at least 24px wide even on 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test("desktop: the month, then the day card beside it, the month the larger (Desktop B, Full screen)", async ({ page }) => {
+test("desktop: one tab at a time, as on phones: the month across the right-hand area under the tabs (Desktop B, Full screen)", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 820 });
   await open(page);
   const a = await page.locator("#calm").boundingBox(),
-    b = await page.locator("#cald").boundingBox(),
     v = await page.locator("#calv").boundingBox();
-  // the tabs over the month, the day card beside both
-  expect(Math.abs(v.y - b.y)).toBeLessThan(2);
+  await expect(page.locator("#cald")).toBeHidden();
   expect(a.y).toBeGreaterThan(v.y + v.height);
-  expect(a.x + a.width).toBeLessThan(b.x);
-  expect(a.width).toBeGreaterThan(b.width);
+  expect(Math.abs(a.width - v.width)).toBeLessThan(2);
+  expect(a.width).toBeGreaterThan(700);
   // tithi names stay whole words: no day is taller than its row's tallest by a letter-per-line wrap
   const cells = await page.locator("#calm .cd").evaluateAll((d) => d.map((x) => x.getBoundingClientRect().width));
   expect(Math.min(...cells)).toBeGreaterThan(50);
@@ -508,24 +510,23 @@ test("Home: This week, the 7 days after today, each opening its day in the calen
   expect(await dates(w.locator(".upr"))).toEqual(["2026-10-20 fest", "2026-10-23 pradosh", "2026-10-25 fest"]);
   await expect(w.locator(".upr").first()).toHaveAccessibleName("Tuesday, 20 October: Dasara (Vijayadashami) , in 2 days");
   await expect(w.locator(".upr .mn.full")).toHaveCount(1); // Kojagiri: a full moon
-  await expect(w.locator(".upx")).toHaveText("Next: Sankashti Chaturthi Wed 28 Oct");
+  await expect(w.locator(".upx")).toHaveText("NextSankashti ChaturthiWed 28 Oct · in 10 days");
   // it sits under the calendar line, above the session's texts
   const y = async (s) => (await page.locator(s).boundingBox()).y;
   expect(await y("#pan")).toBeLessThan(await y("#upw"));
   expect(await y("#upw")).toBeLessThan(await y("#tsc"));
-  // an entry opens its day: on phones the Day tab, on wide screens the day card beside the month
+  // an entry opens its day alone, on the Day tab, on every screen
   await w.locator('.upr[data-d="2026-10-23"]').click();
   await expect(page.locator("#cal")).toBeVisible();
   await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Trayodashi");
+  await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#calu")).toBeHidden();
-  if (wide(page)) {
-    await expect(page.locator('#calv [data-v="month"]')).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator('#calm button[data-d="2026-10-23"]')).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator('#calm button[data-d="2026-10-23"]')).toBeFocused();
-  } else {
-    await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator("#calm")).toBeHidden();
-  }
+  await expect(page.locator("#calm")).toBeHidden();
+  await page.locator("#cbk").click();
+  // so does the first one after the week, under them
+  await w.locator(".upx").click();
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Krishna Tritiya");
+  await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
   await page.locator("#cbk").click();
   await expect(page.locator("#cal")).toBeHidden();
   // Next 15 days opens the 15 days tab; Escape closes it, back to the button
@@ -533,23 +534,46 @@ test("Home: This week, the 7 days after today, each opening its day in the calen
   await page.locator("#upwm").click();
   await expect(page.locator("#calu")).toBeVisible();
   await expect(page.locator("#calm")).toBeHidden();
-  await expect(page.locator("#cald")).toBeVisible({ visible: wide(page) });
+  await expect(page.locator("#cald")).toBeHidden();
   await expect(page.locator('#calv [data-v="up"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "true");
+  // only the card it was opened from is marked open, not the date card above
+  await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "false");
   await page.keyboard.press("Escape");
   await expect(page.locator("#upwm")).toBeFocused();
 });
 
-test("the calendar's tabs: Day, 15 days, Month on phones; 15 days and Month beside the day card on wide screens @mobile", async ({ page }) => {
+test("on a wide screen, This week or the date card clicked while the calendar is open switches it, and only that one is marked", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 820 });
+  await openSite(page, ENGLISH_ONLY, { now: NOW });
+  await page.locator("#panb").click(CORNER);
+  await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "true");
+  await page.locator("#upwm").click();
+  await page.waitForTimeout(500); // (a Back step taken by mistake would close it here)
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator('#calv [data-v="up"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "false");
+  await page.locator("#panb").click(CORNER);
+  await page.waitForTimeout(500);
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "false");
+  // the date above the line and This week's header, which are not buttons, the same
+  await page.locator("#upw .uph h2").click();
+  await page.waitForTimeout(500);
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator('#calv [data-v="up"]')).toHaveAttribute("aria-pressed", "true");
+  await page.locator("#tdd").click();
+  await page.waitForTimeout(500);
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
+});
+
+test("the calendar's tabs: Day, 15 days, Month, one at a time, the same on every screen @mobile", async ({ page }) => {
   await openSite(page, ENGLISH_ONLY, { now: NOW });
   await page.locator("#panb").click(CORNER);
   const tabs = page.locator("#calv button");
-  if (wide(page)) {
-    await expect(tabs).toHaveText(["15 days", "Month"]);
-    await expect(page.locator("#calm")).toBeVisible();
-    await expect(page.locator("#cald")).toBeVisible();
-    return;
-  }
   await expect(tabs).toHaveText(["Day", "15 days", "Month"]);
   await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#cald")).toBeVisible();
@@ -636,7 +660,7 @@ test("Upcoming: a festival of several days is one entry, Day 6–9 of the Utsav,
     "Saturday, 25 July: Shri Gondhavlekar Maharaj Utsav Day 6–9 · until Tue 28 Jul , Tomorrow",
   );
   await expect(w.locator(".upr").nth(1).locator("small")).toHaveText("Utsav 7");
-  await expect(w.locator(".upx")).toHaveText("Next: Sankashti Chaturthi Sat 1 Aug");
+  await expect(w.locator(".upx")).toHaveText("NextSankashti ChaturthiSat 1 Aug · in 8 days");
   // today's own are in the line above: the Utsav's Day 5 and Ashadhi Ekadashi
   await expect(page.locator("#fst")).toContainText("Day 5");
 });

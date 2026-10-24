@@ -50,6 +50,7 @@ export function update() {
     // Desktop A shows it large on Home (css/10-today.css): the browser picks the full-size picture there
     set(btn.querySelector("img"), "srcset", p.small + " 360w, " + p.large + " 940w");
     set(btn, "aria-label", "Show the picture full screen: " + p.label);
+    set(document.getElementById("bti"), "aria-label", "Show the picture full screen: " + p.label);
     btn.setAttribute("data-picture", p.picture);
     btn.setAttribute("data-day", String(p.day));
   }
