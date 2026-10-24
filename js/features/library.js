@@ -357,9 +357,10 @@ function renderList() {
   at.insertAdjacentHTML("beforebegin", listHtml());
 }
 
-/** After a change: the list, the English style of the titles, the switches and search */
+/** After a change: the list (and the PDFs' categories), the English style of the titles, the switches and search */
 function refreshPage() {
   renderList();
+  document.dispatchEvent(new Event("nitya-library")); // the PDFs tab's categories (js/features/pdfs.js)
   titlesSet();
   apply();
   buildIX();

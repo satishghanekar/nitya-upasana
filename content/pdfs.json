@@ -1,19 +1,44 @@
 {
- "groups": [
+ "pdfs": [
   {
-   "name": { "mr": "संस्कृत", "en": "Sanskrit" },
-   "pdfs": [
-    { "file": "pdfs/mahanyasa-vidhi.pdf", "title": { "mr": "महान्यास विधी", "en": "Mahanyasa Vidhi" } },
-    { "file": "pdfs/shivanjali.pdf", "title": { "mr": "शिवांजली", "en": "Shivanjali" } },
-    { "file": "pdfs/lalita-sahasranama.pdf", "title": { "mr": "श्री ललितासहस्रनाम", "en": "Shri Lalita Sahasranama" } },
-    { "file": "pdfs/pavamana-suktam.pdf", "title": { "mr": "पवमान सूक्त", "en": "Pavamana Suktam" } }
-   ]
+   "id": "vedic-chant-mahanyasa-vidhi",
+   "file": "pdfs/mahanyasa-vidhi.pdf",
+   "title": "महान्यास विधी",
+   "titleEn": "Mahanyasa Vidhi",
+   "category": "vedic-chant",
+   "language": "sa"
   },
   {
-   "name": { "mr": "मराठी", "en": "Marathi" },
-   "pdfs": [
-    { "file": "pdfs/manache-shlok.pdf", "title": { "mr": "मनाचे श्लोक", "en": "Manache Shlok" } }
-   ]
+   "id": "vedic-chant-pavamana-suktam",
+   "file": "pdfs/pavamana-suktam.pdf",
+   "title": "पवमान सूक्त",
+   "titleEn": "Pavamana Suktam",
+   "category": "vedic-chant",
+   "language": "sa"
+  },
+  {
+   "id": "vedic-chant-lalita-sahasranama",
+   "file": "pdfs/lalita-sahasranama.pdf",
+   "title": "श्री ललितासहस्रनाम",
+   "titleEn": "Shri Lalita Sahasranama",
+   "category": "vedic-chant",
+   "language": "sa"
+  },
+  {
+   "id": "vedic-chant-shivanjali",
+   "file": "pdfs/shivanjali.pdf",
+   "title": "शिवांजली",
+   "titleEn": "Shivanjali",
+   "category": "vedic-chant",
+   "language": "sa"
+  },
+  {
+   "id": "stotra-manache-shlok",
+   "file": "pdfs/manache-shlok.pdf",
+   "title": "मनाचे श्लोक",
+   "titleEn": "Manache Shlok",
+   "category": "stotra",
+   "language": "mr"
   }
  ]
 }

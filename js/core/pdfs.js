@@ -1,17 +1,25 @@
 // @ts-check
-// The Library's PDFs (content/pdfs.json): the groups and their PDFs as the PDFs tab lists them, with whatever is
-// missing or mistyped in the file left out, so one bad entry never hides the rest. A name given in one language only
-// is used for both. Pure, unit-tested in tests/unit/pdfs.test.mjs; no init() (used by js/features/pdfs.js).
+// The Library's PDFs (content/pdfs.json, written like content/library.json: id, file, title, titleEn, category,
+// language): each PDF with its titles and its category, one of the texts' categories (content/categories.json), with
+// whatever is missing or mistyped in the file left out, so one bad entry never hides the rest. A title given in one
+// language only is used for both. Pure, unit-tested in tests/unit/pdfs.test.mjs; no
+// init() (used by js/features/pdfs.js).
 
 /**
  * @typedef {import("./library.js").Name} Name
- * @typedef {{ file: string, title: Name }} Pdf   file: its path under content/ ("pdfs/dasbodh.pdf")
- * @typedef {{ name: Name, pdfs: Pdf[] }} PdfGroup
+ * @typedef {import("./library.js").Category} Category
+ * @typedef {{ id: string, file: string, title: Name, category: string, language: string }} Pdf
+ *   file: its path under content/ ("pdfs/dasbodh.pdf"); title: { mr: title, en: titleEn }
+ * @typedef {{ category: Category, pdfs: Pdf[] }} PdfShelf
  */
+
+/** @param {unknown} s */
+function str(s) {
+  return typeof s === "string" ? s.trim() : "";
+}
 
 /** @param {unknown} n @returns {Name | null} */
 function nameOf(n) {
-  if (typeof n === "string") n = { mr: n, en: n };
   if (!n || typeof n !== "object") return null;
   var o = /** @type {Record<string, unknown>} */ (n),
     mr = typeof o.mr === "string" ? o.mr.trim() : "",
@@ -29,28 +37,44 @@ export function fileOk(f) {
 }
 
 /**
- * The groups with at least one PDF, in the file's order
+ * The PDFs, in the file's order
  * @param {unknown} o content/pdfs.json as read
- * @returns {PdfGroup[]}
+ * @returns {Pdf[]}
  */
 export function cleanPdfs(o) {
-  var groups = o && typeof o === "object" ? /** @type {Record<string, unknown>} */ (o).groups : null;
-  if (!Array.isArray(groups)) return [];
-  /** @type {PdfGroup[]} */
+  var list = o && typeof o === "object" ? /** @type {Record<string, unknown>} */ (o).pdfs : null;
+  if (!Array.isArray(list)) return [];
+  /** @type {Pdf[]} */
   var out = [];
-  groups.forEach(function (g) {
-    if (!g || typeof g !== "object") return;
-    var name = nameOf(g.name),
-      list = Array.isArray(g.pdfs) ? g.pdfs : [];
-    /** @type {Pdf[]} */
-    var pdfs = [];
-    list.forEach(function (/** @type {any} */ p) {
-      var t = p && nameOf(p.title);
-      if (t && fileOk(p.file)) pdfs.push({ file: p.file, title: t });
-    });
-    if (name && pdfs.length) out.push({ name: name, pdfs: pdfs });
+  list.forEach(function (/** @type {any} */ p) {
+    var t = p && nameOf({ mr: p.title, en: p.titleEn });
+    if (t && fileOk(p.file))
+      out.push({ id: str(p.id) || p.file.replace(/^pdfs\//, "").replace(/\.pdf$/i, ""), file: p.file, title: t, category: str(p.category), language: str(p.language) });
   });
   return out;
+}
+
+/**
+ * The PDFs by category, as the Texts tab lists the texts: the categories in their order, each with its PDFs in the
+ * file's order, empty ones left out. A PDF whose category is unknown goes in the first category, as a text would.
+ * @param {Pdf[]} pdfs
+ * @param {Category[]} cats  the categories as shown now (js/features/library.js)
+ * @returns {PdfShelf[]}
+ */
+export function pdfShelves(pdfs, cats) {
+  /** @type {PdfShelf[]} */
+  var out = cats.map(function (c) {
+    return { category: c, pdfs: [] };
+  });
+  pdfs.forEach(function (p) {
+    var s = out.filter(function (x) {
+      return x.category.id === p.category;
+    })[0] || out[0];
+    if (s) s.pdfs.push(p);
+  });
+  return out.filter(function (s) {
+    return s.pdfs.length;
+  });
 }
 
 /** The address a PDF opens at, from the page: content/pdfs/… with spaces and the like escaped @param {Pdf} p */

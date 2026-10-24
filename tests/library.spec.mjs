@@ -426,15 +426,11 @@ test("every control in the categories sheet has a 44px target", async ({ page })
 // ---- The PDFs tab (content/pdfs.json, js/features/pdfs.js): a made-up list and PDF, served to the test only ----
 const SAMPLE_PDF = readFileSync(new URL("./unit/fixtures/sample.pdf", import.meta.url));
 const PDFS = {
-  groups: [
-    {
-      name: { mr: "ग्रंथ", en: "Books" },
-      pdfs: [
-        { file: "pdfs/dasbodh.pdf", title: { mr: "दासबोध", en: "Dasbodh" } },
-        { file: "pdfs/Shri Gurucharitra.pdf", title: { mr: "श्री गुरुचरित्र", en: "Shri Gurucharitra" } },
-      ],
-    },
-    { name: { mr: "पोथी", en: "Pothi" }, pdfs: [{ file: "pdfs/pothi.pdf", title: { en: "Pothi" } }, { file: "../index.html", title: "Not a PDF" }] },
+  pdfs: [
+    { id: "vedic-chant-dasbodh", file: "pdfs/dasbodh.pdf", title: "दासबोध", titleEn: "Dasbodh", category: "vedic-chant", language: "mr" },
+    { id: "stotra-pothi", file: "pdfs/pothi.pdf", titleEn: "Pothi", category: "stotra", language: "sa" },
+    { id: "vedic-chant-gurucharitra", file: "pdfs/Shri Gurucharitra.pdf", title: "श्री गुरुचरित्र", titleEn: "Shri Gurucharitra", category: "vedic-chant", language: "mr" },
+    { id: "aarti-x", file: "../index.html", title: "Not a PDF", category: "aarti" },
   ],
 };
 async function withPdfs(page, list = PDFS) {
@@ -443,7 +439,7 @@ async function withPdfs(page, list = PDFS) {
 }
 
 test("no PDFs listed: the Library has no tabs @mobile", async ({ page }) => {
-  await withPdfs(page, { groups: [] });
+  await withPdfs(page, { pdfs: [] });
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#hm").click();
   await expect(page.locator("#jtb")).toBeHidden();
@@ -451,7 +447,7 @@ test("no PDFs listed: the Library has no tabs @mobile", async ({ page }) => {
   await expect(page.locator("#q")).toBeVisible();
 });
 
-test("Texts | PDFs: the PDFs by group, each opening in a new tab; the Library opens on Texts again @mobile", async ({ page }) => {
+test("Texts | PDFs: the PDFs by the texts' categories, each opening in a new tab; the Library opens on Texts again @mobile", async ({ page }) => {
   await withPdfs(page);
   await openSite(page, SETUPS.both, { now: EVENING });
   await page.locator("#hm").click();
@@ -471,9 +467,10 @@ test("Texts | PDFs: the PDFs by group, each opening in a new tab; the Library op
   await expect(page.locator("#res li")).toHaveCount(0);
   await expect(page.locator("#lbr")).toBeHidden();
   await expect(page.locator("#jl .tocg:not(.pdfg)").first()).toBeHidden();
-  // the groups in order, with the entry that is not a PDF left out; names in both reading languages
-  await expect(page.locator("#jl .pdfg .gh .mr")).toHaveText(["ग्रंथ", "पोथी"]);
-  await expect(page.locator("#jl .pdfg .gh .en")).toHaveText(["Books", "Pothi"]);
+  // the texts' categories in their order (Aarti, with no PDF, left out), with the entry that is not a PDF left out;
+  // names in both reading languages
+  await expect(page.locator("#jl .pdfg .gh .mr")).toHaveText(["वैदिक मंत्र", "स्तोत्र"]);
+  await expect(page.locator("#jl .pdfg .gh .en")).toHaveText(["Vedic Chant", "Stotra"]);
   const links = page.locator("#jl .pdfg a.pdf");
   await expect(links).toHaveCount(3);
   await expect(links.locator(".m .mr")).toHaveText(["दासबोध", "श्री गुरुचरित्र", "Pothi"]);
@@ -492,6 +489,20 @@ test("Texts | PDFs: the PDFs by group, each opening in a new tab; the Library op
   await expect(tabs.nth(0)).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#q")).toBeVisible();
   await expect(page.locator("#jl .pdfg").first()).toBeHidden();
+});
+
+test("a category renamed on this phone: the PDFs tab uses the new name too @mobile", async ({ page }) => {
+  await withPdfs(page);
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await openSheet(page);
+  await page.locator('.lbe[data-id="stotra"]').click();
+  await page.locator("#lbmr").fill("स्तोत्रे");
+  await page.locator("#lben").fill("Stotras");
+  await page.locator("#lbsave").click();
+  await page.locator("#lbx").click();
+  await page.locator("#jtb button").nth(1).click();
+  await expect(page.locator("#jl .pdfg .gh .mr")).toHaveText(["वैदिक मंत्र", "स्तोत्रे"]);
+  await expect(page.locator("#jl .pdfg a.pdf")).toHaveCount(3);
 });
 
 test("the PDFs tab in Marathi menus @mobile", async ({ page }) => {
