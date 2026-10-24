@@ -5,7 +5,8 @@
 //
 // The routine comes from content/routines.json: for each session, either the same
 // list every day ({ mode: "fixed", texts }) or one list per weekday ({ mode: "weekday", days: { mon: […], … } }).
-// The default is content/routines.json (Satish's own routine), for a person who has not changed theirs.
+// The default is content/routines.json, for a person who has not changed theirs: a starting routine (2026-10-23)
+// that each person changes in the routine builder.
 // Which session it is now: sessionAt() in js/core/time-of-day.js.
 
 /**
