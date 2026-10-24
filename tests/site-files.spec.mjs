@@ -41,8 +41,8 @@ test("every file in js/parts.js exists", () => {
 test("js/parts.js lists the texts in content/library.json, so every text is kept for offline use", () => {
   const lib = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
   // the routine (content/routines.json) is kept too: the Today card shows it offline; and the festival rules
-  // (content/festivals.json), which the Vedic calendar uses offline
-  expect(parts.content).toEqual(["content/library.json", "content/categories.json", "content/routines.json", "content/festivals.json", ...lib.texts.map((t) => "content/" + t.file)]);
+  // (content/festivals.json) and the holidays (content/holidays.json), which the Vedic calendar uses offline
+  expect(parts.content).toEqual(["content/library.json", "content/categories.json", "content/routines.json", "content/festivals.json", "content/holidays.json", ...lib.texts.map((t) => "content/" + t.file)]);
   for (const f of parts.content) expect(parts.all).toContain(f);
 });
 

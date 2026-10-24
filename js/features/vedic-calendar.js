@@ -24,6 +24,7 @@
 import { P } from "../core/state.js";
 import { dayPanchang, monthPanchang } from "../core/panchang.js";
 import { festivalsFor, festivalsInMonth } from "../core/festivals.js";
+import { holidaysBetween, holidaysInMonth } from "../core/holidays.js";
 import { loaded } from "../text/load.js";
 import { skLoc } from "./sankashti.js";
 import { setC } from "./overlays.js";
@@ -36,6 +37,7 @@ import { DAYS, MONTHS, dv, esc, lead, mrLang, num, scr, second, ui } from "../co
  * @typedef {import("../core/panchang.js").MonthDay} MonthDay
  * @typedef {import("../core/panchang-names.js").Name} Name
  * @typedef {import("../core/festivals.js").FestivalDay} FestivalDay
+ * @typedef {import("../core/holidays.js").HolidayDay} HolidayDay
  * @typedef {{ lat: number, lon: number, mr: string, en: string }} Where
  */
 
@@ -58,6 +60,7 @@ const N = {
   angaraki: { mr: "अंगारकी", en: "Angaraki" },
   angSk: { mr: "अंगारकी संकष्टी", en: "Angaraki Sankashti" },
   festival: { mr: "सण", en: "Festival", ia: "Festival" },
+  holiday: { mr: "सुट्टी", en: "Holiday", ia: "Holiday" },
 };
 
 // The words around the names, in the menu language
@@ -334,6 +337,36 @@ function monthFests(y, m) {
   if (!fmonths[k]) fmonths[k] = festivalsInMonth(y, m, pl, loaded.festivals);
   return fmonths[k];
 }
+// ----- public holidays (content/holidays.json; js/core/holidays.js) -----
+
+/** @type {Record<string, Record<string, HolidayDay[]>>} months' holidays worked out while the page is open */
+var hmonths = {};
+/** @param {number} y @param {number} m 1–12 @returns {Record<string, HolidayDay[]>} */
+function monthHols(y, m) {
+  var pl = where();
+  if (!pl || !loaded.holidays) return {};
+  var k = pl.lat + "," + pl.lon + ":" + y + "-" + m;
+  if (!hmonths[k]) hmonths[k] = holidaysInMonth(y, m, pl, loaded.holidays);
+  return hmonths[k];
+}
+/** The holidays on one day ("YYYY-MM-DD", or now) @param {string | Date} k @param {{ lat: number, lon: number }} pl */
+function holsOn(k, pl) {
+  if (!loaded.holidays) return [];
+  if (typeof k === "string") {
+    var d = dateOf(k);
+    return monthHols(d.getFullYear(), d.getMonth() + 1)[k] || [];
+  }
+  return holidaysBetween(keyOf(k), keyOf(k), pl, loaded.holidays);
+}
+/** A holiday's name with where it is kept: "Republic Day (India)", "स्वातंत्र्य दिन (अमेरिका)" @param {HolidayDay} h @returns {Name} */
+function holName(h) {
+  var g = (loaded.holidays && loaded.holidays.groups) || {},
+    gs = h.groups.map(function (x) {
+      return g[x] || { mr: x, en: x };
+    });
+  return { mr: h.mr + " (" + gs.map(function (x) { return x.mr; }).join(", ") + ")", en: h.en + " (" + gs.map(function (x) { return x.en; }).join(", ") + ")" };
+}
+
 /** The festivals on one day ("YYYY-MM-DD", or now), [] when the rules did not load
  * @param {string | Date} k @param {{ lat: number, lon: number }} pl */
 function festsOn(k, pl) {
@@ -349,7 +382,7 @@ function festsOn(k, pl) {
 function festHome(pl) {
   var box = document.getElementById("fst");
   if (!box) return;
-  var fs = pl ? festsOn(new Date(), pl) : [];
+  var fs = pl ? /** @type {Name[]} */ (festsOn(new Date(), pl)).concat(holsOn(new Date(), pl).map(holName)) : [];
   if (!fs.length) {
     box.hidden = true;
     box.innerHTML = "";
@@ -456,6 +489,7 @@ function dayRender() {
   if (md && md.vriddhi) tSmall += "<br>" + esc(w.vriddhi);
   if (p.tithi.borderline) tSmall += "<br>" + esc(w.near);
   var fs = festsOn(k, pl),
+    hs = holsOn(k, pl).map(holName),
     tags = md ? marks(md) : [],
     masa = cat(" ", (p.masa.adhikaName ? [p.masa.adhikaName] : []).concat([p.masa.name]));
   // "शके १९४८ · पराभव संवत्सर" / "Shaka 1948 · Parabhava"; "शरद ऋतु · दक्षिणायन" / "Sharad · Dakshinayana"
@@ -473,14 +507,19 @@ function dayRender() {
     "<div>" +
     '<h3 id="cdt">' + nameH(title(p)) + "</h3>" +
     '<p class="cdd">' + say(dateLine) + (k === keyOf(new Date()) ? " · " + say(w.today) : "") + "</p>" +
-    (tags.length || fs.length
+    (tags.length || fs.length || hs.length
       ? '<p class="cdg">' +
         fs
           .map(function (f) {
             return fname(f, "tag fest");
           })
+          .concat(
+            hs.map(function (h) {
+              return nameH(h, "tag hol");
+            }),
+          )
           .join(" ") +
-        (fs.length && tags.length ? " " : "") +
+        ((fs.length || hs.length) && tags.length ? " " : "") +
         tags
           .map(function (t) {
             return nameH(t, "tag");
@@ -502,6 +541,23 @@ function dayRender() {
             ? fs
                 .map(function (f) {
                   return nameH2(f);
+                })
+                .join(say(", "))
+            : "",
+        )
+      : "") +
+    (hs.length
+      ? row(
+          N.holiday,
+          hs
+            .map(function (h) {
+              return nameH(h);
+            })
+            .join(say(", ")),
+          two
+            ? hs
+                .map(function (h) {
+                  return nameH2(h);
                 })
                 .join(say(", "))
             : "",
@@ -562,6 +618,7 @@ function monthRender() {
     m = view.m,
     days = monthOf(y, m),
     fm = monthFests(y, m),
+    hm = monthHols(y, m),
     today = keyOf(new Date()),
     first = new Date(y, m - 1, 1).getDay(),
     py = m === 1 ? y - 1 : y,
@@ -616,6 +673,7 @@ function monthRender() {
       sel = d.date === view.day,
       tn = t.name,
       fs = fm[d.date] || [],
+      hs = hm[d.date] || [],
       // a festival's own label stands for एकादशी on आषाढी / कार्तिकी एकादशी
       lab = d.ekadashi && !fs.length ? N.ekadashi : null,
       skl = d.sankashti ? (d.vara === 2 ? N.angaraki : N.sankashti) : null,
@@ -632,6 +690,13 @@ function monthRender() {
           fs.length && E
             ? fs.map(function (f) {
                 return f.en;
+              })
+            : [],
+        )
+        .concat(
+          hs.length && E
+            ? hs.map(function (h) {
+                return h.en;
               })
             : [],
         )
@@ -654,6 +719,11 @@ function monthRender() {
       fs
         .map(function (f) {
           return cell(f.short, "fs");
+        })
+        .join("") +
+      hs
+        .map(function (h) {
+          return cell(h.short, "hs");
         })
         .join("") +
       (lab ? cell(lab, "f") : "") +

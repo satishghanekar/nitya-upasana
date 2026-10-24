@@ -7,6 +7,7 @@
 // It also fetches content/routines.json, the default routine the Today card shows (js/features/today-card.js),
 // at the same time; without it the texts still load and the card shows empty sessions. And content/festivals.json, the
 // festival rules the Vedic calendar marks (js/core/festivals.js); without it no festivals are marked. And
+// content/holidays.json, the public holidays it marks (js/core/holidays.js); without it no holidays are marked. And
 // content/categories.json, the library's categories, which also set the reading order and the numbers
 // (js/text/content.js, js/core/library.js, js/features/library.js); without it each category is named by its id.
 
@@ -15,15 +16,16 @@ import { buildContent } from "./content.js";
 /**
  * What was loaded, for the parts that need it after start-up: the library (content/library.json) and the
  * routine (content/routines.json; null when it could not be loaded) and the festival rules (content/festivals.json;
- * null when it could not be loaded) and the categories (content/categories.json; null when it could not be loaded).
+ * null when it could not be loaded) and the holidays (content/holidays.json; null when it could not be loaded) and the categories (content/categories.json; null when it could not be loaded).
  * @type {{
  *   library: import("./content.js").Library | null,
  *   routine: import("../core/routine.js").Routine | null,
  *   festivals: import("../core/festivals.js").FestivalList | null,
+ *   holidays: import("../core/holidays.js").HolidayList | null,
  *   categories: import("../core/library.js").BundledCategory[] | null
  * }}
  */
-export const loaded = { library: null, routine: null, festivals: null, categories: null };
+export const loaded = { library: null, routine: null, festivals: null, holidays: null, categories: null };
 
 /**
  * @param {string} url
@@ -57,6 +59,18 @@ export function load() {
     .then(
       function (/** @type {import("../core/festivals.js").FestivalList} */ o) {
         loaded.festivals = o && Array.isArray(o.festivals) ? o : null;
+      },
+      function (/** @type {unknown} */ e) {
+        console.warn(e);
+      },
+    );
+  var holidays = get("content/holidays.json")
+    .then(function (r) {
+      return r.json();
+    })
+    .then(
+      function (/** @type {import("../core/holidays.js").HolidayList} */ o) {
+        loaded.holidays = o && Array.isArray(o.holidays) ? o : null;
       },
       function (/** @type {unknown} */ e) {
         console.warn(e);
@@ -103,5 +117,5 @@ export function load() {
         w.SCR.page();
       });
     });
-  return Promise.all([texts, routine, festivals, categories]).then(function () {});
+  return Promise.all([texts, routine, festivals, holidays, categories]).then(function () {});
 }

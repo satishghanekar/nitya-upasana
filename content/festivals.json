@@ -4,16 +4,21 @@
  "adhika": "nija",
  "festivals": [
   { "id": "makar-sankranti", "mr": "मकर संक्रांत", "en": "Makar Sankranti", "short": { "mr": "संक्रांत", "en": "Sankranti" }, "rule": { "rashi": 10 } },
+  { "id": "gondavalekar-maharaj-jayanti", "mr": "श्री गोंदवलेकर महाराज जयंती", "en": "Shri Gondavalekar Maharaj Jayanti", "short": { "mr": "महाराज जयंती", "en": "Maharaj Jayanti" }, "rule": { "masa": 11, "paksha": "shukla", "tithi": 12, "kala": "sunrise", "tie": "first" } },
   { "id": "maha-shivratri", "mr": "महाशिवरात्री", "en": "Maha Shivratri", "short": { "mr": "शिवरात्री", "en": "Shivratri" }, "rule": { "masa": 11, "paksha": "krishna", "tithi": 14, "kala": "nishita", "tie": "first" } },
   { "id": "holi", "mr": "होळी", "en": "Holi (Holika Dahan)", "short": { "mr": "होळी", "en": "Holi" }, "rule": { "masa": 12, "paksha": "shukla", "tithi": 15, "kala": "pradosh", "tie": "second" } },
   { "id": "gudi-padwa", "mr": "गुढीपाडवा", "en": "Gudi Padwa", "short": { "mr": "गुढीपाडवा", "en": "Gudi Padwa" }, "rule": { "masa": 1, "paksha": "shukla", "tithi": 1, "kala": "sunrise", "tie": "first" } },
+  { "id": "swami-samarth-prakat-din", "mr": "श्री स्वामी समर्थ प्रकट दिन", "en": "Shri Swami Samarth Prakat Din", "short": { "mr": "स्वामी प्रकट दिन", "en": "Swami Prakat Din" }, "rule": { "masa": 1, "paksha": "shukla", "tithi": 2, "kala": "sunrise", "tie": "first" } },
   { "id": "ram-navami", "mr": "श्रीराम नवमी", "en": "Ram Navami", "short": { "mr": "रामनवमी", "en": "Ram Navami" }, "rule": { "masa": 1, "paksha": "shukla", "tithi": 9, "kala": "madhyahna", "tie": "second" } },
   { "id": "hanuman-jayanti", "mr": "हनुमान जयंती", "en": "Hanuman Jayanti", "short": { "mr": "हनुमान जयंती", "en": "Hanuman Jayanti" }, "rule": { "masa": 1, "paksha": "shukla", "tithi": 15, "kala": "sunrise", "tie": "first" } },
+  { "id": "swami-samarth-punyatithi", "mr": "श्री स्वामी समर्थ पुण्यतिथी", "en": "Shri Swami Samarth Punyatithi", "short": { "mr": "स्वामी पुण्यतिथी", "en": "Swami Punyatithi" }, "rule": { "masa": 1, "paksha": "krishna", "tithi": 13, "kala": "sunrise", "tie": "first" } },
+  { "id": "nana-maharaj-punyatithi", "mr": "श्री नाना महाराज तराणेकर पुण्यतिथी", "en": "Shri Nana Maharaj Taranekar Punyatithi", "short": { "mr": "नाना महाराज पुण्यतिथी", "en": "Nana Maharaj Punyatithi" }, "rule": { "masa": 1, "paksha": "krishna", "tithi": 10, "kala": "sunrise", "tie": "first" } },
   { "id": "akshaya-tritiya", "mr": "अक्षय्य तृतीया", "en": "Akshaya Tritiya", "short": { "mr": "अक्षय्य तृतीया", "en": "Akshaya Tritiya" }, "rule": { "masa": 2, "paksha": "shukla", "tithi": 3, "kala": "sunrise", "tie": "first" } },
   { "id": "vat-purnima", "mr": "वटपौर्णिमा", "en": "Vat Purnima", "short": { "mr": "वट पौर्णिमा", "en": "Vat Purnima" }, "rule": { "masa": 3, "paksha": "shukla", "tithi": 15, "kala": "madhyahna", "tie": "first" } },
   { "id": "ashadhi-ekadashi", "mr": "आषाढी एकादशी", "en": "Ashadhi Ekadashi", "short": { "mr": "आषाढी एकादशी", "en": "Ashadhi Ekadashi" }, "rule": { "masa": 4, "paksha": "shukla", "tithi": 11, "kala": "sunrise", "tie": "first" } },
   { "id": "guru-purnima", "mr": "गुरुपौर्णिमा", "en": "Guru Purnima", "short": { "mr": "गुरु पौर्णिमा", "en": "Guru Purnima" }, "rule": { "masa": 4, "paksha": "shukla", "tithi": 15, "kala": "sunrise", "tie": "first" } },
   { "id": "nag-panchami", "mr": "नागपंचमी", "en": "Nag Panchami", "short": { "mr": "नागपंचमी", "en": "Nag Panchami" }, "rule": { "masa": 5, "paksha": "shukla", "tithi": 5, "kala": "sunrise", "tie": "first" } },
+  { "id": "nana-maharaj-jayanti", "mr": "श्री नाना महाराज तराणेकर जयंती", "en": "Shri Nana Maharaj Taranekar Jayanti", "short": { "mr": "नाना महाराज जयंती", "en": "Nana Maharaj Jayanti" }, "rule": { "masa": 5, "paksha": "shukla", "tithi": 5, "kala": "sunrise", "tie": "first" } },
   { "id": "narali-purnima", "mr": "नारळी पौर्णिमा · रक्षाबंधन", "en": "Narali Purnima · Raksha Bandhan", "short": { "mr": "नारळी पौर्णिमा", "en": "Narali Purnima" }, "rule": { "masa": 5, "paksha": "shukla", "tithi": 15, "kala": "sunrise", "tie": "first" } },
   { "id": "gokulashtami", "mr": "गोकुळाष्टमी", "en": "Gokulashtami (Krishna Janmashtami)", "short": { "mr": "जन्माष्टमी", "en": "Janmashtami" }, "rule": { "masa": 5, "paksha": "krishna", "tithi": 8, "kala": "nishita", "tie": "first" } },
   { "id": "ganesh-chaturthi", "mr": "श्री गणेश चतुर्थी", "en": "Ganesh Chaturthi", "short": { "mr": "गणेश चतुर्थी", "en": "Ganesh Chaturthi" }, "rule": { "masa": 6, "paksha": "shukla", "tithi": 4, "kala": "madhyahna", "tie": "first" } },
@@ -27,6 +32,7 @@
   { "id": "bhaubeej", "mr": "भाऊबीज", "en": "Bhaubeej", "short": { "mr": "भाऊबीज", "en": "Bhaubeej" }, "rule": { "masa": 8, "paksha": "shukla", "tithi": 2, "kala": "aparahna", "tie": "second" } },
   { "id": "kartiki-ekadashi", "mr": "कार्तिकी एकादशी", "en": "Kartiki Ekadashi", "short": { "mr": "कार्तिकी एकादशी", "en": "Kartiki Ekadashi" }, "rule": { "masa": 8, "paksha": "shukla", "tithi": 11, "kala": "sunrise", "tie": "first" } },
   { "id": "tripurari-purnima", "mr": "त्रिपुरारी पौर्णिमा", "en": "Tripurari Purnima", "short": { "mr": "त्रिपुरारी", "en": "Tripurari" }, "rule": { "masa": 8, "paksha": "shukla", "tithi": 15, "kala": "pradosh", "tie": "first" } },
-  { "id": "datta-jayanti", "mr": "दत्त जयंती", "en": "Datta Jayanti", "short": { "mr": "दत्त जयंती", "en": "Datta Jayanti" }, "rule": { "masa": 9, "paksha": "shukla", "tithi": 15, "kala": "pradosh", "tie": "first" } }
+  { "id": "datta-jayanti", "mr": "दत्त जयंती", "en": "Datta Jayanti", "short": { "mr": "दत्त जयंती", "en": "Datta Jayanti" }, "rule": { "masa": 9, "paksha": "shukla", "tithi": 15, "kala": "pradosh", "tie": "first" } },
+  { "id": "gondavalekar-maharaj-punyatithi", "mr": "श्री गोंदवलेकर महाराज पुण्यतिथी", "en": "Shri Gondavalekar Maharaj Punyatithi", "short": { "mr": "महाराज पुण्यतिथी", "en": "Maharaj Punyatithi" }, "rule": { "masa": 9, "paksha": "krishna", "tithi": 10, "kala": "sunrise", "tie": "first" } }
  ]
 }
