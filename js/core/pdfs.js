@@ -86,7 +86,7 @@ export function pdfShelves(pdfs, cats) {
 }
 
 /**
- * A PDF's pages and size as its row shows them, in Marathi and English: "१२० पाने · ४.१ MB", "120 pp · 4.1 MB"
+ * A PDF's pages and size as its row shows them, in Marathi and English: "१२० पाने · ४.१ MB", "120 pages · 4.1 MB"
  * (sizes as phones give them, 1 MB = 1,000,000 bytes: KB below 1 MB, MB with one decimal below 10 MB). Either
  * part is left out when not known; "" for both when neither is.
  * @param {Pdf} p
@@ -97,7 +97,7 @@ export function pdfFacts(p) {
     size = !p.size ? "" : mb < 1 ? Math.max(1, Math.round(p.size / 1e3)) + " KB" : (mb < 10 ? (Math.round(mb * 10) / 10).toFixed(1) : String(Math.round(mb))).replace(/\.0$/, "") + " MB";
   return {
     mr: [p.pages ? dv(p.pages) + (p.pages === 1 ? " पान" : " पाने") : "", dv(size)].filter(Boolean).join(" · "),
-    en: [p.pages ? p.pages + (p.pages === 1 ? " page" : " pp") : "", size].filter(Boolean).join(" · "),
+    en: [p.pages ? p.pages + (p.pages === 1 ? " page" : " pages") : "", size].filter(Boolean).join(" · "),
   };
 }
 

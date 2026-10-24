@@ -52,7 +52,7 @@ describe("cleanPdfs", () => {
 describe("pdfFacts", () => {
   const f = (pages, size) => pdfFacts({ ...ONE, pages, size });
   test("pages and size, in Marathi and English", () => {
-    expect(f(120, 4058213)).toEqual({ mr: "१२० पाने · ४.१ MB", en: "120 pp · 4.1 MB" });
+    expect(f(120, 4058213)).toEqual({ mr: "१२० पाने · ४.१ MB", en: "120 pages · 4.1 MB" });
     expect(f(1, 318293)).toEqual({ mr: "१ पान · ३१८ KB", en: "1 page · 318 KB" });
   });
   test("KB below 1 MB, one decimal below 10 MB, none from 10 MB", () => {
@@ -63,7 +63,7 @@ describe("pdfFacts", () => {
     expect(f(0, 23400000).en).toBe("23 MB");
   });
   test("what is not known is left out", () => {
-    expect(f(36, 0)).toEqual({ mr: "३६ पाने", en: "36 pp" });
+    expect(f(36, 0)).toEqual({ mr: "३६ पाने", en: "36 pages" });
     expect(f(0, 0)).toEqual({ mr: "", en: "" });
   });
 });

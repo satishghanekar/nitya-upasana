@@ -8,9 +8,11 @@ const FONTS=SITE_PARTS.fonts;
 const IMAGES=SITE_PARTS.images;
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(V).then(c=>c.addAll(['./','manifest.json',...IMAGES,...PARTS,...FONTS].map(x=>new Request(x,{cache:'reload'}))).catch(()=>{})))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
-// Same-site files: the page itself, its style and script files and the texts (content/, with the Library's PDFs, each
-// kept once it has been opened) are fetched fresh when possible (3 s limit, then the saved copy), so the page never
-// runs with an older copy of its parts; everything else is answered from the saved copy and refreshed in the background.
+// Same-site files: the page itself, its style and script files and the texts (content/) are fetched fresh when possible
+// (3 s limit, then the saved copy), so the page never runs with an older copy of its parts; everything else is
+// answered from the saved copy and refreshed in the background. A PDF from the Library's Books tab is kept once it
+// has been opened and from then on always opened from the phone, never downloaded again, until the next version
+// (V) clears the saved copies (the Books tab marks the ones kept, js/features/pdfs.js).
 // Nothing here may leave the page waiting: if the saved copy can't be read within 2 s, or anything
 // goes wrong, the request goes straight to the network as if there were no service worker.
 // (Safari on a Mac sat on a blank page with the previous version; its storage can stall.)
@@ -26,12 +28,12 @@ self.addEventListener('fetch',e=>{
   const pdf=/\.pdf$/i.test(u.pathname);
   const nav=!pdf&&(r.mode==='navigate'||/\/(index\.html)?$/.test(u.pathname));
   const key=nav?new URL('./',location.href).href:u.origin+u.pathname;
-  const fresh=nav||/\.(js|css)$|\/content\//.test(u.pathname);
+  const fresh=nav||!pdf&&/\.(js|css)$|\/content\//.test(u.pathname);
   const go=async()=>{
     const c=await wait(caches.open(V),2000);
     let m=c?await wait(c.match(key),2000):null;
     if(m&&m.redirected)m=null; // Safari refuses a redirected copy for a page
-    if(m&&u.pathname.includes('/fonts/'))return m; // font files never change
+    if(m&&(pdf||u.pathname.includes('/fonts/')))return m; // font files never change; a PDF is kept as first opened
     const net=()=>fetch(nav?key:u.origin+u.pathname,{cache:'no-cache',credentials:'same-origin'}).then(x=>{
       if(c&&x&&x.ok&&!x.redirected)c.put(key,x.clone()).catch(()=>{});return x}).catch(()=>null);
     if(fresh&&m){const n=net();const x=await wait(n,3000);if(x&&x.ok)return x;done(n);return m}

@@ -10,7 +10,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { setJ } from "./overlays.js";
-import { hasPdfs } from "./pdfs.js";
+import { hasPdfs, marks } from "./pdfs.js";
 
 /** The list of texts; search hides it while results are shown */
 export var ul;
@@ -35,6 +35,7 @@ export function libTab(v) {
   if (v === "pdf") {
     clearSearch();
     jp.setAttribute("data-tab", "pdf");
+    marks();
   } else jp.removeAttribute("data-tab");
   [].forEach.call(tb.querySelectorAll("button"), function (/** @type {HTMLElement} */ b) {
     b.setAttribute("aria-pressed", String(b.dataset.v === v));
