@@ -57,10 +57,10 @@
   flex: none;
   color: var(--muted);
 }
-/* under the picture and date (not on wide screens, where the picture is large beside the card): the lines start
-   under the date, without the calendar mark */
+/* under the date (not on wide screens, where the card starts after a calendar mark): the lines start where the date
+   does, without the mark */
 :root:not([data-rail="1"]) #pan .pcard {
-  padding-left: 80px;
+  padding-left: 12px;
 }
 :root:not([data-rail="1"]) #pan .pcard > svg {
   display: none;

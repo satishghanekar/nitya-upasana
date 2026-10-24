@@ -49,6 +49,11 @@
   height: 56px;
   margin: 0;
 }
+/* phones and tablets: the picture is in the top bar (#bti), so the card's lines use its whole width; on wide screens
+   it is large beside the card (Satish, 2026-10-24) */
+:root:not([data-rail="1"]) #tdy #iconb {
+  display: none;
+}
 /* no calendar line (no place known): the card is the picture and date alone */
 #tdy:has(+ #pan[hidden]) {
   border-bottom: 1px solid var(--hdrl);
