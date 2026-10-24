@@ -28,6 +28,10 @@
 // first day). Nothing else (nakshatra such as Shravan for Dasara or Rohini for Janmashtami, bhadra for Holi and Raksha
 // Bandhan, Vaishnava ekadashi) is considered; a printed calendar may differ on such years.
 //
+// A festival of several days before another (Gondhavlekar Maharaj Utsav, the nine days before Guru Purnima:
+// a family tradition, Satish 2026-10-24) is counted in days from that festival's day at the place; each day is named
+// with its number ({n} in the names: Day 1 … Day 9).
+//
 // A solar festival (Makar Sankranti) is on the day the sun enters the sidereal sign (Lahiri), counted from sunset to
 // sunset: a sankranti between sunset and the next sunrise is kept the next day (its punyakala is then), one before
 // sunset on that day.
@@ -43,9 +47,10 @@ import { dayTimes, masaOf, panchangDay, sunSidereal, tithiAt } from "./panchang.
  * @typedef {{ masa: number, paksha: "shukla" | "krishna", tithi: number, kala: Kala, tie: "first" | "second" }} LunarRule
  *   masa 1 Chaitra … 12 Phalgun (amanta, nija); tithi 1–15 within the paksha (krishna 15 is amavasya)
  * @typedef {{ rashi: number }} SolarRule  rashi 1 Mesha … 10 Makara … 12 Meena: the sidereal sign the sun enters
+ * @typedef {{ before: string, days: number }} BeforeRule  the `days` days before the festival with id `before`
  * @typedef {import("./panchang-names.js").Name} Name
  * @typedef {{ en: string, mr?: string }} Wiki  the Wikipedia page's title (as in its address), English and Marathi
- * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, rule: LunarRule | SolarRule }} Festival
+ * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, rule: LunarRule | SolarRule | BeforeRule }} Festival
  *   mr / en the full names (the festival is itself a Name); short the label for a day in the month grid
  * @typedef {{ version: number, adhika: "nija", festivals: Festival[] }} FestivalList  content/festivals.json
  * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, date: string, from: Date, to: Date }} FestivalDay
@@ -111,9 +116,18 @@ export function kalaWindow(d, kala) {
   }
 }
 
-/** @param {LunarRule | SolarRule} r @returns {r is LunarRule} */
+/** @param {LunarRule | SolarRule | BeforeRule} r @returns {r is LunarRule} */
 function lunar(r) {
   return "masa" in r;
+}
+/** @param {LunarRule | SolarRule | BeforeRule} r @returns {r is SolarRule} */
+function solar(r) {
+  return "rashi" in r;
+}
+var DV = "०१२३४५६७८९";
+/** A day's number in a name: {n}, in Devanagari digits in Marathi @param {string} s @param {number} n @param {boolean} mr */
+function nth(s, n, mr) {
+  return s.replace("{n}", mr ? String(n).replace(/\d/g, function (c) { return DV[+c]; }) : String(n));
 }
 /** tithi 1–30 of a lunar rule @param {LunarRule} r */
 function tithiN(r) {
@@ -133,10 +147,20 @@ export function festivalsBetween(from, to, place, list) {
   var times = timesCache(place);
   /** @type {FestivalDay[]} */
   var out = [];
-  /** @param {Festival} f @param {string} date @param {number} a @param {number} b */
-  function add(f, date, a, b) {
-    if (date >= from && date <= to)
-      out.push({ id: f.id, mr: f.mr, en: f.en, short: f.short, wiki: f.wiki, date: date, from: new Date(a), to: new Date(b) });
+  /** @param {Festival} f @param {string} date @param {number} a @param {number} b @param {number} [n] the day's number */
+  function add(f, date, a, b, n) {
+    if (date < from || date > to) return;
+    var d = n || 0;
+    out.push({
+      id: f.id,
+      mr: nth(f.mr, d, true),
+      en: nth(f.en, d, false),
+      short: { mr: nth(f.short.mr, d, true), en: nth(f.short.en, d, false) },
+      wiki: f.wiki,
+      date: date,
+      from: new Date(a),
+      to: new Date(b),
+    });
   }
 
   // lunar festivals, by tithi: every tithi current at some time from `from`'s sunrise to the sunrise after `to`
@@ -183,7 +207,7 @@ export function festivalsBetween(from, to, place, list) {
 
   // solar festivals: the sun enters the sign between the day before's sunset and this day's
   all.forEach(function (f) {
-    if (lunar(f.rule)) return;
+    if (!solar(f.rule)) return;
     var L = (f.rule.rashi - 1) * 30;
     /** @param {string} k */
     var dusk = function (k) {
@@ -204,6 +228,19 @@ export function festivalsBetween(from, to, place, list) {
       }
       a = b;
     }
+  });
+
+  // the days before another festival: that festival's days up to `days` after `to`, counted back
+  all.forEach(function (f) {
+    var r = f.rule;
+    if (!("before" in r)) return;
+    var n = r.days,
+      base = all.filter(function (b) {
+        return b.id === /** @type {BeforeRule} */ (r).before && !("before" in b.rule);
+      });
+    festivalsBetween(from, addDays(to, n), place, base).forEach(function (b) {
+      for (var i = 1; i <= n; i++) add(f, addDays(b.date, i - n - 1), b.from.getTime(), b.to.getTime(), i);
+    });
   });
 
   return out.sort(function (x, y) {
