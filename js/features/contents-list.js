@@ -5,7 +5,7 @@
 // list here from the home page.
 // The tabs, Chants | Books (पाठ | पोथी; #jtb, Satish, 2026-10-24), are shown only when content/pdfs.json lists a PDF, beside Back
 // in place of the title, as on the calendar page
-// (js/features/pdfs.js): the PDFs tab sets data-tab="pdf" on #jump, and the styles (css/13-library.css) show the
+// (js/features/pdfs.js): the Books tab sets data-tab="pdf" on #jump, and the styles (css/13-library.css) show the
 // PDFs' groups in #jl in place of the search box, the texts and Edit categories. The Library opens on Texts each time.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 

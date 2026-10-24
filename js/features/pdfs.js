@@ -1,14 +1,14 @@
 // @ts-check
-// The Library's PDFs: the PDFs tab's list, from content/pdfs.json (cleaned by js/core/pdfs.js), one .tocg.pdfg per
-// category, the texts' categories with the names this phone uses (js/features/library.js; listed again when they
-// change, "nitya-library"), at the end of the Library's list (#jl), so it looks like the texts' list, follows the text size and the
-// reading languages, and is put in Kannada letters with it (LATER in js/render.js). The tabs themselves, Texts |
-// PDFs, are js/features/contents-list.js's. A PDF opens in a new tab, in the phone's or computer's own PDF viewer
-// (Satish, 2026-10-24); on the iPhone's Home Screen app that is a view over the app with Done, so the app stays
-// where it was. sw.js keeps each PDF for offline use once it has been opened, and opens it from the phone after that;
-// a cloud before each title, as the iPhone's Files app shows one (Satish, 2026-10-24), says which: a cloud with an
-// arrow down while it is online only, a cloud with a ✓ once this phone has it (.pst, data-saved), checked when the
-// list is shown and again when the reader comes back from a PDF (marks()).
+// The Library's books (PDFs): the Books tab's list, from content/pdfs.json (cleaned by js/core/pdfs.js), one
+// .tocg.pdfg per category, the texts' categories with the names this phone uses (js/features/library.js; listed
+// again when they change, "nitya-library"), at the end of the Library's list (#jl), so it looks like the texts'
+// list, follows the text size and the reading languages, and is put in Kannada letters with it (LATER in
+// js/render.js). The tabs themselves, Chants | Books, are js/features/contents-list.js's. A PDF opens in a new tab,
+// in the phone's or computer's own PDF viewer (Satish, 2026-10-24); on the iPhone's Home Screen app that is a view
+// over the app with Done, so the app stays where it was. sw.js keeps each PDF once it has been opened, and opens it
+// from the phone after that. A cloud before each title, as the iPhone's Files app shows one (Satish, 2026-10-24),
+// says which: an arrow down while it is online only, a ✓ once this phone has it (.pst, data-saved), checked when
+// the list is shown and again when the reader comes back from a PDF (marks()).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { loaded } from "../text/load.js";
