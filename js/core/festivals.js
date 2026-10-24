@@ -28,7 +28,7 @@
 // first day). Nothing else (nakshatra such as Shravan for Dasara or Rohini for Janmashtami, bhadra for Holi and Raksha
 // Bandhan, Vaishnava ekadashi) is considered; a printed calendar may differ on such years.
 //
-// A festival of several days before another (Gondhavlekar Maharaj Utsav, the nine days before Guru Purnima:
+// A festival of several days before another (Shri Gondhavlekar Maharaj Utsav, the nine days before Guru Purnima:
 // a family tradition, Satish 2026-10-24) is counted in days from that festival's day at the place; each day is named
 // with its number ({n} in the names: Day 1 … Day 9).
 //

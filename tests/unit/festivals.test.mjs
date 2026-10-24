@@ -176,14 +176,14 @@ describe("the parts of the day", () => {
   });
 });
 
-describe("Gondhavlekar Maharaj Utsav: the nine days before Guru Purnima", () => {
+describe("Shri Gondhavlekar Maharaj Utsav: the nine days before Guru Purnima", () => {
   const days = (y, place) => festivalsBetween(y + "-06-01", y + "-08-31", place, LIST).filter((f) => f.id === "gondavalekar-maharaj-utsav");
   test("2026 in Pune: Day 1 on 20 July … Day 9 on 28 July, Guru Purnima on the 29th", () => {
     const d = days(2026, PUNE);
     expect(d.map((f) => f.date)).toEqual(["2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-25", "2026-07-26", "2026-07-27", "2026-07-28"]);
-    expect(d[0].en).toBe("Gondhavlekar Maharaj Utsav · Day 1");
+    expect(d[0].en).toBe("Shri Gondhavlekar Maharaj Utsav · Day 1");
     expect(d[8].short).toEqual({ mr: "उत्सव ९", en: "Utsav 9" });
-    expect(d[2].mr).toBe("गोंदवलेकर महाराज उत्सव — दिवस ३");
+    expect(d[2].mr).toBe("श्री गोंदवलेकर महाराज उत्सव — दिवस ३");
   });
   test("a range that ends inside the Utsav still finds its days (Guru Purnima is after it)", () => {
     expect(festivalsBetween("2026-07-25", "2026-07-25", PUNE, LIST).map((f) => f.short.en)).toContain("Utsav 6");
