@@ -53,18 +53,6 @@
   color: var(--ink);
   font: 400 13.5px/1.4 var(--lat);
 }
-#pan .pcard > svg {
-  flex: none;
-  color: var(--muted);
-}
-/* under the date (not on wide screens, where the card starts after a calendar mark): the lines start where the date
-   does, without the mark */
-:root:not([data-rail="1"]) #pan .pcard {
-  padding-left: 12px;
-}
-:root:not([data-rail="1"]) #pan .pcard > svg {
-  display: none;
-}
 #panb {
   position: absolute;
   inset: 0;
@@ -110,15 +98,44 @@
 #pan[lang="mr"] .p3 {
   font-family: var(--body);
 }
-#pan #pn3 {
-  display: contents;
-}
-#pan .p3 > span > span,
 #ploc {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   white-space: nowrap;
+}
+/* the sunrise and the sunset, each its picture and time: a button above the card's button that shows the picture full
+   screen; a 24px target (WCAG 2.5.8) */
+#pan .psun {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 24px;
+  margin: -4px -6px;
+  padding: 2px 6px 2px 4px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  cursor: zoom-in;
+}
+#pan .psun:hover {
+  color: var(--accent);
+}
+#pan .psun img {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+#pan .psun:focus-visible {
+  outline: 2px solid var(--ink);
 }
 /* the pin and the place, above the card's button; a 24px target (WCAG 2.5.8) */
 #ploc {

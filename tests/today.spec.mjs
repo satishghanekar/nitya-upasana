@@ -595,7 +595,7 @@ test("on a wide screen the Library opens beside Home's column, with the bottom b
   await expect(page.locator("#tsc")).toBeVisible();
   await expect(nowRows(page)).toHaveCount(0);
   // the Vedic calendar opens beside it too, with the bottom bar; Next closes it and goes on
-  await page.locator("#pan").click();
+  await page.locator("#panb").click({ position: { x: 12, y: 12 } });
   await expect(page.locator("#cal")).toBeVisible();
   await expect(page.locator("#asc")).toBeVisible();
   await page.locator("#asn").click();
