@@ -44,12 +44,14 @@ const SIMPLE = { morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha"]
 
 describe("the rules for a person's lists", () => {
   test("a person with no routine of their own edits a copy of the default (content/routines.json), unchanged", () => {
-    const r = editable(null, ROUTINE);
-    expect(r).toEqual(ROUTINE);
+    expect(editable(null, ROUTINE)).toEqual(ROUTINE);
+    // the copy is the person's own: changing it leaves the default as it was
+    const DEF = { morning: { mode: "weekday", days: { mon: ["aarti-sukhkarta"] } }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: [] } };
+    const r = editable(null, DEF);
     r.morning.days.mon.push("x");
-    expect(ROUTINE.morning.days.mon).not.toContain("x");
+    expect(DEF.morning.days.mon).not.toContain("x");
     r.evening.texts.push("x");
-    expect(ROUTINE.evening.texts).not.toContain("x");
+    expect(DEF.evening.texts).not.toContain("x");
     // their own wins when they have one; nothing at all gives three empty sessions
     expect(editable({ morning: { mode: "fixed", texts: ["aarti-sukhkarta"] } }, ROUTINE).morning.texts).toEqual(["aarti-sukhkarta"]);
     expect(editable(null, null)).toEqual({ morning: { mode: "fixed", texts: [] }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: [] } });

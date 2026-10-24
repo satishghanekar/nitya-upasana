@@ -3,7 +3,7 @@
 // to Home. The bottom bar's search button and the one at the end of each piece open the same page.
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { openSite, SETUPS, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
+import { openSite, SETUPS, axeScan, axeEveryTheme, noViolations, useTestRoutine } from "./helpers.mjs";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 // the bundled categories that have texts, in order (an empty one is left out of the list)
@@ -92,6 +92,7 @@ test("the bottom bar's search button opens the Library while reading", async ({ 
 });
 
 test("on the home page the top bar has the name, profile, Library, More and Settings; while reading Library moves to the bottom bar @mobile", async ({ page }) => {
+  await useTestRoutine(page);
   await openSite(page, SETUPS.marathi, { now: EVENING });
   for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   await expect(page.locator("#asq")).toBeHidden();
