@@ -522,6 +522,26 @@
     border-left: 1px solid var(--rule);
     z-index: 6;
   }
+  /* while one of them covers the large picture, the picture and today's date come back small at the top of Home's
+     column, as on a phone (Satish, 2026-10-24) */
+  :root[data-hv="1"][data-rail="1"]:has(#cal:not([hidden]), #panel:not([hidden]), #jump:not([hidden])) #home > #tdy {
+    grid-column: 1;
+    grid-row: auto;
+    flex-direction: row;
+    gap: 14px;
+    margin: 0 0 14px;
+    text-align: start;
+  }
+  :root[data-hv="1"][data-rail="1"]:has(#cal:not([hidden]), #panel:not([hidden]), #jump:not([hidden])) #tdy #iconb {
+    width: 56px;
+    height: 56px;
+  }
+  :root[data-hv="1"][data-rail="1"]:has(#cal:not([hidden]), #panel:not([hidden]), #jump:not([hidden])) #tdd .d1 {
+    font-size: 20px;
+  }
+  :root[data-hv="1"][data-rail="1"]:has(#cal:not([hidden]), #panel:not([hidden]), #jump:not([hidden])) #tdd .d2 {
+    font-size: 14px;
+  }
   /* while reading, the bottom bar stays under the Library and the calendar (css/07-bottom-bar-folds.css) */
   :root[data-rail="1"]:not([data-home="1"]) #cal,
   :root[data-rail="1"]:not([data-home="1"]) #jump {
