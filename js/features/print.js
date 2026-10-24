@@ -21,7 +21,7 @@ import { FEAT_SW } from "../core/features.js";
 import { compose } from "../print/compose.js";
 import { createWhat, whatWords } from "../print/what.js";
 import { shelvesNow } from "./library.js";
-import { todaySessions, runIds } from "./today-card.js";
+import { todaySessions, runIds, shownSession } from "./today-card.js";
 import { cur } from "../core/apply.js";
 import { active, list as people } from "../store/store.js";
 import { loaded } from "../text/load.js";
@@ -968,8 +968,8 @@ export function init() {
       pon(mode);
       tryPrint(false);
     }
-    // Open the builder: from Print (More), at What with the ticks as last left; from Print this text or Print this
-    // session, with just those texts ticked and at How (on a phone; ‹ What to print shows the choice)
+    // Open the builder: at What with the ticks as last left; with a session (tab "today"), at What on the Today tab with
+    // it chosen; with a text, just it ticked and at How (on a phone; ‹ What to print shows the choice)
     /** @param {{ ids?: string[], tab?: string, from?: HTMLElement | null }} [o] */
     function openPrint(o) {
       o = o || {};
@@ -1034,12 +1034,15 @@ export function init() {
       what.tab(o.tab || "texts");
       what.render();
       fontsAhead();
-      step(o.ids ? "how" : "what");
+      // on a phone, a session (the Today tab, with the session chosen) opens at What, so another one is a tap away;
+      // a text opens at How
+      var how = !!o.ids && o.tab !== "today";
+      step(how ? "how" : "what");
       ovPush();
       pm.hidden = false;
       refresh();
       // (a card taller than the screen stays at its top: Next or Print is in the bar at the bottom)
-      (o.ids || (wide && wide.matches) ? bpr : bnx).focus({ preventScroll: true });
+      (how || (wide && wide.matches) ? bpr : bnx).focus({ preventScroll: true });
     }
     var opener = /** @type {HTMLElement | null} */ (null);
     function langRow() {
@@ -1053,13 +1056,17 @@ export function init() {
     document.addEventListener("nitya-print", function (e) {
       openPrint(/** @type {CustomEvent} */ (e).detail || {});
     });
-    // Print in the bottom bar (while reading): the session being read (js/features/today-card.js runIds), else the text
-    // on screen, at How (the Today tab shows the session's choice)
+    // Print in the bottom bar: while reading, the session being read (js/features/today-card.js runIds), else the text
+    // on screen; on Home, the session Home shows. A session opens at What on the Today tab, with it chosen; a text at How
     document.getElementById("asp").onclick = function () {
       var b = document.getElementById("asp"),
         ids = runIds(),
         sec = cur(),
         t = null;
+      if (!sec && !(ids && ids.length))
+        ids = (todaySessions().filter(function (s) {
+          return s.session === shownSession();
+        })[0] || { ids: [] }).ids;
       if (ids && ids.length) return openPrint({ ids: ids, tab: "today", from: b });
       shelvesNow().forEach(function (s) {
         s.texts.forEach(function (x) {
