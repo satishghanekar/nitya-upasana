@@ -29,17 +29,36 @@
   margin-inline: auto;
   padding-top: 14px;
 }
+/* the picture and the date are the top of one card with the Vedic calendar line under them (#pan, css/12-calendar.css),
+   the same on every screen (Satish, 2026-10-24); on wide screens the picture is large beside it and the card starts
+   with the date */
 #tdy {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin: 0 0 14px;
+  gap: 12px;
+  margin: 0;
+  padding: 10px 12px 2px;
+  border: 1px solid var(--hdrl);
+  border-bottom: 0;
+  border-radius: 14px 14px 0 0;
+  background: var(--hdrt);
 }
 #tdy #iconb {
   flex: none;
-  width: 76px;
-  height: 76px;
+  width: 56px;
+  height: 56px;
   margin: 0;
+}
+/* no calendar line (no place known): the card is the picture and date alone */
+#tdy:has(+ #pan[hidden]) {
+  border-bottom: 1px solid var(--hdrl);
+  border-radius: 14px;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+/* a tap on the date opens the calendar too, as the line under it does (#panb, for the keyboard) */
+#tdd {
+  cursor: pointer;
 }
 #tdd {
   display: grid;
@@ -340,7 +359,7 @@
 }
 /* ==== Desktop A (screens 1024px and wider): Home on its own uses the whole layout width (85% of the
    screen): today on the left (the Vedic calendar line, the festival line, Morning / Afternoon / Evening, the session's
-   texts with their ticks, More, the Library line), the day's picture large on the right with the date under it.
+   texts with their ticks, More, the Library line), with today's date at the top; the day's picture large on the right.
    The rows are auto-sized and the last one takes the rest, so the picture spanning them all leaves no gaps ==== */
 @media screen and (min-width: 1024px) {
   /* the body's 16px and Home's own 8px taken back, so today's column starts where it stays while reading */
@@ -360,26 +379,28 @@
     grid-column: 1;
     min-width: 0;
   }
+  /* the picture alone on the right, centred in the height of the screen; today's date always at the top of the
+     left column, so it is in sight and nothing moves when a page opens over the picture (Satish, 2026-10-24) */
   :root[data-hv="1"][data-rail="1"] #home > #tdy {
-    --pic: min(560px, calc(100vh - 260px), calc(var(--W) - 120px));
-    grid-column: 2;
-    grid-row: 1 / -1;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 18px;
-    /* the picture and the date centred in the height of the screen */
-    margin: max(6px, calc((100vh - 260px - var(--pic)) / 2)) 0 0;
-    text-align: center;
+    display: contents;
   }
   :root[data-hv="1"][data-rail="1"] #tdy #iconb {
+    --pic: min(560px, calc(100vh - 200px), calc(var(--W) - 120px));
+    grid-column: 2;
+    grid-row: 1 / -1;
+    justify-self: center;
     width: var(--pic);
     height: var(--pic);
+    margin-top: max(6px, calc((100vh - 200px - var(--pic)) / 2));
   }
-  :root[data-hv="1"][data-rail="1"] #tdd .d1 {
-    font-size: 26px;
-  }
-  :root[data-hv="1"][data-rail="1"] #tdd .d2 {
-    font-size: 16px;
+  :root[data-hv="1"][data-rail="1"] #tdd {
+    grid-column: 1;
+    margin: 0;
+    padding: 10px 12px 2px 42px;
+    border: 1px solid var(--hdrl);
+    border-bottom: 0;
+    border-radius: 14px 14px 0 0;
+    background: var(--hdrt);
   }
 }
 
@@ -408,6 +429,10 @@
   }
   :root[data-rail="1"]:not([data-hv]) #home > #tdy {
     display: none;
+  }
+  :root[data-rail="1"]:not([data-hv]) #pan .pcard {
+    border-top: 1px solid var(--hdrl);
+    border-radius: 14px;
   }
   #tsl li.now {
     border-radius: 0 10px 10px 0;
@@ -521,26 +546,6 @@
     border-left: 1px solid var(--rule);
     z-index: 6;
   }
-  /* while one of them covers the large picture, the picture and today's date come back small at the top of Home's
-     column, as on a phone (Satish, 2026-10-24) */
-  :root[data-hv="1"][data-rail="1"]:has(#cal:not([hidden]), #panel:not([hidden]), #jump:not([hidden])) #home > #tdy {
-    grid-column: 1;
-    grid-row: auto;
-    flex-direction: row;
-    gap: 14px;
-    margin: 0 0 14px;
-    text-align: start;
-  }
-  :root[data-hv="1"][data-rail="1"]:has(#cal:not([hidden]), #panel:not([hidden]), #jump:not([hidden])) #tdy #iconb {
-    width: 56px;
-    height: 56px;
-  }
-  :root[data-hv="1"][data-rail="1"]:has(#cal:not([hidden]), #panel:not([hidden]), #jump:not([hidden])) #tdd .d1 {
-    font-size: 20px;
-  }
-  :root[data-hv="1"][data-rail="1"]:has(#cal:not([hidden]), #panel:not([hidden]), #jump:not([hidden])) #tdd .d2 {
-    font-size: 14px;
-  }
   /* while reading, the bottom bar stays under the Library and the calendar (css/07-bottom-bar-folds.css) */
   :root[data-rail="1"]:not([data-home="1"]) #cal,
   :root[data-rail="1"]:not([data-home="1"]) #jump {
@@ -618,6 +623,7 @@
   :root[data-rail="1"] #sp-home .sp-grp {
     break-inside: avoid;
   }
+  :root[data-rail="1"]:has(#panb[aria-expanded="true"]) :is(#tdy, #tdd),
   :root[data-rail="1"] #pan .pcard:has(#panb[aria-expanded="true"]) {
     border-color: var(--accent);
     box-shadow: inset 3px 0 0 var(--accent);
@@ -630,28 +636,11 @@
 }
 
 
-/* ==== Tablets held upright: Home is one larger column with the day's picture large on
-   top and the date under it, so the screen is filled without adding anything to Home ==== */
+/* ==== Tablets held upright: Home is one larger column ==== */
 @media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
   :root[data-hv="1"] #home {
     max-width: 40rem;
     font-size: 1.08em;
-  }
-  :root[data-hv="1"] #tdy {
-    flex-direction: column;
-    gap: 14px;
-    margin: 16px 0 22px;
-    text-align: center;
-  }
-  :root[data-hv="1"] #tdy #iconb {
-    width: min(340px, 34vh);
-    height: min(340px, 34vh);
-  }
-  :root[data-hv="1"] #tdd .d1 {
-    font-size: 26px;
-  }
-  :root[data-hv="1"] #tdd .d2 {
-    font-size: 16px;
   }
   :root[data-hv="1"] #tsl li {
     padding-block: 4px;
@@ -713,8 +702,9 @@
   :root[data-rail="1"] .wrap > :not(#home) {
     zoom: var(--Z);
   }
-  :root[data-hv="1"][data-rail="1"] #home > #tdy {
-    --pic: min(900px, calc(100vh - 300px), calc(var(--W) - 160px));
+  :root[data-hv="1"][data-rail="1"] #tdy #iconb {
+    --pic: min(900px, calc(100vh - 240px), calc(var(--W) - 160px));
+    margin-top: max(6px, calc((100vh - 240px - var(--pic)) / 2));
   }
   :root[data-hv="1"][data-rail="1"] #tdd {
     zoom: var(--Z);

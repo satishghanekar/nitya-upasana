@@ -495,6 +495,15 @@ test("on a wide screen Home uses the whole width: today on the left, the picture
     expect(pic.x, `${width}px picture beside today`).toBeGreaterThan(list.x + list.width);
     expect(pic.width, `${width}px picture size`).toBeGreaterThanOrEqual(Math.min(400, height - 300));
     expect(pic.y + pic.height, `${width}px picture on screen`).toBeLessThanOrEqual(height);
+    // today's date at the top of the left column, above the calendar line; it stays put when the calendar opens
+    const date = await page.locator("#tdd").boundingBox(),
+      pan = await page.locator("#pan").boundingBox();
+    expect(date.x + date.width, `${width}px date on the left`).toBeLessThan(pic.x);
+    expect(date.y + date.height, `${width}px date above the calendar line`).toBeLessThanOrEqual(pan.y);
+    await page.locator("#panb").click({ position: { x: 12, y: 12 } });
+    await expect(page.locator("#cal")).toBeVisible();
+    expect((await page.locator("#tdd").boundingBox()).y, `${width}px date stays put`).toBe(date.y);
+    expect((await page.locator("#pan").boundingBox()).y, `${width}px calendar line stays put`).toBe(pan.y);
     await expect(page.locator("#rail")).toHaveCount(0);
     await context.close();
   }
