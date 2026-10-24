@@ -57,8 +57,8 @@ test("the line opens the calendar page; the day card has today's panchang @mobil
   await expect(row(page, "मास")).toHaveText("आश्विनAshvin (amanta)");
   await expect(row(page, "संवत्सर")).toHaveText("शके १९४८ · पराभव संवत्सरShaka 1948 · Parabhava");
   await expect(row(page, "ऋतु · अयन")).toHaveText("शरद ऋतु · दक्षिणायनSharad · Dakshinayana");
-  // the next Sankashti, with moonrise (the same as the Share message)
-  await expect(page.locator("#cald .csk")).toHaveText("Next संकष्टी चतुर्थी: Wed, Oct 28Moonrise 8:09 pm · Columbus, OH");
+  // no next Sankashti here (Satish, 2026-10-24: Home and the Share message have it)
+  await expect(page.locator("#cald .csk")).toHaveCount(0);
   await expect(page.locator("#caln0")).toHaveText("Worked out on this phone for Columbus, OH. Tap a day to see its details.");
 });
 
@@ -91,7 +91,8 @@ test("the month: weekdays, tithi at sunrise, paksha shading, moons, Ekadashi, Sa
   await expect(day(30).locator(".kx")).toHaveText("+षष्ठी");
   await expect(day(30)).toHaveAccessibleName(/30 October, Friday, पंचमी.*Krishna Panchami.*kshaya tithi: Krishna Shashthi/);
   // with Kojagiri Purnima, a festival (content/festivals.json): its short name shows, its full name is heard
-  await expect(day(25)).toHaveAccessibleName("25 October, Sunday, पौर्णिमा कोजागिरी , Purnima, Kojagiri Purnima");
+  // (and Valmiki Jayanti, a Karnataka holiday on Ashvin purnima at sunrise: the 25th in Columbus)
+  await expect(day(25)).toHaveAccessibleName("25 October, Sunday, पौर्णिमा कोजागिरी वाल्मीकि जयंती , Purnima, Kojagiri Purnima, Valmiki Jayanti");
   // the key
   await expect(page.locator(".ckey")).toContainText("Shukla paksha");
   await expect(page.locator(".ckey")).toContainText("Krishna paksha");
@@ -111,7 +112,28 @@ test("tapping a day shows it in the day card @mobile", async ({ page }) => {
   // purnima: no paksha in the title
   await page.locator('#calm button[data-d="2026-10-25"]').click();
   await expect(page.locator("#cdt")).toHaveText("आश्विन पौर्णिमा");
-  await expect(page.locator("#cald .cdg")).toHaveText("कोजागिरी पौर्णिमा पौर्णिमा");
+  await expect(page.locator("#cald .cdg")).toHaveText("कोजागिरी पौर्णिमा वाल्मीकि जयंती (कर्नाटक) पौर्णिमा");
+});
+
+// Public holidays (content/holidays.json, Satish 2026-10-24): in the month and the day card, with where they are kept
+test("a public holiday shows in the month and the day card, with its country or state @mobile", async ({ page }) => {
+  await open(page);
+  await expect(page.locator('#calm button[data-d="2026-10-12"] .hs')).toHaveText("कोलंबस डे");
+  await expect(page.locator('#calm button[data-d="2026-10-02"] .hs')).toHaveText("गांधी जयंती");
+  await page.locator('#calm button[data-d="2026-10-12"]').click();
+  await expect(page.locator("#cald .cdg .tag.hol")).toHaveText("कोलंबस डे (अमेरिका)");
+  await expect(row(page, "सुट्टी")).toHaveText("कोलंबस डे (अमेरिका) ↗Columbus Day (US)");
+  await expect(row(page, "सुट्टी").locator("a")).toHaveAttribute("href", "https://en.wikipedia.org/wiki/Columbus_Day");
+});
+
+// A festival's name links to its Wikipedia page (Satish, 2026-10-24): English with English menus, Marathi where there is one
+test("a festival's name in the day card links to its Wikipedia page @mobile", async ({ page }) => {
+  await open(page);
+  await page.locator('#calm button[data-d="2026-10-20"]').click();
+  const a = row(page, "सण").locator("a");
+  await expect(a).toHaveAttribute("href", "https://en.wikipedia.org/wiki/Vijayadashami");
+  await expect(a).toHaveAttribute("target", "_blank");
+  await expect(a).toHaveAccessibleName("दसरा: Wikipedia (opens in a new tab)");
 });
 
 test("previous and next month @mobile", async ({ page }) => {
@@ -189,7 +211,6 @@ test("Marathi menus: the page's words and digits are Marathi", async ({ page }) 
   await expect(row(page, "तिथी")).toHaveText("शुद्ध अष्टमीShukla Ashtami · सोमवारी रात्री १:२१ पर्यंत");
   await expect(row(page, "सूर्योदय")).toHaveText("सकाळी ७:४५सूर्यास्त सायं. ६:४७ · कोलंबस");
   await expect(page.locator('#calm button[data-d="2026-10-25"] b')).toHaveText("२५");
-  await expect(page.locator("#cald .csk")).toHaveText("पुढील संकष्टी चतुर्थी: बुधवार, २८ ऑक्टोबरचंद्रोदय रात्री ८:०९ · कोलंबस");
 });
 
 test("targets: the page's buttons are 44px; days are at least 24px wide even on the smallest phones @mobile", async ({ page }) => {
@@ -260,7 +281,6 @@ test("English first, no second: Home and the calendar are all in English, with L
   await expect(row(page, "Month")).toHaveText("Ashvinamanta");
   await expect(row(page, "Samvatsara")).toHaveText("Shaka 1948 · Parabhava");
   await expect(row(page, "Ritu · Ayana")).toHaveText("Sharad · Dakshinayana");
-  await expect(page.locator("#cald .csk")).toHaveText("Next Sankashti Chaturthi: Wed, Oct 28Moonrise 8:09 pm · Columbus, OH");
   await expect(page.locator("#cmt")).toHaveText("October 2026Bhadrapad → Ashvin from 11 Oct");
   await expect(page.locator(".cgr thead th [aria-hidden]")).toHaveText(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
   await expect(day(page, 18).locator(".t")).toHaveText("Ashtami");
@@ -382,7 +402,7 @@ test("festivals: दसरा on 20 October in the month, a tag and a row in the
   await day(20).click();
   await expect(page.locator("#cald .cdg")).toHaveText("दसरा");
   await expect(page.locator("#cald .cdg .tag.fest")).toHaveCount(1);
-  await expect(row(page, "सण")).toHaveText("दसराDasara (Vijayadashami)");
+  await expect(row(page, "सण")).toHaveText("दसरा ↗Dasara (Vijayadashami)");
   // an ordinary day has no festival row
   await day(19).click();
   await expect(page.locator("#cald dt", { hasText: "सण" })).toHaveCount(0);
@@ -436,7 +456,7 @@ test("festivals in English only: Home says Today: Dasara, the month and the day 
   await expect(day(page, 11).locator(".fs")).toHaveText("Navratri");
   await expect(day(page, 25).locator(".fs")).toHaveText("Kojagiri");
   await expect(page.locator("#cald .cdg .tag.fest")).toHaveText("Dasara (Vijayadashami)");
-  await expect(row(page, "Festival")).toHaveText("Dasara (Vijayadashami)");
+  await expect(row(page, "Festival")).toHaveText("Dasara (Vijayadashami) ↗");
   expect(await page.locator("#cald .cdg").innerText()).not.toMatch(DEVANAGARI);
   expect(await page.locator("#calm .fs").allInnerTexts()).not.toContainEqual(expect.stringMatching(DEVANAGARI));
 });
@@ -445,7 +465,7 @@ test("festivals in Marathi only: आज दसरा, and no English line in the
   await openSite(page, { ...SETUPS["marathi-menus"], lead: "mr", l2: "", loc: { lat: 39.96, lon: -83.0 } }, { now: DASARA });
   await expect(page.locator("#fst")).toHaveText("आज दसरा");
   await page.locator("#panb").click();
-  await expect(row(page, "सण")).toHaveText("दसरा");
+  await expect(row(page, "सण")).toHaveText("दसरा ↗");
 });
 
 // Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); each language set-up in full
@@ -467,3 +487,16 @@ for (const [name, prefs, themes] of [
     expect(await scan("#cal")).toEqual(ok);
   });
 }
+
+// The place (Satish, 2026-10-24): a pin beside Home's calendar line, no longer a row in Settings
+test("the pin beside the calendar line uses the phone's location @mobile", async ({ page }) => {
+  await page.context().grantPermissions(["geolocation"]);
+  await page.context().setGeolocation({ latitude: 18.52, longitude: 73.86 });
+  await openSite(page, SETUPS.english);
+  await expect(page.locator("#sloc")).toHaveCount(0);
+  const pin = page.locator("#ploc");
+  await expect(pin).toHaveAccessibleName("Use my location (Columbus, OH)");
+  await pin.click();
+  await expect(page.locator("#panb .p3")).toContainText("Pune");
+  await expect(page.locator("#ploc")).toHaveAccessibleName("Use my location (Pune, Maharashtra)");
+});

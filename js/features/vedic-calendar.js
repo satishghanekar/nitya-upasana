@@ -9,7 +9,7 @@
 // - The calendar page (#cal), opened by that button: like the Library page (#jump) it sits under the top bar with a
 //   Back button, the phone's Back closes it (js/features/history.js) and focus returns to the button (overlays.js
 //   setC). A day card (tithi, nakshatra and yoga with their end times, vara, sunrise and sunset, moonrise, month,
-//   samvatsara, ritu and ayana, the next Sankashti) and the month as a table of buttons: each day's tithi at sunrise,
+//   samvatsara, ritu and ayana) and the month as a table of buttons: each day's tithi at sunrise,
 //   shukla / krishna shading, full and new moon, Ekadashi and Sankashti, kshaya and vriddhi tithis, today. A month is
 //   worked out only when it is shown (monthPanchang(), ~50 ms) and kept while the page is open.
 // - Festivals (content/festivals.json, rules in js/core/festivals.js): a short label on the day in the month, a tag
@@ -24,8 +24,9 @@
 import { P } from "../core/state.js";
 import { dayPanchang, monthPanchang } from "../core/panchang.js";
 import { festivalsFor, festivalsInMonth } from "../core/festivals.js";
+import { holidaysBetween, holidaysInMonth } from "../core/holidays.js";
 import { loaded } from "../text/load.js";
-import { skLoc, skNext, skFmt, skMid } from "./sankashti.js";
+import { skLoc } from "./sankashti.js";
 import { setC } from "./overlays.js";
 import { IA } from "../text/iast.js";
 import { PAKSHA } from "../core/panchang-names.js";
@@ -36,6 +37,7 @@ import { DAYS, MONTHS, dv, esc, lead, mrLang, num, scr, second, ui } from "../co
  * @typedef {import("../core/panchang.js").MonthDay} MonthDay
  * @typedef {import("../core/panchang-names.js").Name} Name
  * @typedef {import("../core/festivals.js").FestivalDay} FestivalDay
+ * @typedef {import("../core/holidays.js").HolidayDay} HolidayDay
  * @typedef {{ lat: number, lon: number, mr: string, en: string }} Where
  */
 
@@ -57,9 +59,8 @@ const N = {
   sankashti: { mr: "संकष्टी", en: "Sankashti" },
   angaraki: { mr: "अंगारकी", en: "Angaraki" },
   angSk: { mr: "अंगारकी संकष्टी", en: "Angaraki Sankashti" },
-  skc: { mr: "संकष्टी चतुर्थी", en: "Sankashti Chaturthi" },
-  angSkc: { mr: "अंगारकी संकष्टी चतुर्थी", en: "Angaraki Sankashti Chaturthi" },
   festival: { mr: "सण", en: "Festival", ia: "Festival" },
+  holiday: { mr: "सुट्टी", en: "Holiday", ia: "Holiday" },
 };
 
 // The words around the names, in the menu language
@@ -68,13 +69,11 @@ const W = {
     open: " (open the Vedic calendar)",
     sunrise: "Sunrise",
     sunset: "Sunset",
-    moonrise: "Moonrise",
     noRise: "No moonrise this day",
     until: "until ",
     amanta: "amanta",
     today: "today",
-    next: "Next",
-    skToday: "Sankashti Chaturthi today",
+    loc: "Use my location",
     prev: "Previous month",
     nextM: "Next month",
     key: ["Shukla paksha", "Krishna paksha", "Purnima", "Amavasya"],
@@ -93,13 +92,11 @@ const W = {
     open: " (पंचांग उघडा)",
     sunrise: "सूर्योदय",
     sunset: "सूर्यास्त",
-    moonrise: "चंद्रोदय",
     noRise: "या दिवशी चंद्रोदय नाही",
     until: "",
     amanta: "अमान्त",
     today: "आज",
-    next: "पुढील",
-    skToday: "संकष्टी चतुर्थी आज",
+    loc: "माझे ठिकाण वापरा",
     prev: "मागचा महिना",
     nextM: "पुढचा महिना",
     key: ["शुद्ध पक्ष", "वद्य पक्ष", "पौर्णिमा", "अमावास्या"],
@@ -122,9 +119,9 @@ const ICON = {
   down: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 4v5M9.5 6.5 12 9l2.5-2.5"/></svg>',
   chev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   prev: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+  pin: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   next: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8l-5.8 3.5 1.6-6.6-5.2-4.4 6.8-.5z" fill="currentColor"/></svg>',
-  moon: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" fill="currentColor"/></svg>',
 };
 
 /** The calendar page's state while it is open */
@@ -321,7 +318,9 @@ function homeRender() {
     "</span></span></span>" +
     '<span class="sr">' + esc(w.open) + "</span>" +
     ICON.chev +
-    "</button>";
+    "</button>" +
+    // the place: a tap asks the phone where it is (js/features/sankashti.js useMyLocation)
+    '<button type="button" id="ploc" aria-label="' + esc(w.loc + " (" + placeName(L) + ")") + '">' + ICON.pin + "</button>";
   box.hidden = false;
   festHome(pl);
 }
@@ -333,6 +332,18 @@ function homeRender() {
 function fname(n, cls) {
   return nameH(n, cls);
 }
+/** A festival's or holiday's name as a link to its Wikipedia page (Marathi with Marathi menus, where there is one),
+ * opening in a new tab with ↗, as the texts' credits do; just the name when it has none
+ * @param {Name & { wiki?: import("../core/festivals.js").Wiki }} f */
+function fwiki(f) {
+  if (!f.wiki) return fname(f);
+  var M = ui() === "mr" && !!f.wiki.mr,
+    url = M ? "https://mr.wikipedia.org/wiki/" + f.wiki.mr : "https://en.wikipedia.org/wiki/" + f.wiki.en,
+    // (the name as shown first, so what is heard starts with what is seen)
+    shown = txt(f, lead() === "en" ? "en" : "mr"),
+    label = ui() === "mr" ? shown + " — विकिपीडिया (नवीन टॅबमध्ये उघडेल)" : shown + ": Wikipedia (opens in a new tab)";
+  return '<a href="' + esc(encodeURI(url)) + '" target="_blank" rel="noopener" aria-label="' + esc(label) + '">' + fname(f) + '<span class="crx" aria-hidden="true"> ↗</span></a>';
+}
 /** @type {Record<string, Record<string, FestivalDay[]>>} months' festivals worked out while the page is open */
 var fmonths = {};
 /** @param {number} y @param {number} m 1–12 @returns {Record<string, FestivalDay[]>} */
@@ -343,6 +354,37 @@ function monthFests(y, m) {
   if (!fmonths[k]) fmonths[k] = festivalsInMonth(y, m, pl, loaded.festivals);
   return fmonths[k];
 }
+// ----- public holidays (content/holidays.json; js/core/holidays.js) -----
+
+/** @type {Record<string, Record<string, HolidayDay[]>>} months' holidays worked out while the page is open */
+var hmonths = {};
+/** @param {number} y @param {number} m 1–12 @returns {Record<string, HolidayDay[]>} */
+function monthHols(y, m) {
+  var pl = where();
+  if (!pl || !loaded.holidays) return {};
+  var k = pl.lat + "," + pl.lon + ":" + y + "-" + m;
+  if (!hmonths[k]) hmonths[k] = holidaysInMonth(y, m, pl, loaded.holidays);
+  return hmonths[k];
+}
+/** The holidays on one day ("YYYY-MM-DD", or now) @param {string | Date} k @param {{ lat: number, lon: number }} pl */
+function holsOn(k, pl) {
+  if (!loaded.holidays) return [];
+  if (typeof k === "string") {
+    var d = dateOf(k);
+    return monthHols(d.getFullYear(), d.getMonth() + 1)[k] || [];
+  }
+  return holidaysBetween(keyOf(k), keyOf(k), pl, loaded.holidays);
+}
+/** A holiday's name with where it is kept: "Republic Day (India)", "स्वातंत्र्य दिन (अमेरिका)", and its Wikipedia page
+ * @param {HolidayDay} h @returns {Name & { wiki?: import("../core/festivals.js").Wiki }} */
+function holName(h) {
+  var g = (loaded.holidays && loaded.holidays.groups) || {},
+    gs = h.groups.map(function (x) {
+      return g[x] || { mr: x, en: x };
+    });
+  return { mr: h.mr + " (" + gs.map(function (x) { return x.mr; }).join(", ") + ")", en: h.en + " (" + gs.map(function (x) { return x.en; }).join(", ") + ")", wiki: h.wiki };
+}
+
 /** The festivals on one day ("YYYY-MM-DD", or now), [] when the rules did not load
  * @param {string | Date} k @param {{ lat: number, lon: number }} pl */
 function festsOn(k, pl) {
@@ -358,7 +400,7 @@ function festsOn(k, pl) {
 function festHome(pl) {
   var box = document.getElementById("fst");
   if (!box) return;
-  var fs = pl ? festsOn(new Date(), pl) : [];
+  var fs = pl ? /** @type {Name[]} */ (festsOn(new Date(), pl)).concat(holsOn(new Date(), pl).map(holName)) : [];
   if (!fs.length) {
     box.hidden = true;
     box.innerHTML = "";
@@ -465,6 +507,7 @@ function dayRender() {
   if (md && md.vriddhi) tSmall += "<br>" + esc(w.vriddhi);
   if (p.tithi.borderline) tSmall += "<br>" + esc(w.near);
   var fs = festsOn(k, pl),
+    hs = holsOn(k, pl).map(holName),
     tags = md ? marks(md) : [],
     masa = cat(" ", (p.masa.adhikaName ? [p.masa.adhikaName] : []).concat([p.masa.name]));
   // "शके १९४८ · पराभव संवत्सर" / "Shaka 1948 · Parabhava"; "शरद ऋतु · दक्षिणायन" / "Sharad · Dakshinayana"
@@ -476,21 +519,25 @@ function dayRender() {
   var ritu = function (l) {
     return cat(" · ", [l === "mr" ? cat(" ", [p.ritu.name, { mr: "ऋतु", en: "" }]) : p.ritu.name, p.ayana.name]);
   };
-  var sk = skLine(L);
   box.innerHTML =
     '<div class="cdh">' +
     (src ? '<img src="' + esc(src) + '" alt="" width="64" height="64">' : "") +
     "<div>" +
     '<h3 id="cdt">' + nameH(title(p)) + "</h3>" +
     '<p class="cdd">' + say(dateLine) + (k === keyOf(new Date()) ? " · " + say(w.today) : "") + "</p>" +
-    (tags.length || fs.length
+    (tags.length || fs.length || hs.length
       ? '<p class="cdg">' +
         fs
           .map(function (f) {
             return fname(f, "tag fest");
           })
+          .concat(
+            hs.map(function (h) {
+              return nameH(h, "tag hol");
+            }),
+          )
           .join(" ") +
-        (fs.length && tags.length ? " " : "") +
+        ((fs.length || hs.length) && tags.length ? " " : "") +
         tags
           .map(function (t) {
             return nameH(t, "tag");
@@ -505,13 +552,30 @@ function dayRender() {
           N.festival,
           fs
             .map(function (f) {
-              return fname(f);
+              return fwiki(f);
             })
             .join(say(", ")),
           two
             ? fs
                 .map(function (f) {
                   return nameH2(f);
+                })
+                .join(say(", "))
+            : "",
+        )
+      : "") +
+    (hs.length
+      ? row(
+          N.holiday,
+          hs
+            .map(function (h) {
+              return fwiki(h);
+            })
+            .join(say(", ")),
+          two
+            ? hs
+                .map(function (h) {
+                  return nameH2(h);
                 })
                 .join(say(", "))
             : "",
@@ -530,8 +594,7 @@ function dayRender() {
     row(N.masa, nameH(masa), two ? nameH2(masa) + esc(" (" + w.amanta + ")") : esc(w.amanta)) +
     row(N.samvatsara, nameH(sam(lead())), two ? nameH2(sam(second() || "en")) : "") +
     row(N.rituAyana, nameH(ritu(lead())), two ? nameH2(ritu(second() || "en")) : "") +
-    "</dl>" +
-    sk;
+    "</dl>";
 }
 
 /** The tithi name for 1–30 (for kshaya notes) @param {number} n @returns {Name} */
@@ -557,32 +620,6 @@ function marks(md) {
   return t;
 }
 
-/** The next Sankashti, with moonrise and the place (as on Home and in the Share message) @param {Where} L */
-function skLine(L) {
-  var o = skNext();
-  if (!o) return "";
-  var f = skFmt(o),
-    E = ui() === "en",
-    today = Math.round((o.day - skMid()) / 86400000) === 0,
-    w = words(),
-    head = today
-      ? E
-        ? en(w.skToday + (f.ang ? " (Angaraki)" : ""))
-        : mr((f.ang ? "अंगारकी " : "") + w.skToday)
-      : E
-        ? en(w.next + " ") + "<b>" + nameH(f.ang ? N.angSkc : N.skc) + "</b>" + en(": " + f.den)
-        : mr(w.next + " ") + "<b>" + nameH(f.ang ? N.angSkc : N.skc) + "</b>" + mr(": " + f.dmr);
-  return (
-    '<p class="csk"><span class="dot">' +
-    ICON.moon +
-    "</span><span>" +
-    head +
-    '<br><span class="muted" lang="' + (E ? "en" : mrLang()) + '">' +
-    esc((E ? w.moonrise + " " + f.ten : w.moonrise + " " + f.tmr) + " · " + placeName(L)) +
-    "</span></span></p>"
-  );
-}
-
 /** A name in a day of the month: the first reading language only, a long English one may break @param {Name} n @param {string} cls */
 function cell(n, cls) {
   var l = lead();
@@ -599,6 +636,7 @@ function monthRender() {
     m = view.m,
     days = monthOf(y, m),
     fm = monthFests(y, m),
+    hm = monthHols(y, m),
     today = keyOf(new Date()),
     first = new Date(y, m - 1, 1).getDay(),
     py = m === 1 ? y - 1 : y,
@@ -653,6 +691,7 @@ function monthRender() {
       sel = d.date === view.day,
       tn = t.name,
       fs = fm[d.date] || [],
+      hs = hm[d.date] || [],
       // a festival's own label stands for एकादशी on आषाढी / कार्तिकी एकादशी
       lab = d.ekadashi && !fs.length ? N.ekadashi : null,
       skl = d.sankashti ? (d.vara === 2 ? N.angaraki : N.sankashti) : null,
@@ -669,6 +708,13 @@ function monthRender() {
           fs.length && E
             ? fs.map(function (f) {
                 return f.en;
+              })
+            : [],
+        )
+        .concat(
+          hs.length && E
+            ? hs.map(function (h) {
+                return h.en;
               })
             : [],
         )
@@ -691,6 +737,11 @@ function monthRender() {
       fs
         .map(function (f) {
           return cell(f.short, "fs");
+        })
+        .join("") +
+      hs
+        .map(function (h) {
+          return cell(h.short, "hs");
         })
         .join("") +
       (lab ? cell(lab, "f") : "") +
@@ -849,5 +900,7 @@ export function init() {
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) homeSoon();
   });
+  // a new place (the pin, js/features/sankashti.js useMyLocation)
+  document.addEventListener("nitya-place", homeSoon);
   homeSoon();
 }

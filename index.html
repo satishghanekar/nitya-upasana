@@ -79,6 +79,7 @@
 <link rel="modulepreload" href="js/core/panchang-names.js">
 <link rel="modulepreload" href="js/core/panchang.js">
 <link rel="modulepreload" href="js/core/festivals.js">
+<link rel="modulepreload" href="js/core/holidays.js">
 <link rel="modulepreload" href="js/features/vedic-calendar.js">
 <link rel="modulepreload" href="js/text/dhrupad-markers.js">
 <link rel="modulepreload" href="js/text/stanza-numbers.js">
@@ -176,95 +177,104 @@
       <h2 id="spt"><span class="mr">सेटिंग्ज</span><span class="en" lang="en">Settings</span></h2>
     </div>
     <div class="sp-body">
-      <!-- Main and second language: the phone's own dropdown (an invisible <select> over each row); English is listed
-           twice, once per spelling -->
-      <h3 class="sp-h"><span class="mr">भाषा</span><span class="en" lang="en">Languages</span></h3>
-      <div class="sp-card">
-        <div class="sp-row sp-go sp-pick" id="sl1"><span class="sp-l"><span class="mr">मुख्य भाषा</span><span class="en" lang="en">Main language</span><small><span class="mr">मोठ्या अक्षरांत</span><span class="en" lang="en">Large text</span></small></span><span class="sp-v" id="sl1v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl1s" aria-label="Main language"></select></div>
-        <div class="sp-row sp-go sp-pick" id="sl2"><span class="sp-l"><span class="mr">दुसरी भाषा</span><span class="en" lang="en">Second language</span><small><span class="mr">लहान, प्रत्येक ओळीखाली</span><span class="en" lang="en">Smaller, under each line</span></small></span><span class="sp-v" id="sl2v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl2s" aria-label="Second language"></select></div>
-        <div class="sp-row" id="surow">
-          <span class="sp-l"><span class="mr">मेनू आणि बटणे</span><span class="en" lang="en">Menus and buttons</span></span>
-          <div class="sp-seg" id="su" role="group" aria-label="Menus and buttons">
-            <button type="button" data-v="en" lang="en">English</button>
-            <button type="button" data-v="mr" lang="mr">मराठी</button>
+      <!-- each heading with its cards in one group, kept whole in a column (Safari splits a heading from its card
+           otherwise, whatever break-after says) -->
+      <section class="sp-grp">
+        <!-- Main and second language: the phone's own dropdown (an invisible <select> over each row); English is listed
+             twice, once per spelling -->
+        <h3 class="sp-h"><span class="mr">भाषा</span><span class="en" lang="en">Languages</span></h3>
+        <div class="sp-card">
+          <div class="sp-row sp-go sp-pick" id="sl1"><span class="sp-l"><span class="mr">मुख्य भाषा</span><span class="en" lang="en">Main language</span><small><span class="mr">मोठ्या अक्षरांत</span><span class="en" lang="en">Large text</span></small></span><span class="sp-v" id="sl1v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl1s" aria-label="Main language"></select></div>
+          <div class="sp-row sp-go sp-pick" id="sl2"><span class="sp-l"><span class="mr">दुसरी भाषा</span><span class="en" lang="en">Second language</span><small><span class="mr">लहान, प्रत्येक ओळीखाली</span><span class="en" lang="en">Smaller, under each line</span></small></span><span class="sp-v" id="sl2v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl2s" aria-label="Second language"></select></div>
+          <div class="sp-row" id="surow">
+            <span class="sp-l"><span class="mr">मेनू आणि बटणे</span><span class="en" lang="en">Menus and buttons</span></span>
+            <div class="sp-seg" id="su" role="group" aria-label="Menus and buttons">
+              <button type="button" data-v="en" lang="en">English</button>
+              <button type="button" data-v="mr" lang="mr">मराठी</button>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- a few lines of the Ganapati aarti, as the pieces will show them (filled in by the script) -->
-      <div class="sp-prev" id="sprev" aria-hidden="true"></div>
-      <h3 class="sp-h"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></h3>
-      <div class="sp-card">
-        <div class="sp-row">
-          <span class="sp-l"><span class="mr">अक्षरांचा आकार</span><span class="en" lang="en">Text size</span></span>
-          <div class="sp-seg sp-sz" role="group" aria-label="Text size">
-            <button id="sm" type="button" aria-label="Smaller">A−</button>
-            <span id="szv" class="sp-szv" role="status"></span>
-            <button id="lg" type="button" aria-label="Larger">A+</button>
-            <button id="sr" type="button" aria-label="Reset text size"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
+        <!-- a few lines of the Ganapati aarti, as the pieces will show them (filled in by the script) -->
+        <div class="sp-prev" id="sprev" aria-hidden="true"></div>
+      </section>
+      <section class="sp-grp">
+        <h3 class="sp-h"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></h3>
+        <div class="sp-card">
+          <div class="sp-row">
+            <span class="sp-l"><span class="mr">अक्षरांचा आकार</span><span class="en" lang="en">Text size</span></span>
+            <div class="sp-seg sp-sz" role="group" aria-label="Text size">
+              <button id="sm" type="button" aria-label="Smaller">A−</button>
+              <span id="szv" class="sp-szv" role="status"></span>
+              <button id="lg" type="button" aria-label="Larger">A+</button>
+              <button id="sr" type="button" aria-label="Reset text size"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
+            </div>
+          </div>
+          <div class="sp-row sp-stk">
+            <span class="sp-l"><span class="mr">अक्षरशैली</span><span class="en" lang="en">Text font</span></span>
+            <div class="sp-seg" id="sfn" role="group" aria-label="Text font">
+              <button type="button" data-v="classic"><span class="mr">पारंपरिक</span><span class="en" lang="en">Traditional</span></button>
+              <button type="button" data-v="std"><span class="mr">आधुनिक</span><span class="en" lang="en">Modern</span></button>
+              <button type="button" data-v="bold"><span class="mr">ठळक</span><span class="en" lang="en">Bold</span></button>
+            </div>
+          </div>
+          <div class="sp-row">
+            <span class="sp-l"><span class="mr">ध्रुपद</span><span class="en" lang="en">Dhrupad</span></span>
+            <div class="sp-seg" id="srf" role="group" aria-label="Dhrupad">
+              <button type="button" data-v="1"><span class="mr">एकदा</span><span class="en" lang="en">Once</span></button>
+              <button type="button" data-v="0"><span class="mr">प्रत्येक कडव्यानंतर</span><span class="en" lang="en">Every verse</span></button>
+            </div>
+          </div>
+          <div class="sp-row" id="colrow">
+            <span class="sp-l"><span class="mr">मांडणी</span><span class="en" lang="en">Layout</span></span>
+            <div class="sp-seg" id="sc" role="group" aria-label="Layout">
+              <button type="button" data-v="1"><span class="mr">१ स्तंभ</span><span class="en" lang="en">1 column</span></button>
+              <button type="button" data-v="2"><span class="mr">२ स्तंभ</span><span class="en" lang="en">2 columns</span></button>
+            </div>
           </div>
         </div>
-        <div class="sp-row sp-stk">
-          <span class="sp-l"><span class="mr">अक्षरशैली</span><span class="en" lang="en">Text font</span></span>
-          <div class="sp-seg" id="sfn" role="group" aria-label="Text font">
-            <button type="button" data-v="classic"><span class="mr">पारंपरिक</span><span class="en" lang="en">Traditional</span></button>
-            <button type="button" data-v="std"><span class="mr">आधुनिक</span><span class="en" lang="en">Modern</span></button>
-            <button type="button" data-v="bold"><span class="mr">ठळक</span><span class="en" lang="en">Bold</span></button>
+      </section>
+      <section class="sp-grp">
+        <h3 class="sp-h"><span class="mr">स्क्रीन</span><span class="en" lang="en">Screen</span></h3>
+        <div class="sp-card">
+          <div class="sp-row sp-stk">
+            <span class="sp-l"><span class="mr">रंगसंगती</span><span class="en" lang="en">Theme</span></span>
+            <div class="sp-seg" id="st" role="group" aria-label="Theme">
+              <button type="button" data-v="auto"><span class="mr">आपोआप</span><span class="en" lang="en">Auto</span></button>
+              <button type="button" data-v="light"><span class="mr">फिकट</span><span class="en" lang="en">Light</span></button>
+              <button type="button" data-v="sepia"><span class="mr">सेपिया</span><span class="en" lang="en">Sepia</span></button>
+              <button type="button" data-v="dark"><span class="mr">गडद</span><span class="en" lang="en">Dark</span></button>
+            </div>
           </div>
+          <button id="tc" class="sp-row sp-sw" type="button"><span class="sp-l"><span class="mr">अधिक ठळक</span><span class="en" lang="en">High contrast</span></span></button>
+          <button id="tw" class="sp-row sp-sw" type="button"><span class="sp-l"><span class="mr">स्क्रीन चालू ठेवा</span><span class="en" lang="en">Keep screen on</span></span></button>
         </div>
-        <div class="sp-row">
-          <span class="sp-l"><span class="mr">ध्रुपद</span><span class="en" lang="en">Dhrupad</span></span>
-          <div class="sp-seg" id="srf" role="group" aria-label="Dhrupad">
-            <button type="button" data-v="1"><span class="mr">एकदा</span><span class="en" lang="en">Once</span></button>
-            <button type="button" data-v="0"><span class="mr">प्रत्येक कडव्यानंतर</span><span class="en" lang="en">Every verse</span></button>
-          </div>
+      </section>
+      <section class="sp-grp">
+        <!-- Profiles and backup (js/features/profiles.js, js/features/backup.js): who is reading (opens the profile sheet),
+             Save a backup file, Restore from a file, and a warning when this browser can't save here -->
+        <h3 class="sp-h"><span class="mr">प्रोफाइल आणि बॅकअप</span><span class="en" lang="en">Profiles and backup</span></h3>
+        <div class="sp-card">
+          <p class="sp-row sp-warn" id="stw2" hidden><span class="sp-l"><span class="mr">हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.</span><span class="en" lang="en">This browser can't save here. Use Save a backup file before closing.</span></span></p>
+          <button type="button" class="sp-row sp-go" id="spf"><span class="sp-l"><span class="mr">कोण वाचत आहे</span><span class="en" lang="en">Who is reading</span></span><span class="sp-v" id="spfv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <!-- the reading person's routine: the routine builder (#rtb, js/features/routine-builder.js) -->
+          <button type="button" class="sp-row sp-go" id="sprt" aria-haspopup="dialog" aria-controls="rtb"><span class="sp-l"><span class="mr">दिनक्रम</span><span class="en" lang="en">Routine</span><small><span class="mr">प्रत्येक वेळेच्या रचना आणि त्यांचा क्रम</span><span class="en" lang="en">The texts for each session, in order</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button type="button" class="sp-row sp-go" id="bks"><span class="sp-l"><span class="mr">बॅकअप फाइल जतन करा</span><span class="en" lang="en">Save a backup file</span><small id="bksv"></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
+          <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span class="mr">फाइलमधून परत आणा</span><span class="en" lang="en">Restore from a file</span><small><span class="mr">आधी जतन केलेली .nitya फाइल</span><span class="en" lang="en">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
         </div>
-        <div class="sp-row" id="colrow">
-          <span class="sp-l"><span class="mr">मांडणी</span><span class="en" lang="en">Layout</span></span>
-          <div class="sp-seg" id="sc" role="group" aria-label="Layout">
-            <button type="button" data-v="1"><span class="mr">१ स्तंभ</span><span class="en" lang="en">1 column</span></button>
-            <button type="button" data-v="2"><span class="mr">२ स्तंभ</span><span class="en" lang="en">2 columns</span></button>
-          </div>
+      </section>
+      <section class="sp-grp">
+        <h3 class="sp-h"><span class="mr">माहिती</span><span class="en" lang="en">About</span></h3>
+        <div class="sp-card">
+          <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span class="mr">मदत आणि वापर</span><span class="en" lang="en">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button type="button" class="sp-row sp-go" id="inb2" hidden><span class="sp-l"><span class="mr">होम स्क्रीनवर ठेवा</span><span class="en" lang="en">Add to Home Screen</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <!-- one line: the version and whether the site is saved for offline use; a tap checks for updates (fetches the
+               page and its files fresh; reloads if any changed, else says it is up to date) -->
+          <button type="button" class="sp-row" id="upd"><span class="sp-l"><span id="ver" lang="en"></span> · <span id="offv"></span></span><span class="sp-v" id="updv"></span></button>
         </div>
-      </div>
-      <h3 class="sp-h"><span class="mr">स्क्रीन</span><span class="en" lang="en">Screen</span></h3>
-      <div class="sp-card">
-        <div class="sp-row sp-stk">
-          <span class="sp-l"><span class="mr">रंगसंगती</span><span class="en" lang="en">Theme</span></span>
-          <div class="sp-seg" id="st" role="group" aria-label="Theme">
-            <button type="button" data-v="auto"><span class="mr">आपोआप</span><span class="en" lang="en">Auto</span></button>
-            <button type="button" data-v="light"><span class="mr">फिकट</span><span class="en" lang="en">Light</span></button>
-            <button type="button" data-v="sepia"><span class="mr">सेपिया</span><span class="en" lang="en">Sepia</span></button>
-            <button type="button" data-v="dark"><span class="mr">गडद</span><span class="en" lang="en">Dark</span></button>
-          </div>
-        </div>
-        <button id="tc" class="sp-row sp-sw" type="button"><span class="sp-l"><span class="mr">अधिक ठळक</span><span class="en" lang="en">High contrast</span></span></button>
-        <button id="tw" class="sp-row sp-sw" type="button"><span class="sp-l"><span class="mr">स्क्रीन चालू ठेवा</span><span class="en" lang="en">Keep screen on</span></span></button>
-      </div>
-      <!-- Profiles and backup (js/features/profiles.js, js/features/backup.js): who is reading (opens the profile sheet),
-           Save a backup file, Restore from a file, and a warning when this browser can't save here -->
-      <h3 class="sp-h"><span class="mr">प्रोफाइल आणि बॅकअप</span><span class="en" lang="en">Profiles and backup</span></h3>
-      <div class="sp-card">
-        <p class="sp-row sp-warn" id="stw2" hidden><span class="sp-l"><span class="mr">हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.</span><span class="en" lang="en">This browser can't save here. Use Save a backup file before closing.</span></span></p>
-        <button type="button" class="sp-row sp-go" id="spf"><span class="sp-l"><span class="mr">कोण वाचत आहे</span><span class="en" lang="en">Who is reading</span></span><span class="sp-v" id="spfv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-        <!-- the reading person's routine: the routine builder (#rtb, js/features/routine-builder.js) -->
-        <button type="button" class="sp-row sp-go" id="sprt" aria-haspopup="dialog" aria-controls="rtb"><span class="sp-l"><span class="mr">दिनक्रम</span><span class="en" lang="en">Routine</span><small><span class="mr">प्रत्येक वेळेच्या रचना आणि त्यांचा क्रम</span><span class="en" lang="en">The texts for each session, in order</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-        <button type="button" class="sp-row sp-go" id="bks"><span class="sp-l"><span class="mr">बॅकअप फाइल जतन करा</span><span class="en" lang="en">Save a backup file</span><small id="bksv"></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
-        <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span class="mr">फाइलमधून परत आणा</span><span class="en" lang="en">Restore from a file</span><small><span class="mr">आधी जतन केलेली .nitya फाइल</span><span class="en" lang="en">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
-      </div>
-      <h3 class="sp-h"><span class="mr">माहिती</span><span class="en" lang="en">About</span></h3>
-      <div class="sp-card">
-        <!-- The place moonrise is worked out for (js/features/sankashti.js): a tap asks the phone for its location once;
-             only the rounded place is kept, on this device -->
-        <button type="button" class="sp-row sp-go" id="sloc"><span class="sp-l"><span class="mr">चंद्रोदयासाठी ठिकाण</span><span class="en" lang="en">Place for moonrise</span><small><span class="mr">माझे ठिकाण वापरा</span><span class="en" lang="en">Use my location</span></small></span><span class="sp-v" id="slocv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg></button>
-        <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span class="mr">मदत आणि वापर</span><span class="en" lang="en">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-        <button type="button" class="sp-row sp-go" id="inb2" hidden><span class="sp-l"><span class="mr">होम स्क्रीनवर ठेवा</span><span class="en" lang="en">Add to Home Screen</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-        <!-- one line: the version and whether the site is saved for offline use; a tap checks for updates (fetches the
-             page and its files fresh; reloads if any changed, else says it is up to date) -->
-        <button type="button" class="sp-row" id="upd"><span class="sp-l"><span id="ver" lang="en"></span> · <span id="offv"></span></span><span class="sp-v" id="updv"></span></button>
-      </div>
-      <!-- who made the site, always in English -->
-      <p class="sp-by" lang="en">A volunteer offering by Satish Ghanekar<br><a href="mailto:satishghanekar1@gmail.com">satishghanekar1@gmail.com</a></p>
+      </section>
     </div>
+    <!-- who made the site, always in English -->
+    <p class="sp-by" lang="en">A volunteer offering by Satish Ghanekar<br><a href="mailto:satishghanekar1@gmail.com">satishghanekar1@gmail.com</a></p>
   </div>
 </div>
 <!-- ==== Vedic calendar (js/features/vedic-calendar.js, worked out by js/core/panchang.js on this phone): opened by the
@@ -506,7 +516,7 @@
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
                 <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home says so, "Today: Dasara"). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
-        <li><b>On a Sankashti day</b> a line under the date gives tonight's <b>moonrise</b> for where you are (Angaraki, on a Tuesday, is marked). The place is your phone's time zone until you choose <b>Place for moonrise</b> under About in Settings, which uses your phone's location; the town is worked out on the phone and your location is never sent anywhere.</li>
+        <li><b>On a Sankashti day</b> a line under the date gives tonight's <b>moonrise</b> for where you are (Angaraki, on a Tuesday, is marked). The place is your phone's time zone until you tap the <b>pin</b> beside the Vedic calendar line on Home, which uses your phone's location; the town is worked out on the phone and your location is never sent anywhere.</li>
       </ul>
 
       <h3>Your routine</h3>
@@ -589,7 +599,7 @@
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b> and <b>Keep screen on</b>: switches; tap to turn on or off. Keep screen on starts on for phones and tablets and off on computers.</li>
         <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Routine</b> (see Your routine above), <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
-        <li><b>About:</b> <b>Place for moonrise</b> (see Home above), this Help, <b>Add to Home Screen</b> (until the site is installed), and one line with the version and whether the site is saved for offline use; tap it to check for updates (see Good to know below).</li>
+        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line with the version and whether the site is saved for offline use; tap it to check for updates (see Good to know below).</li>
       </ul>
 
       <h3>Print</h3>
