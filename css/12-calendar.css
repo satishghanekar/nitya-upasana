@@ -230,12 +230,6 @@
   font-size: 13px;
   text-align: center;
 }
-#cal .cwait {
-  margin: 0;
-  padding: 24px;
-  color: var(--muted);
-  text-align: center;
-}
 
 /* ==== The day card (#cald): picture and title, the rows, the next Sankashti ==== */
 #cald {
