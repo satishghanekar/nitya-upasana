@@ -685,9 +685,10 @@ function upHome(pl) {
         }).join("") + "</ul>"
       : "") +
     (next
-      ? '<p class="upx"><span class="upxl">' + say(w.uNext) + "</span>" +
+      // a button too, to its day, like the rows
+      ? '<button type="button" class="upx" data-d="' + next.date + '"><span class="upxl">' + say(w.uNext) + "</span>" +
         "<b>" + nameH(next.name) + "</b>" +
-        '<span class="upxd">' + say(dayLabel(next.date) + " · " + w.uIn(Math.round((dateOf(next.date).getTime() - dateOf(t).getTime()) / 864e5))) + "</span></p>"
+        '<span class="upxd">' + say(dayLabel(next.date) + " · " + w.uIn(Math.round((dateOf(next.date).getTime() - dateOf(t).getTime()) / 864e5))) + "</span></button>"
       : "");
   box.hidden = false;
 }
@@ -800,8 +801,8 @@ function dayRender() {
   };
   var today = keyOf(new Date());
   box.innerHTML =
-    // on phones, ‹ › to the day before or after, and Today
-    (narrow()
+    // on the Day tab, ‹ › to the day before or after, and Today
+    (view.mode === "day"
       ? '<div class="cdnav">' +
         '<button type="button" class="cnav" data-dd="-1">' + ICON.prev + '<span class="sr">' + esc(w.prevDay) + "</span></button>" +
         '<span class="cdnt">' + say(dayLabel(k)) + "</span>" +
@@ -1103,7 +1104,8 @@ function upRender() {
     (a.length || b.length ? "" : '<p class="upe">' + say(w.uNone) + "</p>");
 }
 
-/** Phones, and tablets held upright: one tab at a time (Day, 15 days, Month); wider, the day card stays beside */
+/** Phones, and tablets held upright: one tab at a time (Day, 15 days, Month); wider, the day card stays beside the
+ * 15 days and the month (the Day tab is the day card alone there too) */
 function narrow() {
   return !matchMedia("(min-width: 820px)").matches || matchMedia("(orientation: portrait) and (max-width: 1023px)").matches;
 }
@@ -1121,13 +1123,14 @@ function calRender() {
   var note = document.getElementById("caln0"),
     w = words(),
     nar = narrow();
-  if (!nar && view.mode === "day") view.mode = "month";
   var mode = view.mode;
+  // (css/12-calendar.css: on wide screens the Day tab is the day card alone, centred; 15 days and Month keep it beside)
+  c.setAttribute("data-mode", mode);
   if (note) note.innerHTML = L ? say(w.note(placeName(L))) : "";
-  // Day | 15 days | Month (Day only on phones)
+  // Day | 15 days | Month, on every screen (Satish, 2026-10-24: a day opened from This week shows alone)
   var v = document.getElementById("calv");
   if (v) {
-    var tabs = /** @type {("day" | "up" | "month")[]} */ (nar ? ["day", "up", "month"] : ["up", "month"]);
+    var tabs = /** @type {("day" | "up" | "month")[]} */ (["day", "up", "month"]);
     v.className = "n" + tabs.length;
     v.innerHTML = tabs
       .map(function (m) {
@@ -1303,9 +1306,9 @@ export function init() {
   if (upw)
     upw.addEventListener("click", function (e) {
       var t = /** @type {HTMLElement} */ (e.target),
-        r = /** @type {HTMLElement | null} */ (t.closest(".upr"));
+        r = /** @type {HTMLElement | null} */ (t.closest(".upr, .upx"));
       // the row tapped stays marked while its day is open (css/12-calendar.css)
-      [].forEach.call(document.querySelectorAll("#upw .upr.on"), function (/** @type {HTMLElement} */ x) {
+      [].forEach.call(document.querySelectorAll("#upw .on"), function (/** @type {HTMLElement} */ x) {
         x.classList.remove("on");
       });
       if (r && r.dataset.d) {
