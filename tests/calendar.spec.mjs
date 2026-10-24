@@ -505,3 +505,19 @@ test("the place on the calendar line uses the phone's location @mobile", async (
   await expect(page.locator("#ploc")).toContainText("Pune");
   await expect(page.locator("#ploc")).toHaveAccessibleName("Pune, Maharashtra · Use my location");
 });
+
+// No prompt (Satish, 2026-10-24): the place is the time zone's city until the pin is tapped; after that, each open
+// brings it up to date quietly while the phone allows it
+test("no prompt on opening; once the pin has set the place, a later open brings it up to date @mobile", async ({ page }) => {
+  await page.context().grantPermissions(["geolocation"]);
+  await page.context().setGeolocation({ latitude: 18.52, longitude: 73.86 });
+  await openSite(page, SETUPS.english);
+  await page.waitForTimeout(2000);
+  await expect(page.locator("#ploc")).toContainText("Columbus, OH");
+  await page.locator("#ploc").click();
+  await expect(page.locator("#ploc")).toContainText("Pune");
+  // the next open, somewhere else: the place follows, without a tap
+  await page.context().setGeolocation({ latitude: 39.96, longitude: -83.0 });
+  await page.reload();
+  await expect(page.locator("#ploc")).toContainText("Columbus", { timeout: 5000 });
+});
