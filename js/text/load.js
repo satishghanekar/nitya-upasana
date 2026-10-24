@@ -9,23 +9,25 @@
 // festival rules the Vedic calendar marks (js/core/festivals.js); without it no festivals are marked. And
 // content/holidays.json, the public holidays it marks (js/core/holidays.js); without it no holidays are marked. And
 // content/categories.json, the library's categories, which also set the reading order and the numbers
-// (js/text/content.js, js/core/library.js, js/features/library.js); without it each category is named by its id.
+// (js/text/content.js, js/core/library.js, js/features/library.js); without it each category is named by its id. And
+// content/pdfs.json, the PDFs the Library's PDFs tab lists (js/features/pdfs.js); without it the tab is not shown.
 
 import { buildContent } from "./content.js";
 
 /**
  * What was loaded, for the parts that need it after start-up: the library (content/library.json) and the
  * routine (content/routines.json; null when it could not be loaded) and the festival rules (content/festivals.json;
- * null when it could not be loaded) and the holidays (content/holidays.json; null when it could not be loaded) and the categories (content/categories.json; null when it could not be loaded).
+ * null when it could not be loaded) and the holidays (content/holidays.json; null when it could not be loaded) and the categories (content/categories.json; null when it could not be loaded) and the PDFs (content/pdfs.json, as read; null when it could not be loaded).
  * @type {{
  *   library: import("./content.js").Library | null,
  *   routine: import("../core/routine.js").Routine | null,
  *   festivals: import("../core/festivals.js").FestivalList | null,
  *   holidays: import("../core/holidays.js").HolidayList | null,
- *   categories: import("../core/library.js").BundledCategory[] | null
+ *   categories: import("../core/library.js").BundledCategory[] | null,
+ *   pdfs: unknown
  * }}
  */
-export const loaded = { library: null, routine: null, festivals: null, holidays: null, categories: null };
+export const loaded = { library: null, routine: null, festivals: null, holidays: null, categories: null, pdfs: null };
 
 /**
  * @param {string} url
@@ -88,6 +90,18 @@ export function load() {
         console.warn(e);
       },
     );
+  var pdfs = get("content/pdfs.json")
+    .then(function (r) {
+      return r.json();
+    })
+    .then(
+      function (/** @type {unknown} */ o) {
+        loaded.pdfs = o;
+      },
+      function (/** @type {unknown} */ e) {
+        console.warn(e);
+      },
+    );
   var texts = get("content/library.json")
     .then(function (r) {
       return r.json();
@@ -117,5 +131,5 @@ export function load() {
         w.SCR.page();
       });
     });
-  return Promise.all([texts, routine, festivals, holidays, categories]).then(function () {});
+  return Promise.all([texts, routine, festivals, holidays, categories, pdfs]).then(function () {});
 }

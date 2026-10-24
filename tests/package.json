@@ -12,6 +12,7 @@
     "lhci": "lhci autorun",
     "lint": "stylelint --config stylelint.config.mjs \"../css/**/*.css\" && cd .. && eslint -c tests/eslint.config.mjs js sw.js",
     "unit": "vitest run",
+    "pdfs": "node tools/pdf-info.mjs",
     "types": "tsc -p tsconfig.json"
   },
   "devDependencies": {
