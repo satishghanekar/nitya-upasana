@@ -27,6 +27,7 @@ import { festivalsBetween, festivalsFor, festivalsInMonth } from "../core/festiv
 import { holidaysBetween, holidaysInMonth } from "../core/holidays.js";
 import { loaded } from "../text/load.js";
 import { skLoc } from "./sankashti.js";
+import { openPicture } from "./picture-viewer.js";
 import { setC } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { IA } from "../text/iast.js";
@@ -77,6 +78,7 @@ const W = {
     amanta: "amanta",
     today: "today",
     loc: "Use my location",
+    pic: "show the picture full screen",
     prev: "Previous month",
     nextM: "Next month",
     key: ["Shukla paksha", "Krishna paksha", "Purnima", "Amavasya"],
@@ -135,6 +137,7 @@ const W = {
     amanta: "अमान्त",
     today: "आज",
     loc: "माझे ठिकाण वापरा",
+    pic: "चित्र मोठे पाहा",
     prev: "मागचा महिना",
     nextM: "पुढचा महिना",
     key: ["शुद्ध पक्ष", "वद्य पक्ष", "पौर्णिमा", "अमावास्या"],
@@ -187,9 +190,9 @@ const W = {
 };
 
 const ICON = {
-  cal: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
-  up: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 4v5M9.5 6.5 12 4l2.5 2.5"/></svg>',
-  down: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 4v5M9.5 6.5 12 9l2.5-2.5"/></svg>',
+  // the sunrise and sunset beside their times: the app's own round pictures, small (kept offline by js/parts.js)
+  sunrise: '<img src="picture-sunrise-360.webp" alt="" width="16" height="16">',
+  sunset: '<img src="picture-sunset-360.webp" alt="" width="16" height="16">',
   chev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   prev: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
   pin: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
@@ -396,26 +399,23 @@ function homeRender() {
   // (named by the lines, read in order) and the pin (#ploc) over that; a tap anywhere else opens the calendar
   box.innerHTML =
     '<div class="pcard">' +
-    ICON.cal +
     '<span class="pt">' +
     '<span id="pn1">' + nameH(title(p), "p1") + "</span>" +
     '<span class="p2" id="pn2">' +
     // "\u00a0·" keeps each dot with the word before it when the line wraps
     nameH(cat("\u00a0· ", [cat(" ", [N.nakshatra, p.nakshatra.name]), shaka(s.shaka), lead() === "mr" ? cat(" ", [s.name, N.samvatsara]) : s.name])) +
     "</span>" +
-    '<span class="p3"><span id="pn3"><span>' +
-    ICON.up +
-    '<span class="sr">' + esc(w.sunrise) + " </span>" +
-    esc(sr) +
-    "</span><span>" +
-    ICON.down +
-    '<span class="sr">' + esc(w.sunset) + " </span>" +
-    esc(ss) +
-    "</span></span>" +
+    // the sunrise and the sunset, each with its picture, are buttons that show the picture full screen
+    // (js/features/picture-viewer.js); the card's button is named by their times (#pnr, #pns)
+    '<span class="p3">' +
+    '<button type="button" class="psun" id="psr" data-pic="sunrise">' + ICON.sunrise +
+    '<span id="pnr"><span class="sr">' + esc(w.sunrise) + " </span>" + esc(sr) + '</span><span class="sr"> · ' + esc(w.pic) + "</span></button>" +
+    '<button type="button" class="psun" id="pss" data-pic="sunset">' + ICON.sunset +
+    '<span id="pns"><span class="sr">' + esc(w.sunset) + " </span>" + esc(ss) + '</span><span class="sr"> · ' + esc(w.pic) + "</span></button>" +
     // the place: a tap asks the phone where it is (js/features/sankashti.js useMyLocation)
     '<button type="button" id="ploc">' + ICON.pin + esc(placeName(L)) + '<span class="sr"> · ' + esc(w.loc) + "</span></button>" +
     "</span></span>" +
-    '<button type="button" id="panb" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal" aria-labelledby="pn1 pn2 pn3 pno">' +
+    '<button type="button" id="panb" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal" aria-labelledby="pn1 pn2 pnr pns pno">' +
     '<span class="sr" id="pno">' + esc(w.open) + "</span>" +
     ICON.chev +
     "</button></div>";
@@ -1273,7 +1273,10 @@ export function init() {
     c = page();
   if (pan)
     pan.addEventListener("click", function (e) {
-      if (/** @type {HTMLElement} */ (e.target).closest("#panb")) calOpen("day", undefined, "#panb");
+      var t = /** @type {HTMLElement} */ (e.target),
+        sun = /** @type {HTMLElement | null} */ (t.closest(".psun"));
+      if (sun) openPicture(sun.getAttribute("data-pic") === "sunset" ? "sunset" : "sunrise", sun);
+      else if (t.closest("#panb")) calOpen("day", undefined, "#panb");
     });
   // the date above the line is the top of the same card: a tap there opens the calendar too
   var tdd = document.getElementById("tdd");

@@ -155,7 +155,8 @@ for (const width of [390, 1280]) {
           const y = b.top + ((k + 0.5) * b.height) / n,
             x = b.left + Math.min(b.width / 2, 20);
           const at = y >= 0 && y < innerHeight && document.elementFromPoint(x, y);
-          if (at && (at === e || e.contains(at))) shown++;
+          // the calendar card's button lies under the card's own buttons (the sunrise, sunset and place): not hidden
+          if (at && (at === e || e.contains(at) || (e.id === "panb" && at.closest("#pan")))) shown++;
         }
         return { key, frac: shown / n };
       });

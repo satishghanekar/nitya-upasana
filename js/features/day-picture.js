@@ -3,7 +3,7 @@
 // evening, with today's weekday star ringed (which picture and which star: js/core/time-of-day.js).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
-// It sets the home page picture (#iconb), the full-screen picture (#pzi,
+// It sets the home page picture (#iconb), the top bar's small one (#bti), the full-screen picture (#pzi,
 // fetched on its first open by features/picture-viewer.js) and the browser tab icon. The installed app icon
 // stays the sunrise picture (phones copy it when the app is added to the Home Screen).
 // The page can stay open for hours, so it checks again at the next change (12:00, 17:00, midnight) and whenever
@@ -50,6 +50,7 @@ export function update() {
     // Desktop A shows it large on Home (css/10-today.css): the browser picks the full-size picture there
     set(btn.querySelector("img"), "srcset", p.small + " 360w, " + p.large + " 940w");
     set(btn, "aria-label", "Show the picture full screen: " + p.label);
+    set(document.querySelector("#bti img"), "src", p.small);
     set(document.getElementById("bti"), "aria-label", "Show the picture full screen: " + p.label);
     btn.setAttribute("data-picture", p.picture);
     btn.setAttribute("data-day", String(p.day));

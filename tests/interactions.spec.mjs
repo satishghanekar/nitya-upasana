@@ -274,6 +274,7 @@ for (const [when, picture, day, name, label] of [
     await page.setViewportSize({ width: 1280, height: 820 });
     await openSite(page, SETUPS.marathi, { now: new Date(when) });
     await expect(page.locator("#bti")).toHaveAttribute("aria-label", "Show the picture full screen: " + label);
+    await expect(page.locator("#bti img")).toHaveAttribute("src", `picture-${picture}-360.webp`);
     const btn = page.locator("#iconb");
     await expect(btn).toHaveAttribute("data-picture", picture);
     await expect(btn).toHaveAttribute("data-day", String(day));
@@ -298,6 +299,11 @@ for (const [when, picture, day, name, label] of [
     await expect(page.locator("#pzv")).toHaveAttribute("aria-label", label.replace(/,.*/, ""));
     await expect(page.locator("#pzi")).toHaveAttribute("src", `picture-${picture}.webp`);
     await expect(page.locator("#pzi")).toHaveAttribute("alt", new RegExp("^" + label.replace(/,.*/, "") + ": ॐ"));
+    // with the same star ringed
+    const [pb, pr] = [await page.locator("#pzi").boundingBox(), await page.locator("#pzr").boundingBox()];
+    const px = (pr.x + pr.width / 2 - pb.x) / pb.width;
+    if (day === 0) expect(px).toBeLessThan(0.2);
+    else expect(px).toBeGreaterThan(0.6);
   });
 }
 
