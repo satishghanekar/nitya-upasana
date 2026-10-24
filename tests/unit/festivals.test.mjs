@@ -36,18 +36,20 @@ describe("content/festivals.json", () => {
         expect(r.rashi).toBeGreaterThanOrEqual(1);
         expect(r.rashi).toBeLessThanOrEqual(12);
       } else {
-        expect(Object.keys(r).sort()).toEqual(["kala", "masa", "paksha", "tie", "tithi"]);
-        expect(r.masa).toBeGreaterThanOrEqual(1);
-        expect(r.masa).toBeLessThanOrEqual(12);
-        expect(["shukla", "krishna"]).toContain(r.paksha);
+        expect(Object.keys(r).sort()).toEqual(["kala", "masa", "paksha", "tie", "tithi"].filter((k) => k !== "masa" || f.id !== "pradosh"));
+        if (r.masa) {
+          expect(r.masa).toBeGreaterThanOrEqual(1);
+          expect(r.masa).toBeLessThanOrEqual(12);
+        }
+        expect(["shukla", "krishna", "both"]).toContain(r.paksha);
         expect(r.tithi).toBeGreaterThanOrEqual(1);
         expect(r.tithi).toBeLessThanOrEqual(15);
         expect(KALAS).toContain(r.kala);
-        expect(["first", "second"]).toContain(r.tie);
+        expect(["first", "second", "more"]).toContain(r.tie);
       }
     }
-    // (25, then Shri Gondavalekar Maharaj's, Shri Swami Samarth's, Shri Nana Maharaj Taranekar's and Shri Swami Swarupanand Ji's days, and the Utsav before Guru Purnima, 2026-10-24)
-    expect(LIST.festivals.length).toBe(34);
+    // (25, then Shri Gondavalekar Maharaj's, Shri Swami Samarth's, Shri Nana Maharaj Taranekar's and Shri Swami Swarupanand Ji's days, the Utsav before Guru Purnima, and Pradosh, 2026-10-24)
+    expect(LIST.festivals.length).toBe(35);
   });
 });
 
@@ -86,9 +88,10 @@ describe("2026 in Pune (IST)", () => {
   test("every festival once in 2026 (the Utsav nine times) but the Maharaj Punyatithi (2 Jan 2027), none in Adhika Jyeshtha (17 May – 15 June)", () => {
     const all = festivalsBetween("2026-01-01", "2026-12-31", PUNE, LIST);
     expect(all.filter((f) => f.id === "gondavalekar-maharaj-utsav")).toHaveLength(9);
+    expect(all.filter((f) => f.id === "pradosh")).toHaveLength(25);
     expect([...new Set(all.map((f) => f.id))].sort()).toEqual(LIST.festivals.map((f) => f.id).filter((id) => id !== "gondavalekar-maharaj-punyatithi").sort());
-    expect(festivalsBetween("2027-01-01", "2027-01-10", PUNE, LIST).map((f) => f.date + " " + f.id)).toEqual(["2027-01-02 gondavalekar-maharaj-punyatithi"]);
-    expect(all.filter((f) => f.date >= "2026-05-17" && f.date <= "2026-06-15")).toEqual([]);
+    expect(festivalsBetween("2027-01-01", "2027-01-10", PUNE, LIST).map((f) => f.date + " " + f.id)).toEqual(["2027-01-02 gondavalekar-maharaj-punyatithi", "2027-01-04 pradosh"]);
+    expect(all.filter((f) => f.date >= "2026-05-17" && f.date <= "2026-06-15").map((f) => f.date + " " + f.id)).toEqual(["2026-05-28 pradosh", "2026-06-12 pradosh"]);
   });
   test("the tithi each festival is kept for", () => {
     const d = festivalsFor("2026-10-20", PUNE, LIST);
@@ -144,8 +147,10 @@ describe("2026 in Columbus, Ohio (America/New_York)", () => {
   test("a month at a time, and a Date read on the place's clock", () => {
     const oct = festivalsInMonth(2026, 10, COLUMBUS, LIST);
     expect(Object.fromEntries(Object.entries(oct).map(([k, v]) => [k, v.map((f) => f.id)]))).toEqual({
+      "2026-10-07": ["pradosh"],
       "2026-10-11": ["ghatasthapana"],
       "2026-10-20": ["dasara"],
+      "2026-10-23": ["pradosh"],
       "2026-10-25": ["kojagiri-purnima"],
     });
     expect(festivalsFor(new Date("2026-10-20T23:30:00-04:00"), COLUMBUS, LIST).map((f) => f.id)).toEqual(["dasara"]);
@@ -187,5 +192,27 @@ describe("Shri Gondhavlekar Maharaj Utsav: the nine days before Guru Purnima", (
   });
   test("a range that ends inside the Utsav still finds its days (Guru Purnima is after it)", () => {
     expect(festivalsBetween("2026-07-25", "2026-07-25", PUNE, LIST).map((f) => f.short.en)).toContain("Utsav 6");
+  });
+});
+
+describe("Pradosh: the trayodashi at dusk, in each paksha of every month (adhika too)", () => {
+  const P = (from, to) => festivalsBetween(from, to, PUNE, LIST).filter((f) => f.id === "pradosh");
+  test("2026 in Pune, as Drik Panchang gives it", () => {
+    expect(P("2026-01-01", "2026-12-31").map((f) => f.date)).toEqual([
+      "2026-01-01", "2026-01-16", "2026-01-30", "2026-02-14", "2026-03-01", "2026-03-16", "2026-03-30", "2026-04-15", "2026-04-28",
+      "2026-05-14", "2026-05-28", "2026-06-12", "2026-06-27", "2026-07-12", "2026-07-26", "2026-08-10", "2026-08-25", "2026-09-08",
+      "2026-09-24", "2026-10-08", "2026-10-23", "2026-11-06", "2026-11-22", "2026-12-06", "2026-12-21",
+    ]);
+  });
+  test('tie "more": at dusk on both days, the one it covers longer (trayodashi 20:43 28 Feb → 19:09 1 Mar 2026: the 1st)', () => {
+    expect(P("2026-02-27", "2026-03-02").map((f) => f.date)).toEqual(["2026-03-01"]);
+  });
+  test("on a Monday, Tuesday or Saturday its name begins Som, Bhaum or Shani", () => {
+    const by = Object.fromEntries(P("2026-01-01", "2026-12-31").map((f) => [f.date, f]));
+    expect(by["2026-03-16"].en).toBe("Som Pradosh");
+    expect(by["2026-03-16"].short).toEqual({ mr: "सोम प्रदोष", en: "Som Pradosh" });
+    expect(by["2026-04-28"].mr).toBe("भौम प्रदोष");
+    expect(by["2026-02-14"].en).toBe("Shani Pradosh");
+    expect(by["2026-01-01"].en).toBe("Pradosh");
   });
 });

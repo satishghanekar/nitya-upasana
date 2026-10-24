@@ -6,7 +6,7 @@
 // small line under the date says so, with tonight's moonrise and the place (#skt): "Sankashti Chaturthi today ·
 // Moonrise 8:09 pm · Columbus, OH". The next Sankashti is still worked out on every visit for the Share message
 // (js/features/share.js reads skCache), which is unchanged.
-// The place: the reader's own (the pin beside Home's Vedic calendar line, "Use my location", kept on this device as P.loc and
+// The place: the reader's own (the place on Home's Vedic calendar line, with its pin: "Use my location", kept on this device as P.loc and
 // named from the built-in list below), else a city for the phone's time zone.
 
 import { flash } from "../core/page.js";
@@ -380,31 +380,49 @@ export function init() {
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) skLang();
   });
-  // the pin beside Home's Vedic calendar line (#ploc, drawn by js/features/vedic-calendar.js): "Use my location"
+  // the place on Home's Vedic calendar line (#ploc, drawn by js/features/vedic-calendar.js): a tap uses my location
   document.addEventListener("click", function (e) {
     var t = /** @type {HTMLElement | null} */ (e.target);
     if (t && t.closest && t.closest("#ploc")) useMyLocation();
   });
+  // Never a prompt (Satish, 2026-10-24: until the pin is tapped, the place is the time zone's city): once the pin
+  // has set a place and the phone already allows it, the place is quietly brought up to date a moment after each
+  // open, so it follows the reader when they travel
+  setTimeout(autoLocation, 1500);
 }
 
-/** Ask the phone where it is (once; only the rounded place is kept, on this device) and work the day out there */
-export function useMyLocation() {
+function autoLocation() {
+  if (navigator.geolocation && P.loc && navigator.permissions && navigator.permissions.query)
+    navigator.permissions.query({ name: "geolocation" }).then(
+      function (s) {
+        if (s.state === "granted") useMyLocation(true);
+      },
+      function () {},
+    );
+}
+
+/**
+ * Ask the phone where it is (only the rounded place is kept, on this device) and work the day out there
+ * @param {boolean} [quiet] without a tap: no message when it fails, and none when the place is the same
+ */
+export function useMyLocation(quiet) {
   if (!navigator.geolocation) {
-    flash("हे ब्राउझर ठिकाण देऊ शकत नाही", "Location is not available in this browser");
+    if (!quiet) flash("हे ब्राउझर ठिकाण देऊ शकत नाही", "Location is not available in this browser");
     return;
   }
   navigator.geolocation.getCurrentPosition(
     function (p) {
+      var was = (skLoc() || { en: "" }).en;
       change({ loc: { lat: Math.round(p.coords.latitude * 100) / 100, lon: Math.round(p.coords.longitude * 100) / 100 } });
       skCache = null;
       skLang();
       // the Vedic calendar (Home's line, the page when open) works the day out again there
       document.dispatchEvent(new Event("nitya-place"));
-      flash("ठिकाण: " + ((skLoc() || { mr: "" }).mr), "Place: " + ((skLoc() || { en: "" }).en));
+      if (!quiet || (skLoc() || { en: "" }).en !== was) flash("ठिकाण: " + ((skLoc() || { mr: "" }).mr), "Place: " + ((skLoc() || { en: "" }).en));
     },
     function () {
-      flash("ठिकाण मिळाले नाही", "Could not get your location");
+      if (!quiet) flash("ठिकाण मिळाले नाही", "Could not get your location");
     },
-    { timeout: 15000, maximumAge: 86400000 },
+    { timeout: 15000, maximumAge: quiet ? 3600000 : 86400000 },
   );
 }
