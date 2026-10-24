@@ -15,7 +15,7 @@
    - Print
 */
 
-/* ==== Texts | PDFs (#jtb, js/features/contents-list.js): shown only when the Library has PDFs; the look of the
+/* ==== Chants | Books, पाठ | पोथी (#jtb, js/features/contents-list.js): shown only when the Library has PDFs; the look of the
    calendar's tabs (#calv, 12-calendar.css), beside Back in the Library's top row. The PDFs tab (data-tab="pdf" on #jump) shows the PDFs' groups in place
    of the search, the texts and Edit categories ==== */
 #jtb {

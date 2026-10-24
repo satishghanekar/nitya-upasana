@@ -3,7 +3,7 @@
 // button in the top bar (#hm), the search button in the bottom bar and at the end of each piece; a title opens its
 // text (js/features/clicks.js), and Back (the button here, the phone's Back, or Escape) returns. Home v2 moved the
 // list here from the home page.
-// The tabs, Texts | PDFs (#jtb, Satish, 2026-10-24), are shown only when content/pdfs.json lists a PDF, beside Back
+// The tabs, Chants | Books (पाठ | पोथी; #jtb, Satish, 2026-10-24), are shown only when content/pdfs.json lists a PDF, beside Back
 // in place of the title, as on the calendar page
 // (js/features/pdfs.js): the PDFs tab sets data-tab="pdf" on #jump, and the styles (css/13-library.css) show the
 // PDFs' groups in #jl in place of the search box, the texts and Edit categories. The Library opens on Texts each time.
