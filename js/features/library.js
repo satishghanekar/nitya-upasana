@@ -346,20 +346,21 @@ function listHtml() {
     .join("");
 }
 
-/** Put the list in the Library, before the Edit categories button */
+/** Put the list in the Library, before the Edit categories button (the PDFs, js/features/pdfs.js, come after it) */
 function renderList() {
   var jl = document.getElementById("jl"),
     at = document.getElementById("lbr");
   if (!jl || !at) return;
-  [].forEach.call(jl.querySelectorAll(".tocg"), function (/** @type {Element} */ g) {
+  [].forEach.call(jl.querySelectorAll(".tocg:not(.pdfg)"), function (/** @type {Element} */ g) {
     g.remove();
   });
   at.insertAdjacentHTML("beforebegin", listHtml());
 }
 
-/** After a change: the list, the English style of the titles, the switches and search */
+/** After a change: the list (and the PDFs' categories), the English style of the titles, the switches and search */
 function refreshPage() {
   renderList();
+  document.dispatchEvent(new Event("nitya-library")); // the Books tab's categories (js/features/pdfs.js)
   titlesSet();
   apply();
   buildIX();

@@ -1,0 +1,54 @@
+{
+ "pdfs": [
+  {
+   "id": "vedic-chant-mahanyasa-vidhi",
+   "file": "pdfs/mahanyasa-vidhi.pdf",
+   "title": "महान्यास विधी",
+   "titleEn": "Mahanyasa Vidhi",
+   "category": "vedic-chant",
+   "language": "sa",
+   "pages": 120,
+   "size": 4058213
+  },
+  {
+   "id": "vedic-chant-pavamana-suktam",
+   "file": "pdfs/pavamana-suktam.pdf",
+   "title": "पवमान सूक्त",
+   "titleEn": "Pavamana Suktam",
+   "category": "vedic-chant",
+   "language": "sa",
+   "pages": 107,
+   "size": 508151
+  },
+  {
+   "id": "vedic-chant-lalita-sahasranama",
+   "file": "pdfs/lalita-sahasranama.pdf",
+   "title": "श्री ललितासहस्रनाम",
+   "titleEn": "Shri Lalita Sahasranama",
+   "category": "vedic-chant",
+   "language": "sa",
+   "pages": 20,
+   "size": 318293
+  },
+  {
+   "id": "vedic-chant-shivanjali",
+   "file": "pdfs/shivanjali.pdf",
+   "title": "शिवांजली",
+   "titleEn": "Shivanjali",
+   "category": "vedic-chant",
+   "language": "sa",
+   "pages": 36,
+   "size": 997375
+  },
+  {
+   "id": "stotra-manache-shlok",
+   "file": "pdfs/manache-shlok.pdf",
+   "title": "मनाचे श्लोक",
+   "titleEn": "Manache Shlok",
+   "category": "stotra",
+   "language": "mr",
+   "pages": 48,
+   "size": 848593
+  }
+ ]
+}
