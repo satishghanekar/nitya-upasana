@@ -6,7 +6,7 @@
 // small line under the date says so, with tonight's moonrise and the place (#skt): "Sankashti Chaturthi today ·
 // Moonrise 8:09 pm · Columbus, OH". The next Sankashti is still worked out on every visit for the Share message
 // (js/features/share.js reads skCache), which is unchanged.
-// The place: the reader's own (Settings → Place for moonrise, "Use my location", kept on this device as P.loc and
+// The place: the reader's own (the pin beside Home's Vedic calendar line, "Use my location", kept on this device as P.loc and
 // named from the built-in list below), else a city for the phone's time zone.
 
 import { flash } from "../core/page.js";
@@ -365,17 +365,9 @@ export function skRender() {
   box.hidden = false;
 }
 
-/** Settings → Place for moonrise: the place's name */
-function placeShow() {
-  var v = document.getElementById("slocv"),
-    L = skLoc();
-  if (v) v.textContent = L ? (P.ui === "mr" ? L.mr : L.en) : "—";
-}
-
 /** Re-draw for the menu language and the day (called by apply(), js/features/bars.js) */
 export function skLang() {
   var k = P.ui + new Date().toDateString() + JSON.stringify(P.loc || null);
-  placeShow();
   if (k === skKey) return;
   skKey = k;
   skRender();
@@ -388,25 +380,31 @@ export function init() {
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) skLang();
   });
-  // Settings → Place for moonrise: "Use my location" (asked of the phone once; only the rounded place is kept)
-  var b = document.getElementById("sloc");
-  if (b)
-    b.addEventListener("click", function () {
-      if (!navigator.geolocation) {
-        flash("हे ब्राउझर ठिकाण देऊ शकत नाही", "Location is not available in this browser");
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(
-        function (p) {
-          change({ loc: { lat: Math.round(p.coords.latitude * 100) / 100, lon: Math.round(p.coords.longitude * 100) / 100 } });
-          skCache = null;
-          skLang();
-          flash("ठिकाण: " + ((skLoc() || { mr: "" }).mr), "Place: " + ((skLoc() || { en: "" }).en));
-        },
-        function () {
-          flash("ठिकाण मिळाले नाही", "Could not get your location");
-        },
-        { timeout: 15000, maximumAge: 86400000 },
-      );
-    });
+  // the pin beside Home's Vedic calendar line (#ploc, drawn by js/features/vedic-calendar.js): "Use my location"
+  document.addEventListener("click", function (e) {
+    var t = /** @type {HTMLElement | null} */ (e.target);
+    if (t && t.closest && t.closest("#ploc")) useMyLocation();
+  });
+}
+
+/** Ask the phone where it is (once; only the rounded place is kept, on this device) and work the day out there */
+export function useMyLocation() {
+  if (!navigator.geolocation) {
+    flash("हे ब्राउझर ठिकाण देऊ शकत नाही", "Location is not available in this browser");
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    function (p) {
+      change({ loc: { lat: Math.round(p.coords.latitude * 100) / 100, lon: Math.round(p.coords.longitude * 100) / 100 } });
+      skCache = null;
+      skLang();
+      // the Vedic calendar (Home's line, the page when open) works the day out again there
+      document.dispatchEvent(new Event("nitya-place"));
+      flash("ठिकाण: " + ((skLoc() || { mr: "" }).mr), "Place: " + ((skLoc() || { en: "" }).en));
+    },
+    function () {
+      flash("ठिकाण मिळाले नाही", "Could not get your location");
+    },
+    { timeout: 15000, maximumAge: 86400000 },
+  );
 }
