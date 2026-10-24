@@ -595,7 +595,7 @@
   :root[data-rail="1"] #sp-home .sp-grp {
     break-inside: avoid;
   }
-  :root[data-rail="1"] #panb[aria-expanded="true"] {
+  :root[data-rail="1"] #pan .pcard:has(#panb[aria-expanded="true"]) {
     border-color: var(--accent);
     box-shadow: inset 3px 0 0 var(--accent);
   }

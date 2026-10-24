@@ -6,7 +6,7 @@
 // small line under the date says so, with tonight's moonrise and the place (#skt): "Sankashti Chaturthi today ·
 // Moonrise 8:09 pm · Columbus, OH". The next Sankashti is still worked out on every visit for the Share message
 // (js/features/share.js reads skCache), which is unchanged.
-// The place: the reader's own (the pin beside Home's Vedic calendar line, "Use my location", kept on this device as P.loc and
+// The place: the reader's own (the place on Home's Vedic calendar line, with its pin: "Use my location", kept on this device as P.loc and
 // named from the built-in list below), else a city for the phone's time zone.
 
 import { flash } from "../core/page.js";
@@ -380,7 +380,7 @@ export function init() {
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) skLang();
   });
-  // the pin beside Home's Vedic calendar line (#ploc, drawn by js/features/vedic-calendar.js): "Use my location"
+  // the place on Home's Vedic calendar line (#ploc, drawn by js/features/vedic-calendar.js): a tap uses my location
   document.addEventListener("click", function (e) {
     var t = /** @type {HTMLElement | null} */ (e.target);
     if (t && t.closest && t.closest("#ploc")) useMyLocation();
