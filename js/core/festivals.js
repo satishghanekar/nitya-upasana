@@ -6,7 +6,7 @@
 //
 // How a lunar festival's day is chosen (the usual dharmashastra way, as Kalnirnay and Drik Panchang apply it):
 // 1. Its tithi: each occurrence of the rule's paksha and tithi whose amanta month (at the tithi) is the rule's month
-//    and is NOT adhika. In a year with an adhika month the festival falls in the nija month (2026: Vat Purnima in nija
+//    and is NOT adhika (a rule with no month, a vrat such as Pradosh, is kept every month, adhika too). In a year with an adhika month the festival falls in the nija month (2026: Vat Purnima in nija
 //    Jyeshtha, 29 June, not in Adhika Jyeshtha). A kshaya month (very rare; none 1983–2124) is not handled.
 // 2. Its candidate days: the days (sunrise to next sunrise, at the place) in which that tithi is current at some time,
 //    one to three of them.
@@ -23,6 +23,8 @@
 //    Columbus: purnima from 2:26 am on 25 October to 0:11 am on the 26th is at neither midnight, and is kept on the
 //    25th). For a sunrise rule "none" means a kshaya tithi, which lies in only one day, so that day is taken (Gudi Padwa 2026: pratipada begins after sunrise on 19 March and is over
 //    before the next, so 19 March); "two" is a vriddhi tithi, at two sunrises, and the first is taken.
+// Tie "more" (Pradosh): of two days, the one whose karmakala the tithi covers longer (Drik Panchang's Pradosh days
+// in Pune, 2024–2028, all 124 match; "first" or "second" would miss 5 or 6).
 // The tie choices in content/festivals.json: "second" for Holi (pradosh), Lakshmi Pujan (pradosh) and Bhaubeej
 // (aparahna: the dvitiya that fills the afternoon, 11 November 2026), "first" for the rest (Ganesh Chaturthi takes the tritiya-mixed chaturthi, Dasara the first aparahna dashami, Smarta ekadashis the
 // first day). Nothing else (nakshatra such as Shravan for Dasara or Rohini for Janmashtami, bhadra for Holi and Raksha
@@ -44,13 +46,15 @@ import { dayTimes, masaOf, panchangDay, sunSidereal, tithiAt } from "./panchang.
 /**
  * @typedef {import("./panchang.js").Place} Place
  * @typedef {"sunrise" | "madhyahna" | "aparahna" | "pradosh" | "nishita" | "moonrise"} Kala
- * @typedef {{ masa: number, paksha: "shukla" | "krishna", tithi: number, kala: Kala, tie: "first" | "second" }} LunarRule
- *   masa 1 Chaitra … 12 Phalgun (amanta, nija); tithi 1–15 within the paksha (krishna 15 is amavasya)
+ * @typedef {{ masa?: number, paksha: "shukla" | "krishna" | "both", tithi: number, kala: Kala, tie: "first" | "second" | "more" }} LunarRule
+ *   masa 1 Chaitra … 12 Phalgun (amanta, nija), or none: every month, adhika too (a vrat such as Pradosh); tithi 1–15
+ *   within the paksha (krishna 15 is amavasya), "both": in each paksha
  * @typedef {{ rashi: number }} SolarRule  rashi 1 Mesha … 10 Makara … 12 Meena: the sidereal sign the sun enters
  * @typedef {{ before: string, days: number }} BeforeRule  the `days` days before the festival with id `before`
  * @typedef {import("./panchang-names.js").Name} Name
  * @typedef {{ en: string, mr?: string }} Wiki  the Wikipedia page's title (as in its address), English and Marathi
- * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, rule: LunarRule | SolarRule | BeforeRule }} Festival
+ * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, rule: LunarRule | SolarRule | BeforeRule, vara?: Record<string, Name> }} Festival
+ *   vara: a word put before the names on a weekday (0 Sunday … 6 Saturday): Som Pradosh on a Monday
  *   mr / en the full names (the festival is itself a Name); short the label for a day in the month grid
  * @typedef {{ version: number, adhika: "nija", festivals: Festival[] }} FestivalList  content/festivals.json
  * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, date: string, from: Date, to: Date }} FestivalDay
@@ -118,7 +122,7 @@ export function kalaWindow(d, kala) {
 
 /** @param {LunarRule | SolarRule | BeforeRule} r @returns {r is LunarRule} */
 function lunar(r) {
-  return "masa" in r;
+  return "tithi" in r;
 }
 /** @param {LunarRule | SolarRule | BeforeRule} r @returns {r is SolarRule} */
 function solar(r) {
@@ -129,9 +133,9 @@ var DV = "०१२३४५६७८९";
 function nth(s, n, mr) {
   return s.replace("{n}", mr ? String(n).replace(/\d/g, function (c) { return DV[+c]; }) : String(n));
 }
-/** tithi 1–30 of a lunar rule @param {LunarRule} r */
-function tithiN(r) {
-  return r.paksha === "krishna" ? r.tithi + 15 : r.tithi;
+/** the tithis 1–30 of a lunar rule @param {LunarRule} r */
+function tithiNs(r) {
+  return r.paksha === "both" ? [r.tithi, r.tithi + 15] : [r.paksha === "krishna" ? r.tithi + 15 : r.tithi];
 }
 
 /**
@@ -150,12 +154,16 @@ export function festivalsBetween(from, to, place, list) {
   /** @param {Festival} f @param {string} date @param {number} a @param {number} b @param {number} [n] the day's number */
   function add(f, date, a, b, n) {
     if (date < from || date > to) return;
-    var d = n || 0;
+    var d = n || 0,
+      v = f.vara && f.vara[new Date(date + "T12:00:00Z").getUTCDay()],
+      pre = function (/** @type {"mr" | "en"} */ l) {
+        return v ? v[l] + " " : "";
+      };
     out.push({
       id: f.id,
-      mr: nth(f.mr, d, true),
-      en: nth(f.en, d, false),
-      short: { mr: nth(f.short.mr, d, true), en: nth(f.short.en, d, false) },
+      mr: pre("mr") + nth(f.mr, d, true),
+      en: pre("en") + nth(f.en, d, false),
+      short: { mr: pre("mr") + nth(f.short.mr, d, true), en: pre("en") + nth(f.short.en, d, false) },
       wiki: f.wiki,
       date: date,
       from: new Date(a),
@@ -167,7 +175,10 @@ export function festivalsBetween(from, to, place, list) {
   /** @type {Record<number, Festival[]>} */
   var byTithi = {};
   all.forEach(function (f) {
-    if (lunar(f.rule)) (byTithi[tithiN(f.rule)] = byTithi[tithiN(f.rule)] || []).push(f);
+    if (lunar(f.rule))
+      tithiNs(f.rule).forEach(function (n) {
+        (byTithi[n] = byTithi[n] || []).push(f);
+      });
   });
   var t = times(from).ref.getTime(),
     stop = times(to).next.getTime();
@@ -178,7 +189,7 @@ export function festivalsBetween(from, to, place, list) {
       fs = byTithi[ti.n];
     if (fs) {
       var masa = masaOf(new Date((s + e) / 2));
-      if (!masa.adhika) {
+      {
         // the days it is current in
         /** @type {string[]} */
         var cand = [];
@@ -186,11 +197,21 @@ export function festivalsBetween(from, to, place, list) {
           cand.push(k);
         fs.forEach(function (f) {
           var r = /** @type {LunarRule} */ (f.rule);
-          if (r.masa !== masa.n) return;
+          if (r.masa ? masa.adhika || r.masa !== masa.n : false) return;
+          /** how long the tithi is in the day's karmakala @param {string} k */
+          var cover = function (k) {
+            var w = kalaWindow(times(k), r.kala);
+            return Math.min(e, w[1]) - Math.max(s, w[0]);
+          };
           var hits = cand.filter(function (k) {
             var w = kalaWindow(times(k), r.kala);
             return s <= w[1] && e > w[0];
           });
+          // "more": of two days, the one whose karmakala the tithi covers longer
+          if (r.tie === "more" && hits.length > 1)
+            hits = [hits.reduce(function (a, b) {
+              return cover(b) > cover(a) ? b : a;
+            })];
           // one day: that day; two: the rule's tie between them; none: the rule's tie between the days it is
           // current in daylight (so a tithi that only begins in a day's last hours before sunrise does not claim it)
           var lit = cand.filter(function (k) {

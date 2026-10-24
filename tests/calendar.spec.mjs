@@ -19,25 +19,28 @@ test("Home: the calendar line under the date, with sunrise, sunset and the place
   await openSite(page, COLUMBUS, { now: NOW });
   const b = page.locator("#panb");
   await expect(b).toBeVisible();
-  await expect(b.locator(".p1")).toHaveText("आश्विन शुद्ध अष्टमी");
-  await expect(b.locator(".p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
-  await expect(b.locator(".p3")).toHaveText(/7:45 am.*6:47 pm.*Columbus, OH/);
+  await expect(page.locator("#pan .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
+  await expect(page.locator("#pan .p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
+  await expect(page.locator("#pan .p3")).toHaveText(/7:45 am.*6:47 pm.*Columbus, OH/);
   await expect(b).toHaveAccessibleName(
-    "आश्विन शुद्ध अष्टमी नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर Sunrise 7:45 am Sunset 6:47 pm Columbus, OH (open the Vedic calendar)",
+    "आश्विन शुद्ध अष्टमी नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर Sunrise 7:45 am Sunset 6:47 pm (open the Vedic calendar)",
   );
   await expect(b).toHaveAttribute("aria-expanded", "false");
   // it sits between the date and the session's texts (on wide screens the date is under the picture, on the right)
   const y = async (s) => (await page.locator(s).boundingBox()).y;
   if ((page.viewportSize()?.width ?? 0) < 1024) expect(await y("#tdy")).toBeLessThan(await y("#pan"));
   expect(await y("#pan")).toBeLessThan(await y("#tsc"));
+  // the place, with its pin, after the sunset (the last part for screen readers)
+  await expect(page.locator("#ploc")).toHaveText("Columbus, OH · Use my location");
   // the month is not worked out until the page opens
   await expect(page.locator("#calm")).toBeEmpty();
 });
 
 test("Home: the line in Marathi menus has Devanagari digits and the place's Marathi name", async ({ page }) => {
   await openSite(page, { ...SETUPS["marathi-menus"], loc: { lat: 39.96, lon: -83.0 } }, { now: NOW });
-  await expect(page.locator("#panb .p3")).toHaveText(/सकाळी ७:४५.*सायं\. ६:४७.*कोलंबस/);
+  await expect(page.locator("#pan .p3")).toHaveText(/सकाळी ७:४५.*सायं\. ६:४७/);
   await expect(page.locator("#panb")).toHaveAccessibleName(/^आश्विन शुद्ध अष्टमी .*सूर्योदय सकाळी ७:४५ .*\(पंचांग उघडा\)$/);
+  await expect(page.locator("#ploc")).toHaveText(/कोलंबस/);
 });
 
 test("the line opens the calendar page; the day card has today's panchang @mobile", async ({ page }) => {
@@ -262,11 +265,11 @@ const day = (page, d) => page.locator(`#calm button[data-d="2026-10-${String(d).
 test("English first, no second: Home and the calendar are all in English, with Latin digits @mobile", async ({ page }) => {
   await openSite(page, ENGLISH_ONLY, { now: NOW });
   const b = page.locator("#panb");
-  await expect(b.locator(".p1")).toHaveText("Ashvin Shukla Ashtami");
-  await expect(b.locator(".p1")).toHaveAttribute("lang", "en");
-  await expect(b.locator(".p2")).toHaveText("Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava");
+  await expect(page.locator("#pan .p1")).toHaveText("Ashvin Shukla Ashtami");
+  await expect(page.locator("#pan .p1")).toHaveAttribute("lang", "en");
+  await expect(page.locator("#pan .p2")).toHaveText("Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava");
   await expect(b).toHaveAccessibleName(
-    "Ashvin Shukla Ashtami Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava Sunrise 7:45 am Sunset 6:47 pm Columbus, OH (open the Vedic calendar)",
+    "Ashvin Shukla Ashtami Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava Sunrise 7:45 am Sunset 6:47 pm (open the Vedic calendar)",
   );
   expect(await page.locator("#pan").innerText()).not.toMatch(DEVANAGARI);
   await b.click();
@@ -306,8 +309,8 @@ test("English first, no second: Home and the calendar are all in English, with L
 test("Marathi first, English second: Marathi names, English as the day card's small lines @mobile", async ({ page }) => {
   await openSite(page, COLUMBUS, { now: NOW });
   // the Home line has the first language only
-  await expect(page.locator("#panb .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
-  await expect(page.locator("#panb .p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
+  await expect(page.locator("#pan .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
+  await expect(page.locator("#pan .p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
   await page.locator("#panb").click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(row(page, "तिथी").locator("small [lang=en]")).toHaveText("Shukla Ashtami");
@@ -321,8 +324,8 @@ test("Marathi first, English second: Marathi names, English as the day card's sm
 
 test("English first, Marathi second: English names, Marathi as the day card's small lines @mobile", async ({ page }) => {
   await openSite(page, ENGLISH_MARATHI, { now: NOW });
-  await expect(page.locator("#panb .p1")).toHaveText("Ashvin Shukla Ashtami");
-  await expect(page.locator("#panb .p2")).toHaveText("Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava");
+  await expect(page.locator("#pan .p1")).toHaveText("Ashvin Shukla Ashtami");
+  await expect(page.locator("#pan .p2")).toHaveText("Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava");
   await page.locator("#panb").click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Ashtami");
@@ -341,8 +344,8 @@ test("English first, Marathi second: English names, Marathi as the day card's sm
 
 test("Marathi first, no second: Marathi names without English lines @mobile", async ({ page }) => {
   await openSite(page, MARATHI_ONLY, { now: NOW });
-  await expect(page.locator("#panb .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
-  await expect(page.locator("#panb .p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
+  await expect(page.locator("#pan .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
+  await expect(page.locator("#pan .p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
   await page.locator("#panb").click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(page.locator("#cdt")).toHaveText("आश्विन शुद्ध अष्टमी");
@@ -354,8 +357,8 @@ test("Marathi first, no second: Marathi names without English lines @mobile", as
 
 test("Kannada letters: the Marathi names in Kannada script @mobile", async ({ page }) => {
   await openSite(page, KANNADA, { now: NOW });
-  await expect(page.locator("#panb .p1")).toHaveAttribute("lang", "kn");
-  await expect(page.locator("#panb .p1")).toHaveText(/^[\u0C80-\u0CFF ]+$/);
+  await expect(page.locator("#pan .p1")).toHaveAttribute("lang", "kn");
+  await expect(page.locator("#pan .p1")).toHaveText(/^[\u0C80-\u0CFF ]+$/);
   await page.locator("#panb").click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(page.locator("#cdt")).toHaveText(/^[\u0C80-\u0CFF ]+$/);
@@ -367,8 +370,8 @@ test("Kannada letters: the Marathi names in Kannada script @mobile", async ({ pa
 
 test("English first in the scholarly style: the names in IAST @mobile", async ({ page }) => {
   await openSite(page, ENGLISH_IAST, { now: NOW });
-  await expect(page.locator("#panb .p1")).toHaveText("Āśvina Śukla Aṣṭamī");
-  await expect(page.locator("#panb .p2")).toHaveText("Nakṣatra Uttarāṣāḍhā · Śaka 1948 · Parābhava");
+  await expect(page.locator("#pan .p1")).toHaveText("Āśvina Śukla Aṣṭamī");
+  await expect(page.locator("#pan .p2")).toHaveText("Nakṣatra Uttarāṣāḍhā · Śaka 1948 · Parābhava");
   await page.locator("#panb").click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   await expect(day(page, 18).locator(".t")).toHaveText("Aṣṭamī");
@@ -377,11 +380,11 @@ test("English first in the scholarly style: the names in IAST @mobile", async ({
 
 test("changing the first language in Settings re-draws the Home line", async ({ page }) => {
   await openSite(page, COLUMBUS, { now: NOW });
-  await expect(page.locator("#panb .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
+  await expect(page.locator("#pan .p1")).toHaveText("आश्विन शुद्ध अष्टमी");
   await page.locator("#aa").click();
   await page.locator("#sl1s").selectOption("en:simple");
   await page.locator("#xc").click();
-  await expect(page.locator("#panb .p1")).toHaveText("Ashvin Shukla Ashtami");
+  await expect(page.locator("#pan .p1")).toHaveText("Ashvin Shukla Ashtami");
   await page.locator("#panb").click();
   await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Ashtami");
   await expect(row(page, "Tithi")).toHaveText("Shukla Ashtamiशुद्ध अष्टमी · until Mon 1:21 am");
@@ -397,7 +400,9 @@ test("festivals: दसरा on 20 October in the month, a tag and a row in the
   await expect(day(20).locator(".fs")).toHaveText("दसरा");
   await expect(day(11).locator(".fs")).toHaveText("नवरात्र"); // घटस्थापना: Navratri begins
   await expect(day(25).locator(".fs")).toHaveText("कोजागिरी");
-  await expect(page.locator("#calm .cd .fs")).toHaveCount(3);
+  await expect(day(7).locator(".fs")).toHaveText("प्रदोष"); // the trayodashi at dusk, in each paksha
+  await expect(day(23).locator(".fs")).toHaveText("प्रदोष");
+  await expect(page.locator("#calm .cd .fs")).toHaveCount(5);
   await expect(day(20)).toHaveAccessibleName("20 October, Tuesday, दशमी दसरा , Shukla Dashami, Dasara (Vijayadashami)");
   await day(20).click();
   await expect(page.locator("#cald .cdg")).toHaveText("दसरा");
@@ -410,7 +415,7 @@ test("festivals: दसरा on 20 October in the month, a tag and a row in the
 
 test("festivals: Home says आज दसरा on the day only @mobile", async ({ page }) => {
   await openSite(page, COLUMBUS, { now: DASARA });
-  await expect(page.locator("#panb .p1")).toHaveText("आश्विन शुद्ध दशमी");
+  await expect(page.locator("#pan .p1")).toHaveText("आश्विन शुद्ध दशमी");
   const f = page.locator("#fst");
   await expect(f).toBeVisible();
   await expect(f).toHaveText("Today: दसरा · Dasara (Vijayadashami)");
@@ -488,15 +493,31 @@ for (const [name, prefs, themes] of [
   });
 }
 
-// The place (Satish, 2026-10-24): a pin beside Home's calendar line, no longer a row in Settings
-test("the pin beside the calendar line uses the phone's location @mobile", async ({ page }) => {
+// The place (Satish, 2026-10-24): the place, with its pin, on Home's calendar line, no longer a row in Settings
+test("the place on the calendar line uses the phone's location @mobile", async ({ page }) => {
   await page.context().grantPermissions(["geolocation"]);
   await page.context().setGeolocation({ latitude: 18.52, longitude: 73.86 });
   await openSite(page, SETUPS.english);
   await expect(page.locator("#sloc")).toHaveCount(0);
   const pin = page.locator("#ploc");
-  await expect(pin).toHaveAccessibleName("Use my location (Columbus, OH)");
+  await expect(pin).toHaveAccessibleName("Columbus, OH · Use my location");
   await pin.click();
-  await expect(page.locator("#panb .p3")).toContainText("Pune");
-  await expect(page.locator("#ploc")).toHaveAccessibleName("Use my location (Pune, Maharashtra)");
+  await expect(page.locator("#ploc")).toContainText("Pune");
+  await expect(page.locator("#ploc")).toHaveAccessibleName("Pune, Maharashtra · Use my location");
+});
+
+// No prompt (Satish, 2026-10-24): the place is the time zone's city until the pin is tapped; after that, each open
+// brings it up to date quietly while the phone allows it
+test("no prompt on opening; once the pin has set the place, a later open brings it up to date @mobile", async ({ page }) => {
+  await page.context().grantPermissions(["geolocation"]);
+  await page.context().setGeolocation({ latitude: 18.52, longitude: 73.86 });
+  await openSite(page, SETUPS.english);
+  await page.waitForTimeout(2000);
+  await expect(page.locator("#ploc")).toContainText("Columbus, OH");
+  await page.locator("#ploc").click();
+  await expect(page.locator("#ploc")).toContainText("Pune");
+  // the next open, somewhere else: the place follows, without a tap
+  await page.context().setGeolocation({ latitude: 39.96, longitude: -83.0 });
+  await page.reload();
+  await expect(page.locator("#ploc")).toContainText("Columbus", { timeout: 5000 });
 });
