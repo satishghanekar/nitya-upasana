@@ -544,7 +544,7 @@
   margin: 0;
 }
 
-/* ==== Upcoming: Month | Upcoming (#calv), the next 15 days (#calu) and the next week on Home (#upw); an entry is a
+/* ==== Upcoming: the tabs (#calv), the 15 days (#calu) and the next week on Home (#upw); an entry is a
    button (.upr) to its day in the month ==== */
 #cald[hidden],
 #calm[hidden],
@@ -556,6 +556,7 @@
 #calv {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-self: start;
   gap: 3px;
   padding: 3px;
   border-radius: 12px;
@@ -573,6 +574,9 @@
   font-family: inherit;
   cursor: pointer;
 }
+#calv.n3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 #calv button[aria-pressed="true"] {
   background: var(--bg);
   color: var(--accent);
@@ -588,8 +592,41 @@
   background: var(--hdr);
 }
 #cut {
-  margin: 0 0 6px;
+  flex: 1;
+  margin: 0;
   font: 400 19px/1.35 var(--head);
+  text-align: center;
+}
+#cut:focus,
+#cdt:focus {
+  outline: none;
+}
+/* Today, when the tab shows other days; on phones the day card's ‹ › and Today */
+.cto {
+  margin: 0;
+  text-align: center;
+}
+.cto button,
+.ctod {
+  height: auto;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 16px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: 600 14px/1.2 var(--lat);
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.cdnav {
+  margin: -4px -4px 0;
+  padding: 0;
+}
+.cdnt {
+  flex: 1;
   text-align: center;
 }
 .upk {
@@ -793,21 +830,27 @@
   #cal .calin {
     grid-template-columns: 360px 1fr;
     align-items: start;
+    grid-template-rows: auto auto 1fr;
     max-width: 980px;
   }
   #cal .libhd,
-  #calv,
-  #calu,
   #caln0,
   #call {
     grid-column: 1 / -1;
   }
-  #calv,
-  #calu {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 34rem;
-    justify-self: center;
+  /* the day card on the left; the tabs, then the month or the 15 days, beside it */
+  #cal #cald {
+    grid-column: 1;
+    grid-row: 2 / span 2;
+  }
+  #cal #calv {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  #cal #calm,
+  #cal #calu {
+    grid-column: 2;
+    grid-row: 3;
   }
   .cd {
     min-height: 76px;
@@ -835,12 +878,17 @@
 @media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
   #cal .calin {
     grid-template-columns: 1fr;
+    grid-template-rows: none;
     max-width: 44rem;
   }
-  #cal #calm {
+  #cal #calv {
+    grid-column: 1;
     grid-row: 2;
   }
-  #cal #cald {
+  #cal #calm,
+  #cal #cald,
+  #cal #calu {
+    grid-column: 1;
     grid-row: 3;
   }
   #cal #cald dl {

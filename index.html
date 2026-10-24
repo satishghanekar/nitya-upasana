@@ -286,11 +286,12 @@
     <button type="button" id="cbk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागे</span><span class="en" lang="en">Back</span></button>
     <h2 id="calt"><span lang="mr">पंचांग</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">Vedic calendar</span></h2>
   </div>
-  <!-- Month | Upcoming (written in by the script) -->
+  <!-- The tabs, Day | 15 days | Month on phones, 15 days | Month beside the day card on wider screens (written in by
+       the script) -->
   <div id="calv" role="group" aria-label="Vedic calendar"></div>
   <section id="cald" aria-labelledby="cdt"></section>
   <section id="calm" aria-labelledby="cmt"></section>
-  <!-- Upcoming: today and the next 14 days, by week (js/features/vedic-calendar.js upRender) -->
+  <!-- 15 days: from today at first, by week, ‹ › to the 15 before or after (js/features/vedic-calendar.js upRender) -->
   <section id="calu" aria-labelledby="cut" hidden></section>
   <p id="caln0"></p>
   <p id="call" class="sr" aria-live="polite"></p>
@@ -523,7 +524,7 @@
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
                 <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home says so, "Today: Dasara"). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
-        <li><b>This week:</b> under the Vedic calendar line, the festivals, Pradosh and Sankashti of the next 7 days (the Utsav's days as one entry); tap one to see its day in the calendar, or <b>Next 15 days</b> for the calendar's <b>Upcoming</b> view, where you can also show the public holidays.</li>
+        <li><b>This week:</b> under the Vedic calendar line, the festivals, Pradosh and Sankashti of the next 7 days (the Utsav's days as one entry); tap one to see its day in the calendar, or <b>Next 15 days</b> for the calendar's <b>15 days</b> tab, where ‹ › go to the 15 days before or after and you can also show the public holidays. On a phone the calendar has three tabs, <b>Day</b>, <b>15 days</b> and <b>Month</b>, each with ‹ ›; a day tapped in the month or the 15 days opens on the Day tab, and Back returns to where you were. On a wider screen the day stays beside the month or the 15 days.</li>
         <li><b>On a Sankashti day</b> a line under the date gives tonight's <b>moonrise</b> for where you are (Angaraki, on a Tuesday, is marked). The place is your phone's time zone until you tap the place, with its <b>pin</b>, on the Vedic calendar line on Home, which uses your phone's location (and keeps it up to date each time you open the app, while your phone allows it); the town is worked out on the phone and your location is never sent anywhere.</li>
       </ul>
 
