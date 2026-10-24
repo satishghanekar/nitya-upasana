@@ -207,10 +207,9 @@ var view = {
   y: 0,
   /** 1–12 */
   m: 0,
-  /** @type {"day" | "month" | "up"} the tab shown: the day card, the month, or 15 days (on wide screens the day card
-   * stays beside the month or the 15 days, and "day" shows the month) */
+  /** @type {"day" | "month" | "up"} the tab shown: the day card, the month, or 15 days */
   mode: "day",
-  /** @type {"" | "month" | "up"} the tab a date or an entry was tapped in, which Back returns to (phones) */
+  /** @type {"" | "month" | "up"} the tab a date or an entry was tapped in, which Back returns to */
   from: "",
   /** the 15 days' first day, "YYYY-MM-DD" */
   uFrom: "",
@@ -1104,12 +1103,6 @@ function upRender() {
     (a.length || b.length ? "" : '<p class="upe">' + say(w.uNone) + "</p>");
 }
 
-/** Phones, and tablets held upright: one tab at a time (Day, 15 days, Month); wider, the day card stays beside the
- * 15 days and the month (the Day tab is the day card alone there too) */
-function narrow() {
-  return !matchMedia("(min-width: 820px)").matches || matchMedia("(orientation: portrait) and (max-width: 1023px)").matches;
-}
-
 /** Draw the whole page in the menu language */
 function calRender() {
   var c = page(),
@@ -1122,12 +1115,10 @@ function calRender() {
   calKey = langKey();
   var note = document.getElementById("caln0"),
     w = words(),
-    nar = narrow();
-  var mode = view.mode;
-  // (css/12-calendar.css: on wide screens the Day tab is the day card alone, centred; 15 days and Month keep it beside)
+    mode = view.mode;
   c.setAttribute("data-mode", mode);
   if (note) note.innerHTML = L ? say(w.note(placeName(L))) : "";
-  // Day | 15 days | Month, on every screen (Satish, 2026-10-24: a day opened from This week shows alone)
+  // Day | 15 days | Month: one at a time, filling the page, the same on every screen (Satish, 2026-10-24)
   var v = document.getElementById("calv");
   if (v) {
     var tabs = /** @type {("day" | "up" | "month")[]} */ (["day", "up", "month"]);
@@ -1144,7 +1135,7 @@ function calRender() {
     if (e) e.hidden = !show;
     return show;
   }
-  if (show("cald", !nar || mode === "day")) dayRender();
+  if (show("cald", mode === "day")) dayRender();
   show("caln0", mode === "month");
   if (show("calm", mode === "month")) monthRender();
   if (show("calu", mode === "up")) upRender();
@@ -1196,7 +1187,7 @@ function announce() {
       ": " +
       (p ? p.textContent : "");
 }
-// Phones: the Day tab at a day tapped in the month or the 15 days has its own step in the browser's history, so the
+// The Day tab at a day tapped in the month or the 15 days has its own step in the browser's history, so the
 // phone's Back returns to that tab, as the page's Back does (ovSub in js/features/history.js)
 var subOn = false;
 function subPush() {
@@ -1212,7 +1203,7 @@ function subDrop() {
   subOn = false;
   ovSubDone();
 }
-/** Phones: the Day tab at a day tapped in the month or the 15 days, which Back returns to
+/** The Day tab at a day tapped in the month or the 15 days, which Back returns to
  * @param {string} k @param {"month" | "up"} from */
 function toDay(k, from) {
   setDay(k);
@@ -1229,7 +1220,7 @@ function toDay(k, from) {
 /** Back (the page's button, Escape, or the phone's Back): to the tab the day was tapped in, else close the page
  * @param {boolean} [fromPop] the phone's Back, which has taken its step already */
 function back(fromPop) {
-  if (view.mode === "day" && view.from && narrow()) {
+  if (view.mode === "day" && view.from) {
     if (!fromPop) subDrop();
     view.mode = view.from;
     view.from = "";
@@ -1250,18 +1241,6 @@ function back(fromPop) {
   if (fromPop) return;
   subDrop();
   setC(false);
-}
-
-/**
- * Show a day in the card, and its month in the table; focus stays with the day picked
- * @param {string} k "YYYY-MM-DD" @param {boolean} [focus]
- */
-function pick(k, focus) {
-  setDay(k);
-  dayRender();
-  monthRender();
-  announce();
-  if (focus) focusDay(k);
 }
 
 /** @param {string} k */
@@ -1339,9 +1318,8 @@ export function init() {
         b = /** @type {HTMLElement | null} */ (t.closest("button"));
       if (!b) return;
       if (b.classList.contains("cd") && b.dataset.d) {
-        // a day in the month: beside it, or on phones the Day tab (Back returns to the month)
-        if (narrow()) toDay(b.dataset.d, "month");
-        else pick(b.dataset.d, true);
+        // a day in the month: its day on the Day tab (Back returns to the month)
+        toDay(b.dataset.d, "month");
       } else if (b.dataset.v) {
         // Day | 15 days | Month
         view.mode = /** @type {"day" | "month" | "up"} */ (b.dataset.v);
@@ -1363,13 +1341,8 @@ export function init() {
         var again0 = /** @type {HTMLElement | null} */ (document.querySelector('#calu [data-k="' + k + '"]'));
         if (again0) again0.focus();
       } else if (b.classList.contains("upr") && b.dataset.d) {
-        // an entry: its day beside, or on phones the Day tab (Back returns to the 15 days)
-        if (narrow()) toDay(b.dataset.d, "up");
-        else {
-          setDay(b.dataset.d);
-          dayRender();
-          announce();
-        }
+        // an entry: its day on the Day tab (Back returns to the 15 days)
+        toDay(b.dataset.d, "up");
       } else if (b.dataset.u) {
         // the 15 days before or after, or from today
         var u = +b.dataset.u;
@@ -1419,12 +1392,6 @@ export function init() {
       if (e.key === "Escape" && isOpen()) back();
     });
   }
-  // a phone turned, a window resized: one tab at a time, or the day card beside
-  var wide = matchMedia("(min-width: 820px)");
-  if (wide.addEventListener)
-    wide.addEventListener("change", function () {
-      if (isOpen()) calRender();
-    });
   // the day can change while the page is open: check again when it comes back into view
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) homeSoon();
