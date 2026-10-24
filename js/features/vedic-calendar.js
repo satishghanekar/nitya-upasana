@@ -1288,6 +1288,12 @@ export function init() {
     pan.addEventListener("click", function (e) {
       if (/** @type {HTMLElement} */ (e.target).closest("#panb")) calOpen("day");
     });
+  // the date above the line is the top of the same card: a tap there opens the calendar too
+  var tdd = document.getElementById("tdd");
+  if (tdd)
+    tdd.addEventListener("click", function () {
+      if (skLoc()) calOpen("day");
+    });
   var upw = document.getElementById("upw");
   if (upw)
     upw.addEventListener("click", function (e) {

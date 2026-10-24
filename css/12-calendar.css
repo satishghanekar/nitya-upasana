@@ -44,9 +44,11 @@
   align-items: center;
   gap: 10px;
   min-height: 44px;
-  padding: 10px 40px 10px 12px;
+  padding: 6px 40px 10px 12px;
+  /* the bottom of the card the picture and date start (#tdy, css/10-today.css) */
   border: 1px solid var(--hdrl);
-  border-radius: 14px;
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
   background: var(--hdrt);
   color: var(--ink);
   font: 400 13.5px/1.4 var(--lat);
@@ -54,6 +56,14 @@
 #pan .pcard > svg {
   flex: none;
   color: var(--muted);
+}
+/* under the picture and date (not on wide screens, where the picture is large beside the card): the lines start
+   under the date, without the calendar mark */
+:root:not([data-rail="1"]) #pan .pcard {
+  padding-left: 80px;
+}
+:root:not([data-rail="1"]) #pan .pcard > svg {
+  display: none;
 }
 #panb {
   position: absolute;
@@ -135,7 +145,8 @@
   display: block;
   height: 86px;
   border: 1px solid var(--hdrl);
-  border-radius: 14px;
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
   background: var(--hdrt);
 }
 
