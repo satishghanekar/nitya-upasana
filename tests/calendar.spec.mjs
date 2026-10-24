@@ -487,3 +487,16 @@ for (const [name, prefs, themes] of [
     expect(await scan("#cal")).toEqual(ok);
   });
 }
+
+// The place (Satish, 2026-10-24): a pin beside Home's calendar line, no longer a row in Settings
+test("the pin beside the calendar line uses the phone's location @mobile", async ({ page }) => {
+  await page.context().grantPermissions(["geolocation"]);
+  await page.context().setGeolocation({ latitude: 18.52, longitude: 73.86 });
+  await openSite(page, SETUPS.english);
+  await expect(page.locator("#sloc")).toHaveCount(0);
+  const pin = page.locator("#ploc");
+  await expect(pin).toHaveAccessibleName("Use my location (Columbus, OH)");
+  await pin.click();
+  await expect(page.locator("#panb .p3")).toContainText("Pune");
+  await expect(page.locator("#ploc")).toHaveAccessibleName("Use my location (Pune, Maharashtra)");
+});

@@ -73,6 +73,7 @@ const W = {
     until: "until ",
     amanta: "amanta",
     today: "today",
+    loc: "Use my location",
     prev: "Previous month",
     nextM: "Next month",
     key: ["Shukla paksha", "Krishna paksha", "Purnima", "Amavasya"],
@@ -95,6 +96,7 @@ const W = {
     until: "",
     amanta: "अमान्त",
     today: "आज",
+    loc: "माझे ठिकाण वापरा",
     prev: "मागचा महिना",
     nextM: "पुढचा महिना",
     key: ["शुद्ध पक्ष", "वद्य पक्ष", "पौर्णिमा", "अमावास्या"],
@@ -117,6 +119,7 @@ const ICON = {
   down: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 4v5M9.5 6.5 12 9l2.5-2.5"/></svg>',
   chev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   prev: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+  pin: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   next: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8l-5.8 3.5 1.6-6.6-5.2-4.4 6.8-.5z" fill="currentColor"/></svg>',
 };
@@ -315,7 +318,9 @@ function homeRender() {
     "</span></span></span>" +
     '<span class="sr">' + esc(w.open) + "</span>" +
     ICON.chev +
-    "</button>";
+    "</button>" +
+    // the place: a tap asks the phone where it is (js/features/sankashti.js useMyLocation)
+    '<button type="button" id="ploc" aria-label="' + esc(w.loc + " (" + placeName(L) + ")") + '">' + ICON.pin + "</button>";
   box.hidden = false;
   festHome(pl);
 }
@@ -895,5 +900,7 @@ export function init() {
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) homeSoon();
   });
+  // a new place (the pin, js/features/sankashti.js useMyLocation)
+  document.addEventListener("nitya-place", homeSoon);
   homeSoon();
 }

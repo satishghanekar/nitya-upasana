@@ -37,7 +37,30 @@
 }
 
 /* ==== The calendar line on Home (#pan): one button with three lines and a chevron ==== */
+/* the line and, beside it, the pin that sets the place (js/features/sankashti.js useMyLocation) */
+#pan:not([hidden]) {
+  display: flex;
+  gap: 8px;
+}
+#ploc {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--hdrl);
+  border-radius: 14px;
+  background: var(--hdrt);
+  color: var(--muted);
+  cursor: pointer;
+}
+#ploc:hover {
+  color: var(--accent);
+}
 #panb {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 10px;
