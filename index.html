@@ -125,7 +125,8 @@
      in the Reading sheet (Aa in the bottom bar) and in Settings ==== -->
 <div class="bar" role="banner">
   <div id="prog" aria-hidden="true"></div>
-  <a class="t site" id="bt" href="./" aria-label="Home: नित्य उपासना"><img class="bti" src="picture-sunrise-360.webp" alt="" width="28" height="28"><span id="btt">संकटहर चतुर्थी</span></a>
+  <!-- the app's picture, small: it opens the picture full screen (js/features/picture-viewer.js); the name goes Home -->
+  <span class="brand"><button type="button" id="bti" aria-label="Show the picture full screen"><img src="picture-sunrise-360.webp" alt="" width="28" height="28"></button><a class="t site" id="bt" href="./" aria-label="Home: नित्य उपासना"><span id="btt">संकटहर चतुर्थी</span></a></span>
   <!-- Who is reading (js/features/profiles.js): their round badge and name; a tap opens the profile sheet (#pfm).
        The words "Profile:" are for screen readers; on narrow phones the name is hidden visually only. -->
   <button type="button" id="who" aria-haspopup="dialog" aria-expanded="false" aria-controls="pfm"><span class="pfa" aria-hidden="true"></span><span class="sr" id="whol">Profile: </span><span class="pfn"></span></button>

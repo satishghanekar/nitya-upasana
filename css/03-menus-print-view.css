@@ -309,13 +309,39 @@ a.t {
   gap: 6px;
   font-size: 21px;
 }
-.bar .t.site .bti {
+.bar .brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+/* the small picture, drawn 28px (22px on phones, css/11-profiles.css): its padding makes the button a 44px target,
+   and the negative margin takes the room back */
+.bar #bti {
   flex: none;
+  display: block;
+  box-sizing: content-box;
   width: 28px;
+  min-width: 0;
   height: 28px;
+  margin: -8px;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: zoom-in;
+}
+.bar #bti img {
+  display: block;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   box-shadow: 0 0 0 1px var(--hdrl);
   object-fit: cover;
+}
+.bar #bti:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -6px;
 }
 .bar .t.site span {
   overflow: hidden;
