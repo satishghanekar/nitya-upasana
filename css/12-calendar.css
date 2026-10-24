@@ -819,7 +819,8 @@
   cursor: pointer;
 }
 #upwm:focus-visible,
-#upw .upr:focus-visible {
+#upw .upr:focus-visible,
+#upw .upx:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: -2px;
 }
@@ -833,11 +834,23 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 2px 10px;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  min-height: 44px;
   margin: 0;
   padding: 8px 12px;
+  border: 0;
+  border-radius: 0;
   background: var(--hdrt);
   color: var(--muted);
-  font-size: 13px;
+  font: 400 13px/1.45 var(--lat);
+  font-family: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+#upw .upx:hover b {
+  color: var(--accent);
 }
 #upw .upxl {
   font: 700 11px/1.4 var(--lat);
@@ -883,6 +896,19 @@
   #cal #calm,
   #cal #calu {
     grid-column: 2;
+    grid-row: 3;
+  }
+  /* the Day tab: the day card alone, under the tabs, in one centred column */
+  #cal[data-mode="day"] .calin {
+    grid-template-columns: minmax(0, 40rem);
+    justify-content: center;
+  }
+  #cal[data-mode="day"] #calv {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  #cal[data-mode="day"] #cald {
+    grid-column: 1;
     grid-row: 3;
   }
   .cd {

@@ -616,6 +616,15 @@
     grid-column: 2;
     grid-row: 2 / span 2;
   }
+  /* the Day tab: the day card alone, under the tabs, in one centred column */
+  :root[data-rail="1"] #cal[data-mode="day"] .calin {
+    grid-template-columns: minmax(0, 40rem);
+    justify-content: center;
+  }
+  :root[data-rail="1"] #cal[data-mode="day"] #cald {
+    grid-column: 1;
+    grid-row: 3;
+  }
   :root[data-rail="1"] #panel .sp-pg {
     max-width: none;
     margin: 0;
@@ -635,7 +644,7 @@
     box-shadow: inset 3px 0 0 var(--accent);
   }
   /* This week, when the calendar was opened from it: the row tapped too */
-  :root[data-rail="1"] #upw:has(#upwm[aria-expanded="true"]) .upr.on {
+  :root[data-rail="1"] #upw:has(#upwm[aria-expanded="true"]) :is(.upr, .upx).on {
     background: var(--hdrt);
     box-shadow: inset 0 0 0 1px var(--accent);
   }
