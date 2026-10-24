@@ -199,45 +199,44 @@
   gap: 16px;
   max-width: 34rem;
   margin: 0 auto;
+  /* room under the top bar, as Home's column has */
+  padding-top: 16px;
 }
-#cal .libhd {
-  padding-bottom: 0;
+/* Back (‹) and the tabs in one row: Back is a square in the tabs' colour at their left */
+#cal .calbar {
+  display: flex;
+  gap: 8px;
+}
+#cal .calbar #calv {
+  flex: 1;
+  min-width: 0;
 }
 #cbk {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  min-height: 44px;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 50px;
   height: auto;
+  min-height: 50px;
   margin: 0;
-  padding: 0 10px 0 4px;
+  padding: 0;
   border: 0;
-  border-radius: 10px;
-  background: none;
+  border-radius: 12px;
+  background: var(--hdrt);
   color: var(--accent);
-  font: 600 17px/1.2 var(--lat);
   cursor: pointer;
 }
-#cal .libhd[data-lang="mr"] #cbk {
-  font-family: var(--body);
+#cbk:hover {
+  background: var(--hdrl);
 }
 #cbk:focus-visible,
 #cal button:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 1px;
 }
-#calt {
-  margin: 0;
-  font: 400 22px/1.3 var(--head);
-  color: var(--accent);
-}
-#calt [lang="en"] {
-  font-family: var(--head);
-}
 #cal [lang="en"] {
   font-family: var(--lat);
 }
-#calt [lang="en"],
 #cal h3 [lang="en"] {
   font-family: var(--head);
 }
