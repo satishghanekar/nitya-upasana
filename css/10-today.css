@@ -497,6 +497,7 @@
   #tdy,
   #skt,
   #fst,
+  #upw,
   #pan,
   #tsc {
     display: none;
@@ -655,6 +656,7 @@
   :root[data-hv="1"] #home > #pan,
   :root[data-hv="1"] #home > #fst,
   :root[data-hv="1"] #home > #skt,
+  :root[data-hv="1"] #home > #upw,
   :root[data-hv="1"] #home > #pfnt {
     grid-column: 1;
   }

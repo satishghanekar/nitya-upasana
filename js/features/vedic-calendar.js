@@ -23,7 +23,7 @@
 
 import { P } from "../core/state.js";
 import { dayPanchang, monthPanchang } from "../core/panchang.js";
-import { festivalsFor, festivalsInMonth } from "../core/festivals.js";
+import { festivalsBetween, festivalsFor, festivalsInMonth } from "../core/festivals.js";
 import { holidaysBetween, holidaysInMonth } from "../core/holidays.js";
 import { loaded } from "../text/load.js";
 import { skLoc } from "./sankashti.js";
@@ -59,6 +59,8 @@ const N = {
   sankashti: { mr: "संकष्टी", en: "Sankashti" },
   angaraki: { mr: "अंगारकी", en: "Angaraki" },
   angSk: { mr: "अंगारकी संकष्टी", en: "Angaraki Sankashti" },
+  skFull: { mr: "संकष्टी चतुर्थी", en: "Sankashti Chaturthi" },
+  angSkFull: { mr: "अंगारकी संकष्टी चतुर्थी", en: "Angaraki Sankashti Chaturthi" },
   festival: { mr: "सण", en: "Festival", ia: "Festival" },
   holiday: { mr: "सुट्टी", en: "Holiday", ia: "Holiday" },
 };
@@ -87,6 +89,31 @@ const W = {
     },
     showing: "Showing ",
     fToday: "Today: ",
+    week: "This week",
+    next15: "Next 15 days",
+    month: "Month",
+    up: "Upcoming",
+    view: "Show",
+    upTitle: "The next 15 days",
+    nextWeek: "Next week",
+    after: "Just after",
+    uToday: "Today",
+    uTomorrow: "Tomorrow",
+    /** @param {number} n */
+    uIn: function (n) {
+      return "in " + n + " days";
+    },
+    /** @param {number} a @param {number} b */
+    uDays: function (a, b) {
+      return "Day " + a + (a === b ? "" : "–" + b);
+    },
+    /** @param {string} d */
+    uUntil: function (d) {
+      return "until " + d;
+    },
+    uNext: "Next: ",
+    uNone: "Nothing is marked on these days.",
+    kinds: { fest: "Festivals", sk: "Sankashti", pradosh: "Pradosh", hol: "Holidays" },
   },
   mr: {
     open: " (पंचांग उघडा)",
@@ -110,6 +137,31 @@ const W = {
     },
     showing: "",
     fToday: "आज ",
+    week: "या आठवड्यात",
+    next15: "पुढचे १५ दिवस",
+    month: "महिना",
+    up: "आगामी",
+    view: "दाखवा",
+    upTitle: "पुढचे १५ दिवस",
+    nextWeek: "पुढच्या आठवड्यात",
+    after: "त्यानंतर",
+    uToday: "आज",
+    uTomorrow: "उद्या",
+    /** @param {number} n */
+    uIn: function (n) {
+      return dv(n) + " दिवसांनी";
+    },
+    /** @param {number} a @param {number} b */
+    uDays: function (a, b) {
+      return "दिवस " + dv(a) + (a === b ? "" : "–" + dv(b));
+    },
+    /** @param {string} d */
+    uUntil: function (d) {
+      return d + "पर्यंत";
+    },
+    uNext: "पुढे: ",
+    uNone: "या दिवसांत काही नाही.",
+    kinds: { fest: "सण", sk: "संकष्टी", pradosh: "प्रदोष", hol: "सुट्ट्या" },
   },
 };
 
@@ -121,6 +173,9 @@ const ICON = {
   prev: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
   pin: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   next: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+  dusk: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 17h18M7 17a5 5 0 0 1 10 0M12 7v3M5.6 10.6l1.4 1.1M18.4 10.6 17 11.7"/></svg>',
+  crescent: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15.5 3.5a9 9 0 1 0 5 13.5A7 7 0 0 1 15.5 3.5z" fill="currentColor"/></svg>',
+  flag: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4h11l-2 4 2 4H5"/></svg>',
   star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8l-5.8 3.5 1.6-6.6-5.2-4.4 6.8-.5z" fill="currentColor"/></svg>',
 };
 
@@ -131,6 +186,8 @@ var view = {
   y: 0,
   /** 1–12 */
   m: 0,
+  /** @type {"month" | "up"} the month and its day card, or the next 15 days */
+  mode: "month",
 };
 /** @type {Record<string, MonthDay[]>} months worked out while the page is open, by place and month */
 var months = {};
@@ -219,6 +276,19 @@ function dateOf(k) {
   var p = k.split("-");
   return new Date(+p[0], +p[1] - 1, +p[2]);
 }
+/** @param {string} k "YYYY-MM-DD" @param {number} n days */
+function addDays(k, n) {
+  var d = dateOf(k);
+  d.setDate(d.getDate() + n);
+  return keyOf(d);
+}
+/** "Tue 28 Jul" / "मंगळवार २८ जुलै" @param {string} k */
+function dayLabel(k) {
+  var d = dateOf(k);
+  return ui() === "en"
+    ? DAYS.en[d.getDay()].slice(0, 3) + " " + d.getDate() + " " + MONTHS.en[d.getMonth()].slice(0, 3)
+    : DAYS.mr[d.getDay()] + " " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()];
+}
 
 /**
  * A clock time on this phone: "7:45 am", or in Marathi "सकाळी ७:४५" (रात्री, पहाटे, सकाळी, दुपारी, सायं.)
@@ -281,6 +351,7 @@ function homeRender() {
     box.hidden = true;
     box.innerHTML = "";
     festHome(null);
+    upHome(null);
     return;
   }
   var p;
@@ -325,6 +396,7 @@ function homeRender() {
     "</button></div>";
   box.hidden = false;
   festHome(pl);
+  upHome(pl);
 }
 
 // ----- festivals (content/festivals.json; js/core/festivals.js) -----
@@ -419,6 +491,174 @@ function festHome(pl) {
       })
       .join(say(", ")) +
     "</span>";
+  box.hidden = false;
+}
+
+// ----- Upcoming: the next 15 days (the calendar's Upcoming view, #calu) and the next week on Home (#upw) -----
+// The festivals (Pradosh apart), Pradosh, Sankashti with its moonrise (the month's mark, as the calendar shows it) and
+// the public holidays; a festival of several days (the Utsav's Day 1 … Day 9) is one entry, "Day 1–9 · until Tue 28
+// Jul", and a festival on one of its days says which ("Utsav 5"). Home shows the 7 days after today (today's own are
+// the lines above it, #fst and #skt) and the first one after them; holidays only in the Upcoming view, when asked.
+
+/**
+ * @typedef {"fest" | "pradosh" | "sk" | "hol"} UpKind
+ * @typedef {{ date: string, kind: UpKind, name: Name, end?: string, d1?: number, d2?: number, rise?: Date | null,
+ *   moon: string, also?: Name }} Up  one entry; end, d1, d2: a festival of several days (its last date and day numbers)
+ */
+
+/** What the Upcoming view shows (its buttons), while the app is open */
+var upShow = { fest: true, pradosh: true, sk: true, hol: false };
+/** @type {UpKind[]} */
+const KINDS = ["fest", "pradosh", "sk", "hol"];
+
+/** A festival's name without its day's number: "Shri Gondhavlekar Maharaj Utsav" @param {FestivalDay} f @returns {Name} */
+function runName(f) {
+  var all = (loaded.festivals && loaded.festivals.festivals) || [],
+    r = all.filter(function (x) {
+      return x.id === f.id;
+    })[0];
+  /** @param {string} s */
+  function cut(s) {
+    return s.replace(/\s*[·—]\s*[^·—]*\{n\}.*$/, "");
+  }
+  return r ? { mr: cut(r.mr), en: cut(r.en) } : f;
+}
+
+/**
+ * The entries from `from` to `to` (inclusive), in date order
+ * @param {string} from "YYYY-MM-DD" @param {string} to @param {{ lat: number, lon: number }} pl
+ * @returns {Up[]}
+ */
+function upList(from, to, pl) {
+  /** @type {Up[]} */
+  var out = [];
+  /** @type {Record<string, Up>} the festival of several days running, by id */
+  var runs = {};
+  /** @type {Record<string, Name>} a day's number in such a festival: "Utsav 5", by date */
+  var inRun = {};
+  (loaded.festivals ? festivalsBetween(from, to, pl, loaded.festivals) : []).forEach(function (f) {
+    /** @type {UpKind} */
+    var kind = f.id === "pradosh" ? "pradosh" : "fest";
+    if (f.n) {
+      inRun[f.date] = f.short;
+      var r = runs[f.id];
+      if (r && r.end === addDays(f.date, -1)) {
+        r.end = f.date;
+        r.d2 = f.n;
+        return;
+      }
+      out.push((runs[f.id] = { date: f.date, kind: kind, name: runName(f), end: f.date, d1: f.n, d2: f.n, moon: "" }));
+      return;
+    }
+    out.push({ date: f.date, kind: kind, name: f, moon: "" });
+  });
+  /** @type {Record<string, MonthDay>} */
+  var md = {};
+  for (var k = from; k <= to; k = addDays(k, 1)) {
+    var d = dateOf(k),
+      m = monthOf(d.getFullYear(), d.getMonth() + 1)[d.getDate() - 1];
+    if (!m) continue;
+    md[k] = m;
+    if (m.sankashti) {
+      var rise = null;
+      try {
+        rise = dayPanchang(k, pl).moonrise;
+      } catch (e) {}
+      out.push({ date: k, kind: "sk", name: m.vara === 2 ? N.angSkFull : N.skFull, rise: rise, moon: "" });
+    }
+  }
+  if (loaded.holidays)
+    holidaysBetween(from, to, pl, loaded.holidays).forEach(function (h) {
+      out.push({ date: h.date, kind: "hol", name: holName(h), moon: "" });
+    });
+  out.forEach(function (u) {
+    var m = md[u.date];
+    if (u.kind === "fest" && m) u.moon = m.purnima ? "full" : m.amavasya ? "new" : "";
+    if (!u.end && inRun[u.date]) u.also = inRun[u.date];
+  });
+  return out.sort(function (a, b) {
+    // on a day, a festival of several days first
+    return a.date < b.date ? -1 : a.date > b.date ? 1 : (a.end ? 0 : 1) - (b.end ? 0 : 1) || KINDS.indexOf(a.kind) - KINDS.indexOf(b.kind);
+  });
+}
+
+/** One entry, a button that shows its day in the calendar @param {Up} u @param {string} today "YYYY-MM-DD" */
+function upRow(u, today) {
+  var w = words(),
+    E = ui() === "en",
+    d = dateOf(u.date),
+    n = Math.round((d.getTime() - dateOf(today).getTime()) / 864e5),
+    when = n === 0 ? w.uToday : n === 1 ? w.uTomorrow : w.uIn(n),
+    other = d.getMonth() !== dateOf(today).getMonth(),
+    full = E ? DAYS.en[d.getDay()] + ", " + d.getDate() + " " + MONTHS.en[d.getMonth()] : DAYS.mr[d.getDay()] + ", " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()],
+    icon =
+      u.kind === "sk"
+        ? ICON.crescent
+        : u.kind === "pradosh"
+          ? ICON.dusk
+          : u.kind === "hol"
+            ? ICON.flag
+            : u.moon
+              ? '<span class="mn ' + u.moon + '" aria-hidden="true"></span>'
+              : ICON.star,
+    // the small line: the name in the second reading language, then what is particular to the entry
+    det =
+      u.end && u.d1
+        ? w.uDays(u.d1, u.d2 || u.d1) + (u.end !== u.date ? " · " + w.uUntil(dayLabel(u.end)) : "")
+        : u.kind === "sk"
+          ? u.rise
+            ? txt(N.moonrise, E ? "en" : "mr") + " " + clock(u.rise)
+            : w.noRise
+          : "",
+    two = nameH2(u.name),
+    small = [two, det ? say(det) : "", u.also ? nameH(u.also) : ""].filter(Boolean).join(say(" · "));
+  return (
+    '<li><button type="button" class="upr ' + u.kind + '" data-d="' + u.date + '">' +
+    '<span class="upd" aria-hidden="true"><span>' + esc(E ? DAYS.en[d.getDay()].slice(0, 3) : scr(MR_WD[d.getDay()])) + "</span>" +
+    "<b>" + num(d.getDate()) + "</b>" +
+    (other ? "<span>" + esc(E ? MONTHS.en[d.getMonth()].slice(0, 3) : scr(MONTHS.mr[d.getMonth()])) + "</span>" : "") +
+    "</span>" +
+    '<span class="upi">' + icon + "</span>" +
+    '<span class="upn"><span class="sr">' + say(full + ": ") + "</span>" + nameH(u.name, "un") + (small ? '<small>' + small + "</small>" : "") + "</span>" +
+    '<span class="upw' + (n < 2 ? " soon" : "") + '"><span class="sr">, </span>' + say(when) + "</span>" +
+    "</button></li>"
+  );
+}
+
+/** Home: the next 7 days (#upw), and the first entry after them; hidden when nothing is marked in the next month
+ * @param {{ lat: number, lon: number } | null} pl */
+function upHome(pl) {
+  var box = document.getElementById("upw");
+  if (!box) return;
+  var t = keyOf(new Date()),
+    wk = addDays(t, 7),
+    all = pl && loaded.festivals
+      ? upList(addDays(t, 1), addDays(t, 30), pl).filter(function (u) {
+          return u.kind !== "hol";
+        })
+      : [],
+    near = all.filter(function (u) {
+      return u.date <= wk;
+    }),
+    next = all.filter(function (u) {
+      return u.date > wk;
+    })[0];
+  if (!near.length && !next) {
+    box.hidden = true;
+    box.innerHTML = "";
+    return;
+  }
+  var w = words();
+  box.lang = ui();
+  box.innerHTML =
+    '<div class="uph"><h2 id="upwh">' + say(w.week) + "</h2>" +
+    '<button type="button" id="upwm" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">' + say(w.next15) + ICON.chev + "</button></div>" +
+    (near.length
+      ? '<ul class="upl">' + near.map(function (u) {
+          return upRow(u, t);
+        }).join("") + "</ul>"
+      : "") +
+    (next ? '<p class="upx">' + say(w.uNext) + "<b>" + nameH(next.name) + "</b> " + say(dayLabel(next.date)) + "</p>" : "");
   box.hidden = false;
 }
 
@@ -765,6 +1005,51 @@ function monthRender() {
   box.innerHTML = html;
 }
 
+/** The Upcoming view (#calu): today and the next 14 days, by week, what follows just after, and the buttons that
+ * choose what it shows */
+function upRender() {
+  var box = document.getElementById("calu"),
+    L = skLoc(),
+    pl = where();
+  if (!box || !L || !pl) return;
+  var w = words(),
+    t = keyOf(new Date()),
+    end = addDays(t, 14),
+    all = upList(t, addDays(end, 7), pl).filter(function (u) {
+      return upShow[u.kind];
+    }),
+    a = all.filter(function (u) {
+      return u.date <= addDays(t, 6);
+    }),
+    b = all.filter(function (u) {
+      return u.date > addDays(t, 6) && u.date <= end;
+    }),
+    c = all
+      .filter(function (u) {
+        return u.date > end;
+      })
+      .slice(0, 3);
+  /** @param {string} h @param {Up[]} us */
+  function group(h, us) {
+    return us.length
+      ? '<h4 class="uph4">' + say(h) + '</h4><ul class="upl">' + us.map(function (u) {
+          return upRow(u, t);
+        }).join("") + "</ul>"
+      : "";
+  }
+  box.innerHTML =
+    '<h3 id="cut">' + say(w.upTitle) + '<span class="cms">' + say(dayLabel(t) + " – " + dayLabel(end) + " · " + placeName(L)) + "</span></h3>" +
+    '<div class="upk" role="group" aria-label="' + esc(w.view) + '">' +
+    KINDS.map(function (k) {
+      return '<button type="button" data-k="' + k + '" aria-pressed="' + upShow[k] + '"><span>' + say(w.kinds[k]) + "</span></button>";
+    }).join("") +
+    "</div>" +
+    group(w.week, a) +
+    group(w.nextWeek, b) +
+    (a.length || b.length ? "" : '<p class="upe">' + say(w.uNone) + "</p>") +
+    group(w.after, c);
+}
+
 /** Draw the whole page in the menu language */
 function calRender() {
   var c = page(),
@@ -775,26 +1060,51 @@ function calRender() {
   if (hd) hd.setAttribute("data-lang", l);
   c.lang = l;
   calKey = langKey();
-  var note = document.getElementById("caln0");
-  if (note) note.innerHTML = L ? say(words().note(placeName(L))) : "";
-  dayRender();
-  monthRender();
+  var note = document.getElementById("caln0"),
+    w = words(),
+    up = view.mode === "up";
+  if (note) note.innerHTML = L ? say(w.note(placeName(L))) : "";
+  // Month | Upcoming
+  var v = document.getElementById("calv");
+  if (v)
+    v.innerHTML = ["month", "up"]
+      .map(function (m) {
+        return '<button type="button" data-v="' + m + '" aria-pressed="' + (view.mode === m) + '">' + say(m === "up" ? w.up : w.month) + "</button>";
+      })
+      .join("");
+  ["cald", "calm", "caln0"].forEach(function (id) {
+    var e = document.getElementById(id);
+    if (e) e.hidden = up;
+  });
+  var u = document.getElementById("calu");
+  if (u) u.hidden = !up;
+  if (up) upRender();
+  else {
+    dayRender();
+    monthRender();
+  }
 }
 
-/** Open the calendar at today */
-export function calOpen() {
+/**
+ * Open the calendar at today, or at a day, or at the next 15 days
+ * @param {"month" | "up"} [mode] @param {string} [day] "YYYY-MM-DD"
+ */
+export function calOpen(mode, day) {
   var c = page();
   if (!c || !skLoc()) return;
-  var now = new Date();
+  var now = day ? dateOf(day) : new Date();
   view.day = keyOf(now);
   view.y = now.getFullYear();
   view.m = now.getMonth() + 1;
+  view.mode = mode === "up" ? "up" : "month";
   setC(true);
   // the page is shown first; the month is worked out right after (about 50 ms)
   var wait = document.getElementById("calm");
   if (wait) wait.innerHTML = '<p class="cwait">…</p>';
   setTimeout(function () {
-    if (isOpen()) calRender();
+    if (!isOpen()) return;
+    calRender();
+    if (day) focusDay(day);
   }, 0);
 }
 
@@ -853,6 +1163,14 @@ export function init() {
     pan.addEventListener("click", function (e) {
       if (/** @type {HTMLElement} */ (e.target).closest("#panb")) calOpen();
     });
+  var upw = document.getElementById("upw");
+  if (upw)
+    upw.addEventListener("click", function (e) {
+      var t = /** @type {HTMLElement} */ (e.target),
+        r = /** @type {HTMLElement | null} */ (t.closest(".upr"));
+      if (t.closest("#upwm")) calOpen("up");
+      else if (r && r.dataset.d) calOpen("month", r.dataset.d);
+    });
   if (c) {
     var bk = document.getElementById("cbk");
     if (bk)
@@ -864,6 +1182,29 @@ export function init() {
         b = /** @type {HTMLElement | null} */ (t.closest("button"));
       if (!b) return;
       if (b.classList.contains("cd") && b.dataset.d) pick(b.dataset.d, true);
+      else if (b.dataset.v) {
+        // Month | Upcoming
+        view.mode = b.dataset.v === "up" ? "up" : "month";
+        calRender();
+        var v = /** @type {HTMLElement | null} */ (document.querySelector('#calv [data-v="' + view.mode + '"]'));
+        if (v) v.focus();
+      } else if (b.dataset.k && b.closest(".upk")) {
+        // what the Upcoming view shows
+        var k = /** @type {UpKind} */ (b.dataset.k);
+        upShow[k] = !upShow[k];
+        upRender();
+        var again0 = /** @type {HTMLElement | null} */ (document.querySelector('#calu [data-k="' + k + '"]'));
+        if (again0) again0.focus();
+      } else if (b.classList.contains("upr") && b.dataset.d) {
+        // an entry: its day in the month
+        var d = dateOf(b.dataset.d);
+        view.day = b.dataset.d;
+        view.y = d.getFullYear();
+        view.m = d.getMonth() + 1;
+        view.mode = "month";
+        calRender();
+        focusDay(view.day);
+      }
       else if (b.classList.contains("cnav")) {
         var id = b.id;
         showMonth(+(b.dataset.y || 0), +(b.dataset.m || 0));

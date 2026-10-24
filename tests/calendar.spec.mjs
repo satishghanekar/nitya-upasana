@@ -473,6 +473,81 @@ test("festivals in Marathi only: आज दसरा, and no English line in the
   await expect(row(page, "सण")).toHaveText("दसरा ↗");
 });
 
+// Upcoming (Satish, 2026-10-24): on Home, the 7 days after today; in the calendar, the next 15 days. The clock is
+// Sunday 18 October 2026: Dasara on Tuesday 20, Pradosh on Friday 23, Kojagiri Purnima on Sunday 25, Sankashti on
+// Wednesday 28, then Pradosh on 6 November, Narak Chaturdashi on 7 and Lakshmi Pujan on 8
+const dates = (loc) => loc.evaluateAll((bs) => bs.map((b) => b.dataset.d + " " + b.className.replace("upr ", "")));
+test("Home: This week, the 7 days after today, each opening its day in the calendar @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: NOW });
+  const w = page.locator("#upw");
+  await expect(w.locator("h2")).toHaveText("This week");
+  expect(await dates(w.locator(".upr"))).toEqual(["2026-10-20 fest", "2026-10-23 pradosh", "2026-10-25 fest"]);
+  await expect(w.locator(".upr").first()).toHaveAccessibleName("Tuesday, 20 October: Dasara (Vijayadashami) , in 2 days");
+  await expect(w.locator(".upr .mn.full")).toHaveCount(1); // Kojagiri: a full moon
+  await expect(w.locator(".upx")).toHaveText("Next: Sankashti Chaturthi Wed 28 Oct");
+  // it sits under the calendar line, above the session's texts
+  const y = async (s) => (await page.locator(s).boundingBox()).y;
+  expect(await y("#pan")).toBeLessThan(await y("#upw"));
+  expect(await y("#upw")).toBeLessThan(await y("#tsc"));
+  // an entry opens its day in the month
+  await w.locator('.upr[data-d="2026-10-23"]').click();
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator('#calm button[data-d="2026-10-23"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator('#calm button[data-d="2026-10-23"]')).toBeFocused();
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Trayodashi");
+  await expect(page.locator("#calu")).toBeHidden();
+  await page.locator("#cbk").click();
+  // Next 15 days opens the Upcoming view; Back returns to it
+  await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "false");
+  await page.locator("#upwm").click();
+  await expect(page.locator("#calu")).toBeVisible();
+  await expect(page.locator("#cald")).toBeHidden();
+  await expect(page.locator("#calm")).toBeHidden();
+  await expect(page.locator('#calv [data-v="up"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "true");
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#upwm")).toBeFocused();
+});
+
+test("Upcoming: the next 15 days by week, what follows just after, and what it shows @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: NOW });
+  await page.locator("#upwm").click();
+  const u = page.locator("#calu");
+  await expect(u.locator("#cut")).toHaveText("The next 15 daysSun 18 Oct – Sun 1 Nov · Columbus, OH");
+  await expect(u.locator(".uph4")).toHaveText(["This week", "Next week", "Just after"]);
+  expect(await dates(u.locator(".upr"))).toEqual([
+    "2026-10-20 fest", "2026-10-23 pradosh", "2026-10-25 fest", "2026-10-28 sk",
+    "2026-11-06 pradosh", "2026-11-07 fest", "2026-11-08 fest",
+  ]);
+  await expect(u.locator('.upr[data-d="2026-10-28"]')).toHaveAccessibleName("Wednesday, 28 October: Sankashti Chaturthi Moonrise 8:09 pm , in 10 days");
+  // the buttons: Holidays adds the public holidays; Pradosh off leaves them out
+  await expect(u.locator(".upk button")).toHaveText(["Festivals", "Pradosh", "Sankashti", "Holidays"]);
+  await u.locator('.upk [data-k="hol"]').click();
+  await expect(page.locator('#calu .upk [data-k="hol"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator('#calu .upk [data-k="hol"]')).toBeFocused();
+  await expect(u.locator(".upr.hol")).toHaveCount(2); // Valmiki Jayanti, Karnataka Rajyotsava
+  await u.locator('.upk [data-k="pradosh"]').click();
+  await expect(u.locator(".upr.pradosh")).toHaveCount(0);
+  // Month goes back to today's day card
+  await page.locator('#calv [data-v="month"]').click();
+  await expect(page.locator("#cald")).toBeVisible();
+  await expect(page.locator("#calm button.cd")).toHaveCount(31);
+  await expect(u).toBeHidden();
+});
+
+test("Upcoming: a festival of several days is one entry, Day 6–9 of the Utsav, and a day within it says so @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: new Date("2026-07-24T09:00:00-04:00") });
+  const w = page.locator("#upw");
+  expect(await dates(w.locator(".upr"))).toEqual(["2026-07-25 fest", "2026-07-26 pradosh", "2026-07-29 fest"]);
+  await expect(w.locator(".upr").first()).toHaveAccessibleName(
+    "Saturday, 25 July: Shri Gondhavlekar Maharaj Utsav Day 6–9 · until Tue 28 Jul , Tomorrow",
+  );
+  await expect(w.locator(".upr").nth(1).locator("small")).toHaveText("Utsav 7");
+  await expect(w.locator(".upx")).toHaveText("Next: Sankashti Chaturthi Sat 1 Aug");
+  // today's own are in the line above: the Utsav's Day 5 and Ashadhi Ekadashi
+  await expect(page.locator("#fst")).toContainText("Day 5");
+});
+
 // Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); each language set-up in full
 for (const [name, prefs, themes] of [
   ["light", COLUMBUS, true],
@@ -486,9 +561,13 @@ for (const [name, prefs, themes] of [
     const ok = themes ? noViolations() : [];
     await openSite(page, prefs, { now: NOW });
     expect(await scan("#pan")).toEqual(ok);
+    expect(await scan("#upw")).toEqual(ok);
     await page.locator("#panb").click();
     await expect(page.locator("#calm button.cd")).toHaveCount(31);
     await page.locator('#calm button[data-d="2026-10-28"]').click();
+    expect(await scan("#cal")).toEqual(ok);
+    await page.locator('#calv [data-v="up"]').click();
+    await expect(page.locator("#calu .upr").first()).toBeVisible();
     expect(await scan("#cal")).toEqual(ok);
   });
 }
