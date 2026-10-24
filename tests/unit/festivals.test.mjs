@@ -42,8 +42,8 @@ describe("content/festivals.json", () => {
         expect(["first", "second"]).toContain(r.tie);
       }
     }
-    // (25, then Shri Gondavalekar Maharaj's, Shri Swami Samarth's and Shri Nana Maharaj Taranekar's days, 2026-10-24)
-    expect(LIST.festivals.length).toBe(31);
+    // (25, then Shri Gondavalekar Maharaj's, Shri Swami Samarth's, Shri Nana Maharaj Taranekar's and Shri Swami Swarupanand Ji's days, 2026-10-24)
+    expect(LIST.festivals.length).toBe(33);
   });
 });
 
@@ -116,7 +116,7 @@ describe("2026 in Columbus, Ohio (America/New_York)", () => {
     const pune = year(2026, PUNE);
     const earlier = Object.keys(pune).filter((id) => got[id] !== pune[id]);
     expect(earlier.sort()).toEqual(
-      ["akshaya-tritiya", "ashadhi-ekadashi", "bali-pratipada", "bhaubeej", "gokulashtami", "gondavalekar-maharaj-jayanti", "hanuman-jayanti", "narak-chaturdashi", "narali-purnima", "tripurari-purnima"].sort(),
+      ["akshaya-tritiya", "ashadhi-ekadashi", "bali-pratipada", "bhaubeej", "gokulashtami", "gondavalekar-maharaj-jayanti", "hanuman-jayanti", "narak-chaturdashi", "narali-purnima", "swarupanand-punyatithi", "tripurari-purnima"].sort(),
     );
     for (const id of earlier) {
       const a = new Date(pune[id]),

@@ -122,7 +122,18 @@ test("a public holiday shows in the month and the day card, with its country or 
   await expect(page.locator('#calm button[data-d="2026-10-02"] .hs')).toHaveText("गांधी जयंती");
   await page.locator('#calm button[data-d="2026-10-12"]').click();
   await expect(page.locator("#cald .cdg .tag.hol")).toHaveText("कोलंबस डे (अमेरिका)");
-  await expect(row(page, "सुट्टी")).toHaveText("कोलंबस डे (अमेरिका)Columbus Day (US)");
+  await expect(row(page, "सुट्टी")).toHaveText("कोलंबस डे (अमेरिका) ↗Columbus Day (US)");
+  await expect(row(page, "सुट्टी").locator("a")).toHaveAttribute("href", "https://en.wikipedia.org/wiki/Columbus_Day");
+});
+
+// A festival's name links to its Wikipedia page (Satish, 2026-10-24): English with English menus, Marathi where there is one
+test("a festival's name in the day card links to its Wikipedia page @mobile", async ({ page }) => {
+  await open(page);
+  await page.locator('#calm button[data-d="2026-10-20"]').click();
+  const a = row(page, "सण").locator("a");
+  await expect(a).toHaveAttribute("href", "https://en.wikipedia.org/wiki/Vijayadashami");
+  await expect(a).toHaveAttribute("target", "_blank");
+  await expect(a).toHaveAccessibleName("दसरा: Wikipedia (opens in a new tab)");
 });
 
 test("previous and next month @mobile", async ({ page }) => {
@@ -391,7 +402,7 @@ test("festivals: दसरा on 20 October in the month, a tag and a row in the
   await day(20).click();
   await expect(page.locator("#cald .cdg")).toHaveText("दसरा");
   await expect(page.locator("#cald .cdg .tag.fest")).toHaveCount(1);
-  await expect(row(page, "सण")).toHaveText("दसराDasara (Vijayadashami)");
+  await expect(row(page, "सण")).toHaveText("दसरा ↗Dasara (Vijayadashami)");
   // an ordinary day has no festival row
   await day(19).click();
   await expect(page.locator("#cald dt", { hasText: "सण" })).toHaveCount(0);
@@ -445,7 +456,7 @@ test("festivals in English only: Home says Today: Dasara, the month and the day 
   await expect(day(page, 11).locator(".fs")).toHaveText("Navratri");
   await expect(day(page, 25).locator(".fs")).toHaveText("Kojagiri");
   await expect(page.locator("#cald .cdg .tag.fest")).toHaveText("Dasara (Vijayadashami)");
-  await expect(row(page, "Festival")).toHaveText("Dasara (Vijayadashami)");
+  await expect(row(page, "Festival")).toHaveText("Dasara (Vijayadashami) ↗");
   expect(await page.locator("#cald .cdg").innerText()).not.toMatch(DEVANAGARI);
   expect(await page.locator("#calm .fs").allInnerTexts()).not.toContainEqual(expect.stringMatching(DEVANAGARI));
 });
@@ -454,7 +465,7 @@ test("festivals in Marathi only: आज दसरा, and no English line in the
   await openSite(page, { ...SETUPS["marathi-menus"], lead: "mr", l2: "", loc: { lat: 39.96, lon: -83.0 } }, { now: DASARA });
   await expect(page.locator("#fst")).toHaveText("आज दसरा");
   await page.locator("#panb").click();
-  await expect(row(page, "सण")).toHaveText("दसरा");
+  await expect(row(page, "सण")).toHaveText("दसरा ↗");
 });
 
 // Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); each language set-up in full

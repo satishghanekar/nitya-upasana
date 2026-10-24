@@ -14,9 +14,10 @@ import { festivalsBetween } from "./festivals.js";
  * @typedef {import("./panchang.js").Place} Place
  * @typedef {import("./panchang-names.js").Name} Name
  * @typedef {{ date: string } | { month: number, weekday: number, nth: number } | { easter: number }} CivilRule
- * @typedef {{ id: string, groups: string[], mr: string, en: string, short: Name, rule: CivilRule | LunarRule }} Holiday
+ * @typedef {import("./festivals.js").Wiki} Wiki
+ * @typedef {{ id: string, groups: string[], mr: string, en: string, short: Name, wiki?: Wiki, rule: CivilRule | LunarRule }} Holiday
  * @typedef {{ version: number, groups: Record<string, Name>, holidays: Holiday[] }} HolidayList  content/holidays.json
- * @typedef {{ id: string, groups: string[], mr: string, en: string, short: Name, date: string }} HolidayDay
+ * @typedef {{ id: string, groups: string[], mr: string, en: string, short: Name, wiki?: Wiki, date: string }} HolidayDay
  *   date "YYYY-MM-DD"
  */
 
@@ -96,7 +97,7 @@ export function holidaysBetween(from, to, place, list) {
   var out = [];
   /** @param {Holiday} h @param {string} date */
   function add(h, date) {
-    out.push({ id: h.id, groups: h.groups, mr: h.mr, en: h.en, short: h.short, date: date });
+    out.push({ id: h.id, groups: h.groups, mr: h.mr, en: h.en, short: h.short, wiki: h.wiki, date: date });
   }
   var y0 = +from.slice(0, 4),
     y1 = +to.slice(0, 4);

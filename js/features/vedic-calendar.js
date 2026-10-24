@@ -327,6 +327,18 @@ function homeRender() {
 function fname(n, cls) {
   return nameH(n, cls);
 }
+/** A festival's or holiday's name as a link to its Wikipedia page (Marathi with Marathi menus, where there is one),
+ * opening in a new tab with ↗, as the texts' credits do; just the name when it has none
+ * @param {Name & { wiki?: import("../core/festivals.js").Wiki }} f */
+function fwiki(f) {
+  if (!f.wiki) return fname(f);
+  var M = ui() === "mr" && !!f.wiki.mr,
+    url = M ? "https://mr.wikipedia.org/wiki/" + f.wiki.mr : "https://en.wikipedia.org/wiki/" + f.wiki.en,
+    // (the name as shown first, so what is heard starts with what is seen)
+    shown = txt(f, lead() === "en" ? "en" : "mr"),
+    label = ui() === "mr" ? shown + " — विकिपीडिया (नवीन टॅबमध्ये उघडेल)" : shown + ": Wikipedia (opens in a new tab)";
+  return '<a href="' + esc(encodeURI(url)) + '" target="_blank" rel="noopener" aria-label="' + esc(label) + '">' + fname(f) + '<span class="crx" aria-hidden="true"> ↗</span></a>';
+}
 /** @type {Record<string, Record<string, FestivalDay[]>>} months' festivals worked out while the page is open */
 var fmonths = {};
 /** @param {number} y @param {number} m 1–12 @returns {Record<string, FestivalDay[]>} */
@@ -358,13 +370,14 @@ function holsOn(k, pl) {
   }
   return holidaysBetween(keyOf(k), keyOf(k), pl, loaded.holidays);
 }
-/** A holiday's name with where it is kept: "Republic Day (India)", "स्वातंत्र्य दिन (अमेरिका)" @param {HolidayDay} h @returns {Name} */
+/** A holiday's name with where it is kept: "Republic Day (India)", "स्वातंत्र्य दिन (अमेरिका)", and its Wikipedia page
+ * @param {HolidayDay} h @returns {Name & { wiki?: import("../core/festivals.js").Wiki }} */
 function holName(h) {
   var g = (loaded.holidays && loaded.holidays.groups) || {},
     gs = h.groups.map(function (x) {
       return g[x] || { mr: x, en: x };
     });
-  return { mr: h.mr + " (" + gs.map(function (x) { return x.mr; }).join(", ") + ")", en: h.en + " (" + gs.map(function (x) { return x.en; }).join(", ") + ")" };
+  return { mr: h.mr + " (" + gs.map(function (x) { return x.mr; }).join(", ") + ")", en: h.en + " (" + gs.map(function (x) { return x.en; }).join(", ") + ")", wiki: h.wiki };
 }
 
 /** The festivals on one day ("YYYY-MM-DD", or now), [] when the rules did not load
@@ -534,7 +547,7 @@ function dayRender() {
           N.festival,
           fs
             .map(function (f) {
-              return fname(f);
+              return fwiki(f);
             })
             .join(say(", ")),
           two
@@ -551,7 +564,7 @@ function dayRender() {
           N.holiday,
           hs
             .map(function (h) {
-              return nameH(h);
+              return fwiki(h);
             })
             .join(say(", ")),
           two

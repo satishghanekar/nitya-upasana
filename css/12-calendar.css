@@ -255,6 +255,15 @@
   padding: 9px 2px;
   border-bottom: 1px solid var(--hdrl);
 }
+/* a festival's name links to its Wikipedia page, as the texts' credits do */
+#cald dd a {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+#cald dd a:hover {
+  color: var(--accent);
+}
 #cald dt {
   padding-right: 14px;
   color: var(--muted);
