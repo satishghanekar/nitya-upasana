@@ -34,7 +34,7 @@ test("the Library button opens every text, grouped, with search @mobile", async 
   await expect(page.locator("#jump")).toHaveAccessibleName("संग्रह Library");
   await expect(page.locator("#q")).toBeVisible();
   // by category (content/categories.json): वैदिक मंत्र, आरती, …, every text of the library in order
-  await expect(page.locator("#jl .tocg .gh .mr")).toHaveText(GROUPS);
+  await expect(page.locator("#jl .tocg:not(.pdfg) .gh .mr")).toHaveText(GROUPS);
   const ids = LIB.texts.map((t) => t.id);
   await expect(page.locator("#jl a[data-go]")).toHaveCount(ids.length);
   // the bottom bar steps aside
@@ -142,7 +142,8 @@ test("every Library link and button has a 44px target", async ({ page }) => {
 });
 
 // ---- Slice 3: the Library by category, the categories sheet (#lbm) and search across the library ----
-const groups = (page) => page.locator("#jl .tocg .gh .mr").allTextContents();
+// (the texts' categories, not the PDFs tab's groups)
+const groups = (page) => page.locator("#jl .tocg:not(.pdfg) .gh .mr").allTextContents();
 const inGroup = (page, cat) => page.locator(`#jl .tocg[data-cat="${cat}"] a[data-go]`).evaluateAll((as) => as.map((a) => a.getAttribute("data-go")));
 async function openSheet(page) {
   await page.locator("#hm").click();
@@ -363,7 +364,7 @@ test("keyboard: the sheet traps Tab, Escape steps back then closes it, the phone
 test("English only (Settings → Languages): English titles and category names, English words @mobile", async ({ page }) => {
   await openSite(page, { lang: "en", lead: "en", l2: "", ui: "en" }, { now: EVENING });
   await page.locator("#hm").click();
-  await expect(page.locator("#jl .tocg .gh .en")).toHaveText(GROUPS_EN);
+  await expect(page.locator("#jl .tocg:not(.pdfg) .gh .en")).toHaveText(GROUPS_EN);
   await expect(page.locator("#jl .tocg .gh .mr").first()).toBeHidden();
   expect(await page.locator('#jl a[data-go="a1"] .m').innerText()).toMatch(/^1\.\s*Ganapati Aarti$/);
   await page.locator("#lbb").click();
@@ -442,6 +443,7 @@ async function withPdfs(page, list = PDFS) {
 }
 
 test("no PDFs listed: the Library has no tabs @mobile", async ({ page }) => {
+  await withPdfs(page, { groups: [] });
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#hm").click();
   await expect(page.locator("#jtb")).toBeHidden();

@@ -1,3 +1,19 @@
 {
- "groups": []
+ "groups": [
+  {
+   "name": { "mr": "संस्कृत", "en": "Sanskrit" },
+   "pdfs": [
+    { "file": "pdfs/mahanyasa-vidhi.pdf", "title": { "mr": "महान्यास विधी", "en": "Mahanyasa Vidhi" } },
+    { "file": "pdfs/shivanjali.pdf", "title": { "mr": "शिवांजली", "en": "Shivanjali" } },
+    { "file": "pdfs/lalita-sahasranama.pdf", "title": { "mr": "श्री ललितासहस्रनाम", "en": "Shri Lalita Sahasranama" } },
+    { "file": "pdfs/pavamana-suktam.pdf", "title": { "mr": "पवमान सूक्त", "en": "Pavamana Suktam" } }
+   ]
+  },
+  {
+   "name": { "mr": "मराठी", "en": "Marathi" },
+   "pdfs": [
+    { "file": "pdfs/manache-shlok.pdf", "title": { "mr": "मनाचे श्लोक", "en": "Manache Shlok" } }
+   ]
+  }
+ ]
 }
