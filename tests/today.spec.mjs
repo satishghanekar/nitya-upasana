@@ -1,6 +1,6 @@
 // Home: the time-of-day picture beside today's
 // date, the Morning | Afternoon | Evening switch (a session with nothing set greyed), the session's texts with a tick
-// each (a title starts the session there; no Start button: Satish, 2026-10-22), More (App / Share / QR / Print / Help, closed by default) and
+// each (a title starts the session there; no Start button: Satish, 2026-10-22), More (App / Share / QR / Help, closed by default) and
 // "Another text? Open the Library". Home ends there: the pieces show once a text is opened. On a Sankashti day only,
 // one line with moonrise. Every text is in the Library (the book button). These tests run on a fixed routine (TEST_ROUTINE
 // in helpers.mjs: Morning = Atharvashirsha, Evening = the ten aartis), so they don't change with Satish's schedule; the
@@ -326,7 +326,7 @@ test("Home has no date card, week row or contents list: the Library has every te
   await openSite(page, SETUPS.marathi, { now: EVENING });
   for (const sel of ["#skc", "#skmore", "#skall", "#twk", "#tso", "#tfb", "#cvb", "#tmo", "#home #shr", "#home .tocg", "#home a[data-go]"])
     await expect(page.locator(sel), sel).toHaveCount(0);
-  // Home ends after the session's texts and the Library line (App, Share, QR, Print and Help are under ⋯ More in the top bar); the reading page's pieces are not shown under it
+  // Home ends after the session's texts and the Library line (App, Share, QR and Help are under ⋯ More in the top bar); the reading page's pieces are not shown under it
   await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
   await expect(page.locator("section.ash:visible")).toHaveCount(0);
   await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(LIB.texts.length);
@@ -348,7 +348,7 @@ test("Marathi menus: the Sankashti line in Marathi", async ({ page }) => {
   await expect(page.locator("#skt")).toHaveText(/^संकष्टी चतुर्थी आज · चंद्रोदय .+ · कोलंबस$/);
 });
 
-test("⋯ More in the top bar opens App / Share / QR / Print / Help under it, at every width", async ({ browser }) => {
+test("⋯ More in the top bar opens App / Share / QR / Help under it, at every width", async ({ browser }) => {
   for (const width of [390, 820, 1280]) {
     const context = await browser.newContext({ viewport: { width, height: 844 }, serviceWorkers: "block" });
     const page = await context.newPage();
@@ -565,7 +565,7 @@ test("on a wide screen the Library opens beside Home's column, with the bottom b
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await rows(page).nth(0).locator("a.tgo").click();
   await expect.poll(() => onPiece(page)).toBe("a1");
-  await page.locator("#asq").click();
+  await page.locator("#hm").click();
   await expect(page.locator("#jump")).toBeVisible();
   // Home's column stays on the left with the text being read marked; the bottom bar stays under the Library
   await expect(page.locator("#tsc")).toBeVisible();

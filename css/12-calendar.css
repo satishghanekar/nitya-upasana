@@ -621,12 +621,19 @@
   text-underline-offset: 3px;
   cursor: pointer;
 }
+/* ‹ the date › together in the middle, Today after them */
 .cdnav {
-  margin: -4px -4px 0;
-  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 10px;
+  margin: -4px 0 0;
 }
 .cdnt {
-  flex: 1;
+  min-width: 7.5em;
+  color: var(--muted);
+  font-size: 14px;
   text-align: center;
 }
 .upk {

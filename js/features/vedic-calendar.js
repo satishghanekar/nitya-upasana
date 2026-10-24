@@ -28,6 +28,7 @@ import { holidaysBetween, holidaysInMonth } from "../core/holidays.js";
 import { loaded } from "../text/load.js";
 import { skLoc } from "./sankashti.js";
 import { setC } from "./overlays.js";
+import { ovSub, ovSubDone } from "./history.js";
 import { IA } from "../text/iast.js";
 import { PAKSHA } from "../core/panchang-names.js";
 import { DAYS, MONTHS, dv, esc, lead, mrLang, num, scr, second, ui } from "../core/words.js";
@@ -797,10 +798,11 @@ function dayRender() {
   box.innerHTML =
     // on phones, ‹ › to the day before or after, and Today
     (narrow()
-      ? '<div class="cmh cdnav">' +
+      ? '<div class="cdnav">' +
         '<button type="button" class="cnav" data-dd="-1">' + ICON.prev + '<span class="sr">' + esc(w.prevDay) + "</span></button>" +
-        '<span class="cdnt">' + (k === today ? "" : '<button type="button" class="ctod" data-dd="0">' + say(w.todayB) + "</button>") + "</span>" +
+        '<span class="cdnt">' + say(dayLabel(k)) + "</span>" +
         '<button type="button" class="cnav" data-dd="1">' + ICON.next + '<span class="sr">' + esc(w.nextDay) + "</span></button>" +
+        (k === today ? "" : '<button type="button" class="ctod" data-dd="0">' + say(w.todayB) + "</button>") +
         "</div>"
       : "") +
     '<div class="cdh">' +
@@ -1154,6 +1156,7 @@ export function calOpen(mode, day) {
   view.m = now.getMonth() + 1;
   view.mode = mode || "day";
   view.from = "";
+  subOn = false;
   view.uFrom = keyOf(new Date());
   setC(true);
   // the page is shown first; the month is worked out right after (about 50 ms)
@@ -1185,12 +1188,29 @@ function announce() {
       ": " +
       (p ? p.textContent : "");
 }
+// Phones: the Day tab at a day tapped in the month or the 15 days has its own step in the browser's history, so the
+// phone's Back returns to that tab, as the page's Back does (ovSub in js/features/history.js)
+var subOn = false;
+function subPush() {
+  if (subOn) return;
+  subOn = true;
+  ovSub(function () {
+    subOn = false;
+    back(true);
+  });
+}
+function subDrop() {
+  if (!subOn) return;
+  subOn = false;
+  ovSubDone();
+}
 /** Phones: the Day tab at a day tapped in the month or the 15 days, which Back returns to
  * @param {string} k @param {"month" | "up"} from */
 function toDay(k, from) {
   setDay(k);
   view.mode = "day";
   view.from = from;
+  subPush();
   calRender();
   // the month, out of sight, marks the day too
   if (from === "month") monthRender();
@@ -1198,9 +1218,11 @@ function toDay(k, from) {
   var h = document.getElementById("cdt");
   if (h) h.focus();
 }
-/** Back (the page's button, or Escape): to the tab the day was tapped in, else close the page */
-function back() {
+/** Back (the page's button, Escape, or the phone's Back): to the tab the day was tapped in, else close the page
+ * @param {boolean} [fromPop] the phone's Back, which has taken its step already */
+function back(fromPop) {
   if (view.mode === "day" && view.from && narrow()) {
+    if (!fromPop) subDrop();
     view.mode = view.from;
     view.from = "";
     if (view.mode === "month") setDay(view.day);
@@ -1217,6 +1239,8 @@ function back() {
     }
     return;
   }
+  if (fromPop) return;
+  subDrop();
   setC(false);
 }
 
@@ -1275,7 +1299,9 @@ export function init() {
   if (c) {
     var bk = document.getElementById("cbk");
     if (bk)
-      bk.addEventListener("click", back);
+      bk.addEventListener("click", function () {
+        back();
+      });
     c.addEventListener("click", function (e) {
       var t = /** @type {HTMLElement} */ (e.target),
         b = /** @type {HTMLElement | null} */ (t.closest("button"));
@@ -1288,6 +1314,7 @@ export function init() {
         // Day | 15 days | Month
         view.mode = /** @type {"day" | "month" | "up"} */ (b.dataset.v);
         view.from = "";
+        subDrop();
         if (view.mode === "month") {
           var vd = dateOf(view.day);
           view.y = vd.getFullYear();

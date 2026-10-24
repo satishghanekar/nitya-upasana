@@ -329,10 +329,9 @@
 }
 
 /* ==== On the home page (data-home, set by js/features/bars.js while no piece is at the top): the bottom bar has only
-   Print (the session Home shows) and Reading (Aa), and the top bar has Library. While reading, Library is in the bottom
-   bar (one place each), with ‹ Prev, Home and Next › ==== */
-[data-home="1"] :is(#asv, #ash, #asq, #asn),
-:root:not([data-home="1"]) .bar #hm {
+   Print (the session Home shows) and Reading (Aa); while reading, ‹ Prev, Home and Next › too. Library stays in the top
+   bar on every page, so the top bar is the same everywhere (Satish, 2026-10-24) ==== */
+[data-home="1"] :is(#asv, #ash, #asn) {
   display: none;
 }
 [data-home="1"] #asi {
@@ -610,10 +609,6 @@
   :root[data-rail="1"] #panel .sp-pg {
     max-width: none;
     margin: 0;
-  }
-  :root[data-rail="1"] #panel .sp-hd {
-    box-shadow: 0 1px 0 var(--rule);
-    clip-path: none;
   }
   /* Settings' groups as cards across the width */
   :root[data-rail="1"] #sp-home .sp-body {

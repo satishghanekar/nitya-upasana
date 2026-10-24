@@ -81,10 +81,9 @@
   display: grid;
   place-items: center;
 }
-/* Home, Library and Reading: the icon with its word under it, in the menu language (the word is the button's name).
+/* Home, Print and Reading: the icon with its word under it, in the menu language (the word is the button's name).
    The button keeps the bar's 44px height. */
 #ash,
-#asq,
 #asp,
 #rsb {
   align-content: center;
@@ -111,7 +110,6 @@
     white-space: nowrap;
   }
   #ash,
-  #asq,
   #asp,
   #rsb {
     min-width: 44px;
@@ -517,7 +515,7 @@ html[data-asb="1"] {
   color: var(--bg);
   border-color: var(--accent);
 }
-/* The bar holds six buttons (Prev, Home, Library, Print, Reading, Next): phones close the gaps and slim the icon
+/* The bar holds five buttons (Prev, Home, Print, Reading, Next): phones close the gaps and slim the icon
    buttons, and narrow ones show only the arrows of Prev and Next (their names stay for screen readers and voice
    control) */
 @media (max-width: 439px) {
@@ -525,7 +523,6 @@ html[data-asb="1"] {
     gap: 2px;
   }
   #ash,
-  #asq,
   #asp,
   #rsb {
     min-width: 52px;
