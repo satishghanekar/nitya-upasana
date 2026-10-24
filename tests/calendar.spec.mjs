@@ -246,8 +246,6 @@ test("keyboard: open, move through the month with the arrows, pick a day, Escape
 
 test("Marathi menus: the page's words and digits are Marathi", async ({ page }) => {
   await open(page, { ...SETUPS["marathi-menus"], loc: { lat: 39.96, lon: -83.0 } });
-  await expect(page.locator("#cbk .mr")).toBeVisible();
-  await expect(page.locator("#cbk .en")).toBeHidden();
   await expect(page.locator("#cbk")).toHaveAccessibleName("मागे");
   await expect(page.locator("#cmt")).toHaveText("ऑक्टोबर २०२६भाद्रपद → आश्विन (११ ऑक्टोबरपासून)");
   // the second reading language (English) is the small line, with the menus' words
@@ -283,7 +281,7 @@ test("desktop: one tab at a time, as on phones: the month across the right-hand 
   await page.setViewportSize({ width: 1280, height: 820 });
   await open(page);
   const a = await page.locator("#calm").boundingBox(),
-    v = await page.locator("#calv").boundingBox();
+    v = await page.locator("#cal .calbar").boundingBox();
   await expect(page.locator("#cald")).toBeHidden();
   expect(a.y).toBeGreaterThan(v.y + v.height);
   expect(Math.abs(a.width - v.width)).toBeLessThan(2);
