@@ -61,6 +61,20 @@
   outline: 2px solid var(--ink);
   outline-offset: 0;
 }
+/* A book's cloud, before its title (js/features/pdfs.js marks()): online only, muted; saved on this phone, in the
+   accent colour. In the number's place, so the titles line up as the chants' do */
+#jl .tocg ol.toc .pst {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: -4px;
+  color: var(--muted);
+}
+#jl .tocg ol.toc .pst[data-saved="true"] {
+  color: var(--accent);
+}
+#jl .tocg ol.toc .pst svg {
+  display: block;
+}
 /* ==== The Edit categories button, at the end of the Library's list ==== */
 #lbr {
   margin: 18px 0 4px;

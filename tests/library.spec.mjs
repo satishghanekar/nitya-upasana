@@ -476,8 +476,9 @@ test("Chants | Books: the PDFs by the texts' categories, each opening in a new t
   await expect(links.locator(".m .mr")).toHaveText(["दासबोध", "श्री गुरुचरित्र", "Pothi"]);
   await expect(links.nth(1)).toHaveAttribute("href", "content/pdfs/Shri%20Gurucharitra.pdf");
   // each one's pages and size when content/pdfs.json gives them
-  await expect(links.locator(".lt")).toHaveCount(1);
-  await expect(links.nth(2).locator(".lt .en")).toHaveText("48 pp · 4.1 MB");
+  await expect(links.locator(".lt .en")).toHaveText(["", "", "48 pages · 4.1 MB"]);
+  // a cloud before each title: online only, as none has been opened on this phone yet
+  await expect(links.locator('.pst[data-saved="false"]')).toHaveCount(3);
   await expect(links.nth(0)).toHaveAttribute("target", "_blank");
   await expect(links.nth(0)).toHaveAttribute("rel", "noopener");
   // a PDF opens in a tab of its own, the Library staying open behind it
@@ -515,7 +516,7 @@ test("the PDFs tab in Marathi menus @mobile", async ({ page }) => {
   await expect(page.locator("#jtb button").nth(0)).toHaveAccessibleName("पाठ");
   await expect(page.locator("#jtb button").nth(1)).toHaveAccessibleName("पोथी");
   await page.locator("#jtb button").nth(1).click();
-  await expect(page.locator("#jl .pdfg a.pdf").first()).toHaveAccessibleName("दासबोध");
+  await expect(page.locator("#jl .pdfg a.pdf").first()).toHaveAccessibleName(/^दासबोध\s*, फक्त ऑनलाइन$/);
 });
 
 test("the Books tab follows Kannada letters and English only", async ({ browser }) => {

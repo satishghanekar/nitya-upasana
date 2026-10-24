@@ -75,3 +75,32 @@ test("a PDF opened once is the PDF, and opens offline @chromium-only", async ({ 
   await expect(tab.locator("body")).toContainText("This PDF is not saved on this phone yet");
   await context.setOffline(false);
 });
+
+// The Books tab's cloud before each book (js/features/pdfs.js marks()): online only at first, then saved on this
+// phone for the one opened, once the reader is back
+test("a book opened once is marked as saved on this phone @chromium-only", async ({ page, context }) => {
+  await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [PREFS_KEY, JSON.stringify(BASE_PREFS)]);
+  await page.goto("./");
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller)
+      await new Promise((r) => navigator.serviceWorker.addEventListener("controllerchange", r, { once: true }));
+  });
+  await page.locator("#hm").click();
+  await page.locator("#jtb button").nth(1).click();
+  const books = page.locator("#jl .pdfg a.pdf");
+  await expect(books.first()).toBeVisible();
+  await expect(page.locator('#jl .pst[data-saved="true"]')).toHaveCount(0);
+  await expect(books.first()).toHaveAccessibleName(/, (online only|फक्त ऑनलाइन)$/);
+  // the smallest book, opened in a tab of its own (headless Chromium saves it rather than showing it)
+  const book = books.filter({ hasText: "Lalita" }).first();
+  const href = await book.getAttribute("href");
+  const tab = await context.newPage();
+  await Promise.all([tab.waitForEvent("download"), tab.goto(href).catch(() => {})]);
+  await tab.close();
+  await page.bringToFront();
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await expect(book.locator('.pst[data-saved="true"]')).toHaveCount(1);
+  await expect(book).toHaveAccessibleName(/, (saved on this phone|या फोनवर जतन)$/);
+  await expect(page.locator('#jl .pst[data-saved="true"]')).toHaveCount(1);
+});
