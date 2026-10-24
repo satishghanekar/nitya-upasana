@@ -6,7 +6,9 @@
    "title": "महान्यास विधी",
    "titleEn": "Mahanyasa Vidhi",
    "category": "vedic-chant",
-   "language": "sa"
+   "language": "sa",
+   "pages": 120,
+   "size": 4058213
   },
   {
    "id": "vedic-chant-pavamana-suktam",
@@ -14,7 +16,9 @@
    "title": "पवमान सूक्त",
    "titleEn": "Pavamana Suktam",
    "category": "vedic-chant",
-   "language": "sa"
+   "language": "sa",
+   "pages": 107,
+   "size": 508151
   },
   {
    "id": "vedic-chant-lalita-sahasranama",
@@ -22,7 +26,9 @@
    "title": "श्री ललितासहस्रनाम",
    "titleEn": "Shri Lalita Sahasranama",
    "category": "vedic-chant",
-   "language": "sa"
+   "language": "sa",
+   "pages": 20,
+   "size": 318293
   },
   {
    "id": "vedic-chant-shivanjali",
@@ -30,7 +36,9 @@
    "title": "शिवांजली",
    "titleEn": "Shivanjali",
    "category": "vedic-chant",
-   "language": "sa"
+   "language": "sa",
+   "pages": 36,
+   "size": 997375
   },
   {
    "id": "stotra-manache-shlok",
@@ -38,7 +46,9 @@
    "title": "मनाचे श्लोक",
    "titleEn": "Manache Shlok",
    "category": "stotra",
-   "language": "mr"
+   "language": "mr",
+   "pages": 48,
+   "size": 848593
   }
  ]
 }

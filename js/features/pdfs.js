@@ -9,7 +9,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { loaded } from "../text/load.js";
-import { cleanPdfs, pdfHref, pdfShelves } from "../core/pdfs.js";
+import { cleanPdfs, pdfFacts, pdfHref, pdfShelves } from "../core/pdfs.js";
 import { categories } from "./library.js";
 import { esc, scr as to } from "../core/words.js";
 
@@ -26,10 +26,13 @@ function listHtml() {
     .map(function (s) {
       var items = s.pdfs
         .map(function (p) {
+          var f = pdfFacts(p);
           return (
             '<li><a href="' + esc(pdfHref(p)) + '" target="_blank" rel="noopener" class="pdf"><span class="m">' +
             '<span class="mr">' + esc(to(p.title.mr)) + '</span><span class="en" lang="en">' + esc(p.title.en) + "</span></span>" +
-            '<span class="lt"><span class="mr">PDF</span><span class="en" lang="en">PDF</span></span></a></li>'
+            // its pages and size, when known (no "PDF": the Books tab has nothing else)
+            (f.en ? '<span class="lt"><span class="mr">' + esc(f.mr) + '</span><span class="en" lang="en">' + esc(f.en) + "</span></span>" : "") +
+            "</a></li>"
           );
         })
         .join("");

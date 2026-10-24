@@ -1,21 +1,29 @@
 // @ts-check
 // The Library's PDFs (content/pdfs.json, written like content/library.json: id, file, title, titleEn, category,
-// language): each PDF with its titles and its category, one of the texts' categories (content/categories.json), with
+// language, and its pages and size in bytes, filled in by tests/tools/pdf-info.mjs): each PDF with its titles and its category, one of the texts' categories (content/categories.json), with
 // whatever is missing or mistyped in the file left out, so one bad entry never hides the rest. A title given in one
 // language only is used for both. Pure, unit-tested in tests/unit/pdfs.test.mjs; no
 // init() (used by js/features/pdfs.js).
 
+import { dv } from "./words.js";
+
 /**
  * @typedef {import("./library.js").Name} Name
  * @typedef {import("./library.js").Category} Category
- * @typedef {{ id: string, file: string, title: Name, category: string, language: string }} Pdf
- *   file: its path under content/ ("pdfs/dasbodh.pdf"); title: { mr: title, en: titleEn }
+ * @typedef {{ id: string, file: string, title: Name, category: string, language: string, pages: number, size: number }} Pdf
+ *   file: its path under content/ ("pdfs/dasbodh.pdf"); title: { mr: title, en: titleEn }; pages, size (bytes): 0
+ *   when not known
  * @typedef {{ category: Category, pdfs: Pdf[] }} PdfShelf
  */
 
 /** @param {unknown} s */
 function str(s) {
   return typeof s === "string" ? s.trim() : "";
+}
+
+/** A count: a whole number above 0, else 0 @param {unknown} n */
+function count(n) {
+  return typeof n === "number" && n > 0 && Math.floor(n) === n ? n : 0;
 }
 
 /** @param {unknown} n @returns {Name | null} */
@@ -49,7 +57,7 @@ export function cleanPdfs(o) {
   list.forEach(function (/** @type {any} */ p) {
     var t = p && nameOf({ mr: p.title, en: p.titleEn });
     if (t && fileOk(p.file))
-      out.push({ id: str(p.id) || p.file.replace(/^pdfs\//, "").replace(/\.pdf$/i, ""), file: p.file, title: t, category: str(p.category), language: str(p.language) });
+      out.push({ id: str(p.id) || p.file.replace(/^pdfs\//, "").replace(/\.pdf$/i, ""), file: p.file, title: t, category: str(p.category), language: str(p.language), pages: count(p.pages), size: count(p.size) });
   });
   return out;
 }
@@ -75,6 +83,22 @@ export function pdfShelves(pdfs, cats) {
   return out.filter(function (s) {
     return s.pdfs.length;
   });
+}
+
+/**
+ * A PDF's pages and size as its row shows them, in Marathi and English: "१२० पाने · ४.१ MB", "120 pp · 4.1 MB"
+ * (sizes as phones give them, 1 MB = 1,000,000 bytes: KB below 1 MB, MB with one decimal below 10 MB). Either
+ * part is left out when not known; "" for both when neither is.
+ * @param {Pdf} p
+ * @returns {Name}
+ */
+export function pdfFacts(p) {
+  var mb = p.size / 1e6,
+    size = !p.size ? "" : mb < 1 ? Math.max(1, Math.round(p.size / 1e3)) + " KB" : (mb < 10 ? (Math.round(mb * 10) / 10).toFixed(1) : String(Math.round(mb))).replace(/\.0$/, "") + " MB";
+  return {
+    mr: [p.pages ? dv(p.pages) + (p.pages === 1 ? " पान" : " पाने") : "", dv(size)].filter(Boolean).join(" · "),
+    en: [p.pages ? p.pages + (p.pages === 1 ? " page" : " pp") : "", size].filter(Boolean).join(" · "),
+  };
 }
 
 /** The address a PDF opens at, from the page: content/pdfs/… with spaces and the like escaped @param {Pdf} p */

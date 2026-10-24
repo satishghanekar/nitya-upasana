@@ -428,7 +428,7 @@ const SAMPLE_PDF = readFileSync(new URL("./unit/fixtures/sample.pdf", import.met
 const PDFS = {
   pdfs: [
     { id: "vedic-chant-dasbodh", file: "pdfs/dasbodh.pdf", title: "दासबोध", titleEn: "Dasbodh", category: "vedic-chant", language: "mr" },
-    { id: "stotra-pothi", file: "pdfs/pothi.pdf", titleEn: "Pothi", category: "stotra", language: "sa" },
+    { id: "stotra-pothi", file: "pdfs/pothi.pdf", titleEn: "Pothi", category: "stotra", language: "sa", pages: 48, size: 4058213 },
     { id: "vedic-chant-gurucharitra", file: "pdfs/Shri Gurucharitra.pdf", title: "श्री गुरुचरित्र", titleEn: "Shri Gurucharitra", category: "vedic-chant", language: "mr" },
     { id: "aarti-x", file: "../index.html", title: "Not a PDF", category: "aarti" },
   ],
@@ -475,6 +475,9 @@ test("Chants | Books: the PDFs by the texts' categories, each opening in a new t
   await expect(links).toHaveCount(3);
   await expect(links.locator(".m .mr")).toHaveText(["दासबोध", "श्री गुरुचरित्र", "Pothi"]);
   await expect(links.nth(1)).toHaveAttribute("href", "content/pdfs/Shri%20Gurucharitra.pdf");
+  // each one's pages and size when content/pdfs.json gives them
+  await expect(links.locator(".lt")).toHaveCount(1);
+  await expect(links.nth(2).locator(".lt .en")).toHaveText("48 pp · 4.1 MB");
   await expect(links.nth(0)).toHaveAttribute("target", "_blank");
   await expect(links.nth(0)).toHaveAttribute("rel", "noopener");
   // a PDF opens in a tab of its own, the Library staying open behind it
@@ -512,17 +515,17 @@ test("the PDFs tab in Marathi menus @mobile", async ({ page }) => {
   await expect(page.locator("#jtb button").nth(0)).toHaveAccessibleName("पाठ");
   await expect(page.locator("#jtb button").nth(1)).toHaveAccessibleName("पोथी");
   await page.locator("#jtb button").nth(1).click();
-  await expect(page.locator("#jl .pdfg a.pdf").first()).toHaveAccessibleName("दासबोध PDF");
+  await expect(page.locator("#jl .pdfg a.pdf").first()).toHaveAccessibleName("दासबोध");
 });
 
-test("the PDFs tab follows Kannada letters and English only", async ({ browser }) => {
+test("the Books tab follows Kannada letters and English only", async ({ browser }) => {
   for (const [setup, first] of [["kannada", "ದಾಸಬೋಧ"], ["english", "Dasbodh"]]) {
     const page = await browser.newPage();
     await withPdfs(page);
     await openSite(page, SETUPS[setup], { now: EVENING });
     await page.locator("#hm").click();
     await page.locator("#jtb button").nth(1).click();
-    await expect.poll(() => page.locator("#jl .pdfg a.pdf").first().innerText()).toMatch(new RegExp("^" + first + "\\s"));
+    await expect.poll(() => page.locator("#jl .pdfg a.pdf").first().innerText()).toMatch(new RegExp("^" + first + "(\\s|$)"));
     await page.close();
   }
 });
