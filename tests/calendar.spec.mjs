@@ -46,6 +46,30 @@ test("Home: the calendar line under the date, with sunrise, sunset and the place
   await expect(page.locator("#calm")).toBeEmpty();
 });
 
+test("Home: the sunrise and sunset beside their times show their pictures full screen, the same size @mobile", async ({ page }) => {
+  // 7 pm: the time of day's picture is the sunset; the sunrise opens all the same, and closing brings the sunset back
+  await openSite(page, COLUMBUS, { now: NOW });
+  const [rise, set] = [page.locator('.psun[data-pic="sunrise"]'), page.locator('.psun[data-pic="sunset"]')];
+  await expect(rise).toHaveAccessibleName("Sunrise 7:45 am · show the picture full screen");
+  const [a, b] = [await rise.locator("img").boundingBox(), await set.locator("img").boundingBox()];
+  expect([a.width, a.height]).toEqual([b.width, b.height]);
+  expect((await rise.boundingBox()).height).toBeGreaterThanOrEqual(24);
+  await rise.click();
+  await expect(page.locator("#pzv")).toBeVisible();
+  await expect(page.locator("#pzv")).toHaveAttribute("aria-label", "Sunrise picture");
+  await expect(page.locator("#pzi")).toHaveAttribute("src", "picture-sunrise.webp");
+  // today's star ringed: 18 October 2026 is a Sunday, the star on the far left
+  const [pb, pr] = [await page.locator("#pzi").boundingBox(), await page.locator("#pzr").boundingBox()];
+  expect((pr.x + pr.width / 2 - pb.x) / pb.width).toBeLessThan(0.2);
+  await expect(page.locator("#cal")).toBeHidden();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#pzv")).toBeHidden();
+  await expect(rise).toBeFocused();
+  await expect(page.locator("#pzv")).toHaveAttribute("aria-label", "Sunset picture");
+  await set.click();
+  await expect(page.locator("#pzi")).toHaveAttribute("src", "picture-sunset.webp");
+});
+
 test("Home: the line in Marathi menus has Devanagari digits and the place's Marathi name", async ({ page }) => {
   await openSite(page, { ...SETUPS["marathi-menus"], loc: { lat: 39.96, lon: -83.0 } }, { now: NOW });
   await expect(page.locator("#pan .p3")).toHaveText(/सकाळी ७:४५.*सायं\. ६:४७/);
