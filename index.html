@@ -156,13 +156,15 @@
      PDF: the PDFs tab lists them (js/features/pdfs.js), each opening in the phone's own PDF viewer. ==== -->
 <div id="jump" hidden role="dialog" aria-labelledby="jlt" tabindex="-1">
   <div class="libin">
+  <!-- Back (‹) and, when the Library has PDFs, the tabs Texts | PDFs in one row, as on the calendar page; with the tabs
+       the title is for screen readers only (js/features/contents-list.js) -->
   <div class="libhd">
-    <button type="button" id="jbk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागे</span><span class="en" lang="en">Back</span></button>
+    <button type="button" id="jbk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span class="mr">मागे</span><span class="en" lang="en">Back</span></span></button>
     <h2 id="jlt"><span lang="mr">संग्रह</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">Library</span></h2>
-  </div>
-  <div id="jtb" role="group" aria-label="Library" hidden>
-    <button type="button" data-v="texts" aria-pressed="true"><span class="mr">रचना</span><span class="en" lang="en">Texts</span></button>
-    <button type="button" data-v="pdf" aria-pressed="false"><span class="mr">पीडीएफ</span><span class="en" lang="en">PDFs</span></button>
+    <div id="jtb" role="group" aria-label="Library" hidden>
+      <button type="button" data-v="texts" aria-pressed="true"><span class="mr">रचना</span><span class="en" lang="en">Texts</span></button>
+      <button type="button" data-v="pdf" aria-pressed="false"><span class="mr">पीडीएफ</span><span class="en" lang="en">PDFs</span></button>
+    </div>
   </div>
   <input id="q" type="search" placeholder="Find a text or a line" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Find a text or a line">
   <div id="none" hidden><span class="mr">काही सापडले नाही</span><span class="en" lang="en">Nothing found</span></div>

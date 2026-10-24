@@ -3,7 +3,8 @@
 // button in the top bar (#hm), the search button in the bottom bar and at the end of each piece; a title opens its
 // text (js/features/clicks.js), and Back (the button here, the phone's Back, or Escape) returns. Home v2 moved the
 // list here from the home page.
-// The tabs, Texts | PDFs (#jtb, Satish, 2026-10-24), are shown only when content/pdfs.json lists a PDF
+// The tabs, Texts | PDFs (#jtb, Satish, 2026-10-24), are shown only when content/pdfs.json lists a PDF, beside Back
+// in place of the title, as on the calendar page
 // (js/features/pdfs.js): the PDFs tab sets data-tab="pdf" on #jump, and the styles (css/13-library.css) show the
 // PDFs' groups in #jl in place of the search box, the texts and Edit categories. The Library opens on Texts each time.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
@@ -51,6 +52,9 @@ export function init() {
   var tb = document.getElementById("jtb");
   if (tb && hasPdfs()) {
     tb.hidden = false;
+    // the tabs take the title's place beside Back; screen readers still hear it
+    var t = document.getElementById("jlt");
+    if (t) t.classList.add("sr");
     tb.addEventListener("click", function (e) {
       var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest("button[data-v]"));
       if (b) libTab(b.dataset.v === "pdf" ? "pdf" : "texts");
