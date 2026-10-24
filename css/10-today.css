@@ -328,11 +328,16 @@
   }
 }
 
-/* ==== On the home page (data-home, set by js/features/bars.js while no piece is at the top): no bottom bar, so the top
-   bar has Library. While reading, Library is in the bottom bar (one place each) ==== */
-[data-home="1"] #asc,
+/* ==== On the home page (data-home, set by js/features/bars.js while no piece is at the top): the bottom bar has only
+   Print (the session Home shows) and Reading (Aa), and the top bar has Library. While reading, Library is in the bottom
+   bar (one place each), with ‹ Prev, Home and Next › ==== */
+[data-home="1"] :is(#asv, #ash, #asq, #asn),
 :root:not([data-home="1"]) .bar #hm {
   display: none;
+}
+[data-home="1"] #asi {
+  justify-content: center;
+  gap: 32px;
 }
 /* ==== Desktop A (screens 1024px and wider): Home on its own uses the whole layout width (85% of the
    screen): today on the left (the Vedic calendar line, the festival line, Morning / Afternoon / Evening, the session's
