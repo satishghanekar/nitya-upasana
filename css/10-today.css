@@ -61,9 +61,12 @@
   padding-bottom: 10px;
   margin-bottom: 14px;
 }
-/* a tap on the date opens the calendar too, as the line under it does (#panb, for the keyboard) */
+/* a tap on the date opens the calendar too, as the line under it does (#panb, for the keyboard); like a button, its
+   text is not selected (no text cursor) on a click */
 #tdd {
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 #tdd {
   display: grid;
@@ -401,7 +404,7 @@
   :root[data-hv="1"][data-rail="1"] #tdd {
     grid-column: 1;
     margin: 0;
-    padding: 10px 12px 2px 42px;
+    padding: 10px 12px 2px;
     border: 1px solid var(--hdrl);
     border-bottom: 0;
     border-radius: 14px 14px 0 0;
@@ -435,9 +438,6 @@
   /* the date stays at the top of the card; the picture is in the top bar (#bti) */
   :root[data-rail="1"]:not([data-hv]) #tdy #iconb {
     display: none;
-  }
-  :root[data-rail="1"]:not([data-hv]) #tdy {
-    padding-left: 42px;
   }
   #tsl li.now {
     border-radius: 0 10px 10px 0;
