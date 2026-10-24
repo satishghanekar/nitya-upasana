@@ -10,6 +10,10 @@ export function init() {
     var v = document.getElementById("pzv"),
       im = document.getElementById("pzi"),
       ib = document.getElementById("iconb"),
+      // the small picture in the top bar opens it too (on phones the only one: Home's card has no picture there)
+      tb = document.getElementById("bti"),
+      /** @type {HTMLElement} the button that opened it, where focus returns */
+      from = ib,
       hint = document.getElementById("pzh");
     if (!v || !im || !ib) return;
     var s = 1,
@@ -64,12 +68,16 @@ export function init() {
       document.documentElement.style.overflow = "";
       if (!fromPop) ovDone();
       try {
-        ib.focus({ preventScroll: true });
+        from.focus({ preventScroll: true });
       } catch (e) {}
     }
-    ib.addEventListener("click", function (e) {
-      e.stopPropagation();
-      open();
+    [ib, tb].forEach(function (b) {
+      if (b)
+        b.addEventListener("click", function (e) {
+          e.stopPropagation();
+          from = b;
+          open();
+        });
     });
     document.getElementById("pzx").onclick = function () {
       close();

@@ -24,7 +24,8 @@ const STATES = [
   }],
   ["Help open", SETUPS.marathi, (p) => tapMore(p, "#hlpb")],
   ["QR open", SETUPS.marathi, (p) => tapMore(p, "#qrb")],
-  ["picture open", SETUPS.marathi, (p) => p.locator("#iconb").click()],
+  // (from the small picture in the top bar, on every screen)
+  ["picture open", SETUPS.marathi, (p) => p.locator("#bti").click()],
 ];
 
 for (const [name, prefs, prep, themes] of STATES) {

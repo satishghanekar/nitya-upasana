@@ -49,6 +49,11 @@
   height: 56px;
   margin: 0;
 }
+/* phones and tablets: the picture is in the top bar (#bti), so the card's lines use its whole width; on wide screens
+   it is large beside the card (Satish, 2026-10-24) */
+:root:not([data-rail="1"]) #tdy #iconb {
+  display: none;
+}
 /* no calendar line (no place known): the card is the picture and date alone */
 #tdy:has(+ #pan[hidden]) {
   border-bottom: 1px solid var(--hdrl);
@@ -427,12 +432,12 @@
     overflow: auto;
     scrollbar-width: thin;
   }
-  :root[data-rail="1"]:not([data-hv]) #home > #tdy {
+  /* the date stays at the top of the card; the picture is in the top bar (#bti) */
+  :root[data-rail="1"]:not([data-hv]) #tdy #iconb {
     display: none;
   }
-  :root[data-rail="1"]:not([data-hv]) #pan .pcard {
-    border-top: 1px solid var(--hdrl);
-    border-radius: 14px;
+  :root[data-rail="1"]:not([data-hv]) #tdy {
+    padding-left: 42px;
   }
   #tsl li.now {
     border-radius: 0 10px 10px 0;
@@ -571,11 +576,8 @@
   :root[data-rail="1"][data-sp] {
     overflow: visible;
   }
-  /* the month takes the room the day card leaves; its days fill the height of the screen, names kept whole */
+  /* one tab at a time across the right-hand area; the month's days fill the height of the screen, names kept whole */
   :root[data-rail="1"] #cal .calin {
-    grid-template-columns: minmax(0, 1fr) clamp(290px, 26vw, 360px);
-    /* the header, the tabs, then the month or the 15 days: the day card beside the last two takes no room from the tabs */
-    grid-template-rows: auto auto 1fr;
     gap: 16px 24px;
     max-width: none;
     margin: 0;
@@ -598,19 +600,6 @@
     word-break: keep-all;
     font-size: 11.5px;
   }
-  :root[data-rail="1"] #cal #calv {
-    grid-column: 1;
-    grid-row: 2;
-  }
-  :root[data-rail="1"] #cal #calm,
-  :root[data-rail="1"] #cal #calu {
-    grid-column: 1;
-    grid-row: 3;
-  }
-  :root[data-rail="1"] #cal #cald {
-    grid-column: 2;
-    grid-row: 2 / span 2;
-  }
   :root[data-rail="1"] #panel .sp-pg {
     max-width: none;
     margin: 0;
@@ -624,9 +613,15 @@
     break-inside: avoid;
   }
   :root[data-rail="1"]:has(#panb[aria-expanded="true"]) :is(#tdy, #tdd),
-  :root[data-rail="1"] #pan .pcard:has(#panb[aria-expanded="true"]) {
+  :root[data-rail="1"] #pan .pcard:has(#panb[aria-expanded="true"]),
+  :root[data-rail="1"] #upw:has(#upwm[aria-expanded="true"]) {
     border-color: var(--accent);
     box-shadow: inset 3px 0 0 var(--accent);
+  }
+  /* This week, when the calendar was opened from it: the row tapped too */
+  :root[data-rail="1"] #upw:has(#upwm[aria-expanded="true"]) :is(.upr, .upx).on {
+    background: var(--hdrt);
+    box-shadow: inset 0 0 0 1px var(--accent);
   }
   :root[data-rail="1"] #aa[aria-expanded="true"] {
     background: var(--accent);

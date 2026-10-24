@@ -63,7 +63,7 @@ test.describe("notched iPhone @chromium-only", () => {
     await page.locator("#aa").click();
     await clear("#panel .sp-hd button");
     await page.keyboard.press("Escape");
-    await page.locator("#iconb").click();
+    await page.locator("#bti").click();
     await clear("#pzx");
   });
 });
@@ -214,7 +214,8 @@ for (const [w, h] of WIDTHS) {
     const r = await page.evaluate(() => {
       const d = document.documentElement,
         wrap = document.querySelector(".wrap").getBoundingClientRect(),
-        btns = [...document.querySelectorAll("body > .bar button, #asc button")]
+        // (the small picture belongs with the site's name, at the far left like it)
+        btns = [...document.querySelectorAll("body > .bar button:not(#bti), #asc button")]
           .filter((b) => b.getClientRects().length)
           .map((b) => b.getBoundingClientRect());
       return {
