@@ -152,7 +152,9 @@ export function init() {
     el.addEventListener("focusout", function (e) {
       var t = e.relatedTarget;
       // (not into the categories sheet, which opens over the Library, nor the profile sheet, over the routine builder)
-      if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help,#lbm,#pfm")) return;
+      // (nor into Home's calendar card or This week, which open the calendar at another view: closing it first would
+      // let its Back step close the calendar they open)
+      if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help,#lbm,#pfm,#pan,#tdd,#upw")) return;
       el._ret = null;
       if (el === pn) setP(false);
       else if (el === jp) setJ(false);

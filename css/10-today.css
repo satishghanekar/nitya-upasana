@@ -432,12 +432,12 @@
     overflow: auto;
     scrollbar-width: thin;
   }
-  :root[data-rail="1"]:not([data-hv]) #home > #tdy {
+  /* the date stays at the top of the card; the picture is in the top bar (#bti) */
+  :root[data-rail="1"]:not([data-hv]) #tdy #iconb {
     display: none;
   }
-  :root[data-rail="1"]:not([data-hv]) #pan .pcard {
-    border-top: 1px solid var(--hdrl);
-    border-radius: 14px;
+  :root[data-rail="1"]:not([data-hv]) #tdy {
+    padding-left: 42px;
   }
   #tsl li.now {
     border-radius: 0 10px 10px 0;
@@ -629,9 +629,15 @@
     break-inside: avoid;
   }
   :root[data-rail="1"]:has(#panb[aria-expanded="true"]) :is(#tdy, #tdd),
-  :root[data-rail="1"] #pan .pcard:has(#panb[aria-expanded="true"]) {
+  :root[data-rail="1"] #pan .pcard:has(#panb[aria-expanded="true"]),
+  :root[data-rail="1"] #upw:has(#upwm[aria-expanded="true"]) {
     border-color: var(--accent);
     box-shadow: inset 3px 0 0 var(--accent);
+  }
+  /* This week, when the calendar was opened from it: the row tapped too */
+  :root[data-rail="1"] #upw:has(#upwm[aria-expanded="true"]) .upr.on {
+    background: var(--hdrt);
+    box-shadow: inset 0 0 0 1px var(--accent);
   }
   :root[data-rail="1"] #aa[aria-expanded="true"] {
     background: var(--accent);

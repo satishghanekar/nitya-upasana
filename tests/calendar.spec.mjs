@@ -508,7 +508,7 @@ test("Home: This week, the 7 days after today, each opening its day in the calen
   expect(await dates(w.locator(".upr"))).toEqual(["2026-10-20 fest", "2026-10-23 pradosh", "2026-10-25 fest"]);
   await expect(w.locator(".upr").first()).toHaveAccessibleName("Tuesday, 20 October: Dasara (Vijayadashami) , in 2 days");
   await expect(w.locator(".upr .mn.full")).toHaveCount(1); // Kojagiri: a full moon
-  await expect(w.locator(".upx")).toHaveText("Next: Sankashti Chaturthi Wed 28 Oct");
+  await expect(w.locator(".upx")).toHaveText("NextSankashti ChaturthiWed 28 Oct · in 10 days");
   // it sits under the calendar line, above the session's texts
   const y = async (s) => (await page.locator(s).boundingBox()).y;
   expect(await y("#pan")).toBeLessThan(await y("#upw"));
@@ -536,8 +536,28 @@ test("Home: This week, the 7 days after today, each opening its day in the calen
   await expect(page.locator("#cald")).toBeVisible({ visible: wide(page) });
   await expect(page.locator('#calv [data-v="up"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "true");
+  // only the card it was opened from is marked open, not the date card above
+  await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "false");
   await page.keyboard.press("Escape");
   await expect(page.locator("#upwm")).toBeFocused();
+});
+
+test("on a wide screen, This week or the date card clicked while the calendar is open switches it, and only that one is marked", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 820 });
+  await openSite(page, ENGLISH_ONLY, { now: NOW });
+  await page.locator("#panb").click(CORNER);
+  await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "true");
+  await page.locator("#upwm").click();
+  await page.waitForTimeout(500); // (a Back step taken by mistake would close it here)
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator('#calv [data-v="up"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "false");
+  await page.locator("#panb").click(CORNER);
+  await page.waitForTimeout(500);
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "false");
 });
 
 test("the calendar's tabs: Day, 15 days, Month on phones; 15 days and Month beside the day card on wide screens @mobile", async ({ page }) => {
@@ -636,7 +656,7 @@ test("Upcoming: a festival of several days is one entry, Day 6–9 of the Utsav,
     "Saturday, 25 July: Shri Gondhavlekar Maharaj Utsav Day 6–9 · until Tue 28 Jul , Tomorrow",
   );
   await expect(w.locator(".upr").nth(1).locator("small")).toHaveText("Utsav 7");
-  await expect(w.locator(".upx")).toHaveText("Next: Sankashti Chaturthi Sat 1 Aug");
+  await expect(w.locator(".upx")).toHaveText("NextSankashti ChaturthiSat 1 Aug · in 8 days");
   // today's own are in the line above: the Utsav's Day 5 and Ashadhi Ekadashi
   await expect(page.locator("#fst")).toContainText("Day 5");
 });
