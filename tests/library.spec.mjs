@@ -421,3 +421,104 @@ test("every control in the categories sheet has a 44px target", async ({ page })
   );
   expect(small).toEqual([]);
 });
+
+// ---- The PDFs tab (content/pdfs.json, js/features/pdfs.js): a made-up list and PDF, served to the test only ----
+const SAMPLE_PDF = readFileSync(new URL("./unit/fixtures/sample.pdf", import.meta.url));
+const PDFS = {
+  groups: [
+    {
+      name: { mr: "ग्रंथ", en: "Books" },
+      pdfs: [
+        { file: "pdfs/dasbodh.pdf", title: { mr: "दासबोध", en: "Dasbodh" } },
+        { file: "pdfs/Shri Gurucharitra.pdf", title: { mr: "श्री गुरुचरित्र", en: "Shri Gurucharitra" } },
+      ],
+    },
+    { name: { mr: "पोथी", en: "Pothi" }, pdfs: [{ file: "pdfs/pothi.pdf", title: { en: "Pothi" } }, { file: "../index.html", title: "Not a PDF" }] },
+  ],
+};
+async function withPdfs(page, list = PDFS) {
+  await page.route("**/content/pdfs.json", (r) => r.fulfill({ json: list }));
+  await page.route("**/content/pdfs/**", (r) => r.fulfill({ body: SAMPLE_PDF, contentType: "application/pdf" }));
+}
+
+test("no PDFs listed: the Library has no tabs @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await page.locator("#hm").click();
+  await expect(page.locator("#jtb")).toBeHidden();
+  await expect(page.locator("#jl .pdfg")).toHaveCount(0);
+  await expect(page.locator("#q")).toBeVisible();
+});
+
+test("Texts | PDFs: the PDFs by group, each opening in a new tab; the Library opens on Texts again @mobile", async ({ page }) => {
+  await withPdfs(page);
+  await openSite(page, SETUPS.both, { now: EVENING });
+  await page.locator("#hm").click();
+  const tabs = page.locator("#jtb button");
+  // (the words in the menu language only: the other is in the page, not shown)
+  await expect(tabs.nth(0)).toHaveAccessibleName("Texts");
+  await expect(tabs.nth(1)).toHaveAccessibleName("PDFs");
+  await expect(tabs.nth(0)).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#jl .pdfg").first()).toBeHidden();
+  // a search shown when the tab changes is cleared
+  await page.locator("#q").fill("sukh");
+  await expect(page.locator("#res li").first()).toBeVisible();
+  await tabs.nth(1).click();
+  await expect(tabs.nth(1)).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#q")).toBeHidden();
+  await expect(page.locator("#q")).toHaveValue("");
+  await expect(page.locator("#res li")).toHaveCount(0);
+  await expect(page.locator("#lbr")).toBeHidden();
+  await expect(page.locator("#jl .tocg:not(.pdfg)").first()).toBeHidden();
+  // the groups in order, with the entry that is not a PDF left out; names in both reading languages
+  await expect(page.locator("#jl .pdfg .gh .mr")).toHaveText(["ग्रंथ", "पोथी"]);
+  await expect(page.locator("#jl .pdfg .gh .en")).toHaveText(["Books", "Pothi"]);
+  const links = page.locator("#jl .pdfg a.pdf");
+  await expect(links).toHaveCount(3);
+  await expect(links.locator(".m .mr")).toHaveText(["दासबोध", "श्री गुरुचरित्र", "Pothi"]);
+  await expect(links.nth(1)).toHaveAttribute("href", "content/pdfs/Shri%20Gurucharitra.pdf");
+  await expect(links.nth(0)).toHaveAttribute("target", "_blank");
+  await expect(links.nth(0)).toHaveAttribute("rel", "noopener");
+  // a PDF opens in a tab of its own, the Library staying open behind it
+  const [tab] = await Promise.all([page.context().waitForEvent("page"), links.nth(0).click()]);
+  await tab.waitForLoadState();
+  expect(tab.url()).toMatch(/\/content\/pdfs\/dasbodh\.pdf$/);
+  await tab.close();
+  await expect(page.locator("#jump")).toBeVisible();
+  // closed and opened again: on Texts, with the search box
+  await page.locator("#jbk").click();
+  await page.locator("#hm").click();
+  await expect(tabs.nth(0)).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#q")).toBeVisible();
+  await expect(page.locator("#jl .pdfg").first()).toBeHidden();
+});
+
+test("the PDFs tab in Marathi menus @mobile", async ({ page }) => {
+  await withPdfs(page);
+  await openSite(page, SETUPS["marathi-menus"], { now: EVENING });
+  await page.locator("#hm").click();
+  await expect(page.locator("#jtb button").nth(0)).toHaveAccessibleName("रचना");
+  await expect(page.locator("#jtb button").nth(1)).toHaveAccessibleName("पीडीएफ");
+  await page.locator("#jtb button").nth(1).click();
+  await expect(page.locator("#jl .pdfg a.pdf").first()).toHaveAccessibleName("दासबोध PDF");
+});
+
+test("the PDFs tab follows Kannada letters and English only", async ({ browser }) => {
+  for (const [setup, first] of [["kannada", "ದಾಸಬೋಧ"], ["english", "Dasbodh"]]) {
+    const page = await browser.newPage();
+    await withPdfs(page);
+    await openSite(page, SETUPS[setup], { now: EVENING });
+    await page.locator("#hm").click();
+    await page.locator("#jtb button").nth(1).click();
+    await expect.poll(() => page.locator("#jl .pdfg a.pdf").first().innerText()).toMatch(new RegExp("^" + first + "\\s"));
+    await page.close();
+  }
+});
+
+test("axe: the PDFs tab, in every theme; 44px tabs", async ({ page }) => {
+  await withPdfs(page);
+  await openSite(page, SETUPS.both, { now: EVENING });
+  await page.locator("#hm").click();
+  await page.locator("#jtb button").nth(1).click();
+  for (const b of await page.locator("#jtb button").all()) expect((await b.boundingBox()).height).toBeGreaterThanOrEqual(44);
+  expect(await axeEveryTheme(page, "#jump")).toEqual(noViolations());
+});

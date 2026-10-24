@@ -1,5 +1,6 @@
 // Offline: once opened, the site works with no internet (service worker sw.js).
 import { test, expect } from "@playwright/test";
+import { readFileSync } from "node:fs";
 import { FIXED_NOW, PREFS_KEY, BASE_PREFS, TEXT_COUNT, buildAll } from "./helpers.mjs";
 
 test.use({ serviceWorkers: "allow" });
@@ -48,4 +49,29 @@ test("version in index.html and sw.js match", async ({ request }) => {
   const b = /const V\s*=\s*'(aarti-v[\d.]+)'/.exec(sw)?.[1];
   expect(a, "<meta name=\"version\"> in index.html").toBeTruthy();
   expect(b, "sw.js").toBe(a);
+});
+
+// A PDF from the Library's PDFs tab opens in the browser's own viewer: the service worker answers its address with
+// the PDF, never the page (a page's address is answered with the page), keeps it once opened, and says plainly when
+// one not yet kept is opened without internet. (A file in tests/ stands in for content/pdfs/; the rule is by .pdf.)
+test("a PDF opened once is the PDF, and opens offline @chromium-only", async ({ page, context }) => {
+  await page.goto("./");
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller)
+      await new Promise((r) => navigator.serviceWorker.addEventListener("controllerchange", r, { once: true }));
+  });
+  const tab = await context.newPage();
+  // (headless Chromium saves a PDF it is sent rather than showing it: its first bytes tell a PDF from the page)
+  const pdf = async (url) => {
+    const [d] = await Promise.all([tab.waitForEvent("download"), tab.goto(url).catch(() => {})]);
+    return readFileSync(await d.path()).subarray(0, 5).toString();
+  };
+  expect(await pdf("tests/unit/fixtures/sample.pdf")).toBe("%PDF-");
+  await context.setOffline(true);
+  expect(await pdf("tests/unit/fixtures/sample.pdf")).toBe("%PDF-");
+  const r = await tab.goto("tests/unit/fixtures/never-opened.pdf");
+  expect([r.status(), r.fromServiceWorker()]).toEqual([503, true]);
+  await expect(tab.locator("body")).toContainText("This PDF is not saved on this phone yet");
+  await context.setOffline(false);
 });

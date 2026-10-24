@@ -346,12 +346,12 @@ function listHtml() {
     .join("");
 }
 
-/** Put the list in the Library, before the Edit categories button */
+/** Put the list in the Library, before the Edit categories button (the PDFs, js/features/pdfs.js, come after it) */
 function renderList() {
   var jl = document.getElementById("jl"),
     at = document.getElementById("lbr");
   if (!jl || !at) return;
-  [].forEach.call(jl.querySelectorAll(".tocg"), function (/** @type {Element} */ g) {
+  [].forEach.call(jl.querySelectorAll(".tocg:not(.pdfg)"), function (/** @type {Element} */ g) {
     g.remove();
   });
   at.insertAdjacentHTML("beforebegin", listHtml());

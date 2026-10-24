@@ -20,6 +20,7 @@ const TYPES = {
   ".webp": "image/webp",
   ".svg": "image/svg+xml",
   ".woff2": "font/woff2",
+  ".pdf": "application/pdf",
 };
 
 createServer(async (req, res) => {

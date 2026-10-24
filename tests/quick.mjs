@@ -28,6 +28,7 @@ const SUITES = [
   // texts and lists
   [/^content\/texts\//, () => ["content", "print"]],
   [/^content\/library\.json$|^content\/categories\.json$/, () => ["content", "library", "print"]],
+  [/^content\/pdfs(\.json$|\/)/, () => ["library"]],
   [/^content\/festivals\.json$/, () => ["calendar"]],
   [/^content\/routines\.json$/, () => ["today"]],
   // the offline copy and the files Cloudflare serves
@@ -56,7 +57,7 @@ const SUITES = [
   [/^js\/features\/(routine-builder|text-picker)\.js$/, () => ["builder"]],
   [/^js\/features\/(history|bottom-bar)\.js$/, () => ["reading", "today", "interactions"]],
   [/^js\/store\/|^js\/features\/(profiles|backup)\.js$/, () => ["profiles"]],
-  [/^js\/core\/library\.js$|^js\/features\/(library|contents-list|reading-sheet)\.js$/, () => ["library"]],
+  [/^js\/core\/(library|pdfs)\.js$|^js\/features\/(library|pdfs|contents-list|reading-sheet)\.js$/, () => ["library"]],
   // pictures and fonts
   [/\.(png|jpg|webp|svg|woff2)$/, () => ["visual"]],
 ];
