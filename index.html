@@ -283,12 +283,13 @@
      or Escape). The day card (#cald) and the month (#calm) are written in by the script when it opens ==== -->
 <div id="cal" hidden role="dialog" aria-labelledby="calt" tabindex="-1">
   <div class="calin">
-  <div class="libhd">
-    <button type="button" id="cbk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागे</span><span class="en" lang="en">Back</span></button>
-    <h2 id="calt"><span lang="mr">पंचांग</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">Vedic calendar</span></h2>
+  <!-- Back (‹) at the left of the tabs, Day | 15 days | Month, one at a time on every screen (written in by the script);
+       the page's title is for screen readers only -->
+  <h2 id="calt" class="sr"><span lang="mr">पंचांग</span> <span lang="en">Vedic calendar</span></h2>
+  <div class="calbar">
+    <button type="button" id="cbk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span class="mr">मागे</span><span class="en" lang="en">Back</span></span></button>
+    <div id="calv" role="group" aria-label="Vedic calendar"></div>
   </div>
-  <!-- The tabs, Day | 15 days | Month, one at a time on every screen (written in by the script) -->
-  <div id="calv" role="group" aria-label="Vedic calendar"></div>
   <section id="cald" aria-labelledby="cdt"></section>
   <section id="calm" aria-labelledby="cmt"></section>
   <!-- 15 days: from today at first, by week, ‹ › to the 15 before or after (js/features/vedic-calendar.js upRender) -->
