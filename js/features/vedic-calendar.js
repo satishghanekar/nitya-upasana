@@ -1109,8 +1109,9 @@ function calRender() {
     L = skLoc();
   if (!c) return;
   var l = ui(),
-    hd = /** @type {HTMLElement | null} */ (c.querySelector(".libhd"));
-  if (hd) hd.setAttribute("data-lang", l);
+    // Back's word in the menu language (css/02-core.css: .mr / .en by data-lang)
+    bar = /** @type {HTMLElement | null} */ (c.querySelector(".calbar"));
+  if (bar) bar.setAttribute("data-lang", l);
   c.lang = l;
   calKey = langKey();
   var note = document.getElementById("caln0"),
