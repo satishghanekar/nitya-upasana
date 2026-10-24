@@ -4,7 +4,7 @@
 // warning when IndexedDB can't be opened, the backup reminder, and accessibility of the new dialogs.
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { FIXED_NOW, openSite, PREFS_KEY, settle, SETUPS, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
+import { FIXED_NOW, openSite, PREFS_KEY, settle, SETUPS, axeScan, axeEveryTheme, noViolations, useTestRoutine, TEST_AARTIS } from "./helpers.mjs";
 
 const EVENING = new Date("2026-10-18T19:00:00-04:00"); // Sunday evening: the ten aartis
 const fs = (page) => page.evaluate(() => parseFloat(document.documentElement.style.getPropertyValue("--fs")));
@@ -78,6 +78,7 @@ test("first visit: version 1.3's settings become the first person, 'Me', shown o
 });
 
 test("first visit from an older version (settings version 4), with version 1.3's ticks left in storage", async ({ page }) => {
+  await useTestRoutine(page);
   await page.clock.setFixedTime(EVENING);
   await page.addInitScript(() => {
     if (sessionStorage.getItem("__seeded")) return;
@@ -92,7 +93,7 @@ test("first visit from an older version (settings version 4), with version 1.3's
   expect(await textLang(page)).toBe("en");
   await expect(page.locator("html")).toHaveAttribute("data-ref", "0");
   // Home has no ticks now: the old ones are simply not shown
-  await expect(page.locator("#tsn")).toHaveText("4 texts");
+  await expect(page.locator("#tsn")).toHaveText(`${TEST_AARTIS.length} texts`);
   const boot = await page.evaluate(() => JSON.parse(localStorage.getItem("aarti2-prefs")));
   expect([boot.sv, boot.l2]).toEqual([6, "en"]);
 });

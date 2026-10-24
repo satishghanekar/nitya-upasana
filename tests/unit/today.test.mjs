@@ -53,19 +53,10 @@ describe("the picture for the day and session picked on the card", () => {
 
 describe("the default routine (content/routines.json)", () => {
   const DAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-  test("Morning: Ganapati Atharvashirsha first, then Shree Rudra (Sat, Sun, Mon), Purusha Suktam (Mon, Wed) and Shri Sukta (Wed), then the Ganapati and Devi aartis", () => {
-    const vedic = { 0: ["vedic-chant-shree-rudra"], 1: ["vedic-chant-shree-rudra", "vedic-chant-purusha-suktam"], 3: ["vedic-chant-purusha-suktam", "vedic-chant-shri-sukta"], 6: ["vedic-chant-shree-rudra"] };
-    for (let d = 0; d < 7; d++) {
-      expect(textsFor(ROUTINE, d, "morning"), DAYS[d]).toEqual(["vedic-chant-atharvashirsha", ...(vedic[d] || []), "aarti-sukhkarta", "aarti-durge-durghat-bhari"]);
-    }
-  });
-  test("Evening, the same every day: the Ganapati and Devi aartis, Ghalin Lotangan, then the Wednesday ashtak last", () => {
-    for (let d = 0; d < 7; d++) {
-      expect(textsFor(ROUTINE, d, "evening"), DAYS[d]).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan", "ashtak-wednesday"]);
-    }
-  });
-  test("Afternoon is empty", () => {
-    for (let d = 0; d < 7; d++) expect(textsFor(ROUTINE, d, "afternoon")).toEqual([]);
+  // (2026-10-23: the starting routine everyone gets; each person changes it in the routine builder)
+  const EXPECT = {"morning": {"sun": ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam", "vedic-chant-shree-rudra", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jaydeva-jaydeva-samartha", "aarti-ghalin-lotangan"], "mon": ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam", "vedic-chant-shree-rudra", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jaydeva-jaydeva-samartha", "aarti-ovaloon-aarti-chaitanyabrahma", "aarti-ghalin-lotangan"], "tue": ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jaydeva-jaydeva-samartha", "aarti-kariton-guruvar", "aarti-ghalin-lotangan"], "wed": ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jaydeva-jaydeva-samartha", "aarti-belaguve", "aarti-ghalin-lotangan"], "thu": ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jaydeva-jaydeva-samartha", "aarti-belaguve", "aarti-ghalin-lotangan"], "fri": ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jaydeva-jaydeva-samartha", "aarti-ghalin-lotangan"], "sat": ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam", "vedic-chant-shree-rudra", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jaydeva-jaydeva-samartha", "aarti-ghalin-lotangan"]}, "afternoon": {"sun": [], "mon": [], "tue": [], "wed": [], "thu": [], "fri": [], "sat": []}, "evening": {"sun": ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jay-jay-aarti-shrigururaya", "aarti-ghalin-lotangan", "ashtak-sunday", "ashtak-brahmachaitanya-sarikha"], "mon": ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jay-jay-aarti-shrigururaya", "aarti-lavathavati-vikrala", "aarti-ghalin-lotangan", "ashtak-monday", "ashtak-ananyata-maj-ghado"], "tue": ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jay-jay-aarti-shrigururaya", "aarti-shendur-lal-chadhayo", "aarti-kariton-guruvar", "aarti-ghalin-lotangan", "ashtak-tuesday", "ashtak-anudin-anutapen"], "wed": ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jay-jay-aarti-shrigururaya", "aarti-ovaloon-aarti-chaitanyabrahma", "aarti-ghalin-lotangan", "ashtak-wednesday", "ashtak-sadguru-padukashtak"], "thu": ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jay-jay-aarti-shrigururaya", "aarti-trigunatmak-traimurti", "aarti-ovaloo-sapreme-aarti", "aarti-ghalin-lotangan", "ashtak-thursday"], "fri": ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jay-jay-aarti-shrigururaya", "aarti-ghalin-lotangan", "ashtak-friday", "ashtak-haachi-subodh"], "sat": ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jay-jay-aarti-shrigururaya", "aarti-dhanya-jagin-guruvarya", "aarti-ghalin-lotangan", "ashtak-saturday"]}};
+  test.each(["morning", "afternoon", "evening"])("%s, each day as planned", (s) => {
+    for (let d = 0; d < 7; d++) expect(textsFor(ROUTINE, d, s), s + " " + DAYS[d]).toEqual(EXPECT[s][DAYS[d]]);
   });
   test("every text the routine names is in content/library.json", () => {
     const ids = new Set(LIBRARY.texts.map((t) => t.id));

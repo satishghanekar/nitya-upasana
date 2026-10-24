@@ -1,9 +1,7 @@
 // Routine printouts (js/print/select.js): each text once in routine order, its tag, and the week at a glance
-import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { dayList, selectRoutine, tagFor, weekGrid, weekOrder } from "../../js/print/select.js";
 
-const ROUTINE = JSON.parse(readFileSync(new URL("../../content/routines.json", import.meta.url), "utf8"));
 const WEEK = [0, 1, 2, 3, 4, 5, 6];
 const ALL = ["morning", "afternoon", "evening"];
 
@@ -41,10 +39,10 @@ describe("selectRoutine", () => {
   it("is empty for no routine", () => {
     expect(selectRoutine(null, WEEK, ALL)).toEqual({ ids: [], where: {} });
   });
-  it("prints each text of the default routine once", () => {
-    const ids = selectRoutine(ROUTINE, WEEK, ALL).ids;
+  it("prints each text of a routine once, Monday's Morning first", () => {
+    const ids = selectRoutine(R, WEEK, ALL).ids;
     expect(new Set(ids).size).toBe(ids.length);
-    expect(ids[0]).toBe(ROUTINE.morning.days.mon[0]);
+    expect(ids[0]).toBe(R.morning.days.mon[0]);
   });
 });
 
