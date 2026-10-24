@@ -9,7 +9,7 @@
 // - The calendar page (#cal), opened by that button: like the Library page (#jump) it sits under the top bar with a
 //   Back button, the phone's Back closes it (js/features/history.js) and focus returns to the button (overlays.js
 //   setC). A day card (tithi, nakshatra and yoga with their end times, vara, sunrise and sunset, moonrise, month,
-//   samvatsara, ritu and ayana, the next Sankashti) and the month as a table of buttons: each day's tithi at sunrise,
+//   samvatsara, ritu and ayana) and the month as a table of buttons: each day's tithi at sunrise,
 //   shukla / krishna shading, full and new moon, Ekadashi and Sankashti, kshaya and vriddhi tithis, today. A month is
 //   worked out only when it is shown (monthPanchang(), ~50 ms) and kept while the page is open.
 // - Festivals (content/festivals.json, rules in js/core/festivals.js): a short label on the day in the month, a tag
@@ -25,7 +25,7 @@ import { P } from "../core/state.js";
 import { dayPanchang, monthPanchang } from "../core/panchang.js";
 import { festivalsFor, festivalsInMonth } from "../core/festivals.js";
 import { loaded } from "../text/load.js";
-import { skLoc, skNext, skFmt, skMid } from "./sankashti.js";
+import { skLoc } from "./sankashti.js";
 import { setC } from "./overlays.js";
 import { IA } from "../text/iast.js";
 import { PAKSHA } from "../core/panchang-names.js";
@@ -57,8 +57,6 @@ const N = {
   sankashti: { mr: "संकष्टी", en: "Sankashti" },
   angaraki: { mr: "अंगारकी", en: "Angaraki" },
   angSk: { mr: "अंगारकी संकष्टी", en: "Angaraki Sankashti" },
-  skc: { mr: "संकष्टी चतुर्थी", en: "Sankashti Chaturthi" },
-  angSkc: { mr: "अंगारकी संकष्टी चतुर्थी", en: "Angaraki Sankashti Chaturthi" },
   festival: { mr: "सण", en: "Festival", ia: "Festival" },
 };
 
@@ -68,13 +66,10 @@ const W = {
     open: " (open the Vedic calendar)",
     sunrise: "Sunrise",
     sunset: "Sunset",
-    moonrise: "Moonrise",
     noRise: "No moonrise this day",
     until: "until ",
     amanta: "amanta",
     today: "today",
-    next: "Next",
-    skToday: "Sankashti Chaturthi today",
     prev: "Previous month",
     nextM: "Next month",
     key: ["Shukla paksha", "Krishna paksha", "Purnima", "Amavasya"],
@@ -93,13 +88,10 @@ const W = {
     open: " (पंचांग उघडा)",
     sunrise: "सूर्योदय",
     sunset: "सूर्यास्त",
-    moonrise: "चंद्रोदय",
     noRise: "या दिवशी चंद्रोदय नाही",
     until: "",
     amanta: "अमान्त",
     today: "आज",
-    next: "पुढील",
-    skToday: "संकष्टी चतुर्थी आज",
     prev: "मागचा महिना",
     nextM: "पुढचा महिना",
     key: ["शुद्ध पक्ष", "वद्य पक्ष", "पौर्णिमा", "अमावास्या"],
@@ -124,7 +116,6 @@ const ICON = {
   prev: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
   next: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8l-5.8 3.5 1.6-6.6-5.2-4.4 6.8-.5z" fill="currentColor"/></svg>',
-  moon: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" fill="currentColor"/></svg>',
 };
 
 /** The calendar page's state while it is open */
@@ -476,7 +467,6 @@ function dayRender() {
   var ritu = function (l) {
     return cat(" · ", [l === "mr" ? cat(" ", [p.ritu.name, { mr: "ऋतु", en: "" }]) : p.ritu.name, p.ayana.name]);
   };
-  var sk = skLine(L);
   box.innerHTML =
     '<div class="cdh">' +
     (src ? '<img src="' + esc(src) + '" alt="" width="64" height="64">' : "") +
@@ -530,8 +520,7 @@ function dayRender() {
     row(N.masa, nameH(masa), two ? nameH2(masa) + esc(" (" + w.amanta + ")") : esc(w.amanta)) +
     row(N.samvatsara, nameH(sam(lead())), two ? nameH2(sam(second() || "en")) : "") +
     row(N.rituAyana, nameH(ritu(lead())), two ? nameH2(ritu(second() || "en")) : "") +
-    "</dl>" +
-    sk;
+    "</dl>";
 }
 
 /** The tithi name for 1–30 (for kshaya notes) @param {number} n @returns {Name} */
@@ -555,32 +544,6 @@ function marks(md) {
   if (md.ekadashi) t.push(N.ekadashi);
   if (md.sankashti) t.push(md.vara === 2 ? N.angSk : N.sankashti);
   return t;
-}
-
-/** The next Sankashti, with moonrise and the place (as on Home and in the Share message) @param {Where} L */
-function skLine(L) {
-  var o = skNext();
-  if (!o) return "";
-  var f = skFmt(o),
-    E = ui() === "en",
-    today = Math.round((o.day - skMid()) / 86400000) === 0,
-    w = words(),
-    head = today
-      ? E
-        ? en(w.skToday + (f.ang ? " (Angaraki)" : ""))
-        : mr((f.ang ? "अंगारकी " : "") + w.skToday)
-      : E
-        ? en(w.next + " ") + "<b>" + nameH(f.ang ? N.angSkc : N.skc) + "</b>" + en(": " + f.den)
-        : mr(w.next + " ") + "<b>" + nameH(f.ang ? N.angSkc : N.skc) + "</b>" + mr(": " + f.dmr);
-  return (
-    '<p class="csk"><span class="dot">' +
-    ICON.moon +
-    "</span><span>" +
-    head +
-    '<br><span class="muted" lang="' + (E ? "en" : mrLang()) + '">' +
-    esc((E ? w.moonrise + " " + f.ten : w.moonrise + " " + f.tmr) + " · " + placeName(L)) +
-    "</span></span></p>"
-  );
 }
 
 /** A name in a day of the month: the first reading language only, a long English one may break @param {Name} n @param {string} cls */
