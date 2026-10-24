@@ -310,6 +310,8 @@ a.t {
   font-size: 21px;
 }
 .bar .brand {
+  /* takes the room the name took, so who is reading stays beside the tools */
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   gap: 8px;

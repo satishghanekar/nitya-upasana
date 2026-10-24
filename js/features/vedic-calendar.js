@@ -122,7 +122,7 @@ const W = {
     uUntil: function (d) {
       return "until " + d;
     },
-    uNext: "Next: ",
+    uNext: "Next",
     uNone: "Nothing is marked on these days.",
     kinds: { fest: "Festivals", sk: "Sankashti", pradosh: "Pradosh", hol: "Holidays" },
   },
@@ -180,7 +180,7 @@ const W = {
     uUntil: function (d) {
       return d + "पर्यंत";
     },
-    uNext: "पुढे: ",
+    uNext: "पुढे",
     uNone: "या दिवसांत काही नाही.",
     kinds: { fest: "सण", sk: "संकष्टी", pradosh: "प्रदोष", hol: "सुट्ट्या" },
   },
@@ -684,7 +684,11 @@ function upHome(pl) {
           return upRow(u, t);
         }).join("") + "</ul>"
       : "") +
-    (next ? '<p class="upx">' + say(w.uNext) + "<b>" + nameH(next.name) + "</b> " + say(dayLabel(next.date)) + "</p>" : "");
+    (next
+      ? '<p class="upx"><span class="upxl">' + say(w.uNext) + "</span>" +
+        "<b>" + nameH(next.name) + "</b>" +
+        '<span class="upxd">' + say(dayLabel(next.date) + " · " + w.uIn(Math.round((dateOf(next.date).getTime() - dateOf(t).getTime()) / 864e5))) + "</span></p>"
+      : "");
   box.hidden = false;
 }
 
@@ -1146,8 +1150,9 @@ function calRender() {
 /**
  * Open the calendar at a tab: the day (today, or `day`), the next 15 days or the month
  * @param {"day" | "month" | "up"} [mode] @param {string} [day] "YYYY-MM-DD"
+ * @param {string} [by] the card it was opened from, "#panb" or "#upwm": only that one is marked open
  */
-export function calOpen(mode, day) {
+export function calOpen(mode, day, by) {
   var c = page();
   if (!c || !skLoc()) return;
   var now = day ? dateOf(day) : new Date();
@@ -1162,6 +1167,10 @@ export function calOpen(mode, day) {
   // screens the month too, about 50 ms, less once worked out)
   calRender();
   setC(true);
+  // (setC marks every card that opens the calendar; the other one is not open)
+  var other = by === "#upwm" ? "#panb" : "#upwm",
+    o = document.querySelector(other);
+  if (o) o.setAttribute("aria-expanded", "false");
   if (day && view.mode === "month") focusDay(day);
 }
 
@@ -1282,21 +1291,29 @@ export function init() {
     c = page();
   if (pan)
     pan.addEventListener("click", function (e) {
-      if (/** @type {HTMLElement} */ (e.target).closest("#panb")) calOpen("day");
+      if (/** @type {HTMLElement} */ (e.target).closest("#panb")) calOpen("day", undefined, "#panb");
     });
   // the date above the line is the top of the same card: a tap there opens the calendar too
   var tdd = document.getElementById("tdd");
   if (tdd)
     tdd.addEventListener("click", function () {
-      if (skLoc()) calOpen("day");
+      if (skLoc()) calOpen("day", undefined, "#panb");
     });
   var upw = document.getElementById("upw");
   if (upw)
     upw.addEventListener("click", function (e) {
       var t = /** @type {HTMLElement} */ (e.target),
         r = /** @type {HTMLElement | null} */ (t.closest(".upr"));
-      if (t.closest("#upwm")) calOpen("up");
-      else if (r && r.dataset.d) calOpen("day", r.dataset.d);
+      // the row tapped stays marked while its day is open (css/12-calendar.css)
+      [].forEach.call(document.querySelectorAll("#upw .upr.on"), function (/** @type {HTMLElement} */ x) {
+        x.classList.remove("on");
+      });
+      if (r && r.dataset.d) {
+        r.classList.add("on");
+        calOpen("day", r.dataset.d, "#upwm");
+      }
+      // Next 15 days, or anywhere else on the header, as the card above opens the calendar from anywhere on it
+      else if (t.closest("#upwm, .uph")) calOpen("up", undefined, "#upwm");
     });
   if (c) {
     var bk = document.getElementById("cbk");
