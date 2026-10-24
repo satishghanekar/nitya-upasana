@@ -8,18 +8,17 @@ const rootAttr = (page, a) => page.evaluate((a) => document.documentElement.getA
 // Opened at a piece on a phone, the bars start tucked away (a tap on the page brings them back)
 const untuck = (page) => page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
 
-// The top bar while reading: the name, who is reading, ⋯ More and Settings. Language and Dhrupad are in the reading
-// sheet (Aa), and Library is in the bottom bar
-test("while reading the top bar has no Language, Dhrupad or Library button; the bottom bar has Home, Library and Reading @mobile", async ({ page }) => {
+// The top bar while reading, as on Home: the name, who is reading, Library, ⋯ More and Settings. Language and Dhrupad
+// are in the reading sheet (Aa)
+test("while reading the top bar has Library and no Language or Dhrupad button; the bottom bar has Home, Print and Reading @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a1" });
   await untuck(page);
-  expect(await page.locator("#home-btn, #rb").count()).toBe(0);
-  await expect(page.locator("#hm")).toBeHidden();
-  for (const b of ["#who", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  expect(await page.locator("#home-btn, #rb, #asq").count()).toBe(0);
+  for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   await expect(page.locator("#tmb")).toHaveAccessibleName("More");
   // the bottom bar's middle buttons are named by the word under each icon, in the menu language
   await expect(page.locator("#ash")).toHaveAccessibleName("Home");
-  await expect(page.locator("#asq")).toHaveAccessibleName("Library");
+  await expect(page.locator("#asp")).toHaveAccessibleName("Print");
   await expect(page.locator("#rsb")).toHaveAccessibleName("Reading");
 });
 
@@ -27,11 +26,11 @@ test("the bottom bar's words follow the menu language @mobile", async ({ page })
   await openSite(page, SETUPS["marathi-menus"], { hash: "#a1" });
   await untuck(page);
   await expect(page.locator("#ash")).toHaveAccessibleName("मुख्यपृष्ठ");
-  await expect(page.locator("#asq")).toHaveAccessibleName("संग्रह");
+  await expect(page.locator("#asp")).toHaveAccessibleName(/प्रिंट/);
   await expect(page.locator("#rsb")).toHaveAccessibleName("वाचन");
 });
 
-test("⋯ More opens App, Share, QR, Print and Help under it while reading; a tap outside or Escape closes it @mobile", async ({ page }) => {
+test("⋯ More opens App, Share, QR and Help under it while reading; a tap outside or Escape closes it @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a1" });
   await untuck(page);
   const more = page.locator("#tmb"),

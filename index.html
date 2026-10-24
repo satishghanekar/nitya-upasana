@@ -120,12 +120,12 @@
 <body>
 <!-- Keyboard users: the first Tab shows this link, which skips the top bar and the contents menu -->
 <a class="skip" id="skip" href="#home" lang="en">Skip to the texts</a>
-<!-- ==== Top bar: home link, who is reading, then Library (every text, and search; on the home page only, the bottom bar
-     has it while reading: css/10-today.css), More (App, Share, QR, Print, Help) and Settings. Language and Dhrupad are
+<!-- ==== Top bar, the same on every page: home link, who is reading, then Library (every text, and search), More (App,
+     Share, QR, Help) and Settings. Language and Dhrupad are
      in the Reading sheet (Aa in the bottom bar) and in Settings ==== -->
 <div class="bar" role="banner">
   <div id="prog" aria-hidden="true"></div>
-  <a class="t site" id="bt" href="./" aria-label="Home: नित्य उपासना"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.6 5.5c.5-1.9 1.8-3.1 3.4-3.7 1.6.6 2.9 1.8 3.4 3.7"/><path d="M8.4 5.6h7.2"/><path d="M8.4 5.6c-.4 3.6.6 6.3 2.4 7.4.1 3.3 0 6.3 1.9 7.6 1.6 1 3.5 0 3.2-1.8-.2-1-1.3-1.3-1.8-.6"/><path d="M15.6 5.6c.4 3.6-.6 6.2-2.6 7.2"/><path d="M8.4 5.6C5.6 4.5 2.4 6 2.8 9.6c.3 2.6 2.4 3.7 4.8 3"/><path d="M15.6 5.6c2.8-1.1 6 .4 5.6 4-.3 2.6-2.4 3.7-4.8 3"/><path d="M12 7v1.8"/><path d="M9.3 13.6l-.9 1.6"/></svg><span id="btt">संकटहर चतुर्थी</span></a>
+  <a class="t site" id="bt" href="./" aria-label="Home: नित्य उपासना"><img class="bti" src="picture-sunrise-360.webp" alt="" width="28" height="28"><span id="btt">संकटहर चतुर्थी</span></a>
   <!-- Who is reading (js/features/profiles.js): their round badge and name; a tap opens the profile sheet (#pfm).
        The words "Profile:" are for screen readers; on narrow phones the name is hidden visually only. -->
   <button type="button" id="who" aria-haspopup="dialog" aria-expanded="false" aria-controls="pfm"><span class="pfa" aria-hidden="true"></span><span class="sr" id="whol">Profile: </span><span class="pfn"></span></button>
@@ -146,8 +146,8 @@
   <button type="button" id="qrb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg><span class="mr">QR<span class="sr"> कोड</span></span><span class="en" lang="en">QR<span class="sr"> code</span></span></button>
   <button type="button" id="hlpb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.3-2.5 3.9"/><path d="M12 17.2v.01"/></svg><span class="mr">मदत</span><span class="en" lang="en">Help</span></button>
 </div>
-<!-- ==== Library (js/features/contents-list.js): opened by the book button in the top bar on the home page (and the book
-     button in the bottom bar while reading, and at the end of each piece). Every text by category (js/features/library.js), with search across the
+<!-- ==== Library (js/features/contents-list.js): opened by the book button in the top bar (on every page, Satish 2026-10-24),
+     and at the end of each piece. Every text by category (js/features/library.js), with search across the
      library (texts, then lines: js/text/search.js). A title opens it; Back (or the phone's Back) returns. Over the page,
      under the top bar; the bottom bar steps aside while it is open. ==== -->
 <div id="jump" hidden role="dialog" aria-labelledby="jlt" tabindex="-1">
@@ -174,7 +174,7 @@
   <div class="sp-pg" id="sp-home">
     <div class="sp-hd">
       <button type="button" class="sp-bk" id="xc"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागे</span><span class="en" lang="en">Back</span></button>
-      <h2 id="spt"><span class="mr">सेटिंग्ज</span><span class="en" lang="en">Settings</span></h2>
+      <h2 id="spt"><span lang="mr">सेटिंग्ज</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">Settings</span></h2>
     </div>
     <div class="sp-body">
       <!-- each heading with its cards in one group, kept whole in a column (Safari splits a heading from its card
@@ -286,8 +286,13 @@
     <button type="button" id="cbk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागे</span><span class="en" lang="en">Back</span></button>
     <h2 id="calt"><span lang="mr">पंचांग</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">Vedic calendar</span></h2>
   </div>
+  <!-- The tabs, Day | 15 days | Month on phones, 15 days | Month beside the day card on wider screens (written in by
+       the script) -->
+  <div id="calv" role="group" aria-label="Vedic calendar"></div>
   <section id="cald" aria-labelledby="cdt"></section>
   <section id="calm" aria-labelledby="cmt"></section>
+  <!-- 15 days: from today at first, by week, ‹ › to the 15 before or after (js/features/vedic-calendar.js upRender) -->
+  <section id="calu" aria-labelledby="cut" hidden></section>
   <p id="caln0"></p>
   <p id="call" class="sr" aria-live="polite"></p>
   </div>
@@ -339,6 +344,9 @@
     <p id="fst" hidden></p>
     <!-- On a Sankashti day only (js/features/sankashti.js): "Sankashti Chaturthi today · Moonrise 8:09 pm · place" -->
     <p id="skt" hidden></p>
+    <!-- The next 7 days (js/features/vedic-calendar.js upHome): festivals, Pradosh and Sankashti, each a button to its day
+         in the calendar, and the first one after them; "Next 15 days" opens the calendar's Upcoming view -->
+    <section id="upw" aria-labelledby="upwh" hidden></section>
     <!-- Notes about saving (js/features/backup.js): this browser can't save here (IndexedDB could not be opened), or a
          gentle reminder to save a backup file (none for 30 days, or never and 14 days since the first visit) -->
     <div id="pfnt" hidden>
@@ -516,6 +524,7 @@
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
                 <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home says so, "Today: Dasara"). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
+        <li><b>This week:</b> under the Vedic calendar line, the festivals, Pradosh and Sankashti of the next 7 days (the Utsav's days as one entry); tap one to see its day in the calendar, or <b>Next 15 days</b> for the calendar's <b>15 days</b> tab, where ‹ › go to the 15 days before or after and you can also show the public holidays. On a phone the calendar has three tabs, <b>Day</b>, <b>15 days</b> and <b>Month</b>, each with ‹ ›; a day tapped in the month or the 15 days opens on the Day tab, and Back returns to where you were. On a wider screen the day stays beside the month or the 15 days.</li>
         <li><b>On a Sankashti day</b> a line under the date gives tonight's <b>moonrise</b> for where you are (Angaraki, on a Tuesday, is marked). The place is your phone's time zone until you tap the place, with its <b>pin</b>, on the Vedic calendar line on Home, which uses your phone's location (and keeps it up to date each time you open the app, while your phone allows it); the town is worked out on the phone and your location is never sent anywhere.</li>
       </ul>
 
@@ -531,7 +540,7 @@
 
       <h3>Library</h3>
       <ul>
-        <li>The <b>book</b> button (at the top on Home, in the bottom bar while you read) opens the Library: every text by category (वैदिक मंत्र / Vedic Chant, आरती / Aarti, अष्टक / Ashtak), numbered from 1 in each. Tap a title to open it; <b>Back</b> (or your phone's Back) returns. Pinch, or A− / A+, changes the size of the list.</li>
+        <li>The <b>book</b> button at the top opens the Library: every text by category (वैदिक मंत्र / Vedic Chant, आरती / Aarti, अष्टक / Ashtak), numbered from 1 in each. Tap a title to open it; <b>Back</b> (or your phone's Back) returns. Pinch, or A− / A+, changes the size of the list.</li>
         <li><b>Search</b> the whole library: type a few letters of a title, a category or a line in Marathi, English or Kannada. Texts whose title, first line or category match come first, under <b>Texts</b> (रचना), then the lines, under <b>Lines</b> (ओळी). Plain letters are enough, spelling is forgiving (<i>sukhakarta</i>, <i>ganpati</i> and <i>vithal</i> find <i>sukhakartā</i>, <i>Ganapati</i> and <i>Vitthal</i>), one typo is forgiven, and Marathi letters find English ones too. The matching words are shown in bold; tap a text to open it, or a line to go to that line. On a computer you can type straight away, and use ↑ ↓ and Enter.</li>
         <li><b>Edit categories</b> (विभाग बदला), at the end of the Library's list: add a category of your own (a name in Marathi, English or both), rename any category, delete one you added (its texts go back where they came from), and choose the category each text is listed under. A category with no texts is not shown in the list. The built-in categories can be renamed but not deleted, and <b>Use the original name</b> brings their name back. These changes stay on this phone for everyone who reads here and are saved in backup files; the words of the texts never change. ✕, Escape or your phone's Back closes it and leaves the Library open.</li>
       </ul>
@@ -544,7 +553,7 @@
         <li><b>Fold a text:</b> a tap anywhere on its heading (or its round ⌃) folds it down to its heading; tap it again to open it. Your phone remembers this, and going to a folded text from the Library or search opens it.</li>
         <li><b>More room to read:</b> on phones and tablets, the top and bottom bars slide away as you scroll down, leaving a thin strip with the name of the text. Scroll up a little, tap a blank part of the page or the strip, or reach the end of the page to bring them back.</li>
         <li><b>Pinch</b> (on a computer: a trackpad pinch, or Ctrl + / Ctrl − and Ctrl 0 to reset; ⌘ on a Mac) or use A− / A+ (under <b>Aa</b> in the bottom bar, or in Settings) to change the text size. The page itself never zooms, and on Home a pinch does nothing. The bubble shows the size (100% is the normal size for your screen); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
-        <li><b>Bottom bar:</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring texts (in a session, the session's); <b>Home</b> (a house with a lamp) goes back to Home; <b>Library</b> (open book) opens every text, with search; <b>Reading</b> (Aa) opens the reading choices. Each has its word under the icon; on a phone on its side the words are left out to keep the bar low, and on the smallest phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch.</li>
+        <li><b>Bottom bar:</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring texts (in a session, the session's); <b>Home</b> (a house with a lamp) goes back to Home; <b>Print</b> prints; <b>Reading</b> (Aa) opens the reading choices. Each has its word under the icon; on a phone on its side the words are left out to keep the bar low, and on the smallest phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch.</li>
         <li><b>Reading</b> (Aa, bottom bar): slides up the reading choices within reach of your thumb: <b>Language</b> (main, second or both), <b>Text size</b> (A− and A+, with ↺ to go back to the normal size) and <b>Dhrupad</b> (once at the top, or after every verse; in “once” mode, tap <b>↻ ध्रुपद</b> under a stanza to see the refrain, and tap anywhere to close it), plus <b>All settings</b>. Your place stays put as you change them. Tap outside it, ✕ or your phone's Back to close it.</li>
         <li><b>Back:</b> your phone's Back button (or swipe) closes an open menu or box, then goes back to where you were before the last jump, for example from an aarti back to Home.</li>
         <li>The screen stays on while the site is open (you can turn this off in Settings). If you switch away and come back within 12 hours, it reopens where you were reading.</li>
@@ -554,7 +563,7 @@
       <ul>
         <li><b>The name</b> takes you Home. While you read, it shows the text on screen (for example <i lang="mr">५. दत्ताची आरती</i>).</li>
         <li><b>The badge</b> shows who is reading (see People on one phone).</li>
-        <li><b>Library</b> (open book), on Home; while you read it is in the bottom bar.</li>
+        <li><b>Library</b> (open book), on every page.</li>
         <li><b>⋯ More:</b> a small menu with <b>App</b> (add to your Home Screen, until it is installed), <b>Share</b>, <b>QR</b> and <b>Help</b>, on every page. Tap outside it or press Escape to close it.</li>
         <li><b>⚙ Settings:</b> opens as its own page; <b>‹ Back</b> (or your phone's Back) returns you to where you were. See below.</li>
         <li>With no internet, a small cloud with a line through it shows here: the saved copy is in use, and everything still works.</li>
@@ -633,14 +642,14 @@
 <div id="szt" aria-hidden="true"></div>
 <div id="sza" class="sr" role="status"></div>
 <div id="fl" role="status" aria-live="polite"></div>
-<!-- ==== Bottom bar (footer menu, reading pages; not on the home page): ‹ Previous, Home, Library + search, Aa (reading sheet), Next ›. ==== -->
+<!-- ==== Bottom bar (footer menu): ‹ Previous, Home, Print, Aa (reading sheet), Next ›; on the home page Print and Aa only. ==== -->
 <!-- slim strip with the piece name, shown while the bars are tucked away on phones and tablets (data-tuck) -->
 <div id="tuck" aria-hidden="true"><span id="tkt"></span><i id="tkp"></i></div>
 <div id="asc" hidden role="navigation" aria-label="Previous, home, library, print, reading, next">
   <div id="asi">
     <button type="button" id="asv" class="asx"></button>
     <button type="button" id="ash" class="asi"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.6 12 3.5l9 7.1"/><path d="M5.2 9v11h13.6V9"/><path d="M12 11.2c1.3 1.5 1.6 2.8 0 4.3-1.6-1.5-1.3-2.8 0-4.3z"/><path d="M9.3 17.6h5.4"/></svg><span class="asil"><span class="mr">मुख्यपृष्ठ</span><span class="en" lang="en">Home</span></span></button>
-    <button type="button" id="asq" class="asi" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2.5 5.5C5.6 4.6 8.9 4.9 12 7c3.1-2.1 6.4-2.4 9.5-1.5v13.3c-3.1-.9-6.4-.6-9.5 1.5-3.1-2.1-6.4-2.4-9.5-1.5z"/><path d="M12 7v13.3"/></svg><span class="asil"><span class="mr">संग्रह</span><span class="en" lang="en">Library</span></span></button>
+    
       <button type="button" id="asp" class="asi" aria-haspopup="dialog" aria-controls="prm"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg><span class="asil"><span class="mr">प्रिंट</span><span class="en" lang="en">Print</span></span></button>
     <button type="button" id="rsb" class="asi" aria-expanded="false" aria-controls="rsh"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 19l3.6-9 3.6 9M3.9 15.6h4.4"/><path d="M11.5 19l5-13 5 13M13.4 14h6.2"/></svg><span class="asil"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></span></button>
     <button type="button" id="asn" class="asx"></button>

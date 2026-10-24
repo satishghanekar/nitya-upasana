@@ -38,6 +38,8 @@ html:not([data-ready]) body {
   }
 }
 body {
+  /* no gap above the top bar, so it stays in one place when the page scrolls under it */
+  margin-top: 0;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--body);

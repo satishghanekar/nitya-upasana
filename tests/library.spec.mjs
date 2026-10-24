@@ -82,25 +82,36 @@ test("search in the Library finds a line and goes to it", async ({ page }) => {
   await expect.poll(() => onPiece(page)).toBe("a1");
 });
 
-test("the bottom bar's search button opens the Library while reading", async ({ page }) => {
+test("the top bar's Library button opens the Library while reading", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING, hash: "#a3" });
-  await expect(page.locator("#asq")).toBeVisible();
-  await page.locator("#asq").click();
+  await expect(page.locator("#hm")).toBeVisible();
+  await page.locator("#hm").click();
   await expect(page.locator("#jump")).toBeVisible();
   await page.locator('#jl a[data-go="a7"]').click();
   await expect.poll(() => onPiece(page)).toBe("a7");
 });
 
-test("on the home page the top bar has the name, profile, Library, More and Settings; while reading Library moves to the bottom bar @mobile", async ({ page }) => {
+test("the top bar is the same on Home and while reading: the name, profile, Library, More and Settings, in the same places @mobile", async ({ page }) => {
   await useTestRoutine(page);
   await openSite(page, SETUPS.marathi, { now: EVENING });
+  const where = () => page.evaluate(() => ["#who", "#hm", "#tmb", "#aa"].map((s) => Math.round(document.querySelector(s).getBoundingClientRect().x)));
   for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
-  await expect(page.locator("#asq")).toBeHidden();
+  const home = await where();
   await page.locator("#tsl a.tgo").first().click();
   await expect.poll(() => onPiece(page)).toBe("a1");
-  await expect(page.locator("#hm")).toBeHidden();
-  await expect(page.locator("#asq")).toBeVisible();
-  for (const b of ["#who", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  expect(await where()).toEqual(home);
+  // Settings, the Library and the calendar open under it, so it stays; their headers alike: Back, then the name in both
+  // languages
+  await page.locator("#aa").click();
+  await expect(page.locator("#panel")).toBeVisible();
+  await expect(page.locator("#hm")).toBeVisible();
+  const bar = await page.locator(".bar").boundingBox(),
+    sp = await page.locator("#panel").boundingBox();
+  expect(sp.y).toBeGreaterThanOrEqual(bar.y + bar.height - 1);
+  await expect(page.locator("#spt")).toHaveText("सेटिंग्ज · Settings");
+  const left = async (s) => (await page.locator(s).boundingBox()).x;
+  expect(await left("#spt")).toBeLessThan(await left("#xc") + 140);
 });
 
 // Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); Marathi menus in full

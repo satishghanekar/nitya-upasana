@@ -40,7 +40,8 @@ const goTo = (id) => async (page) => {
   }, id);
   await page.waitForTimeout(300);
 };
-const calendar = (p) => p.locator("#panb").click();
+// (near its corner: the middle of the card can be the place's pin, over the card's button on wider screens)
+const calendar = (p) => p.locator("#panb").click({ position: { x: 12, y: 12 } });
 
 const CASES = [
   // home page at every size

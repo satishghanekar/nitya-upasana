@@ -23,11 +23,12 @@
 
 import { P } from "../core/state.js";
 import { dayPanchang, monthPanchang } from "../core/panchang.js";
-import { festivalsFor, festivalsInMonth } from "../core/festivals.js";
+import { festivalsBetween, festivalsFor, festivalsInMonth } from "../core/festivals.js";
 import { holidaysBetween, holidaysInMonth } from "../core/holidays.js";
 import { loaded } from "../text/load.js";
 import { skLoc } from "./sankashti.js";
 import { setC } from "./overlays.js";
+import { ovSub, ovSubDone } from "./history.js";
 import { IA } from "../text/iast.js";
 import { PAKSHA } from "../core/panchang-names.js";
 import { DAYS, MONTHS, dv, esc, lead, mrLang, num, scr, second, ui } from "../core/words.js";
@@ -59,6 +60,8 @@ const N = {
   sankashti: { mr: "संकष्टी", en: "Sankashti" },
   angaraki: { mr: "अंगारकी", en: "Angaraki" },
   angSk: { mr: "अंगारकी संकष्टी", en: "Angaraki Sankashti" },
+  skFull: { mr: "संकष्टी चतुर्थी", en: "Sankashti Chaturthi" },
+  angSkFull: { mr: "अंगारकी संकष्टी चतुर्थी", en: "Angaraki Sankashti Chaturthi" },
   festival: { mr: "सण", en: "Festival", ia: "Festival" },
   holiday: { mr: "सुट्टी", en: "Holiday", ia: "Holiday" },
 };
@@ -87,6 +90,41 @@ const W = {
     },
     showing: "Showing ",
     fToday: "Today: ",
+    week: "This week",
+    next15: "Next 15 days",
+    day: "Day",
+    month: "Month",
+    up: "15 days",
+    prevDay: "Previous day",
+    nextDay: "Next day",
+    prevU: "Previous 15 days",
+    nextU: "Next 15 days",
+    todayB: "Today",
+    view: "Show",
+    upTitle: "The next 15 days",
+    nextWeek: "Next week",
+    uYesterday: "Yesterday",
+    /** @param {number} n */
+    uAgo: function (n) {
+      return n + " days ago";
+    },
+    uToday: "Today",
+    uTomorrow: "Tomorrow",
+    /** @param {number} n */
+    uIn: function (n) {
+      return "in " + n + " days";
+    },
+    /** @param {number} a @param {number} b */
+    uDays: function (a, b) {
+      return "Day " + a + (a === b ? "" : "–" + b);
+    },
+    /** @param {string} d */
+    uUntil: function (d) {
+      return "until " + d;
+    },
+    uNext: "Next: ",
+    uNone: "Nothing is marked on these days.",
+    kinds: { fest: "Festivals", sk: "Sankashti", pradosh: "Pradosh", hol: "Holidays" },
   },
   mr: {
     open: " (पंचांग उघडा)",
@@ -110,6 +148,41 @@ const W = {
     },
     showing: "",
     fToday: "आज ",
+    week: "या आठवड्यात",
+    next15: "पुढचे १५ दिवस",
+    day: "दिवस",
+    month: "महिना",
+    up: "१५ दिवस",
+    prevDay: "मागचा दिवस",
+    nextDay: "पुढचा दिवस",
+    prevU: "मागचे १५ दिवस",
+    nextU: "पुढचे १५ दिवस",
+    todayB: "आज",
+    view: "दाखवा",
+    upTitle: "पुढचे १५ दिवस",
+    nextWeek: "पुढच्या आठवड्यात",
+    uYesterday: "काल",
+    /** @param {number} n */
+    uAgo: function (n) {
+      return dv(n) + " दिवसांपूर्वी";
+    },
+    uToday: "आज",
+    uTomorrow: "उद्या",
+    /** @param {number} n */
+    uIn: function (n) {
+      return dv(n) + " दिवसांनी";
+    },
+    /** @param {number} a @param {number} b */
+    uDays: function (a, b) {
+      return "दिवस " + dv(a) + (a === b ? "" : "–" + dv(b));
+    },
+    /** @param {string} d */
+    uUntil: function (d) {
+      return d + "पर्यंत";
+    },
+    uNext: "पुढे: ",
+    uNone: "या दिवसांत काही नाही.",
+    kinds: { fest: "सण", sk: "संकष्टी", pradosh: "प्रदोष", hol: "सुट्ट्या" },
   },
 };
 
@@ -121,6 +194,9 @@ const ICON = {
   prev: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
   pin: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   next: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+  dusk: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 17h18M7 17a5 5 0 0 1 10 0M12 7v3M5.6 10.6l1.4 1.1M18.4 10.6 17 11.7"/></svg>',
+  crescent: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15.5 3.5a9 9 0 1 0 5 13.5A7 7 0 0 1 15.5 3.5z" fill="currentColor"/></svg>',
+  flag: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4h11l-2 4 2 4H5"/></svg>',
   star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8l-5.8 3.5 1.6-6.6-5.2-4.4 6.8-.5z" fill="currentColor"/></svg>',
 };
 
@@ -131,6 +207,13 @@ var view = {
   y: 0,
   /** 1–12 */
   m: 0,
+  /** @type {"day" | "month" | "up"} the tab shown: the day card, the month, or 15 days (on wide screens the day card
+   * stays beside the month or the 15 days, and "day" shows the month) */
+  mode: "day",
+  /** @type {"" | "month" | "up"} the tab a date or an entry was tapped in, which Back returns to (phones) */
+  from: "",
+  /** the 15 days' first day, "YYYY-MM-DD" */
+  uFrom: "",
 };
 /** @type {Record<string, MonthDay[]>} months worked out while the page is open, by place and month */
 var months = {};
@@ -219,6 +302,19 @@ function dateOf(k) {
   var p = k.split("-");
   return new Date(+p[0], +p[1] - 1, +p[2]);
 }
+/** @param {string} k "YYYY-MM-DD" @param {number} n days */
+function addDays(k, n) {
+  var d = dateOf(k);
+  d.setDate(d.getDate() + n);
+  return keyOf(d);
+}
+/** "Tue 28 Jul" / "मंगळवार २८ जुलै" @param {string} k */
+function dayLabel(k) {
+  var d = dateOf(k);
+  return ui() === "en"
+    ? DAYS.en[d.getDay()].slice(0, 3) + " " + d.getDate() + " " + MONTHS.en[d.getMonth()].slice(0, 3)
+    : DAYS.mr[d.getDay()] + " " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()];
+}
 
 /**
  * A clock time on this phone: "7:45 am", or in Marathi "सकाळी ७:४५" (रात्री, पहाटे, सकाळी, दुपारी, सायं.)
@@ -281,6 +377,7 @@ function homeRender() {
     box.hidden = true;
     box.innerHTML = "";
     festHome(null);
+    upHome(null);
     return;
   }
   var p;
@@ -325,6 +422,7 @@ function homeRender() {
     "</button></div>";
   box.hidden = false;
   festHome(pl);
+  upHome(pl);
 }
 
 // ----- festivals (content/festivals.json; js/core/festivals.js) -----
@@ -422,16 +520,191 @@ function festHome(pl) {
   box.hidden = false;
 }
 
+// ----- Upcoming: 15 days at a time (the calendar's 15 days tab, #calu) and the next week on Home (#upw) -----
+// The festivals (Pradosh apart), Pradosh, Sankashti with its moonrise (the month's mark, as the calendar shows it) and
+// the public holidays; a festival of several days (the Utsav's Day 1 … Day 9) is one entry, "Day 1–9 · until Tue 28
+// Jul", and a festival on one of its days says which ("Utsav 5"). Home shows the 7 days after today (today's own are
+// the lines above it, #fst and #skt) and the first one after them; holidays only in the 15 days, when asked.
+
+/**
+ * @typedef {"fest" | "pradosh" | "sk" | "hol"} UpKind
+ * @typedef {{ date: string, kind: UpKind, name: Name, end?: string, d1?: number, d2?: number, rise?: Date | null,
+ *   moon: string, also?: Name }} Up  one entry; end, d1, d2: a festival of several days (its last date and day numbers)
+ */
+
+/** What the 15 days show (its buttons), while the app is open */
+var upShow = { fest: true, pradosh: true, sk: true, hol: false };
+/** @type {UpKind[]} */
+const KINDS = ["fest", "pradosh", "sk", "hol"];
+
+/** A festival's name without its day's number: "Shri Gondhavlekar Maharaj Utsav" @param {FestivalDay} f @returns {Name} */
+function runName(f) {
+  var all = (loaded.festivals && loaded.festivals.festivals) || [],
+    r = all.filter(function (x) {
+      return x.id === f.id;
+    })[0];
+  /** @param {string} s */
+  function cut(s) {
+    return s.replace(/\s*[·—]\s*[^·—]*\{n\}.*$/, "");
+  }
+  return r ? { mr: cut(r.mr), en: cut(r.en) } : f;
+}
+
+/**
+ * The entries from `from` to `to` (inclusive), in date order
+ * @param {string} from "YYYY-MM-DD" @param {string} to @param {{ lat: number, lon: number }} pl
+ * @returns {Up[]}
+ */
+function upList(from, to, pl) {
+  /** @type {Up[]} */
+  var out = [];
+  /** @type {Record<string, Up>} the festival of several days running, by id */
+  var runs = {};
+  /** @type {Record<string, Name>} a day's number in such a festival: "Utsav 5", by date */
+  var inRun = {};
+  (loaded.festivals ? festivalsBetween(from, to, pl, loaded.festivals) : []).forEach(function (f) {
+    /** @type {UpKind} */
+    var kind = f.id === "pradosh" ? "pradosh" : "fest";
+    if (f.n) {
+      inRun[f.date] = f.short;
+      var r = runs[f.id];
+      if (r && r.end === addDays(f.date, -1)) {
+        r.end = f.date;
+        r.d2 = f.n;
+        return;
+      }
+      out.push((runs[f.id] = { date: f.date, kind: kind, name: runName(f), end: f.date, d1: f.n, d2: f.n, moon: "" }));
+      return;
+    }
+    out.push({ date: f.date, kind: kind, name: f, moon: "" });
+  });
+  /** @type {Record<string, MonthDay>} */
+  var md = {};
+  for (var k = from; k <= to; k = addDays(k, 1)) {
+    var d = dateOf(k),
+      m = monthOf(d.getFullYear(), d.getMonth() + 1)[d.getDate() - 1];
+    if (!m) continue;
+    md[k] = m;
+    if (m.sankashti) {
+      var rise = null;
+      try {
+        rise = dayPanchang(k, pl).moonrise;
+      } catch (e) {}
+      out.push({ date: k, kind: "sk", name: m.vara === 2 ? N.angSkFull : N.skFull, rise: rise, moon: "" });
+    }
+  }
+  if (loaded.holidays)
+    holidaysBetween(from, to, pl, loaded.holidays).forEach(function (h) {
+      out.push({ date: h.date, kind: "hol", name: holName(h), moon: "" });
+    });
+  out.forEach(function (u) {
+    var m = md[u.date];
+    if (u.kind === "fest" && m) u.moon = m.purnima ? "full" : m.amavasya ? "new" : "";
+    if (!u.end && inRun[u.date]) u.also = inRun[u.date];
+  });
+  return out.sort(function (a, b) {
+    // on a day, a festival of several days first
+    return a.date < b.date ? -1 : a.date > b.date ? 1 : (a.end ? 0 : 1) - (b.end ? 0 : 1) || KINDS.indexOf(a.kind) - KINDS.indexOf(b.kind);
+  });
+}
+
+/** One entry, a button that shows its day in the calendar @param {Up} u @param {string} today "YYYY-MM-DD" */
+function upRow(u, today) {
+  var w = words(),
+    E = ui() === "en",
+    d = dateOf(u.date),
+    n = Math.round((d.getTime() - dateOf(today).getTime()) / 864e5),
+    when = n === 0 ? w.uToday : n === 1 ? w.uTomorrow : n === -1 ? w.uYesterday : n < 0 ? w.uAgo(-n) : w.uIn(n),
+    other = d.getMonth() !== dateOf(today).getMonth(),
+    full = E ? DAYS.en[d.getDay()] + ", " + d.getDate() + " " + MONTHS.en[d.getMonth()] : DAYS.mr[d.getDay()] + ", " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()],
+    icon =
+      u.kind === "sk"
+        ? ICON.crescent
+        : u.kind === "pradosh"
+          ? ICON.dusk
+          : u.kind === "hol"
+            ? ICON.flag
+            : u.moon
+              ? '<span class="mn ' + u.moon + '" aria-hidden="true"></span>'
+              : ICON.star,
+    // the small line: the name in the second reading language, then what is particular to the entry
+    det =
+      u.end && u.d1
+        ? w.uDays(u.d1, u.d2 || u.d1) + (u.end !== u.date ? " · " + w.uUntil(dayLabel(u.end)) : "")
+        : u.kind === "sk"
+          ? u.rise
+            ? txt(N.moonrise, E ? "en" : "mr") + " " + clock(u.rise)
+            : w.noRise
+          : "",
+    two = nameH2(u.name),
+    small = [two, det ? say(det) : "", u.also ? nameH(u.also) : ""].filter(Boolean).join(say(" · "));
+  return (
+    '<li><button type="button" class="upr ' + u.kind + '" data-d="' + u.date + '">' +
+    '<span class="upd" aria-hidden="true"><span>' + esc(E ? DAYS.en[d.getDay()].slice(0, 3) : scr(MR_WD[d.getDay()])) + "</span>" +
+    "<b>" + num(d.getDate()) + "</b>" +
+    (other ? "<span>" + esc(E ? MONTHS.en[d.getMonth()].slice(0, 3) : scr(MONTHS.mr[d.getMonth()])) + "</span>" : "") +
+    "</span>" +
+    '<span class="upi">' + icon + "</span>" +
+    '<span class="upn"><span class="sr">' + say(full + ": ") + "</span>" + nameH(u.name, "un") + (small ? '<small>' + small + "</small>" : "") + "</span>" +
+    '<span class="upw' + (n < 2 ? " soon" : "") + '"><span class="sr">, </span>' + say(when) + "</span>" +
+    "</button></li>"
+  );
+}
+
+/** Home: the next 7 days (#upw), and the first entry after them; hidden when nothing is marked in the next month
+ * @param {{ lat: number, lon: number } | null} pl */
+function upHome(pl) {
+  var box = document.getElementById("upw");
+  if (!box) return;
+  var t = keyOf(new Date()),
+    wk = addDays(t, 7),
+    all = pl && loaded.festivals
+      ? upList(addDays(t, 1), addDays(t, 30), pl).filter(function (u) {
+          return u.kind !== "hol";
+        })
+      : [],
+    near = all.filter(function (u) {
+      return u.date <= wk;
+    }),
+    next = all.filter(function (u) {
+      return u.date > wk;
+    })[0];
+  if (!near.length && !next) {
+    box.hidden = true;
+    box.innerHTML = "";
+    return;
+  }
+  var w = words();
+  box.lang = ui();
+  box.innerHTML =
+    '<div class="uph"><h2 id="upwh">' + say(w.week) + "</h2>" +
+    '<button type="button" id="upwm" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">' + say(w.next15) + ICON.chev + "</button></div>" +
+    (near.length
+      ? '<ul class="upl">' + near.map(function (u) {
+          return upRow(u, t);
+        }).join("") + "</ul>"
+      : "") +
+    (next ? '<p class="upx">' + say(w.uNext) + "<b>" + nameH(next.name) + "</b> " + say(dayLabel(next.date)) + "</p>" : "");
+  box.hidden = false;
+}
+
 /** What the words and names are drawn in: the menu language, the script and the reading languages */
 function langKey() {
   return ui() + mrLang() + lead() + second() + (P && P.tr);
 }
 
-/** Re-draw the Home line soon (after the page is shown), when the languages, the day or the place changed */
+/** Re-draw the Home line and This week (soon after the page is shown), when the languages, the day or the place changed */
 function homeSoon() {
   var k = langKey() + new Date().toDateString() + JSON.stringify(P.loc || null);
   if (k === homeKey) return;
   homeKey = k;
+  // before the page is first shown (js/main.js data-ready), drawn at once, with This week, so nothing jumps when it
+  // shows (about 30 ms); later, just after the page is drawn
+  if (!document.documentElement.hasAttribute("data-ready")) {
+    clearTimeout(homeT);
+    homeRender();
+    return;
+  }
   var box = document.getElementById("pan");
   // keep the line's room while today is worked out, so the list below does not jump
   if (box && box.hidden && skLoc()) {
@@ -521,12 +794,22 @@ function dayRender() {
   var ritu = function (l) {
     return cat(" · ", [l === "mr" ? cat(" ", [p.ritu.name, { mr: "ऋतु", en: "" }]) : p.ritu.name, p.ayana.name]);
   };
+  var today = keyOf(new Date());
   box.innerHTML =
+    // on phones, ‹ › to the day before or after, and Today
+    (narrow()
+      ? '<div class="cdnav">' +
+        '<button type="button" class="cnav" data-dd="-1">' + ICON.prev + '<span class="sr">' + esc(w.prevDay) + "</span></button>" +
+        '<span class="cdnt">' + say(dayLabel(k)) + "</span>" +
+        '<button type="button" class="cnav" data-dd="1">' + ICON.next + '<span class="sr">' + esc(w.nextDay) + "</span></button>" +
+        (k === today ? "" : '<button type="button" class="ctod" data-dd="0">' + say(w.todayB) + "</button>") +
+        "</div>"
+      : "") +
     '<div class="cdh">' +
     (src ? '<img src="' + esc(src) + '" alt="" width="64" height="64">' : "") +
     "<div>" +
-    '<h3 id="cdt">' + nameH(title(p)) + "</h3>" +
-    '<p class="cdd">' + say(dateLine) + (k === keyOf(new Date()) ? " · " + say(w.today) : "") + "</p>" +
+    '<h3 id="cdt" tabindex="-1">' + nameH(title(p)) + "</h3>" +
+    '<p class="cdd">' + say(dateLine) + (k === today ? " · " + say(w.today) : "") + "</p>" +
     (tags.length || fs.length || hs.length
       ? '<p class="cdg">' +
         fs
@@ -765,6 +1048,62 @@ function monthRender() {
   box.innerHTML = html;
 }
 
+/** The 15 days (#calu): from view.uFrom (today at first), by week, with ‹ › to the 15 before or after, and the buttons
+ * that choose what it shows */
+function upRender() {
+  var box = document.getElementById("calu"),
+    L = skLoc(),
+    pl = where();
+  if (!box || !L || !pl) return;
+  var w = words(),
+    t = keyOf(new Date()),
+    s = view.uFrom || t,
+    now = s === t,
+    end = addDays(s, 14),
+    mid = addDays(s, 6),
+    all = upList(s, end, pl).filter(function (u) {
+      return upShow[u.kind];
+    }),
+    a = all.filter(function (u) {
+      return u.date <= mid;
+    }),
+    b = all.filter(function (u) {
+      return u.date > mid;
+    });
+  /** @param {string} x @param {string} y */
+  function range(x, y) {
+    return dayLabel(x) + " – " + dayLabel(y);
+  }
+  /** @param {string} h @param {Up[]} us */
+  function group(h, us) {
+    return us.length
+      ? '<h4 class="uph4">' + say(h) + '</h4><ul class="upl">' + us.map(function (u) {
+          return upRow(u, t);
+        }).join("") + "</ul>"
+      : "";
+  }
+  box.innerHTML =
+    '<div class="cmh">' +
+    '<button type="button" class="cnav" data-u="-15">' + ICON.prev + '<span class="sr">' + esc(w.prevU) + "</span></button>" +
+    '<h3 id="cut" tabindex="-1">' + say(now ? w.upTitle : range(s, end)) + '<span class="cms">' + say((now ? range(s, end) + " · " : "") + placeName(L)) + "</span></h3>" +
+    '<button type="button" class="cnav" data-u="15">' + ICON.next + '<span class="sr">' + esc(w.nextU) + "</span></button>" +
+    "</div>" +
+    (now ? "" : '<p class="cto"><button type="button" data-u="0">' + say(w.todayB) + "</button></p>") +
+    '<div class="upk" role="group" aria-label="' + esc(w.view) + '">' +
+    KINDS.map(function (k) {
+      return '<button type="button" data-k="' + k + '" aria-pressed="' + upShow[k] + '"><span>' + say(w.kinds[k]) + "</span></button>";
+    }).join("") +
+    "</div>" +
+    group(now ? w.week : range(s, mid), a) +
+    group(now ? w.nextWeek : range(addDays(mid, 1), end), b) +
+    (a.length || b.length ? "" : '<p class="upe">' + say(w.uNone) + "</p>");
+}
+
+/** Phones, and tablets held upright: one tab at a time (Day, 15 days, Month); wider, the day card stays beside */
+function narrow() {
+  return !matchMedia("(min-width: 820px)").matches || matchMedia("(orientation: portrait) and (max-width: 1023px)").matches;
+}
+
 /** Draw the whole page in the menu language */
 function calRender() {
   var c = page(),
@@ -775,27 +1114,134 @@ function calRender() {
   if (hd) hd.setAttribute("data-lang", l);
   c.lang = l;
   calKey = langKey();
-  var note = document.getElementById("caln0");
-  if (note) note.innerHTML = L ? say(words().note(placeName(L))) : "";
-  dayRender();
-  monthRender();
+  var note = document.getElementById("caln0"),
+    w = words(),
+    nar = narrow();
+  if (!nar && view.mode === "day") view.mode = "month";
+  var mode = view.mode;
+  if (note) note.innerHTML = L ? say(w.note(placeName(L))) : "";
+  // Day | 15 days | Month (Day only on phones)
+  var v = document.getElementById("calv");
+  if (v) {
+    var tabs = /** @type {("day" | "up" | "month")[]} */ (nar ? ["day", "up", "month"] : ["up", "month"]);
+    v.className = "n" + tabs.length;
+    v.innerHTML = tabs
+      .map(function (m) {
+        return '<button type="button" data-v="' + m + '" aria-pressed="' + (mode === m) + '">' + say(m === "up" ? w.up : m === "day" ? w.day : w.month) + "</button>";
+      })
+      .join("");
+  }
+  /** @param {string} id @param {boolean} show */
+  function show(id, show) {
+    var e = document.getElementById(id);
+    if (e) e.hidden = !show;
+    return show;
+  }
+  if (show("cald", !nar || mode === "day")) dayRender();
+  show("caln0", mode === "month");
+  if (show("calm", mode === "month")) monthRender();
+  if (show("calu", mode === "up")) upRender();
 }
 
-/** Open the calendar at today */
-export function calOpen() {
+/**
+ * Open the calendar at a tab: the day (today, or `day`), the next 15 days or the month
+ * @param {"day" | "month" | "up"} [mode] @param {string} [day] "YYYY-MM-DD"
+ */
+export function calOpen(mode, day) {
   var c = page();
   if (!c || !skLoc()) return;
-  var now = new Date();
+  var now = day ? dateOf(day) : new Date();
   view.day = keyOf(now);
   view.y = now.getFullYear();
   view.m = now.getMonth() + 1;
+  view.mode = mode || "day";
+  view.from = "";
+  subOn = false;
+  view.uFrom = keyOf(new Date());
   setC(true);
   // the page is shown first; the month is worked out right after (about 50 ms)
   var wait = document.getElementById("calm");
   if (wait) wait.innerHTML = '<p class="cwait">…</p>';
   setTimeout(function () {
-    if (isOpen()) calRender();
+    if (!isOpen()) return;
+    calRender();
+    if (day && view.mode === "month") focusDay(day);
   }, 0);
+}
+
+/** The day shown in the card, and its month @param {string} k "YYYY-MM-DD" */
+function setDay(k) {
+  var d = dateOf(k);
+  view.day = k;
+  view.y = d.getFullYear();
+  view.m = d.getMonth() + 1;
+}
+/** Say which day the card shows (screen readers) */
+function announce() {
+  var live = document.getElementById("call"),
+    p = /** @type {HTMLElement | null} */ (document.getElementById("cdt")),
+    d = dateOf(view.day);
+  if (live)
+    live.textContent =
+      words().showing +
+      (ui() === "en" ? d.getDate() + " " + MONTHS.en[d.getMonth()] : dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()]) +
+      ": " +
+      (p ? p.textContent : "");
+}
+// Phones: the Day tab at a day tapped in the month or the 15 days has its own step in the browser's history, so the
+// phone's Back returns to that tab, as the page's Back does (ovSub in js/features/history.js)
+var subOn = false;
+function subPush() {
+  if (subOn) return;
+  subOn = true;
+  ovSub(function () {
+    subOn = false;
+    back(true);
+  });
+}
+function subDrop() {
+  if (!subOn) return;
+  subOn = false;
+  ovSubDone();
+}
+/** Phones: the Day tab at a day tapped in the month or the 15 days, which Back returns to
+ * @param {string} k @param {"month" | "up"} from */
+function toDay(k, from) {
+  setDay(k);
+  view.mode = "day";
+  view.from = from;
+  subPush();
+  calRender();
+  // the month, out of sight, marks the day too
+  if (from === "month") monthRender();
+  announce();
+  var h = document.getElementById("cdt");
+  if (h) h.focus();
+}
+/** Back (the page's button, Escape, or the phone's Back): to the tab the day was tapped in, else close the page
+ * @param {boolean} [fromPop] the phone's Back, which has taken its step already */
+function back(fromPop) {
+  if (view.mode === "day" && view.from && narrow()) {
+    if (!fromPop) subDrop();
+    view.mode = view.from;
+    view.from = "";
+    if (view.mode === "month") setDay(view.day);
+    calRender();
+    var b = /** @type {HTMLElement | null} */ (
+      document.querySelector(view.mode === "month" ? '#calm button[data-d="' + view.day + '"]' : '#calu .upr[data-d="' + view.day + '"]')
+    );
+    if (b) {
+      if (view.mode === "month") focusDay(view.day);
+      else b.focus();
+    } else {
+      var t = document.querySelector('#calv [aria-pressed="true"]');
+      if (t) /** @type {HTMLElement} */ (t).focus();
+    }
+    return;
+  }
+  if (fromPop) return;
+  subDrop();
+  setC(false);
 }
 
 /**
@@ -803,21 +1249,10 @@ export function calOpen() {
  * @param {string} k "YYYY-MM-DD" @param {boolean} [focus]
  */
 function pick(k, focus) {
-  var d = dateOf(k);
-  view.day = k;
-  view.y = d.getFullYear();
-  view.m = d.getMonth() + 1;
+  setDay(k);
   dayRender();
   monthRender();
-  var live = document.getElementById("call");
-  if (live) {
-    var p = /** @type {HTMLElement | null} */ (document.getElementById("cdt"));
-    live.textContent =
-      words().showing +
-      (ui() === "en" ? d.getDate() + " " + MONTHS.en[d.getMonth()] : dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()]) +
-      ": " +
-      (p ? p.textContent : "");
-  }
+  announce();
   if (focus) focusDay(k);
 }
 
@@ -851,20 +1286,80 @@ export function init() {
     c = page();
   if (pan)
     pan.addEventListener("click", function (e) {
-      if (/** @type {HTMLElement} */ (e.target).closest("#panb")) calOpen();
+      if (/** @type {HTMLElement} */ (e.target).closest("#panb")) calOpen("day");
+    });
+  // the date above the line is the top of the same card: a tap there opens the calendar too
+  var tdd = document.getElementById("tdd");
+  if (tdd)
+    tdd.addEventListener("click", function () {
+      if (skLoc()) calOpen("day");
+    });
+  var upw = document.getElementById("upw");
+  if (upw)
+    upw.addEventListener("click", function (e) {
+      var t = /** @type {HTMLElement} */ (e.target),
+        r = /** @type {HTMLElement | null} */ (t.closest(".upr"));
+      if (t.closest("#upwm")) calOpen("up");
+      else if (r && r.dataset.d) calOpen("day", r.dataset.d);
     });
   if (c) {
     var bk = document.getElementById("cbk");
     if (bk)
       bk.addEventListener("click", function () {
-        setC(false);
+        back();
       });
     c.addEventListener("click", function (e) {
       var t = /** @type {HTMLElement} */ (e.target),
         b = /** @type {HTMLElement | null} */ (t.closest("button"));
       if (!b) return;
-      if (b.classList.contains("cd") && b.dataset.d) pick(b.dataset.d, true);
-      else if (b.classList.contains("cnav")) {
+      if (b.classList.contains("cd") && b.dataset.d) {
+        // a day in the month: beside it, or on phones the Day tab (Back returns to the month)
+        if (narrow()) toDay(b.dataset.d, "month");
+        else pick(b.dataset.d, true);
+      } else if (b.dataset.v) {
+        // Day | 15 days | Month
+        view.mode = /** @type {"day" | "month" | "up"} */ (b.dataset.v);
+        view.from = "";
+        subDrop();
+        if (view.mode === "month") {
+          var vd = dateOf(view.day);
+          view.y = vd.getFullYear();
+          view.m = vd.getMonth() + 1;
+        }
+        calRender();
+        var v = /** @type {HTMLElement | null} */ (document.querySelector('#calv [data-v="' + view.mode + '"]'));
+        if (v) v.focus();
+      } else if (b.dataset.k && b.closest(".upk")) {
+        // what the 15 days show
+        var k = /** @type {UpKind} */ (b.dataset.k);
+        upShow[k] = !upShow[k];
+        upRender();
+        var again0 = /** @type {HTMLElement | null} */ (document.querySelector('#calu [data-k="' + k + '"]'));
+        if (again0) again0.focus();
+      } else if (b.classList.contains("upr") && b.dataset.d) {
+        // an entry: its day beside, or on phones the Day tab (Back returns to the 15 days)
+        if (narrow()) toDay(b.dataset.d, "up");
+        else {
+          setDay(b.dataset.d);
+          dayRender();
+          announce();
+        }
+      } else if (b.dataset.u) {
+        // the 15 days before or after, or from today
+        var u = +b.dataset.u;
+        view.uFrom = u ? addDays(view.uFrom || keyOf(new Date()), u) : keyOf(new Date());
+        upRender();
+        var again1 = /** @type {HTMLElement | null} */ (u ? document.querySelector('#calu [data-u="' + u + '"]') : document.getElementById("cut"));
+        if (again1) again1.focus();
+      } else if (b.dataset.dd) {
+        // the day before or after, or today
+        var dd = +b.dataset.dd;
+        setDay(dd ? addDays(view.day, dd) : keyOf(new Date()));
+        dayRender();
+        announce();
+        var again2 = /** @type {HTMLElement | null} */ (dd ? document.querySelector('#cald [data-dd="' + dd + '"]') : document.getElementById("cdt"));
+        if (again2) again2.focus();
+      } else if (b.classList.contains("cnav")) {
         var id = b.id;
         showMonth(+(b.dataset.y || 0), +(b.dataset.m || 0));
         var again = document.getElementById(id);
@@ -895,9 +1390,15 @@ export function init() {
       else focusDay(k);
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && isOpen()) setC(false);
+      if (e.key === "Escape" && isOpen()) back();
     });
   }
+  // a phone turned, a window resized: one tab at a time, or the day card beside
+  var wide = matchMedia("(min-width: 820px)");
+  if (wide.addEventListener)
+    wide.addEventListener("change", function () {
+      if (isOpen()) calRender();
+    });
   // the day can change while the page is open: check again when it comes back into view
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) homeSoon();

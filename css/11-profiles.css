@@ -50,8 +50,8 @@
     clip: rect(0 0 0 0);
   }
 }
-/* phones: the badge without the button's frame, and the title gives up its small Ganesha (the bottom bar's Ganesha
-   is Home too) and a little size, so नित्य उपासना still fits beside it on a 390px phone */
+/* phones: the badge without the button's frame, and the title gives up its small picture (Home shows it large) and
+   a little size, so नित्य उपासना still fits beside it on a 390px phone */
 @media (max-width: 420px) {
   #who {
     width: 40px;
@@ -64,7 +64,7 @@
   .bar .tools {
     gap: 3px;
   }
-  .bar .t.site svg {
+  .bar .t.site .bti {
     display: none;
   }
   .bar .t.site:not([data-tl="en"]) {
