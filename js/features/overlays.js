@@ -128,6 +128,8 @@ const PAGES = {
       return pn;
     },
     openers: "#aa",
+    // under the top bar on every screen, as the Library and the calendar are, so the top bar is always there
+    below: true,
     bb: true,
     focus: "always",
     shown: function () {
@@ -145,7 +147,7 @@ const PAGES = {
     el: function () {
       return jp;
     },
-    openers: "#hm,.pns,#asq",
+    openers: "#hm,.pns",
     below: true,
     focus: "outside",
     shown: function () {

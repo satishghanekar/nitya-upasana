@@ -45,7 +45,7 @@ There is no build step: the browser loads these files as they are.
 | `text/line-breaks.js` | Preferred line breaks |
 | `text/autofit.js` | Auto-fit text size |
 | `core/apply.js` | Current piece, folds and menus |
-| `features/bottom-bar.js` | Bottom bar (#asc): Prev, Home, Library, Aa, Next |
+| `features/bottom-bar.js` | Bottom bar (#asc): Prev, Home, Print, Aa, Next (Library is in the top bar on every page) |
 | `features/bars.js` | Bars tuck away while reading (CSS: "Bars tuck away while reading"), and apply() |
 | `features/settings-panel.js` | Settings panel |
 | `features/dhrupad-button.js` | Dhrupad: toggle once / after every stanza, keeping the reader's place (Reading sheet and Settings) |

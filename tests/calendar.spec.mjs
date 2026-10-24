@@ -556,6 +556,7 @@ test("the calendar's tabs: Day, 15 days, Month on phones; 15 days and Month besi
   await expect(page.locator("#cald .cdd")).toHaveText("Monday, 19 October 2026");
   await expect(page.locator('#cald [data-dd="1"]')).toBeFocused();
   await expect(page.locator("#call")).toHaveText("Showing 19 October: Ashvin Shukla Navami");
+  await expect(page.locator("#cald .cdnt")).toHaveText("Mon 19 Oct");
   await page.locator('#cald [data-dd="0"]').click();
   await expect(page.locator("#cald .cdd")).toHaveText("Sunday, 18 October 2026 · today");
   await expect(page.locator('#cald [data-dd="0"]')).toHaveCount(0);
@@ -568,6 +569,16 @@ test("the calendar's tabs: Day, 15 days, Month on phones; 15 days and Month besi
   await page.locator("#cbk").click();
   await expect(page.locator("#cal")).toBeVisible();
   await expect(page.locator('#calm button[data-d="2026-10-28"]')).toBeFocused();
+  // the phone's Back does the same: back to the month, then it closes the page
+  await page.locator('#calm button[data-d="2026-10-27"]').click();
+  await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
+  await page.goBack();
+  await expect(page.locator('#calv [data-v="month"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#cal")).toBeVisible();
+  await page.goBack();
+  await expect(page.locator("#cal")).toBeHidden();
+  await page.locator("#panb").click({ position: { x: 12, y: 12 } });
+  await page.locator('#calv [data-v="month"]').click();
   // an entry in the 15 days, the same; Escape returns to the list
   await page.locator('#calv [data-v="up"]').click();
   await page.locator('#calu .upr[data-d="2026-10-20"]').click();
