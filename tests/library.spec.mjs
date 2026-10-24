@@ -447,14 +447,14 @@ test("no PDFs listed: the Library has no tabs @mobile", async ({ page }) => {
   await expect(page.locator("#q")).toBeVisible();
 });
 
-test("Texts | PDFs: the PDFs by the texts' categories, each opening in a new tab; the Library opens on Texts again @mobile", async ({ page }) => {
+test("Chants | Books: the PDFs by the texts' categories, each opening in a new tab; the Library opens on Chants again @mobile", async ({ page }) => {
   await withPdfs(page);
   await openSite(page, SETUPS.both, { now: EVENING });
   await page.locator("#hm").click();
   const tabs = page.locator("#jtb button");
   // (the words in the menu language only: the other is in the page, not shown)
-  await expect(tabs.nth(0)).toHaveAccessibleName("Texts");
-  await expect(tabs.nth(1)).toHaveAccessibleName("PDFs");
+  await expect(tabs.nth(0)).toHaveAccessibleName("Chants");
+  await expect(tabs.nth(1)).toHaveAccessibleName("Books");
   await expect(tabs.nth(0)).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#jl .pdfg").first()).toBeHidden();
   // a search shown when the tab changes is cleared
@@ -509,8 +509,8 @@ test("the PDFs tab in Marathi menus @mobile", async ({ page }) => {
   await withPdfs(page);
   await openSite(page, SETUPS["marathi-menus"], { now: EVENING });
   await page.locator("#hm").click();
-  await expect(page.locator("#jtb button").nth(0)).toHaveAccessibleName("रचना");
-  await expect(page.locator("#jtb button").nth(1)).toHaveAccessibleName("पीडीएफ");
+  await expect(page.locator("#jtb button").nth(0)).toHaveAccessibleName("पाठ");
+  await expect(page.locator("#jtb button").nth(1)).toHaveAccessibleName("पोथी");
   await page.locator("#jtb button").nth(1).click();
   await expect(page.locator("#jl .pdfg a.pdf").first()).toHaveAccessibleName("दासबोध PDF");
 });
