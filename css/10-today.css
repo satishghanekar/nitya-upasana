@@ -576,11 +576,8 @@
   :root[data-rail="1"][data-sp] {
     overflow: visible;
   }
-  /* the month takes the room the day card leaves; its days fill the height of the screen, names kept whole */
+  /* one tab at a time across the right-hand area; the month's days fill the height of the screen, names kept whole */
   :root[data-rail="1"] #cal .calin {
-    grid-template-columns: minmax(0, 1fr) clamp(290px, 26vw, 360px);
-    /* the header, the tabs, then the month or the 15 days: the day card beside the last two takes no room from the tabs */
-    grid-template-rows: auto auto 1fr;
     gap: 16px 24px;
     max-width: none;
     margin: 0;
@@ -602,27 +599,6 @@
     overflow-wrap: normal;
     word-break: keep-all;
     font-size: 11.5px;
-  }
-  :root[data-rail="1"] #cal #calv {
-    grid-column: 1;
-    grid-row: 2;
-  }
-  :root[data-rail="1"] #cal #calm,
-  :root[data-rail="1"] #cal #calu {
-    grid-column: 1;
-    grid-row: 3;
-  }
-  :root[data-rail="1"] #cal #cald {
-    grid-column: 2;
-    grid-row: 2 / span 2;
-  }
-  /* the Day tab: the day card alone, under the tabs, across the width */
-  :root[data-rail="1"] #cal[data-mode="day"] .calin {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  :root[data-rail="1"] #cal[data-mode="day"] #cald {
-    grid-column: 1;
-    grid-row: 3;
   }
   :root[data-rail="1"] #panel .sp-pg {
     max-width: none;
