@@ -592,10 +592,7 @@
     columns: 3 340px;
     column-gap: 24px;
   }
-  :root[data-rail="1"] #sp-home .sp-h {
-    break-after: avoid;
-  }
-  :root[data-rail="1"] #sp-home .sp-card {
+  :root[data-rail="1"] #sp-home .sp-grp {
     break-inside: avoid;
   }
   :root[data-rail="1"] #panb[aria-expanded="true"] {

@@ -91,6 +91,10 @@ html[data-sp] {
 .sp-body {
   padding: 4px 16px 0;
 }
+/* a heading with its cards (index.html): its own formatting context, so the heading's top margin stays inside it */
+.sp-grp {
+  display: flow-root;
+}
 .sp-h {
   margin: 22px 6px 8px;
   font: 600 12.5px/1.2 var(--lat);
@@ -359,9 +363,9 @@ html[data-sp] {
 :root[data-font]:not([data-font="std"]) .sp-pw > [lang="en"] {
   font-family: var(--tf), var(--lat);
 }
-/* the maker's name and email, quiet, under About */
+/* the maker's name and email, quiet, centred under all the cards (outside their columns) */
 .sp-by {
-  margin: 18px 6px 8px;
+  margin: 18px 22px 8px;
   font: 400 13px/1.6 var(--lat);
   text-align: center;
   color: var(--muted);
@@ -428,10 +432,8 @@ html[data-scr="kn"][data-font]:not([data-font="std"]) .sp-pw [lang="kn"] {
     columns: 2;
     column-gap: 18px;
   }
-  #sp-home .sp-h {
-    break-after: avoid;
-  }
-  #sp-home .sp-card {
+  /* a heading and its cards stay together (index.html's .sp-grp; Safari ignores break-after on the heading) */
+  #sp-home .sp-grp {
     break-inside: avoid;
   }
 }
