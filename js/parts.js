@@ -48,6 +48,8 @@ var SITE_PARTS = (function () {
     "text/iast",
     "core/library",
     "features/library",
+    "core/pdfs",
+    "features/pdfs",
     "text/layout",
     "features/astronomy",
     "features/sankashti",
@@ -97,13 +99,15 @@ var SITE_PARTS = (function () {
     return "js/" + f + ".js";
   });
   // The texts: the list of texts and categories, then one file per text, as listed in content/library.json
-  // (js/text/load.js reads them; tests/site-files.spec.mjs checks this list against library.json)
+  // (js/text/load.js reads them; tests/site-files.spec.mjs checks this list against library.json). The list of PDFs
+  // (pdfs.json) is kept too, not the PDFs themselves: sw.js keeps each one once it has been opened on the phone.
   var content = [
     "library.json",
     "categories.json",
     "routines.json",
     "festivals.json",
     "holidays.json",
+    "pdfs.json",
     "texts/vedic-chant-atharvashirsha.txt",
     "texts/vedic-chant-shree-rudra.txt",
     "texts/vedic-chant-shri-sukta.txt",

@@ -15,6 +15,7 @@ import { mark } from "./bars.js";
 import { fsFlush, szSet } from "./settings-panel.js";
 import { ovDone, ovPush } from "./history.js";
 import { spSet } from "./languages.js";
+import { clearSearch, libTab } from "./contents-list.js";
 
 /**
  * Everything that opens over the page, dialogs first: the first one open in this order is the one on top.
@@ -154,15 +155,9 @@ const PAGES = {
       fsFlush();
     },
     hidden: function () {
-      // the search starts empty next time, with the whole list
-      var qq = /** @type {HTMLInputElement | null} */ (document.getElementById("q"));
-      if (qq && qq.value) {
-        qq.value = "";
-        /** @type {HTMLElement} */ (document.getElementById("res")).innerHTML = "";
-        /** @type {HTMLElement} */ (document.getElementById("none")).hidden = true;
-        /** @type {HTMLElement} */ (document.getElementById("jl")).hidden = false;
-      }
-      if (qq) qq.blur();
+      // the search starts empty next time, with the whole list, on the Texts tab
+      clearSearch();
+      libTab("texts");
     },
   },
   // The Vedic calendar page (#cal): opened by the line on Home (#panb) or Next 15 days (#upwm), under the top bar like the Library; Back, the
