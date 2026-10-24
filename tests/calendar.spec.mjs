@@ -400,7 +400,9 @@ test("festivals: दसरा on 20 October in the month, a tag and a row in the
   await expect(day(20).locator(".fs")).toHaveText("दसरा");
   await expect(day(11).locator(".fs")).toHaveText("नवरात्र"); // घटस्थापना: Navratri begins
   await expect(day(25).locator(".fs")).toHaveText("कोजागिरी");
-  await expect(page.locator("#calm .cd .fs")).toHaveCount(3);
+  await expect(day(7).locator(".fs")).toHaveText("प्रदोष"); // the trayodashi at dusk, in each paksha
+  await expect(day(23).locator(".fs")).toHaveText("प्रदोष");
+  await expect(page.locator("#calm .cd .fs")).toHaveCount(5);
   await expect(day(20)).toHaveAccessibleName("20 October, Tuesday, दशमी दसरा , Shukla Dashami, Dasara (Vijayadashami)");
   await day(20).click();
   await expect(page.locator("#cald .cdg")).toHaveText("दसरा");
