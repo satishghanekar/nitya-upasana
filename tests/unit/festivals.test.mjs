@@ -42,7 +42,8 @@ describe("content/festivals.json", () => {
         expect(["first", "second"]).toContain(r.tie);
       }
     }
-    expect(LIST.festivals.length).toBe(25);
+    // (25, then Shri Gondavalekar Maharaj's, Shri Swami Samarth's and Shri Nana Maharaj Taranekar's days, 2026-10-24)
+    expect(LIST.festivals.length).toBe(31);
   });
 });
 
@@ -77,9 +78,11 @@ describe("2026 in Pune (IST)", () => {
   ])("%s on %s", (id, date) => {
     expect(got[id]).toBe(date);
   });
-  test("every festival once in 2026, none in Adhika Jyeshtha (17 May – 15 June)", () => {
+  // (with 2026's Adhika Jyeshtha, Margashirsha vadya dashami, Shri Gondavalekar Maharaj's Punyatithi, falls on 2 Jan 2027)
+  test("every festival once in 2026 but the Maharaj Punyatithi (2 Jan 2027), none in Adhika Jyeshtha (17 May – 15 June)", () => {
     const all = festivalsBetween("2026-01-01", "2026-12-31", PUNE, LIST);
-    expect(all.map((f) => f.id).sort()).toEqual(LIST.festivals.map((f) => f.id).sort());
+    expect(all.map((f) => f.id).sort()).toEqual(LIST.festivals.map((f) => f.id).filter((id) => id !== "gondavalekar-maharaj-punyatithi").sort());
+    expect(festivalsBetween("2027-01-01", "2027-01-10", PUNE, LIST).map((f) => f.date + " " + f.id)).toEqual(["2027-01-02 gondavalekar-maharaj-punyatithi"]);
     expect(all.filter((f) => f.date >= "2026-05-17" && f.date <= "2026-06-15")).toEqual([]);
   });
   test("the tithi each festival is kept for", () => {
@@ -113,7 +116,7 @@ describe("2026 in Columbus, Ohio (America/New_York)", () => {
     const pune = year(2026, PUNE);
     const earlier = Object.keys(pune).filter((id) => got[id] !== pune[id]);
     expect(earlier.sort()).toEqual(
-      ["akshaya-tritiya", "ashadhi-ekadashi", "bali-pratipada", "bhaubeej", "gokulashtami", "hanuman-jayanti", "narak-chaturdashi", "narali-purnima", "tripurari-purnima"].sort(),
+      ["akshaya-tritiya", "ashadhi-ekadashi", "bali-pratipada", "bhaubeej", "gokulashtami", "gondavalekar-maharaj-jayanti", "hanuman-jayanti", "narak-chaturdashi", "narali-purnima", "tripurari-purnima"].sort(),
     );
     for (const id of earlier) {
       const a = new Date(pune[id]),

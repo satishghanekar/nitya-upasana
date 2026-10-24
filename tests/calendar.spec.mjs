@@ -91,7 +91,8 @@ test("the month: weekdays, tithi at sunrise, paksha shading, moons, Ekadashi, Sa
   await expect(day(30).locator(".kx")).toHaveText("+षष्ठी");
   await expect(day(30)).toHaveAccessibleName(/30 October, Friday, पंचमी.*Krishna Panchami.*kshaya tithi: Krishna Shashthi/);
   // with Kojagiri Purnima, a festival (content/festivals.json): its short name shows, its full name is heard
-  await expect(day(25)).toHaveAccessibleName("25 October, Sunday, पौर्णिमा कोजागिरी , Purnima, Kojagiri Purnima");
+  // (and Valmiki Jayanti, a Karnataka holiday on Ashvin purnima at sunrise: the 25th in Columbus)
+  await expect(day(25)).toHaveAccessibleName("25 October, Sunday, पौर्णिमा कोजागिरी वाल्मीकि जयंती , Purnima, Kojagiri Purnima, Valmiki Jayanti");
   // the key
   await expect(page.locator(".ckey")).toContainText("Shukla paksha");
   await expect(page.locator(".ckey")).toContainText("Krishna paksha");
@@ -111,7 +112,17 @@ test("tapping a day shows it in the day card @mobile", async ({ page }) => {
   // purnima: no paksha in the title
   await page.locator('#calm button[data-d="2026-10-25"]').click();
   await expect(page.locator("#cdt")).toHaveText("आश्विन पौर्णिमा");
-  await expect(page.locator("#cald .cdg")).toHaveText("कोजागिरी पौर्णिमा पौर्णिमा");
+  await expect(page.locator("#cald .cdg")).toHaveText("कोजागिरी पौर्णिमा वाल्मीकि जयंती (कर्नाटक) पौर्णिमा");
+});
+
+// Public holidays (content/holidays.json, Satish 2026-10-24): in the month and the day card, with where they are kept
+test("a public holiday shows in the month and the day card, with its country or state @mobile", async ({ page }) => {
+  await open(page);
+  await expect(page.locator('#calm button[data-d="2026-10-12"] .hs')).toHaveText("कोलंबस डे");
+  await expect(page.locator('#calm button[data-d="2026-10-02"] .hs')).toHaveText("गांधी जयंती");
+  await page.locator('#calm button[data-d="2026-10-12"]').click();
+  await expect(page.locator("#cald .cdg .tag.hol")).toHaveText("कोलंबस डे (अमेरिका)");
+  await expect(row(page, "सुट्टी")).toHaveText("कोलंबस डे (अमेरिका)Columbus Day (US)");
 });
 
 test("previous and next month @mobile", async ({ page }) => {
