@@ -44,10 +44,11 @@ import { dayTimes, masaOf, panchangDay, sunSidereal, tithiAt } from "./panchang.
  *   masa 1 Chaitra … 12 Phalgun (amanta, nija); tithi 1–15 within the paksha (krishna 15 is amavasya)
  * @typedef {{ rashi: number }} SolarRule  rashi 1 Mesha … 10 Makara … 12 Meena: the sidereal sign the sun enters
  * @typedef {import("./panchang-names.js").Name} Name
- * @typedef {{ id: string, mr: string, en: string, short: Name, rule: LunarRule | SolarRule }} Festival
+ * @typedef {{ en: string, mr?: string }} Wiki  the Wikipedia page's title (as in its address), English and Marathi
+ * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, rule: LunarRule | SolarRule }} Festival
  *   mr / en the full names (the festival is itself a Name); short the label for a day in the month grid
  * @typedef {{ version: number, adhika: "nija", festivals: Festival[] }} FestivalList  content/festivals.json
- * @typedef {{ id: string, mr: string, en: string, short: Name, date: string, from: Date, to: Date }} FestivalDay
+ * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, date: string, from: Date, to: Date }} FestivalDay
  *   date "YYYY-MM-DD" on the place's clock; from / to: the tithi's start and end (a solar festival: the sankranti's
  *   moment, both)
  */
@@ -135,7 +136,7 @@ export function festivalsBetween(from, to, place, list) {
   /** @param {Festival} f @param {string} date @param {number} a @param {number} b */
   function add(f, date, a, b) {
     if (date >= from && date <= to)
-      out.push({ id: f.id, mr: f.mr, en: f.en, short: f.short, date: date, from: new Date(a), to: new Date(b) });
+      out.push({ id: f.id, mr: f.mr, en: f.en, short: f.short, wiki: f.wiki, date: date, from: new Date(a), to: new Date(b) });
   }
 
   // lunar festivals, by tithi: every tithi current at some time from `from`'s sunrise to the sunrise after `to`
