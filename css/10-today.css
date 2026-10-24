@@ -479,23 +479,28 @@
   gap: 8px;
   padding: 10px 0;
 }
+/* Back (‹): a square in the tabs' colour, as the calendar's (#cbk, 12-calendar.css), with the title or the tabs
+   (#jtb, 13-library.css) beside it in one row */
+#jump .libhd {
+  padding: 12px 0;
+}
 #jbk {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  min-height: 44px;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 50px;
   height: auto;
+  min-height: 50px;
   margin: 0;
-  padding: 0 10px 0 4px;
+  padding: 0;
   border: 0;
-  border-radius: 10px;
-  background: none;
+  border-radius: 12px;
+  background: var(--hdrt);
   color: var(--accent);
-  font: 600 17px/1.2 var(--lat);
   cursor: pointer;
 }
-.libhd[data-lang="mr"] #jbk {
-  font-family: var(--body);
+#jbk:hover {
+  background: var(--hdrl);
 }
 #jbk:focus-visible {
   outline: 2px solid var(--ink);

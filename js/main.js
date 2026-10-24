@@ -31,6 +31,7 @@ import { init as startState } from "./core/state.js";
 import { init as startFeatures } from "./core/features.js";
 import { init as startDayPicture } from "./features/day-picture.js";
 import { init as startLibrary } from "./features/library.js";
+import { init as startPdfs } from "./features/pdfs.js";
 import { init as startIast } from "./text/iast.js";
 import { init as startLayout } from "./text/layout.js";
 import { init as startAstronomy } from "./features/astronomy.js";
@@ -71,6 +72,7 @@ function start() {
     startFeatures(); // Features held back for a later release
     startDayPicture(); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed
     startLibrary(); // The Library's list by category and the categories sheet (add, rename, delete, move a text)
+    startPdfs(); // The Library's PDFs (content/pdfs.json), listed in its PDFs tab
     startIast(); // IAST transliteration (Devanagari → Latin with diacritics, Vedic accents as marks)
     startLayout(); // Layout helpers that run once
     startAstronomy(); // Astronomy: sun and moon, tithi, moonrise and the Sankashti rule (worked out on this device)
