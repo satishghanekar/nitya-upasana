@@ -1302,6 +1302,16 @@ export function init() {
     tdd.addEventListener("click", function () {
       if (skLoc()) calOpen("day", undefined, "#panb");
     });
+  // The date and This week's header are not buttons: a press there would move focus to the page (#main), which closes
+  // the calendar when it is open (history.js, focusout) before the click opens it again; focus stays where it is
+  ["#tdd", "#upw"].forEach(function (sel) {
+    var el = document.querySelector(sel);
+    if (el)
+      el.addEventListener("mousedown", function (e) {
+        var t = /** @type {HTMLElement} */ (e.target);
+        if (sel === "#tdd" || (t.closest(".uph") && !t.closest("button"))) e.preventDefault();
+      });
+  });
   var upw = document.getElementById("upw");
   if (upw)
     upw.addEventListener("click", function (e) {

@@ -616,10 +616,9 @@
     grid-column: 2;
     grid-row: 2 / span 2;
   }
-  /* the Day tab: the day card alone, under the tabs, in one centred column */
+  /* the Day tab: the day card alone, under the tabs, across the width */
   :root[data-rail="1"] #cal[data-mode="day"] .calin {
-    grid-template-columns: minmax(0, 40rem);
-    justify-content: center;
+    grid-template-columns: minmax(0, 1fr);
   }
   :root[data-rail="1"] #cal[data-mode="day"] #cald {
     grid-column: 1;

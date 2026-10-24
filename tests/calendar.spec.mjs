@@ -557,6 +557,15 @@ test("on a wide screen, This week or the date card clicked while the calendar is
   await expect(page.locator("#cal")).toBeVisible();
   await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator("#upwm")).toHaveAttribute("aria-expanded", "false");
+  // the date above the line and This week's header, which are not buttons, the same
+  await page.locator("#upw .uph h2").click();
+  await page.waitForTimeout(500);
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator('#calv [data-v="up"]')).toHaveAttribute("aria-pressed", "true");
+  await page.locator("#tdd").click();
+  await page.waitForTimeout(500);
+  await expect(page.locator("#cal")).toBeVisible();
+  await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
 });
 
 test("the calendar's tabs: Day, 15 days, Month on every screen; on wide screens 15 days and Month keep the day card beside @mobile", async ({ page }) => {

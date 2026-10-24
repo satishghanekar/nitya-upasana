@@ -898,10 +898,14 @@
     grid-column: 2;
     grid-row: 3;
   }
-  /* the Day tab: the day card alone, under the tabs, in one centred column */
+  /* the Day tab: the day card alone, under the tabs, across the width, its rows in two columns */
   #cal[data-mode="day"] .calin {
-    grid-template-columns: minmax(0, 40rem);
-    justify-content: center;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #cal[data-mode="day"] #cald dl {
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr;
+    column-gap: 14px;
   }
   #cal[data-mode="day"] #calv {
     grid-column: 1;
