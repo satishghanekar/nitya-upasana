@@ -484,25 +484,29 @@
 .cd.today[aria-pressed="true"] {
   box-shadow: inset 0 0 0 2px var(--bg);
 }
-/* full moon (filled) and new moon (a ring) */
+/* full moon (Purnima): a glowing pale-gold moon with faint maria; new moon (Amavasya): a dark moon, a thin gold rim
+   and a sliver of earthshine. The same in every theme and on today */
 .mn {
   display: inline-block;
   flex: none;
   box-sizing: border-box;
-  width: 10px;
-  height: 10px;
+  width: 13px;
+  height: 13px;
   margin: 1px auto 0;
-  border: 1.5px solid var(--igold);
   border-radius: 50%;
 }
 .mn.full {
-  background: var(--igold);
+  background:
+    radial-gradient(circle at 64% 36%, rgb(176 132 52 / 0.38) 0 13%, transparent 15%),
+    radial-gradient(circle at 38% 66%, rgb(176 132 52 / 0.3) 0 11%, transparent 13%),
+    radial-gradient(circle at 30% 40%, rgb(176 132 52 / 0.22) 0 7%, transparent 9%),
+    radial-gradient(circle at 40% 35%, #fffbe9, #f6dc96 55%, #dcae48);
+  box-shadow: 0 0 0 0.75px #c99a3a, 0 0 5px 1px rgb(246 206 110 / 0.6);
 }
-.cd.today .mn {
-  border-color: var(--bg);
-}
-.cd.today .mn.full {
-  background: var(--bg);
+.mn.new {
+  border: 1.25px solid #d6b25e;
+  background: radial-gradient(circle at 38% 34%, #4a4656, #1c1a22 72%);
+  box-shadow: inset 1.5px 0 0 rgb(255 236 190 / 0.4);
 }
 .ckey {
   display: flex;
