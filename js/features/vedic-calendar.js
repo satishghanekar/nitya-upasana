@@ -1158,15 +1158,11 @@ export function calOpen(mode, day) {
   view.from = "";
   subOn = false;
   view.uFrom = keyOf(new Date());
+  // drawn before the page is shown, so it never shows empty for a moment (a day or 15 days take a few ms; on wide
+  // screens the month too, about 50 ms, less once worked out)
+  calRender();
   setC(true);
-  // the page is shown first; the month is worked out right after (about 50 ms)
-  var wait = document.getElementById("calm");
-  if (wait) wait.innerHTML = '<p class="cwait">…</p>';
-  setTimeout(function () {
-    if (!isOpen()) return;
-    calRender();
-    if (day && view.mode === "month") focusDay(day);
-  }, 0);
+  if (day && view.mode === "month") focusDay(day);
 }
 
 /** The day shown in the card, and its month @param {string} k "YYYY-MM-DD" */
