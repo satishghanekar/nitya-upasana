@@ -269,35 +269,6 @@
 #cald dd small[lang="kn"] {
   font-family: var(--body);
 }
-.csk {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  padding: 10px 12px;
-  border: 1px solid var(--hdrl);
-  border-radius: 12px;
-  background: var(--hdrt);
-  font-size: 14px;
-}
-.csk .dot {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--hdr);
-  color: var(--igold);
-}
-.csk b {
-  color: var(--accent);
-  font-weight: 650;
-}
-.csk .muted {
-  color: var(--muted);
-}
-
 /* ==== The month (#calm): the header with previous / next, the table of days, the key ==== */
 #calm {
   padding: 14px 8px;
