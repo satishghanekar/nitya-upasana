@@ -4,7 +4,7 @@
 // (the line on Home) and mockups/vedic-calendar.html (the calendar page) on branch mockup-home-v2.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
-// - Home (#pan): one button under the date, "आश्विन शुद्ध अष्टमी" / "नक्षत्र … · शके १९४८ · पराभव संवत्सर" / sunrise,
+// - Home (#pan): a card under the date (its button, #panb, over all of it), "आश्विन शुद्ध अष्टमी" / "नक्षत्र … · शके १९४८ · पराभव संवत्सर" / sunrise,
 //   sunset and the place. Only today is worked out (one dayPanchang(), a few milliseconds), after the page is shown.
 // - The calendar page (#cal), opened by that button: like the Library page (#jump) it sits under the top bar with a
 //   Back button, the phone's Back closes it (js/features/history.js) and focus returns to the button (overlays.js
@@ -119,7 +119,7 @@ const ICON = {
   down: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 4v5M9.5 6.5 12 9l2.5-2.5"/></svg>',
   chev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   prev: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
-  pin: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
+  pin: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   next: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8l-5.8 3.5 1.6-6.6-5.2-4.4 6.8-.5z" fill="currentColor"/></svg>',
 };
@@ -296,16 +296,18 @@ function homeRender() {
     sr = p.sunrise ? clock(p.sunrise) : "—",
     ss = p.sunset ? clock(p.sunset) : "—";
   box.lang = l;
+  // A card, not one button, so the place's pin can sit beside the place: the card's button (#panb) lies over all of it
+  // (named by the lines, read in order) and the pin (#ploc) over that; a tap anywhere else opens the calendar
   box.innerHTML =
-    '<button type="button" id="panb" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">' +
+    '<div class="pcard">' +
     ICON.cal +
     '<span class="pt">' +
-    nameH(title(p), "p1") +
-    '<span class="p2">' +
+    '<span id="pn1">' + nameH(title(p), "p1") + "</span>" +
+    '<span class="p2" id="pn2">' +
     // "\u00a0·" keeps each dot with the word before it when the line wraps
     nameH(cat("\u00a0· ", [cat(" ", [N.nakshatra, p.nakshatra.name]), shaka(s.shaka), lead() === "mr" ? cat(" ", [s.name, N.samvatsara]) : s.name])) +
     "</span>" +
-    '<span class="p3"><span>' +
+    '<span class="p3"><span id="pn3"><span>' +
     ICON.up +
     '<span class="sr">' + esc(w.sunrise) + " </span>" +
     esc(sr) +
@@ -313,14 +315,14 @@ function homeRender() {
     ICON.down +
     '<span class="sr">' + esc(w.sunset) + " </span>" +
     esc(ss) +
-    "</span><span>" +
-    esc(placeName(L)) +
-    "</span></span></span>" +
-    '<span class="sr">' + esc(w.open) + "</span>" +
-    ICON.chev +
-    "</button>" +
+    "</span></span>" +
     // the place: a tap asks the phone where it is (js/features/sankashti.js useMyLocation)
-    '<button type="button" id="ploc" aria-label="' + esc(w.loc + " (" + placeName(L) + ")") + '">' + ICON.pin + "</button>";
+    '<button type="button" id="ploc">' + ICON.pin + esc(placeName(L)) + '<span class="sr"> · ' + esc(w.loc) + "</span></button>" +
+    "</span></span>" +
+    '<button type="button" id="panb" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal" aria-labelledby="pn1 pn2 pn3 pno">' +
+    '<span class="sr" id="pno">' + esc(w.open) + "</span>" +
+    ICON.chev +
+    "</button></div>";
   box.hidden = false;
   festHome(pl);
 }
