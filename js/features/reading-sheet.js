@@ -7,6 +7,7 @@ import { LANGS, LK, cur } from "../core/apply.js";
 import { apply } from "./bars.js";
 import { szSet } from "./settings-panel.js";
 import { setP } from "./overlays.js";
+import { spTab } from "./settings-panel.js";
 import { refToggle } from "./dhrupad-button.js";
 import { ovDone, ovPush } from "./history.js";
 
@@ -36,7 +37,7 @@ export function init() {
   document.getElementById("rsl").onclick = function (e) {
     var b = e.target.closest("button");
     if (!b) return;
-    if (b.dataset.v === "+") return rsSettings("sl2s");
+    if (b.dataset.v === "+") return rsSettings("read", "sl2s");
     if (b.dataset.v === P.lang) return;
     var c = cur();
     change({ lang: b.dataset.v }, apply);
@@ -61,7 +62,7 @@ export function init() {
     rsSet();
   };
   document.getElementById("rsall").onclick = function () {
-    rsSettings();
+    rsSettings("read");
   };
 }
 
@@ -85,13 +86,16 @@ export function rsOpen(o) {
   }
 }
 
-// Settings from the sheet: the sheet's Back step is handed on to Settings, so Back still closes it
-function rsSettings(focusId) {
+// Settings from the sheet, on its Reading tab (the languages and the reading choices): the sheet's Back step is
+// handed on to Settings, so Back still closes it
+/** @param {"read"} tab @param {string} [focusId] */
+function rsSettings(tab, focusId) {
   rsFlush();
   rsh.hidden = true;
   rsb.setAttribute("aria-expanded", "false");
   document.documentElement.style.overflow = "";
   setP(true);
+  spTab(tab);
   if (focusId) document.getElementById(focusId).focus();
 }
 

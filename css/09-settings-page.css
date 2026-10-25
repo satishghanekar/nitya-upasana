@@ -6,8 +6,9 @@
    - Kannada letters: the original text when it is shown in Kannada letters (html[data-scr="kn"], set by …
 */
 
-/* ==== Settings page (option A, 2026-10-15): under the top bar while open (Satish, 2026-10-24); rounded cards of rows in groups
-   (Languages, Reading, Screen, About), like phone settings. The main and second language are dropdowns.
+/* ==== Settings page (option A, 2026-10-15): under the top bar while open (Satish, 2026-10-24); Back and the tabs
+   Reading | Screen | More in one row, as on the Library and the calendar pages (Satish, 2026-10-25), with
+   one tab's rounded cards of rows at a time, like phone settings. The main and second language are dropdowns.
    Centred, at most 640px wide, on wide screens. ==== */
 html[data-sp] {
   overflow: hidden;
@@ -39,18 +40,27 @@ html[data-sp] {
   position: sticky;
   top: 0;
   z-index: 1;
-  /* Back, then the page's name in both languages, as the Library and the calendar have them (Satish, 2026-10-24) */
+  /* Back (a square, #xc) and the tabs (#spv), as the Library's #jbk and #jtb (10-today.css, 13-library.css) */
   display: flex;
-  align-items: center;
   gap: 8px;
-  min-height: 56px;
-  padding: 0 max(12px, env(safe-area-inset-right, 0px)) 0 max(12px, env(safe-area-inset-left, 0px));
+  padding: 12px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px));
   background: var(--bg);
 }
-.sp-hd h2 {
-  margin: 0;
-  font: 400 22px/1.3 var(--head);
-  color: var(--accent);
+/* one tab at a time (js/features/settings-panel.js spTab) */
+.sp-grp[hidden] {
+  display: none;
+}
+/* a tab with one group: its heading is the tab's name, so screen readers only (as .sr) */
+.sp-grp.sp-one > .sp-h {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.sp-grp.sp-one {
+  padding-top: 10px;
 }
 .sp button {
   font: inherit;
@@ -63,20 +73,6 @@ html[data-sp] {
   border-radius: 0;
   background: none;
   text-align: start;
-}
-.sp .sp-bk {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  min-height: 44px;
-  padding: 0 10px 0 4px;
-  border-radius: 10px;
-  color: var(--accent);
-  font-weight: 600;
-  font-size: 17px;
-}
-.sp-bk .mr {
-  font-family: var(--body);
 }
 .sp-body {
   padding: 4px 16px 0;
@@ -413,17 +409,3 @@ html[data-scr="kn"][data-font]:not([data-font="std"]) .sp-pw [lang="kn"] {
   font-family: var(--kf), "Noto Sans Kannada", var(--body) !important;
 }
 
-/* ==== Tablets held upright: Settings' cards in two columns ==== */
-@media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
-  .sp-pg {
-    max-width: 46rem;
-  }
-  #sp-home .sp-body {
-    columns: 2;
-    column-gap: 18px;
-  }
-  /* a heading and its cards stay together (index.html's .sp-grp; Safari ignores break-after on the heading) */
-  #sp-home .sp-grp {
-    break-inside: avoid;
-  }
-}

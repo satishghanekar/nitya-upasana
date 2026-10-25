@@ -26,7 +26,7 @@ export function init() {
       m2.content = "Nitya Upasana";
       hd.appendChild(m2);
     } catch (e) {}
-    // Offline: a small cloud in the top bar while there is no internet (#ofb), and in Settings → About whether the
+    // Offline: a small cloud in the top bar while there is no internet (#ofb), and in Settings → More → About whether the
     // site is saved for offline use (#offv). A short note says so once, when the first visit has saved it.
     ofb = document.getElementById("ofb");
     offv = document.getElementById("offv");
@@ -48,7 +48,7 @@ export function init() {
       offv.innerHTML = two(OFV[st]);
       ofb.hidden = st !== "off";
     }
-    // Check for updates (Settings → About, a tap on the version line): what it says on the right, in the menu language
+    // Check for updates (Settings → More → About, a tap on the version line): what it says on the right, in the menu language
     upd = document.getElementById("upd");
     updv = document.getElementById("updv");
     UPD = {
