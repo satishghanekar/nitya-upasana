@@ -195,29 +195,22 @@
       </div>
     </div>
     <div class="sp-body">
-      <!-- each heading with its cards in one group, kept whole in a column (Safari splits a heading from its card
-           otherwise, whatever break-after says) -->
-      <section class="sp-grp" data-tab="read">
-        <!-- Main and second language: the phone's own dropdown (an invisible <select> over each row); English is listed
-             twice, once per spelling -->
-        <h3 class="sp-h"><span class="mr">भाषा</span><span class="en" lang="en">Languages</span></h3>
-        <div class="sp-card">
-          <div class="sp-row sp-go sp-pick" id="sl1"><span class="sp-l"><span class="mr">मुख्य भाषा</span><span class="en" lang="en">Main language</span><small><span class="mr">मोठ्या अक्षरांत</span><span class="en" lang="en">Large text</span></small></span><span class="sp-v" id="sl1v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl1s" aria-label="Main language"></select></div>
-          <div class="sp-row sp-go sp-pick" id="sl2"><span class="sp-l"><span class="mr">दुसरी भाषा</span><span class="en" lang="en">Second language</span><small><span class="mr">लहान, प्रत्येक ओळीखाली</span><span class="en" lang="en">Smaller, under each line</span></small></span><span class="sp-v" id="sl2v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl2s" aria-label="Second language"></select></div>
-          <div class="sp-row" id="surow">
-            <span class="sp-l"><span class="mr">मेनू आणि बटणे</span><span class="en" lang="en">Menus and buttons</span></span>
-            <div class="sp-seg" id="su" role="group" aria-label="Menus and buttons">
-              <button type="button" data-v="en" lang="en">English</button>
-              <button type="button" data-v="mr" lang="mr">मराठी</button>
-            </div>
-          </div>
-        </div>
+      <!-- each heading with its card in one group (.sp-grp, tagged with its tab); on wider screens a tab's groups sit in
+           two columns (css/09-settings-page.css) -->
+      <!-- Reading: what the texts look like. The preview first (beside the choices on wider screens), then every choice it
+           shows in one card: the main and second language (the phone's own dropdown, an invisible <select> over each
+           row; English is listed twice, once per spelling), text size and font. Then how a text is laid out, which the
+           preview can't show: the dhrupad and the columns (Satish, 2026-10-25) -->
+      <section class="sp-grp sp-pvg" data-tab="read">
+        <h3 class="sp-h"><span class="mr">नमुना</span><span class="en" lang="en">Preview</span></h3>
         <!-- a few lines of the Ganapati aarti, as the pieces will show them (filled in by the script) -->
         <div class="sp-prev" id="sprev" aria-hidden="true"></div>
       </section>
       <section class="sp-grp" data-tab="read">
-        <h3 class="sp-h"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></h3>
+        <h3 class="sp-h"><span class="mr">भाषा आणि अक्षरे</span><span class="en" lang="en">Language and text</span></h3>
         <div class="sp-card">
+          <div class="sp-row sp-go sp-pick" id="sl1"><span class="sp-l"><span class="mr">मुख्य भाषा</span><span class="en" lang="en">Main language</span><small><span class="mr">मोठ्या अक्षरांत</span><span class="en" lang="en">Large text</span></small></span><span class="sp-v" id="sl1v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl1s" aria-label="Main language"></select></div>
+          <div class="sp-row sp-go sp-pick" id="sl2"><span class="sp-l"><span class="mr">दुसरी भाषा</span><span class="en" lang="en">Second language</span><small><span class="mr">लहान, प्रत्येक ओळीखाली</span><span class="en" lang="en">Smaller, under each line</span></small></span><span class="sp-v" id="sl2v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl2s" aria-label="Second language"></select></div>
           <div class="sp-row">
             <span class="sp-l"><span class="mr">अक्षरांचा आकार</span><span class="en" lang="en">Text size</span></span>
             <div class="sp-seg sp-sz" role="group" aria-label="Text size">
@@ -235,6 +228,11 @@
               <button type="button" data-v="bold"><span class="mr">ठळक</span><span class="en" lang="en">Bold</span></button>
             </div>
           </div>
+        </div>
+      </section>
+      <section class="sp-grp" data-tab="read">
+        <h3 class="sp-h"><span class="mr">कडवी</span><span class="en" lang="en">Verses</span></h3>
+        <div class="sp-card">
           <div class="sp-row">
             <span class="sp-l"><span class="mr">ध्रुपद</span><span class="en" lang="en">Dhrupad</span></span>
             <div class="sp-seg" id="srf" role="group" aria-label="Dhrupad">
@@ -251,9 +249,17 @@
           </div>
         </div>
       </section>
+      <!-- Screen: the app around the texts: the language of the menus and buttons, the theme, contrast, screen on -->
       <section class="sp-grp" data-tab="screen">
         <h3 class="sp-h"><span class="mr">स्क्रीन</span><span class="en" lang="en">Screen</span></h3>
         <div class="sp-card">
+          <div class="sp-row" id="surow">
+            <span class="sp-l"><span class="mr">मेनू आणि बटणे</span><span class="en" lang="en">Menus and buttons</span></span>
+            <div class="sp-seg" id="su" role="group" aria-label="Menus and buttons">
+              <button type="button" data-v="en" lang="en">English</button>
+              <button type="button" data-v="mr" lang="mr">मराठी</button>
+            </div>
+          </div>
           <div class="sp-row sp-stk">
             <span class="sp-l"><span class="mr">रंगसंगती</span><span class="en" lang="en">Theme</span></span>
             <div class="sp-seg" id="st" role="group" aria-label="Theme">
@@ -609,7 +615,7 @@
       </ul>
 
       <h3>Settings</h3>
-      <p>Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (the languages and how the texts look), <b>Screen</b> (theme, contrast, keeping the screen on) and <b>More</b> (Profiles and backup, and About). It opens on Reading each time. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
+      <p>Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages, text size and font; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on) and <b>More</b> (Profiles and backup, and About). It opens on Reading each time. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
       <ul>
         <li><b>Main language:</b> the language you read in, in large text: <span lang="mr">मराठी</span> (the text as written), English (in English letters) or <span lang="kn">ಕನ್ನಡ</span> (the same words in Kannada letters). Tap it to pick from a list; English is there twice, once for each spelling (see English spelling below). With Kannada the menus are in English, and the second language can be English or None.</li>
         <li><b>Second language:</b> shown smaller, under each line, when Language (under <b>Aa</b> in the bottom bar) is set to both. Pick the other language, or <b>None</b> to read in one language only. Picking your second language as the main one swaps the two.</li>

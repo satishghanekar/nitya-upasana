@@ -259,7 +259,6 @@ html[data-sp] {
 }
 /* the preview: a few lines as the pieces show them */
 .sp-prev {
-  margin-top: 12px;
   padding: 12px 14px 14px;
   border: 1px solid var(--rule);
   border-radius: 14px;
@@ -308,13 +307,6 @@ html[data-sp] {
 }
 .sp #upd[data-s="off"] #updv {
   color: var(--warn);
-}
-.sp-pt {
-  margin-bottom: 6px;
-  font: 600 11.5px var(--lat);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
 }
 /* the preview's lines follow the pieces: the same text size (--fs) and share of it, line spacing and font */
 .sp-p1 {
@@ -383,6 +375,33 @@ html[data-sp] {
 @media print {
   .sp {
     display: none !important;
+  }
+}
+
+/* ==== Wider screens (iPads and desktops): a tab's groups in two columns. Reading: its choices on the left and the
+   preview beside them on the right, staying in view while the choices scroll; More: Profiles and backup beside
+   About; a tab with one group (Screen) across both ==== */
+@media screen and (min-width: 760px) {
+  .sp-pg {
+    max-width: 1000px;
+  }
+  #sp-home .sp-body {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+    align-items: start;
+  }
+  #sp-home .sp-grp.sp-one {
+    grid-column: 1 / -1;
+  }
+  #sp-home .sp-pvg {
+    position: sticky;
+    top: 70px; /* under the tabs (.sp-hd) */
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  #sp-home .sp-pvg ~ .sp-grp {
+    grid-column: 1;
   }
 }
 
