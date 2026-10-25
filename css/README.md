@@ -69,7 +69,7 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(max-width: 819px)` | Phones and small tablets: English names in the Vedic calendar's days a step smaller |
 | `(min-width: 820px)` | Tablets and up: wider spacing; the Vedic calendar shows the day card beside the month |
 | `(min-width: 600px) and (max-width: 1023px) and (orientation: portrait)` | Tablets held upright: Home with the picture large on top, the calendar's month above the day card, the Library in two columns |
-| `(min-width: 1024px)` | iPads held sideways and desktops: Home's column on the left (on Home, and fixed beside the text being read) and the page beside it across the whole width; the calendar, Settings (its tabs and cards in one column, at most 820 px) and Library open beside it; the routine builder's Add texts picker sits beside its list |
+| `(min-width: 1024px)` | iPads held sideways and desktops: Home's column on the left (on Home, and fixed beside the text being read) and the page beside it across the whole width; the calendar, Settings (its tabs across the width, a tab's groups side by side) and Library open beside it; the routine builder's Add texts picker sits beside its list |
 | `(min-width: 1400px)` | Desktops: a wider left column and 32px edges; the layout stops growing at 2200px, centred |
 | `(min-width: 2200px)`, `(min-width: 3000px)` | Large monitors (2K at 100%, 4K at low scaling): the left column, the bars and the pages beside it drawn 1.25× / 1.6× larger (`zoom`) |
 | `(orientation: landscape) and (max-height: 520px)` | Phones held sideways: tighter line spacing and headers; Home in two columns (the day left, the session right); the bottom bar's words under Home, Library and Reading are left out |
