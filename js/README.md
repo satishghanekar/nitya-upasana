@@ -49,7 +49,7 @@ There is no build step: the browser loads these files as they are.
 | `core/apply.js` | Current piece, folds and menus |
 | `features/bottom-bar.js` | Bottom bar (#asc): Prev, Home, Print, Aa, Next (Library is in the top bar on every page) |
 | `features/bars.js` | Bars tuck away while reading (CSS: "Bars tuck away while reading"), and apply() |
-| `features/settings-panel.js` | Settings panel |
+| `features/settings-panel.js` | Settings panel: its rows, and its tabs Reading \| Screen \| More (`#spv`, `spTab()`; each `.sp-grp` says its tab in `data-tab`); it opens on Reading each time (`features/overlays.js`), and the reading sheet opens it there too |
 | `features/dhrupad-button.js` | Dhrupad: toggle once / after every stanza, keeping the reader's place (Reading sheet and Settings) |
 | `features/reading-sheet.js` | Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad, within thumb reach |
 | `features/wake-lock.js` | Keep the screen on (Wake Lock). Browsers drop the lock when the page is hidden, so it is re-requested. |

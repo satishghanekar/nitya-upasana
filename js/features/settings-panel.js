@@ -1,4 +1,6 @@
-// Settings panel
+// Settings panel. Its tabs, Reading | Screen | More (#spv, Satish, 2026-10-25; Reading has the languages too), beside Back as on the
+// Library and the calendar pages: one tab's groups at a time (each .sp-grp says its tab, data-tab); Settings opens
+// on Reading each time, or on the tab its opener asks for (js/features/reading-sheet.js).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { flash } from "../core/page.js";
@@ -12,7 +14,36 @@ import { buildIX } from "../text/search.js";
 
 var fsT;
 
+/**
+ * Show one tab of Settings
+ * @param {"read" | "screen" | "more"} v
+ */
+export function spTab(v) {
+  var tb = document.getElementById("spv");
+  if (!tb) return;
+  [].forEach.call(tb.querySelectorAll("button"), function (/** @type {HTMLElement} */ b) {
+    b.setAttribute("aria-pressed", String(b.dataset.v === v));
+  });
+  var on = 0;
+  [].forEach.call(pn.querySelectorAll(".sp-grp"), function (/** @type {HTMLElement} */ g) {
+    g.hidden = g.dataset.tab !== v;
+    if (!g.hidden) on++;
+  });
+  // a tab with one group: its heading is the tab's name, for screen readers only
+  [].forEach.call(pn.querySelectorAll(".sp-grp"), function (/** @type {HTMLElement} */ g) {
+    g.classList.toggle("sp-one", on === 1);
+  });
+  pn.scrollTop = 0;
+}
+
 export function init() {
+  var tb = document.getElementById("spv");
+  if (tb)
+    tb.addEventListener("click", function (e) {
+      var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest("button[data-v]"));
+      if (b) spTab(/** @type {any} */ (b.dataset.v));
+    });
+  spTab("read");
   // Text size: the Settings page and its preview change at once; the long page under it is laid out
   // again once the taps stop (or when Settings closes). Laying it out on every tap made A−/A+ feel stuck on phones.
   fsT = 0;

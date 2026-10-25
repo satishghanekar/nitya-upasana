@@ -8,7 +8,7 @@ Everything runs on the phone or computer. Nothing is sent anywhere, there is no 
 
 ## What the site does
 
-What a reader sees and can do is described in the site's own **Help** (⋯ More → Help, or Settings → About). Its text is in `index.html`, in the `<template id="hlpc">`; keep it up to date with every change a reader can see. In short:
+What a reader sees and can do is described in the site's own **Help** (⋯ More → Help, or Settings → More → About). Its text is in `index.html`, in the `<template id="hlpc">`; keep it up to date with every change a reader can see. In short:
 
 - **Home** is what to chant now: the picture for the time of day (sunrise, midday, sunset) with the weekday's star ringed, today's date, the Vedic calendar line, and a Morning / Afternoon / Evening switch that opens at the session for the time now (Morning before 12:00, Afternoon 12:00 to 17:00, Evening from 17:00). The session's texts come from the reading person's routine for today's weekday. A title starts the session there: its texts follow one another in one scroll, in session order, and ‹ Prev and Next › jump between them and never leave the session. A festival day or a Sankashti day adds one line (with tonight's moonrise on a Sankashti). On wide screens (from 1024px) Home's column stays on the left while a text is read on the right.
 - **Library** (the open-book button): every text by category (Vedic Chant, Aarti, Ashtak, and any the family adds), numbered from 1 in each, with search across every title and line. Categories can be added, renamed and texts moved on each phone. When the site has PDFs, a **Books** (पोथी) tab beside **Chants** (पाठ) lists them under the same categories; each shows its pages and size, opens in the phone's own PDF viewer and is kept on the phone once opened (a cloud before each title shows which are: ↓ online only, ✓ saved).
@@ -55,14 +55,14 @@ Because every merge goes live, changes are made on a branch, checked (see *Check
 
 ### The version
 
-The version is what Settings → About shows. It is written in **two** places, which must always be the same (here as an example):
+The version is what Settings → More → About shows. It is written in **two** places, which must always be the same (here as an example):
 
 1. `sw.js`, near the top: `const V='aarti-v1.22';`
 2. `index.html`, near the top: `<meta name="version" content="aarti-v1.22">`
 
 Change both together for every release, digits and dots only: the last number for fixes (`1.22` → `1.22.1`), the middle one for new features (`1.23`). `tests/offline.spec.mjs` fails if the two differ.
 
-Phones keep a saved copy of the site, but the page and its style, script and text files are fetched fresh whenever there is internet, so a published change reaches phones the next time the site is opened online. Changing the version also makes phones refresh the saved icons and fonts. A tap on the version line in Settings → About checks for updates straight away.
+Phones keep a saved copy of the site, but the page and its style, script and text files are fetched fresh whenever there is internet, so a published change reaches phones the next time the site is opened online. Changing the version also makes phones refresh the saved icons and fonts. A tap on the version line in Settings → More → About checks for updates straight away.
 
 ### After publishing
 
