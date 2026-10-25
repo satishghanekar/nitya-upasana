@@ -484,7 +484,8 @@
 #jump .libhd {
   padding: 12px 0;
 }
-#jbk {
+#jbk,
+#xc {
   display: grid;
   flex: none;
   place-items: center;
@@ -499,10 +500,12 @@
   color: var(--accent);
   cursor: pointer;
 }
-#jbk:hover {
+#jbk:hover,
+#xc:hover {
   background: var(--hdrl);
 }
-#jbk:focus-visible {
+#jbk:focus-visible,
+#xc:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 0;
 }
@@ -605,17 +608,10 @@
     word-break: keep-all;
     font-size: 11.5px;
   }
+  /* Settings across the whole width, as the Library is (its two columns: 09-settings-page.css) */
   :root[data-rail="1"] #panel .sp-pg {
     max-width: none;
     margin: 0;
-  }
-  /* Settings' groups as cards across the width */
-  :root[data-rail="1"] #sp-home .sp-body {
-    columns: 3 340px;
-    column-gap: 24px;
-  }
-  :root[data-rail="1"] #sp-home .sp-grp {
-    break-inside: avoid;
   }
   :root[data-rail="1"]:has(#panb[aria-expanded="true"]) :is(#tdy, #tdd),
   :root[data-rail="1"] #pan .pcard:has(#panb[aria-expanded="true"]),
@@ -627,11 +623,6 @@
   :root[data-rail="1"] #upw:has(#upwm[aria-expanded="true"]) :is(.upr, .upx).on {
     background: var(--hdrt);
     box-shadow: inset 0 0 0 1px var(--accent);
-  }
-  :root[data-rail="1"] #aa[aria-expanded="true"] {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--bg);
   }
 }
 

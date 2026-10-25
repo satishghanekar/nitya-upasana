@@ -14,7 +14,7 @@
 //   beside the list on wide screens, a sheet on phones.
 // Every change is kept at once in the person's profile (setRoutine(), js/store/store.js; backed up with them) and Home
 // is told ("nitya-routine"). Until the first change a person follows content/routines.json (Q5). The rules for the
-// lists (pure, unit-tested): js/core/routine.js. Titles follow the reading languages (Settings → Languages), as the
+// lists (pure, unit-tested): js/core/routine.js. Titles follow the reading languages (Settings → Reading → Languages), as the
 // Vedic calendar's names do: the first language large, the second under it; the words around them follow the menus.
 
 import { loaded } from "../text/load.js";

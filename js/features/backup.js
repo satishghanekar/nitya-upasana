@@ -60,7 +60,7 @@ const W = {
     problems: {
       "not-json": "This is not a Nitya Upasana backup file (.nitya).",
       "not-nitya": "This is not a Nitya Upasana backup file (.nitya).",
-      newer: "This file was saved by a newer version of the app. Check for updates (Settings → About, tap the version line) and try again.",
+      newer: "This file was saved by a newer version of the app. Check for updates (Settings → More → About, tap the version line) and try again.",
       kind: "This .nitya file is not a full backup.",
       checksum: "This file has been changed or damaged since it was saved (its checksum does not match), so nothing was restored.",
       empty: "This backup has no people in it.",
@@ -102,7 +102,7 @@ const W = {
     problems: {
       "not-json": "ही नित्य उपासनेची बॅकअप फाइल (.nitya) नाही.",
       "not-nitya": "ही नित्य उपासनेची बॅकअप फाइल (.nitya) नाही.",
-      newer: "ही फाइल ॲपच्या नव्या आवृत्तीने जतन केली आहे. अपडेट तपासा (सेटिंग्ज → माहिती, आवृत्तीची ओळ दाबा) आणि पुन्हा प्रयत्न करा.",
+      newer: "ही फाइल ॲपच्या नव्या आवृत्तीने जतन केली आहे. अपडेट तपासा (सेटिंग्ज → अधिक → माहिती, आवृत्तीची ओळ दाबा) आणि पुन्हा प्रयत्न करा.",
       kind: "ही .nitya फाइल पूर्ण बॅकअप नाही.",
       checksum: "जतन केल्यानंतर ही फाइल बदलली किंवा खराब झाली आहे (चेकसम जुळत नाही), त्यामुळे काहीही परत आणले नाही.",
       empty: "या बॅकअपमध्ये एकही व्यक्ती नाही.",

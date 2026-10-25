@@ -12,7 +12,7 @@
 import { root } from "../core/page.js";
 import { jp, pn } from "../core/apply.js";
 import { mark } from "./bars.js";
-import { fsFlush, szSet } from "./settings-panel.js";
+import { fsFlush, spTab, szSet } from "./settings-panel.js";
 import { ovDone, ovPush } from "./history.js";
 import { spSet } from "./languages.js";
 import { clearSearch, libTab } from "./contents-list.js";
@@ -142,6 +142,8 @@ const PAGES = {
     hidden: function () {
       fsFlush();
       root.removeAttribute("data-sp");
+      // it opens on Reading next time
+      spTab("read");
     },
   },
   jump: {

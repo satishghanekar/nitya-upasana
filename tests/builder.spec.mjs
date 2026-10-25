@@ -224,6 +224,7 @@ test("on a wide screen the picker is beside the list, and the sheet's Tab trap i
 test("Settings → Routine opens the builder at the session Home shows", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MON_EVENING });
   await page.locator("#aa").click();
+  await page.locator('#spv button[data-v="more"]').click();
   await expect(page.locator("#sprt")).toContainText("Routine");
   await page.locator("#sprt").click();
   await expect(page.locator("#panel")).toBeHidden();
@@ -253,6 +254,7 @@ test("each person has their own routine; Save a backup file → Restore brings i
   await expect(rows(page)).toHaveCount(10);
   // backup
   await page.locator("#aa").click();
+  await page.locator('#spv button[data-v="more"]').click();
   const [dl] = await Promise.all([page.waitForEvent("download"), page.locator("#bks").click()]);
   const file = info.outputPath("backup.nitya");
   await dl.saveAs(file);
