@@ -109,6 +109,7 @@ test("search in Marathi letters finds the line", async ({ page }) => {
 test("Settings opens, changes theme, high contrast and font, and closes with Back", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await page.locator("#aa").click();
+  await page.locator('#spv button[data-v="screen"]').click();
   await expect(page.locator("#panel")).toBeVisible();
   await page.locator('#st button[data-v="dark"]').click();
   expect(await rootAttr(page, "data-pref")).toBe("dark");
@@ -116,7 +117,8 @@ test("Settings opens, changes theme, high contrast and font, and closes with Bac
   expect(await rootAttr(page, "data-pref")).toBe("sepia");
   await page.locator("#tc").click();
   expect(await rootAttr(page, "data-hc")).toBe("1");
-  // three fonts, Traditional first (the default), then Modern and Bold
+  // three fonts, Traditional first (the default), then Modern and Bold, on the Reading tab
+  await page.locator('#spv button[data-v="read"]').click();
   await expect(page.locator("#sfn button")).toHaveText(["Traditional", "Modern", "Bold"], { useInnerText: true });
   expect(await rootAttr(page, "data-font")).toBe("classic");
   await expect(page.locator('#sfn button[data-v="classic"]')).toHaveAttribute("aria-pressed", "true");
@@ -459,4 +461,31 @@ test.describe("pinch @chromium-only", () => {
     await tapMore(page, "#hlpb");
     expect(await pinchStart(page, "#help .hlpin")).toBe(true);
   });
+});
+
+// Settings' tabs, Reading | Screen | More, beside Back: one tab's groups at a time, the credit under every tab, and
+// Settings opens on Reading again each time
+test("Settings: Reading | Screen | More, one at a time; opens on Reading each time", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await page.locator("#aa").click();
+  const tab = (v) => page.locator(`#spv button[data-v="${v}"]`);
+  await expect(tab("read")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#sl1")).toBeVisible();
+  await expect(page.locator("#sfn")).toBeVisible();
+  await expect(page.locator("#st")).toBeHidden();
+  await expect(page.locator(".sp-by")).toBeVisible();
+  await tab("screen").click();
+  await expect(tab("screen")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#st")).toBeVisible();
+  await expect(page.locator("#sl1")).toBeHidden();
+  await expect(page.locator(".sp-by")).toBeVisible();
+  await tab("more").click();
+  await expect(page.locator("#bks")).toBeVisible();
+  await expect(page.locator("#hlp2")).toBeVisible();
+  await expect(page.locator(".sp-by")).toBeVisible();
+  await page.locator("#xc").click();
+  await expect(page.locator("#panel")).toBeHidden();
+  await page.locator("#aa").click();
+  await expect(tab("read")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#bks")).toBeHidden();
 });

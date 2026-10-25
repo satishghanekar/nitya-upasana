@@ -30,8 +30,7 @@ export function init() {
 
 // Show the settings that depend on the language choice
 export function spSet() {
-  var mr = P.ui === "mr",
-    v1 = document.getElementById("sl1v"),
+  var v1 = document.getElementById("sl1v"),
     v2 = document.getElementById("sl2v");
   var k1 = spKey(P.lead),
     k2 = P.l2 ? spKey(P.l2) : "";
@@ -67,7 +66,8 @@ export function spSet() {
           }).join("") + "</div>"
       : "";
   };
-  var h = '<div class="sp-pt">' + (mr ? "नमुना" : "Preview") + '</div><div class="sp-pw">' + q(P.lead, "sp-p1") + (P.l2 ? q(P.l2, "sp-p2") : "") + "</div>";
+  // (its heading, Preview, is the group's, in index.html)
+  var h = '<div class="sp-pw">' + q(P.lead, "sp-p1") + (P.l2 ? q(P.l2, "sp-p2") : "") + "</div>";
   document.getElementById("sprev").innerHTML = h;
 }
 

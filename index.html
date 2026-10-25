@@ -179,37 +179,38 @@
   </div>
 </div>
 <!-- ==== Settings page: opened by the ⚙ button, it covers the whole page until Back (or the phone's Back) closes it.
-     Groups of rows in rounded cards (Languages, Reading, Screen, About), like phone settings ==== -->
+     Back and three tabs, Reading | Screen | More, each with its groups of rows in rounded cards, like phone settings ==== -->
 <div class="sp" id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="spt" tabindex="-1">
   <div class="sp-pg" id="sp-home">
+    <!-- Back (‹) and the tabs, Reading | Screen | More, in one row as on the Library and the calendar pages
+         (Satish, 2026-10-25; js/features/settings-panel.js spTab); the page's title is for screen readers only. Each
+         group below says which tab it is on (data-tab) -->
+    <h2 id="spt" class="sr"><span lang="mr">सेटिंग्ज</span> <span lang="en">Settings</span></h2>
     <div class="sp-hd">
-      <button type="button" class="sp-bk" id="xc"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागे</span><span class="en" lang="en">Back</span></button>
-      <h2 id="spt"><span lang="mr">सेटिंग्ज</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">Settings</span></h2>
+      <button type="button" id="xc"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span class="mr">मागे</span><span class="en" lang="en">Back</span></span></button>
+      <div id="spv" role="group" aria-label="Settings">
+        <button type="button" data-v="read" aria-pressed="true"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></button>
+        <button type="button" data-v="screen" aria-pressed="false"><span class="mr">स्क्रीन</span><span class="en" lang="en">Screen</span></button>
+        <button type="button" data-v="more" aria-pressed="false"><span class="mr">अधिक</span><span class="en" lang="en">More</span></button>
+      </div>
     </div>
     <div class="sp-body">
-      <!-- each heading with its cards in one group, kept whole in a column (Safari splits a heading from its card
-           otherwise, whatever break-after says) -->
-      <section class="sp-grp">
-        <!-- Main and second language: the phone's own dropdown (an invisible <select> over each row); English is listed
-             twice, once per spelling -->
-        <h3 class="sp-h"><span class="mr">भाषा</span><span class="en" lang="en">Languages</span></h3>
-        <div class="sp-card">
-          <div class="sp-row sp-go sp-pick" id="sl1"><span class="sp-l"><span class="mr">मुख्य भाषा</span><span class="en" lang="en">Main language</span><small><span class="mr">मोठ्या अक्षरांत</span><span class="en" lang="en">Large text</span></small></span><span class="sp-v" id="sl1v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl1s" aria-label="Main language"></select></div>
-          <div class="sp-row sp-go sp-pick" id="sl2"><span class="sp-l"><span class="mr">दुसरी भाषा</span><span class="en" lang="en">Second language</span><small><span class="mr">लहान, प्रत्येक ओळीखाली</span><span class="en" lang="en">Smaller, under each line</span></small></span><span class="sp-v" id="sl2v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl2s" aria-label="Second language"></select></div>
-          <div class="sp-row" id="surow">
-            <span class="sp-l"><span class="mr">मेनू आणि बटणे</span><span class="en" lang="en">Menus and buttons</span></span>
-            <div class="sp-seg" id="su" role="group" aria-label="Menus and buttons">
-              <button type="button" data-v="en" lang="en">English</button>
-              <button type="button" data-v="mr" lang="mr">मराठी</button>
-            </div>
-          </div>
-        </div>
+      <!-- each heading with its card in one group (.sp-grp, tagged with its tab); on wider screens a tab's groups sit in
+           two columns (css/09-settings-page.css) -->
+      <!-- Reading: what the texts look like. The preview first (beside the choices on wider screens), then every choice it
+           shows in one card: the main and second language (the phone's own dropdown, an invisible <select> over each
+           row; English is listed twice, once per spelling), text size and font. Then how a text is laid out, which the
+           preview can't show: the dhrupad and the columns (Satish, 2026-10-25) -->
+      <section class="sp-grp sp-pvg" data-tab="read">
+        <h3 class="sp-h"><span class="mr">नमुना</span><span class="en" lang="en">Preview</span></h3>
         <!-- a few lines of the Ganapati aarti, as the pieces will show them (filled in by the script) -->
         <div class="sp-prev" id="sprev" aria-hidden="true"></div>
       </section>
-      <section class="sp-grp">
-        <h3 class="sp-h"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></h3>
+      <section class="sp-grp" data-tab="read">
+        <h3 class="sp-h"><span class="mr">भाषा आणि अक्षरे</span><span class="en" lang="en">Language and text</span></h3>
         <div class="sp-card">
+          <div class="sp-row sp-go sp-pick" id="sl1"><span class="sp-l"><span class="mr">मुख्य भाषा</span><span class="en" lang="en">Main language</span><small><span class="mr">मोठ्या अक्षरांत</span><span class="en" lang="en">Large text</span></small></span><span class="sp-v" id="sl1v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl1s" aria-label="Main language"></select></div>
+          <div class="sp-row sp-go sp-pick" id="sl2"><span class="sp-l"><span class="mr">दुसरी भाषा</span><span class="en" lang="en">Second language</span><small><span class="mr">लहान, प्रत्येक ओळीखाली</span><span class="en" lang="en">Smaller, under each line</span></small></span><span class="sp-v" id="sl2v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl2s" aria-label="Second language"></select></div>
           <div class="sp-row">
             <span class="sp-l"><span class="mr">अक्षरांचा आकार</span><span class="en" lang="en">Text size</span></span>
             <div class="sp-seg sp-sz" role="group" aria-label="Text size">
@@ -227,6 +228,11 @@
               <button type="button" data-v="bold"><span class="mr">ठळक</span><span class="en" lang="en">Bold</span></button>
             </div>
           </div>
+        </div>
+      </section>
+      <section class="sp-grp" data-tab="read">
+        <h3 class="sp-h"><span class="mr">कडवी</span><span class="en" lang="en">Verses</span></h3>
+        <div class="sp-card">
           <div class="sp-row">
             <span class="sp-l"><span class="mr">ध्रुपद</span><span class="en" lang="en">Dhrupad</span></span>
             <div class="sp-seg" id="srf" role="group" aria-label="Dhrupad">
@@ -243,9 +249,17 @@
           </div>
         </div>
       </section>
-      <section class="sp-grp">
+      <!-- Screen: the app around the texts: the language of the menus and buttons, the theme, contrast, screen on -->
+      <section class="sp-grp" data-tab="screen">
         <h3 class="sp-h"><span class="mr">स्क्रीन</span><span class="en" lang="en">Screen</span></h3>
         <div class="sp-card">
+          <div class="sp-row" id="surow">
+            <span class="sp-l"><span class="mr">मेनू आणि बटणे</span><span class="en" lang="en">Menus and buttons</span></span>
+            <div class="sp-seg" id="su" role="group" aria-label="Menus and buttons">
+              <button type="button" data-v="en" lang="en">English</button>
+              <button type="button" data-v="mr" lang="mr">मराठी</button>
+            </div>
+          </div>
           <div class="sp-row sp-stk">
             <span class="sp-l"><span class="mr">रंगसंगती</span><span class="en" lang="en">Theme</span></span>
             <div class="sp-seg" id="st" role="group" aria-label="Theme">
@@ -259,7 +273,7 @@
           <button id="tw" class="sp-row sp-sw" type="button"><span class="sp-l"><span class="mr">स्क्रीन चालू ठेवा</span><span class="en" lang="en">Keep screen on</span></span></button>
         </div>
       </section>
-      <section class="sp-grp">
+      <section class="sp-grp" data-tab="more">
         <!-- Profiles and backup (js/features/profiles.js, js/features/backup.js): who is reading (opens the profile sheet),
              Save a backup file, Restore from a file, and a warning when this browser can't save here -->
         <h3 class="sp-h"><span class="mr">प्रोफाइल आणि बॅकअप</span><span class="en" lang="en">Profiles and backup</span></h3>
@@ -272,7 +286,7 @@
           <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span class="mr">फाइलमधून परत आणा</span><span class="en" lang="en">Restore from a file</span><small><span class="mr">आधी जतन केलेली .nitya फाइल</span><span class="en" lang="en">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
         </div>
       </section>
-      <section class="sp-grp">
+      <section class="sp-grp" data-tab="more">
         <h3 class="sp-h"><span class="mr">माहिती</span><span class="en" lang="en">About</span></h3>
         <div class="sp-card">
           <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span class="mr">मदत आणि वापर</span><span class="en" lang="en">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -283,7 +297,7 @@
         </div>
       </section>
     </div>
-    <!-- who made the site, always in English -->
+    <!-- who made the site, always in English, under every tab -->
     <p class="sp-by" lang="en">A volunteer offering by Satish Ghanekar<br><a href="mailto:satishghanekar1@gmail.com">satishghanekar1@gmail.com</a></p>
   </div>
 </div>
@@ -487,7 +501,7 @@
     <div class="pfbs"><button type="button" id="bkok" class="pri"></button><button type="button" id="bkno"></button></div>
   </div>
 </div>
-<!-- ==== Help (English only), opened from ⋯ More and Settings → About. Keep it up to date with every change a reader can see ==== -->
+<!-- ==== Help (English only), opened from ⋯ More and Settings → More → About. Keep it up to date with every change a reader can see ==== -->
 <div id="help" hidden role="dialog" aria-modal="true" aria-labelledby="hlpt" lang="en">
   <div class="hlpbar"><h2 id="hlpt">Help</h2><button type="button" id="hlpx" aria-label="Close help"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <!-- Help's text is laid out only when Help is first opened (js/features/help.js) -->
@@ -534,19 +548,19 @@
         <li><b>Reading the session:</b> tap a title to start there. The session's texts follow one another in one scroll, in the session's order, and nothing else is in between. <b>Next ›</b> and <b>‹ Prev</b> in the bottom bar jump to the next or previous text of the session; <b>Next ›</b> after the last one, or <b>‹ Prev</b> on the first, brings you back here. <b>Print</b> in the bottom bar prints the session.</li>
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
                 <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
-        <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home says so, "Today: Dasara"). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
+        <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home says so, "Today: Dasara"). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Reading → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
         <li><b>This week:</b> under the Vedic calendar line, the festivals, Pradosh and Sankashti of the next 7 days (the Utsav's days as one entry); tap one to see its day in the calendar, or <b>Next 15 days</b> for the calendar's <b>15 days</b> tab, where ‹ › go to the 15 days before or after and you can also show the public holidays. The calendar has three tabs, <b>Day</b>, <b>15 days</b> and <b>Month</b>, each with ‹ ›, the same on a phone, a tablet or a computer; a day tapped in the month or the 15 days opens on the Day tab, and Back returns to where you were.</li>
         <li><b>On a Sankashti day</b> a line under the date gives tonight's <b>moonrise</b> for where you are (Angaraki, on a Tuesday, is marked). The place is your phone's time zone until you tap the place, with its <b>pin</b>, on the Vedic calendar line on Home, which uses your phone's location (and keeps it up to date each time you open the app, while your phone allows it); the town is worked out on the phone and your location is never sent anywhere.</li>
       </ul>
 
       <h3>Your routine</h3>
-      <p>Each person chooses their own texts for each session, and their order. Tap <b>Edit</b> beside the session on Home (or Settings → Profiles and backup → <b>Routine</b>; <b>Add texts</b> when a session is empty).</p>
+      <p>Each person chooses their own texts for each session, and their order. Tap <b>Edit</b> beside the session on Home (or Settings → More → Profiles and backup → <b>Routine</b>; <b>Add texts</b> when a session is empty).</p>
       <ul>
         <li>Pick <b>Morning</b>, <b>Afternoon</b> or <b>Evening</b> at the top. <b>Same every day</b> keeps one list; <b>Different by weekday</b> gives each day its own, with a row of days (this week's dates) to choose which day you are changing. <b>Copy to other days…</b> gives the day's list to the days you tick.</li>
         <li><b>↑</b> and <b>↓</b> move a text, <b>✕</b> removes it. With a keyboard, Alt+↑ and Alt+↓ move the text whose button has focus, and Delete removes it. You can also drag a text by its dotted handle. Each change is read out by screen readers ("घालीन लोटांगण moved to 3 of 5").</li>
         <li><b>Add texts</b> lists every text, with a search box: tick one to add it at the end, untick it to remove it. On a computer the list is beside yours; on a phone or tablet it slides up, and <b>Done</b> (or Back) closes it.</li>
         <li>Changes are kept at once, for the person reading, and go into backup files. Home follows your routine for today and the time of day.</li>
-        <li>The titles follow your reading languages (Settings → Languages): English first shows the English names.</li>
+        <li>The titles follow your reading languages (Settings → Reading → Languages): English first shows the English names.</li>
       </ul>
 
       <h3>Library</h3>
@@ -588,20 +602,20 @@
         <li><b>Switch:</b> tap a name. The page changes to that person's settings straight away.</li>
         <li><b>Add a person:</b> give a name; the badge letters come from the name (or type up to four), and pick a colour. There is room for eight.</li>
         <li><b>Edit</b> beside a name: rename, change the letters or the colour, or <b>Delete this person</b> (it asks first). The last person can't be deleted.</li>
-        <li>The same list opens from Settings → <b>Who is reading</b>.</li>
+        <li>The same list opens from Settings → More → <b>Who is reading</b>.</li>
       </ul>
 
       <h3>Backup</h3>
       <p>Everything is kept on this phone only. A backup file keeps a copy you can bring back after a new phone, a reset or cleared browser data.</p>
       <ul>
-        <li><b>Save a backup file</b> (Settings → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and routines, and this phone's Library categories, nothing else.</li>
+        <li><b>Save a backup file</b> (Settings → More → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and routines, and this phone's Library categories, nothing else.</li>
         <li><b>Restore from a file:</b> pick a <i>.nitya</i> file. The site checks it, then shows who will be added, replaced or removed before anything changes; tap <b>Restore</b> to go ahead. Restoring replaces the people on this phone with the ones in the file.</li>
         <li>A short reminder to save a backup shows on Home now and then (two weeks after you start, then a month after each backup). <b>Not now</b> hides it for two weeks.</li>
         <li>If the browser can't save anything (some private windows), a note says so: everything works, but is forgotten when the page closes, so save a backup file first.</li>
       </ul>
 
       <h3>Settings</h3>
-      <p>Settings is in five groups: Languages, Reading, Screen, Profiles and backup, and About. The Languages, Reading and Screen settings are kept for the person reading (see People on one phone).</p>
+      <p>Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages, text size and font; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on) and <b>More</b> (Profiles and backup, and About). It opens on Reading each time. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
       <ul>
         <li><b>Main language:</b> the language you read in, in large text: <span lang="mr">मराठी</span> (the text as written), English (in English letters) or <span lang="kn">ಕನ್ನಡ</span> (the same words in Kannada letters). Tap it to pick from a list; English is there twice, once for each spelling (see English spelling below). With Kannada the menus are in English, and the second language can be English or None.</li>
         <li><b>Second language:</b> shown smaller, under each line, when Language (under <b>Aa</b> in the bottom bar) is set to both. Pick the other language, or <b>None</b> to read in one language only. Picking your second language as the main one swaps the two.</li>
@@ -642,8 +656,8 @@
 
       <h3>Good to know</h3>
       <ul>
-        <li><b>Works without internet:</b> the first time you open the site it is saved on your phone, and a short “Ready to use offline” note shows. Settings → About shows “Offline ready” beside the version once it is saved. With no internet, a small cloud with a line through it shows in the top bar: the saved copy is in use, and everything still works.</li>
-        <li><b>Getting updates:</b> new changes load by themselves whenever you are online. To look straight away, open Settings and tap the version line under About: it shows “Checking…”, then “Up to date” (or “No internet”), or reloads with the new version.</li>
+        <li><b>Works without internet:</b> the first time you open the site it is saved on your phone, and a short “Ready to use offline” note shows. Settings → More → About shows “Offline ready” beside the version once it is saved. With no internet, a small cloud with a line through it shows in the top bar: the saved copy is in use, and everything still works.</li>
+        <li><b>Getting updates:</b> new changes load by themselves whenever you are online. To look straight away, open Settings → More and tap the version line under About: it shows “Checking…”, then “Up to date” (or “No internet”), or reloads with the new version.</li>
         <li><b>Privacy:</b> your people, settings and location stay on your phone. Nothing is sent anywhere; a backup file goes only where you save or send it.</li>
         <li>Moonrise times are calculated on your phone and may differ by a few minutes from printed calendars.</li>
       </ul>

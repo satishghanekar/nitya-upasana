@@ -101,17 +101,19 @@ test("the top bar is the same on Home and while reading: the name, profile, Libr
   await expect.poll(() => onPiece(page)).toBe("a1");
   for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   expect(await where()).toEqual(home);
-  // Settings, the Library and the calendar open under it, so it stays; their headers alike: Back, then the name in both
-  // languages
+  // Settings, the Library and the calendar open under it, so it stays; their headers alike: Back, then the tabs
   await page.locator("#aa").click();
   await expect(page.locator("#panel")).toBeVisible();
   await expect(page.locator("#hm")).toBeVisible();
   const bar = await page.locator(".bar").boundingBox(),
     sp = await page.locator("#panel").boundingBox();
   expect(sp.y).toBeGreaterThanOrEqual(bar.y + bar.height - 1);
-  await expect(page.locator("#spt")).toHaveText("सेटिंग्ज · Settings");
-  const left = async (s) => (await page.locator(s).boundingBox()).x;
-  expect(await left("#spt")).toBeLessThan(await left("#xc") + 140);
+  // Back and the tabs in one row, the title for screen readers only, as on the Library and the calendar pages
+  await expect(page.locator("#spt")).toHaveText("सेटिंग्ज Settings");
+  const xc = await page.locator("#xc").boundingBox(),
+    tabs = await page.locator("#spv").boundingBox();
+  expect(Math.abs(xc.y - tabs.y)).toBeLessThan(4);
+  await expect(page.locator("#spv button")).toHaveText([/Reading$/, /Screen$/, /More$/]);
 });
 
 // Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); Marathi menus in full
