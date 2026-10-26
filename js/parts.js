@@ -110,6 +110,7 @@ var SITE_PARTS = (function () {
     "pdfs.json",
     "texts/vedic-chant-atharvashirsha.txt",
     "texts/vedic-chant-shree-rudra.txt",
+    "texts/vedic-chant-durga-suktam.txt",
     "texts/vedic-chant-shri-sukta.txt",
     "texts/vedic-chant-purusha-suktam.txt",
     "texts/vedic-chant-lalita-sahasranama.txt",
@@ -144,6 +145,7 @@ var SITE_PARTS = (function () {
     "texts/ashtak-haachi-subodh.txt",
     "texts/ashtak-brahmachaitanya-sarikha.txt",
     "texts/ashtak-swami-majha-pahila.txt",
+    "texts/ashtak-surya-ashtakam.txt",
   ].map(function (f) {
     return "content/" + f;
   });

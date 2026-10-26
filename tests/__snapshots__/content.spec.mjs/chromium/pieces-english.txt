@@ -754,8 +754,47 @@ Om Shantih Shantih Shantih ||
 
 Krishna Yajurveda, Taittiriya Samhita ↗
 
+### vedic-chant-durga-suktam
+3. Durga Suktam
+
+Om Jatavedase Sunavama Soma Maratiyato Nidahati Vedah |
+
+Sa Nah Parshadati Durgani Vishva Naveva Sindhum Duritatyagnih ||
+
+Tamagnivarnam Tapasa Jvalantim Vairochanim Karmaphaleshu Jushtam |
+
+Durgam Devigm Sharanamaham Prapadye Sutarasi Tarase Namah ||
+
+Agne Tvam Paraya Navyo Asmanthsvastibhirati Durgani Vishva |
+
+Pushcha Pruthvi Bahula Na Urvi Bhava Tokaya Tanayaya Shamyoh ||
+
+Vishvani No Durgaha Jatavedah Sindhunna Nava Duritatiparshi |
+
+Agne Atrivanmanasa Grunanosmakam Bodhyavita Tanunam ||
+
+Prutana Jitagm Sahamanamugramagnigm Huvema Paramathsadhasthat |
+
+Sa Nah Parshadati Durgani Vishva Kshamaddevo Ati Duritatyagnih ||
+
+Pratnoshi Kamidyo Adhvareshu Sanachcha Hota Navyashcha Satsi |
+
+Svanchagne Tanuvam Piprayasvasmabhyam Cha Saubhagamayajasva ||
+
+Gobhirjushtamayujo Nishiktam Tavendra Vishnoranusancharema |
+
+Nakasya Prushthamabhi Samvasano Vaishnavim Loka Iha Madayantam ||
+
+Om Katyayanaya Vidmahe Kanyakumari Dhimahi |
+
+Tanno Durgih Prachodayat ||
+
+|| Om Shantih Shantih Shantih ||
+
+Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)
+
 ### vedic-chant-shri-sukta
-3. Shri Sukta
+4. Shri Sukta
 
 Om || Hiranyavarnam Harinim Suvarnarajatasrajam |
 
@@ -934,7 +973,7 @@ Tanno Lakshmih Prachodayat ||
 Rig Veda (Khila Sukta)
 
 ### vedic-chant-purusha-suktam
-4. Purusha Suktam
+5. Purusha Suktam
 
 Om Tachchham Yoravrunimahe |
 
@@ -1151,7 +1190,7 @@ Sarvam Manishana || 10 ||
 Krishna Yajurveda, Taittiriya Aranyaka ↗
 
 ### vedic-chant-lalita-sahasranama
-5. Shri Lalita Sahasranama
+6. Shri Lalita Sahasranama
 
 || Atha Shrilalitasahasranamastotram ||
 
@@ -3646,3 +3685,54 @@ Tujhen Rup Hen Sagun | Tujhen Rup Hen Sagun |
 Sada Raho Dola Ya Managangatirin || 6 ||
 
 ↻ Refrain
+
+### ashtak-surya-ashtakam
+14. Shri Surya Ashtakam
+
+|| Shri Ganeshaya Namah ||
+
+Adideva Namastubhyam Prasida Mama Bhaskara |
+
+Divakara Namastubhyam Prabhakara Namostu Te || 1 ||
+
+Saptashva Rathamarudham Prachandam Kashyapatmajam |
+
+Shvetapadmadharam Devam Tam Suryam Pranamamyaham || 2 ||
+
+Lohitam Rathamarudham Sarvaloka Pitamaham |
+
+Mahapapaharam Devam Tam Suryam Pranamamyaham || 3 ||
+
+Traigunyashcha Mahashuram Brahmavishnu Maheshvaram |
+
+Mahapapaharam Devam Tam Suryam Pranamamyaham || 4 ||
+
+Brunhitam Tejahpunjam Cha Vayu Akashameva Cha |
+
+Prabhutvam Sarvalokanam Tam Suryam Pranamamyaham || 5 ||
+
+Bandhukapushpasankasham Harakundalabhushitam |
+
+Ekachakradharam Devam Tam Suryam Pranamamyaham || 6 ||
+
+Tam Suryam Lokakartaram Maha Tejah Pradipanam |
+
+Mahapapa Haram Devam Tam Suryam Pranamamyaham || 7 ||
+
+Tam Suryam Jagatam Natham Dnyanaprakashamokshadam |
+
+Mahapapaharam Devam Tam Suryam Pranamamyaham || 8 ||
+
+Suryashtakam Pathennityam Grahapida Pranashanam |
+
+Aputro Labhate Putram Daridro Dhanavan Bhavet || 9 ||
+
+Aamisham Madhupanam Cha Yah Karoti Raverdine |
+
+Saptajanmabhavet Rogi Janmajanma Daridrata || 10 ||
+
+Stri-Taila-Madhu-Mamsani Ye Tyajanti Raverdine |
+
+Na Vyadhi Shoka Daridryam Surya Lokam Cha Gachchhati || 11 ||
+
+Iti Shri Shivaproktam Shri Suryashtakam Sampurnam ||

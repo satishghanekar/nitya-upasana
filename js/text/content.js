@@ -146,8 +146,15 @@ export function toPiece(t, n, lib) {
         again();
       }
     });
-  } else
-    blocks.forEach(function (b) {
+  } else {
+    // [once] lines at the very top (an invocation: ॥ श्री गणेशाय नमः ॥) go above the text (lead), as in a text with a dhrupad
+    var top = 0;
+    while (blocks[top] && blocks[top].kind === "once") top++;
+    if (top)
+      p.lead = blocks.slice(0, top).map(function (b) {
+        return /** @type {Item} */ ({ kind: "dh", lines: b.lines.map(line) });
+      });
+    blocks.slice(top).forEach(function (b) {
       /** @type {Item} */
       var it = {};
       if (b.kind === "note") {
@@ -155,13 +162,14 @@ export function toPiece(t, n, lib) {
         it.nt = true;
       }
       else {
-        if (b.kind === "dhrupad") it.kind = "dh";
+        if (b.kind === "dhrupad" || b.kind === "once") it.kind = "dh";
         if (b.bold) it.bold = true;
         if (b.para) it.para = true;
         it.lines = b.lines.map(line);
       }
       items.push(it);
     });
+  }
   p.items = items;
   p.credit = credits(t.credit, t.creditEn) + (t.creditNote || t.creditNoteEn ? "<small>" + credits(t.creditNote, t.creditNoteEn) + "</small>" : "");
   return p;
