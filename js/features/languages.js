@@ -22,6 +22,14 @@ export function init() {
   document.getElementById("sl2s").onchange = function () {
     spPick(2, this.value);
   };
+  // Show: the main language, the second or both, as Language in the Aa sheet does
+  document.getElementById("slw").onclick = function (e) {
+    var b = e.target.closest("button");
+    if (!b || b.dataset.v === P.lang) return;
+    var c = cur();
+    change({ lang: b.dataset.v }, apply);
+    if (c) c.scrollIntoView();
+  };
   document.getElementById("srf").onclick = function (e) {
     var b = e.target.closest("button");
     if (b && b.dataset.v !== String(P.ref)) refToggle();
@@ -49,26 +57,55 @@ export function spSet() {
   // menus are in English or the main language, so with English as the main language there is nothing to pick
   // (nor with Kannada, which has no menus of its own yet)
   document.getElementById("surow").hidden = LK(P.lead) !== "mr";
+  // Show: one button per language and Both, named in their own language (as in the Aa sheet)
+  document.getElementById("slwrow").hidden = !P.l2;
+  document.getElementById("slw").innerHTML = P.l2
+    ? [P.lead, P.l2, "both"]
+        .map(function (v) {
+          var l = v === "both" ? P.ui : LK(v),
+            t = v === "both" ? (P.ui === "mr" ? "दोन्ही" : "Both") : LANGS[LK(v)].n;
+          return '<button type="button" data-v="' + v + '" lang="' + l + '" aria-pressed="' + (v === P.lang) + '">' + t + "</button>";
+        })
+        .join("")
+    : "";
   [].forEach.call(document.querySelectorAll("#srf button"), function (b) {
     b.setAttribute("aria-pressed", String(b.dataset.v === String(P.ref)));
   });
   if (pn.hidden) return; // the rest is the preview, made when Settings is open
-  // Preview: the first two lines of the Ganapati aarti, main language large and second small. Its size, font and
-  // line spacing come from the CSS (.sp-p1 / .sp-p2 in css/09-settings-page.css, which follow the same text size
-  // and font as the pieces), so A−, A+, reset and the font buttons change it at once.
-  var q = function (l, cls) {
-    var a1 = pieceEl("a1"), // (built if not opened yet: js/core/page.js)
-      ps = a1 ? [].slice.call(a1.querySelectorAll(".items .verse > ." + l + " p"), 0, 2) : [];
-    return ps.length
-      ? '<div class="' + cls + '" lang="' + LK(l) + '">' +
-          ps.map(function (p) {
-            return "<p>" + p.innerHTML.replace(/ ([।॥|])/g, "\u00a0$1") + "</p>"; // a danda never starts a line
-          }).join("") + "</div>"
-      : "";
-  };
+  // Preview: the Ganapati aarti as the pieces will show it, main language large and second small under each line,
+  // with the Dhrupad choice: "once" has the dhrupad at the top and the ↻ ध्रुपद note after the verse, "every verse"
+  // has the dhrupad after it (Satish, 2026-10-26). Its size, font and line spacing come from the CSS (.sp-p1 / .sp-p2
+  // in css/09-settings-page.css, which follow the same text size and font as the pieces), so A−, A+, reset and the
+  // font buttons change it at once.
+  var a1 = pieceEl("a1"); // (built if not opened yet: js/core/page.js)
+  if (!a1) return;
+  var both = P.lang === "both",
+    ls = both ? [P.lead, P.l2] : [P.lang],
+    // the lines of one block (the dhrupad at the top, or the first verse) in each language shown
+    lines = function (sel, n) {
+      return ls.map(function (l) {
+        return [].slice.call(a1.querySelectorAll(sel + " .verse > ." + l + " p"), 0, n).map(function (p) {
+          return p.innerHTML.replace(/ ([।॥|])/g, "\u00a0$1"); // a danda never starts a line
+        });
+      });
+    },
+    // one line: the main language, and the second under it
+    row = function (b, k, cls) {
+      return b
+        .map(function (ps, w) {
+          return ps[k] === undefined ? "" : '<div class="' + (w ? "sp-p2" : "sp-p1") + (cls ? " " + cls : "") + '" lang="' + LK(ls[w]) + '"><p>' + ps[k] + "</p></div>";
+        })
+        .join("");
+    },
+    dh = lines(".rftop", 1),
+    vs = lines(".items > .item:not(.rf)", both ? 1 : 2),
+    h = P.ref ? row(dh, 0, "sp-pd") : "";
+  for (var k = 0; k < vs[0].length; k++) h += row(vs, k);
+  h += P.ref
+    ? '<div class="sp-pn">' + (P.ui === "mr" ? "↻ ध्रुपद" : "↻ Refrain") + "</div>"
+    : row(dh, 0, "sp-pd");
   // (its heading, Preview, is the group's, in index.html)
-  var h = '<div class="sp-pw">' + q(P.lead, "sp-p1") + (P.l2 ? q(P.l2, "sp-p2") : "") + "</div>";
-  document.getElementById("sprev").innerHTML = h;
+  document.getElementById("sprev").innerHTML = '<div class="sp-pw">' + h + "</div>";
 }
 
 function spKey(slot) {
