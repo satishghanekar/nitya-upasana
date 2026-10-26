@@ -194,8 +194,6 @@ export function parseText(raw, name) {
   bl.forEach(function (b, k) {
     if (b.kind === "dhrupad-repeated" && !(t.refrain === "every-verse" && k === d + 1))
       fail(file, "[dhrupad repeated] comes right after the [dhrupad] of a text with refrain: every-verse");
-    if (b.kind === "once" && t.refrain !== "every-verse")
-      fail(file, "[once] is for a text with refrain: every-verse (in other texts, [dhrupad] is a line said once)");
   });
   if (t.refrain === "every-verse") {
     if (!bl[d] || bl[d].kind !== "dhrupad" || bl[d].bold)

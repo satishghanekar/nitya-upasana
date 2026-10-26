@@ -81,7 +81,6 @@ describe("blocks", () => {
     ["before-first without every-verse", "[1]\nक\nK\n", "refrain-before-first: yes\n", /needs refrain: every-verse/],
     ["a stanza before the dhrupad", "[once]\nक\nK\n\n[1]\nख\nKh\n\n[dhrupad]\nग\nG\n", "refrain: every-verse\n", /needs a \[dhrupad\] block first/],
     ["[once] lines and no dhrupad", "[once]\nक\nK\n", "refrain: every-verse\n", /needs a \[dhrupad\] block first/],
-    ["[once] without every-verse", "[once]\nक\nK\n\n[1]\nख\nKh\n", "", /\[once\] is for a text with refrain: every-verse/],
     ["a repeat not right after the dhrupad", "[once]\nक\nK\n\n[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[dhrupad repeated]\nख\nKh\n", "refrain: every-verse\n", /\[dhrupad repeated\] comes right after/],
   ])("every-verse rules: refuses %s", (_, body, head, err) => {
     expect(() => parse(body, head)).toThrow(err);
