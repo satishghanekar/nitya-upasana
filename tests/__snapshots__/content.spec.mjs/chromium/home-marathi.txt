@@ -31,7 +31,7 @@ Afternoon
 Nothing set
 Evening
 सकाळ · Morning
-7 texts
+8 texts
 Edit
 १.
 गणपत्यथर्वशीर्षोपनिषत्
@@ -42,22 +42,26 @@ Sanskrit
 Purusha Suktam
 Sanskrit
 ३.
+श्रीसूक्त
+Shri Sukta
+Sanskrit
+४.
 गणपतीची आरती
 Ganapati Aarti
 Marathi
-४.
+५.
 देवीची आरती
 Devi Aarti
 Marathi
-५.
+६.
 श्रीमहाराजांची आरती
 Shrimaharajanchi Aarti
 Marathi
-६.
+७.
 आरती बेळगुवे
 Aarti Belaguve
 Marathi
-७.
+८.
 घालीन लोटांगण
 Ghalin Lotangan
 Marathi
