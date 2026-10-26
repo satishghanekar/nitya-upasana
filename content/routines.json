@@ -11,7 +11,8 @@
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
-    "aarti-ghalin-lotangan"
+    "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali"
    ],
    "mon": [
     "vedic-chant-atharvashirsha",
@@ -24,7 +25,8 @@
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
     "aarti-ovaloon-aarti-chaitanyabrahma",
-    "aarti-ghalin-lotangan"
+    "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali"
    ],
    "tue": [
     "vedic-chant-atharvashirsha",
@@ -34,7 +36,8 @@
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
     "aarti-kariton-guruvar",
-    "aarti-ghalin-lotangan"
+    "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali"
    ],
    "wed": [
     "vedic-chant-atharvashirsha",
@@ -44,7 +47,8 @@
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
     "aarti-belaguve",
-    "aarti-ghalin-lotangan"
+    "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali"
    ],
    "thu": [
     "vedic-chant-atharvashirsha",
@@ -54,7 +58,8 @@
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
     "aarti-belaguve",
-    "aarti-ghalin-lotangan"
+    "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali"
    ],
    "fri": [
     "vedic-chant-atharvashirsha",
@@ -63,7 +68,8 @@
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
-    "aarti-ghalin-lotangan"
+    "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali"
    ],
    "sat": [
     "vedic-chant-atharvashirsha",
@@ -74,7 +80,8 @@
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
-    "aarti-ghalin-lotangan"
+    "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali"
    ]
   }
  },
@@ -90,6 +97,7 @@
     "aarti-durge-durghat-bhari",
     "aarti-jay-jay-aarti-shrigururaya",
     "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali",
     "ashtak-sunday",
     "ashtak-brahmachaitanya-sarikha"
    ],
@@ -99,6 +107,7 @@
     "aarti-jay-jay-aarti-shrigururaya",
     "aarti-lavathavati-vikrala",
     "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali",
     "ashtak-monday",
     "ashtak-ananyata-maj-ghado"
    ],
@@ -109,6 +118,7 @@
     "aarti-shendur-lal-chadhayo",
     "aarti-kariton-guruvar",
     "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali",
     "ashtak-tuesday",
     "ashtak-anudin-anutapen"
    ],
@@ -118,6 +128,7 @@
     "aarti-jay-jay-aarti-shrigururaya",
     "aarti-ovaloon-aarti-chaitanyabrahma",
     "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali",
     "ashtak-wednesday",
     "ashtak-sadguru-padukashtak"
    ],
@@ -128,6 +139,7 @@
     "aarti-trigunatmak-traimurti",
     "aarti-ovaloo-sapreme-aarti",
     "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali",
     "ashtak-thursday"
    ],
    "fri": [
@@ -135,6 +147,7 @@
     "aarti-durge-durghat-bhari",
     "aarti-jay-jay-aarti-shrigururaya",
     "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali",
     "ashtak-friday",
     "ashtak-haachi-subodh"
    ],
@@ -144,6 +157,7 @@
     "aarti-jay-jay-aarti-shrigururaya",
     "aarti-dhanya-jagin-guruvarya",
     "aarti-ghalin-lotangan",
+    "vedic-chant-mantra-pushpanjali",
     "ashtak-saturday"
    ]
   }
