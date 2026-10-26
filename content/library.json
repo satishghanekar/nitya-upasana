@@ -19,6 +19,15 @@
    "lines": 278
   },
   {
+   "id": "vedic-chant-durga-suktam",
+   "file": "texts/vedic-chant-durga-suktam.txt",
+   "title": "दुर्गा सूक्तम्",
+   "titleEn": "Durga Suktam",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 17
+  },
+  {
    "id": "vedic-chant-shri-sukta",
    "file": "texts/vedic-chant-shri-sukta.txt",
    "title": "श्रीसूक्त",
@@ -323,6 +332,15 @@
    "category": "ashtak",
    "language": "mr",
    "lines": 22
+  },
+  {
+   "id": "ashtak-surya-ashtakam",
+   "file": "texts/ashtak-surya-ashtakam.txt",
+   "title": "श्री सूर्याष्टकम्",
+   "titleEn": "Shri Surya Ashtakam",
+   "category": "ashtak",
+   "language": "sa",
+   "lines": 24
   }
  ],
  "pageLanguage": "mr",
