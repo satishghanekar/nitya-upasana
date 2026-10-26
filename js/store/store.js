@@ -13,7 +13,6 @@ import { openDB } from "./db.js";
 import {
   canAdd,
   canDelete,
-  cleanChecklist,
   cleanColour,
   cleanInitials,
   cleanName,
@@ -357,35 +356,6 @@ export function remove(id) {
   putMeta();
   changed();
   return { ok: true, switched: sw };
-}
-
-// ---- ticks (js/core/ticks.js), per person, in their profile ----
-/**
- * A stand-in for localStorage that js/core/ticks.js reads and writes: { v: 1, profiles: { <id>: { date, done } } },
- * kept in each person's profile (checklist) and written to IndexedDB at once
- * @returns {{ getItem(k: string): string | null, setItem(k: string, v: string): void }}
- */
-export function ticksStorage() {
-  return {
-    getItem: function () {
-      /** @type {Record<string, any>} */
-      var o = {};
-      profiles.forEach(function (p) {
-        if (p.checklist) o[p.id] = p.checklist;
-      });
-      return JSON.stringify({ v: 1, profiles: o });
-    },
-    setItem: function (k, v) {
-      var all = JSON.parse(v);
-      profiles.forEach(function (p) {
-        var c = cleanChecklist(all && all.profiles && all.profiles[p.id]);
-        if (c && JSON.stringify(c) !== JSON.stringify(p.checklist)) {
-          p.checklist = c;
-          putProfile(p);
-        }
-      });
-    },
-  };
 }
 
 // ---- the reading person's routine (the routine builder, js/features/routine-builder.js) ----
