@@ -28,13 +28,13 @@
    "lines": 278
   },
   {
-   "id": "vedic-chant-durga-suktam",
-   "file": "texts/vedic-chant-durga-suktam.txt",
-   "title": "दुर्गा सूक्तम्",
-   "titleEn": "Durga Suktam",
+   "id": "vedic-chant-purusha-suktam",
+   "file": "texts/vedic-chant-purusha-suktam.txt",
+   "title": "पुरुषसूक्तम्",
+   "titleEn": "Purusha Suktam",
    "category": "vedic-chant",
    "language": "sa",
-   "lines": 17
+   "lines": 106
   },
   {
    "id": "vedic-chant-shri-sukta",
@@ -46,13 +46,13 @@
    "lines": 84
   },
   {
-   "id": "vedic-chant-purusha-suktam",
-   "file": "texts/vedic-chant-purusha-suktam.txt",
-   "title": "पुरुषसूक्तम्",
-   "titleEn": "Purusha Suktam",
+   "id": "vedic-chant-durga-suktam",
+   "file": "texts/vedic-chant-durga-suktam.txt",
+   "title": "दुर्गा सूक्तम्",
+   "titleEn": "Durga Suktam",
    "category": "vedic-chant",
    "language": "sa",
-   "lines": 106
+   "lines": 17
   },
   {
    "id": "vedic-chant-lalita-sahasranama",
