@@ -10,24 +10,6 @@
    "lines": 95
   },
   {
-   "id": "vedic-chant-laghunyasa",
-   "file": "texts/vedic-chant-laghunyasa.txt",
-   "title": "लघुन्यासः",
-   "titleEn": "Laghunyasa",
-   "category": "vedic-chant",
-   "language": "sa",
-   "lines": 83
-  },
-  {
-   "id": "vedic-chant-shree-rudra",
-   "file": "texts/vedic-chant-shree-rudra.txt",
-   "title": "श्री रुद्रप्रश्नः",
-   "titleEn": "Shree Rudra",
-   "category": "vedic-chant",
-   "language": "sa",
-   "lines": 278
-  },
-  {
    "id": "vedic-chant-purusha-suktam",
    "file": "texts/vedic-chant-purusha-suktam.txt",
    "title": "पुरुषसूक्तम्",
@@ -44,6 +26,24 @@
    "category": "vedic-chant",
    "language": "sa",
    "lines": 84
+  },
+  {
+   "id": "vedic-chant-laghunyasa",
+   "file": "texts/vedic-chant-laghunyasa.txt",
+   "title": "लघुन्यासः",
+   "titleEn": "Laghunyasa",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 83
+  },
+  {
+   "id": "vedic-chant-shree-rudra",
+   "file": "texts/vedic-chant-shree-rudra.txt",
+   "title": "श्री रुद्रप्रश्नः",
+   "titleEn": "Shree Rudra",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 278
   },
   {
    "id": "vedic-chant-durga-suktam",
