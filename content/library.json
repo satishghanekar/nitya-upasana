@@ -64,6 +64,15 @@
    "lines": 369
   },
   {
+   "id": "vedic-chant-mantra-pushpanjali",
+   "file": "texts/vedic-chant-mantra-pushpanjali.txt",
+   "title": "मन्त्रपुष्पाञ्जलिः",
+   "titleEn": "Mantra Pushpanjali",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 12
+  },
+  {
    "id": "aarti-sukhkarta",
    "file": "texts/aarti-sukhkarta.txt",
    "title": "गणपतीची आरती",

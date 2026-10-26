@@ -1,0 +1,40 @@
+id: vedic-chant-mantra-pushpanjali
+title: मन्त्रपुष्पाञ्जलिः
+title-en: Mantra Pushpanjali
+category: vedic-chant
+language: sa
+layout: prose
+---
+[para 1]
+ॐ यज्ञेन यज्ञमयजन्त देवास्तानि धर्माणि प्रथमान्यासन् ।
+Om Yadnyena Yadnyamayajanta Devastani Dharmani Prathamanyasan |
+ते ह नाकं महिमानः सचन्त यत्र पूर्वे साध्याः सन्ति देवाः ॥
+Te Ha Nakam Mahimanah Sachanta Yatra Purve Sadhyah Santi Devah ||
+
+[para 2]
+ॐ राजाधिराजाय प्रसह्य साहिने । नमो वयं वैश्रवणाय कुर्महे ।
+Om Rajadhirajaya Prasahya Sahine | Namo Vayam Vaishravanaya Kurmahe |
+स मे कामान् कामकामाय मह्यम् । कामेश्वरो वैश्रवणो ददातु ।
+Sa Me Kaman Kamakamaya Mahyam | Kameshvaro Vaishravano Dadatu |
+कुबेराय वैश्रवणाय । महाराजाय नमः ॥
+Kuberaya Vaishravanaya | Maharajaya Namah ||
+
+[para 3]
+ॐ स्वस्ति । साम्राज्यं भौज्यं स्वाराज्यं वैराज्यं पारमेष्ठ्यं राज्यं
+Om Svasti | Samrajyam Bhaujyam Svarajyam Vairajyam Parameshthyam Rajyam
+महाराज्यमाधिपत्यमयं समन्तपर्यायी स्यात् सार्वभौमः सार्वायुष आन्तादापरार्धात् ।
+Maharajyamadhipatyamayam Samantaparyayi Syat Sarvabhaumah Sarvayusha Antadaparardhat |
+पृथिव्यै समुद्रपर्यन्ताया एकराळिति ॥
+Pruthivyai Samudraparyantaya Ekaraliti ||
+
+[4]
+तदप्येष श्लोकोऽभिगीतो मरुतः परिवेष्टारो मरुत्तस्यावसन् गृहे ।
+Tadapyesha Shlokobhigito Marutah Pariveshtaro Maruttasyavasan Gruhe |
+आविक्षितस्य कामप्रेर्विश्वेदेवाः सभासद इति ॥
+Avikshitasya Kamaprervishvedevah Sabhasada Iti ||
+
+[para 5]
+एकदन्ताय विद्महे वक्रतुण्डाय धीमहि । तन्नो दन्ती प्रचोदयात् ॥
+Ekadantaya Vidmahe Vakratundaya Dhimahi | Tanno Danti Prachodayat ||
+मन्त्रपुष्पाञ्जलिं समर्पयामि ॥
+Mantrapushpanjalim Samarpayami ||
