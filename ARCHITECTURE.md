@@ -12,7 +12,7 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files and the 
 4. **`js/main.js`** starts the site script. `js/text/load.js` fetches `content/library.json`, the text files in `content/texts/`, `content/routines.json` and `content/festivals.json`; `js/text/content.js` turns the texts into `CONTENT` (reading each file with `js/text/format.js`). At the same time `openStore()` (`js/store/store.js`) opens IndexedDB, where the people on this phone are kept. Then each part's `init()` runs in a fixed order (listed in `js/README.md`), and `data-ready` is set on `<html>`. If the texts can't be loaded the parts start anyway, so Home, Settings and Help still work.
 5. **No text is built at start-up.** A text is built the first time it is opened (`pieceEl(id)` in `js/core/page.js`, from `CONTENT` through `renderPiece`), and each part's step for a new piece (`onPiece`) runs on it then: Kannada letters, the English spelling, stanza numbers, line breaks, dhrupad markers, the fold, the highlighted line and so on. Search builds its index from `CONTENT` the first time something is searched, and print builds its own copy (see *Printing*).
 6. **Until `data-ready` is set, the page is hidden**, so it never jumps while the reader's theme, languages, text size and Home's session arrive. If the script never runs, the page shows after 1.5 s anyway.
-7. **After the page is shown:** the service worker (`sw.js`) saves the site for offline use, the Vedic calendar line is worked out, fonts that arrive late trigger one refit of the text size, and the print view is laid out ahead in an idle moment (`warm()` in `js/features/print.js`).
+7. **After the page is shown:** the service worker (`sw.js`) saves the site for offline use, the Vedic calendar line is worked out, and fonts that arrive late trigger one refit of the text size.
 
 ## Screens
 
@@ -34,7 +34,7 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files and the 
   - Switching person replaces `P` in place (`setAll()`, then `applyPrefs()` in `js/features/profiles.js`), with no reload.
 - **`apply()`** (`js/features/bars.js`) is the only place that turns `P` into the page: the `data-*` switches the styles react to (`data-lang` on each region; `data-ref`, `data-cols`, `data-rail`, `data-font`, `data-pref`, `data-hc` on `<html>`) and `--fs`, the text size.
 - **Auto-fit** (`js/text/autofit.js`) works out the largest text size at which every verse line fits the screen on one row, measuring all lines at once in a hidden copy and remembering each result per language, font, layout and window size. It is skipped when the reader has chosen a size (`P.fsu`), and it does not count the run-on lines of the Vedic chants.
-- **`checklist`** in a profile (`js/core/ticks.js`, `ticksStorage()` in `js/store/store.js`) is kept and carried by backups, but Home no longer shows or sets ticks.
+- **`checklist`** in a profile (its shape in `js/core/ticks.js`) is kept and carried by backups, but Home no longer shows or sets ticks.
 - **Routines:** each profile has `routine`, in the shape of `content/routines.json` (per session `{ mode: "fixed", texts }` or `{ mode: "weekday", days: { mon: […], … } }`). `null` means the person never changed it and follows `content/routines.json`, so they get a changed default after an update; the first change in the builder copies it. The rules are pure functions in `js/core/routine.js`.
 - **The Library's categories:** the built-in ones are `content/categories.json`; what the family changes on this phone (categories added, names changed, texts moved) is one object in `meta.library`, for everyone on the phone. `js/core/library.js` merges the two. The texts themselves are never changed, and the reading page's numbers follow the built-in categories.
 - **Backups** (`js/store/backup.js`, `js/features/backup.js`) are `.nitya` files: plain JSON (`format: "nitya"`, `schema`, `kind: "backup"`, `app`, `created`, `payload` with every person, the device's settings and `library`, and `sha256`, a SHA-256 of the payload). Restoring checks the file (ours, not newer, checksum, cleaned values), shows who will be added, replaced or removed, and replaces everyone only after **Restore** is tapped.
@@ -90,8 +90,7 @@ The floor is **iOS 15.4** (iPhone 6s / 7, iPad Air 2 / mini 4 run up to iOS 15.8
 | Fallback | Why |
 |---|---|
 | `css/99-fallbacks.css` | `color-mix()` needs iOS 16.2. Without these plain colours, buttons and cards on iOS 15 lose their colours. The file must stay last. |
-| `vh` before `dvh` / `svh` | Older Safari has no dynamic viewport units. |
-| `setTimeout` when there is no `requestIdleCallback` | Safari has no `requestIdleCallback`, so the print warm-up just waits a moment. |
+| `vh` before `dvh` | Older Safari has no dynamic viewport units. |
 | Class `wk` on `<html>` | WebKit's print layout (see *Printing*). |
 | `meta[name="version"]` read with a default | The page still runs if the tag is missing. |
 | 1.5 s reveal | The page shows even if the site script fails to start, also with reduced motion. |

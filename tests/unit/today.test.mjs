@@ -4,23 +4,13 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 import { pictureAt, pictureFor, sessionAt } from "../../js/core/time-of-day.js";
-import { dateKey, firstUndone, SESSIONS, stepInSession, textsFor, weekOf } from "../../js/core/routine.js";
-import { createTicks, PROFILE, TICKS_KEY } from "../../js/core/ticks.js";
+import { dateKey, SESSIONS, stepInSession, textsFor, weekOf } from "../../js/core/routine.js";
+import { PROFILE, TICKS_KEY } from "../../js/core/ticks.js";
 
 const ROUTINE = JSON.parse(readFileSync(new URL("../../content/routines.json", import.meta.url), "utf8"));
 const LIBRARY = JSON.parse(readFileSync(new URL("../../content/library.json", import.meta.url), "utf8"));
 // 18 October 2026 is a Sunday
 const at = (day, h = 9, m = 0) => new Date(2026, 9, day, h, m);
-
-// A stand-in for localStorage
-function memory() {
-  const m = new Map();
-  return {
-    getItem: (k) => (m.has(k) ? m.get(k) : null),
-    setItem: (k, v) => m.set(k, String(v)),
-    raw: m,
-  };
-}
 
 describe("which session it is now (Morning < 12:00, Afternoon 12:00–17:00, Evening ≥ 17:00)", () => {
   test.each([
@@ -111,13 +101,6 @@ describe("the week row: Monday to Sunday of this week", () => {
 
 describe("walking through a session", () => {
   const ids = ["a", "b", "c"];
-  test("the first text not yet ticked", () => {
-    expect(firstUndone(ids, [])).toBe(0);
-    expect(firstUndone(ids, ["a"])).toBe(1);
-    expect(firstUndone(ids, ["a", "c"])).toBe(1);
-    expect(firstUndone(ids, ["a", "b", "c"])).toBe(-1);
-    expect(firstUndone([], [])).toBe(-1);
-  });
   test("Next goes to the following text, and after the last one the session ends", () => {
     expect(stepInSession(ids, "a", 1)).toEqual({ to: "b" });
     expect(stepInSession(ids, "b", 1)).toEqual({ to: "c" });
@@ -133,82 +116,9 @@ describe("walking through a session", () => {
   });
 });
 
-describe("ticks: kept on this device for one day", () => {
-  test("a tick is kept for its day and session", () => {
-    const s = memory(),
-      t = createTicks(s);
-    t.set("2026-10-18", "evening", "aarti-sukhkarta", true);
-    t.set("2026-10-18", "evening", "aarti-durge-durghat-bhari", true);
-    expect(t.done("2026-10-18", "evening")).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari"]);
-    expect(t.done("2026-10-18", "morning")).toEqual([]);
-  });
-  test("ticks survive a reload (a new reader of the same storage)", () => {
-    const s = memory();
-    createTicks(s).set("2026-10-18", "morning", "vedic-chant-atharvashirsha", true);
-    expect(createTicks(s).done("2026-10-18", "morning")).toEqual(["vedic-chant-atharvashirsha"]);
-  });
-  test("unticking removes it; ticking twice keeps one", () => {
-    const t = createTicks(memory());
-    t.set("2026-10-18", "evening", "a", true);
-    t.set("2026-10-18", "evening", "a", true);
-    expect(t.done("2026-10-18", "evening")).toEqual(["a"]);
-    t.set("2026-10-18", "evening", "a", false);
-    expect(t.done("2026-10-18", "evening")).toEqual([]);
-  });
-  test("the next day starts with no ticks, and a tick that day drops yesterday's", () => {
-    const s = memory(),
-      t = createTicks(s);
-    t.set("2026-10-18", "evening", "a", true);
-    expect(t.done("2026-10-19", "evening")).toEqual([]);
-    t.set("2026-10-19", "morning", "b", true);
-    expect(t.done("2026-10-19", "evening")).toEqual([]);
-    expect(t.done("2026-10-18", "evening")).toEqual([]);
-    expect(JSON.parse(s.getItem(TICKS_KEY)).profiles[PROFILE]).toEqual({ date: "2026-10-19", done: { morning: ["b"] } });
-  });
-  test("prune clears an older day's ticks from storage", () => {
-    const s = memory(),
-      t = createTicks(s);
-    t.set("2026-10-18", "evening", "a", true);
-    t.prune("2026-10-19");
-    expect(JSON.parse(s.getItem(TICKS_KEY)).profiles[PROFILE]).toEqual({ date: "2026-10-19", done: {} });
-    t.set("2026-10-19", "evening", "a", true);
-    t.prune("2026-10-19");
-    expect(t.done("2026-10-19", "evening")).toEqual(["a"]);
-  });
-  test("ticks belong to the person reading: each has their own, the same storage", () => {
-    const s = memory();
-    let who = "pa";
-    const t = createTicks(s, undefined, () => who);
-    t.set("2026-10-18", "evening", "a", true);
-    who = "pb";
-    expect(t.done("2026-10-18", "evening")).toEqual([]);
-    t.set("2026-10-18", "evening", "b", true);
-    who = "pa";
-    expect(t.done("2026-10-18", "evening")).toEqual(["a"]);
-    expect(Object.keys(JSON.parse(s.getItem(TICKS_KEY)).profiles).sort()).toEqual(["pa", "pb"]);
-    // no one named yet: the family's
-    who = "";
-    expect(t.done("2026-10-18", "evening")).toEqual([]);
-  });
+describe("ticks before profiles", () => {
   test("the old single list's key and name (read once, when moving ticks into the first person)", () => {
     expect(TICKS_KEY).toBe("nitya-ticks");
     expect(PROFILE).toBe("family");
-  });
-  test("broken or missing storage never throws, and ticks then last for this visit", () => {
-    const bad = memory();
-    bad.setItem(TICKS_KEY, "{not json");
-    expect(createTicks(bad).done("2026-10-18", "evening")).toEqual([]);
-    const off = {
-      getItem() {
-        throw new Error("blocked");
-      },
-      setItem() {
-        throw new Error("blocked");
-      },
-    };
-    const t = createTicks(off);
-    expect(() => t.set("2026-10-18", "evening", "a", true)).not.toThrow();
-    expect(t.done("2026-10-18", "evening")).toEqual(["a"]);
-    expect(createTicks(null).done("2026-10-18", "evening")).toEqual([]);
   });
 });

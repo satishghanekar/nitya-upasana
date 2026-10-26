@@ -70,17 +70,6 @@ export function dateKey(date) {
 }
 
 /**
- * Where Start / Continue opens: the first text not yet ticked, or -1 when every one is.
- * @param {string[]} ids
- * @param {string[]} done
- * @returns {number}
- */
-export function firstUndone(ids, done) {
-  for (var i = 0; i < ids.length; i++) if (done.indexOf(ids[i]) < 0) return i;
-  return -1;
-}
-
-/**
  * Prev (dir -1) or Next (dir 1) from a text while reading a session: the text to go to, { end: true } after
  * the last one (back to Today), or null when the text is not in the session or there is nothing before it
  * (then Prev and Next follow the library order, as they always did).
@@ -234,17 +223,6 @@ export function copyDays(routine, session, from, to) {
     if (d >= 0 && d <= 6 && d !== from) days[DAY_KEYS[d]] = list.slice();
   });
   return r;
-}
-
-/**
- * Whether every weekday of a session has the same list (then "Same every day" loses nothing)
- * @param {Routine} routine
- * @param {Session} session
- */
-export function allDaysSame(routine, session) {
-  var first = JSON.stringify(textsFor(routine, 0, session));
-  for (var d = 1; d < 7; d++) if (JSON.stringify(textsFor(routine, d, session)) !== first) return false;
-  return true;
 }
 
 /**

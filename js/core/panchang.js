@@ -361,8 +361,8 @@ function masaAt(t) {
   };
 }
 
-/** Shaka year and the 60-year cycle at t, given the month then @param {number} t @param {Masa} masa */
-function samvatsaraAt(t, masa) {
+/** Shaka year and the 60-year cycle, given the month @param {Masa} masa */
+function samvatsaraAt(masa) {
   // back to about the start of Chaitra (Feb–Apr whatever adhika months lie between), then its Gregorian year
   var chaitra = masa.startsAt.getTime() - (masa.n - 1) * SYNODIC + 15 * DAY,
     shaka = new Date(chaitra).getUTCFullYear() - 78,
@@ -415,7 +415,7 @@ export function dayPanchang(date, place) {
     yoga: { n: yi + 1, name: YOGA[yi], endsAt: new Date(change(yogaIx, t, 1)) },
     karana: { n: ki + 1, name: KARANA[ki], endsAt: new Date(change(halfIx, t, 1)) },
     masa: masa,
-    samvatsara: samvatsaraAt(t, masa),
+    samvatsara: samvatsaraAt(masa),
     ritu: { n: ritu + 1, name: RITU[ritu] },
     ayana: { key: ay, name: AYANA[ay] },
   };
