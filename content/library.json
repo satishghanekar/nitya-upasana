@@ -10,6 +10,33 @@
    "lines": 95
   },
   {
+   "id": "vedic-chant-purusha-suktam",
+   "file": "texts/vedic-chant-purusha-suktam.txt",
+   "title": "पुरुषसूक्तम्",
+   "titleEn": "Purusha Suktam",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 106
+  },
+  {
+   "id": "vedic-chant-shri-sukta",
+   "file": "texts/vedic-chant-shri-sukta.txt",
+   "title": "श्रीसूक्त",
+   "titleEn": "Shri Sukta",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 84
+  },
+  {
+   "id": "vedic-chant-laghunyasa",
+   "file": "texts/vedic-chant-laghunyasa.txt",
+   "title": "लघुन्यासः",
+   "titleEn": "Laghunyasa",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 83
+  },
+  {
    "id": "vedic-chant-shree-rudra",
    "file": "texts/vedic-chant-shree-rudra.txt",
    "title": "श्री रुद्रप्रश्नः",
@@ -26,24 +53,6 @@
    "category": "vedic-chant",
    "language": "sa",
    "lines": 17
-  },
-  {
-   "id": "vedic-chant-shri-sukta",
-   "file": "texts/vedic-chant-shri-sukta.txt",
-   "title": "श्रीसूक्त",
-   "titleEn": "Shri Sukta",
-   "category": "vedic-chant",
-   "language": "sa",
-   "lines": 84
-  },
-  {
-   "id": "vedic-chant-purusha-suktam",
-   "file": "texts/vedic-chant-purusha-suktam.txt",
-   "title": "पुरुषसूक्तम्",
-   "titleEn": "Purusha Suktam",
-   "category": "vedic-chant",
-   "language": "sa",
-   "lines": 106
   },
   {
    "id": "vedic-chant-lalita-sahasranama",

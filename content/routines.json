@@ -4,8 +4,9 @@
   "days": {
    "sun": [
     "vedic-chant-atharvashirsha",
-    "vedic-chant-purusha-suktam",
+    "vedic-chant-laghunyasa",
     "vedic-chant-shree-rudra",
+    "vedic-chant-purusha-suktam",
     "vedic-chant-durga-suktam",
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
@@ -14,8 +15,9 @@
    ],
    "mon": [
     "vedic-chant-atharvashirsha",
-    "vedic-chant-purusha-suktam",
+    "vedic-chant-laghunyasa",
     "vedic-chant-shree-rudra",
+    "vedic-chant-purusha-suktam",
     "vedic-chant-durga-suktam",
     "ashtak-surya-ashtakam",
     "aarti-sukhkarta",
@@ -27,6 +29,7 @@
    "tue": [
     "vedic-chant-atharvashirsha",
     "vedic-chant-purusha-suktam",
+    "vedic-chant-shri-sukta",
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
@@ -36,6 +39,7 @@
    "wed": [
     "vedic-chant-atharvashirsha",
     "vedic-chant-purusha-suktam",
+    "vedic-chant-shri-sukta",
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
@@ -45,6 +49,7 @@
    "thu": [
     "vedic-chant-atharvashirsha",
     "vedic-chant-purusha-suktam",
+    "vedic-chant-shri-sukta",
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
@@ -54,6 +59,7 @@
    "fri": [
     "vedic-chant-atharvashirsha",
     "vedic-chant-purusha-suktam",
+    "vedic-chant-shri-sukta",
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
@@ -61,8 +67,9 @@
    ],
    "sat": [
     "vedic-chant-atharvashirsha",
-    "vedic-chant-purusha-suktam",
+    "vedic-chant-laghunyasa",
     "vedic-chant-shree-rudra",
+    "vedic-chant-purusha-suktam",
     "vedic-chant-durga-suktam",
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
