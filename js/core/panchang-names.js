@@ -38,7 +38,6 @@ export var MASA = pairs(
   "Chaitra Vaishakh Jyeshtha Ashadh Shravan Bhadrapad Ashvin Kartik Margashirsha Paush Magh Phalgun"
 );
 export var ADHIKA = { mr: "अधिक", en: "Adhika" };
-export var NIJA = { mr: "निज", en: "Nija" };
 
 export var NAKSHATRA = pairs(
   "अश्विनी भरणी कृत्तिका रोहिणी मृग आर्द्रा पुनर्वसु पुष्य आश्लेषा मघा पूर्वा_फाल्गुनी उत्तरा_फाल्गुनी हस्त चित्रा स्वाती विशाखा अनुराधा ज्येष्ठा मूळ पूर्वाषाढा उत्तराषाढा श्रवण धनिष्ठा शततारका पूर्वा_भाद्रपदा उत्तरा_भाद्रपदा रेवती",

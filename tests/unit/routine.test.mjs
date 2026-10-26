@@ -9,7 +9,6 @@ import { readFileSync } from "node:fs";
 import { beforeEach, describe, expect, test } from "vitest";
 import {
   addTexts,
-  allDaysSame,
   byWeekday,
   cleanList,
   cleanRoutine,
@@ -64,11 +63,9 @@ describe("the rules for a person's lists", () => {
     expect(byWeekday(r, "evening")).toBe(true);
     expect(Object.keys(r.evening.days)).toEqual(DAY_KEYS);
     for (let d = 0; d < 7; d++) expect(textsFor(r, d, "evening")).toEqual(AARTIS);
-    expect(allDaysSame(r, "evening")).toBe(true);
     r = setList(r, "evening", THU, ["aarti-ghalin-lotangan", "aarti-sukhkarta"]);
     expect(textsFor(r, THU, "evening")).toEqual(["aarti-ghalin-lotangan", "aarti-sukhkarta"]);
     expect(textsFor(r, MON, "evening")).toEqual(AARTIS);
-    expect(allDaysSame(r, "evening")).toBe(false);
     // the same every day, from Thursday: Thursday's list for every day
     const fixed = setMode(r, "evening", "fixed", THU);
     expect(fixed.evening).toEqual({ mode: "fixed", texts: ["aarti-ghalin-lotangan", "aarti-sukhkarta"] });
