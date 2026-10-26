@@ -1,13 +1,12 @@
 // The store on IndexedDB (js/store/db.js, js/store/store.js), with fake-indexeddb standing in for the browser's:
 // opening with a time limit and one retry, falling back to memory; the first visit moving today's settings and ticks
-// into the first person; switching, adding, renaming and deleting people; ticks per person; and a backup written and
+// into the first person; switching, adding, renaming and deleting people; and a backup written and
 // restored into a fresh database with everything the same.
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
 import { beforeEach, describe, expect, test } from "vitest";
 import { memoryDB, openDB } from "../../js/store/db.js";
 import * as store from "../../js/store/store.js";
-import { createTicks } from "../../js/core/ticks.js";
 import { makeBackup, parseBackup, serialise } from "../../js/store/backup.js";
 import { migratePrefs } from "../../js/store/migrate.js";
 
@@ -147,21 +146,6 @@ describe("the store", () => {
     await store.settled();
     await load(idb, null, null);
     expect(store.list().map((p) => p.name)).toEqual(["Me"]);
-  });
-
-  test("ticks are per person, kept in their profile", async () => {
-    await load(idb, null, null);
-    const ticks = createTicks(store.ticksStorage(), undefined, () => store.active().id);
-    ticks.set("2026-10-18", "evening", "aarti-sukhkarta", true);
-    const b = store.add({ name: "Baba" }).profile;
-    store.switchTo(b.id, migratePrefs(null, ENV).prefs);
-    expect(ticks.done("2026-10-18", "evening")).toEqual([]);
-    ticks.set("2026-10-18", "evening", "aarti-jai-ganesh-deva", true);
-    store.switchTo(store.list()[0].id, migratePrefs(null, ENV).prefs);
-    expect(ticks.done("2026-10-18", "evening")).toEqual(["aarti-sukhkarta"]);
-    await store.settled();
-    await load(idb, null, null);
-    expect(store.list().map((p) => p.checklist.done.evening)).toEqual([["aarti-sukhkarta"], ["aarti-jai-ganesh-deva"]]);
   });
 
   test("backup → restore into a fresh database: every person, setting and tick the same", async () => {

@@ -55,14 +55,6 @@ export function onPiece(fn) {
 }
 
 /**
- * The piece's data (CONTENT), by its id on the page (a3), or null
- * @param {string} id
- */
-export function pieceData(id) {
-  return id in at ? order[at[id]] : null;
-}
-
-/**
  * The element with this id. A piece (a3) not opened before is built first, from CONTENT (js/render.js renderPiece,
  * with the pieces before and after it for its Previous / Next), in the chosen script, and each part's step is run on it.
  * @param {string} id
