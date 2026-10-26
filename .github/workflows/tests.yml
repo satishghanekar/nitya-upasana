@@ -64,7 +64,7 @@ jobs:
           path: |
             tests/playwright-report/
             tests/test-results/
-          retention-days: 14
+          retention-days: 1
   lighthouse:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
