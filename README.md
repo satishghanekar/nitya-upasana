@@ -139,7 +139,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 | `[1]`, `[2]`, … | A stanza, numbered in order. The app adds ॥ १ ॥ at its end (after its last line that is not a refrain line); do not type it. In a `layout: prose` text the numbers are part of the text, and the blocks are simply counted. |
 | `[para 3]` | A stanza that starts a new paragraph in a `layout: prose` text. |
 | `[dhrupad]` | With `refrain: every-verse`: the dhrupad, first in the file (only `[once]` lines and `[note]`s may come before it). Otherwise: lines said once, where they stand (in a Vedic chant, the opening and closing peace chants). |
-| `[once]` | With `refrain: every-verse`: lines said once, where they stand, with no dhrupad after them: an invocation before the dhrupad (Aarti Belaguve's ॥ श्रीराम समर्थ ॥, shown above it) or a closing line (Nana Maharaj's aarti). In other texts, use `[dhrupad]` for this. |
+| `[once]` | With `refrain: every-verse`: lines said once, where they stand, with no dhrupad after them: an invocation before the dhrupad (Aarti Belaguve's ॥ श्रीराम समर्थ ॥, shown above it) or a closing line (Nana Maharaj's aarti). In other texts: lines said once, shown above the text when they come first (Surya Ashtakam's ॥ श्री गणेशाय नमः ॥), otherwise where they stand, like `[dhrupad]`. |
 | `[dhrupad bold]` | The same, shown in bold (Ghalin Lotangan's closing mantra). |
 | `[dhrupad repeated]` | Right after `[dhrupad]`, only when the repeats are written differently from the top (the Vitthal Aarti). |
 | `[refrain]` | Inside a block: the lines after it are refrain lines (shown as the refrain, or hidden with the dhrupad set to once). |

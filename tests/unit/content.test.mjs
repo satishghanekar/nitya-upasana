@@ -66,6 +66,15 @@ describe("CONTENT from the text files", () => {
     expect(p.items.map((i) => i.kind || (i.rmk ? "rmk" : "stanza"))).toEqual(["stanza", "rmk", "rf", "dh"]);
     expect(p.items.flatMap((i) => (i.lines || []).map((l) => l.l))).toEqual(["x.2", "x.3", "x.4"]);
   });
+  // with no dhrupad: [once] lines at the top go above the text (lead), later ones stand where they are
+  test("no dhrupad: [once] lines at the top lead, later ones stand where they are", () => {
+    const head = "id: x\ntitle: क\ntitle-en: K\ncategory: ashtak\nlanguage: sa\n---\n";
+    const t = parseText(head + "[once]\nक\nK\n\n[1]\nग\nG\n\n[once]\nघ\nGh\n");
+    const p = toPiece(t, 1, lib);
+    expect(p.lead).toEqual([{ kind: "dh", lines: [{ l: "x.1", mr: "क", en: "K" }] }]);
+    expect(p.items.map((i) => i.kind || "stanza")).toEqual(["stanza", "dh"]);
+    expect(p.items.flatMap((i) => i.lines.map((l) => l.l))).toEqual(["x.2", "x.3"]);
+  });
   test("a text missing from the files stops the build", () => {
     expect(() => buildContent(lib, { ...files, "aarti-sukhkarta": undefined })).toThrow("texts/aarti-sukhkarta.txt: not loaded");
   });
