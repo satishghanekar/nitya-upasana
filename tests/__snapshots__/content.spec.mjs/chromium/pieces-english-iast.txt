@@ -754,8 +754,47 @@ om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 
 Krishna Yajurveda, Taittiriya Samhita ↗
 
+### vedic-chant-durga-suktam
+3. Durgā Sūktam
+
+om̐ jā̱tave̍dase sunavāma̱ soma̍ marātīya̱to nida̍hāti̱ veda̍ḥ |
+
+sa na̍ḥ parṣa̱dati̍ du̱rgāṇi̱ viśvā̍ nā̱veva̱ sindhu̍ṃ duri̱tā'tya̱gniḥ ||
+
+tāma̱gniva̍rṇā̱ṃ tapa̍sā jvala̱ntīṃ vai̍roca̱nīṃ ka̍rmapha̱leṣu̱ juṣṭā̎m |
+
+du̱rgāṃ de̱vīgṃ śara̍ṇama̱haṃ prapa̍dye su̱tara̍si tarase̱ nama̍ḥ ||
+
+agne̱ tvaṃ pā̍rayā̱ navyo̍ a̱smānthsva̱stibhi̱rati̍ du̱rgāṇi̱ viśvā̎ |
+
+pūśca̍ pṛ̱thvī ba̍hu̱lā na̍ u̱rvī bhavā̍ to̱kāya̱ tana̍yāya̱ śaṃyoḥ ||
+
+viśvā̍ni no du̱rgahā̍ jātaveda̱ḥ sindhu̱nna nā̱vā du̍ri̱tā'ti̍parṣi |
+
+agne̍ atri̱vanmana̍sā gṛṇā̱no̎'smāka̍ṃ bodhyavi̱tā ta̱nūnā̎m ||
+
+pṛ̱ta̱nā̱ jita̱gṃ̱ saha̍mānamu̱grama̱gnigṃ hu̍vema para̱māthsa̱dhasthā̎t |
+
+sa na̍ḥ parṣa̱dati̍ du̱rgāṇi̱ viśvā̱ kṣāma̍dde̱vo ati̍ duri̱tā'tya̱gniḥ ||
+
+pra̱tnoṣi̍ ka̱mīḍyo̍ adhva̱reṣu̍ sa̱nācca̱ hotā̱ navya̍śca̱ satsi̍ |
+
+svāñcā̎'gne ta̱nuva̍ṃ pi̱praya̍svā̱smabhya̍ṃ ca̱ saubha̍ga̱māya̍jasva ||
+
+gobhi̱rjuṣṭa̍ma̱yujo̱ niṣi̍kta̱ṃ tave̎ndra viṣṇo̱ranu̱sañca̍rema |
+
+nāka̍sya pṛ̱ṣṭhama̱bhi sa̱ṃvasā̍no̱ vaiṣṇa̍vīṃ lo̱ka i̱ha mā̍dayantām ||
+
+om̐ kā̱tyā̱ya̱nāya̍ vi̱dmahe̍ kanyaku̱māri̍ dhīmahi |
+
+tanno̍ durgiḥ praco̱dayā̎t ||
+
+|| om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
+
+Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)
+
 ### vedic-chant-shri-sukta
-3. Śrīsūkta
+4. Śrīsūkta
 
 om̐ || hiraṇyavarṇāṃ hariṇīṃ suvarṇarajatasrajām |
 
@@ -934,7 +973,7 @@ tanno lakṣmīḥ pracodayāt ||
 Rig Veda (Khila Sukta)
 
 ### vedic-chant-purusha-suktam
-4. Puruṣasūktam
+5. Puruṣasūktam
 
 om̐ taccha̱ṃ yorāvṛ̍ṇīmahe |
 
@@ -1151,7 +1190,7 @@ sarva̍ṃ maniṣāṇa || 10 ||
 Krishna Yajurveda, Taittiriya Aranyaka ↗
 
 ### vedic-chant-lalita-sahasranama
-5. Śrīlalitāsahasranāmastotram
+6. Śrīlalitāsahasranāmastotram
 
 || atha śrīlalitāsahasranāmastotram ||
 
@@ -3654,3 +3693,54 @@ tujheṃ rūpa heṃ saguṇa | ​tujheṃ rūpa heṃ saguṇa |
 sadā rāho ḍoḷā yā māṇagaṅgātīrīṃ || 6 ||
 
 ↻ Refrain
+
+### ashtak-surya-ashtakam
+14. Śrī Sūryāṣṭakam
+
+|| śrī gaṇeśāya namaḥ ||
+
+ādideva namastubhyaṃ prasīda mama bhāskara |
+
+divākara namastubhyaṃ prabhākara namo'stu te || 1 ||
+
+saptāśva rathamārūḍhaṃ pracaṇḍaṃ kaśyapātmajam |
+
+śvetapadmadharaṃ devaṃ taṃ sūryaṃ praṇamāmyaham || 2 ||
+
+lohitaṃ rathamārūḍhaṃ sarvaloka pitāmaham |
+
+mahāpāpaharaṃ devaṃ taṃ sūryaṃ praṇamāmyaham || 3 ||
+
+traiguṇyaśca mahāśūraṃ brahmāviṣṇu maheśvaram |
+
+mahāpāpaharaṃ devaṃ taṃ sūryaṃ praṇamāmyaham || 4 ||
+
+bṛṃhitaṃ tejaḥpuñjaṃ ca vāyu ākāśameva ca |
+
+prabhutvaṃ sarvalokānāṃ taṃ sūryaṃ praṇamāmyaham || 5 ||
+
+bandhūkapuṣpasaṅkāśaṃ hārakuṇḍalabhūṣitam |
+
+ekacakradharaṃ devaṃ taṃ sūryaṃ praṇamāmyaham || 6 ||
+
+taṃ sūryaṃ lokakartāraṃ mahā tejaḥ pradīpanam |
+
+mahāpāpa haraṃ devaṃ taṃ sūryaṃ praṇamāmyaham || 7 ||
+
+taṃ sūryaṃ jagatāṃ nāthaṃ jñānaprakāśamokṣadam |
+
+mahāpāpaharaṃ devaṃ taṃ sūryaṃ praṇamāmyaham || 8 ||
+
+sūryāṣṭakaṃ paṭhennityaṃ grahapīḍā praṇāśanam |
+
+aputro labhate putraṃ daridro dhanavān bhavet || 9 ||
+
+āmiṣaṃ madhupānaṃ ca yaḥ karoti raverdine |
+
+saptajanmabhavet rogi janmajanma daridratā || 10 ||
+
+strī-taila-madhu-māṃsāni ye tyajanti raverdine |
+
+na vyādhi śoka dāridryaṃ sūrya lokaṃ ca gacchati || 11 ||
+
+iti śrī śivaproktaṃ śrī sūryāṣṭakaṃ sampūrṇam ||
