@@ -10,6 +10,15 @@
    "lines": 95
   },
   {
+   "id": "vedic-chant-laghunyasa",
+   "file": "texts/vedic-chant-laghunyasa.txt",
+   "title": "लघुन्यासः",
+   "titleEn": "Laghunyasa",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 83
+  },
+  {
    "id": "vedic-chant-shree-rudra",
    "file": "texts/vedic-chant-shree-rudra.txt",
    "title": "श्री रुद्रप्रश्नः",
