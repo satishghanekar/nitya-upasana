@@ -407,6 +407,20 @@ test("on Home, Print in the bottom bar prints the session Home shows, chosen on 
   await expect(page.locator('#prtp-today .prses[data-s="evening"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
 });
+// a session left running (Home in the bottom bar leaves it so) does not change that: on Home, Print prints what Home shows
+test("on Home, Print prints the session Home shows, not one still being read @mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.marathi, { now: MORNING });
+  await rows(page).first().locator("a.tgo").click();
+  await expect(page.locator("html")).not.toHaveAttribute("data-hv", "1");
+  await page.locator("#ash").click();
+  await expect(page.locator("#tdy")).toBeVisible();
+  await pickTab(page, "evening");
+  await page.locator("#asp").click();
+  await expect(page.locator("#prtab-today")).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator('#prtp-today .prses[data-s="evening"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
+});
 test("Home on its own: the pieces show once a text is opened, and go again on the way home @mobile", async ({ page }) => {
   const errors = [];
   await openSite(page, SETUPS.marathi, { now: EVENING, errors });

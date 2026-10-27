@@ -22,8 +22,9 @@ import { dv } from "../core/words.js";
  * @param {string[] | null} [ids]  only these texts (their Library ids), still in reading order; without it (null), every
  *   text. A list naming no text in the Library (empty, or an old print link's) prints nothing, never everything
  * @param {string} [lang]  the language printed (P.lang's values: mr, en or both); without it, as the page shows it
- * @param {boolean} [ordered]  a routine printout (print redesign P5): the texts in the order given, not the Library's,
- *   numbered 1, 2, 3… in that order, as one group
+ * @param {boolean | { mr: string, en: string }} [ordered]  a routine printout (print redesign P5) or a session from
+ *   Home (the builder's Today tab): the texts in the order given, not the Library's, numbered 1, 2, 3… in that order, as
+ *   one group; a session's group is named (its day and session, as the printed contents head it)
  * @returns {{ el: HTMLElement, secs: HTMLElement[], groups: { name: HTMLElement[], secs: HTMLElement[] }[] }}
  */
 export function compose(ids, lang, ordered) {
@@ -56,7 +57,7 @@ export function compose(ids, lang, ordered) {
     var list = /** @type {string[]} */ (ids);
     cats = [
       {
-        name: { mr: "", en: "" },
+        name: typeof ordered === "object" ? ordered : { mr: "", en: "" },
         pieces: list
           .map(function (id) {
             return all.filter(function (p) {

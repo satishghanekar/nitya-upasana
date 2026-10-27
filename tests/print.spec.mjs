@@ -8,7 +8,7 @@
 // verse; then the Print pop-up and builder, the iPhone's Print now and Open in Safari, and routine printouts.
 // PDFs can only be made by Chromium, so this suite is Chromium-only.
 import { test, expect, devices } from "@playwright/test";
-import { openSite, SETUPS, TEXT_COUNT, openMore, tapMore, readText, useTestRoutine, TEST_AARTIS, openPrintBuilder } from "./helpers.mjs";
+import { openSite, SETUPS, TEXT_COUNT, openMore, tapMore, readText, useTestRoutine, TEST_AARTIS, openPrintBuilder, FIXED_NOW } from "./helpers.mjs";
 import { printOnce, checkPrintout, checkPages, stubPrint, printFromButton, howStep, readPrintView, addMarkers, pdfPages, markerPages, sourceLines } from "./print-helpers.mjs";
 
 test.describe.configure({ mode: "parallel" });
@@ -226,8 +226,8 @@ test("iPhone: when Print now does not print either, Share → Print and Open in 
   await context.close();
 });
 
-// The iPhone Home Screen app cannot print (neither tap opens the dialog there): choosing a layout goes straight
-// to Open in Safari, without trying to print
+// The iPhone Home Screen app cannot print (neither tap opens the dialog there): before iOS 17 (the device here is
+// iOS 15), choosing a layout goes straight to Open in Safari, without trying to print
 test("iPhone Home Screen app: a layout choice goes straight to Open in Safari @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
@@ -255,6 +255,49 @@ test("iPhone Home Screen app: a layout choice goes straight to Open in Safari @c
   await expect(page.locator("#pr1")).toBeVisible();
   await expect(page.locator("#prw")).toBeHidden();
   await context.close();
+});
+
+// iOS 17 and later: the Home Screen app's Print goes to Safari in the same tap, no pop-up between. Once the app is
+// left the builder is closed; if Safari did not open (the app still on screen), Open in Safari and Copy link
+test("iPhone Home Screen app on iOS 17: Print goes straight to Safari @chromium-only", async ({ browser }) => {
+  const ua = IPHONE.userAgent.replace(/OS \d+_\d+(_\d+)? like/, "OS 17_4 like");
+  const context = await browser.newContext({ ...IPHONE, userAgent: ua, locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "standalone", { value: true });
+    window.__printed = 0;
+    window.print = () => window.__printed++;
+  });
+  await openSite(page, SETUPS.english);
+  // Safari opens: the app is left, and the builder is put away
+  await openPrintBuilder(page);
+  await howStep(page);
+  await page.locator("#prgp").click({ noWaitAfter: true });
+  await expect(page.locator("#prsf")).toHaveAttribute("data-to", /^x-safari-http.*\?print=as&s=/);
+  await expect(page.locator("#prsf")).toBeHidden();
+  await page.evaluate(() => {
+    Object.defineProperty(document, "visibilityState", { value: "hidden", configurable: true });
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  await expect(page.locator("#prm")).toBeHidden();
+  await context.close();
+  // Safari does not open (the app stays on screen): after a moment, Open in Safari and Copy link
+  const c2 = await browser.newContext({ ...IPHONE, userAgent: ua, locale: "en-US", serviceWorkers: "block" });
+  const p2 = await c2.newPage();
+  await p2.addInitScript(() => {
+    Object.defineProperty(navigator, "standalone", { value: true });
+    window.__printed = 0;
+    window.print = () => window.__printed++;
+  });
+  await openSite(p2, SETUPS.english);
+  await openPrintBuilder(p2);
+  await howStep(p2);
+  await p2.locator("#prgp").click({ noWaitAfter: true });
+  await expect(p2.locator("#prsf")).toHaveAttribute("data-to", /^x-safari-/);
+  await expect(p2.locator("#prsf")).toBeVisible({ timeout: 5_000 });
+  await expect(p2.locator("#prcp")).toBeVisible();
+  expect(await p2.evaluate(() => window.__printed)).toBe(0);
+  await c2.close();
 });
 
 // iPhone: the print view is written at once (nothing is laid out ahead or measured), so Print opens the dialog from
@@ -303,7 +346,7 @@ test("iPhone Home Screen app: Open in Safari carries the print choices @chromium
   });
   await page.reload();
   await openPrintBuilder(page);
-  await howStep(page);
+  await page.locator("#prnx").click();
   await page.locator("#pr2").click();
   await page.locator("#prgp").click();
   await expect(page.locator("#prsf")).toBeVisible();
@@ -444,7 +487,7 @@ test("print pop-up: a saved Landscape choice is kept @chromium-only", async ({ p
   });
   await page.reload();
   await openPrintBuilder(page);
-  await howStep(page);
+  await page.locator("#prnx").click();
   await expect(page.locator("#pr2")).toHaveAttribute("aria-pressed", "true");
 });
 
@@ -719,6 +762,85 @@ test("print builder: the bottom bar's Print while reading a session, and the Tod
       return n;
     }),
   ).toBeGreaterThan(TEST_AARTIS.length + 1);
+  await context.close();
+});
+
+// A session prints in Home's order (never sorted into the Library's categories), numbered 1, 2, 3… in that order under
+// one heading, the day and the session; Open in Safari carries the session, and Safari prints it the same way
+test("print builder: a session prints in Home's order, in the app and in Safari @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await useTestRoutine(page);
+  await openSite(page, SETUPS.marathi);
+  await page.locator("#asp").click();
+  await page.locator('.prses[data-s="evening"]').click();
+  const day = await page.evaluate(() => ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"][new Date().getDay()]);
+  /** @param {import("@playwright/test").Page} p */
+  const printed = (p) =>
+    p.evaluate(() => ({
+      heads: [...document.querySelectorAll("#pv .pvcov .pvcat")].map((e) => e.textContent.trim()),
+      toc: [...document.querySelectorAll("#pv .pvcov li")].map((e) => e.getAttribute("data-sid")),
+      texts: [...document.querySelectorAll("#pv .pvs")].map((e) => e.getAttribute("data-sid")),
+      nums: [...document.querySelectorAll("#pv .pvs .pvnum")].map((e) => e.textContent.trim()),
+    }));
+  const sids = await page.evaluate(
+    (ids) =>
+      ids.map((id) => {
+        let sid = "";
+        window.CONTENT.categories.forEach((g) => g.pieces.forEach((p) => p.text === id && (sid = p.id)));
+        return sid;
+      }),
+    TEST_AARTIS,
+  );
+  // the preview shows the session's first text
+  await page.locator("#prnx").click();
+  await expect(page.locator("#prsheet iframe")).toHaveCount(1);
+  expect(await page.locator("#prsheet iframe").evaluate((f) => f.contentDocument.querySelector(".pvs").getAttribute("data-sid"))).toBe(sids[0]);
+  await page.locator("#prgp").click();
+  await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
+  if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
+  const app = await printed(page);
+  expect(app.texts).toEqual(sids);
+  expect(app.toc).toEqual(sids);
+  expect(app.heads).toEqual([`${day} · सायंकाळ`]);
+  expect(app.nums.slice(0, 3)).toEqual(["१.", "२.", "३."]);
+  // Safari prints it the same way
+  await page.locator("body").dispatchEvent("pointerdown");
+  await page.evaluate(() => dispatchEvent(new Event("afterprint")));
+  const sa = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const hp = await sa.newPage();
+  await hp.addInitScript(() => {
+    Object.defineProperty(navigator, "standalone", { value: true });
+  });
+  await useTestRoutine(hp);
+  await openSite(hp, SETUPS.marathi);
+  await hp.locator("#asp").click();
+  await hp.locator('.prses[data-s="evening"]').click();
+  await hp.locator("#prnx").click();
+  await hp.locator("#prgp").click();
+  await hp.locator("#prsf").click();
+  const href = await hp.locator("#prsf").getAttribute("data-to");
+  expect(href).toContain("&o=evening");
+  const sf = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const sp = await sf.newPage();
+  await sp.addInitScript(() => {
+    window.__printed = 0;
+    window.print = () => {
+      if (window.__printed++) dispatchEvent(new Event("beforeprint"));
+    };
+  });
+  await sp.clock.setFixedTime(FIXED_NOW);
+  await sp.goto(href.replace(/^x-safari-/, ""));
+  await expect(sp.locator("#prgo")).toBeVisible({ timeout: 15_000 });
+  await sp.locator("#prgo").click();
+  await sp.waitForFunction(() => document.querySelectorAll("#pv .pvs").length > 0, null, { timeout: 15_000 });
+  const safari = await printed(sp);
+  expect(safari.texts).toEqual(sids);
+  expect(safari.heads).toEqual([`${day} · सायंकाळ`]);
+  await sf.close();
+  await sa.close();
   await context.close();
 });
 
