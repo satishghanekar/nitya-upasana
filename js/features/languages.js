@@ -98,7 +98,7 @@ export function spSet() {
         .join("");
     },
     dh = lines(".rftop", 1),
-    vs = lines(".items > .item:not(.rf)", both ? 1 : 2),
+    vs = lines(".items > .item:not(.rf)", 1), // one line of the verse: the dhrupad, above or below it, stays in view
     h = P.ref ? row(dh, 0, "sp-pd") : "";
   for (var k = 0; k < vs[0].length; k++) h += row(vs, k);
   h += P.ref
