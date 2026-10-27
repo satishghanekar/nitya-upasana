@@ -48,6 +48,10 @@ export function init() {
       last = "as", // the layout last chosen, carried to Safari
       pn = pm.querySelector(".prn:not(#prw):not(#prv)"),
       busy = false,
+      /** @type {{ m: string, ids: string[] | null, rp: any } | null} the printout being made from the builder */
+      job = null,
+      /** @type {{ m: string, ids: string[] | null, rp: any } | null} the printout just printed, until the reader is back */
+      again = null,
       seen = false; // the browser has started printing (beforeprint) since the last window.print()
     // the original's language, by the letters it is shown in (P.ind), as the Print pop-up names it: in Marathi
     // menus, then in English. A new script (js/render.js) adds its name here.
@@ -963,6 +967,7 @@ export function init() {
       busy = true;
       if (mode === "as") mode = "one";
       sel = chosen();
+      job = { m: mode, ids: sel, rp: rplan() };
       setPage(mode);
       build(mode, sel, rplan());
       pon(mode);
@@ -1030,7 +1035,12 @@ export function init() {
       paperRow();
       document.getElementById("prx").setAttribute("aria-label", M ? "रद्द" : "Cancel");
       // What, drawn afresh (the Library's categories, the reading languages and the menu language may have changed)
-      if (o.ids) what.set(o.ids);
+      // a session is the Today tab's choice, and the Library tab starts with nothing ticked, so a text ticked there
+      // prints on its own (not with the session's texts)
+      if (o.ids && o.tab === "today") {
+        what.today(o.ids);
+        what.set([]);
+      } else if (o.ids) what.set(o.ids);
       what.tab(o.tab || "texts");
       what.render();
       fontsAhead();
@@ -1090,16 +1100,29 @@ export function init() {
     });
     // Printing from the browser's own menu (or Share → Print on a phone) gets the same print view (one
     // language in a column, both side by side): contents, then every piece, never the home page
+    // Safari lays the page out again after afterprint (its print sheet, a change of paper there): until the reader is
+    // back on the page, that is still the printout chosen, not the whole Library
     window.addEventListener("beforeprint", function () {
       seen = true;
       if (!busy) {
-        var m = dm();
-        setPage(m);
-        build(m, null);
-        pon(m);
+        var j = again || { m: dm(), ids: null, rp: null };
+        setPage(j.m);
+        build(j.m, j.ids, j.rp);
+        pon(j.m);
       }
     });
+    // a tap or a key on the page (Ctrl+P too): the reader is back, and the browser's own Print prints the whole Library
+    ["pointerdown", "keydown"].forEach(function (t) {
+      document.addEventListener(
+        t,
+        function () {
+          again = null;
+        },
+        true,
+      );
+    });
     window.addEventListener("afterprint", function () {
+      if (busy) again = job;
       busy = false;
       sel = null;
       poff();
