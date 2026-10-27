@@ -29,7 +29,7 @@ import { setView } from "./day-picture.js";
 import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, stepInSession, textsFor } from "../core/routine.js";
-import { routine } from "../store/store.js";
+import { onReread, routine } from "../store/store.js";
 import { DAYS, MONTHS, dv, esc, scr, scrKey } from "../core/words.js";
 
 /**
@@ -429,6 +429,8 @@ export function profileChanged() {
 }
 
 export function init() {
+  // another tab changed the routine (js/store/store.js)
+  onReread(profileChanged);
   buildInfo();
   onPiece(runOne);
   try {
