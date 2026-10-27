@@ -394,3 +394,26 @@ test("the sheet keeps Tab inside it", async ({ page, browserName }) => {
     expect(await page.evaluate(() => !!document.activeElement.closest("#tpk"))).toBe(true);
   }
 });
+
+// The site open in two tabs: a routine changed in one is read in by the other (Home follows), and a setting changed
+// there afterwards never writes the older routine back over it
+test("two tabs: a routine changed in one is kept when the other then changes a setting", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: MON_EVENING });
+  const other = await page.context().newPage();
+  await useTestRoutine(other);
+  await openSite(other, SETUPS.marathi, { now: MON_EVENING });
+  expect(await homeIds(other)).toContain("aarti-sukhkarta");
+  await openBuilder(page);
+  await btn(page, "aarti-sukhkarta", "rm").click();
+  await page.keyboard.press("Escape");
+  // the other tab reads it in, and Home there follows
+  await expect.poll(() => homeIds(other)).not.toContain("aarti-sukhkarta");
+  // a setting changed in the other tab (A+ in Settings), saved a moment later
+  await other.locator("#aa").click();
+  await other.locator("#lg").click();
+  await other.waitForTimeout(800);
+  await page.reload();
+  await settle(page);
+  expect(await homeIds(page)).not.toContain("aarti-sukhkarta");
+  await other.close();
+});

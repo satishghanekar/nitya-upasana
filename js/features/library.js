@@ -16,7 +16,7 @@
 
 import { P } from "../core/state.js";
 import { loaded } from "../text/load.js";
-import { getLibrary, setLibrary } from "../store/store.js";
+import { getLibrary, onReread, setLibrary } from "../store/store.js";
 import {
   addCategory,
   categoriesOf,
@@ -586,6 +586,8 @@ function moved(s) {
 }
 
 export function init() {
+  // another tab changed the categories (js/store/store.js)
+  onReread(refresh);
   readData();
   sheet = document.getElementById("lbm");
   if (!entries.length) return;

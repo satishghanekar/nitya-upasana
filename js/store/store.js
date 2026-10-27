@@ -60,6 +60,14 @@ var failures = 0,
   lastFailed = false;
 /** @type {Array<() => void>} */
 var problemListeners = [];
+// The site open in two tabs (or windows) at once: each keeps its own copy in memory, so a tab tells the others when a
+// write has landed and they read IndexedDB again, rather than writing their older copy over it later
+/** @type {BroadcastChannel | null} */
+var channel = null;
+/** @type {ReturnType<typeof setTimeout> | undefined} */
+var again;
+/** @type {Array<() => void>} */
+var rereadListeners = [];
 
 /**
  * Open the database and read what it holds. Never rejects: if IndexedDB can't be used, the store works in memory
@@ -77,6 +85,14 @@ export function openStore(o) {
       function (r) {
         rawProfiles = Array.isArray(r[0]) ? r[0] : [];
         rawMeta = r[1] && typeof r[1] === "object" ? r[1] : null;
+        if (db && db.kind === "idb" && typeof BroadcastChannel === "function")
+          try {
+            channel = new BroadcastChannel("nitya-store");
+            channel.onmessage = function () {
+              clearTimeout(again);
+              again = setTimeout(reread, 100);
+            };
+          } catch (e) {}
       },
       function () {
         rawProfiles = [];
@@ -107,19 +123,7 @@ export function start(saved, ticks, e, now) {
   env = e;
   var m = rawMeta ? cleanMeta(rawMeta) : null,
     order = (m && m.order) || [],
-    list = rawProfiles
-      .map(function (p) {
-        return cleanProfile(p, env);
-      })
-      .filter(function (/** @type {Profile | null} */ p) {
-        return !!p;
-      })
-      // IndexedDB lists them by id: put them back in the order they were added
-      .sort(function (/** @type {Profile} */ a, /** @type {Profile} */ b) {
-        var i = order.indexOf(a.id),
-          j = order.indexOf(b.id);
-        return (i < 0 ? 1e9 : i) - (j < 0 ? 1e9 : j) || (a.created < b.created ? -1 : a.created > b.created ? 1 : 0);
-      }),
+    list = peopleIn(rawProfiles, order),
     plan = startPlan({
       profiles: /** @type {Profile[]} */ (list),
       meta: m,
@@ -138,6 +142,26 @@ export function start(saved, ticks, e, now) {
   });
   if (plan.writeMeta || JSON.stringify(order) !== JSON.stringify(ids())) putMeta();
   return { prefs: plan.prefs, first: plan.first, saveBoot: plan.saveBoot };
+}
+
+/**
+ * The people as IndexedDB holds them, cleaned, in the order they were added (IndexedDB lists them by id)
+ * @param {any[]} raw @param {string[]} order @returns {Profile[]}
+ */
+function peopleIn(raw, order) {
+  return /** @type {Profile[]} */ (
+    raw
+      .map(function (p) {
+        return cleanProfile(p, env);
+      })
+      .filter(function (/** @type {Profile | null} */ p) {
+        return !!p;
+      })
+  ).sort(function (a, b) {
+    var i = order.indexOf(a.id),
+      j = order.indexOf(b.id);
+    return (i < 0 ? 1e9 : i) - (j < 0 ? 1e9 : j) || (a.created < b.created ? -1 : a.created > b.created ? 1 : 0);
+  });
 }
 
 /** @param {any} m @returns {Meta} */
@@ -184,6 +208,10 @@ function queue(fn) {
   writing = writing.then(fn).then(
     function () {
       if (lastFailed) problem(false);
+      if (channel)
+        try {
+          channel.postMessage("saved");
+        } catch (e) {}
     },
     function (e) {
       console.error("Saving on this device failed", e);
@@ -204,6 +232,46 @@ function problem(on) {
     }
   });
 }
+/**
+ * Another tab has written: read the people and the meta again. This tab keeps who is reading here, and the settings
+ * it has not written yet (they follow); the parts are told as when the people change (onChange)
+ */
+function reread() {
+  var d = db;
+  if (!d || !profiles.length) return;
+  Promise.all([d.all("profiles"), d.get("meta", "meta")]).then(
+    function (r) {
+      if (!Array.isArray(r[0]) || !r[1] || typeof r[1] !== "object") return;
+      var m = cleanMeta(r[1]),
+        list = peopleIn(r[0], m.order || []),
+        me = active();
+      if (!list.length) return;
+      if (pending && me)
+        list.forEach(function (p) {
+          if (p.id === me.id) p.settings = me.settings;
+        });
+      m.activeProfile = meta.activeProfile;
+      if (pending) m.device = meta.device;
+      profiles = list;
+      meta = m;
+      changed();
+      rereadListeners.forEach(function (f) {
+        try {
+          f();
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    },
+    function () {},
+  );
+}
+
+/** Tell me when another tab's changes have been read in (a routine, the Library's categories) @param {() => void} fn */
+export function onReread(fn) {
+  rereadListeners.push(fn);
+}
+
 /** Whether the last write to IndexedDB failed (a later one that lands clears it) */
 export function saveFailed() {
   return lastFailed;
@@ -504,6 +572,9 @@ export function _reset() {
   meta = { activeProfile: "", device: {}, since: "", lastBackup: "", snooze: "", schema: 1 };
   listeners = [];
   problemListeners = [];
+  rereadListeners = [];
+  if (channel) channel.close();
+  channel = null;
   failures = 0;
   lastFailed = false;
   pending = false;
