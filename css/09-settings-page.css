@@ -377,6 +377,64 @@ html[data-sp] {
     font-size: 12.5px;
   }
 }
+/* Phones: the Reading tab, preview and every choice, on one iPhone screen (Satish, 2026-10-27): the preview's heading
+   for screen readers only (the window says what it is) and the window shorter; the language rows without their
+   hints (the preview shows large and small); Show and Text font beside their labels; Verses' heading for screen
+   readers only (Dhrupad says what it is); rows and headings closer */
+@media screen and (max-width: 759.98px) {
+  .sp-pvg > .sp-h,
+  .sp-grp:has(#srf) > .sp-h {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .sp-pvg {
+    padding-top: 10px;
+  }
+  .sp-prev {
+    padding: 8px 12px 6px;
+  }
+  .sp-pw {
+    height: 150px;
+  }
+  /* one language shown: no line under each line, so a shorter window holds the same */
+  .sp-pw:not(:has(.sp-p2)) {
+    height: 120px;
+  }
+  .sp-grp:has(#srf) {
+    padding-top: 10px;
+  }
+  .sp-hd {
+    padding-block: 8px 6px;
+  }
+  .sp-h {
+    margin: 14px 6px 6px;
+  }
+  .sp .sp-row {
+    min-height: 46px;
+    padding-block: 6px;
+  }
+  .sp-pick small {
+    display: none;
+  }
+  .sp #slwrow,
+  .sp .sp-stk:has(#sfn) {
+    flex-wrap: nowrap;
+    padding-block: 6px;
+  }
+  .sp #slwrow .sp-l,
+  .sp .sp-stk:has(#sfn) .sp-l {
+    flex: 0 1 auto;
+  }
+  .sp #slwrow .sp-seg,
+  .sp .sp-stk #sfn {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .sp .sp-sw::after {
     transition: none;
