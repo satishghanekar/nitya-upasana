@@ -963,6 +963,10 @@ test("iPhone Home Screen app: Open in Safari carries a routine printout @chromiu
   await page.locator("#prsf").click();
   const href = await page.locator("#prsf").getAttribute("data-to");
   expect(href).toMatch(/&r=/);
+  // of the routine, just what is printed: Evening was taken off, so the link has none of its texts
+  const carried = JSON.parse(decodeURIComponent(/&r=([^&]*)/.exec(href)[1])).r;
+  expect(carried.evening).toEqual({ mode: "fixed", texts: [] });
+  expect(carried.afternoon).toEqual({ mode: "fixed", texts: [] });
   // Safari: a fresh browser, with the default routine (the link brings the person's own)
   const sf = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const sp = await sf.newPage();

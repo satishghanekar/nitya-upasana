@@ -27,7 +27,7 @@ import { active, list as people } from "../store/store.js";
 import { loaded } from "../text/load.js";
 import { MONTHS, dv } from "../core/words.js";
 import { TAG_WORDS, tagFor } from "../print/select.js";
-import { cleanRoutine } from "../core/routine.js";
+import { cleanRoutine, routinePart } from "../core/routine.js";
 
 // The page each printout is made for: one language upright, both languages side by side on a sideways page
 var CHOICE = { one: { page: "up" }, both: { page: "land" } };
@@ -884,10 +884,11 @@ export function init() {
       });
       var rp = rplan(),
         r = "";
-      // a routine printout: whose (name and routine: Safari keeps its own storage) and the days and sessions chosen
+      // a routine printout: whose (name, printed on its first page, and the routine: Safari keeps its own storage) and
+      // the days and sessions chosen; of the routine, just those days and sessions
       if (rp) {
         var c = what.routine();
-        r = "&r=" + encodeURIComponent(JSON.stringify({ n: rp.name, r: rp.routine, w: c.span, d: rp.days, s: c.sessions }));
+        r = "&r=" + encodeURIComponent(JSON.stringify({ n: rp.name, r: routinePart(rp.routine, rp.days, rp.sessions), w: c.span, d: rp.days, s: c.sessions }));
       }
       return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (chosen() ? "&t=" + /** @type {string[]} */ (chosen()).join(",") : "") + r;
     }
