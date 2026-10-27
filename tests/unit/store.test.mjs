@@ -206,6 +206,35 @@ describe("the store", () => {
     expect(store.getLibrary()).toEqual(lib);
   });
 
+  test("a write that fails (storage full) is said, a restore that can't be saved fails, and a write that lands clears it", async () => {
+    const r0 = await load(idb, V13);
+    const backup = parseBackup(serialise(makeBackup(store.exportData(), { app: "aarti-v1.34", created: "2026-10-27T10:00:00Z" })), ENV).data;
+    let told = 0;
+    store.onSaveProblem(() => told++);
+    const put = IDBObjectStore.prototype.put;
+    IDBObjectStore.prototype.put = function () {
+      throw new DOMException("full", "QuotaExceededError");
+    };
+    try {
+      store.add({ name: "Baba" });
+      await store.settled();
+      expect(store.saveFailed()).toBe(true);
+      expect(told).toBe(1);
+      // the restore is in place for this visit, and its settings come with the failure
+      const e = await store.restore(backup).then(
+        () => null,
+        (x) => x,
+      );
+      expect(e).toBeInstanceOf(Error);
+      expect(e.prefs.fs).toBe(r0.prefs.fs);
+    } finally {
+      IDBObjectStore.prototype.put = put;
+    }
+    store.add({ name: "Aai" });
+    await store.settled();
+    expect(store.saveFailed()).toBe(false);
+  });
+
   test("in memory (IndexedDB failed): everything works for this visit", async () => {
     store._reset();
     await store.openStore({ idb: { open: () => ({}) }, timeout: 20 });

@@ -126,6 +126,11 @@ const W = {
       return d + "’s list is now used every day";
     },
     toWeek: "Each weekday can now have its own list",
+    /** @param {string} d */
+    fixAsk: function (d) {
+      return "Use " + d + "’s list every day? The other days’ own lists will be removed.";
+    },
+    fixGo: "Use every day",
   },
   mr: {
     /** @param {string} n */
@@ -204,6 +209,11 @@ const W = {
       return "आता रोज " + d + "चीच यादी";
     },
     toWeek: "आता प्रत्येक वाराची यादी वेगळी ठेवता येईल",
+    /** @param {string} d */
+    fixAsk: function (d) {
+      return d + "ची यादी रोज वापरायची? इतर वारांच्या वेगळ्या याद्या काढल्या जातील.";
+    },
+    fixGo: "रोज वापरा",
   },
 };
 
@@ -369,6 +379,7 @@ function say(s) {
 
 function render() {
   if (!page) return;
+  fixPanel(false);
   var w = words(),
     p = active();
   page.lang = ui();
@@ -483,6 +494,7 @@ function copyPanel(o) {
   f.hidden = !o;
   b.setAttribute("aria-expanded", String(o));
   if (!o) return;
+  fixPanel(false);
   el("rtcpl").textContent = w.copyTo(w.what(w.sessions[view.session], view.day));
   el("rtcpd").innerHTML = WEEK_ORDER.filter(function (d) {
     return d !== view.day;
@@ -584,11 +596,34 @@ function toggle(id, on) {
   }
 }
 
-/** @param {"fixed" | "weekday"} m */
-function setModeTo(m) {
+/** Whether every weekday has the same list in the session shown */
+function daysAlike() {
+  var a = JSON.stringify(textsFor(view.r, 0, view.session));
+  return DAY_KEYS.every(function (_, d) {
+    return JSON.stringify(textsFor(view.r, d, view.session)) === a;
+  });
+}
+/** Same every day, asked first while the weekdays' lists differ (they would go) @param {boolean} o */
+function fixPanel(o) {
+  var w = words();
+  el("rtfx").hidden = !o;
+  if (!o) return;
+  el("rtfxt").textContent = w.fixAsk(w.days[view.day]);
+  el("rtfxo").textContent = w.fixGo;
+  el("rtfxx").textContent = w.cancel;
+  el("rtfxo").focus();
+}
+
+/** @param {"fixed" | "weekday"} m @param {boolean} [sure]  asked already (or nothing to lose) */
+function setModeTo(m, sure) {
   if (m === (weekly() ? "weekday" : "fixed")) return;
   var w = words(),
     s = view.session;
+  if (m === "fixed" && !sure && !daysAlike()) {
+    copyPanel(false);
+    fixPanel(true);
+    return;
+  }
   if (m === "fixed") {
     weekBefore[s] = /** @type {SessionPlan} */ (JSON.parse(JSON.stringify(view.r[s])));
     keep(setMode(view.r, s, "fixed", view.day));
@@ -765,6 +800,11 @@ export function init() {
       say(what() + " · " + words().texts(list().length));
     } else if (b.id === "rtcpb") copyPanel(el("rtcpf").hidden);
     else if (b.id === "rtcpo") copyNow();
+    else if (b.id === "rtfxo") setModeTo("fixed", true);
+    else if (b.id === "rtfxx") {
+      fixPanel(false);
+      focusRadio("rtmd");
+    }
     else if (b.id === "rtcpx") {
       copyPanel(false);
       el("rtcpb").focus();

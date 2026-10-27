@@ -18,6 +18,7 @@ import {
   MAX_TEXTS,
   moveItem,
   removeText,
+  routinePart,
   setList,
   setMode,
   textsFor,
@@ -110,6 +111,20 @@ describe("the rules for a person's lists", () => {
     expect(addTexts(["a", "b"], ["c", "a", "d"])).toEqual(["a", "b", "c", "d"]);
     expect(removeText(["a", "b", "c"], "b")).toEqual(["a", "c"]);
     expect(removeText(["a"], "x")).toEqual(["a"]);
+  });
+
+  test("a routine printout's link carries just the days and sessions printed", () => {
+    let r = setMode(editable(null, SIMPLE), "evening", "weekday", MON);
+    r = setList(r, "evening", THU, ["aarti-ghalin-lotangan"]);
+    const part = routinePart(r, [MON, THU], ["evening"]);
+    expect(Object.keys(part.evening.days).sort()).toEqual([DAY_KEYS[MON], DAY_KEYS[THU]].sort());
+    expect(textsFor(part, MON, "evening")).toEqual(AARTIS);
+    expect(textsFor(part, THU, "evening")).toEqual(["aarti-ghalin-lotangan"]);
+    expect(textsFor(part, 0, "evening")).toEqual([]);
+    // a session not printed: no texts
+    expect(part.morning).toEqual({ mode: "fixed", texts: [] });
+    // read back as Safari does, the same
+    expect(textsFor(cleanRoutine(JSON.parse(JSON.stringify(part))), THU, "evening")).toEqual(["aarti-ghalin-lotangan"]);
   });
 
   test("the builder's week row starts on Monday", () => {
