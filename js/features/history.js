@@ -2,7 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { bt, onPiece, pieceEl } from "../core/page.js";
-import { aa, cur, jp, unfold, pn } from "../core/apply.js";
+import { aa, aimAt, cur, jp, unfold, pn } from "../core/apply.js";
 import { TK, apply, goHome, mark, tuckHold } from "./bars.js";
 import { anyOpen, closeForBack, pageEls, setC, setJ, setP, setR, trapped } from "./overlays.js";
 
@@ -244,6 +244,8 @@ export function jumpTo(go, url) {
   solo(url && url.charAt(0) === "#" ? url.slice(1) : "");
   homeView(!(url && url.charAt(0) === "#" && url !== "#home"));
   go();
+  // the piece gone to is the one being read until the reader scrolls, even if it is too short to reach the top
+  aimAt(url && url.charAt(0) === "#" && url !== "#home" ? pieceEl(url.slice(1)) : null);
   // the page may not have scrolled (a short text read on its own, css/10-today.css): the bars follow anyway
   mark();
   try {
@@ -343,5 +345,7 @@ export function homeAlone() {
 
 // Home buttons (top-bar title, Home in the bottom bar): back to the top of the home page
 export function goHomeNav() {
+  // going Home leaves the session being read (js/features/today-card.js)
+  document.dispatchEvent(new Event("nitya-home"));
   jumpTo(goHome, location.pathname);
 }
