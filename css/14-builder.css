@@ -262,10 +262,12 @@
   font-family: var(--body);
 }
 #rtcpb[hidden],
-#rtcpf[hidden] {
+#rtcpf[hidden],
+#rtfx[hidden] {
   display: none;
 }
-#rtcpf {
+#rtcpf,
+#rtfx {
   display: grid;
   gap: 8px;
   margin: 0;
@@ -273,6 +275,11 @@
   border: 1px solid var(--hdrl);
   border-radius: 14px;
   background: var(--hdr);
+}
+#rtfxt {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 600;
 }
 #rtcpl {
   padding: 0;
