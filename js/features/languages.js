@@ -106,6 +106,28 @@ export function spSet() {
     : row(dh, 0, "sp-pd");
   // (its heading, Preview, is the group's, in index.html)
   document.getElementById("sprev").innerHTML = '<div class="sp-pw">' + h + "</div>";
+  fitPreview();
+}
+
+/**
+ * The preview at the size the pieces will have. The pieces fit their size to the open text (js/text/autofit.js: the
+ * largest size, up to the default, at which every line fits the screen, never under 18px), but on Home no text is
+ * open to measure, so the preview fits its own lines to its window by the same rule, and so shows them whole at 100%.
+ * A size the reader chose (A− / A+, a pinch) is shown as it is, A+ running past the window's edges as on the page.
+ */
+export function fitPreview() {
+  var pw = /** @type {HTMLElement | null} */ (document.querySelector("#sprev .sp-pw"));
+  if (!pw) return;
+  pw.style.removeProperty("--fs");
+  if (P.fsu || !pw.clientWidth) return;
+  var avail = pw.clientWidth - 12, // (inside its faded edges)
+    widest = 0;
+  [].forEach.call(pw.querySelectorAll("p"), function (/** @type {HTMLElement} */ p) {
+    widest = Math.max(widest, p.getBoundingClientRect().width);
+  });
+  if (widest <= avail) return;
+  var fs = parseFloat(getComputedStyle(pw).getPropertyValue("--fs")) || 24;
+  pw.style.setProperty("--fs", Math.max(18, Math.floor((fs * avail) / widest)) + "px");
 }
 
 function spKey(slot) {

@@ -394,15 +394,19 @@ html[data-sp] {
   .sp-pvg {
     padding-top: 10px;
   }
+  /* one height for every language and Dhrupad choice, so the cards below never jump: tall enough for the tallest at
+     100% (both languages, the dhrupad once: four lines and ↻ Refrain); narrow fades, so the lines show whole */
   .sp-prev {
-    padding: 8px 12px 6px;
+    padding: 4px 12px;
   }
   .sp-pw {
-    height: 150px;
-  }
-  /* one language shown: no line under each line, so a shorter window holds the same */
-  .sp-pw:not(:has(.sp-p2)) {
-    height: 120px;
+    height: 168px;
+    /* centred while the lines fit (one language leaves room), from the top once A+ makes them taller */
+    justify-content: safe center;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent),
+      linear-gradient(to bottom, #000 calc(100% - 6px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent),
+      linear-gradient(to bottom, #000 calc(100% - 6px), transparent);
   }
   .sp-grp:has(#srf) {
     padding-top: 10px;

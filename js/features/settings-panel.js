@@ -11,6 +11,7 @@ import { refit } from "../text/autofit.js";
 import { cur, pn } from "../core/apply.js";
 import { apply } from "./bars.js";
 import { buildIX } from "../text/search.js";
+import { fitPreview } from "./languages.js";
 
 var fsT;
 
@@ -90,6 +91,7 @@ export function init() {
 export function fsTap(fs, fsu) {
   change({ fs: fs, fsu: fsu });
   pn.style.setProperty("--fs", P.fs + "px");
+  fitPreview();
   szSet();
   clearTimeout(fsT);
   fsT = setTimeout(fsFlush, 700);
