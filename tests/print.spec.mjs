@@ -346,7 +346,7 @@ test("iPhone Home Screen app: Open in Safari carries the print choices @chromium
   });
   await page.reload();
   await openPrintBuilder(page);
-  await page.locator("#prnx").click();
+  await howStep(page);
   await page.locator("#pr2").click();
   await page.locator("#prgp").click();
   await expect(page.locator("#prsf")).toBeVisible();
@@ -487,7 +487,7 @@ test("print pop-up: a saved Landscape choice is kept @chromium-only", async ({ p
   });
   await page.reload();
   await openPrintBuilder(page);
-  await page.locator("#prnx").click();
+  await howStep(page);
   await expect(page.locator("#pr2")).toHaveAttribute("aria-pressed", "true");
 });
 
