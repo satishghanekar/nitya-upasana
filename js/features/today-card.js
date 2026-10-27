@@ -330,6 +330,20 @@ function runBuild() {
   });
 }
 
+/** The routine changed (the builder, another person, a restore) while a session is read: it follows the new list */
+function runRefresh() {
+  if (!run) return;
+  var ids = idsFor(run.day, run.session);
+  if (ids.join() === run.ids.join()) return;
+  if (!ids.length) return runEnd();
+  run.ids = ids;
+  try {
+    sessionStorage.setItem(RUN_KEY, JSON.stringify(run));
+  } catch (e) {}
+  runMark();
+  document.dispatchEvent(new Event("nitya-session"));
+}
+
 /** Leave the session: the page shows one text at a time again */
 function runEnd() {
   run = null;
@@ -439,6 +453,7 @@ export function todayLang() {
 
 /** Another person is reading (js/features/profiles.js): their routine, and their menu language */
 export function profileChanged() {
+  runRefresh();
   if (document.getElementById("tdy")) render();
 }
 
@@ -507,6 +522,7 @@ export function init() {
   });
   // the routine changed (the builder) or another person's was restored: draw the list again
   document.addEventListener("nitya-routine", function () {
+    runRefresh();
     render();
   });
   // a title opens its text, reading the session from there

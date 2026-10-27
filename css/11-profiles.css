@@ -183,7 +183,8 @@
 }
 .pfnm {
   flex: 1;
-  min-width: 0;
+  /* the name keeps room for a few letters on a 320px phone: "Reading now" folds onto two lines instead */
+  min-width: 3em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -192,7 +193,8 @@
   font-family: var(--body);
 }
 .pfnow {
-  flex: none;
+  flex: 0 1 auto;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 3px;

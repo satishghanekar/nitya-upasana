@@ -98,6 +98,8 @@
 }
 #rtb .rtmain {
   display: grid;
+  /* one column no wider than the page: its rows shrink to fit a 320px phone (a bare grid column grows to its widest row) */
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   min-width: 0;
 }
