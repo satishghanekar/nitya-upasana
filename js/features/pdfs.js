@@ -34,7 +34,7 @@ function listHtml() {
             '<li><a href="' + esc(pdfHref(p)) + '" target="_blank" rel="noopener" class="pdf"><span class="m">' + mark(false) +
             '<span class="mr">' + esc(to(p.title.mr)) + '</span><span class="en" lang="en">' + esc(p.title.en) + "</span></span>" +
             // its pages and size, when known (no "PDF": the Books tab has nothing else)
-            '<span class="lt"><span class="mr">' + esc(f.mr) + '</span><span class="en" lang="en">' + esc(f.en) + "</span></span>" +
+            '<span class="lt"><span class="mr">' + esc(to(f.mr)) + '</span><span class="en" lang="en">' + esc(f.en) + "</span></span>" +
             '<span class="sr pss"></span></a></li>'
           );
         })
@@ -72,6 +72,7 @@ function said(saved) {
  */
 export function marks() {
   var w = /** @type {any} */ (window);
+  saidIn = ui();
   [].forEach.call(document.querySelectorAll("#jl a.pdf"), function (/** @type {HTMLAnchorElement} */ a) {
     /** @param {boolean} saved */
     function set(saved) {
@@ -90,6 +91,16 @@ export function marks() {
         set(false);
       });
   });
+}
+
+/** @type {string} the menu language the clouds' words were last written in */
+var saidIn = "";
+
+/** The menu language changed (apply(), js/features/bars.js): the clouds' words for screen readers in the new one */
+export function pdfLang() {
+  if (saidIn === ui()) return;
+  saidIn = ui();
+  marks();
 }
 
 /** After a PDF is opened: checked again every few seconds for a minute, as it may take that long to come in */

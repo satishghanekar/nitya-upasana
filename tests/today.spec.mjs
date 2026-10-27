@@ -424,6 +424,25 @@ test("on a Sankashti day only, one line gives tonight's moonrise and the place @
   await expect(page.locator("#skt")).toBeHidden();
 });
 
+test("a page left open past midnight: the date, the Vedic calendar line and the Sankashti line move on to the new day", async ({ page, browser }) => {
+  await openSite(page, SETUPS.marathi, { now: new Date("2026-10-27T23:58:00-04:00"), running: true });
+  await expect(page.locator("#skt")).toBeHidden();
+  const line = (p) => p.locator("#pan").innerText();
+  const yesterday = await line(page);
+  await page.clock.runFor("04:00");
+  await expect(page.locator("#tdd .d2")).toHaveText("Wednesday, 28 October 2026");
+  await expect(page.locator("#skt")).toBeVisible();
+  // as a page opened now shows them
+  const fresh = await browser.newPage();
+  await useTestRoutine(fresh);
+  await openSite(fresh, SETUPS.marathi, { now: new Date("2026-10-28T00:02:00-04:00") });
+  const today = await line(fresh);
+  expect(today).not.toEqual(yesterday);
+  expect(await line(page)).toEqual(today);
+  await expect(page.locator("#skt")).toHaveText(await fresh.locator("#skt").innerText());
+  await fresh.close();
+});
+
 test("Marathi menus: the Sankashti line in Marathi", async ({ page }) => {
   await openSite(page, SETUPS["marathi-menus"], { now: new Date("2026-10-28T19:00:00-04:00") });
   await expect(page.locator("#skt")).toHaveText(/^संकष्टी चतुर्थी आज · चंद्रोदय .+ · कोलंबस$/);

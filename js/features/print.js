@@ -651,14 +651,14 @@ export function init() {
     // view is (build), into a frame the size of the page, cut off at the page's foot
     var shv = document.getElementById("prsheet"),
       pshown = "";
-    // the first text ticked, in the Library's order (as it prints); a routine's or a session's first text
+    // the first text ticked, in the Library's order as this phone lists it (as it prints); a routine's or a session's first text
     function first() {
       var c = chosen(),
         f = null;
       if (rplan() || splan()) return c && c.length ? [c[0]] : null;
-      /** @type {any} */ (window).CONTENT.categories.forEach(function (/** @type {any} */ g) {
-        g.pieces.forEach(function (/** @type {any} */ p) {
-          if (!f && (!c || c.indexOf(p.text) >= 0)) f = p.text;
+      shelvesNow().forEach(function (sh) {
+        sh.texts.forEach(function (t) {
+          if (!f && (!c || c.indexOf(t.id) >= 0)) f = t.id;
         });
       });
       return f ? [f] : null;

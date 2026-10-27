@@ -492,3 +492,20 @@ test("axe: the home page notes (can't save here, the reminder) @mobile", async (
   await expect(page.locator("#stw")).toBeVisible();
   expect(await axeScan(page, "#home")).toEqual([]);
 });
+
+test("a 320px phone: the people sheet keeps the name and Reading now on the screen, in Marathi menus too", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  for (const setup of ["marathi", "marathi-menus"]) {
+    await openSite(page, SETUPS[setup]);
+    await page.locator("#who").click();
+    await expect(page.locator("#pfm")).toBeVisible();
+    const r = await page.evaluate(() => {
+      const nm = document.querySelector("#pfl .pfnm"),
+        now = document.querySelector("#pfl .pfnow");
+      return { name: nm.scrollWidth <= nm.clientWidth + 1, right: now.getBoundingClientRect().right, card: document.querySelector("#pfl .pfp").getBoundingClientRect().right };
+    });
+    expect(r.name, setup + ": the name is not cut").toBe(true);
+    expect(r.right, setup + ": Reading now inside its row").toBeLessThanOrEqual(r.card);
+    await page.keyboard.press("Escape");
+  }
+});
