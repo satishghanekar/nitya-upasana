@@ -4,7 +4,8 @@
 // category and for everything. (No page counts: the browser lays the pages out as it prints, js/features/print.js.)
 // A second tab, Today, offers today's sessions from the reading person's routine (and all of today), one tap each:
 // a tap chooses that session (P4b). Today keeps its own choice, apart from the Library's ticks: ticking one text on
-// the Library tab prints that text, not the session as well (Satish, 2026-10-27).
+// the Library tab prints that text, not the session as well (Satish, 2026-10-27). A session prints in Home's order, as
+// one list headed by the day and the session (session() says which), never sorted into the Library's categories.
 // A third tab, Routine (P5, mockup 1 panel 2), prints a person's routine: the whole week or one day, the days and the
 // sessions chosen, each text once in routine order with a tag saying when it is said (js/print/select.js). The tab on
 // show is what prints: Texts its ticks, Today the session chosen, Routine its own list (plan() gives its page 1 too).
@@ -116,8 +117,10 @@ export function createWhat(el, o) {
     /** @type {string[] | null | undefined} ticks given before the Library was read (a print link), put in place once it is */
     pending,
     tab = "texts",
-    /** @type {string[]} the Today tab's choice: the texts of the session tapped (none at first) */
+    /** @type {string[]} the Today tab's choice: the texts of the session tapped (none at first), in Home's order */
     day = [],
+    /** the session they are ("morning", "afternoon", "evening" or "all"; "" when not known) */
+    dayS = "",
     /** @type {RoutineChoice} the Routine tab's choices: whose, the whole week or one day (today at first), the sessions */
     rc = { who: "", span: "week", days: [0, 1, 2, 3, 4, 5, 6], day: new Date().getDay(), sessions: SESSIONS.slice() },
     /** @type {WhatPerson | null} a person a print link carries (Safari keeps its own storage: Open in Safari) */
@@ -525,7 +528,10 @@ export function createWhat(el, o) {
         x = sessions().filter(function (y) {
           return y.session === at;
         })[0];
-      if (x) day = x.ids.slice();
+      if (x) {
+        day = x.ids.slice();
+        dayS = x.session;
+      }
       sync();
       o.onChange();
       return;
@@ -566,10 +572,25 @@ export function createWhat(el, o) {
     },
     pick: pick,
     set: set,
-    /** The Today tab's choice: a session's texts @param {string[]} ids */
-    today: function (ids) {
+    /**
+     * The Today tab's choice: a session's texts, in Home's order, and which session (else the one of today's that has
+     * those texts)
+     * @param {string[]} ids @param {string} [s]
+     */
+    today: function (ids, s) {
       day = ids.slice();
+      dayS =
+        s ||
+        (
+          sessions().filter(function (x) {
+            return x.ids.length && same(x.ids);
+          })[0] || { session: "" }
+        ).session;
       if (el.firstChild) sync();
+    },
+    /** The session the Today tab prints (Today on show with a session chosen): its texts print in Home's order, else null */
+    session: function () {
+      return tab === "today" && day.length ? { session: dayS } : null;
     },
     /** What a routine printout holds (the Routine tab on show), else null */
     plan: function () {
