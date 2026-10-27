@@ -958,6 +958,12 @@ export function init() {
     }
     function go(mode) {
       last = mode;
+      // nothing chosen that the Library has (a print link naming texts since removed): What, to choose again, never
+      // the whole Library
+      if (!what.total().texts) {
+        flash("निवडलेल्या रचना आता संग्रहात नाहीत: पुन्हा निवडा.", "The texts chosen are no longer in the Library: choose again.", 4000);
+        return openPrint({});
+      }
       // the iPhone Home Screen app cannot print: straight to Open in Safari
       if (iOS && standalone) return toSafari(true);
       pm.hidden = true;

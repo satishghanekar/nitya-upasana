@@ -19,7 +19,8 @@ import { dv } from "../core/words.js";
 
 /**
  * Every piece, in reading order, and the Library categories they are listed under in the printed contents.
- * @param {string[] | null} [ids]  only these texts (their Library ids), still in reading order; without it, every text
+ * @param {string[] | null} [ids]  only these texts (their Library ids), still in reading order; without it (null), every
+ *   text. A list naming no text in the Library (empty, or an old print link's) prints nothing, never everything
  * @param {string} [lang]  the language printed (P.lang's values: mr, en or both); without it, as the page shows it
  * @param {boolean} [ordered]  a routine printout (print redesign P5): the texts in the order given, not the Library's,
  *   numbered 1, 2, 3… in that order, as one group
@@ -30,16 +31,6 @@ export function compose(ids, lang, ordered) {
   var w = window,
     C = w.CONTENT,
     el = document.createElement("div");
-  // a list naming no text in the Library (an old print link) prints everything
-  if (
-    ids &&
-    !C.categories.some(function (/** @type {any} */ g) {
-      return g.pieces.some(function (/** @type {any} */ p) {
-        return ids.indexOf(p.text) >= 0;
-      });
-    })
-  )
-    ids = null;
   // each category's texts numbered 1, 2, 3… in the printout (as its contents list them), whatever their numbers in the
   // whole Library: three texts printed from two categories read 1 | 1, 2, never 1 | 1, 3 (Satish, 2026-10-22). The
   // copy only: CONTENT keeps the Library's numbers
