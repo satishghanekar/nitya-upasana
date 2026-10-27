@@ -35,7 +35,7 @@ import { DAYS, MONTHS, dv, esc, scr, scrKey } from "../core/words.js";
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
  * @typedef {{ id: string, sec: string, title: string, titleEn: string, language: string }} TextInfo
- * @typedef {{ ids: string[], day: string, session: Session }} Run
+ * @typedef {{ ids: string[], day: string, session: Session, at?: number }} Run
  */
 
 // The menu words, in English and Marathi (the menu language, P.ui)
@@ -94,6 +94,9 @@ const MR_SESSION = { morning: "सकाळ", afternoon: "दुपार", even
 /** @type {Record<Session, string>} */
 const EN_SESSION = { morning: "Morning", afternoon: "Afternoon", evening: "Evening" };
 const RUN_KEY = "nitya-run";
+// a session started on another day is not carried on, unless it was started less than this long ago (an evening
+// session read past midnight)
+const RUN_KEEP = 3 * 3600 * 1000;
 
 /** @type {Record<string, TextInfo>} */
 var info = {};
@@ -309,7 +312,7 @@ function runOne(x) {
 /** @param {string} id */
 function startAt(id) {
   var c = current();
-  run = { ids: idsFor(c.day, c.session), day: c.day, session: c.session };
+  run = { ids: idsFor(c.day, c.session), day: c.day, session: c.session, at: Date.now() };
   try {
     sessionStorage.setItem(RUN_KEY, JSON.stringify(run));
   } catch (e) {}
@@ -334,6 +337,14 @@ function runEnd() {
     sessionStorage.removeItem(RUN_KEY);
   } catch (x) {}
   runMark();
+}
+
+/**
+ * A session from an earlier day, started longer ago than RUN_KEEP: left behind when the page is opened again
+ * @param {Run} r
+ */
+function stale(r) {
+  return r.day !== dateKey(new Date()) && !(typeof r.at === "number" && Date.now() - r.at < RUN_KEEP);
 }
 
 /** The session being read (its Library ids, in order), or null: the bottom bar's Print (js/features/print.js) */
@@ -388,9 +399,12 @@ export function sessionStep(sec, dir) {
   };
 }
 
-// A new day while the page is open: back to today and the session for the time now
-function check() {
+// A new day while the page is open: back to today and the session for the time now; coming back to the page
+// (shown again) on a later day also leaves a session read the day before
+/** @param {boolean} [back]  the page was shown again */
+function check(back) {
   var now = new Date();
+  if (back && run && stale(run)) runEnd();
   if (dateKey(now) !== shownToday) {
     pick = { session: null };
     render();
@@ -437,6 +451,8 @@ export function init() {
     var r = JSON.parse(sessionStorage.getItem(RUN_KEY) || "null");
     if (r && Array.isArray(r.ids)) run = r;
   } catch (e) {}
+  // a session read on an earlier day is not taken up again
+  if (run && stale(run)) runEnd();
   runMark();
   var tabs = /** @type {HTMLElement} */ (document.getElementById("tss")),
     list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
@@ -519,9 +535,13 @@ export function init() {
   clearTimeout(timer);
   timer = setTimeout(check, nextChange(new Date()).getTime() - Date.now() + 1000);
   document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) check();
+    if (!document.hidden) check(true);
   });
   addEventListener("pageshow", function (e) {
-    if (e.persisted) check();
+    if (e.persisted) check(true);
+  });
+  // Home (the top bar's name, Home in the bottom bar, Home at the end of a text) leaves the session being read
+  document.addEventListener("nitya-home", function () {
+    if (run) runEnd();
   });
 }

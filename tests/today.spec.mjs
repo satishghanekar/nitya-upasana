@@ -61,6 +61,87 @@ test("the bundled default: Home shows the day's lists from content/routines.json
   expect(await rows(page).locator(".t1").allTextContents()).toEqual(textsFor(BUNDLED, 4, "evening").map((id) => TITLE[id].title));
 });
 
+// Every session of the bundled routine, every weekday, read through with Next at a phone's, an upright iPad's and a
+// computer's width: the address follows each text in Home's order, and Next after the last goes Home. A title tapped
+// last is the text read, however short (the Mantra Pushpanjali ends every morning: on an iPad or a computer the page
+// ends before it can reach the top bar, js/core/apply.js aimAt()).
+for (const [name, vp] of [["a phone", { width: 390, height: 844 }], ["an upright iPad", { width: 820, height: 1180 }], ["a computer", { width: 1440, height: 900 }]]) {
+  test(`the bundled default: every session of the week reads through to Home with Next, on ${name}`, async ({ page }) => {
+    test.setTimeout(240_000);
+    await page.setViewportSize(vp);
+    // Monday 19 to Sunday 25 October 2026
+    for (let d = 19; d <= 25; d++)
+      for (const at of ["08:00", "19:00"]) {
+        await openSite(page, SETUPS.marathi, { now: new Date(`2026-10-${d}T${at}:00-04:00`) });
+        const secs = await page.$$eval("#tsl a.tgo", (as) => as.map((a) => a.getAttribute("href").replace("./", "")));
+        const where = `${d} Oct ${at}`;
+        expect(secs.length, where).toBeGreaterThan(0);
+        // the last title: that text is the one read, and Next goes Home
+        await rows(page).last().locator("a.tgo").click();
+        await expect.poll(() => hash(page), where).toBe(secs.at(-1));
+        await expect(page.locator("#asn"), where).toHaveAttribute("aria-label", "Next: Today");
+        await page.locator("#ash").click();
+        await expect(page.locator("#tsc")).toBeInViewport();
+        // from the first title, Next through the session in Home's order, then Home
+        await rows(page).first().locator("a.tgo").click();
+        for (const sec of secs) {
+          await expect.poll(() => hash(page), where).toBe(sec);
+          await page.locator("#asn").evaluate((b) => b.click());
+        }
+        await expect.poll(() => hash(page), where).toBe("");
+        await expect(page.locator("#tsc")).toBeInViewport();
+      }
+  });
+}
+// on a computer Home's column stays beside the text: the short last text is the one marked in Home's list
+test("the bundled default: on a computer the last text of the morning is marked in Home's list, with Prev going back", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSite(page, SETUPS.marathi, { now: new Date("2026-10-19T08:00:00-04:00") });
+  const ids = textsFor(BUNDLED, 1, "morning");
+  await rows(page).last().locator("a.tgo").click();
+  await expect(page.locator("#tsl li.now a")).toHaveAttribute("data-t", ids.at(-1));
+  await expect(page.locator("#asv")).toHaveAttribute("aria-label", "Prev: " + TITLE[ids.at(-2)].titleEn);
+  await page.locator("#asv").evaluate((b) => b.click());
+  await expect(page.locator("#tsl li.now a")).toHaveAttribute("data-t", ids.at(-2));
+  await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: " + TITLE[ids.at(-1)].titleEn);
+});
+
+// Leaving a session: Home leaves it, and a session read on an earlier day is not taken up again after a reload
+test("Home in the bottom bar or the top bar leaves the session being read @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  for (const home of ["#ash", "#bt"]) {
+    await rows(page).nth(1).locator("a.tgo").click();
+    await expect(page.locator("html")).toHaveAttribute("data-run", "1");
+    await page.locator(home).evaluate((b) => b.click());
+    await expect(page.locator("html")).not.toHaveAttribute("data-run", "1");
+    expect(await page.evaluate(() => sessionStorage.getItem("nitya-run"))).toBeNull();
+  }
+});
+test("a session read the evening before is not taken up again the next morning; one read past midnight is @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: new Date("2026-10-18T19:00:00-04:00") });
+  const sec = (await rows(page).nth(1).locator("a.tgo").getAttribute("href")).replace("./", "");
+  await rows(page).nth(1).locator("a.tgo").click();
+  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
+  // the next morning, the same tab opened again: the text in the address, on its own
+  await page.clock.setFixedTime(new Date("2026-10-19T07:00:00-04:00"));
+  await page.reload();
+  await settle(page);
+  await expect(page.locator("html")).not.toHaveAttribute("data-run", "1");
+  await expect.poll(() => hash(page)).toBe(sec);
+  // an evening session started at 23:30 and still read at 00:30 carries on
+  await page.clock.setFixedTime(new Date("2026-10-19T23:30:00-04:00"));
+  await page.reload();
+  await settle(page);
+  await page.locator("#ash").click();
+  await pickTab(page, "evening");
+  await rows(page).nth(1).locator("a.tgo").click();
+  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
+  await page.clock.setFixedTime(new Date("2026-10-20T00:30:00-04:00"));
+  await page.reload();
+  await settle(page);
+  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
+});
+
 test("in the morning Home shows Thursday's Morning: the Atharvashirsha, with no Start button @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
   await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
@@ -407,14 +488,15 @@ test("on Home, Print in the bottom bar prints the session Home shows, chosen on 
   await expect(page.locator('#prtp-today .prses[data-s="evening"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
 });
-// a session left running (Home in the bottom bar leaves it so) does not change that: on Home, Print prints what Home shows
+// a session left running (the phone's Back to Home leaves it so) does not change that: on Home, Print prints what Home shows
 test("on Home, Print prints the session Home shows, not one still being read @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi, { now: MORNING });
   await rows(page).first().locator("a.tgo").click();
   await expect(page.locator("html")).not.toHaveAttribute("data-hv", "1");
-  await page.locator("#ash").click();
+  await page.goBack();
   await expect(page.locator("#tdy")).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
   await pickTab(page, "evening");
   await page.locator("#asp").click();
   await expect(page.locator("#prtab-today")).toHaveAttribute("aria-selected", "true");
