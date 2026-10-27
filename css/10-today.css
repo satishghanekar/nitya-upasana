@@ -342,6 +342,13 @@
     display: flex;
     flex-direction: column;
   }
+  /* no scroll anchoring while a session runs: the browser picks its anchor in the page's order, not the session's, and
+     when a text above grows (fonts, line breaks) it could throw the reader thousands of pixels back, onto another
+     text (a phone, the morning's last title tapped: the Shri Sukta shown instead of the Mantra Pushpanjali) */
+  :root[data-run="1"] {
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- Safari has no scroll anchoring to turn off */
+    overflow-anchor: none;
+  }
 }
 /* One text at a time: only the text being read (.solo, js/features/history.js) is
    shown, on every screen, from the Library or search (a session runs on instead: above). The next text never runs
