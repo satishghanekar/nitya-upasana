@@ -16,9 +16,11 @@ import { numberStanzas } from "../text/stanza-numbers.js";
 import { breakLines } from "../text/line-breaks.js";
 import { leadOrder } from "../features/bars.js";
 import { dv } from "../core/words.js";
+import { shelvesNow } from "../features/library.js";
 
 /**
- * Every piece, in reading order, and the Library categories they are listed under in the printed contents.
+ * Every piece, in the Library's order, and the Library's categories (as this phone lists them) they are listed under in
+ * the printed contents.
  * @param {string[] | null} [ids]  only these texts (their Library ids), still in reading order; without it (null), every
  *   text. A list naming no text in the Library (empty, or an old print link's) prints nothing, never everything
  * @param {string} [lang]  the language printed (P.lang's values: mr, en or both); without it, as the page shows it
@@ -35,12 +37,23 @@ export function compose(ids, lang, ordered) {
   // each category's texts numbered 1, 2, 3… in the printout (as its contents list them), whatever their numbers in the
   // whole Library: three texts printed from two categories read 1 | 1, 2, never 1 | 1, 3 (Satish, 2026-10-22). The
   // copy only: CONTENT keeps the Library's numbers
-  var cats = C.categories.map(function (/** @type {any} */ g) {
+  // the categories as this phone's Library lists them (names the family changed, texts moved), in its order
+  /** @type {Record<string, any>} */
+  var byText = {};
+  C.categories.forEach(function (/** @type {any} */ g) {
+    g.pieces.forEach(function (/** @type {any} */ p) {
+      byText[p.text] = p;
+    });
+  });
+  var cats = shelvesNow().map(function (sh) {
     return {
-      name: g.name,
-      pieces: g.pieces
+      name: sh.category.name,
+      pieces: sh.texts
+        .map(function (t) {
+          return byText[t.id];
+        })
         .filter(function (/** @type {any} */ p) {
-          return !ids || ids.indexOf(p.text) >= 0;
+          return p && (!ids || ids.indexOf(p.text) >= 0);
         })
         .map(function (/** @type {any} */ p, /** @type {number} */ i) {
           var n = i + 1;
