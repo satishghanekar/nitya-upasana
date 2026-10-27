@@ -26,7 +26,7 @@ import { dayPanchang, monthPanchang } from "../core/panchang.js";
 import { festivalsBetween, festivalsFor, festivalsInMonth } from "../core/festivals.js";
 import { holidaysBetween, holidaysInMonth } from "../core/holidays.js";
 import { loaded } from "../text/load.js";
-import { skLoc } from "./sankashti.js";
+import { skLang, skLoc } from "./sankashti.js";
 import { openPicture } from "./picture-viewer.js";
 import { setC } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
@@ -1403,4 +1403,20 @@ export function init() {
   // a new place (the pin, js/features/sankashti.js useMyLocation)
   document.addEventListener("nitya-place", homeSoon);
   homeSoon();
+  midnight();
+}
+
+// A page left open on screen (Keep screen on, an iPad on a stand): at midnight the Home line, the festival line, This week
+// and the Sankashti line move to the new day with the date (js/features/today-card.js has its own timer)
+/** @type {ReturnType<typeof setTimeout> | undefined} */
+var midT;
+function midnight() {
+  var n = new Date(),
+    m = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0, 1);
+  clearTimeout(midT);
+  midT = setTimeout(function () {
+    homeSoon();
+    skLang();
+    midnight();
+  }, m.getTime() - n.getTime());
 }

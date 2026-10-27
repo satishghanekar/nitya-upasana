@@ -3,7 +3,7 @@
 // to Home. The bottom bar's search button and the one at the end of each piece open the same page.
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { openSite, SETUPS, axeScan, axeEveryTheme, noViolations, useTestRoutine } from "./helpers.mjs";
+import { openSite, settle, SETUPS, axeScan, axeEveryTheme, noViolations, useTestRoutine } from "./helpers.mjs";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 // the bundled categories that have texts, in order (an empty one is left out of the list)
@@ -541,3 +541,34 @@ test("axe: the PDFs tab, in every theme; 44px tabs", async ({ page }) => {
   for (const b of await page.locator("#jtb button").all()) expect((await b.boundingBox()).height).toBeGreaterThanOrEqual(44);
   expect(await axeEveryTheme(page, "#jump")).toEqual(noViolations());
 });
+
+// A setting changed in Settings shows the Library as a reload with it does: the English style, Kannada letters (the
+// numbers too), the menu language (the Books tab's "online only")
+for (const [name, set] of [
+  ["English in the scholarly spelling", (page) => page.locator("#sl1s").selectOption("en:iast")],
+  ["Kannada letters", (page) => page.locator("#sl1s").selectOption("kn")],
+  ["Marathi menus", async (page) => {
+    await page.locator('#spv button[data-v="screen"]').click();
+    await page.locator('#su button[data-v="mr"]').click();
+  }],
+]) {
+  test(`${name}, changed in Settings: the Library as after a reload`, async ({ page }) => {
+    await withPdfs(page);
+    await openSite(page, SETUPS.marathi, { now: EVENING });
+    const library = async () => {
+      await page.locator("#hm").click();
+      await page.locator("#jtb button").nth(1).click();
+      await expect(page.locator("#jl a.pdf .pss").first()).not.toBeEmpty();
+      const t = await page.locator("#jl").evaluate((jl) => jl.textContent.replace(/\s+/g, " "));
+      await page.locator("#jtb button").nth(0).click();
+      return t;
+    };
+    await page.locator("#aa").click();
+    await set(page);
+    await page.locator("#xc").click();
+    const live = await library();
+    await page.reload();
+    await settle(page);
+    expect(live).toEqual(await library());
+  });
+}

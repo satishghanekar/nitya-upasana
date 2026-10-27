@@ -115,6 +115,8 @@ export function init() {
     });
     titlesIn(sec, ia);
   });
+  // the titles already on the page (the Library's list, built before this) in the chosen style
+  titlesSet();
 }
 
 // A title's text (the texts write them as HTML)

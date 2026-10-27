@@ -59,6 +59,31 @@ test("a few texts: their own contents @chromium-only", async ({ browser }) => {
   await context.close();
 });
 
+test("the contents follow the Library as this phone lists it: a renamed category, a text moved @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await openSite(page, SETUPS.marathi);
+  await page.locator("#hm").click();
+  await page.locator("#lbb").click();
+  await page.locator('.lbe[data-id="aarti"]').click();
+  await page.locator("#lbmr").fill("आरत्या");
+  await page.locator("#lben").fill("Aartis");
+  await page.locator("#lbsave").click();
+  await page.locator("#lbs-aarti-ghalin-lotangan").selectOption("vedic-chant");
+  await page.locator("#lbx").click();
+  // (the categories are kept on this phone, so a print link opened now prints with them)
+  await page.goto("./?print=as&t=vedic-chant-atharvashirsha,aarti-durge-durghat-bhari,aarti-ghalin-lotangan");
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
+  await page.emulateMedia({ media: "print" });
+  const pv = await readPrintView(page);
+  expect(pv.toc.map((t) => t.id)).toEqual(["p1", "a8", "a3"]);
+  expect(pv.pieces).toEqual(["p1", "a8", "a3"]);
+  await expect(page.locator("#pv .pvcat")).toHaveText([/वैदिक मंत्र/, /आरत्या/]);
+  expect(await page.locator("#pv .pvtoc .pvnum").allTextContents()).toEqual(["१.", "२.", "१."]);
+  await context.close();
+});
+
 // A print link naming only texts since removed: never the whole Library; What opens to choose again, and says why
 test("a print link naming no text in the Library prints nothing, and opens What @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });

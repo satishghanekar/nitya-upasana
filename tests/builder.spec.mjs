@@ -417,3 +417,46 @@ test("two tabs: a routine changed in one is kept when the other then changes a s
   expect(await homeIds(page)).not.toContain("aarti-sukhkarta");
   await other.close();
 });
+
+test("on a computer, editing the routine while reading a session: the reading page and Next follow the new list", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await openSite(page, SETUPS.marathi, { now: MON_EVENING });
+  await rows(page).first().locator("a.tgo").click();
+  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
+  const before = await homeIds(page);
+  await openBuilder(page);
+  await btn(page, before[1], "rm").click();
+  await page.locator("#rbk").click();
+  const after = await homeIds(page);
+  expect(after).toEqual(before.filter((id) => id !== before[1]));
+  // the session being read is the new list, in its order, and Next skips the text taken out
+  const hrefs = await rows(page).evaluateAll((l) => l.map((x) => x.querySelector("a.tgo").getAttribute("href").replace(/^.*#/, "")));
+  const inrun = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll("#main > .ash.inrun")]
+        .sort((a, b) => +a.style.order - +b.style.order)
+        .map((x) => x.id),
+    );
+  await expect.poll(inrun).toEqual(hrefs);
+  await page.locator("#asn").click();
+  await expect(page).toHaveURL(new RegExp("#" + hrefs[1] + "$"));
+});
+
+test("a 320px phone: the builder's buttons stay on the screen, in English and Marathi menus", async ({ browser }) => {
+  // the bundled routine (its long titles widened the builder), on a phone that honours the page's viewport
+  const context = await browser.newContext({ viewport: { width: 320, height: 568 }, isMobile: true, hasTouch: true });
+  const page = await context.newPage();
+  for (const setup of ["marathi", "marathi-menus"]) {
+    await openSite(page, SETUPS[setup], { now: MON_EVENING });
+    await openBuilder(page);
+    const out = await page.evaluate(() =>
+      [...document.querySelectorAll("#rtb button, #rtb [role=radio]")]
+        .filter((b) => b.offsetParent !== null)
+        .filter((b) => b.getBoundingClientRect().right > innerWidth + 0.5)
+        .map((b) => b.id || b.textContent.trim()),
+    );
+    expect(out, setup).toEqual([]);
+    await page.locator("#rbk").click();
+  }
+  await context.close();
+});
