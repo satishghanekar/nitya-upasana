@@ -59,6 +59,20 @@ test("a few texts: their own contents @chromium-only", async ({ browser }) => {
   await context.close();
 });
 
+// A print link naming only texts since removed: never the whole Library; What opens to choose again, and says why
+test("a print link naming no text in the Library prints nothing, and opens What @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await openSite(page, SETUPS.english, { hash: "?print=as&t=no-such-text,gone-too" });
+  await expect(page.locator("#prm")).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator("#fl")).toHaveText("The texts chosen are no longer in the Library: choose again.");
+  await expect(page.locator("#prgp")).toBeDisabled();
+  expect(await page.evaluate(() => window.__printed)).toBe(0);
+  expect(await page.locator("#pv .pvs").count()).toBe(0);
+  await context.close();
+});
+
 // Printing from the browser's own menu (Ctrl/⌘ P, or Share → Print on a phone) doesn't go through the pop-up: the
 // page builds the print view in "beforeprint", the whole Library
 test("browser menu print gives the whole Library @chromium-only", async ({ browser }) => {
@@ -949,6 +963,10 @@ test("iPhone Home Screen app: Open in Safari carries a routine printout @chromiu
   await page.locator("#prsf").click();
   const href = await page.locator("#prsf").getAttribute("data-to");
   expect(href).toMatch(/&r=/);
+  // of the routine, just what is printed: Evening was taken off, so the link has none of its texts
+  const carried = JSON.parse(decodeURIComponent(/&r=([^&]*)/.exec(href)[1])).r;
+  expect(carried.evening).toEqual({ mode: "fixed", texts: [] });
+  expect(carried.afternoon).toEqual({ mode: "fixed", texts: [] });
   // Safari: a fresh browser, with the default routine (the link brings the person's own)
   const sf = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const sp = await sf.newPage();

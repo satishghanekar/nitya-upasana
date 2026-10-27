@@ -1,7 +1,7 @@
 // Settings (P), loaded from this device: the person reading's, with the device's
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { active, saveSettings, start } from "../store/store.js";
+import { active, flush, saveSettings, start } from "../store/store.js";
 import { TICKS_KEY } from "./ticks.js";
 
 export var P;
@@ -24,6 +24,11 @@ export function init() {
   // written again: settings from an older version (now upgraded), the first visit with profiles, or a person whose
   // settings came from IndexedDB rather than from the boot copy
   if (r.first || r.saveBoot || JSON.stringify(boot()) !== JSON.stringify(saved)) save();
+  // the settings wait a moment before IndexedDB has them: written at once when the page is hidden or closed
+  addEventListener("pagehide", flush);
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") flush();
+  });
 }
 
 /** @param {string} k */

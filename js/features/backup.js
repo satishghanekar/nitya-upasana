@@ -10,7 +10,8 @@
 // - The browser is asked to keep the data (navigator.storage.persist()) after a backup, a restore or a new person:
 //   not at start-up, because some browsers ask the reader first.
 // - A gentle reminder on the home page (#bkn) when no backup was saved for 30 days (or never, 14 days after the first
-//   visit), with Not now; and a warning (#stw) when this browser can't save here at all (IndexedDB failed).
+//   visit), with Not now; and a warning (#stw) when this browser can't save here (IndexedDB could not be opened, or a
+//   write to it failed: until one lands again).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { P, dfs } from "../core/state.js";
@@ -19,7 +20,7 @@ import { ovDone, ovPush } from "./history.js";
 import { applyPrefs } from "./profiles.js";
 import { refresh as refreshLibrary } from "./library.js";
 import { describeRestore, fileName, makeBackup, needsReminder, parseBackup, serialise } from "../store/backup.js";
-import { exportData, getMeta, kind, list, markBackup, onChange, restore, snooze } from "../store/store.js";
+import { exportData, getMeta, kind, list, markBackup, onChange, onSaveProblem, restore, saveFailed, snooze } from "../store/store.js";
 import { MONTHS, dv, esc } from "../core/words.js";
 
 /** @typedef {import("../store/backup.js").Payload} Payload */
@@ -57,6 +58,7 @@ const W = {
     ok: "OK",
     done: "Restored from the backup file",
     bad: "This file can't be restored",
+    unsaved: "The backup could not be saved on this phone. Try again, or keep the backup file.",
     problems: {
       "not-json": "This is not a Nitya Upasana backup file (.nitya).",
       "not-nitya": "This is not a Nitya Upasana backup file (.nitya).",
@@ -99,6 +101,7 @@ const W = {
     ok: "ठीक आहे",
     done: "बॅकअप फाइलमधून परत आणले",
     bad: "ही फाइल वापरता येत नाही",
+    unsaved: "बॅकअप या फोनवर जतन होऊ शकला नाही. पुन्हा प्रयत्न करा, किंवा बॅकअप फाइल जपून ठेवा.",
     problems: {
       "not-json": "ही नित्य उपासनेची बॅकअप फाइल (.nitya) नाही.",
       "not-nitya": "ही नित्य उपासनेची बॅकअप फाइल (.nitya) नाही.",
@@ -311,21 +314,32 @@ function doRestore() {
   var data = pendingData;
   if (!data) return closeDialog();
   pendingData = null;
-  restore(data).then(function (prefs) {
+  /** @param {any} prefs @param {boolean} saved */
+  function shown(prefs, saved) {
     applyPrefs(prefs);
     refreshLibrary();
     persist();
     closeDialog();
-    flash(W.mr.done, W.en.done, 2500);
+    if (saved) flash(W.mr.done, W.en.done, 2500);
+    else flash(W.mr.unsaved, W.en.unsaved, 6000);
     notes();
-  });
+  }
+  restore(data).then(
+    function (prefs) {
+      shown(prefs, true);
+    },
+    // in place for this visit, but not kept on this phone: the warning (#stw) stays until a write lands
+    function (/** @type {any} */ e) {
+      shown(e.prefs, false);
+    },
+  );
 }
 
 // ---- the notes on the home page and the lines in Settings ----
 export function notes() {
   var w = words(),
     m = getMeta(),
-    mem = kind() === "memory",
+    mem = kind() === "memory" || saveFailed(),
     remind = !mem && needsReminder(m, new Date());
   el("stw").hidden = !mem;
   el("stw2").hidden = !mem;
@@ -340,6 +354,7 @@ export function init() {
   if (!dlg) return;
   notes();
   onChange(notes);
+  onSaveProblem(notes);
   // the menu language may change: the notes follow it
   document.addEventListener("click", function (e) {
     if (/** @type {HTMLElement} */ (e.target).closest && /** @type {HTMLElement} */ (e.target).closest("#su")) setTimeout(notes);

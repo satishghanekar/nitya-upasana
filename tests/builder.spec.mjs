@@ -147,12 +147,29 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await expect(page.locator('#rtwk [aria-checked="true"]')).toHaveAccessibleName("Tuesday 20");
 });
 
-test("same every day again: the day's list for every day; Escape closes the builder", async ({ page }) => {
+test("same every day again: asked first when the days differ (Cancel keeps them); the day's list for every day; Escape closes the builder", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MON_EVENING });
   await openBuilder(page);
+  // every day alike: no question
+  await page.locator('#rtmd [data-v="weekday"]').click();
+  await page.locator('#rtmd [data-v="fixed"]').click();
+  await expect(page.locator("#rtfx")).toBeHidden();
+  await expect(page.locator('#rtmd [aria-checked="true"]')).toHaveText("Same every day");
   await page.locator('#rtmd [data-v="weekday"]').click();
   await btn(page, "aarti-sukhkarta", "rm").click();
+  // Monday differs now: asked first; Cancel keeps each day's list
   await page.locator('#rtmd [data-v="fixed"]').click();
+  await expect(page.locator("#rtfxt")).toHaveText("Use Monday’s list every day? The other days’ own lists will be removed.");
+  await expect(page.locator("#rtfxo")).toBeFocused();
+  await page.locator("#rtfxx").click();
+  await expect(page.locator("#rtfx")).toBeHidden();
+  await expect(page.locator('#rtmd [aria-checked="true"]')).toHaveText("Different by weekday");
+  await expect(page.locator('#rtmd [data-v="weekday"]')).toBeFocused();
+  // the arrows ask too, rather than choosing at once
+  await page.keyboard.press("ArrowLeft");
+  await expect(page.locator("#rtfx")).toBeVisible();
+  await expect(page.locator('#rtmd [aria-checked="true"]')).toHaveText("Different by weekday");
+  await page.locator("#rtfxo").click();
   await expect(page.locator("#rtlive")).toHaveText("Monday’s list is now used every day");
   await expect(page.locator("#rtwk")).toBeHidden();
   await expect(page.locator("#rtsum")).toHaveText("Evening, every day · 9 texts");
@@ -376,4 +393,27 @@ test("the sheet keeps Tab inside it", async ({ page, browserName }) => {
     await page.keyboard.press("Tab");
     expect(await page.evaluate(() => !!document.activeElement.closest("#tpk"))).toBe(true);
   }
+});
+
+// The site open in two tabs: a routine changed in one is read in by the other (Home follows), and a setting changed
+// there afterwards never writes the older routine back over it
+test("two tabs: a routine changed in one is kept when the other then changes a setting", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: MON_EVENING });
+  const other = await page.context().newPage();
+  await useTestRoutine(other);
+  await openSite(other, SETUPS.marathi, { now: MON_EVENING });
+  expect(await homeIds(other)).toContain("aarti-sukhkarta");
+  await openBuilder(page);
+  await btn(page, "aarti-sukhkarta", "rm").click();
+  await page.keyboard.press("Escape");
+  // the other tab reads it in, and Home there follows
+  await expect.poll(() => homeIds(other)).not.toContain("aarti-sukhkarta");
+  // a setting changed in the other tab (A+ in Settings), saved a moment later
+  await other.locator("#aa").click();
+  await other.locator("#lg").click();
+  await other.waitForTimeout(800);
+  await page.reload();
+  await settle(page);
+  expect(await homeIds(page)).not.toContain("aarti-sukhkarta");
+  await other.close();
 });
