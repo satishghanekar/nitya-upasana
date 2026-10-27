@@ -54,11 +54,29 @@ export function LK(slot) {
   return slot === "mr" ? P.ind : slot;
 }
 
+// The piece just gone to (Next, a title on Home, the Library) and where the page then stood: until the reader
+// scrolls, that piece is the one being read, even when it is too short to reach the top bar (the last text of a
+// session on an iPad or a computer, where the page ends below it)
+/** @type {HTMLElement | null} */
+var aimEl = null,
+  aimY = 0;
+/** @param {HTMLElement | null} el */
+export function aimAt(el) {
+  aimEl = el;
+  aimY = scrollY;
+}
+
 // The piece being read: the last one whose top has passed just under the top bar
 export function cur() {
   var c = null,
     y = 90,
     best = -Infinity;
+  if (aimEl) {
+    // (the page may get shorter just after, pulling the scroll up with it at its end: still where it was left)
+    var end = scrollY >= document.documentElement.scrollHeight - innerHeight - 2 && aimY >= scrollY;
+    if ((Math.abs(scrollY - aimY) < 2 || end) && aimEl.offsetParent !== null) return aimEl;
+    aimEl = null;
+  }
   // the lowest piece whose top has reached the top bar (a session shows its texts in session order, which may not be
   // the page's: css/10-today.css)
   secs.forEach(function (x) {
