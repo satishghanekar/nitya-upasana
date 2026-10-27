@@ -146,6 +146,30 @@ export function cleanRoutine(r) {
 }
 
 /**
+ * Just the days and sessions a routine printout shows (the print link to Safari carries no more of the routine)
+ * @param {any} routine
+ * @param {number[]} days  0 Sunday … 6 Saturday
+ * @param {string[]} sessions
+ * @returns {Routine}
+ */
+export function routinePart(routine, days, sessions) {
+  var r = editable(routine, null);
+  SESSIONS.forEach(function (s) {
+    var p = /** @type {SessionPlan} */ (r[s]);
+    if (sessions.indexOf(s) < 0) r[s] = { mode: "fixed", texts: [] };
+    else if (p.mode === "weekday") {
+      /** @type {Partial<Record<DayKey, string[]>>} */
+      var kept = {};
+      days.forEach(function (d) {
+        if (d >= 0 && d <= 6) kept[DAY_KEYS[d]] = textsFor(r, d, s);
+      });
+      r[s] = { mode: "weekday", days: kept };
+    }
+  });
+  return r;
+}
+
+/**
  * A person's routine to edit: their own, or a copy of the default (content/routines.json) when they have none
  * @param {Routine | null | undefined} mine
  * @param {Routine | null | undefined} fallback
