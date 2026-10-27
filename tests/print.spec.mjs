@@ -545,8 +545,13 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   }));
   expect(pv.pieces.length).toBe(2);
   expect(pv.toc).toBe(2);
-  // the browser's own menu, after that printout, prints the whole Library again
+  // Safari laying the page out again after afterprint (its print sheet) still prints the two
   await page.evaluate(() => dispatchEvent(new Event("afterprint")));
+  await page.evaluate(() => dispatchEvent(new Event("beforeprint")));
+  expect(await page.evaluate(() => document.querySelectorAll("#pv .pvs").length)).toBe(2);
+  // the browser's own menu, once the reader is back on the page, prints the whole Library again
+  await page.evaluate(() => dispatchEvent(new Event("afterprint")));
+  await page.locator("body").dispatchEvent("pointerdown");
   await page.evaluate(() => dispatchEvent(new Event("beforeprint")));
   expect(await page.evaluate(() => document.querySelectorAll("#pv .pvs").length)).toBe(TEXT_COUNT);
   // and the builder keeps the two ticked
@@ -639,7 +644,7 @@ test("print builder: Open in Safari carries the texts ticked @chromium-only", as
 });
 
 // Print in the bottom bar, while reading a session: the builder opens at What, on the Today tab with that session
-// chosen (just its texts ticked), Next › going on to How. Today offers each session and all of today, one tap each (the test routine:
+// chosen, Next › going on to How. Today offers each session and all of today, one tap each (the test routine:
 // Morning the Atharvashirsha, Afternoon empty, Evening ten aartis; 10 am, so Home shows Morning).
 test("print builder: the bottom bar's Print while reading a session, and the Today tab @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
@@ -661,13 +666,19 @@ test("print builder: the bottom bar's Print while reading a session, and the Tod
   await expect(page.locator('.prses[data-s="morning"]')).toHaveAttribute("aria-pressed", "false");
   await page.locator('.prses[data-s="all"]').click();
   await expect(page.locator("#prsum span").first()).toHaveText(`${TEST_AARTIS.length + 1} texts`);
-  // the Texts tab shows the same ticks
+  // the Library tab keeps its own ticks, none when opened at a session: one text ticked there prints on its own
   await page.locator("#prtab-texts").click();
   await expect(page.locator("#prtp-texts")).toBeVisible();
   await expect(page.locator("#prtp-today")).toBeHidden();
-  expect(await page.locator("#prwl .tpkl input:checked").evaluateAll((l) => l.map((x) => x.value).sort())).toEqual(["vedic-chant-atharvashirsha", ...TEST_AARTIS].sort());
-  // Evening prints just its texts
+  await expect(page.locator("#prwl .tpkl input:checked")).toHaveCount(0);
+  await expect(page.locator("#prgp")).toBeDisabled();
+  await page.locator("#prwl .tpkl input").first().check();
+  await expect(page.locator("#prwl .tpkl input:checked")).toHaveCount(1);
+  await expect(page.locator("#prsum span").first()).not.toHaveText(/texts$/);
+  // back on Today, the session chosen is still the choice; Evening prints just its texts, and Safari laying the page
+  // out again after afterprint (its print sheet) still prints them, not the whole Library
   await page.locator("#prtab-today").click();
+  await expect(page.locator('.prses[data-s="all"]')).toHaveAttribute("aria-pressed", "true");
   await page.locator('.prses[data-s="evening"]').click();
   await page.locator("#prnx").click();
   await page.locator("#prgp").click();
@@ -675,6 +686,25 @@ test("print builder: the bottom bar's Print while reading a session, and the Tod
   if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
   expect(await page.evaluate(() => document.querySelectorAll("#pv .pvs").length)).toBe(TEST_AARTIS.length);
+  expect(
+    await page.evaluate(() => {
+      dispatchEvent(new Event("afterprint"));
+      dispatchEvent(new Event("beforeprint"));
+      const n = document.querySelectorAll("#pv .pvs").length;
+      dispatchEvent(new Event("afterprint"));
+      return n;
+    }),
+  ).toBe(TEST_AARTIS.length);
+  // once the reader is back on the page, the browser's own Print prints the whole Library again
+  await page.locator("body").dispatchEvent("pointerdown");
+  expect(
+    await page.evaluate(() => {
+      dispatchEvent(new Event("beforeprint"));
+      const n = document.querySelectorAll("#pv .pvs").length;
+      dispatchEvent(new Event("afterprint"));
+      return n;
+    }),
+  ).toBeGreaterThan(TEST_AARTIS.length + 1);
   await context.close();
 });
 
