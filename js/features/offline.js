@@ -3,7 +3,9 @@
 
 import { flash, onPiece } from "../core/page.js";
 
-var FONTS, IMAGES, hd, l1, m1, m2, ofb, offv, OFV, CACHE, me, upd, updv, UPD, PARTS, ofSaved;
+var FONTS, IMAGES, hd, l1, m1, m2, ofb, offv, OFV, CACHE, me, upd, updv, UPD, PARTS, ofSaved, fill;
+// whether every file is in the saved copy: null until known, false while one is missing
+var whole = null;
 
 export function init() {
   // The cache name below must match the one in sw.js; change both on every deploy.
@@ -85,7 +87,7 @@ export function init() {
     addEventListener("offline", crNet);
     ofSet(navigator.onLine === false ? "off" : "idle");
     addEventListener("online", function () {
-      if (offv.getAttribute("data-s") === "off") ofSet("idle");
+      if (offv.getAttribute("data-s") === "off") ofSet(whole === false ? "save" : "idle");
       if (upd.getAttribute("data-s") === "off") updSet("");
     });
     updSet("");
@@ -165,40 +167,52 @@ export function init() {
     };
     if ("serviceWorker" in navigator) {
       // The badge shows straight away. On a first visit (no service worker in charge yet) it says "Saving for offline…"
-      // while the files are saved; it never waits more than 8 s, because some phones are slow to report back.
+      // while the files are saved. "Offline ready" only once every file is in the saved copy: a file that could not be
+      // saved (a weak connection) is tried again when the internet is back or the page is shown again, and until then
+      // the badge keeps saying "Saving for offline…" (sw.js saves the same files, but goes on without one that fails).
       ofSaved = function () {
+        whole = true;
         if (offv.getAttribute("data-s") !== "save") return;
         ofSet("idle");
         flash("ऑफलाइन वापरासाठी तयार", "Ready to use offline");
       };
-      if (!navigator.serviceWorker.controller && navigator.onLine !== false) {
-        ofSet("save");
-        setTimeout(ofSaved, 8000);
-      }
+      if (!navigator.serviceWorker.controller && navigator.onLine !== false) ofSet("save");
+      var files = PARTS.concat(FONTS, IMAGES),
+        filling = false;
+      // Keep the page, its parts, every font file and the pictures (each one not saved yet), then say so
+      fill = function () {
+        if (filling || whole || !("caches" in window) || navigator.onLine === false) return;
+        filling = true;
+        caches
+          .open(CACHE)
+          .then(function (c) {
+            c.add(new Request("./", { cache: "reload" })).catch(function () {});
+            return Promise.all(
+              files.map(function (u) {
+                return c.match(u).then(function (h) {
+                  return h || c.add(u);
+                });
+              }),
+            );
+          })
+          .then(ofSaved, function () {
+            whole = false;
+            if (offv.getAttribute("data-s") !== "off") ofSet("save");
+          })
+          .then(function () {
+            filling = false;
+          });
+      };
+      addEventListener("online", fill);
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") fill();
+      });
       navigator.serviceWorker
         .register("sw.js")
         .then(function () {
           return navigator.serviceWorker.ready;
         })
-        .then(function () {
-          if (!("caches" in window)) return;
-          caches.open(CACHE).then(function (c) {
-            // Keep the page, its parts, every font file and the pictures, then show the offline badge (sw.js caches the same files)
-            var done = ofSaved;
-            c.add(new Request("./", { cache: "reload" })).catch(function () {});
-            Promise.all(
-              PARTS.concat(FONTS, IMAGES).map(function (u) {
-                return c.match(u).then(function (h) {
-                  return h || c.add(u);
-                });
-              }),
-            )
-              .then(done)
-              .catch(function () {
-                done();
-              });
-          });
-        })
+        .then(fill)
         .catch(function () {});
     }
   }

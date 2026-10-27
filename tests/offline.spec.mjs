@@ -40,6 +40,30 @@ test("works offline after the first visit @chromium-only", async ({ page, contex
   await context.setOffline(false);
 });
 
+// A file that could not be saved on the first visit (a weak connection): never "Offline ready" while it is missing;
+// it is tried again when the internet is back, and then the badge and the note say ready
+test("offline ready only once every file is saved @chromium-only", async ({ page, context }) => {
+  await page.clock.setFixedTime(FIXED_NOW);
+  await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [PREFS_KEY, JSON.stringify(BASE_PREFS)]);
+  const block = (r) => r.abort();
+  await context.route("**/picture-sunset.webp", block);
+  await page.goto("./");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.locator("#aa").click();
+  await page.locator('#spv button[data-v="more"]').click();
+  // the other files are saved, the picture is not: still saving
+  await expect
+    .poll(() => page.evaluate(async () => (await caches.open(document.querySelector('meta[name="version"]').content)).keys().then((k) => k.length)), { timeout: 20_000 })
+    .toBeGreaterThan(10);
+  await page.waitForTimeout(1000);
+  await expect(page.locator("#offv")).toHaveAttribute("data-s", "save");
+  // the internet back: the picture is saved, and the site is ready offline
+  await context.unroute("**/picture-sunset.webp", block);
+  await page.evaluate(() => dispatchEvent(new Event("online")));
+  await expect(page.locator("#offv")).toHaveAttribute("data-s", "idle", { timeout: 20_000 });
+  await expect(page.locator("#fl")).toHaveText("Ready to use offline");
+});
+
 // The version is written twice on purpose: browsers install a new service worker when sw.js itself changes
 // (not every browser re-checks the files it imports), so sw.js must carry it, and the page needs it at start-up.
 test("version in index.html and sw.js match", async ({ request }) => {
