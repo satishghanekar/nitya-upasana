@@ -489,3 +489,34 @@ test("Settings: Reading | Screen | More, one at a time; opens on Reading each ti
   await expect(tab("read")).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#bks")).toBeHidden();
 });
+
+// Settings › Reading on a phone: the preview keeps one height whatever Show is (the cards below never jump), and at
+// 100% every line shows whole, as the pieces fit their lines to the screen; A+ shows the size chosen, running past
+test("Settings preview: one height for every Show choice, whole lines at 100%, A+ as chosen @mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 667 });
+  await openSite(page, SETUPS.english);
+  await page.locator("#aa").click();
+  const pw = page.locator("#sprev .sp-pw");
+  const fits = () =>
+    pw.evaluate((w) => {
+      const r = w.getBoundingClientRect();
+      return [...w.querySelectorAll("p")].every((p) => {
+        const b = p.getBoundingClientRect();
+        return b.left >= r.left && b.right <= r.right && b.bottom <= r.bottom;
+      });
+    });
+  const heights = [];
+  for (const v of ["mr", "en", "both"]) {
+    await page.locator(`#slw [data-v="${v}"]`).click();
+    await pw.waitFor();
+    heights.push(Math.round((await pw.boundingBox()).height));
+    expect(await fits(), `whole lines with Show ${v}`).toBe(true);
+  }
+  expect(new Set(heights).size).toBe(1);
+  // English shown, fitted under the default size; A+ takes the size chosen, not the fit
+  await page.locator('#slw [data-v="en"]').click();
+  const fitted = await pw.evaluate((w) => parseFloat(getComputedStyle(w).getPropertyValue("--fs")));
+  await page.locator("#lg").click();
+  const chosen = await pw.evaluate((w) => parseFloat(getComputedStyle(w).getPropertyValue("--fs")));
+  expect(chosen).toBeGreaterThan(fitted);
+});
