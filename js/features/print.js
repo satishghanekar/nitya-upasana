@@ -48,9 +48,9 @@ export function init() {
       last = "as", // the layout last chosen, carried to Safari
       pn = pm.querySelector(".prn:not(#prw):not(#prv)"),
       busy = false,
-      /** @type {{ m: string, ids: string[] | null, rp: any } | null} the printout being made from the builder */
+      /** @type {{ m: string, ids: string[] | null, rp: any, sp: { session: string } | null } | null} the printout being made from the builder */
       job = null,
-      /** @type {{ m: string, ids: string[] | null, rp: any } | null} the printout just printed, until the reader is back */
+      /** @type {{ m: string, ids: string[] | null, rp: any, sp: { session: string } | null } | null} the printout just printed, until the reader is back */
       again = null,
       seen = false; // the browser has started printing (beforeprint) since the last window.print()
     // the original's language, by the letters it is shown in (P.ind), as the Print pop-up names it: in Marathi
@@ -305,9 +305,14 @@ export function init() {
     // mode: "one" (one language) or "side" (both, side by side). ids: the texts printed (their Library ids), or null for
     // every text. rp: a routine printout (the builder's Routine tab): its texts in routine order, page 1 with the week at
     // a glance, and each text's tag under its title. into: where to write it (the print view, or the preview's page)
-    /** @param {string} mode @param {string[] | null} ids @param {import("../print/what.js").RoutinePlan | null} [rp] @param {HTMLElement} [into] */
-    function build(mode, ids, rp, into) {
-      var src = compose(ids, plang(), !!rp);
+    // sp: a session from Home (the builder's Today tab): its texts in Home's order, the contents headed by the day and
+    // the session
+    /**
+     * @param {string} mode @param {string[] | null} ids @param {import("../print/what.js").RoutinePlan | null} [rp]
+     * @param {HTMLElement} [into] @param {{ session: string } | null} [sp]
+     */
+    function build(mode, ids, rp, into, sp) {
+      var src = compose(ids, plang(), rp ? true : sp ? sessionName(sp.session) : false);
       try {
         write(into || pv, mode, src, rp || null);
       } finally {
@@ -342,6 +347,14 @@ export function init() {
     }
     var DAYS_MR = ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
       DAYS_EN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    // A session's printout heads its contents with today and the session: "Tuesday · Evening" (all of today: the day)
+    /** @param {string} s */
+    function sessionName(s) {
+      var d = new Date().getDay(),
+        mr = /** @type {Record<string, string>} */ (TAG_WORDS.mr.sessions)[s],
+        en = /** @type {Record<string, string>} */ (TAG_WORDS.en.sessions)[s];
+      return { mr: DAYS_MR[d] + (mr ? " · " + mr : ""), en: DAYS_EN[d] + (en ? " · " + en : "") };
+    }
     // A title (a text's, the printout's, a category's) in the language printed: with both, the original's, the English
     // under it, smaller
     /** @param {string} tag @param {string} cls @param {string} mrHtml @param {string} enHtml @param {string} [numMr] @param {string} [numEn] */
@@ -625,6 +638,10 @@ export function init() {
     function rplan() {
       return what.plan();
     }
+    // a session's printout (the Today tab on show), else null
+    function splan() {
+      return what.session();
+    }
     // the bottom bar and the preview follow every choice
     function refresh() {
       summary();
@@ -634,11 +651,11 @@ export function init() {
     // view is (build), into a frame the size of the page, cut off at the page's foot
     var shv = document.getElementById("prsheet"),
       pshown = "";
-    // the first text ticked, in the Library's order (as it prints); a routine's first text
+    // the first text ticked, in the Library's order (as it prints); a routine's or a session's first text
     function first() {
       var c = chosen(),
         f = null;
-      if (rplan()) return c && c.length ? [c[0]] : null;
+      if (rplan() || splan()) return c && c.length ? [c[0]] : null;
       /** @type {any} */ (window).CONTENT.categories.forEach(function (/** @type {any} */ g) {
         g.pieces.forEach(function (/** @type {any} */ p) {
           if (!f && (!c || c.indexOf(p.text) >= 0)) f = p.text;
@@ -890,6 +907,9 @@ export function init() {
         var c = what.routine();
         r = "&r=" + encodeURIComponent(JSON.stringify({ n: rp.name, r: routinePart(rp.routine, rp.days, rp.sessions), w: c.span, d: rp.days, s: c.sessions }));
       }
+      // a session's printout: which, so Safari prints it in this order with its heading
+      var sp = splan();
+      if (sp && sp.session) r += "&o=" + sp.session;
       return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (chosen() ? "&t=" + /** @type {string[]} */ (chosen()).join(",") : "") + r;
     }
     // open: the pop-up is already open (its Back step is in place); tapped: Print now was tapped and the
@@ -905,11 +925,35 @@ export function init() {
       pm.hidden = false;
       bsf.focus();
     }
-    bsf.onclick = function () {
+    function openSafari() {
       var u = "x-safari-" + link(last);
       bsf.setAttribute("data-to", u); // (for the tests)
       location.href = u;
-    };
+    }
+    bsf.onclick = openSafari;
+    // Print in the Home Screen app goes to Safari in the one tap, no pop-up between (Satish, 2026-10-27): iOS 17 and
+    // later open an x-safari-https:// address in Safari. Once the app is left, the builder is closed, so the app is as
+    // it was on coming back; if Safari did not open (an older iOS, or iOS held it back), Open in Safari and Copy link
+    var IOS17 = (function () {
+      var v = /OS (\d+)_\d+(?:_\d+)? like Mac OS X/.exec(navigator.userAgent);
+      return !!v && Number(v[1]) >= 17;
+    })();
+    function toSafariNow() {
+      if (!IOS17) return toSafari(true);
+      var gone = false;
+      function away() {
+        if (document.visibilityState !== "hidden" || gone) return;
+        gone = true;
+        document.removeEventListener("visibilitychange", away);
+        pmClose();
+      }
+      document.addEventListener("visibilitychange", away);
+      openSafari();
+      setTimeout(function () {
+        document.removeEventListener("visibilitychange", away);
+        if (!gone && !pm.hidden) toSafari(true);
+      }, 2000);
+    }
     bcp.onclick = function () {
       var u = link(last);
       try {
@@ -965,8 +1009,9 @@ export function init() {
         flash("निवडलेल्या रचना आता संग्रहात नाहीत: पुन्हा निवडा.", "The texts chosen are no longer in the Library: choose again.", 4000);
         return openPrint({});
       }
-      // the iPhone Home Screen app cannot print: straight to Open in Safari
-      if (iOS && standalone) return toSafari(true);
+      // the iPhone Home Screen app cannot print: straight to Safari (iOS 17 and later open it in the same tap), else
+      // Open in Safari
+      if (iOS && standalone) return toSafariNow();
       pm.hidden = true;
       ovDrop();
       // the chosen button has just been hidden: keyboard focus goes back to Print, not to the top of the page
@@ -974,15 +1019,15 @@ export function init() {
       busy = true;
       if (mode === "as") mode = "one";
       sel = chosen();
-      job = { m: mode, ids: sel, rp: rplan() };
+      job = { m: mode, ids: sel, rp: rplan(), sp: splan() };
       setPage(mode);
-      build(mode, sel, rplan());
+      build(mode, sel, rplan(), undefined, splan());
       pon(mode);
       tryPrint(false);
     }
     // Open the builder: at What with the ticks as last left; with a session (tab "today"), at What on the Today tab with
     // it chosen; with a text, just it ticked and at How (on a phone; ‹ What to print shows the choice)
-    /** @param {{ ids?: string[], tab?: string, from?: HTMLElement | null }} [o] */
+    /** @param {{ ids?: string[], tab?: string, session?: string, from?: HTMLElement | null }} [o] */
     function openPrint(o) {
       o = o || {};
       opener = o.from || document.getElementById("asp");
@@ -1045,7 +1090,7 @@ export function init() {
       // a session is the Today tab's choice, and the Library tab starts with nothing ticked, so a text ticked there
       // prints on its own (not with the session's texts)
       if (o.ids && o.tab === "today") {
-        what.today(o.ids);
+        what.today(o.ids, o.session);
         what.set([]);
       } else if (o.ids) what.set(o.ids);
       what.tab(o.tab || "texts");
@@ -1074,17 +1119,21 @@ export function init() {
       openPrint(/** @type {CustomEvent} */ (e).detail || {});
     });
     // Print in the bottom bar: while reading, the session being read (js/features/today-card.js runIds), else the text
-    // on screen; on Home, the session Home shows. A session opens at What on the Today tab, with it chosen; a text at How
+    // on screen; on Home, the session Home shows, even with a session still being read (Home in the bottom bar leaves it
+    // running). A session opens at What on the Today tab, with it chosen; a text at How
     document.getElementById("asp").onclick = function () {
       var b = document.getElementById("asp"),
-        ids = runIds(),
         sec = cur(),
+        ids = sec ? runIds() : null,
+        s = "",
         t = null;
-      if (!sec && !(ids && ids.length))
-        ids = (todaySessions().filter(function (s) {
-          return s.session === shownSession();
+      if (!sec) {
+        s = shownSession();
+        ids = (todaySessions().filter(function (x) {
+          return x.session === s;
         })[0] || { ids: [] }).ids;
-      if (ids && ids.length) return openPrint({ ids: ids, tab: "today", from: b });
+      }
+      if (ids && ids.length) return openPrint({ ids: ids, tab: "today", session: s, from: b });
       shelvesNow().forEach(function (s) {
         s.texts.forEach(function (x) {
           if (sec && x.sec === sec.id) t = x;
@@ -1112,9 +1161,9 @@ export function init() {
     window.addEventListener("beforeprint", function () {
       seen = true;
       if (!busy) {
-        var j = again || { m: dm(), ids: null, rp: null };
+        var j = again || { m: dm(), ids: null, rp: null, sp: null };
         setPage(j.m);
-        build(j.m, j.ids, j.rp);
+        build(j.m, j.ids, j.rp, undefined, j.sp);
         pon(j.m);
       }
     });
@@ -1139,7 +1188,11 @@ export function init() {
     if (window.PRQ) {
       var mode = window.PRQ;
       window.PRQ = "";
-      what.set(window.PRT || null);
+      // a session from Home: the Today tab with its texts in Home's order (js/render.js reads it)
+      if (window.PRO) {
+        what.today(window.PRT || [], window.PRO);
+        what.tab("today");
+      } else what.set(window.PRT || null);
       // a routine printout (Open in Safari carries it: js/render.js reads it)
       var rr = /** @type {any} */ (window).PRR;
       if (rr && rr.days.length) what.carry({ id: "link", name: rr.name, routine: cleanRoutine(rr.routine) }, { who: "link", span: rr.span, days: rr.days, day: rr.days[0], sessions: rr.sessions });
