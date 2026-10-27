@@ -9,7 +9,7 @@ const IMAGES=SITE_PARTS.images;
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(V).then(c=>c.addAll(['./','manifest.json',...IMAGES,...PARTS,...FONTS].map(x=>new Request(x,{cache:'reload'}))).catch(()=>{})))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 // Same-site files: the page itself, its style and script files and the texts (content/) are fetched fresh when possible
-// (3 s limit, then the saved copy), so the page never runs with an older copy of its parts; everything else is
+// (3 s limit, 1 s for the texts, then the saved copy), so the page never runs with an older copy of its parts; everything else is
 // answered from the saved copy and refreshed in the background. A PDF from the Library's Books tab is kept once it
 // has been opened and from then on always opened from the phone, never downloaded again, until the next version
 // (V) clears the saved copies (the Books tab marks the ones kept, js/features/pdfs.js).
@@ -36,7 +36,9 @@ self.addEventListener('fetch',e=>{
     if(m&&(pdf||u.pathname.includes('/fonts/')))return m; // font files never change; a PDF is kept as first opened
     const net=()=>fetch(nav?key:u.origin+u.pathname,{cache:'no-cache',credentials:'same-origin'}).then(x=>{
       if(c&&x&&x.ok&&!x.redirected)c.put(key,x.clone()).catch(()=>{});return x}).catch(()=>null);
-    if(fresh&&m){const n=net();const x=await wait(n,3000);if(x&&x.ok)return x;done(n);return m}
+    // the texts (content/) wait 1 s, not 3: start-up reads the list and then every text, one wait after the other, so
+    // on a weak connection the page sat hidden for 6 s with every text already saved
+    if(fresh&&m){const n=net();const x=await wait(n,u.pathname.includes('/content/')?1000:3000);if(x&&x.ok)return x;done(n);return m}
     if(m){done(net());return m}
     const x=await net();if(x)return x;
     if(c&&nav){const h=await wait(c.match('./',{ignoreSearch:true}),2000);if(h)return h}

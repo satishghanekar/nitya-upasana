@@ -64,6 +64,31 @@ test("offline ready only once every file is saved @chromium-only", async ({ page
   await expect(page.locator("#fl")).toHaveText("Ready to use offline");
 });
 
+// A weak connection with the site saved: the texts wait 1 s for the network, then come from the saved copy, so the
+// page shows in about 2 s, not the 6 s it took when the list and then the texts each waited 3 s
+test("a weak connection: the saved texts show the page in about 2 s @chromium-only", async ({ page, context }) => {
+  await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [PREFS_KEY, JSON.stringify(BASE_PREFS)]);
+  await page.goto("./");
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller)
+      await new Promise((r) => navigator.serviceWorker.addEventListener("controllerchange", r, { once: true }));
+    const v = document.querySelector('meta[name="version"]').content;
+    for (let i = 0; i < 100; i++) {
+      if ((await (await caches.open(v)).keys()).length > 60) return;
+      await new Promise((r) => setTimeout(r, 100));
+    }
+  });
+  await context.route("**/content/**", async (r) => {
+    await new Promise((x) => setTimeout(x, 5000));
+    await r.continue().catch(() => {});
+  });
+  const t = Date.now();
+  await page.reload();
+  await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+  expect(Date.now() - t).toBeLessThan(3500);
+});
+
 // The version is written twice on purpose: browsers install a new service worker when sw.js itself changes
 // (not every browser re-checks the files it imports), so sw.js must carry it, and the page needs it at start-up.
 test("version in index.html and sw.js match", async ({ request }) => {
