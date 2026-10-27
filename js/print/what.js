@@ -3,10 +3,11 @@
 // lists them (the family's own categories too), a checkbox for each text, search, Select all or Clear for each
 // category and for everything. (No page counts: the browser lays the pages out as it prints, js/features/print.js.)
 // A second tab, Today, offers today's sessions from the reading person's routine (and all of today), one tap each:
-// a tap ticks just that session's texts (P4b).
+// a tap chooses that session (P4b). Today keeps its own choice, apart from the Library's ticks: ticking one text on
+// the Library tab prints that text, not the session as well (Satish, 2026-10-27).
 // A third tab, Routine (P5, mockup 1 panel 2), prints a person's routine: the whole week or one day, the days and the
 // sessions chosen, each text once in routine order with a tag saying when it is said (js/print/select.js). The tab on
-// show is what prints: Texts and Today print the ticks, Routine its own list (plan() gives its page 1 too).
+// show is what prints: Texts its ticks, Today the session chosen, Routine its own list (plan() gives its page 1 too).
 // Ticking changes nothing on the reading page; js/features/print.js reads pick() and plan() when Print is tapped.
 // The words follow the menu language (P.ui); the titles follow the reading languages, as in the routine builder: the
 // first language large, the second under it.
@@ -115,6 +116,8 @@ export function createWhat(el, o) {
     /** @type {string[] | null | undefined} ticks given before the Library was read (a print link), put in place once it is */
     pending,
     tab = "texts",
+    /** @type {string[]} the Today tab's choice: the texts of the session tapped (none at first) */
+    day = [],
     /** @type {RoutineChoice} the Routine tab's choices: whose, the whole week or one day (today at first), the sessions */
     rc = { who: "", span: "week", days: [0, 1, 2, 3, 4, 5, 6], day: new Date().getDay(), sessions: SESSIONS.slice() },
     /** @type {WhatPerson | null} a person a print link carries (Safari keeps its own storage: Open in Safari) */
@@ -143,6 +146,7 @@ export function createWhat(el, o) {
       var r = rplan();
       return r ? r.ids : [];
     }
+    if (tab === "today") return day.filter(known);
     var a = all(),
       on = a.filter(function (t) {
         return !off[t.id];
@@ -153,7 +157,7 @@ export function createWhat(el, o) {
   }
   /** The chosen texts (on the Routine tab, in routine order) */
   function chosen() {
-    if (tab === "routine")
+    if (tab === "routine" || tab === "today")
       return /** @type {WhatText[]} */ (
         /** @type {string[]} */ (pick())
           .map(byId)
@@ -422,13 +426,12 @@ export function createWhat(el, o) {
       })[0] || null
     );
   }
-  /** Whether exactly these texts are ticked @param {string[]} ids */
+  /** Whether these are the texts of the session chosen on the Today tab @param {string[]} ids */
   function same(ids) {
-    var on = chosen();
     return (
-      on.length === ids.length &&
-      on.every(function (t) {
-        return ids.indexOf(t.id) >= 0;
+      day.length === ids.length &&
+      day.every(function (id) {
+        return ids.indexOf(id) >= 0;
       })
     );
   }
@@ -522,7 +525,8 @@ export function createWhat(el, o) {
         x = sessions().filter(function (y) {
           return y.session === at;
         })[0];
-      if (x) set(x.ids);
+      if (x) day = x.ids.slice();
+      sync();
       o.onChange();
       return;
     }
@@ -562,6 +566,11 @@ export function createWhat(el, o) {
     },
     pick: pick,
     set: set,
+    /** The Today tab's choice: a session's texts @param {string[]} ids */
+    today: function (ids) {
+      day = ids.slice();
+      if (el.firstChild) sync();
+    },
     /** What a routine printout holds (the Routine tab on show), else null */
     plan: function () {
       return tab === "routine" ? rplan() : null;
