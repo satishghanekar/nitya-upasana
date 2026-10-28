@@ -41,6 +41,7 @@ export function libTab(v) {
     b.setAttribute("aria-pressed", String(b.dataset.v === v));
   });
   jp.scrollTop = 0;
+  /** @type {HTMLElement} */ (jp.querySelector(".libsc")).scrollTop = 0;
 }
 
 export function init() {
