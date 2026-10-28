@@ -2,7 +2,8 @@
 // The print builder, step 1, What (print redesign P4, PLAN §3.1, mockup 1): the Library's categories as the Library
 // lists them (the family's own categories too), a checkbox for each text, search, Select all or Clear for each
 // category and for everything. (No page counts: the browser lays the pages out as it prints, js/features/print.js.)
-// A second tab, Today, offers today's sessions from the reading person's routine (and all of today), one tap each:
+// A second tab, Today, offers the sessions of the day Home shows from the reading person's routine (and all of that day),
+// one tap each; on another day than today the tab is named by its weekday ("Wednesday"):
 // a tap chooses that session (P4b). Today keeps its own choice, apart from the Library's ticks: ticking one text on
 // the Library tab prints that text, not the session as well (Satish, 2026-10-27). A session prints in Home's order, as
 // one list headed by the day and the session (session() says which), never sorted into the Library's categories.
@@ -14,7 +15,7 @@
 // first language large, the second under it.
 // No init(): js/features/print.js creates it (createWhat) when it starts.
 
-import { esc, lead, num, scr, scrKey, second, ui } from "../core/words.js";
+import { DAYS, esc, lead, num, scr, scrKey, second, ui } from "../core/words.js";
 import { searchKey } from "../features/text-picker.js";
 import { SESSIONS } from "../core/routine.js";
 import { TAG_WORDS, selectRoutine, tagFor, weekGrid, weekOrder } from "./select.js";
@@ -22,7 +23,8 @@ import { TAG_WORDS, selectRoutine, tagFor, weekGrid, weekOrder } from "./select.
 /**
  * @typedef {{ id: string, sec: string, title: string, titleEn: string, language: string }} WhatText
  * @typedef {{ category: { id: string, name: { mr: string, en: string } }, texts: WhatText[] }} WhatShelf
- * @typedef {{ session: string, name: string, ids: string[] }} WhatSession  one of today's sessions and its texts
+ * @typedef {{ session: string, name: string, ids: string[], day?: number, today?: boolean }} WhatSession  one of the
+ *   sessions of the day Home shows and its texts, with that day's weekday and whether it is today
  * @typedef {{ id: string, name: string, routine: import("../core/routine.js").Routine | null }} WhatPerson  a person and
  *   their routine (their own, or the default one)
  * @typedef {{ shelves: () => WhatShelf[], today: () => WhatSession[], people: () => WhatPerson[], me: () => string,
@@ -50,6 +52,10 @@ const W = {
     tabs: { texts: "Library", today: "Today", routine: "Routine" },
     todayInfo: "Tap a session to print its texts.",
     allToday: "All of today",
+    /** @param {string} d the weekday */
+    allDay: function (d) {
+      return "All of " + d;
+    },
     empty: "No texts",
     who: "Whose routine",
     week: "Whole week",
@@ -75,6 +81,10 @@ const W = {
     tabs: { texts: "संग्रह", today: "आज", routine: "दिनक्रम" },
     todayInfo: "सत्र निवडा: त्यातील रचना प्रिंट होतील.",
     allToday: "आजचे सर्व",
+    /** @param {string} d the weekday */
+    allDay: function (d) {
+      return d + "चे सर्व";
+    },
     empty: "एकही रचना नाही",
     who: "कोणाचा दिनक्रम",
     week: "पूर्ण आठवडा",
@@ -121,6 +131,8 @@ export function createWhat(el, o) {
     day = [],
     /** the session they are ("morning", "afternoon", "evening" or "all"; "" when not known) */
     dayS = "",
+    /** @type {number | undefined} and its weekday (the day Home shows; undefined: today) */
+    dayW,
     /** @type {RoutineChoice} the Routine tab's choices: whose, the whole week or one day (today at first), the sessions */
     rc = { who: "", span: "week", days: [0, 1, 2, 3, 4, 5, 6], day: new Date().getDay(), sessions: SESSIONS.slice() },
     /** @type {WhatPerson | null} a person a print link carries (Safari keeps its own storage: Open in Safari) */
@@ -341,7 +353,7 @@ export function createWhat(el, o) {
     el.innerHTML =
       '<div class="prtabs" role="tablist">' +
       TABS.map(function (k) {
-          return '<button type="button" role="tab" id="prtab-' + k + '" data-tab="' + k + '" aria-controls="prtp-' + k + '">' + esc(w.tabs[/** @type {"texts" | "today" | "routine"} */ (k)]) + "</button>";
+          return '<button type="button" role="tab" id="prtab-' + k + '" data-tab="' + k + '" aria-controls="prtp-' + k + '">' + esc(k === "today" ? dayName() || w.tabs.today : w.tabs[/** @type {"texts" | "routine"} */ (k)]) + "</button>";
         })
         .join("") +
       "</div>" +
@@ -381,7 +393,13 @@ export function createWhat(el, o) {
     sync();
   }
 
-  /** Today's sessions with texts, and all of today when more than one has texts */
+  /** The weekday Home shows, in the menu language, or "" when it shows today */
+  function dayName() {
+    var x = o.today()[0];
+    if (!x || x.today !== false || typeof x.day !== "number") return "";
+    return ui() === "mr" ? scr(DAYS.mr[x.day]) : DAYS.en[x.day];
+  }
+  /** The day's sessions with texts, and all of the day when more than one has texts */
   function sessions() {
     var ss = o.today(),
       full = ss.filter(function (x) {
@@ -395,7 +413,8 @@ export function createWhat(el, o) {
           if (ids.indexOf(id) < 0) ids.push(id);
         });
       });
-      ss = ss.concat([{ session: "all", name: whatWords().allToday, ids: ids }]);
+      var dn = dayName();
+      ss = ss.concat([{ session: "all", name: dn ? whatWords().allDay(dn) : whatWords().allToday, ids: ids, day: ss[0].day, today: ss[0].today }]);
     }
     return ss;
   }
@@ -531,6 +550,7 @@ export function createWhat(el, o) {
       if (x) {
         day = x.ids.slice();
         dayS = x.session;
+        dayW = x.day;
       }
       sync();
       o.onChange();
@@ -573,12 +593,13 @@ export function createWhat(el, o) {
     pick: pick,
     set: set,
     /**
-     * The Today tab's choice: a session's texts, in Home's order, and which session (else the one of today's that has
-     * those texts)
-     * @param {string[]} ids @param {string} [s]
+     * The Today tab's choice: a session's texts, in Home's order, which session (else the one of the day's that has
+     * those texts) and its weekday (else today)
+     * @param {string[]} ids @param {string} [s] @param {number} [d]
      */
-    today: function (ids, s) {
+    today: function (ids, s, d) {
       day = ids.slice();
+      dayW = d;
       dayS =
         s ||
         (
@@ -588,9 +609,12 @@ export function createWhat(el, o) {
         ).session;
       if (el.firstChild) sync();
     },
-    /** The session the Today tab prints (Today on show with a session chosen): its texts print in Home's order, else null */
+    /**
+     * The session the Today tab prints (Today on show with a session chosen): its texts print in Home's order, headed by
+     * its day (the weekday, when known), else null
+     */
     session: function () {
-      return tab === "today" && day.length ? { session: dayS } : null;
+      return tab === "today" && day.length ? { session: dayS, day: dayW } : null;
     },
     /** What a routine printout holds (the Routine tab on show), else null */
     plan: function () {

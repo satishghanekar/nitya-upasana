@@ -96,6 +96,9 @@
       // a session from Home (the print builder's Today tab): its texts print in the order given, headed by the session
       var o = /[?&]o=(morning|afternoon|evening|all)(?:&|#|$)/.exec(location.search);
       if (o) window.PRO = o[1];
+      // and its day (the weekday Home showed), for the heading
+      var od = /[?&]od=([0-6])(?:&|#|$)/.exec(location.search);
+      if (od) window.PROD = +od[1];
       // a routine printout (the print builder's Routine tab): whose (name and routine) and the days and sessions;
       // js/features/print.js cleans the routine before using it
       var r = /[?&]r=([^&#]*)/.exec(location.search);

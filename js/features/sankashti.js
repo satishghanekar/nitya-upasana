@@ -13,6 +13,7 @@ import { flash } from "../core/page.js";
 import { P, change } from "../core/state.js";
 import { SK } from "./astronomy.js";
 import { DAYS, MONTHS, dv } from "../core/words.js";
+import { dateKey } from "../core/routine.js";
 
 /** The next Sankashti, worked out once a day for the place (read by js/features/share.js), or null */
 /** @type {{ key: string, list: Sankashti[], ni: number, sel: number } | null} */
@@ -337,13 +338,53 @@ export function skNext() {
   return skCache.list[skCache.ni] || null;
 }
 
-/** The Sankashti line on the home page (#skt): shown on the day only; re-drawn when the day or menu language changes */
+// The day Home shows ("YYYY-MM-DD", or "" for today: skDay()) and its Sankashti, worked out once per place and day
+var skAt = "";
+/** @type {{ key: string, o: Sankashti | null }} */
+var skOnCache = { key: "", o: null };
+
+/**
+ * The Sankashti on a day other than today, or null @param {string} k "YYYY-MM-DD"
+ * @returns {Sankashti | null}
+ */
+function skOn(k) {
+  var L = skLoc();
+  if (!L) return null;
+  var key = L.lat + "," + L.lon + "," + k;
+  if (skOnCache.key !== key) {
+    var p = k.split("-"),
+      mid = new Date(+p[0], +p[1] - 1, +p[2]).getTime(),
+      f = null;
+    try {
+      f = SK.upcoming(mid, L.lat, L.lon, 1)[0] || null;
+    } catch (e) {}
+    skOnCache = { key: key, o: f && Math.round((f.day - mid) / 86400000) === 0 ? f : null };
+  }
+  return skOnCache.o;
+}
+
+/**
+ * Home shows another day ("YYYY-MM-DD"), or today again (""): the Sankashti line follows it (js/features/vedic-calendar.js
+ * homeDay, from ‹ › under the date)
+ * @param {string} k
+ */
+export function skDay(k) {
+  if (k === skAt) return;
+  skAt = k;
+  skRender();
+}
+
+/**
+ * The Sankashti line on the home page (#skt): shown on the day only (on today, or on the day Home shows); re-drawn
+ * when the day or menu language changes
+ */
 export function skRender() {
   var box = document.getElementById("skt");
   if (!box) return;
-  var o = skNext(),
+  var at = skAt && skAt !== dateKey(new Date()) ? skAt : "",
+    o = at ? skOn(at) : skNext(),
     L = skLoc();
-  if (!o || !L || Math.round((o.day - skMid()) / 86400000) !== 0) {
+  if (!o || !L || (!at && Math.round((o.day - skMid()) / 86400000) !== 0)) {
     box.hidden = true;
     box.innerHTML = "";
     return;
@@ -356,7 +397,8 @@ export function skRender() {
     MOON +
     "<span>" +
     '<span class="skp">' +
-    (mr ? (f.ang ? "अंगारकी " : "") + "संकष्टी चतुर्थी आज" : "Sankashti Chaturthi today" + (f.ang ? " (Angaraki)" : "")) +
+    // ("today" only on today)
+    (mr ? (f.ang ? "अंगारकी " : "") + "संकष्टी चतुर्थी" + (at ? "" : " आज") : "Sankashti Chaturthi" + (at ? "" : " today") + (f.ang ? " (Angaraki)" : "")) +
     '</span><span aria-hidden="true"> · </span><span class="skp">' +
     (mr ? "चंद्रोदय <b>" + f.tmr + "</b>" : "Moonrise <b>" + f.ten + "</b>") +
     '</span><span aria-hidden="true"> · </span><span class="skp">' +
@@ -367,7 +409,7 @@ export function skRender() {
 
 /** Re-draw for the menu language and the day (called by apply(), js/features/bars.js) */
 export function skLang() {
-  var k = P.ui + new Date().toDateString() + JSON.stringify(P.loc || null);
+  var k = P.ui + new Date().toDateString() + skAt + JSON.stringify(P.loc || null);
   if (k === skKey) return;
   skKey = k;
   skRender();

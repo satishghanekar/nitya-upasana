@@ -82,6 +82,90 @@
   font: 400 14px/1.35 var(--lat);
   color: var(--muted);
 }
+/* ‹ › under the date (js/features/today-card.js): the day before or after; between them the day's word, greyed on
+   today ("Today") and marked on another day ("Tomorrow", "3 days ago") */
+#tdn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 2px;
+  cursor: default;
+}
+#tdn .tdnb {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--hdrl);
+  border-radius: 50%;
+  background: var(--hdr);
+  color: var(--accent);
+  cursor: pointer;
+}
+#tdn .tdnb:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+#tdn .tdnb:focus-visible,
+#tdbb:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+#tdr {
+  padding: 1px 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--muted);
+  font: 600 14px/1.6 var(--lat);
+}
+#tdn[lang="mr"] #tdr {
+  font-family: var(--body);
+}
+#tdr.on {
+  border-color: var(--accent);
+  background: var(--bg);
+  color: var(--accent);
+}
+/* another day shown: "Showing Wednesday" and Today ›, where This week is on today */
+#tdb[hidden] {
+  display: none;
+}
+#tdb {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 8px 8px 8px 12px;
+  border: 1px dashed var(--accent);
+  border-radius: 12px;
+  background: var(--hdrt);
+  color: var(--ink);
+  font: 400 15px/1.35 var(--lat);
+}
+#tdb[lang="mr"] {
+  font-family: var(--body);
+}
+#tdb b {
+  color: var(--accent);
+}
+#tdbb {
+  flex: none;
+  height: auto;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+  font: 600 15px/1.2 var(--lat);
+  font-family: inherit;
+  cursor: pointer;
+}
 #iconb:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
@@ -542,6 +626,7 @@
   #skt,
   #fst,
   #upw,
+  #tdb,
   #pan,
   #tsc {
     display: none;
@@ -666,6 +751,7 @@
   :root[data-hv="1"] #home > #fst,
   :root[data-hv="1"] #home > #skt,
   :root[data-hv="1"] #home > #upw,
+  :root[data-hv="1"] #home > #tdb,
   :root[data-hv="1"] #home > #pfnt {
     grid-column: 1;
   }
