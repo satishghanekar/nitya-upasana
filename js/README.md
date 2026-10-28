@@ -47,7 +47,7 @@ There is no build step: the browser loads these files as they are.
 | `text/line-breaks.js` | Preferred line breaks |
 | `text/autofit.js` | Auto-fit text size |
 | `core/apply.js` | Current piece (`cur()`; `aimAt()` keeps the piece just gone to as current until the reader scrolls, so a short last text counts), folds and menus |
-| `features/bottom-bar.js` | Bottom bar (#asc): Prev, Home, Print, Aa, Next (Library is in the top bar on every page) |
+| `features/bottom-bar.js` | Bottom bar (#asc): Prev, Home, Library, Aa, Next (Print is in the top bar on every page) |
 | `features/bars.js` | Bars tuck away while reading (CSS: "Bars tuck away while reading"), and apply() |
 | `features/settings-panel.js` | Settings panel: its rows, and its tabs Reading \| Screen \| More (`#spv`, `spTab()`; each `.sp-grp` says its tab in `data-tab`); it opens on Reading each time (`features/overlays.js`), and the reading sheet opens it there too |
 | `features/dhrupad-button.js` | Dhrupad: toggle once / after every stanza, keeping the reader's place (Reading sheet and Settings) |
@@ -59,7 +59,7 @@ There is no build step: the browser loads these files as they are.
 | `features/contents-list.js` | The Library page (`#jump`): its Back button, the list (`#jl`, built by `features/library.js`) that search hides while results show (`clearSearch()`), and the tabs Chants \| Books (पाठ \| पोथी; `#jtb`, `libTab()`) beside Back, shown only when there are PDFs, in place of the title; the Library opens on Chants each time |
 | `features/clicks.js` | Clicks: Library links (data-go) jump to a piece; tapping a verse line highlights it |
 | `features/pinch.js` | Pinch with two fingers to change the text size (the page itself never zooms; on the home page a pinch does nothing) |
-| `text/search.js` | Search across the library: builds the index the first time something is searched, from a copy of every piece made from `CONTENT` (titles, ids, first lines, categories from `features/library.js`, every line in the original and both English spellings) and shows the results: "Texts" ("रचना") first, then "Lines" ("ओळी"), with matches in bold, ↑ ↓ Enter, and the count announced |
+| `text/search.js` | Search across the library: builds the index the first time something is searched, from a copy of every piece made from `CONTENT` (titles, ids, first lines, categories from `features/library.js`, every line in the original and both English spellings) and shows the results: "Texts" ("रचना") first, then "Lines" ("ओळी"), with matches in bold, ↑ ↓ Enter, and the count announced; Recent (`rcShow()`: the last places gone to from here, a text or a line, `P.rc` per person, × and Clear) while the box is empty; the phone keyboard's height as `--kb` on `#jump`, so the box at the foot stays above it |
 | `text/search-core.js` | The search rules (pure, unit-tested in `tests/unit/search.test.mjs`; no `init()`): folding (IAST, svara marks, punctuation, Kannada letters), loose spellings, Devanagari typed matched through its English letters, one typo per four letters, and the ranking (title, id, first line, category, then lines) |
 | `core/startup.js` | Start-up: the page width without the scrollbar, the current piece while scrolling, the highlighted line, and opening the text in the address (or the reading position kept from last time) |
 | `features/picture-viewer.js` | Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move |
@@ -69,7 +69,7 @@ There is no build step: the browser loads these files as they are.
 | `print/select.js` | What a routine printout holds: each text once in routine order (`selectRoutine`), its tag such as “Daily · Morning, Evening” (`tagFor`), and the week at a glance (`weekGrid`). Pure functions, unit-tested (no `init()`: used by `print/what.js` and `features/print.js`) |
 | `features/print.js` | Print: the print builder (`#prm`, What then How, `openPrint()`), the print view (`#pv`, written from the texts in markup of its own: its look is `css/15-print.css`) and printing, Safari for the iPhone Home Screen app (opened in the same tap on iOS 17 and later, else Open in Safari) |
 | `features/share.js` | Share, QR code and the Add to Home Screen buttons |
-| `features/more-menu.js` | More (⋯ in the top bar): App, Share, QR and Help in a small menu under the button (Print is in the bottom bar) |
+| `features/more-menu.js` | More (⋯ in the top bar): App, Share, QR and Help in a small menu under the button (Print is its own button in the top bar) |
 | `features/offline.js` | Offline use: home-screen app details and the service worker (sw.js) |
 | `features/profiles.js` | The badge in the top bar and the profile sheet (#pfm): switch, add, rename, colour and letters, delete with a confirm; `applyPrefs()` changes the page to another person's settings in place |
 | `features/text-picker.js` | Add texts: every text in the library with search and a checkbox each (ticked = in the list being edited); beside the routine builder's list from 1024px, a sheet (modal dialog, Tab kept inside, Done / Escape / the phone's Back) on phones and tablets. On its own so it can later gain category filters; its tags name each text's category on this phone (`core/library.js`, given by `features/routine-builder.js`); its search (`searchKey`, `matches`) is unit-tested (no `init()`: created by `features/routine-builder.js`) |

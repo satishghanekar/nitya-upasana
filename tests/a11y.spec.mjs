@@ -21,6 +21,15 @@ const STATES = [
   ["search open", SETUPS.marathi, async (p) => {
     await p.locator("#hm").click();
     await p.locator("#q").fill("deva");
+    await p.waitForTimeout(300);
+    // on a phone the list ends above the search box at the foot of the screen: scrolled so no row is cut in half
+    // by that edge (axe counts only the part of a row still in view toward its 24px)
+    await p.evaluate(() => {
+      const j = document.getElementById("jump"),
+        end = j.getBoundingClientRect().bottom,
+        cut = [...j.querySelectorAll("#res li")].find((li) => li.getBoundingClientRect().top < end && li.getBoundingClientRect().bottom > end);
+      if (cut) j.scrollTop += cut.getBoundingClientRect().bottom - end;
+    });
   }],
   ["Help open", SETUPS.marathi, (p) => tapMore(p, "#hlpb")],
   ["QR open", SETUPS.marathi, (p) => tapMore(p, "#qrb")],

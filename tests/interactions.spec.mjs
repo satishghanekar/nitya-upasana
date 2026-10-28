@@ -18,7 +18,7 @@ test("while reading the top bar has Library and no Language or Dhrupad button; t
   await expect(page.locator("#tmb")).toHaveAccessibleName("More");
   // the bottom bar's middle buttons are named by the word under each icon, in the menu language
   await expect(page.locator("#ash")).toHaveAccessibleName("Home");
-  await expect(page.locator("#asp")).toHaveAccessibleName("Print");
+  await expect(page.locator("#hm")).toHaveAccessibleName("Library");
   await expect(page.locator("#rsb")).toHaveAccessibleName("Reading");
 });
 
@@ -26,7 +26,7 @@ test("the bottom bar's words follow the menu language @mobile", async ({ page })
   await openSite(page, SETUPS["marathi-menus"], { hash: "#a1" });
   await untuck(page);
   await expect(page.locator("#ash")).toHaveAccessibleName("मुख्यपृष्ठ");
-  await expect(page.locator("#asp")).toHaveAccessibleName(/प्रिंट/);
+  await expect(page.locator("#hm")).toHaveAccessibleName("संग्रह");
   await expect(page.locator("#rsb")).toHaveAccessibleName("वाचन");
 });
 
@@ -40,7 +40,7 @@ test("⋯ More opens App, Share, QR and Help under it while reading; a tap outsi
   await expect(menu).toBeVisible();
   await expect(more).toHaveAttribute("aria-expanded", "true");
   for (const id of ["#shb", "#qrb", "#hlpb"]) await expect(page.locator(id)).toBeVisible();
-  // (Print and Print this text are in the bottom bar now, not here)
+  // (Print is its own button in the top bar, not here)
   await expect(page.locator("#shr #prb, #shr #prt")).toHaveCount(0);
   // under the button, on screen
   const b = await more.boundingBox(),

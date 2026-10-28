@@ -1,6 +1,7 @@
-// The Library: the book button in the top bar opens every text, grouped as
-// the home page had them (पूजा, आरती), with search. A title opens its text; Back (the button or the browser's) returns
-// to Home. The bottom bar's search button and the one at the end of each piece open the same page.
+// The Library: the book button in the bottom bar opens every text, grouped as
+// the home page had them (पूजा, आरती), with search (the box at the foot of the page on phones) and Recent. A title
+// opens its text; Back (the button or the browser's) returns to Home. The button at the end of each piece opens the
+// same page.
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { openSite, settle, SETUPS, axeScan, axeEveryTheme, noViolations, useTestRoutine } from "./helpers.mjs";
@@ -82,7 +83,54 @@ test("search in the Library finds a line and goes to it", async ({ page }) => {
   await expect.poll(() => onPiece(page)).toBe("a1");
 });
 
-test("the top bar's Library button opens the Library while reading", async ({ page }) => {
+test("Recent: the places gone to from search, newest first; × takes one away, Clear all; kept after a reload @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  // the Library is in the bottom bar on Home too, and its search box at the foot of the screen
+  await page.locator("#hm").click();
+  await expect(page.locator("#rcn")).toBeHidden();
+  const vp = page.viewportSize(),
+    qb = await page.locator("#q").boundingBox();
+  // (at the top on wide screens, where the Library opens beside Home)
+  if (vp.width < 1024) expect(qb.y + qb.height).toBeGreaterThan(vp.height - 90);
+  else expect(qb.y).toBeLessThan(260);
+  // a text, then a line
+  await page.locator("#q").fill("sukhakarta");
+  await page.locator("#res li.rt button").first().click();
+  await expect.poll(() => onPiece(page)).toBe("a1");
+  await page.evaluate(() => document.getElementById("hm").click());
+  await page.locator("#q").fill("nurvi");
+  await page.locator("#res li:not(.rh):not(.rt) button").first().click();
+  await expect(page.locator("#jump")).toBeHidden();
+  await page.evaluate(() => document.getElementById("hm").click());
+  await expect(page.locator("#rcn")).toBeVisible();
+  await expect(page.locator("#rcl li")).toHaveCount(2);
+  await expect(page.locator("#rcl li").first()).toHaveClass("rln");
+  await expect(page.locator("#rcl li").first()).toContainText("नुरवी");
+  await expect(page.locator("#rcl li").nth(1)).toHaveClass("rt");
+  // typing hides it; an empty box brings it back
+  await page.locator("#q").fill("deva");
+  await expect(page.locator("#rcn")).toBeHidden();
+  await page.locator("#q").fill("");
+  await expect(page.locator("#rcn")).toBeVisible();
+  // × takes the line away; the text stays, also after a reload
+  await page.locator("#rcl .rcx").first().click();
+  await expect(page.locator("#rcl li")).toHaveCount(1);
+  await settle(page);
+  await page.reload();
+  await page.waitForSelector("html[data-ready]");
+  // (it reopens where the reader was, with the bars tucked away on a phone)
+  await page.evaluate(() => document.getElementById("hm").click());
+  await expect(page.locator("#rcl li")).toHaveCount(1);
+  // a tap on it opens the text
+  await page.locator("#rcl .rcg").click();
+  await expect.poll(() => onPiece(page)).toBe("a1");
+  // Clear empties it
+  await page.evaluate(() => document.getElementById("hm").click());
+  await page.locator("#rcc").click();
+  await expect(page.locator("#rcn")).toBeHidden();
+});
+
+test("the bottom bar's Library button opens the Library while reading", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING, hash: "#a3" });
   await expect(page.locator("#hm")).toBeVisible();
   await page.locator("#hm").click();
@@ -91,20 +139,20 @@ test("the top bar's Library button opens the Library while reading", async ({ pa
   await expect.poll(() => onPiece(page)).toBe("a7");
 });
 
-test("the top bar is the same on Home and while reading: the name, profile, Library, More and Settings, in the same places @mobile", async ({ page }) => {
+test("the top bar is the same on Home and while reading: the name, profile, Print, More and Settings, in the same places @mobile", async ({ page }) => {
   await useTestRoutine(page);
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  const where = () => page.evaluate(() => ["#who", "#hm", "#tmb", "#aa"].map((s) => Math.round(document.querySelector(s).getBoundingClientRect().x)));
-  for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  const where = () => page.evaluate(() => ["#who", "#asp", "#tmb", "#aa"].map((s) => Math.round(document.querySelector(s).getBoundingClientRect().x)));
+  for (const b of ["#who", "#asp", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   const home = await where();
   await page.locator("#tsl a.tgo").first().click();
   await expect.poll(() => onPiece(page)).toBe("a1");
-  for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  for (const b of ["#who", "#asp", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   expect(await where()).toEqual(home);
   // Settings, the Library and the calendar open under it, so it stays; their headers alike: Back, then the tabs
   await page.locator("#aa").click();
   await expect(page.locator("#panel")).toBeVisible();
-  await expect(page.locator("#hm")).toBeVisible();
+  await expect(page.locator("#asp")).toBeVisible();
   const bar = await page.locator(".bar").boundingBox(),
     sp = await page.locator("#panel").boundingBox();
   expect(sp.y).toBeGreaterThanOrEqual(bar.y + bar.height - 1);
