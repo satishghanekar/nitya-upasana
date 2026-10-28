@@ -130,6 +130,43 @@ export function init() {
         });
       });
     }
+    // The page opens from the saved copy (sw.js), so before reloading, the new files must be in it: a new version
+    // installs its own copy (sw.js changed), and files changed under the same version are saved over the old ones.
+    // Resolves once that is done, or after 20 s at most.
+    function newCopy() {
+      var fresh = Promise.resolve();
+      if ("caches" in window)
+        fresh = caches
+          .open(CACHE)
+          .then(function (c) {
+            return c.addAll(
+              ["./"].concat(PARTS).map(function (u) {
+                return new Request(u, { cache: "reload" });
+              }),
+            );
+          })
+          .catch(function () {});
+      var next = Promise.resolve();
+      if ("serviceWorker" in navigator)
+        next = navigator.serviceWorker
+          .getRegistration()
+          .then(function (g) {
+            return g && g.update().then(function () {
+              // a new version is installing: wait until it is in charge
+              if (!g.installing && !g.waiting) return;
+              return new Promise(function (res) {
+                navigator.serviceWorker.addEventListener("controllerchange", res);
+              });
+            });
+          })
+          .catch(function () {});
+      return Promise.race([
+        Promise.all([fresh, next]),
+        new Promise(function (res) {
+          setTimeout(res, 20000);
+        }),
+      ]);
+    }
     upd.onclick = function () {
       if (upd.getAttribute("data-s") === "busy") return;
       if (navigator.onLine === false) {
@@ -146,14 +183,9 @@ export function init() {
           setTimeout(function () {
             if (changed) {
               flash("नवीन आवृत्ती, उघडत आहे…", "New version, loading…");
-              try {
-                navigator.serviceWorker.getRegistration().then(function (g) {
-                  if (g) g.update();
-                });
-              } catch (e) {}
-              setTimeout(function () {
+              newCopy().then(function () {
                 location.reload();
-              }, 700);
+              });
               return;
             }
             updSet("ok");

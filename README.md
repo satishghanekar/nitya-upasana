@@ -62,7 +62,7 @@ The version is what Settings → More → About shows. It is written in **two** 
 
 Change both together for every release, digits and dots only: the last number for fixes (`1.22` → `1.22.1`), the middle one for new features (`1.23`). `tests/offline.spec.mjs` fails if the two differ.
 
-Phones keep a saved copy of the site, but the page and its style, script and text files are fetched fresh whenever there is internet, so a published change reaches phones the next time the site is opened online. Changing the version also makes phones refresh the saved icons and fonts. A tap on the version line in Settings → More → About checks for updates straight away.
+Phones keep a saved copy of the site and always open from it, without asking the network, so the site starts quickly even on a weak connection. Phones download files again only when the version changes: opening the site online notices the new `sw.js`, which saves a whole new copy in the background (the fonts are carried over), and the next launch opens the new version. So a change reaches phones only with a new version. A tap on the version line in Settings → More → About checks for updates straight away.
 
 ### After publishing
 

@@ -178,6 +178,36 @@ test("in the evening Home shows Sunday's Evening: the ten aartis in order @mobil
   await expect(tab(page, "evening")).toHaveAttribute("aria-selected", "true");
 });
 
+// The splash (js/splash.js): from the first paint until the page is ready, the picture for the time of day with today's
+// star ringed (as on Home), the name, and the seven stars lit in turn; then it fades out and lets taps through
+test("the splash shows the evening picture with Sunday's star ringed, then goes @mobile", async ({ page }) => {
+  const { STARS } = await import("../js/core/time-of-day.js");
+  let go;
+  const held = new Promise((r) => (go = r));
+  await page.route("**/js/main.js", async (r) => {
+    await held;
+    await r.continue();
+  });
+  await page.clock.setFixedTime(EVENING);
+  await page.addInitScript(([k, v]) => localStorage.setItem(k, v), ["aarti2-prefs", JSON.stringify({ th: "dark" })]);
+  // the site script is held back, so the page is still starting (main.js also holds back the page's load event)
+  await page.goto("./", { waitUntil: "commit" });
+  const spl = page.locator("#spl");
+  await expect(spl).toBeVisible();
+  await expect(spl.locator("img")).toHaveAttribute("src", "picture-sunset-360.webp");
+  await expect(spl.locator(".spln")).toHaveText("नित्य उपासना");
+  await expect(spl.locator(".spls")).toHaveCount(7);
+  const ring = await spl.locator(".splr").evaluate((e) => [parseFloat(e.style.left), parseFloat(e.style.top)]);
+  expect(ring).toEqual(STARS.sunset[0]);
+  // the reader's theme is on the page before the site script runs, so the splash matches it
+  await expect(page.locator("html")).toHaveAttribute("data-pref", "dark");
+  expect(await page.evaluate(() => document.documentElement.hasAttribute("data-ready"))).toBe(false);
+  go();
+  await settle(page);
+  await expect(spl).toBeHidden();
+  expect(await spl.evaluate((e) => getComputedStyle(e).pointerEvents)).toBe("none");
+});
+
 test("the session switch changes the list, the picture and what screen readers hear @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
   await pickTab(page, "afternoon");
