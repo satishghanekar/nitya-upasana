@@ -5,7 +5,8 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
 // - Home (#pan): a card under the date (its button, #panb, over all of it), "आश्विन शुद्ध अष्टमी" / "नक्षत्र … · शके १९४८ · पराभव संवत्सर" / sunrise,
-//   sunset and the place. Only today is worked out (one dayPanchang(), a few milliseconds), after the page is shown.
+//   sunset and the place. Only the day Home shows is worked out (one dayPanchang(), a few milliseconds), after the page
+//   is shown: today, or another day picked with ‹ › under the date (homeDay(), from js/features/today-card.js).
 // - The calendar page (#cal), opened by that button: like the Library page (#jump) it sits under the top bar with a
 //   Back button, the phone's Back closes it (js/features/history.js) and focus returns to the button (overlays.js
 //   setC). A day card (tithi, nakshatra and yoga with their end times, vara, sunrise and sunset, moonrise, month,
@@ -13,7 +14,7 @@
 //   shukla / krishna shading, full and new moon, Ekadashi and Sankashti, kshaya and vriddhi tithis, today. A month is
 //   worked out only when it is shown (monthPanchang(), ~50 ms) and kept while the page is open.
 // - Festivals (content/festivals.json, rules in js/core/festivals.js): a short label on the day in the month, a tag
-//   and a row in the day card, and on Home, on the day only, one line under the calendar line (#fst): "आज दसरा" /
+//   and a row in the day card, and on Home, on the day only (or on the day Home shows: "उद्या …", "Wednesday: …"), one line under the calendar line (#fst): "आज दसरा" /
 //   "Today: Dasara". Their names follow the reading languages like the panchang's (nameH / nameH2).
 // Words: the panchang's names (tithi, paksha, masa, nakshatra, yoga, samvatsara, ritu, ayana, the weekdays, the day's
 // marks) follow the reading languages in Settings, as the pieces do: the first language (P.lead) everywhere, and the
@@ -26,7 +27,7 @@ import { dayPanchang, monthPanchang } from "../core/panchang.js";
 import { festivalsBetween, festivalsFor, festivalsInMonth } from "../core/festivals.js";
 import { holidaysBetween, holidaysInMonth } from "../core/holidays.js";
 import { loaded } from "../text/load.js";
-import { skLang, skLoc } from "./sankashti.js";
+import { skDay, skLang, skLoc } from "./sankashti.js";
 import { openPicture } from "./picture-viewer.js";
 import { setC } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
@@ -92,6 +93,12 @@ const W = {
     },
     showing: "Showing ",
     fToday: "Today: ",
+    fTomorrow: "Tomorrow: ",
+    fYesterday: "Yesterday: ",
+    /** @param {number} d the weekday */
+    fOn: function (d) {
+      return DAYS.en[d] + ": ";
+    },
     week: "This week",
     next15: "Next 15 days",
     day: "Day",
@@ -151,6 +158,12 @@ const W = {
     },
     showing: "",
     fToday: "आज ",
+    fTomorrow: "उद्या ",
+    fYesterday: "काल ",
+    /** @param {number} d the weekday */
+    fOn: function (d) {
+      return DAYS.mr[d] + "ी ";
+    },
     week: "या आठवड्यात",
     next15: "पुढचे १५ दिवस",
     day: "दिवस",
@@ -219,6 +232,8 @@ var view = {
 };
 /** @type {Record<string, MonthDay[]>} months worked out while the page is open, by place and month */
 var months = {};
+// the day Home shows ("YYYY-MM-DD", picked with ‹ › under the date: js/features/today-card.js), or "" for today
+var homeAt = "";
 var homeKey = "",
   calKey = "";
 /** @type {ReturnType<typeof setTimeout> | undefined} */
@@ -384,7 +399,7 @@ function homeRender() {
   }
   var p;
   try {
-    p = dayPanchang(new Date(), pl);
+    p = dayPanchang(homeAt || new Date(), pl);
   } catch (e) {
     box.hidden = true;
     return;
@@ -494,12 +509,20 @@ function festsOn(k, pl) {
   }
   return festivalsFor(k, pl, loaded.festivals);
 }
+/** "Today: " on Home's festival line; on another day shown there, "Tomorrow: ", "Yesterday: " or "Wednesday: " */
+function homeWhen() {
+  var w = words();
+  if (!homeAt) return w.fToday;
+  var n = Math.round((dateOf(homeAt).getTime() - dateOf(keyOf(new Date())).getTime()) / 864e5);
+  return n === 1 ? w.fTomorrow : n === -1 ? w.fYesterday : w.fOn(dateOf(homeAt).getDay());
+}
 /** Home, on a festival day only (#fst): "आज दसरा" / "Today: Dasara", with the second reading language after a dot
  * @param {{ lat: number, lon: number } | null} pl */
 function festHome(pl) {
   var box = document.getElementById("fst");
   if (!box) return;
-  var fs = pl ? /** @type {Name[]} */ (festsOn(new Date(), pl)).concat(holsOn(new Date(), pl).map(holName)) : [];
+  var at = homeAt || new Date(),
+    fs = pl ? /** @type {Name[]} */ (festsOn(at, pl)).concat(holsOn(at, pl).map(holName)) : [];
   if (!fs.length) {
     box.hidden = true;
     box.innerHTML = "";
@@ -508,7 +531,7 @@ function festHome(pl) {
   box.lang = ui();
   box.innerHTML =
     '<span class="dot" aria-hidden="true">' + ICON.star + "</span><span>" +
-    say(words().fToday) +
+    say(homeWhen()) +
     fs
       .map(function (f) {
         var two = nameH2(f);
@@ -657,6 +680,8 @@ function upHome(pl) {
   if (!box) return;
   var t = keyOf(new Date()),
     wk = addDays(t, 7),
+    // another day shown on Home: This week (which counts from today) makes way for "Showing …" (#tdb)
+    off = !!homeAt && homeAt !== t,
     all = pl && loaded.festivals
       ? upList(addDays(t, 1), addDays(t, 30), pl).filter(function (u) {
           return u.kind !== "hol";
@@ -668,7 +693,7 @@ function upHome(pl) {
     next = all.filter(function (u) {
       return u.date > wk;
     })[0];
-  if (!near.length && !next) {
+  if (off || (!near.length && !next)) {
     box.hidden = true;
     box.innerHTML = "";
     return;
@@ -699,7 +724,7 @@ function langKey() {
 
 /** Re-draw the Home line and This week (soon after the page is shown), when the languages, the day or the place changed */
 function homeSoon() {
-  var k = langKey() + new Date().toDateString() + JSON.stringify(P.loc || null);
+  var k = langKey() + new Date().toDateString() + homeAt + JSON.stringify(P.loc || null);
   if (k === homeKey) return;
   homeKey = k;
   // before the page is first shown (js/main.js data-ready), drawn at once, with This week, so nothing jumps when it
@@ -1143,6 +1168,19 @@ function calRender() {
 }
 
 /**
+ * The day Home shows ("YYYY-MM-DD", or "" for today), from ‹ › under the date (js/features/today-card.js): the Home
+ * line, the festival line and the Sankashti line (skDay()) follow it, This week shows only on today, and the card opens
+ * the calendar at it
+ * @param {string} k
+ */
+export function homeDay(k) {
+  if (k === homeAt) return;
+  homeAt = k;
+  skDay(k);
+  homeSoon();
+}
+
+/**
  * Open the calendar at a tab: the day (today, or `day`), the next 15 days or the month
  * @param {"day" | "month" | "up"} [mode] @param {string} [day] "YYYY-MM-DD"
  * @param {string} [by] the card it was opened from, "#panb" or "#upwm": only that one is marked open
@@ -1277,13 +1315,15 @@ export function init() {
       var t = /** @type {HTMLElement} */ (e.target),
         sun = /** @type {HTMLElement | null} */ (t.closest(".psun"));
       if (sun) openPicture(sun.getAttribute("data-pic") === "sunset" ? "sunset" : "sunrise", sun);
-      else if (t.closest("#panb")) calOpen("day", undefined, "#panb");
+      else if (t.closest("#panb")) calOpen("day", homeAt || undefined, "#panb");
     });
   // the date above the line is the top of the same card: a tap there opens the calendar too
   var tdd = document.getElementById("tdd");
   if (tdd)
-    tdd.addEventListener("click", function () {
-      if (skLoc()) calOpen("day", undefined, "#panb");
+    tdd.addEventListener("click", function (e) {
+      // (‹ › under the date are its own buttons: js/features/today-card.js)
+      if (/** @type {HTMLElement} */ (e.target).closest("#tdn")) return;
+      if (skLoc()) calOpen("day", homeAt || undefined, "#panb");
     });
   // The date and This week's header are not buttons: a press there would move focus to the page (#main), which closes
   // the calendar when it is open (history.js, focusout) before the click opens it again; focus stays where it is
@@ -1292,7 +1332,7 @@ export function init() {
     if (el)
       el.addEventListener("mousedown", function (e) {
         var t = /** @type {HTMLElement} */ (e.target);
-        if (sel === "#tdd" || (t.closest(".uph") && !t.closest("button"))) e.preventDefault();
+        if ((sel === "#tdd" && !t.closest("#tdn")) || (t.closest(".uph") && !t.closest("button"))) e.preventDefault();
       });
   });
   var upw = document.getElementById("upw");
