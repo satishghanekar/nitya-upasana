@@ -1,7 +1,8 @@
 // @ts-check
 // Search across the whole library: the rules, without the page.
 // - Texts are found by their title (Marathi, English, and the scholarly spelling of the Marathi one), their id
-//   ("sukhkarta", "jai-ganesh-deva"), their first line and their category's name. They rank first.
+//   ("sukhkarta", "jai-ganesh-deva") and their category's name. They rank first, so a title found is a tap away; what is
+//   found only inside a text (its first line too) is listed under its lines.
 // - Lines are found in the original (svara marks and punctuation ignored) and in both English spellings.
 // - Spellings people type still match ("sukhakarta" = "sukhkarta", "vithal" = "vitthal", "chi" = "ci"), Devanagari
 //   typed is also matched through its English letters ("सुखकर्ता" finds the text whose id is aarti-sukhkarta), and a typo
@@ -11,14 +12,14 @@
 
 /**
  * @typedef {(s: string) => string} Fn
- * @typedef {{ id: string, name?: string, sec: string, title: string, titleEn: string, categories: string[], first?: string[] }} TextIn
+ * @typedef {{ id: string, name?: string, sec: string, title: string, titleEn: string, categories: string[] }} TextIn
  *   name: the id without its category (sukhkarta, of aarti-sukhkarta), found as the id is; sec: the reading page's
- *   section id (a1); categories: the names of its category (Marathi, English); first: its first line, original and English
+ *   section id (a1); categories: the names of its category (Marathi, English)
  * @typedef {{ id: string, sec: string, text: string, m: string, e: string, extra?: string }} LineIn
  *   id: the line id (s1l3); text: its text's id; m: the original line; e: its English as shown; extra: more English
  *   to search but not show (the everyday spelling while the scholarly one is shown)
- * @typedef {{ t: TextIn, names: string[], latin: string[], loose: string[], first: string[], firstLoose: string[],
- *   cats: string[], words: string[] }} TextKey
+ * @typedef {{ t: TextIn, names: string[], latin: string[], loose: string[], cats: string[],
+ *   words: string[] }} TextKey
  * @typedef {{ l: LineIn, t: string, lo: string, words: string[] }} LineKey
  * @typedef {{ texts: TextKey[], lines: LineKey[], roman: Fn | null, from: Fn | null }} Index
  * @typedef {{ kind: "text", id: string, sec: string, score: number }} TextHit
@@ -33,7 +34,6 @@ export const SCORE = {
   titleWords: 800, // every word typed starts a word of a title or the id
   titleIn: 700, // every word typed is inside a title or the id
   titleLoose: 650, // the same, spelt loosely (or Devanagari typed, matched through its English letters)
-  first: 600, // the text's first line
   category: 500, // its category's name
   titleTypo: 400, // a title, with a typo forgiven
   phrase: 300, // a line holding the words as typed, together
@@ -170,16 +170,12 @@ export function buildIndex(o) {
     from: from,
     texts: o.texts.map(function (t) {
       var latin = [f(t.id), t.name ? f(t.name) : "", f(t.titleEn), r(t.title)].filter(Boolean),
-        names = [f(t.title)].concat(latin),
-        first = (t.first || []).map(f).filter(Boolean),
-        firstR = (t.first || []).map(r).filter(Boolean);
+        names = [f(t.title)].concat(latin);
       return {
         t: t,
         names: names,
         latin: latin,
         loose: latin.map(loose),
-        first: first,
-        firstLoose: first.concat(firstR).map(loose),
         cats: t.categories.map(f),
         words: names.join(" ").split(" ").concat(latin.map(loose).join(" ").split(" ")).filter(Boolean),
       };
@@ -289,9 +285,6 @@ export function textScore(k, Q) {
     if (Q.ro && lk === Q.ro) return SCORE.titleStart;
     if ((Q.lo.length && allIn(Q.lo, lk)) || (Q.rtoks.length && allIn(Q.rtoks, lk))) return SCORE.titleLoose;
   }
-  for (i = 0; i < k.first.length; i++) if (allIn(Q.toks, k.first[i])) return SCORE.first;
-  for (i = 0; i < k.firstLoose.length; i++)
-    if ((Q.lo.length && allIn(Q.lo, k.firstLoose[i])) || (Q.rtoks.length && allIn(Q.rtoks, k.firstLoose[i]))) return SCORE.first - 20;
   for (i = 0; i < k.cats.length; i++) {
     var c = k.cats[i];
     if (

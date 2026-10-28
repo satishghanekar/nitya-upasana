@@ -94,7 +94,7 @@ function start() {
     startContentsList(); // Library: every text by category, with search (#jump), opened by the book button in the top bar
     startClicks(); // Clicks: contents links (data-go) jump to a piece; tapping a verse line highlights it
     startPinch(); // Pinch with two fingers to change the text size (the page itself never zooms)
-    startSearch(); // Search across the library: texts by title, id, first line and category, then every line
+    startSearch(); // Search across the library: texts by title, id and category, then every line
     startStartup(); // Start-up
     startPictureViewer(); // Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move
     startHelp(); // Help: opens over the page; the phone's Back button closes it
