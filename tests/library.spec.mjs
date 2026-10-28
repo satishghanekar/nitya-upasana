@@ -83,6 +83,51 @@ test("search in the Library finds a line and goes to it", async ({ page }) => {
   await expect.poll(() => onPiece(page)).toBe("a1");
 });
 
+// An iPhone clips away a box fixed to the screen inside the Library's own scroll: the search box vanished and, as the
+// Library stopped above it, the open text showed through at the foot. So the Library reaches the foot of the screen,
+// covering the page, and the box sticks to the foot of the Library's scroll, never fixed (Chromium shows a fixed box,
+// so the test checks the layout that keeps it visible on an iPhone)
+test("the Library covers the page to the foot of the screen, its search box inside it, while a text is open @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await page.locator("#hm").click();
+  await page.locator("#jl a").nth(1).click();
+  await expect(page.locator("#jump")).toBeHidden();
+  await page.evaluate(() => document.getElementById("hm").click());
+  await expect(page.locator("#jump")).toBeVisible();
+  const vp = page.viewportSize();
+  const m = () =>
+    page.evaluate(() => {
+      const j = document.getElementById("jump"),
+        b = document.getElementById("qbar"),
+        jr = j.getBoundingClientRect(),
+        br = b.getBoundingClientRect();
+      return {
+        jb: jr.bottom,
+        bt: br.top,
+        bb: br.bottom,
+        pos: getComputedStyle(b).position,
+        h: innerHeight,
+        sx: j.scrollWidth - j.clientWidth,
+      };
+    });
+  for (const end of [false, true]) {
+    if (end) await page.locator("#jump").evaluate((j) => (j.scrollTop = j.scrollHeight));
+    const r = await m();
+    expect(r.pos).not.toBe("fixed");
+    expect(r.sx).toBe(0);
+    if (vp.width < 1024) {
+      expect(Math.abs(r.jb - r.h)).toBeLessThan(1);
+      expect(Math.abs(r.bb - r.jb)).toBeLessThan(1);
+      expect(r.bt).toBeGreaterThan(r.h - 120);
+    } else expect(r.bb).toBeLessThan(r.jb);
+  }
+  // a short list of results: the box stays at the foot
+  await page.locator("#q").fill("nurvi");
+  await expect(page.locator("#res button").first()).toBeVisible();
+  const r = await m();
+  if (vp.width < 1024) expect(Math.abs(r.bb - r.h)).toBeLessThan(1);
+});
+
 test("Recent: the places gone to from search, newest first; × takes one away, Clear all; kept after a reload @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   // the Library is in the bottom bar on Home too, and its search box at the foot of the screen
