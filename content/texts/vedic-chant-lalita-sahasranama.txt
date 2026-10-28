@@ -9,7 +9,7 @@ credit-en: [Brahmanda Purana](https://en.wikipedia.org/wiki/Lalita_Sahasranama)
 ---
 [note: न्यासः | Nyasa]
 
-[dhrupad]
+[once]
 अस्य श्रीललितासहस्रनामस्तोत्रमाला मन्त्रस्य ।
 Asya Shrilalitasahasranamastotramala Mantrasya |
 वशिन्यादिवाग्देवता ऋषयः ।
@@ -31,7 +31,7 @@ Chintitaphalavaptyarthe Jape Viniyogah |
 
 [note: ध्यानम् | Dhyanam]
 
-[dhrupad]
+[once]
 सिन्दूरारुण विग्रहां त्रिनयनां माणिक्यमौलि स्फुरत्
 Sinduraruna Vigraham Trinayanam Manikyamauli Sphurat
 तारा नायक शेखरां स्मितमुखी मापीन वक्षोरुहाम् ।
@@ -41,7 +41,7 @@ Panibhyamalipurna Ratna Chashakam Raktotpalam Bibhratim
 सौम्यां रत्न घटस्थ रक्तचरणां ध्यायेत् परामम्बिकाम् ॥
 Saumyam Ratna Ghatastha Raktacharanam Dhyayet Paramambikam ||
 
-[dhrupad]
+[once]
 अरुणां करुणा तरङ्गिताक्षीं
 Arunam Karuna Tarangitakshim
 धृत पाशाङ्कुश पुष्प बाणचापाम् ।
@@ -51,7 +51,7 @@ Animadibhi Ravrutam Mayukhai-
 रहमित्येव विभावये भवानीम् ॥
 Rahamityeva Vibhavaye Bhavanim ||
 
-[dhrupad]
+[once]
 ध्यायेत् पद्मासनस्थां विकसितवदनां पद्मपत्रायताक्षीं
 Dhyayet Padmasanastham Vikasitavadanam Padmapatrayatakshim
 हेमाभां पीतवस्त्रां करकलितलसद्धेमपद्मां वराङ्गीम् ।
@@ -61,7 +61,7 @@ Sarvalankara Yuktam Satata Mabhayadam Bhaktanamram Bhavanim
 श्रीविद्यां शान्त मूर्तिं सकल सुरनुतां सर्व सम्पत्प्रदात्रीम् ॥
 Shrividyam Shanta Murtim Sakala Suranutam Sarva Sampatpradatrim ||
 
-[dhrupad]
+[once]
 सकुङ्कुम विलेपनामलिकचुम्बि कस्तूरिकां
 Sakunkuma Vilepanamalikachumbi Kasturikam
 समन्द हसितेक्षणां सशर चाप पाशाङ्कुशाम् ।
@@ -71,7 +71,7 @@ Asheshajana Mohinim Aruna Malya Bhushambaram
 जपाकुसुम भासुरां जपविधौ स्मरे दम्बिकाम् ॥
 Japakusuma Bhasuram Japavidhau Smare Dambikam ||
 
-[dhrupad]
+[once]
 ॥ अथ श्रीललितासहस्रनामस्तोत्रम् ॥
 || Atha Shrilalitasahasranamastotram ||
 
@@ -1173,7 +1173,7 @@ Shrishiva Shiva-Shaktyaikya-Rupini Lalitambika |
 एवं श्रीललिता देव्या नाम्नां साहस्रकं जगुः ॥
 Evam Shrilalita Devya Namnam Sahasrakam Jaguh ||
 
-[dhrupad]
+[once]
 ॥ इति श्रीब्रह्माण्डपुराणे उत्तरखण्डे श्रीहयग्रीवागस्त्यसंवादे
 || Iti Shribrahmandapurane Uttarakhande Shrihayagrivagastyasamvade
 श्रीललिता सहस्रनाम स्तोत्र कथनं सम्पूर्णम् ॥
