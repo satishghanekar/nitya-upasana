@@ -93,10 +93,17 @@ function ovFocus(el, o) {
     if (el.hidden) el._ret = a;
     return;
   }
-  if (el._ret && (el.contains(a) || a === document.body || !a)) {
-    try {
-      el._ret.focus({ preventScroll: true });
-    } catch (e) {}
+  var r = el._ret;
+  if (r && (el.contains(a) || a === document.body || !a)) {
+    var go = function () {
+      try {
+        r.focus({ preventScroll: true });
+      } catch (e) {}
+    };
+    // the button that opened it may not be shown yet: the bottom bar comes back once no page is open (data-menu,
+    // js/features/bottom-bar.js), a moment after this one is hidden
+    if (r.getClientRects().length) go();
+    else Promise.resolve().then(go);
   }
   el._ret = null;
 }
@@ -223,8 +230,9 @@ function page(id, o) {
     return;
   }
   var was = !e.hidden;
-  ovFocus(e, false);
+  // hidden first, so the bottom bar (and its Library button) can come back to take the focus
   e.hidden = true;
+  ovFocus(e, false);
   expanded(p.openers, false);
   if (p.hidden) p.hidden(was);
   ovDone();

@@ -124,7 +124,7 @@ export function init() {
     // so the keyboard doesn't pop up over the list)
     if (!jp.hidden && matchMedia("(hover: hover) and (pointer: fine)").matches) document.getElementById("q").focus();
   };
-  // Home and Search at the end of each piece do exactly what the top bar's buttons do
+  // Home and Search at the end of each piece do exactly what the bottom bar's Home and Library do
   onPiece(function (sec) {
     [].forEach.call(sec.querySelectorAll(".pnh"), function (h) {
       h.addEventListener("click", function (e) {
