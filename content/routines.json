@@ -99,7 +99,8 @@
     "aarti-ghalin-lotangan",
     "vedic-chant-mantra-pushpanjali",
     "ashtak-sunday",
-    "ashtak-brahmachaitanya-sarikha"
+    "ashtak-brahmachaitanya-sarikha",
+    "stotra-ram-raksha"
    ],
    "mon": [
     "aarti-sukhkarta",
@@ -120,7 +121,9 @@
     "aarti-ghalin-lotangan",
     "vedic-chant-mantra-pushpanjali",
     "ashtak-tuesday",
-    "ashtak-anudin-anutapen"
+    "ashtak-anudin-anutapen",
+    "stotra-maruti-stotra",
+    "stotra-hanuman-chalisa"
    ],
    "wed": [
     "aarti-sukhkarta",
@@ -158,7 +161,9 @@
     "aarti-dhanya-jagin-guruvarya",
     "aarti-ghalin-lotangan",
     "vedic-chant-mantra-pushpanjali",
-    "ashtak-saturday"
+    "ashtak-saturday",
+    "stotra-maruti-stotra",
+    "stotra-hanuman-chalisa"
    ]
   }
  }
