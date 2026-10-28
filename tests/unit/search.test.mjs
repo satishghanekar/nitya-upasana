@@ -1,5 +1,5 @@
 // Search across the library (slice 3, js/text/search-core.js): how the query and the texts are compared (folding,
-// loose English spellings, typos) and how results rank: texts by title, id, first line and category first, then
+// loose English spellings, typos) and how results rank: texts by title, id and category first, then
 // lines. Built here from the text files themselves, as the page builds it from the lines it shows.
 import { beforeAll, describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
@@ -22,7 +22,7 @@ beforeAll(async () => {
     const cat = CATS.find((c) => c.id === t.category);
     const all = t.blocks.flatMap((b) => b.lines);
     const name = id.startsWith(t.category + "-") ? id.slice(t.category.length + 1) : "";
-    texts.push({ id, name, sec: t.legacyId, title: t.title, titleEn: t.titleEn, categories: [cat.name.mr, cat.name.en], first: [plain(all[0].orig), plain(all[0].en)] });
+    texts.push({ id, name, sec: t.legacyId, title: t.title, titleEn: t.titleEn, categories: [cat.name.mr, cat.name.en] });
     all.forEach((l, i) => lines.push({ id: id + "." + (i + 1), sec: t.legacyId, text: id, m: plain(l.orig), e: plain(l.en) }));
   }
   ix = buildIndex({ texts, lines, roman: IA });
@@ -78,13 +78,20 @@ describe("ranking", () => {
     expect(top("sukhakarta").id).toBe("aarti-sukhkarta");
     expect(top("Sukhkarta Dukhharta").id).toBe("aarti-sukhkarta");
   });
-  test('"jai dev": Jai Ganesh Deva by its id first, then the aartis that begin "Jai Dev Jai Dev", then the lines', () => {
+  test('"jai dev": Jai Ganesh Deva by its id under Texts; the aartis that begin "Jai Dev Jai Dev" only under Lines', () => {
     const r = search(ix, "jai dev");
     expect(r.texts[0].id).toBe("aarti-jai-ganesh-deva");
-    expect(r.texts.map((t) => t.id)).toEqual(expect.arrayContaining(["aarti-sukhkarta", "aarti-lavathavati-vikrala", "aarti-trigunatmak-traimurti"]));
-    expect(r.texts.slice(1).every((t) => t.score <= SCORE.first)).toBe(true);
+    expect(r.texts.map((t) => t.id)).not.toContain("aarti-sukhkarta");
+    expect(r.lines.map((l) => l.text)).toEqual(expect.arrayContaining(["aarti-sukhkarta", "aarti-lavathavati-vikrala", "aarti-trigunatmak-traimurti"]));
     expect(r.lines[0].score).toBe(SCORE.phrase);
     expect(r.lines.every((l, i) => i === 0 || r.lines[i - 1].score >= l.score)).toBe(true);
+  });
+  test("Texts are found by their title, not by what is inside them: those are under Lines", () => {
+    // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotra, but only Jai Ganesh Deva has Ganesh in its title
+    const r = search(ix, "ganesh");
+    expect(r.texts.map((t) => t.id)).toEqual(["aarti-jai-ganesh-deva"]);
+    expect(r.lines.map((l) => l.text)).toContain("stotra-ram-raksha");
+    expect(r.texts.every((t) => t.score >= SCORE.titleTypo)).toBe(true);
   });
   test("titles in either language, with the Marathi title matched in English letters too", () => {
     expect(top("Devi Aarti").id).toBe("aarti-durge-durghat-bhari");
