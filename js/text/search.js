@@ -1,6 +1,6 @@
 // @ts-check
-// Search across the library, in the Library page (#jump): texts by title (Marathi, English, scholarly spelling), id,
-// first line and category first, under "Texts" ("रचना"), then every line, original and English, under "Lines"
+// Search across the library, in the Library page (#jump): texts by title (Marathi, English, scholarly spelling), id and
+// category first, under "Texts" ("रचना"), then every line, original and English, under "Lines"
 // ("ओळी"); matches ignore svara marks and punctuation, forgive the spellings people type and a typo, and Devanagari
 // typed also finds what is written in English letters. The rules and the ranking are in ./search-core.js
 // (unit-tested); this part builds the index from the texts, as the pieces show them, and shows the results.
@@ -271,7 +271,7 @@ function find() {
     li.appendChild(h);
     frag.appendChild(li);
   }
-  // Texts first (by title, id, first line or category), with their category: a tap opens the text
+  // Texts first (by title, id or category), with their category: a tap opens the text
   if (found.texts.length) head("रचना", "Texts");
   found.texts.forEach(function (r) {
     var li = document.createElement("li"),
@@ -354,8 +354,6 @@ function ix() {
   var seen = {};
   /** @type {import("./search-core.js").LineIn[]} */
   var lines = [];
-  /** @type {Record<string, string[]>} */
-  var first = {};
   var from = scr().from;
   [].forEach.call(all.querySelectorAll(".ash .mr p[data-l]"), function (/** @type {HTMLElement} */ p) {
     var id = p.getAttribute("data-l") || "",
@@ -368,16 +366,8 @@ function ix() {
     seen[k] = 1;
     lines.push({ id: id, sec: sec.id, text: sec.id, m: m, e: e, extra: ens[id] && ens[id] !== e ? ens[id] : "" });
   });
-  // each text's first line: the first line on its page (its dhrupad, when said first)
-  secs.forEach(function (sec) {
-    var m = sec.querySelector(".verse > .mr > p"),
-      e = sec.querySelector(".verse > .en > p");
-    if (m) first[sec.id] = [txt(m), e ? txt(e) : ""];
-  });
   IX = buildIndex({
-    texts: textsForSearch().map(function (t) {
-      return Object.assign({ first: first[t.sec] || [] }, t);
-    }),
+    texts: textsForSearch(),
     lines: lines,
     roman: IA,
     from: from,

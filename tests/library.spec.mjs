@@ -83,6 +83,16 @@ test("search in the Library finds a line and goes to it", async ({ page }) => {
   await expect.poll(() => onPiece(page)).toBe("a1");
 });
 
+test("search lists texts by their title first; a text found only inside it is under Lines", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await page.locator("#hm").click();
+  // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotra, but only Jai Ganesh Deva has Ganesh in its title
+  await page.locator("#q").fill("ganesh");
+  await expect(page.locator("#res li.rt")).toHaveCount(1);
+  await expect(page.locator("#res li.rt .rl")).toHaveText("आरती जय गणेश देवा");
+  await expect(page.locator("#res li:not(.rh):not(.rt) .rs", { hasText: "श्रीरामरक्षास्तोत्रम्" }).first()).toBeVisible();
+});
+
 // An iPhone clips away a box fixed to the screen inside the Library's own scroll: the search box vanished and, as the
 // Library stopped above it, the open text showed through at the foot. So the Library reaches the foot of the screen,
 // covering the page, and the box sticks to the foot of the Library's scroll, never fixed (Chromium shows a fixed box,
