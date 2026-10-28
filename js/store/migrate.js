@@ -7,7 +7,7 @@
 // backup file.
 //
 // Per person: text size, languages, English style, font, dhrupad, theme, high contrast,
-// autoscroll, folds and the highlighted line. Per device: keep the screen on, location, layout on wide screens, the
+// autoscroll, folds, the highlighted line and the Library's Recent. Per device: keep the screen on, location, layout on wide screens, the
 // Print pop-up's choices and the folded home card.
 
 /**
@@ -19,7 +19,7 @@
 export const SETTINGS_VERSION = 6;
 
 // what each person keeps in their profile
-export const PROFILE_KEYS = ["lang", "lead", "l2", "ui", "ind", "tr", "fs", "fsu", "fnt", "ref", "th", "hc", "as", "ason", "asp", "af", "tf", "hl"];
+export const PROFILE_KEYS = ["lang", "lead", "l2", "ui", "ind", "tr", "fs", "fsu", "fnt", "ref", "th", "hc", "as", "ason", "asp", "af", "tf", "hl", "rc"];
 // what stays with the device, whoever is reading
 export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "plang", "ppr", "fold"];
 
@@ -45,6 +45,7 @@ export function defaults(env) {
     cols: 0, // wide screens: 0 automatic, 1 one column, 2 two columns
     loc: null, // { lat, lon } from "Use my location"
     hl: "", // data-l id of the highlighted line
+    rc: [], // Recent in the Library, newest first: a text's id, or its id and a line's ("a3|s3l5"), at most 8
     por: "", // the page last chosen in the Print pop-up: "" | "up" | "land"
     fnt: "classic", // text font: std (Modern) | classic (Traditional) | bold (Bold)
     pref: "", // dhrupad in the printout: "" as on the page | 0 | 1

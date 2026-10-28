@@ -85,7 +85,10 @@ export function init() {
 }
 
 function tuck(on) {
-  on = on && !root.hasAttribute("data-rail") && !root.hasAttribute("data-menu");
+  // never on Home (data-home): its bars stay put. A long Home (the week, a session of eleven texts) scrolled past the
+  // tuck point, and the bars hid and came back mid-scroll, which iPhones drew in the middle of the page (Satish,
+  // 2026-10-27)
+  on = on && !root.hasAttribute("data-rail") && !root.hasAttribute("data-menu") && !root.hasAttribute("data-home");
   if (on === root.hasAttribute("data-tuck")) return;
   if (on) root.setAttribute("data-tuck", "1");
   else root.removeAttribute("data-tuck");
@@ -224,7 +227,7 @@ export function apply() {
   [].forEach.call(document.querySelectorAll(".wrap > .ash,#pv,#jl"), function (e) {
     e.setAttribute("data-lang", P.lang);
   });
-  [].forEach.call(document.querySelectorAll(".bar,#shr,#asc,#none,.libhd,#jtb,#spv,#panel,#home > *,#qrm,#prm,#inm,#rsh,#szt,#szr,#fl"), function (e) {
+  [].forEach.call(document.querySelectorAll(".bar,#shr,#asc,#none,.libhd,.rch,#jtb,#spv,#panel,#home > *,#qrm,#prm,#inm,#rsh,#szt,#szr,#fl"), function (e) {
     e.setAttribute("data-lang", P.ui);
   });
   root.lang = SCR.k || "mr"; // the page is Marathi (or Kannada); English parts carry lang="en" themselves (screen readers pick the voice from this)
