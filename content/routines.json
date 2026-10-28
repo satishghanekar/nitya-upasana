@@ -32,7 +32,6 @@
     "vedic-chant-atharvashirsha",
     "vedic-chant-purusha-suktam",
     "vedic-chant-shri-sukta",
-    "stotra-maruti-stotra",
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
@@ -78,7 +77,6 @@
     "vedic-chant-shree-rudra",
     "vedic-chant-purusha-suktam",
     "vedic-chant-durga-suktam",
-    "stotra-maruti-stotra",
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
@@ -122,7 +120,8 @@
     "aarti-ghalin-lotangan",
     "vedic-chant-mantra-pushpanjali",
     "ashtak-tuesday",
-    "ashtak-anudin-anutapen"
+    "ashtak-anudin-anutapen",
+    "stotra-maruti-stotra"
    ],
    "wed": [
     "aarti-sukhkarta",
@@ -160,7 +159,8 @@
     "aarti-dhanya-jagin-guruvarya",
     "aarti-ghalin-lotangan",
     "vedic-chant-mantra-pushpanjali",
-    "ashtak-saturday"
+    "ashtak-saturday",
+    "stotra-maruti-stotra"
    ]
   }
  }
