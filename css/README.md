@@ -17,7 +17,7 @@ Each file starts with a comment that lists its sections. Every section begins wi
 |---|---|
 | `00-fonts.css` | `@font-face` rules for `fonts/`. `unicode-range` makes the browser download only the parts a page uses. |
 | `01-theme.css` | Colour and font variables on `:root` for the light, sepia and dark themes and high contrast. |
-| `02-core.css` | The first full set of rules for the reading page: page, top bar, contents, pieces, language switching, search, phones held sideways, section headings. Also the first print rules. |
+| `02-core.css` | The first full set of rules for the reading page: page, top bar, contents, pieces, language switching, search, phones held sideways, section headings, and the splash shown while the page starts (`#spl`). Also the first print rules. |
 | `03-menus-print-view.css` | Top-bar title, the ⋯ More menu (`#shr`: App, Share, QR, Help), the QR pop-up, Add to Home Screen and its steps (`#inm`), the print builder (`#prm`: What, then How), the piece header card, and the dhrupad at the top of a piece. |
 | `04-columns-rail.css` | Two stanza columns (`data-cols`), piece and stanza numbers, both languages side by side on wide screens, the wide layout (`data-rail`), the reading progress line and the dhrupad markers as pills. |
 | `05-home-card.css` | The "paper sheet" under Home, the offline cloud in the top bar (`#ofb`), the lotus ornament at the end of each piece, quieter piece numbers, the fade-in, the tappable dhrupad markers and the repeated dhrupad. |

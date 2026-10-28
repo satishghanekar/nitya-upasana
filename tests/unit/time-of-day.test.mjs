@@ -2,6 +2,7 @@
 // The sessions: Morning before 12:00, Afternoon 12:00–17:00, Evening from 17:00.
 // Dates are made with the local-time constructor, so the tests mean the same in any time zone.
 import { describe, expect, test } from "vitest";
+import { readFileSync } from "node:fs";
 import { nextChange, pictureAt, sessionAt, STARS } from "../../js/core/time-of-day.js";
 
 // 18 October 2026 is a Sunday
@@ -93,4 +94,11 @@ describe("when the picture next changes", () => {
     const now = at(18, 23, 0);
     expect(pictureAt(nextChange(now))).toMatchObject({ picture: "sunrise", day: 1 });
   });
+});
+
+// The splash (js/splash.js, a plain script that runs before the modules) keeps its own copy of the star centres
+test("the splash rings the same stars as Home", () => {
+  const src = readFileSync(new URL("../../js/splash.js", import.meta.url), "utf8");
+  const copy = new Function("return " + /var STARS = (\{[\s\S]*?\});/.exec(src)[1])();
+  expect(copy).toEqual(STARS);
 });

@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.36.3">
+<meta name="version" content="aarti-v1.37.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -120,6 +120,10 @@
 </head>
 
 <body>
+<!-- The splash: the picture for the time of day with today's star ringed, and the name, from the first paint until the
+     page is ready (js/splash.js sets it up; css/02-core.css, "Splash") -->
+<div id="spl" aria-hidden="true"><div class="splm"><img alt="" width="152" height="152"></div><div class="spln">नित्य उपासना</div></div>
+<script src="js/splash.js"></script>
 <!-- Keyboard users: the first Tab shows this link, which skips the top bar and the contents menu -->
 <a class="skip" id="skip" href="#home" lang="en">Skip to the texts</a>
 <!-- ==== Top bar, the same on every page: home link, who is reading, then Library (every text, and search), More (App,
@@ -313,7 +317,7 @@
           <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span class="mr">मदत आणि वापर</span><span class="en" lang="en">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
           <button type="button" class="sp-row sp-go" id="inb2" hidden><span class="sp-l"><span class="mr">होम स्क्रीनवर ठेवा</span><span class="en" lang="en">Add to Home Screen</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
           <!-- one line: the version and whether the site is saved for offline use; a tap checks for updates (fetches the
-               page and its files fresh; reloads if any changed, else says it is up to date) -->
+               page and its files fresh; if any changed, saves the new copy and reloads with it, else says it is up to date) -->
           <button type="button" class="sp-row" id="upd"><span class="sp-l"><span id="ver" lang="en"></span> · <span id="offv"></span></span><span class="sp-v" id="updv"></span></button>
         </div>
       </section>
@@ -687,7 +691,7 @@
       <h3>Good to know</h3>
       <ul>
         <li><b>Works without internet:</b> the first time you open the site it is saved on your phone, and a short “Ready to use offline” note shows. Settings → More → About shows “Offline ready” beside the version once it is saved. With no internet, a small cloud with a line through it shows in the top bar: the saved copy is in use, and everything still works.</li>
-        <li><b>Getting updates:</b> new changes load by themselves whenever you are online. To look straight away, open Settings → More and tap the version line under About: it shows “Checking…”, then “Up to date” (or “No internet”), or reloads with the new version.</li>
+        <li><b>Getting updates:</b> the site opens straight from the copy saved on your phone, so it starts quickly even with a weak connection. When a new version is published it is saved in the background while you are online, and the next time you open the site you get it. To look straight away, open Settings → More and tap the version line under About: it shows “Checking…”, then “Up to date” (or “No internet”), or reloads with the new version.</li>
         <li><b>Privacy:</b> your people, settings and location stay on your phone. Nothing is sent anywhere; a backup file goes only where you save or send it.</li>
         <li>Moonrise times are calculated on your phone and may differ by a few minutes from printed calendars.</li>
       </ul>
