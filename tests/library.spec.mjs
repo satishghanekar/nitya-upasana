@@ -94,9 +94,10 @@ test("search lists texts by their title first; a text found only inside it is un
 });
 
 // An iPhone clips away a box fixed to the screen inside the Library's own scroll: the search box vanished and, as the
-// Library stopped above it, the open text showed through at the foot. So the Library reaches the foot of the screen,
-// covering the page, and the box sticks to the foot of the Library's scroll, never fixed (Chromium shows a fixed box,
-// so the test checks the layout that keeps it visible on an iPhone)
+// Library stopped above it, the open text showed through at the foot. A box stuck to the foot of the scroll made the
+// iPhone scroll the list back to the box's place at its end. So the Library reaches the foot of the screen, covering
+// the page, and the box sits under the list's scroll, never fixed and never inside it (Chromium draws all of these, so
+// the test checks the layout that keeps the box visible on an iPhone)
 test("the Library covers the page to the foot of the screen, its search box inside it, while a text is open @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#hm").click();
@@ -111,19 +112,24 @@ test("the Library covers the page to the foot of the screen, its search box insi
         b = document.getElementById("qbar"),
         jr = j.getBoundingClientRect(),
         br = b.getBoundingClientRect();
+      // no scroll between the box and the Library on phones (on wide screens the whole Library scrolls)
+      let sc = false;
+      for (let e = b.parentElement; e && e !== j; e = e.parentElement) if (/auto|scroll/.test(getComputedStyle(e).overflowY)) sc = true;
       return {
         jb: jr.bottom,
         bt: br.top,
         bb: br.bottom,
+        sc,
         pos: getComputedStyle(b).position,
         h: innerHeight,
         sx: j.scrollWidth - j.clientWidth,
       };
     });
   for (const end of [false, true]) {
-    if (end) await page.locator("#jump").evaluate((j) => (j.scrollTop = j.scrollHeight));
+    if (end) await page.locator("#jump").evaluate((j) => [j, j.querySelector(".libsc")].forEach((e) => (e.scrollTop = e.scrollHeight)));
     const r = await m();
     expect(r.pos).not.toBe("fixed");
+    expect(r.sc).toBe(false);
     expect(r.sx).toBe(0);
     if (vp.width < 1024) {
       expect(Math.abs(r.jb - r.h)).toBeLessThan(1);
@@ -136,6 +142,35 @@ test("the Library covers the page to the foot of the screen, its search box insi
   await expect(page.locator("#res button").first()).toBeVisible();
   const r = await m();
   if (vp.width < 1024) expect(Math.abs(r.bb - r.h)).toBeLessThan(1);
+});
+
+// On an iPhone the first results went out of reach, the list scrolled to its end ("shree lali", Satish): each search
+// shows its list from the top, and the keyboard's lift leaves no room for the home bar under the box
+test("each search shows its best results at the top, above the box and the keyboard @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await page.locator("#hm").click();
+  await page.locator("#q").fill("shree");
+  await expect(page.locator("#res li.rt").first()).toBeVisible();
+  const sc = page.locator("#jump .libsc");
+  // scrolled to the end of a long list, then typing on
+  await page.locator("#jump").evaluate((j) => [j, j.querySelector(".libsc")].forEach((e) => (e.scrollTop = e.scrollHeight)));
+  await page.locator("#q").pressSequentially(" lali");
+  await expect(page.locator("#res li.rt .rl").first()).toHaveText("श्रीललितासहस्रनामस्तोत्रम्");
+  await expect.poll(() => sc.evaluate((e) => e.scrollTop)).toBe(0);
+  await expect(page.locator("#res li.rt").first()).toBeInViewport();
+  const vp = page.viewportSize();
+  if (vp.width >= 1024) return;
+  // the keyboard open (its height as --kb): the box just above it, the Library still covering the page under it
+  await page.locator("#jump").evaluate((j) => j.style.setProperty("--kb", "300px"));
+  const r = await page.evaluate(() => ({
+    j: document.getElementById("jump").getBoundingClientRect().bottom,
+    b: document.getElementById("qbar").getBoundingClientRect().bottom,
+    pb: getComputedStyle(document.getElementById("qbar")).paddingBottom,
+    h: innerHeight,
+  }));
+  expect(Math.abs(r.j - r.h)).toBeLessThan(1);
+  expect(Math.abs(r.b - (r.h - 300))).toBeLessThan(1);
+  expect(r.pb).toBe("10px");
 });
 
 test("Recent: the places gone to from search, newest first; × takes one away, Clear all; kept after a reload @mobile", async ({ page }) => {
