@@ -1,7 +1,11 @@
 // @ts-check
 // Home: what to chant now.
-// The time-of-day picture with today's weekday star (js/features/day-picture.js) beside today's date in Marathi and
-// English; a Morning | Afternoon | Evening switch (#tss, tabs: arrow keys move between them, Enter or Space picks),
+// The time-of-day picture with the weekday's star (js/features/day-picture.js) beside the date in Marathi and English,
+// with ‹ › under it to show another day (#tdn: the day before or after, and between them Today, Tomorrow, Yesterday,
+// "In 3 days" or "3 days ago"). Home opens on today; on another day all of Home follows it (the Vedic calendar line,
+// the festival and Sankashti lines: homeDay() in js/features/vedic-calendar.js; the picture's star; the sessions'
+// texts), This week makes way for "Showing Wednesday" with Today › (#tdb), and a title reads that day's session. A new
+// day, or coming back to the page after AWAY, shows today again. A Morning | Afternoon | Evening switch (#tss, tabs: arrow keys move between them, Enter or Space picks),
 // opened at the session for the time now; a session with nothing set today is greyed ("Nothing set", aria-disabled,
 // still focusable, and picking it shows the empty state with Add texts); the picked session's texts, numbered, each
 // title starting the session there. The Library is the top bar's book button; App, Share, QR, Print and Help are under
@@ -26,6 +30,7 @@ import { flash, onPiece, pieceEl } from "../core/page.js";
 import { cur, unfold } from "../core/apply.js";
 import { homeAlone, jumpTo } from "./history.js";
 import { setView } from "./day-picture.js";
+import { homeDay } from "./vedic-calendar.js";
 import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, stepInSession, textsFor } from "../core/routine.js";
@@ -63,6 +68,24 @@ const W = {
     },
     end: "Today",
     ended: "End of the session",
+    prev: "Previous day",
+    next: "Next day",
+    today: "Today",
+    tomorrow: "Tomorrow",
+    yesterday: "Yesterday",
+    /** @param {number} n */
+    later: function (n) {
+      return "In " + n + " days";
+    },
+    /** @param {number} n */
+    ago: function (n) {
+      return n + " days ago";
+    },
+    /** @param {string} d the weekday's name, as HTML */
+    showing: function (d) {
+      return "Showing <b>" + d + "</b>";
+    },
+    back: "Today ›",
   },
   mr: {
     days: DAYS.mr,
@@ -87,6 +110,24 @@ const W = {
     },
     end: "आज",
     ended: "या वेळेची उपासना पूर्ण",
+    prev: "आधीचा दिवस",
+    next: "पुढचा दिवस",
+    today: "आज",
+    tomorrow: "उद्या",
+    yesterday: "काल",
+    /** @param {number} n */
+    later: function (n) {
+      return dv(n) + " दिवसांनी";
+    },
+    /** @param {number} n */
+    ago: function (n) {
+      return dv(n) + " दिवसांपूर्वी";
+    },
+    /** @param {string} d the weekday's name, as HTML */
+    showing: function (d) {
+      return "<b>" + d + "</b> पाहत आहात";
+    },
+    back: "आज ›",
   },
 };
 /** @type {Record<Session, string>} */
@@ -97,20 +138,25 @@ const RUN_KEY = "nitya-run";
 // a session started on another day is not carried on, unless it was started less than this long ago (an evening
 // session read past midnight)
 const RUN_KEEP = 3 * 3600 * 1000;
+// how far ‹ › go from today, each way (days)
+const SPAN = 366;
+// another day shown, and the page hidden longer than this: it shows today again when it comes back
+const AWAY = 30 * 60 * 1000;
 
 /** @type {Record<string, TextInfo>} */
 var info = {};
 /** @type {Record<string, string>} section id → text id */
 var bySec = {};
 // The session shown when one is picked by hand (the Morning | Afternoon | Evening switch), or null to follow the
-// clock; a new day starts again from the clock
-/** @type {{ session: Session | null }} */
-var pick = { session: null };
+// clock, and the day shown ("YYYY-MM-DD", from ‹ ›), or "" for today; a new day starts again from the clock and today
+/** @type {{ session: Session | null, day: string }} */
+var pick = { session: null, day: "" };
 // The session being read (started from a title in the list), so Prev and Next follow it
 /** @type {Run | null} */
 var run = null;
 var shownToday = "",
-  langKey = "";
+  langKey = "",
+  hiddenAt = 0;
 /** @type {ReturnType<typeof setTimeout> | undefined} */
 var timer;
 
@@ -124,11 +170,30 @@ function fromKey(key) {
   return new Date(+p[0], +p[1] - 1, +p[2]);
 }
 
-/** The day and session the home page shows: always today */
+/** @param {string} key YYYY-MM-DD @param {number} n days */
+function addDays(key, n) {
+  var d = fromKey(key);
+  d.setDate(d.getDate() + n);
+  return dateKey(d);
+}
+
+/** Days from a to b @param {string} a @param {string} b */
+function daysBetween(a, b) {
+  return Math.round((fromKey(b).getTime() - fromKey(a).getTime()) / 864e5);
+}
+
+/** The day and session the home page shows: today, or the day picked with ‹ › */
 function current() {
   var now = new Date(),
     today = dateKey(now);
-  return { today: today, day: today, session: pick.session || sessionAt(now) };
+  return { today: today, day: pick.day || today, session: pick.session || sessionAt(now) };
+}
+
+/** The day shown, as said beside ‹ ›: Today, Tomorrow, Yesterday, In 3 days, 3 days ago @param {string} today @param {string} day */
+function dayWord(today, day) {
+  var w = words(),
+    n = daysBetween(today, day);
+  return n === 0 ? w.today : n === 1 ? w.tomorrow : n === -1 ? w.yesterday : n > 0 ? w.later(n) : w.ago(-n);
 }
 
 /** The texts of a session on a day, from the reading person's routine, keeping only those in the library */
@@ -193,6 +258,26 @@ export function render() {
   /** @type {HTMLElement} */ (dd.querySelector(".d1")).textContent = scr(W.mr.days[d.getDay()] + ", " + dv(d.getDate()) + " " + W.mr.months[d.getMonth()] + " " + dv(d.getFullYear()));
   /** @type {HTMLElement} */ (dd.querySelector(".d1")).lang = scrKey() || "mr";
   /** @type {HTMLElement} */ (dd.querySelector(".d2")).textContent = W.en.days[d.getDay()] + ", " + d.getDate() + " " + W.en.months[d.getMonth()] + " " + d.getFullYear();
+  // ‹ › and the day's word between them (Today greyed); "Showing Wednesday · Today ›" in place of This week
+  var other = c.day !== c.today,
+    off = daysBetween(c.today, c.day),
+    rel = /** @type {HTMLElement} */ (document.getElementById("tdr")),
+    bar = /** @type {HTMLElement} */ (document.getElementById("tdb")),
+    tp = /** @type {HTMLButtonElement} */ (document.getElementById("tdp")),
+    tx = /** @type {HTMLButtonElement} */ (document.getElementById("tdx"));
+  /** @type {HTMLElement} */ (document.getElementById("tdn")).lang = ui;
+  rel.textContent = dayWord(c.today, c.day);
+  rel.classList.toggle("on", other);
+  tp.setAttribute("aria-label", w.prev);
+  tx.setAttribute("aria-label", w.next);
+  tp.disabled = off <= -SPAN;
+  tx.disabled = off >= SPAN;
+  bar.lang = ui;
+  /** @type {HTMLElement} */ (document.getElementById("tdbt")).innerHTML = w.showing(esc(ui === "mr" ? scr(W.mr.days[d.getDay()]) : W.en.days[d.getDay()]));
+  /** @type {HTMLElement} */ (document.getElementById("tdbb")).textContent = w.back;
+  bar.hidden = !other;
+  document.documentElement.toggleAttribute("data-day", other);
+  homeDay(other ? c.day : "");
   // the session's heading, in both languages, and how many texts it has
   var head = /** @type {HTMLElement} */ (document.getElementById("tsh"));
   head.innerHTML = '<span lang="' + (scrKey() || "mr") + '">' + scr(MR_SESSION[c.session]) + '</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">' + EN_SESSION[c.session] + "</span>";
@@ -237,7 +322,7 @@ export function render() {
     /** @type {HTMLElement} */ (b.querySelector(".tshn")).textContent = n ? "" : w.unset;
   });
   /** @type {HTMLElement} */ (document.getElementById("tsp")).setAttribute("aria-labelledby", "tss-" + c.session);
-  setView(pick.session ? { session: c.session, day: d.getDay() } : null);
+  setView(pick.session || other ? { session: c.session, day: d.getDay() } : null);
   markNow(/** @type {HTMLElement | null} */ (cur()));
 }
 
@@ -262,7 +347,7 @@ function announce() {
     d = fromKey(c.day),
     ids = idsFor(c.day, c.session);
   /** @type {HTMLElement} */ (document.getElementById("tlive")).textContent =
-    w.sessions[c.session] + ", " + w.days[d.getDay()] + ": " + (ids.length ? w.texts(ids.length) : w.none);
+    (c.day !== c.today ? dayWord(c.today, c.day) + ", " : "") + w.sessions[c.session] + ", " + w.days[d.getDay()] + ": " + (ids.length ? w.texts(ids.length) : w.none);
 }
 
 /**
@@ -366,6 +451,11 @@ export function runIds() {
   return run ? run.ids.slice() : null;
 }
 
+/** The weekday of the session being read (the day it was started on Home), or undefined: Print's heading */
+export function runDay() {
+  return run ? fromKey(run.day).getDay() : undefined;
+}
+
 // After the last text of a session (or ‹ Prev on its first): back home, with the session's heading focused
 /** @param {boolean} [done]  after the last text: say the session is over */
 function endSession(done) {
@@ -420,7 +510,10 @@ function check(back) {
   var now = new Date();
   if (back && run && stale(run)) runEnd();
   if (dateKey(now) !== shownToday) {
-    pick = { session: null };
+    pick = { session: null, day: "" };
+    render();
+  } else if (back && pick.day && hiddenAt && now.getTime() - hiddenAt > AWAY) {
+    pick.day = "";
     render();
   } else if (!pick.session) render();
   clearTimeout(timer);
@@ -433,15 +526,25 @@ export function shownSession() {
 }
 
 /**
- * Today's sessions and their texts (Library ids, in routine order), named in the menu language: Print's Today tab and
- * Home's Print this session (js/features/print.js)
- * @returns {{ session: Session, name: string, ids: string[] }[]}
+ * The day Home shows: its weekday (as Date.getDay() counts them), and whether it is today (the routine builder opens
+ * at it; Print heads a session with it)
+ * @returns {{ key: string, day: number, today: boolean }}
  */
-export function todaySessions() {
-  var d = dateKey(new Date()),
+export function shownDay() {
+  var c = current();
+  return { key: c.day, day: fromKey(c.day).getDay(), today: c.day === c.today };
+}
+
+/**
+ * The sessions of the day Home shows and their texts (Library ids, in routine order), named in the menu language, with
+ * that day's weekday and whether it is today: Print's Today tab and the bottom bar's Print on Home (js/features/print.js)
+ * @returns {{ session: Session, name: string, ids: string[], day: number, today: boolean }[]}
+ */
+export function shownSessions() {
+  var c = shownDay(),
     names = P.ui === "mr" ? MR_SESSION : EN_SESSION;
   return /** @type {Session[]} */ (["morning", "afternoon", "evening"]).map(function (s) {
-    return { session: s, name: names[s], ids: idsFor(d, s) };
+    return { session: s, name: names[s], ids: idsFor(c.key, s), day: c.day, today: c.today };
   });
 }
 
@@ -472,7 +575,7 @@ export function init() {
   var tabs = /** @type {HTMLElement} */ (document.getElementById("tss")),
     list = /** @type {HTMLElement} */ (document.getElementById("tsl"));
   if (!tabs || !list) return;
-  // Morning | Afternoon | Evening: a tap (or Enter / Space) shows that session's texts for today in place; it stays
+  // Morning | Afternoon | Evening: a tap (or Enter / Space) shows that session's texts for the day shown in place; it stays
   // picked until the next day (then the clock again). Picking the session of the clock follows the clock again.
   /** @param {Session} s */
   function choose(s) {
@@ -488,6 +591,35 @@ export function init() {
         b.focus({ preventScroll: true });
       } catch (x) {}
   }
+  // ‹ › under the date: the day before or after (no further than SPAN days from today); Today › back to today, with
+  // focus on the session's heading, as the bar goes
+  /** @param {number} n days from the day shown, or 0 for today */
+  function toDay(n) {
+    if (!document.documentElement.hasAttribute("data-rail")) homeAlone();
+    var c = current(),
+      k = n ? addDays(c.day, n) : c.today;
+    if (Math.abs(daysBetween(c.today, k)) > SPAN) return;
+    pick.day = k === c.today ? "" : k;
+    render();
+    announce();
+  }
+  [["tdp", -1], ["tdx", 1]].forEach(function (x) {
+    var b = document.getElementById(/** @type {string} */ (x[0]));
+    if (b)
+      b.addEventListener("click", function () {
+        toDay(/** @type {number} */ (x[1]));
+      });
+  });
+  var tb = document.getElementById("tdbb");
+  if (tb)
+    tb.addEventListener("click", function () {
+      toDay(0);
+      var h = document.getElementById("tsh");
+      if (h)
+        try {
+          h.focus({ preventScroll: true });
+        } catch (x) {}
+    });
   tabs.addEventListener("click", function (e) {
     var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('[role="tab"]'));
     if (b) choose(/** @type {Session} */ (b.dataset.s));
@@ -517,7 +649,7 @@ export function init() {
   [document.getElementById("tsed"), document.getElementById("tsea")].forEach(function (b) {
     if (!b) return;
     b.addEventListener("click", function () {
-      document.dispatchEvent(new CustomEvent("nitya-routine-edit", { detail: { session: current().session, add: b.id === "tsea", from: b } }));
+      document.dispatchEvent(new CustomEvent("nitya-routine-edit", { detail: { session: current().session, day: shownDay().day, add: b.id === "tsea", from: b } }));
     });
   });
   // the routine changed (the builder) or another person's was restored: draw the list again
@@ -551,7 +683,8 @@ export function init() {
   clearTimeout(timer);
   timer = setTimeout(check, nextChange(new Date()).getTime() - Date.now() + 1000);
   document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) check(true);
+    if (document.hidden) hiddenAt = Date.now();
+    else check(true);
   });
   addEventListener("pageshow", function (e) {
     if (e.persisted) check(true);

@@ -869,6 +869,63 @@ test("print builder: a session prints in Home's order, in the app and in Safari 
   await context.close();
 });
 
+// Home showing another day (‹ › under the date): Print prints that day's session, headed by that day, and Open in Safari
+// carries the day, so Safari (on today, a Thursday) heads it the same
+test("print builder: a session of another day is headed by that day, in the app and in Safari @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await useTestRoutine(page);
+  await openSite(page, SETUPS.marathi);
+  await page.locator("#tdx").click();
+  await expect(page.locator("#tdd .d2")).toHaveText("Friday, 16 October 2026");
+  await page.locator("#asp").click();
+  await expect(page.locator("#prtab-today")).toHaveText("Friday");
+  await page.locator('.prses[data-s="evening"]').click();
+  const heads = (p) => p.evaluate(() => [...document.querySelectorAll("#pv .pvcov .pvcat")].map((e) => e.textContent.trim()));
+  await page.locator("#prnx").click();
+  await page.locator("#prgp").click();
+  await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
+  if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
+  expect(await heads(page)).toEqual(["शुक्रवार · सायंकाळ"]);
+  await page.locator("body").dispatchEvent("pointerdown");
+  await page.evaluate(() => dispatchEvent(new Event("afterprint")));
+  // the Home Screen app hands it to Safari with its day
+  const sa = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const hp = await sa.newPage();
+  await hp.addInitScript(() => {
+    Object.defineProperty(navigator, "standalone", { value: true });
+  });
+  await useTestRoutine(hp);
+  await openSite(hp, SETUPS.marathi);
+  await hp.locator("#tdx").click();
+  await hp.locator("#asp").click();
+  await hp.locator('.prses[data-s="evening"]').click();
+  await hp.locator("#prnx").click();
+  await hp.locator("#prgp").click();
+  await hp.locator("#prsf").click();
+  const href = await hp.locator("#prsf").getAttribute("data-to");
+  expect(href).toContain("&o=evening&od=5");
+  const sf = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const sp = await sf.newPage();
+  await sp.addInitScript(() => {
+    window.__printed = 0;
+    window.print = () => {
+      if (window.__printed++) dispatchEvent(new Event("beforeprint"));
+    };
+  });
+  await sp.clock.setFixedTime(FIXED_NOW);
+  await sp.goto(href.replace(/^x-safari-/, ""));
+  await expect(sp.locator("#prgo")).toBeVisible({ timeout: 15_000 });
+  await sp.locator("#prgo").click();
+  await sp.waitForFunction(() => document.querySelectorAll("#pv .pvs").length > 0, null, { timeout: 15_000 });
+  expect(await heads(sp)).toEqual(["शुक्रवार · सायंकाळ"]);
+  await sf.close();
+  await sa.close();
+  await context.close();
+});
+
 // Print in the bottom bar while a text is read (Print and Print this text left ⋯ More, 2026-10-22): just that text, at
 // How, named in the bar
 test("print builder: Print in the bottom bar prints the text being read @chromium-only", async ({ browser }) => {

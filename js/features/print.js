@@ -21,7 +21,7 @@ import { FEAT_SW } from "../core/features.js";
 import { compose } from "../print/compose.js";
 import { createWhat, whatWords } from "../print/what.js";
 import { shelvesNow } from "./library.js";
-import { todaySessions, runIds, shownSession } from "./today-card.js";
+import { shownSessions, shownDay, runDay, runIds, shownSession } from "./today-card.js";
 import { cur } from "../core/apply.js";
 import { active, list as people } from "../store/store.js";
 import { loaded } from "../text/load.js";
@@ -312,7 +312,7 @@ export function init() {
      * @param {HTMLElement} [into] @param {{ session: string } | null} [sp]
      */
     function build(mode, ids, rp, into, sp) {
-      var src = compose(ids, plang(), rp ? true : sp ? sessionName(sp.session) : false);
+      var src = compose(ids, plang(), rp ? true : sp ? sessionName(sp.session, sp.day) : false);
       try {
         write(into || pv, mode, src, rp || null);
       } finally {
@@ -347,10 +347,10 @@ export function init() {
     }
     var DAYS_MR = ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
       DAYS_EN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    // A session's printout heads its contents with today and the session: "Tuesday · Evening" (all of today: the day)
-    /** @param {string} s */
-    function sessionName(s) {
-      var d = new Date().getDay(),
+    // A session's printout heads its contents with its day and the session: "Tuesday · Evening" (all of a day: the day)
+    /** @param {string} s @param {number} [day] the weekday (the day Home shows), else today */
+    function sessionName(s, day) {
+      var d = typeof day === "number" ? day : new Date().getDay(),
         mr = /** @type {Record<string, string>} */ (TAG_WORDS.mr.sessions)[s],
         en = /** @type {Record<string, string>} */ (TAG_WORDS.en.sessions)[s];
       return { mr: DAYS_MR[d] + (mr ? " · " + mr : ""), en: DAYS_EN[d] + (en ? " · " + en : "") };
@@ -612,7 +612,7 @@ export function init() {
     // (css/03-menus-print-view.css). The bottom bar keeps the running total and Next or Print.
     var what = createWhat(/** @type {HTMLElement} */ (document.getElementById("prwl")), {
         shelves: shelvesNow,
-        today: todaySessions,
+        today: shownSessions,
         // each person's routine: their own, else the default one (content/routines.json)
         people: function () {
           return people().map(function (p) {
@@ -909,7 +909,7 @@ export function init() {
       }
       // a session's printout: which, so Safari prints it in this order with its heading
       var sp = splan();
-      if (sp && sp.session) r += "&o=" + sp.session;
+      if (sp && sp.session) r += "&o=" + sp.session + (typeof sp.day === "number" ? "&od=" + sp.day : "");
       return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (chosen() ? "&t=" + /** @type {string[]} */ (chosen()).join(",") : "") + r;
     }
     // open: the pop-up is already open (its Back step is in place); tapped: Print now was tapped and the
@@ -1090,7 +1090,7 @@ export function init() {
       // a session is the Today tab's choice, and the Library tab starts with nothing ticked, so a text ticked there
       // prints on its own (not with the session's texts)
       if (o.ids && o.tab === "today") {
-        what.today(o.ids, o.session);
+        what.today(o.ids, o.session, o.day);
         what.set([]);
       } else if (o.ids) what.set(o.ids);
       what.tab(o.tab || "texts");
@@ -1119,8 +1119,9 @@ export function init() {
       openPrint(/** @type {CustomEvent} */ (e).detail || {});
     });
     // Print in the bottom bar: while reading, the session being read (js/features/today-card.js runIds), else the text
-    // on screen; on Home, the session Home shows, even with a session still being read (Home in the bottom bar leaves it
-    // running). A session opens at What on the Today tab, with it chosen; a text at How
+    // on screen; on Home, the session Home shows, on the day it shows, even with a session still being read (Home in the
+    // bottom bar leaves it running). A session opens at What on the Today tab, with it chosen and headed by its day; a
+    // text at How
     document.getElementById("asp").onclick = function () {
       var b = document.getElementById("asp"),
         sec = cur(),
@@ -1129,11 +1130,11 @@ export function init() {
         t = null;
       if (!sec) {
         s = shownSession();
-        ids = (todaySessions().filter(function (x) {
+        ids = (shownSessions().filter(function (x) {
           return x.session === s;
         })[0] || { ids: [] }).ids;
       }
-      if (ids && ids.length) return openPrint({ ids: ids, tab: "today", session: s, from: b });
+      if (ids && ids.length) return openPrint({ ids: ids, tab: "today", session: s, day: sec ? runDay() : shownDay().day, from: b });
       shelvesNow().forEach(function (s) {
         s.texts.forEach(function (x) {
           if (sec && x.sec === sec.id) t = x;
@@ -1190,7 +1191,7 @@ export function init() {
       window.PRQ = "";
       // a session from Home: the Today tab with its texts in Home's order (js/render.js reads it)
       if (window.PRO) {
-        what.today(window.PRT || [], window.PRO);
+        what.today(window.PRT || [], window.PRO, window.PROD);
         what.tab("today");
       } else what.set(window.PRT || null);
       // a routine printout (Open in Safari carries it: js/render.js reads it)
