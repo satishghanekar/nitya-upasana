@@ -751,7 +751,7 @@ export function init() {
   // Home: Edit and Add texts (js/features/today-card.js)
   document.addEventListener("nitya-routine-edit", function (e) {
     var d = /** @type {CustomEvent} */ (e).detail || {};
-    openBuilder({ session: d.session, from: d.from, add: d.add });
+    openBuilder({ session: d.session, day: d.day, from: d.from, add: d.add });
   });
   // Settings → Routine: Settings closes, and Back returns to Home with focus on ⚙
   // (the builder opens first, then Settings closes: its Back step becomes the builder's, as the Vedic calendar does)

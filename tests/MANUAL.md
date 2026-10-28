@@ -22,7 +22,7 @@ Automation covers the engines (Chromium, Firefox, WebKit) and emulated phones an
 | Reader | Check |
 |---|---|
 | VoiceOver (iPhone) | Swipe through Home and an aarti: Marathi lines read in a Marathi or Hindi voice, English lines in English. Fold states are announced ("collapsed / expanded"). |
-| VoiceOver (iPhone) | Home: Morning, Afternoon and Evening are read as tabs, the one picked as selected; a title opens the session in one scroll; Next and Prev move through the session and never leave it. |
+| VoiceOver (iPhone) | Home: Morning, Afternoon and Evening are read as tabs, the one picked as selected; a title opens the session in one scroll; Next and Prev move through the session and never leave it. Next day (›) is read with its name, and the day and session shown are announced ("Tomorrow, Morning, Wednesday: 9 texts"). |
 | TalkBack (Android) | Same as above; the bottom bar buttons have names. |
 | VoiceOver (Mac) or NVDA (Windows) | Tab through Settings to the end and back; Escape closes it and returns to the ⚙ button. Search: results are announced. |
 
