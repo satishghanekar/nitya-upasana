@@ -64,9 +64,9 @@ test("offline ready only once every file is saved @chromium-only", async ({ page
   await expect(page.locator("#fl")).toHaveText("Ready to use offline");
 });
 
-// A weak connection with the site saved: the texts wait 1 s for the network, then come from the saved copy, so the
-// page shows in about 2 s, not the 6 s it took when the list and then the texts each waited 3 s
-test("a weak connection: the saved texts show the page in about 2 s @chromium-only", async ({ page, context }) => {
+// A weak connection with the site saved: the page and every part come from the saved copy at once, without asking the
+// network, so the page is ready as fast as with a good connection (it took 6 s and more when each file waited for it)
+test("a weak connection: the saved copy opens the page without asking the network @chromium-only", async ({ page, context }) => {
   await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [PREFS_KEY, JSON.stringify(BASE_PREFS)]);
   await page.goto("./");
   await page.evaluate(async () => {
@@ -75,18 +75,51 @@ test("a weak connection: the saved texts show the page in about 2 s @chromium-on
       await new Promise((r) => navigator.serviceWorker.addEventListener("controllerchange", r, { once: true }));
     const v = document.querySelector('meta[name="version"]').content;
     for (let i = 0; i < 100; i++) {
-      if ((await (await caches.open(v)).keys()).length > 60) return;
+      if ((await (await caches.open(v)).keys()).length > 120) return;
       await new Promise((r) => setTimeout(r, 100));
     }
   });
-  await context.route("**/content/**", async (r) => {
-    await new Promise((x) => setTimeout(x, 5000));
-    await r.continue().catch(() => {});
+  // what reaches the network: from the page itself, or fetched by the service worker
+  const net = [];
+  context.on("request", (r) => {
+    if (r.serviceWorker()) net.push(r.url());
   });
-  const t = Date.now();
+  const res = [];
+  page.on("response", (r) => res.push(r));
   await page.reload();
   await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
-  expect(Date.now() - t).toBeLessThan(3500);
+  const own = res.filter((r) => new URL(r.url()).origin === new URL(page.url()).origin && !r.url().endsWith("/sw.js"));
+  expect(own.length).toBeGreaterThan(100);
+  expect(own.filter((r) => !r.fromServiceWorker()).map((r) => r.url())).toEqual([]);
+  expect(net.filter((u) => !u.endsWith("/sw.js") && !u.endsWith("/js/parts.js"))).toEqual([]);
+});
+
+// Check for updates (Settings → More → About) still finds a file changed under the same version: it saves the new
+// copy over the old one before reloading, since the page opens from the saved copy
+test("Check for updates saves a changed file and reloads with it @chromium-only", async ({ page, context }) => {
+  await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [PREFS_KEY, JSON.stringify(BASE_PREFS)]);
+  await page.goto("./");
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller)
+      await new Promise((r) => navigator.serviceWorker.addEventListener("controllerchange", r, { once: true }));
+  });
+  await page.reload();
+  await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+  // the server now has a changed style file
+  await context.route("**/css/99-fallbacks.css", async (r) => {
+    const res = await r.fetch();
+    await r.fulfill({ response: res, body: (await res.text()) + "\n#__changed{color:red}" });
+  });
+  await page.locator("#aa").click();
+  await page.locator('#spv button[data-v="more"]').click();
+  await page.locator("#upd").click();
+  await page.waitForEvent("load", { timeout: 25_000 });
+  await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+  await context.unrouteAll({ behavior: "ignoreErrors" });
+  // the page now runs with the changed file, from the saved copy
+  const css = await page.evaluate(async () => (await (await fetch("css/99-fallbacks.css")).text()).includes("#__changed"));
+  expect(css).toBe(true);
 });
 
 // The version is written twice on purpose: browsers install a new service worker when sw.js itself changes

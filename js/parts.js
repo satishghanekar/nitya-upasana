@@ -27,8 +27,8 @@ var SITE_PARTS = (function () {
   ].map(function (f) {
     return "css/" + f + ".css";
   });
-  // The plain scripts, in load order: this list, the code that builds the pieces
-  var scripts = ["js/parts.js", "js/render.js"];
+  // The plain scripts, in load order: this list, the splash shown while the page starts, the code that builds the pieces
+  var scripts = ["js/parts.js", "js/splash.js", "js/render.js"];
   // The site script: js/main.js (loaded with <script type="module">) and the parts it imports
   var modules = [
     "main",
