@@ -55,6 +55,9 @@ const CASES = [
   ["home-tablet-land", "tablet-land", SETUPS.marathi],
   ["home-sankashti-phone", "phone", SETUPS.marathi, null, new Date("2026-10-28T19:00:00-04:00")],
   ["home-marathi-menus", "phone", SETUPS["marathi-menus"]],
+  // ‹ › under the date: the next day, a Sankashti, on a phone and beside the picture on a computer
+  ["home-other-day-phone", "phone", SETUPS.marathi, (p) => p.locator("#tdx").click(), new Date("2026-10-27T19:00:00-04:00")],
+  ["home-other-day-desktop", "desktop", SETUPS.marathi, (p) => p.locator("#tdx").click(), new Date("2026-10-27T19:00:00-04:00")],
   // a piece in every language arrangement
   ["aarti-marathi-phone", "phone", SETUPS.marathi, goTo("a1")],
   ["aarti-english-phone", "phone", SETUPS.english, goTo("a1")],
