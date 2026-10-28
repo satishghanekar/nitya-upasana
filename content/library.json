@@ -244,6 +244,15 @@
    "lines": 35
   },
   {
+   "id": "stotra-hanuman-chalisa",
+   "file": "texts/stotra-hanuman-chalisa.txt",
+   "title": "श्री हनुमान चालीसा",
+   "titleEn": "Shri Hanuman Chalisa",
+   "category": "stotra",
+   "language": "hi",
+   "lines": 86
+  },
+  {
    "id": "ashtak-sadguru-padukashtak",
    "file": "texts/ashtak-sadguru-padukashtak.txt",
    "title": "श्रीसद्गुरुपादुकाष्टक",

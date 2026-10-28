@@ -135,6 +135,7 @@ var SITE_PARTS = (function () {
     "texts/aarti-svastha-karin-shayan.txt",
     "texts/aarti-ovaloo-sapreme-aarti.txt",
     "texts/stotra-maruti-stotra.txt",
+    "texts/stotra-hanuman-chalisa.txt",
     "texts/ashtak-sadguru-padukashtak.txt",
     "texts/ashtak-ananyata-maj-ghado.txt",
     "texts/ashtak-anudin-anutapen.txt",
