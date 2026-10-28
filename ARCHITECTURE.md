@@ -7,12 +7,13 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files and the 
 ## What happens when the page opens
 
 1. **`<head>`** loads the style files in `css/` in number order, then `js/parts.js`, the one list of the site's files. `modulepreload` links fetch the script parts in parallel.
-2. **`<body>`** has the top bar, Settings (with its Reading | Screen | More tabs), Home, the Library (with its Chants | Books tabs, पाठ | पोथी), the Vedic calendar, the routine builder and the dialogs, written in HTML. Help's text sits in a `<template>` and is only laid out when Help is first opened. `#pieces`, at the end of `<main>`, marks where the texts go.
-3. **`js/render.js`**, a plain script, defines `renderPiece` (a text's HTML from its data) and `SCR` (Kannada letters). It also reads the boot copy of the settings and the print choices carried in a print link, before the modules run.
-4. **`js/main.js`** starts the site script. `js/text/load.js` fetches `content/library.json`, the text files in `content/texts/`, `content/routines.json` and `content/festivals.json`; `js/text/content.js` turns the texts into `CONTENT` (reading each file with `js/text/format.js`). At the same time `openStore()` (`js/store/store.js`) opens IndexedDB, where the people on this phone are kept. Then each part's `init()` runs in a fixed order (listed in `js/README.md`), and `data-ready` is set on `<html>`. If the texts can't be loaded the parts start anyway, so Home, Settings and Help still work.
-5. **No text is built at start-up.** A text is built the first time it is opened (`pieceEl(id)` in `js/core/page.js`, from `CONTENT` through `renderPiece`), and each part's step for a new piece (`onPiece`) runs on it then: Kannada letters, the English spelling, stanza numbers, line breaks, dhrupad markers, the fold, the highlighted line and so on. Search builds its index from `CONTENT` the first time something is searched, and print builds its own copy (see *Printing*).
-6. **Until `data-ready` is set, the page is hidden**, so it never jumps while the reader's theme, languages, text size and Home's session arrive. If the script never runs, the page shows after 1.5 s anyway.
-7. **After the page is shown:** the service worker (`sw.js`) saves the site for offline use, the Vedic calendar line is worked out, and fonts that arrive late trigger one refit of the text size.
+2. **The splash** (`#spl`, the first thing in `<body>`, set up by the plain script `js/splash.js`) shows from the first paint: the picture for the time of day with today's weekday star ringed, as on Home, the name, and the seven stars lighting up in turn. `js/splash.js` also puts the reader's theme from the boot copy of the settings on `<html>`, so the splash matches it. It fades out once `data-ready` is set (styles in `css/02-core.css`, "Splash"), or after 10 s if the site script never starts. `tests/unit/time-of-day.test.mjs` checks its copy of the star centres against `js/core/time-of-day.js`.
+3. **`<body>`** has the top bar, Settings (with its Reading | Screen | More tabs), Home, the Library (with its Chants | Books tabs, पाठ | पोथी), the Vedic calendar, the routine builder and the dialogs, written in HTML. Help's text sits in a `<template>` and is only laid out when Help is first opened. `#pieces`, at the end of `<main>`, marks where the texts go.
+4. **`js/render.js`**, a plain script, defines `renderPiece` (a text's HTML from its data) and `SCR` (Kannada letters). It also reads the boot copy of the settings and the print choices carried in a print link, before the modules run.
+5. **`js/main.js`** starts the site script. `js/text/load.js` fetches `content/library.json`, the text files in `content/texts/`, `content/routines.json` and `content/festivals.json`; `js/text/content.js` turns the texts into `CONTENT` (reading each file with `js/text/format.js`). At the same time `openStore()` (`js/store/store.js`) opens IndexedDB, where the people on this phone are kept. Then each part's `init()` runs in a fixed order (listed in `js/README.md`), and `data-ready` is set on `<html>`. If the texts can't be loaded the parts start anyway, so Home, Settings and Help still work.
+6. **No text is built at start-up.** A text is built the first time it is opened (`pieceEl(id)` in `js/core/page.js`, from `CONTENT` through `renderPiece`), and each part's step for a new piece (`onPiece`) runs on it then: Kannada letters, the English spelling, stanza numbers, line breaks, dhrupad markers, the fold, the highlighted line and so on. Search builds its index from `CONTENT` the first time something is searched, and print builds its own copy (see *Printing*).
+7. **Until `data-ready` is set, the page is hidden**, so it never jumps (the splash covers it meanwhile) while the reader's theme, languages, text size and Home's session arrive. If the script never runs, the page shows after 1.5 s anyway.
+8. **After the page is shown:** the service worker (`sw.js`) saves the site for offline use, the Vedic calendar line is worked out, and fonts that arrive late trigger one refit of the text size.
 
 ## Screens
 
@@ -76,11 +77,12 @@ These hold for every text, so a new text prints correctly as soon as its file ex
 ## Offline use and updates
 
 - `sw.js` keeps the page and every file in `js/parts.js` (styles, scripts, texts, the main fonts, the pictures and icons) in a cache named after the version.
-  - The page and its parts are always fetched fresh when possible, with a 3 s limit before the saved copy is used, so the page never mixes old and new parts.
-  - Everything else comes from the saved copy and is refreshed in the background. The optional fonts are saved once someone picks them.
+  - Every file comes from the saved copy of this version whenever it has it, at once and without asking the network, so start-up takes the same time with a weak connection or none. A file not saved yet (a first visit still saving, an optional font once picked, a PDF once opened) is fetched and then kept.
+  - Nothing is downloaded again until a new version is published. Opening the site online lets the browser notice the changed `sw.js`; the new worker saves a whole fresh copy in a new cache (the font files are copied from the old one), takes over, and deletes the old copy. The page already open keeps running; the next launch opens the new version. If a file can't be fetched, that install fails and the old version stays until the next launch tries again, so the saved copy is never a mix of two versions (a first visit, with nothing to fall back on, goes on without the file and `js/features/offline.js` saves it later).
+  - Requests made with `cache: 'no-store'` or `'reload'` (Check for updates, the page saving missing files) go straight to the network.
   - If the saved copy can't be read within 2 s, the request goes to the network (Safari's storage can stall).
 - **The version is written twice on purpose:** in `sw.js` (`V`) and in `<meta name="version">` in `index.html`. Browsers install a new service worker only when `sw.js` itself changes, and not every browser re-checks the files it imports, so the version must sit in `sw.js`; the page needs it at start-up too. `tests/offline.spec.mjs` fails if the two differ.
-- **Check for updates** (the version line in Settings → More → About, `js/features/offline.js`) fetches the page and each file in `js/parts.js` fresh and reloads if any changed, so it finds changes even when the version stays the same.
+- **Check for updates** (the version line in Settings → More → About, `js/features/offline.js`) fetches the page and each file in `js/parts.js` fresh. If any changed, it saves them over the saved copy and asks for the new `sw.js` (waiting until a new version is in charge, 20 s at most), then reloads, so it finds changes even when the version stays the same.
 - **`_headers`** lets phones keep font files for a year and pictures for a week without asking again. The page, styles and scripts are always re-checked (`no-cache`).
 
 ## Oldest supported browsers, and the fallbacks they need
@@ -93,7 +95,7 @@ The floor is **iOS 15.4** (iPhone 6s / 7, iPad Air 2 / mini 4 run up to iOS 15.8
 | `vh` before `dvh` | Older Safari has no dynamic viewport units. |
 | Class `wk` on `<html>` | WebKit's print layout (see *Printing*). |
 | `meta[name="version"]` read with a default | The page still runs if the tag is missing. |
-| 1.5 s reveal | The page shows even if the site script fails to start, also with reduced motion. |
+| 1.5 s reveal, 10 s splash limit | The page shows, and the splash goes, even if the site script fails to start, also with reduced motion. |
 
 ## What not to do
 
