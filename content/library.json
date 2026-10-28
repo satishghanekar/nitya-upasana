@@ -235,6 +235,33 @@
    "lines": 20
   },
   {
+   "id": "stotra-maruti-stotra",
+   "file": "texts/stotra-maruti-stotra.txt",
+   "title": "मारुती स्तोत्र",
+   "titleEn": "Maruti Stotra",
+   "category": "stotra",
+   "language": "mr",
+   "lines": 35
+  },
+  {
+   "id": "stotra-hanuman-chalisa",
+   "file": "texts/stotra-hanuman-chalisa.txt",
+   "title": "श्री हनुमान चालीसा",
+   "titleEn": "Shri Hanuman Chalisa",
+   "category": "stotra",
+   "language": "hi",
+   "lines": 86
+  },
+  {
+   "id": "stotra-ram-raksha",
+   "file": "texts/stotra-ram-raksha.txt",
+   "title": "श्रीरामरक्षास्तोत्रम्",
+   "titleEn": "Shri Ram Raksha Stotra",
+   "category": "stotra",
+   "language": "sa",
+   "lines": 100
+  },
+  {
    "id": "ashtak-sadguru-padukashtak",
    "file": "texts/ashtak-sadguru-padukashtak.txt",
    "title": "श्रीसद्गुरुपादुकाष्टक",
