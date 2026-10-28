@@ -316,33 +316,41 @@
   font-weight: 600;
 }
 
-/* ==== The search box at the foot of the Library (#qbar), within thumb reach (Satish, 2026-10-27): fixed to the foot of
-   the screen, and the Library's list ends just above it, so nothing scrolls under it. When the phone's keyboard opens,
-   both are lifted by its height (--kb, js/text/search.js), so the box sits just above it. On wide screens (the Library
-   beside Home) it stays at the top, under the tabs ==== */
-:root {
-  --qh: calc(67px + max(10px, env(safe-area-inset-bottom, 0px)) - 10px);
-}
+/* ==== The search box at the foot of the Library (#qbar), within thumb reach (Satish, 2026-10-27): the Library reaches the
+   foot of the screen and the box sticks to the foot of its scroll (position: sticky; a fixed box inside the Library's
+   scroll is clipped away on iPhones, and the page under it showed through). The list ends just above it, so nothing
+   scrolls under it; a short list leaves the box at the foot all the same (.libin fills the Library, the box's
+   margin-top: auto). When the phone's keyboard opens, the Library is lifted by its height (--kb, js/text/search.js),
+   so the box sits just above it. Its background (a shadow) and top line (a border image) reach both edges of the
+   screen without widening the Library's scroll. On wide screens (the Library beside Home) it stays at the top, under
+   the tabs ==== */
 :root:not([data-rail="1"]) #jump {
-  bottom: calc(var(--kb, 0px) + var(--qh));
-  padding-bottom: 16px;
-}
-:root:not([data-rail="1"]) #jump[data-tab="pdf"] {
   bottom: var(--kb, 0px);
+}
+:root:not([data-rail="1"]) #jump:not([data-tab="pdf"]) {
+  padding-bottom: 0;
 }
 #jump .libin {
   display: flex;
   flex-direction: column;
 }
+:root:not([data-rail="1"]) #jump .libin {
+  min-height: 100%;
+}
+:root:not([data-rail="1"]) #jump :is(#jl, #res:not(:empty)) {
+  margin-bottom: 16px;
+}
 #qbar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: var(--kb, 0px);
+  position: sticky;
+  bottom: 0;
   z-index: 7;
-  padding: 10px 16px max(10px, env(safe-area-inset-bottom, 0px));
-  background: var(--bg);
+  margin-top: auto;
+  padding: 10px 0 max(10px, env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--rule);
+  border-image: linear-gradient(var(--rule), var(--rule)) 1 / 1px 0 0 / 0 100vmax;
+  background: var(--bg);
+  box-shadow: 0 0 0 100vmax var(--bg);
+  clip-path: inset(0 -100vmax);
 }
 #jump #qbar #q {
   max-width: 34rem;
@@ -355,9 +363,13 @@
   :root[data-rail="1"] #qbar {
     order: -1;
     position: static;
+    margin-top: 0;
     padding: 0 0 10px;
-    border-top: 0;
+    border: 0;
+    border-image: none;
     background: none;
+    box-shadow: none;
+    clip-path: none;
   }
   :root[data-rail="1"] #jump #qbar #q {
     margin: 0;
