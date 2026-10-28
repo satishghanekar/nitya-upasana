@@ -7,7 +7,71 @@ stanza-numbers: as-written
 credit: [ब्रह्माण्डपुराण](https://en.wikipedia.org/wiki/Lalita_Sahasranama)
 credit-en: [Brahmanda Purana](https://en.wikipedia.org/wiki/Lalita_Sahasranama)
 ---
-[dhrupad]
+[note: न्यासः | Nyasa]
+
+[once]
+अस्य श्रीललितासहस्रनामस्तोत्रमाला मन्त्रस्य ।
+Asya Shrilalitasahasranamastotramala Mantrasya |
+वशिन्यादिवाग्देवता ऋषयः ।
+Vashinyadivagdevata Rushayah |
+अनुष्टुप् छन्दः ।
+Anushtup Chhandah |
+श्रीललितापरमेश्वरी देवता ।
+Shrilalitaparameshvari Devata |
+श्रीमद्वाग्भवकूटेति बीजम् ।
+Shrimadvagbhavakuteti Bijam |
+मध्यकूटेति शक्तिः ।
+Madhyakuteti Shaktih |
+शक्तिकूटेति कीलकम् ।
+Shaktikuteti Kilakam |
+श्रीललितामहात्रिपुरसुन्दरी-प्रसादसिद्धिद्वारा
+Shrilalitamahatripurasundari-Prasadasiddhidvara
+चिन्तितफलावाप्त्यर्थे जपे विनियोगः ।
+Chintitaphalavaptyarthe Jape Viniyogah |
+
+[note: ध्यानम् | Dhyanam]
+
+[once]
+सिन्दूरारुण विग्रहां त्रिनयनां माणिक्यमौलि स्फुरत्
+Sinduraruna Vigraham Trinayanam Manikyamauli Sphurat
+तारा नायक शेखरां स्मितमुखी मापीन वक्षोरुहाम् ।
+Tara Nayaka Shekharam Smitamukhi Mapina Vakshoruham |
+पाणिभ्यामलिपूर्ण रत्न चषकं रक्तोत्पलं बिभ्रतीं
+Panibhyamalipurna Ratna Chashakam Raktotpalam Bibhratim
+सौम्यां रत्न घटस्थ रक्तचरणां ध्यायेत् परामम्बिकाम् ॥
+Saumyam Ratna Ghatastha Raktacharanam Dhyayet Paramambikam ||
+
+[once]
+अरुणां करुणा तरङ्गिताक्षीं
+Arunam Karuna Tarangitakshim
+धृत पाशाङ्कुश पुष्प बाणचापाम् ।
+Dhruta Pashankusha Pushpa Banachapam |
+अणिमादिभि रावृतां मयूखै-
+Animadibhi Ravrutam Mayukhai-
+रहमित्येव विभावये भवानीम् ॥
+Rahamityeva Vibhavaye Bhavanim ||
+
+[once]
+ध्यायेत् पद्मासनस्थां विकसितवदनां पद्मपत्रायताक्षीं
+Dhyayet Padmasanastham Vikasitavadanam Padmapatrayatakshim
+हेमाभां पीतवस्त्रां करकलितलसद्धेमपद्मां वराङ्गीम् ।
+Hemabham Pitavastram Karakalitalasaddhemapadmam Varangim |
+सर्वालङ्कार युक्तां सतत मभयदां भक्तनम्रां भवानीं
+Sarvalankara Yuktam Satata Mabhayadam Bhaktanamram Bhavanim
+श्रीविद्यां शान्त मूर्तिं सकल सुरनुतां सर्व सम्पत्प्रदात्रीम् ॥
+Shrividyam Shanta Murtim Sakala Suranutam Sarva Sampatpradatrim ||
+
+[once]
+सकुङ्कुम विलेपनामलिकचुम्बि कस्तूरिकां
+Sakunkuma Vilepanamalikachumbi Kasturikam
+समन्द हसितेक्षणां सशर चाप पाशाङ्कुशाम् ।
+Samanda Hasitekshanam Sashara Chapa Pashankusham |
+अशेषजन मोहिनीं अरुण माल्य भूषाम्बरां
+Asheshajana Mohinim Aruna Malya Bhushambaram
+जपाकुसुम भासुरां जपविधौ स्मरे दम्बिकाम् ॥
+Japakusuma Bhasuram Japavidhau Smare Dambikam ||
+
+[once]
 ॥ अथ श्रीललितासहस्रनामस्तोत्रम् ॥
 || Atha Shrilalitasahasranamastotram ||
 
@@ -1109,7 +1173,7 @@ Shrishiva Shiva-Shaktyaikya-Rupini Lalitambika |
 एवं श्रीललिता देव्या नाम्नां साहस्रकं जगुः ॥
 Evam Shrilalita Devya Namnam Sahasrakam Jaguh ||
 
-[dhrupad]
+[once]
 ॥ इति श्रीब्रह्माण्डपुराणे उत्तरखण्डे श्रीहयग्रीवागस्त्यसंवादे
 || Iti Shribrahmandapurane Uttarakhande Shrihayagrivagastyasamvade
 श्रीललिता सहस्रनाम स्तोत्र कथनं सम्पूर्णम् ॥
