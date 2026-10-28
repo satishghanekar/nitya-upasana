@@ -306,6 +306,9 @@ function find() {
     frag.appendChild(li);
   });
   res.appendChild(frag);
+  // each new search shows its best results first: the list from its top (on phones it scrolls in .libsc)
+  jp.scrollTop = 0;
+  /** @type {HTMLElement} */ (jp.querySelector(".libsc")).scrollTop = 0;
 }
 
 /** The index, built again when the script, the English spelling or the categories change: on the next search */

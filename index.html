@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.36.2">
+<meta name="version" content="aarti-v1.36.3">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -157,6 +157,9 @@
      PDF: the Books tab lists the PDFs (js/features/pdfs.js), each opening in the phone's own PDF viewer. ==== -->
 <div id="jump" hidden role="dialog" aria-labelledby="jlt" tabindex="-1">
   <div class="libin">
+  <!-- Everything but the search box, in a scroll of its own on phones and tablets, so the box below is never inside
+       the scroll (an iPhone kept scrolling the list to the box's place at its end) -->
+  <div class="libsc">
   <!-- Back (‹) and, when the Library has PDFs, the tabs Chants | Books in one row, as on the calendar page; with the tabs
        the title is for screen readers only (js/features/contents-list.js) -->
   <div class="libhd">
@@ -181,6 +184,7 @@
        with this phone's changes; categories with no texts are left out. Last, the button that opens the categories sheet (#lbm). -->
   <div id="jl">
   <div id="lbr"><button type="button" id="lbb" aria-haspopup="dialog" aria-expanded="false" aria-controls="lbm"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h4v16H4zM10 4h4v16h-4z"/><path d="M15 5.2l3.9-1 3.6 14.6-3.9 1z"/></svg><span id="lbbw" lang="en">Edit categories</span></button></div>
+  </div>
   </div>
   <!-- the search box at the foot of the page, within thumb reach and kept just above the phone's keyboard; at the top on
        wide screens (css/13-library.css) -->
