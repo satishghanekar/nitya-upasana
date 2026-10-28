@@ -81,10 +81,10 @@
   display: grid;
   place-items: center;
 }
-/* Home, Print and Reading: the icon with its word under it, in the menu language (the word is the button's name).
+/* Home, Library and Reading: the icon with its word under it, in the menu language (the word is the button's name).
    The button keeps the bar's 44px height. */
 #ash,
-#asp,
+#hm,
 #rsb {
   align-content: center;
   row-gap: 3px;
@@ -110,7 +110,7 @@
     white-space: nowrap;
   }
   #ash,
-  #asp,
+  #hm,
   #rsb {
     min-width: 44px;
   }
@@ -166,6 +166,14 @@
 [data-tuck="1"] body > .bar,
 [data-tuck="1"] #asc {
   visibility: hidden;
+}
+/* never on Home: back on Home with the bars tucked, they show again (js/features/bars.js tuck()) */
+[data-home="1"][data-tuck="1"] #tuck {
+  visibility: hidden;
+}
+[data-home="1"][data-tuck="1"] body > .bar,
+[data-home="1"][data-tuck="1"] #asc {
+  visibility: visible;
 }
 @media print {
   #tuck {
@@ -532,7 +540,7 @@ html[data-asb="1"] {
   color: var(--bg);
   border-color: var(--accent);
 }
-/* The bar holds five buttons (Prev, Home, Print, Reading, Next): phones close the gaps and slim the icon
+/* The bar holds five buttons (Prev, Home, Library, Reading, Next): phones close the gaps and slim the icon
    buttons, and narrow ones show only the arrows of Prev and Next (their names stay for screen readers and voice
    control) */
 @media (max-width: 439px) {
@@ -540,7 +548,7 @@ html[data-asb="1"] {
     gap: 2px;
   }
   #ash,
-  #asp,
+  #hm,
   #rsb {
     min-width: 52px;
     padding: 0 2px;

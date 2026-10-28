@@ -665,7 +665,8 @@ p.fl {
   font-size: 15px;
 }
 
-#hm {
+/* Print, in the top bar */
+#asp {
   font-size: 22px;
   padding-inline: 12px;
 }

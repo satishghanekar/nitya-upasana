@@ -4,9 +4,11 @@
 // ("ओळी"); matches ignore svara marks and punctuation, forgive the spellings people type and a typo, and Devanagari
 // typed also finds what is written in English letters. The rules and the ranking are in ./search-core.js
 // (unit-tested); this part builds the index from the texts, as the pieces show them, and shows the results.
+// Recent (#rcn) lists the last places the person went to from here (a text, or a line in it; P.rc, per person) while
+// the box is empty. The box is at the foot of the page on phones, kept above the keyboard (--kb on #jump).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { P } from "../core/state.js";
+import { P, change } from "../core/state.js";
 import { IA, englishStyle, titleText } from "./iast.js";
 import { numberStanzas } from "./stanza-numbers.js";
 import { breakLines } from "./line-breaks.js";
@@ -71,6 +73,121 @@ export function init() {
     clearTimeout(qT);
     qT = setTimeout(find, 120);
   });
+  // Recent: drawn each time the Library opens; Clear empties it
+  new MutationObserver(function () {
+    if (!jp.hidden) rcShow();
+  }).observe(jp, { attributes: true, attributeFilter: ["hidden"] });
+  /** @type {HTMLElement} */ (document.getElementById("rcc")).onclick = function () {
+    change({ rc: [] });
+    rcShow();
+    q.focus();
+  };
+  // The phone's keyboard covers the foot of the page, where the box is: the Library is lifted by its height
+  var vv = window.visualViewport;
+  if (vv) {
+    var v = vv,
+      kb = function () {
+        jp.style.setProperty("--kb", Math.max(0, Math.round(innerHeight - v.height - v.offsetTop)) + "px");
+      };
+    v.addEventListener("resize", kb);
+    v.addEventListener("scroll", kb);
+  }
+}
+
+/** Open a text at its top @param {string} sec */
+function openText(sec) {
+  var el = pieceEl(sec);
+  unfold(el);
+  jumpTo(function () {
+    if (el) el.scrollIntoView();
+  }, "#" + sec);
+}
+
+/** Open a text at one of its lines @param {string} sec @param {string} id */
+function openLine(sec, id) {
+  jumpTo(function () {
+    goLine(id, true);
+  }, "#" + sec);
+}
+
+// ---- Recent ----
+var RC_MAX = 8;
+
+/** Remember a place, first in Recent: a text, or a line in it @param {string} sec @param {string} id */
+function remember(sec, id) {
+  var k = id ? sec + "|" + id : sec;
+  change({
+    rc: [k].concat((P.rc || []).filter(function (/** @type {string} */ x) { return x !== k; })).slice(0, RC_MAX),
+  });
+}
+
+/** Recent, while nothing is searched: each place as a search result shows it, with × to take it away */
+export function rcShow() {
+  var box = /** @type {HTMLElement} */ (document.getElementById("rcn")),
+    list = /** @type {HTMLElement} */ (document.getElementById("rcl"));
+  if (!box || !list) return;
+  list.innerHTML = "";
+  var L = P.lang === "en" ? "en" : "mr",
+    LL = L === "en" ? "en" : scr().k || "mr",
+    mrUi = P.ui === "mr",
+    n = 0;
+  (P.rc || []).forEach(function (/** @type {string} */ k) {
+    var p = k.split("|"),
+      sec = p[0],
+      id = p[1] || "",
+      el = pieceEl(sec);
+    if (!el) return; // a text no longer in the Library
+    /** @param {string} l */
+    var line = function (l) {
+      var x = el && el.querySelector('.verse > .' + l + ' > p[data-l="' + id + '"]');
+      return x ? txt(x) : "";
+    };
+    if (id && !line("mr")) return; // a line no longer in the text
+    var li = document.createElement("li"),
+      b = document.createElement("button"),
+      x = document.createElement("button"),
+      c = categoryOfSection(sec);
+    b.type = x.type = "button";
+    b.className = "rcg";
+    if (id) {
+      li.className = "rln";
+      b.appendChild(span("rs", LL, sectionTitle(sec, L)));
+      b.appendChild(span("rl", LL, line(L)));
+      if (P.lang === "both") b.appendChild(span("rl2", "en", line("en")));
+    } else {
+      li.className = "rt";
+      if (c) b.appendChild(span("rs", LL, L === "en" ? c.name.en : scr().to(c.name.mr)));
+      b.appendChild(span("rl", LL, sectionTitle(sec, L)));
+      if (P.lang === "both") b.appendChild(span("rl2", "en", sectionTitle(sec, "en")));
+    }
+    b.onclick = function () {
+      remember(sec, id);
+      if (id) openLine(sec, id);
+      else openText(sec);
+    };
+    x.className = "rcx";
+    x.textContent = "×";
+    x.setAttribute("aria-label", (mrUi ? "काढा: " : "Remove: ") + (b.textContent || ""));
+    x.onclick = function () {
+      change({ rc: (P.rc || []).filter(function (/** @type {string} */ y) { return y !== k; }) });
+      rcShow();
+    };
+    li.appendChild(b);
+    li.appendChild(x);
+    list.appendChild(li);
+    n++;
+  });
+  // only while the whole list shows (nothing searched)
+  box.hidden = !n || ul.hidden;
+
+  /** @param {string} cls @param {string} lang @param {string} t */
+  function span(cls, lang, t) {
+    var s = document.createElement("span");
+    s.className = cls;
+    s.lang = lang;
+    s.textContent = t;
+    return s;
+  }
 }
 
 /**
@@ -108,6 +225,7 @@ function find() {
   none.hidden = true;
   var found = search(ix(), v);
   ul.hidden = Array.from(fold(v, scr().from).replace(/ /g, "")).length >= 2;
+  rcShow();
   if (!ul.hidden) return say(-1, 0, false);
   var n = found.texts.length + found.lines.length;
   say(found.lines.length, found.texts.length, found.more);
@@ -165,11 +283,8 @@ function find() {
     b.appendChild(span("rl", LL, sectionTitle(r.sec, L), true));
     if (P.lang === "both") b.appendChild(span("rl2", "en", sectionTitle(r.sec, "en"), true));
     b.onclick = function () {
-      var el = pieceEl(r.sec);
-      unfold(el);
-      jumpTo(function () {
-        if (el) el.scrollIntoView();
-      }, "#" + r.sec);
+      remember(r.sec, "");
+      openText(r.sec);
     };
     li.appendChild(b);
     frag.appendChild(li);
@@ -184,9 +299,8 @@ function find() {
     b.appendChild(span("rl", LL, P.lang === "en" ? r.e : r.m, true));
     if (P.lang === "both") b.appendChild(span("rl2", "en", r.e, true));
     b.onclick = function () {
-      jumpTo(function () {
-        goLine(r.id, true);
-      }, "#" + r.sec);
+      remember(r.sec, r.id);
+      openLine(r.sec, r.id);
     };
     li.appendChild(b);
     frag.appendChild(li);

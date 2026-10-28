@@ -67,7 +67,7 @@ ol.toc a {
   overflow: auto;
   box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
 }
-/* the Library's and Settings' buttons while their page is open */
+/* the Library's (bottom bar) and Settings' buttons while their page is open */
 #hm[aria-expanded="true"],
 #aa[aria-expanded="true"] {
   background: var(--accent);
@@ -91,7 +91,7 @@ ol.toc a {
   }
 }
 
-#hm svg {
+#asp svg {
   display: block;
   margin: auto;
 }

@@ -447,8 +447,8 @@
 }
 
 /* ==== On the home page (data-home, set by js/features/bars.js while no piece is at the top): the bottom bar has only
-   Print (the session Home shows) and Reading (Aa); while reading, ‹ Prev, Home and Next › too. Library stays in the top
-   bar on every page, so the top bar is the same everywhere (Satish, 2026-10-24) ==== */
+   Library and Reading (Aa); while reading, ‹ Prev, Home and Next › too. Print is in the top bar on every page
+   (Satish, 2026-10-27) ==== */
 [data-home="1"] :is(#asv, #ash, #asn) {
   display: none;
 }
