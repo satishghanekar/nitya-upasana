@@ -152,7 +152,7 @@ test("version in index.html and sw.js match", async ({ request }) => {
   const html = await (await request.get("./")).text();
   const sw = await (await request.get("sw.js")).text();
   const a = /<meta name="version" content="(aarti-v[\d.]+)">/.exec(html)?.[1];
-  const b = /const V\s*=\s*'(aarti-v[\d.]+)'/.exec(sw)?.[1];
+  const b = /const V\s*=\s*["'](aarti-v[\d.]+)["']/.exec(sw)?.[1];
   expect(a, '<meta name="version"> in index.html').toBeTruthy();
   expect(b, "sw.js").toBe(a);
 });
