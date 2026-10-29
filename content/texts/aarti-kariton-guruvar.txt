@@ -4,6 +4,7 @@ title-en: Aarti Kariton Guruvar
 category: aarti
 language: mr
 refrain: every-verse
+refrain-before-first: yes
 ---
 [dhrupad]
 आरती करितों गुरुवर भगवन् ब्रह्मचैतन्या ।
