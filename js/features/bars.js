@@ -26,7 +26,7 @@ export function init() {
   // scrollY here, mid start-up, would make it lay the page out early)
   // h: the page height, kept up to date as the page grows or shrinks (folds, fonts, a resize), so the
   // scroll handler below never asks the browser for it, which could make it lay the page out mid-scroll
-  TK = { y: 0, acc: 0, hold: 0, h: 0 };
+  TK = { y: 0, acc: 0, hold: 0, h: 0, show: 0 };
   // A piece just built (js/core/page.js) takes the text language and the order of its two languages, as apply() sets
   onPiece(function (sec) {
     sec.setAttribute("data-lang", P.lang);
@@ -44,11 +44,13 @@ export function init() {
         d = y - TK.y;
       TK.y = y;
       if (Date.now() < TK.hold) return;
-      if (y < 80 || y + innerHeight >= (TK.h || document.documentElement.scrollHeight) - 4) return tuck(false);
+      if (y < 80 || y + innerHeight >= (TK.h || document.documentElement.scrollHeight) - 4) return showSoon();
       // small movements add up, so a slow drag still counts; a change of direction starts again
       TK.acc = (d > 0) === (TK.acc > 0) ? TK.acc + d : d;
-      if (TK.acc > 24) tuck(true);
-      else if (TK.acc < -24) tuck(false);
+      if (TK.acc > 24) {
+        clearTimeout(TK.show);
+        tuck(true);
+      } else if (TK.acc < -24) showSoon();
     },
     { passive: true },
   );
@@ -94,7 +96,19 @@ function tuck(on) {
   else root.removeAttribute("data-tuck");
 }
 
+// Scrolling brings the bars back only once the page has stopped moving (no scroll for 150 ms, momentum included): an
+// iPhone draws a fixed bar made visible mid-scroll where it was before the scroll, in the middle of the page (Satish,
+// 2026-10-29; hiding them mid-scroll is safe, so that stays at once)
+function showSoon() {
+  if (!root.hasAttribute("data-tuck")) return;
+  clearTimeout(TK.show);
+  TK.show = setTimeout(function () {
+    tuck(false);
+  }, 150);
+}
+
 export function tuckHold() {
+  clearTimeout(TK.show);
   TK.hold = Date.now() + 700;
   TK.acc = 0;
   tuck(false);
