@@ -667,7 +667,7 @@ test("print builder: a category's Select all and Clear, and one text alone @chro
   // one text alone
   await page.locator('.prcb[data-cat=""]').click();
   await page.locator('#prwl .tpkl li[data-id="aarti-sukhkarta"] input').check();
-  await expect(page.locator("#prsum span").first()).toHaveText("गणपतीची आरती");
+  await expect(page.locator("#prsum span").first()).toHaveText("सुखकर्ता दुःखहर्ता");
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
   const pv = await page.evaluate(() => ({ pieces: document.querySelectorAll("#pv .pvs").length, toc: !!document.querySelector("#pv .pvtoc") }));

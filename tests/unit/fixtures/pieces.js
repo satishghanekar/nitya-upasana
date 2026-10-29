@@ -616,7 +616,7 @@ window.CONTENT = {
       "en": "1."
      },
      "title": {
-      "mr": "गणपतीची आरती",
+      "mr": "सुखकर्ता दुःखहर्ता",
       "en": "Ganapati Aarti"
      },
      "tag": {
@@ -814,7 +814,7 @@ window.CONTENT = {
       "en": "2."
      },
      "title": {
-      "mr": "गणपति जी की आरती",
+      "mr": "शेंदुर लाल चढ़ायो",
       "en": "Ganapati Ji ki Aarti"
      },
      "tag": {
