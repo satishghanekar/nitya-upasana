@@ -96,17 +96,30 @@ export function init() {
     });
     // Files the page is built from besides itself (js/parts.js, shared with sw.js)
     PARTS = SITE_PARTS.all;
-    // Resolves to true if the page or any of its parts differs from the saved copy, false if not; fails with no internet.
-    // The saved copy is read first, because fetching goes through the service worker, which saves what it fetches.
+    // A file's address marked to be fetched from the network, past the saved copy (sw.js lets ?fresh through). The
+    // request's cache mode ('no-store', 'reload') is not enough: Safari's service worker never sees it, so it answered
+    // from the saved copy and Check for updates compared that copy with itself ("Up to date", stuck on 1.37.3).
+    /** @param {string} u */
+    function fresh(u) {
+      return u + (u.indexOf("?") < 0 ? "?" : "&") + "fresh=" + Date.now();
+    }
+    // The saved copy of this version, or null when there is none: caches.open() would make an empty one. Safari installs
+    // a new version as the app opens and removes this version's copy, while the page on screen is still this version.
+    function savedCopy() {
+      if (!("caches" in window)) return Promise.resolve(null);
+      return caches.has(CACHE).then(function (h) {
+        return h ? caches.open(CACHE) : null;
+      });
+    }
+    // Resolves to true if the page names another version than the one on screen, or the page or any of its parts
+    // differs from the saved copy; false if not; fails with no internet.
     function partsChanged() {
       var files = ["./"].concat(PARTS);
       return Promise.all(
         files.map(function (u) {
-          if (!("caches" in window)) return null;
-          return caches
-            .open(CACHE)
+          return savedCopy()
             .then(function (c) {
-              return c.match(new URL(u, location.href).href);
+              return c && c.match(new URL(u, location.href).href);
             })
             .then(function (m) {
               return m ? m.text() : null;
@@ -118,9 +131,12 @@ export function init() {
       ).then(function (old) {
         return Promise.all(
           files.map(function (u, i) {
-            return fetch(u, { cache: "no-store" }).then(function (r) {
+            return fetch(fresh(u), { cache: "no-store" }).then(function (r) {
               if (!r.ok) throw new Error(r.status);
               return r.text().then(function (t) {
+                // (the page: its <meta name="version">, which the saved copy may no longer have to compare with)
+                var v = i === 0 && /<meta name="version" content="([^"]+)"/.exec(t);
+                if (v && v[1] !== CACHE) return true;
                 return old[i] !== null && t !== old[i];
               });
             });
@@ -132,20 +148,33 @@ export function init() {
     }
     // The page opens from the saved copy (sw.js), so before reloading, the new files must be in it: a new version
     // installs its own copy (sw.js changed), and files changed under the same version are saved over the old ones.
-    // Resolves once that is done, or after 20 s at most.
+    // Resolves once that is done, or after 20 s at most. Every file is fetched before any is saved, so a file that fails
+    // leaves the saved copy as it was (as addAll did).
     function newCopy() {
-      var fresh = Promise.resolve();
-      if ("caches" in window)
-        fresh = caches
-          .open(CACHE)
-          .then(function (c) {
-            return c.addAll(
-              ["./"].concat(PARTS).map(function (u) {
-                return new Request(u, { cache: "reload" });
-              }),
-            );
+      var saved = Promise.resolve();
+      if ("caches" in window) {
+        var files = ["./"].concat(PARTS);
+        saved = Promise.all(
+          files.map(function (u) {
+            return fetch(fresh(u), { cache: "reload" }).then(function (r) {
+              if (!r.ok) throw new Error(r.status);
+              return r;
+            });
+          }),
+        )
+          .then(function (rs) {
+            // (a new version saves its own copy, sw.js: only this version's copy, if it is still there, is saved over)
+            return savedCopy().then(function (c) {
+              if (c)
+                return Promise.all(
+                  rs.map(function (r, i) {
+                    return c.put(new URL(files[i], location.href).href, r);
+                  }),
+                );
+            });
           })
           .catch(function () {});
+      }
       var next = Promise.resolve();
       if ("serviceWorker" in navigator)
         next = navigator.serviceWorker
@@ -161,7 +190,7 @@ export function init() {
           })
           .catch(function () {});
       return Promise.race([
-        Promise.all([fresh, next]),
+        Promise.all([saved, next]),
         new Promise(function (res) {
           setTimeout(res, 20000);
         }),

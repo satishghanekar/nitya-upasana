@@ -106,8 +106,8 @@ test("Check for updates saves a changed file and reloads with it @chromium-only"
   });
   await page.reload();
   await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
-  // the server now has a changed style file
-  await context.route("**/css/99-fallbacks.css", async (r) => {
+  // the server now has a changed style file (asked for with ?fresh by the check, plain by the page)
+  await context.route(/\/css\/99-fallbacks\.css(\?|$)/, async (r) => {
     const res = await r.fetch();
     await r.fulfill({ response: res, body: (await res.text()) + "\n#__changed{color:red}" });
   });
@@ -120,6 +120,32 @@ test("Check for updates saves a changed file and reloads with it @chromium-only"
   // the page now runs with the changed file, from the saved copy
   const css = await page.evaluate(async () => (await (await fetch("css/99-fallbacks.css")).text()).includes("#__changed"));
   expect(css).toBe(true);
+});
+
+// Safari installs a new version as the app opens and removes the saved copy of the version still on screen: Check for
+// updates then has no copy to compare with, and finds the new version from the version the page names (it said "Up to
+// date", stuck on 1.37.3, 2026-10-29)
+test("Check for updates finds a new version installed while the old one is on screen @chromium-only", async ({ page, context }) => {
+  await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [PREFS_KEY, JSON.stringify(BASE_PREFS)]);
+  await page.goto("./");
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller)
+      await new Promise((r) => navigator.serviceWorker.addEventListener("controllerchange", r, { once: true }));
+  });
+  await page.reload();
+  await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+  // the server's page names a newer version, and this version's saved copy is gone
+  await context.route(/\/(\?fresh=\d+)?$/, async (r) => {
+    const res = await r.fetch();
+    await r.fulfill({ response: res, body: (await res.text()).replace(/content="aarti-v[\d.]+"/, 'content="aarti-v99.0"') });
+  });
+  await page.evaluate(async () => caches.delete(document.querySelector('meta[name="version"]').content));
+  await page.locator("#aa").click();
+  await page.locator('#spv button[data-v="more"]').click();
+  const loaded = page.waitForEvent("load", { timeout: 25_000 });
+  await page.locator("#upd").click();
+  await loaded;
 });
 
 // The version is written twice on purpose: browsers install a new service worker when sw.js itself changes
