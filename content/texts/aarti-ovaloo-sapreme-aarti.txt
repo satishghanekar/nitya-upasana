@@ -4,6 +4,7 @@ title-en: Aarti Shri Nana Maharajanchi
 category: aarti
 language: mr
 refrain: every-verse
+refrain-before-first: yes
 ---
 [once]
 ॥ अवधूत चिंतन श्री गुरूदेव दत्त ॥
