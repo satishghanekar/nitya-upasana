@@ -218,7 +218,12 @@ export function init() {
         caches
           .open(CACHE)
           .then(function (c) {
-            c.add(new Request("./", { cache: "reload" })).catch(function () {});
+            // the page too, only when the saved copy lacks it: it is downloaded again only with a new version (sw.js)
+            c.match("./")
+              .then(function (h) {
+                return h || c.add(new Request("./", { cache: "reload" }));
+              })
+              .catch(function () {});
             return Promise.all(
               files.map(function (u) {
                 return c.match(u).then(function (h) {
