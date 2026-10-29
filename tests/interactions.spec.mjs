@@ -520,3 +520,24 @@ test("Settings preview: one height for every Show choice, whole lines at 100%, A
   const chosen = await pw.evaluate((w) => parseFloat(getComputedStyle(w).getPropertyValue("--fs")));
   expect(chosen).toBeGreaterThan(fitted);
 });
+
+// On an iPhone a fixed bar made visible while the page still scrolls can be drawn in the middle of the page: scrolling
+// up brings the bars back only once the page stops moving; scrolling down hides them at once
+test("scrolling up brings the bars back once the page stops, not mid-scroll @mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.marathi, { hash: "#vedic-chant-shree-rudra" }); // a long text, so the page goes on scrolling
+  await page.waitForTimeout(800);
+  const tucked = () => page.evaluate(() => document.documentElement.hasAttribute("data-tuck"));
+  const steps = (dy) =>
+    page.evaluate(async (dy) => {
+      for (let i = 0; i < 6; i++) {
+        scrollBy(0, dy);
+        await new Promise((r) => requestAnimationFrame(r));
+      }
+    }, dy);
+  await steps(60);
+  await expect.poll(tucked).toBe(true);
+  await steps(-30);
+  expect(await tucked()).toBe(true);
+  await expect.poll(tucked).toBe(false);
+});
