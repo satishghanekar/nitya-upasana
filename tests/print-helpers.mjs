@@ -44,8 +44,8 @@ export async function howStep(page) {
 /** Press Print on the home page, then the given choice ("pr1" = first button, "pr2" = second). */
 export async function printFromButton(page, choice) {
   await page.evaluate(() => scrollTo(0, 0));
-  // (Print is in the bottom bar while a text is read; on Home the builder is opened as js/features/print.js lets
-  // another part open it, at What with everything ticked as last left)
+  // (the builder is opened as js/features/print.js lets another part open it, at What with everything ticked as last
+  // left; the reader's way in is Print in the top bar)
   await openPrintBuilder(page);
   await howStep(page);
   // the page (Portrait pr1 or Landscape pr2; both languages have only Landscape, so no choice shows), then Print

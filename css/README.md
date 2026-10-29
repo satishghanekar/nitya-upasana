@@ -61,7 +61,7 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 |---|---|
 | `(max-width: 359px)` | The smallest phones: Settings tightens |
 | `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon |
-| `(max-width: 399px)` | Phones up to 399px: the bottom bar's six buttons fit by showing only the arrows of Prev and Next |
+| `(max-width: 399px)` | Phones up to 399px: the bottom bar's five buttons fit by showing only the arrows of Prev and Next |
 | `(max-width: 439px)` | Phones: the bottom bar's five buttons (Prev, Home, Library, Reading, Next) close their gaps and slim the icon buttons |
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
@@ -74,7 +74,9 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(min-width: 2200px)`, `(min-width: 3000px)` | Large monitors (2K at 100%, 4K at low scaling): the left column, the bars and the pages beside it drawn 1.25× / 1.6× larger (`zoom`) |
 | `(orientation: landscape) and (max-height: 520px)` | Phones held sideways: tighter line spacing and headers; Home in two columns (the day left, the session right); the bottom bar's words under Home, Library and Reading are left out |
 
-The same test keeps the number of `!important` (70) and `:root:root` (11) from growing: they only win over earlier rules, and each new one makes the next change harder.
+The same test keeps the number of `!important` (40) and `:root:root` (11) from growing: they only win over earlier rules, and each new one makes the next change harder.
+
+Hover colours go inside `@media (hover: hover)`, so they show with a mouse and never stick after a tap on a phone or iPad.
 
 ## Checks
 

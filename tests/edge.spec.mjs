@@ -450,7 +450,7 @@ test("CSS: no new !important, :root:root boosts or unlisted breakpoints (L1, L2)
     .filter((f) => f.endsWith(".css"))
     .map((f) => readFileSync(new URL(f, dir), "utf8"))
     .join("\n");
-  expect((css.match(/!important/g) || []).length).toBeLessThanOrEqual(70);
+  expect((css.match(/!important/g) || []).length).toBeLessThanOrEqual(40);
   expect((css.match(/:root:root/g) || []).length).toBeLessThanOrEqual(11); // :root:root:root:root counts twice
   const readme = readFileSync(new URL("README.md", dir), "utf8");
   const widths = [...new Set([...css.matchAll(/\((?:min|max)-(?:width|height): *(\d+)px\)/g)].map((m) => m[1]))];

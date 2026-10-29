@@ -683,9 +683,9 @@ test("⋯ More in the top bar opens App / Share / QR / Help under it, at every w
   }
 });
 
-// Home is just the session's texts (Satish, 2026-10-22): no Print this session and no Library line (the Library is the
-// top bar's book); Print is in the bottom bar while reading, and prints the session being read
-test("Home has no Print this session or Library line; the bottom bar's Print prints the session @mobile", async ({ page }) => {
+// Home is just the session's texts (Satish, 2026-10-22): no Print this session and no Library line (the Library is in
+// the bottom bar); Print in the top bar prints the session being read
+test("Home has no Print this session or Library line; Print in the top bar prints the session @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(page.locator("#tspr, #tlib, #tlibb")).toHaveCount(0);
   await expect(page.locator("#hm")).toBeVisible();
