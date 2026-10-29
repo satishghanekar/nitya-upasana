@@ -462,8 +462,10 @@
   font: 400 22px/1 var(--lat);
   cursor: pointer;
 }
-#rcl .rcx:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  #rcl .rcx:hover {
+    color: var(--accent);
+  }
 }
 
 /* ==== Print: none of this is printed ==== */

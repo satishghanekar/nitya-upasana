@@ -188,8 +188,10 @@
   text-underline-offset: 3px;
   white-space: nowrap;
 }
-.cr a:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  .cr a:hover {
+    color: var(--accent);
+  }
 }
 .cr a:not([href]) {
   text-decoration: none;

@@ -591,9 +591,11 @@
   color: var(--accent);
   cursor: pointer;
 }
-#jbk:hover,
-#xc:hover {
-  background: var(--hdrl);
+@media (hover: hover) {
+  #jbk:hover,
+  #xc:hover {
+    background: var(--hdrl);
+  }
 }
 #jbk:focus-visible,
 #xc:focus-visible {

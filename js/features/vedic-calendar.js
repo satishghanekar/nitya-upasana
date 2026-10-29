@@ -1177,6 +1177,10 @@ export function homeDay(k) {
   if (k === homeAt) return;
   homeAt = k;
   skDay(k);
+  // the festival line named the day before: hidden until the new day's is worked out (homeSoon), so it never shows
+  // under the new date
+  var f = document.getElementById("fst");
+  if (f) f.hidden = true;
   homeSoon();
 }
 

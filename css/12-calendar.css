@@ -125,8 +125,10 @@
   white-space: nowrap;
   cursor: zoom-in;
 }
-#pan .psun:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  #pan .psun:hover {
+    color: var(--accent);
+  }
 }
 #pan .psun img {
   display: block;
@@ -151,8 +153,10 @@
   font: inherit;
   cursor: pointer;
 }
-#ploc:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  #ploc:hover {
+    color: var(--accent);
+  }
 }
 #ploc:focus-visible {
   outline: 2px solid var(--ink);
@@ -226,8 +230,10 @@
   color: var(--accent);
   cursor: pointer;
 }
-#cbk:hover {
-  background: var(--hdrl);
+@media (hover: hover) {
+  #cbk:hover {
+    background: var(--hdrl);
+  }
 }
 #cbk:focus-visible,
 #cal button:focus-visible {
@@ -320,8 +326,10 @@
   text-decoration: underline dotted;
   text-underline-offset: 3px;
 }
-#cald dd a:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  #cald dd a:hover {
+    color: var(--accent);
+  }
 }
 #cald dt {
   padding-right: 14px;
@@ -723,8 +731,10 @@
   text-align: start;
   cursor: pointer;
 }
-.upr:hover .un {
-  color: var(--accent);
+@media (hover: hover) {
+  .upr:hover .un {
+    color: var(--accent);
+  }
 }
 .upd {
   display: flex;
@@ -865,8 +875,10 @@
   text-align: start;
   cursor: pointer;
 }
-#upw .upx:hover b {
-  color: var(--accent);
+@media (hover: hover) {
+  #upw .upx:hover b {
+    color: var(--accent);
+  }
 }
 #upw .upxl {
   font: 700 11px/1.4 var(--lat);
