@@ -4376,7 +4376,7 @@ mantrapuṣpāñjaliṃ samarpayāmi ||
 ### a1
 1.
 सुखकर्ता दुःखहर्ता
-Gaṇapatīcī Āratī
+Sukhakartā Duḥkhahartā
 ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 जय देव जय देव, जय मंगल मूर्ती ।
@@ -4449,7 +4449,7 @@ saṅkaṭī pāvāve nirvāṇī rakṣāve suravaravandanā || 3 ||
 ### a2
 2.
 शेंदुर लाल चढ़ायो
-Gaṇapati Jī Kī Āratī
+Śendura Lāla Caṛhāyo
 ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 जय जय श्री गणराज विद्या सुखदाता ।
@@ -5176,7 +5176,7 @@ om̐ jaya jagadīśa hare || 9 ||
 ### aarti-jaydeva-jaydeva-samartha
 11.
 जयदेवा जयदेवा जय जय समर्था
-Śrīmahārājāṃcī Āratī
+Jayadevā Jayadevā Jaya Jaya Samarthā
 ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 जयदेवा जयदेवा जय जय समर्था ॥
@@ -5186,6 +5186,8 @@ om̐ jaya jagadīśa hare || 9 ||
 jayadevā jayadevā jaya jaya samarthā ||
 
 śrībrahmacaitanyā sadgurunāthā | jayadevā jayadevā || dhṛ. ||
+
+↻ ध्रुपदRefrain
 
 तू अनिर्वचनीय परमात्मा अससी ।
 
@@ -5244,7 +5246,7 @@ ghyāvī sevā sadā hīca vinantī || 3 ||
 ### aarti-jay-jay-aarti-shrigururaya
 12.
 जय जय आरती श्रीगुरुराया
-Āratī Śrīmahārājāṃcī
+Jaya Jaya Āratī Śrīgururāyā
 ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
 जय जय आरती श्रीगुरुराया । सद्‌गुरुराया ।
@@ -5254,6 +5256,8 @@ ghyāvī sevā sadā hīca vinantī || 3 ||
 jaya jaya āratī śrīgururāyā | sad‌gururāyā |
 
 namitoṃ tava padiṃ saṃhari māyā || dhṛ. ||
+
+↻ ध्रुपदRefrain
 
 मी जीव हा भ्रम द्वैतपसारा । द्वैतपसारा ।
 
@@ -5298,6 +5302,8 @@ Ovāḷūṃ Āratī Sad‌guru Caitanyabrahmā
 ovāḷūṃ āratī sad‌guru caitanyabrahmā |
 
 nigamāgama varṇitāṃ na kaḷe agādha mahimā || dhṛ. ||
+
+↻ ध्रुपदRefrain
 
 निर्गुण निराकार तेंचि साकार झालें ।
 
@@ -5355,6 +5361,8 @@ saccidānandamūrti ḍoḷābhari myāṃ pāhilī || 3 ||
 
 karuṇeneṃ svīkāra karāvā ananyasāmānyā || dhṛ. ||
 
+↻ ध्रुपदRefrain
+
 स्वप्रकाश तूं तव तेजानें जग भासे सकळ ।
 
 नीरांजन हें भगवत्पादापाशीं निश्चळ ।
@@ -5410,6 +5418,8 @@ Dhanya Jagīṃ Yā Guruvarya He Mārutiavatāra
 dhanya jagīṃ yā guruvarya he mārutiavatāra | mārutiavatāra |
 
 kāṃhīṃ nāhīṃ aṇumātrahī saṃśayāsi thāra || dhṛ. ||
+
+↻ ध्रुपदRefrain
 
 काय वर्णूं मी गूण तयांचे न पुरे ही वाणी । न पुरे ही वाणी ।
 
@@ -5500,6 +5510,8 @@ rāmatanaya hā caraṇā vandī joḍuniyā kara || 3 ||
 
 parabrahmā parātparā sanakādikamānyā || dhṛ. ||
 
+↻ ध्रुपदRefrain
+
 नित्यशुद्धा निजानंदा निरुपमवैभवा ।
 
 निरंजना निष्प्रपंचा निजजनभवदावा ।
@@ -5555,6 +5567,8 @@ Svastha Karīṃ Śayana Prabho Mañcakāvarī
 svastha karīṃ śayana prabho mañcakāvarī |
 
 śrīsad‌gurumahārāja pāhūṃ ḍoḷebharī || dhṛ. ||
+
+↻ ध्रुपदRefrain
 
 चिन्मय तूं परमात्मा अससि तत्त्वतां ।
 
@@ -5616,6 +5630,8 @@ mahābhāgavata prārthī kāṃhīṃ cākarī || 3 ||
 ovāḷū sapreme āratī mārtaṇḍā tujalā |
 
 ananya bhāve śaraṇa ālo āmhī sad‌gurū caraṇālā || dhṛ. ||
+
+↻ ध्रुपदRefrain
 
 संसारी या त्रस्त जाहलो मुकलो सौख्याला ।
 

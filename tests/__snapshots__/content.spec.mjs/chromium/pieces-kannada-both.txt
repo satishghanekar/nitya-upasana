@@ -4375,7 +4375,7 @@ Mantrapushpanjalim Samarpayami ||
 
 ### a1
 1.
-ಗಣಪತೀಚೀ ಆರತೀ
+ಸುಖಕರ್ತಾ ದುಃಖಹರ್ತಾ
 Sukhkarta Dukhharta
 ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
@@ -4448,7 +4448,7 @@ Sankati Pavave Nirvani Rakshave Survarvandana || 3 ||
 
 ### a2
 2.
-ಗಣಪತಿ ಜೀ ಕೀ ಆರತೀ
+ಶೇಂದುರ ಲಾಲ ಚಢ಼ಾಯೋ
 Shendur Laal Chadhayo
 ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
@@ -5167,7 +5167,7 @@ Om Jai Jagdish Hare || 9 ||
 
 ### aarti-jaydeva-jaydeva-samartha
 11.
-ಶ್ರೀಮಹಾರಾಜಾಂಚೀ ಆರತೀ
+ಜಯದೇವಾ ಜಯದೇವಾ ಜಯ ಜಯ ಸಮರ್ಥಾ
 Jayadeva Jayadeva Jay Jay Samartha
 ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
@@ -5178,6 +5178,8 @@ Jayadeva Jayadeva Jay Jay Samartha
 Jayadeva Jayadeva Jay Jay Samartha ||
 
 Shribrahmachaitanya Sadgurunatha | Jayadeva Jayadeva || Dhr. ||
+
+↻ ಧ್ರುಪದRefrain
 
 ತೂ ಅನಿರ್ವಚನೀಯ ಪರಮಾತ್ಮಾ ಅಸಸೀ ।
 
@@ -5235,7 +5237,7 @@ Ghyavi Seva Sada Hich Vinanti || 3 ||
 
 ### aarti-jay-jay-aarti-shrigururaya
 12.
-ಆರತೀ ಶ್ರೀಮಹಾರಾಜಾಂಚೀ
+ಜಯ ಜಯ ಆರತೀ ಶ್ರೀಗುರುರಾಯಾ
 Jay Jay Aarti Shrigururaya
 ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
@@ -5246,6 +5248,8 @@ Jay Jay Aarti Shrigururaya
 Jay Jay Aarti Shrigururaya | Sadgururaya |
 
 Namiton Tav Padin Sanhari Maya || Dhr. ||
+
+↻ ಧ್ರುಪದRefrain
 
 ಮೀ ಜೀವ ಹಾ ಭ್ರಮ ದ್ವೈತಪಸಾರಾ । ದ್ವೈತಪಸಾರಾ ।
 
@@ -5290,6 +5294,8 @@ Ovalun Aarti Sadguru Chaitanyabrahma
 Ovalun Aarti Sadguru Chaitanyabrahma |
 
 Nigamagam Varnitan Na Kale Agadh Mahima || Dhr. ||
+
+↻ ಧ್ರುಪದRefrain
 
 ನಿರ್ಗುಣ ನಿರಾಕಾರ ತೇಂಚಿ ಸಾಕಾರ ಝಾಲೇಂ ।
 
@@ -5347,6 +5353,8 @@ Aarti Kariton Guruvar Bhagavan Brahmachaitanya |
 
 Karunenen Svikar Karava Ananyasamanya || Dhr. ||
 
+↻ ಧ್ರುಪದRefrain
+
 ಸ್ವಪ್ರಕಾಶ ತೂಂ ತವ ತೇಜಾನೇಂ ಜಗ ಭಾಸೇ ಸಕಳ ।
 
 ನೀರಾಂಜನ ಹೇಂ ಭಗವತ್ಪಾದಾಪಾಶೀಂ ನಿಶ್ಚಳ ।
@@ -5402,6 +5410,8 @@ Dhanya Jagin Ya Guruvarya He Marutiavatar
 Dhanya Jagin Ya Guruvarya He Marutiavatar | Marutiavatar |
 
 Kanhin Nahin Anumatrahi Sanshayasi Thar || Dhr. ||
+
+↻ ಧ್ರುಪದRefrain
 
 ಕಾಯ ವರ್ಣೂಂ ಮೀ ಗೂಣ ತಯಾಂಚೇ ನ ಪುರೇ ಹೀ ವಾಣೀ । ನ ಪುರೇ ಹೀ ವಾಣೀ ।
 
@@ -5492,6 +5502,8 @@ Aarti Belaguve Sadguru Shribrahmachaitanya |
 
 Parabrahma Paratpara Sanakadikamanya || Dhr. ||
 
+↻ ಧ್ರುಪದRefrain
+
 ನಿತ್ಯಶುದ್ಧಾ ನಿಜಾನಂದಾ ನಿರುಪಮವೈಭವಾ ।
 
 ನಿರಂಜನಾ ನಿಷ್ಪ್ರಪಂಚಾ ನಿಜಜನಭವದಾವಾ ।
@@ -5547,6 +5559,8 @@ Svastha Karin Shayan Prabho Manchakavari
 Svastha Karin Shayan Prabho Manchakavari |
 
 Shrisadgurumaharaj Pahun Dolebhari || Dhr. ||
+
+↻ ಧ್ರುಪದRefrain
 
 ಚಿನ್ಮಯ ತೂಂ ಪರಮಾತ್ಮಾ ಅಸಸಿ ತತ್ತ್ವತಾಂ ।
 
@@ -5608,6 +5622,8 @@ Aarti Shri Nana Maharajanchi
 Ovalu Sapreme Aarti Martanda Tujala |
 
 Ananya Bhave Sharan Aalo Aamhi Sadguru Charanala || Dhr. ||
+
+↻ ಧ್ರುಪದRefrain
 
 ಸಂಸಾರೀ ಯಾ ತ್ರಸ್ತ ಜಾಹಲೋ ಮುಕಲೋ ಸೌಖ್ಯಾಲಾ ।
 
