@@ -19,7 +19,6 @@
    - Home on its own: no pieces under it
    - On the home page: no bottom bar, Library in the top bar; while reading, Library is in the bottom bar
    - The Library page
-   - Print
 */
 
 /* ==== The home page: picture and date ==== */
@@ -622,18 +621,6 @@
   outline-offset: 0;
 }
 
-/* ==== Print ==== */
-@media print {
-  #tdy,
-  #skt,
-  #fst,
-  #upw,
-  #tdb,
-  #pan,
-  #tsc {
-    display: none;
-  }
-}
 
 /* ==== Desktop B: the Vedic calendar (#cal), Settings (#panel) and the Library (#jump) open in the
    right-hand area, under the top bar, beside Home's column on the left, not over the whole page, with the bottom bar

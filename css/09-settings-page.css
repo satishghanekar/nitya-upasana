@@ -444,11 +444,6 @@ html[data-sp] {
     transition: none;
   }
 }
-@media print {
-  .sp {
-    display: none !important;
-  }
-}
 
 /* ==== Wider screens (iPads and desktops): a tab's groups in two columns. Reading: its choices on the left and the
    preview beside them on the right, staying in view while the choices scroll; More: Profiles and backup beside

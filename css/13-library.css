@@ -12,7 +12,6 @@
    - The Edit categories button
    - The categories sheet
    - Search results: texts, then lines
-   - Print
 */
 
 /* ==== Chants | Books, पाठ | पोथी (#jtb, js/features/contents-list.js): shown only when the Library has PDFs; the
@@ -468,13 +467,6 @@
   }
 }
 
-/* ==== Print: none of this is printed ==== */
-@media print {
-  #lbr,
-  #lbm {
-    display: none !important;
-  }
-}
 
 /* ==== Tablets held upright: the categories in two columns ==== */
 @media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
