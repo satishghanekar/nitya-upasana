@@ -10,19 +10,7 @@
 // Everything stays on this device. Nothing is sent anywhere.
 
 import { openDB } from "./db.js";
-import {
-  canAdd,
-  canDelete,
-  cleanColour,
-  cleanInitials,
-  cleanName,
-  cleanProfile,
-  makeId,
-  nameProblem,
-  newProfile,
-  nextColour,
-  startPlan,
-} from "./profiles.js";
+import { canAdd, canDelete, cleanColour, cleanInitials, cleanName, cleanProfile, makeId, nameProblem, newProfile, nextColour, startPlan } from "./profiles.js";
 import { defaults, devicePart, joinPrefs, profilePart } from "./migrate.js";
 import { cleanRoutine } from "../core/routine.js";
 import { cleanLocal, emptyLocal } from "../core/library.js";

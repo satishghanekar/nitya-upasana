@@ -255,9 +255,12 @@ export function render() {
   sc.lang = ui;
   // the date, in Marathi (in Kannada letters when chosen) and in English
   var dd = /** @type {HTMLElement} */ (document.getElementById("tdd"));
-  /** @type {HTMLElement} */ (dd.querySelector(".d1")).textContent = scr(W.mr.days[d.getDay()] + ", " + dv(d.getDate()) + " " + W.mr.months[d.getMonth()] + " " + dv(d.getFullYear()));
+  /** @type {HTMLElement} */ (dd.querySelector(".d1")).textContent = scr(
+    W.mr.days[d.getDay()] + ", " + dv(d.getDate()) + " " + W.mr.months[d.getMonth()] + " " + dv(d.getFullYear()),
+  );
   /** @type {HTMLElement} */ (dd.querySelector(".d1")).lang = scrKey() || "mr";
-  /** @type {HTMLElement} */ (dd.querySelector(".d2")).textContent = W.en.days[d.getDay()] + ", " + d.getDate() + " " + W.en.months[d.getMonth()] + " " + d.getFullYear();
+  /** @type {HTMLElement} */ (dd.querySelector(".d2")).textContent =
+    W.en.days[d.getDay()] + ", " + d.getDate() + " " + W.en.months[d.getMonth()] + " " + d.getFullYear();
   // ‹ › and the day's word between them (Today greyed); "Showing Wednesday · Today ›" in place of This week
   var other = c.day !== c.today,
     off = daysBetween(c.today, c.day),
@@ -280,7 +283,14 @@ export function render() {
   homeDay(other ? c.day : "");
   // the session's heading, in both languages, and how many texts it has
   var head = /** @type {HTMLElement} */ (document.getElementById("tsh"));
-  head.innerHTML = '<span lang="' + (scrKey() || "mr") + '">' + scr(MR_SESSION[c.session]) + '</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">' + EN_SESSION[c.session] + "</span>";
+  head.innerHTML =
+    '<span lang="' +
+    (scrKey() || "mr") +
+    '">' +
+    scr(MR_SESSION[c.session]) +
+    '</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">' +
+    EN_SESSION[c.session] +
+    "</span>";
   /** @type {HTMLElement} */ (document.getElementById("tsn")).textContent = !ids.length ? w.none : w.texts(ids.length);
   var ed = document.getElementById("tsed");
   if (ed) {
@@ -293,10 +303,24 @@ export function render() {
       var t = info[id];
       return (
         "<li>" +
-        '<a class="tgo" href="./#' + t.sec + '" data-t="' + id + '">' +
-        '<span class="tno" aria-hidden="true">' + scr(dv(i + 1)) + ".</span>" +
-        '<span class="tt"><span class="t1" lang="' + (scrKey() || t.language) + '">' + esc(scr(t.title)) + '</span><span class="t2" lang="en">' + esc(t.titleEn) + "</span></span>" +
-        '<span class="ttg">' + esc(langName(t.language, ui)) + "</span>" +
+        '<a class="tgo" href="./#' +
+        t.sec +
+        '" data-t="' +
+        id +
+        '">' +
+        '<span class="tno" aria-hidden="true">' +
+        scr(dv(i + 1)) +
+        ".</span>" +
+        '<span class="tt"><span class="t1" lang="' +
+        (scrKey() || t.language) +
+        '">' +
+        esc(scr(t.title)) +
+        '</span><span class="t2" lang="en">' +
+        esc(t.titleEn) +
+        "</span></span>" +
+        '<span class="ttg">' +
+        esc(langName(t.language, ui)) +
+        "</span>" +
         "</a></li>"
       );
     })
@@ -347,7 +371,12 @@ function announce() {
     d = fromKey(c.day),
     ids = idsFor(c.day, c.session);
   /** @type {HTMLElement} */ (document.getElementById("tlive")).textContent =
-    (c.day !== c.today ? dayWord(c.today, c.day) + ", " : "") + w.sessions[c.session] + ", " + w.days[d.getDay()] + ": " + (ids.length ? w.texts(ids.length) : w.none);
+    (c.day !== c.today ? dayWord(c.today, c.day) + ", " : "") +
+    w.sessions[c.session] +
+    ", " +
+    w.days[d.getDay()] +
+    ": " +
+    (ids.length ? w.texts(ids.length) : w.none);
 }
 
 /**
@@ -603,7 +632,10 @@ export function init() {
     render();
     announce();
   }
-  [["tdp", -1], ["tdx", 1]].forEach(function (x) {
+  [
+    ["tdp", -1],
+    ["tdx", 1],
+  ].forEach(function (x) {
     var b = document.getElementById(/** @type {string} */ (x[0]));
     if (b)
       b.addEventListener("click", function () {
@@ -649,7 +681,9 @@ export function init() {
   [document.getElementById("tsed"), document.getElementById("tsea")].forEach(function (b) {
     if (!b) return;
     b.addEventListener("click", function () {
-      document.dispatchEvent(new CustomEvent("nitya-routine-edit", { detail: { session: current().session, day: shownDay().day, add: b.id === "tsea", from: b } }));
+      document.dispatchEvent(
+        new CustomEvent("nitya-routine-edit", { detail: { session: current().session, day: shownDay().day, add: b.id === "tsea", from: b } }),
+      );
     });
   });
   // the routine changed (the builder) or another person's was restored: draw the list again

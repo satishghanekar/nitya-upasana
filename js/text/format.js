@@ -62,7 +62,12 @@ const ZWSP = "​";
 
 /** "¦" → zero-width space, " // " → <br>, after & < > are written as HTML entities. */
 export function toHtml(/** @type {string} */ s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/ \/\/ /g, "<br>").replace(/¦/g, ZWSP);
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/ \/\/ /g, "<br>")
+    .replace(/¦/g, ZWSP);
 }
 /** The reverse of toHtml(). */
 export function toMarks(/** @type {string} */ s) {
@@ -98,7 +103,9 @@ export function parseText(raw, name) {
     if (!m) fail(at, 'expected "name: value" in the header, or "---" to end it');
     var key = /** @type {string} */ (m && m[1]),
       val = /** @type {string} */ (m && m[2]);
-    var f = FIELDS.find(function (x) { return x[0] === key; });
+    var f = FIELDS.find(function (x) {
+      return x[0] === key;
+    });
     if (!f) fail(at, 'unknown header field "' + key + '"');
     if (seen[key]) fail(at, '"' + key + '" given twice');
     seen[key] = true;
@@ -189,8 +196,7 @@ export function parseText(raw, name) {
   var bl = t.blocks;
   // with refrain: every-verse, the dhrupad is the first block that is not [once] lines or a [note]
   var d = 0;
-  if (t.refrain === "every-verse")
-    while (bl[d] && (bl[d].kind === "once" || bl[d].kind === "note")) d++;
+  if (t.refrain === "every-verse") while (bl[d] && (bl[d].kind === "once" || bl[d].kind === "note")) d++;
   bl.forEach(function (b, k) {
     if (b.kind === "dhrupad-repeated" && !(t.refrain === "every-verse" && k === d + 1))
       fail(file, "[dhrupad repeated] comes right after the [dhrupad] of a text with refrain: every-verse");
@@ -202,7 +208,12 @@ export function parseText(raw, name) {
       if (b.kind === "dhrupad") fail(file, "refrain: every-verse has one [dhrupad] block, the first");
     });
     bl.slice(d, d + 2).forEach(function (b) {
-      if (b.lines.some(function (l) { return l.rf; })) fail(file, "the [dhrupad] of refrain: every-verse is all refrain: no [refrain] inside it");
+      if (
+        b.lines.some(function (l) {
+          return l.rf;
+        })
+      )
+        fail(file, "the [dhrupad] of refrain: every-verse is all refrain: no [refrain] inside it");
     });
     if (bl[d + 1] && bl[d + 1].kind === "dhrupad-repeated" && bl[d + 1].lines.length !== bl[d].lines.length)
       fail(file, "[dhrupad repeated] needs as many lines as [dhrupad]");
@@ -225,7 +236,9 @@ export function formatText(t) {
     if (f[0] === "refrain-before-first") v = "yes";
     if (f[0] === "line-id-exceptions")
       v = Object.keys(v)
-        .map(function (k) { return k + "=" + v[k]; })
+        .map(function (k) {
+          return k + "=" + v[k];
+        })
         .join(", ");
     out.push(f[0] + ": " + v);
   });

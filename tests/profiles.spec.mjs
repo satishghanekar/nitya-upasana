@@ -52,12 +52,14 @@ const idb = (page) =>
       }),
   );
 
-
 /** Language in the reading sheet (Aa in the bottom bar): 0 main, 1 second, 2 both. Clicked by script, as the
  *  bottom bar steps aside on the home page, where these tests are. */
 async function pickLanguage(page, n) {
   await page.locator("#rsb").evaluate((b) => b.click());
-  await page.locator("#rsl button").nth(n).evaluate((b) => b.click());
+  await page
+    .locator("#rsl button")
+    .nth(n)
+    .evaluate((b) => b.click());
   await page.locator("#rsx").evaluate((b) => b.click());
 }
 
@@ -85,7 +87,10 @@ test("first visit from an older version (settings version 4), with version 1.3's
     sessionStorage.setItem("__seeded", "1");
     localStorage.clear();
     localStorage.setItem("aarti2-prefs", JSON.stringify({ sv: 4, fs: 28, fsu: 1, lang: "en", ref: 0, wake: 0, ui: "en" }));
-    localStorage.setItem("nitya-ticks", JSON.stringify({ v: 1, profiles: { family: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta", "aarti-shendur-lal-chadhayo"] } } } }));
+    localStorage.setItem(
+      "nitya-ticks",
+      JSON.stringify({ v: 1, profiles: { family: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta", "aarti-shendur-lal-chadhayo"] } } } }),
+    );
   });
   await page.goto("./");
   await settle(page);
@@ -502,7 +507,11 @@ test("a 320px phone: the people sheet keeps the name and Reading now on the scre
     const r = await page.evaluate(() => {
       const nm = document.querySelector("#pfl .pfnm"),
         now = document.querySelector("#pfl .pfnow");
-      return { name: nm.scrollWidth <= nm.clientWidth + 1, right: now.getBoundingClientRect().right, card: document.querySelector("#pfl .pfp").getBoundingClientRect().right };
+      return {
+        name: nm.scrollWidth <= nm.clientWidth + 1,
+        right: now.getBoundingClientRect().right,
+        card: document.querySelector("#pfl .pfp").getBoundingClientRect().right,
+      };
     });
     expect(r.name, setup + ": the name is not cut").toBe(true);
     expect(r.right, setup + ": Reading now inside its row").toBeLessThanOrEqual(r.card);

@@ -265,17 +265,18 @@ export function textScore(k, Q) {
     i;
   for (i = 0; i < k.names.length; i++) {
     var n = k.names[i],
-      s = n === Q.phrase
-        ? SCORE.title
-        : n.indexOf(Q.phrase) === 0
-          ? SCORE.titleStart
-          : Q.toks.every(function (t) {
-                return startsWord(n, t);
-              })
-            ? SCORE.titleWords
-            : allIn(Q.toks, n)
-              ? SCORE.titleIn
-              : 0;
+      s =
+        n === Q.phrase
+          ? SCORE.title
+          : n.indexOf(Q.phrase) === 0
+            ? SCORE.titleStart
+            : Q.toks.every(function (t) {
+                  return startsWord(n, t);
+                })
+              ? SCORE.titleWords
+              : allIn(Q.toks, n)
+                ? SCORE.titleIn
+                : 0;
     if (s > best) best = s;
   }
   if (best) return best;

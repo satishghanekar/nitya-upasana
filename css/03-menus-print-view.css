@@ -254,7 +254,6 @@ a.t {
   overflow-wrap: anywhere;
 }
 
-
 /* ==== Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm) ==== */
 .inb {
   display: flex;
@@ -1220,7 +1219,6 @@ span.prwho {
   .rftop .verse {
     border-left: 1pt solid #999;
   }
-
 }
 .rftop {
   margin: 6px 10px 1.3em;

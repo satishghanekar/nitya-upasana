@@ -330,8 +330,20 @@ function listHtml() {
             lt = langs[e.language];
           return (
             // ("./#a3": the piece is built when opened, js/core/page.js, so a bare "#a3" may point at nothing yet)
-            '<li><a href="./#' + e.sec + '" data-go="' + e.sec + '"><span class="m"><span class="no"><span class="nm">' + to(dv(i + 1)) + '.</span><span class="ne">' + (i + 1) + ".</span></span> " +
-            '<span class="mr">' + esc(to(e.title)) + '</span><span class="en" lang="en">' + esc(e.titleEn) + "</span></span>" +
+            '<li><a href="./#' +
+            e.sec +
+            '" data-go="' +
+            e.sec +
+            '"><span class="m"><span class="no"><span class="nm">' +
+            to(dv(i + 1)) +
+            '.</span><span class="ne">' +
+            (i + 1) +
+            ".</span></span> " +
+            '<span class="mr">' +
+            esc(to(e.title)) +
+            '</span><span class="en" lang="en">' +
+            esc(e.titleEn) +
+            "</span></span>" +
             (lt ? '<span class="lt"><span class="mr">' + esc(to(lt.mr)) + '</span><span class="en" lang="en">' + esc(lt.en) + "</span></span>" : "") +
             "</a></li>"
           );
@@ -339,8 +351,16 @@ function listHtml() {
         .join("");
       var n = s.category.name;
       return (
-        '<div class="tocg" data-cat="' + esc(s.category.id) + '"><h2 class="gh"><span class="mr">' + esc(to(n.mr)) + '</span><span class="en" lang="en">' + esc(n.en) + "</span></h2>" +
-        '<ol class="toc">' + items + "</ol></div>"
+        '<div class="tocg" data-cat="' +
+        esc(s.category.id) +
+        '"><h2 class="gh"><span class="mr">' +
+        esc(to(n.mr)) +
+        '</span><span class="en" lang="en">' +
+        esc(n.en) +
+        "</span></h2>" +
+        '<ol class="toc">' +
+        items +
+        "</ol></div>"
       );
     })
     .join("");
@@ -499,10 +519,24 @@ function renderCats() {
         other = l2 ? catTxt(c.name, l2) : "";
       return (
         "<li>" +
-        '<div class="lbcn"><span class="lbn" lang="' + langOf(l1) + '">' + esc(name) + "</span>" +
+        '<div class="lbcn"><span class="lbn" lang="' +
+        langOf(l1) +
+        '">' +
+        esc(name) +
+        "</span>" +
         (other && other !== name ? '<span class="lbo" lang="' + langOf(/** @type {"mr" | "en"} */ (l2)) + '">' + esc(other) + "</span>" : "") +
-        '<small class="lbk" lang="' + (ui() === "mr" ? mrLang() : "en") + '">' + esc(w.count(n[c.id] || 0)) + "</small></div>" +
-        '<button type="button" class="lbe" data-id="' + esc(c.id) + '" aria-label="' + esc(w.rename + ": " + name) + '">' + PENCIL + "</button>" +
+        '<small class="lbk" lang="' +
+        (ui() === "mr" ? mrLang() : "en") +
+        '">' +
+        esc(w.count(n[c.id] || 0)) +
+        "</small></div>" +
+        '<button type="button" class="lbe" data-id="' +
+        esc(c.id) +
+        '" aria-label="' +
+        esc(w.rename + ": " + name) +
+        '">' +
+        PENCIL +
+        "</button>" +
         "</li>"
       );
     })
@@ -519,8 +553,22 @@ function renderTexts() {
         sid = "lbs-" + e.id;
       return (
         "<li>" +
-        '<label for="' + sid + '"><span class="lbtn" lang="' + langOf(l1) + '">' + esc(title) + "</span></label>" +
-        '<select id="' + sid + '" data-t="' + esc(e.id) + '" lang="' + langOf(l1) + '" aria-label="' + esc(w.catFor(title)) + '">' +
+        '<label for="' +
+        sid +
+        '"><span class="lbtn" lang="' +
+        langOf(l1) +
+        '">' +
+        esc(title) +
+        "</span></label>" +
+        '<select id="' +
+        sid +
+        '" data-t="' +
+        esc(e.id) +
+        '" lang="' +
+        langOf(l1) +
+        '" aria-label="' +
+        esc(w.catFor(title)) +
+        '">' +
         cats
           .map(function (c) {
             return '<option value="' + esc(c.id) + '"' + (c.id === cur ? " selected" : "") + ">" + esc(nm(c)) + "</option>";

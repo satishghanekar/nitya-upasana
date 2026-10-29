@@ -10,16 +10,46 @@ var TRL, TRT;
 // Devanagari (or Kannada letters, through SCR) → IAST. Pure: reads only its argument, so tests/unit can check it.
 export var IA = (function () {
   var C = {
-    क: "k", ख: "kh", ग: "g", घ: "gh", ङ: "ṅ", च: "c", छ: "ch", ज: "j", झ: "jh", ञ: "ñ",
-    ट: "ṭ", ठ: "ṭh", ड: "ḍ", ढ: "ḍh", ण: "ṇ", त: "t", थ: "th", द: "d", ध: "dh", न: "n",
-    प: "p", फ: "ph", ब: "b", भ: "bh", म: "m", य: "y", र: "r", ल: "l", ळ: "ḷ", व: "v",
-    श: "ś", ष: "ṣ", स: "s", ह: "h",
+    क: "k",
+    ख: "kh",
+    ग: "g",
+    घ: "gh",
+    ङ: "ṅ",
+    च: "c",
+    छ: "ch",
+    ज: "j",
+    झ: "jh",
+    ञ: "ñ",
+    ट: "ṭ",
+    ठ: "ṭh",
+    ड: "ḍ",
+    ढ: "ḍh",
+    ण: "ṇ",
+    त: "t",
+    थ: "th",
+    द: "d",
+    ध: "dh",
+    न: "n",
+    प: "p",
+    फ: "ph",
+    ब: "b",
+    भ: "bh",
+    म: "m",
+    य: "y",
+    र: "r",
+    ल: "l",
+    ळ: "ḷ",
+    व: "v",
+    श: "ś",
+    ष: "ṣ",
+    स: "s",
+    ह: "h",
   };
   var NK = { ड: "ṛ", ढ: "ṛh", क: "q", ख: "x", ग: "ġ", ज: "z", फ: "f" }; // with nukta (Hindi)
   var V = { अ: "a", आ: "ā", इ: "i", ई: "ī", उ: "u", ऊ: "ū", ऋ: "ṛ", ॠ: "ṝ", ऌ: "ḷ", ए: "e", ऐ: "ai", ओ: "o", औ: "au" };
   var M = { "ा": "ā", "ि": "i", "ी": "ī", "ु": "u", "ू": "ū", "ृ": "ṛ", "ॄ": "ṝ", "ॢ": "ḷ", "ॣ": "ḹ", "े": "e", "ै": "ai", "ो": "o", "ौ": "au" };
   var S = { "॑": "̍", "॒": "̱", "᳚": "̎" }; // svarita, anudatta, dirgha svarita
-  var O = { "ॐ": "om̐", "ऽ": "'", "।": "|", "॥": "||" };
+  var O = { ॐ: "om̐", ऽ: "'", "।": "|", "॥": "||" };
   return function (t) {
     t = SCR.from(t); // from Kannada letters back to the Devanagari the rules below read
     var o = "",
@@ -128,7 +158,11 @@ function plain(h) {
 
 // One English line in the chosen style
 function line(x, ia) {
-  if (ia && x.i === null) x.i = x.m.split(/<br\s*\/?>/).map(IA).join("<br>");
+  if (ia && x.i === null)
+    x.i = x.m
+      .split(/<br\s*\/?>/)
+      .map(IA)
+      .join("<br>");
   x.p.innerHTML = ia ? x.i : x.s;
   x.p.classList.toggle("ia", ia);
 }
@@ -156,7 +190,10 @@ export function englishStyle(/** @type {ParentNode} */ r) {
     [].forEach.call(v.querySelectorAll(":scope>.en>p"), function (p, i) {
       var m = ms[i];
       if (!m) return;
-      p.innerHTML = m.innerHTML.split(/<br\s*\/?>/).map(IA).join("<br>");
+      p.innerHTML = m.innerHTML
+        .split(/<br\s*\/?>/)
+        .map(IA)
+        .join("<br>");
       p.classList.add("ia");
     });
   });
@@ -181,7 +218,7 @@ export function titlesSet(ia) {
 
 // The titles inside r (the page, or a piece just built): its heading and its links to other pieces
 function titlesIn(r, ia) {
-  [].forEach.call(r.querySelectorAll('.ash header h2 > .en, a[data-go] .en'), function (e) {
+  [].forEach.call(r.querySelectorAll(".ash header h2 > .en, a[data-go] .en"), function (e) {
     var a = e.closest("a[data-go], .ash"),
       t = a && TRT[a.getAttribute("data-go") || a.id];
     // not the language tag in the home list

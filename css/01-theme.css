@@ -15,9 +15,7 @@
   --accent: #7b1113;
   --rule: #d9c9b4;
   --bar: #fcf9f4ee;
-  --head:
-    "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI",
-    Mangal, serif;
+  --head: "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
   --body: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
   --fs: 21px;
 }

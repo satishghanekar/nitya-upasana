@@ -18,19 +18,23 @@ const STATES = [
   ["Settings open", SETUPS.marathi, (p) => p.locator("#aa").click(), true],
   ["Print open", SETUPS.marathi, (p) => openPrintBuilder(p), true],
   ["Library open", SETUPS.marathi, (p) => p.locator("#hm").click(), true],
-  ["search open", SETUPS.marathi, async (p) => {
-    await p.locator("#hm").click();
-    await p.locator("#q").fill("deva");
-    await p.waitForTimeout(300);
-    // on a phone the list ends above the search box at the foot of the screen: scrolled so no row is cut in half
-    // by that edge (axe counts only the part of a row still in view toward its 24px)
-    await p.evaluate(() => {
-      const j = document.getElementById("jump"),
-        end = j.getBoundingClientRect().bottom,
-        cut = [...j.querySelectorAll("#res li")].find((li) => li.getBoundingClientRect().top < end && li.getBoundingClientRect().bottom > end);
-      if (cut) j.scrollTop += cut.getBoundingClientRect().bottom - end;
-    });
-  }],
+  [
+    "search open",
+    SETUPS.marathi,
+    async (p) => {
+      await p.locator("#hm").click();
+      await p.locator("#q").fill("deva");
+      await p.waitForTimeout(300);
+      // on a phone the list ends above the search box at the foot of the screen: scrolled so no row is cut in half
+      // by that edge (axe counts only the part of a row still in view toward its 24px)
+      await p.evaluate(() => {
+        const j = document.getElementById("jump"),
+          end = j.getBoundingClientRect().bottom,
+          cut = [...j.querySelectorAll("#res li")].find((li) => li.getBoundingClientRect().top < end && li.getBoundingClientRect().bottom > end);
+        if (cut) j.scrollTop += cut.getBoundingClientRect().bottom - end;
+      });
+    },
+  ],
   ["Help open", SETUPS.marathi, (p) => tapMore(p, "#hlpb")],
   ["QR open", SETUPS.marathi, (p) => tapMore(p, "#qrb")],
   // (from the small picture in the top bar, on every screen)
@@ -116,7 +120,8 @@ test("label in name: every labelled control's name contains its visible text", a
       .map((b) => {
         // the visible words, from shown text nodes only (icons and hidden language spans excluded)
         const w = document.createTreeWalker(b, NodeFilter.SHOW_TEXT);
-        let t = "", n;
+        let t = "",
+          n;
         while ((n = w.nextNode())) if (n.parentElement.getClientRects().length && !n.parentElement.closest("svg")) t += n.data;
         t = t.replace(/\s+/g, " ").trim();
         const name = b.getAttribute("aria-label");
@@ -136,12 +141,14 @@ test("reduced motion: no transitions longer than 0.01s when the reader asks for 
   const context = await browser.newContext({ reducedMotion: "reduce", serviceWorkers: "block" });
   const page = await context.newPage();
   await openSite(page, SETUPS.marathi);
-  const long = await page.evaluate(() =>
-    [...document.querySelectorAll("body *")]
-      .filter((e) => e.getClientRects().length)
-      .map((e) => getComputedStyle(e))
-      .filter((s) => s.transitionDuration.split(",").some((d) => parseFloat(d) > 0.01) || (s.animationName !== "none" && parseFloat(s.animationDuration) > 0.01))
-      .length,
+  const long = await page.evaluate(
+    () =>
+      [...document.querySelectorAll("body *")]
+        .filter((e) => e.getClientRects().length)
+        .map((e) => getComputedStyle(e))
+        .filter(
+          (s) => s.transitionDuration.split(",").some((d) => parseFloat(d) > 0.01) || (s.animationName !== "none" && parseFloat(s.animationDuration) > 0.01),
+        ).length,
   );
   expect(long).toBe(0);
   await context.close();

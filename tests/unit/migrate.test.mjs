@@ -3,7 +3,17 @@
 // script in index.html), upgraded by js/store/migrate.js exactly as js/core/state.js always did, and split into the
 // person's part and the device's part.
 import { describe, expect, test } from "vitest";
-import { cleanPerson, defaults, DEVICE_KEYS, devicePart, joinPrefs, migratePrefs, PROFILE_KEYS, profilePart, SETTINGS_VERSION } from "../../js/store/migrate.js";
+import {
+  cleanPerson,
+  defaults,
+  DEVICE_KEYS,
+  devicePart,
+  joinPrefs,
+  migratePrefs,
+  PROFILE_KEYS,
+  profilePart,
+  SETTINGS_VERSION,
+} from "../../js/store/migrate.js";
 
 const PHONE = { desk: false, fs: 24 };
 const DESK = { desk: true, fs: 24 };
@@ -16,17 +26,130 @@ const SHAPES = {
   // sv 2: before "dhrupad once" became the default
   v2: { sv: 2, fs: 22, th: "sepia", lang: "en", ui: "en", ref: 0, hc: 0, wake: 0, cols: 2 },
   // 3b27c05 (2026-10-14, "Copy all files from sankashti-chaturthi"): sv 4
-  v4: { sv: 4, fs: 30, fsu: 1, th: "light", lang: "mr", ui: "mr", ref: 1, hc: 0, wake: 1, cols: 0, loc: { lat: 40.1, lon: -83.1 }, hl: "s1l3", tr: "iast", fold: 1, pf: 1, xf: 0, tf: 1, af: ["a3"] },
+  v4: {
+    sv: 4,
+    fs: 30,
+    fsu: 1,
+    th: "light",
+    lang: "mr",
+    ui: "mr",
+    ref: 1,
+    hc: 0,
+    wake: 1,
+    cols: 0,
+    loc: { lat: 40.1, lon: -83.1 },
+    hl: "s1l3",
+    tr: "iast",
+    fold: 1,
+    pf: 1,
+    xf: 0,
+    tf: 1,
+    af: ["a3"],
+  },
   // b56f95d (2026-10-14): sv 5, autoscroll speeds added
-  v5: { sv: 5, fs: 24, fsu: 0, th: "auto", lang: "both", ui: "en", ref: 0, hc: 0, wake: 0, cols: 1, loc: null, hl: "", tr: "simple", fold: 0, pf: 0, xf: 1, tf: 0, af: [], as: 5, ason: 1, asp: { a1: 4 } },
+  v5: {
+    sv: 5,
+    fs: 24,
+    fsu: 0,
+    th: "auto",
+    lang: "both",
+    ui: "en",
+    ref: 0,
+    hc: 0,
+    wake: 0,
+    cols: 1,
+    loc: null,
+    hl: "",
+    tr: "simple",
+    fold: 0,
+    pf: 0,
+    xf: 1,
+    tf: 0,
+    af: [],
+    as: 5,
+    ason: 1,
+    asp: { a1: 4 },
+  },
   // eec4308 (2026-10-15): text fonts
   v5font: { sv: 5, fs: 24, th: "dark", lang: "mr", ui: "mr", ref: 1, hc: 0, wake: 1, fnt: "hand", tr: "simple", af: [], as: 3, ason: 0, asp: {} },
   // ca0bf0c (2026-10-17): "In Both, show first" (lead), still sv 5
-  v5lead: { sv: 5, fs: 24, th: "auto", lang: "both", lead: "en", ui: "mr", ref: 1, hc: 0, wake: 1, fnt: "classic", tr: "simple", af: [], as: 3, ason: 0, asp: {} },
+  v5lead: {
+    sv: 5,
+    fs: 24,
+    th: "auto",
+    lang: "both",
+    lead: "en",
+    ui: "mr",
+    ref: 1,
+    hc: 0,
+    wake: 1,
+    fnt: "classic",
+    tr: "simple",
+    af: [],
+    as: 3,
+    ason: 0,
+    asp: {},
+  },
   // ed0fa0a (2026-10-17): sv 6, a main and a second language, Kannada letters, the Print page
-  v6: { sv: 6, fs: 26, fsu: 1, th: "sepia", lang: "en", lead: "mr", l2: "en", ui: "en", ind: "kn", ref: 1, hc: 1, wake: 0, cols: 0, loc: null, hl: "s2l1", por: "land", fnt: "bold", tr: "iast", fold: 0, pf: 0, xf: 0, tf: 0, af: ["a9"], as: 3, ason: 0, asp: {} },
+  v6: {
+    sv: 6,
+    fs: 26,
+    fsu: 1,
+    th: "sepia",
+    lang: "en",
+    lead: "mr",
+    l2: "en",
+    ui: "en",
+    ind: "kn",
+    ref: 1,
+    hc: 1,
+    wake: 0,
+    cols: 0,
+    loc: null,
+    hl: "s2l1",
+    por: "land",
+    fnt: "bold",
+    tr: "iast",
+    fold: 0,
+    pf: 0,
+    xf: 0,
+    tf: 0,
+    af: ["a9"],
+    as: 3,
+    ason: 0,
+    asp: {},
+  },
   // e0dfa0a and after (2026-10-18, version 1.3): the Print pop-up's dhrupad and font
-  v6print: { sv: 6, fs: 24, fsu: 0, th: "auto", lang: "mr", lead: "mr", l2: "", ui: "mr", ind: "mr", ref: 0, hc: 0, wake: 1, cols: 0, loc: null, hl: "", por: "up", fnt: "std", pref: 1, pfn: "classic", tr: "simple", fold: 1, pf: 0, xf: 0, tf: 0, af: [], as: 3, ason: 0, asp: {} },
+  v6print: {
+    sv: 6,
+    fs: 24,
+    fsu: 0,
+    th: "auto",
+    lang: "mr",
+    lead: "mr",
+    l2: "",
+    ui: "mr",
+    ind: "mr",
+    ref: 0,
+    hc: 0,
+    wake: 1,
+    cols: 0,
+    loc: null,
+    hl: "",
+    por: "up",
+    fnt: "std",
+    pref: 1,
+    pfn: "classic",
+    tr: "simple",
+    fold: 1,
+    pf: 0,
+    xf: 0,
+    tf: 0,
+    af: [],
+    as: 3,
+    ason: 0,
+    asp: {},
+  },
 };
 
 describe("settings from every older version are upgraded as js/core/state.js always did", () => {
@@ -99,11 +222,28 @@ describe("settings from every older version are upgraded as js/core/state.js alw
   });
 
   test("three text fonts (version 1.24): Modern, Traditional and Bold kept; anything else Traditional", () => {
-    for (const [v, want] of [["std", "std"], ["classic", "classic"], ["bold", "bold"], ["hand", "classic"], ["best", "classic"], ["", "classic"], [undefined, "classic"]])
+    for (const [v, want] of [
+      ["std", "std"],
+      ["classic", "classic"],
+      ["bold", "bold"],
+      ["hand", "classic"],
+      ["best", "classic"],
+      ["", "classic"],
+      [undefined, "classic"],
+    ])
       expect(migratePrefs({ ...SHAPES.v6print, fnt: v }, PHONE).prefs.fnt).toBe(want);
   });
   test("the printout's font (version 1.24): one of the three, else as the text font (Best and Handwritten are gone)", () => {
-    for (const [v, want] of [["std", "std"], ["classic", "classic"], ["bold", "bold"], ["best", ""], ["hand", ""], ["", ""], [3, ""], [undefined, ""]])
+    for (const [v, want] of [
+      ["std", "std"],
+      ["classic", "classic"],
+      ["bold", "bold"],
+      ["best", ""],
+      ["hand", ""],
+      ["", ""],
+      [3, ""],
+      [undefined, ""],
+    ])
       expect(migratePrefs({ ...SHAPES.v6print, pfn: v }, PHONE).prefs.pfn).toBe(want);
   });
   test("a new reader starts in Traditional, with the printout following it", () => {
@@ -111,11 +251,27 @@ describe("settings from every older version are upgraded as js/core/state.js alw
   });
 
   test("the printout's language (version 1.21.3): kept when it is the original, English or both, else as the page", () => {
-    for (const [v, want] of [["en", "en"], ["mr", "mr"], ["both", "both"], ["", ""], ["kn", ""], [3, ""], [undefined, ""]])
+    for (const [v, want] of [
+      ["en", "en"],
+      ["mr", "mr"],
+      ["both", "both"],
+      ["", ""],
+      ["kn", ""],
+      [3, ""],
+      [undefined, ""],
+    ])
       expect(migratePrefs({ ...SHAPES.v6print, plang: v }, PHONE).prefs.plang).toBe(want);
   });
   test("the printout's paper (version 1.22.1): kept when Letter or A4, else as the device's region suggests", () => {
-    for (const [v, want] of [["letter", "letter"], ["a4", "a4"], ["", ""], ["A4", ""], ["legal", ""], [4, ""], [undefined, ""]])
+    for (const [v, want] of [
+      ["letter", "letter"],
+      ["a4", "a4"],
+      ["", ""],
+      ["A4", ""],
+      ["legal", ""],
+      [4, ""],
+      [undefined, ""],
+    ])
       expect(migratePrefs({ ...SHAPES.v6print, ppr: v }, PHONE).prefs.ppr).toBe(want);
   });
   test("every shape comes out with every setting, and nothing else", () => {
@@ -126,7 +282,10 @@ describe("settings from every older version are upgraded as js/core/state.js alw
   });
 
   test("damaged values are replaced by defaults, never trusted", () => {
-    const p = migratePrefs({ sv: 6, fs: "huge", th: "neon", fnt: 3, af: "a1", asp: [1], loc: { lat: "x" }, lang: "fr", l2: "de", pref: "1", tr: "other" }, PHONE).prefs;
+    const p = migratePrefs(
+      { sv: 6, fs: "huge", th: "neon", fnt: 3, af: "a1", asp: [1], loc: { lat: "x" }, lang: "fr", l2: "de", pref: "1", tr: "other" },
+      PHONE,
+    ).prefs;
     expect([p.fs, p.th, p.fnt, p.lang, p.l2, p.pref, p.tr]).toEqual([24, "auto", "classic", "mr", "en", "", "simple"]);
     expect(p.af).toEqual([]);
     expect(p.asp).toEqual({});

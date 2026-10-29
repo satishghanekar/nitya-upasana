@@ -437,7 +437,9 @@
 }
 #rcl .rs {
   display: block;
-  font: 600 12px "Inter", var(--body);
+  font:
+    600 12px "Inter",
+    var(--body);
   color: var(--muted);
 }
 #rcl .rl {
@@ -466,7 +468,6 @@
     color: var(--accent);
   }
 }
-
 
 /* ==== Tablets held upright: the categories in two columns ==== */
 @media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {

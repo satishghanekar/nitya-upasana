@@ -9,7 +9,19 @@
 // PDFs can only be made by Chromium, so this suite is Chromium-only.
 import { test, expect, devices } from "@playwright/test";
 import { openSite, SETUPS, TEXT_COUNT, openMore, tapMore, readText, useTestRoutine, TEST_AARTIS, openPrintBuilder, FIXED_NOW } from "./helpers.mjs";
-import { printOnce, checkPrintout, checkPages, stubPrint, printFromButton, howStep, readPrintView, addMarkers, pdfPages, markerPages, sourceLines } from "./print-helpers.mjs";
+import {
+  printOnce,
+  checkPrintout,
+  checkPages,
+  stubPrint,
+  printFromButton,
+  howStep,
+  readPrintView,
+  addMarkers,
+  pdfPages,
+  markerPages,
+  sourceLines,
+} from "./print-helpers.mjs";
 
 test.describe.configure({ mode: "parallel" });
 
@@ -153,7 +165,11 @@ test("a session being read: Print in the bottom bar prints the texts in full @ch
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
   if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
-  const secs = await page.evaluate(() => [...document.querySelectorAll("#pv .pvs")].map((s) => s.querySelectorAll(".pvl").length + [...s.querySelectorAll(".pvpr")].reduce((n, p) => n + (p.pvLines || []).length, 0)));
+  const secs = await page.evaluate(() =>
+    [...document.querySelectorAll("#pv .pvs")].map(
+      (s) => s.querySelectorAll(".pvl").length + [...s.querySelectorAll(".pvpr")].reduce((n, p) => n + (p.pvLines || []).length, 0),
+    ),
+  );
   expect(secs.length).toBeGreaterThan(0);
   for (const n of secs) expect(n).toBeGreaterThan(2);
   await context.close();
@@ -441,7 +457,9 @@ for (const [setup, a] of [
     await expect(page.locator("#prpv")).toHaveText("Landscape, side by side");
     // the language row: the main language first, then the other, then Both (chosen); the tiles show the main language
     await expect(page.locator("#prlg [aria-pressed=true]")).toHaveAttribute("data-v", "both");
-    expect(await page.locator("#prlg button").evaluateAll((l) => l.map((x) => x.dataset.v))).toEqual(setup === "english-main-both" ? ["en", "mr", "both"] : ["mr", "en", "both"]);
+    expect(await page.locator("#prlg button").evaluateAll((l) => l.map((x) => x.dataset.v))).toEqual(
+      setup === "english-main-both" ? ["en", "mr", "both"] : ["mr", "en", "both"],
+    );
     await expect(page.locator("#prfn .prfx").first()).toHaveText(a);
     await expect(page.locator("#prgp")).toBeFocused();
   });
@@ -485,7 +503,10 @@ test("print pop-up: the page chosen is remembered and printed that way @chromium
     const sizes = () =>
       page.evaluate(() => {
         const all = (rules) => [...rules].flatMap((r) => (r.cssRules && r.type !== 6 ? all(r.cssRules) : [r]));
-        return [...document.styleSheets].flatMap((s) => all(s.cssRules)).filter((r) => r.type === 6 && r.style.size).map((r) => r.style.size);
+        return [...document.styleSheets]
+          .flatMap((s) => all(s.cssRules))
+          .filter((r) => r.type === 6 && r.style.size)
+          .map((r) => r.style.size);
       });
     await page.locator("#pr2").click();
     await expect(page.locator("#prl")).toBeVisible({ visible: !!ua });
@@ -939,7 +960,12 @@ test("print builder: Print in the bottom bar prints the text being read @chromiu
   await readText(page, "a7");
   await page.locator("#asp").click();
   await expect(page.locator("#prhw")).toBeVisible();
-  const name = await page.evaluate(() => document.querySelector("#a7 header h2 .mr").textContent.replace(/^[०-९0-9.\s]+/, "").trim());
+  const name = await page.evaluate(() =>
+    document
+      .querySelector("#a7 header h2 .mr")
+      .textContent.replace(/^[०-९0-9.\s]+/, "")
+      .trim(),
+  );
   await expect(page.locator("#prsum span").first()).toHaveText(name);
   await expect(page.locator("#prsum span").first()).toHaveAttribute("lang", "mr");
   // the first tab is the Library (the menus are in English here; Marathi menus: संग्रह)
@@ -1038,7 +1064,15 @@ test("print builder: the preview and the paper @chromium-only", async ({ browser
 const P5_ROUTINE = {
   morning: {
     mode: "weekday",
-    days: { mon: ["vedic-chant-atharvashirsha", "aarti-sukhkarta"], tue: ["aarti-sukhkarta"], wed: ["aarti-sukhkarta"], thu: ["aarti-sukhkarta"], fri: ["aarti-sukhkarta"], sat: ["aarti-sukhkarta", "aarti-ghalin-lotangan"], sun: ["aarti-sukhkarta"] },
+    days: {
+      mon: ["vedic-chant-atharvashirsha", "aarti-sukhkarta"],
+      tue: ["aarti-sukhkarta"],
+      wed: ["aarti-sukhkarta"],
+      thu: ["aarti-sukhkarta"],
+      fri: ["aarti-sukhkarta"],
+      sat: ["aarti-sukhkarta", "aarti-ghalin-lotangan"],
+      sun: ["aarti-sukhkarta"],
+    },
   },
   afternoon: { mode: "fixed", texts: [] },
   evening: { mode: "fixed", texts: ["aarti-durge-durghat-bhari", "aarti-sukhkarta"] },

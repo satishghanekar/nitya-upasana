@@ -121,7 +121,12 @@ describe("adding, renaming and deleting a category", () => {
     expect(removeCategory(emptyLocal(), BUNDLED, "aarti")).toEqual({ ok: false, problem: "bundled" });
     expect(removeCategory(emptyLocal(), BUNDLED, "nope")).toEqual({ ok: false, problem: "missing" });
     let l = addCategory(emptyLocal(), BUNDLED, { en: "Bhajan" }).local;
-    l = moveText(l, categoriesOf(BUNDLED, l), TEXTS.find((t) => t.id === "aarti-ghalin-lotangan"), "bhajan").local;
+    l = moveText(
+      l,
+      categoriesOf(BUNDLED, l),
+      TEXTS.find((t) => t.id === "aarti-ghalin-lotangan"),
+      "bhajan",
+    ).local;
     expect(shelf(l, "bhajan")).toEqual(["aarti-ghalin-lotangan"]);
     const r = removeCategory(l, BUNDLED, "bhajan");
     expect(r.ok).toBe(true);
@@ -137,7 +142,9 @@ describe("moving a text", () => {
     const atv = TEXTS.find((t) => t.id === "vedic-chant-atharvashirsha");
     l = moveText(l, categoriesOf(BUNDLED, l), atv, "stotra").local;
     // in reading order among the Stotra already there
-    expect(shelf(l, "stotra")).toEqual(ORDER.filter((id) => ["vedic-chant-atharvashirsha", "aarti-ghalin-lotangan"].includes(id) || shelf(emptyLocal(), "stotra").includes(id)));
+    expect(shelf(l, "stotra")).toEqual(
+      ORDER.filter((id) => ["vedic-chant-atharvashirsha", "aarti-ghalin-lotangan"].includes(id) || shelf(emptyLocal(), "stotra").includes(id)),
+    );
     expect(shelf(l, "aarti")).not.toContain("aarti-ghalin-lotangan");
     expect(shelf(l, "vedic-chant")).toEqual(shelf(emptyLocal(), "vedic-chant").filter((id) => id !== "vedic-chant-atharvashirsha"));
     expect(categoryOf(gl, categoriesOf(BUNDLED, l), l)).toBe("stotra");
@@ -159,7 +166,12 @@ describe("what storage or a backup file holds is checked", () => {
     expect(cleanLocal(null)).toEqual(emptyLocal());
     expect(cleanLocal("x")).toEqual(emptyLocal());
     const l = cleanLocal({
-      added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }, { id: "bhajan", name: { en: "Twice" } }, { id: "Bad Id", name: { en: "x" } }, { id: "noname" }],
+      added: [
+        { id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 },
+        { id: "bhajan", name: { en: "Twice" } },
+        { id: "Bad Id", name: { en: "x" } },
+        { id: "noname" },
+      ],
       renames: { aarti: { mr: "आरत्या", en: "" }, "vedic-chant": 3 },
       moves: { "aarti-ghalin-lotangan": "bhajan", x: 5, "<b>": "aarti" },
     });

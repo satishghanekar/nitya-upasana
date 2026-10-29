@@ -1,0 +1,15 @@
+# Editors' settings for every file (https://editorconfig.org); the scripts, styles and tests are also laid out by
+# Prettier (cd tests && npm run format, checked by npm run lint)
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+
+# a text's lines are kept exactly as written, and two spaces at a line's end are a Markdown line break
+[{content/texts/*.txt,*.md}]
+trim_trailing_whitespace = false

@@ -46,7 +46,7 @@ export function init() {
       if (Date.now() < TK.hold) return;
       if (y < 80 || y + innerHeight >= (TK.h || document.documentElement.scrollHeight) - 4) return showSoon();
       // small movements add up, so a slow drag still counts; a change of direction starts again
-      TK.acc = (d > 0) === (TK.acc > 0) ? TK.acc + d : d;
+      TK.acc = d > 0 === TK.acc > 0 ? TK.acc + d : d;
       if (TK.acc > 24) {
         clearTimeout(TK.show);
         tuck(true);
@@ -148,8 +148,7 @@ export function mark() {
   var pg = document.getElementById("prog");
   if (pg) {
     var dh = document.documentElement.scrollHeight - innerHeight;
-    pg.style.transform = document.getElementById("tkp").style.transform =
-      "scaleX(" + (dh > 0 ? Math.min(1, Math.max(0, scrollY / dh)) : 0) + ")";
+    pg.style.transform = document.getElementById("tkp").style.transform = "scaleX(" + (dh > 0 ? Math.min(1, Math.max(0, scrollY / dh)) : 0) + ")";
   }
 }
 

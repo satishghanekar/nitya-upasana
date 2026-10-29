@@ -258,9 +258,18 @@ export function offerRestore(text) {
   }
   el("bkmt").textContent = w.ask;
   el("bkmd").innerHTML =
-    "<p>" + esc(w.from(day(r.backup.created), P.ui === "mr" ? dv(v) : v)) + "</p>" +
-    '<ul class="bkl">' + line(w.inFile, names) + line(w.added, d.added) + line(w.replaced, d.replaced) + line(w.removed, d.removed) + "</ul>" +
-    "<p>" + esc(w.then(d.active)) + "</p>";
+    "<p>" +
+    esc(w.from(day(r.backup.created), P.ui === "mr" ? dv(v) : v)) +
+    "</p>" +
+    '<ul class="bkl">' +
+    line(w.inFile, names) +
+    line(w.added, d.added) +
+    line(w.replaced, d.replaced) +
+    line(w.removed, d.removed) +
+    "</ul>" +
+    "<p>" +
+    esc(w.then(d.active)) +
+    "</p>";
   el("bkok").textContent = w.restore;
   el("bkok").hidden = false;
   el("bkno").textContent = w.cancel;
