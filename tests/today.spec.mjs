@@ -566,9 +566,14 @@ test("on another day the Sankashti line leaves out today, and the festival line 
   await page.locator("#tdx").click();
   await expect(page.locator("#skt")).toBeHidden();
   // the first festival within two weeks: named by the day shown, never "Today"
+  // (Home's lines follow a new day a moment after the date, js/features/vedic-calendar.js homeSoon(): each step waits
+  // for that before looking)
+  const settled = () => page.evaluate(() => new Promise((r) => setTimeout(r, 0)));
   let n = 2;
+  await settled();
   while (!(await page.locator("#fst").isVisible()) && n < 16) {
     await page.locator("#tdx").click();
+    await settled();
     n++;
   }
   await expect(page.locator("#fst")).toBeVisible();

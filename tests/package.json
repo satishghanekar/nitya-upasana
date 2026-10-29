@@ -1,7 +1,7 @@
 {
-  "name": "sankathara-chaturthi",
+  "name": "nitya-upasana",
   "private": true,
-  "description": "Tests and checks for the Sankathara Chaturthi site. The site itself has no build step: the files at the repository root are served as they are. Run everything from this folder (cd tests).",
+  "description": "Tests and checks for the Nitya Upasana site. The site itself has no build step: the files at the repository root are served as they are. Run everything from this folder (cd tests).",
   "scripts": {
     "serve": "node serve.mjs",
     "test": "playwright test",

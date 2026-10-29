@@ -65,46 +65,57 @@ import { init as startProfiles } from "./features/profiles.js";
 import { init as startBackup } from "./features/backup.js";
 import { init as startRoutineBuilder } from "./features/routine-builder.js";
 
+// One part that fails to start is reported and passed over, so the parts after it still start (a part that needs
+// it may then fail too, but no more than that)
+/** @param {() => void} init */
+function run(init) {
+  try {
+    init();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 function start() {
   try {
-    startPage(); // Page basics: the <html> element, the short message (flash), and the pieces on the reading page
-    startState(); // Settings (P), loaded from this device
-    startFeatures(); // Features held back for a later release
-    startDayPicture(); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed
-    startLibrary(); // The Library's list by category and the categories sheet (add, rename, delete, move a text)
-    startPdfs(); // The Library's PDFs (content/pdfs.json), listed in its PDFs tab
-    startIast(); // IAST transliteration (Devanagari → Latin with diacritics, Vedic accents as marks)
-    startLayout(); // Layout helpers that run once
-    startAstronomy(); // Astronomy: sun and moon, tithi, moonrise and the Sankashti rule (worked out on this device)
-    startSankashti(); // Sankashti: the next one (for Share) and, on the day, one line on the home page with moonrise
-    startTodayCard(); // Home: the picture and date, this session's texts, and the other sessions
-    startVedicCalendar(); // the Vedic calendar: the line on Home (today only, after the page shows) and its page (#cal)
-    startDhrupadMarkers(); // Tappable dhrupad markers (every text with refrain: every-verse)
-    startStanzaNumbers(); // Stanza numbers
-    startLineBreaks(); // Preferred line breaks
-    startAutofit(); // Auto-fit text size
-    startApply(); // Current piece, menus and apply()
-    startBottomBar(); // Bottom bar (#asc): ‹ Prev, Home, Print, Aa, Next ›
-    startBars(); // Bars tuck away while reading (CSS: "Bars tuck away while reading")
-    startSettingsPanel(); // Settings panel
-    startReadingSheet(); // Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad
-    startWakeLock(); // Keep the screen on (Wake Lock). Browsers drop the lock when the page is hidden, so it is re-requested.
-    startHistory(); // Back button
-    startLanguages(); // Settings page: languages
-    startContentsList(); // Library: every text by category, with search (#jump), opened by the book button in the top bar
-    startClicks(); // Clicks: contents links (data-go) jump to a piece; tapping a verse line highlights it
-    startPinch(); // Pinch with two fingers to change the text size (the page itself never zooms)
-    startSearch(); // Search across the library: texts by title, id and category, then every line
-    startStartup(); // Start-up
-    startPictureViewer(); // Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move
-    startHelp(); // Help: opens over the page; the phone's Back button closes it
-    startPrint(); // Print
-    startShare(); // Share, QR code and the Add to Home Screen buttons
-    startMoreMenu(); // More (⋯ in the top bar): App, Share, QR, Print and Help in a small menu
-    startOffline(); // Offline use: home-screen app details and the service worker (sw.js)
-    startProfiles(); // People on this phone: the profile chip in the top bar and its sheet (switch, add, edit, delete)
-    startBackup(); // Save a backup file / Restore from a file, the backup reminder, keeping the data (storage.persist)
-    startRoutineBuilder(); // The routine builder (#rtb): each person's texts per session, in order, with the Add texts picker
+    run(startPage); // Page basics: the <html> element, the short message (flash), and the pieces on the reading page
+    run(startState); // Settings (P), loaded from this device
+    run(startFeatures); // Features held back for a later release
+    run(startDayPicture); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed
+    run(startLibrary); // The Library's list by category and the categories sheet (add, rename, delete, move a text)
+    run(startPdfs); // The Library's PDFs (content/pdfs.json), listed in its PDFs tab
+    run(startIast); // IAST transliteration (Devanagari → Latin with diacritics, Vedic accents as marks)
+    run(startLayout); // Layout helpers that run once
+    run(startAstronomy); // Astronomy: sun and moon, tithi, moonrise and the Sankashti rule (worked out on this device)
+    run(startSankashti); // Sankashti: the next one (for Share) and, on the day, one line on the home page with moonrise
+    run(startTodayCard); // Home: the picture and date, this session's texts, and the other sessions
+    run(startVedicCalendar); // the Vedic calendar: the line on Home (today only, after the page shows) and its page (#cal)
+    run(startDhrupadMarkers); // Tappable dhrupad markers (every text with refrain: every-verse)
+    run(startStanzaNumbers); // Stanza numbers
+    run(startLineBreaks); // Preferred line breaks
+    run(startAutofit); // Auto-fit text size
+    run(startApply); // Current piece, menus and apply()
+    run(startBottomBar); // Bottom bar (#asc): ‹ Prev, Home, Print, Aa, Next ›
+    run(startBars); // Bars tuck away while reading (CSS: "Bars tuck away while reading")
+    run(startSettingsPanel); // Settings panel
+    run(startReadingSheet); // Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad
+    run(startWakeLock); // Keep the screen on (Wake Lock). Browsers drop the lock when the page is hidden, so it is re-requested.
+    run(startHistory); // Back button
+    run(startLanguages); // Settings page: languages
+    run(startContentsList); // Library: every text by category, with search (#jump), opened by the book button in the top bar
+    run(startClicks); // Clicks: contents links (data-go) jump to a piece; tapping a verse line highlights it
+    run(startPinch); // Pinch with two fingers to change the text size (the page itself never zooms)
+    run(startSearch); // Search across the library: texts by title, id and category, then every line
+    run(startStartup); // Start-up
+    run(startPictureViewer); // Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move
+    run(startHelp); // Help: opens over the page; the phone's Back button closes it
+    run(startPrint); // Print
+    run(startShare); // Share, QR code and the Add to Home Screen buttons
+    run(startMoreMenu); // More (⋯ in the top bar): App, Share, QR and Help in a small menu (Print is its own button)
+    run(startOffline); // Offline use: home-screen app details and the service worker (sw.js)
+    run(startProfiles); // People on this phone: the profile chip in the top bar and its sheet (switch, add, edit, delete)
+    run(startBackup); // Save a backup file / Restore from a file, the backup reminder, keeping the data (storage.persist)
+    run(startRoutineBuilder); // The routine builder (#rtb): each person's texts per session, in order, with the Add texts picker
   } finally {
     // Show the page (see "data-ready" in css/02-core.css), even if a part failed to start
     document.documentElement.setAttribute("data-ready", "");
