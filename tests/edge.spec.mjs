@@ -4,7 +4,7 @@
 // keyboard alone. Each test names the audit item it guards (H1–H4, M1–M6, T4–T8).
 import { test, expect } from "@playwright/test";
 import { readFileSync, readdirSync } from "node:fs";
-import { openSite, settle, SETUPS , openMore, tapMore, readText } from "./helpers.mjs";
+import { openSite, settle, SETUPS, openMore, tapMore, readText } from "./helpers.mjs";
 import { stubPrint } from "./print-helpers.mjs";
 
 // ---- Notched iPhones (H2, H4) -------------------------------------------------------------------------
@@ -19,10 +19,13 @@ async function notch(page, size, insets) {
   await cdp.send("Emulation.setSafeAreaInsetsOverride", { insets });
 }
 const box = (page, sel) =>
-  page.locator(sel).first().evaluate((e) => {
-    const r = e.getBoundingClientRect();
-    return { left: r.left, top: r.top, right: r.right, bottom: r.bottom };
-  });
+  page
+    .locator(sel)
+    .first()
+    .evaluate((e) => {
+      const r = e.getBoundingClientRect();
+      return { left: r.left, top: r.top, right: r.right, bottom: r.bottom };
+    });
 
 test.describe("notched iPhone @chromium-only", () => {
   test("upright: the text-size bubble and Default size sit below the top bar (H2)", async ({ page }) => {
@@ -46,10 +49,12 @@ test.describe("notched iPhone @chromium-only", () => {
     await openSite(page, SETUPS.marathi);
     const clear = async (sel) => {
       for (const b of await page.locator(sel).evaluateAll((els) =>
-        els.filter((e) => e.getClientRects().length).map((e) => {
-          const r = e.getBoundingClientRect();
-          return { id: e.id || e.className, left: r.left, right: r.right };
-        }),
+        els
+          .filter((e) => e.getClientRects().length)
+          .map((e) => {
+            const r = e.getBoundingClientRect();
+            return { id: e.id || e.className, left: r.left, right: r.right };
+          }),
       )) {
         expect(b.left, `${b.id} is in the left notch zone`).toBeGreaterThanOrEqual(LANDSCAPE.left);
         expect(b.right, `${b.id} is in the right notch zone`).toBeLessThanOrEqual(size.width - LANDSCAPE.right);
@@ -104,7 +109,12 @@ for (const [name, prefs] of THEMES) {
           cv.fillStyle = "#000";
           cv.fillStyle = s;
           const t = cv.fillStyle;
-          return t[0] === "#" ? [1, 3, 5].map((i) => parseInt(t.slice(i, i + 2), 16)) : t.match(/[\d.]+/g).slice(0, 3).map(Number);
+          return t[0] === "#"
+            ? [1, 3, 5].map((i) => parseInt(t.slice(i, i + 2), 16))
+            : t
+                .match(/[\d.]+/g)
+                .slice(0, 3)
+                .map(Number);
         };
         const lum = (c) => {
           const a = c.map((x) => ((x /= 255) <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4));
@@ -184,8 +194,7 @@ for (const [w, h] of [
     await page.addInitScript(() => {
       window.__cls = [];
       new PerformanceObserver((l) => {
-        for (const e of l.getEntries())
-          if (!e.hadRecentInput && document.documentElement.hasAttribute("data-ready")) window.__cls.push(e.value);
+        for (const e of l.getEntries()) if (!e.hadRecentInput && document.documentElement.hasAttribute("data-ready")) window.__cls.push(e.value);
       }).observe({ type: "layout-shift", buffered: true });
     });
     await openSite(page, SETUPS.marathi);
@@ -261,14 +270,33 @@ test("screen readers: the size bubble is silent while pinching, the final size i
   await expect(page.locator("#sza")).toHaveAttribute("role", "status");
   await readText(page, "a1");
   await page.locator("#a1 .items .verse p").first().scrollIntoViewIfNeeded();
-  await page.locator("#a1 .items .verse p").first().evaluate((el) => {
-    const r = el.getBoundingClientRect();
-    const t = (id, x) => new Touch({ identifier: id, target: el, clientX: x, clientY: r.top + 5 });
-    el.dispatchEvent(new TouchEvent("touchstart", { touches: [t(1, 100), t(2, 150)], targetTouches: [t(1, 100), t(2, 150)], changedTouches: [t(1, 100), t(2, 150)], bubbles: true, cancelable: true }));
-    for (let d = 60; d <= 160; d += 20)
-      el.dispatchEvent(new TouchEvent("touchmove", { touches: [t(1, 100), t(2, 100 + d)], targetTouches: [t(1, 100), t(2, 100 + d)], changedTouches: [t(2, 100 + d)], bubbles: true, cancelable: true }));
-    el.dispatchEvent(new TouchEvent("touchend", { touches: [], targetTouches: [], changedTouches: [t(1, 100), t(2, 260)], bubbles: true }));
-  });
+  await page
+    .locator("#a1 .items .verse p")
+    .first()
+    .evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      const t = (id, x) => new Touch({ identifier: id, target: el, clientX: x, clientY: r.top + 5 });
+      el.dispatchEvent(
+        new TouchEvent("touchstart", {
+          touches: [t(1, 100), t(2, 150)],
+          targetTouches: [t(1, 100), t(2, 150)],
+          changedTouches: [t(1, 100), t(2, 150)],
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+      for (let d = 60; d <= 160; d += 20)
+        el.dispatchEvent(
+          new TouchEvent("touchmove", {
+            touches: [t(1, 100), t(2, 100 + d)],
+            targetTouches: [t(1, 100), t(2, 100 + d)],
+            changedTouches: [t(2, 100 + d)],
+            bubbles: true,
+            cancelable: true,
+          }),
+        );
+      el.dispatchEvent(new TouchEvent("touchend", { touches: [], targetTouches: [], changedTouches: [t(1, 100), t(2, 260)], bubbles: true }));
+    });
   await expect(page.locator("#sza")).toHaveText(/^Text size \d+%$/);
 });
 
@@ -368,11 +396,17 @@ test("keyboard only: Tab to Print, choose a layout, print, and focus comes back 
 // ---- Keeping the cascade from getting harder to change (L1, L2) ----------------------------------------
 // The counts may only go down. A new breakpoint must be added to css/README.md's list first.
 // ---- 2026-10-18 audit: pop-ups on short screens, Back, and the dhrupad bubble ----------------------------
-for (const size of [{ width: 667, height: 375 }, { width: 320, height: 256 }]) {
+for (const size of [
+  { width: 667, height: 375 },
+  { width: 320, height: 256 },
+]) {
   test(`QR and Add to Home Screen pop-ups scroll so Close is reachable at ${size.width}×${size.height} (WCAG 1.4.10) @chromium-only`, async ({ page }) => {
     await page.setViewportSize(size);
     await openSite(page, SETUPS.marathi);
-    for (const [open, close] of [["#qrb", "#qrx"], ["#inb", "#inx"]]) {
+    for (const [open, close] of [
+      ["#qrb", "#qrx"],
+      ["#inb", "#inx"],
+    ]) {
       await openMore(page);
       if (!(await page.locator(open).isVisible())) continue;
       await page.locator(open).click();
@@ -389,7 +423,11 @@ for (const size of [{ width: 667, height: 375 }, { width: 320, height: 256 }]) {
 test("the phone's Back closes QR, Print and the picture and returns focus to their button (WCAG 2.4.3) @chromium-only", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   // (Print last: it is in the bottom bar while a text is read, and the picture is on Home)
-  for (const [open, dlg] of [["#qrb", "#qrm"], ["#iconb", "#pzv"], ["#asp", "#prm"]]) {
+  for (const [open, dlg] of [
+    ["#qrb", "#qrm"],
+    ["#iconb", "#pzv"],
+    ["#asp", "#prm"],
+  ]) {
     // (Print is in the bottom bar while a text is read: focus comes back to it)
     if (open === "#asp") await readText(page, "a1");
     else if (open !== "#iconb") await openMore(page);
@@ -425,7 +463,8 @@ test("a 320px phone: the home buttons show their words, and a note sits under th
   for (const id of ["#shb", "#qrb", "#hlpb"]) {
     const w = page.locator(id + " > span.en");
     await expect(w).toBeVisible();
-    const b = await page.locator(id).boundingBox(), t = await w.boundingBox();
+    const b = await page.locator(id).boundingBox(),
+      t = await w.boundingBox();
     expect(t.x >= b.x - 0.5 && t.x + t.width <= b.x + b.width + 0.5, `${id} word inside its button`).toBe(true);
   }
   // a long note while reading
@@ -438,7 +477,8 @@ test("a 320px phone: the home buttons show their words, and a note sits under th
   const fl = page.locator("#fl");
   await expect(fl).toHaveClass(/\bon\b/);
   await expect(fl).toContainText("Dhrupad after every verse");
-  const f = await fl.boundingBox(), bar = await page.locator("body > .bar").first().boundingBox();
+  const f = await fl.boundingBox(),
+    bar = await page.locator("body > .bar").first().boundingBox();
   expect(f.x).toBeGreaterThanOrEqual(0);
   expect(f.x + f.width).toBeLessThanOrEqual(320);
   expect(f.y, "note under the top bar").toBeGreaterThanOrEqual(bar.y + bar.height - 0.5);

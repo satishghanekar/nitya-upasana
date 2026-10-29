@@ -19,19 +19,7 @@
 // upper-limb moonrise (typically 0.1).
 
 import { SK, init as initSky } from "../features/astronomy.js";
-import {
-  AYANA,
-  KARANA,
-  MASA,
-  NAKSHATRA,
-  PAKSHA,
-  RITU,
-  SAMVATSARA,
-  VARA,
-  YOGA,
-  ADHIKA,
-  tithiName,
-} from "./panchang-names.js";
+import { AYANA, KARANA, MASA, NAKSHATRA, PAKSHA, RITU, SAMVATSARA, VARA, YOGA, ADHIKA, tithiName } from "./panchang-names.js";
 
 /**
  * @typedef {import("./panchang-names.js").Name} Name
@@ -495,8 +483,7 @@ export function monthPanchang(year, month, place) {
     var n = nums[i];
     /** @type {number[]} */
     var kshaya = [];
-    if (nums[i + 1] !== n)
-      for (var j = n % 30; j + 1 !== nums[i + 1] && kshaya.length < 2; j = (j + 1) % 30) kshaya.push(j + 1);
+    if (nums[i + 1] !== n) for (var j = n % 30; j + 1 !== nums[i + 1] && kshaya.length < 2; j = (j + 1) % 30) kshaya.push(j + 1);
     /** @param {number} x */
     var has = function (x) {
       return n === x || kshaya.indexOf(x) >= 0;

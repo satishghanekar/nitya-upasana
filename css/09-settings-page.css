@@ -246,16 +246,12 @@ html[data-sp] {
   width: 46px;
   height: 28px;
   border-radius: 14px;
-  background:
-    radial-gradient(circle at 14px 50%, #fff 11px, transparent 12px),
-    color-mix(in srgb, var(--ink) 20%, var(--surface));
+  background: radial-gradient(circle at 14px 50%, #fff 11px, transparent 12px), color-mix(in srgb, var(--ink) 20%, var(--surface));
   box-shadow: inset 0 0 0 1px #0001;
   transition: background 0.2s;
 }
 .sp .sp-sw[aria-pressed="true"]::after {
-  background:
-    radial-gradient(circle at 32px 50%, #fff 11px, transparent 12px),
-    var(--accent);
+  background: radial-gradient(circle at 32px 50%, #fff 11px, transparent 12px), var(--accent);
 }
 /* the preview: a few lines as the pieces show them */
 .sp-prev {
@@ -282,11 +278,11 @@ html[data-sp] {
   align-items: center;
   height: 180px;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent),
-    linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent), linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
   -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent),
-    linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+  mask-image:
+    linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent), linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
   mask-composite: intersect;
 }
 .sp-pw > div {
@@ -403,10 +399,10 @@ html[data-sp] {
     height: 168px;
     /* centred while the lines fit (one language leaves room), from the top once A+ makes them taller */
     justify-content: safe center;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent),
-      linear-gradient(to bottom, #000 calc(100% - 6px), transparent);
-    mask-image: linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent),
-      linear-gradient(to bottom, #000 calc(100% - 6px), transparent);
+    -webkit-mask-image:
+      linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent), linear-gradient(to bottom, #000 calc(100% - 6px), transparent);
+    mask-image:
+      linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent), linear-gradient(to bottom, #000 calc(100% - 6px), transparent);
   }
   .sp-grp:has(#srf) {
     padding-top: 10px;
@@ -494,4 +490,3 @@ html[data-scr="kn"][data-font]:not([data-font="std"]) #home .nm,
 html[data-scr="kn"][data-font]:not([data-font="std"]) .sp-pw [lang="kn"] {
   font-family: var(--kf), "Noto Sans Kannada", var(--body) !important;
 }
-

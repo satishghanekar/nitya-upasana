@@ -26,13 +26,13 @@ export const BASE_PREFS = { sv: 6, wake: 0 };
 
 /** Named reader set-ups used across suites. Each is merged over BASE_PREFS. */
 export const SETUPS = {
-  "marathi": { lang: "mr", lead: "mr", l2: "en" },
-  "english": { lang: "en", lead: "mr", l2: "en" },
-  "both": { lang: "both", lead: "mr", l2: "en" },
+  marathi: { lang: "mr", lead: "mr", l2: "en" },
+  english: { lang: "en", lead: "mr", l2: "en" },
+  both: { lang: "both", lead: "mr", l2: "en" },
   "english-iast": { lang: "en", lead: "mr", l2: "en", tr: "iast" },
   "both-iast": { lang: "both", lead: "mr", l2: "en", tr: "iast" },
   "english-main-both": { lang: "both", lead: "en", l2: "mr" },
-  "kannada": { lang: "mr", lead: "mr", l2: "en", ind: "kn" },
+  kannada: { lang: "mr", lead: "mr", l2: "en", ind: "kn" },
   "kannada-both": { lang: "both", lead: "mr", l2: "en", ind: "kn" },
   "marathi-every-verse": { lang: "mr", lead: "mr", l2: "en", ref: 0 },
   "marathi-menus": { lang: "mr", lead: "mr", l2: "en", ui: "mr" },
@@ -103,7 +103,14 @@ export async function pieceText(page) {
       .map((s) => {
         const was = s.classList.contains("solo");
         s.classList.add("solo");
-        const x = "### " + s.id + "\n" + s.innerText.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+        const x =
+          "### " +
+          s.id +
+          "\n" +
+          s.innerText
+            .replace(/[ \t]+\n/g, "\n")
+            .replace(/\n{3,}/g, "\n\n")
+            .trim();
         if (!was) s.classList.remove("solo");
         return x;
       })
@@ -179,9 +186,9 @@ export async function axeScan(page, include = [], opt = {}) {
   const violations = await page.evaluate(
     ([sel, options]) =>
       // @ts-ignore axe is injected above
-      window.axe.run(sel.length ? { include: sel.map((s) => [s]) } : document, options).then((r) =>
-        r.violations.map((v) => ({ id: v.id, impact: v.impact, targets: v.nodes.map((n) => n.target.join(" ")) })),
-      ),
+      window.axe
+        .run(sel.length ? { include: sel.map((s) => [s]) } : document, options)
+        .then((r) => r.violations.map((v) => ({ id: v.id, impact: v.impact, targets: v.nodes.map((n) => n.target.join(" ")) }))),
     [sel, options],
   );
   return violations.map((v) => `${v.id} (${v.impact}): ${v.targets.slice(0, 5).join(", ")}`);
@@ -237,8 +244,18 @@ export async function readText(page, sec) {
 // (content/routines.json changes as texts are added): the first default, v1.10 (Morning = the Ganapati Atharvashirsha,
 // Evening = the ten aartis in the Library's order, Afternoon empty). The bundled default has its own tests
 // (unit/today.test.mjs and "the bundled default" in today.spec.mjs).
-export const TEST_AARTIS = ["aarti-sukhkarta", "aarti-shendur-lal-chadhayo", "aarti-durge-durghat-bhari", "aarti-lavathavati-vikrala", "aarti-trigunatmak-traimurti",
-  "aarti-dnyanaraja", "aarti-yei-o-vitthale", "aarti-ghalin-lotangan", "aarti-jai-ganesh-deva", "aarti-jai-jagdish-hare"];
+export const TEST_AARTIS = [
+  "aarti-sukhkarta",
+  "aarti-shendur-lal-chadhayo",
+  "aarti-durge-durghat-bhari",
+  "aarti-lavathavati-vikrala",
+  "aarti-trigunatmak-traimurti",
+  "aarti-dnyanaraja",
+  "aarti-yei-o-vitthale",
+  "aarti-ghalin-lotangan",
+  "aarti-jai-ganesh-deva",
+  "aarti-jai-jagdish-hare",
+];
 export const TEST_ROUTINE = {
   morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha"] },
   afternoon: { mode: "fixed", texts: [] },

@@ -25,7 +25,8 @@ export function init() {
     var b = document.createElement("button");
     b.type = "button";
     b.className = "afb";
-    b.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>';
+    b.innerHTML =
+      '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>';
     b.onclick = function () {
       var y = h.getBoundingClientRect().top,
         af = P.af.slice(),

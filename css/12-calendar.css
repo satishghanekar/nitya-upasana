@@ -527,9 +527,10 @@
   background:
     radial-gradient(circle at 64% 36%, rgb(176 132 52 / 0.38) 0 13%, transparent 15%),
     radial-gradient(circle at 38% 66%, rgb(176 132 52 / 0.3) 0 11%, transparent 13%),
-    radial-gradient(circle at 30% 40%, rgb(176 132 52 / 0.22) 0 7%, transparent 9%),
-    radial-gradient(circle at 40% 35%, #fffbe9, #f6dc96 55%, #dcae48);
-  box-shadow: 0 0 0 0.75px #c99a3a, 0 0 5px 1px rgb(246 206 110 / 0.6);
+    radial-gradient(circle at 30% 40%, rgb(176 132 52 / 0.22) 0 7%, transparent 9%), radial-gradient(circle at 40% 35%, #fffbe9, #f6dc96 55%, #dcae48);
+  box-shadow:
+    0 0 0 0.75px #c99a3a,
+    0 0 5px 1px rgb(246 206 110 / 0.6);
 }
 .mn.new {
   border: 1.25px solid #d6b25e;
@@ -921,7 +922,6 @@
     font-size: 11.5px;
   }
 }
-
 
 /* ==== Tablets held upright: one column a little narrower, taller days, the day card's rows in two columns ==== */
 @media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {

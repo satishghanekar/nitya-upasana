@@ -72,7 +72,10 @@ test("load and the language choices lay the page out only a few times @chromium-
     await page.evaluate(() => (window.__slow = 0));
     const t = await metrics(cdp);
     // Language in the reading sheet (Aa): English, both, then Marathi again
-    await page.locator("#rsl button").nth((i + 1) % 3).evaluate((b) => b.click());
+    await page
+      .locator("#rsl button")
+      .nth((i + 1) % 3)
+      .evaluate((b) => b.click());
     await page.waitForTimeout(1000);
     taps.push({ ...diff(t, await metrics(cdp)), responseMs: Math.round(await page.evaluate(() => window.__slow)) });
   }

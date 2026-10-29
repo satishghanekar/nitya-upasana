@@ -9,10 +9,13 @@ import { stubPrint } from "./print-helpers.mjs";
 
 // the first font a line asks for, and its weight
 const look = (page, sel) =>
-  page.locator(sel).first().evaluate((e) => {
-    const s = getComputedStyle(e);
-    return [s.fontFamily.split(",")[0].trim().replace(/"/g, ""), s.fontWeight];
-  });
+  page
+    .locator(sel)
+    .first()
+    .evaluate((e) => {
+      const s = getComputedStyle(e);
+      return [s.fontFamily.split(",")[0].trim().replace(/"/g, ""), s.fontWeight];
+    });
 // an aarti (a1) and the Atharvashirsha (p1, a Vedic chant), each line of the original
 const AARTI = "#a1 .item:not(.dh) .verse .mr p";
 const VEDIC = "#p1 .verse .mr p";

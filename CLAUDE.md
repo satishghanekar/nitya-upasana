@@ -25,8 +25,9 @@ private.
   that sets it; the others import it and only read it.
 - A new page, dialog or sheet goes into `PAGES` / `LAYERS` in `js/features/overlays.js` (Back, focus kept inside,
   Escape).
-- Match the code around you: `var` and `function` in the parts, double quotes (single around HTML that holds double
-  quotes), 2-space indent, semicolons, trailing commas in lists that span lines. Anything written into HTML goes
+- Match the code around you: `var` and `function` in the parts. Layout is Prettier's (`cd tests && npm run format`;
+  `npm run lint` fails on anything else): double quotes, 2-space indent, semicolons, lines up to 160 characters.
+  Comments are wrapped by hand at about 120. Anything written into HTML goes
   through `esc()` (`js/core/words.js`).
 - No `console.log`. `console.warn` / `console.error` only where a failure is caught and the site carries on (the tests
   fail on any console error).

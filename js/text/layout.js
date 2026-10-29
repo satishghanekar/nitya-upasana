@@ -7,11 +7,7 @@ export function init() {
   onPiece(gridItems);
   // Gentle fade-in for verses that scroll into view (never for content already on screen; skipped if the device asks for less motion)
   (function () {
-    if (
-      !("IntersectionObserver" in window) ||
-      (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)
-    )
-      return;
+    if (!("IntersectionObserver" in window) || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
     var ready = false;
     var io = new IntersectionObserver(
       function (es) {

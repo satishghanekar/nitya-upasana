@@ -414,7 +414,10 @@ export function init() {
       h.textContent = rp.name;
       cov.appendChild(h);
       var sub = mk("p", "pvsub");
-      sub.textContent = L === "mr" ? rmr("नित्य उपासना · " + MONTHS.mr[now.getMonth()] + " " + dv(now.getFullYear())) : "Nitya Upasana · " + MONTHS.en[now.getMonth()] + " " + now.getFullYear();
+      sub.textContent =
+        L === "mr"
+          ? rmr("नित्य उपासना · " + MONTHS.mr[now.getMonth()] + " " + dv(now.getFullYear()))
+          : "Nitya Upasana · " + MONTHS.en[now.getMonth()] + " " + now.getFullYear();
       cov.appendChild(sub);
       if (rp.grid.length) {
         var h3 = mk("h3", "pvcat");
@@ -588,7 +591,12 @@ export function init() {
     function fontsAhead() {
       if (!document.fonts || !document.fonts.load) return;
       var f = pfn(),
-        want = f === "classic" ? ['400 16px "SC Classic"', '700 16px "SC Bold"', '400 16px "Tiro Devanagari Sanskrit"'] : f === "bold" ? ['600 16px "SC Bold"', '800 16px "SC Bold"'] : [];
+        want =
+          f === "classic"
+            ? ['400 16px "SC Classic"', '700 16px "SC Bold"', '400 16px "Tiro Devanagari Sanskrit"']
+            : f === "bold"
+              ? ['600 16px "SC Bold"', '800 16px "SC Bold"']
+              : [];
       if (olang() === "kn") want.push(f === "std" ? '400 16px "Noto Sans Kannada"' : '400 16px "SC Kn Classic"');
       want.forEach(function (x) {
         try {
@@ -692,7 +700,21 @@ export function init() {
       try {
         var d = /** @type {Document} */ (f.contentDocument);
         d.open();
-        d.write('<!doctype html><html data-print="' + m + '"' + attrs() + '><head><base href="' + location.href.replace(/"/g, "%22") + '"><style>' + pcss() + "\nhtml,body{margin:0;overflow:hidden;background:#fff}body{box-sizing:content-box;padding:17mm 19mm 0;height:" + (sh[1] - 36) + "mm}</style></head><body>" + box.outerHTML + "</body></html>");
+        d.write(
+          '<!doctype html><html data-print="' +
+            m +
+            '"' +
+            attrs() +
+            '><head><base href="' +
+            location.href.replace(/"/g, "%22") +
+            '"><style>' +
+            pcss() +
+            "\nhtml,body{margin:0;overflow:hidden;background:#fff}body{box-sizing:content-box;padding:17mm 19mm 0;height:" +
+            (sh[1] - 36) +
+            "mm}</style></head><body>" +
+            box.outerHTML +
+            "</body></html>",
+        );
         d.close();
       } catch (e) {}
     }
@@ -910,7 +932,16 @@ export function init() {
       // a session's printout: which, so Safari prints it in this order with its heading
       var sp = splan();
       if (sp && sp.session) r += "&o=" + sp.session + (typeof sp.day === "number" ? "&od=" + sp.day : "");
-      return location.origin + location.pathname + "?print=" + mode + "&s=" + encodeURIComponent(JSON.stringify(s)) + (chosen() ? "&t=" + /** @type {string[]} */ (chosen()).join(",") : "") + r;
+      return (
+        location.origin +
+        location.pathname +
+        "?print=" +
+        mode +
+        "&s=" +
+        encodeURIComponent(JSON.stringify(s)) +
+        (chosen() ? "&t=" + /** @type {string[]} */ (chosen()).join(",") : "") +
+        r
+      );
     }
     // open: the pop-up is already open (its Back step is in place); tapped: Print now was tapped and the
     // dialog still did not open (not the Home Screen app: another app's browser, or Safari holding it back),
@@ -1130,9 +1161,11 @@ export function init() {
         t = null;
       if (!sec) {
         s = shownSession();
-        ids = (shownSessions().filter(function (x) {
-          return x.session === s;
-        })[0] || { ids: [] }).ids;
+        ids = (
+          shownSessions().filter(function (x) {
+            return x.session === s;
+          })[0] || { ids: [] }
+        ).ids;
       }
       if (ids && ids.length) return openPrint({ ids: ids, tab: "today", session: s, day: sec ? runDay() : shownDay().day, from: b });
       shelvesNow().forEach(function (s) {
@@ -1196,7 +1229,11 @@ export function init() {
       } else what.set(window.PRT || null);
       // a routine printout (Open in Safari carries it: js/render.js reads it)
       var rr = /** @type {any} */ (window).PRR;
-      if (rr && rr.days.length) what.carry({ id: "link", name: rr.name, routine: cleanRoutine(rr.routine) }, { who: "link", span: rr.span, days: rr.days, day: rr.days[0], sessions: rr.sessions });
+      if (rr && rr.days.length)
+        what.carry(
+          { id: "link", name: rr.name, routine: cleanRoutine(rr.routine) },
+          { who: "link", span: rr.span, days: rr.days, day: rr.days[0], sessions: rr.sessions },
+        );
       (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () {
         setTimeout(function () {
           go(mode);

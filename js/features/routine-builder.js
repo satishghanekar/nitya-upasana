@@ -19,20 +19,7 @@
 
 import { loaded } from "../text/load.js";
 import { sessionAt } from "../core/time-of-day.js";
-import {
-  DAY_KEYS,
-  WEEK_ORDER,
-  addTexts,
-  byWeekday,
-  copyDays,
-  editable,
-  moveItem,
-  removeText,
-  setList,
-  setMode,
-  textsFor,
-  weekOf,
-} from "../core/routine.js";
+import { DAY_KEYS, WEEK_ORDER, addTexts, byWeekday, copyDays, editable, moveItem, removeText, setList, setMode, textsFor, weekOf } from "../core/routine.js";
 import { active, getLibrary, onChange, routine, setRoutine } from "../store/store.js";
 import { categoriesOf, categoryOf } from "../core/library.js";
 import { setR } from "./overlays.js";
@@ -288,7 +275,11 @@ function nameHtml(t) {
   var l = lead(),
     s = second();
   return (
-    '<span class="t1" lang="' + langIn(t, l) + '">' + esc(titleIn(t, l)) + "</span>" +
+    '<span class="t1" lang="' +
+    langIn(t, l) +
+    '">' +
+    esc(titleIn(t, l)) +
+    "</span>" +
     (s ? '<span class="t2" lang="' + langIn(t, s) + '">' + esc(titleIn(t, s)) + "</span>" : "")
   );
 }
@@ -445,10 +436,18 @@ function radios(g, label, items) {
   g.innerHTML = items
     .map(function (x) {
       return (
-        '<button type="button" role="radio" data-v="' + x.v + '" aria-checked="' + x.on + '" tabindex="' + (x.on ? 0 : -1) + '"' +
+        '<button type="button" role="radio" data-v="' +
+        x.v +
+        '" aria-checked="' +
+        x.on +
+        '" tabindex="' +
+        (x.on ? 0 : -1) +
+        '"' +
         (x.label ? ' aria-label="' + esc(x.label) + '"' : "") +
         (x.cls ? ' class="' + x.cls + '"' : "") +
-        ">" + x.html + "</button>"
+        ">" +
+        x.html +
+        "</button>"
       );
     })
     .join("");
@@ -466,14 +465,38 @@ function drawList() {
       var t = info[id],
         nm = esc(nameOf(id));
       return (
-        '<li data-id="' + esc(id) + '">' +
-        '<span class="rtg" aria-hidden="true">' + ICON.grip + "</span>" +
-        '<span class="tno" aria-hidden="true">' + (lead() === "mr" ? scr(dv(i + 1)) : i + 1) + ".</span>" +
-        '<span class="tt">' + nameHtml(t) + "</span>" +
+        '<li data-id="' +
+        esc(id) +
+        '">' +
+        '<span class="rtg" aria-hidden="true">' +
+        ICON.grip +
+        "</span>" +
+        '<span class="tno" aria-hidden="true">' +
+        (lead() === "mr" ? scr(dv(i + 1)) : i + 1) +
+        ".</span>" +
+        '<span class="tt">' +
+        nameHtml(t) +
+        "</span>" +
         '<span class="rtbs">' +
-        '<button type="button" class="mv" data-a="up" aria-label="' + w.up(nm) + '"' + (i === 0 ? ' aria-disabled="true"' : "") + ">" + ICON.up + "</button>" +
-        '<button type="button" class="mv" data-a="down" aria-label="' + w.down(nm) + '"' + (i === n - 1 ? ' aria-disabled="true"' : "") + ">" + ICON.down + "</button>" +
-        '<button type="button" class="mv rm" data-a="rm" aria-label="' + w.remove(nm) + '">' + ICON.x + "</button>" +
+        '<button type="button" class="mv" data-a="up" aria-label="' +
+        w.up(nm) +
+        '"' +
+        (i === 0 ? ' aria-disabled="true"' : "") +
+        ">" +
+        ICON.up +
+        "</button>" +
+        '<button type="button" class="mv" data-a="down" aria-label="' +
+        w.down(nm) +
+        '"' +
+        (i === n - 1 ? ' aria-disabled="true"' : "") +
+        ">" +
+        ICON.down +
+        "</button>" +
+        '<button type="button" class="mv rm" data-a="rm" aria-label="' +
+        w.remove(nm) +
+        '">' +
+        ICON.x +
+        "</button>" +
         "</span></li>"
       );
     })
@@ -804,8 +827,7 @@ export function init() {
     else if (b.id === "rtfxx") {
       fixPanel(false);
       focusRadio("rtmd");
-    }
-    else if (b.id === "rtcpx") {
+    } else if (b.id === "rtcpx") {
       copyPanel(false);
       el("rtcpb").focus();
     } else if (b.id === "rtadd") picker.open(b);
@@ -854,10 +876,12 @@ export function init() {
     "keydown",
     function (e) {
       if (e.key !== "Escape" || !isOpen() || picker.isOpen()) return;
-      if (["pfm", "bkm", "help"].some(function (i) {
-        var d = document.getElementById(i);
-        return d && !d.hidden;
-      }))
+      if (
+        ["pfm", "bkm", "help"].some(function (i) {
+          var d = document.getElementById(i);
+          return d && !d.hidden;
+        })
+      )
         return;
       if (!el("rtcpf").hidden) {
         copyPanel(false);

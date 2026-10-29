@@ -35,7 +35,9 @@ export function init() {
   (function () {
     var ms = pageEls();
     function menu() {
-      var m = ms.filter(function (m) { return m && !m.hidden; })[0];
+      var m = ms.filter(function (m) {
+        return m && !m.hidden;
+      })[0];
       if (m) root.setAttribute("data-menu", m.id);
       else root.removeAttribute("data-menu");
     }

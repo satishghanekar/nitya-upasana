@@ -18,10 +18,7 @@ export function init() {
     function sunLon(T) {
       var L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T,
         M = (357.52911 + 35999.05029 * T - 0.0001537 * T * T) * D2R;
-      var C =
-        (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(M) +
-        (0.019993 - 0.000101 * T) * Math.sin(2 * M) +
-        0.000289 * Math.sin(3 * M);
+      var C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(M) + (0.019993 - 0.000101 * T) * Math.sin(2 * M) + 0.000289 * Math.sin(3 * M);
       var om = (125.04 - 1934.136 * T) * D2R;
       return n360(L0 + C - 0.00569 - 0.00478 * Math.sin(om));
     }
@@ -230,8 +227,7 @@ export function init() {
             if (pick === null) pick = mid(en);
             rs = rise(pick + 12 * h, addDay(pick) + 12 * h, lat, lon);
           }
-          if (addDay(pick) > from)
-            out.push({ day: pick, rise: rs, start: s, end: en, atRise: rs !== null && rs >= s && rs < en });
+          if (addDay(pick) > from) out.push({ day: pick, rise: rs, start: s, end: en, atRise: rs !== null && rs >= s && rs < en });
         }
         p = e;
       }

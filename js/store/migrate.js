@@ -73,7 +73,13 @@ function fits(k, v, d) {
   if (v === undefined) return false;
   if (k === "loc") return v === null || (!!v && typeof v === "object" && typeof v.lat === "number" && typeof v.lon === "number");
   if (k === "pref") return v === "" || v === 0 || v === 1;
-  if (Array.isArray(d)) return Array.isArray(v) && v.every(function (x) { return typeof x === "string"; });
+  if (Array.isArray(d))
+    return (
+      Array.isArray(v) &&
+      v.every(function (x) {
+        return typeof x === "string";
+      })
+    );
   if (d && typeof d === "object") return !!v && typeof v === "object" && !Array.isArray(v);
   if (typeof d === "number") return typeof v === "number" && isFinite(v);
   return typeof v === typeof d;

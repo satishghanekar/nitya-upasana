@@ -74,18 +74,9 @@ function segs(p) {
 
 function ratio() {
   // cached per language / dhrupad / layout / orientation
-  var k = [
-    P.lang,
-    LEAD,
-    P.ind,
-    P.fnt,
-    P.tr,
-    P.ref,
-    root.getAttribute("data-cols"),
-    root.getAttribute("data-rail"),
-    MQL.matches ? "l" : "p",
-    fontsN(),
-  ].join("|");
+  var k = [P.lang, LEAD, P.ind, P.fnt, P.tr, P.ref, root.getAttribute("data-cols"), root.getAttribute("data-rail"), MQL.matches ? "l" : "p", fontsN()].join(
+    "|",
+  );
   if (FR[k]) return FR[k];
   // measured at the device default size, as on first load: some layouts (two columns) size their columns in em,
   // so measuring at the current size would give a different answer each time and the size would creep down

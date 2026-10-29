@@ -105,7 +105,6 @@ export function whatWords() {
   return W[ui()];
 }
 
-
 /** A title in a reading language: as written (Kannada letters when chosen), or its English name */
 /** @param {WhatText} t @param {"mr" | "en"} l */
 function titleIn(t, l) {
@@ -166,18 +165,15 @@ export function createWhat(el, o) {
       on = a.filter(function (t) {
         return !off[t.id];
       });
-    return on.length === a.length ? null : on.map(function (t) {
-      return t.id;
-    });
+    return on.length === a.length
+      ? null
+      : on.map(function (t) {
+          return t.id;
+        });
   }
   /** The chosen texts (on the Routine tab, in routine order) */
   function chosen() {
-    if (tab === "routine" || tab === "today")
-      return /** @type {WhatText[]} */ (
-        /** @type {string[]} */ (pick())
-          .map(byId)
-          .filter(Boolean)
-      );
+    if (tab === "routine" || tab === "today") return /** @type {WhatText[]} */ (/** @type {string[]} */ (pick()).map(byId).filter(Boolean));
     return all().filter(function (t) {
       return !off[t.id];
     });
@@ -261,7 +257,9 @@ export function createWhat(el, o) {
     var h =
       '<div class="prrw">' +
       (ps.length > 1
-        ? '<select class="prwho" data-rk="who" aria-label="' + esc(w.who) + '">' +
+        ? '<select class="prwho" data-rk="who" aria-label="' +
+          esc(w.who) +
+          '">' +
           ps
             .map(function (x) {
               return '<option value="' + esc(x.id) + '"' + (x.id === me ? " selected" : "") + ">" + esc(x.name) + "</option>";
@@ -272,29 +270,66 @@ export function createWhat(el, o) {
       '<span class="prrs">' +
       ["week", "day"]
         .map(function (k) {
-          return '<button type="button" data-rk="span-' + k + '" data-rspan="' + k + '" aria-pressed="' + (rc.span === k) + '">' + esc(k === "week" ? w.week : w.oneDay) + "</button>";
+          return (
+            '<button type="button" data-rk="span-' +
+            k +
+            '" data-rspan="' +
+            k +
+            '" aria-pressed="' +
+            (rc.span === k) +
+            '">' +
+            esc(k === "week" ? w.week : w.oneDay) +
+            "</button>"
+          );
         })
         .join("") +
       "</span></div>" +
-      '<div class="prchips" role="group" aria-label="' + esc(w.days) + '">' +
+      '<div class="prchips" role="group" aria-label="' +
+      esc(w.days) +
+      '">' +
       [1, 2, 3, 4, 5, 6, 0]
         .map(function (n) {
           return (
-            '<button type="button" class="prchip' + (n === new Date().getDay() ? " prtoday" : "") + '" data-rk="day-' + n + '" data-rday="' + n + '" aria-pressed="' + (d.indexOf(n) >= 0) + '">' + esc(ui() === "mr" ? scr(tw.days[n]) : tw.days[n]) + "</button>"
+            '<button type="button" class="prchip' +
+            (n === new Date().getDay() ? " prtoday" : "") +
+            '" data-rk="day-' +
+            n +
+            '" data-rday="' +
+            n +
+            '" aria-pressed="' +
+            (d.indexOf(n) >= 0) +
+            '">' +
+            esc(ui() === "mr" ? scr(tw.days[n]) : tw.days[n]) +
+            "</button>"
           );
         })
         .join("") +
       "</div>" +
-      '<div class="prchips" role="group" aria-label="' + esc(w.sessions) + '">' +
+      '<div class="prchips" role="group" aria-label="' +
+      esc(w.sessions) +
+      '">' +
       SESSIONS.map(function (s) {
         var any = !!p && hasTexts(p, s),
           nm = ui() === "mr" ? scr(tw.sessions[s]) : tw.sessions[s];
         return (
-          '<button type="button" class="prchip" data-rk="ses-' + s + '" data-rses="' + s + '" aria-pressed="' + (any && rc.sessions.indexOf(s) >= 0) + '"' + (any ? "" : " disabled") + ">" + esc(nm) + (any ? "" : ' <small>· ' + esc(w.noTexts) + "</small>") + "</button>"
+          '<button type="button" class="prchip" data-rk="ses-' +
+          s +
+          '" data-rses="' +
+          s +
+          '" aria-pressed="' +
+          (any && rc.sessions.indexOf(s) >= 0) +
+          '"' +
+          (any ? "" : " disabled") +
+          ">" +
+          esc(nm) +
+          (any ? "" : " <small>· " + esc(w.noTexts) + "</small>") +
+          "</button>"
         );
       }).join("") +
       "</div>" +
-      '<div class="prcg"><span>' + esc(w.order) + "</span></div>";
+      '<div class="prcg"><span>' +
+      esc(w.order) +
+      "</span></div>";
     if (r && r.ids.length) {
       var rr = r;
       h +=
@@ -303,9 +338,21 @@ export function createWhat(el, o) {
           .map(function (id, i) {
             var t = /** @type {WhatText} */ (byId(id));
             return (
-              '<li data-id="' + esc(id) + '" data-sec="' + esc(t.sec) + '"><span class="prrn">' + num(i + 1) + '.</span><span class="tt"><span class="t1" lang="' + langIn(t, l) + '">' + esc(titleIn(t, l)) + "</span>" +
+              '<li data-id="' +
+              esc(id) +
+              '" data-sec="' +
+              esc(t.sec) +
+              '"><span class="prrn">' +
+              num(i + 1) +
+              '.</span><span class="tt"><span class="t1" lang="' +
+              langIn(t, l) +
+              '">' +
+              esc(titleIn(t, l)) +
+              "</span>" +
               (s2 ? '<span class="t2" lang="' + langIn(t, s2) + '">' + esc(titleIn(t, s2)) + "</span>" : "") +
-              '<span class="prtag">' + esc(tagIn(rr, id)) + '</span></span></li>'
+              '<span class="prtag">' +
+              esc(tagIn(rr, id)) +
+              "</span></span></li>"
             );
           })
           .join("") +
@@ -353,31 +400,70 @@ export function createWhat(el, o) {
     el.innerHTML =
       '<div class="prtabs" role="tablist">' +
       TABS.map(function (k) {
-          return '<button type="button" role="tab" id="prtab-' + k + '" data-tab="' + k + '" aria-controls="prtp-' + k + '">' + esc(k === "today" ? dayName() || w.tabs.today : w.tabs[/** @type {"texts" | "routine"} */ (k)]) + "</button>";
-        })
-        .join("") +
+        return (
+          '<button type="button" role="tab" id="prtab-' +
+          k +
+          '" data-tab="' +
+          k +
+          '" aria-controls="prtp-' +
+          k +
+          '">' +
+          esc(k === "today" ? dayName() || w.tabs.today : w.tabs[/** @type {"texts" | "routine"} */ (k)]) +
+          "</button>"
+        );
+      }).join("") +
       "</div>" +
-      '<div class="prtp" id="prtp-today" role="tabpanel" aria-labelledby="prtab-today"><p class="prti">' + esc(w.todayInfo) + "</p>" + todayHtml() + "</div>" +
+      '<div class="prtp" id="prtp-today" role="tabpanel" aria-labelledby="prtab-today"><p class="prti">' +
+      esc(w.todayInfo) +
+      "</p>" +
+      todayHtml() +
+      "</div>" +
       '<div class="prtp" id="prtp-routine" role="tabpanel" aria-labelledby="prtab-routine"><div class="prrt"></div></div>' +
       '<div class="prtp" id="prtp-texts" role="tabpanel" aria-labelledby="prtab-texts">' +
-      '<input type="search" class="tpkq prwq" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="' + esc(w.search) + '" aria-label="' + esc(w.search) + '">' +
-      '<div class="prcg prcga"><span>' + esc(w.all) + '</span><button type="button" class="prcb" data-cat=""></button></div>' +
+      '<input type="search" class="tpkq prwq" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="' +
+      esc(w.search) +
+      '" aria-label="' +
+      esc(w.search) +
+      '">' +
+      '<div class="prcg prcga"><span>' +
+      esc(w.all) +
+      '</span><button type="button" class="prcb" data-cat=""></button></div>' +
       o
         .shelves()
         .map(function (s) {
           var c = s.category;
           return (
-            '<div class="prgr" data-cat="' + esc(c.id) + '"><div class="prcg"><span lang="' + (l === "mr" ? scrKey() || "mr" : "en") + '">' + esc(l === "mr" ? scr(c.name.mr) : c.name.en) + " · " + num(s.texts.length) + "</span>" +
-            '<button type="button" class="prcb" data-cat="' + esc(c.id) + '"></button></div>' +
+            '<div class="prgr" data-cat="' +
+            esc(c.id) +
+            '"><div class="prcg"><span lang="' +
+            (l === "mr" ? scrKey() || "mr" : "en") +
+            '">' +
+            esc(l === "mr" ? scr(c.name.mr) : c.name.en) +
+            " · " +
+            num(s.texts.length) +
+            "</span>" +
+            '<button type="button" class="prcb" data-cat="' +
+            esc(c.id) +
+            '"></button></div>' +
             '<ul class="tpkl">' +
             s.texts
               .map(function (t) {
                 return (
-                  '<li data-id="' + esc(t.id) + '" data-sec="' + esc(t.sec) + '"><label class="tpkr"><input type="checkbox" value="' + esc(t.id) + '">' +
+                  '<li data-id="' +
+                  esc(t.id) +
+                  '" data-sec="' +
+                  esc(t.sec) +
+                  '"><label class="tpkr"><input type="checkbox" value="' +
+                  esc(t.id) +
+                  '">' +
                   '<span class="tpkc" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>' +
-                  '<span class="tt"><span class="t1" lang="' + langIn(t, l) + '">' + esc(titleIn(t, l)) + "</span>" +
+                  '<span class="tt"><span class="t1" lang="' +
+                  langIn(t, l) +
+                  '">' +
+                  esc(titleIn(t, l)) +
+                  "</span>" +
                   (s2 ? '<span class="t2" lang="' + langIn(t, s2) + '">' + esc(titleIn(t, s2)) + "</span>" : "") +
-                  '</span></label></li>'
+                  "</span></label></li>"
                 );
               })
               .join("") +
@@ -385,7 +471,9 @@ export function createWhat(el, o) {
           );
         })
         .join("") +
-      '<p class="tpkn" hidden>' + esc(w.none) + "</p></div>";
+      '<p class="tpkn" hidden>' +
+      esc(w.none) +
+      "</p></div>";
     showTab();
     drawRoutine();
     /** @type {HTMLInputElement} */ (el.querySelector(".prwq")).value = q;
@@ -432,8 +520,18 @@ export function createWhat(el, o) {
             .filter(Boolean)
             .join(" · ");
           return (
-            '<li><button type="button" class="prses" data-s="' + esc(x.session) + '"' + (x.ids.length ? "" : " disabled") + '><span class="prsn">' + esc(x.name) + '</span><span class="prsc"></span>' +
-            '<span class="prsl" lang="' + (l === "mr" ? scrKey() || "mr" : "en") + '">' + esc(names || whatWords().empty) + "</span></button></li>"
+            '<li><button type="button" class="prses" data-s="' +
+            esc(x.session) +
+            '"' +
+            (x.ids.length ? "" : " disabled") +
+            '><span class="prsn">' +
+            esc(x.name) +
+            '</span><span class="prsc"></span>' +
+            '<span class="prsl" lang="' +
+            (l === "mr" ? scrKey() || "mr" : "en") +
+            '">' +
+            esc(names || whatWords().empty) +
+            "</span></button></li>"
           );
         })
         .join("") +

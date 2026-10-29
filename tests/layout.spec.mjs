@@ -45,11 +45,14 @@ for (const s of SCREENS)
       const size = await page.evaluate(() => parseFloat(getComputedStyle(document.querySelector("#a1 .verse p")).fontSize));
       expect(size, "verse text at least 16px").toBeGreaterThanOrEqual(16);
       // no verse line is wider than the screen
-      const wide = await page.evaluate((w) =>
-        [...document.querySelectorAll(".verse p")].filter((p) => {
-          const r = p.getBoundingClientRect();
-          return r.width && r.right > w + 1;
-        }).length, s.width);
+      const wide = await page.evaluate(
+        (w) =>
+          [...document.querySelectorAll(".verse p")].filter((p) => {
+            const r = p.getBoundingClientRect();
+            return r.width && r.right > w + 1;
+          }).length,
+        s.width,
+      );
       expect(wide, "verse lines wider than the screen").toBe(0);
       await context.close();
     });
@@ -76,7 +79,8 @@ async function dandasStartingRows(page, id, lang) {
       const bad = [];
       document.querySelectorAll("#" + id + " .verse ." + lang + " p").forEach((p) => {
         const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
-        let prev = null, n;
+        let prev = null,
+          n;
         while ((n = w.nextNode()))
           for (let i = 0; i < n.data.length; i++) {
             const c = n.data[i];
@@ -148,10 +152,7 @@ for (const s of SCREENS.filter((x) => ["iphone-15", "ipad-air", "ipad-landscape"
 test("Vedic chants keep their lines in pairs with both languages", async ({ page }) => {
   await openSite(page, SETUPS.both, { hash: "#vedic-chant-shree-rudra" });
   await buildAll(page);
-  const shown = await page.evaluate(
-    (ids) => ids.map((id) => getComputedStyle(document.querySelector("#" + id + " .item.para .verse .mr p")).display),
-    PROSE,
-  );
+  const shown = await page.evaluate((ids) => ids.map((id) => getComputedStyle(document.querySelector("#" + id + " .item.para .verse .mr p")).display), PROSE);
   expect(shown).toEqual(["block", "block", "block"]);
 });
 

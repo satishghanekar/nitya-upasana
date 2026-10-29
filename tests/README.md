@@ -12,7 +12,8 @@ npm run quick                        # the quick check: lint, types, logic tests
 npm run full                         # the full run, before every merge: lint, types, logic tests and every browser suite
 npm run release                      # the release check: the print audit and Lighthouse (before a version bump)
 npm test                             # every browser suite (Chromium only, the default on a computer)
-npm run lint                         # stylelint and eslint, as CI runs it
+npm run lint                         # stylelint, eslint and the Prettier check, as CI runs it
+npm run format                       # Prettier lays out the scripts, styles and tests (tests/prettier.config.mjs)
 npm run unit                         # Vitest: the logic tests in unit/ (no browser, a second or two)
 npm run types                        # TypeScript checks the JavaScript files that start with // @ts-check (nothing is compiled)
 npm run pdfs                         # after adding or replacing a PDF: writes each book's pages and size into content/pdfs.json

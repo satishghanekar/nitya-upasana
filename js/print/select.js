@@ -84,7 +84,7 @@ export function dayList(days, lang) {
   if (ord.length === 7) return w.daily;
   /** @type {string[]} */
   var out = [];
-  for (var i = 0; i < ord.length; ) {
+  for (var i = 0; i < ord.length;) {
     var j = i;
     while (j + 1 < ord.length && WEEK_ORDER.indexOf(ord[j + 1]) === WEEK_ORDER.indexOf(ord[j]) + 1) j++;
     if (j - i >= 2) out.push(w.days[ord[i]] + "–" + w.days[ord[j]]);

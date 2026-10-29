@@ -26,7 +26,7 @@ export function breakLines(/** @type {ParentNode} */ r) {
         function (t) {
           return t.split(ZW);
         },
-        ZW
+        ZW,
       );
   });
   [].forEach.call(r.querySelectorAll(".verse .en p"), function (p) {

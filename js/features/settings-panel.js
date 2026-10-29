@@ -119,10 +119,20 @@ export function trPick(v) {
     // can't stop the others or leave the switch showing the old choice; apply() below always runs
     var bad = [];
     [
-      ["lines", function () { trSet(v, true); }],
+      [
+        "lines",
+        function () {
+          trSet(v, true);
+        },
+      ],
       ["search", buildIX],
       // the text size is fitted to the main language's lines, so only English-only text needs fitting again
-      ["size", function () { if (P.lang === "en") refit(); }],
+      [
+        "size",
+        function () {
+          if (P.lang === "en") refit();
+        },
+      ],
     ].forEach(function (st) {
       try {
         st[1]();

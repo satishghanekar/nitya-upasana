@@ -260,10 +260,12 @@ test("targets: the page's buttons are 44px; days are at least 24px wide even on 
   const sizes = async () =>
     page.evaluate(() =>
       // the buttons shown (on phones one tab at a time)
-      [...document.querySelectorAll("#cal button, #panb")].filter((b) => b.getClientRects().length).map((b) => {
-        const r = b.getBoundingClientRect();
-        return { id: b.id || b.dataset.d, w: r.width, h: r.height };
-      }),
+      [...document.querySelectorAll("#cal button, #panb")]
+        .filter((b) => b.getClientRects().length)
+        .map((b) => {
+          const r = b.getBoundingClientRect();
+          return { id: b.id || b.dataset.d, w: r.width, h: r.height };
+        }),
     );
   for (const s of await sizes()) {
     expect(s.h, s.id).toBeGreaterThanOrEqual(44);
@@ -652,9 +654,7 @@ test("15 days: by week, ‹ › to the 15 before or after, and what it shows @mo
   await expect(u.locator('[data-u="15"]')).toBeFocused();
   await expect(u.locator("#cut")).toHaveText("Mon 2 Nov – Mon 16 NovColumbus, OH");
   await expect(u.locator(".uph4")).toHaveText(["Mon 2 Nov – Sun 8 Nov", "Mon 9 Nov – Mon 16 Nov"]);
-  expect(await dates(u.locator(".upr"))).toEqual([
-    "2026-11-06 pradosh", "2026-11-07 fest", "2026-11-08 fest", "2026-11-09 fest", "2026-11-10 fest",
-  ]);
+  expect(await dates(u.locator(".upr"))).toEqual(["2026-11-06 pradosh", "2026-11-07 fest", "2026-11-08 fest", "2026-11-09 fest", "2026-11-10 fest"]);
   await expect(u.locator(".upr .mn.new")).toHaveCount(1); // Lakshmi Pujan, on the Amavasya
   // back, past today: days ago
   await u.locator('[data-u="-15"]').click();
@@ -678,9 +678,7 @@ test("Upcoming: a festival of several days is one entry, Day 6–9 of the Utsav,
   await openSite(page, ENGLISH_ONLY, { now: new Date("2026-07-24T09:00:00-04:00") });
   const w = page.locator("#upw");
   expect(await dates(w.locator(".upr"))).toEqual(["2026-07-25 fest", "2026-07-26 pradosh", "2026-07-29 fest"]);
-  await expect(w.locator(".upr").first()).toHaveAccessibleName(
-    "Saturday, 25 July: Shri Gondhavlekar Maharaj Utsav Day 6–9 · until Tue 28 Jul , Tomorrow",
-  );
+  await expect(w.locator(".upr").first()).toHaveAccessibleName("Saturday, 25 July: Shri Gondhavlekar Maharaj Utsav Day 6–9 · until Tue 28 Jul , Tomorrow");
   await expect(w.locator(".upr").nth(1).locator("small")).toHaveText("Utsav 7");
   await expect(w.locator(".upx")).toHaveText("NextSankashti ChaturthiSat 1 Aug · in 8 days");
   // today's own are in the line above: the Utsav's Day 5 and Ashadhi Ekadashi
