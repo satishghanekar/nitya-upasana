@@ -1,9 +1,10 @@
 id: aarti-jaydeva-jaydeva-samartha
-title: श्रीमहाराजांची आरती
-title-en: Shrimaharajanchi Aarti
+title: जयदेवा जयदेवा जय जय समर्था
+title-en: Jayadeva Jayadeva Jay Jay Samartha
 category: aarti
 language: mr
 refrain: every-verse
+refrain-before-first: yes
 ---
 [dhrupad]
 जयदेवा जयदेवा जय जय समर्था ॥

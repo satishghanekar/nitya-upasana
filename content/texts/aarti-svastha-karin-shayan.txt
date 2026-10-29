@@ -4,6 +4,7 @@ title-en: Svastha Karin Shayan Prabho Manchakavari
 category: aarti
 language: mr
 refrain: every-verse
+refrain-before-first: yes
 ---
 [dhrupad]
 स्वस्थ करीं शयन प्रभो मंचकावरी ।

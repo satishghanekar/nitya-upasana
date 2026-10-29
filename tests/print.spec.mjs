@@ -602,7 +602,7 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await expect(page.locator("#prnx")).toBeDisabled();
   await expect(page.locator('.prcb[data-cat=""]')).toHaveText("Select all");
   // two texts, found by search
-  await page.locator(".prwq").fill("ganapati aarti");
+  await page.locator(".prwq").fill("sukhkarta");
   await expect(page.locator("#prwl .tpkl li:visible")).toHaveCount(1);
   await page.locator("#prwl .tpkl li:visible input").check();
   await page.locator(".prwq").fill("");
@@ -667,7 +667,7 @@ test("print builder: a category's Select all and Clear, and one text alone @chro
   // one text alone
   await page.locator('.prcb[data-cat=""]').click();
   await page.locator('#prwl .tpkl li[data-id="aarti-sukhkarta"] input').check();
-  await expect(page.locator("#prsum span").first()).toHaveText("गणपतीची आरती");
+  await expect(page.locator("#prsum span").first()).toHaveText("सुखकर्ता दुःखहर्ता");
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
   const pv = await page.evaluate(() => ({ pieces: document.querySelectorAll("#pv .pvs").length, toc: !!document.querySelector("#pv .pvtoc") }));
@@ -1023,7 +1023,7 @@ test("print builder: the preview and the paper @chromium-only", async ({ browser
   await page.locator('.prcb[data-cat=""]').click();
   await page.locator('#prwl .tpkl li[data-id="aarti-sukhkarta"] input').check();
   await page.locator("#prnx").click();
-  await expect(title()).toContainText("Ganapati Aarti", { timeout: 20_000 });
+  await expect(title()).toContainText("Sukhkarta Dukhharta", { timeout: 20_000 });
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
   const rules = await page.evaluate(() => [...document.querySelectorAll("style[media=print]")].map((s) => s.textContent).join(" "));

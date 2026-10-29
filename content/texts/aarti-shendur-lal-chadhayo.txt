@@ -1,6 +1,6 @@
 id: aarti-shendur-lal-chadhayo
-title: गणपति जी की आरती
-title-en: Ganapati Ji ki Aarti
+title: शेंदुर लाल चढ़ायो
+title-en: Shendur Laal Chadhayo
 category: aarti
 language: hi
 legacy-id: a2

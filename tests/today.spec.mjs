@@ -434,7 +434,7 @@ test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ 
 test("Kannada letters: the titles in the list are shown in Kannada", async ({ page }) => {
   await openSite(page, SETUPS.kannada, { now: EVENING });
   await expect(rows(page).first().locator(".t1")).toHaveText(/^[ಀ-೿\s]+$/);
-  await expect(rows(page).first().locator(".t2")).toHaveText("Ganapati Aarti");
+  await expect(rows(page).first().locator(".t2")).toHaveText("Sukhkarta Dukhharta");
 });
 
 test("Home has no date card, week row or contents list: the Library has every text", async ({ page }) => {
