@@ -117,7 +117,8 @@
 }
 /* ==== Bars tuck away while reading (phones and tablets without the side menu) ====
    Scrolling down slides the top and bottom bars out of view, leaving a slim strip with the piece name;
-   scrolling up, reaching the end of the page, or tapping a blank part of the page brings them back.
+   scrolling up or reaching the end of the page (once the page stops moving: js/features/bars.js showSoon()), or
+   tapping a blank part of the page brings them back.
    The script sets data-tuck on <html>. */
 #tuck {
   position: fixed;
