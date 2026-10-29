@@ -5,7 +5,7 @@ om̐ bha̱draṃ karṇe̍bhiḥ śṛṇu̱yāma̍ devāḥ |
 
 bha̱draṃ pa̍śyemā̱kṣabhi̱ryaja̍trāḥ |
 
-sthi̱rairaṅgai̎stuṣṭu̱vāgṃsa̍sta̱nūbhi̍ḥ |
+sthi̱rairaṅgai̎stuṣṭu̱vāgṃ sa̍sta̱nūbhi̍ḥ |
 
 vyaśe̍ma de̱vahi̍ta̱ṃ yadāyu̍ḥ |
 
@@ -57,7 +57,7 @@ tvaṃ saccidānandā'dvi̍tīyo̱'si |
 
 tvaṃ pra̱tyakṣa̱ṃ brahmā̍si |
 
-tvaṃ jñānamayo vijñā̍namayo̱'si || 4 ||
+tvaṃ jñānamayo vijñāna̍mayo̱'si || 4 ||
 
 sarvaṃ jagadidaṃ tva̍tto jā̱yate |
 
@@ -89,7 +89,7 @@ tvaṃ brahmā tvaṃ viṣṇustvaṃ rudrastvamindrastvamagnistvaṃ
 
 vāyustvaṃ sūryastvaṃ candramāstvaṃ brahma̱ bhūrbhuva̱ḥ svarom || 6 ||
 
-ga̱ṇādi̎ṃ pū̍rvamuccā̱rya̱ va̱rṇādī̎ṃ stadana̱ntaram |
+ga̱ṇādi̎ṃ pūrva̍muccā̱rya̱ va̱rṇādī̎ṃ stadana̱ntaram |
 
 anusvāraḥ pa̍rata̱raḥ | ardhe̎ndula̱sitam |
 
@@ -97,7 +97,7 @@ tāre̍ṇa ṛ̱ddham | etattava manu̍svarū̱pam |
 
 gakāraḥ pū̎rvarū̱pam | akāro madhya̍marū̱pam |
 
-anusvāraścā̎ntyarū̱pam | bindu̍rutta̱rarūpam |
+anusvāraścā̎ntyarū̱pam | bindurutta̍rarū̱pam |
 
 nāda̍ḥ sandhā̱nam | sagṃhi̍tā sa̱ndhiḥ |
 
@@ -113,7 +113,7 @@ tanno̍ dantiḥ praco̱dayā̎t || 8 ||
 
 ekada̱ntaṃ ca̍turha̱sta̱ṃ pā̱śama̍ṅkuśa̱dhāri̍ṇam |
 
-rada̍ṃ ca̱ va̍radaṃ ha̱stai̱rbi̱bhrāṇa̍ṃ mūṣa̱kadhva̍jam |
+rada̍ṃ ca̱ vara̍daṃ ha̱stai̱rbi̱bhrāṇa̍ṃ mūṣa̱kadhva̍jam |
 
 rakta̍ṃ la̱mboda̍raṃ śū̱rpa̱ka̱rṇaka̍ṃ rakta̱vāsa̍sam |
 
@@ -143,7 +143,7 @@ sa pañcamahāpāpā̎t pramu̱cyate |
 
 sā̱yama̍dhīyā̱no̱ divasakṛtaṃ pāpa̍ṃ nāśa̱yati |
 
-prā̱ta̍radhīyā̱no̱ rātri̍kṛtaṃ pāpa̍ṃ nāśa̱yati |
+prā̱tara̍dhīyā̱no̱ rātri̍kṛtaṃ pāpa̍ṃ nāśa̱yati |
 
 sāyaṃ prātaḥ pra̍yuñjā̱no̱ pāpo'pā̍po bha̱vati |
 
@@ -163,7 +163,7 @@ caturthyāmana̍śnan ja̱pati sa vidyā̍vān bha̱vati |
 
 ityatharva̍ṇavā̱kyam |
 
-brahmādyā̱va̍raṇaṃ vi̱dyānna bibheti kadā̍cane̱ti || 12 ||
+brahmādyā̱vara̍ṇaṃ vi̱dyānna bibheti kadā̍cane̱ti || 12 ||
 
 yo dūrvāṅku̍rairya̱jati sa vaiśravaṇopa̍mo bha̱vati |
 

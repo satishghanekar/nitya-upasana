@@ -7,7 +7,7 @@ Gaṇapatyatharvaśīrṣopaniṣat
 
 भ॒द्रं प॑श्येमा॒क्षभि॒र्यज॑त्राः ।
 
-स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ंस॑स्त॒नूभिः॑ ।
+स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ं स॑स्त॒नूभिः॑ ।
 
 व्यशे॑म दे॒वहि॑तं॒ यदायुः॑ ।
 
@@ -25,7 +25,7 @@ om̐ bha̱draṃ karṇe̍bhiḥ śṛṇu̱yāma̍ devāḥ |
 
 bha̱draṃ pa̍śyemā̱kṣabhi̱ryaja̍trāḥ |
 
-sthi̱rairaṅgai̎stuṣṭu̱vāgṃsa̍sta̱nūbhi̍ḥ |
+sthi̱rairaṅgai̎stuṣṭu̱vāgṃ sa̍sta̱nūbhi̍ḥ |
 
 vyaśe̍ma de̱vahi̍ta̱ṃ yadāyu̍ḥ |
 
@@ -107,7 +107,7 @@ sarvato māṃ pāhi pāhi̍ sama̱ntāt || 3 ||
 
 त्वं प्र॒त्यक्षं॒ ब्रह्मा॑सि ।
 
-त्वं ज्ञानमयो विज्ञा॑नमयो॒ऽसि ॥ ४ ॥
+त्वं ज्ञानमयो विज्ञान॑मयो॒ऽसि ॥ ४ ॥
 
 tvaṃ vāṅmaya̍stvaṃ cinma̱yaḥ |
 
@@ -117,7 +117,7 @@ tvaṃ saccidānandā'dvi̍tīyo̱'si |
 
 tvaṃ pra̱tyakṣa̱ṃ brahmā̍si |
 
-tvaṃ jñānamayo vijñā̍namayo̱'si || 4 ||
+tvaṃ jñānamayo vijñāna̍mayo̱'si || 4 ||
 
 सर्वं जगदिदं त्व॑त्तो जा॒यते ।
 
@@ -183,7 +183,7 @@ rudrastvamindrastvamagnistvaṃ
 vāyustvaṃ sūryastvaṃ candramāstvaṃ
 brahma̱ bhūrbhuva̱ḥ svarom || 6 ||
 
-ग॒णादिं᳚ पू॑र्वमुच्चा॒र्य॒ व॒र्णादीं᳚ स्तदन॒न्तरम् ।
+ग॒णादिं᳚ पूर्व॑मुच्चा॒र्य॒ व॒र्णादीं᳚ स्तदन॒न्तरम् ।
 
 अनुस्वारः प॑रत॒रः । अर्धे᳚न्दुल॒सितम् ।
 
@@ -191,7 +191,7 @@ brahma̱ bhūrbhuva̱ḥ svarom || 6 ||
 
 गकारः पू᳚र्वरू॒पम् । अकारो मध्य॑मरू॒पम् ।
 
-अनुस्वारश्चा᳚न्त्यरू॒पम् । बिन्दु॑रुत्त॒ररूपम् ।
+अनुस्वारश्चा᳚न्त्यरू॒पम् । बिन्दुरुत्त॑ररू॒पम् ।
 
 नादः॑ सन्धा॒नम् । सग्ंहि॑ता स॒न्धिः ।
 
@@ -201,7 +201,7 @@ brahma̱ bhūrbhuva̱ḥ svarom || 6 ||
 
 ॐ गं ग॒णप॑तये नमः ॥ ७ ॥
 
-ga̱ṇādi̎ṃ pū̍rvamuccā̱rya̱ va̱rṇādī̎ṃ stadana̱ntaram |
+ga̱ṇādi̎ṃ pūrva̍muccā̱rya̱ va̱rṇādī̎ṃ stadana̱ntaram |
 
 anusvāraḥ pa̍rata̱raḥ | ardhe̎ndula̱sitam |
 
@@ -209,7 +209,7 @@ tāre̍ṇa ṛ̱ddham | etattava manu̍svarū̱pam |
 
 gakāraḥ pū̎rvarū̱pam | akāro madhya̍marū̱pam |
 
-anusvāraścā̎ntyarū̱pam | bindu̍rutta̱rarūpam |
+anusvāraścā̎ntyarū̱pam | bindurutta̍rarū̱pam |
 
 nāda̍ḥ sandhā̱nam | sagṃhi̍tā sa̱ndhiḥ |
 
@@ -229,7 +229,7 @@ tanno̍ dantiḥ praco̱dayā̎t || 8 ||
 
 एकद॒न्तं च॑तुर्ह॒स्तं॒ पा॒शम॑ङ्कुश॒धारि॑णम् ।
 
-रदं॑ च॒ व॑रदं ह॒स्तै॒र्बि॒भ्राणं॑ मूष॒कध्व॑जम् ।
+रदं॑ च॒ वर॑दं ह॒स्तै॒र्बि॒भ्राणं॑ मूष॒कध्व॑जम् ।
 
 रक्तं॑ ल॒म्बोद॑रं शू॒र्प॒क॒र्णकं॑ रक्त॒वास॑सम् ।
 
@@ -245,7 +245,7 @@ tanno̍ dantiḥ praco̱dayā̎t || 8 ||
 
 ekada̱ntaṃ ca̍turha̱sta̱ṃ pā̱śama̍ṅkuśa̱dhāri̍ṇam |
 
-rada̍ṃ ca̱ va̍radaṃ ha̱stai̱rbi̱bhrāṇa̍ṃ mūṣa̱kadhva̍jam |
+rada̍ṃ ca̱ vara̍daṃ ha̱stai̱rbi̱bhrāṇa̍ṃ mūṣa̱kadhva̍jam |
 
 rakta̍ṃ la̱mboda̍raṃ śū̱rpa̱ka̱rṇaka̍ṃ rakta̱vāsa̍sam |
 
@@ -289,7 +289,7 @@ varadamūrtaye̱ nama̍ḥ || 10 ||
 
 सा॒यम॑धीया॒नो॒ दिवसकृतं पापं॑ नाश॒यति ।
 
-प्रा॒त॑रधीया॒नो॒ रात्रि॑कृतं पापं॑ नाश॒यति ।
+प्रा॒तर॑धीया॒नो॒ रात्रि॑कृतं पापं॑ नाश॒यति ।
 
 सायं प्रातः प्र॑युञ्जा॒नो॒ पापोऽपा॑पो भ॒वति ।
 
@@ -315,7 +315,7 @@ sa pañcamahāpāpā̎t pramu̱cyate |
 
 sā̱yama̍dhīyā̱no̱ divasakṛtaṃ pāpa̍ṃ nāśa̱yati |
 
-prā̱ta̍radhīyā̱no̱ rātri̍kṛtaṃ pāpa̍ṃ nāśa̱yati |
+prā̱tara̍dhīyā̱no̱ rātri̍kṛtaṃ pāpa̍ṃ nāśa̱yati |
 
 sāyaṃ prātaḥ pra̍yuñjā̱no̱ pāpo'pā̍po bha̱vati |
 
@@ -339,7 +339,7 @@ taṃ tamane̍na sā̱dhayet || 11 ||
 
 इत्यथर्व॑णवा॒क्यम् ।
 
-ब्रह्माद्या॒व॑रणं वि॒द्यान्न बिभेति
+ब्रह्माद्या॒वर॑णं वि॒द्यान्न बिभेति
 कदा॑चने॒ति ॥ १२ ॥
 
 anena gaṇapatima̍bhiṣi̱ñcati
@@ -350,7 +350,7 @@ sa vidyā̍vān bha̱vati |
 
 ityatharva̍ṇavā̱kyam |
 
-brahmādyā̱va̍raṇaṃ vi̱dyānna bibheti
+brahmādyā̱vara̍ṇaṃ vi̱dyānna bibheti
 kadā̍cane̱ti || 12 ||
 
 यो दूर्वाङ्कु॑रैर्य॒जति
