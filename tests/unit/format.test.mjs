@@ -9,7 +9,10 @@ const parse = (body, head = "") => parseText(HEAD + head + "---\n" + body);
 
 describe("header", () => {
   test("required and optional fields", () => {
-    const t = parse("[1]\nक\nK\n", "legacy-id: a1\nline-ids: s1l\nline-id-exceptions: s1l4=s1l4r, s1l5=s1l5b\nlayout: prose\ncredit: रचना : [नाव](https://mr.wikipedia.org/wiki/नाव)\n");
+    const t = parse(
+      "[1]\nक\nK\n",
+      "legacy-id: a1\nline-ids: s1l\nline-id-exceptions: s1l4=s1l4r, s1l5=s1l5b\nlayout: prose\ncredit: रचना : [नाव](https://mr.wikipedia.org/wiki/नाव)\n",
+    );
     expect(t).toMatchObject({
       id: "x",
       title: "क",
@@ -41,7 +44,14 @@ describe("blocks", () => {
   test("stanzas, dhrupad, para, bold, notes and refrain lines", () => {
     const t = parse("[dhrupad bold]\nक\nK\n[refrain]\nख\nKh\n\n[1]\nग\nG\n\n[para 2]\nघ\nGh\n\n[note: ↻ ३ वेळा | 3 times]\n");
     expect(t.blocks).toEqual([
-      { kind: "dhrupad", bold: true, lines: [{ orig: "क", en: "K", rf: false }, { orig: "ख", en: "Kh", rf: true }] },
+      {
+        kind: "dhrupad",
+        bold: true,
+        lines: [
+          { orig: "क", en: "K", rf: false },
+          { orig: "ख", en: "Kh", rf: true },
+        ],
+      },
       { kind: "stanza", n: 1, lines: [{ orig: "ग", en: "G", rf: false }] },
       { kind: "stanza", n: 2, para: true, lines: [{ orig: "घ", en: "Gh", rf: false }] },
       { kind: "note", note: { mr: "↻ ३ वेळा", en: "3 times" }, lines: [] },
@@ -81,7 +91,12 @@ describe("blocks", () => {
     ["before-first without every-verse", "[1]\nक\nK\n", "refrain-before-first: yes\n", /needs refrain: every-verse/],
     ["a stanza before the dhrupad", "[once]\nक\nK\n\n[1]\nख\nKh\n\n[dhrupad]\nग\nG\n", "refrain: every-verse\n", /needs a \[dhrupad\] block first/],
     ["[once] lines and no dhrupad", "[once]\nक\nK\n", "refrain: every-verse\n", /needs a \[dhrupad\] block first/],
-    ["a repeat not right after the dhrupad", "[once]\nक\nK\n\n[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[dhrupad repeated]\nख\nKh\n", "refrain: every-verse\n", /\[dhrupad repeated\] comes right after/],
+    [
+      "a repeat not right after the dhrupad",
+      "[once]\nक\nK\n\n[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[dhrupad repeated]\nख\nKh\n",
+      "refrain: every-verse\n",
+      /\[dhrupad repeated\] comes right after/,
+    ],
   ])("every-verse rules: refuses %s", (_, body, head, err) => {
     expect(() => parse(body, head)).toThrow(err);
   });

@@ -93,7 +93,9 @@ export function spSet() {
     row = function (b, k, cls) {
       return b
         .map(function (ps, w) {
-          return ps[k] === undefined ? "" : '<div class="' + (w ? "sp-p2" : "sp-p1") + (cls ? " " + cls : "") + '" lang="' + LK(ls[w]) + '"><p>' + ps[k] + "</p></div>";
+          return ps[k] === undefined
+            ? ""
+            : '<div class="' + (w ? "sp-p2" : "sp-p1") + (cls ? " " + cls : "") + '" lang="' + LK(ls[w]) + '"><p>' + ps[k] + "</p></div>";
         })
         .join("");
     },
@@ -101,9 +103,7 @@ export function spSet() {
     vs = lines(".items > .item:not(.rf)", 1), // one line of the verse: the dhrupad, above or below it, stays in view
     h = P.ref ? row(dh, 0, "sp-pd") : "";
   for (var k = 0; k < vs[0].length; k++) h += row(vs, k);
-  h += P.ref
-    ? '<div class="sp-pn">' + (P.ui === "mr" ? "↻ ध्रुपद" : "↻ Refrain") + "</div>"
-    : row(dh, 0, "sp-pd");
+  h += P.ref ? '<div class="sp-pn">' + (P.ui === "mr" ? "↻ ध्रुपद" : "↻ Refrain") + "</div>" : row(dh, 0, "sp-pd");
   // (its heading, Preview, is the group's, in index.html)
   document.getElementById("sprev").innerHTML = '<div class="sp-pw">' + h + "</div>";
   fitPreview();

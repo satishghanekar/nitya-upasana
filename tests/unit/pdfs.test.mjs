@@ -4,7 +4,6 @@ import { readFileSync } from "node:fs";
 import { cleanPdfs, fileOk, pdfFacts, pdfHref, pdfShelves } from "../../js/core/pdfs.js";
 import { pdfInfo } from "../tools/pdf-info.mjs";
 
-
 const RAW = { id: "stotra-dasbodh", file: "pdfs/dasbodh.pdf", title: "दासबोध", titleEn: "Dasbodh", category: "stotra", language: "mr" };
 const ONE = { id: "stotra-dasbodh", file: "pdfs/dasbodh.pdf", title: { mr: "दासबोध", en: "Dasbodh" }, category: "stotra", language: "mr", pages: 0, size: 0 };
 const cat = (id, mr, en, order) => ({ id, name: { mr, en }, order, origin: "bundled", original: null });
@@ -27,7 +26,12 @@ describe("cleanPdfs", () => {
     expect(cleanPdfs(o)).toEqual([ONE]);
   });
   test("pages and size: whole numbers above 0, else 0", () => {
-    const [a, b] = cleanPdfs({ pdfs: [{ ...RAW, pages: 48, size: 848593 }, { ...RAW, pages: -1, size: "4 MB" }] });
+    const [a, b] = cleanPdfs({
+      pdfs: [
+        { ...RAW, pages: 48, size: 848593 },
+        { ...RAW, pages: -1, size: "4 MB" },
+      ],
+    });
     expect([a.pages, a.size]).toEqual([48, 848593]);
     expect([b.pages, b.size]).toEqual([0, 0]);
   });

@@ -13,13 +13,17 @@ export function init() {
   // so the next stanza stays clear. Tap again, tap elsewhere or press Escape to close; it also closes by itself.
   rmkPop = null;
   onPiece(markTappable);
-  document.addEventListener("click", function (e) {
-    var m = e.target.closest && e.target.closest(".rmkt");
-    if (m) {
-      e.stopPropagation();
-      rmkOpen(m);
-    } else rmkClose();
-  }, true);
+  document.addEventListener(
+    "click",
+    function (e) {
+      var m = e.target.closest && e.target.closest(".rmkt");
+      if (m) {
+        e.stopPropagation();
+        rmkOpen(m);
+      } else rmkClose();
+    },
+    true,
+  );
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && rmkPop) return rmkClose();
     var m = e.target.closest && e.target.closest(".rmkt");
@@ -28,9 +32,13 @@ export function init() {
       rmkOpen(m);
     }
   });
-  addEventListener("scroll", function () {
-    if (rmkPop && !rmkPop.m.getBoundingClientRect().height) rmkClose();
-  }, { passive: true });
+  addEventListener(
+    "scroll",
+    function () {
+      if (rmkPop && !rmkPop.m.getBoundingClientRect().height) rmkClose();
+    },
+    { passive: true },
+  );
   addEventListener("resize", function () {
     if (rmkPop) rmkPop.el.place();
   });

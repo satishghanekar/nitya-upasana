@@ -10,8 +10,22 @@ import { defaults, devicePart, profilePart } from "../../js/store/migrate.js";
 const ENV = { desk: false, fs: 24 };
 const NOW = "2026-10-18T19:00:00.000Z";
 const settings = (o = {}) => ({ ...profilePart(defaults(ENV)), ...o });
-const AAI = newProfile({ id: "paai", name: "Aai", initials: "आई", colour: COLOURS[0].v, settings: settings({ fs: 32, fsu: 1, lang: "both", th: "dark" }), checklist: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta"] } }, now: NOW });
-const BABA = newProfile({ id: "pbaba", name: "बाबा", colour: COLOURS[1].v, settings: settings({ lead: "en", l2: "mr", lang: "en", ui: "en", hc: 1 }), now: NOW });
+const AAI = newProfile({
+  id: "paai",
+  name: "Aai",
+  initials: "आई",
+  colour: COLOURS[0].v,
+  settings: settings({ fs: 32, fsu: 1, lang: "both", th: "dark" }),
+  checklist: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta"] } },
+  now: NOW,
+});
+const BABA = newProfile({
+  id: "pbaba",
+  name: "बाबा",
+  colour: COLOURS[1].v,
+  settings: settings({ lead: "en", l2: "mr", lang: "en", ui: "en", hc: 1 }),
+  now: NOW,
+});
 const DEVICE = { ...devicePart({ ...defaults(ENV), sv: 6 }), loc: { lat: 40, lon: -83 } };
 const DATA = { profiles: [AAI, BABA], activeProfile: "pbaba", device: DEVICE };
 const file = () => serialise(makeBackup(DATA, { app: "aarti-v1.4", created: NOW }));
@@ -43,7 +57,9 @@ describe("a backup file", () => {
     expect(r.data.activeProfile).toBe("pbaba");
     expect(r.data.settings).toEqual(DEVICE);
     // and written again from what was read, the file is the same
-    expect(serialise(makeBackup({ profiles: r.data.profiles, activeProfile: r.data.activeProfile, device: r.data.settings }, { app: "aarti-v1.4", created: NOW }))).toBe(file());
+    expect(
+      serialise(makeBackup({ profiles: r.data.profiles, activeProfile: r.data.activeProfile, device: r.data.settings }, { app: "aarti-v1.4", created: NOW })),
+    ).toBe(file());
   });
 
   test("from version 1.8 it carries the family's categories (checked when read); an older file has none", () => {
@@ -58,7 +74,14 @@ describe("a backup file", () => {
     expect(r.data.library).toEqual(library);
     // a damaged part is dropped, never trusted as it is (the checksum is made again, as an editor would)
     const b = JSON.parse(text);
-    b.payload.library = { added: [{ id: "Bad Id!", name: { mr: "x", en: "x" } }, { id: "ok", name: {} }], renames: { aarti: 5 }, moves: { "aarti-sukhkarta": "<b>" } };
+    b.payload.library = {
+      added: [
+        { id: "Bad Id!", name: { mr: "x", en: "x" } },
+        { id: "ok", name: {} },
+      ],
+      renames: { aarti: 5 },
+      moves: { "aarti-sukhkarta": "<b>" },
+    };
     b.sha256 = sha256(JSON.stringify(b.payload));
     expect(parseBackup(JSON.stringify(b), ENV).data.library).toEqual({ added: [], renames: {}, moves: {} });
     // a file from 1.7 or before: no library, so a restore leaves this phone's categories alone

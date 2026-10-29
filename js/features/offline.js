@@ -33,10 +33,10 @@ export function init() {
     ofb = document.getElementById("ofb");
     offv = document.getElementById("offv");
     OFV = {
-        idle: ["ऑफलाइन तयार", "Offline ready"],
-        save: ["ऑफलाइनसाठी जतन…", "Saving for offline…"],
-        off: ["जतन केलेली प्रत", "Saved copy in use"],
-      };
+      idle: ["ऑफलाइन तयार", "Offline ready"],
+      save: ["ऑफलाइनसाठी जतन…", "Saving for offline…"],
+      off: ["जतन केलेली प्रत", "Saved copy in use"],
+    };
     // The offline copy's name ("aarti-v1.0") from <meta name="version"> in index.html, and the version shown ("1.0")
     CACHE = (document.querySelector('meta[name="version"]') || {}).content || "aarti-v1.0";
     me = (CACHE.match(/^aarti-v([\d.]+)$/) || [])[1];
@@ -54,11 +54,11 @@ export function init() {
     upd = document.getElementById("upd");
     updv = document.getElementById("updv");
     UPD = {
-        "": ["अपडेट तपासा", "Check for updates"],
-        busy: ["तपासत आहे…", "Checking…"],
-        ok: ["सर्व अद्ययावत आहे", "Up to date"],
-        off: ["इंटरनेट नाही", "No internet"],
-      };
+      "": ["अपडेट तपासा", "Check for updates"],
+      busy: ["तपासत आहे…", "Checking…"],
+      ok: ["सर्व अद्ययावत आहे", "Up to date"],
+      off: ["इंटरनेट नाही", "No internet"],
+    };
     function updSet(st) {
       upd.setAttribute("data-s", st);
       updv.innerHTML = two(UPD[st]);
@@ -180,13 +180,16 @@ export function init() {
         next = navigator.serviceWorker
           .getRegistration()
           .then(function (g) {
-            return g && g.update().then(function () {
-              // a new version is installing: wait until it is in charge
-              if (!g.installing && !g.waiting) return;
-              return new Promise(function (res) {
-                navigator.serviceWorker.addEventListener("controllerchange", res);
-              });
-            });
+            return (
+              g &&
+              g.update().then(function () {
+                // a new version is installing: wait until it is in charge
+                if (!g.installing && !g.waiting) return;
+                return new Promise(function (res) {
+                  navigator.serviceWorker.addEventListener("controllerchange", res);
+                });
+              })
+            );
           })
           .catch(function () {});
       return Promise.race([
@@ -209,16 +212,19 @@ export function init() {
       // Newer if the page, its styles, its script or the pieces' text differ from the copy running now
       partsChanged()
         .then(function (changed) {
-          setTimeout(function () {
-            if (changed) {
-              flash("नवीन आवृत्ती, उघडत आहे…", "New version, loading…");
-              newCopy().then(function () {
-                location.reload();
-              });
-              return;
-            }
-            updSet("ok");
-          }, Math.max(0, 900 - (Date.now() - t0)));
+          setTimeout(
+            function () {
+              if (changed) {
+                flash("नवीन आवृत्ती, उघडत आहे…", "New version, loading…");
+                newCopy().then(function () {
+                  location.reload();
+                });
+                return;
+              }
+              updSet("ok");
+            },
+            Math.max(0, 900 - (Date.now() - t0)),
+          );
         })
         .catch(function () {
           ofSet("off");

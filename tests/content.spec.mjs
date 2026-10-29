@@ -36,9 +36,7 @@ test("every line has a unique id and a partner in the other language @chromium-o
   const r = await page.evaluate(() => {
     const ids = [...document.querySelectorAll(".verse .mr p[data-l]")].map((p) => p.dataset.l);
     const dup = ids.filter((x, i) => ids.indexOf(x) !== i);
-    const unpaired = [...document.querySelectorAll(".verse")].filter(
-      (v) => v.querySelectorAll(".mr p").length !== v.querySelectorAll(".en p").length,
-    ).length;
+    const unpaired = [...document.querySelectorAll(".verse")].filter((v) => v.querySelectorAll(".mr p").length !== v.querySelectorAll(".en p").length).length;
     return { n: ids.length, dup, unpaired };
   });
   expect(r.n).toBeGreaterThan(200);

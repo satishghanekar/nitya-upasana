@@ -8,14 +8,7 @@
 // - the app's own Sankashti days (js/features/astronomy.js), which must not move.
 import { readFileSync } from "node:fs";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import {
-  BORDERLINE_MIN,
-  dayPanchang,
-  fullMoonAfter,
-  monthPanchang,
-  newMoonAfter,
-  tithiAt,
-} from "../../js/core/panchang.js";
+import { BORDERLINE_MIN, dayPanchang, fullMoonAfter, monthPanchang, newMoonAfter, tithiAt } from "../../js/core/panchang.js";
 import * as N from "../../js/core/panchang-names.js";
 import { init, SK } from "../../js/features/astronomy.js";
 
@@ -25,8 +18,7 @@ const COLUMBUS = { lat: 39.96, lon: -83.0, tz: "America/New_York" };
 const MIN = 60000;
 const mins = (a, b) => Math.abs(a - b) / MIN;
 /** "Mon 01:22" on the place's clock */
-const clock = (d, tz) =>
-  d.toLocaleString("en-GB", { timeZone: tz, weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).replace(",", "");
+const clock = (d, tz) => d.toLocaleString("en-GB", { timeZone: tz, weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).replace(",", "");
 
 // The Sankashti card works in the phone's time zone; these tests set it, and put it back after.
 const TZ0 = process.env.TZ;
@@ -103,7 +95,8 @@ describe("18 October 2026, Columbus, Ohio", () => {
 
 describe("new and full moons of 2026 (NASA, UT)", () => {
   const NEW = "01-18T19:52 02-17T12:01 03-19T01:23 04-17T11:52 05-16T20:01 06-15T02:54 07-14T09:44 08-12T17:37 09-11T03:27 10-10T15:50 11-09T07:02 12-09T00:52";
-  const FULL = "01-03T10:03 02-01T22:09 03-03T11:38 04-02T02:12 05-01T17:23 05-31T08:45 06-29T23:57 07-29T14:36 08-28T04:18 09-26T16:49 10-26T04:12 11-24T14:53 12-24T01:28";
+  const FULL =
+    "01-03T10:03 02-01T22:09 03-03T11:38 04-02T02:12 05-01T17:23 05-31T08:45 06-29T23:57 07-29T14:36 08-28T04:18 09-26T16:49 10-26T04:12 11-24T14:53 12-24T01:28";
   for (const [label, list, next] of [
     ["new", NEW, newMoonAfter],
     ["full", FULL, fullMoonAfter],
@@ -218,8 +211,7 @@ describe("Sankashti days are the app's own", () => {
         .filter((d) => d.getFullYear() < 2028)
         .map((d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
       const ours = [];
-      for (const y of [2026, 2027])
-        for (let m = 1; m <= 12; m++) for (const d of monthPanchang(y, m, place)) if (d.sankashti) ours.push(d);
+      for (const y of [2026, 2027]) for (let m = 1; m <= 12; m++) for (const d of monthPanchang(y, m, place)) if (d.sankashti) ours.push(d);
       expect(ours.map((d) => d.date)).toEqual(app);
       expect(app.length).toBeGreaterThanOrEqual(24);
       // a krishna tritiya or chaturthi at sunrise (chaturthi at moonrise)

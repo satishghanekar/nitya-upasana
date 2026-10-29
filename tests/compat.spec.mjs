@@ -19,7 +19,10 @@ test("every color-mix() has an iOS 15 fallback", () => {
   const fallback = CSS.slice(start);
   const missing = [];
   for (const m of main.matchAll(/([^{}]+)\{([^{}]*color-mix[^{}]*)\}/g)) {
-    const sel = m[1].trim().split(",").map((s) => s.trim());
+    const sel = m[1]
+      .trim()
+      .split(",")
+      .map((s) => s.trim());
     const props = [...m[2].matchAll(/([\w-]+)\s*:[^;]*color-mix/g)].map((p) => p[1]);
     // text-decoration-color falls back to the text colour by itself
     for (const prop of props.filter((p) => p !== "text-decoration-color"))

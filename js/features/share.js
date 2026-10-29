@@ -90,14 +90,9 @@ export function init() {
       }
     };
     var ua = navigator.userAgent,
-      ios =
-        !/Android/.test(ua) &&
-        (/iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)),
+      ios = !/Android/.test(ua) && (/iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)),
       standalone = navigator.standalone || (window.matchMedia && matchMedia("(display-mode: standalone)").matches),
-      safari =
-        ios &&
-        (/CriOS|FxiOS|EdgiOS/.test(ua) || /Safari\//.test(ua)) &&
-        !/GSA\/|FBAN|FBAV|Instagram|WhatsApp|Line\/|Snapchat/.test(ua),
+      safari = ios && (/CriOS|FxiOS|EdgiOS/.test(ua) || /Safari\//.test(ua)) && !/GSA\/|FBAN|FBAV|Instagram|WhatsApp|Line\/|Snapchat/.test(ua),
       deferred = null;
     // Add to Home Screen buttons (home page and Settings), always there until the site is opened from its icon.
     // Chrome/Edge/Android: the browser's own install prompt when it offers one; otherwise (iPhone, or the prompt

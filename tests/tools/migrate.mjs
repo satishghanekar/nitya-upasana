@@ -59,7 +59,10 @@ function creditText(html) {
     /<a href="([^"]*)" target="_blank" rel="noopener" aria-label="[^"]*">([^<]*)<span class="crx" aria-hidden="true"> ↗<\/span><\/a>/g,
     "[$2]($1)",
   );
-  const m = /^<span class="mr">([^<]*)<\/span><span class="en" lang="en">([^<]*)<\/span>(?:<small><span class="mr">([^<]*)<\/span><span class="en" lang="en">([^<]*)<\/span><\/small>)?$/.exec(plain);
+  const m =
+    /^<span class="mr">([^<]*)<\/span><span class="en" lang="en">([^<]*)<\/span>(?:<small><span class="mr">([^<]*)<\/span><span class="en" lang="en">([^<]*)<\/span><\/small>)?$/.exec(
+      plain,
+    );
   must(m, "credit not understood: " + html);
   return { credit: m[1], creditEn: m[2], creditNote: m[3], creditNoteEn: m[4] };
 }
@@ -93,7 +96,15 @@ for (const g of C.groups) {
       blocks.push({ kind: "dhrupad", lines: p.refrain.lines.map((x) => pairLine(x)) });
       const rfs = p.items.filter((it) => it.kind === "rf");
       const rep = rfs[0].lines.map((x) => pairLine(x));
-      must(rfs.every((it) => same(it.lines.map((x) => pairLine(x)), rep)), p.id + ": the repeated dhrupads differ");
+      must(
+        rfs.every((it) =>
+          same(
+            it.lines.map((x) => pairLine(x)),
+            rep,
+          ),
+        ),
+        p.id + ": the repeated dhrupads differ",
+      );
       if (!same(rep, blocks[0].lines)) blocks.push({ kind: "dhrupad-repeated", lines: rep });
       if (p.items[0].rmk) t.refrainFirst = true;
       for (const it of p.items) {

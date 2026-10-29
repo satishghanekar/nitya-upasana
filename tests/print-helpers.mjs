@@ -16,8 +16,28 @@ import { fileURLToPath } from "node:url";
 import { test, expect } from "@playwright/test";
 import { openSite, openPrintBuilder } from "./helpers.mjs";
 
-const DIGITS = { "०": 0, "१": 1, "२": 2, "३": 3, "४": 4, "५": 5, "६": 6, "७": 7, "८": 8, "९": 9,
-  "೦": 0, "೧": 1, "೨": 2, "೩": 3, "೪": 4, "೫": 5, "೬": 6, "೭": 7, "೮": 8, "೯": 9 };
+const DIGITS = {
+  "०": 0,
+  "१": 1,
+  "२": 2,
+  "३": 3,
+  "४": 4,
+  "५": 5,
+  "६": 6,
+  "७": 7,
+  "८": 8,
+  "९": 9,
+  "೦": 0,
+  "೧": 1,
+  "೨": 2,
+  "೩": 3,
+  "೪": 4,
+  "೫": 5,
+  "೬": 6,
+  "೭": 7,
+  "೮": 8,
+  "೯": 9,
+};
 /** "१२" or "೧೨" or "12" → 12 */
 export const toInt = (s) => Number(String(s).replace(/./g, (c) => (c in DIGITS ? DIGITS[c] : c)));
 
@@ -44,8 +64,8 @@ export async function howStep(page) {
 /** Press Print on the home page, then the given choice ("pr1" = first button, "pr2" = second). */
 export async function printFromButton(page, choice) {
   await page.evaluate(() => scrollTo(0, 0));
-  // (Print is in the bottom bar while a text is read; on Home the builder is opened as js/features/print.js lets
-  // another part open it, at What with everything ticked as last left)
+  // (the builder is opened as js/features/print.js lets another part open it, at What with everything ticked as last
+  // left; the reader's way in is Print in the top bar)
   await openPrintBuilder(page);
   await howStep(page);
   // the page (Portrait pr1 or Landscape pr2; both languages have only Landscape, so no choice shows), then Print
@@ -69,7 +89,9 @@ export async function readPrintView(page) {
       pieces: [...pv.querySelectorAll(".pvs")].map((s) => s.dataset.sid),
       blocks: pv.querySelectorAll(".pvs .pvk").length,
       // the blocks that may run on from one page to the next (a Vedic paragraph: "p1:11", as the markers name them)
-      flow: [...pv.querySelectorAll(".pvs")].flatMap((s) => [...s.querySelectorAll(".pvk")].map((k, j) => (k.classList.contains("pvflow") ? s.dataset.sid + ":" + j : "")).filter(Boolean)),
+      flow: [...pv.querySelectorAll(".pvs")].flatMap((s) =>
+        [...s.querySelectorAll(".pvk")].map((k, j) => (k.classList.contains("pvflow") ? s.dataset.sid + ":" + j : "")).filter(Boolean),
+      ),
       // the English lines that are shown in the print view (for the text check)
       // (a Vedic paragraph is one text: its lines are the paragraph's pvLines, js/features/print.js)
       english: [...pv.querySelectorAll(".pvl.pve, .pvpr.pve, td.pve")]
@@ -93,40 +115,54 @@ export async function readPrintView(page) {
 export async function addMarkers(page, when = "now") {
   await page.evaluate((when) => {
     const run = () => {
-    const mk = (t, end) => {
-      // A box of no width at the start or end of the block, its text (white, 1px) running out of it over the block's
-      // own letters: to the right from the start, to the left from the end (the box is right-to-left, its text inside
-      // still left-to-right). So it takes no space, moves nothing, and never reaches past the block into the page's
-      // margin, where Chrome cuts what it prints. (Absolutely placed, a marker ran off a line at the page's edge.)
-      // !important: the site's own !important font rules (Kannada letters set every .mr element's font) must not
-      // reach the marker, or it is drawn in whatever font the machine falls back to and may not read back
-      const s = document.createElement("span"),
-        i = document.createElement("span");
-      s.className = "__pm";
-      s.style.cssText = ["display:inline-block", "width:0", "font:1px/1 monospace", "letter-spacing:0", "word-spacing:0", "text-transform:none", "text-indent:0", "color:#fff", "white-space:nowrap", "vertical-align:baseline", "direction:" + (end ? "rtl" : "ltr")].map((d) => d + " !important").join(";");
-      i.style.cssText = "direction:ltr !important;unicode-bidi:isolate !important";
-      i.textContent = " [[" + t + "]] ";
-      s.appendChild(i);
-      return s;
-    };
-    const shown = (n) => {
-      for (let e = n.parentElement; e && e.id !== "pv"; e = e.parentElement)
-        if (getComputedStyle(e).display === "none") return false;
-      return true;
-    };
-    document.querySelectorAll("#pv .pvs").forEach((sec) => {
-      sec.querySelectorAll(".pvk").forEach((k, j) => {
-        const w = document.createTreeWalker(k, NodeFilter.SHOW_TEXT, {
-          acceptNode: (n) => (n.data.trim() && shown(n) ? 1 : 3),
+      const mk = (t, end) => {
+        // A box of no width at the start or end of the block, its text (white, 1px) running out of it over the block's
+        // own letters: to the right from the start, to the left from the end (the box is right-to-left, its text inside
+        // still left-to-right). So it takes no space, moves nothing, and never reaches past the block into the page's
+        // margin, where Chrome cuts what it prints. (Absolutely placed, a marker ran off a line at the page's edge.)
+        // !important: the site's own !important font rules (Kannada letters set every .mr element's font) must not
+        // reach the marker, or it is drawn in whatever font the machine falls back to and may not read back
+        const s = document.createElement("span"),
+          i = document.createElement("span");
+        s.className = "__pm";
+        s.style.cssText = [
+          "display:inline-block",
+          "width:0",
+          "font:1px/1 monospace",
+          "letter-spacing:0",
+          "word-spacing:0",
+          "text-transform:none",
+          "text-indent:0",
+          "color:#fff",
+          "white-space:nowrap",
+          "vertical-align:baseline",
+          "direction:" + (end ? "rtl" : "ltr"),
+        ]
+          .map((d) => d + " !important")
+          .join(";");
+        i.style.cssText = "direction:ltr !important;unicode-bidi:isolate !important";
+        i.textContent = " [[" + t + "]] ";
+        s.appendChild(i);
+        return s;
+      };
+      const shown = (n) => {
+        for (let e = n.parentElement; e && e.id !== "pv"; e = e.parentElement) if (getComputedStyle(e).display === "none") return false;
+        return true;
+      };
+      document.querySelectorAll("#pv .pvs").forEach((sec) => {
+        sec.querySelectorAll(".pvk").forEach((k, j) => {
+          const w = document.createTreeWalker(k, NodeFilter.SHOW_TEXT, {
+            acceptNode: (n) => (n.data.trim() && shown(n) ? 1 : 3),
+          });
+          const first = w.nextNode();
+          if (!first) return;
+          let last = first,
+            n;
+          while ((n = w.nextNode())) last = n;
+          first.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":s"), first);
+          last.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":e", true), last.nextSibling);
         });
-        const first = w.nextNode();
-        if (!first) return;
-        let last = first, n;
-        while ((n = w.nextNode())) last = n;
-        first.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":s"), first);
-        last.parentNode.insertBefore(mk(sec.dataset.sid + ":" + j + ":e", true), last.nextSibling);
       });
-    });
     };
     if (when === "now") run();
     else addEventListener("beforeprint", run);
@@ -143,7 +179,13 @@ const PDF_DIR = new URL("./pdfs/", import.meta.url);
  */
 export async function pdfPages(page, paper, save) {
   const buf = await page.pdf({ format: paper, preferCSSPageSize: true, printBackground: true });
-  if (!save && process.env.SAVE_PDFS) save = test.info().title.replace(/ @[\w-]+/g, "").replace(/[^\w.-]+/g, "-").replace(/^-|-$/g, "") + ".pdf";
+  if (!save && process.env.SAVE_PDFS)
+    save =
+      test
+        .info()
+        .title.replace(/ @[\w-]+/g, "")
+        .replace(/[^\w.-]+/g, "-")
+        .replace(/^-|-$/g, "") + ".pdf";
   if (save) {
     const f = fileURLToPath(new URL(save, PDF_DIR));
     mkdirSync(dirname(f), { recursive: true });
@@ -195,9 +237,13 @@ export function checkPrintout(r) {
   expect(pv.pieces).toEqual(onScreen);
   expect(pv.toc.map((t) => t.id)).toEqual(onScreen);
   // every piece starts on a page of its own: its first block below the last page of the one before
-  const last = (id) => Math.max(...Object.entries(at).filter(([k]) => k.startsWith(id + ":")).map(([, p]) => p));
-  for (let i = 1; i < onScreen.length; i++)
-    expect(at[onScreen[i] + ":0:s"], `${onScreen[i]} starts on a new page`).toBeGreaterThan(last(onScreen[i - 1]));
+  const last = (id) =>
+    Math.max(
+      ...Object.entries(at)
+        .filter(([k]) => k.startsWith(id + ":"))
+        .map(([, p]) => p),
+    );
+  for (let i = 1; i < onScreen.length; i++) expect(at[onScreen[i] + ":0:s"], `${onScreen[i]} starts on a new page`).toBeGreaterThan(last(onScreen[i - 1]));
   checkPages(r);
   return { pages: pdf.pages.length };
 }
@@ -234,7 +280,14 @@ export function checkPages(r) {
     // next piece's heading) between the English ones: there, a line is all there when its words come in order with
     // only other scripts between them (Devanagari or Kannada, and the odd number or mark: never an English word)
     const other = "[^A-Za-z]{0,3000}?";
-    const words = (l) => new RegExp(l.split(/\s+/).filter((w) => squash(w)).map((w) => squash(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join(other));
+    const words = (l) =>
+      new RegExp(
+        l
+          .split(/\s+/)
+          .filter((w) => squash(w))
+          .map((w) => squash(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+          .join(other),
+      );
     const missing = pv.english.filter((l) => !flat.includes(squash(l)) && !(mode === "side" && words(l).test(flat)));
     expect(missing, "English lines missing from the PDF").toEqual([]);
     // (in English letters as the texts have them: not with IAST, which prints other letters)
@@ -261,7 +314,13 @@ export function markerPages(pages) {
 // above as a dotless "ı", and the PDF text then reads "ı", so it counts as "i".
 // (also without zero-width joiners and with plain quotes: a PDF's text layer may drop the one and straighten the other, or read a closing quote as the letter ʼ)
 export const squash = (s) =>
-  s.normalize("NFD").replace(/\p{M}/gu, "").replace(/ı/g, "i").replace(/[‘’ʼ]/g, "'").replace(/[“”]/g, '"').replace(/[\s​­‌‍]+/g, "");
+  s
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .replace(/ı/g, "i")
+    .replace(/[‘’ʼ]/g, "'")
+    .replace(/[“”]/g, '"')
+    .replace(/[\s​­‌‍]+/g, "");
 
 /**
  * Every English line of every text, by piece id, from the texts themselves (window.CONTENT), not from the print view:
@@ -276,7 +335,12 @@ export function sourceLines(page) {
           // (a dhrupad line typed into a verse, rf, prints only with the dhrupad after every verse)
           [...(p.refrain ? p.refrain.lines : []), ...p.items.flatMap((i) => i.lines || []).filter((l) => !l.rf)]
             .flatMap((l) => String(l.en || "").split(/<br\s*\/?>/))
-            .map((t) => t.replace(/<[^>]+>/g, "").replace(/\u200b/g, "").trim())
+            .map((t) =>
+              t
+                .replace(/<[^>]+>/g, "")
+                .replace(/\u200b/g, "")
+                .trim(),
+            )
             .filter(Boolean),
         ]),
       ),

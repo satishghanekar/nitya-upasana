@@ -211,7 +211,8 @@ const ICON = {
   pin: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   next: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   dusk: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 17h18M7 17a5 5 0 0 1 10 0M12 7v3M5.6 10.6l1.4 1.1M18.4 10.6 17 11.7"/></svg>',
-  crescent: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15.5 3.5a9 9 0 1 0 5 13.5A7 7 0 0 1 15.5 3.5z" fill="currentColor"/></svg>',
+  crescent:
+    '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15.5 3.5a9 9 0 1 0 5 13.5A7 7 0 0 1 15.5 3.5z" fill="currentColor"/></svg>',
   flag: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4h11l-2 4 2 4H5"/></svg>',
   star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8l-5.8 3.5 1.6-6.6-5.2-4.4 6.8-.5z" fill="currentColor"/></svg>',
 };
@@ -286,8 +287,16 @@ function nameH2(n) {
 /** Names joined into one (for a title or a line) @param {string} sep @param {Name[]} ns @returns {Name} */
 function cat(sep, ns) {
   return {
-    mr: ns.map(function (n) { return n.mr; }).join(sep),
-    en: ns.map(function (n) { return n.en; }).join(sep),
+    mr: ns
+      .map(function (n) {
+        return n.mr;
+      })
+      .join(sep),
+    en: ns
+      .map(function (n) {
+        return n.en;
+      })
+      .join(sep),
     ia: P && P.tr === "iast" ? ns.map(iaOf).join(sep) : undefined,
   };
 }
@@ -297,10 +306,24 @@ function shaka(y) {
 }
 // Where an English name may break in a narrow day of the month ("Chatur-dashi"), when it must
 const HY = {
-  Pratipada: "Prati-pada", Dvitiya: "Dvi-tiya", Tritiya: "Tri-tiya", Chaturthi: "Chatur-thi", Panchami: "Pan-chami",
-  Shashthi: "Shash-thi", Saptami: "Sap-tami", Ashtami: "Ash-tami", Navami: "Nav-ami", Dashami: "Dash-ami",
-  Ekadashi: "Eka-dashi", Dvadashi: "Dva-dashi", Trayodashi: "Trayo-dashi", Chaturdashi: "Chatur-dashi",
-  Purnima: "Pur-nima", Amavasya: "Ama-vasya", Sankashti: "San-kashti", Angaraki: "Anga-raki",
+  Pratipada: "Prati-pada",
+  Dvitiya: "Dvi-tiya",
+  Tritiya: "Tri-tiya",
+  Chaturthi: "Chatur-thi",
+  Panchami: "Pan-chami",
+  Shashthi: "Shash-thi",
+  Saptami: "Sap-tami",
+  Ashtami: "Ash-tami",
+  Navami: "Nav-ami",
+  Dashami: "Dash-ami",
+  Ekadashi: "Eka-dashi",
+  Dvadashi: "Dva-dashi",
+  Trayodashi: "Trayo-dashi",
+  Chaturdashi: "Chatur-dashi",
+  Purnima: "Pur-nima",
+  Amavasya: "Ama-vasya",
+  Sankashti: "San-kashti",
+  Angaraki: "Anga-raki",
 };
 /** @param {string} h an escaped English name (IAST: before its last part only) */
 function hy(h) {
@@ -415,7 +438,9 @@ function homeRender() {
   box.innerHTML =
     '<div class="pcard">' +
     '<span class="pt">' +
-    '<span id="pn1">' + nameH(title(p), "p1") + "</span>" +
+    '<span id="pn1">' +
+    nameH(title(p), "p1") +
+    "</span>" +
     '<span class="p2" id="pn2">' +
     // "\u00a0·" keeps each dot with the word before it when the line wraps
     nameH(cat("\u00a0· ", [cat(" ", [N.nakshatra, p.nakshatra.name]), shaka(s.shaka), lead() === "mr" ? cat(" ", [s.name, N.samvatsara]) : s.name])) +
@@ -423,15 +448,36 @@ function homeRender() {
     // the sunrise and the sunset, each with its picture, are buttons that show the picture full screen
     // (js/features/picture-viewer.js); the card's button is named by their times (#pnr, #pns)
     '<span class="p3">' +
-    '<button type="button" class="psun" id="psr" data-pic="sunrise">' + ICON.sunrise +
-    '<span id="pnr"><span class="sr">' + esc(w.sunrise) + " </span>" + esc(sr) + '</span><span class="sr"> · ' + esc(w.pic) + "</span></button>" +
-    '<button type="button" class="psun" id="pss" data-pic="sunset">' + ICON.sunset +
-    '<span id="pns"><span class="sr">' + esc(w.sunset) + " </span>" + esc(ss) + '</span><span class="sr"> · ' + esc(w.pic) + "</span></button>" +
+    '<button type="button" class="psun" id="psr" data-pic="sunrise">' +
+    ICON.sunrise +
+    '<span id="pnr"><span class="sr">' +
+    esc(w.sunrise) +
+    " </span>" +
+    esc(sr) +
+    '</span><span class="sr"> · ' +
+    esc(w.pic) +
+    "</span></button>" +
+    '<button type="button" class="psun" id="pss" data-pic="sunset">' +
+    ICON.sunset +
+    '<span id="pns"><span class="sr">' +
+    esc(w.sunset) +
+    " </span>" +
+    esc(ss) +
+    '</span><span class="sr"> · ' +
+    esc(w.pic) +
+    "</span></button>" +
     // the place: a tap asks the phone where it is (js/features/sankashti.js useMyLocation)
-    '<button type="button" id="ploc">' + ICON.pin + esc(placeName(L)) + '<span class="sr"> · ' + esc(w.loc) + "</span></button>" +
+    '<button type="button" id="ploc">' +
+    ICON.pin +
+    esc(placeName(L)) +
+    '<span class="sr"> · ' +
+    esc(w.loc) +
+    "</span></button>" +
     "</span></span>" +
     '<button type="button" id="panb" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal" aria-labelledby="pn1 pn2 pnr pns pno">' +
-    '<span class="sr" id="pno">' + esc(w.open) + "</span>" +
+    '<span class="sr" id="pno">' +
+    esc(w.open) +
+    "</span>" +
     ICON.chev +
     "</button></div>";
   box.hidden = false;
@@ -456,7 +502,15 @@ function fwiki(f) {
     // (the name as shown first, so what is heard starts with what is seen)
     shown = txt(f, lead() === "en" ? "en" : "mr"),
     label = ui() === "mr" ? shown + " — विकिपीडिया (नवीन टॅबमध्ये उघडेल)" : shown + ": Wikipedia (opens in a new tab)";
-  return '<a href="' + esc(encodeURI(url)) + '" target="_blank" rel="noopener" aria-label="' + esc(label) + '">' + fname(f) + '<span class="crx" aria-hidden="true"> ↗</span></a>';
+  return (
+    '<a href="' +
+    esc(encodeURI(url)) +
+    '" target="_blank" rel="noopener" aria-label="' +
+    esc(label) +
+    '">' +
+    fname(f) +
+    '<span class="crx" aria-hidden="true"> ↗</span></a>'
+  );
 }
 /** @type {Record<string, Record<string, FestivalDay[]>>} months' festivals worked out while the page is open */
 var fmonths = {};
@@ -496,7 +550,27 @@ function holName(h) {
     gs = h.groups.map(function (x) {
       return g[x] || { mr: x, en: x };
     });
-  return { mr: h.mr + " (" + gs.map(function (x) { return x.mr; }).join(", ") + ")", en: h.en + " (" + gs.map(function (x) { return x.en; }).join(", ") + ")", wiki: h.wiki };
+  return {
+    mr:
+      h.mr +
+      " (" +
+      gs
+        .map(function (x) {
+          return x.mr;
+        })
+        .join(", ") +
+      ")",
+    en:
+      h.en +
+      " (" +
+      gs
+        .map(function (x) {
+          return x.en;
+        })
+        .join(", ") +
+      ")",
+    wiki: h.wiki,
+  };
 }
 
 /** The festivals on one day ("YYYY-MM-DD", or now), [] when the rules did not load
@@ -530,7 +604,9 @@ function festHome(pl) {
   }
   box.lang = ui();
   box.innerHTML =
-    '<span class="dot" aria-hidden="true">' + ICON.star + "</span><span>" +
+    '<span class="dot" aria-hidden="true">' +
+    ICON.star +
+    "</span><span>" +
     say(homeWhen()) +
     fs
       .map(function (f) {
@@ -638,7 +714,9 @@ function upRow(u, today) {
     n = Math.round((d.getTime() - dateOf(today).getTime()) / 864e5),
     when = n === 0 ? w.uToday : n === 1 ? w.uTomorrow : n === -1 ? w.uYesterday : n < 0 ? w.uAgo(-n) : w.uIn(n),
     other = d.getMonth() !== dateOf(today).getMonth(),
-    full = E ? DAYS.en[d.getDay()] + ", " + d.getDate() + " " + MONTHS.en[d.getMonth()] : DAYS.mr[d.getDay()] + ", " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()],
+    full = E
+      ? DAYS.en[d.getDay()] + ", " + d.getDate() + " " + MONTHS.en[d.getMonth()]
+      : DAYS.mr[d.getDay()] + ", " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()],
     icon =
       u.kind === "sk"
         ? ICON.crescent
@@ -661,14 +739,33 @@ function upRow(u, today) {
     two = nameH2(u.name),
     small = [two, det ? say(det) : "", u.also ? nameH(u.also) : ""].filter(Boolean).join(say(" · "));
   return (
-    '<li><button type="button" class="upr ' + u.kind + '" data-d="' + u.date + '">' +
-    '<span class="upd" aria-hidden="true"><span>' + esc(E ? DAYS.en[d.getDay()].slice(0, 3) : scr(MR_WD[d.getDay()])) + "</span>" +
-    "<b>" + num(d.getDate()) + "</b>" +
+    '<li><button type="button" class="upr ' +
+    u.kind +
+    '" data-d="' +
+    u.date +
+    '">' +
+    '<span class="upd" aria-hidden="true"><span>' +
+    esc(E ? DAYS.en[d.getDay()].slice(0, 3) : scr(MR_WD[d.getDay()])) +
+    "</span>" +
+    "<b>" +
+    num(d.getDate()) +
+    "</b>" +
     (other ? "<span>" + esc(E ? MONTHS.en[d.getMonth()].slice(0, 3) : scr(MONTHS.mr[d.getMonth()])) + "</span>" : "") +
     "</span>" +
-    '<span class="upi">' + icon + "</span>" +
-    '<span class="upn"><span class="sr">' + say(full + ": ") + "</span>" + nameH(u.name, "un") + (small ? '<small>' + small + "</small>" : "") + "</span>" +
-    '<span class="upw' + (n < 2 ? " soon" : "") + '"><span class="sr">, </span>' + say(when) + "</span>" +
+    '<span class="upi">' +
+    icon +
+    "</span>" +
+    '<span class="upn"><span class="sr">' +
+    say(full + ": ") +
+    "</span>" +
+    nameH(u.name, "un") +
+    (small ? "<small>" + small + "</small>" : "") +
+    "</span>" +
+    '<span class="upw' +
+    (n < 2 ? " soon" : "") +
+    '"><span class="sr">, </span>' +
+    say(when) +
+    "</span>" +
     "</button></li>"
   );
 }
@@ -682,11 +779,12 @@ function upHome(pl) {
     wk = addDays(t, 7),
     // another day shown on Home: This week (which counts from today) makes way for "Showing …" (#tdb)
     off = !!homeAt && homeAt !== t,
-    all = pl && loaded.festivals
-      ? upList(addDays(t, 1), addDays(t, 30), pl).filter(function (u) {
-          return u.kind !== "hol";
-        })
-      : [],
+    all =
+      pl && loaded.festivals
+        ? upList(addDays(t, 1), addDays(t, 30), pl).filter(function (u) {
+            return u.kind !== "hol";
+          })
+        : [],
     near = all.filter(function (u) {
       return u.date <= wk;
     }),
@@ -701,18 +799,35 @@ function upHome(pl) {
   var w = words();
   box.lang = ui();
   box.innerHTML =
-    '<div class="uph"><h2 id="upwh">' + say(w.week) + "</h2>" +
-    '<button type="button" id="upwm" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">' + say(w.next15) + ICON.chev + "</button></div>" +
+    '<div class="uph"><h2 id="upwh">' +
+    say(w.week) +
+    "</h2>" +
+    '<button type="button" id="upwm" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">' +
+    say(w.next15) +
+    ICON.chev +
+    "</button></div>" +
     (near.length
-      ? '<ul class="upl">' + near.map(function (u) {
-          return upRow(u, t);
-        }).join("") + "</ul>"
+      ? '<ul class="upl">' +
+        near
+          .map(function (u) {
+            return upRow(u, t);
+          })
+          .join("") +
+        "</ul>"
       : "") +
     (next
-      // a button too, to its day, like the rows
-      ? '<button type="button" class="upx" data-d="' + next.date + '"><span class="upxl">' + say(w.uNext) + "</span>" +
-        "<b>" + nameH(next.name) + "</b>" +
-        '<span class="upxd">' + say(dayLabel(next.date) + " · " + w.uIn(Math.round((dateOf(next.date).getTime() - dateOf(t).getTime()) / 864e5))) + "</span></button>"
+      ? // a button too, to its day, like the rows
+        '<button type="button" class="upx" data-d="' +
+        next.date +
+        '"><span class="upxl">' +
+        say(w.uNext) +
+        "</span>" +
+        "<b>" +
+        nameH(next.name) +
+        "</b>" +
+        '<span class="upxd">' +
+        say(dayLabel(next.date) + " · " + w.uIn(Math.round((dateOf(next.date).getTime() - dateOf(t).getTime()) / 864e5))) +
+        "</span></button>"
       : "");
   box.hidden = false;
 }
@@ -828,17 +943,32 @@ function dayRender() {
     // on the Day tab, ‹ › to the day before or after, and Today
     (view.mode === "day"
       ? '<div class="cdnav">' +
-        '<button type="button" class="cnav" data-dd="-1">' + ICON.prev + '<span class="sr">' + esc(w.prevDay) + "</span></button>" +
-        '<span class="cdnt">' + say(dayLabel(k)) + "</span>" +
-        '<button type="button" class="cnav" data-dd="1">' + ICON.next + '<span class="sr">' + esc(w.nextDay) + "</span></button>" +
+        '<button type="button" class="cnav" data-dd="-1">' +
+        ICON.prev +
+        '<span class="sr">' +
+        esc(w.prevDay) +
+        "</span></button>" +
+        '<span class="cdnt">' +
+        say(dayLabel(k)) +
+        "</span>" +
+        '<button type="button" class="cnav" data-dd="1">' +
+        ICON.next +
+        '<span class="sr">' +
+        esc(w.nextDay) +
+        "</span></button>" +
         (k === today ? "" : '<button type="button" class="ctod" data-dd="0">' + say(w.todayB) + "</button>") +
         "</div>"
       : "") +
     '<div class="cdh">' +
     (src ? '<img src="' + esc(src) + '" alt="" width="64" height="64">' : "") +
     "<div>" +
-    '<h3 id="cdt" tabindex="-1">' + nameH(title(p)) + "</h3>" +
-    '<p class="cdd">' + say(dateLine) + (k === today ? " · " + say(w.today) : "") + "</p>" +
+    '<h3 id="cdt" tabindex="-1">' +
+    nameH(title(p)) +
+    "</h3>" +
+    '<p class="cdd">' +
+    say(dateLine) +
+    (k === today ? " · " + say(w.today) : "") +
+    "</p>" +
     (tags.length || fs.length || hs.length
       ? '<p class="cdg">' +
         fs
@@ -899,11 +1029,7 @@ function dayRender() {
     row(N.nakshatra, nameH(p.nakshatra.name), then(p.nakshatra.name, p.nakshatra.endsAt)) +
     row(N.yoga, nameH(p.yoga.name), then(p.yoga.name, p.yoga.endsAt)) +
     row(N.vara, nameH(p.vara.name), nameH2(p.vara.name)) +
-    row(
-      N.sunrise,
-      say(p.sunrise ? clock(p.sunrise) : "—"),
-      esc(w.sunset + " " + (p.sunset ? clock(p.sunset) : "—") + " · " + placeName(L)),
-    ) +
+    row(N.sunrise, say(p.sunrise ? clock(p.sunrise) : "—"), esc(w.sunset + " " + (p.sunset ? clock(p.sunset) : "—") + " · " + placeName(L))) +
     row(N.moonrise, say(p.moonrise ? clock(p.moonrise) : "—"), p.moonrise ? "" : esc(w.noRise)) +
     row(N.masa, nameH(masa), two ? nameH2(masa) + esc(" (" + w.amanta + ")") : esc(w.amanta)) +
     row(N.samvatsara, nameH(sam(lead())), two ? nameH2(sam(second() || "en")) : "") +
@@ -920,7 +1046,22 @@ function monthTithi(n) {
 }
 const TN = {
   mr: ["प्रतिपदा", "द्वितीया", "तृतीया", "चतुर्थी", "पंचमी", "षष्ठी", "सप्तमी", "अष्टमी", "नवमी", "दशमी", "एकादशी", "द्वादशी", "त्रयोदशी", "चतुर्दशी"],
-  en: ["Pratipada", "Dvitiya", "Tritiya", "Chaturthi", "Panchami", "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dvadashi", "Trayodashi", "Chaturdashi"],
+  en: [
+    "Pratipada",
+    "Dvitiya",
+    "Tritiya",
+    "Chaturthi",
+    "Panchami",
+    "Shashthi",
+    "Saptami",
+    "Ashtami",
+    "Navami",
+    "Dashami",
+    "Ekadashi",
+    "Dvadashi",
+    "Trayodashi",
+    "Chaturdashi",
+  ],
 };
 
 /** The day's marks: पौर्णिमा, अमावास्या, एकादशी, संकष्टी (अंगारकी on a Tuesday) @param {MonthDay} md */
@@ -969,14 +1110,46 @@ function monthRender() {
   var mName = E ? MONTHS.en[m - 1] + " " + y : MONTHS.mr[m - 1] + " " + dv(y);
   var html =
     '<div class="cmh">' +
-    '<button type="button" class="cnav" id="calp" data-y="' + py + '" data-m="' + pm + '">' + ICON.prev + '<span class="sr">' + esc(w.prev) + ": " + esc(E ? MONTHS.en[pm - 1] + " " + py : MONTHS.mr[pm - 1] + " " + dv(py)) + "</span></button>" +
-    '<h3 id="cmt">' + say(mName) + '<span class="cms">' + sub + "</span></h3>" +
-    '<button type="button" class="cnav" id="caln" data-y="' + ny + '" data-m="' + nm + '">' + ICON.next + '<span class="sr">' + esc(w.nextM) + ": " + esc(E ? MONTHS.en[nm - 1] + " " + ny : MONTHS.mr[nm - 1] + " " + dv(ny)) + "</span></button>" +
+    '<button type="button" class="cnav" id="calp" data-y="' +
+    py +
+    '" data-m="' +
+    pm +
+    '">' +
+    ICON.prev +
+    '<span class="sr">' +
+    esc(w.prev) +
+    ": " +
+    esc(E ? MONTHS.en[pm - 1] + " " + py : MONTHS.mr[pm - 1] + " " + dv(py)) +
+    "</span></button>" +
+    '<h3 id="cmt">' +
+    say(mName) +
+    '<span class="cms">' +
+    sub +
+    "</span></h3>" +
+    '<button type="button" class="cnav" id="caln" data-y="' +
+    ny +
+    '" data-m="' +
+    nm +
+    '">' +
+    ICON.next +
+    '<span class="sr">' +
+    esc(w.nextM) +
+    ": " +
+    esc(E ? MONTHS.en[nm - 1] + " " + ny : MONTHS.mr[nm - 1] + " " + dv(ny)) +
+    "</span></button>" +
     "</div>" +
     '<table class="cgr" aria-labelledby="cmt"><thead><tr>' +
     MR_WD.map(function (x, i) {
       var wd = { mr: x, en: DAYS.en[i].slice(0, 3), ia: DAYS.en[i].slice(0, 3) };
-      return '<th scope="col"><span aria-hidden="true" lang="' + langOf(lead()) + '">' + esc(txt(wd, lead())) + '</span><span class="sr">' + esc(E ? DAYS.en[i] : scr(DAYS.mr[i])) + "</span></th>";
+      return (
+        '<th scope="col"><span aria-hidden="true" lang="' +
+        langOf(lead()) +
+        '">' +
+        esc(txt(wd, lead())) +
+        '</span><span class="sr">' +
+        esc(E ? DAYS.en[i] : scr(DAYS.mr[i])) +
+        "</span></th>"
+      );
     }).join("") +
     "</tr></thead><tbody><tr>";
   var col = 0;
@@ -1015,9 +1188,18 @@ function monthRender() {
       srAfter = [E ? tithiText(t, "en") : t.n === 15 || t.n === 30 ? "" : t.pakshaName.mr + " पक्ष"]
         .concat(d.purnima && t.n !== 15 ? [E ? "Purnima" : "पौर्णिमा"] : [])
         .concat(d.amavasya && t.n !== 30 ? [E ? "Amavasya" : "अमावास्या"] : [])
-        .concat(d.kshaya.length ? [w.kshaya + d.kshaya.map(function (n) {
-          return E ? monthTithi(n).en : monthTithi(n).mr;
-        }).join(", ")] : [])
+        .concat(
+          d.kshaya.length
+            ? [
+                w.kshaya +
+                  d.kshaya
+                    .map(function (n) {
+                      return E ? monthTithi(n).en : monthTithi(n).mr;
+                    })
+                    .join(", "),
+              ]
+            : [],
+        )
         .concat(
           fs.length && E
             ? fs.map(function (f) {
@@ -1037,15 +1219,41 @@ function monthRender() {
         .filter(Boolean)
         .join(", ");
     html +=
-      '<td class="' + (kr ? "kr" : "sh") + '">' +
-      '<button type="button" class="cd' + (isT ? " today" : "") + '" data-d="' + d.date + '" tabindex="' + (d.date === focusDay ? "0" : "-1") + '" aria-pressed="' + sel + '"' + (isT ? ' aria-current="date"' : "") + ">" +
-      '<b lang="' + (E ? "en" : mrLang()) + '">' + num(d.day) + "</b>" +
-      '<span class="sr" lang="' + (E ? "en" : mrLang()) + '">' + esc(scr(srBefore)) + "</span>" +
+      '<td class="' +
+      (kr ? "kr" : "sh") +
+      '">' +
+      '<button type="button" class="cd' +
+      (isT ? " today" : "") +
+      '" data-d="' +
+      d.date +
+      '" tabindex="' +
+      (d.date === focusDay ? "0" : "-1") +
+      '" aria-pressed="' +
+      sel +
+      '"' +
+      (isT ? ' aria-current="date"' : "") +
+      ">" +
+      '<b lang="' +
+      (E ? "en" : mrLang()) +
+      '">' +
+      num(d.day) +
+      "</b>" +
+      '<span class="sr" lang="' +
+      (E ? "en" : mrLang()) +
+      '">' +
+      esc(scr(srBefore)) +
+      "</span>" +
       cell(tn, "t") +
       (d.kshaya.length
-        ? '<span class="kx" lang="' + langOf(lead()) + '">+' + d.kshaya.map(function (n) {
-            return hy(esc(txt(n === 15 ? N.purnima : n === 30 ? N.amavasya : { mr: TN.mr[(n - 1) % 15], en: TN.en[(n - 1) % 15] }, lead())));
-          }).join(" +") + "</span>"
+        ? '<span class="kx" lang="' +
+          langOf(lead()) +
+          '">+' +
+          d.kshaya
+            .map(function (n) {
+              return hy(esc(txt(n === 15 ? N.purnima : n === 30 ? N.amavasya : { mr: TN.mr[(n - 1) % 15], en: TN.en[(n - 1) % 15] }, lead())));
+            })
+            .join(" +") +
+          "</span>"
         : "") +
       (moon ? '<span class="mn ' + moon + '" aria-hidden="true"></span>' : "") +
       fs
@@ -1061,18 +1269,32 @@ function monthRender() {
       (lab ? cell(lab, "f") : "") +
       (skl ? cell(skl, "f") : "") +
       (d.vriddhi ? '<span class="vr" aria-hidden="true">' + (E ? "vriddhi" : esc(scr("वृद्धी"))) + "</span>" : "") +
-      '<span class="sr" lang="' + (E ? "en" : mrLang()) + '">, ' + esc(scr(srAfter)) + "</span>" +
+      '<span class="sr" lang="' +
+      (E ? "en" : mrLang()) +
+      '">, ' +
+      esc(scr(srAfter)) +
+      "</span>" +
       "</button></td>";
   });
   for (; col < 7; col++) html += '<td class="ce"></td>';
   html +=
     "</tr></tbody></table>" +
     '<p class="ckey">' +
-    '<span><i class="ks" aria-hidden="true"></i>' + say(w.key[0]) + "</span>" +
-    '<span><i class="kk" aria-hidden="true"></i>' + say(w.key[1]) + "</span>" +
-    '<span><i class="mn full" aria-hidden="true"></i>' + say(w.key[2]) + "</span>" +
-    '<span><i class="mn new" aria-hidden="true"></i>' + say(w.key[3]) + "</span>" +
-    '<span class="kn">' + say(w.keyNote) + "</span>" +
+    '<span><i class="ks" aria-hidden="true"></i>' +
+    say(w.key[0]) +
+    "</span>" +
+    '<span><i class="kk" aria-hidden="true"></i>' +
+    say(w.key[1]) +
+    "</span>" +
+    '<span><i class="mn full" aria-hidden="true"></i>' +
+    say(w.key[2]) +
+    "</span>" +
+    '<span><i class="mn new" aria-hidden="true"></i>' +
+    say(w.key[3]) +
+    "</span>" +
+    '<span class="kn">' +
+    say(w.keyNote) +
+    "</span>" +
     "</p>";
   box.innerHTML = html;
 }
@@ -1106,19 +1328,39 @@ function upRender() {
   /** @param {string} h @param {Up[]} us */
   function group(h, us) {
     return us.length
-      ? '<h4 class="uph4">' + say(h) + '</h4><ul class="upl">' + us.map(function (u) {
-          return upRow(u, t);
-        }).join("") + "</ul>"
+      ? '<h4 class="uph4">' +
+          say(h) +
+          '</h4><ul class="upl">' +
+          us
+            .map(function (u) {
+              return upRow(u, t);
+            })
+            .join("") +
+          "</ul>"
       : "";
   }
   box.innerHTML =
     '<div class="cmh">' +
-    '<button type="button" class="cnav" data-u="-15">' + ICON.prev + '<span class="sr">' + esc(w.prevU) + "</span></button>" +
-    '<h3 id="cut" tabindex="-1">' + say(now ? w.upTitle : range(s, end)) + '<span class="cms">' + say((now ? range(s, end) + " · " : "") + placeName(L)) + "</span></h3>" +
-    '<button type="button" class="cnav" data-u="15">' + ICON.next + '<span class="sr">' + esc(w.nextU) + "</span></button>" +
+    '<button type="button" class="cnav" data-u="-15">' +
+    ICON.prev +
+    '<span class="sr">' +
+    esc(w.prevU) +
+    "</span></button>" +
+    '<h3 id="cut" tabindex="-1">' +
+    say(now ? w.upTitle : range(s, end)) +
+    '<span class="cms">' +
+    say((now ? range(s, end) + " · " : "") + placeName(L)) +
+    "</span></h3>" +
+    '<button type="button" class="cnav" data-u="15">' +
+    ICON.next +
+    '<span class="sr">' +
+    esc(w.nextU) +
+    "</span></button>" +
     "</div>" +
     (now ? "" : '<p class="cto"><button type="button" data-u="0">' + say(w.todayB) + "</button></p>") +
-    '<div class="upk" role="group" aria-label="' + esc(w.view) + '">' +
+    '<div class="upk" role="group" aria-label="' +
+    esc(w.view) +
+    '">' +
     KINDS.map(function (k) {
       return '<button type="button" data-k="' + k + '" aria-pressed="' + upShow[k] + '"><span>' + say(w.kinds[k]) + "</span></button>";
     }).join("") +
@@ -1151,7 +1393,9 @@ function calRender() {
     v.className = "n" + tabs.length;
     v.innerHTML = tabs
       .map(function (m) {
-        return '<button type="button" data-v="' + m + '" aria-pressed="' + (mode === m) + '">' + say(m === "up" ? w.up : m === "day" ? w.day : w.month) + "</button>";
+        return (
+          '<button type="button" data-v="' + m + '" aria-pressed="' + (mode === m) + '">' + say(m === "up" ? w.up : m === "day" ? w.day : w.month) + "</button>"
+        );
       })
       .join("");
   }
@@ -1177,6 +1421,10 @@ export function homeDay(k) {
   if (k === homeAt) return;
   homeAt = k;
   skDay(k);
+  // the festival line named the day before: hidden until the new day's is worked out (homeSoon), so it never shows
+  // under the new date
+  var f = document.getElementById("fst");
+  if (f) f.hidden = true;
   homeSoon();
 }
 

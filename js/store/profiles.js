@@ -88,7 +88,9 @@ export function initialsOf(name) {
  * @param {string} name
  */
 export function cleanInitials(typed, name) {
-  var t = String(typed || "").replace(/\s+/g, "").replace(/[\u0000-\u001f\u007f]/g, "");
+  var t = String(typed || "")
+    .replace(/\s+/g, "")
+    .replace(/[\u0000-\u001f\u007f]/g, "");
   return t ? clusters(t).slice(0, INITIALS_MAX).join("") : initialsOf(name);
 }
 
@@ -125,7 +127,11 @@ export function makeId(list, rand) {
     /** @type {string} */
     id;
   do {
-    id = "p" + Math.floor(r() * 2176782336).toString(36).padStart(6, "0");
+    id =
+      "p" +
+      Math.floor(r() * 2176782336)
+        .toString(36)
+        .padStart(6, "0");
   } while (
     list.some(function (p) {
       return p.id === id;

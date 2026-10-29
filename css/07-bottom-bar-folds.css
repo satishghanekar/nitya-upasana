@@ -25,8 +25,7 @@
   z-index: 7;
   /* on iPhones without a home button the buttons sit partly in the home-bar zone (as Safari's own toolbar
      does), so the bar isn't padded by the whole zone; never less than 8px */
-  padding: 8px max(16px, env(safe-area-inset-right, 0px)) max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px))
-    max(16px, env(safe-area-inset-left, 0px));
+  padding: 8px max(16px, env(safe-area-inset-right, 0px)) max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)) max(16px, env(safe-area-inset-left, 0px));
   background: var(--bar);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -176,16 +175,6 @@
 [data-home="1"][data-tuck="1"] #asc {
   visibility: visible;
 }
-@media print {
-  #tuck {
-    display: none !important;
-  }
-}
-@media print {
-  #asc {
-    display: none !important;
-  }
-}
 /* ==== Folding the home contents list and each piece (the Contents button's look is in "Fold headings" below) ==== */
 
 .ash header {
@@ -218,7 +207,6 @@
   transition: transform 0.2s;
 }
 @media screen {
-
   .ash.af .afb svg {
     transform: rotate(180deg);
   }
@@ -429,12 +417,6 @@
   color: rgb(255 255 255 / 0.7);
   font: 500 13px/1.3 var(--lat);
   pointer-events: none;
-}
-@media print {
-  #iconb,
-  #pzv {
-    display: none !important;
-  }
 }
 
 #iconb img {
@@ -733,9 +715,4 @@ html[data-asb="1"] {
 .rs-go svg {
   flex: none;
   color: var(--muted);
-}
-@media print {
-  #rsh {
-    display: none;
-  }
 }

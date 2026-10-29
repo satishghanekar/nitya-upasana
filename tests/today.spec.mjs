@@ -65,7 +65,11 @@ test("the bundled default: Home shows the day's lists from content/routines.json
 // computer's width: the address follows each text in Home's order, and Next after the last goes Home. A title tapped
 // last is the text read, however short (the Mantra Pushpanjali ends every morning: on an iPad or a computer the page
 // ends before it can reach the top bar, js/core/apply.js aimAt()).
-for (const [name, vp] of [["a phone", { width: 390, height: 844 }], ["an upright iPad", { width: 820, height: 1180 }], ["a computer", { width: 1440, height: 900 }]]) {
+for (const [name, vp] of [
+  ["a phone", { width: 390, height: 844 }],
+  ["an upright iPad", { width: 820, height: 1180 }],
+  ["a computer", { width: 1440, height: 900 }],
+]) {
   test(`the bundled default: every session of the week reads through to Home with Next, on ${name}`, async ({ page }) => {
     test.setTimeout(240_000);
     await page.setViewportSize(vp);
@@ -263,7 +267,6 @@ test("Home v3: Monday 7:00 and 19:00, Tuesday 14:00 (the clock's session stays p
   }
 });
 
-
 test("a page left open overnight starts the new day at its session", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: new Date("2026-10-18T23:58:00-04:00"), running: true });
   await page.clock.runFor("03:00");
@@ -426,7 +429,11 @@ test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ 
   await expect(tab(page, "morning")).toHaveText("सकाळ");
   await expect(tab(page, "afternoon")).toHaveText("दुपारकाहीच नाही");
   await page.locator("#tmb").click();
-  for (const [id, w] of [["#shb", "शेअर"], ["#hlpb", "मदत"]]) await expect(page.locator(id)).toHaveText(w, { useInnerText: true });
+  for (const [id, w] of [
+    ["#shb", "शेअर"],
+    ["#hlpb", "मदत"],
+  ])
+    await expect(page.locator(id)).toHaveText(w, { useInnerText: true });
   await expect(page.locator("#tsn")).toHaveText("१० रचना");
   await expect(rows(page).nth(1).locator(".t1")).toHaveText(TITLE["aarti-shendur-lal-chadhayo"].title);
 });
@@ -566,9 +573,14 @@ test("on another day the Sankashti line leaves out today, and the festival line 
   await page.locator("#tdx").click();
   await expect(page.locator("#skt")).toBeHidden();
   // the first festival within two weeks: named by the day shown, never "Today"
+  // (Home's lines follow a new day a moment after the date, js/features/vedic-calendar.js homeSoon(): each step waits
+  // for that before looking)
+  const settled = () => page.evaluate(() => new Promise((r) => setTimeout(r, 0)));
   let n = 2;
+  await settled();
   while (!(await page.locator("#fst").isVisible()) && n < 16) {
     await page.locator("#tdx").click();
+    await settled();
     n++;
   }
   await expect(page.locator("#fst")).toBeVisible();
@@ -678,9 +690,9 @@ test("⋯ More in the top bar opens App / Share / QR / Help under it, at every w
   }
 });
 
-// Home is just the session's texts (Satish, 2026-10-22): no Print this session and no Library line (the Library is the
-// top bar's book); Print is in the bottom bar while reading, and prints the session being read
-test("Home has no Print this session or Library line; the bottom bar's Print prints the session @mobile", async ({ page }) => {
+// Home is just the session's texts (Satish, 2026-10-22): no Print this session and no Library line (the Library is in
+// the bottom bar); Print in the top bar prints the session being read
+test("Home has no Print this session or Library line; Print in the top bar prints the session @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(page.locator("#tspr, #tlib, #tlibb")).toHaveCount(0);
   await expect(page.locator("#hm")).toBeVisible();
@@ -760,7 +772,11 @@ test("the greyed session's words are at least 4.5:1 on the switch, in every them
     const page = await context.newPage();
     await openSite(page, { ...SETUPS.marathi, th }, { now: EVENING });
     const ratio = await page.evaluate(() => {
-      const rgb = (c) => c.match(/[\d.]+/g).slice(0, 3).map(Number);
+      const rgb = (c) =>
+        c
+          .match(/[\d.]+/g)
+          .slice(0, 3)
+          .map(Number);
       const lum = (c) => {
         const [r, g, b] = rgb(c).map((v) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
         return 0.2126 * r + 0.7152 * g + 0.0722 * b;
@@ -793,7 +809,11 @@ test("on a phone Home ends with the session's texts, with no Start button; the b
 });
 
 test("on a wide screen Home uses the whole width: today on the left, the picture large beside it (Full screen)", async ({ browser }) => {
-  for (const [width, height] of [[1024, 768], [1280, 820], [1920, 1080]]) {
+  for (const [width, height] of [
+    [1024, 768],
+    [1280, 820],
+    [1920, 1080],
+  ]) {
     const context = await browser.newContext({ viewport: { width, height }, serviceWorkers: "block" });
     const page = await context.newPage();
     await openSite(page, SETUPS.marathi, { now: EVENING });

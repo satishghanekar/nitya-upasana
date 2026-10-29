@@ -89,9 +89,20 @@ describe("2026 in Pune (IST)", () => {
     const all = festivalsBetween("2026-01-01", "2026-12-31", PUNE, LIST);
     expect(all.filter((f) => f.id === "gondavalekar-maharaj-utsav")).toHaveLength(9);
     expect(all.filter((f) => f.id === "pradosh")).toHaveLength(25);
-    expect([...new Set(all.map((f) => f.id))].sort()).toEqual(LIST.festivals.map((f) => f.id).filter((id) => id !== "gondavalekar-maharaj-punyatithi").sort());
-    expect(festivalsBetween("2027-01-01", "2027-01-10", PUNE, LIST).map((f) => f.date + " " + f.id)).toEqual(["2027-01-02 gondavalekar-maharaj-punyatithi", "2027-01-04 pradosh"]);
-    expect(all.filter((f) => f.date >= "2026-05-17" && f.date <= "2026-06-15").map((f) => f.date + " " + f.id)).toEqual(["2026-05-28 pradosh", "2026-06-12 pradosh"]);
+    expect([...new Set(all.map((f) => f.id))].sort()).toEqual(
+      LIST.festivals
+        .map((f) => f.id)
+        .filter((id) => id !== "gondavalekar-maharaj-punyatithi")
+        .sort(),
+    );
+    expect(festivalsBetween("2027-01-01", "2027-01-10", PUNE, LIST).map((f) => f.date + " " + f.id)).toEqual([
+      "2027-01-02 gondavalekar-maharaj-punyatithi",
+      "2027-01-04 pradosh",
+    ]);
+    expect(all.filter((f) => f.date >= "2026-05-17" && f.date <= "2026-06-15").map((f) => f.date + " " + f.id)).toEqual([
+      "2026-05-28 pradosh",
+      "2026-06-12 pradosh",
+    ]);
   });
   test("the tithi each festival is kept for", () => {
     const d = festivalsFor("2026-10-20", PUNE, LIST);
@@ -124,7 +135,19 @@ describe("2026 in Columbus, Ohio (America/New_York)", () => {
     const pune = year(2026, PUNE);
     const earlier = Object.keys(pune).filter((id) => got[id] !== pune[id]);
     expect(earlier.sort()).toEqual(
-      ["akshaya-tritiya", "ashadhi-ekadashi", "bali-pratipada", "bhaubeej", "gokulashtami", "gondavalekar-maharaj-jayanti", "hanuman-jayanti", "narak-chaturdashi", "narali-purnima", "swarupanand-punyatithi", "tripurari-purnima"].sort(),
+      [
+        "akshaya-tritiya",
+        "ashadhi-ekadashi",
+        "bali-pratipada",
+        "bhaubeej",
+        "gokulashtami",
+        "gondavalekar-maharaj-jayanti",
+        "hanuman-jayanti",
+        "narak-chaturdashi",
+        "narali-purnima",
+        "swarupanand-punyatithi",
+        "tripurari-purnima",
+      ].sort(),
     );
     for (const id of earlier) {
       const a = new Date(pune[id]),
@@ -185,7 +208,17 @@ describe("Shri Gondhavlekar Maharaj Utsav: the nine days before Guru Purnima", (
   const days = (y, place) => festivalsBetween(y + "-06-01", y + "-08-31", place, LIST).filter((f) => f.id === "gondavalekar-maharaj-utsav");
   test("2026 in Pune: Day 1 on 20 July … Day 9 on 28 July, Guru Purnima on the 29th", () => {
     const d = days(2026, PUNE);
-    expect(d.map((f) => f.date)).toEqual(["2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-25", "2026-07-26", "2026-07-27", "2026-07-28"]);
+    expect(d.map((f) => f.date)).toEqual([
+      "2026-07-20",
+      "2026-07-21",
+      "2026-07-22",
+      "2026-07-23",
+      "2026-07-24",
+      "2026-07-25",
+      "2026-07-26",
+      "2026-07-27",
+      "2026-07-28",
+    ]);
     expect(d[0].en).toBe("Shri Gondhavlekar Maharaj Utsav · Day 1");
     expect(d[8].short).toEqual({ mr: "उत्सव ९", en: "Utsav 9" });
     expect(d[2].mr).toBe("श्री गोंदवलेकर महाराज उत्सव — दिवस ३");
@@ -199,9 +232,31 @@ describe("Pradosh: the trayodashi at dusk, in each paksha of every month (adhika
   const P = (from, to) => festivalsBetween(from, to, PUNE, LIST).filter((f) => f.id === "pradosh");
   test("2026 in Pune, as Drik Panchang gives it", () => {
     expect(P("2026-01-01", "2026-12-31").map((f) => f.date)).toEqual([
-      "2026-01-01", "2026-01-16", "2026-01-30", "2026-02-14", "2026-03-01", "2026-03-16", "2026-03-30", "2026-04-15", "2026-04-28",
-      "2026-05-14", "2026-05-28", "2026-06-12", "2026-06-27", "2026-07-12", "2026-07-26", "2026-08-10", "2026-08-25", "2026-09-08",
-      "2026-09-24", "2026-10-08", "2026-10-23", "2026-11-06", "2026-11-22", "2026-12-06", "2026-12-21",
+      "2026-01-01",
+      "2026-01-16",
+      "2026-01-30",
+      "2026-02-14",
+      "2026-03-01",
+      "2026-03-16",
+      "2026-03-30",
+      "2026-04-15",
+      "2026-04-28",
+      "2026-05-14",
+      "2026-05-28",
+      "2026-06-12",
+      "2026-06-27",
+      "2026-07-12",
+      "2026-07-26",
+      "2026-08-10",
+      "2026-08-25",
+      "2026-09-08",
+      "2026-09-24",
+      "2026-10-08",
+      "2026-10-23",
+      "2026-11-06",
+      "2026-11-22",
+      "2026-12-06",
+      "2026-12-21",
     ]);
   });
   test('tie "more": at dusk on both days, the one it covers longer (trayodashi 20:43 28 Feb → 19:09 1 Mar 2026: the 1st)', () => {

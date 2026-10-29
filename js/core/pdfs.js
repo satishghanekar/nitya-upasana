@@ -57,7 +57,15 @@ export function cleanPdfs(o) {
   list.forEach(function (/** @type {any} */ p) {
     var t = p && nameOf({ mr: p.title, en: p.titleEn });
     if (t && fileOk(p.file))
-      out.push({ id: str(p.id) || p.file.replace(/^pdfs\//, "").replace(/\.pdf$/i, ""), file: p.file, title: t, category: str(p.category), language: str(p.language), pages: count(p.pages), size: count(p.size) });
+      out.push({
+        id: str(p.id) || p.file.replace(/^pdfs\//, "").replace(/\.pdf$/i, ""),
+        file: p.file,
+        title: t,
+        category: str(p.category),
+        language: str(p.language),
+        pages: count(p.pages),
+        size: count(p.size),
+      });
   });
   return out;
 }
@@ -75,9 +83,10 @@ export function pdfShelves(pdfs, cats) {
     return { category: c, pdfs: [] };
   });
   pdfs.forEach(function (p) {
-    var s = out.filter(function (x) {
-      return x.category.id === p.category;
-    })[0] || out[0];
+    var s =
+      out.filter(function (x) {
+        return x.category.id === p.category;
+      })[0] || out[0];
     if (s) s.pdfs.push(p);
   });
   return out.filter(function (s) {
@@ -94,7 +103,11 @@ export function pdfShelves(pdfs, cats) {
  */
 export function pdfFacts(p) {
   var mb = p.size / 1e6,
-    size = !p.size ? "" : mb < 1 ? Math.max(1, Math.round(p.size / 1e3)) + " KB" : (mb < 10 ? (Math.round(mb * 10) / 10).toFixed(1) : String(Math.round(mb))).replace(/\.0$/, "") + " MB";
+    size = !p.size
+      ? ""
+      : mb < 1
+        ? Math.max(1, Math.round(p.size / 1e3)) + " KB"
+        : (mb < 10 ? (Math.round(mb * 10) / 10).toFixed(1) : String(Math.round(mb))).replace(/\.0$/, "") + " MB";
   return {
     mr: [p.pages ? dv(p.pages) + (p.pages === 1 ? " पान" : " पाने") : "", dv(size)].filter(Boolean).join(" · "),
     en: [p.pages ? p.pages + (p.pages === 1 ? " page" : " pages") : "", size].filter(Boolean).join(" · "),

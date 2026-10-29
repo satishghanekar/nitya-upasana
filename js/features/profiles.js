@@ -279,12 +279,26 @@ function renderList() {
       var on = p.id === a.id;
       return (
         "<li>" +
-        '<button type="button" class="pfp" data-id="' + p.id + '"' + (on ? ' aria-current="true"' : "") + ">" +
+        '<button type="button" class="pfp" data-id="' +
+        p.id +
+        '"' +
+        (on ? ' aria-current="true"' : "") +
+        ">" +
         badge(p) +
-        '<span class="pfnm" lang="' + langOf(p.name) + '">' + esc(p.name) + "</span>" +
+        '<span class="pfnm" lang="' +
+        langOf(p.name) +
+        '">' +
+        esc(p.name) +
+        "</span>" +
         (on ? '<span class="pfnow">' + CHECK + "<span>" + w.now + "</span></span>" : "") +
         "</button>" +
-        '<button type="button" class="pfe" data-id="' + p.id + '" aria-label="' + esc(w.edit + ": " + p.name) + '">' + PENCIL + "</button>" +
+        '<button type="button" class="pfe" data-id="' +
+        p.id +
+        '" aria-label="' +
+        esc(w.edit + ": " + p.name) +
+        '">' +
+        PENCIL +
+        "</button>" +
         "</li>"
       );
     })
@@ -298,8 +312,17 @@ function renderColours() {
   var ui = /** @type {"mr" | "en"} */ (P.ui === "mr" ? "mr" : "en");
   el("pfcol").innerHTML = COLOURS.map(function (c) {
     return (
-      '<label class="pfsw" style="--c:' + c.v + '"><input type="radio" name="pfcolour" value="' + c.v + '"' + (c.v === colour ? " checked" : "") +
-      ' aria-label="' + c[ui] + '"><span aria-hidden="true">' + CHECK + "</span></label>"
+      '<label class="pfsw" style="--c:' +
+      c.v +
+      '"><input type="radio" name="pfcolour" value="' +
+      c.v +
+      '"' +
+      (c.v === colour ? " checked" : "") +
+      ' aria-label="' +
+      c[ui] +
+      '"><span aria-hidden="true">' +
+      CHECK +
+      "</span></label>"
     );
   }).join("");
 }
