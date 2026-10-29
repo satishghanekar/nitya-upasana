@@ -171,6 +171,21 @@ test("each search shows its best results at the top, above the box and the keybo
   expect(Math.abs(r.j - r.h)).toBeLessThan(1);
   expect(Math.abs(r.b - (r.h - 300))).toBeLessThan(1);
   expect(r.pb).toBe("10px");
+  // an iPhone also slides the screen up as its keyboard opens (here 100px of a 400px keyboard): the Library goes down by
+  // as much (--vvt), so on screen its top is still under the top bar, and the box still just above the keyboard
+  const top0 = await page.evaluate(() => document.getElementById("jump").getBoundingClientRect().top);
+  await page.locator("#jump").evaluate((j) => {
+    j.style.setProperty("--kb", "400px");
+    j.style.setProperty("--vvt", "100px");
+  });
+  const s = await page.evaluate(() => ({
+    t: document.getElementById("jump").getBoundingClientRect().top,
+    b: document.getElementById("qbar").getBoundingClientRect().bottom,
+    h: innerHeight,
+  }));
+  expect(Math.abs(s.t - (top0 + 100))).toBeLessThan(1);
+  // (seen from the slid screen, 100px up: the box ends at the keyboard's top, h - 400)
+  expect(Math.abs(s.b - 100 - (s.h - 400))).toBeLessThan(1);
 });
 
 test("Recent: the places gone to from search, newest first; × takes one away, Clear all; kept after a reload @mobile", async ({ page }) => {
@@ -334,15 +349,15 @@ test("a pinch on the Library resizes only its list, with the reading page's text
       };
     }, fixed);
   const a = await look();
-  expect(a.list).toBeCloseTo(15, 0); // the book-index size at the automatic text size
+  expect(a.list).toBeCloseTo(17, 0); // the book-index size at the automatic text size
   for (let i = 0; i < 4; i++) await page.keyboard.press("Control+Equal");
   // the size reaches the page on the next frame (js/features/pinch.js): read it after that frame, not before (WebKit
   // on GitHub, busy laying the printout out in the background, read the size of three presses, then of four)
   await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r()))));
   const b = await look();
   expect(b.fs).toBeGreaterThan(a.fs);
-  expect(b.list).toBeCloseTo((15 * b.fs) / b.fsa, 1);
-  expect(b.head).toBeCloseTo((15 * b.fs) / b.fsa, 1);
+  expect(b.list).toBeCloseTo((17 * b.fs) / b.fsa, 1);
+  expect(b.head).toBeCloseTo((17 * b.fs) / b.fsa, 1);
   expect(b.fixed).toEqual(a.fixed);
   await expect(page.locator("#szt")).toContainText("Text size");
   // the reading page has the same size

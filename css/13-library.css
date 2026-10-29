@@ -329,6 +329,8 @@
   bottom: 0;
   padding: 0 0 var(--kb, 0px);
   overflow: hidden;
+  /* the iPhone's slide when its keyboard opens, undone (--vvt, js/text/search.js) */
+  transform: translateY(var(--vvt, 0px));
 }
 #jump .libin {
   display: flex;
@@ -491,12 +493,12 @@
 
 /* ==== The list follows the text size (Satish, 2026-10-21) ====
    A pinch (or Ctrl + / −) on the Library makes its list bigger or smaller, by the same share as the reading page
-   (one setting, P.fs): 15px at the automatic size (--fsa, set by js/text/autofit.js), 150% gives 22.5px. The top
-   bar, Back, the title and the search box keep their size. The sizes below are 08-contents-book.css's and
-   06-help-polish.css's, in ems of that 15px. */
+   (one setting, P.fs): 17px at the automatic size (--fsa, set by js/text/autofit.js; 15px until Satish asked for it
+   a little bigger in Sankathara Chaturthi, 2026-10-29), 150% gives 25.5px. The top bar, Back, the title and the
+   search box keep their size. The sizes below are 08-contents-book.css's and 06-help-polish.css's, in ems of it. */
 @media screen {
   #jl {
-    font-size: calc(var(--fs) * 15 / var(--fsa, 24));
+    font-size: calc(var(--fs) * 17 / var(--fsa, 24));
   }
   #jl .tocg ol.toc a,
   #jl .tocg ol.toc .lt,

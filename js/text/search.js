@@ -87,7 +87,12 @@ export function init() {
   if (vv) {
     var v = vv,
       kb = function () {
-        jp.style.setProperty("--kb", Math.max(0, Math.round(innerHeight - v.height - v.offsetTop)) + "px");
+        // On an iPhone the keyboard also slides what is on screen up (offsetTop), so the box above it stays in view:
+        // the Library goes down by as much (--vvt) and keeps room for the whole keyboard, so its top, with the best
+        // results, is still under the top bar, not slid out of view above the screen (Satish, 2026-10-29)
+        var o = Math.max(0, Math.round(v.offsetTop));
+        jp.style.setProperty("--kb", Math.max(0, Math.round(innerHeight - v.height - v.offsetTop) + o) + "px");
+        jp.style.setProperty("--vvt", o + "px");
       };
     v.addEventListener("resize", kb);
     v.addEventListener("scroll", kb);
