@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "node serve.mjs",
     "test": "playwright test",
+    "engines": "PW_PROJECTS=chromium,firefox,webkit,iphone,ipad,pixel playwright test",
     "quick": "node quick.mjs",
     "full": "npm run lint && npm run types && npm run unit && playwright test",
     "release": "npm run lhci",

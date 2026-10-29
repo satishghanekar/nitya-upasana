@@ -125,9 +125,9 @@ export function siteParts() {
   return ctx.SITE_PARTS;
 }
 
-/** Share, QR, Print, Help (and Add to Home Screen) sit under More on the home page: open it (as a reader would), then
+/** Share, QR, Help (and Add to Home Screen) sit under More on the home page: open it (as a reader would), then
  *  tap the button. */
-/** ⋯ More in the top bar: App, Share, QR, Print and Help. A choice closes it, and focus comes back to ⋯. */
+/** ⋯ More in the top bar: App, Share, QR and Help. A choice closes it, and focus comes back to ⋯. */
 export async function openMore(page) {
   if (!(await page.locator("#shr").isVisible())) await page.locator("#tmb").click();
 }
@@ -137,8 +137,8 @@ export async function tapMore(page, id) {
 }
 
 /**
- * Open the print builder at What, as last left (Print and Print this text are no longer in ⋯ More: Print in the bottom
- * bar opens it while reading; js/features/print.js also opens it on the event "nitya-print", which these tests use)
+ * Open the print builder at What, as last left (Print and Print this text are no longer in ⋯ More: Print in the top
+ * bar opens it; js/features/print.js also opens it on the event "nitya-print", which these tests use)
  * @param {import("@playwright/test").Page} page @param {{ ids?: string[], tab?: string }} [detail]
  */
 export async function openPrintBuilder(page, detail = {}) {
