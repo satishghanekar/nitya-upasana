@@ -21,7 +21,10 @@ npx playwright test print.spec.mjs   # one suite
 npx playwright test -g "kannada"     # tests whose name matches
 SAVE_PDFS=1 npx playwright test print.spec.mjs   # also keep every printed PDF in tests/pdfs/ to look at
 npm run lhci                         # Lighthouse CI: CLS fails the run; score, LCP and TBT targets warn until they are met
+npm run sister                       # still in line with the sister app (Sankathara Chaturthi, in the folder beside this one)?
 ```
+
+`npm run sister` (`tools/sister-check.mjs`, the same file in both apps) compares every script, style and test the two apps share with `tools/sister-baseline.json`: how many lines differed when they were last brought in line. A file further apart than that has drifted, most often a fix made in one app only: bring it to the other, then `npm run sister -- --update` and copy the baseline to the other app.
 
 `npm test` starts a small static server (`serve.mjs`, port 4173) by itself. On a failure, `npx playwright show-report` opens the details, with a trace of every step.
 
