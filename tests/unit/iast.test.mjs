@@ -19,8 +19,8 @@ const CHECKS = [
   ["क्लेशांपासुनि सोडवी तोडी भवपाशा ।", "kleśāṃpāsuni soḍavī toḍī bhavapāśā |"],
   ["डोळ्यांनी पाहिन रूप तुझें ।", "ḍoḷyāṃnī pāhina rūpa tujheṃ |"],
   ["ॐ भ॒द्रं कर्णे॑भिः शृणु॒याम॑ देवाः ।", "om̐ bha̱draṃ karṇe̍bhiḥ śṛṇu̱yāma̍ devāḥ |"],
-  ["स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ंस॑स्त॒नूभिः॑ ।", "sthi̱rairaṅgai̎stuṣṭu̱vāgṃsa̍sta̱nūbhi̍ḥ |"],
-  ["त्वं ज्ञानमयो विज्ञा॑नमयो॒ऽसि ॥ ४ ॥", "tvaṃ jñānamayo vijñā̍namayo̱'si || 4 ||"],
+  ["स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ं स॑स्त॒नूभिः॑ ।", "sthi̱rairaṅgai̎stuṣṭu̱vāgṃ sa̍sta̱nūbhi̍ḥ |"],
+  ["त्वं ज्ञानमयो विज्ञान॑मयो॒ऽसि ॥ ४ ॥", "tvaṃ jñānamayo vijñāna̍mayo̱'si || 4 ||"],
   ["शेंदुर लाल चढ़ायो अच्छा गजमुख को ।", "śendura lāla caṛhāyo acchā gajamukha ko |"],
   ["बाँझन को पुत्र देत, निर्धन को माया ॥", "bām̐jhana ko putra deta, nirdhana ko māyā ||"],
 ];

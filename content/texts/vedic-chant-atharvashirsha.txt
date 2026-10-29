@@ -14,8 +14,8 @@ credit-en: [An Atharva Veda Upanishad](https://en.wikipedia.org/wiki/Ganapati_At
 Om Bhadram Karnebhih Shrunuyama Devah |
 भ॒द्रं प॑श्येमा॒क्षभि॒र्यज॑त्राः ।
 Bhadram Pashyemakshabhiryajatrah |
-स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ंस॑स्त॒नूभिः॑ ।
-Sthirairangaistushtuvagmsastanubhih |
+स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ं स॑स्त॒नूभिः॑ ।
+Sthirairangaistushtuvagm Sastanubhih |
 व्यशे॑म दे॒वहि॑तं॒ यदायुः॑ ।
 Vyashema Devahitam Yadayuh |
 स्व॒स्ति न॒ इन्द्रो॑ वृ॒द्धश्र॑वाः ।
@@ -74,7 +74,7 @@ Tvamanandamayastvam Brahmamayah |
 Tvam Sachchidanandadvitiyosi |
 त्वं प्र॒त्यक्षं॒ ब्रह्मा॑सि ।
 Tvam Pratyaksham Brahmasi |
-त्वं ज्ञानमयो विज्ञा॑नमयो॒ऽसि ॥ ४ ॥
+त्वं ज्ञानमयो विज्ञान॑मयो॒ऽसि ॥ ४ ॥
 Tvam Dnyanamayo Vidnyanamayosi || 4 ||
 
 [para 5]
@@ -112,7 +112,7 @@ Tvam Brahma Tvam Vishnustvam // Rudrastvamindrastvamagnistvam
 Vayustvam Suryastvam Chandramastvam // Brahma Bhurbhuvah Svarom || 6 ||
 
 [7]
-ग॒णादिं᳚ पू॑र्वमुच्चा॒र्य॒ व॒र्णादीं᳚ स्तदन॒न्तरम् ।
+ग॒णादिं᳚ पूर्व॑मुच्चा॒र्य॒ व॒र्णादीं᳚ स्तदन॒न्तरम् ।
 Ganadim Purvamuchcharya Varnadim Stadanantaram |
 अनुस्वारः प॑रत॒रः । अर्धे᳚न्दुल॒सितम् ।
 Anusvarah Paratarah | Ardhendulasitam |
@@ -120,7 +120,7 @@ Anusvarah Paratarah | Ardhendulasitam |
 Tarena Ruddham | Etattava Manusvarupam |
 गकारः पू᳚र्वरू॒पम् । अकारो मध्य॑मरू॒पम् ।
 Gakarah Purvarupam | Akaro Madhyamarupam |
-अनुस्वारश्चा᳚न्त्यरू॒पम् । बिन्दु॑रुत्त॒ररूपम् ।
+अनुस्वारश्चा᳚न्त्यरू॒पम् । बिन्दुरुत्त॑ररू॒पम् ।
 Anusvarashchantyarupam | Binduruttararupam |
 नादः॑ सन्धा॒नम् । सग्ंहि॑ता स॒न्धिः ।
 Nadah Sandhanam | Samhita Sandhih |
@@ -140,7 +140,7 @@ Tanno Dantih Prachodayat || 8 ||
 [9]
 एकद॒न्तं च॑तुर्ह॒स्तं॒ पा॒शम॑ङ्कुश॒धारि॑णम् ।
 Ekadantam Chaturhastam Pashamankushadharinam |
-रदं॑ च॒ व॑रदं ह॒स्तै॒र्बि॒भ्राणं॑ मूष॒कध्व॑जम् ।
+रदं॑ च॒ वर॑दं ह॒स्तै॒र्बि॒भ्राणं॑ मूष॒कध्व॑जम् ।
 Radam Cha Varadam Hastairbibhranam Mushakadhvajam |
 रक्तं॑ ल॒म्बोद॑रं शू॒र्प॒क॒र्णकं॑ रक्त॒वास॑सम् ।
 Raktam Lambodaram Shurpakarnakam Raktavasasam |
@@ -174,7 +174,7 @@ Sa Sarvavighnairna Badhyate | // Sa Sarvatra Sukhamedhate |
 Sa Panchamahapapat Pramuchyate |
 सा॒यम॑धीया॒नो॒ दिवसकृतं पापं॑ नाश॒यति ।
 Sayamadhiyano Divasakrutam Papam Nashayati |
-प्रा॒त॑रधीया॒नो॒ रात्रि॑कृतं पापं॑ नाश॒यति ।
+प्रा॒तर॑धीया॒नो॒ रात्रि॑कृतं पापं॑ नाश॒यति ।
 Prataradhiyano Ratrikrutam Papam Nashayati |
 सायं प्रातः प्र॑युञ्जा॒नो॒ पापोऽपा॑पो भ॒वति ।
 Sayam Pratah Prayunjano Papopapo Bhavati |
@@ -196,7 +196,7 @@ Anena Ganapatimabhishinchati // Sa Vagmi Bhavati |
 Chaturthyamanashnan Japati // Sa Vidyavan Bhavati |
 इत्यथर्व॑णवा॒क्यम् ।
 Ityatharvanavakyam |
-ब्रह्माद्या॒व॑रणं वि॒द्यान्न बिभेति // कदा॑चने॒ति ॥ १२ ॥
+ब्रह्माद्या॒वर॑णं वि॒द्यान्न बिभेति // कदा॑चने॒ति ॥ १२ ॥
 Brahmadyavaranam Vidyanna Bibheti // Kadachaneti || 12 ||
 
 [13]

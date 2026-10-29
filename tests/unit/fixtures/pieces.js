@@ -65,8 +65,8 @@ window.CONTENT = {
         },
         {
          "l": "p1l3",
-         "mr": "स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ंस॑स्त॒नूभिः॑ ।",
-         "en": "Sthirairangaistushtuvagmsastanubhih |"
+         "mr": "स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ं स॑स्त॒नूभिः॑ ।",
+         "en": "Sthirairangaistushtuvagm Sastanubhih |"
         },
         {
          "l": "p1l4",
@@ -212,7 +212,7 @@ window.CONTENT = {
         },
         {
          "l": "p1l29",
-         "mr": "त्वं ज्ञानमयो विज्ञा॑नमयो॒ऽसि ॥ ४ ॥",
+         "mr": "त्वं ज्ञानमयो विज्ञान॑मयो॒ऽसि ॥ ४ ॥",
          "en": "Tvam Dnyanamayo Vidnyanamayosi || 4 ||"
         }
        ]
@@ -305,7 +305,7 @@ window.CONTENT = {
        "lines": [
         {
          "l": "p1l45",
-         "mr": "ग॒णादिं᳚ पू॑र्वमुच्चा॒र्य॒ व॒र्णादीं᳚ स्तदन॒न्तरम् ।",
+         "mr": "ग॒णादिं᳚ पूर्व॑मुच्चा॒र्य॒ व॒र्णादीं᳚ स्तदन॒न्तरम् ।",
          "en": "Ganadim Purvamuchcharya Varnadim Stadanantaram |"
         },
         {
@@ -325,7 +325,7 @@ window.CONTENT = {
         },
         {
          "l": "p1l49",
-         "mr": "अनुस्वारश्चा᳚न्त्यरू॒पम् । बिन्दु॑रुत्त॒ररूपम् ।",
+         "mr": "अनुस्वारश्चा᳚न्त्यरू॒पम् । बिन्दुरुत्त॑ररू॒पम् ।",
          "en": "Anusvarashchantyarupam | Binduruttararupam |"
         },
         {
@@ -374,7 +374,7 @@ window.CONTENT = {
         },
         {
          "l": "p1l57",
-         "mr": "रदं॑ च॒ व॑रदं ह॒स्तै॒र्बि॒भ्राणं॑ मूष॒कध्व॑जम् ।",
+         "mr": "रदं॑ च॒ वर॑दं ह॒स्तै॒र्बि॒भ्राणं॑ मूष॒कध्व॑जम् ।",
          "en": "Radam Cha Varadam Hastairbibhranam Mushakadhvajam |"
         },
         {
@@ -458,7 +458,7 @@ window.CONTENT = {
         },
         {
          "l": "p1l72",
-         "mr": "प्रा॒त॑रधीया॒नो॒ रात्रि॑कृतं पापं॑ नाश॒यति ।",
+         "mr": "प्रा॒तर॑धीया॒नो॒ रात्रि॑कृतं पापं॑ नाश॒यति ।",
          "en": "Prataradhiyano Ratrikrutam Papam Nashayati |"
         },
         {
@@ -513,7 +513,7 @@ window.CONTENT = {
         },
         {
          "l": "p1l82",
-         "mr": "ब्रह्माद्या॒व॑रणं वि॒द्यान्न बिभेति<br>कदा॑चने॒ति ॥ १२ ॥",
+         "mr": "ब्रह्माद्या॒वर॑णं वि॒द्यान्न बिभेति<br>कदा॑चने॒ति ॥ १२ ॥",
          "en": "Brahmadyavaranam Vidyanna Bibheti<br>Kadachaneti || 12 ||"
         }
        ]
