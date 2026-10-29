@@ -100,9 +100,7 @@
      the print view keeps a little space inside it on every page (box-decoration-break: clone).
      Only where the browser can do both, so text never touches the line. */
   @supports (box-decoration-break: clone) {
-
   }
-
 }
 
 /* ==== The print pop-up uses the Latin font ==== */

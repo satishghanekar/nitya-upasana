@@ -11,7 +11,7 @@
    - The profile sheet and the Restore dialog
    - Edit a person: fields and colours
    - Notes on the home page
-   - High contrast, print
+   - High contrast, reduced motion
 */
 
 /* ==== The profile chip (top bar, between the title and the buttons) ==== */
@@ -437,7 +437,7 @@
   border-left: 4px solid #a3191c;
 }
 
-/* ==== High contrast, reduced motion, print ==== */
+/* ==== High contrast, reduced motion ==== */
 /* high contrast is black: the red of Delete and of a problem turns light */
 [data-hc="1"] .pfdel,
 [data-hc="1"] .pferr {
@@ -449,11 +449,3 @@
   border-color: var(--ink);
 }
 /* (nothing here moves, so reduced motion needs no rule) */
-@media print {
-  .bar #who,
-  #pfm,
-  #bkm,
-  #home #pfnt {
-    display: none;
-  }
-}

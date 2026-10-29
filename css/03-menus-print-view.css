@@ -188,8 +188,10 @@ a.t {
   flex: none;
   color: var(--accent);
 }
-#shr button:hover {
-  background: var(--surface);
+@media (hover: hover) {
+  #shr button:hover {
+    background: var(--surface);
+  }
 }
 #shr button:focus-visible {
   outline: 2px solid var(--ink);
@@ -200,11 +202,6 @@ a.t {
   margin-top: 4px;
   border-top: 1px solid var(--rule);
   border-radius: 0 0 10px 10px;
-}
-@media print {
-  #shr {
-    display: none !important;
-  }
 }
 /* centred while it fits; taller than the screen (a phone on its side, 400% zoom) it starts at the top and the
    pop-up scrolls, so Close is always reachable (WCAG 1.4.10) */
@@ -255,14 +252,6 @@ a.t {
   color: var(--muted);
   margin: 10px 0 14px;
   overflow-wrap: anywhere;
-}
-
-@media print {
-  #qrm,
-  #inm,
-  .inb {
-    display: none !important;
-  }
 }
 
 /* ==== Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm) ==== */
@@ -368,11 +357,6 @@ a.t {
 }
 .skip:focus {
   top: calc(8px + env(safe-area-inset-top));
-}
-@media print {
-  .skip {
-    display: none;
-  }
 }
 #main:focus,
 #jump:focus,
@@ -1235,7 +1219,6 @@ span.prwho {
   .rftop .verse {
     border-left: 1pt solid #999;
   }
-
 }
 .rftop {
   margin: 6px 10px 1.3em;

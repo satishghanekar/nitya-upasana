@@ -26,8 +26,8 @@ const SUITES = [
   [/^tests\/(helpers|print-helpers|playwright\.config|serve)\.mjs$|^tests\/package/, () => ["ALL"]],
   [/^tests\/__snapshots__\/(\w[\w-]*)\.spec\.mjs\//, (m) => [m[1]]],
   // texts and lists
-  [/^content\/texts\//, () => ["content", "print"]],
-  [/^content\/library\.json$|^content\/categories\.json$/, () => ["content", "library", "print"]],
+  [/^content\/texts\//, () => ["content", "print", "print-view"]],
+  [/^content\/library\.json$|^content\/categories\.json$/, () => ["content", "library", "print", "print-view"]],
   [/^content\/pdfs(\.json$|\/)/, () => ["library", "offline"]],
   [/^content\/festivals\.json$/, () => ["calendar"]],
   [/^content\/routines\.json$/, () => ["today"]],
@@ -38,7 +38,7 @@ const SUITES = [
   // the text fonts: what each sets the texts in, on screen and in print
   [/^css\/0[0279]-|^js\/features\/(print|settings-panel)\.js$|^js\/store\/migrate\.js$/, () => ["fonts"]],
   [/^css\/01-theme\.css$/, () => ["a11y"]],
-  [/^css\/(03-menus-print-view|15-print)\.css$/, () => ["print"]],
+  [/^css\/(03-menus-print-view|15-print)\.css$/, () => ["print", "print-view"]],
   [/^css\/10-today\.css$/, () => ["today", "reading"]],
   [/^css\/11-profiles\.css$/, () => ["profiles"]],
   [/^css\/12-calendar\.css$/, () => ["calendar"]],
@@ -46,9 +46,9 @@ const SUITES = [
   [/^css\/14-builder\.css$/, () => ["builder"]],
   [/^css\/99-fallbacks\.css$/, () => ["compat"]],
   // the script, area by area
-  [/^js\/print\/|^js\/features\/print\.js$/, () => ["print"]],
+  [/^js\/print\/|^js\/features\/print\.js$/, () => ["print", "print-view"]],
   // the printout builds its own copy of the pieces with these (js/print/compose.js)
-  [/^js\/render\.js$|^js\/text\/(iast|layout|line-breaks|stanza-numbers|dhrupad-markers)\.js$|^js\/features\/bars\.js$/, () => ["print"]],
+  [/^js\/render\.js$|^js\/text\/(iast|layout|line-breaks|stanza-numbers|dhrupad-markers)\.js$|^js\/features\/bars\.js$/, () => ["print", "print-view"]],
   [/^js\/text\/(iast|format|content|load|dhrupad-markers|stanza-numbers)\.js$/, () => ["content", "interactions"]],
   [/^js\/text\/search/, () => ["library", "interactions"]],
   [/^js\/text\/(layout|line-breaks|autofit)\.js$/, () => ["layout", "visual"]],

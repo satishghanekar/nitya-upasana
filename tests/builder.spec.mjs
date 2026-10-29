@@ -21,8 +21,7 @@ const items = (page) => page.locator("#rtl li");
 const pick = (page, id) => page.locator(`#tpk input[value="${id}"]`);
 const btn = (page, id, a) => page.locator(`#rtl li[data-id="${id}"] button[data-a="${a}"]`);
 const ids = (page) => items(page).evaluateAll((l) => l.map((x) => x.dataset.id));
-const homeIds = (page) =>
-  rows(page).evaluateAll((l) => l.map((x) => x.querySelector("a.tgo").dataset.t));
+const homeIds = (page) => rows(page).evaluateAll((l) => l.map((x) => x.querySelector("a.tgo").dataset.t));
 
 async function openBuilder(page) {
   await page.locator("#tsed").click();
@@ -47,7 +46,9 @@ test("Edit beside the session opens the builder for the reading person, at that 
   await expect(page.locator("#tsed")).toBeFocused();
 });
 
-test("build Monday's morning: different by weekday, add with the picker, reorder with buttons and keys, remove, copy to Thursday; Home follows, after a reload too @mobile", async ({ page }) => {
+test("build Monday's morning: different by weekday, add with the picker, reorder with buttons and keys, remove, copy to Thursday; Home follows, after a reload too @mobile", async ({
+  page,
+}) => {
   await page.setViewportSize(PHONE);
   await openSite(page, SETUPS.marathi, { now: MON_EVENING });
   await openBuilder(page);
@@ -147,7 +148,9 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await expect(page.locator('#rtwk [aria-checked="true"]')).toHaveAccessibleName("Tuesday 20");
 });
 
-test("same every day again: asked first when the days differ (Cancel keeps them); the day's list for every day; Escape closes the builder", async ({ page }) => {
+test("same every day again: asked first when the days differ (Cancel keeps them); the day's list for every day; Escape closes the builder", async ({
+  page,
+}) => {
   await openSite(page, SETUPS.marathi, { now: MON_EVENING });
   await openBuilder(page);
   // every day alike: no question
@@ -256,7 +259,16 @@ test("each person has their own routine; Save a backup file → Restore brings i
   const errors = [];
   await openSite(page, SETUPS.marathi, { now: MON_EVENING, errors });
   await openBuilder(page);
-  for (const id of ["aarti-shendur-lal-chadhayo", "aarti-durge-durghat-bhari", "aarti-lavathavati-vikrala", "aarti-trigunatmak-traimurti", "aarti-dnyanaraja", "aarti-yei-o-vitthale", "aarti-jai-ganesh-deva", "aarti-jai-jagdish-hare"])
+  for (const id of [
+    "aarti-shendur-lal-chadhayo",
+    "aarti-durge-durghat-bhari",
+    "aarti-lavathavati-vikrala",
+    "aarti-trigunatmak-traimurti",
+    "aarti-dnyanaraja",
+    "aarti-yei-o-vitthale",
+    "aarti-jai-ganesh-deva",
+    "aarti-jai-jagdish-hare",
+  ])
     await btn(page, id, "rm").click();
   expect(await ids(page)).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
   await page.locator("#rbk").click();
@@ -373,12 +385,18 @@ test("44px targets in the builder and the picker @mobile", async ({ page }) => {
   await openBuilder(page);
   await page.locator('#rtmd [data-v="weekday"]').click();
   const small = await page.locator("#rtb button:visible, #tsed").evaluateAll((l) =>
-    l.map((b) => [b.id || b.getAttribute("aria-label") || b.textContent.trim(), b.getBoundingClientRect()]).filter(([, r]) => r.width < 44 || r.height < 44).map(([n]) => n),
+    l
+      .map((b) => [b.id || b.getAttribute("aria-label") || b.textContent.trim(), b.getBoundingClientRect()])
+      .filter(([, r]) => r.width < 44 || r.height < 44)
+      .map(([n]) => n),
   );
   expect(small).toEqual([]);
   await page.locator("#rtadd").click();
   const small2 = await page.locator("#tpk .tpkr, #tpk button, #tpk input.tpkq").evaluateAll((l) =>
-    l.map((b) => [b.className, b.getBoundingClientRect()]).filter(([, r]) => r.height < 44).map(([n]) => n),
+    l
+      .map((b) => [b.className, b.getBoundingClientRect()])
+      .filter(([, r]) => r.height < 44)
+      .map(([n]) => n),
   );
   expect(small2).toEqual([]);
 });
@@ -432,11 +450,7 @@ test("on a computer, editing the routine while reading a session: the reading pa
   // the session being read is the new list, in its order, and Next skips the text taken out
   const hrefs = await rows(page).evaluateAll((l) => l.map((x) => x.querySelector("a.tgo").getAttribute("href").replace(/^.*#/, "")));
   const inrun = () =>
-    page.evaluate(() =>
-      [...document.querySelectorAll("#main > .ash.inrun")]
-        .sort((a, b) => +a.style.order - +b.style.order)
-        .map((x) => x.id),
-    );
+    page.evaluate(() => [...document.querySelectorAll("#main > .ash.inrun")].sort((a, b) => +a.style.order - +b.style.order).map((x) => x.id));
   await expect.poll(inrun).toEqual(hrefs);
   await page.locator("#asn").click();
   await expect(page).toHaveURL(new RegExp("#" + hrefs[1] + "$"));

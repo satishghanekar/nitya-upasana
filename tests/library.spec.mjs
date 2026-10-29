@@ -8,9 +8,7 @@ import { openSite, settle, SETUPS, axeScan, axeEveryTheme, noViolations, useTest
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 // the bundled categories that have texts, in order (an empty one is left out of the list)
-const CATS = JSON.parse(readFileSync(new URL("../content/categories.json", import.meta.url), "utf8")).filter((c) =>
-  LIB.texts.some((t) => t.category === c.id),
-);
+const CATS = JSON.parse(readFileSync(new URL("../content/categories.json", import.meta.url), "utf8")).filter((c) => LIB.texts.some((t) => t.category === c.id));
 const GROUPS = CATS.map((c) => c.name.mr);
 const GROUPS_EN = CATS.map((c) => c.name.en);
 const VEDIC = LIB.texts.filter((t) => t.category === "vedic-chant");
@@ -311,9 +309,26 @@ test("the Library lists the texts by category; empty categories are left out; ea
   await page.locator("#hm").click();
   expect(await groups(page)).toEqual(GROUPS);
   expect(await inGroup(page, "vedic-chant")).toEqual(["p1", ...VEDIC.slice(1).map((t) => t.id)]);
-  expect(await inGroup(page, "aarti")).toEqual(["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10",
-    "aarti-jaydeva-jaydeva-samartha", "aarti-jay-jay-aarti-shrigururaya", "aarti-ovaloon-aarti-chaitanyabrahma", "aarti-kariton-guruvar",
-    "aarti-dhanya-jagin-guruvarya", "aarti-belaguve", "aarti-svastha-karin-shayan", "aarti-ovaloo-sapreme-aarti"]);
+  expect(await inGroup(page, "aarti")).toEqual([
+    "a1",
+    "a2",
+    "a3",
+    "a4",
+    "a5",
+    "a6",
+    "a7",
+    "a8",
+    "a9",
+    "a10",
+    "aarti-jaydeva-jaydeva-samartha",
+    "aarti-jay-jay-aarti-shrigururaya",
+    "aarti-ovaloon-aarti-chaitanyabrahma",
+    "aarti-kariton-guruvar",
+    "aarti-dhanya-jagin-guruvarya",
+    "aarti-belaguve",
+    "aarti-svastha-karin-shayan",
+    "aarti-ovaloo-sapreme-aarti",
+  ]);
   // numbered from 1 in each category (Satish, 2026-10-21), in Marathi and English digits
   for (const g of await page.locator("#jl .tocg").all()) {
     const n = await g.locator("a[data-go]").count();
@@ -540,7 +555,12 @@ test("English first with Marathi second: the sheet names in English with the Mar
   await expect(page.locator("#lbcl .lbn").first()).toHaveText("Vedic Chant");
   await expect(page.locator("#lbcl .lbo").first()).toHaveText("वैदिक मंत्र");
   // the list's category names put English first, as the titles do
-  expect(await page.locator("#jl .tocg .gh").first().evaluate((h) => h.firstElementChild.className)).toBe("en");
+  expect(
+    await page
+      .locator("#jl .tocg .gh")
+      .first()
+      .evaluate((h) => h.firstElementChild.className),
+  ).toBe("en");
 });
 
 for (const [name, prefs, themes] of [
@@ -584,7 +604,14 @@ const PDFS = {
   pdfs: [
     { id: "vedic-chant-dasbodh", file: "pdfs/dasbodh.pdf", title: "दासबोध", titleEn: "Dasbodh", category: "vedic-chant", language: "mr" },
     { id: "stotra-pothi", file: "pdfs/pothi.pdf", titleEn: "Pothi", category: "stotra", language: "sa", pages: 48, size: 4058213 },
-    { id: "vedic-chant-gurucharitra", file: "pdfs/Shri Gurucharitra.pdf", title: "श्री गुरुचरित्र", titleEn: "Shri Gurucharitra", category: "vedic-chant", language: "mr" },
+    {
+      id: "vedic-chant-gurucharitra",
+      file: "pdfs/Shri Gurucharitra.pdf",
+      title: "श्री गुरुचरित्र",
+      titleEn: "Shri Gurucharitra",
+      category: "vedic-chant",
+      language: "mr",
+    },
     { id: "aarti-x", file: "../index.html", title: "Not a PDF", category: "aarti" },
   ],
 };
@@ -675,7 +702,10 @@ test("the PDFs tab in Marathi menus @mobile", async ({ page }) => {
 });
 
 test("the Books tab follows Kannada letters and English only", async ({ browser }) => {
-  for (const [setup, first] of [["kannada", "ದಾಸಬೋಧ"], ["english", "Dasbodh"]]) {
+  for (const [setup, first] of [
+    ["kannada", "ದಾಸಬೋಧ"],
+    ["english", "Dasbodh"],
+  ]) {
     const page = await browser.newPage();
     await withPdfs(page);
     await openSite(page, SETUPS[setup], { now: EVENING });
@@ -700,10 +730,13 @@ test("axe: the PDFs tab, in every theme; 44px tabs", async ({ page }) => {
 for (const [name, set] of [
   ["English in the scholarly spelling", (page) => page.locator("#sl1s").selectOption("en:iast")],
   ["Kannada letters", (page) => page.locator("#sl1s").selectOption("kn")],
-  ["Marathi menus", async (page) => {
-    await page.locator('#spv button[data-v="screen"]').click();
-    await page.locator('#su button[data-v="mr"]').click();
-  }],
+  [
+    "Marathi menus",
+    async (page) => {
+      await page.locator('#spv button[data-v="screen"]').click();
+      await page.locator('#su button[data-v="mr"]').click();
+    },
+  ],
 ]) {
   test(`${name}, changed in Settings: the Library as after a reload`, async ({ page }) => {
     await withPdfs(page);

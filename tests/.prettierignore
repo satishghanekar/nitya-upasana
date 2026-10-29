@@ -1,0 +1,7 @@
+# Not laid out by Prettier: what the tests record or produce, and the texts' fixtures
+__snapshots__/
+test-results/
+playwright-report/
+.lighthouseci/
+pdfs/
+unit/fixtures/

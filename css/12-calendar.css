@@ -10,7 +10,6 @@
    - The day card (#cald)
    - The month (#calm): a table of day buttons, shukla and krishna shading, moon marks, the key
    - Tablets and desktops: one tab at a time, across the width
-   - Print
 */
 
 /* ==== Krishna paksha shading (--ck): a step darker than the shukla days (--hdrt), with the muted text and the
@@ -125,8 +124,10 @@
   white-space: nowrap;
   cursor: zoom-in;
 }
-#pan .psun:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  #pan .psun:hover {
+    color: var(--accent);
+  }
 }
 #pan .psun img {
   display: block;
@@ -151,8 +152,10 @@
   font: inherit;
   cursor: pointer;
 }
-#ploc:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  #ploc:hover {
+    color: var(--accent);
+  }
 }
 #ploc:focus-visible {
   outline: 2px solid var(--ink);
@@ -226,8 +229,10 @@
   color: var(--accent);
   cursor: pointer;
 }
-#cbk:hover {
-  background: var(--hdrl);
+@media (hover: hover) {
+  #cbk:hover {
+    background: var(--hdrl);
+  }
 }
 #cbk:focus-visible,
 #cal button:focus-visible {
@@ -320,8 +325,10 @@
   text-decoration: underline dotted;
   text-underline-offset: 3px;
 }
-#cald dd a:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  #cald dd a:hover {
+    color: var(--accent);
+  }
 }
 #cald dt {
   padding-right: 14px;
@@ -520,9 +527,10 @@
   background:
     radial-gradient(circle at 64% 36%, rgb(176 132 52 / 0.38) 0 13%, transparent 15%),
     radial-gradient(circle at 38% 66%, rgb(176 132 52 / 0.3) 0 11%, transparent 13%),
-    radial-gradient(circle at 30% 40%, rgb(176 132 52 / 0.22) 0 7%, transparent 9%),
-    radial-gradient(circle at 40% 35%, #fffbe9, #f6dc96 55%, #dcae48);
-  box-shadow: 0 0 0 0.75px #c99a3a, 0 0 5px 1px rgb(246 206 110 / 0.6);
+    radial-gradient(circle at 30% 40%, rgb(176 132 52 / 0.22) 0 7%, transparent 9%), radial-gradient(circle at 40% 35%, #fffbe9, #f6dc96 55%, #dcae48);
+  box-shadow:
+    0 0 0 0.75px #c99a3a,
+    0 0 5px 1px rgb(246 206 110 / 0.6);
 }
 .mn.new {
   border: 1.25px solid #d6b25e;
@@ -723,8 +731,10 @@
   text-align: start;
   cursor: pointer;
 }
-.upr:hover .un {
-  color: var(--accent);
+@media (hover: hover) {
+  .upr:hover .un {
+    color: var(--accent);
+  }
 }
 .upd {
   display: flex;
@@ -865,8 +875,10 @@
   text-align: start;
   cursor: pointer;
 }
-#upw .upx:hover b {
-  color: var(--accent);
+@media (hover: hover) {
+  #upw .upx:hover b {
+    color: var(--accent);
+  }
 }
 #upw .upxl {
   font: 700 11px/1.4 var(--lat);
@@ -908,14 +920,6 @@
   .cd .fs,
   .cd .hs {
     font-size: 11.5px;
-  }
-}
-
-/* ==== Print: neither the line nor the page is printed ==== */
-@media print {
-  #cal,
-  #pan {
-    display: none;
   }
 }
 

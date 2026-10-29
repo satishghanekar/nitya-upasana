@@ -49,10 +49,7 @@ export function init() {
     sp = JSON.parse(localStorage.getItem("aarti2-pos") || "null");
   } catch (e) {}
   el = h && pieceEl(h);
-  var reading =
-    el && el.id !== "home"
-      ? true
-      : !h && !!(sp && sp.id && Date.now() - sp.t < 12 * 3600000 && pieceEl(sp.id));
+  var reading = el && el.id !== "home" ? true : !h && !!(sp && sp.id && Date.now() - sp.t < 12 * 3600000 && pieceEl(sp.id));
   solo(el && el.id !== "home" ? el.id : !h && reading && sp ? sp.id : "");
   if (reading) document.documentElement.removeAttribute("data-hv");
   else document.documentElement.setAttribute("data-hv", "1");
@@ -103,12 +100,12 @@ export function init() {
     if (sp && Date.now() - sp.t < 12 * 3600000 && (sp.id || sp.y > 0)) {
       moved = false;
       goPos = function () {
-          if (moved) return;
-          var el = sp.id && pieceEl(sp.id);
-          // a piece not shown: stay at the top, on Home on its own
-          if (el && el.offsetParent === null) return homeView(true);
-          scrollTo(0, el ? el.getBoundingClientRect().top + scrollY + sp.y : sp.y);
-        };
+        if (moved) return;
+        var el = sp.id && pieceEl(sp.id);
+        // a piece not shown: stay at the top, on Home on its own
+        if (el && el.offsetParent === null) return homeView(true);
+        scrollTo(0, el ? el.getBoundingClientRect().top + scrollY + sp.y : sp.y);
+      };
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
       setTimeout(goPos, 50);
       setTimeout(goPos, 400);

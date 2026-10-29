@@ -12,7 +12,6 @@
    - The Edit categories button
    - The categories sheet
    - Search results: texts, then lines
-   - Print
 */
 
 /* ==== Chants | Books, पाठ | पोथी (#jtb, js/features/contents-list.js): shown only when the Library has PDFs; the
@@ -438,7 +437,9 @@
 }
 #rcl .rs {
   display: block;
-  font: 600 12px "Inter", var(--body);
+  font:
+    600 12px "Inter",
+    var(--body);
   color: var(--muted);
 }
 #rcl .rl {
@@ -462,15 +463,9 @@
   font: 400 22px/1 var(--lat);
   cursor: pointer;
 }
-#rcl .rcx:hover {
-  color: var(--accent);
-}
-
-/* ==== Print: none of this is printed ==== */
-@media print {
-  #lbr,
-  #lbm {
-    display: none !important;
+@media (hover: hover) {
+  #rcl .rcx:hover {
+    color: var(--accent);
   }
 }
 

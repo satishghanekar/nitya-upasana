@@ -131,7 +131,14 @@ function solar(r) {
 var DV = "०१२३४५६७८९";
 /** A day's number in a name: {n}, in Devanagari digits in Marathi @param {string} s @param {number} n @param {boolean} mr */
 function nth(s, n, mr) {
-  return s.replace("{n}", mr ? String(n).replace(/\d/g, function (c) { return DV[+c]; }) : String(n));
+  return s.replace(
+    "{n}",
+    mr
+      ? String(n).replace(/\d/g, function (c) {
+          return DV[+c];
+        })
+      : String(n),
+  );
 }
 /** the tithis 1–30 of a lunar rule @param {LunarRule} r */
 function tithiNs(r) {
@@ -196,8 +203,7 @@ export function festivalsBetween(from, to, place, list) {
         // the days it is current in
         /** @type {string[]} */
         var cand = [];
-        for (var k = panchangDay(new Date(s), place); times(k).ref.getTime() < e && cand.length < 4; k = addDays(k, 1))
-          cand.push(k);
+        for (var k = panchangDay(new Date(s), place); times(k).ref.getTime() < e && cand.length < 4; k = addDays(k, 1)) cand.push(k);
         fs.forEach(function (f) {
           var r = /** @type {LunarRule} */ (f.rule);
           if (r.masa ? masa.adhika || r.masa !== masa.n : false) return;
@@ -212,9 +218,11 @@ export function festivalsBetween(from, to, place, list) {
           });
           // "more": of two days, the one whose karmakala the tithi covers longer
           if (r.tie === "more" && hits.length > 1)
-            hits = [hits.reduce(function (a, b) {
-              return cover(b) > cover(a) ? b : a;
-            })];
+            hits = [
+              hits.reduce(function (a, b) {
+                return cover(b) > cover(a) ? b : a;
+              }),
+            ];
           // one day: that day; two: the rule's tie between them; none: the rule's tie between the days it is
           // current in daylight (so a tithi that only begins in a day's last hours before sunrise does not claim it)
           var lit = cand.filter(function (k) {
@@ -293,11 +301,9 @@ function dateKey(d, place) {
   }
   /** @type {Record<string, string>} */
   var p = {};
-  new Intl.DateTimeFormat("en-US", { timeZone: place.tz, year: "numeric", month: "2-digit", day: "2-digit" })
-    .formatToParts(d)
-    .forEach(function (x) {
-      p[x.type] = x.value;
-    });
+  new Intl.DateTimeFormat("en-US", { timeZone: place.tz, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(d).forEach(function (x) {
+    p[x.type] = x.value;
+  });
   return p.year + "-" + p.month + "-" + p.day;
 }
 

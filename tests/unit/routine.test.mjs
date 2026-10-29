@@ -40,13 +40,21 @@ const MON = 1,
 // The rules below are shown on a simple routine of the shape the builder starts from: one list each session, every day
 // (the bundled default, content/routines.json, now differs by weekday; its own tests are in today.test.mjs)
 const AARTIS = ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-lavathavati-vikrala", "aarti-ghalin-lotangan"];
-const SIMPLE = { morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha"] }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: AARTIS } };
+const SIMPLE = {
+  morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha"] },
+  afternoon: { mode: "fixed", texts: [] },
+  evening: { mode: "fixed", texts: AARTIS },
+};
 
 describe("the rules for a person's lists", () => {
   test("a person with no routine of their own edits a copy of the default (content/routines.json), unchanged", () => {
     expect(editable(null, ROUTINE)).toEqual(ROUTINE);
     // the copy is the person's own: changing it leaves the default as it was
-    const DEF = { morning: { mode: "weekday", days: { mon: ["aarti-sukhkarta"] } }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: [] } };
+    const DEF = {
+      morning: { mode: "weekday", days: { mon: ["aarti-sukhkarta"] } },
+      afternoon: { mode: "fixed", texts: [] },
+      evening: { mode: "fixed", texts: [] },
+    };
     const r = editable(null, DEF);
     r.morning.days.mon.push("x");
     expect(DEF.morning.days.mon).not.toContain("x");
@@ -54,7 +62,11 @@ describe("the rules for a person's lists", () => {
     expect(DEF.evening.texts).not.toContain("x");
     // their own wins when they have one; nothing at all gives three empty sessions
     expect(editable({ morning: { mode: "fixed", texts: ["aarti-sukhkarta"] } }, ROUTINE).morning.texts).toEqual(["aarti-sukhkarta"]);
-    expect(editable(null, null)).toEqual({ morning: { mode: "fixed", texts: [] }, afternoon: { mode: "fixed", texts: [] }, evening: { mode: "fixed", texts: [] } });
+    expect(editable(null, null)).toEqual({
+      morning: { mode: "fixed", texts: [] },
+      afternoon: { mode: "fixed", texts: [] },
+      evening: { mode: "fixed", texts: [] },
+    });
   });
 
   test("Same every day → Different by weekday: every day starts with the one list; back again takes the day shown", () => {
@@ -190,11 +202,30 @@ describe("the routine in a profile and in a backup file", () => {
 
   test("a backup from version 1.7 (no routine in it) restores everyone on the default routine", () => {
     const old = {
-      profiles: [{ id: "paai", name: "Aai", initials: "A", colour: COLOURS[0].v, settings, checklist: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta"] } }, created: NOW, updated: NOW }],
+      profiles: [
+        {
+          id: "paai",
+          name: "Aai",
+          initials: "A",
+          colour: COLOURS[0].v,
+          settings,
+          checklist: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta"] } },
+          created: NOW,
+          updated: NOW,
+        },
+      ],
       activeProfile: "paai",
       settings: devicePart(defaults(ENV)),
     };
-    const text = JSON.stringify({ format: "nitya", schema: 1, kind: "backup", app: "aarti-v1.7", created: NOW, payload: old, sha256: sha256(JSON.stringify(old)) });
+    const text = JSON.stringify({
+      format: "nitya",
+      schema: 1,
+      kind: "backup",
+      app: "aarti-v1.7",
+      created: NOW,
+      payload: old,
+      sha256: sha256(JSON.stringify(old)),
+    });
     const r = parseBackup(text, ENV);
     expect(r.ok).toBe(true);
     expect(r.data.profiles[0].routine).toBeNull();

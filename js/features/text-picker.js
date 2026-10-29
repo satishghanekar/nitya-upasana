@@ -100,24 +100,42 @@ export function createPicker(el, o) {
     el.lang = o.lang();
     el.innerHTML =
       '<div class="tpkin">' +
-      '<div class="tpkhd"><h3 id="tpkt" tabindex="-1">' + esc(w.heading) + "</h3>" +
-      '<button type="button" class="tpkx">' + esc(w.done) + "</button></div>" +
-      '<input type="search" class="tpkq" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="' + esc(w.search) + '" aria-label="' + esc(w.search) + '">' +
+      '<div class="tpkhd"><h3 id="tpkt" tabindex="-1">' +
+      esc(w.heading) +
+      "</h3>" +
+      '<button type="button" class="tpkx">' +
+      esc(w.done) +
+      "</button></div>" +
+      '<input type="search" class="tpkq" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="' +
+      esc(w.search) +
+      '" aria-label="' +
+      esc(w.search) +
+      '">' +
       '<ul class="tpkl">' +
       texts
         .map(function (t) {
           var cat = (w.cats && w.cats[t.category]) || "";
           return (
-            '<li data-id="' + esc(t.id) + '"><label class="tpkr"><input type="checkbox" value="' + esc(t.id) + '"' + (o.isOn(t.id) ? " checked" : "") + ">" +
+            '<li data-id="' +
+            esc(t.id) +
+            '"><label class="tpkr"><input type="checkbox" value="' +
+            esc(t.id) +
+            '"' +
+            (o.isOn(t.id) ? " checked" : "") +
+            ">" +
             '<span class="tpkc" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>' +
-            '<span class="tt">' + o.name(t) + "</span>" +
+            '<span class="tt">' +
+            o.name(t) +
+            "</span>" +
             (cat ? '<span class="ttg">' + esc(cat) + "</span>" : "") +
             "</label></li>"
           );
         })
         .join("") +
       "</ul>" +
-      '<p class="tpkn" hidden>' + esc(w.none) + "</p>" +
+      '<p class="tpkn" hidden>' +
+      esc(w.none) +
+      "</p>" +
       '<p class="tpks sr" role="status"></p>' +
       "</div>";
     var input = /** @type {HTMLInputElement} */ (el.querySelector(".tpkq"));

@@ -61,7 +61,10 @@ describe("CONTENT from the text files", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\ncategory: aarti\nlanguage: mr\nrefrain: every-verse\n---\n";
     const t = parseText(head + "[once]\nक\nK\n\n[note: अ | a]\n\n[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[once]\nघ\nGh\n");
     const p = toPiece(t, 1, lib);
-    expect(p.lead).toEqual([{ kind: "dh", lines: [{ l: "x.1", mr: "क", en: "K" }] }, { rmk: { mr: "अ", en: "a" }, nt: true }]);
+    expect(p.lead).toEqual([
+      { kind: "dh", lines: [{ l: "x.1", mr: "क", en: "K" }] },
+      { rmk: { mr: "अ", en: "a" }, nt: true },
+    ]);
     expect(p.refrain.lines).toEqual([{ mr: "ख", en: "Kh" }]);
     expect(p.items.map((i) => i.kind || (i.rmk ? "rmk" : "stanza"))).toEqual(["stanza", "rmk", "rf", "dh"]);
     expect(p.items.flatMap((i) => (i.lines || []).map((l) => l.l))).toEqual(["x.2", "x.3", "x.4"]);
@@ -92,7 +95,11 @@ describe("content checks", () => {
   test("the reading order is the Library's: by category, each numbered from 1, every text once", () => {
     const C = buildContent(lib, files, categories);
     expect(C.categories.map((c) => c.id)).toEqual([...categories].sort((a, b) => a.order - b.order).map((c) => c.id));
-    expect(pieces(C).map((p) => p.text).sort()).toEqual(lib.texts.map((t) => t.id).sort());
+    expect(
+      pieces(C)
+        .map((p) => p.text)
+        .sort(),
+    ).toEqual(lib.texts.map((t) => t.id).sort());
     for (const c of C.categories) {
       expect(c.pieces.map((p) => p.no.en)).toEqual(c.pieces.map((_, i) => i + 1 + "."));
       for (const p of c.pieces) expect(lib.texts.find((t) => t.id === p.text).category).toBe(c.id);

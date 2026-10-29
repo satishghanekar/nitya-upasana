@@ -19,7 +19,6 @@
    - Home on its own: no pieces under it
    - On the home page: no bottom bar, Library in the top bar; while reading, Library is in the bottom bar
    - The Library page
-   - Print
 */
 
 /* ==== The home page: picture and date ==== */
@@ -591,9 +590,11 @@
   color: var(--accent);
   cursor: pointer;
 }
-#jbk:hover,
-#xc:hover {
-  background: var(--hdrl);
+@media (hover: hover) {
+  #jbk:hover,
+  #xc:hover {
+    background: var(--hdrl);
+  }
 }
 #jbk:focus-visible,
 #xc:focus-visible {
@@ -618,19 +619,6 @@
 #jl .tocg ol.toc a:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 0;
-}
-
-/* ==== Print ==== */
-@media print {
-  #tdy,
-  #skt,
-  #fst,
-  #upw,
-  #tdb,
-  #pan,
-  #tsc {
-    display: none;
-  }
 }
 
 /* ==== Desktop B: the Vedic calendar (#cal), Settings (#panel) and the Library (#jump) open in the
@@ -717,7 +705,6 @@
     box-shadow: inset 0 0 0 1px var(--accent);
   }
 }
-
 
 /* ==== Tablets held upright: Home is one larger column ==== */
 @media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {

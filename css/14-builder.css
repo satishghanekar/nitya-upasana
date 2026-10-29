@@ -12,7 +12,6 @@
    - The list: grip, number, title, ↑ ↓ ✕
    - Add texts: the picker (#tpk), a sheet on phones and tablets
    - Wide screens: the picker beside the list
-   - Print
 */
 
 /* ==== Edit beside the session on Home, and an empty session (js/features/today-card.js) ==== */
@@ -655,14 +654,6 @@
     overflow-y: auto;
   }
   #rtadd {
-    display: none;
-  }
-}
-
-/* ==== Print ==== */
-@media print {
-  #rtb,
-  #tsed {
     display: none;
   }
 }

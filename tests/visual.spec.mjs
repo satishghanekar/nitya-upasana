@@ -94,10 +94,15 @@ const CASES = [
   ["settings-desktop", "desktop", SETUPS.marathi, (p) => p.locator("#aa").click()],
   ["settings-tablet", "tablet", SETUPS.marathi, (p) => p.locator("#aa").click()],
   ["settings-dark", "phone", { ...SETUPS.marathi, th: "dark" }, (p) => p.locator("#aa").click()],
-  ["search-phone", "phone", SETUPS.marathi, async (p) => {
-    await p.locator("#hm").click();
-    await p.locator("#q").fill("sukh");
-  }],
+  [
+    "search-phone",
+    "phone",
+    SETUPS.marathi,
+    async (p) => {
+      await p.locator("#hm").click();
+      await p.locator("#q").fill("sukh");
+    },
+  ],
   ["library-phone", "phone", SETUPS.marathi, (p) => p.locator("#hm").click()],
   ["library-desktop", "desktop", SETUPS.marathi, (p) => p.locator("#hm").click()],
   ["library-tablet", "tablet", SETUPS.marathi, (p) => p.locator("#hm").click()],
@@ -114,20 +119,29 @@ const CASES = [
   ["print-how-phone", "phone", SETUPS.marathi, async (p) => (await printBuilder(p), p.locator("#prnx").click())],
   ["print-builder-desktop", "desktop", SETUPS.marathi, printBuilder],
   // the Routine tab: the default routine, the whole week, each text once with its tag
-  ["print-routine-phone", "phone", SETUPS.marathi, async (p) => {
-    await printBuilder(p);
-    await p.locator("#prtab-routine").click();
-    await expect(p.locator(".prrl .prtag").first()).toHaveText(/\w/);
-  }],
+  [
+    "print-routine-phone",
+    "phone",
+    SETUPS.marathi,
+    async (p) => {
+      await printBuilder(p);
+      await p.locator("#prtab-routine").click();
+      await expect(p.locator(".prrl .prtag").first()).toHaveText(/\w/);
+    },
+  ],
 ];
 
 // Print, open at What once the first-page preview (with its fonts) is in
 async function printBuilder(p) {
   await openPrintBuilder(p);
-  await p.waitForFunction(() => {
-    const f = document.querySelector("#prsheet iframe");
-    return f && f.contentDocument && f.contentDocument.fonts.status === "loaded";
-  }, null, { timeout: 20_000 });
+  await p.waitForFunction(
+    () => {
+      const f = document.querySelector("#prsheet iframe");
+      return f && f.contentDocument && f.contentDocument.fonts.status === "loaded";
+    },
+    null,
+    { timeout: 20_000 },
+  );
 }
 
 for (const [name, size, prefs, prep, now] of CASES) {

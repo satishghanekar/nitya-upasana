@@ -1,6 +1,6 @@
 // Interactions: what readers do, checked in every browser engine (and on phone emulation for @mobile).
 import { test, expect } from "@playwright/test";
-import { openSite, settle, SETUPS, PREFS_KEY , openMore, tapMore, readText } from "./helpers.mjs";
+import { openSite, settle, SETUPS, PREFS_KEY, openMore, tapMore, readText } from "./helpers.mjs";
 
 const prefs = (page) => page.evaluate((k) => JSON.parse(localStorage.getItem(k)), PREFS_KEY);
 const rootAttr = (page, a) => page.evaluate((a) => document.documentElement.getAttribute(a), a);
@@ -370,33 +370,39 @@ test.describe("pinch @chromium-only", () => {
   test.use({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 844 } });
   // fires a two-finger touchstart on the element and reports whether the site stopped the browser's zoom
   const pinchStart = (page, selector) =>
-    page.locator(selector).first().evaluate((el) => {
-      const r = el.getBoundingClientRect();
-      const t = (id, dx) => new Touch({ identifier: id, target: el, clientX: r.left + 20 + dx, clientY: r.top + 10 });
-      const touches = [t(1, 0), t(2, 60)];
-      const ev = new TouchEvent("touchstart", { touches, targetTouches: touches, changedTouches: touches, bubbles: true, cancelable: true });
-      el.dispatchEvent(ev);
-      const end = new TouchEvent("touchend", { touches: [], targetTouches: [], changedTouches: touches, bubbles: true, cancelable: true });
-      el.dispatchEvent(end);
-      return ev.defaultPrevented;
-    });
+    page
+      .locator(selector)
+      .first()
+      .evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        const t = (id, dx) => new Touch({ identifier: id, target: el, clientX: r.left + 20 + dx, clientY: r.top + 10 });
+        const touches = [t(1, 0), t(2, 60)];
+        const ev = new TouchEvent("touchstart", { touches, targetTouches: touches, changedTouches: touches, bubbles: true, cancelable: true });
+        el.dispatchEvent(ev);
+        const end = new TouchEvent("touchend", { touches: [], targetTouches: [], changedTouches: touches, bubbles: true, cancelable: true });
+        el.dispatchEvent(end);
+        return ev.defaultPrevented;
+      });
 
   // spreads two fingers apart on the element and returns the text size before and after
   const pinchOut = (page, selector) =>
-    page.locator(selector).first().evaluate(async (el) => {
-      const fs = () => document.documentElement.style.getPropertyValue("--fs");
-      const before = fs();
-      const r = el.getBoundingClientRect();
-      const t = (id, x) => new Touch({ identifier: id, target: el, clientX: r.left + x, clientY: r.top + 10 });
-      const fire = (type, touches) =>
-        el.dispatchEvent(new TouchEvent(type, { touches, targetTouches: touches, changedTouches: touches, bubbles: true, cancelable: true }));
-      fire("touchstart", [t(1, 20), t(2, 80)]);
-      fire("touchmove", [t(1, 10), t(2, 200)]);
-      await new Promise((ok) => requestAnimationFrame(() => requestAnimationFrame(ok)));
-      const after = fs();
-      el.dispatchEvent(new TouchEvent("touchend", { touches: [], targetTouches: [], changedTouches: [t(1, 10), t(2, 200)], bubbles: true }));
-      return { before, after };
-    });
+    page
+      .locator(selector)
+      .first()
+      .evaluate(async (el) => {
+        const fs = () => document.documentElement.style.getPropertyValue("--fs");
+        const before = fs();
+        const r = el.getBoundingClientRect();
+        const t = (id, x) => new Touch({ identifier: id, target: el, clientX: r.left + x, clientY: r.top + 10 });
+        const fire = (type, touches) =>
+          el.dispatchEvent(new TouchEvent(type, { touches, targetTouches: touches, changedTouches: touches, bubbles: true, cancelable: true }));
+        fire("touchstart", [t(1, 20), t(2, 80)]);
+        fire("touchmove", [t(1, 10), t(2, 200)]);
+        await new Promise((ok) => requestAnimationFrame(() => requestAnimationFrame(ok)));
+        const after = fs();
+        el.dispatchEvent(new TouchEvent("touchend", { touches: [], targetTouches: [], changedTouches: [t(1, 10), t(2, 200)], bubbles: true }));
+        return { before, after };
+      });
 
   test("on the home page a pinch does nothing", async ({ page }) => {
     await openSite(page, SETUPS.marathi);

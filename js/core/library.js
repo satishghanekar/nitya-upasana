@@ -48,7 +48,10 @@ function copy(l) {
  */
 function part(s) {
   if (typeof s !== "string") return "";
-  var t = s.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim();
+  var t = s
+    .replace(/[\u0000-\u001f\u007f]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   return Array.from(t).slice(0, NAME_MAX).join("").trim();
 }
 
@@ -109,10 +112,21 @@ export function categoriesOf(bundled, local) {
   /** @type {Category[]} */
   var out = bundled.map(function (b) {
     var r = local.renames[b.id];
-    return { id: b.id, name: r ? { mr: r.mr, en: r.en } : { mr: b.name.mr, en: b.name.en }, order: b.order, origin: "bundled", original: r ? { mr: b.name.mr, en: b.name.en } : null };
+    return {
+      id: b.id,
+      name: r ? { mr: r.mr, en: r.en } : { mr: b.name.mr, en: b.name.en },
+      order: b.order,
+      origin: "bundled",
+      original: r ? { mr: b.name.mr, en: b.name.en } : null,
+    };
   });
   local.added.forEach(function (a) {
-    if (out.some(function (c) { return c.id === a.id; })) return;
+    if (
+      out.some(function (c) {
+        return c.id === a.id;
+      })
+    )
+      return;
     var r = local.renames[a.id] || a.name;
     out.push({ id: a.id, name: { mr: r.mr, en: r.en }, order: a.order, origin: "family", original: null });
   });
@@ -137,7 +151,13 @@ export function categoriesOf(bundled, local) {
  */
 export function categoryOf(t, cats, local) {
   var m = local.moves[t.id];
-  if (m && cats.some(function (c) { return c.id === m; })) return m;
+  if (
+    m &&
+    cats.some(function (c) {
+      return c.id === m;
+    })
+  )
+    return m;
   return t.category;
 }
 
@@ -156,9 +176,10 @@ export function shelves(texts, cats, local) {
   });
   texts.forEach(function (t) {
     var id = categoryOf(t, cats, local),
-      s = out.filter(function (x) {
-        return x.category.id === id;
-      })[0] || out[0];
+      s =
+        out.filter(function (x) {
+          return x.category.id === id;
+        })[0] || out[0];
     if (s) s.texts.push(t.id);
   });
   return out;
@@ -228,9 +249,10 @@ export function addCategory(local, bundled, name) {
         return c.id;
       }),
     ),
-    order = cats.reduce(function (m, c) {
-      return Math.max(m, c.order);
-    }, 0) + 1,
+    order =
+      cats.reduce(function (m, c) {
+        return Math.max(m, c.order);
+      }, 0) + 1,
     l = copy(local);
   l.added.push({ id: id, name: n, order: order });
   return { ok: true, local: l, id: id };

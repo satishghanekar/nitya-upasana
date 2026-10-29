@@ -46,6 +46,7 @@ There is no build step. The files in this repository are exactly what the site s
 | `tests/` | The automated tests (see `tests/README.md`). Not part of the site. |
 | `.github/workflows/` | The test run on every pull request and push to `main`, and the job that refreshes its screenshots. |
 | `ARCHITECTURE.md` | How the page, styles and scripts fit together, for anyone changing the code. |
+| `CLAUDE.md`, `.cursorrules` | The short list of rules for changing the site, for people and AI assistants (`.cursorrules` points Cursor to `CLAUDE.md`). |
 
 ## How publishing works
 
@@ -57,7 +58,7 @@ Because every merge goes live, changes are made on a branch, checked (see *Check
 
 The version is what Settings → More → About shows. It is written in **two** places, which must always be the same (here as an example):
 
-1. `sw.js`, near the top: `const V='aarti-v1.22';`
+1. `sw.js`, near the top: `const V = "aarti-v1.22";`
 2. `index.html`, near the top: `<meta name="version" content="aarti-v1.22">`
 
 Change both together for every release, digits and dots only: the last number for fixes (`1.22` → `1.22.1`), the middle one for new features (`1.23`). `tests/offline.spec.mjs` fails if the two differ.

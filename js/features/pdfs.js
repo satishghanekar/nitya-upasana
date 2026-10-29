@@ -31,18 +31,37 @@ function listHtml() {
         .map(function (p) {
           var f = pdfFacts(p);
           return (
-            '<li><a href="' + esc(pdfHref(p)) + '" target="_blank" rel="noopener" class="pdf"><span class="m">' + mark(false) +
-            '<span class="mr">' + esc(to(p.title.mr)) + '</span><span class="en" lang="en">' + esc(p.title.en) + "</span></span>" +
+            '<li><a href="' +
+            esc(pdfHref(p)) +
+            '" target="_blank" rel="noopener" class="pdf"><span class="m">' +
+            mark(false) +
+            '<span class="mr">' +
+            esc(to(p.title.mr)) +
+            '</span><span class="en" lang="en">' +
+            esc(p.title.en) +
+            "</span></span>" +
             // its pages and size, when known (no "PDF": the Books tab has nothing else)
-            '<span class="lt"><span class="mr">' + esc(to(f.mr)) + '</span><span class="en" lang="en">' + esc(f.en) + "</span></span>" +
+            '<span class="lt"><span class="mr">' +
+            esc(to(f.mr)) +
+            '</span><span class="en" lang="en">' +
+            esc(f.en) +
+            "</span></span>" +
             '<span class="sr pss"></span></a></li>'
           );
         })
         .join("");
       var n = s.category.name;
       return (
-        '<div class="tocg pdfg" data-cat="' + esc(s.category.id) + '"><h2 class="gh"><span class="mr">' + esc(to(n.mr)) + '</span><span class="en" lang="en">' + esc(n.en) + "</span></h2>" +
-        '<ol class="toc">' + items + "</ol></div>"
+        '<div class="tocg pdfg" data-cat="' +
+        esc(s.category.id) +
+        '"><h2 class="gh"><span class="mr">' +
+        esc(to(n.mr)) +
+        '</span><span class="en" lang="en">' +
+        esc(n.en) +
+        "</span></h2>" +
+        '<ol class="toc">' +
+        items +
+        "</ol></div>"
       );
     })
     .join("");
@@ -51,8 +70,14 @@ function listHtml() {
 // The clouds, drawn after the iPhone's: online only (an arrow down) and saved on this phone (a ✓)
 var CLOUD = '<path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.6 4.5 4.5 0 0 0 7 18.5z"/>',
   ICON = {
-    off: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + CLOUD + '<path d="M12 10.5v5.5M9.6 13.8L12 16.2l2.4-2.4"/></svg>',
-    on: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + CLOUD + '<path d="M9.3 13.6l2 2 3.6-4"/></svg>',
+    off:
+      '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      CLOUD +
+      '<path d="M12 10.5v5.5M9.6 13.8L12 16.2l2.4-2.4"/></svg>',
+    on:
+      '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      CLOUD +
+      '<path d="M9.3 13.6l2 2 3.6-4"/></svg>',
   };
 
 /** The cloud before a title @param {boolean} saved */

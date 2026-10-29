@@ -115,21 +115,23 @@ export function load() {
             return r.text();
           });
         }),
-      ).then(function (raw) {
-        return categories.then(function () {
-          return raw;
+      )
+        .then(function (raw) {
+          return categories.then(function () {
+            return raw;
+          });
+        })
+        .then(function (raw) {
+          /** @type {Record<string, string>} */
+          var files = {};
+          lib.texts.forEach(function (t, i) {
+            files[t.id] = raw[i];
+          });
+          /** @type {any} */
+          var w = window;
+          w.CONTENT = buildContent(lib, files, loaded.categories);
+          w.SCR.page();
         });
-      }).then(function (raw) {
-        /** @type {Record<string, string>} */
-        var files = {};
-        lib.texts.forEach(function (t, i) {
-          files[t.id] = raw[i];
-        });
-        /** @type {any} */
-        var w = window;
-        w.CONTENT = buildContent(lib, files, loaded.categories);
-        w.SCR.page();
-      });
     });
   return Promise.all([texts, routine, festivals, holidays, categories, pdfs]).then(function () {});
 }

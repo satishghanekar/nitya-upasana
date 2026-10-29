@@ -4,10 +4,14 @@
 // Each line keeps its two languages side by side in the data; this file decides how they are shown.
 (function () {
   "use strict";
-  var ICON_PREV = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
-  var ICON_NEXT = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
-  var LOTUS = '<div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>';
-  var PNQ = '<div class="pnq"><a class="pnh" href="./" aria-label="Home"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.6 12 3.5l9 7.1"/><path d="M5.2 9v11h13.6V9"/><path d="M12 11.2c1.3 1.5 1.6 2.8 0 4.3-1.6-1.5-1.3-2.8 0-4.3z"/><path d="M9.3 17.6h5.4"/></svg></a><button type="button" class="pns" aria-label="Library and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>';
+  var ICON_PREV =
+    '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+  var ICON_NEXT =
+    '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
+  var LOTUS =
+    '<div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>';
+  var PNQ =
+    '<div class="pnq"><a class="pnh" href="./" aria-label="Home"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.6 12 3.5l9 7.1"/><path d="M5.2 9v11h13.6V9"/><path d="M12 11.2c1.3 1.5 1.6 2.8 0 4.3-1.6-1.5-1.3-2.8 0-4.3z"/><path d="M9.3 17.6h5.4"/></svg></a><button type="button" class="pns" aria-label="Library and search" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h14M4 11h8M4 16h5"/><circle cx="16" cy="15.5" r="3.6"/><path d="M18.6 18.1l2.6 2.6"/></svg></button></div>';
 
   // A pair of spans: the original text, then English
   function two(t) {
@@ -22,10 +26,22 @@
   }
   function verse(list, pad, bold) {
     return (
-      pad + '<div class="verse' + (bold ? " bold" : "") + '">\n' +
-      pad + '  <div class="mr">\n' + lines(list, "mr", pad + "    ") + pad + "  </div>\n" +
-      pad + '  <div class="en" lang="en">\n' + lines(list, "en", pad + "    ") + pad + "  </div>\n" +
-      pad + "</div>\n"
+      pad +
+      '<div class="verse' +
+      (bold ? " bold" : "") +
+      '">\n' +
+      pad +
+      '  <div class="mr">\n' +
+      lines(list, "mr", pad + "    ") +
+      pad +
+      "  </div>\n" +
+      pad +
+      '  <div class="en" lang="en">\n' +
+      lines(list, "en", pad + "    ") +
+      pad +
+      "  </div>\n" +
+      pad +
+      "</div>\n"
     );
   }
   function item(x) {
@@ -33,7 +49,16 @@
     // the original has one, so a note that is a heading (फलश्रुति) does not look like a repeat
     if (x.rmk) {
       var ra = !x.nt || /^↻/.test(x.rmk.mr) ? '<i class="ra">↻ </i>' : "";
-      return '      <div class="rmk' + (x.nt ? " nt" : "") + '"><span class="mr">' + x.rmk.mr + '</span><span class="en" lang="en">' + ra + x.rmk.en + "</span></div>\n";
+      return (
+        '      <div class="rmk' +
+        (x.nt ? " nt" : "") +
+        '"><span class="mr">' +
+        x.rmk.mr +
+        '</span><span class="en" lang="en">' +
+        ra +
+        x.rmk.en +
+        "</span></div>\n"
+      );
     }
     return '      <div class="item' + (x.kind ? " " + x.kind : "") + (x.para ? " para" : "") + '">\n' + verse(x.lines, "        ", x.bold) + "      </div>\n";
   }
@@ -45,10 +70,25 @@
   }
   function piece(p, prev, next, ui) {
     var h =
-      '  <section id="' + p.id + '" class="ash' + (p.cls ? " " + p.cls : "") + (p.prose ? " prose" : "") + '"' + (p.lang ? ' lang="' + p.lang + '"' : "") + ">\n" +
+      '  <section id="' +
+      p.id +
+      '" class="ash' +
+      (p.cls ? " " + p.cls : "") +
+      (p.prose ? " prose" : "") +
+      '"' +
+      (p.lang ? ' lang="' + p.lang + '"' : "") +
+      ">\n" +
       "    <header>\n" +
-      '      <h2><span class="no"><span class="nm">' + p.no.mr + '</span><span class="ne">' + p.no.en + "</span></span> " + two(p.title) + "</h2>\n" +
-      '      <div class="tag">' + two(p.tag) + "</div>\n" +
+      '      <h2><span class="no"><span class="nm">' +
+      p.no.mr +
+      '</span><span class="ne">' +
+      p.no.en +
+      "</span></span> " +
+      two(p.title) +
+      "</h2>\n" +
+      '      <div class="tag">' +
+      two(p.tag) +
+      "</div>\n" +
       "    </header>\n";
     // [once] lines and [note]s that come before the dhrupad at the top (js/text/content.js)
     if (p.lead) h += '    <div class="items lead">\n' + p.lead.map(item).join("") + "    </div>\n";
@@ -69,7 +109,7 @@
   // here, before the page script runs, so every later step (search, English spelling, printing) sees the new text.
   // To add another script, give it an entry in SCRIPTS.
   var SCRIPTS = {
-    kn: { off: 0x380, sp: { "ॐ": "ಓಂ", "ऱ": "ರ", "ॅ": "್ಯಾ", "ॉ": "ಾ", "ऑ": "ಆ", "ॲ": "ಅ" }, back: [[/ಓಂ(?![ಀ-೿])/g, "ॐ"]] },
+    kn: { off: 0x380, sp: { ॐ: "ಓಂ", ऱ: "ರ", "ॅ": "್ಯಾ", "ॉ": "ಾ", ऑ: "ಆ", ॲ: "ಅ" }, back: [[/ಓಂ(?![ಀ-೿])/g, "ॐ"]] },
   };
   var KEEP = /[॒॑।॥]/;
   // ---- Print handed over from the iPhone Home Screen app (js/features/print.js, "Open in Safari") ----
@@ -122,7 +162,7 @@
   } catch (e) {}
   var ind = "";
   try {
-    ind =(JSON.parse(localStorage.getItem("aarti2-prefs") || "{}").ind || "");
+    ind = JSON.parse(localStorage.getItem("aarti2-prefs") || "{}").ind || "";
   } catch (e) {}
   var S = SCRIPTS[ind],
     OLD = [], // [node, "", text] or [element, attribute, value]: what SCR.page() changed
@@ -133,15 +173,20 @@
     k: S ? ind : "", // "" while the text is shown as written
     // Devanagari → the chosen script
     to: function (t) {
-      return !S ? t : t.replace(/[ऀ-ॿ]/g, function (c) {
-        return S.sp[c] || (KEEP.test(c) ? c : String.fromCharCode(c.charCodeAt(0) + S.off));
-      });
+      return !S
+        ? t
+        : t.replace(/[ऀ-ॿ]/g, function (c) {
+            return S.sp[c] || (KEEP.test(c) ? c : String.fromCharCode(c.charCodeAt(0) + S.off));
+          });
     },
     // and back, for the English spelling (IAST) and search
     from: function (t) {
       if (!S) return t;
-      S.back.forEach(function (b) { t = t.replace(b[0], b[1]); });
-      var lo = 0x900 + S.off, hi = lo + 0x7f;
+      S.back.forEach(function (b) {
+        t = t.replace(b[0], b[1]);
+      });
+      var lo = 0x900 + S.off,
+        hi = lo + 0x7f;
       return t.replace(/[ঀ-෿]/g, function (c) {
         var n = c.charCodeAt(0);
         return n >= lo && n <= hi ? String.fromCharCode(n - S.off) : c;
@@ -165,11 +210,13 @@
     el: function (r, old) {
       if (!S) return;
       var OLD = old || [];
-      var w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT), n;
-      while ((n = w.nextNode())) if (/[ऀ-ॿ]/.test(n.data)) {
-        OLD.push([n, "", n.data]);
-        n.data = SCR.to(n.data);
-      }
+      var w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT),
+        n;
+      while ((n = w.nextNode()))
+        if (/[ऀ-ॿ]/.test(n.data)) {
+          OLD.push([n, "", n.data]);
+          n.data = SCR.to(n.data);
+        }
       [].forEach.call(r.querySelectorAll("[title], [aria-label]"), function (e) {
         ["title", "aria-label"].forEach(function (a) {
           var v = e.getAttribute(a);
@@ -186,9 +233,11 @@
       });
       // Poet links: the Kannada Wikipedia page when there is one, else the English page beside it
       [].forEach.call(r.querySelectorAll(".cr"), function (c) {
-        var en = c.querySelectorAll(".en a[href]"), W = (window.CONTENT && CONTENT.wiki && CONTENT.wiki[ind]) || {};
+        var en = c.querySelectorAll(".en a[href]"),
+          W = (window.CONTENT && CONTENT.wiki && CONTENT.wiki[ind]) || {};
         [].forEach.call(c.querySelectorAll(".mr a[href]"), function (a, i) {
-          var h = decodeURI(a.getAttribute("href")), to = W[h] || (en[i] && en[i].getAttribute("href"));
+          var h = decodeURI(a.getAttribute("href")),
+            to = W[h] || (en[i] && en[i].getAttribute("href"));
           if (!to) return;
           ["href", "hreflang", "aria-label"].forEach(function (x) {
             OLD.push([a, x, a.getAttribute(x)]);
@@ -211,10 +260,12 @@
         else o[0].setAttribute(o[1], o[2]);
       }
       OLD = [];
-      if (S) [].forEach.call(document.querySelectorAll(LATER), function (r) {
-        var w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT), n;
-        while ((n = w.nextNode())) n.data = SCR.from(n.data);
-      });
+      if (S)
+        [].forEach.call(document.querySelectorAll(LATER), function (r) {
+          var w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT),
+            n;
+          while ((n = w.nextNode())) n.data = SCR.from(n.data);
+        });
       document.documentElement.removeAttribute("data-scr");
       ind = k;
       S = SCRIPTS[k];
@@ -222,7 +273,8 @@
       if (S) {
         SCR.page();
         [].forEach.call(document.querySelectorAll(LATER), function (r) {
-          var w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT), n;
+          var w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT),
+            n;
           while ((n = w.nextNode())) if (/[ऀ-ॿ]/.test(n.data)) n.data = SCR.to(n.data);
         });
       }

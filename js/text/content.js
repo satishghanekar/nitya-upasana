@@ -57,7 +57,12 @@ function credit(s, side) {
     var label = side === "mr" ? m[1] + " — विकिपीडिया (नवीन टॅबमध्ये उघडेल)" : m[1] + ": Wikipedia (opens in a new tab)";
     out +=
       esc(s.slice(last, m.index)) +
-      '<a href="' + esc(m[2]) + '" target="_blank" rel="noopener" aria-label="' + esc(label) + '">' + esc(m[1]) +
+      '<a href="' +
+      esc(m[2]) +
+      '" target="_blank" rel="noopener" aria-label="' +
+      esc(label) +
+      '">' +
+      esc(m[1]) +
       '<span class="crx" aria-hidden="true"> ↗</span></a>';
     last = re.lastIndex;
   }
@@ -103,7 +108,13 @@ export function toPiece(t, n, lib) {
   // stanza-numbers: as-written: the numbers are part of the text, so js/text/stanza-numbers.js adds none
   if (t.stanzaNumbers === "as-written") p.cls = (p.cls ? p.cls + " " : "") + "ownsn";
   if (t.layout === "prose") p.prose = true;
-  p.no = { mr: String(n).replace(/[0-9]/g, function (d) { return DIGITS[+d]; }) + ".", en: n + "." };
+  p.no = {
+    mr:
+      String(n).replace(/[0-9]/g, function (d) {
+        return DIGITS[+d];
+      }) + ".",
+    en: n + ".",
+  };
   p.title = { mr: t.title, en: t.titleEn };
   p.tag = pair(lib.languages[t.language]);
   /** @type {Item[]} */
@@ -160,8 +171,7 @@ export function toPiece(t, n, lib) {
       if (b.kind === "note") {
         it.rmk = pair(/** @type {Pair} */ (b.note));
         it.nt = true;
-      }
-      else {
+      } else {
         if (b.kind === "dhrupad" || b.kind === "once") it.kind = "dh";
         if (b.bold) it.bold = true;
         if (b.para) it.para = true;
@@ -202,25 +212,29 @@ export function buildContent(lib, files, cats) {
     });
   lib.texts.forEach(function (x) {
     // a category not in categories.json (tests/unit/content.test.mjs checks there is none) goes last, named by its id
-    if (!list.some(function (c) { return c.id === x.category; })) list.push({ id: x.category, name: { mr: x.category, en: x.category } });
+    if (
+      !list.some(function (c) {
+        return c.id === x.category;
+      })
+    )
+      list.push({ id: x.category, name: { mr: x.category, en: x.category } });
   });
   // every category, those with no texts yet too (the family can move texts into them, js/features/library.js)
   return {
     ui: lib.ui,
     wiki: lib.wiki,
-    categories: list
-      .map(function (c) {
-        return {
-          id: c.id,
-          name: c.name,
-          pieces: lib.texts
-            .filter(function (x) {
-              return x.category === c.id;
-            })
-            .map(function (x, i) {
-              return toPiece(texts[x.id], i + 1, lib);
-            }),
-        };
-      }),
+    categories: list.map(function (c) {
+      return {
+        id: c.id,
+        name: c.name,
+        pieces: lib.texts
+          .filter(function (x) {
+            return x.category === c.id;
+          })
+          .map(function (x, i) {
+            return toPiece(texts[x.id], i + 1, lib);
+          }),
+      };
+    }),
   };
 }
