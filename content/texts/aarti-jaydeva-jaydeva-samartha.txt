@@ -4,6 +4,7 @@ title-en: Jayadeva Jayadeva Jay Jay Samartha
 category: aarti
 language: mr
 refrain: every-verse
+refrain-before-first: yes
 ---
 [dhrupad]
 जयदेवा जयदेवा जय जय समर्था ॥
