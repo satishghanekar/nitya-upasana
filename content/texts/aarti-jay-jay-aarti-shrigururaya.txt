@@ -1,9 +1,10 @@
 id: aarti-jay-jay-aarti-shrigururaya
-title: आरती श्रीमहाराजांची
-title-en: Aarti Shrimaharajanchi
+title: जय जय आरती श्रीगुरुराया
+title-en: Jay Jay Aarti Shrigururaya
 category: aarti
 language: mr
 refrain: every-verse
+refrain-before-first: yes
 ---
 [dhrupad]
 जय जय आरती श्रीगुरुराया । सद्‌गुरुराया ।
