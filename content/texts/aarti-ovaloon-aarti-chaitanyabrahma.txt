@@ -4,6 +4,7 @@ title-en: Ovalun Aarti Sadguru Chaitanyabrahma
 category: aarti
 language: mr
 refrain: every-verse
+refrain-before-first: yes
 ---
 [dhrupad]
 ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा ।
