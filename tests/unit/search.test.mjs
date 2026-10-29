@@ -60,7 +60,7 @@ describe("folding and loose spelling", () => {
 });
 
 describe("ranking", () => {
-  test('"sukhkarta" finds Ganapati Aarti first, by its id', () => {
+  test('"sukhkarta" finds Sukhkarta Dukhharta first, by its id', () => {
     expect(top("sukhkarta")).toMatchObject({ id: "aarti-sukhkarta", sec: "a1" });
     expect(top("sukhkarta").score).toBeGreaterThanOrEqual(SCORE.title);
     // and its lines
@@ -110,10 +110,10 @@ describe("ranking", () => {
     expect(textIds("aarti")).toEqual(expect.arrayContaining(lib.texts.filter((t) => t.category === "aarti").map((t) => t.id)));
   });
   test("an exact title outranks one it merely starts", () => {
-    const r = search(ix, "ganapati aarti").texts;
-    expect(r[0].id).toBe("aarti-sukhkarta");
-    expect(r[0].score).toBe(SCORE.title);
-    expect(r.find((t) => t.id === "aarti-shendur-lal-chadhayo").score).toBeLessThan(SCORE.title);
+    expect(search(ix, "aarti jai ganesh deva").texts[0]).toMatchObject({ id: "aarti-jai-ganesh-deva", score: SCORE.title });
+    const r = search(ix, "aarti jai").texts;
+    expect(r.map((t) => t.id).slice(0, 2)).toEqual(["aarti-jai-ganesh-deva", "aarti-jai-jagdish-hare"]);
+    for (const t of r.slice(0, 2)) expect(t.score).toBe(SCORE.titleStart);
   });
   test("a typo is forgiven, but not in short words", () => {
     expect(top("lotangn").id).toBe("aarti-ghalin-lotangan");

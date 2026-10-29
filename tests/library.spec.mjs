@@ -427,7 +427,7 @@ test("search across the library: Devanagari and English find texts (first) and l
   for (const q of ["sukhakarta", "सुखकर्ता"]) {
     await page.locator("#q").fill(q);
     await expect(page.locator("#res li.rh h3")).toHaveText(["Texts", "Lines"]);
-    await expect(page.locator("#res li.rt").first().locator(".rl")).toHaveText("गणपतीची आरती");
+    await expect(page.locator("#res li.rt").first().locator(".rl")).toHaveText("सुखकर्ता दुःखहर्ता");
     await expect(page.locator("#res li:not(.rh):not(.rt)").first()).toContainText("सुखकर्ता");
     await expect(page.locator("#srs")).toHaveText(/^1 text and \d+ lines?$/);
   }
@@ -506,7 +506,7 @@ test("English only (Settings → Languages): English titles and category names, 
   await page.locator("#hm").click();
   await expect(page.locator("#jl .tocg:not(.pdfg) .gh .en")).toHaveText(GROUPS_EN);
   await expect(page.locator("#jl .tocg .gh .mr").first()).toBeHidden();
-  expect(await page.locator('#jl a[data-go="a1"] .m').innerText()).toMatch(/^1\.\s*Ganapati Aarti$/);
+  expect(await page.locator('#jl a[data-go="a1"] .m').innerText()).toMatch(/^1\.\s*Sukhkarta Dukhharta$/);
   await page.locator("#lbb").click();
   await expect(page.locator("#lbcl .lbn")).toHaveText(["Vedic Chant", "Aarti", "Stotra", "Ashtak"]);
   await expect(page.locator("#lbcl .lbo")).toHaveCount(0); // no second language
@@ -515,7 +515,7 @@ test("English only (Settings → Languages): English titles and category names, 
   await page.keyboard.press("Escape");
   await page.locator("#q").fill("sukhakarta");
   await expect(page.locator("#res li.rt .rs")).toHaveText(["Aarti"]);
-  await expect(page.locator("#res li.rt .rl")).toHaveText(["Ganapati Aarti"]);
+  await expect(page.locator("#res li.rt .rl")).toHaveText(["Sukhkarta Dukhharta"]);
 });
 
 test("English first with Marathi second: the sheet names in English with the Marathi under them", async ({ page }) => {

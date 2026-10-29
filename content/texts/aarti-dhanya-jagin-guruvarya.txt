@@ -4,6 +4,7 @@ title-en: Dhanya Jagin Ya Guruvarya He Marutiavatar
 category: aarti
 language: mr
 refrain: every-verse
+refrain-before-first: yes
 ---
 [dhrupad]
 धन्य जगीं या गुरुवर्य हे मारुतिअवतार । मारुतिअवतार ।

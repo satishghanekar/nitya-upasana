@@ -75,8 +75,8 @@
   {
    "id": "aarti-sukhkarta",
    "file": "texts/aarti-sukhkarta.txt",
-   "title": "गणपतीची आरती",
-   "titleEn": "Ganapati Aarti",
+   "title": "सुखकर्ता दुःखहर्ता",
+   "titleEn": "Sukhkarta Dukhharta",
    "category": "aarti",
    "language": "mr",
    "lines": 15
@@ -84,8 +84,8 @@
   {
    "id": "aarti-shendur-lal-chadhayo",
    "file": "texts/aarti-shendur-lal-chadhayo.txt",
-   "title": "गणपति जी की आरती",
-   "titleEn": "Ganapati Ji ki Aarti",
+   "title": "शेंदुर लाल चढ़ायो",
+   "titleEn": "Shendur Laal Chadhayo",
    "category": "aarti",
    "language": "hi",
    "lines": 15
@@ -165,8 +165,8 @@
   {
    "id": "aarti-jaydeva-jaydeva-samartha",
    "file": "texts/aarti-jaydeva-jaydeva-samartha.txt",
-   "title": "श्रीमहाराजांची आरती",
-   "titleEn": "Shrimaharajanchi Aarti",
+   "title": "जयदेवा जयदेवा जय जय समर्था",
+   "titleEn": "Jayadeva Jayadeva Jay Jay Samartha",
    "category": "aarti",
    "language": "mr",
    "lines": 14
@@ -174,8 +174,8 @@
   {
    "id": "aarti-jay-jay-aarti-shrigururaya",
    "file": "texts/aarti-jay-jay-aarti-shrigururaya.txt",
-   "title": "आरती श्रीमहाराजांची",
-   "titleEn": "Aarti Shrimaharajanchi",
+   "title": "जय जय आरती श्रीगुरुराया",
+   "titleEn": "Jay Jay Aarti Shrigururaya",
    "category": "aarti",
    "language": "mr",
    "lines": 8
