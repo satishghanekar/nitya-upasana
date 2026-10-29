@@ -1,6 +1,6 @@
 id: aarti-sukhkarta
 title: सुखकर्ता दुःखहर्ता
-title-en: Ganapati Aarti
+title-en: Sukhkarta Dukhharta
 category: aarti
 language: mr
 legacy-id: a1

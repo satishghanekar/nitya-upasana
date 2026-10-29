@@ -617,7 +617,7 @@ window.CONTENT = {
      },
      "title": {
       "mr": "सुखकर्ता दुःखहर्ता",
-      "en": "Ganapati Aarti"
+      "en": "Sukhkarta Dukhharta"
      },
      "tag": {
       "mr": "मराठी",
@@ -815,7 +815,7 @@ window.CONTENT = {
      },
      "title": {
       "mr": "शेंदुर लाल चढ़ायो",
-      "en": "Ganapati Ji ki Aarti"
+      "en": "Shendur Laal Chadhayo"
      },
      "tag": {
       "mr": "हिंदी",

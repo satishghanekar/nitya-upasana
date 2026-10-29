@@ -23,7 +23,7 @@ test("from the Library only the text opened is on the page, and Prev / Next in t
   // Home is not above it (on wide screens its column is beside the text, out of the page's flow)
   expect(await page.locator("#home").evaluate((h) => getComputedStyle(h).display === "none" || getComputedStyle(h).position === "fixed")).toBe(true);
   await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: Shankar Aarti");
-  await expect(page.locator("#asv")).toHaveAttribute("aria-label", "Prev: Ganapati Ji ki Aarti");
+  await expect(page.locator("#asv")).toHaveAttribute("aria-label", "Prev: Shendur Laal Chadhayo");
   await page.locator("#asn").click();
   await expect.poll(() => shown(page)).toEqual(["a4"]);
   await expect.poll(() => page.evaluate(() => location.hash)).toBe("#a4");

@@ -308,11 +308,11 @@ test("each person has their own routine; Save a backup file → Restore brings i
 test("English only: titles in English, with no second line; Marathi menus say बदला @mobile", async ({ page }) => {
   await openSite(page, { lang: "en", lead: "en", l2: "", ui: "en" }, { now: MON_EVENING });
   await openBuilder(page);
-  await expect(items(page).first().locator(".t1")).toHaveText("Ganapati Aarti");
+  await expect(items(page).first().locator(".t1")).toHaveText("Sukhkarta Dukhharta");
   await expect(items(page).first().locator(".t1")).toHaveAttribute("lang", "en");
   await expect(items(page).locator(".t2")).toHaveCount(0);
   await expect(items(page).first().locator(".tno")).toHaveText("1.");
-  await expect(btn(page, "aarti-sukhkarta", "up")).toHaveAccessibleName("Move Ganapati Aarti up");
+  await expect(btn(page, "aarti-sukhkarta", "up")).toHaveAccessibleName("Move Sukhkarta Dukhharta up");
   await expect(page.locator("#tpk li").first().locator(".t1")).toHaveText("Ganapati Atharvashirsha");
   await expect(page.locator("#tpk .t2")).toHaveCount(0);
   await btn(page, "aarti-ghalin-lotangan", "up").click();
@@ -322,7 +322,7 @@ test("English only: titles in English, with no second line; Marathi menus say �
 test("English first, Marathi second: English titles with Marathi under them", async ({ page }) => {
   await openSite(page, SETUPS["english-main-both"], { now: MON_EVENING });
   await openBuilder(page);
-  await expect(items(page).first().locator(".t1")).toHaveText("Ganapati Aarti");
+  await expect(items(page).first().locator(".t1")).toHaveText("Sukhkarta Dukhharta");
   await expect(items(page).first().locator(".t2")).toHaveText(T["aarti-sukhkarta"].title);
 });
 
