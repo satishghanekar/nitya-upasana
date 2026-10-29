@@ -93,7 +93,7 @@ A text is one plain-text file in `content/texts/`, named after its id, which sta
 
 ```
 id: aarti-sukhkarta
-title: गणपतीची आरती
+title: सुखकर्ता दुःखहर्ता
 title-en: Ganapati Aarti
 category: aarti
 language: mr

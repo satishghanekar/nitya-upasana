@@ -427,7 +427,7 @@ test("search across the library: Devanagari and English find texts (first) and l
   for (const q of ["sukhakarta", "सुखकर्ता"]) {
     await page.locator("#q").fill(q);
     await expect(page.locator("#res li.rh h3")).toHaveText(["Texts", "Lines"]);
-    await expect(page.locator("#res li.rt").first().locator(".rl")).toHaveText("गणपतीची आरती");
+    await expect(page.locator("#res li.rt").first().locator(".rl")).toHaveText("सुखकर्ता दुःखहर्ता");
     await expect(page.locator("#res li:not(.rh):not(.rt)").first()).toContainText("सुखकर्ता");
     await expect(page.locator("#srs")).toHaveText(/^1 text and \d+ lines?$/);
   }

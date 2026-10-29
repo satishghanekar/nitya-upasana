@@ -6,7 +6,7 @@
 // A file is a header, a line "---", then blocks separated by blank lines:
 //
 //   id: aarti-sukhkarta                 header: "name: value", one per line
-//   title: गणपतीची आरती
+//   title: सुखकर्ता दुःखहर्ता
 //   …
 //   ---
 //   [dhrupad]                           a block starts with its name in brackets

@@ -1,5 +1,5 @@
 id: aarti-shendur-lal-chadhayo
-title: गणपति जी की आरती
+title: शेंदुर लाल चढ़ायो
 title-en: Ganapati Ji ki Aarti
 category: aarti
 language: hi
