@@ -10,7 +10,6 @@
    - The day card (#cald)
    - The month (#calm): a table of day buttons, shukla and krishna shading, moon marks, the key
    - Tablets and desktops: one tab at a time, across the width
-   - Print
 */
 
 /* ==== Krishna paksha shading (--ck): a step darker than the shukla days (--hdrt), with the muted text and the
@@ -923,13 +922,6 @@
   }
 }
 
-/* ==== Print: neither the line nor the page is printed ==== */
-@media print {
-  #cal,
-  #pan {
-    display: none;
-  }
-}
 
 /* ==== Tablets held upright: one column a little narrower, taller days, the day card's rows in two columns ==== */
 @media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {

@@ -203,11 +203,6 @@ a.t {
   border-top: 1px solid var(--rule);
   border-radius: 0 0 10px 10px;
 }
-@media print {
-  #shr {
-    display: none !important;
-  }
-}
 /* centred while it fits; taller than the screen (a phone on its side, 400% zoom) it starts at the top and the
    pop-up scrolls, so Close is always reachable (WCAG 1.4.10) */
 #qrm,
@@ -259,13 +254,6 @@ a.t {
   overflow-wrap: anywhere;
 }
 
-@media print {
-  #qrm,
-  #inm,
-  .inb {
-    display: none !important;
-  }
-}
 
 /* ==== Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm) ==== */
 .inb {
@@ -370,11 +358,6 @@ a.t {
 }
 .skip:focus {
   top: calc(8px + env(safe-area-inset-top));
-}
-@media print {
-  .skip {
-    display: none;
-  }
 }
 #main:focus,
 #jump:focus,

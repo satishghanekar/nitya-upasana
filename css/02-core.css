@@ -124,11 +124,6 @@ html[data-ready] #spl {
     0 0 6px 2px rgb(255 255 255 / 0.6),
     inset 0 0 4px rgb(255 255 255 / 0.6);
 }
-@media print {
-  #spl {
-    display: none;
-  }
-}
 body {
   /* no gap above the top bar, so it stays in one place when the page scrolls under it */
   margin-top: 0;
@@ -805,11 +800,6 @@ body {
 }
 #szr .mr {
   font-family: var(--body);
-}
-@media print {
-  #szr {
-    display: none !important;
-  }
 }
 [hidden] {
   display: none !important;

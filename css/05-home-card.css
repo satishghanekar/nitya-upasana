@@ -81,11 +81,6 @@
 #ofb[hidden] {
   display: none;
 }
-@media print {
-  #ofb {
-    display: none !important;
-  }
-}
 
 /* ==== Lotus ornament at the end of each piece ==== */
 .fin {
@@ -220,11 +215,6 @@
 @media (prefers-reduced-motion: reduce) {
   .rmkpop {
     animation: none;
-  }
-}
-@media print {
-  .rmkpop {
-    display: none !important;
   }
 }
 
