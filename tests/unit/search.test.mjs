@@ -110,10 +110,10 @@ describe("ranking", () => {
     expect(textIds("aarti")).toEqual(expect.arrayContaining(lib.texts.filter((t) => t.category === "aarti").map((t) => t.id)));
   });
   test("an exact title outranks one it merely starts", () => {
-    const r = search(ix, "shrimaharajanchi aarti").texts;
-    expect(r[0].id).toBe("aarti-jaydeva-jaydeva-samartha");
-    expect(r[0].score).toBe(SCORE.title);
-    expect(r.find((t) => t.id === "aarti-jay-jay-aarti-shrigururaya").score).toBeLessThan(SCORE.title);
+    expect(search(ix, "aarti jai ganesh deva").texts[0]).toMatchObject({ id: "aarti-jai-ganesh-deva", score: SCORE.title });
+    const r = search(ix, "aarti jai").texts;
+    expect(r.map((t) => t.id).slice(0, 2)).toEqual(["aarti-jai-ganesh-deva", "aarti-jai-jagdish-hare"]);
+    for (const t of r.slice(0, 2)) expect(t.score).toBe(SCORE.titleStart);
   });
   test("a typo is forgiven, but not in short words", () => {
     expect(top("lotangn").id).toBe("aarti-ghalin-lotangan");
