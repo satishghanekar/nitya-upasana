@@ -1,6 +1,6 @@
 // Service worker: keeps a copy of the site on the phone so it opens without internet.
 // V is the site's version (shown as "v1.9" in Settings → About). It must match <meta name="version"> in index.html; change both on a new release.
-const V='aarti-v1.37.4';
+const V='aarti-v1.37.5';
 // The page's styles and scripts, the font files and the pictures to keep: one list for the page and this worker, in js/parts.js
 importScripts('js/parts.js');
 const PARTS=SITE_PARTS.all;
@@ -28,7 +28,8 @@ self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.a
 // running and the next launch opens the new version). A file not saved yet (a first visit still saving, a font picked
 // later, a PDF from the Library's Books tab) is fetched and then kept; a PDF is kept once opened and from then on
 // always opened from the phone (the Books tab marks the ones kept, js/features/pdfs.js).
-// "Check for updates" (js/features/offline.js) asks with cache 'no-store' or 'reload': those go straight to the network.
+// "Check for updates" (js/features/offline.js) marks its requests ?fresh (Safari's worker never sees a request's cache
+// mode), and the page saving missing files asks with cache 'reload': those go straight to the network.
 // Nothing here may leave the page waiting: if the saved copy can't be read within 2 s, or anything
 // goes wrong, the request goes straight to the network as if there were no service worker.
 // (Safari on a Mac sat on a blank page with the previous version; its storage can stall.)
@@ -37,7 +38,7 @@ self.addEventListener('fetch',e=>{
   const r=e.request;if(r.method!=='GET')return;
   const u=new URL(r.url);
   if(u.origin!==location.origin)return;
-  if(r.cache==='no-store'||r.cache==='reload')return;
+  if(r.cache==='no-store'||r.cache==='reload'||u.searchParams.has('fresh'))return;
   // Saving a fetched file is handed to waitUntil now, while the event is still being dispatched
   // (Safari can refuse waitUntil once the handler has moved on).
   let done;const bg=new Promise(res=>done=res);e.waitUntil(bg);
