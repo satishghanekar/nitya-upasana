@@ -39,13 +39,14 @@
     background: #fff !important;
   }
 
-  /* ---- The fonts: the printout's text font (data-font), for the original, the Vedic texts, Kannada letters and
-     English; a bold line (the dhrupad at the top, a [dhrupad bold] block) in a face that has a bold of its own (Tiro has
-     none, and a bold made up by Safari printed every word three times over in the PDF's text) ---- */
+  /* ---- The fonts: the printout's text font (data-font), for the original, the Vedic texts, Kannada, Telugu and
+     Gujarati letters (--ks, --kf: css/09-settings-page.css) and English; a bold line (the dhrupad at the top, a
+     [dhrupad bold] block) in a face that has a bold of its own (Tiro has none, and a bold made up by Safari printed
+     every word three times over in the PDF's text) ---- */
   :root[data-print] #pv {
     --po: var(--body);
     --pved: var(--body);
-    --pk: "Noto Sans Kannada", var(--body);
+    --pk: var(--ks, "Noto Sans Kannada"), var(--body);
     --pe: var(--lat);
     --pob: var(--po);
     --peb: var(--pe);
@@ -55,7 +56,7 @@
   :root[data-print][data-font="classic"] #pv {
     --po: "SC Classic", var(--body);
     --pved: "Tiro Devanagari Sanskrit", "SC Classic", var(--body);
-    --pk: "SC Kn Classic", "Noto Sans Kannada", var(--body);
+    --pk: var(--kf, "SC Kn Classic"), var(--ks, "Noto Sans Kannada"), var(--body);
     --pe: "SC Classic", var(--lat);
     --pob: "SC Bold", var(--body);
     --peb: "SC Bold", var(--lat);
@@ -63,7 +64,7 @@
   :root[data-print][data-font="bold"] #pv {
     --po: "SC Bold", var(--body);
     --pved: "SC Bold", var(--body);
-    --pk: "SC Kn Classic", "Noto Sans Kannada", var(--body);
+    --pk: var(--kf, "SC Kn Classic"), var(--ks, "Noto Sans Kannada"), var(--body);
     --pe: "SC Bold", var(--lat);
     --pw: 600;
     --pwb: 800;
@@ -83,9 +84,10 @@
   #pv .pvved .pvo {
     font-family: var(--pved);
   }
-  /* (Kannada letters: their own face, whatever another rule says about lang="kn": css/09-settings-page.css) */
-  #pv .pvo[lang="kn"],
-  #pv [lang="kn"] .pvo {
+  /* (Kannada, Telugu and Gujarati letters: their own face, whatever another rule says about their lang:
+     css/09-settings-page.css) */
+  #pv .pvo:is([lang="kn"], [lang="te"], [lang="gu"]),
+  #pv :is([lang="kn"], [lang="te"], [lang="gu"]) .pvo {
     font-family: var(--pk) !important;
   }
   #pv .pve {

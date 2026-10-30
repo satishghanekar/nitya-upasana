@@ -142,6 +142,43 @@
   unicode-range: U+0951-0952, U+0964-0965, U+0C80-0CF3, U+1CD0-1CFA, U+200C-200D, U+25CC;
 }
 
+/* Telugu and Gujarati letters (Settings → Main language → తెలుగు, ગુજરાતી), as Kannada's above: Noto Sans for Modern,
+   Noto Serif for Traditional and Bold, each with its own dandas and ॑ ॒ marks. The Telugu faces draw ᳚ too; the
+   Gujarati ones have none, so ᳚ on Gujarati letters comes from the Devanagari face. Not on the offline list
+   (js/parts.js): a browser downloads them when those letters are first on screen, and sw.js keeps them from then on. */
+@font-face {
+  font-family: "Noto Sans Telugu";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(../fonts/noto-sans-telugu-telugu.woff2) format("woff2");
+  unicode-range: U+0951-0952, U+0964-0965, U+0C00-0C7F, U+1CD5-1CD6, U+1CD8, U+1CDA, U+1CF2, U+200C-200D, U+25CC;
+}
+@font-face {
+  font-family: "SC Te Classic";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(../fonts/noto-serif-telugu-telugu.woff2) format("woff2");
+  unicode-range: U+0951-0952, U+0964-0965, U+0C00-0C7F, U+1CD5-1CD6, U+1CD8, U+1CDA, U+1CF2, U+200C-200D, U+25CC;
+}
+@font-face {
+  font-family: "Noto Sans Gujarati";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(../fonts/noto-sans-gujarati-gujarati.woff2) format("woff2");
+  unicode-range: U+0951-0952, U+0964-0965, U+0A80-0AFF, U+200C-200D, U+25CC;
+}
+@font-face {
+  font-family: "SC Gu Classic";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(../fonts/noto-serif-gujarati-gujarati.woff2) format("woff2");
+  unicode-range: U+0951-0952, U+0964-0965, U+0A80-0AFF, U+200C-200D, U+25CC;
+}
+
 /* Text font choices (Settings → Text font, and the same three in the Print pop-up):
    - Modern (std): the site's own fonts above, Noto Sans Devanagari and Inter;
    - Traditional (classic): "SC Classic", Tiro Devanagari Marathi (the same files as above), with the Vedic chants in

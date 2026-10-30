@@ -43,7 +43,7 @@ test("Kannada menus: the bars, Settings and the Library in Kannada, marked as Ka
   await expect(page.locator("#asn")).toHaveAccessibleName(/^ಮುಂದೆ/);
   await page.locator("#aa").click();
   await page.locator('#spv button[data-v="screen"]').click();
-  await expect(page.locator("#su button")).toHaveText(["English", "मराठी", "ಕನ್ನಡ"]);
+  await expect(page.locator("#su button")).toHaveText(["English", "मराठी", "ಕನ್ನಡ", "తెలుగు", "ગુજરાતી"]);
   await expect(page.locator('#su button[data-v="kn"]')).toHaveAttribute("aria-pressed", "true");
   // back to English, at once
   await page.locator('#su button[data-v="en"]').click();
@@ -51,6 +51,25 @@ test("Kannada menus: the bars, Settings and the Library in Kannada, marked as Ka
   await expect(page.locator("#ash")).toHaveAccessibleName("Home");
   expect((await prefs(page)).ui).toBe("en");
 });
+
+// Marathi menus go with Marathi letters: picking Kannada, Telugu or Gujarati letters turns them into that language's;
+// other menus stay as they are whatever the letters
+for (const [from, pick, want] of [
+  ["mr", "kn", "ಸಂಗ್ರಹ"],
+  ["mr", "te", "సంగ్రహం"],
+  ["mr", "gu", "સંગ્રહ"],
+  ["kn", "gu", "ಸಂಗ್ರಹ"],
+  ["en", "te", "Library"],
+])
+  test(`${from} menus, then ${pick} letters picked in Settings: the menus follow the rule`, async ({ page }) => {
+    await openSite(page, { ...SETUPS.marathi, ui: from }, { hash: "#a1" });
+    await page.locator("#aa").click();
+    await page.locator("#sl1s").selectOption(pick);
+    await page.locator("#xc").click();
+    await untuck(page);
+    await expect(page.locator("#hm")).toHaveAccessibleName(want);
+    await expect(page.locator("#a1 .verse .mr").first()).toHaveAttribute("lang", pick);
+  });
 
 test("⋯ More opens App, Share, QR and Help under it while reading; a tap outside or Escape closes it @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a1" });

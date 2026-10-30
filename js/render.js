@@ -101,17 +101,21 @@
     return h + "  </section>\n";
   }
 
-  // ---- The same words in another Indian script (Settings → Main language → ಕನ್ನಡ) ----
-  // The text is written once, in Devanagari. Kannada letters sit at the same place in their Unicode block, 0x380
-  // further on, so each letter moves across one for one. A few signs have no Kannada twin: the dandas and the Vedic
-  // accent marks stay as they are (Kannada books use them too), ॐ is written ಓಂ, and the Marathi eyelash ऱ and the
-  // ॅ of English words (टॅब, tab) take their usual Kannada spelling. The choice is read from the saved settings
-  // here, before the page script runs, so every later step (search, English spelling, printing) sees the new text.
-  // To add another script, give it an entry in SCRIPTS.
+  // ---- The same words in another Indian script (Settings → Main language → ಕನ್ನಡ, తెలుగు, ગુજરાતી) ----
+  // The text is written once, in Devanagari. Kannada, Telugu and Gujarati letters sit at the same place in their
+  // Unicode blocks (0x380, 0x300 and 0x180 further on), so each letter moves across one for one. A few signs have no
+  // twin there: the dandas and the Vedic accent marks stay as they are (books in these scripts use them too), ॐ is
+  // written ಓಂ and ఓం, and the Marathi eyelash ऱ and the ॅ of English words (टॅब, tab) take the usual spelling. Gujarati
+  // has its own ૐ, ૅ and ૉ; its block has no ऱ, ऴ or ॲ, and its fonts have no ᳚, written there as ॑॑, which looks the
+  // same. The choice is read from the saved settings here, before the page script runs, so every later step (search,
+  // English spelling, printing) sees the new text.
+  // To add another script, give it an entry in SCRIPTS (and its fonts: css/00-fonts.css, css/09-settings-page.css).
   var SCRIPTS = {
     kn: { off: 0x380, sp: { ॐ: "ಓಂ", ऱ: "ರ", "ॅ": "್ಯಾ", "ॉ": "ಾ", ऑ: "ಆ", ॲ: "ಅ" }, back: [[/ಓಂ(?![ಀ-೿])/g, "ॐ"]] },
+    te: { off: 0x300, sp: { ॐ: "ఓం", ऱ: "ర", "ॅ": "్యా", "ॉ": "ా", ऑ: "ఆ", ॲ: "అ" }, back: [[/ఓం(?![ఀ-౿])/g, "ॐ"]] },
+    gu: { off: 0x180, sp: { ऱ: "ર", ऴ: "ળ", ॲ: "અ", "᳚": "॑॑" }, back: [[/॑॑/g, "᳚"]] },
   };
-  var KEEP = /[॒॑।॥]/;
+  var KEEP = /[॒॑।॥᳚]/;
   // ---- Print handed over from the iPhone Home Screen app (js/features/print.js, "Open in Safari") ----
   // The app cannot print, so it opens Safari at …/?print=as&s={…} (and &t=…, when only some texts are printed): the
   // reader's print choices (language, dhrupad, font, page) are saved here first, before anything reads them, and the
@@ -175,7 +179,7 @@
     to: function (t) {
       return !S
         ? t
-        : t.replace(/[ऀ-ॿ]/g, function (c) {
+        : t.replace(/[ऀ-ॿ᳚]/g, function (c) {
             return S.sp[c] || (KEEP.test(c) ? c : String.fromCharCode(c.charCodeAt(0) + S.off));
           });
     },

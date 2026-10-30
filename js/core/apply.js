@@ -17,6 +17,8 @@ export function init() {
     mr: { n: "मराठी" },
     en: { n: "English" },
     kn: { n: "ಕನ್ನಡ" },
+    te: { n: "తెలుగు" },
+    gu: { n: "ગુજરાતી" },
   };
   // Each piece has a ⌃ button in its heading that folds it down to the heading
   if (!Array.isArray(P.af)) P.af = [];

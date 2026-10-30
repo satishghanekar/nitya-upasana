@@ -9,7 +9,7 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files and the 
 1. **`<head>`** loads the style files in `css/` in number order, then `js/parts.js`, the one list of the site's files. `modulepreload` links fetch the script parts in parallel.
 2. **The splash** (`#spl`, the first thing in `<body>`, set up by the plain script `js/splash.js`) shows from the first paint: the picture for the time of day with today's weekday star ringed, as on Home, the name, and the seven stars lighting up in turn. `js/splash.js` also puts the reader's theme from the boot copy of the settings on `<html>`, so the splash matches it. It fades out once `data-ready` is set (styles in `css/02-core.css`, "Splash"), or after 10 s if the site script never starts. `tests/unit/time-of-day.test.mjs` checks its copy of the star centres against `js/core/time-of-day.js`.
 3. **`<body>`** has the top bar, Settings (with its Reading | Screen | More tabs), Home, the Library (with its Chants | Books tabs, पाठ | पोथी), the Vedic calendar, the routine builder and the dialogs, written in HTML. Help's text sits in a `<template>` and is only laid out when Help is first opened. `#pieces`, at the end of `<main>`, marks where the texts go.
-4. **`js/render.js`**, a plain script, defines `renderPiece` (a text's HTML from its data) and `SCR` (Kannada letters). It also reads the boot copy of the settings and the print choices carried in a print link, before the modules run.
+4. **`js/render.js`**, a plain script, defines `renderPiece` (a text's HTML from its data) and `SCR` (Kannada, Telugu or Gujarati letters). It also reads the boot copy of the settings and the print choices carried in a print link, before the modules run.
 5. **`js/main.js`** starts the site script. `js/text/load.js` fetches `content/library.json`, the text files in `content/texts/`, `content/routines.json`, `content/festivals.json`, `content/holidays.json` and `content/pdfs.json`; `js/text/content.js` turns the texts into `CONTENT` (reading each file with `js/text/format.js`). At the same time `openStore()` (`js/store/store.js`) opens IndexedDB, where the people on this phone are kept. Then each part's `init()` runs in a fixed order (listed in `js/README.md`), each on its own, so one that fails doesn't stop the rest, and `data-ready` is set on `<html>`. If the texts can't be loaded the parts start anyway, so Home, Settings and Help still work.
 6. **No text is built at start-up.** A text is built the first time it is opened (`pieceEl(id)` in `js/core/page.js`, from `CONTENT` through `renderPiece`), and each part's step for a new piece (`onPiece`) runs on it then: Kannada letters, the English spelling, stanza numbers, line breaks, dhrupad markers, the fold, the highlighted line and so on. Search builds its index from `CONTENT` the first time something is searched, and print builds its own copy (see *Printing*).
 7. **Until `data-ready` is set, the page is hidden**, so it never jumps (the splash covers it meanwhile) while the reader's theme, languages, text size and Home's session arrive. If the script never runs, the page shows after 1.5 s anyway.
@@ -44,7 +44,7 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files and the 
 
 ## Menu languages
 
-The menus are in English, Marathi or Kannada (Settings → Menus and buttons, `P.ui`). Every menu word is in a catalog, one file per language (`js/strings/en.js`, `js/strings/mr.js`, `js/strings/kn.js`), each part's words under its name:
+The menus are in English, Marathi, Kannada, Telugu or Gujarati (Settings → Menus and buttons, `P.ui`). Every menu word is in a catalog, one file per language (`js/strings/en.js`, `mr.js`, `kn.js`, `te.js`, `gu.js`), each part's words under its name:
 
 - a script reads them with `menuWords("part")` (`js/core/strings.js`); a sentence with a value in it ("until Mon 1:21 am", "सोमवारी रात्री १:२१ पर्यंत") is a function, so each language keeps its own word order;
 - the page's own words are `<span data-w="page.key">English</span>` in `index.html`, filled in the menu language by `fillWords()` when the page starts and when the menu language changes (the English inside is what shows without the script); an element filled takes the language's code as its class and `lang`, so the styles for `.mr` and `.en` still apply;
@@ -60,7 +60,7 @@ A word a language lacks is taken from English. `tests/unit/strings.test.mjs` che
 3. If it is written in letters the site has no font for, add one (`fonts/`, `css/00-fonts.css`) and give `.gu` (the class the filled words take) and `[data-lang="gu"]` (the menus the scripts write) that font, as `css/09-settings-page.css` does for Kannada.
 4. `npm run unit` says what is missing.
 
-The reading languages (the texts, their titles, and the calendar's names: tithi, nakshatra, festivals) are another matter: they follow `P.lead` and `P.l2`, and Marathi can be shown in Kannada letters (`SCRIPTS` in `js/render.js`).
+The reading languages (the texts, their titles, and the calendar's names: tithi, nakshatra, festivals) are another matter: they follow `P.lead` and `P.l2`, and Marathi can be shown in Kannada, Telugu or Gujarati letters (`SCRIPTS` in `js/render.js`; each script's fonts in `css/00-fonts.css`, picked through `--ks` and `--kf` in `css/09-settings-page.css`).
 
 ## Vedic calendar and moonrise
 

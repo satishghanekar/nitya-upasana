@@ -480,7 +480,7 @@ export default {
   },
   // Print (js/features/print.js): the Print pop-up in the menu language, the printout's own words in its language
   print: {
-    langs: { mr: "Marathi", kn: "Kannada", en: "English" },
+    langs: { mr: "Marathi", kn: "Kannada", te: "Telugu", gu: "Gujarati", en: "English" },
     portrait: "Portrait",
     landscape: "Landscape",
     both: "Both",

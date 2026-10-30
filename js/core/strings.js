@@ -1,5 +1,5 @@
 // @ts-check
-// The menu words, in every menu language. Each language has one file in js/strings/ (en.js, mr.js, kn.js) holding
+// The menu words, in every menu language. Each language has one file in js/strings/ (en.js, mr.js, kn.js, te.js, gu.js) holding
 // each part's words under the part's name, and menuWords("backup") gives the backup part's words in the menu
 // language (P.ui). A word a language lacks is taken from English, so a new language can be added a part at a time.
 // No init(): nothing here touches the page, so the unit tests (tests/unit/strings.test.mjs) run it in Node.
@@ -15,13 +15,15 @@
 import en from "../strings/en.js";
 import mr from "../strings/mr.js";
 import kn from "../strings/kn.js";
+import te from "../strings/te.js";
+import gu from "../strings/gu.js";
 import { menuLangs, ui } from "./words.js";
 
 /** @typedef {typeof en} Words */
 
 /** The menu languages: their code (as P.ui keeps it) and their words */
 /** @type {Record<string, Partial<Words>>} */
-export const LANGS = { en: en, mr: mr, kn: kn };
+export const LANGS = { en: en, mr: mr, kn: kn, te: te, gu: gu };
 menuLangs(Object.keys(LANGS));
 
 /** @type {Record<string, any>} */

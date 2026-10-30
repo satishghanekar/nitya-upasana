@@ -477,7 +477,7 @@ export default {
   },
   // Print (js/features/print.js): the Print pop-up in the menu language, the printout's own words in its language
   print: {
-    langs: { mr: "ಮರಾಠಿ", kn: "ಕನ್ನಡ", en: "ಇಂಗ್ಲಿಷ್" },
+    langs: { mr: "ಮರಾಠಿ", kn: "ಕನ್ನಡ", te: "ತೆಲುಗು", gu: "ಗುಜರಾತಿ", en: "ಇಂಗ್ಲಿಷ್" },
     portrait: "ಲಂಬ",
     landscape: "ಅಡ್ಡ",
     both: "ಎರಡೂ",

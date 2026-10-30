@@ -214,6 +214,15 @@ describe("settings from every older version are upgraded as js/core/state.js alw
     expect(prefs.af).toEqual(["a9"]);
   });
 
+  test("the letters the original is shown in: Kannada, Telugu or Gujarati kept, anything else Marathi; Marathi menus only with Marathi letters, the others free", () => {
+    for (const ind of ["kn", "te", "gu"]) {
+      const p = migratePrefs({ ...SHAPES.v6, ind, ui: "kn" }, PHONE).prefs;
+      expect([p.ind, p.ui]).toEqual([ind, "kn"]);
+      expect(migratePrefs({ ...SHAPES.v6, ind, ui: "mr" }, PHONE).prefs.ui).toBe("en");
+    }
+    expect(migratePrefs({ ...SHAPES.v6, ind: "ta" }, PHONE).prefs.ind).toBe("mr");
+  });
+
   test("v6 with the Print pop-up's choices (version 1.3): kept as they are", () => {
     const { prefs, changed } = migratePrefs(SHAPES.v6print, PHONE);
     expect(changed).toBe(false);

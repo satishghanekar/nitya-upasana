@@ -54,6 +54,14 @@ export function init() {
       /** @type {{ m: string, ids: string[] | null, rp: any, sp: { session: string } | null } | null} the printout just printed, until the reader is back */
       again = null,
       seen = false; // the browser has started printing (beforeprint) since the last window.print()
+    // the faces of the other scripts the original can be shown in (js/render.js SCRIPTS): Modern's, then Traditional's
+    // and Bold's (css/00-fonts.css)
+    /** @type {Record<string, string[]>} */
+    var IND = {
+      kn: ["Noto Sans Kannada", "SC Kn Classic"],
+      te: ["Noto Sans Telugu", "SC Te Classic"],
+      gu: ["Noto Sans Gujarati", "SC Gu Classic"],
+    };
     // the original's language is named by the letters it is shown in (P.ind): menuWords("print").langs; a new script
     // (js/render.js) adds its name there
 
@@ -65,9 +73,10 @@ export function init() {
       if (html !== undefined) e.innerHTML = html;
       return e;
     }
-    // the original's language as the page marks it (Marathi, or the language of the letters it is shown in: Kannada)
+    // the original's language as the page marks it (Marathi, or the language of the letters it is shown in: Kannada,
+    // Telugu, Gujarati)
     function olang() {
-      return P.ind === "kn" ? "kn" : "mr";
+      return IND[P.ind] ? P.ind : "mr";
     }
     // the language printed: "mr" (the original), "en" or "both"
     /** @param {Element} host @param {string} k  "mr" or "en" @returns {string}  the inner HTML of its part in that language */
@@ -592,7 +601,7 @@ export function init() {
             : f === "bold"
               ? ['600 16px "SC Bold"', '800 16px "SC Bold"']
               : [];
-      if (olang() === "kn") want.push(f === "std" ? '400 16px "Noto Sans Kannada"' : '400 16px "SC Kn Classic"');
+      if (IND[olang()]) want.push('400 16px "' + IND[olang()][f === "std" ? 0 : 1] + '"');
       want.forEach(function (x) {
         try {
           document.fonts.load(x, "कॅ॑A").catch(function () {});
@@ -800,10 +809,10 @@ export function init() {
     /** @param {string} lang @param {string} [font] (else the printout's) */
     function fam(lang, font) {
       var f = font || pfn(),
-        kn = lang === "kn",
-        base = kn ? '"Noto Sans Kannada", var(--body)' : lang === "en" ? "var(--lat)" : "var(--body)";
-      // (Kannada letters: Noto Serif Kannada for Traditional and Bold alike, css/09-settings-page.css)
-      return f === "std" ? base : '"' + (kn ? "SC Kn Classic" : FAM[f]) + '", ' + base;
+        ind = IND[lang],
+        base = ind ? '"' + ind[0] + '", var(--body)' : lang === "en" ? "var(--lat)" : "var(--body)";
+      // (Kannada, Telugu and Gujarati letters: the serif face for Traditional and Bold alike, css/09-settings-page.css)
+      return f === "std" ? base : '"' + (ind ? ind[1] : FAM[f]) + '", ' + base;
     }
     function words(k) {
       var a1 = pieceEl("a1"), // (built if not opened yet: js/core/page.js)
@@ -813,7 +822,7 @@ export function init() {
       return t.length > 26 ? t.slice(0, 26).replace(/\s+\S*$/, "") + "…" : t;
     }
     function rows() {
-      var or = P.ind === "kn" ? "kn" : "mr",
+      var or = olang(),
         ks = plang() === "both" ? (LEAD === "en" ? ["en", "mr"] : ["mr", "en"]) : [plang() === "en" ? "en" : "mr"];
       [].forEach.call(dh.children, function (b) {
         b.setAttribute("aria-pressed", b.dataset.v === String(pref()) ? "true" : "false");
@@ -1063,7 +1072,7 @@ export function init() {
       // both languages shown the main one comes first (left, or on top)
       var pw = menuWords("print"),
         en = pw.langs.en,
-        or = P.ind === "kn" ? pw.langs.kn : pw.langs.mr,
+        or = pw.langs[olang()],
         l1 = LEAD === "en" ? en : or,
         l2 = LEAD === "en" ? or : en;
       // the page: Portrait or Landscape (one language), a tap picks it; both languages: Landscape, side by side

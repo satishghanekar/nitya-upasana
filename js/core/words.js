@@ -14,12 +14,16 @@ import { P } from "./state.js";
 export const MONTHS = {
   mr: ["जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"],
   kn: ["ಜನವರಿ", "ಫೆಬ್ರವರಿ", "ಮಾರ್ಚ್", "ಏಪ್ರಿಲ್", "ಮೇ", "ಜೂನ್", "ಜುಲೈ", "ಆಗಸ್ಟ್", "ಸೆಪ್ಟೆಂಬರ್", "ಅಕ್ಟೋಬರ್", "ನವೆಂಬರ್", "ಡಿಸೆಂಬರ್"],
+  te: ["జనవరి", "ఫిబ్రవరి", "మార్చి", "ఏప్రిల్", "మే", "జూన్", "జులై", "ఆగస్టు", "సెప్టెంబర్", "అక్టోబర్", "నవంబర్", "డిసెంబర్"],
+  gu: ["જાન્યુઆરી", "ફેબ્રુઆરી", "માર્ચ", "એપ્રિલ", "મે", "જૂન", "જુલાઈ", "ઑગસ્ટ", "સપ્ટેમ્બર", "ઑક્ટોબર", "નવેમ્બર", "ડિસેમ્બર"],
   en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 };
 /** The weekdays, Sunday first (as Date.getDay() counts them) */
 export const DAYS = {
   mr: ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
   kn: ["ಭಾನುವಾರ", "ಸೋಮವಾರ", "ಮಂಗಳವಾರ", "ಬುಧವಾರ", "ಗುರುವಾರ", "ಶುಕ್ರವಾರ", "ಶನಿವಾರ"],
+  te: ["ఆదివారం", "సోమవారం", "మంగళవారం", "బుధవారం", "గురువారం", "శుక్రవారం", "శనివారం"],
+  gu: ["રવિવાર", "સોમવાર", "મંગળવાર", "બુધવાર", "ગુરુવાર", "શુક્રવાર", "શનિવાર"],
   en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };
 
@@ -76,14 +80,14 @@ export function scr(s) {
   return w.SCR && w.SCR.k ? w.SCR.to(s) : s;
 }
 
-/** The script the texts are shown in: "" as written, or "kn" (Kannada letters) */
+/** The script the texts are shown in: "" as written, or "kn", "te", "gu" (Kannada, Telugu, Gujarati letters) */
 export function scrKey() {
   /** @type {any} */
   var w = typeof window === "undefined" ? {} : window;
   return (w.SCR && w.SCR.k) || "";
 }
 
-/** The lang attribute for Marathi as shown: "mr", or "kn" in Kannada letters */
+/** The lang attribute for Marathi as shown: "mr", or "kn", "te", "gu" in those letters */
 export function mrLang() {
   return scrKey() || "mr";
 }

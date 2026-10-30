@@ -71,24 +71,34 @@ for (const [pfn, aarti, vedic] of [
     expect(await printed(page, { ...SETUPS.marathi, fnt: other, pfn }, "vedic-chant-atharvashirsha")).toEqual(vedic);
   });
 
-// Kannada letters in print: their own face in each font, as on screen
-for (const [pfn, want] of [
-  ["std", ["Noto Sans Kannada", "400"]],
-  ["classic", ["SC Kn Classic", "400"]],
-])
-  test(`in print, Kannada letters, ${pfn} @chromium-only`, async ({ page }) => {
-    await stubPrint(page);
-    expect(await printed(page, { ...SETUPS.kannada, pfn }, "aarti-sukhkarta")).toEqual(want);
-  });
+// The other scripts the original can be shown in, with their faces: Noto Sans in Modern, Noto Serif (named SC … Classic)
+// in Traditional and Bold; each draws the Vedic marks on its own letters (css/00-fonts.css)
+const SCRIPT_FACES = [
+  ["Kannada", "kannada", "Noto Sans Kannada", "SC Kn Classic"],
+  ["Telugu", "telugu", "Noto Sans Telugu", "SC Te Classic"],
+  ["Gujarati", "gujarati", "Noto Sans Gujarati", "SC Gu Classic"],
+];
 
-// Kannada letters: Noto Sans Kannada in Modern, Noto Serif Kannada in Traditional and Bold (both draw the Vedic marks)
-for (const [fnt, want] of [
-  ["std", ["Noto Sans Kannada", "400"]],
-  ["classic", ["SC Kn Classic", "400"]],
-  ["bold", ["SC Kn Classic", "600"]],
-])
-  test(`Kannada letters, ${fnt}`, async ({ page }) => {
-    await openSite(page, { ...SETUPS.kannada, fnt });
-    await readText(page, "p1");
-    expect(await look(page, VEDIC)).toEqual(want);
-  });
+// in print: their own face in each font, as on screen
+for (const [name, setup, sans, serif] of SCRIPT_FACES)
+  for (const [pfn, want] of [
+    ["std", [sans, "400"]],
+    ["classic", [serif, "400"]],
+  ])
+    test(`in print, ${name} letters, ${pfn} @chromium-only`, async ({ page }) => {
+      await stubPrint(page);
+      expect(await printed(page, { ...SETUPS[setup], pfn }, "aarti-sukhkarta")).toEqual(want);
+    });
+
+// on screen: the sans face in Modern, the serif in Traditional and Bold
+for (const [name, setup, sans, serif] of SCRIPT_FACES)
+  for (const [fnt, want] of [
+    ["std", [sans, "400"]],
+    ["classic", [serif, "400"]],
+    ["bold", [serif, "600"]],
+  ])
+    test(`${name} letters, ${fnt}`, async ({ page }) => {
+      await openSite(page, { ...SETUPS[setup], fnt });
+      await readText(page, "p1");
+      expect(await look(page, VEDIC)).toEqual(want);
+    });
