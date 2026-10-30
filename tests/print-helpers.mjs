@@ -263,7 +263,9 @@ export function checkPages(r) {
     if (at[end] !== at[key]) cut.push(`${key.slice(0, -2)} (pages ${at[key]}–${at[end]})`);
   }
   expect(cut, "blocks split across pages").toEqual([]);
-  // every block was found in the PDF (nothing lost off the page)
+  // every block was found in the PDF (nothing lost off the page), naming any block with a start or end not found
+  const half = Object.keys(at).filter((k) => !(k.slice(0, -1) + (k.endsWith("s") ? "e" : "s") in at));
+  expect(half, "blocks with only their start or end printed").toEqual([]);
   expect(Object.keys(at).length, "every block start and end printed").toBe(pv.blocks * 2);
   // page footer "N / total" on every page
   const n = pdf.pages.length;
