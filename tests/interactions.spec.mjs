@@ -53,16 +53,18 @@ test("Kannada menus: the bars, Settings and the Library in Kannada, marked as Ka
   expect((await prefs(page)).ui).toBe("en");
 });
 
-// The menus are English or the language the texts are shown in, never mixed: picking other letters takes menus in
-// the old letters' language to the new letters' language, and leaves English menus English
-for (const [from, pick, want] of [
-  ["mr", "kn", "ಸಂಗ್ರಹ"],
-  ["mr", "te", "సంగ్రహం"],
-  ["mr", "gu", "સંગ્રહ"],
-  ["en", "te", "Library"],
+// The menus are English or the language the texts are shown in, never mixed: picking other letters puts the menus
+// back to English (Marathi menus over Kannada letters would be mixed), and Settings then offers English and the new
+// letters' language
+for (const [from, ind, pick] of [
+  ["mr", "mr", "kn"],
+  ["mr", "mr", "te"],
+  ["kn", "kn", "gu"],
+  ["en", "mr", "te"],
 ])
-  test(`${from} menus, then ${pick} letters picked in Settings: the menus follow the rule`, async ({ page }) => {
-    await openSite(page, { ...SETUPS.marathi, ui: from }, { hash: "#a1" });
+  test(`${from} menus, then ${pick} letters picked in Settings: the menus go back to English`, async ({ page }) => {
+    const want = "Library";
+    await openSite(page, { ...SETUPS.marathi, ind, ui: from }, { hash: "#a1" });
     await page.locator("#aa").click();
     await page.locator("#sl1s").selectOption(pick);
     await page.locator("#xc").click();

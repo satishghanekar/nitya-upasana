@@ -70,7 +70,7 @@
  "tests/edge.spec.mjs": 55,
  "tests/eslint.config.mjs": 2,
  "tests/helpers.mjs": 137,
- "tests/interactions.spec.mjs": 729,
+ "tests/interactions.spec.mjs": 732,
  "tests/layout.spec.mjs": 102,
  "tests/library.spec.mjs": 685,
  "tests/offline.spec.mjs": 142,

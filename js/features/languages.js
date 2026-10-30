@@ -9,7 +9,7 @@ import { trPick } from "./settings-panel.js";
 import { buildIX } from "../text/search.js";
 import { refToggle } from "./dhrupad-button.js";
 import { pieceEl } from "../core/page.js";
-import { LANGS as MENUS, menuWords } from "../core/strings.js";
+import { menuWords } from "../core/strings.js";
 
 var PICK;
 
@@ -172,9 +172,9 @@ function spPick(w, k) {
   } else l2 = v;
   /** @type {Record<string, any>} */
   var ch = { lead: lead, l2: l2, lang: !l2 || role === 1 ? lead : role === 2 ? l2 : "both" };
-  // Menus in English, or in the language of the letters shown (js/store/migrate.js tidy()): menus in the old letters'
-  // language follow to the new letters' (when it has words of its own), and English as the main language means English
-  if (P.ui !== "en" && (lead === "en" || P.ui !== ind)) ch.ui = lead !== "en" && MENUS[ind] ? ind : "en";
+  // Menus in English, or in the language of the letters shown (js/store/migrate.js tidy()): other letters, or English
+  // as the main language, put the menus back to English (Satish, 2026-10-30)
+  if (P.ui !== "en" && (lead === "en" || P.ui !== ind)) ch.ui = "en";
   var sw = ind !== P.ind;
   if (sw) ch.ind = ind;
   change(ch, function () {
