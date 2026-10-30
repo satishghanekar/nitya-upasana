@@ -9,28 +9,43 @@ const F = read("festivals.json");
 const H = read("holidays.json");
 
 describe("festival drawings", () => {
-  test("every festival has its own drawing, none the fallback star", () => {
+  test("every festival has its own drawing, none the fallback star, no two the same (Diwali's days each their own)", () => {
     for (const f of F.festivals) expect(festLook(f.id)[0], f.id).not.toBe("star");
+    const names = F.festivals.map((f) => festLook(f.id)[0]);
+    expect(new Set(names).size).toBe(names.length);
+    expect(["narak-chaturdashi", "lakshmi-pujan", "bali-pratipada", "bhaubeej"].map((id) => festLook(id)[0])).toEqual([
+      "phuljhadi",
+      "lakshmi",
+      "crown",
+      "thali",
+    ]);
   });
 
   test("the tint says the kind of day", () => {
     expect(festLook("dasara")).toEqual(["aapta", "sai"]);
     expect(festLook("pradosh")).toEqual(["linga", "shi"]);
-    expect(festLook("maha-shivratri")).toEqual(["linga", "shi"]);
-    expect(festLook("kojagiri-purnima")).toEqual(["moon", "moon"]);
+    expect(festLook("maha-shivratri")).toEqual(["trishul", "shi"]);
+    expect(festLook("kojagiri-purnima")).toEqual(["kojagiri", "moon"]);
+    expect(festLook("guru-purnima")).toEqual(["pothi", "moon"]);
     expect(festLook("ganesh-chaturthi")).toEqual(["modak", "gan"]);
-    expect(festLook("lakshmi-pujan")).toEqual(["diya", "sai"]);
+    expect(festLook("anant-chaturdashi")).toEqual(["visarjan", "gan"]);
   });
 
-  test("a saint's Jayanti is a lotus, a Punyatithi the paduka, anything new a star", () => {
-    expect(festLook("datta-jayanti")[0]).toBe("lotus");
-    expect(festLook("swami-samarth-punyatithi")[0]).toBe("paduka");
+  test("each saint's days their own; a saint's day not drawn yet a lotus or the paduka, anything new a star", () => {
+    expect(["gondavalekar-maharaj-jayanti", "gondavalekar-maharaj-utsav", "gondavalekar-maharaj-punyatithi"].map((id) => festLook(id)[0])).toEqual([
+      "mala",
+      "toran",
+      "samadhi",
+    ]);
+    expect(festLook("datta-jayanti")[0]).toBe("kamandalu");
+    expect(festLook("someone-jayanti")[0]).toBe("lotus");
+    expect(festLook("someone-punyatithi")[0]).toBe("paduka");
     expect(festLook("someone-new")).toEqual(["star", "sai"]);
   });
 
   test("the circle is hidden from screen readers and carries its tint", () => {
     expect(festIcon("dasara")).toMatch(/^<span class="fi sai" aria-hidden="true"><svg /);
-    expect(iconHtml("modak", "gan")).toMatch(/^<span class="fi gan"/);
+    expect(iconHtml("crescent", "gan")).toMatch(/^<span class="fi gan"/);
     expect(festMark("dasara")).toMatch(/^<svg class="fm" [^>]*aria-hidden="true"/);
   });
 });
