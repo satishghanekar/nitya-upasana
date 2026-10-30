@@ -65,14 +65,14 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(max-width: 439px)` | Phones: the bottom bar's five buttons (Prev, Home, Library, Reading, Next) close their gaps and slim the icon buttons |
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
-| `(min-width: 760px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own; Settings: below, the tabs, the Reading tab tightened to fit one iPhone screen; from 760px (iPads upright and sideways, desktops) no tabs: the title beside Back and every group at once, in two columns (`.sp-c1`: the preview and the reading choices; `.sp-c2`: screen, profiles, about) |
+| `(min-width: 760px) and (min-height: 521px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own; Settings: below, the tabs, the Reading tab tightened to fit one iPhone screen; from 760px (iPads upright and sideways, desktops) no tabs: the title beside Back and every group at once, in two columns (`.sp-c1`: the preview and the reading choices; `.sp-c2`: screen, profiles, about). A phone held sideways (at most 520px high) keeps the tabs (the 521px height) |
 | `(max-width: 819px)` | Phones and small tablets: English names in the Vedic calendar's days a step smaller |
 | `(min-width: 820px)` | Tablets and up: wider spacing; the Vedic calendar shows the day card beside the month |
 | `(min-width: 600px) and (max-width: 1023px) and (orientation: portrait)` | Tablets held upright: Home with the picture large on top, the calendar's month above the day card, the Library in two columns |
 | `(min-width: 1024px)` | iPads held sideways and desktops: Home's column on the left (on Home, and fixed beside the text being read) and the page beside it across the whole width; the calendar, Settings (across the width, a tab's groups in two columns) and Library open beside it; the routine builder's Add texts picker sits beside its list |
 | `(min-width: 1400px)` | Desktops: a wider left column and 32px edges; the layout stops growing at 2200px, centred |
 | `(min-width: 2200px)`, `(min-width: 3000px)` | Large monitors (2K at 100%, 4K at low scaling): the left column, the bars and the pages beside it drawn 1.25× / 1.6× larger (`zoom`) |
-| `(orientation: landscape) and (max-height: 520px)` | Phones held sideways: tighter line spacing and headers; Home in two columns (the day left, the session right); the bottom bar's words under Home, Library and Reading are left out |
+| `(orientation: landscape) and (max-height: 520px)` | Phones held sideways: tighter line spacing and headers; Home in two columns (the day left, the session right); the bottom bar's words under Home, Library and Reading are left out; Settings keeps the phone's tabs, with Reading's preview on the left beside its choices |
 
 The same test keeps the number of `!important` (40) and `:root:root` (11) from growing: they only win over earlier rules, and each new one makes the next change harder.
 

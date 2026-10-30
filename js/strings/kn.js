@@ -553,6 +553,8 @@ export default {
     dark: "ಗಾಢ",
     highContrast: "ಹೆಚ್ಚಿನ ಕಾಂಟ್ರಾಸ್ಟ್",
     keepScreenOn: "ಪರದೆ ಆನ್ ಇರಲಿ",
+    afterLastTouch: "ಕೊನೆಯ ಸ್ಪರ್ಶದ ನಂತರ, ನಿಮಿಷಗಳು",
+    off: "ಆಫ್",
     profilesAndBackup: "ಪ್ರೊಫೈಲ್‌ಗಳು ಮತ್ತು ಬ್ಯಾಕಪ್",
     thisBrowserCanTSave: "ಈ ಬ್ರೌಸರ್ ಇಲ್ಲಿ ಉಳಿಸಲಾರದು. ಮುಚ್ಚುವ ಮೊದಲು ಬ್ಯಾಕಪ್ ಫೈಲ್ ಉಳಿಸಿ.",
     whoIsReading: "ಯಾರು ಓದುತ್ತಿದ್ದಾರೆ",

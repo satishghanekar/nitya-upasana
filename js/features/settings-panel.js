@@ -19,8 +19,9 @@ import { esc } from "../core/words.js";
 var fsT;
 /** The tab last chosen, kept for when a desktop window is narrowed to tabs again */
 var tab = "read";
-/** iPads (upright or sideways) and desktops: no tabs, every group (as the min-width: 760px rules in the CSS) */
-var WIDE = window.matchMedia("(min-width: 760px)");
+/** iPads (upright or sideways) and desktops: no tabs, every group (as the min-width: 760px rules in the CSS). A phone
+ * held sideways is as wide but too short for it: the tabs */
+var WIDE = window.matchMedia("(min-width: 760px) and (min-height: 521px)");
 
 /**
  * Show one tab of Settings
@@ -53,7 +54,7 @@ export function init() {
       if (b) spTab(/** @type {any} */ (b.dataset.v));
     });
   spTab("read");
-  // a window made wider or narrower across 760px: every group, or the tab chosen
+  // a window made wider or narrower across 760px, or a phone turned: every group, or the tab chosen
   if (WIDE.addEventListener)
     WIDE.addEventListener("change", function () {
       spTab(/** @type {any} */ (tab));
