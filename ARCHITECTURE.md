@@ -60,6 +60,8 @@ A word a language lacks is taken from English. `tests/unit/strings.test.mjs` che
 3. If it is written in letters the site has no font for, add one (`fonts/`, `css/00-fonts.css`) and give `.gu` (the class the filled words take) that font.
 4. `npm run unit` says what is missing.
 
+Not yet in the catalog: the Sankashti line and its place (`js/features/sankashti.js`), which still choose between Marathi and English words inline.
+
 The reading languages (the texts, their titles, and the calendar's names: tithi, nakshatra, festivals) are another matter: they follow `P.lead` and `P.l2`, and Marathi can be shown in Kannada letters (`SCRIPTS` in `js/render.js`).
 
 ## Vedic calendar and moonrise
