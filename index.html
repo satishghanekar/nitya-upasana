@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.37.20">
+<meta name="version" content="aarti-v1.37.21">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -413,22 +413,16 @@
          tap opens it full screen, #pzv), beside today's date in Marathi and English (written in by the script) -->
     <div id="tdy">
       <button type="button" id="iconb" aria-label="Show the picture full screen: Sunrise picture"><img src="picture-sunrise-360.webp" srcset="picture-sunrise-360.webp 360w, picture-sunrise.webp 940w" sizes="(min-width: 1100px) 440px, 76px" fetchpriority="high" alt="" width="360" height="360"><span id="iconr" hidden></span></button>
-      <!-- the date, and ‹ › under it to show the day before or after, with Today / Tomorrow / Yesterday / In 3 days
-           between them (js/features/today-card.js) -->
-      <p id="tdd"><span class="d1" lang="mr"></span><span class="d2" lang="en"></span><span id="tdn"><button type="button" id="tdp" class="tdnb" aria-label="Previous day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span id="tdr"></span><button type="button" id="tdx" class="tdnb" aria-label="Next day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></span></p>
+      <!-- the day bar, as the calendar's Day view has it: ‹ the day › and Today on another day; then the date in the
+           reading languages, the day's word after it (Today, Tomorrow, In 3 days) (js/features/today-card.js) -->
+      <p id="tdd"><span id="tdn"><button type="button" id="tdp" class="tdnb" aria-label="Previous day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span id="tdl"></span><button type="button" id="tdx" class="tdnb" aria-label="Next day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><button type="button" id="tdt" class="off"></button></span><span class="d1" lang="mr"></span><span class="d2" lang="en"><span class="d2t"></span><span class="dsep" aria-hidden="true"> · </span><span id="tdr"></span></span></p>
     </div>
     <!-- The Vedic calendar line (js/features/vedic-calendar.js): today's month, paksha and tithi, nakshatra, Shaka year
          and samvatsara, sunrise, sunset and the place; a tap opens the calendar page (#cal) -->
     <div id="pan" hidden></div>
-    <!-- On a festival day only (js/features/vedic-calendar.js, rules in content/festivals.json): "आज दसरा" -->
-    <p id="fst" hidden></p>
-    <!-- On a Sankashti day only (js/features/sankashti.js): "Sankashti Chaturthi today · Moonrise 8:09 pm · place" -->
-    <p id="skt" hidden></p>
-    <!-- The next 7 days (js/features/vedic-calendar.js upHome): festivals, Pradosh and Sankashti, each a button to its day
-         in the calendar, and the first one after them; "Next 15 days" opens the calendar's Upcoming view -->
+    <!-- Coming up (js/features/vedic-calendar.js upHome): the next two festivals, Pradosh or Sankashti after the day shown,
+         each a button to its day in the calendar; "Next 15 days" opens the calendar's Upcoming view -->
     <section id="upw" aria-labelledby="upwh" hidden></section>
-    <!-- Another day shown with ‹ › (js/features/today-card.js): "Showing Wednesday" and Today ›, in place of This week -->
-    <p id="tdb" hidden><span id="tdbt"></span><button type="button" id="tdbb"></button></p>
     <!-- Notes about saving (js/features/backup.js): this browser can't save here (IndexedDB could not be opened), or a
          gentle reminder to save a backup file (none for 30 days, or never and 14 days since the first visit) -->
     <div id="pfnt" hidden>

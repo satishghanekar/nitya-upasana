@@ -33,7 +33,7 @@ test("Home: the calendar line under the date, with sunrise, sunset and the place
   await expect(page.locator("#pan .p2")).toHaveText("नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर");
   await expect(page.locator("#pan .p3")).toHaveText(/7:45 am.*6:47 pm.*Columbus, OH/);
   await expect(b).toHaveAccessibleName(
-    "आश्विन शुद्ध अष्टमी नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर Sunrise 7:45 am Sunset 6:47 pm (open the Vedic calendar)",
+    "आश्विन शुद्ध अष्टमी नक्षत्र उत्तराषाढा · शके १९४८ · पराभव संवत्सर Sunrise 7:45 am Sunset 6:47 pm Next: दसरा · Tue 20 Oct (open the Vedic calendar)",
   );
   await expect(b).toHaveAttribute("aria-expanded", "false");
   // it sits between the date and the session's texts (on wide screens the date is under the picture, on the right)
@@ -72,8 +72,8 @@ test("Home: the sunrise and sunset beside their times show their pictures full s
 
 // Home's lines are kept for the day (js/features/vedic-calendar.js homeDraw()): a second opening draws the kept copy,
 // the same as worked out; a new place works them out again
-test("Home: the calendar line, festival line and This week are kept for the day, and worked out again for a new place @mobile", async ({ page }) => {
-  const lines = () => page.evaluate(() => ["pan", "fst", "upw"].map((id) => [document.getElementById(id).hidden, document.getElementById(id).innerHTML]));
+test("Home: the calendar line (with the day's line) and Coming up are kept for the day, and worked out again for a new place @mobile", async ({ page }) => {
+  const lines = () => page.evaluate(() => ["pan", "upw"].map((id) => [document.getElementById(id).hidden, document.getElementById(id).innerHTML]));
   await openSite(page, COLUMBUS, { now: NOW });
   const worked = await lines();
   const kept = await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-home-lines")));
@@ -344,7 +344,7 @@ test("English first, no second: Home and the calendar are all in English, with L
   await expect(page.locator("#pan .p1")).toHaveAttribute("lang", "en");
   await expect(page.locator("#pan .p2")).toHaveText("Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava");
   await expect(b).toHaveAccessibleName(
-    "Ashvin Shukla Ashtami Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava Sunrise 7:45 am Sunset 6:47 pm (open the Vedic calendar)",
+    "Ashvin Shukla Ashtami Nakshatra Uttara Ashadha · Shaka 1948 · Parabhava Sunrise 7:45 am Sunset 6:47 pm Next: Dasara (Vijayadashami) · Tue 20 Oct (open the Vedic calendar)",
   );
   expect(await page.locator("#pan").innerText()).not.toMatch(DEVANAGARI);
   await b.click(CORNER);
@@ -494,47 +494,43 @@ test("festivals: दसरा on 20 October in the month, a tag and a row in the
   await expect(page.locator("#cald dt", { hasText: "सण" })).toHaveCount(0);
 });
 
-test("festivals: Home says आज दसरा on the day only @mobile", async ({ page }) => {
+// The day's festival is the last line of the calendar card (#pn4; it had a line of its own under the card, on the day
+// only, which made Home jump: Satish, 2026-10-30)
+test("festivals: on the day, the calendar card's last line names it @mobile", async ({ page }) => {
   await openSite(page, COLUMBUS, { now: DASARA });
   await expect(page.locator("#pan .p1")).toHaveText("आश्विन शुद्ध दशमी");
-  const f = page.locator("#fst");
-  await expect(f).toBeVisible();
-  await expect(f).toHaveText("Today: दसरा · Dasara (Vijayadashami)");
-  // it sits under the calendar line, above the session's texts
-  const y = async (s) => (await page.locator(s).boundingBox()).y;
-  expect(await y("#pan")).toBeLessThan(await y("#fst"));
-  expect(await y("#fst")).toBeLessThan(await y("#tsc"));
+  await expect(page.locator("#pn4")).toHaveText("दसरा · Dasara (Vijayadashami)");
+  await expect(page.locator("#pn4 svg")).toHaveCount(1);
 });
 
-test("festivals: Marathi only says आज दसरा; no line the day before or after", async ({ browser }) => {
-  for (const [now, shown] of [
-    [DASARA, true],
-    [new Date("2026-10-19T20:00:00-04:00"), false],
-    [new Date("2026-10-21T08:00:00-04:00"), false],
+test("festivals: Marathi only names दसरा on the day; the day before it is next, the day after it is gone", async ({ browser }) => {
+  for (const [now, line] of [
+    [DASARA, /^दसरा$/],
+    [new Date("2026-10-19T20:00:00-04:00"), /^पुढे: दसरा · मंगळवार २० ऑक्टोबर$/],
+    [new Date("2026-10-21T08:00:00-04:00"), /^पुढे: (?!दसरा)/],
   ]) {
     const page = await browser.newPage();
     await openSite(page, { ...SETUPS["marathi-menus"], l2: "", loc: { lat: 39.96, lon: -83.0 } }, { now });
     await expect(page.locator("#panb")).toBeVisible();
-    if (shown) await expect(page.locator("#fst")).toHaveText("आज दसरा");
-    else await expect(page.locator("#fst")).toBeHidden();
+    await expect(page.locator("#pn4")).toHaveText(line);
     await page.close();
   }
 });
 
-test("axe: the festival line on Home and Dasara in the calendar @mobile", async ({ page }) => {
+test("axe: the festival in the calendar card on Home and Dasara in the calendar @mobile", async ({ page }) => {
   await openSite(page, COLUMBUS, { now: DASARA });
-  await expect(page.locator("#fst")).toBeVisible();
-  expect(await axeScan(page, ["#fst", "#pan"], { mismatch: true })).toEqual([]);
+  await expect(page.locator("#pn4")).toContainText("दसरा");
+  expect(await axeScan(page, ["#pan"], { mismatch: true })).toEqual([]);
   await page.locator("#panb").click(CORNER);
   await page.locator('#calv [data-v="month"]').click();
   await expect(page.locator("#calm button.cd")).toHaveCount(31);
   expect(await axeScan(page, "#cal", { mismatch: true })).toEqual([]);
 });
 
-test("festivals in English only: Home says Today: Dasara, the month and the day card have no Devanagari @mobile", async ({ page }) => {
+test("festivals in English only: Home names Dasara, the month and the day card have no Devanagari @mobile", async ({ page }) => {
   await openSite(page, ENGLISH_ONLY, { now: DASARA });
-  const f = page.locator("#fst");
-  await expect(f).toHaveText("Today: Dasara (Vijayadashami)");
+  const f = page.locator("#pn4");
+  await expect(f).toHaveText("Dasara (Vijayadashami)");
   expect(await f.innerText()).not.toMatch(DEVANAGARI);
   await page.locator("#panb").click(CORNER);
   await page.locator('#calv [data-v="month"]').click();
@@ -549,40 +545,48 @@ test("festivals in English only: Home says Today: Dasara, the month and the day 
   expect(await page.locator("#calm .fs").allInnerTexts()).not.toContainEqual(expect.stringMatching(DEVANAGARI));
 });
 
-test("festivals in Marathi only: आज दसरा, and no English line in the day card", async ({ page }) => {
+test("festivals in Marathi only: दसरा, and no English line in the day card", async ({ page }) => {
   await openSite(page, { ...SETUPS["marathi-menus"], lead: "mr", l2: "", loc: { lat: 39.96, lon: -83.0 } }, { now: DASARA });
-  await expect(page.locator("#fst")).toHaveText("आज दसरा");
+  await expect(page.locator("#pn4")).toHaveText("दसरा");
   await page.locator("#panb").click(CORNER);
   await expect(row(page, "सण")).toHaveText("दसरा ↗");
 });
 
-// Upcoming (Satish, 2026-10-24): on Home, the 7 days after today; in the calendar, the next 15 days. The clock is
+// Upcoming (Satish, 2026-10-24): on Home, Coming up, the next two after the day shown (Satish, 2026-10-30: it was the 7
+// days after today, and changed height from day to day); in the calendar, the next 15 days. The clock is
 // Sunday 18 October 2026: Dasara on Tuesday 20, Pradosh on Friday 23, Kojagiri Purnima on Sunday 25, Sankashti on
 // Wednesday 28, then Pradosh on 6 November, Narak Chaturdashi on 7 and Lakshmi Pujan on 8
 const dates = (loc) => loc.evaluateAll((bs) => bs.map((b) => b.dataset.d + " " + b.className.replace("upr ", "")));
-test("Home: This week, the 7 days after today, each opening its day in the calendar @mobile", async ({ page }) => {
+test("Home: Coming up, the next two after the day shown, each opening its day in the calendar @mobile", async ({ page }) => {
   await openSite(page, ENGLISH_ONLY, { now: NOW });
   const w = page.locator("#upw");
-  await expect(w.locator("h2")).toHaveText("This week");
-  expect(await dates(w.locator(".upr"))).toEqual(["2026-10-20 fest", "2026-10-23 pradosh", "2026-10-25 fest"]);
+  await expect(w.locator("h2")).toHaveText("Coming up");
+  expect(await dates(w.locator(".upr"))).toEqual(["2026-10-20 fest"]);
   await expect(w.locator(".upr").first()).toHaveAccessibleName("Tuesday, 20 October: Dasara (Vijayadashami) , in 2 days");
-  await expect(w.locator(".upr .mn.full")).toHaveCount(1); // Kojagiri: a full moon
-  await expect(w.locator(".upx")).toHaveText("NextSankashti ChaturthiWed 28 Oct · in 10 days");
+  await expect(w.locator(".upx")).toHaveText("NextPradoshFri 23 Oct · in 5 days");
+  // on another day, the two after it, and the same height
+  const h = (await w.boundingBox()).height;
+  await page.locator("#tdx").click();
+  await page.locator("#tdx").click();
+  await expect(w.locator(".upr")).toHaveAttribute("data-d", "2026-10-23");
+  await expect(w.locator(".upx")).toContainText("Kojagiri");
+  expect((await w.boundingBox()).height).toBeCloseTo(h, 0);
+  await page.locator("#tdt").click();
   // it sits under the calendar line, above the session's texts
   const y = async (s) => (await page.locator(s).boundingBox()).y;
   expect(await y("#pan")).toBeLessThan(await y("#upw"));
   expect(await y("#upw")).toBeLessThan(await y("#tsc"));
   // an entry opens its day alone, on the Day tab, on every screen
-  await w.locator('.upr[data-d="2026-10-23"]').click();
+  await w.locator('.upr[data-d="2026-10-20"]').click();
   await expect(page.locator("#cal")).toBeVisible();
-  await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Trayodashi");
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Dashami");
   await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#calu")).toBeHidden();
   await expect(page.locator("#calm")).toBeHidden();
   await page.locator("#cbk").click();
-  // so does the first one after the week, under them
+  // so does the next one, under it
   await w.locator(".upx").click();
-  await expect(page.locator("#cdt")).toHaveText("Ashvin Krishna Tritiya");
+  await expect(page.locator("#cdt")).toHaveText("Ashvin Shukla Trayodashi");
   await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");
   await page.locator("#cbk").click();
   await expect(page.locator("#cal")).toBeHidden();
@@ -709,13 +713,17 @@ test("15 days: by week, ‹ › to the 15 before or after, and what it shows @mo
 
 test("Upcoming: a festival of several days is one entry, Day 6–9 of the Utsav, and a day within it says so @mobile", async ({ page }) => {
   await openSite(page, ENGLISH_ONLY, { now: new Date("2026-07-24T09:00:00-04:00") });
+  // Home's Coming up: the Utsav's Day 6–9 as one entry, then Pradosh
   const w = page.locator("#upw");
-  expect(await dates(w.locator(".upr"))).toEqual(["2026-07-25 fest", "2026-07-26 pradosh", "2026-07-29 fest"]);
+  expect(await dates(w.locator(".upr"))).toEqual(["2026-07-25 fest"]);
   await expect(w.locator(".upr").first()).toHaveAccessibleName("Saturday, 25 July: Shri Gondhavlekar Maharaj Utsav Day 6–9 · until Tue 28 Jul , Tomorrow");
-  await expect(w.locator(".upr").nth(1).locator("small")).toHaveText("Utsav 7");
-  await expect(w.locator(".upx")).toHaveText("NextSankashti ChaturthiSat 1 Aug · in 8 days");
-  // today's own are in the line above: the Utsav's Day 5 and Ashadhi Ekadashi
-  await expect(page.locator("#fst")).toContainText("Day 5");
+  await expect(w.locator(".upx")).toContainText("Pradosh");
+  // today's own are in the calendar card's last line: the Utsav's Day 5 and Ashadhi Ekadashi
+  await expect(page.locator("#pn4")).toContainText("Day 5");
+  // the calendar's 15 days: Pradosh on a day within the Utsav says so
+  await page.locator("#upwm").click();
+  const u = page.locator("#calu");
+  await expect(u.locator('.upr[data-d="2026-07-26"] small')).toHaveText("Utsav 7");
 });
 
 // Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); each language set-up in full
