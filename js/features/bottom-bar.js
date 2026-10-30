@@ -3,13 +3,12 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root } from "../core/page.js";
-import { P } from "../core/state.js";
 import { cur } from "../core/apply.js";
 import { goHomeNav } from "./history.js";
 import { pageEls } from "./overlays.js";
 import { sessionStep } from "./today-card.js";
 import { menuWords } from "../core/strings.js";
-import { ui } from "../core/words.js";
+import { nameLang, ui } from "../core/words.js";
 
 export var asc;
 
@@ -72,7 +71,8 @@ export function topEdge() {
 
 // Prev and Next named for where they go, in the menu language
 export function asLabel() {
-  var mr = P.ui === "mr",
+  // the titles named in the buttons' spoken labels: in the menu language's letters (js/core/words.js nameLang())
+  var mr = nameLang() === "mr",
     w = menuWords("bottomBar"),
     c = cur();
   [

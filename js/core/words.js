@@ -51,10 +51,11 @@ export function ui() {
   return P && MENU.indexOf(P.ui) >= 0 ? P.ui : "en";
 }
 
-/** Which of a name's two languages (Marathi, English: places, panchang names, titles) the menus show it in: Marathi
- * in Marathi menus, else English @returns {"mr" | "en"} */
+/** Which of a name's two languages (Marathi, English: places, panchang names, titles) the menus show it in: the
+ * original in Marathi menus and in the menus of the letters it is shown in (Kannada, Telugu, Gujarati: written with
+ * scr()), English in English menus (Satish, 2026-10-30: Kannada menus showed English names) @returns {"mr" | "en"} */
 export function nameLang() {
-  return ui() === "mr" ? "mr" : "en";
+  return ui() === "en" ? "en" : "mr";
 }
 
 /** Digits as the menu language writes them @param {number | string} n */
@@ -71,6 +72,19 @@ export function lead() {
 export function second() {
   var s = P && P.l2;
   return (s === "mr" || s === "en") && s !== lead() ? s : "";
+}
+
+/** A two-language name (a place, a category) as the menus show it: the original in its letters, or English
+ * @param {{ mr: string, en: string }} n */
+export function nameOf(n) {
+  return nameLang() === "mr" ? scr(n.mr) : n.en;
+}
+
+/** The reading languages shown now (Settings → Show), the main one first: one of them, or both @returns {("mr" | "en")[]} */
+export function shown() {
+  var two = second();
+  if (P && P.lang === "both" && two) return [lead(), two];
+  return [P && P.lang === "en" ? "en" : P && P.lang === "mr" ? "mr" : lead()];
 }
 
 /** Marathi in the chosen script: as written, or in Kannada letters @param {string} s */

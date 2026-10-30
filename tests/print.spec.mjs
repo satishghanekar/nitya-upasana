@@ -992,6 +992,19 @@ test("print builder: Print in the bottom bar prints the text being read @chromiu
   await context.close();
 });
 
+// The builder's language buttons in the order Settings has them: English first when English is the main language,
+// even with English alone shown (the order came from both being shown before; Satish, 2026-10-30)
+test("print builder: English as the main language lists English first @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await openSite(page, { lang: "en", lead: "en", l2: "mr" });
+  await openPrintBuilder(page);
+  await howStep(page);
+  await expect(page.locator("#prlg button")).toHaveText(["English", "Marathi", "Both"]);
+  await expect(page.locator("#prlg [aria-pressed=true]")).toHaveText("English");
+  await context.close();
+});
+
 // The printout's language is its own (like its font): picked under How, it changes what prints, not the reading page;
 // it is carried to Safari; Both turns the page row into "Landscape, side by side"
 test("print builder: the printout's language @chromium-only", async ({ browser }) => {

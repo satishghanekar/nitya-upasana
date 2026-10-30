@@ -607,6 +607,7 @@ export default {
     ok: "OK",
     home: "Home",
     library: "Library",
+    vedicCalendar: "Vedic calendar",
     smaller: " smaller",
     larger: " larger",
     allSettings: "All settings",

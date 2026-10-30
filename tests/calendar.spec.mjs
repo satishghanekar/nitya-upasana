@@ -112,7 +112,7 @@ test("Home: the line in Marathi menus has Devanagari digits and the place's Mara
 
 test("the line opens the calendar page; the day card has today's panchang @mobile", async ({ page }) => {
   await open(page);
-  await expect(page.locator("#cal")).toHaveAccessibleName("पंचांग Vedic calendar");
+  await expect(page.locator("#cal")).toHaveAccessibleName("Vedic calendar");
   await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator("#asc")).toBeHidden();
   await expect(page.locator("#cdt")).toHaveText("आश्विन शुद्ध अष्टमी");
@@ -621,7 +621,7 @@ test("on a wide screen, This week or the date card clicked while the calendar is
   await page.waitForTimeout(500);
   await expect(page.locator("#cal")).toBeVisible();
   await expect(page.locator('#calv [data-v="up"]')).toHaveAttribute("aria-pressed", "true");
-  await page.locator("#tdd").click();
+  await page.locator("#tdd .d1").click(); // (the date: English only has one line, and ‹ › under it change the day)
   await page.waitForTimeout(500);
   await expect(page.locator("#cal")).toBeVisible();
   await expect(page.locator('#calv [data-v="day"]')).toHaveAttribute("aria-pressed", "true");

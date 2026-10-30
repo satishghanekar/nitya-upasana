@@ -60,6 +60,17 @@ describe("dayList", () => {
   });
 });
 
+describe("tags in Kannada, Telugu and Gujarati: each language's own words", () => {
+  it("days, sessions and every day", () => {
+    expect(dayList(WEEK, "kn")).toBe("ಪ್ರತಿದಿನ");
+    expect(dayList([1, 2, 3, 4, 5], "te")).toBe("సోమ–శుక్ర");
+    expect(tagFor({ morning: [1, 6, 0], evening: WEEK }, "gu")).toBe("સોમ, શનિ, રવિ · સવાર; દરરોજ · સાંજ");
+  });
+  it("a language with no words of its own: English", () => {
+    expect(dayList(WEEK, "xx")).toBe("Daily");
+  });
+});
+
 describe("tagFor", () => {
   const s = selectRoutine(R, WEEK, ALL);
   it("joins sessions that fall on the same days", () => {

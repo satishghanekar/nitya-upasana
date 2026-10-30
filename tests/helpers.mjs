@@ -235,6 +235,43 @@ export function noViolations(themes = Object.keys(THEMES)) {
   return Object.fromEntries(["as opened", ...themes].map((t) => [t, []]));
 }
 
+/**
+ * Words on screen whose letters are not those of their language (lang): Kannada menu words marked English, an
+ * English title left marked Marathi. Screen readers pick the voice from lang (WCAG 3.1.2). Returns "lang≠script: text"
+ * lines for what is shown inside the given parts (an empty list passes). Digits, dandas and accent marks are left out.
+ * @param {import('@playwright/test').Page} page @param {string[]} sels
+ */
+export async function langMismatches(page, sels) {
+  return page.evaluate((sels) => {
+    const S = {
+      mr: /[\u0900-\u0950\u0953-\u0963\u0971-\u097F]/g,
+      kn: /[\u0C80-\u0CE5\u0CF0-\u0CFF]/g,
+      te: /[\u0C00-\u0C65\u0C70-\u0C7F]/g,
+      gu: /[\u0A80-\u0AE5\u0AF0-\u0AFF]/g,
+      en: /[A-Za-z]/g,
+    };
+    const out = [];
+    for (const sel of sels)
+      for (const root of document.querySelectorAll(sel)) {
+        const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        for (let n; (n = w.nextNode());) {
+          const el = n.parentElement;
+          if (!el || !el.getClientRects().length || el.closest("[aria-hidden=true],svg")) continue;
+          let top = "",
+            max = 1;
+          for (const [k, re] of Object.entries(S)) {
+            const c = (n.textContent.match(re) || []).length;
+            if (c > max) [top, max] = [k, c];
+          }
+          const lang = ((el.closest("[lang]") || document.documentElement).getAttribute("lang") || "").split("-")[0];
+          const want = lang === "sa" ? "mr" : lang;
+          if (top && S[want] && want !== top) out.push(`${lang}≠${top}: ${n.textContent.trim().slice(0, 40)}`);
+        }
+      }
+    return out;
+  }, sels);
+}
+
 /** Home shows only what to chant now; a text is read by opening it, here from the Library (as a reader would). */
 export async function readText(page, sec) {
   // the top bar's book on the home page; while reading, the bottom bar's

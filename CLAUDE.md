@@ -40,7 +40,9 @@ private.
   name). A script reads them with `menuWords("part")` (`js/core/strings.js`); `index.html` writes
   `<span data-w="page.key">English</span>`, filled by `fillWords()`. Never write a menu word in a part or in
   `index.html` in one language. A sentence with a value in it is a function, so each language puts the words in its
-  own order. `ui()` is the menu language's code; `nameLang()` picks a two-language name (places, panchang names).
+  own order. `ui()` is the menu language's code (and the `lang` of menu words); `nameLang()` / `nameOf()` pick a
+  two-language name (places, panchang names). Only a text is Marathi in other letters (`scr()`): a date or a session name
+  comes from that language's own catalog (`menuWords(part, code)`), never Marathi's words through `scr()`.
   Adding a menu language: `ARCHITECTURE.md`, "Adding a menu language". `tests/unit/strings.test.mjs` checks it all.
 - Digits and names: `num()` from `js/core/words.js`; day and month names `menuWords("dates")`.
 - The reading languages: `lead()`, `second()`; Marathi in another script through `scr()` and `SCR` (`js/render.js`,
