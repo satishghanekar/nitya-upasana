@@ -1,13 +1,14 @@
 // Service worker: keeps a copy of the site on the phone so it opens without internet.
 // V is the site's version (shown as "v1.9" in Settings → About). It must match <meta name="version"> in index.html; change both on a new release.
-const V = "aarti-v1.37.15";
+const V = "aarti-v1.37.16";
 // The page's styles and scripts, the font files and the pictures to keep: one list for the page and this worker, in js/parts.js
 importScripts("js/parts.js");
 const PARTS = SITE_PARTS.all;
 const FONTS = SITE_PARTS.fonts;
 const IMAGES = SITE_PARTS.images;
 // A new version (a new V) saves a whole fresh copy before it takes over. The font files never change in place, so they
-// are copied from the previous version's saved copy instead of downloaded again. If any file can't be fetched (a weak
+// are copied from the previous version's saved copy instead of downloaded again, and so are the PDFs a reader opened
+// when they are unchanged (keepPdfs). If any file can't be fetched (a weak
 // connection), the install fails and the previous version stays in use until the next launch tries again, so the
 // saved copy is never a mix of two versions and never missing a part.
 self.addEventListener("install", (e) => {
@@ -31,9 +32,29 @@ self.addEventListener("install", (e) => {
       // (js/features/offline.js)
       if (old.length) await all;
       else await all.catch(() => {});
+      // the books a reader opened (content/pdfs/, kept once opened: the fetch handler below) come along too, so a new
+      // version doesn't make them download again; never one that can't be checked, and never in the way of the install
+      if (old.length) await keepPdfs(c, old).catch(() => {});
     })(),
   );
 });
+// A kept PDF is copied to the new version's copy when the new list (content/pdfs.json, saved just before) still names
+// it at the same size, to the byte. A corrected PDF has another size (`npm run pdfs` writes it, and the tests fail until
+// it does), so the old one stays behind and the corrected one is downloaded the next time it is opened.
+async function keepPdfs(c, old) {
+  const list = await c.match(new URL("content/pdfs.json", location.href).href);
+  if (!list) return;
+  for (const p of (await list.json()).pdfs || []) {
+    if (typeof p.file !== "string" || typeof p.size !== "number") continue;
+    const url = new URL("content/" + p.file, location.href).href;
+    for (const k of old) {
+      const m = await (await caches.open(k)).match(url);
+      if (!m) continue;
+      if ((await m.clone().blob()).size === p.size) await c.put(url, m);
+      break;
+    }
+  }
+}
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches

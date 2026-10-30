@@ -20,9 +20,11 @@ var order = [];
 
 export function init() {
   root = document.documentElement;
-  // Safari and every iOS browser (WebKit) need a different print layout trick; mark them with class "wk"
+  // Safari and every iOS browser (WebKit) need a different print layout trick; mark them with class "wk". Firefox
+  // ("ff") prints without the page numbers (it has no @page margin boxes), so the Print pop-up says Chrome prints best
   (function (u) {
     if (/AppleWebKit/.test(u) && !/Chrome\/|Chromium|Edg\/|OPR\//.test(u)) root.classList.add("wk");
+    if (/Firefox\//.test(u)) root.classList.add("ff");
   })(navigator.userAgent);
   bt = document.getElementById("bt");
   // every piece in reading order: by category, as the Library lists them (js/text/content.js)

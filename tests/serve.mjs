@@ -8,6 +8,8 @@ import { gzipSync } from "node:zlib";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const PORT = Number(process.env.PORT || 4173);
+// the Content-Security-Policy _headers gives every file (Cloudflare Pages sends it), so the tests run under it too
+const CSP = (/^\/\*\n(?:  .*\n)*?  Content-Security-Policy: (.+)$/m.exec(await readFile(join(ROOT, "_headers"), "utf8")) || [])[1];
 const TYPES = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
@@ -34,6 +36,7 @@ createServer(async (req, res) => {
     const type = TYPES[extname(file)] || "application/octet-stream";
     let body = await readFile(file);
     const headers = { "Content-Type": type, "Cache-Control": "no-cache" };
+    if (CSP) headers["Content-Security-Policy"] = CSP;
     // Cloudflare compresses text files, so Lighthouse here should see the same transfer sizes
     if (/^(text|application\/(json|manifest))|svg/.test(type) && /\bgzip\b/.test(req.headers["accept-encoding"] || "")) {
       body = gzipSync(body);
