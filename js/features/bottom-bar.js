@@ -8,6 +8,7 @@ import { cur } from "../core/apply.js";
 import { goHomeNav } from "./history.js";
 import { pageEls } from "./overlays.js";
 import { sessionStep } from "./today-card.js";
+import { menuWords } from "../core/strings.js";
 
 export var asc;
 
@@ -71,22 +72,23 @@ export function topEdge() {
 // Prev and Next named for where they go, in the menu language
 export function asLabel() {
   var mr = P.ui === "mr",
+    w = menuWords("bottomBar"),
     c = cur();
   [
-    ["asv", "‹ मागील", "‹ Prev", ".prev"],
-    ["asn", "पुढील ›", "Next ›", ".next"],
+    ["asv", w.prev, ".prev"],
+    ["asn", w.next, ".next"],
   ].forEach(function (x) {
     var b = document.getElementById(x[0]),
       // from the home page, Next opens the first text in the Library (asGo)
-      a = c ? c.querySelector(".pn " + x[3]) : x[3] === ".next" ? document.querySelector("#jl a[data-go]") : null,
+      a = c ? c.querySelector(".pn " + x[2]) : x[2] === ".next" ? document.querySelector("#jl a[data-go]") : null,
       t = c && a && a.querySelector(mr ? ":scope > .mr" : ":scope > .en"),
       // reading a session from the Today card: Prev and Next follow it (js/features/today-card.js)
-      ss = c && sessionStep(c.id, x[3] === ".next" ? 1 : -1),
+      ss = c && sessionStep(c.id, x[2] === ".next" ? 1 : -1),
       name = ss ? ss.label : t ? t.textContent : "";
     // the word in its own span: the smallest phones show only the arrow, to fit the bar (css/07-bottom-bar-folds.css)
-    b.innerHTML = (mr ? x[1] : x[2]).replace(/([^‹›]+)/, '<span class="asw2">$1</span>');
+    b.innerHTML = x[1].replace(/([^‹›]+)/, '<span class="asw2">$1</span>');
     b.lang = mr ? "mr" : "en";
-    b.setAttribute("aria-label", (mr ? x[1] : x[2]).replace(/[‹›]/g, "").trim() + (name ? ": " + name : ""));
+    b.setAttribute("aria-label", x[1].replace(/[‹›]/g, "").trim() + (name ? ": " + name : ""));
     b.disabled = !a && !ss;
   });
 }

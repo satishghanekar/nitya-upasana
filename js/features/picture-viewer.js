@@ -1,9 +1,9 @@
 // Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { P } from "../core/state.js";
 import { ovDone, ovPush } from "./history.js";
 import { STARS } from "../core/time-of-day.js";
+import { menuWords } from "../core/strings.js";
 
 /** @type {(name: string, b: HTMLElement) => void} */
 let showOne = function () {};
@@ -84,7 +84,7 @@ export function init() {
       s = 1;
       tx = ty = 0;
       draw();
-      hint.textContent = P.ui === "mr" ? "मोठे करण्यासाठी दोन बोटांनी पसरा किंवा दोनदा टॅप करा" : "Pinch or double-tap to zoom";
+      hint.textContent = menuWords("pictureViewer").hint;
       v.hidden = false;
       document.documentElement.style.overflow = "hidden";
       document.getElementById("pzx").focus();

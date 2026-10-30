@@ -1,9 +1,10 @@
 // Offline use: home-screen app details and the service worker (sw.js)
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { flash, onPiece } from "../core/page.js";
+import { note, onPiece } from "../core/page.js";
+import { menuWords } from "../core/strings.js";
 
-var FONTS, IMAGES, hd, l1, m1, m2, ofb, offv, OFV, CACHE, me, upd, updv, UPD, PARTS, ofSaved, fill;
+var FONTS, IMAGES, hd, l1, m1, m2, ofb, offv, CACHE, me, upd, updv, PARTS, ofSaved, fill;
 // whether every file is in the saved copy: null until known, false while one is missing
 var whole = null;
 
@@ -32,36 +33,32 @@ export function init() {
     // site is saved for offline use (#offv). A short note says so once, when the first visit has saved it.
     ofb = document.getElementById("ofb");
     offv = document.getElementById("offv");
-    OFV = {
-      idle: ["ऑफलाइन तयार", "Offline ready"],
-      save: ["ऑफलाइनसाठी जतन…", "Saving for offline…"],
-      off: ["जतन केलेली प्रत", "Saved copy in use"],
-    };
+
     // The offline copy's name ("aarti-v1.0") from <meta name="version"> in index.html, and the version shown ("1.0")
     CACHE = (document.querySelector('meta[name="version"]') || {}).content || "aarti-v1.0";
     me = (CACHE.match(/^aarti-v([\d.]+)$/) || [])[1];
     document.getElementById("ver").textContent = me ? "v" + me : "";
-    // both menu languages, so the text follows a change of menu language
-    function two(t) {
-      return '<span class="mr">' + t[0] + '</span><span class="en" lang="en">' + t[1] + "</span>";
+    // both menu languages, so the text follows a change of menu language (shown by data-lang, as index.html's words)
+    /** @param {(w: any) => string} pick */
+    function two(pick) {
+      return '<span class="mr">' + pick(menuWords("offline", "mr")) + '</span><span class="en" lang="en">' + pick(menuWords("offline", "en")) + "</span>";
     }
     function ofSet(st) {
       offv.setAttribute("data-s", st);
-      offv.innerHTML = two(OFV[st]);
+      offv.innerHTML = two(function (w) {
+        return w.state[st];
+      });
       ofb.hidden = st !== "off";
     }
     // Check for updates (Settings → More → About, a tap on the version line): what it says on the right, in the menu language
     upd = document.getElementById("upd");
     updv = document.getElementById("updv");
-    UPD = {
-      "": ["अपडेट तपासा", "Check for updates"],
-      busy: ["तपासत आहे…", "Checking…"],
-      ok: ["सर्व अद्ययावत आहे", "Up to date"],
-      off: ["इंटरनेट नाही", "No internet"],
-    };
+
     function updSet(st) {
       upd.setAttribute("data-s", st);
-      updv.innerHTML = two(UPD[st]);
+      updv.innerHTML = two(function (w) {
+        return w.update[st];
+      });
     }
     // Author lines: the Wikipedia link on a poet's name works only online; offline the name is plain text
     function crNet() {
@@ -204,7 +201,7 @@ export function init() {
       if (navigator.onLine === false) {
         ofSet("off");
         updSet("off");
-        flash("इंटरनेट नाही. जतन केलेली प्रत वापरत आहे.", "No internet. Using the saved copy.");
+        note(menuWords("offline").usingSaved);
         return;
       }
       updSet("busy");
@@ -215,7 +212,7 @@ export function init() {
           setTimeout(
             function () {
               if (changed) {
-                flash("नवीन आवृत्ती, उघडत आहे…", "New version, loading…");
+                note(menuWords("offline").loading);
                 newCopy().then(function () {
                   location.reload();
                 });
@@ -229,7 +226,7 @@ export function init() {
         .catch(function () {
           ofSet("off");
           updSet("off");
-          flash("इंटरनेट नाही. जतन केलेली प्रत वापरत आहे.", "No internet. Using the saved copy.");
+          note(menuWords("offline").usingSaved);
         });
     };
     if ("serviceWorker" in navigator) {
@@ -241,7 +238,7 @@ export function init() {
         whole = true;
         if (offv.getAttribute("data-s") !== "save") return;
         ofSet("idle");
-        flash("ऑफलाइन वापरासाठी तयार", "Ready to use offline");
+        note(menuWords("offline").ready);
       };
       if (!navigator.serviceWorker.controller && navigator.onLine !== false) ofSet("save");
       var files = PARTS.concat(FONTS, IMAGES),

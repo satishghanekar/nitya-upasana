@@ -16,6 +16,16 @@ const MOVED = [
   "js/features/today-card.js",
   "js/features/routine-builder.js",
   "js/print/what.js",
+  "js/features/offline.js",
+  "js/text/search.js",
+  "js/features/share.js",
+  "js/features/reading-sheet.js",
+  "js/features/languages.js",
+  "js/features/dhrupad-button.js",
+  "js/features/bottom-bar.js",
+  "js/features/settings-panel.js",
+  "js/features/pinch.js",
+  "js/features/pdfs.js",
 ];
 
 /** Every word's path in a set of words, with what kind it is: "string", "function/2" (two values), "list/12" */

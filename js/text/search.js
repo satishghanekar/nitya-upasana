@@ -19,6 +19,7 @@ import { categoryOfSection, textsForSearch } from "../features/library.js";
 import { goLine } from "../features/bars.js";
 import { jumpTo } from "../features/history.js";
 import { ul } from "../features/contents-list.js";
+import { menuWords } from "../core/strings.js";
 
 /** @typedef {import("./search-core.js").Index} Index */
 
@@ -140,7 +141,6 @@ export function rcShow() {
   list.innerHTML = "";
   var L = P.lang === "en" ? "en" : "mr",
     LL = L === "en" ? "en" : scr().k || "mr",
-    mrUi = P.ui === "mr",
     n = 0;
   (P.rc || []).forEach(function (/** @type {string} */ k) {
     var p = k.split("|"),
@@ -178,7 +178,7 @@ export function rcShow() {
     };
     x.className = "rcx";
     x.textContent = "×";
-    x.setAttribute("aria-label", (mrUi ? "काढा: " : "Remove: ") + (b.textContent || ""));
+    x.setAttribute("aria-label", menuWords("search").remove(b.textContent || ""));
     x.onclick = function () {
       change({
         rc: (P.rc || []).filter(function (/** @type {string} */ y) {
@@ -213,17 +213,11 @@ export function rcShow() {
  */
 function say(n, t, more) {
   var m = "",
-    en = P.ui !== "mr";
-  /** @param {number} x */
-  var num = function (x) {
-    return en ? String(x) : x.toLocaleString("mr-IN");
-  };
-  if (n === 0 && !t) m = en ? "Nothing found" : "काही सापडले नाही";
-  else if (n >= 0) {
-    var ln = more || n >= 40 ? (en ? "40 or more" : "४० किंवा अधिक") : num(n);
-    m = ln + (en ? (n === 1 ? " result" : " results") : " ओळी सापडल्या");
-    if (t) m = en ? t + (t === 1 ? " text" : " texts") + " and " + ln + (n === 1 ? " line" : " lines") : num(t) + " रचना आणि " + ln + " ओळी सापडल्या";
-  }
+    w = menuWords("search"),
+    // -1: 40 or more
+    ln = more || n >= 40 ? -1 : n;
+  if (n === 0 && !t) m = w.nothing;
+  else if (n >= 0) m = t ? w.both(t, ln) : w.lines(ln);
   clearTimeout(srsT);
   srsT = setTimeout(function () {
     srs.textContent = m;
@@ -274,17 +268,18 @@ function find() {
     LL = L === "en" ? "en" : scr().k || "mr",
     mrUi = P.ui === "mr";
   /** @param {string} mr @param {string} en */
-  function head(mr, en) {
+  /** @param {string} t */
+  function head(t) {
     var li = document.createElement("li"),
       h = document.createElement("h3");
     li.className = "rh";
     h.lang = mrUi ? "mr" : "en";
-    h.textContent = mrUi ? mr : en;
+    h.textContent = t;
     li.appendChild(h);
     frag.appendChild(li);
   }
   // Texts first (by title, id or category), with their category: a tap opens the text
-  if (found.texts.length) head("रचना", "Texts");
+  if (found.texts.length) head(menuWords("search").texts);
   found.texts.forEach(function (r) {
     var li = document.createElement("li"),
       b = document.createElement("button"),
@@ -302,7 +297,7 @@ function find() {
     frag.appendChild(li);
   });
   // Then the lines: a tap opens the text at that line
-  if (found.lines.length) head("ओळी", "Lines");
+  if (found.lines.length) head(menuWords("search").linesHead);
   found.lines.forEach(function (r) {
     var li = document.createElement("li"),
       b = document.createElement("button");
