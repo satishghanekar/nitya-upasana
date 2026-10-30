@@ -4,7 +4,7 @@
    Includes the print view (#pv) built by the script for the Print button.
    Sections:
    - Top-bar title, heading for screen readers, contents overlay refinements
-   - More menu (App, Share, QR, Print, Help); Share / QR / Print buttons, QR pop-up
+   - Share menu (App, Share, QR, Help); Share / QR / Print buttons, QR pop-up
    - Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm)
    - Top-bar title with the app's picture; Home button in the contents overlay
    - Contents headings (refined)
@@ -144,7 +144,7 @@ a.t {
   font-size: 14px;
 }
 
-/* ==== More menu (App, Share, QR, Print, Help); Share / QR / Print buttons, QR pop-up ==== */
+/* ==== Share menu (App, Share, QR, Help); Share / QR / Print buttons, QR pop-up ==== */
 /* More (⋯ in the top bar, js/features/more-menu.js): App, Share, QR, Print and Help in a small menu under the button.
    The script sets top and right from the button when it opens. Sizes in px: the menu keeps its size when the reader
    enlarges the verses. */
