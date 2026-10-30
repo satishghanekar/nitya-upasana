@@ -26,7 +26,7 @@
 // each change, and the list is drawn again (a removed text's tick just no longer shows).
 
 import { P } from "../core/state.js";
-import { flash, onPiece, pieceEl } from "../core/page.js";
+import { note, onPiece, pieceEl } from "../core/page.js";
 import { cur, unfold } from "../core/apply.js";
 import { homeAlone, jumpTo } from "./history.js";
 import { setView } from "./day-picture.js";
@@ -35,7 +35,8 @@ import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, stepInSession, textsFor } from "../core/routine.js";
 import { onReread, routine } from "../store/store.js";
-import { DAYS, MONTHS, dv, esc, scr, scrKey } from "../core/words.js";
+import { dv, esc, scr, scrKey } from "../core/words.js";
+import { menuWords } from "../core/strings.js";
 
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
@@ -43,97 +44,6 @@ import { DAYS, MONTHS, dv, esc, scr, scrKey } from "../core/words.js";
  * @typedef {{ ids: string[], day: string, session: Session, at?: number }} Run
  */
 
-// The menu words, in English and Marathi (the menu language, P.ui)
-const W = {
-  en: {
-    days: DAYS.en,
-    months: MONTHS.en,
-    sessions: { morning: "Morning", afternoon: "Afternoon", evening: "Evening" },
-    tabs: "Session",
-    unset: "Nothing set",
-    /** @param {number} n */
-    texts: function (n) {
-      return n + (n === 1 ? " text" : " texts");
-    },
-    none: "Nothing planned",
-    /** @param {string} s */
-    empty: function (s) {
-      return "Nothing is planned for " + s.toLowerCase() + " yet. ";
-    },
-    add: "Add texts",
-    edit: "Edit",
-    /** @param {string} s */
-    editL: function (s) {
-      return "Edit routine: " + s;
-    },
-    end: "Today",
-    ended: "End of the session",
-    prev: "Previous day",
-    next: "Next day",
-    today: "Today",
-    tomorrow: "Tomorrow",
-    yesterday: "Yesterday",
-    /** @param {number} n */
-    later: function (n) {
-      return "In " + n + " days";
-    },
-    /** @param {number} n */
-    ago: function (n) {
-      return n + " days ago";
-    },
-    /** @param {string} d the weekday's name, as HTML */
-    showing: function (d) {
-      return "Showing <b>" + d + "</b>";
-    },
-    back: "Today ›",
-  },
-  mr: {
-    days: DAYS.mr,
-    months: MONTHS.mr,
-    sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
-    tabs: "वेळ",
-    unset: "काहीच नाही",
-    /** @param {number} n */
-    texts: function (n) {
-      return dv(n) + " रचना";
-    },
-    none: "काही ठरलेले नाही",
-    /** @param {string} s */
-    empty: function (s) {
-      return s + "साठी अजून काही ठरवलेले नाही. ";
-    },
-    add: "रचना जोडा",
-    edit: "बदला",
-    /** @param {string} s */
-    editL: function (s) {
-      return "बदला: " + s + "चा दिनक्रम";
-    },
-    end: "आज",
-    ended: "या वेळेची उपासना पूर्ण",
-    prev: "आधीचा दिवस",
-    next: "पुढचा दिवस",
-    today: "आज",
-    tomorrow: "उद्या",
-    yesterday: "काल",
-    /** @param {number} n */
-    later: function (n) {
-      return dv(n) + " दिवसांनी";
-    },
-    /** @param {number} n */
-    ago: function (n) {
-      return dv(n) + " दिवसांपूर्वी";
-    },
-    /** @param {string} d the weekday's name, as HTML */
-    showing: function (d) {
-      return "<b>" + d + "</b> पाहत आहात";
-    },
-    back: "आज ›",
-  },
-};
-/** @type {Record<Session, string>} */
-const MR_SESSION = { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" };
-/** @type {Record<Session, string>} */
-const EN_SESSION = { morning: "Morning", afternoon: "Afternoon", evening: "Evening" };
 const RUN_KEY = "nitya-run";
 // a session started on another day is not carried on, unless it was started less than this long ago (an evening
 // session read past midnight)
@@ -161,7 +71,7 @@ var shownToday = "",
 var timer;
 
 function words() {
-  return P && P.ui === "mr" ? W.mr : W.en;
+  return menuWords("today");
 }
 
 /** @param {string} key YYYY-MM-DD */
@@ -256,11 +166,11 @@ export function render() {
   // the date, in Marathi (in Kannada letters when chosen) and in English
   var dd = /** @type {HTMLElement} */ (document.getElementById("tdd"));
   /** @type {HTMLElement} */ (dd.querySelector(".d1")).textContent = scr(
-    W.mr.days[d.getDay()] + ", " + dv(d.getDate()) + " " + W.mr.months[d.getMonth()] + " " + dv(d.getFullYear()),
+    menuWords("today", "mr").days[d.getDay()] + ", " + dv(d.getDate()) + " " + menuWords("today", "mr").months[d.getMonth()] + " " + dv(d.getFullYear()),
   );
   /** @type {HTMLElement} */ (dd.querySelector(".d1")).lang = scrKey() || "mr";
   /** @type {HTMLElement} */ (dd.querySelector(".d2")).textContent =
-    W.en.days[d.getDay()] + ", " + d.getDate() + " " + W.en.months[d.getMonth()] + " " + d.getFullYear();
+    menuWords("today", "en").days[d.getDay()] + ", " + d.getDate() + " " + menuWords("today", "en").months[d.getMonth()] + " " + d.getFullYear();
   // ‹ › and the day's word between them (Today greyed); "Showing Wednesday · Today ›" in place of This week
   var other = c.day !== c.today,
     off = daysBetween(c.today, c.day),
@@ -276,7 +186,9 @@ export function render() {
   tp.disabled = off <= -SPAN;
   tx.disabled = off >= SPAN;
   bar.lang = ui;
-  /** @type {HTMLElement} */ (document.getElementById("tdbt")).innerHTML = w.showing(esc(ui === "mr" ? scr(W.mr.days[d.getDay()]) : W.en.days[d.getDay()]));
+  /** @type {HTMLElement} */ (document.getElementById("tdbt")).innerHTML = w.showing(
+    esc(ui === "mr" ? scr(menuWords("today", "mr").days[d.getDay()]) : menuWords("today", "en").days[d.getDay()]),
+  );
   /** @type {HTMLElement} */ (document.getElementById("tdbb")).textContent = w.back;
   bar.hidden = !other;
   document.documentElement.toggleAttribute("data-day", other);
@@ -287,9 +199,9 @@ export function render() {
     '<span lang="' +
     (scrKey() || "mr") +
     '">' +
-    scr(MR_SESSION[c.session]) +
+    scr(menuWords("today", "mr").sessions[c.session]) +
     '</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">' +
-    EN_SESSION[c.session] +
+    menuWords("today", "en").sessions[c.session] +
     "</span>";
   /** @type {HTMLElement} */ (document.getElementById("tsn")).textContent = !ids.length ? w.none : w.texts(ids.length);
   var ed = document.getElementById("tsed");
@@ -497,7 +409,7 @@ function endSession(done) {
     try {
       h.focus({ preventScroll: true });
     } catch (e) {}
-  if (done) flash(W.mr.ended, W.en.ended);
+  if (done) note(menuWords("today").ended);
 }
 
 /**
@@ -571,7 +483,7 @@ export function shownDay() {
  */
 export function shownSessions() {
   var c = shownDay(),
-    names = P.ui === "mr" ? MR_SESSION : EN_SESSION;
+    names = menuWords("today").sessions;
   return /** @type {Session[]} */ (["morning", "afternoon", "evening"]).map(function (s) {
     return { session: s, name: names[s], ids: idsFor(c.key, s), day: c.day, today: c.today };
   });
