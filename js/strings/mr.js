@@ -619,4 +619,36 @@ export default {
   language: {
     name: "मराठी",
   },
+  sankashti: {
+    name: "संकष्टी चतुर्थी",
+    angName: "अंगारकी संकष्टी चतुर्थी",
+    /** @param {string} name */
+    today: function (name) {
+      return name + " आज";
+    },
+    /** @param {string} time */
+    moonrise: function (time) {
+      return "चंद्रोदय <b>" + time + "</b>";
+    },
+    /** @param {number} wd @param {number} d @param {number} m @param {number} y */
+    day: function (wd, d, m, y) {
+      return DAYS.mr[wd] + ", " + dv(d) + " " + MONTHS.mr[m] + (y ? " " + dv(y) : "");
+    },
+    /** @param {number} h @param {string} mi */
+    time: function (h, mi) {
+      return (h >= 20 || h < 4 ? "रात्री " : h >= 16 ? "सायं. " : "") + dv(((h + 11) % 12) + 1) + ":" + dv(mi);
+    },
+    late: " (मध्यरात्रीनंतर)",
+    yourPlace: "तुमचे ठिकाण",
+    /** @param {string} place */
+    near: function (place) {
+      return place + " जवळ";
+    },
+    /** @param {string} place */
+    place: function (place) {
+      return "ठिकाण: " + place;
+    },
+    noGeo: "हे ब्राउझर ठिकाण देऊ शकत नाही",
+    noPlace: "ठिकाण मिळाले नाही",
+  },
 };
