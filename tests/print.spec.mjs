@@ -913,7 +913,7 @@ test("print builder: a session of another day is headed by that day, in the app 
   await useTestRoutine(page);
   await openSite(page, SETUPS.marathi);
   await page.locator("#tdx").click();
-  await expect(page.locator("#tdd .d2t")).toHaveText("Friday, 16 October 2026");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Friday, 16 October");
   await page.locator("#asp").click();
   await expect(page.locator("#prtab-today")).toHaveText("Friday");
   await page.locator('.prses[data-s="evening"]').click();

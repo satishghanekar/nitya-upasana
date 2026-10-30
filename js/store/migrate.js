@@ -7,7 +7,7 @@
 // backup file.
 //
 // Per person: text size, languages, English style, font, dhrupad, theme, high contrast,
-// autoscroll, folds, the highlighted line and the Library's Recent. Per device: keep the screen on, location, layout on wide screens, the
+// autoscroll, folds, the highlighted line, the Library's Recent, the holidays in Coming up and Coming up folded. Per device: keep the screen on, location, layout on wide screens, the
 // Print pop-up's choices and the folded home card.
 
 /**
@@ -19,7 +19,29 @@
 export const SETTINGS_VERSION = 6;
 
 // what each person keeps in their profile
-export const PROFILE_KEYS = ["lang", "lead", "l2", "ui", "ind", "tr", "fs", "fsu", "fnt", "ref", "th", "hc", "as", "ason", "asp", "af", "tf", "hl", "rc"];
+export const PROFILE_KEYS = [
+  "lang",
+  "lead",
+  "l2",
+  "ui",
+  "ind",
+  "tr",
+  "fs",
+  "fsu",
+  "fnt",
+  "ref",
+  "th",
+  "hc",
+  "as",
+  "ason",
+  "asp",
+  "af",
+  "tf",
+  "hl",
+  "rc",
+  "hol",
+  "upf",
+];
 // what stays with the device, whoever is reading
 export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "plang", "ppr", "fold"];
 
@@ -59,6 +81,8 @@ export function defaults(env) {
     as: 3, // autoscroll speed for a piece not yet adjusted, 1–10
     ason: 0, // autoscroll button shown
     asp: {}, // autoscroll speed per piece
+    hol: [], // the public holidays Home's Coming up shows: groups of content/holidays.json ("us", "in", "mh", "ka")
+    upf: 0, // Home's Coming up folded
   };
 }
 

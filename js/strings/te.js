@@ -336,9 +336,8 @@ export default {
       return d + " " + MONTHS.te[m] + ": " + what;
     },
     week: "ఈ వారం",
-    /** Home's card of what comes next (#upw): the next two after the day shown */
+    /** Home's Coming up (#upw): the next three from the day shown */
     coming: "రాబోయే రోజుల్లో",
-    next15: "తర్వాతి 15 రోజులు",
     day: "రోజు",
     month: "నెల",
     up: "15 రోజులు",
@@ -369,9 +368,11 @@ export default {
     uUntil: function (d) {
       return d + " వరకు";
     },
-    uNext: "తర్వాత",
     uNone: "ఈ రోజుల్లో ఏదీ గుర్తించలేదు.",
     kinds: { fest: "పండుగలు", sk: "సంకష్టి", pradosh: "ప్రదోషం", hol: "సెలవులు" },
+    /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
+    holHome: "రాబోయే రోజుల్లో సెలవులు",
+    groups: { us: "అమెరికా", in: "భారత్", mh: "మహారాష్ట్ర", ka: "కర్ణాటక" },
   },
   // The top bar (js/features/bars.js)
   bar: {

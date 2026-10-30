@@ -336,9 +336,8 @@ export default {
       return d + " " + MONTHS.kn[m] + ": " + what;
     },
     week: "ಈ ವಾರ",
-    /** Home's card of what comes next (#upw): the next two after the day shown */
+    /** Home's Coming up (#upw): the next three from the day shown */
     coming: "ಮುಂದಿನ ದಿನಗಳಲ್ಲಿ",
-    next15: "ಮುಂದಿನ 15 ದಿನಗಳು",
     day: "ದಿನ",
     month: "ತಿಂಗಳು",
     up: "15 ದಿನಗಳು",
@@ -369,9 +368,11 @@ export default {
     uUntil: function (d) {
       return d + " ವರೆಗೆ";
     },
-    uNext: "ಮುಂದೆ",
     uNone: "ಈ ದಿನಗಳಲ್ಲಿ ಏನೂ ಗುರುತಿಸಿಲ್ಲ.",
     kinds: { fest: "ಹಬ್ಬಗಳು", sk: "ಸಂಕಷ್ಟಿ", pradosh: "ಪ್ರದೋಷ", hol: "ರಜಾದಿನಗಳು" },
+    /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
+    holHome: "ಮುಂದಿನ ದಿನಗಳಲ್ಲಿ ರಜಾದಿನಗಳು",
+    groups: { us: "ಅಮೆರಿಕ", in: "ಭಾರತ", mh: "ಮಹಾರಾಷ್ಟ್ರ", ka: "ಕರ್ನಾಟಕ" },
   },
   // The top bar (js/features/bars.js)
   bar: {

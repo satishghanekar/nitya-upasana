@@ -161,8 +161,8 @@ test("a session read the evening before is not taken up again the next morning; 
 test("in the morning Home shows Thursday's Morning: the Atharvashirsha, with no Start button @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
   await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
-  await expect(page.locator("#tdd .d1")).toHaveText("गुरुवार, १५ ऑक्टोबर २०२६");
-  await expect(page.locator("#tdd .d2t")).toHaveText("Thursday, 15 October 2026");
+  await expect(page.locator("#tdd .d1")).toHaveText("गुरुवार, १५ ऑक्टोबर");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Thursday, 15 October");
   await expect(rows(page)).toHaveCount(1);
   await expect(rows(page).first().locator(".t1")).toHaveText(TITLE["vedic-chant-atharvashirsha"].title);
   await expect(rows(page).first().locator(".t2")).toHaveText(TITLE["vedic-chant-atharvashirsha"].titleEn);
@@ -282,7 +282,7 @@ test("Home v3: Monday 7:00 and 19:00, Tuesday 14:00 (the clock's session stays p
 test("a page left open overnight starts the new day at its session", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: new Date("2026-10-18T23:58:00-04:00"), running: true });
   await page.clock.runFor("03:00");
-  await expect(page.locator("#tdd .d2t")).toHaveText("Monday, 19 October 2026");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Monday, 19 October");
   await expect(page.locator("#tsh")).toHaveText("सकाळ · Morning");
 });
 test("a title opens its text in the session, and Next walks through the session in order @mobile", async ({ page }) => {
@@ -435,8 +435,8 @@ for (const [name, prefs, themes] of [
 
 test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ page }) => {
   await openSite(page, SETUPS["marathi-menus"], { now: EVENING });
-  await expect(page.locator("#tdd .d1")).toHaveText("रविवार, १८ ऑक्टोबर २०२६");
-  await expect(page.locator("#tdd .d2t")).toHaveText("Sunday, 18 October 2026");
+  await expect(page.locator("#tdd .d1")).toHaveText("रविवार, १८ ऑक्टोबर");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Sunday, 18 October");
   await expect(page.locator("#tss")).toHaveAccessibleName("वेळ");
   await expect(tab(page, "morning")).toHaveText("सकाळ");
   await expect(tab(page, "afternoon")).toHaveText("दुपारकाहीच नाही");
@@ -461,9 +461,9 @@ test("Kannada letters: the titles in the list are shown in Kannada", async ({ pa
 // their own words for the date and the session, and every word is marked with its language (Satish, 2026-10-30)
 test("English as the main language: the date, the session and the titles in English first", async ({ page }) => {
   await openSite(page, SETUPS["english-main-both"], { now: EVENING });
-  await expect(page.locator("#tdd .d1")).toHaveText("Sunday, 18 October 2026");
+  await expect(page.locator("#tdd .d1")).toHaveText("Sunday, 18 October");
   await expect(page.locator("#tdd .d1")).toHaveAttribute("lang", "en");
-  await expect(page.locator("#tdd .d2t")).toHaveText("रविवार, १८ ऑक्टोबर २०२६");
+  await expect(page.locator("#tdd .d2t")).toHaveText("रविवार, १८ ऑक्टोबर");
   await expect(page.locator("#tsh")).toHaveText("Evening · सायंकाळ");
   await expect(rows(page).first().locator(".t1")).toHaveText("Sukhkarta Dukhharta");
   await expect(rows(page).first().locator(".t2")).toHaveText(TITLE["aarti-sukhkarta"].title);
@@ -475,7 +475,7 @@ test("English as the main language: the date, the session and the titles in Engl
 
 test("English alone: no Marathi on the card", async ({ page }) => {
   await openSite(page, { ...SETUPS.english, lead: "en", l2: "", lang: "en" }, { now: EVENING });
-  await expect(page.locator("#tdd .d1")).toHaveText("Sunday, 18 October 2026");
+  await expect(page.locator("#tdd .d1")).toHaveText("Sunday, 18 October");
   // the second line: the day's word alone, without the dot
   await expect(page.locator("#tdd .d2t")).toHaveText("");
   await expect(page.locator("#tdd .dsep")).toBeHidden();
@@ -486,9 +486,9 @@ test("English alone: no Marathi on the card", async ({ page }) => {
 });
 
 for (const [k, day, session] of [
-  ["kn", "ಭಾನುವಾರ, 18 ಅಕ್ಟೋಬರ್ 2026", "ಸಂಜೆ"],
-  ["te", "ఆదివారం, 18 అక్టోబర్ 2026", "సాయంత్రం"],
-  ["gu", "રવિવાર, 18 ઑક્ટોબર 2026", "સાંજ"],
+  ["kn", "ಭಾನುವಾರ, 18 ಅಕ್ಟೋಬರ್", "ಸಂಜೆ"],
+  ["te", "ఆదివారం, 18 అక్టోబర్", "సాయంత్రం"],
+  ["gu", "રવિવાર, 18 ઑક્ટોબર", "સાંજ"],
 ])
   test(`${k} letters and menus: the card in that language's own words, each word marked with its language`, async ({ page }) => {
     await openSite(page, { lang: "both", lead: "mr", l2: "en", ind: k, ui: k, loc: { lat: 39.96, lon: -83.0 } }, { now: EVENING });
@@ -513,25 +513,31 @@ test("Home has no date card, week row or contents list: the Library has every te
   await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(LIB.texts.length);
 });
 
-// The day's line in the calendar card (#pn4, Satish, 2026-10-30): on a Sankashti day, it and tonight's moonrise; the
-// day before, it as the next
-test("on a Sankashti day, the day's line gives tonight's moonrise; the day before, it is next @mobile", async ({ page }) => {
+// Sankashti on Home (Satish, 2026-10-30): on its day, the calendar card in Ganesh's tint with the modak, and Coming up
+// starting with it and tonight's moonrise; the day before, it first in Coming up, tomorrow
+const first = (page) => page.locator("#upw .upr").first();
+test("on a Sankashti day, the card has its tint and Coming up starts with it and tonight's moonrise; the day before, it is first @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: new Date("2026-10-28T19:00:00-04:00") });
-  await expect(page.locator("#pn4")).toHaveText(/^संकष्टी चतुर्थी · Moonrise \d{1,2}:\d\d pm · Sankashti Chaturthi$/);
+  await expect(page.locator("#pan .pcard")).toHaveClass("pcard fday gan");
+  await expect(page.locator("#pn4")).toHaveText(", संकष्टी चतुर्थी");
+  await expect(first(page).locator("small")).toHaveText(/^Wed 28 Oct · Sankashti Chaturthi · Moonrise \d{1,2}:\d\d pm$/);
+  await expect(first(page).locator(".upw")).toHaveText(", Today");
   await page.clock.setFixedTime(new Date("2026-10-27T19:00:00-04:00"));
   await page.reload();
   await settle(page);
-  await expect(page.locator("#pn4")).toHaveText("Next: संकष्टी चतुर्थी · Wed 28 Oct");
+  await expect(page.locator("#pan .pcard")).toHaveClass("pcard");
+  await expect(first(page).locator(".un")).toHaveText("संकष्टी चतुर्थी");
+  await expect(first(page).locator(".upw")).toHaveText(", Tomorrow");
 });
 
 test("a page left open past midnight: the date, the Vedic calendar line and the Sankashti line move on to the new day", async ({ page, browser }) => {
   await openSite(page, SETUPS.marathi, { now: new Date("2026-10-27T23:58:00-04:00"), running: true });
-  await expect(page.locator("#pn4")).toHaveText(/^Next: संकष्टी/);
+  await expect(page.locator("#pn4")).toHaveText("");
   const line = (p) => p.locator("#pan").innerText();
   const yesterday = await line(page);
   await page.clock.runFor("04:00");
-  await expect(page.locator("#tdd .d2t")).toHaveText("Wednesday, 28 October 2026");
-  await expect(page.locator("#pn4")).toHaveText(/^संकष्टी चतुर्थी/);
+  await expect(page.locator("#tdd .d2t")).toHaveText("Wednesday, 28 October");
+  await expect(page.locator("#pn4")).toHaveText(", संकष्टी चतुर्थी");
   // as a page opened now shows them
   const fresh = await browser.newPage();
   await useTestRoutine(fresh);
@@ -543,14 +549,14 @@ test("a page left open past midnight: the date, the Vedic calendar line and the 
   await fresh.close();
 });
 
-test("Marathi menus: the Sankashti day's line in Marathi", async ({ page }) => {
+test("Marathi menus: Sankashti's moonrise in Coming up in Marathi", async ({ page }) => {
   await openSite(page, SETUPS["marathi-menus"], { now: new Date("2026-10-28T19:00:00-04:00") });
-  await expect(page.locator("#pn4")).toHaveText(/^संकष्टी चतुर्थी · चंद्रोदय रात्री [०-९]+:[०-९]+ · Sankashti Chaturthi$/);
+  await expect(first(page).locator("small")).toHaveText(/^बुधवार २८ ऑक्टोबर · Sankashti Chaturthi · चंद्रोदय रात्री [०-९]+:[०-९]+$/);
 });
 
-// Nothing on Home moves as ‹ › go through the days (Satish, 2026-10-30): the arrows, the day's line in the calendar
-// card (a festival or Sankashti on its day, the next one on others) and Coming up keep their places and heights, so
-// the session's switch stays where it is. 27 Oct is the day before a Sankashti, 1 Nov a holiday.
+// Nothing on Home moves as ‹ › go through the days (Satish, 2026-10-30): the arrows, the calendar card (its tint and
+// drawing on a festival, Sankashti or holiday) and Coming up keep their places and heights, so the session's switch
+// stays where it is. 27 Oct is the day before a Sankashti, 1 Nov a holiday (Karnataka's, chosen in Settings).
 for (const [name, size] of [
   ["phone", { width: 390, height: 844 }],
   ["phone sideways", { width: 844, height: 390 }],
@@ -558,14 +564,18 @@ for (const [name, size] of [
 ])
   test(`‹ › through the days: the bar's arrows and the session's switch stay put, ${name}`, async ({ page }) => {
     await page.setViewportSize(size);
-    await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 } }, { now: new Date("2026-10-27T09:00:00-04:00") });
+    await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 }, hol: ["ka"] }, { now: new Date("2026-10-27T09:00:00-04:00") });
     const where = () =>
-      page.evaluate(() => ["#tdp", "#tdx", "#tss"].map((s) => Math.round(document.querySelector(s).getBoundingClientRect()[s === "#tss" ? "top" : "left"])));
-    const first = await where();
+      page.evaluate(() =>
+        ["#tdp", "#tdx", "#upw", "#tss"].map((s) =>
+          Math.round(document.querySelector(s).getBoundingClientRect()[s[1] === "t" && s !== "#tss" ? "left" : "top"]),
+        ),
+      );
+    const at = await where();
     for (let i = 0; i < 6; i++) {
       await page.locator("#tdx").click();
-      await expect(page.locator("#pn4")).not.toHaveText(""); // (the day's line, worked out just after the date)
-      expect(await where(), `day ${i + 1}`).toEqual(first);
+      // (the card and Coming up are worked out just after the date)
+      await expect.poll(where, { message: `day ${i + 1}` }).toEqual(at);
     }
     await expect(page.locator("#tdt")).not.toHaveClass(/off/);
   });
@@ -578,15 +588,13 @@ test("the bundled default: ‹ › show another day's date, Vedic calendar line 
   const titles = () => rows(page).locator(".t2").allTextContents();
   const want = (day, s) => textsFor(BUNDLED, day, s).map((id) => TITLE[id].titleEn);
   await expect(page.locator("#tdr")).toHaveText("Today");
-  await expect(page.locator("#tdl")).toHaveText("Thu 15 Oct");
   await expect(page.locator("#tdt")).toHaveClass(/off/);
   const week = await page.locator("#upw").isVisible(),
     line = await page.locator("#pan").innerText();
   await page.locator("#tdx").click();
-  await expect(page.locator("#tdd .d2t")).toHaveText("Friday, 16 October 2026");
-  await expect(page.locator("#tdd .d1")).toHaveText("शुक्रवार, १६ ऑक्टोबर २०२६");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Friday, 16 October");
+  await expect(page.locator("#tdd .d1")).toHaveText("शुक्रवार, १६ ऑक्टोबर");
   await expect(page.locator("#tdr")).toHaveText("Tomorrow");
-  await expect(page.locator("#tdl")).toHaveText("Fri 16 Oct");
   await expect(page.locator("#tdt")).toHaveText("Today");
   await expect(page.locator("#tdt")).not.toHaveClass(/off/);
   // Coming up stays, as on today
@@ -598,13 +606,12 @@ test("the bundled default: ‹ › show another day's date, Vedic calendar line 
   // back two days: yesterday; four more: Sunday, with Shree Rudra
   await page.locator("#tdp").click();
   await page.locator("#tdp").click();
-  await expect(page.locator("#tdd .d2t")).toHaveText("Wednesday, 14 October 2026");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Wednesday, 14 October");
   await expect(page.locator("#tdr")).toHaveText("Yesterday");
   expect(await titles()).toEqual(want(3, "morning"));
   for (let i = 0; i < 3; i++) await page.locator("#tdp").click();
-  await expect(page.locator("#tdd .d2t")).toHaveText("Sunday, 11 October 2026");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Sunday, 11 October");
   await expect(page.locator("#tdr")).toHaveText("4 days ago");
-  await expect(page.locator("#tdl")).toHaveText("Sun 11 Oct");
   expect(await titles()).toEqual(want(0, "morning"));
   // a session picked stays picked from day to day
   await pickTab(page, "evening");
@@ -614,7 +621,7 @@ test("the bundled default: ‹ › show another day's date, Vedic calendar line 
   expect(await titles()).toEqual(want(1, "evening"));
   // Today: today again, with focus on ›, Today out of sight
   await page.locator("#tdt").click();
-  await expect(page.locator("#tdd .d2t")).toHaveText("Thursday, 15 October 2026");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Thursday, 15 October");
   await expect(page.locator("#tdr")).toHaveText("Today");
   await expect(page.locator("#tdt")).toHaveClass(/off/);
   await expect(page.locator("#tdx")).toBeFocused();
@@ -625,7 +632,7 @@ test("the bundled default: ‹ › show another day's date, Vedic calendar line 
 test("the bundled default: another day's session is read with Next in its own order, and Home comes back to that day @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
   for (let i = 0; i < 4; i++) await page.locator("#tdp").click();
-  await expect(page.locator("#tdd .d2t")).toHaveText("Sunday, 11 October 2026");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Sunday, 11 October");
   const ids = textsFor(BUNDLED, 0, "morning");
   await rows(page).nth(0).locator("a.tgo").click();
   await expect(page.locator("html")).toHaveAttribute("data-run", "1");
@@ -633,7 +640,7 @@ test("the bundled default: another day's session is read with Next in its own or
   await page.locator("#asn").click();
   await expect(page.locator("#asn")).toHaveAttribute("aria-label", `Next: ${TITLE[ids[2]].titleEn}`);
   await page.locator("#ash").evaluate((b) => b.click());
-  await expect(page.locator("#tdd .d2t")).toHaveText("Sunday, 11 October 2026");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Sunday, 11 October");
   await expect(page.locator("#tdt")).not.toHaveClass(/off/);
 });
 
@@ -645,14 +652,15 @@ test("the bundled default: Edit on another day opens the routine builder at that
   await expect(page.locator('#rtwk [aria-checked="true"]')).toHaveAccessibleName(/^Friday/);
 });
 
-test("the day's line follows the day shown: next, then the day itself, then the next again @mobile", async ({ page }) => {
+test("the card's tint follows the day shown: none, then Sankashti's on its day, then none again @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: new Date("2026-10-27T19:00:00-04:00") });
-  await expect(page.locator("#pn4")).toHaveText("Next: संकष्टी चतुर्थी · Wed 28 Oct");
+  await expect(page.locator("#pan .pcard")).toHaveClass("pcard");
   await page.locator("#tdx").click();
-  await expect(page.locator("#pn4")).toHaveText(/^संकष्टी चतुर्थी · Moonrise \d{1,2}:\d\d pm · Sankashti Chaturthi$/);
+  await expect(page.locator("#pan .pcard")).toHaveClass("pcard fday gan");
+  await expect(first(page)).toHaveAttribute("data-d", "2026-10-28");
   await page.locator("#tdx").click();
-  await expect(page.locator("#pn4")).toHaveText(/^Next: /);
-  await expect(page.locator("#pn4")).not.toContainText("संकष्टी");
+  await expect(page.locator("#pan .pcard")).toHaveClass("pcard");
+  await expect(page.locator("#upw .upr[data-d='2026-10-28']")).toHaveCount(0);
 });
 
 test("Marathi menus: another day in Marathi, and the Sankashti line without आज", async ({ page }) => {
@@ -660,9 +668,9 @@ test("Marathi menus: another day in Marathi, and the Sankashti line without आ�
   await expect(page.locator("#tdr")).toHaveText("आज");
   await page.locator("#tdx").click();
   await expect(page.locator("#tdr")).toHaveText("उद्या");
-  await expect(page.locator("#tdl")).toHaveText("बुधवार २८ ऑक्टोबर");
+  await expect(page.locator("#tdd .d1")).toHaveText("बुधवार, २८ ऑक्टोबर");
   await expect(page.locator("#tdt")).toHaveText("आज");
-  await expect(page.locator("#pn4")).toHaveText(/^संकष्टी चतुर्थी · चंद्रोदय .+ · Sankashti Chaturthi$/);
+  await expect(first(page).locator("small")).toHaveText(/^बुधवार २८ ऑक्टोबर · Sankashti Chaturthi · चंद्रोदय .+$/);
   await expect(page.locator("#tdp")).toHaveAccessibleName("आधीचा दिवस");
 });
 
@@ -709,11 +717,11 @@ test("a page hidden for over half an hour on another day shows today when it com
   await away(true);
   await page.clock.runFor("05:00");
   await away(false);
-  await expect(page.locator("#tdd .d2t")).toHaveText("Friday, 16 October 2026");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Friday, 16 October");
   await away(true);
   await page.clock.runFor("31:00");
   await away(false);
-  await expect(page.locator("#tdd .d2t")).toHaveText("Thursday, 15 October 2026");
+  await expect(page.locator("#tdd .d2t")).toHaveText("Thursday, 15 October");
   await expect(page.locator("#tdt")).toHaveClass(/off/);
 });
 

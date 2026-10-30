@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.37.22">
+<meta name="version" content="aarti-v1.38.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -88,6 +88,7 @@
 <link rel="modulepreload" href="js/core/panchang.js">
 <link rel="modulepreload" href="js/core/festivals.js">
 <link rel="modulepreload" href="js/core/holidays.js">
+<link rel="modulepreload" href="js/core/fest-icons.js">
 <link rel="modulepreload" href="js/features/vedic-calendar.js">
 <link rel="modulepreload" href="js/text/dhrupad-markers.js">
 <link rel="modulepreload" href="js/text/stanza-numbers.js">
@@ -322,6 +323,17 @@
               <button type="button" data-v="60">60</button>
             </div>
           </div>
+          <!-- the public holidays Home's Coming up shows, each person's (P.hol; js/features/vedic-calendar.js): any of
+               the groups of content/holidays.json, none at first -->
+          <div class="sp-row sp-stk" id="shrow">
+            <span class="sp-l"><span id="shl" data-w="calendar.holHome">Holidays in Coming up</span></span>
+            <div class="sp-seg" id="shol" role="group" aria-labelledby="shl">
+              <button type="button" data-v="us" aria-pressed="false"><span data-w="calendar.groups.us">US</span></button>
+              <button type="button" data-v="in" aria-pressed="false"><span data-w="calendar.groups.in">India</span></button>
+              <button type="button" data-v="mh" aria-pressed="false"><span data-w="calendar.groups.mh">Maharashtra</span></button>
+              <button type="button" data-v="ka" aria-pressed="false"><span data-w="calendar.groups.ka">Karnataka</span></button>
+            </div>
+          </div>
         </div>
       </section>
       <section class="sp-grp" data-tab="more">
@@ -413,9 +425,9 @@
          tap opens it full screen, #pzv), beside today's date in Marathi and English (written in by the script) -->
     <div id="tdy">
       <button type="button" id="iconb" aria-label="Show the picture full screen: Sunrise picture"><img src="picture-sunrise-360.webp" srcset="picture-sunrise-360.webp 360w, picture-sunrise.webp 940w" sizes="(min-width: 1100px) 440px, 76px" fetchpriority="high" alt="" width="360" height="360"><span id="iconr" hidden></span></button>
-      <!-- the day bar, as the calendar's Day view has it: ‹ the day › and Today on another day; then the date in the
-           reading languages, the day's word after it (Today, Tomorrow, In 3 days) (js/features/today-card.js) -->
-      <p id="tdd"><span id="tdn"><button type="button" id="tdp" class="tdnb" aria-label="Previous day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span id="tdl"></span><button type="button" id="tdx" class="tdnb" aria-label="Next day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><button type="button" id="tdt" class="off"></button></span><span class="d1" lang="mr"></span><span class="d2" lang="en"><span class="d2t"></span><span class="dsep" aria-hidden="true"> · </span><span id="tdr"></span></span></p>
+      <!-- the date in the reading languages, the day's word after it (Today, Tomorrow, In 3 days), and beside it ‹ ›,
+           with Today under them on another day (js/features/today-card.js) -->
+      <p id="tdd"><span id="tdn"><button type="button" id="tdp" class="tdnb" aria-label="Previous day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" id="tdx" class="tdnb" aria-label="Next day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><button type="button" id="tdt" class="off"></button></span><span class="d1" lang="mr"></span><span class="d2" lang="en"><span class="d2t"></span><span class="dsep" aria-hidden="true"> · </span><span id="tdr"></span></span></p>
     </div>
     <!-- The Vedic calendar line (js/features/vedic-calendar.js): today's month, paksha and tithi, nakshatra, Shaka year
          and samvatsara, sunrise, sunset and the place; a tap opens the calendar page (#cal) -->
@@ -597,13 +609,13 @@
       <ul>
         <li><b>Morning, Afternoon, Evening:</b> Home opens at the session for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. Tap another to see its texts for today; the next day starts again from the clock. A session with nothing set today is greyed out ("Nothing set"); tap it to add texts. To start with, everyone has the usual routine: Vedic chants and the Ganapati and Devi aartis in the morning, aartis and an ashtak in the evening, and a free afternoon. Each person can change theirs (see Your routine below).</li>
         <li><b>The list</b> has the session's texts in order.</li>
-        <li><b>Another day:</b> <b>‹</b> and <b>›</b> under the date show the day before or after, and between them it says which day it is: Today, Tomorrow, Yesterday, "In 3 days" or "3 days ago". All of Home follows that day: its date, Vedic calendar line, festival or Sankashti line, the picture's star, and the texts of each session, so you can read them or print them. "Showing Wednesday" with <b>Today ›</b> takes the place of This week; tap Today › to come back. The next day, or when you come back to the app after half an hour or more, Home is on today again. <b>Edit</b> opens your routine at the day shown.</li>
+        <li><b>Another day:</b> <b>‹</b> and <b>›</b> beside the date show the day before or after, and under the date it says which day it is: Today, Tomorrow, Yesterday, "In 3 days" or "3 days ago". All of Home follows that day: its date, the Vedic calendar card and Coming up, the picture's star, and the texts of each session, so you can read them or print them. Tap <b>Today</b>, under the arrows, to come back. Nothing on Home moves as you go from day to day. The next day, or when you come back to the app after half an hour away, Home shows today again.</li>
         <li><b>Reading the session:</b> tap a title to start there. The session's texts follow one another in one scroll, in the session's order, and nothing else is in between. <b>Next ›</b> and <b>‹ Prev</b> in the bottom bar jump to the next or previous text of the session; <b>Next ›</b> after the last one, or <b>‹ Prev</b> on the first, brings you back here, and so does <b>Home</b>, which ends the session (on another day, Home is still on that day). Open the app again the next day and it starts afresh from Home's list. <b>Print</b> in the bottom bar prints the session.</li>
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
                 <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the line under the date gives today's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home says so, "Today: Dasara"). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Reading → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
-        <li><b>This week:</b> under the Vedic calendar line, the festivals, Pradosh and Sankashti of the next 7 days (the Utsav's days as one entry); tap one to see its day in the calendar, or <b>Next 15 days</b> for the calendar's <b>15 days</b> tab, where ‹ › go to the 15 days before or after and you can also show the public holidays. The calendar has three tabs, <b>Day</b>, <b>15 days</b> and <b>Month</b>, each with ‹ ›, the same on a phone, a tablet or a computer; a day tapped in the month or the 15 days opens on the Day tab, and Back returns to where you were.</li>
-        <li><b>On a Sankashti day</b> (or when Home shows one) a line under the date gives that night's <b>moonrise</b> for where you are (Angaraki, on a Tuesday, is marked). The place is your phone's time zone until you tap the place, with its <b>pin</b>, on the Vedic calendar line on Home, which uses your phone's location (and keeps it up to date each time you open the app, while your phone allows it); the town is worked out on the phone and your location is never sent anywhere.</li>
+        <li><b>Coming up:</b> at the bottom of the Vedic calendar card, the next festivals, Pradosh and Sankashti from the day shown (three on a phone, five on a tablet or computer), each with its own small drawing: a diya for the Diwali days, the aapta leaf for Dasara, a modak for Sankashti, the full moon for a Purnima, and so on. Pradosh gives that evening's sunset and Sankashti its moonrise. The public holidays you choose in Settings (Screen: <b>Holidays in Coming up</b>: US, India, Maharashtra, Karnataka) show with their flag. Tap one to see its day in the calendar, or <b>Next 15 days</b> for the calendar's <b>15 days</b> tab. Tap <b>Coming up</b> to fold it to one line, the first of them; it stays folded for you until you open it again. On the day of a festival, Pradosh, Sankashti or a holiday you chose, the calendar card takes its colour, with its drawing after the tithi. The calendar has three tabs, <b>Day</b>, <b>15 days</b> and <b>Month</b>, each with ‹ ›; a day tapped in the month or the 15 days opens on Day, and Back returns.</li>
+        <li><b>The place</b> is your phone's time zone until you tap the place, with its <b>pin</b>, on the Vedic calendar card on Home, which uses your phone's location (and keeps it up to date each time you open the app, while your phone allows it); the town is worked out on the phone and your location is never sent anywhere. Sunrise, sunset and moonrise are for that place.</li>
       </ul>
 
       <h3>Your routine</h3>
@@ -669,7 +681,7 @@
       </ul>
 
       <h3>Settings</h3>
-      <p>Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages and which to show, text size, font and the dhrupad; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on) and <b>More</b> (Profiles and backup, and About). It opens on Reading each time. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
+      <p>Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages and which to show, text size, font and the dhrupad; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on, and the holidays in Coming up) and <b>More</b> (Profiles and backup, and About). It opens on Reading each time. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
       <ul>
         <li><b>Main language:</b> the language you read in, in large text: <span lang="mr">मराठी</span> (the text as written), English (in English letters) or the same words in Kannada, Telugu or Gujarati letters (<span lang="kn">ಕನ್ನಡ</span>, <span lang="te">తెలుగు</span>, <span lang="gu">ગુજરાતી</span>). Tap it to pick from a list; English is there twice, once for each spelling (see English spelling below). With Kannada, Telugu or Gujarati letters the second language can be English or None.</li>
         <li><b>Second language:</b> shown smaller, under each line, when Show (below it, or Language under <b>Aa</b> in the bottom bar) is set to both. Pick the other language, or <b>None</b> to read in one language only. Picking your second language as the main one swaps the two.</li>
