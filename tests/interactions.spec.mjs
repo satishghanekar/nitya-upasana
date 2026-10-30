@@ -585,6 +585,87 @@ test("Settings on a desktop or an iPad: every group at once, in two columns, no 
   expect((await page.locator("#spt").boundingBox()).width).toBeLessThanOrEqual(1);
 });
 
+// A phone held sideways is as wide as an iPad but too short for its layout: the tabs, and on Reading the preview on
+// the left, staying in view while the choices scroll beside it (Satish, 2026-10-30)
+test("Settings on a phone held sideways: the tabs, the preview beside the reading choices", async ({ page }) => {
+  await page.setViewportSize({ width: 844, height: 390 });
+  await openSite(page, SETUPS.marathi);
+  await page.locator("#aa").click();
+  await expect(page.locator("#spv")).toBeVisible();
+  await expect(page.locator("#st")).toBeHidden();
+  const prev = page.locator(".sp-pvg");
+  const box = async (sel) => await page.locator(sel).boundingBox();
+  expect((await box("#sl1")).x).toBeGreaterThan((await prev.boundingBox()).x + (await prev.boundingBox()).width);
+  expect((await box("#sl1")).y, "the first choice in view beside the preview").toBeLessThan(390);
+  await page.locator("#panel").evaluate((e) => (e.scrollTop = e.scrollHeight));
+  const p = await prev.boundingBox();
+  expect(p.y, "the preview stays in view").toBeGreaterThanOrEqual(0);
+  expect(p.y + p.height).toBeLessThanOrEqual(390);
+  await page.locator('#spv [data-v="screen"]').click();
+  await expect(page.locator("#st")).toBeVisible();
+  await expect(page.locator("#sl1")).toBeHidden();
+  // turned upright, and an iPad held sideways, as before
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator("#spv")).toBeVisible();
+  await page.setViewportSize({ width: 1180, height: 820 });
+  await expect(page.locator("#spv")).toBeHidden();
+  for (const id of ["#sl1", "#st"]) await expect(page.locator(id)).toBeVisible();
+});
+
+// Keep screen on (Satish, 2026-10-30): Off, 15, 30, 45 or 60 minutes after the last touch, key or scroll; the old
+// switch's on is 30. The browser's lock is stood in for, so the test sees when it is held and let go
+test("Keep screen on: held for the minutes chosen after the last touch, then let go @mobile", async ({ page }) => {
+  await page.addInitScript(() => {
+    const w = (window.__wl = { held: 0 });
+    Object.defineProperty(navigator, "wakeLock", {
+      configurable: true,
+      value: {
+        request() {
+          w.held++;
+          const l = new EventTarget();
+          l.release = () => {
+            w.held--;
+            l.dispatchEvent(new Event("release"));
+            return Promise.resolve();
+          };
+          return Promise.resolve(l);
+        },
+      },
+    });
+  });
+  await openSite(page, { ...SETUPS.marathi, wake: 1 }, { running: true });
+  const held = () => page.evaluate(() => window.__wl.held);
+  await expect.poll(held).toBe(1);
+  await page.locator("#aa").click();
+  await settingsTab(page, "screen");
+  await expect(page.locator('#tw [data-v="30"]')).toHaveAttribute("aria-pressed", "true");
+  await page.locator('#tw [data-v="15"]').click();
+  await expect(page.locator('#tw [data-v="15"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator('#tw [data-v="30"]')).toHaveAttribute("aria-pressed", "false");
+  await page.clock.runFor("14:00");
+  expect(await held()).toBe(1);
+  // a key starts the 15 minutes again
+  await page.keyboard.press("Shift");
+  await page.clock.runFor("14:00");
+  expect(await held()).toBe(1);
+  await page.clock.runFor("02:00");
+  expect(await held(), "let go 15 minutes after the last touch").toBe(0);
+  // back on the next touch, once
+  await page.keyboard.press("Shift");
+  await page.keyboard.press("Shift");
+  await expect.poll(held).toBe(1);
+  await page.locator('#tw [data-v="0"]').click();
+  await expect.poll(held).toBe(0);
+  await page.keyboard.press("Shift");
+  await page.clock.runFor("01:00");
+  expect(await held(), "Off stays off").toBe(0);
+  const saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k)).wake, PREFS_KEY);
+  expect(saved).toBe(0);
+  // the minutes in the menu language's digits
+  await page.locator('#su [data-v="mr"]').click();
+  await expect(page.locator('#tw [data-v="45"]')).toHaveText("४५");
+});
+
 // Settings › Reading on a phone: the preview keeps one height whatever Show is (the cards below never jump), and at
 // 100% every line shows whole, as the pieces fit their lines to the screen; A+ shows the size chosen, running past
 test("Settings preview: one height for every Show choice, whole lines at 100%, A+ as chosen @mobile", async ({ page }) => {

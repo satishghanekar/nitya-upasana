@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.37.18">
+<meta name="version" content="aarti-v1.37.19">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -310,7 +310,18 @@
             </div>
           </div>
           <button id="tc" class="sp-row sp-sw" type="button"><span class="sp-l"><span data-w="page.highContrast">High contrast</span></span></button>
-          <button id="tw" class="sp-row sp-sw" type="button"><span class="sp-l"><span data-w="page.keepScreenOn">Keep screen on</span></span></button>
+          <!-- how long the screen stays on after the last touch or scroll, in minutes (js/features/wake-lock.js; Satish,
+               2026-10-30): a phone left unattended dims and locks as it normally would -->
+          <div class="sp-row sp-stk" id="twrow">
+            <span class="sp-l"><span id="twl" data-w="page.keepScreenOn">Keep screen on</span><small id="twh" data-w="page.afterLastTouch">Minutes after the last touch</small></span>
+            <div class="sp-seg" id="tw" role="group" aria-labelledby="twl twh">
+              <button type="button" data-v="0"><span data-w="page.off">Off</span></button>
+              <button type="button" data-v="15">15</button>
+              <button type="button" data-v="30">30</button>
+              <button type="button" data-v="45">45</button>
+              <button type="button" data-v="60">60</button>
+            </div>
+          </div>
         </div>
       </section>
       <section class="sp-grp" data-tab="more">

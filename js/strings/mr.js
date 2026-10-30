@@ -534,6 +534,8 @@ export default {
     dark: "गडद",
     highContrast: "अधिक ठळक",
     keepScreenOn: "स्क्रीन चालू ठेवा",
+    afterLastTouch: "शेवटच्या स्पर्शानंतर, मिनिटे",
+    off: "बंद",
     profilesAndBackup: "प्रोफाइल आणि बॅकअप",
     thisBrowserCanTSave: "हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.",
     whoIsReading: "कोण वाचत आहे",

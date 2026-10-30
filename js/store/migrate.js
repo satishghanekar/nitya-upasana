@@ -41,7 +41,7 @@ export function defaults(env) {
     ind: "mr", // what the "mr" place shows: mr (as written) | kn (Kannada letters)
     ref: 1, // dhrupad: 1 = once at the top, 0 = after every stanza
     hc: 0, // high contrast
-    wake: env.desk ? 0 : 1, // keep the screen on
+    wake: env.desk ? 0 : 30, // keep the screen on: minutes after the last touch (0 off, 15, 30, 45, 60)
     cols: 0, // wide screens: 0 automatic, 1 one column, 2 two columns
     loc: null, // { lat, lon } from "Use my location"
     hl: "", // data-l id of the highlighted line
@@ -142,6 +142,8 @@ export function tidy(P) {
   if (["std", "classic", "bold"].indexOf(P.fnt) < 0) P.fnt = "classic";
   if (["std", "classic", "bold"].indexOf(P.pfn) < 0) P.pfn = "";
   if (P.tr !== "iast") P.tr = "simple";
+  // Keep screen on was a switch (1 on) before it took minutes (Satish, 2026-10-30): on is 30 minutes
+  if ([0, 15, 30, 45, 60].indexOf(P.wake) < 0) P.wake = P.wake ? 30 : 0;
   // a menu language's code (its file in js/strings/); one without words shows English (js/core/words.js ui())
   if (typeof P.ui !== "string" || !/^[a-z]{2,3}$/.test(P.ui)) P.ui = "en";
   return P;

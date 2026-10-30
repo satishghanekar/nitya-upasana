@@ -546,6 +546,8 @@ export default {
     dark: "ઘેરું",
     highContrast: "વધુ કૉન્ટ્રાસ્ટ",
     keepScreenOn: "પડદો ચાલુ રાખો",
+    afterLastTouch: "છેલ્લા સ્પર્શ પછી, મિનિટ",
+    off: "બંધ",
     profilesAndBackup: "પ્રોફાઇલ અને બેકઅપ",
     thisBrowserCanTSave: "આ બ્રાઉઝર અહીં સાચવી શકતું નથી. બંધ કરતાં પહેલાં બેકઅપ ફાઇલ સાચવો.",
     whoIsReading: "કોણ વાંચે છે",
