@@ -12,7 +12,7 @@
    Sizes are in px: the home page keeps its size when the reader enlarges the verses.
    Sections:
    - The home page: picture and date
-   - The festival and Sankashti lines (on the day only) and the Vedic calendar line's place
+   - The Vedic calendar card's place
    - The session: texts, ticks
    - Morning | Afternoon | Evening
    - The Library line
@@ -28,19 +28,14 @@
   margin-inline: auto;
   padding-top: 14px;
 }
-/* the picture and the date are the top of one card with the Vedic calendar line under them (#pan, css/12-calendar.css),
-   the same on every screen (Satish, 2026-10-24); on wide screens the picture is large beside it and the card starts
-   with the date */
+/* the date on the page, above the calendar card (#pan and Coming up, css/12-calendar.css: the "Nitya Home cards"
+   mockups, Satish, 2026-10-30); on wide screens the picture is large beside it */
 #tdy {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: 0;
-  padding: 10px 12px 2px;
-  border: 1px solid var(--hdrl);
-  border-bottom: 0;
-  border-radius: 14px 14px 0 0;
-  background: var(--hdrt);
+  margin: 0 0 12px;
+  padding: 0 0 0 2px;
 }
 #tdy #iconb {
   flex: none;
@@ -53,13 +48,6 @@
 :root:not([data-rail="1"]) #tdy #iconb {
   display: none;
 }
-/* no calendar line (no place known): the card is the picture and date alone */
-#tdy:has(+ #pan[hidden]) {
-  border-bottom: 1px solid var(--hdrl);
-  border-radius: 14px;
-  padding-bottom: 10px;
-  margin-bottom: 14px;
-}
 /* a tap on the date opens the calendar too, as the line under it does (#panb, for the keyboard); like a button, its
    text is not selected (no text cursor) on a click */
 #tdd {
@@ -67,11 +55,30 @@
   -webkit-user-select: none;
   user-select: none;
 }
+/* the date's two lines on the left, ‹ › on the right, Today under them */
 #tdd {
   display: grid;
-  gap: 2px;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) 44px 44px;
+  grid-template-areas: "d1 p x" "d2 t t";
+  align-items: center;
+  gap: 2px 6px;
   min-width: 0;
   margin: 0;
+}
+/* each line on one line, so the header keeps one height on every day (a long one is cut with …) */
+#tdd .d1,
+#tdd .d2 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#tdd .d1 {
+  grid-area: d1;
+}
+#tdd .d2 {
+  grid-area: d2;
+  align-self: start;
 }
 #tdd .d1 {
   font: 400 22px/1.3 var(--head);
@@ -81,16 +88,17 @@
   font: 400 14px/1.35 var(--lat);
   color: var(--muted);
 }
-/* The day bar at the top of the card, as the calendar's Day view has it (js/features/today-card.js): ‹ the day ›, the
-   arrows close to it, and Today on the right on another day. Every part keeps its place on every day (the day one
-   width, Today's room kept while it is hidden), so nothing moves as ‹ › go through the days (Satish, 2026-10-30) */
+/* ‹ › beside the date, and Today under them on another day: every part keeps its place on every day (Today's room kept
+   while it is hidden), so nothing moves as ‹ › go through the days (Satish, 2026-10-30) */
 #tdn {
-  display: grid;
-  grid-template-columns: 44px minmax(0, 12em) 44px 1fr;
-  align-items: center;
-  gap: 6px;
-  margin: 0 0 6px;
+  display: contents;
   cursor: default;
+}
+#tdp {
+  grid-area: p;
+}
+#tdx {
+  grid-area: x;
 }
 #tdn .tdnb {
   display: grid;
@@ -100,7 +108,7 @@
   margin: 0;
   padding: 0;
   border: 1px solid var(--hdrl);
-  border-radius: 12px;
+  border-radius: 22px;
   background: var(--hdrt);
   color: var(--accent);
   cursor: pointer;
@@ -109,22 +117,13 @@
   opacity: 0.4;
   cursor: default;
 }
-#tdl {
-  overflow: hidden;
-  color: var(--ink);
-  font: 600 15px/1.2 var(--lat);
-  text-align: center;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-#tdn:not([lang="en"]) #tdl {
-  font-family: var(--body);
-}
+/* (a 44px target that takes 32px of the row: it reaches into the space under the date) */
 #tdt {
-  justify-self: end;
+  grid-area: t;
+  justify-self: center;
   height: auto;
   min-height: 44px;
-  margin: 0;
+  margin: 0 0 -12px;
   padding: 0 4px;
   border: 0;
   background: none;
@@ -157,40 +156,21 @@
   outline-offset: 3px;
 }
 
-/* ==== The Vedic calendar line's place (its look: css/12-calendar.css), and the day's line in it (#pn4): the day's
-   festivals, Pradosh or Sankashti, else the next one, on every day, so the card keeps one height ==== */
+/* ==== The Vedic calendar card's place (its look: css/12-calendar.css): under the date, Coming up (#upw) its bottom ==== */
 #pan[hidden] {
   display: none;
 }
 #pan {
-  margin: 0 0 14px;
+  margin: 0;
 }
-#pan .p4 {
-  display: block;
-  overflow: hidden;
-  /* one line's height whatever is in it (the icon of a festival day was a few px taller than the words) */
-  height: calc(1.45em + 7px);
-  margin-top: 6px;
-  padding-top: 6px;
-  border-top: 1px solid var(--rule);
-  color: var(--muted);
-  font: 400 14px/1.45 var(--lat);
-  white-space: nowrap;
-  text-overflow: ellipsis;
+/* no Coming up under it: the card ends here */
+#pan:has(+ #upw[hidden]) {
+  margin-bottom: 14px;
 }
-#pan[lang="mr"] .p4 {
-  font-family: var(--body);
+#pan:has(+ #upw[hidden]) .pcard {
+  border-bottom: 1px solid var(--hdrl);
+  border-radius: 14px;
 }
-#pan .p4 .dot svg {
-  margin-right: 4px;
-  color: var(--igold);
-  vertical-align: -3px;
-}
-#pan .p4 b {
-  color: var(--accent);
-  font-weight: 650;
-}
-
 /* ==== The session: texts, ticks ==== */
 #tsc {
   margin: 0;
@@ -470,14 +450,10 @@
     height: var(--pic);
     margin-top: max(6px, calc((100vh - 200px - var(--pic)) / 2));
   }
+  /* the date on the page above the calendar card, as on phones */
   :root[data-hv="1"][data-rail="1"] #tdd {
     grid-column: 1;
-    margin: 0;
-    padding: 10px 12px 2px;
-    border: 1px solid var(--hdrl);
-    border-bottom: 0;
-    border-radius: 14px 14px 0 0;
-    background: var(--hdrt);
+    margin: 0 0 12px;
   }
 }
 
@@ -504,7 +480,7 @@
     overflow: auto;
     scrollbar-width: thin;
   }
-  /* the date stays at the top of the card; the picture is in the top bar (#bti) */
+  /* the date stays above the card; the picture is in the top bar (#bti) */
   :root[data-rail="1"]:not([data-hv]) #tdy #iconb {
     display: none;
   }
@@ -672,14 +648,13 @@
     max-width: none;
     margin: 0;
   }
-  :root[data-rail="1"]:has(#panb[aria-expanded="true"]) :is(#tdy, #tdd),
   :root[data-rail="1"] #pan .pcard:has(#panb[aria-expanded="true"]),
   :root[data-rail="1"] #upw:has(#upwm[aria-expanded="true"]) {
     border-color: var(--accent);
     box-shadow: inset 3px 0 0 var(--accent);
   }
   /* This week, when the calendar was opened from it: the row tapped too */
-  :root[data-rail="1"] #upw:has(#upwm[aria-expanded="true"]) :is(.upr, .upx).on {
+  :root[data-rail="1"] #upw:has(#upwm[aria-expanded="true"]) .upr.on {
     background: var(--hdrt);
     box-shadow: inset 0 0 0 1px var(--accent);
   }
@@ -762,5 +737,17 @@
   :root[data-rail="1"]:not([data-hv]) #main > #home {
     top: calc(72px * var(--Z));
     max-height: calc(100vh - var(--asbh) - 88px * var(--Z));
+  }
+}
+
+/* ==== Narrow phones: the date a step smaller, so it fits beside ‹ ›, and under it the day's word alone (Today, In 2
+   days), not the date again in the second language ==== */
+@media (max-width: 379px) {
+  #tdd .d1 {
+    font-size: 19px;
+  }
+  #tdd .d2t,
+  #tdd .dsep {
+    display: none;
   }
 }

@@ -1,9 +1,9 @@
 // @ts-check
 // Home: what to chant now.
-// The time-of-day picture with the weekday's star (js/features/day-picture.js) beside the date in the reading
-// languages, under the day bar, as the calendar's Day view has it (#tdn: ‹ the day ›, and Today on another day; the
-// day's word, Today, Tomorrow, "In 3 days", after the date). Every part keeps its place on every day, so nothing moves
-// as ‹ › go through the days (Satish, 2026-10-30). Home opens on today; on another day all of Home follows it (the
+// The date in the reading languages on the page, ‹ › beside it and Today under them on another day (#tdn; the day's
+// word, Today, Tomorrow, "In 3 days", after the date: the "Nitya Home cards" mockups, Satish, 2026-10-30); on wide
+// screens the time-of-day picture with the weekday's star (js/features/day-picture.js) before it. Every part keeps its
+// place on every day, so nothing moves as ‹ › go through the days. Home opens on today; on another day all of Home follows it (the
 // Vedic calendar line with the day's festival, Pradosh or Sankashti, and Coming up: homeDay() in
 // js/features/vedic-calendar.js; the picture's star; the sessions' texts), and a title reads that day's session. A new
 // day, or coming back to the page after AWAY, shows today again. A Morning | Afternoon | Evening switch (#tss, tabs: arrow keys move between them, Enter or Space picks),
@@ -195,8 +195,9 @@ export function render() {
     d2 = /** @type {HTMLElement} */ (dd.querySelector(".d2")),
     d2t = /** @type {HTMLElement} */ (dd.querySelector(".d2t")),
     rel = /** @type {HTMLElement} */ (document.getElementById("tdr")),
+    // (without the year, so it fits one line beside ‹ › on a phone on every day; the calendar has it)
     dateIn = function (/** @type {"mr" | "en"} */ l) {
-      return menuWords("dates", code(l)).dayYear(d.getDay(), d.getDate(), d.getMonth(), d.getFullYear());
+      return menuWords("dates", code(l)).day(d.getDay(), d.getDate(), d.getMonth());
     };
   d1.lang = code(ls[0]);
   d1.textContent = dateIn(ls[0]);
@@ -206,14 +207,13 @@ export function render() {
   d2t.lang = ls[1] ? code(ls[1]) : ui;
   d2t.textContent = ls[1] ? dateIn(ls[1]) : ""; // (the dot before the word, .dsep, shows only after a date)
   rel.textContent = dayWord(c.today, c.day);
-  // The day bar: ‹ the day › and Today on another day (its room kept on today)
+  // ‹ › beside the date, and Today under them on another day (its room kept on today)
   var other = c.day !== c.today,
     off = daysBetween(c.today, c.day),
     tp = /** @type {HTMLButtonElement} */ (document.getElementById("tdp")),
     tx = /** @type {HTMLButtonElement} */ (document.getElementById("tdx")),
     tt = /** @type {HTMLElement} */ (document.getElementById("tdt"));
   /** @type {HTMLElement} */ (document.getElementById("tdn")).lang = ui;
-  /** @type {HTMLElement} */ (document.getElementById("tdl")).textContent = menuWords("calendar").dayLabel(d.getDay(), d.getDate(), d.getMonth());
   tp.setAttribute("aria-label", w.prev);
   tx.setAttribute("aria-label", w.next);
   tp.disabled = off <= -SPAN;

@@ -22,10 +22,11 @@
 // English plain ("Ashvin Shukla Ashtami") or scholarly (IAST, P.tr). The words around them (glosses, times, dates,
 // buttons, the key, the footnote) follow the menu language, P.ui, with Devanagari digits in Marathi menus.
 
-import { P } from "../core/state.js";
+import { P, change } from "../core/state.js";
 import { dayPanchang, monthPanchang } from "../core/panchang.js";
 import { festivalsBetween, festivalsFor, festivalsInMonth } from "../core/festivals.js";
 import { holidaysBetween, holidaysInMonth } from "../core/holidays.js";
+import { festIcon, festLook, festMark, holIcon, holMark, iconHtml } from "../core/fest-icons.js";
 import { loaded } from "../text/load.js";
 import { skDay, skLang, skLoc } from "./sankashti.js";
 import { openPicture } from "./picture-viewer.js";
@@ -79,11 +80,7 @@ const ICON = {
   prev: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
   pin: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
   next: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
-  dusk: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 17h18M7 17a5 5 0 0 1 10 0M12 7v3M5.6 10.6l1.4 1.1M18.4 10.6 17 11.7"/></svg>',
-  crescent:
-    '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15.5 3.5a9 9 0 1 0 5 13.5A7 7 0 0 1 15.5 3.5z" fill="currentColor"/></svg>',
-  flag: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4h11l-2 4 2 4H5"/></svg>',
-  star: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.5l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8l-5.8 3.5 1.6-6.6-5.2-4.4 6.8-.5z" fill="currentColor"/></svg>',
+  fold: '<svg class="upwc" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>',
 };
 
 /** The calendar page's state while it is open */
@@ -287,13 +284,21 @@ function homeRender() {
     sr = p.sunrise ? clock(p.sunrise) : "—",
     ss = p.sunset ? clock(p.sunset) : "—";
   box.lang = l;
+  // the day's own entries (the holidays chosen in Settings among them): the first gives the card its tint
+  var k = homeAt || keyOf(new Date()),
+    own = loaded.festivals ? upList(k, k, pl, (P && P.hol) || []) : [],
+    tint = own.length ? upTint(own[0]) : "";
   // A card, not one button, so the place's pin can sit beside the place: the card's button (#panb) lies over all of it
   // (named by the lines, read in order) and the pin (#ploc) over that; a tap anywhere else opens the calendar
   box.innerHTML =
-    '<div class="pcard">' +
+    '<div class="pcard' +
+    (tint ? " fday " + tint : "") +
+    '">' +
     '<span class="pt">' +
     '<span id="pn1">' +
     nameH(title(p), "p1") +
+    // the day's drawing, small, after the tithi (its line's height, so the card keeps one height on every day)
+    (own.length ? '<span class="pdi">' + upIcon(own[0]) + "</span>" : "") +
     "</span>" +
     '<span class="p2" id="pn2">' +
     // "\u00a0·" keeps each dot with the word before it when the line wraps
@@ -328,10 +333,17 @@ function homeRender() {
     esc(w.loc) +
     "</span></button>" +
     "</span>" +
-    // the day's festivals, Pradosh or Sankashti, else the next one: one line on every day, so the card never changes
-    // height as ‹ › move through the days (Satish, 2026-10-30)
-    '<span class="p4" id="pn4">' +
-    dayLine(pl) +
+    // the day's festivals, Pradosh, Sankashti and holidays, heard with the card's name; seen as the drawing beside the
+    // lines and the card's tint, and in Coming up under it (its first row, "today"), so the card keeps one height
+    '<span class="sr" id="pn4">' +
+    (own.length
+      ? say(", ") +
+        own
+          .map(function (u) {
+            return nameH(u.name);
+          })
+          .join(say(", "))
+      : "") +
     "</span>" +
     "</span>" +
     '<button type="button" id="panb" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal" aria-labelledby="pn1 pn2 pnr pns pn4 pno">' +
@@ -342,46 +354,6 @@ function homeRender() {
     "</button></div>";
   box.hidden = false;
   upHome(pl);
-}
-
-/**
- * Home's line for the day shown (#pn4), in the panchang's card: its festivals and holidays, Pradosh, or Sankashti with
- * its moonrise; on a day with none, the next one after it ("Next: प्रदोष · Fri 6 Nov"). It takes the place of the
- * festival and Sankashti lines that showed under the card on their days only, and made Home jump as the days changed.
- * @param {{ lat: number, lon: number }} pl
- */
-function dayLine(pl) {
-  var w = words(),
-    k = homeAt || keyOf(new Date()),
-    own = loaded.festivals ? upList(k, k, pl, true) : [],
-    hols = holsOn(k, pl).map(holName),
-    names = own
-      .map(function (u) {
-        var two = nameH2(u.name);
-        return (
-          "<b>" +
-          nameH(u.name) +
-          "</b>" +
-          // a festival of several days: which of them this is ("Day 5"), as Coming up's rows say it; Sankashti's
-          // moonrise. Before the second language's name, so a narrow phone cutting the line short keeps them
-          (u.d1 ? say(" · " + w.uDays(u.d1, u.d1)) : "") +
-          (u.kind === "sk" && u.rise ? say(" · " + txt(N.moonrise, nameLang()) + " " + clock(u.rise)) : "") +
-          (two ? say(" · ") + two : "")
-        );
-      })
-      .concat(
-        hols.map(function (h) {
-          var two = nameH2(h);
-          return "<b>" + nameH(h) + "</b>" + (two ? say(" · ") + two : "");
-        }),
-      );
-  if (names.length) {
-    var u0 = own[0],
-      icon = !u0 ? ICON.flag : u0.kind === "sk" ? ICON.crescent : u0.kind === "pradosh" ? ICON.dusk : ICON.star;
-    return '<span class="dot" aria-hidden="true">' + icon + "</span>" + names.join(say(", "));
-  }
-  var next = loaded.festivals ? upList(addDays(k, 1), addDays(k, 30), pl, true)[0] : null;
-  return next ? say(w.uNext + ": ") + "<b>" + nameH(next.name) + "</b>" + say(" · " + dayLabel(next.date)) : "";
 }
 
 // ----- festivals (content/festivals.json; js/core/festivals.js) -----
@@ -490,8 +462,10 @@ function festsOn(k, pl) {
 
 /**
  * @typedef {"fest" | "pradosh" | "sk" | "hol"} UpKind
- * @typedef {{ date: string, kind: UpKind, name: Name, end?: string, d1?: number, d2?: number, rise?: Date | null,
- *   moon: string, also?: Name }} Up  one entry; end, d1, d2: a festival of several days (its last date and day numbers)
+ * @typedef {{ date: string, kind: UpKind, name: Name, id?: string, groups?: string[], end?: string, d1?: number, d2?: number,
+ *   rise?: Date | null, set?: Date | null, also?: Name }} Up  one entry; id: a festival's (its drawing); groups: a holiday's
+ *   (its flag); end, d1, d2: a festival of several days (its last date and day numbers); rise: Sankashti's moonrise;
+ *   set: Pradosh's sunset
  */
 
 /** What the 15 days show (its buttons), while the app is open */
@@ -515,10 +489,11 @@ function runName(f) {
 /**
  * The entries from `from` to `to` (inclusive), in date order
  * @param {string} from "YYYY-MM-DD" @param {string} to @param {{ lat: number, lon: number }} pl
- * @param {boolean} [noHol] leave the public holidays out (Home never shows them, and they take a while to work out)
+ * @param {string[]} [groups] only these public holidays ("us", "in", "mh", "ka": Home's Coming up, as chosen in
+ *   Settings), none for []; every one when not given
  * @returns {Up[]}
  */
-function upList(from, to, pl, noHol) {
+function upList(from, to, pl, groups) {
   /** @type {Up[]} */
   var out = [];
   /** @type {Record<string, Up>} the festival of several days running, by id */
@@ -536,10 +511,15 @@ function upList(from, to, pl, noHol) {
         r.d2 = f.n;
         return;
       }
-      out.push((runs[f.id] = { date: f.date, kind: kind, name: runName(f), end: f.date, d1: f.n, d2: f.n, moon: "" }));
+      out.push((runs[f.id] = { date: f.date, kind: kind, name: runName(f), id: f.id, end: f.date, d1: f.n, d2: f.n }));
       return;
     }
-    out.push({ date: f.date, kind: kind, name: f, moon: "" });
+    var set = null;
+    if (kind === "pradosh")
+      try {
+        set = dayPanchang(f.date, pl).sunset;
+      } catch (e) {}
+    out.push({ date: f.date, kind: kind, name: f, id: f.id, set: set });
   });
   /** @type {Record<string, MonthDay>} */
   var md = {};
@@ -553,16 +533,20 @@ function upList(from, to, pl, noHol) {
       try {
         rise = dayPanchang(k, pl).moonrise;
       } catch (e) {}
-      out.push({ date: k, kind: "sk", name: m.vara === 2 ? N.angSkFull : N.skFull, rise: rise, moon: "" });
+      out.push({ date: k, kind: "sk", name: m.vara === 2 ? N.angSkFull : N.skFull, rise: rise });
     }
   }
-  if (loaded.holidays && !noHol)
+  if (loaded.holidays && (!groups || groups.length))
     holidaysBetween(from, to, pl, loaded.holidays).forEach(function (h) {
-      out.push({ date: h.date, kind: "hol", name: holName(h), moon: "" });
+      if (
+        !groups ||
+        h.groups.some(function (g) {
+          return groups.indexOf(g) >= 0;
+        })
+      )
+        out.push({ date: h.date, kind: "hol", name: holName(h), groups: h.groups });
     });
   out.forEach(function (u) {
-    var m = md[u.date];
-    if (u.kind === "fest" && m) u.moon = m.purnima ? "full" : m.amavasya ? "new" : "";
     if (!u.end && inRun[u.date]) u.also = inRun[u.date];
   });
   return out.sort(function (a, b) {
@@ -571,29 +555,40 @@ function upList(from, to, pl, noHol) {
   });
 }
 
+/** Days from `today` to `k` @param {string} k @param {string} today "YYYY-MM-DD" */
+function daysTo(k, today) {
+  return Math.round((dateOf(k).getTime() - dateOf(today).getTime()) / 864e5);
+}
+/** When an entry is, from today: "today", "tomorrow", "in 5 days", "3 days ago" @param {string} k @param {string} today */
+function whenOf(k, today) {
+  var w = words(),
+    n = daysTo(k, today);
+  return n === 0 ? w.uToday : n === 1 ? w.uTomorrow : n === -1 ? w.uYesterday : n < 0 ? w.uAgo(-n) : w.uIn(n);
+}
+/** An entry's drawing in its tinted circle (js/core/fest-icons.js): a festival's own, Sankashti's modak, a holiday's flag
+ * @param {Up} u */
+function upIcon(u) {
+  return u.kind === "sk" ? iconHtml("modak", "gan") : u.kind === "hol" ? holIcon(u.groups || []) : festIcon(u.id || "");
+}
+
+/** An entry's tint (js/core/fest-icons.js), which Home's card takes on the entry's day @param {Up} u */
+function upTint(u) {
+  return u.kind === "sk" ? "gan" : u.kind === "hol" ? "hol" : festLook(u.id || "")[1];
+}
+
 /**
- * One entry, a button that shows its day in the calendar
- * @param {Up} u @param {string} today "YYYY-MM-DD" @param {boolean} [month] the month always (Home's Coming up, so its
- *   row is one height on every day), not only when it is another month's
+ * One entry, a button that shows its day in the calendar: the date (in the 15 days a column, on Home the start of the
+ * small line), its drawing, its name, and when it is
+ * @param {Up} u @param {string} today "YYYY-MM-DD" @param {boolean} [home] Home's Coming up
  */
-function upRow(u, today, month) {
+function upRow(u, today, home) {
   var w = words(),
     E = nameLang() === "en",
     d = dateOf(u.date),
-    n = Math.round((d.getTime() - dateOf(today).getTime()) / 864e5),
-    when = n === 0 ? w.uToday : n === 1 ? w.uTomorrow : n === -1 ? w.uYesterday : n < 0 ? w.uAgo(-n) : w.uIn(n),
-    other = !!month || d.getMonth() !== dateOf(today).getMonth(),
+    n = daysTo(u.date, today),
+    when = whenOf(u.date, today),
+    other = d.getMonth() !== dateOf(today).getMonth(),
     full = menuWords("dates").day(d.getDay(), d.getDate(), d.getMonth()),
-    icon =
-      u.kind === "sk"
-        ? ICON.crescent
-        : u.kind === "pradosh"
-          ? ICON.dusk
-          : u.kind === "hol"
-            ? ICON.flag
-            : u.moon
-              ? '<span class="mn ' + u.moon + '" aria-hidden="true"></span>'
-              : ICON.star,
     // the small line: the name in the second reading language, then what is particular to the entry
     det =
       u.end && u.d1
@@ -602,25 +597,31 @@ function upRow(u, today, month) {
           ? u.rise
             ? txt(N.moonrise, E ? "en" : "mr") + " " + clock(u.rise)
             : w.noRise
-          : "",
+          : u.kind === "pradosh" && u.set
+            ? w.sunset + " " + clock(u.set)
+            : "",
     two = nameH2(u.name),
     small = [two, det ? say(det) : "", u.also ? nameH(u.also) : ""].filter(Boolean).join(say(" · "));
+  // on Home the date starts the small line (heard already, in full, before the name)
+  if (home) small = '<span aria-hidden="true">' + say(dayLabel(u.date) + (small ? " · " : "")) + "</span>" + small;
   return (
     '<li><button type="button" class="upr ' +
     u.kind +
     '" data-d="' +
     u.date +
     '">' +
-    '<span class="upd" aria-hidden="true"><span>' +
-    esc(scr(menuWords("dates").daysShort[d.getDay()])) +
-    "</span>" +
-    "<b>" +
-    num(d.getDate()) +
-    "</b>" +
-    (other ? "<span>" + esc(scr(menuWords("dates").monthsShort[d.getMonth()])) + "</span>" : "") +
-    "</span>" +
+    (home
+      ? ""
+      : '<span class="upd" aria-hidden="true"><span>' +
+        esc(scr(menuWords("dates").daysShort[d.getDay()])) +
+        "</span>" +
+        "<b>" +
+        num(d.getDate()) +
+        "</b>" +
+        (other ? "<span>" + esc(scr(menuWords("dates").monthsShort[d.getMonth()])) + "</span>" : "") +
+        "</span>") +
     '<span class="upi">' +
-    icon +
+    upIcon(u) +
     "</span>" +
     '<span class="upn"><span class="sr">' +
     say(full + ": ") +
@@ -629,7 +630,7 @@ function upRow(u, today, month) {
     (small ? "<small>" + small + "</small>" : "") +
     "</span>" +
     '<span class="upw' +
-    (n < 2 ? " soon" : "") +
+    (n >= 0 && n < 2 ? " soon" : "") +
     '"><span class="sr">, </span>' +
     say(when) +
     "</span>" +
@@ -637,57 +638,69 @@ function upRow(u, today, month) {
   );
 }
 
-/** Home: Coming up (#upw), the next two after the day shown, on every day: the first as a row, the second as Next,
- * so it keeps one height as ‹ › move through the days (it showed every entry of the 7 days after today, and made way
- * for "Showing …" on another day; Satish, 2026-10-30); hidden when nothing is marked in the month after the day
+/** Home: Coming up (#upw), at the bottom of the calendar card: the next three from the day shown (five on tablets and
+ * computers; its own first, "today"),
+ * festivals, Pradosh, Sankashti and the public holidays chosen in Settings (P.hol), each with its drawing (Satish,
+ * 2026-10-30: the "Nitya Home cards" mockups). Its heading folds it (P.upf, each person's): folded, one line with the
+ * first ("दसरा · in 2 days"). The same number of rows on every day, so it keeps one height as ‹ › move through the days; hidden
+ * when nothing is marked in the month from the day.
  * @param {{ lat: number, lon: number } | null} pl */
 function upHome(pl) {
   var box = document.getElementById("upw");
   if (!box) return;
   var t = keyOf(new Date()),
     k = homeAt || t,
-    all = pl && loaded.festivals ? upList(addDays(k, 1), addDays(k, 30), pl, true) : [],
-    near = all.slice(0, 1),
-    next = all[1];
-  if (!near.length && !next) {
+    // five: phones show three, tablets and computers all five (css/12-calendar.css)
+    rows = pl && loaded.festivals ? upList(k, addDays(k, 30), pl, (P && P.hol) || []).slice(0, 5) : [];
+  if (!rows.length) {
     box.hidden = true;
     box.innerHTML = "";
     return;
   }
-  var w = words();
+  var w = words(),
+    open = !(P && P.upf);
   box.lang = ui();
   box.innerHTML =
     '<div class="uph"><h2 id="upwh">' +
+    '<button type="button" id="upwf" aria-expanded="' +
+    open +
+    '" aria-controls="upwl">' +
+    '<span class="upwt">' +
     say(w.coming) +
-    "</h2>" +
+    "</span>" +
+    // folded: the first one, after the heading (heard as part of the button's name)
+    '<span class="upws">' +
+    nameH(rows[0].name) +
+    say(" · " + whenOf(rows[0].date, t)) +
+    "</span>" +
+    ICON.fold +
+    "</button></h2></div>" +
+    '<div id="upwl"' +
+    (open ? "" : " hidden") +
+    '><ul class="upl">' +
+    rows
+      .map(function (u) {
+        return upRow(u, t, true);
+      })
+      .join("") +
+    "</ul>" +
+    // the calendar's 15 days, from the day shown
     '<button type="button" id="upwm" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">' +
-    say(w.next15) +
+    say(w.nextU) +
     ICON.chev +
-    "</button></div>" +
-    (near.length
-      ? '<ul class="upl">' +
-        near
-          .map(function (u) {
-            return upRow(u, t, true);
-          })
-          .join("") +
-        "</ul>"
-      : "") +
-    (next
-      ? // a button too, to its day, like the rows
-        '<button type="button" class="upx" data-d="' +
-        next.date +
-        '"><span class="upxl">' +
-        say(w.uNext) +
-        "</span>" +
-        "<b>" +
-        nameH(next.name) +
-        "</b>" +
-        '<span class="upxd">' +
-        say(dayLabel(next.date) + " · " + w.uIn(Math.round((dateOf(next.date).getTime() - dateOf(t).getTime()) / 864e5))) +
-        "</span></button>"
-      : "");
+    "</button></div>";
   box.hidden = false;
+}
+
+/** Fold or open Coming up (its heading's button), and keep it so for the person reading */
+function upFold() {
+  var b = document.getElementById("upwf"),
+    l = document.getElementById("upwl");
+  if (!b || !l) return;
+  var open = b.getAttribute("aria-expanded") !== "true";
+  b.setAttribute("aria-expanded", String(open));
+  l.hidden = !open;
+  change({ upf: open ? 0 : 1 });
 }
 
 /** What the words and names are drawn in: the menu language, the script and the reading languages */
@@ -695,9 +708,14 @@ function langKey() {
   return ui() + mrLang() + lead() + second() + (P && P.tr);
 }
 
+/** The person's own choices Home's card shows: the holidays (Settings) and Coming up folded */
+function homeOwn() {
+  return JSON.stringify([P.hol || [], P.upf || 0]);
+}
+
 /** Re-draw the Home line and This week (soon after the page is shown), when the languages, the day or the place changed */
 function homeSoon() {
-  var k = langKey() + new Date().toDateString() + homeAt + JSON.stringify(P.loc || null);
+  var k = langKey() + new Date().toDateString() + homeAt + JSON.stringify(P.loc || null) + homeOwn();
   if (k === homeKey) return;
   homeKey = k;
   // before the page is first shown (js/main.js data-ready), drawn at once, with This week, so nothing jumps when it
@@ -739,6 +757,7 @@ function keptKey() {
     langKey(),
     tz,
     JSON.stringify(P.loc || null),
+    homeOwn(),
     // the festival and holiday rules (the version covers the site's own; a test may give others)
     hash(JSON.stringify([loaded.festivals || null, loaded.holidays || null])),
   ].join("|");
@@ -846,7 +865,8 @@ function dayRender() {
   if (md && md.vriddhi) tSmall += "<br>" + esc(w.vriddhi);
   if (p.tithi.borderline) tSmall += "<br>" + esc(w.near);
   var fs = festsOn(k, pl),
-    hs = holsOn(k, pl).map(holName),
+    hr = holsOn(k, pl),
+    hs = hr.map(holName),
     tags = md ? marks(md) : [],
     masa = cat(" ", (p.masa.adhikaName ? [p.masa.adhikaName] : []).concat([p.masa.name]));
   // "शके १९४८ · पराभव संवत्सर" / "Shaka 1948 · Parabhava"; "शरद ऋतु · दक्षिणायन" / "Sharad · Dakshinayana"
@@ -896,13 +916,14 @@ function dayRender() {
     "</p>" +
     (tags.length || fs.length || hs.length
       ? '<p class="cdg">' +
+        // each with its drawing (js/core/fest-icons.js)
         fs
           .map(function (f) {
-            return fname(f, "tag fest");
+            return '<span class="tgi">' + festIcon(f.id) + fname(f, "tag fest") + "</span>";
           })
           .concat(
-            hs.map(function (h) {
-              return nameH(h, "tag hol");
+            hs.map(function (h, i) {
+              return '<span class="tgi">' + holIcon(hr[i].groups) + nameH(h, "tag hol") + "</span>";
             }),
           )
           .join(" ") +
@@ -1000,10 +1021,11 @@ function marks(md) {
   return t;
 }
 
-/** A name in a day of the month: the first reading language only, a long English one may break @param {Name} n @param {string} cls */
-function cell(n, cls) {
+/** A name in a day of the month: the first reading language only, a long English one may break
+ * @param {Name} n @param {string} cls @param {string} [mark] a small drawing before it (a festival's, a holiday's flag) */
+function cell(n, cls, mark) {
   var l = lead();
-  return '<span lang="' + langOf(l) + '" class="' + cls + '">' + (l === "en" ? hy(esc(txt(n, l))) : esc(txt(n, l))) + "</span>";
+  return '<span lang="' + langOf(l) + '" class="' + cls + '">' + (mark || "") + (l === "en" ? hy(esc(txt(n, l))) : esc(txt(n, l))) + "</span>";
 }
 
 /** The month table for view.y / view.m */
@@ -1182,12 +1204,12 @@ function monthRender() {
       (moon ? '<span class="mn ' + moon + '" aria-hidden="true"></span>' : "") +
       fs
         .map(function (f) {
-          return cell(f.short, "fs");
+          return cell(f.short, "fs", festMark(f.id));
         })
         .join("") +
       hs
         .map(function (h) {
-          return cell(h.short, "hs");
+          return cell(h.short, "hs", holMark(h.groups));
         })
         .join("") +
       (lab ? cell(lab, "f") : "") +
@@ -1346,17 +1368,16 @@ function calRender() {
 }
 
 /**
- * The day Home shows ("YYYY-MM-DD", or "" for today), from ‹ › under the date (js/features/today-card.js): the Home
- * line, the festival line and the Sankashti line (skDay()) follow it, This week shows only on today, and the card opens
- * the calendar at it
+ * The day Home shows ("YYYY-MM-DD", or "" for today), from ‹ › beside the date (js/features/today-card.js): the
+ * calendar card, its tint and Coming up follow it, and the card opens the calendar at it
  * @param {string} k
  */
 export function homeDay(k) {
   if (k === homeAt) return;
   homeAt = k;
   skDay(k);
-  // the day's line named the day before: emptied (its height kept) until the new day's is worked out (homeSoon), so
-  // it never shows under the new date
+  // the day's festivals, heard with the card's name, were the day before's: emptied until the new day's are worked out
+  // (homeSoon)
   var f = document.getElementById("pn4");
   if (f) f.textContent = "";
   homeSoon();
@@ -1481,11 +1502,37 @@ function showMonth(y, m, focusKey) {
 
 /** Re-draw for the languages, the script, the day and the place (called by apply(), js/features/bars.js) */
 export function calLang() {
+  holSet();
   homeSoon();
   if (isOpen() && calKey !== langKey()) calRender();
 }
 
+/** Settings' holiday buttons (#shol) as the person reading has them (P.hol) */
+function holSet() {
+  var h = (P && P.hol) || [];
+  [].forEach.call(document.querySelectorAll("#shol button"), function (/** @type {HTMLElement} */ b) {
+    b.setAttribute("aria-pressed", String(h.indexOf(b.dataset.v || "") >= 0));
+  });
+}
+
 export function init() {
+  // Settings: a holiday group's button adds it to Coming up, or takes it away
+  var shol = document.getElementById("shol");
+  if (shol)
+    shol.addEventListener("click", function (e) {
+      var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest("button"));
+      if (!b || !b.dataset.v) return;
+      var g = b.dataset.v,
+        h = ((P && P.hol) || []).filter(function (/** @type {string} */ x) {
+          return x !== g;
+        });
+      if (h.length === ((P && P.hol) || []).length) h.push(g);
+      change({ hol: h }, function () {
+        holSet();
+        homeSoon();
+      });
+    });
+  holSet();
   var pan = document.getElementById("pan"),
     c = page();
   if (pan)
@@ -1503,21 +1550,23 @@ export function init() {
       if (/** @type {HTMLElement} */ (e.target).closest("#tdn")) return;
       if (skLoc()) calOpen("day", homeAt || undefined, "#panb");
     });
-  // The date and This week's header are not buttons: a press there would move focus to the page (#main), which closes
-  // the calendar when it is open (history.js, focusout) before the click opens it again; focus stays where it is
-  ["#tdd", "#upw"].forEach(function (sel) {
-    var el = document.querySelector(sel);
-    if (el)
-      el.addEventListener("mousedown", function (e) {
-        var t = /** @type {HTMLElement} */ (e.target);
-        if ((sel === "#tdd" && !t.closest("#tdn")) || (t.closest(".uph") && !t.closest("button"))) e.preventDefault();
-      });
-  });
+  // The date is not a button: a press there would move focus to the page (#main), which closes the calendar when it is
+  // open (history.js, focusout) before the click opens it again; focus stays where it is
+  var tdm = document.getElementById("tdd");
+  if (tdm)
+    tdm.addEventListener("mousedown", function (e) {
+      if (!(/** @type {HTMLElement} */ (e.target).closest("#tdn"))) e.preventDefault();
+    });
   var upw = document.getElementById("upw");
   if (upw)
     upw.addEventListener("click", function (e) {
       var t = /** @type {HTMLElement} */ (e.target),
-        r = /** @type {HTMLElement | null} */ (t.closest(".upr, .upx"));
+        r = /** @type {HTMLElement | null} */ (t.closest(".upr"));
+      // the heading folds or opens the list
+      if (t.closest("#upwf")) {
+        upFold();
+        return;
+      }
       // the row tapped stays marked while its day is open (css/12-calendar.css)
       [].forEach.call(document.querySelectorAll("#upw .on"), function (/** @type {HTMLElement} */ x) {
         x.classList.remove("on");
@@ -1526,8 +1575,8 @@ export function init() {
         r.classList.add("on");
         calOpen("day", r.dataset.d, "#upwm");
       }
-      // Next 15 days, or anywhere else on the header, as the card above opens the calendar from anywhere on it
-      else if (t.closest("#upwm, .uph")) calOpen("up", homeAt || undefined, "#upwm");
+      // 15 days ›: the calendar's 15 days, from the day shown
+      else if (t.closest("#upwm")) calOpen("up", homeAt || undefined, "#upwm");
     });
   if (c) {
     var bk = document.getElementById("cbk");
