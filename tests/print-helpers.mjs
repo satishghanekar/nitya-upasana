@@ -116,10 +116,13 @@ export async function addMarkers(page, when = "now") {
   await page.evaluate((when) => {
     const run = () => {
       const mk = (t, end) => {
-        // A box of no width at the start or end of the block, its text (white, 1px) running out of it over the block's
+        // A box of no width at the start or end of the block, its text (white, 0.25px) running out of it over the block's
         // own letters: to the right from the start, to the left from the end (the box is right-to-left, its text inside
         // still left-to-right). So it takes no space, moves nothing, and never reaches past the block into the page's
-        // margin, where Chrome cuts what it prints. (Absolutely placed, a marker ran off a line at the page's edge.)
+        // margin, where Chrome cuts what it prints. (Absolutely placed, a marker ran off a line at the page's edge; at
+        // 1px, 19px wide, it ran past a last line shorter than itself.) The end's text sits 12px in from the line's end,
+        // moved without moving anything: a line may end a point past the column (Durga Suktam's "pracodayāt ||" in IAST,
+        // on Linux), and Chrome cut the marker there.
         // !important: the site's own !important font rules (Kannada letters set every .mr element's font) must not
         // reach the marker, or it is drawn in whatever font the machine falls back to and may not read back
         const s = document.createElement("span"),
@@ -128,7 +131,7 @@ export async function addMarkers(page, when = "now") {
         s.style.cssText = [
           "display:inline-block",
           "width:0",
-          "font:1px/1 monospace",
+          "font:0.25px/1 monospace",
           "letter-spacing:0",
           "word-spacing:0",
           "text-transform:none",
@@ -140,7 +143,7 @@ export async function addMarkers(page, when = "now") {
         ]
           .map((d) => d + " !important")
           .join(";");
-        i.style.cssText = "direction:ltr !important;unicode-bidi:isolate !important";
+        i.style.cssText = "direction:ltr !important;unicode-bidi:isolate !important" + (end ? ";position:relative !important;left:-12px !important" : "");
         i.textContent = " [[" + t + "]] ";
         s.appendChild(i);
         return s;
@@ -263,7 +266,9 @@ export function checkPages(r) {
     if (at[end] !== at[key]) cut.push(`${key.slice(0, -2)} (pages ${at[key]}–${at[end]})`);
   }
   expect(cut, "blocks split across pages").toEqual([]);
-  // every block was found in the PDF (nothing lost off the page)
+  // every block was found in the PDF (nothing lost off the page), naming any block with a start or end not found
+  const half = Object.keys(at).filter((k) => !(k.slice(0, -1) + (k.endsWith("s") ? "e" : "s") in at));
+  expect(half, "blocks with only their start or end printed").toEqual([]);
   expect(Object.keys(at).length, "every block start and end printed").toBe(pv.blocks * 2);
   // page footer "N / total" on every page
   const n = pdf.pages.length;

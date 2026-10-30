@@ -47,7 +47,13 @@ for (const W of WHOLE) {
     const paper = W.paper || "Letter";
     const r = await printOnce(browser, { prefs: W.prefs, choice: W.choice, mode: W.mode, paper, locale: W.locale || "en-US" });
     expect(r.pdf.landscape, "the PDF pages are sideways").toBe(W.choice === "pr2");
-    checkPrintout(r);
+    // a printout that fails is kept with the test's results, so a failure on CI can be looked at
+    try {
+      checkPrintout(r);
+    } catch (e) {
+      await test.info().attach("printout.pdf", { body: r.pdf.buf, contentType: "application/pdf" });
+      throw e;
+    }
   });
 }
 
