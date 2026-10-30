@@ -26,7 +26,7 @@ import { P, change } from "../core/state.js";
 import { dayPanchang, monthPanchang } from "../core/panchang.js";
 import { festivalsBetween, festivalsFor, festivalsInMonth } from "../core/festivals.js";
 import { holidaysBetween, holidaysInMonth } from "../core/holidays.js";
-import { festIcon, festLook, festMark, holIcon, holMark, iconHtml } from "../core/fest-icons.js";
+import { festIcon, festLook, festMark, holIcon, holMark, iconHtml, markHtml } from "../core/fest-icons.js";
 import { loaded } from "../text/load.js";
 import { skDay, skLang, skLoc } from "./sankashti.js";
 import { openPicture } from "./picture-viewer.js";
@@ -565,10 +565,10 @@ function whenOf(k, today) {
     n = daysTo(k, today);
   return n === 0 ? w.uToday : n === 1 ? w.uTomorrow : n === -1 ? w.uYesterday : n < 0 ? w.uAgo(-n) : w.uIn(n);
 }
-/** An entry's drawing in its tinted circle (js/core/fest-icons.js): a festival's own, Sankashti's modak, a holiday's flag
+/** An entry's drawing in its tinted circle (js/core/fest-icons.js): a festival's own, Sankashti's moon, a holiday's flag
  * @param {Up} u */
 function upIcon(u) {
-  return u.kind === "sk" ? iconHtml("modak", "gan") : u.kind === "hol" ? holIcon(u.groups || []) : festIcon(u.id || "");
+  return u.kind === "sk" ? iconHtml("crescent", "gan") : u.kind === "hol" ? holIcon(u.groups || []) : festIcon(u.id || "");
 }
 
 /** An entry's tint (js/core/fest-icons.js), which Home's card takes on the entry's day @param {Up} u */
@@ -1213,7 +1213,7 @@ function monthRender() {
         })
         .join("") +
       (lab ? cell(lab, "f") : "") +
-      (skl ? cell(skl, "f") : "") +
+      (skl ? cell(skl, "f", markHtml("crescent")) : "") +
       (d.vriddhi ? '<span class="vr" aria-hidden="true">' + (E ? "vriddhi" : esc(scr("वृद्धी"))) + "</span>" : "") +
       '<span class="sr" lang="' +
       (E ? "en" : mrLang()) +
