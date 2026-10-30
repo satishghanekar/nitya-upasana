@@ -433,7 +433,6 @@ export default {
     update: { check: "Check for updates", busy: "Checking…", ok: "Up to date", off: "No internet", restart: "Close and reopen" },
     usingSaved: "No internet. Using the saved copy.",
     loading: "New version, loading…",
-    ready: "Ready to use offline",
     /** @param {string} v the new version ("v1.37.17") */
     reopen: function (v) {
       return "Updated to " + v + ". Close the app and open it again to finish.";

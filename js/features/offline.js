@@ -241,11 +241,11 @@ export function init() {
       // while the files are saved. "Offline ready" only once every file is in the saved copy: a file that could not be
       // saved (a weak connection) is tried again when the internet is back or the page is shown again, and until then
       // the badge keeps saying "Saving for offline…" (sw.js saves the same files, but goes on without one that fails).
+      // The badge says it; no message over the page (Satish, 2026-10-30: it covered the home card on every first visit)
       ofSaved = function () {
         whole = true;
         if (offv.getAttribute("data-s") !== "save") return;
         ofSet("idle");
-        note(menuWords("offline").ready);
       };
       if (!navigator.serviceWorker.controller && navigator.onLine !== false) ofSet("save");
       var files = PARTS.concat(FONTS, IMAGES),

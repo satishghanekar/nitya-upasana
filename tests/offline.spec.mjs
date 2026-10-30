@@ -62,7 +62,8 @@ test("offline ready only once every file is saved @chromium-only", async ({ page
   await context.unroute("**/picture-sunset.webp", block);
   await page.evaluate(() => dispatchEvent(new Event("online")));
   await expect(page.locator("#offv")).toHaveAttribute("data-s", "idle", { timeout: 20_000 });
-  await expect(page.locator("#fl")).toHaveText("Ready to use offline");
+  // the badge says so; no message over the page (Satish, 2026-10-30)
+  await expect(page.locator("#fl")).not.toHaveText("Ready to use offline");
 });
 
 // A weak connection with the site saved: the page and every part come from the saved copy at once, without asking the
