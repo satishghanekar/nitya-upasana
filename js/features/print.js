@@ -134,11 +134,22 @@ export function init() {
       [].forEach.call(sec.querySelectorAll(".rftop, .items > .item, .items > .rmk"), function (/** @type {HTMLElement} */ u) {
         var role = "";
         if (u.classList.contains("rftop")) role = once ? "refrain" : "";
-        else if (u.classList.contains("rmk") && u.classList.contains("nt"))
+        else if (u.classList.contains("rmk") && u.classList.contains("nt")) {
           // a note of the text's own: "↻ ३ वेळा" (repeat the lines above) belongs to what is before it, a heading such
-          // as फलश्रुति to what follows
-          role = /^\s*↻/.test((u.querySelector(".mr") || u).textContent) ? "after" : "before";
-        else if (u.classList.contains("rmk")) role = once ? "after" : "";
+          // as फलश्रुति to what follows. With the dhrupad after every verse, lines already written out again (the
+          // repeats after the first, refrain lines) need no "3 times" too, or it reads as nine.
+          var rep = /^\s*↻/.test((u.querySelector(".mr") || u).textContent),
+            prev = out[out.length - 1];
+          role = !rep ? "before" : !once && prev && prev.el.querySelector(".verse p.rf") ? "" : "after";
+        } else if (u.classList.contains("rmk"))
+          // a "↻ dhrupad" marker; none before the first stanza, where the dhrupad at the top is just above it
+          role =
+            once &&
+            out.some(function (x) {
+              return x.role === "main";
+            })
+              ? "after"
+              : "";
         else if (u.classList.contains("rf")) role = once ? "" : "after";
         else role = "main";
         if (role) out.push({ el: u, role: role });
@@ -533,6 +544,10 @@ export function init() {
             [].forEach.call(other, function (/** @type {Element} */ x) {
               x.remove();
             });
+          // the second, smaller author line (<small>) is a sentence of its own: a space before it
+          [].forEach.call(c.querySelectorAll("small"), function (/** @type {Element} */ x) {
+            x.before(" ");
+          });
           var t = c.textContent.replace(/\s+/g, " ").trim();
           if (t) {
             var pc = mk("p", "pvcr");
