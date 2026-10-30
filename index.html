@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.37.10">
+<meta name="version" content="aarti-v1.37.11">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -152,10 +152,10 @@
      and Help in a small menu under the button, closed by default. The words on each button are its name for screen
      readers and voice control (no aria-label), so the name always matches what is shown, in either menu language. -->
 <div id="shr" hidden>
-  <button type="button" id="inb" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="M9 11l3 3 3-3"/><path d="M10.5 18.5h3"/></svg><span class="mr">ॲप<span class="sr"> (होम स्क्रीनवर ठेवा)</span></span><span class="en" lang="en">App<span class="sr"> (add to Home Screen)</span></span></button>
-  <button type="button" id="shb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span class="mr">शेअर</span><span class="en" lang="en">Share</span></button>
-  <button type="button" id="qrb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg><span class="mr">QR<span class="sr"> कोड</span></span><span class="en" lang="en">QR<span class="sr"> code</span></span></button>
-  <button type="button" id="hlpb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.3-2.5 3.9"/><path d="M12 17.2v.01"/></svg><span class="mr">मदत</span><span class="en" lang="en">Help</span></button>
+  <button type="button" id="inb" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="M9 11l3 3 3-3"/><path d="M10.5 18.5h3"/></svg><span data-w="page.appAddToHomeScreen">App<span class="sr"> (add to Home Screen)</span></span></button>
+  <button type="button" id="shb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span data-w="page.share">Share</span></button>
+  <button type="button" id="qrb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg><span data-w="page.qrCode">QR<span class="sr"> code</span></span></button>
+  <button type="button" id="hlpb"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.3-2.5 3.9"/><path d="M12 17.2v.01"/></svg><span data-w="page.help">Help</span></button>
 </div>
 <!-- ==== Library (js/features/contents-list.js): opened by the book button in the bottom bar (on every page, Satish 2026-10-27),
      and at the end of each piece. Every text by category (js/features/library.js), with search across the
@@ -170,20 +170,20 @@
   <!-- Back (‹) and, when the Library has PDFs, the tabs Chants | Books in one row, as on the calendar page; with the tabs
        the title is for screen readers only (js/features/contents-list.js) -->
   <div class="libhd">
-    <button type="button" id="jbk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span class="mr">मागे</span><span class="en" lang="en">Back</span></span></button>
+    <button type="button" id="jbk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span data-w="page.back">Back</span></span></button>
     <h2 id="jlt"><span lang="mr">संग्रह</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">Library</span></h2>
     <div id="jtb" role="group" aria-label="Library" hidden>
-      <button type="button" data-v="texts" aria-pressed="true"><span class="mr">पाठ</span><span class="en" lang="en">Chants</span></button>
-      <button type="button" data-v="pdf" aria-pressed="false"><span class="mr">पोथी</span><span class="en" lang="en">Books</span></button>
+      <button type="button" data-v="texts" aria-pressed="true"><span data-w="page.chants">Chants</span></button>
+      <button type="button" data-v="pdf" aria-pressed="false"><span data-w="page.books">Books</span></button>
     </div>
   </div>
   <!-- Recent (js/text/search.js rcShow): the last places this person went to from search or from here, newest first,
        while the search box is empty; × takes one away, Clear all of them (Satish, 2026-10-27) -->
   <section id="rcn" hidden aria-labelledby="rcnh">
-    <div class="rch"><h3 id="rcnh"><span class="mr">अलीकडे</span><span class="en" lang="en">Recent</span></h3><button type="button" id="rcc"><span class="mr">सर्व काढा</span><span class="en" lang="en">Clear</span></button></div>
+    <div class="rch"><h3 id="rcnh"><span data-w="page.recent">Recent</span></h3><button type="button" id="rcc"><span data-w="page.clear">Clear</span></button></div>
     <ul id="rcl"></ul>
   </section>
-  <div id="none" hidden><span class="mr">काही सापडले नाही</span><span class="en" lang="en">Nothing found</span></div>
+  <div id="none" hidden><span data-w="page.nothingFound">Nothing found</span></div>
   <ul id="res"></ul>
   <div id="srs" class="sr" role="status"></div>
   <!-- Every text by category (js/features/library.js): Vedic Chant, Aarti and any the family added, each with its texts
@@ -209,11 +209,11 @@
          group below says which tab it is on (data-tab) -->
     <h2 id="spt" class="sr"><span lang="mr">सेटिंग्ज</span> <span lang="en">Settings</span></h2>
     <div class="sp-hd">
-      <button type="button" id="xc"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span class="mr">मागे</span><span class="en" lang="en">Back</span></span></button>
+      <button type="button" id="xc"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span data-w="page.back">Back</span></span></button>
       <div id="spv" role="group" aria-label="Settings">
-        <button type="button" data-v="read" aria-pressed="true"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></button>
-        <button type="button" data-v="screen" aria-pressed="false"><span class="mr">स्क्रीन</span><span class="en" lang="en">Screen</span></button>
-        <button type="button" data-v="more" aria-pressed="false"><span class="mr">अधिक</span><span class="en" lang="en">More</span></button>
+        <button type="button" data-v="read" aria-pressed="true"><span data-w="page.reading">Reading</span></button>
+        <button type="button" data-v="screen" aria-pressed="false"><span data-w="page.screen">Screen</span></button>
+        <button type="button" data-v="more" aria-pressed="false"><span data-w="page.more">More</span></button>
       </div>
     </div>
     <div class="sp-body">
@@ -224,23 +224,23 @@
            row; English is listed twice, once per spelling), text size and font. Then how a text is laid out, which the
            preview can't show: the dhrupad and the columns (Satish, 2026-10-25) -->
       <section class="sp-grp sp-pvg" data-tab="read">
-        <h3 class="sp-h"><span class="mr">नमुना</span><span class="en" lang="en">Preview</span></h3>
+        <h3 class="sp-h"><span data-w="page.preview">Preview</span></h3>
         <!-- a few lines of the Ganapati aarti, as the pieces will show them (filled in by the script) -->
         <div class="sp-prev" id="sprev" aria-hidden="true"></div>
       </section>
       <section class="sp-grp" data-tab="read">
-        <h3 class="sp-h"><span class="mr">भाषा आणि अक्षरे</span><span class="en" lang="en">Language and text</span></h3>
+        <h3 class="sp-h"><span data-w="page.languageAndText">Language and text</span></h3>
         <div class="sp-card">
-          <div class="sp-row sp-go sp-pick" id="sl1"><span class="sp-l"><span class="mr">मुख्य भाषा</span><span class="en" lang="en">Main language</span><small><span class="mr">मोठ्या अक्षरांत</span><span class="en" lang="en">Large text</span></small></span><span class="sp-v" id="sl1v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl1s" aria-label="Main language"></select></div>
-          <div class="sp-row sp-go sp-pick" id="sl2"><span class="sp-l"><span class="mr">दुसरी भाषा</span><span class="en" lang="en">Second language</span><small><span class="mr">लहान, प्रत्येक ओळीखाली</span><span class="en" lang="en">Smaller, under each line</span></small></span><span class="sp-v" id="sl2v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl2s" aria-label="Second language"></select></div>
+          <div class="sp-row sp-go sp-pick" id="sl1"><span class="sp-l"><span data-w="page.mainLanguage">Main language</span><small><span data-w="page.largeText">Large text</span></small></span><span class="sp-v" id="sl1v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl1s" aria-label="Main language"></select></div>
+          <div class="sp-row sp-go sp-pick" id="sl2"><span class="sp-l"><span data-w="page.secondLanguage">Second language</span><small><span data-w="page.smallerUnderEachLine">Smaller, under each line</span></small></span><span class="sp-v" id="sl2v"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><select id="sl2s" aria-label="Second language"></select></div>
           <!-- Show: the main language, the second or both, the same choice as Language in the Aa sheet (Satish, 2026-10-26;
                js/features/languages.js spSet); hidden with no second language -->
           <div class="sp-row sp-stk" id="slwrow">
-            <span class="sp-l"><span class="mr">दाखवा</span><span class="en" lang="en">Show</span></span>
+            <span class="sp-l"><span data-w="page.show">Show</span></span>
             <div class="sp-seg" id="slw" role="group" aria-label="Show"></div>
           </div>
           <div class="sp-row">
-            <span class="sp-l"><span class="mr">अक्षरांचा आकार</span><span class="en" lang="en">Text size</span></span>
+            <span class="sp-l"><span data-w="page.textSize">Text size</span></span>
             <div class="sp-seg sp-sz" role="group" aria-label="Text size">
               <button id="sm" type="button" aria-label="Smaller">A−</button>
               <span id="szv" class="sp-szv" role="status"></span>
@@ -249,76 +249,76 @@
             </div>
           </div>
           <div class="sp-row sp-stk">
-            <span class="sp-l"><span class="mr">अक्षरशैली</span><span class="en" lang="en">Text font</span></span>
+            <span class="sp-l"><span data-w="page.textFont">Text font</span></span>
             <div class="sp-seg" id="sfn" role="group" aria-label="Text font">
-              <button type="button" data-v="classic"><span class="mr">पारंपरिक</span><span class="en" lang="en">Traditional</span></button>
-              <button type="button" data-v="std"><span class="mr">आधुनिक</span><span class="en" lang="en">Modern</span></button>
-              <button type="button" data-v="bold"><span class="mr">ठळक</span><span class="en" lang="en">Bold</span></button>
+              <button type="button" data-v="classic"><span data-w="page.traditional">Traditional</span></button>
+              <button type="button" data-v="std"><span data-w="page.modern">Modern</span></button>
+              <button type="button" data-v="bold"><span data-w="page.bold">Bold</span></button>
             </div>
           </div>
         </div>
       </section>
       <section class="sp-grp" data-tab="read">
-        <h3 class="sp-h"><span class="mr">कडवी</span><span class="en" lang="en">Verses</span></h3>
+        <h3 class="sp-h"><span data-w="page.verses">Verses</span></h3>
         <div class="sp-card">
           <div class="sp-row">
-            <span class="sp-l"><span class="mr">ध्रुपद</span><span class="en" lang="en">Dhrupad</span></span>
+            <span class="sp-l"><span data-w="page.dhrupad">Dhrupad</span></span>
             <div class="sp-seg" id="srf" role="group" aria-label="Dhrupad">
-              <button type="button" data-v="1"><span class="mr">एकदा</span><span class="en" lang="en">Once</span></button>
-              <button type="button" data-v="0"><span class="mr">प्रत्येक कडव्यानंतर</span><span class="en" lang="en">Every verse</span></button>
+              <button type="button" data-v="1"><span data-w="page.once">Once</span></button>
+              <button type="button" data-v="0"><span data-w="page.everyVerse">Every verse</span></button>
             </div>
           </div>
           <div class="sp-row" id="colrow">
-            <span class="sp-l"><span class="mr">मांडणी</span><span class="en" lang="en">Layout</span></span>
+            <span class="sp-l"><span data-w="page.layout">Layout</span></span>
             <div class="sp-seg" id="sc" role="group" aria-label="Layout">
-              <button type="button" data-v="1"><span class="mr">१ स्तंभ</span><span class="en" lang="en">1 column</span></button>
-              <button type="button" data-v="2"><span class="mr">२ स्तंभ</span><span class="en" lang="en">2 columns</span></button>
+              <button type="button" data-v="1"><span data-w="page.n1Column">1 column</span></button>
+              <button type="button" data-v="2"><span data-w="page.n2Columns">2 columns</span></button>
             </div>
           </div>
         </div>
       </section>
       <!-- Screen: the app around the texts: the language of the menus and buttons, the theme, contrast, screen on -->
       <section class="sp-grp" data-tab="screen">
-        <h3 class="sp-h"><span class="mr">स्क्रीन</span><span class="en" lang="en">Screen</span></h3>
+        <h3 class="sp-h"><span data-w="page.screen">Screen</span></h3>
         <div class="sp-card">
           <div class="sp-row" id="surow">
-            <span class="sp-l"><span class="mr">मेनू आणि बटणे</span><span class="en" lang="en">Menus and buttons</span></span>
+            <span class="sp-l"><span data-w="page.menusAndButtons">Menus and buttons</span></span>
             <div class="sp-seg" id="su" role="group" aria-label="Menus and buttons">
               <button type="button" data-v="en" lang="en">English</button>
               <button type="button" data-v="mr" lang="mr">मराठी</button>
             </div>
           </div>
           <div class="sp-row sp-stk">
-            <span class="sp-l"><span class="mr">रंगसंगती</span><span class="en" lang="en">Theme</span></span>
+            <span class="sp-l"><span data-w="page.theme">Theme</span></span>
             <div class="sp-seg" id="st" role="group" aria-label="Theme">
-              <button type="button" data-v="auto"><span class="mr">आपोआप</span><span class="en" lang="en">Auto</span></button>
-              <button type="button" data-v="light"><span class="mr">फिकट</span><span class="en" lang="en">Light</span></button>
-              <button type="button" data-v="sepia"><span class="mr">सेपिया</span><span class="en" lang="en">Sepia</span></button>
-              <button type="button" data-v="dark"><span class="mr">गडद</span><span class="en" lang="en">Dark</span></button>
+              <button type="button" data-v="auto"><span data-w="page.auto">Auto</span></button>
+              <button type="button" data-v="light"><span data-w="page.light">Light</span></button>
+              <button type="button" data-v="sepia"><span data-w="page.sepia">Sepia</span></button>
+              <button type="button" data-v="dark"><span data-w="page.dark">Dark</span></button>
             </div>
           </div>
-          <button id="tc" class="sp-row sp-sw" type="button"><span class="sp-l"><span class="mr">अधिक ठळक</span><span class="en" lang="en">High contrast</span></span></button>
-          <button id="tw" class="sp-row sp-sw" type="button"><span class="sp-l"><span class="mr">स्क्रीन चालू ठेवा</span><span class="en" lang="en">Keep screen on</span></span></button>
+          <button id="tc" class="sp-row sp-sw" type="button"><span class="sp-l"><span data-w="page.highContrast">High contrast</span></span></button>
+          <button id="tw" class="sp-row sp-sw" type="button"><span class="sp-l"><span data-w="page.keepScreenOn">Keep screen on</span></span></button>
         </div>
       </section>
       <section class="sp-grp" data-tab="more">
         <!-- Profiles and backup (js/features/profiles.js, js/features/backup.js): who is reading (opens the profile sheet),
              Save a backup file, Restore from a file, and a warning when this browser can't save here -->
-        <h3 class="sp-h"><span class="mr">प्रोफाइल आणि बॅकअप</span><span class="en" lang="en">Profiles and backup</span></h3>
+        <h3 class="sp-h"><span data-w="page.profilesAndBackup">Profiles and backup</span></h3>
         <div class="sp-card">
-          <p class="sp-row sp-warn" id="stw2" hidden><span class="sp-l"><span class="mr">हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.</span><span class="en" lang="en">This browser can't save here. Use Save a backup file before closing.</span></span></p>
-          <button type="button" class="sp-row sp-go" id="spf"><span class="sp-l"><span class="mr">कोण वाचत आहे</span><span class="en" lang="en">Who is reading</span></span><span class="sp-v" id="spfv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <p class="sp-row sp-warn" id="stw2" hidden><span class="sp-l"><span data-w="page.thisBrowserCanTSave">This browser can't save here. Use Save a backup file before closing.</span></span></p>
+          <button type="button" class="sp-row sp-go" id="spf"><span class="sp-l"><span data-w="page.whoIsReading">Who is reading</span></span><span class="sp-v" id="spfv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
           <!-- the reading person's routine: the routine builder (#rtb, js/features/routine-builder.js) -->
-          <button type="button" class="sp-row sp-go" id="sprt" aria-haspopup="dialog" aria-controls="rtb"><span class="sp-l"><span class="mr">दिनक्रम</span><span class="en" lang="en">Routine</span><small><span class="mr">प्रत्येक वेळेच्या रचना आणि त्यांचा क्रम</span><span class="en" lang="en">The texts for each session, in order</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-          <button type="button" class="sp-row sp-go" id="bks"><span class="sp-l"><span class="mr">बॅकअप फाइल जतन करा</span><span class="en" lang="en">Save a backup file</span><small id="bksv"></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
-          <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span class="mr">फाइलमधून परत आणा</span><span class="en" lang="en">Restore from a file</span><small><span class="mr">आधी जतन केलेली .nitya फाइल</span><span class="en" lang="en">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
+          <button type="button" class="sp-row sp-go" id="sprt" aria-haspopup="dialog" aria-controls="rtb"><span class="sp-l"><span data-w="page.routine">Routine</span><small><span data-w="page.theTextsForEachSession">The texts for each session, in order</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button type="button" class="sp-row sp-go" id="bks"><span class="sp-l"><span data-w="page.saveABackupFile">Save a backup file</span><small id="bksv"></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
+          <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span data-w="page.restoreFromAFile">Restore from a file</span><small><span data-w="page.aNityaFileSavedBefore">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
         </div>
       </section>
       <section class="sp-grp" data-tab="more">
-        <h3 class="sp-h"><span class="mr">माहिती</span><span class="en" lang="en">About</span></h3>
+        <h3 class="sp-h"><span data-w="page.about">About</span></h3>
         <div class="sp-card">
-          <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span class="mr">मदत आणि वापर</span><span class="en" lang="en">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-          <button type="button" class="sp-row sp-go" id="inb2" hidden><span class="sp-l"><span class="mr">होम स्क्रीनवर ठेवा</span><span class="en" lang="en">Add to Home Screen</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span data-w="page.helpAndHowToUse">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button type="button" class="sp-row sp-go" id="inb2" hidden><span class="sp-l"><span data-w="page.addToHomeScreen">Add to Home Screen</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
           <!-- one line: the version and whether the site is saved for offline use; a tap checks for updates (fetches the
                page and its files fresh; if any changed, saves the new copy and reloads with it, else says it is up to date) -->
           <button type="button" class="sp-row" id="upd"><span class="sp-l"><span id="ver" lang="en"></span> · <span id="offv"></span></span><span class="sp-v" id="updv"></span></button>
@@ -338,7 +338,7 @@
        the page's title is for screen readers only -->
   <h2 id="calt" class="sr"><span lang="mr">पंचांग</span> <span lang="en">Vedic calendar</span></h2>
   <div class="calbar">
-    <button type="button" id="cbk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span class="mr">मागे</span><span class="en" lang="en">Back</span></span></button>
+    <button type="button" id="cbk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span data-w="page.back">Back</span></span></button>
     <div id="calv" role="group" aria-label="Vedic calendar"></div>
   </div>
   <section id="cald" aria-labelledby="cdt"></section>
@@ -359,7 +359,7 @@
   <div class="rtin">
   <div class="rtmain">
   <div class="libhd">
-    <button type="button" id="rbk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="mr">मागे</span><span class="en" lang="en">Back</span></button>
+    <button type="button" id="rbk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span data-w="page.back">Back</span></button>
     <h2 id="rtbt"><span class="pfa" id="rtba" aria-hidden="true"></span><span id="rtbn"></span></h2>
   </div>
   <div id="rtss" class="rtseg" role="radiogroup"></div>
@@ -383,7 +383,7 @@
 <main class="wrap" id="main" tabindex="-1">
   <!-- ==== Home page ==== -->
   <section id="home" aria-label="Home">
-    <h1 class="sr"><span class="mr">नित्य उपासना</span><span class="en" lang="en">Nitya Upasana</span></h1>
+    <h1 class="sr"><span data-w="page.nityaUpasana">Nitya Upasana</span></h1>
     <!-- Today (js/features/today-card.js): the app's picture, which follows the time of day
          (sunrise, midday, sunset) with a ring on today's weekday star (#iconr, placed by js/features/day-picture.js; a
          tap opens it full screen, #pzv), beside today's date in Marathi and English (written in by the script) -->
@@ -408,8 +408,8 @@
     <!-- Notes about saving (js/features/backup.js): this browser can't save here (IndexedDB could not be opened), or a
          gentle reminder to save a backup file (none for 30 days, or never and 14 days since the first visit) -->
     <div id="pfnt" hidden>
-      <div id="stw" class="pfw warn" hidden><p><span class="mr">हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.</span><span class="en" lang="en">This browser can't save here. Use Save a backup file before closing.</span></p><div class="pfwb"><button type="button" id="stws"><span class="mr">बॅकअप फाइल जतन करा</span><span class="en" lang="en">Save a backup file</span></button></div></div>
-      <div id="bkn" class="pfw" hidden><p id="bknt"></p><div class="pfwb"><button type="button" id="bkns"><span class="mr">बॅकअप फाइल जतन करा</span><span class="en" lang="en">Save a backup file</span></button><button type="button" id="bknx"><span class="mr">आता नको</span><span class="en" lang="en">Not now</span></button></div></div>
+      <div id="stw" class="pfw warn" hidden><p><span data-w="page.thisBrowserCanTSave">This browser can't save here. Use Save a backup file before closing.</span></p><div class="pfwb"><button type="button" id="stws"><span data-w="page.saveABackupFile">Save a backup file</span></button></div></div>
+      <div id="bkn" class="pfw" hidden><p id="bknt"></p><div class="pfwb"><button type="button" id="bkns"><span data-w="page.saveABackupFile">Save a backup file</span></button><button type="button" id="bknx"><span data-w="page.notNow">Not now</span></button></div></div>
     </div>
     <!-- This session's texts (js/features/today-card.js): Morning | Afternoon |
          Evening (#tss, tabs with arrow keys; it opens at the session for the time now; a session with nothing set that
@@ -446,24 +446,24 @@
   <div id="pzh" aria-hidden="true"></div>
 </div>
 <div id="qrm" hidden role="dialog" aria-modal="true" aria-label="QR code">
-  <div class="qrc"><div class="qrt"><span class="mr">उघडण्यासाठी कॅमेऱ्याने स्कॅन करा</span><span class="en" lang="en">Scan with the camera to open</span></div><div class="qri"><svg viewBox="-4 -4 37 37" width="100%" height="100%" shape-rendering="crispEdges" role="img" aria-label="QR code for https://nitya-upasana.pages.dev/"><rect x="-4" y="-4" width="37" height="37" fill="#fff"/><path fill="#000" d="M0 0h7v1h-7zM8 0h1v1h-1zM11 0h5v1h-5zM19 0h2v1h-2zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h2v1h-2zM13 1h1v1h-1zM16 1h2v1h-2zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM11 2h1v1h-1zM16 2h1v1h-1zM20 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h3v1h-3zM12 3h1v1h-1zM14 3h2v1h-2zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM10 4h3v1h-3zM14 4h1v1h-1zM16 4h2v1h-2zM19 4h2v1h-2zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM9 5h1v1h-1zM11 5h3v1h-3zM15 5h2v1h-2zM19 5h2v1h-2zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h5v1h-5zM15 7h4v1h-4zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h2v1h-2zM5 8h3v1h-3zM13 8h1v1h-1zM15 8h1v1h-1zM17 8h3v1h-3zM22 8h1v1h-1zM25 8h1v1h-1zM27 8h2v1h-2zM0 9h3v1h-3zM4 9h2v1h-2zM7 9h2v1h-2zM11 9h5v1h-5zM18 9h7v1h-7zM28 9h1v1h-1zM1 10h1v1h-1zM3 10h5v1h-5zM10 10h4v1h-4zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM26 10h2v1h-2zM0 11h2v1h-2zM4 11h1v1h-1zM8 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM20 11h3v1h-3zM24 11h1v1h-1zM28 11h1v1h-1zM0 12h2v1h-2zM3 12h1v1h-1zM5 12h3v1h-3zM12 12h1v1h-1zM14 12h2v1h-2zM17 12h1v1h-1zM19 12h1v1h-1zM21 12h1v1h-1zM23 12h1v1h-1zM25 12h2v1h-2zM1 13h1v1h-1zM3 13h2v1h-2zM10 13h3v1h-3zM14 13h1v1h-1zM16 13h2v1h-2zM19 13h1v1h-1zM22 13h1v1h-1zM26 13h3v1h-3zM0 14h2v1h-2zM6 14h1v1h-1zM8 14h4v1h-4zM13 14h1v1h-1zM15 14h2v1h-2zM18 14h4v1h-4zM26 14h3v1h-3zM0 15h2v1h-2zM3 15h1v1h-1zM8 15h1v1h-1zM12 15h1v1h-1zM14 15h1v1h-1zM16 15h1v1h-1zM23 15h2v1h-2zM27 15h1v1h-1zM1 16h1v1h-1zM3 16h4v1h-4zM8 16h2v1h-2zM12 16h1v1h-1zM14 16h2v1h-2zM18 16h1v1h-1zM20 16h2v1h-2zM24 16h2v1h-2zM27 16h1v1h-1zM1 17h1v1h-1zM3 17h1v1h-1zM5 17h1v1h-1zM9 17h2v1h-2zM14 17h1v1h-1zM16 17h1v1h-1zM18 17h1v1h-1zM20 17h2v1h-2zM23 17h1v1h-1zM25 17h3v1h-3zM0 18h1v1h-1zM6 18h6v1h-6zM13 18h6v1h-6zM20 18h1v1h-1zM23 18h2v1h-2zM26 18h1v1h-1zM2 19h3v1h-3zM9 19h1v1h-1zM12 19h10v1h-10zM23 19h2v1h-2zM26 19h1v1h-1zM1 20h2v1h-2zM4 20h3v1h-3zM8 20h1v1h-1zM11 20h1v1h-1zM13 20h5v1h-5zM19 20h8v1h-8zM8 21h2v1h-2zM12 21h1v1h-1zM17 21h4v1h-4zM24 21h5v1h-5zM0 22h7v1h-7zM8 22h2v1h-2zM11 22h2v1h-2zM14 22h1v1h-1zM18 22h3v1h-3zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM11 23h5v1h-5zM20 23h1v1h-1zM24 23h2v1h-2zM28 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM9 24h1v1h-1zM11 24h2v1h-2zM15 24h3v1h-3zM20 24h5v1h-5zM26 24h2v1h-2zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h1v1h-1zM11 25h2v1h-2zM15 25h3v1h-3zM19 25h3v1h-3zM23 25h3v1h-3zM28 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h4v1h-4zM14 26h1v1h-1zM18 26h2v1h-2zM21 26h1v1h-1zM23 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h1v1h-1zM11 27h1v1h-1zM14 27h3v1h-3zM18 27h1v1h-1zM20 27h2v1h-2zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h4v1h-4zM13 28h2v1h-2zM18 28h3v1h-3zM24 28h1v1h-1zM27 28h1v1h-1z"/></svg></div><div class="qru" lang="en">nitya-upasana.pages.dev</div><button type="button" class="wide" id="qrx"><span class="mr">बंद</span><span class="en" lang="en">Close</span></button></div>
+  <div class="qrc"><div class="qrt"><span data-w="page.scanWithTheCameraTo">Scan with the camera to open</span></div><div class="qri"><svg viewBox="-4 -4 37 37" width="100%" height="100%" shape-rendering="crispEdges" role="img" aria-label="QR code for https://nitya-upasana.pages.dev/"><rect x="-4" y="-4" width="37" height="37" fill="#fff"/><path fill="#000" d="M0 0h7v1h-7zM8 0h1v1h-1zM11 0h5v1h-5zM19 0h2v1h-2zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h2v1h-2zM13 1h1v1h-1zM16 1h2v1h-2zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM11 2h1v1h-1zM16 2h1v1h-1zM20 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h3v1h-3zM12 3h1v1h-1zM14 3h2v1h-2zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM10 4h3v1h-3zM14 4h1v1h-1zM16 4h2v1h-2zM19 4h2v1h-2zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM9 5h1v1h-1zM11 5h3v1h-3zM15 5h2v1h-2zM19 5h2v1h-2zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h5v1h-5zM15 7h4v1h-4zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h2v1h-2zM5 8h3v1h-3zM13 8h1v1h-1zM15 8h1v1h-1zM17 8h3v1h-3zM22 8h1v1h-1zM25 8h1v1h-1zM27 8h2v1h-2zM0 9h3v1h-3zM4 9h2v1h-2zM7 9h2v1h-2zM11 9h5v1h-5zM18 9h7v1h-7zM28 9h1v1h-1zM1 10h1v1h-1zM3 10h5v1h-5zM10 10h4v1h-4zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM26 10h2v1h-2zM0 11h2v1h-2zM4 11h1v1h-1zM8 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM20 11h3v1h-3zM24 11h1v1h-1zM28 11h1v1h-1zM0 12h2v1h-2zM3 12h1v1h-1zM5 12h3v1h-3zM12 12h1v1h-1zM14 12h2v1h-2zM17 12h1v1h-1zM19 12h1v1h-1zM21 12h1v1h-1zM23 12h1v1h-1zM25 12h2v1h-2zM1 13h1v1h-1zM3 13h2v1h-2zM10 13h3v1h-3zM14 13h1v1h-1zM16 13h2v1h-2zM19 13h1v1h-1zM22 13h1v1h-1zM26 13h3v1h-3zM0 14h2v1h-2zM6 14h1v1h-1zM8 14h4v1h-4zM13 14h1v1h-1zM15 14h2v1h-2zM18 14h4v1h-4zM26 14h3v1h-3zM0 15h2v1h-2zM3 15h1v1h-1zM8 15h1v1h-1zM12 15h1v1h-1zM14 15h1v1h-1zM16 15h1v1h-1zM23 15h2v1h-2zM27 15h1v1h-1zM1 16h1v1h-1zM3 16h4v1h-4zM8 16h2v1h-2zM12 16h1v1h-1zM14 16h2v1h-2zM18 16h1v1h-1zM20 16h2v1h-2zM24 16h2v1h-2zM27 16h1v1h-1zM1 17h1v1h-1zM3 17h1v1h-1zM5 17h1v1h-1zM9 17h2v1h-2zM14 17h1v1h-1zM16 17h1v1h-1zM18 17h1v1h-1zM20 17h2v1h-2zM23 17h1v1h-1zM25 17h3v1h-3zM0 18h1v1h-1zM6 18h6v1h-6zM13 18h6v1h-6zM20 18h1v1h-1zM23 18h2v1h-2zM26 18h1v1h-1zM2 19h3v1h-3zM9 19h1v1h-1zM12 19h10v1h-10zM23 19h2v1h-2zM26 19h1v1h-1zM1 20h2v1h-2zM4 20h3v1h-3zM8 20h1v1h-1zM11 20h1v1h-1zM13 20h5v1h-5zM19 20h8v1h-8zM8 21h2v1h-2zM12 21h1v1h-1zM17 21h4v1h-4zM24 21h5v1h-5zM0 22h7v1h-7zM8 22h2v1h-2zM11 22h2v1h-2zM14 22h1v1h-1zM18 22h3v1h-3zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM11 23h5v1h-5zM20 23h1v1h-1zM24 23h2v1h-2zM28 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM9 24h1v1h-1zM11 24h2v1h-2zM15 24h3v1h-3zM20 24h5v1h-5zM26 24h2v1h-2zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h1v1h-1zM11 25h2v1h-2zM15 25h3v1h-3zM19 25h3v1h-3zM23 25h3v1h-3zM28 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h4v1h-4zM14 26h1v1h-1zM18 26h2v1h-2zM21 26h1v1h-1zM23 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h1v1h-1zM11 27h1v1h-1zM14 27h3v1h-3zM18 27h1v1h-1zM20 27h2v1h-2zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h4v1h-4zM13 28h2v1h-2zM18 28h3v1h-3zM24 28h1v1h-1zM27 28h1v1h-1z"/></svg></div><div class="qru" lang="en">nitya-upasana.pages.dev</div><button type="button" class="wide" id="qrx"><span data-w="page.close">Close</span></button></div>
 </div>
 <!-- ==== Print builder (js/features/print.js, js/print/what.js): What (the Library's texts with ticks, filled in by the
      script), then How (dhrupad, page, font). One step at a time on a phone (data-step), side by side from 760px. ==== -->
 <div id="prm" hidden role="dialog" aria-modal="true" aria-labelledby="prmt" data-step="what">
-  <div class="qrc prc"><div class="prhd"><button type="button" id="prbk" class="prbk"><span class="mr">‹ काय प्रिंट करायचे</span><span class="en" lang="en">‹ What to print</span></button><div class="qrt" id="prmt"><span class="mr">प्रिंट / PDF</span><span class="en" lang="en">Print / PDF</span></div><button type="button" id="prx" class="pfxb prx" aria-label="Cancel"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="prst" id="prst"><section class="prwh" id="prwh" aria-labelledby="prwht"><h3 class="prsh" id="prwht"><span class="mr">काय प्रिंट करायचे</span><span class="en" lang="en">What to print</span></h3><div id="prwl"></div></section><section class="prhw" id="prhw" aria-labelledby="prhwt"><h3 class="prsh" id="prhwt"><span class="mr">कसे प्रिंट करायचे</span><span class="en" lang="en">How to print</span></h3><div class="pro"><div class="prrow" id="prlr"><span class="prk"><span class="mr">भाषा</span><span class="en" lang="en">Language</span></span><div class="prseg prseg3" id="prlg" role="group" aria-label="Language"></div></div><div class="prrow" id="prdh"><span class="prk"><span class="mr">ध्रुपद (धृ)</span><span class="en" lang="en">Dhrupad (<span lang="mr">धृ</span>)</span></span><div class="prseg prseg2" id="prdg" role="group" aria-label="Dhrupad"><button type="button" data-v="1"><span class="mr">एकदाच</span><span class="en" lang="en">Once</span></button><button type="button" data-v="0"><span class="mr">प्रत्येक कडव्यानंतर</span><span class="en" lang="en">Every verse</span></button></div></div><div class="prrow" id="prpr"><span class="prk"><span class="mr">पान</span><span class="en" lang="en">Page</span></span><div class="prseg prseg2" id="prpg" role="group" aria-label="Page"><button type="button" id="pr1"></button><button type="button" id="pr2"></button></div><span class="prv" id="prpv" hidden></span></div><div class="prrow" id="prft"><span class="prk"><span class="mr">प्रिंटची अक्षरशैली</span><span class="en" lang="en">Print font</span></span><div class="prseg" id="prfn" role="group" aria-label="Print font"></div></div></div><div class="prpre"><div class="prsheet" id="prsheet" role="img"></div><p class="prn prnote"><span class="mr">प्रत्येक रचना नव्या पानावर सुरू होते. कागद: <b id="prp">Letter</b></span><span class="en" lang="en">Every text starts on a new page. Paper: <b id="prq">Letter</b></span> <button type="button" class="prpa" id="prpa"></button><span id="prl" hidden> <span class="mr">आडव्या पानासाठी Safari च्या प्रिंट विंडोतही <span lang="en">Landscape</span> निवडा.</span><span class="en" lang="en">For Landscape, pick it in Safari's dialog too.</span></span><span id="prz" hidden> <span class="mr">Safari च्या प्रिंट विंडोतही <span class="przp" lang="en">A4</span> कागद निवडा.</span><span class="en" lang="en">Pick <span class="przp">A4</span> paper in Safari's dialog too.</span></span><span id="prc" hidden> <span class="mr">Chrome मधून प्रिंट अधिक चांगली येते.</span><span class="en" lang="en">Chrome prints it best.</span></span></p></div></section></div><div class="prs"><button type="button" class="wide" id="prgo" hidden><span class="mr">तयार आहे: प्रिंट करा</span><span class="en" lang="en">Ready: Print now</span></button><button type="button" class="wide" id="prsf" hidden><span class="mr">Safari मध्ये उघडा</span><span class="en" lang="en">Open in Safari</span></button><button type="button" class="wide" id="prcp" hidden><span class="mr">लिंक कॉपी करा</span><span class="en" lang="en">Copy link</span></button></div><div class="prn" id="prw" hidden><span class="mr">iPhone वर होम स्क्रीनवरील ॲपमधून प्रिंट उघडत नाही. <b>Safari मध्ये उघडा</b> दाबा: तुमच्या निवडी सोबत जातात आणि तिथे प्रिंट तयार होते. Safari उघडले नाही तर लिंक कॉपी करा आणि Safari मध्ये पेस्ट करा.</span><span class="en" lang="en">Printing does not open from the Home Screen app on iPhone. Tap <b>Open in Safari</b>: your choices go with it and the printout is made ready there. If Safari does not open, copy the link and paste it into Safari.</span></div><div class="prn" id="prv" hidden><span class="mr">या ब्राउझरने प्रिंट विंडो उघडली नाही. ब्राउझरचे <b>शेअर</b> बटण दाबा आणि <b>प्रिंट</b> निवडा. दुसऱ्या ॲपमधून उघडले असल्यास <b>Safari मध्ये उघडा</b> दाबा: तुमच्या निवडी सोबत जातात.</span><span class="en" lang="en">This browser did not open the print dialog. Tap the browser's <b>Share</b> button and choose <b>Print</b>. If this page opened inside another app, tap <b>Open in Safari</b>: your choices go with it.</span></div><div class="pract"><p class="prsum" id="prsum" aria-live="polite"></p><button type="button" class="wide" id="prnx"><span class="mr">पुढे: कसे प्रिंट करायचे ›</span><span class="en" lang="en">Next: how to print ›</span></button><button type="button" class="wide" id="prgp"><span class="mr">प्रिंट</span><span class="en" lang="en">Print</span></button></div></div>
+  <div class="qrc prc"><div class="prhd"><button type="button" id="prbk" class="prbk"><span data-w="page.whatToPrint">‹ What to print</span></button><div class="qrt" id="prmt"><span data-w="page.printPdf">Print / PDF</span></div><button type="button" id="prx" class="pfxb prx" aria-label="Cancel"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="prst" id="prst"><section class="prwh" id="prwh" aria-labelledby="prwht"><h3 class="prsh" id="prwht"><span data-w="page.whatToPrint2">What to print</span></h3><div id="prwl"></div></section><section class="prhw" id="prhw" aria-labelledby="prhwt"><h3 class="prsh" id="prhwt"><span data-w="page.howToPrint">How to print</span></h3><div class="pro"><div class="prrow" id="prlr"><span class="prk"><span data-w="page.language">Language</span></span><div class="prseg prseg3" id="prlg" role="group" aria-label="Language"></div></div><div class="prrow" id="prdh"><span class="prk"><span data-w="page.dhrupad2">Dhrupad (<span lang="mr">धृ</span>)</span></span><div class="prseg prseg2" id="prdg" role="group" aria-label="Dhrupad"><button type="button" data-v="1"><span data-w="page.once2">Once</span></button><button type="button" data-v="0"><span data-w="page.everyVerse">Every verse</span></button></div></div><div class="prrow" id="prpr"><span class="prk"><span data-w="page.page">Page</span></span><div class="prseg prseg2" id="prpg" role="group" aria-label="Page"><button type="button" id="pr1"></button><button type="button" id="pr2"></button></div><span class="prv" id="prpv" hidden></span></div><div class="prrow" id="prft"><span class="prk"><span data-w="page.printFont">Print font</span></span><div class="prseg" id="prfn" role="group" aria-label="Print font"></div></div></div><div class="prpre"><div class="prsheet" id="prsheet" role="img"></div><p class="prn prnote"><span data-w="page.everyTextStartsOnA">Every text starts on a new page. Paper: <b class="prpaper">Letter</b></span> <button type="button" class="prpa" id="prpa"></button><span id="prl" hidden> <span data-w="page.forLandscapePickItIn">For Landscape, pick it in Safari's dialog too.</span></span><span id="prz" hidden> <span data-w="page.pickA4PaperInSafari">Pick <span class="przp">A4</span> paper in Safari's dialog too.</span></span><span id="prc" hidden> <span data-w="page.chromePrintsItBest">Chrome prints it best.</span></span></p></div></section></div><div class="prs"><button type="button" class="wide" id="prgo" hidden><span data-w="page.readyPrintNow">Ready: Print now</span></button><button type="button" class="wide" id="prsf" hidden><span data-w="page.openInSafari">Open in Safari</span></button><button type="button" class="wide" id="prcp" hidden><span data-w="page.copyLink">Copy link</span></button></div><div class="prn" id="prw" hidden><span data-w="page.printingDoesNotOpenFrom">Printing does not open from the Home Screen app on iPhone. Tap <b>Open in Safari</b>: your choices go with it and the printout is made ready there. If Safari does not open, copy the link and paste it into Safari.</span></div><div class="prn" id="prv" hidden><span data-w="page.thisBrowserDidNotOpen">This browser did not open the print dialog. Tap the browser's <b>Share</b> button and choose <b>Print</b>. If this page opened inside another app, tap <b>Open in Safari</b>: your choices go with it.</span></div><div class="pract"><p class="prsum" id="prsum" aria-live="polite"></p><button type="button" class="wide" id="prnx"><span data-w="page.nextHowToPrint">Next: how to print ›</span></button><button type="button" class="wide" id="prgp"><span data-w="page.print">Print</span></button></div></div>
 </div>
 <!-- ==== Add to Home Screen steps (shown when the browser can't install from a button: iPhone, or Chrome without its prompt) ==== -->
 <div id="inm" hidden role="dialog" aria-modal="true" aria-labelledby="inmt">
-  <div class="qrc"><div class="qrt" id="inmt"><span class="mr">होम स्क्रीनवर जोडा</span><span class="en" lang="en">Add to Home Screen</span></div>
-    <ol class="inl" id="inios" hidden><li><span class="mr">शेअर बटण <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> दाबा (Safari मध्ये खाली, Chrome मध्ये वर उजवीकडे).</span><span class="en" lang="en">Tap the <b lang="en">Share</b> button <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> (at the bottom in Safari, top right in Chrome).</span></li><li><span class="mr">खाली स्क्रोल करून <b lang="en">Add to Home Screen</b> दाबा.</span><span class="en" lang="en">Scroll down and tap <b lang="en">Add to Home Screen</b>.</span></li><li><span class="mr"><b lang="en">Add</b> दाबा.</span><span class="en" lang="en">Tap <b lang="en">Add</b>.</span></li></ol>
-    <ol class="inl" id="inapp" hidden><li><span class="mr">हे पान <b lang="en">Safari</b> किंवा <b lang="en">Chrome</b> मध्ये उघडा (⋯ किंवा शेअर → Open in Safari/Chrome).</span><span class="en" lang="en">Open this page in <b lang="en">Safari</b> or <b lang="en">Chrome</b> (⋯ or Share → Open in Safari/Chrome).</span></li><li><span class="mr">मग शेअर <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> → <b lang="en">Add to Home Screen</b> → <b lang="en">Add</b>.</span><span class="en" lang="en">Then Share <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> → <b lang="en">Add to Home Screen</b> → <b lang="en">Add</b>.</span></li></ol>
-    <ol class="inl" id="inand" hidden><li><span class="mr">Chrome चा <b>⋮</b> मेनू (वर उजवीकडे) उघडा.</span><span class="en" lang="en">Open Chrome's <b>⋮</b> menu (top right).</span></li><li><span class="mr"><b lang="en">Add to Home screen</b> किंवा <b lang="en">Install app</b> दाबा.</span><span class="en" lang="en">Tap <b lang="en">Add to Home screen</b> or <b lang="en">Install app</b>.</span></li><li><span class="mr"><b lang="en">Install</b> किंवा <b lang="en">Add</b> दाबा.</span><span class="en" lang="en">Tap <b lang="en">Install</b> or <b lang="en">Add</b>.</span></li></ol>
-    <ol class="inl" id="indesk" hidden><li><span class="mr">पत्त्याच्या पट्टीच्या उजव्या टोकाला असलेले Install चिन्ह दाबा, किंवा ब्राउझरच्या मेनूतून <b lang="en">Install</b> निवडा.</span><span class="en" lang="en">Click the install icon at the right end of the address bar, or choose <b lang="en">Install</b> from the browser menu.</span></li></ol>
-    <ol class="inl" id="inmac" hidden><li><span class="mr">Safari च्या टूलबारवरील शेअर बटण <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> दाबा, किंवा <b lang="en">File</b> मेनू उघडा.</span><span class="en" lang="en">Click the <b lang="en">Share</b> button <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> in Safari's toolbar, or open the <b lang="en">File</b> menu.</span></li><li><span class="mr"><b lang="en">Add to Dock</b> निवडा, मग <b lang="en">Add</b> दाबा.</span><span class="en" lang="en">Choose <b lang="en">Add to Dock</b>, then click <b lang="en">Add</b>.</span></li></ol>
-    <ol class="inl" id="inff" hidden><li><span class="mr">Firefox मध्ये हे ॲप म्हणून जोडता येत नाही. हे पान Chrome, Edge किंवा Safari मध्ये उघडा आणि हे बटण पुन्हा दाबा.</span><span class="en" lang="en">Firefox can't add this site as an app. Open this page in Chrome, Edge or Safari and tap this button again.</span></li></ol>
-    <p class="inn"><span class="mr">मग ते ॲपसारखे उघडेल, इंटरनेटशिवायही.</span><span class="en" lang="en">It will then open like an app, even without internet.</span></p>
-    <button type="button" class="wide" id="inx"><span class="mr">ठीक आहे</span><span class="en" lang="en">OK</span></button></div>
+  <div class="qrc"><div class="qrt" id="inmt"><span data-w="page.addToHomeScreen2">Add to Home Screen</span></div>
+    <ol class="inl" id="inios" hidden><li><span data-w="page.tapTheShareButtonAt">Tap the <b lang="en">Share</b> button <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> (at the bottom in Safari, top right in Chrome).</span></li><li><span data-w="page.scrollDownAndTapAdd">Scroll down and tap <b lang="en">Add to Home Screen</b>.</span></li><li><span data-w="page.tapAdd">Tap <b lang="en">Add</b>.</span></li></ol>
+    <ol class="inl" id="inapp" hidden><li><span data-w="page.openThisPageInSafari">Open this page in <b lang="en">Safari</b> or <b lang="en">Chrome</b> (⋯ or Share → Open in Safari/Chrome).</span></li><li><span data-w="page.thenShareAddToHome">Then Share <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> → <b lang="en">Add to Home Screen</b> → <b lang="en">Add</b>.</span></li></ol>
+    <ol class="inl" id="inand" hidden><li><span data-w="page.openChromeSMenuTop">Open Chrome's <b>⋮</b> menu (top right).</span></li><li><span data-w="page.tapAddToHomeScreen">Tap <b lang="en">Add to Home screen</b> or <b lang="en">Install app</b>.</span></li><li><span data-w="page.tapInstallOrAdd">Tap <b lang="en">Install</b> or <b lang="en">Add</b>.</span></li></ol>
+    <ol class="inl" id="indesk" hidden><li><span data-w="page.clickTheInstallIconAt">Click the install icon at the right end of the address bar, or choose <b lang="en">Install</b> from the browser menu.</span></li></ol>
+    <ol class="inl" id="inmac" hidden><li><span data-w="page.clickTheShareButtonIn">Click the <b lang="en">Share</b> button <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> in Safari's toolbar, or open the <b lang="en">File</b> menu.</span></li><li><span data-w="page.chooseAddToDockThen">Choose <b lang="en">Add to Dock</b>, then click <b lang="en">Add</b>.</span></li></ol>
+    <ol class="inl" id="inff" hidden><li><span data-w="page.firefoxCanTAddThis">Firefox can't add this site as an app. Open this page in Chrome, Edge or Safari and tap this button again.</span></li></ol>
+    <p class="inn"><span data-w="page.itWillThenOpenLike">It will then open like an app, even without internet.</span></p>
+    <button type="button" class="wide" id="inx"><span data-w="page.ok">OK</span></button></div>
 </div>
 <!-- ==== Profile sheet (js/features/profiles.js), opened by the profile chip in the top bar or Settings → Who is
      reading: the people on this phone (tap one to switch), Add a person, and for each, Edit (name, badge letters,
@@ -712,10 +712,10 @@
 <div id="asc" hidden role="navigation" aria-label="Previous, home, library, reading, next">
   <div id="asi">
     <button type="button" id="asv" class="asx"></button>
-    <button type="button" id="ash" class="asi"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.6 12 3.5l9 7.1"/><path d="M5.2 9v11h13.6V9"/><path d="M12 11.2c1.3 1.5 1.6 2.8 0 4.3-1.6-1.5-1.3-2.8 0-4.3z"/><path d="M9.3 17.6h5.4"/></svg><span class="asil"><span class="mr">मुख्यपृष्ठ</span><span class="en" lang="en">Home</span></span></button>
+    <button type="button" id="ash" class="asi"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.6 12 3.5l9 7.1"/><path d="M5.2 9v11h13.6V9"/><path d="M12 11.2c1.3 1.5 1.6 2.8 0 4.3-1.6-1.5-1.3-2.8 0-4.3z"/><path d="M9.3 17.6h5.4"/></svg><span class="asil"><span data-w="page.home">Home</span></span></button>
     
-    <button type="button" id="hm" class="asi" aria-expanded="false" aria-controls="jump"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5C5.6 4.6 8.9 4.9 12 7c3.1-2.1 6.4-2.4 9.5-1.5v13.3c-3.1-.9-6.4-.6-9.5 1.5-3.1-2.1-6.4-2.4-9.5-1.5z"/><path d="M12 7v13.3"/></svg><span class="asil"><span class="mr">संग्रह</span><span class="en" lang="en">Library</span></span></button>
-    <button type="button" id="rsb" class="asi" aria-expanded="false" aria-controls="rsh"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 19l3.6-9 3.6 9M3.9 15.6h4.4"/><path d="M11.5 19l5-13 5 13M13.4 14h6.2"/></svg><span class="asil"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></span></button>
+    <button type="button" id="hm" class="asi" aria-expanded="false" aria-controls="jump"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5C5.6 4.6 8.9 4.9 12 7c3.1-2.1 6.4-2.4 9.5-1.5v13.3c-3.1-.9-6.4-.6-9.5 1.5-3.1-2.1-6.4-2.4-9.5-1.5z"/><path d="M12 7v13.3"/></svg><span class="asil"><span data-w="page.library">Library</span></span></button>
+    <button type="button" id="rsb" class="asi" aria-expanded="false" aria-controls="rsh"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 19l3.6-9 3.6 9M3.9 15.6h4.4"/><path d="M11.5 19l5-13 5 13M13.4 14h6.2"/></svg><span class="asil"><span data-w="page.reading">Reading</span></span></button>
     <button type="button" id="asn" class="asx"></button>
   </div>
 </div>
@@ -725,33 +725,33 @@
 <div id="rsh" hidden>
   <div class="rsc" role="dialog" aria-labelledby="rsht" tabindex="-1">
     <div class="rs-hd">
-      <h2 id="rsht"><span class="mr">वाचन</span><span class="en" lang="en">Reading</span></h2>
+      <h2 id="rsht"><span data-w="page.reading">Reading</span></h2>
       <button type="button" id="rsx" aria-label="Close"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <div class="rs-row">
-      <span class="rs-l" id="rsll"><span class="mr">भाषा</span><span class="en" lang="en">Language</span></span>
+      <span class="rs-l" id="rsll"><span data-w="page.language">Language</span></span>
       <div class="rs-seg" id="rsl" role="group" aria-labelledby="rsll"></div>
     </div>
     <div class="rs-row">
-      <span class="rs-l" id="rszl"><span class="mr">अक्षरांचा आकार</span><span class="en" lang="en">Text size</span></span>
+      <span class="rs-l" id="rszl"><span data-w="page.textSize">Text size</span></span>
       <div class="rs-sz" role="group" aria-labelledby="rszl">
-        <button type="button" id="rsm"><span class="rsa">A</span>−<span class="sr"><span class="mr"> लहान</span><span class="en" lang="en"> smaller</span></span></button>
+        <button type="button" id="rsm"><span class="rsa">A</span>−<span class="sr"><span data-w="page.smaller"> smaller</span></span></button>
         <span id="rsv" role="status"></span>
-        <button type="button" id="rsp"><span class="rsa">A</span>+<span class="sr"><span class="mr"> मोठे</span><span class="en" lang="en"> larger</span></span></button>
+        <button type="button" id="rsp"><span class="rsa">A</span>+<span class="sr"><span data-w="page.larger"> larger</span></span></button>
         <button type="button" id="rsr" aria-label="Reset text size"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
       </div>
     </div>
     <div class="rs-row">
-      <span class="rs-l" id="rsfl"><span class="mr">ध्रुपद</span><span class="en" lang="en">Dhrupad</span></span>
+      <span class="rs-l" id="rsfl"><span data-w="page.dhrupad">Dhrupad</span></span>
       <div class="rs-seg" id="rsf" role="group" aria-labelledby="rsfl">
-        <button type="button" data-v="1"><span class="mr">एकदा</span><span class="en" lang="en">Once</span></button>
-        <button type="button" data-v="0"><span class="mr">प्रत्येक कडव्यानंतर</span><span class="en" lang="en">Every verse</span></button>
+        <button type="button" data-v="1"><span data-w="page.once">Once</span></button>
+        <button type="button" data-v="0"><span data-w="page.everyVerse">Every verse</span></button>
       </div>
     </div>
-    <button type="button" class="rs-go" id="rsall"><span class="rs-l"><span class="mr">सर्व सेटिंग्ज</span><span class="en" lang="en">All settings</span><small><span class="mr">अक्षरशैली, रंगसंगती, मांडणी</span><span class="en" lang="en">Font, theme, layout</span></small></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    <button type="button" class="rs-go" id="rsall"><span class="rs-l"><span data-w="page.allSettings">All settings</span><small><span data-w="page.fontThemeLayout">Font, theme, layout</span></small></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
   </div>
 </div>
-<button type="button" id="szr" hidden><span class="mr">↺ मूळ आकार</span><span class="en" lang="en">↺ Default size</span></button>
+<button type="button" id="szr" hidden><span data-w="page.defaultSize">↺ Default size</span></button>
 
 <script type="module" src="js/main.js"></script>
 </body>

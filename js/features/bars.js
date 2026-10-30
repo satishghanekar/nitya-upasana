@@ -14,7 +14,7 @@ import { asLabel, asShow, asc } from "./bottom-bar.js";
 import { szSet } from "./settings-panel.js";
 import { setJ, setP } from "./overlays.js";
 import { spSet } from "./languages.js";
-import { menuWords } from "../core/strings.js";
+import { fillWords, menuWords } from "../core/strings.js";
 
 export var TK;
 var tkStrip, MQ900, MQ1000, MQ1024, tailF;
@@ -232,6 +232,9 @@ function applyTail() {
   mark();
 }
 
+/** The menu language the page's words were last filled in */
+var filled = "";
+
 export function apply() {
   root.style.setProperty("--fs", P.fs + "px");
   fsuMark();
@@ -244,6 +247,11 @@ export function apply() {
   [].forEach.call(document.querySelectorAll(".bar,#shr,#asc,#none,.libhd,.rch,#jtb,#spv,#panel,#home > *,#qrm,#prm,#inm,#rsh,#szt,#szr,#fl"), function (e) {
     e.setAttribute("data-lang", P.ui);
   });
+  // the page's own words (index.html data-w), when the menu language is not the one they show
+  if (filled !== P.ui) {
+    filled = P.ui;
+    fillWords();
+  }
   root.lang = SCR.k || "mr"; // the page is Marathi (or Kannada); English parts carry lang="en" themselves (screen readers pick the voice from this)
   [].forEach.call(document.querySelectorAll("#su button"), function (b) {
     b.setAttribute("aria-pressed", String(b.dataset.v === P.ui));

@@ -15,7 +15,7 @@
 // first language large, the second under it.
 // No init(): js/features/print.js creates it (createWhat) when it starts.
 
-import { DAYS, esc, lead, num, scr, scrKey, second, ui } from "../core/words.js";
+import { esc, lead, nameLang, num, scr, scrKey, second, ui } from "../core/words.js";
 import { searchKey } from "../features/text-picker.js";
 import { SESSIONS } from "../core/routine.js";
 import { TAG_WORDS, selectRoutine, tagFor, weekGrid, weekOrder } from "./select.js";
@@ -186,7 +186,7 @@ export function createWhat(el, o) {
     var a = /** @type {HTMLElement | null} */ (document.activeElement),
       at = a && box.contains(a) ? a.getAttribute("data-rk") : null,
       w = whatWords(),
-      tw = TAG_WORDS[ui()],
+      tw = TAG_WORDS[nameLang()],
       l = lead(),
       s2 = second(),
       ps = people(),
@@ -425,7 +425,7 @@ export function createWhat(el, o) {
   function dayName() {
     var x = o.today()[0];
     if (!x || x.today !== false || typeof x.day !== "number") return "";
-    return ui() === "mr" ? scr(DAYS.mr[x.day]) : DAYS.en[x.day];
+    return scr(menuWords("dates").days[x.day]);
   }
   /** The day's sessions with texts, and all of the day when more than one has texts */
   function sessions() {
