@@ -970,3 +970,28 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+/* Nothing moves as ‹ › go through the days (Satish, 2026-10-30), as on Home's day bar (#tdn, css/10-today.css): the Day
+   tab's ‹ the date › stay in the middle, the date one width, and Today, after them, keeps its room on today; so does
+   the 15 days' Today, so the list does not jump down */
+.cdnav {
+  display: grid;
+  grid-template-columns: 1fr 44px minmax(0, 9em) 44px 1fr;
+  gap: 4px 10px;
+}
+.cdnav .cnav[data-dd="-1"] {
+  grid-column: 2;
+}
+.cdnt {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.ctod {
+  justify-self: start;
+}
+.ctod.off,
+.cto button.off {
+  visibility: hidden;
+}
