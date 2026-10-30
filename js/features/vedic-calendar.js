@@ -220,9 +220,7 @@ function addDays(k, n) {
 /** "Tue 28 Jul" / "मंगळवार २८ जुलै" @param {string} k */
 function dayLabel(k) {
   var d = dateOf(k);
-  return ui() === "en"
-    ? DAYS.en[d.getDay()].slice(0, 3) + " " + d.getDate() + " " + MONTHS.en[d.getMonth()].slice(0, 3)
-    : DAYS.mr[d.getDay()] + " " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()];
+  return words().dayLabel(d.getDay(), d.getDate(), d.getMonth());
 }
 
 /**
@@ -230,12 +228,7 @@ function dayLabel(k) {
  * @param {Date} t
  */
 function clock(t) {
-  var h = t.getHours(),
-    mi = ("0" + t.getMinutes()).slice(-2),
-    h12 = ((h + 11) % 12) + 1;
-  if (ui() === "en") return h12 + ":" + mi + (h >= 12 ? " pm" : " am");
-  var part = h < 4 ? "रात्री" : h < 6 ? "पहाटे" : h < 12 ? "सकाळी" : h < 16 ? "दुपारी" : h < 20 ? "सायं." : "रात्री";
-  return part + " " + dv(h12) + ":" + dv(mi);
+  return words().clock(t.getHours(), ("0" + t.getMinutes()).slice(-2));
 }
 /**
  * "until 1:21 am" (with the weekday when it ends on another day than `day`): "until Mon 1:21 am" / "सोमवारी रात्री

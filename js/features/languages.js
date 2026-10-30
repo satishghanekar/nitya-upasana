@@ -9,6 +9,7 @@ import { trPick } from "./settings-panel.js";
 import { buildIX } from "../text/search.js";
 import { refToggle } from "./dhrupad-button.js";
 import { pieceEl } from "../core/page.js";
+import { menuWords } from "../core/strings.js";
 
 var PICK;
 
@@ -63,7 +64,7 @@ export function spSet() {
     ? [P.lead, P.l2, "both"]
         .map(function (v) {
           var l = v === "both" ? P.ui : LK(v),
-            t = v === "both" ? (P.ui === "mr" ? "दोन्ही" : "Both") : LANGS[LK(v)].n;
+            t = v === "both" ? menuWords("languages").both : LANGS[LK(v)].n;
           return '<button type="button" data-v="' + v + '" lang="' + l + '" aria-pressed="' + (v === P.lang) + '">' + t + "</button>";
         })
         .join("")
@@ -103,7 +104,7 @@ export function spSet() {
     vs = lines(".items > .item:not(.rf)", 1), // one line of the verse: the dhrupad, above or below it, stays in view
     h = P.ref ? row(dh, 0, "sp-pd") : "";
   for (var k = 0; k < vs[0].length; k++) h += row(vs, k);
-  h += P.ref ? '<div class="sp-pn">' + (P.ui === "mr" ? "↻ ध्रुपद" : "↻ Refrain") + "</div>" : row(dh, 0, "sp-pd");
+  h += P.ref ? '<div class="sp-pn">' + menuWords("languages").refrain + "</div>" : row(dh, 0, "sp-pd");
   // (its heading, Preview, is the group's, in index.html)
   document.getElementById("sprev").innerHTML = '<div class="sp-pw">' + h + "</div>";
   fitPreview();
@@ -135,7 +136,7 @@ function spKey(slot) {
 }
 
 function spName(k) {
-  if (!k) return P.ui === "mr" ? "काहीही नाही" : "None";
+  if (!k) return menuWords("languages").none;
   var l = k.split(":");
   return LANGS[l[0]].n + (l[1] ? " · " + (l[1] === "iast" ? "sukhakartā" : "Sukhkarta") : "");
 }

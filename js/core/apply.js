@@ -4,6 +4,7 @@
 import { onPiece, secs } from "./page.js";
 import { P, change } from "./state.js";
 import { mark } from "../features/bars.js";
+import { menuWords } from "./strings.js";
 
 export var pn, aa, jp, LANGS;
 
@@ -101,13 +102,13 @@ export function foldSet() {
 
 /** @param {HTMLElement} x */
 function foldOne(x) {
-  var mr = P.ui === "mr",
+  var w = menuWords("fold"),
     f = P.af.indexOf(x.id) >= 0,
     ab = x.querySelector(".afb");
   x.classList.toggle("af", f);
   if (ab) {
     ab.setAttribute("aria-expanded", String(!f));
-    ab.setAttribute("aria-label", f ? (mr ? "उघडा" : "Show this piece") : mr ? "मिटवा" : "Fold this piece");
+    ab.setAttribute("aria-label", f ? w.open : w.fold);
   }
 }
 

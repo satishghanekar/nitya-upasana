@@ -14,6 +14,7 @@ import { asLabel, asShow, asc } from "./bottom-bar.js";
 import { szSet } from "./settings-panel.js";
 import { setJ, setP } from "./overlays.js";
 import { spSet } from "./languages.js";
+import { menuWords } from "../core/strings.js";
 
 export var TK;
 var tkStrip, MQ900, MQ1000, MQ1024, tailF;
@@ -134,7 +135,7 @@ export function mark() {
   } else bt0.classList.remove("pc");
   if (document.getElementById("btt").textContent !== tt) document.getElementById("btt").textContent = tt;
   // its spoken name starts with what it does and contains the words shown (WCAG 2.5.3)
-  var bl = (P.ui === "mr" ? "मुख्य पान: " : "Home: ") + tt;
+  var bl = menuWords("bar").home(tt);
   if (bt0.getAttribute("aria-label") !== bl) bt0.setAttribute("aria-label", bl);
   // the slim strip shown while the bars are tucked away carries the same name and progress line
   var tkt = document.getElementById("tkt");
@@ -253,7 +254,7 @@ export function apply() {
     b.setAttribute("aria-pressed", String(b.dataset.v === P.fnt));
   });
   var qi = document.getElementById("q");
-  qi.placeholder = P.ui === "mr" ? "रचना किंवा ओळ शोधा" : "Find a text or a line";
+  qi.placeholder = menuWords("bar").find;
   qi.setAttribute("aria-label", qi.placeholder);
   root.setAttribute("data-ref", String(P.ref));
   root.setAttribute("data-hc", String(P.hc));

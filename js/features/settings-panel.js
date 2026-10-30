@@ -3,7 +3,7 @@
 // on Reading each time, or on the tab its opener asks for (js/features/reading-sheet.js).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { flash } from "../core/page.js";
+import { flash, note } from "../core/page.js";
 import { P, change, dfs } from "../core/state.js";
 import { FSA } from "../text/autofit.js";
 import { trSet } from "../text/iast.js";
@@ -12,6 +12,7 @@ import { cur, pn } from "../core/apply.js";
 import { apply } from "./bars.js";
 import { buildIX } from "../text/search.js";
 import { fitPreview } from "./languages.js";
+import { menuWords } from "../core/strings.js";
 
 var fsT;
 
@@ -141,7 +142,7 @@ export function trPick(v) {
       }
     });
     if (bad.length) {
-      flash("बदल पूर्ण झाला नाही (" + bad.join("; ") + ")", "Could not finish the change (" + bad.join("; ") + ")");
+      note(menuWords("settings").failed(bad.join("; ")));
       var zt = document.getElementById("fl");
       zt.classList.add("err");
       clearTimeout(flash.t);
