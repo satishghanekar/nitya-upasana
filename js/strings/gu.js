@@ -428,7 +428,47 @@ export default {
   // Offline use and Check for updates (js/features/offline.js): Settings → More → About
   offline: {
     state: { idle: "ઑફલાઇન માટે તૈયાર", save: "ઑફલાઇન માટે સાચવે છે…", off: "સાચવેલી નકલ વપરાય છે" },
-    update: { check: "અપડેટ માટે તપાસો", busy: "તપાસે છે…", ok: "તાજું છે", off: "ઇન્ટરનેટ નથી", restart: "બંધ કરીને ફરી ખોલો" },
+    // the version line in Settings → More → About: what Check for updates found (under the version), and the round
+    // button's name in each state
+    update: {
+      check: "અપડેટ માટે તપાસો",
+      busy: "નવી આવૃત્તિ શોધે છે…",
+      ok: "તમારી પાસે સૌથી નવી આવૃત્તિ છે",
+      off: "ઇન્ટરનેટ નથી · ફરી પ્રયત્ન માટે દબાવો",
+      restart: "સચવાઈ ગઈ. ઍપ બંધ કરીને ફરી ખોલો",
+    },
+    button: { check: "અપડેટ માટે તપાસો", busy: "તપાસે છે…", ok: "ફરી તપાસો", off: "ફરી પ્રયત્ન કરો", restart: "અપડેટ કેવી રીતે પૂરું કરવું" },
+    version: "આવૃત્તિ",
+    how: "કેવી રીતે?",
+    // How? after an update saved on Safari, iPhone or iPad: how to close the app and open it again, for each device
+    finish: {
+      title: "અપડેટ પૂરું કરો",
+      /** @param {string} v the new version ("1.39.3") */
+      saved: function (v) {
+        return "આવૃત્તિ " + v + " આ ઉપકરણ પર સચવાઈ ગઈ";
+      },
+      device: "તમારું ઉપકરણ",
+      kept: "તમારી સેટિંગ્સ જેમ છે તેમ રહેશે.",
+      ok: "સમજાયું",
+      close: "બંધ કરો",
+      iphone: {
+        s1: "સ્ક્રીનના તળિયેથી ઉપર સરકાવીને થોભો",
+        h1: "ખુલ્લી ઍપ બાજુબાજુમાં દેખાશે.",
+        s2: "આ ઍપને ઉપર સરકાવીને બંધ કરો",
+        h2: "અથવા સાઇટ ત્યાં ખુલ્લી હોય તો Safari. કંઈ ખોવાતું નથી.",
+        s3: "હોમ સ્ક્રીન પર તેનું આઇકન દબાવો",
+        h3: "તે નવી આવૃત્તિ સાથે ખૂલશે.",
+      },
+      ipad: {
+        s1: "સ્ક્રીનના તળિયેથી ઉપર સરકાવીને થોભો",
+        h1: "હોમ બટનવાળા iPad પર તેને બે વાર દબાવો.",
+        s2: "આ ઍપને ઉપર સરકાવીને બંધ કરો",
+        h2: "અથવા સાઇટ ત્યાં ખુલ્લી હોય તો Safari. કંઈ ખોવાતું નથી.",
+        s3: "હોમ સ્ક્રીન પર તેનું આઇકન દબાવો",
+        h3: "તે નવી આવૃત્તિ સાથે ખૂલશે.",
+      },
+      mac: { s1: "બંધ કરવા ⌘Q દબાવો", h1: "Safari, અથવા Dock માં ઉમેરી હોય તો આ ઍપ.", s2: "તેને ફરી ખોલો", h2: "Dock માંથી, અથવા Safari ખોલીને આ સાઇટ." },
+    },
     usingSaved: "ઇન્ટરનેટ નથી. સાચવેલી નકલ વાપરીએ છીએ.",
     loading: "નવી આવૃત્તિ, ખૂલે છે…",
     /** @param {string} v the new version ("v1.37.17") */

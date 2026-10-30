@@ -146,9 +146,28 @@ test.describe("in Safari", () => {
     await settingsTab(page, "more");
     await page.locator("#upd").click();
     await expect(page.locator("#upd")).toHaveAttribute("data-s", "restart", { timeout: 25_000 });
-    await expect(page.locator("#updv")).toHaveText("Close and reopen");
+    await expect(page.locator("#updv")).toHaveText("Saved. Close the app and open it again");
     await expect(page.locator("#fl")).toContainText("Close the app and open it again to finish.");
     expect(reloaded).toBe(false);
+    // How? opens the steps over Settings, for this device first (Safari on a Mac); Escape closes only them
+    await page.locator("#uph").click();
+    await expect(page.locator("#upm")).toBeVisible();
+    await expect(page.locator("#upmt")).toHaveText("Finish the update");
+    await expect(page.locator('#upm [data-v="mac"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator("#upm .upms li")).toHaveCount(2);
+    await page.locator('#upm [data-v="iphone"]').click();
+    await expect(page.locator("#upm .upms li")).toHaveCount(3);
+    await expect(page.locator('#upm [data-v="iphone"]')).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(page.locator("#upm")).toBeHidden();
+    await expect(page.locator("#panel")).toBeVisible();
+    await expect(page.locator("#uph")).toBeFocused();
+    // the round button opens them too; Got it closes them
+    await page.locator("#upd").click();
+    await expect(page.locator("#upm")).toBeVisible();
+    await page.locator("#upm .upmo").click();
+    await expect(page.locator("#upm")).toBeHidden();
+    await expect(page.locator("#panel")).toBeVisible();
     await context.unrouteAll({ behavior: "ignoreErrors" });
     // the new file is saved for the next launch
     expect(await page.evaluate(async () => (await (await fetch("css/99-fallbacks.css")).text()).includes("#__changed"))).toBe(true);
