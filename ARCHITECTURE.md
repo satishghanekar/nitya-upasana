@@ -44,7 +44,21 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files and the 
 
 ## Menu languages
 
-The menus are in Marathi or English (Settings, `P.ui`). The scripts' menu words are in a catalog, one file per language (`js/strings/en.js`, `js/strings/mr.js`), each part's words under its name; a part reads them with `menuWords("part")` (`js/core/strings.js`), and a word a language lacks is taken from English. A sentence with a value in it ("until Mon 1:21 am", "सोमवारी रात्री १:२१ पर्यंत") is a function, so each language keeps its own word order. Adding a menu language is a new file in `js/strings/` and a line in `LANGS`; `tests/unit/strings.test.mjs` checks it has every word. Not all of the site is there yet: some parts still choose between two inline words, and `index.html` writes its words as a `.mr` and an `.en` span, shown by `data-lang`. These move to the catalog part by part.
+The menus are in Marathi or English (Settings → Menus and buttons, `P.ui`). Every menu word is in a catalog, one file per language (`js/strings/en.js`, `js/strings/mr.js`), each part's words under its name:
+
+- a script reads them with `menuWords("part")` (`js/core/strings.js`); a sentence with a value in it ("until Mon 1:21 am", "सोमवारी रात्री १:२१ पर्यंत") is a function, so each language keeps its own word order;
+- the page's own words are `<span data-w="page.key">English</span>` in `index.html`, filled in the menu language by `fillWords()` when the page starts and when the menu language changes (the English inside is what shows without the script); an element filled takes the language's code as its class and `lang`, so the styles for `.mr` and `.en` still apply;
+- dates are `menuWords("dates")`: the names of days and months and the calendar's date sentences;
+- `ui()` (`js/core/words.js`) is the menu language's code; `nameLang()` is which of a name's two languages the menus show (places, panchang names and titles exist only in Marathi and English: Marathi menus show Marathi, every other menu language English).
+
+A word a language lacks is taken from English. `tests/unit/strings.test.mjs` checks every language has every word, each sentence takes the same values, every `data-w` in `index.html` is in the catalog, and the parts in `MOVED` keep no Marathi of their own.
+
+### Adding a menu language (Gujarati, say)
+
+1. Copy `js/strings/en.js` to `js/strings/gu.js` and translate it (`language.name` is its own name, "ગુજરાતી"; the dates take its month and day names).
+2. Add it to `LANGS` in `js/core/strings.js`, to `js/parts.js` and as a `<link rel="modulepreload">` in `index.html`. Settings then offers it.
+3. If it is written in letters the site has no font for, add one (`fonts/`, `css/00-fonts.css`) and give `.gu` (the class the filled words take) that font.
+4. `npm run unit` says what is missing.
 
 The reading languages (the texts, their titles, and the calendar's names: tithi, nakshatra, festivals) are another matter: they follow `P.lead` and `P.l2`, and Marathi can be shown in Kannada letters (`SCRIPTS` in `js/render.js`).
 

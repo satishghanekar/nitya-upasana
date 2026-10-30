@@ -33,7 +33,7 @@ import { setC } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { IA } from "../text/iast.js";
 import { PAKSHA } from "../core/panchang-names.js";
-import { DAYS, MONTHS, dv, esc, lead, mrLang, num, scr, second, ui } from "../core/words.js";
+import { DAYS, dv, esc, lead, mrLang, nameLang, num, scr, second, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
 
 /**
@@ -360,7 +360,7 @@ function fwiki(f) {
     url = M ? "https://mr.wikipedia.org/wiki/" + f.wiki.mr : "https://en.wikipedia.org/wiki/" + f.wiki.en,
     // (the name as shown first, so what is heard starts with what is seen)
     shown = txt(f, lead() === "en" ? "en" : "mr"),
-    label = ui() === "mr" ? shown + " — विकिपीडिया (नवीन टॅबमध्ये उघडेल)" : shown + ": Wikipedia (opens in a new tab)";
+    label = words().wiki(shown);
   return (
     '<a href="' +
     esc(encodeURI(url)) +
@@ -569,14 +569,12 @@ function upList(from, to, pl, noHol) {
 /** One entry, a button that shows its day in the calendar @param {Up} u @param {string} today "YYYY-MM-DD" */
 function upRow(u, today) {
   var w = words(),
-    E = ui() === "en",
+    E = nameLang() === "en",
     d = dateOf(u.date),
     n = Math.round((d.getTime() - dateOf(today).getTime()) / 864e5),
     when = n === 0 ? w.uToday : n === 1 ? w.uTomorrow : n === -1 ? w.uYesterday : n < 0 ? w.uAgo(-n) : w.uIn(n),
     other = d.getMonth() !== dateOf(today).getMonth(),
-    full = E
-      ? DAYS.en[d.getDay()] + ", " + d.getDate() + " " + MONTHS.en[d.getMonth()]
-      : DAYS.mr[d.getDay()] + ", " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()],
+    full = menuWords("dates").day(d.getDay(), d.getDate(), d.getMonth()),
     icon =
       u.kind === "sk"
         ? ICON.crescent
@@ -605,12 +603,12 @@ function upRow(u, today) {
     u.date +
     '">' +
     '<span class="upd" aria-hidden="true"><span>' +
-    esc(E ? DAYS.en[d.getDay()].slice(0, 3) : scr(MR_WD[d.getDay()])) +
+    esc(scr(menuWords("dates").daysShort[d.getDay()])) +
     "</span>" +
     "<b>" +
     num(d.getDate()) +
     "</b>" +
-    (other ? "<span>" + esc(E ? MONTHS.en[d.getMonth()].slice(0, 3) : scr(MONTHS.mr[d.getMonth()])) + "</span>" : "") +
+    (other ? "<span>" + esc(scr(menuWords("dates").monthsShort[d.getMonth()])) + "</span>" : "") +
     "</span>" +
     '<span class="upi">' +
     icon +
@@ -814,18 +812,14 @@ function dayRender() {
     pl = where();
   if (!box || !L || !pl) return;
   var w = words(),
-    l = ui(),
     k = view.day,
     d = dateOf(k),
     p = dayPanchang(k, pl),
     md = monthOf(d.getFullYear(), d.getMonth() + 1)[d.getDate() - 1],
-    E = l === "en",
     pic = /** @type {HTMLImageElement | null} */ (document.querySelector("#iconb img")),
     src = pic ? pic.getAttribute("src") || "" : "",
     s = p.samvatsara,
-    dateLine = E
-      ? DAYS.en[d.getDay()] + ", " + d.getDate() + " " + MONTHS.en[d.getMonth()] + " " + d.getFullYear()
-      : DAYS.mr[d.getDay()] + ", " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()] + " " + dv(d.getFullYear());
+    dateLine = menuWords("dates").dayYear(d.getDay(), d.getDate(), d.getMonth(), d.getFullYear());
   // the small lines: the name in the second reading language and when it ends; the tithi's also has kshaya / vriddhi /
   // borderline notes
   var two = !!second();
@@ -1007,7 +1001,7 @@ function monthRender() {
   var box = document.getElementById("calm");
   if (!box) return;
   var w = words(),
-    E = ui() === "en",
+    E = nameLang() === "en",
     y = view.y,
     m = view.m,
     days = monthOf(y, m),
@@ -1025,10 +1019,9 @@ function monthRender() {
   days.forEach(function (d, i) {
     var nmM = nameH(cat(" ", (d.masa.adhika ? [{ mr: "अधिक", en: "Adhika" }] : []).concat([d.masa.name])));
     if (i === 0) sub = nmM;
-    else if (d.masa.n !== days[i - 1].masa.n || d.masa.adhika !== days[i - 1].masa.adhika)
-      sub += " → " + nmM + say(E ? " from " + d.day + " " + MONTHS.en[m - 1].slice(0, 3) : " (" + dv(d.day) + " " + MONTHS.mr[m - 1] + "पासून)");
+    else if (d.masa.n !== days[i - 1].masa.n || d.masa.adhika !== days[i - 1].masa.adhika) sub += " → " + nmM + say(menuWords("dates").from(d.day, m - 1));
   });
-  var mName = E ? MONTHS.en[m - 1] + " " + y : MONTHS.mr[m - 1] + " " + dv(y);
+  var mName = menuWords("dates").monthYear(m - 1, y);
   var html =
     '<div class="cmh">' +
     '<button type="button" class="cnav" id="calp" data-y="' +
@@ -1040,7 +1033,7 @@ function monthRender() {
     '<span class="sr">' +
     esc(w.prev) +
     ": " +
-    esc(E ? MONTHS.en[pm - 1] + " " + py : MONTHS.mr[pm - 1] + " " + dv(py)) +
+    esc(menuWords("dates").monthYear(pm - 1, py)) +
     "</span></button>" +
     '<h3 id="cmt">' +
     say(mName) +
@@ -1056,7 +1049,7 @@ function monthRender() {
     '<span class="sr">' +
     esc(w.nextM) +
     ": " +
-    esc(E ? MONTHS.en[nm - 1] + " " + ny : MONTHS.mr[nm - 1] + " " + dv(ny)) +
+    esc(menuWords("dates").monthYear(nm - 1, ny)) +
     "</span></button>" +
     "</div>" +
     '<table class="cgr" aria-labelledby="cmt"><thead><tr>' +
@@ -1068,7 +1061,7 @@ function monthRender() {
         '">' +
         esc(txt(wd, lead())) +
         '</span><span class="sr">' +
-        esc(E ? DAYS.en[i] : scr(DAYS.mr[i])) +
+        esc(scr(menuWords("dates").days[i])) +
         "</span></th>"
       );
     }).join("") +
@@ -1105,7 +1098,7 @@ function monthRender() {
       skl = d.sankashti ? (d.vara === 2 ? N.angaraki : N.sankashti) : null,
       moon = d.purnima ? "full" : d.amavasya ? "new" : "",
       // what a screen reader hears beyond what is shown: the date, the paksha, today, the marks
-      srBefore = E ? " " + MONTHS.en[m - 1] + ", " + DAYS.en[d.vara] + ", " : " " + MONTHS.mr[m - 1] + ", " + DAYS.mr[d.vara] + ", ",
+      srBefore = menuWords("dates").before(m - 1, d.vara),
       srAfter = [E ? tithiText(t, "en") : t.n === 15 || t.n === 30 ? "" : t.pakshaName.mr + " पक्ष"]
         .concat(d.purnima && t.n !== 15 ? [E ? "Purnima" : "पौर्णिमा"] : [])
         .concat(d.amavasya && t.n !== 30 ? [E ? "Amavasya" : "अमावास्या"] : [])

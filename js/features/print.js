@@ -25,7 +25,7 @@ import { shownSessions, shownDay, runDay, runIds, shownSession } from "./today-c
 import { cur } from "../core/apply.js";
 import { active, list as people } from "../store/store.js";
 import { loaded } from "../text/load.js";
-import { DAYS, dv } from "../core/words.js";
+import { DAYS, dv, ui } from "../core/words.js";
 import { TAG_WORDS, tagFor } from "../print/select.js";
 import { cleanRoutine, routinePart } from "../core/routine.js";
 import { menuWords } from "../core/strings.js";
@@ -715,7 +715,9 @@ export function init() {
     // the paper, and the button that changes it (Letter or A4)
     function paperRow() {
       var o = letter() ? "A4" : "Letter";
-      document.getElementById("prp").textContent = document.getElementById("prq").textContent = letter() ? "Letter" : "A4";
+      [].forEach.call(document.querySelectorAll(".prpaper"), function (/** @type {HTMLElement} */ x) {
+        x.textContent = letter() ? "Letter" : "A4";
+      });
       document.getElementById("prpa").textContent = menuWords("print").use(o);
       // Safari keeps the paper picked in its own dialog: when it is not the region's, it is told to pick it there
       [].forEach.call(document.querySelectorAll(".przp"), function (/** @type {HTMLElement} */ x) {
@@ -734,7 +736,7 @@ export function init() {
         t = what.total(),
         el = document.getElementById("prsum");
       el.textContent = "";
-      el.lang = P.ui === "mr" ? "mr" : "en";
+      el.lang = ui();
       var a = document.createElement("span");
       // one text: its name
       a.textContent = t.one || (t.texts ? w.texts(t.texts) : w.pick);
