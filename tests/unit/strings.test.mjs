@@ -1,0 +1,63 @@
+// The menu words (js/core/strings.js, js/strings/*.js): every language has every word English has, a sentence with
+// values in it takes the same values in every language, and a part moved to the catalog keeps no Marathi of its own.
+import { describe, expect, test } from "vitest";
+import { readFileSync } from "node:fs";
+import { LANGS, menuWords } from "../../js/core/strings.js";
+import en from "../../js/strings/en.js";
+
+// The parts whose words are in the catalog; each one moved adds its file here
+const MOVED = ["js/features/backup.js"];
+
+/** Every word's path in a set of words, with what kind it is: "string", "function/2" (two values), "list/12" */
+function shape(o, at = "") {
+  return Object.entries(o).flatMap(([k, v]) => {
+    const p = at ? at + "." + k : k;
+    if (typeof v === "function") return [[p, "function/" + v.length]];
+    if (Array.isArray(v)) return [[p, "list/" + v.length]];
+    if (v && typeof v === "object") return shape(v, p);
+    return [[p, typeof v]];
+  });
+}
+
+describe("the menu words", () => {
+  for (const [code, words] of Object.entries(LANGS)) {
+    test(`${code}: the same words as English, each the same kind`, () => {
+      expect(shape(words)).toEqual(shape(en));
+    });
+    test(`${code}: no word is empty, and each sentence gives a sentence`, () => {
+      for (const [path, kind] of shape(words)) {
+        const v = path.split(".").reduce((o, k) => o[k], words);
+        if (kind === "string") expect(v.trim(), path).not.toBe("");
+        if (kind.startsWith("function/")) {
+          const out = v(...Array.from({ length: v.length }, (_, i) => "X" + i));
+          expect(typeof out, path).toBe("string");
+          // every value given is in the sentence
+          for (let i = 0; i < v.length; i++) expect(out, path).toContain("X" + i);
+        }
+      }
+    });
+  }
+
+  test("a word a language lacks comes from English", () => {
+    LANGS.zz = { backup: { saved: "zz saved", problems: { read: "zz read" } } };
+    try {
+      const w = menuWords("backup", "zz");
+      expect(w.saved).toBe("zz saved");
+      expect(w.never).toBe(en.backup.never);
+      expect(w.problems.read).toBe("zz read");
+      expect(w.problems.empty).toBe(en.backup.problems.empty);
+    } finally {
+      delete LANGS.zz;
+    }
+  });
+
+  test("the parts moved to the catalog keep no Marathi words of their own", () => {
+    for (const f of MOVED) {
+      // (comments may show an example)
+      const src = readFileSync(new URL("../../" + f, import.meta.url), "utf8")
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/\/\/.*$/gm, "");
+      expect(src.match(/[ऀ-ॿ][^"'\n]*/g) || [], f).toEqual([]);
+    }
+  });
+});

@@ -15,104 +15,16 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { P, dfs } from "../core/state.js";
-import { flash } from "../core/page.js";
+import { note } from "../core/page.js";
+import { menuWords } from "../core/strings.js";
 import { ovDone, ovPush } from "./history.js";
 import { applyPrefs } from "./profiles.js";
 import { refresh as refreshLibrary } from "./library.js";
 import { describeRestore, fileName, makeBackup, needsReminder, parseBackup, serialise } from "../store/backup.js";
 import { exportData, getMeta, kind, list, markBackup, onChange, onSaveProblem, restore, saveFailed, snooze } from "../store/store.js";
-import { MONTHS, dv, esc } from "../core/words.js";
+import { dv, esc } from "../core/words.js";
 
 /** @typedef {import("../store/backup.js").Payload} Payload */
-
-const W = {
-  en: {
-    months: MONTHS.en,
-    never: "Not saved yet",
-    /** @param {string} d */
-    last: function (d) {
-      return "Last saved " + d;
-    },
-    saved: "Backup file saved",
-    shared: "Backup file ready",
-    remindFirst: "Your settings and routine are kept only on this phone. Save a backup file now and then, in case the phone clears website data.",
-    /** @param {string} d */
-    remind: function (d) {
-      return "Your last backup file was saved on " + d + ". Save a new one?";
-    },
-    ask: "Restore from this file?",
-    /** @param {string} d @param {string} v */
-    from: function (d, v) {
-      return "Saved on " + d + (v ? " (version " + v + ")" : "") + ".";
-    },
-    inFile: "People in the file: ",
-    added: "New on this phone: ",
-    replaced: "Replaced by the file's copy (settings and routine): ",
-    removed: "Removed from this phone: ",
-    /** @param {string} n */
-    then: function (n) {
-      return "Reading next: " + n + ".";
-    },
-    restore: "Restore",
-    cancel: "Cancel",
-    ok: "OK",
-    done: "Restored from the backup file",
-    bad: "This file can't be restored",
-    unsaved: "The backup could not be saved on this phone. Try again, or keep the backup file.",
-    problems: {
-      "not-json": "This is not a Nitya Upasana backup file (.nitya).",
-      "not-nitya": "This is not a Nitya Upasana backup file (.nitya).",
-      newer: "This file was saved by a newer version of the app. Check for updates (Settings → More → About, tap the version line) and try again.",
-      kind: "This .nitya file is not a full backup.",
-      checksum: "This file has been changed or damaged since it was saved (its checksum does not match), so nothing was restored.",
-      empty: "This backup has no people in it.",
-      read: "The file could not be read.",
-    },
-  },
-  mr: {
-    months: MONTHS.mr,
-    never: "अजून जतन केलेली नाही",
-    /** @param {string} d */
-    last: function (d) {
-      return "शेवटची " + d + " रोजी";
-    },
-    saved: "बॅकअप फाइल जतन झाली",
-    shared: "बॅकअप फाइल तयार",
-    remindFirst: "तुमची सेटिंग्ज आणि दिनक्रम फक्त या फोनवर आहेत. फोनने वेबसाइटचा डेटा पुसला तर उपयोगी पडावी म्हणून अधूनमधून बॅकअप फाइल जतन करा.",
-    /** @param {string} d */
-    remind: function (d) {
-      return "शेवटची बॅकअप फाइल " + d + " रोजी जतन केली होती. नवी जतन करायची?";
-    },
-    ask: "या फाइलमधून परत आणायचे?",
-    /** @param {string} d @param {string} v */
-    from: function (d, v) {
-      return d + " रोजी जतन केलेली" + (v ? " (आवृत्ती " + v + ")" : "") + ".";
-    },
-    inFile: "फाइलमधील व्यक्ती: ",
-    added: "या फोनवर नव्या: ",
-    replaced: "फाइलमधील प्रतीने बदलल्या जातील (सेटिंग्ज आणि दिनक्रम): ",
-    removed: "या फोनवरून काढल्या जातील: ",
-    /** @param {string} n */
-    then: function (n) {
-      return "पुढे वाचणार: " + n + ".";
-    },
-    restore: "परत आणा",
-    cancel: "रद्द करा",
-    ok: "ठीक आहे",
-    done: "बॅकअप फाइलमधून परत आणले",
-    bad: "ही फाइल वापरता येत नाही",
-    unsaved: "बॅकअप या फोनवर जतन होऊ शकला नाही. पुन्हा प्रयत्न करा, किंवा बॅकअप फाइल जपून ठेवा.",
-    problems: {
-      "not-json": "ही नित्य उपासनेची बॅकअप फाइल (.nitya) नाही.",
-      "not-nitya": "ही नित्य उपासनेची बॅकअप फाइल (.nitya) नाही.",
-      newer: "ही फाइल ॲपच्या नव्या आवृत्तीने जतन केली आहे. अपडेट तपासा (सेटिंग्ज → अधिक → माहिती, आवृत्तीची ओळ दाबा) आणि पुन्हा प्रयत्न करा.",
-      kind: "ही .nitya फाइल पूर्ण बॅकअप नाही.",
-      checksum: "जतन केल्यानंतर ही फाइल बदलली किंवा खराब झाली आहे (चेकसम जुळत नाही), त्यामुळे काहीही परत आणले नाही.",
-      empty: "या बॅकअपमध्ये एकही व्यक्ती नाही.",
-      read: "फाइल वाचता आली नाही.",
-    },
-  },
-};
 
 /** @type {HTMLElement} */
 var dlg;
@@ -122,7 +34,7 @@ var ret = null;
 var pendingData = null;
 
 function words() {
-  return P && P.ui === "mr" ? W.mr : W.en;
+  return menuWords("backup");
 }
 
 /** @param {string} id */
@@ -169,8 +81,7 @@ export function saveBackup() {
   function done(shared) {
     markBackup(now);
     persist();
-    flash(shared ? W.mr.shared : W.mr.saved, shared ? W.en.shared : W.en.saved, 2500);
-    void w;
+    note(shared ? w.shared : w.saved, 2500);
   }
   /** @type {File | null} */
   var file = null;
@@ -329,8 +240,8 @@ function doRestore() {
     refreshLibrary();
     persist();
     closeDialog();
-    if (saved) flash(W.mr.done, W.en.done, 2500);
-    else flash(W.mr.unsaved, W.en.unsaved, 6000);
+    if (saved) note(words().done, 2500);
+    else note(words().unsaved, 6000);
     notes();
   }
   restore(data).then(
