@@ -35,7 +35,8 @@ import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, stepInSession, textsFor } from "../core/routine.js";
 import { onReread, routine } from "../store/store.js";
-import { dv, esc, nameLang, scr, scrKey, ui as menuLang } from "../core/words.js";
+import { dv, esc, lead, mrLang, nameLang, scr, scrKey, second, ui as menuLang } from "../core/words.js";
+import { iaTitle } from "../text/iast.js";
 import { menuWords } from "../core/strings.js";
 
 /**
@@ -143,34 +144,60 @@ function langName(lang, ui) {
   return l ? l[ui] : "";
 }
 
-/** The title a reader sees for a text in the menu language (the bottom bar's labels use the same) */
-/** @param {string} id */
+/** A text's title in the menu language, for the bottom bar's spoken labels: the original (in its letters) in
+ * Marathi, Kannada, Telugu and Gujarati menus, English in English ones @param {string} id */
 function titleOf(id) {
   var t = info[id];
-  return !t ? "" : P.ui === "mr" ? scr(t.title) : t.titleEn;
+  return !t ? "" : nameLang() === "mr" ? scr(t.title) : t.titleEn;
+}
+
+/** A text's title in a reading language: the original in its letters, or English plain or scholarly (IAST)
+ * @param {TextInfo} t @param {"mr" | "en"} l */
+function titleIn(t, l) {
+  return l === "mr" ? scr(t.title) : P.tr === "iast" ? iaTitle(t.title) : t.titleEn;
+}
+
+/** The reading languages the card is in: the main one, and the second when there is one. Show (the main, the second
+ * or both) is for the texts; the card, like the Vedic calendar's day card, keeps both */
+function langs() {
+  return /** @type {("mr" | "en")[]} */ ([lead(), second()].filter(Boolean));
+}
+
+/** What the card is drawn for: the menu language, the reading languages, the letters and the English style */
+function drawnFor() {
+  return [menuLang(), langs().join("+"), scrKey(), P.tr].join("|");
 }
 
 // Draw the date, the session switch and the session's texts
 export function render() {
   var c = current(),
     w = words(),
-    ui = nameLang(),
+    ui = menuLang(),
+    ls = langs(),
+    // the lang of a reading language as shown: the original's letters, or English
+    code = function (/** @type {"mr" | "en"} */ l) {
+      return l === "en" ? "en" : mrLang();
+    },
     d = fromKey(c.day),
     ids = idsFor(c.day, c.session),
     box = document.getElementById("tdy"),
     sc = document.getElementById("tsc");
   if (!box || !sc) return;
   shownToday = c.today;
-  langKey = menuLang() + scrKey();
+  langKey = drawnFor();
   sc.lang = ui;
-  // the date, in Marathi (in Kannada letters when chosen) and in English
+  // The date and the titles in the reading languages (Settings → Reading): the main one large, the second under it;
+  // with no second language, the main one alone. Each in its own words: Kannada letters bring Kannada's days and
+  // months, not Marathi's written in them (Satish, 2026-10-30)
   var dd = /** @type {HTMLElement} */ (document.getElementById("tdd"));
-  /** @type {HTMLElement} */ (dd.querySelector(".d1")).textContent = scr(
-    menuWords("today", "mr").days[d.getDay()] + ", " + dv(d.getDate()) + " " + menuWords("today", "mr").months[d.getMonth()] + " " + dv(d.getFullYear()),
-  );
-  /** @type {HTMLElement} */ (dd.querySelector(".d1")).lang = scrKey() || "mr";
-  /** @type {HTMLElement} */ (dd.querySelector(".d2")).textContent =
-    menuWords("today", "en").days[d.getDay()] + ", " + d.getDate() + " " + menuWords("today", "en").months[d.getMonth()] + " " + d.getFullYear();
+  [".d1", ".d2"].forEach(function (/** @type {string} */ sel, /** @type {number} */ i) {
+    var e = /** @type {HTMLElement} */ (dd.querySelector(sel)),
+      l = ls[i];
+    e.hidden = !l;
+    if (!l) return;
+    e.lang = code(l);
+    e.textContent = menuWords("dates", code(l)).dayYear(d.getDay(), d.getDate(), d.getMonth(), d.getFullYear());
+  });
   // ‹ › and the day's word between them (Today greyed); "Showing Wednesday · Today ›" in place of This week
   var other = c.day !== c.today,
     off = daysBetween(c.today, c.day),
@@ -186,23 +213,18 @@ export function render() {
   tp.disabled = off <= -SPAN;
   tx.disabled = off >= SPAN;
   bar.lang = ui;
-  /** @type {HTMLElement} */ (document.getElementById("tdbt")).innerHTML = w.showing(
-    esc(ui === "mr" ? scr(menuWords("today", "mr").days[d.getDay()]) : menuWords("today", "en").days[d.getDay()]),
-  );
+  /** @type {HTMLElement} */ (document.getElementById("tdbt")).innerHTML = w.showing(esc(w.days[d.getDay()]));
   /** @type {HTMLElement} */ (document.getElementById("tdbb")).textContent = w.back;
   bar.hidden = !other;
   document.documentElement.toggleAttribute("data-day", other);
   homeDay(other ? c.day : "");
-  // the session's heading, in both languages, and how many texts it has
+  // the session's heading in the reading languages, and how many texts it has
   var head = /** @type {HTMLElement} */ (document.getElementById("tsh"));
-  head.innerHTML =
-    '<span lang="' +
-    (scrKey() || "mr") +
-    '">' +
-    scr(menuWords("today", "mr").sessions[c.session]) +
-    '</span> <span class="tsdot" aria-hidden="true">·</span> <span lang="en">' +
-    menuWords("today", "en").sessions[c.session] +
-    "</span>";
+  head.innerHTML = ls
+    .map(function (l) {
+      return '<span lang="' + code(l) + '">' + esc(menuWords("today", code(l)).sessions[c.session]) + "</span>";
+    })
+    .join(' <span class="tsdot" aria-hidden="true">·</span> ');
   /** @type {HTMLElement} */ (document.getElementById("tsn")).textContent = !ids.length ? w.none : w.texts(ids.length);
   var ed = document.getElementById("tsed");
   if (ed) {
@@ -221,17 +243,17 @@ export function render() {
         id +
         '">' +
         '<span class="tno" aria-hidden="true">' +
-        scr(dv(i + 1)) +
+        (ls[0] === "en" ? i + 1 : scr(dv(i + 1))) +
         ".</span>" +
-        '<span class="tt"><span class="t1" lang="' +
-        (scrKey() || t.language) +
-        '">' +
-        esc(scr(t.title)) +
-        '</span><span class="t2" lang="en">' +
-        esc(t.titleEn) +
-        "</span></span>" +
+        '<span class="tt">' +
+        ls
+          .map(function (l, k) {
+            return '<span class="t' + (k + 1) + '" lang="' + (l === "en" ? "en" : scrKey() || t.language) + '">' + esc(titleIn(t, l)) + "</span>";
+          })
+          .join("") +
+        "</span>" +
         '<span class="ttg">' +
-        esc(langName(t.language, ui)) +
+        esc(nameLang() === "mr" ? scr(langName(t.language, "mr")) : langName(t.language, "en")) +
         "</span>" +
         "</a></li>"
       );
@@ -489,9 +511,10 @@ export function shownSessions() {
   });
 }
 
-/** Re-draw when the menu language or the script changes (called by apply(), js/features/bars.js) */
+/** Re-draw when the menu language, the reading languages, the script or the English style change (called by
+ * apply(), js/features/bars.js) */
 export function todayLang() {
-  if (menuLang() + scrKey() !== langKey && document.getElementById("tdy")) render();
+  if (drawnFor() !== langKey && document.getElementById("tdy")) render();
 }
 
 /** Another person is reading (js/features/profiles.js): their routine, and their menu language */

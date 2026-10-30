@@ -201,10 +201,7 @@ export function englishStyle(/** @type {ParentNode} */ r) {
     var h = sec.querySelector("header h2"),
       m = h && h.querySelector(":scope > .mr"),
       e = h && h.querySelector(":scope > .en");
-    if (m && e)
-      e.textContent = IA(m.textContent).replace(/(^|[\s(])([^\s(])/g, function (x, a, c) {
-        return a + c.toUpperCase();
-      });
+    if (m && e) e.textContent = iaTitle(m.textContent);
   });
 }
 
@@ -227,11 +224,16 @@ function titlesIn(r, ia) {
 }
 
 function enTitle(t, ia) {
-  if (ia && t.i === null)
-    t.i = IA(t.m).replace(/(^|[\s(])([^\s(])/g, function (x, a, c) {
-      return a + c.toUpperCase();
-    });
+  if (ia && t.i === null) t.i = iaTitle(t.m);
   return ia ? t.i : t.s;
+}
+
+/** A title in scholarly English (IAST), each word capitalised as a title: गणपत्यथर्वशीर्ष → Gaṇapatyatharvaśīrṣa
+ * @param {string} s the title as written (Devanagari) */
+export function iaTitle(s) {
+  return IA(s).replace(/(^|[\s(])([^\s(])/g, function (x, a, c) {
+    return a + c.toUpperCase();
+  });
 }
 
 // A piece's title as its heading shows it, built or not: in English (en) in the chosen style, else in the chosen
