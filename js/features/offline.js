@@ -3,8 +3,10 @@
 
 import { note, onPiece, root } from "../core/page.js";
 import { fillWords, menuWords } from "../core/strings.js";
+import { esc } from "../core/words.js";
+import { ovSub, ovSubDone } from "./history.js";
 
-var FONTS, IMAGES, hd, l1, m1, m2, ofb, offv, CACHE, me, upd, updv, PARTS, ofSaved, fill;
+var FONTS, IMAGES, hd, l1, m1, m2, ofb, offv, CACHE, me, upd, updv, PARTS, ofSaved, fill, upmVer;
 // whether every file is in the saved copy: null until known, false while one is missing
 var whole = null;
 
@@ -37,7 +39,7 @@ export function init() {
     // The offline copy's name ("aarti-v1.0") from <meta name="version"> in index.html, and the version shown ("1.0")
     CACHE = (document.querySelector('meta[name="version"]') || {}).content || "aarti-v1.0";
     me = (CACHE.match(/^aarti-v([\d.]+)$/) || [])[1];
-    document.getElementById("ver").textContent = me ? "v" + me : "";
+    document.getElementById("ver").textContent = me || "";
     // the words as the page's own (data-w), so they follow a change of menu language (js/core/strings.js fillWords)
     /** @param {HTMLElement} el @param {string} path */
     function words(el, path) {
@@ -49,14 +51,21 @@ export function init() {
       words(offv, "offline.state." + st);
       ofb.hidden = st !== "off";
     }
-    // Check for updates (Settings → More → About, a tap on the version line): what it says on the right, in the menu language
+    // Check for updates (Settings → More → About, the round button): its icon and name, and under the version what it
+    // found (the offline state while there is nothing to say), in the menu language. The row's look follows data-s.
     upd = document.getElementById("upd");
     updv = document.getElementById("updv");
+    var upr = document.getElementById("upr"),
+      uph = document.getElementById("uph");
 
     function updSet(st) {
       upd.setAttribute("data-s", st);
+      upr.setAttribute("data-s", st);
       words(updv, "offline.update." + (st || "check"));
+      words(/** @type {HTMLElement} */ (document.getElementById("updl")), "offline.button." + (st || "check"));
+      uph.hidden = st !== "restart";
     }
+    upmInit(uph);
     // Author lines: the Wikipedia link on a poet's name works only online; offline the name is plain text
     function crNet() {
       var on = navigator.onLine !== false;
@@ -198,6 +207,8 @@ export function init() {
     }
     upd.onclick = function () {
       if (upd.getAttribute("data-s") === "busy") return;
+      // the new version is saved: the button says how to finish, as How? does
+      if (upd.getAttribute("data-s") === "restart") return uph.click();
       if (navigator.onLine === false) {
         ofSet("off");
         updSet("off");
@@ -220,8 +231,11 @@ export function init() {
                 note(menuWords("offline").loading);
                 newCopy().then(function () {
                   if (!wk) return location.reload();
+                  var v = (newer || CACHE).replace(/^aarti-v/, "");
+                  document.getElementById("ver").textContent = v;
+                  upmVer = v;
                   updSet("restart");
-                  note(menuWords("offline").reopen("v" + (newer || CACHE).replace(/^aarti-v/, "")), 12000);
+                  note(menuWords("offline").reopen("v" + v), 12000);
                 });
                 return;
               }
@@ -292,4 +306,99 @@ export function init() {
         .catch(function () {});
     }
   }
+}
+
+/**
+ * Finish the update (#upm), opened by How? (or the round button) once an update is saved on Safari, an iPhone or an
+ * iPad: the steps to close the app and open it again, for the device picked (the reader's own first), written in the
+ * menu language each time it opens. Escape, a tap outside, ✕, Got it or the phone's Back close it.
+ * @param {HTMLElement} opener
+ */
+function upmInit(opener) {
+  var m = /** @type {HTMLElement} */ (document.getElementById("upm")),
+    box = /** @type {HTMLElement} */ (m.querySelector(".upc")),
+    ua = navigator.userAgent,
+    dev = /iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? "ipad" : /iPhone|iPod/.test(ua) ? "iphone" : "mac";
+  var X =
+    '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  function draw() {
+    var w = menuWords("offline").finish,
+      st = /** @type {Record<string, string>} */ (w[dev]),
+      li = "";
+    for (var i = 1; st["s" + i]; i++) li += "<li><b>" + esc(st["s" + i]) + "</b><small>" + esc(st["h" + i]) + "</small></li>";
+    box.innerHTML =
+      '<div class="upmh"><span class="upmi" aria-hidden="true">' +
+      document.querySelector("#upd .vli-restart").outerHTML +
+      '</span><div><h2 id="upmt">' +
+      esc(w.title) +
+      "</h2><p>" +
+      esc(w.saved(upmVer || me || "")) +
+      '</p></div><button type="button" class="upmx" aria-label="' +
+      esc(w.close) +
+      '">' +
+      X +
+      '</button></div><div class="upmd" role="group" aria-label="' +
+      esc(w.device) +
+      '">' +
+      ["iphone", "ipad", "mac"]
+        .map(function (k) {
+          return (
+            '<button type="button" lang="en" data-v="' +
+            k +
+            '" aria-pressed="' +
+            (k === dev) +
+            '">' +
+            { iphone: "iPhone", ipad: "iPad", mac: "Mac" }[k] +
+            "</button>"
+          );
+        })
+        .join("") +
+      '</div><ol class="upms">' +
+      li +
+      '</ol><p class="upmk">' +
+      esc(w.kept) +
+      '</p><button type="button" class="wide upmo">' +
+      esc(w.ok) +
+      "</button>";
+  }
+  // its own Back step over Settings: the phone's Back closes it and leaves Settings open
+  /** @param {boolean} o @param {boolean} [fromPop] closed by the phone's Back (the step is already gone) */
+  function show(o, fromPop) {
+    if (o === !m.hidden) return;
+    if (o) {
+      ovSub(function () {
+        show(false, true);
+      });
+      draw();
+    }
+    m.hidden = !o;
+    if (o) box.focus();
+    else {
+      opener.focus();
+      if (!fromPop) ovSubDone();
+    }
+  }
+  opener.onclick = function () {
+    show(true);
+  };
+  m.addEventListener("click", function (e) {
+    var t = /** @type {HTMLElement} */ (e.target),
+      b = t.closest && t.closest("button");
+    if (t === m || (b && (b.classList.contains("upmx") || b.classList.contains("upmo")))) return show(false);
+    if (b && b.dataset.v && b.dataset.v !== dev) {
+      dev = b.dataset.v;
+      draw();
+      /** @type {HTMLElement} */ (box.querySelector('[data-v="' + dev + '"]')).focus();
+    }
+  });
+  // Escape closes only this, not Settings under it (js/features/pinch.js closes the pages on Escape): caught first
+  addEventListener(
+    "keydown",
+    function (e) {
+      if (e.key !== "Escape" || m.hidden) return;
+      e.stopImmediatePropagation();
+      show(false);
+    },
+    true,
+  );
 }

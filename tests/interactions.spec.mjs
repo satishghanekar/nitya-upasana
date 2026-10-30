@@ -717,3 +717,26 @@ test("scrolling up brings the bars back once the page stops, not mid-scroll @mob
   expect(await tucked()).toBe(true);
   await expect.poll(tucked).toBe(false);
 });
+
+// About's version line: the version, under it the offline state at its start, and the round button beside them, a
+// 44px target named for what it does; on the narrowest phone too
+test("the version line: the version, its state under it, and the round Check for updates button beside them", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.english);
+  await page.locator("#aa").click();
+  await settingsTab(page, "more");
+  await expect(page.locator("#upr .sp-l > span").first()).toHaveText(/^Version \d/);
+  await expect(page.locator("#upd")).toHaveAccessibleName("Check for updates");
+  await expect(page.locator("#uph")).toBeHidden();
+  for (const w of [390, 320]) {
+    await page.setViewportSize({ width: w, height: 700 });
+    const box = async (sel) => await page.locator(sel).boundingBox();
+    const v = await box("#upr .sp-l > span"),
+      s = await box("#ups"),
+      b = await box("#upd");
+    expect(Math.abs(s.x - v.x), w + ": the state under the version, at its start").toBeLessThan(2);
+    expect(s.y, w + ": under it").toBeGreaterThan(v.y + v.height - 2);
+    expect(b.x, w + ": the button beside them").toBeGreaterThan(Math.max(v.x + v.width, s.x + s.width) - 1);
+    expect(Math.round(b.width) + "x" + Math.round(b.height), w + ": 44px").toBe("44x44");
+  }
+});

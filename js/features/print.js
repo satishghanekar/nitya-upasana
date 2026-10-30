@@ -1161,8 +1161,8 @@ export function init() {
       });
     }
     // The builder opened from elsewhere (the tests; a future entry point): the event "nitya-print", its detail as for
-    // openPrint ({ ids, tab }). Print and Print this text are no longer in ⋯ More (Satish, 2026-10-22): Print in the
-    // bottom bar opens it, at the session or the text being read, and its Library tab picks any texts
+    // openPrint ({ ids, tab }). Print and Print this text are no longer in the Share menu (Satish, 2026-10-22): Print in the
+    // top bar opens it, at the session or the text being read, and its Library tab picks any texts
     document.addEventListener("nitya-print", function (e) {
       openPrint(/** @type {CustomEvent} */ (e).detail || {});
     });
