@@ -28,8 +28,8 @@ const DRAW = {
   gudi: '<path d="M8 21V3"/><path class="fl" d="M5.5 6.5a2.5 2.5 0 0 1 5 0z"/><path class="b" d="M8 7.5l8 2-1 6.5-7-2z"/><path d="M10 10l4 1"/>',
   // Ram Navami: the bow and arrow
   bow: '<path d="M7 3c8 3 8 15 0 18"/><path d="M7 3v18"/><path d="M4 12h16M17.5 10l2.5 2-2.5 2"/>',
-  // Hanuman Jayanti: the gada
-  gada: '<path d="M12 2v1.5"/><path class="b" d="M8 8a4 4 0 0 1 8 0c0 2.5-1.8 4.5-4 4.5S8 10.5 8 8z"/><path d="M10.2 4.5c-.6 2.3-.6 5.5.6 7.8M13.8 4.5c.6 2.3.6 5.5-.6 7.8"/><path d="M12 12.5V21M10 21h4M10.5 15.5h3"/>',
+  // Hanuman Jayanti: Hanuman's gada, its ribbed gold head, collar and banded grip, held aslant
+  gada: '<g transform="rotate(35 12 12)"><circle class="fl" cx="12" cy="2.4" r="1"/><path class="fl" d="M12 3.6c-3.3 0-5.6 2.4-5.6 5.4 0 2.6 2 4.6 4.4 5h2.4c2.4-.4 4.4-2.4 4.4-5 0-3-2.3-5.4-5.6-5.4z"/><path d="M9.6 4.4c-1 2.8-1 6.2.4 9.2M14.4 4.4c1 2.8 1 6.2-.4 9.2M12 3.6v10.4"/><rect class="b" x="10.1" y="14" width="3.8" height="1.7" rx=".6"/><path d="M12 15.7v5M11 17.8h2M11 19.3h2"/><circle class="fl" cx="12" cy="21.6" r="1.1"/></g>',
   // Akshaya Tritiya: gold, which never wanes, and its sparkle
   coin: '<circle class="fl" cx="11" cy="13" r="6"/><circle cx="11" cy="13" r="3.5"/><path d="M18 3v4M16 5h4M20 9.5v3M18.5 11h3"/>',
   // Vat Purnima: the banyan, the thread tied round its trunk
@@ -42,12 +42,14 @@ const DRAW = {
     '<path class="b" d="M7 14h10l-1.2 7H8.2z"/><path d="M12 14V6"/><path class="b" d="M12 9.5C10 8.5 9 6.8 9 5c2 0 3 1.5 3 4.5zM12 8.5c2-1 3-2.7 3-4.5-2 0-3 1.5-3 4.5z"/>',
   // Guru Purnima: the guru's pothi, open
   pothi: '<path class="b" d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/>',
-  // Nag Panchami: the naga
-  naga: '<path d="M6 20c0-3 4-3 4-6s-4-3-4-6 2.5-4.5 6-4.5"/><path d="M12 3.5c2.5 0 4 1 4 2.5s-1.5 2-3 2"/><path d="M10 20h8"/>',
-  // Narali Purnima: the coconut offered to the sea
-  coconut: '<circle class="b" cx="12" cy="13" r="7"/><path d="M10 11h.01M14 11h.01M12 14h.01"/><path d="M12 6c0-2 1-3 3-3.5"/>',
-  // Gokulashtami: the dahi handi on its rope
-  handi: '<path d="M8 8.5h8"/><path class="b" d="M8.5 8.5c-3.5 2-3.5 9 3.5 12 7-3 7-10 3.5-12z"/><path class="fl" d="M9.5 5.5h5v3h-5z"/><path d="M5 3.5h14"/>',
+  // Nag Panchami: the naga seen from the side, risen from its coils, its hood spread, its tongue out
+  naga: '<path class="b" d="M4.5 20.2c0-1.6 3.4-2.6 7.5-2.6s7.5 1 7.5 2.6-3.4 2.3-7.5 2.3-7.5-.7-7.5-2.3z"/><path d="M15.2 18.6c2.1-1.6 2.1-4.1-.2-5.6-1.9-1.3-2.4-3.2-1.2-4.9" stroke-width="2.6"/><path class="b" d="M13.6 8.2c-2.7-1.2-5-.6-6 1.2-1.2 2 .1 4.7 2.9 5.9 1.1.5 2.2.4 2.8-.2"/><path d="M9.4 10.4c.6 1.1 1.4 2 2.6 2.6"/><path class="b" d="M13.2 8.3c.3-1.7 1.7-2.8 3.5-2.7 1.3.1 2.4.8 2.5 1.7.1.9-1 1.4-2.5 1.5-1.3.1-2.5.1-3.5-.5z"/><path d="M16.6 6.8h.01" stroke-width="1.9"/><path class="ku" d="M19.4 7.5l1.4.1m0 0 .9-.6m-.9.6.9.5" stroke-width="1"/>',
+  // Narali Purnima: the coconut offered to the sea, broken in two: two bowls, brown shell outside, white flesh inside
+  coconut:
+    '<g transform="rotate(-6 7.2 13.5)"><path class="sh" d="M2.0 13.5c0 3.59 2.34 6 5.2 6s5.2 -2.40 5.2 -6z"/><path class="shd" d="M10.06 14.76c0 2.7 -1.3 4.5 -3.12 5.69 3.90 0 5.2 -2.7 5.46 -5.69z"/><path class="hl" d="M3.3 15.39c.2 2.09 1.04 3.59 2.34 4.5"/><ellipse class="kf" cx="7.2" cy="13.5" rx="5.2" ry="2.1"/><ellipse class="cv" cx="7.2" cy="13.75" rx="3.53" ry="1.26"/></g><g transform="rotate(18 17 9.5)"><path class="sh" d="M12.4 9.5c0 3.12 2.07 5.2 4.6 5.2s4.6 -2.08 4.6 -5.2z"/><path class="shd" d="M19.53 11.06c0 2.34 -1.15 3.90 -2.76 4.93 3.44 0 4.6 -2.34 4.83 -4.93z"/><path class="hl" d="M13.55 11.84c.2 1.81 0.91 3.12 2.07 3.90"/><ellipse class="kf" cx="17" cy="9.5" rx="4.6" ry="2.6"/><ellipse class="cv" cx="17" cy="9.81" rx="3.12" ry="1.56"/></g><path class="pk" d="M12.4 15.4c-.7.9-1 1.6-.5 2.2.3.3.8.3 1.1 0 .5-.6.2-1.3-.6-2.2z"/>',
+  // Gokulashtami: Krishna's bansuri and the peacock feather he wears
+  krishna:
+    '<path d="M14.5 22c-.6-3.2-.3-6.4.9-9.4"/><ellipse class="b" cx="16.4" cy="7.4" rx="4.2" ry="6" transform="rotate(16 16.4 7.4)"/><ellipse class="fl" cx="16.6" cy="7" rx="2.3" ry="3.1" transform="rotate(16 16.6 7)"/><circle class="pk" cx="16.7" cy="7.2" r="1.3"/><rect class="fl" x="1.5" y="15.2" width="18" height="3" rx="1.5" transform="rotate(-14 10.5 16.7)"/><path d="M6 18.4h.01M8.6 17.7h.01M11.2 17h.01M13.8 16.4h.01" stroke-width="1.8"/>',
   // Ganesh Chaturthi: the modak
   modak:
     '<path class="b" d="M12 3C9 6.5 5 10 5 14.5 5 18 8 20 12 20s7-2 7-5.5C19 10 15 6.5 12 3z"/><path d="M12 3v17M9 8c-1.2 3-1.4 8 0 12M15 8c1.2 3 1.4 8 0 12"/>',
@@ -125,7 +127,7 @@ const FEST = {
   "nag-panchami": ["naga", "sai"],
   "nana-maharaj-jayanti": ["palna", "sai"],
   "narali-purnima": ["coconut", "moon"],
-  gokulashtami: ["handi", "sai"],
+  gokulashtami: ["krishna", "sai"],
   "ganesh-chaturthi": ["modak", "gan"],
   "anant-chaturdashi": ["visarjan", "gan"],
   ghatasthapana: ["ghat", "sai"],
