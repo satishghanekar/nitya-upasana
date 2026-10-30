@@ -32,12 +32,15 @@ for (const W of [
         newPage: [...pv.querySelectorAll(":scope > section + section")].filter((s) => !/page|always/.test(css(s).breakBefore || css(s).pageBreakBefore)).length,
         // and no block is split (a Vedic paragraph, pvflow, may run on)
         split: [...pv.querySelectorAll(".pvk:not(.pvflow), .pvt tr")].filter((k) => !/avoid/.test(css(k).breakInside || css(k).pageBreakInside)).length,
+        // in one language each stanza is one inline box, which Safari never splits (a table row it does)
+        boxes: [...pv.querySelectorAll(".pvcol > .pvst")].filter((k) => css(k).display !== "inline-block").length,
       };
     });
     expect(got.shown, "the print view shows").toBe(true);
     expect(got.others, "screen-only parts printed").toEqual([]);
     expect(got.newPage, "texts not starting a new page").toBe(0);
     expect(got.split, "blocks that may be split").toBe(0);
+    expect(got.boxes, "stanzas Safari may split").toBe(0);
   });
 }
 
