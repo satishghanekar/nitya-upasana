@@ -19,6 +19,7 @@ import { DAYS, esc, lead, num, scr, scrKey, second, ui } from "../core/words.js"
 import { searchKey } from "../features/text-picker.js";
 import { SESSIONS } from "../core/routine.js";
 import { TAG_WORDS, selectRoutine, tagFor, weekGrid, weekOrder } from "./select.js";
+import { menuWords } from "../core/strings.js";
 
 /**
  * @typedef {{ id: string, sec: string, title: string, titleEn: string, language: string }} WhatText
@@ -36,73 +37,12 @@ import { TAG_WORDS, selectRoutine, tagFor, weekGrid, weekOrder } from "./select.
  *   what a routine printout holds: page 1's name, grid and tags, and its texts in order
  */
 
-const W = {
-  en: {
-    what: "What to print",
-    search: "Search the Library",
-    all: "All texts",
-    selectAll: "Select all",
-    clear: "Clear",
-    none: "No text matches",
-    /** @param {number} n */
-    texts: function (n) {
-      return n + (n === 1 ? " text" : " texts");
-    },
-    pick: "Pick at least one text",
-    tabs: { texts: "Library", today: "Today", routine: "Routine" },
-    todayInfo: "Tap a session to print its texts.",
-    allToday: "All of today",
-    /** @param {string} d the weekday */
-    allDay: function (d) {
-      return "All of " + d;
-    },
-    empty: "No texts",
-    who: "Whose routine",
-    week: "Whole week",
-    oneDay: "One day",
-    days: "Days",
-    sessions: "Sessions",
-    order: "Printed once each, in routine order",
-    noTexts: "no texts",
-    nothing: "No texts on the days and at the times chosen",
-  },
-  mr: {
-    what: "काय प्रिंट करायचे",
-    search: "संग्रहात शोधा",
-    all: "सर्व रचना",
-    selectAll: "सर्व निवडा",
-    clear: "सर्व काढा",
-    none: "अशी रचना नाही",
-    /** @param {number} n */
-    texts: function (n) {
-      return num(n) + " रचना";
-    },
-    pick: "किमान एक रचना निवडा",
-    tabs: { texts: "संग्रह", today: "आज", routine: "दिनक्रम" },
-    todayInfo: "सत्र निवडा: त्यातील रचना प्रिंट होतील.",
-    allToday: "आजचे सर्व",
-    /** @param {string} d the weekday */
-    allDay: function (d) {
-      return d + "चे सर्व";
-    },
-    empty: "एकही रचना नाही",
-    who: "कोणाचा दिनक्रम",
-    week: "पूर्ण आठवडा",
-    oneDay: "एक दिवस",
-    days: "वार",
-    sessions: "वेळ",
-    order: "प्रत्येक रचना एकदाच, दिनक्रमाच्या क्रमाने",
-    noTexts: "रचना नाहीत",
-    nothing: "निवडलेल्या वारी आणि वेळी एकही रचना नाही",
-  },
-};
-
 /** The tabs, in order */
 const TABS = ["texts", "today", "routine"];
 
 /** The words in the menu language */
 export function whatWords() {
-  return W[ui()];
+  return menuWords("printWhat");
 }
 
 /** A title in a reading language: as written (Kannada letters when chosen), or its English name */

@@ -94,3 +94,9 @@ export function flash(m, e, ms) {
     x.classList.remove("on");
   }, ms || 1600);
 }
+
+/** The short message, already in the menu language (words from js/core/strings.js menuWords())
+ * @param {string} text @param {number} [ms] */
+export function note(text, ms) {
+  flash(text, text, ms);
+}

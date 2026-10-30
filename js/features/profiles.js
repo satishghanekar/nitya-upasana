@@ -10,7 +10,7 @@
 // js/store/profiles.js.
 
 import { P, setAll } from "../core/state.js";
-import { flash } from "../core/page.js";
+import { note } from "../core/page.js";
 import { cur } from "../core/apply.js";
 import { hlMark } from "../core/startup.js";
 import { apply } from "./bars.js";
@@ -21,8 +21,9 @@ import { trSet } from "../text/iast.js";
 import { refit } from "../text/autofit.js";
 import { buildIX } from "../text/search.js";
 import { active, add, list, onChange, remove, switchTo, update } from "../store/store.js";
-import { canAdd, canDelete, COLOURS, initialsOf, INITIALS_MAX, MAX_PROFILES } from "../store/profiles.js";
+import { canAdd, canDelete, COLOURS, initialsOf } from "../store/profiles.js";
 import { esc } from "../core/words.js";
+import { menuWords } from "../core/strings.js";
 
 /**
  * @typedef {import("../store/profiles.js").Profile} Profile
@@ -30,76 +31,6 @@ import { esc } from "../core/words.js";
  */
 
 // The sheet's words, in the menu language (P.ui)
-const W = {
-  en: {
-    title: "Who is reading?",
-    add: "Add a person",
-    info: "Each person keeps their own text size, languages, theme and routine on this phone.",
-    now: "Reading now",
-    edit: "Edit",
-    addTitle: "Add a person",
-    editTitle: "Edit: ",
-    name: "Name",
-    initials: "Letters on the badge",
-    initialsHint: "Up to " + INITIALS_MAX + ". Left empty, they come from the name.",
-    colour: "Colour",
-    save: "Save",
-    cancel: "Cancel",
-    del: "Delete this person",
-    /** @param {string} n */
-    ask: function (n) {
-      return "Delete " + n + "? Their settings and routine will be removed from this phone. A backup file saved earlier still has them.";
-    },
-    yes: "Delete",
-    close: "Close",
-    empty: "Please type a name.",
-    taken: "Someone on this phone already has this name.",
-    full: "There is room for " + MAX_PROFILES + " people.",
-    /** @param {string} n */
-    switched: function (n) {
-      return "Now reading: " + n;
-    },
-    /** @param {string} n */
-    deleted: function (n) {
-      return n + " was deleted";
-    },
-    chip: "Profile: ",
-  },
-  mr: {
-    title: "कोण वाचत आहे?",
-    add: "व्यक्ती जोडा",
-    info: "प्रत्येकाचा अक्षरांचा आकार, भाषा, रंगसंगती आणि दिनक्रम या फोनवर वेगळ्या राहतात.",
-    now: "आता वाचत आहे",
-    edit: "बदला",
-    addTitle: "व्यक्ती जोडा",
-    editTitle: "बदला: ",
-    name: "नाव",
-    initials: "बॅजवरील अक्षरे",
-    initialsHint: "जास्तीत जास्त " + "०१२३४५६७८९"[INITIALS_MAX] + ". रिकामे ठेवल्यास नावावरून.",
-    colour: "रंग",
-    save: "जतन करा",
-    cancel: "रद्द करा",
-    del: "ही व्यक्ती काढून टाका",
-    /** @param {string} n */
-    ask: function (n) {
-      return n + " यांना काढून टाकायचे? त्यांची सेटिंग्ज आणि दिनक्रम या फोनवरून काढले जातील. आधी जतन केलेल्या बॅकअप फाइलमध्ये ते राहतील.";
-    },
-    yes: "काढून टाका",
-    close: "बंद करा",
-    empty: "कृपया नाव लिहा.",
-    taken: "या फोनवर हे नाव आधीच आहे.",
-    full: "जास्तीत जास्त ८ व्यक्ती ठेवता येतात.",
-    /** @param {string} n */
-    switched: function (n) {
-      return "आता वाचत आहे: " + n;
-    },
-    /** @param {string} n */
-    deleted: function (n) {
-      return n + " काढले";
-    },
-    chip: "प्रोफाइल: ",
-  },
-};
 const PENCIL =
   '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>';
 const CHECK =
@@ -118,7 +49,7 @@ var editing = "",
   colour = "";
 
 function words() {
-  return P && P.ui === "mr" ? W.mr : W.en;
+  return menuWords("profiles");
 }
 
 /** The language a name is written in, for screen readers: English for Latin letters, else Marathi */
@@ -386,7 +317,7 @@ function switchPerson(id) {
   if (!next) return;
   applyPrefs(next);
   var n = active().name;
-  flash(W.mr.switched(n), W.en.switched(n), 2200);
+  note(menuWords("profiles").switched(n), 2200);
 }
 
 function confirmDelete() {
@@ -394,7 +325,7 @@ function confirmDelete() {
     r = p ? remove(p.id) : { ok: false, switched: null };
   if (!p || !r.ok) return show("list");
   if (r.switched) applyPrefs(r.switched);
-  flash(W.mr.deleted(p.name), W.en.deleted(p.name));
+  note(menuWords("profiles").deleted(p.name));
   show("list");
 }
 
