@@ -345,7 +345,9 @@
   font: 400 12.5px/1.45 var(--lat);
 }
 #cald dd small[lang="mr"],
-#cald dd small[lang="kn"] {
+#cald dd small[lang="kn"],
+#cald dd small[lang="te"],
+#cald dd small[lang="gu"] {
   font-family: var(--body);
 }
 /* ==== The month (#calm): the header with previous / next, the table of days, the key ==== */
@@ -448,7 +450,9 @@
   font: 600 15px/1.2 var(--lat);
 }
 .cd b[lang="mr"],
-.cd b[lang="kn"] {
+.cd b[lang="kn"],
+.cd b[lang="te"],
+.cd b[lang="gu"] {
   font-family: var(--body);
 }
 .cd .t {

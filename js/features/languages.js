@@ -9,14 +9,14 @@ import { trPick } from "./settings-panel.js";
 import { buildIX } from "../text/search.js";
 import { refToggle } from "./dhrupad-button.js";
 import { pieceEl } from "../core/page.js";
-import { menuWords } from "../core/strings.js";
+import { LANGS as MENUS, menuWords } from "../core/strings.js";
 
 var PICK;
 
 export function init() {
   // The language lists: each language once, English twice (one per spelling), and None for the second language.
-  // A pick is "mr", "kn", "en:simple" or "en:iast".
-  PICK = ["mr", "en:simple", "en:iast", "kn"];
+  // A pick is "mr", "en:simple", "en:iast", or the Marathi in other letters: "kn", "te", "gu".
+  PICK = ["mr", "en:simple", "en:iast", "kn", "te", "gu"];
   document.getElementById("sl1s").onchange = function () {
     spPick(1, this.value);
   };
@@ -55,9 +55,11 @@ export function spSet() {
     var l = k.split(":")[0];
     return l === LK(P.lead) || (l !== "en" && k && P.lead !== "en");
   });
-  // menus are in English or the main language, so with English as the main language there is nothing to pick
-  // (nor with Kannada, which has no menus of its own yet)
-  document.getElementById("surow").hidden = LK(P.lead) !== "mr";
+  // menus: any language with words of its own (js/strings/), except Marathi beside texts not in Marathi letters
+  // (js/store/migrate.js tidy())
+  [].forEach.call(document.querySelectorAll("#su button"), function (b) {
+    b.hidden = b.dataset.v === "mr" && (P.lead === "en" || P.ind !== "mr");
+  });
   // Show: one button per language and Both, named in their own language (as in the Aa sheet)
   document.getElementById("slwrow").hidden = !P.l2;
   document.getElementById("slw").innerHTML = P.l2
@@ -169,7 +171,9 @@ function spPick(w, k) {
   } else l2 = v;
   /** @type {Record<string, any>} */
   var ch = { lead: lead, l2: l2, lang: !l2 || role === 1 ? lead : role === 2 ? l2 : "both" };
-  if (lead === "en" || ind !== "mr") ch.ui = "en";
+  // Marathi menus go with Marathi letters: in other letters, the menus in that language when it has words of its
+  // own, else English
+  if (P.ui === "mr" && (lead === "en" || ind !== "mr")) ch.ui = lead !== "en" && MENUS[ind] ? ind : "en";
   var sw = ind !== P.ind;
   if (sw) ch.ind = ind;
   change(ch, function () {

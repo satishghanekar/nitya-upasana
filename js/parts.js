@@ -45,6 +45,8 @@ var SITE_PARTS = (function () {
     "strings/en",
     "strings/mr",
     "strings/kn",
+    "strings/te",
+    "strings/gu",
     "core/strings",
     "core/features",
     "core/time-of-day",

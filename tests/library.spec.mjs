@@ -730,6 +730,8 @@ test("axe: the PDFs tab, in every theme; 44px tabs", async ({ page }) => {
 for (const [name, set] of [
   ["English in the scholarly spelling", (page) => page.locator("#sl1s").selectOption("en:iast")],
   ["Kannada letters", (page) => page.locator("#sl1s").selectOption("kn")],
+  ["Telugu letters", (page) => page.locator("#sl1s").selectOption("te")],
+  ["Gujarati letters", (page) => page.locator("#sl1s").selectOption("gu")],
   [
     "Marathi menus",
     async (page) => {

@@ -636,7 +636,9 @@ h2[tabindex="-1"]:focus {
   color: var(--muted);
 }
 .prsum [lang="mr"],
-.prsum [lang="kn"] {
+.prsum [lang="kn"],
+.prsum [lang="te"],
+.prsum [lang="gu"] {
   font-family: var(--body);
   font-size: 15px;
   color: var(--ink);
@@ -960,7 +962,9 @@ span.prwho {
   color: var(--muted);
 }
 .prcg span[lang="mr"],
-.prcg span[lang="kn"] {
+.prcg span[lang="kn"],
+.prcg span[lang="te"],
+.prcg span[lang="gu"] {
   font-family: var(--body);
   font-size: 14px;
 }
@@ -1002,7 +1006,9 @@ span.prwho {
   font: 400 12.5px/17px var(--lat);
 }
 #prwl .tt .t2[lang="mr"],
-#prwl .tt .t2[lang="kn"] {
+#prwl .tt .t2[lang="kn"],
+#prwl .tt .t2[lang="te"],
+#prwl .tt .t2[lang="gu"] {
   font-family: var(--body);
   font-size: 13.5px;
 }
