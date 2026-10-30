@@ -10,6 +10,7 @@
    - The day card (#cald)
    - The month (#calm): a table of day buttons, shukla and krishna shading, moon marks, the key
    - Tablets and desktops: one tab at a time, across the width
+   - The drawings of the festivals and the holidays' flags
 */
 
 /* ==== Krishna paksha shading (--ck): a step darker than the shukla days (--hdrt), with the muted text and the
@@ -43,11 +44,11 @@
   align-items: center;
   gap: 10px;
   min-height: 44px;
-  padding: 6px 40px 10px 12px;
-  /* the bottom of the card the picture and date start (#tdy, css/10-today.css) */
+  padding: 10px 40px 10px 12px;
+  /* the top of the card Coming up ends (#upw) */
   border: 1px solid var(--hdrl);
-  border-top: 0;
-  border-radius: 0 0 14px 14px;
+  border-bottom: 0;
+  border-radius: 14px 14px 0 0;
   background: var(--hdrt);
   color: var(--ink);
   font: 400 13.5px/1.4 var(--lat);
@@ -804,12 +805,12 @@
   color: var(--muted);
   text-align: center;
 }
-/* Home: a card under the today lines */
+/* Home: the bottom of the calendar card (#pan) */
 #upw {
   margin: 0 0 14px;
   border: 1px solid var(--hdrl);
-  border-radius: 14px;
-  background: var(--hdr);
+  border-radius: 0 0 14px 14px;
+  background: var(--hdrt);
   color: var(--ink);
   font: 400 14px/1.45 var(--lat);
   overflow: hidden;
@@ -820,28 +821,80 @@
 #upw .uph {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 2px 4px 0 12px;
-  /* a tap on the header opens the 15 days, as Next 15 days does (that button, for the keyboard) */
-  cursor: pointer;
 }
 #upwh {
+  flex: 1;
+  min-width: 0;
   margin: 0;
-  color: var(--accent);
-  font: 700 15px/1.3 var(--lat);
-  font-family: inherit;
+  font: inherit;
 }
-#upwm {
-  height: auto;
-  display: inline-flex;
+/* the heading's button folds and opens the list; folded, it says the first one after the heading */
+#upwf {
+  display: flex;
   align-items: center;
-  gap: 2px;
-  min-height: 44px;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  min-height: 48px;
   margin: 0;
-  padding: 0 6px 0 10px;
+  padding: 0 8px 0 12px;
   border: 0;
   border-radius: 10px;
+  background: none;
+  color: var(--muted);
+  font: 400 13.5px/1.3 var(--lat);
+  font-family: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.upwt {
+  flex: none;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 15px;
+}
+.upws {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.upws [lang] {
+  color: var(--ink);
+}
+#upwf[aria-expanded="true"] .upws {
+  visibility: hidden;
+}
+.upwc {
+  flex: none;
+  color: var(--accent);
+  transition: transform 0.2s;
+}
+#upwf[aria-expanded="true"] .upwc {
+  transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .upwc {
+    transition: none;
+  }
+}
+/* Next 15 days, across the bottom of the open list */
+#upwm {
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 10px;
+  border: 0;
+  border-top: 1px solid var(--hdrl);
+  border-radius: 0;
   background: none;
   color: var(--accent);
   font: 600 14px/1.2 var(--lat);
@@ -849,58 +902,14 @@
   cursor: pointer;
 }
 #upwm:focus-visible,
-#upw .upr:focus-visible,
-#upw .upx:focus-visible {
+#upwf:focus-visible,
+#upw .upr:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: -2px;
 }
 #upw .upl {
   padding: 0 8px;
   border-top: 1px solid var(--hdrl);
-}
-/* the first one after the week: "NEXT  प्रदोष            Fri 6 Nov · in 13 days" */
-#upw .upx {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 2px 10px;
-  box-sizing: border-box;
-  width: 100%;
-  height: auto;
-  min-height: 44px;
-  margin: 0;
-  padding: 8px 12px;
-  border: 0;
-  border-radius: 0;
-  background: var(--hdrt);
-  color: var(--muted);
-  font: 400 13px/1.45 var(--lat);
-  font-family: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-@media (hover: hover) {
-  #upw .upx:hover b {
-    color: var(--accent);
-  }
-}
-#upw .upxl {
-  font: 700 11px/1.4 var(--lat);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-#upw[lang="mr"] .upxl {
-  font-family: var(--body);
-  font-size: 12px;
-  letter-spacing: 0;
-}
-#upw .upx b {
-  color: var(--ink);
-  font-weight: 650;
-}
-#upw .upxd {
-  margin-left: auto;
-  font-size: 12px;
 }
 
 /* ==== Tablets and desktops: one tab at a time, as on phones (Satish, 2026-10-24), across the width; the day card's
@@ -950,22 +959,28 @@
   }
 }
 
-/* Home's Coming up keeps one height on every day (Satish, 2026-10-30): its row's small line and Next each on one line,
-   cut with … (the calendar's 15 days has them whole) */
+/* Home's Coming up keeps one height on every day (Satish, 2026-10-30): three rows of one height, each name and small
+   line on one line, cut with … (the calendar's 15 days has them whole) */
+#upw .upr {
+  height: 56px;
+  min-height: 0;
+  padding: 0 8px 0 4px;
+}
+/* three on phones; tablets and computers, with room to spare, show all five (js/features/vedic-calendar.js upHome) */
+#upw .upl li:nth-child(n + 4) {
+  display: none;
+}
+@media (min-width: 760px) and (min-height: 521px) {
+  #upw .upl li:nth-child(n + 4) {
+    display: block;
+  }
+}
 #upw .upn {
   min-width: 0;
 }
+#upw .un,
 #upw .upn small {
   display: block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-#upw .upx {
-  flex-wrap: nowrap;
-}
-#upw .upx b {
-  min-width: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -994,4 +1009,203 @@
 .ctod.off,
 .cto button.off {
   visibility: hidden;
+}
+
+/* ==== The drawings of the festivals and the holidays' flags (js/core/fest-icons.js): in a tinted circle, the tint
+   the kind of day, in every theme (the "Nitya Home cards" mockups, Satish, 2026-10-30) ==== */
+:root {
+  --fi-sai: #f6e2c4;
+  --fi-sai-ink: #874a0c;
+  --fi-shi: #e6e4ef;
+  --fi-shi-ink: #47456e;
+  --fi-moon: #efe7d2;
+  --fi-moon-ink: #6e5828;
+  --fi-gan: #f6dcd6;
+  --fi-gan-ink: #7b1113;
+  --fi-hol: #e9ece9;
+  --fi-hol-ink: #46504a;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-pref]) {
+    --fi-sai: #3d2a17;
+    --fi-sai-ink: #f0b878;
+    --fi-shi: #2b2a3d;
+    --fi-shi-ink: #c3c0ec;
+    --fi-moon: #33301f;
+    --fi-moon-ink: #e2cf95;
+    --fi-gan: #3d1f1c;
+    --fi-gan-ink: #f2ab9d;
+    --fi-hol: #262b29;
+    --fi-hol-ink: #b6c2bd;
+  }
+}
+:root[data-pref="dark"] {
+  --fi-sai: #3d2a17;
+  --fi-sai-ink: #f0b878;
+  --fi-shi: #2b2a3d;
+  --fi-shi-ink: #c3c0ec;
+  --fi-moon: #33301f;
+  --fi-moon-ink: #e2cf95;
+  --fi-gan: #3d1f1c;
+  --fi-gan-ink: #f2ab9d;
+  --fi-hol: #262b29;
+  --fi-hol-ink: #b6c2bd;
+}
+:root[data-pref="sepia"] {
+  --fi-sai: #f0d9b0;
+  --fi-sai-ink: #6e3b06;
+  --fi-shi: #e6dfdf;
+  --fi-shi-ink: #403d5c;
+  --fi-moon: #ece0b8;
+  --fi-moon-ink: #5c4820;
+  --fi-gan: #f1d8cc;
+  --fi-gan-ink: #6e1f14;
+  --fi-hol: #e6e3d0;
+  --fi-hol-ink: #3f4843;
+}
+/* high contrast: the drawing in the text colour on the page, the circle its outline */
+:root[data-hc="1"][data-hc] {
+  --fi-sai: var(--bg);
+  --fi-sai-ink: var(--ink);
+  --fi-shi: var(--bg);
+  --fi-shi-ink: var(--ink);
+  --fi-moon: var(--bg);
+  --fi-moon-ink: var(--ink);
+  --fi-gan: var(--bg);
+  --fi-gan-ink: var(--ink);
+  --fi-hol: var(--bg);
+  --fi-hol-ink: var(--ink);
+}
+:root[data-hc="1"] .fi {
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+.fi {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.fi.sai {
+  background: var(--fi-sai);
+  color: var(--fi-sai-ink);
+}
+.fi.shi {
+  background: var(--fi-shi);
+  color: var(--fi-shi-ink);
+}
+.fi.moon {
+  background: var(--fi-moon);
+  color: var(--fi-moon-ink);
+}
+.fi.gan {
+  background: var(--fi-gan);
+  color: var(--fi-gan-ink);
+}
+.fi.hol {
+  background: var(--fi-hol);
+  color: var(--fi-hol-ink);
+}
+.fi .flag {
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 15%);
+}
+/* a state's holiday: its letters on the flag's corner */
+.fi .fst {
+  position: absolute;
+  right: -5px;
+  bottom: -3px;
+  padding: 1px 4px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 700 9px/1.2 var(--lat);
+}
+.fi .fst::after {
+  content: attr(data-s);
+}
+/* in a row: the circle in place of the old small icon */
+.upi {
+  width: 40px;
+}
+/* Home's calendar card on a festival, Pradosh, Sankashti or a chosen holiday: the day's tint, and its drawing beside the
+   lines */
+#pan .pcard.fday.sai {
+  background: var(--fi-sai);
+}
+#pan .pcard.fday.shi {
+  background: var(--fi-shi);
+}
+#pan .pcard.fday.moon {
+  background: var(--fi-moon);
+}
+#pan .pcard.fday.gan {
+  background: var(--fi-gan);
+}
+#pan .pcard.fday.hol {
+  background: var(--fi-hol);
+}
+/* the card keeps one height on every day: its second and third lines on one line each, cut with … on a narrow phone
+   (a long nakshatra, the place) */
+#pan .p2 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#pan .p3 {
+  flex-wrap: nowrap;
+}
+#ploc {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* the day's drawing after the tithi, the line's height */
+#pan #pn1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#pan .pdi .fi {
+  width: 24px;
+  height: 24px;
+  background: var(--hdr);
+}
+#pan .pdi .fi svg {
+  width: 16px;
+  height: 16px;
+}
+/* (a holiday's flag alone there, without its state's letters) */
+#pan .pdi .fi .flag {
+  width: 16px;
+  height: 11px;
+}
+#pan .pdi .fst {
+  display: none;
+}
+:root[data-hc="1"] #pan .pcard.fday {
+  background: var(--hdrt);
+}
+/* the day card's festival and holiday tags, each after its drawing, smaller */
+.tgi {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 4px;
+}
+.tgi .fi {
+  width: 28px;
+  height: 28px;
+}
+.tgi .fi svg {
+  width: 17px;
+  height: 17px;
+}
+/* a festival's drawing and a holiday's flag before its name in a day of the month */
+.cd .fm {
+  margin-right: 2px;
+  vertical-align: -1px;
 }

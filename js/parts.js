@@ -66,6 +66,7 @@ var SITE_PARTS = (function () {
     "core/panchang",
     "core/festivals",
     "core/holidays",
+    "core/fest-icons",
     "features/vedic-calendar",
     "text/dhrupad-markers",
     "text/stanza-numbers",

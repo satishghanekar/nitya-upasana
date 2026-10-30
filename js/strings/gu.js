@@ -335,9 +335,8 @@ export default {
       return d + " " + MONTHS.gu[m] + ": " + what;
     },
     week: "આ અઠવાડિયે",
-    /** Home's card of what comes next (#upw): the next two after the day shown */
+    /** Home's Coming up (#upw): the next three from the day shown */
     coming: "આવતા દિવસોમાં",
-    next15: "પછીના 15 દિવસ",
     day: "દિવસ",
     month: "મહિનો",
     up: "15 દિવસ",
@@ -368,9 +367,11 @@ export default {
     uUntil: function (d) {
       return d + " સુધી";
     },
-    uNext: "પછી",
     uNone: "આ દિવસોમાં કંઈ નોંધ્યું નથી.",
     kinds: { fest: "તહેવારો", sk: "સંકષ્ટી", pradosh: "પ્રદોષ", hol: "રજાઓ" },
+    /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
+    holHome: "આવતા દિવસોમાં રજાઓ",
+    groups: { us: "અમેરિકા", in: "ભારત", mh: "મહારાષ્ટ્ર", ka: "કર્ણાટક" },
   },
   // The top bar (js/features/bars.js)
   bar: {
