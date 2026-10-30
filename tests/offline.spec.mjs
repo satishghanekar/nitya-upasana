@@ -210,3 +210,44 @@ test("a book opened once is marked as saved on this phone @chromium-only", async
   await expect(book).toHaveAccessibleName(/, (saved on this phone|या फोनवर जतन)$/);
   await expect(page.locator('#jl .pst[data-saved="true"]')).toHaveCount(1);
 });
+
+// A new version keeps the books a reader opened (sw.js keepPdfs), so they don't download again, but only one the new
+// list (content/pdfs.json) names at the same size: a corrected PDF, with another size, is left behind
+test("a new version keeps the books already opened, unless one was replaced @chromium-only", async ({ page, context }) => {
+  await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [PREFS_KEY, JSON.stringify(BASE_PREFS)]);
+  await page.goto("./");
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller) await new Promise((r) => navigator.serviceWorker.addEventListener("controllerchange", r, { once: true }));
+  });
+  const list = (await (await page.request.get("content/pdfs.json")).json()).pdfs;
+  const kept = list.find((p) => /lalita/.test(p.file)),
+    replaced = list.find((p) => p !== kept);
+  // the smallest book, opened once in a tab of its own (headless Chromium saves it rather than showing it)
+  const tab = await context.newPage();
+  await Promise.all([tab.waitForEvent("download"), tab.goto("content/" + kept.file).catch(() => {})]);
+  await tab.close();
+  // a new version installs (Playwright can't serve the worker a changed script, so the saved copy is moved under an
+  // older version's name and the worker installed again: it finds that copy as the previous version's), with another
+  // book kept from before it was corrected: the saved copy is not the size the list now gives
+  const got = await page.evaluate(
+    async ([a, b]) => {
+      const v = document.querySelector('meta[name="version"]').content,
+        at = (f) => new URL("content/" + f, location.href).href,
+        now = await caches.open(v),
+        before = await caches.open("aarti-v0.1");
+      for (const q of await now.keys()) await before.put(q, await now.match(q));
+      await before.put(at(b), new Response("%PDF- the old edition"));
+      await caches.delete(v);
+      // (the same worker at another address is a new one to the browser, so it installs)
+      const reg = await navigator.serviceWorker.register("sw.js?again=1");
+      const w = reg.installing || reg.waiting || reg.active;
+      if (w.state !== "activated") await new Promise((r) => w.addEventListener("statechange", () => w.state === "activated" && r(null)));
+      const c = await caches.open(v);
+      return [!!(await c.match(at(a))), !!(await c.match(at(b))), await caches.has("aarti-v0.1")];
+    },
+    [kept.file, replaced.file],
+  );
+  // the unchanged book came along, the replaced one didn't, and the older copy is gone
+  expect(got).toEqual([true, false, false]);
+});

@@ -29,6 +29,8 @@ private.
   `npm run lint` fails on anything else): double quotes, 2-space indent, semicolons, lines up to 160 characters.
   Comments are wrapped by hand at about 120. Anything written into HTML goes
   through `esc()` (`js/core/words.js`).
+- No inline `<script>` and no `on…=` attributes: the Content-Security-Policy in `_headers` blocks them (the tests run
+  under it, `tests/serve.mjs`). Anything the page loads comes from this site.
 - No `console.log`. `console.warn` / `console.error` only where a failure is caught and the site carries on (the tests
   fail on any console error).
 - Comments say why, in plain English, as the existing ones do.

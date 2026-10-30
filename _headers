@@ -40,3 +40,10 @@
 
 /manifest.json
   Cache-Control: no-cache
+
+# What a page may load (Content-Security-Policy): everything from this site, nothing from elsewhere. Scripts are never
+# inline; styles may be, because the print view writes its own (a <style> and style attributes, js/features/print.js).
+# Links to other sites (Wikipedia, WhatsApp) are ordinary links and not limited by it. tests/serve.mjs sends the same
+# policy, so every test runs under it, and a file it blocks fails the tests (a console error).
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self'; frame-src 'self' blob:; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'

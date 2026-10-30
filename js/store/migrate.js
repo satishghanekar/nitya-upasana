@@ -133,8 +133,9 @@ export function tidy(P) {
   if (P.por !== "land" && P.por !== "up") P.por = "";
   if (["mr", "en", "both"].indexOf(P.plang) < 0) P.plang = "";
   if (["letter", "a4"].indexOf(P.ppr) < 0) P.ppr = "";
-  // Marathi menus go with the texts in Marathi letters (other menu languages are free: js/strings/)
-  if (P.ui === "mr" && (P.lead === "en" || P.ind !== "mr")) P.ui = "en";
+  // Menus in English, or in the language the texts are shown in (Marathi, or the letters picked: P.ind), never mixed
+  // (Satish, 2026-10-30: no Marathi texts under Telugu menus); with English as the main language, English
+  if (P.ui !== "en" && (P.lead === "en" || P.ui !== P.ind)) P.ui = "en";
   if (!P.l2 || [P.lead, P.l2, "both"].indexOf(P.lang) < 0) P.lang = P.lead;
   if (["auto", "light", "sepia", "dark"].indexOf(P.th) < 0) P.th = "auto";
   // three text fonts since v1.24: Handwritten and the printout's Best are gone (Traditional now does what Best did)
