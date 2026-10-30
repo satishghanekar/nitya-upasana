@@ -44,7 +44,7 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files and the 
 
 ## Menu languages
 
-The menus are in English, Marathi or Kannada (Settings → Menus and buttons, `P.ui`). Every menu word is in a catalog, one file per language (`js/strings/en.js`, `js/strings/mr.js`, `js/strings/kn.js`), each part's words under its name:
+The menus are in English, Marathi, Kannada, Telugu or Gujarati (Settings → Menus and buttons, `P.ui`). Every menu word is in a catalog, one file per language (`js/strings/en.js`, `mr.js`, `kn.js`, `te.js`, `gu.js`), each part's words under its name:
 
 - a script reads them with `menuWords("part")` (`js/core/strings.js`); a sentence with a value in it ("until Mon 1:21 am", "सोमवारी रात्री १:२१ पर्यंत") is a function, so each language keeps its own word order;
 - the page's own words are `<span data-w="page.key">English</span>` in `index.html`, filled in the menu language by `fillWords()` when the page starts and when the menu language changes (the English inside is what shows without the script); an element filled takes the language's code as its class and `lang`, so the styles for `.mr` and `.en` still apply;

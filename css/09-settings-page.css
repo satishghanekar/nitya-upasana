@@ -473,17 +473,20 @@ html[data-sp] {
    own faces (css/00-fonts.css): --ks for Modern, --kf for Traditional and Bold. The dandas and Vedic accent marks
    come from the same face as the letter they sit on ==== */
 html[data-scr="kn"],
-[lang="kn"] {
+[lang="kn"],
+[data-lang="kn"] {
   --ks: "Noto Sans Kannada";
   --kf: "SC Kn Classic";
 }
 html[data-scr="te"],
-[lang="te"] {
+[lang="te"],
+[data-lang="te"] {
   --ks: "Noto Sans Telugu";
   --kf: "SC Te Classic";
 }
 html[data-scr="gu"],
-[lang="gu"] {
+[lang="gu"],
+[data-lang="gu"] {
   --ks: "Noto Sans Gujarati";
   --kf: "SC Gu Classic";
 }
@@ -503,9 +506,9 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   font-family: var(--kf), var(--ks), var(--body) !important;
 }
 
-/* Kannada menus (Settings → Menus and buttons → ಕನ್ನಡ): the words the scripts write into the bar, the menus and the
-   dialogs, which carry the menu language as data-lang (js/features/bars.js apply()). The page's own words take
-   lang="kn" and the rule above. Its unicode-range keeps the Marathi and English in them in their own fonts. */
-[data-lang="kn"]:not(.ash) {
-  font-family: "Noto Sans Kannada", var(--body);
+/* Kannada, Telugu and Gujarati menus (Settings → Menus and buttons): the words the scripts write into the bar, the menus
+   and the dialogs, which carry the menu language as data-lang (js/features/bars.js apply()). The page's own words take
+   their lang and the rule above. The faces' unicode-range keeps the Marathi and English in them in their own fonts. */
+:is([data-lang="kn"], [data-lang="te"], [data-lang="gu"]):not(.ash) {
+  font-family: var(--ks), var(--body);
 }
