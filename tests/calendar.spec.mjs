@@ -70,6 +70,39 @@ test("Home: the sunrise and sunset beside their times show their pictures full s
   await expect(page.locator("#pzi")).toHaveAttribute("src", "picture-sunset.webp");
 });
 
+// Home's lines are kept for the day (js/features/vedic-calendar.js homeDraw()): a second opening draws the kept copy,
+// the same as worked out; a new place works them out again
+test("Home: the calendar line, festival line and This week are kept for the day, and worked out again for a new place @mobile", async ({ page }) => {
+  const lines = () => page.evaluate(() => ["pan", "fst", "upw"].map((id) => [document.getElementById(id).hidden, document.getElementById(id).innerHTML]));
+  await openSite(page, COLUMBUS, { now: NOW });
+  const worked = await lines();
+  const kept = await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-home-lines")));
+  expect(kept.k).toContain("2026-10-18");
+  // opened again: the kept copy, as worked out
+  await page.reload();
+  await expect(page.locator("#panb")).toBeVisible();
+  expect(await lines()).toEqual(worked);
+  // the copy is what was drawn: a marked copy shows as it is
+  await page.evaluate(() => {
+    const o = JSON.parse(localStorage.getItem("nitya-home-lines"));
+    o.b[0][2] = o.b[0][2].replace("Columbus", "Kept copy");
+    localStorage.setItem("nitya-home-lines", JSON.stringify(o));
+  });
+  await page.reload();
+  await expect(page.locator("#pan")).toContainText("Kept copy");
+  // another place: worked out again, not the kept copy
+  await page.evaluate(() => {
+    const p = JSON.parse(localStorage.getItem("aarti2-prefs"));
+    p.loc = { lat: 18.52, lon: 73.86 };
+    localStorage.setItem("aarti2-prefs", JSON.stringify(p));
+  });
+  await page.reload();
+  await expect(page.locator("#panb")).toBeVisible();
+  await expect(page.locator("#pan")).not.toContainText("Kept copy");
+  await expect(page.locator("#pan")).not.toContainText("Columbus");
+  expect((await lines())[0][1]).not.toEqual(worked[0][1]);
+});
+
 test("Home: the line in Marathi menus has Devanagari digits and the place's Marathi name", async ({ page }) => {
   await openSite(page, { ...SETUPS["marathi-menus"], loc: { lat: 39.96, lon: -83.0 } }, { now: NOW });
   await expect(page.locator("#pan .p3")).toHaveText(/सकाळी ७:४५.*सायं\. ६:४७/);
