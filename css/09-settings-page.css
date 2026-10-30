@@ -512,3 +512,112 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
 :is([data-lang="kn"], [data-lang="te"], [data-lang="gu"]):not(.ash) {
   font-family: var(--ks), var(--body);
 }
+
+/* ==== The page's title and its two columns (index.html .sp-ttl, .sp-c1, .sp-c2). Phones and tablets: the tabs, the
+   title for screen readers only, and the columns as if not there, so the groups lie as the rules above place them.
+   iPads (upright or sideways) and desktops: the title beside Back, no tabs, and every group at once
+   (js/features/settings-panel.js WIDE): the preview and the reading choices it shows on the left; the screen,
+   profiles and about on the right (Satish, 2026-10-30) ==== */
+.sp-ttl {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.sp-c1,
+.sp-c2 {
+  display: contents;
+}
+@media screen and (min-width: 760px) {
+  .sp-pg {
+    max-width: 1080px;
+  }
+  .sp-hd {
+    align-items: center;
+  }
+  /* (above the tabs' own look, css/13-library.css, which comes later) */
+  .sp-hd > #spv {
+    display: none;
+  }
+  .sp-ttl {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    margin: 0 0 0 6px;
+    font: 600 22px/1.2 var(--lat);
+    color: var(--ink);
+  }
+  .sp-ttl .mr {
+    font-family: var(--head);
+  }
+  #sp-home .sp-body {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 28px;
+    align-items: start;
+  }
+  #sp-home .sp-c1,
+  #sp-home .sp-c2 {
+    display: block;
+    min-width: 0;
+  }
+  /* every heading shown (a group alone in a tab hides it on smaller screens) */
+  #sp-home .sp-grp > .sp-h,
+  #sp-home .sp-grp.sp-one > .sp-h {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+  #sp-home .sp-pvg {
+    position: static;
+  }
+}
+
+/* ==== The top bar's Share (⋯ before 2026-10-30): App, Share, QR and Help (js/features/more-menu.js). Its word is its
+   name: for screen readers only on phones and tablets, shown beside the icon on desktops ==== */
+#tmb .tmbw {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+@media screen and (min-width: 1024px) {
+  #tmb {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  #tmb svg {
+    margin: 0;
+  }
+  #tmb .tmbw {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    font-size: 15px;
+  }
+}
+
+/* ==== About's version line and Check for updates (phones, a column on iPads): the button drops under the line
+   when both don't fit, rather than the line breaking in two ==== */
+.sp #upd {
+  flex-wrap: wrap;
+  row-gap: 2px;
+}
+.sp #upd .sp-l {
+  flex: 1 1 15em;
+}
+.sp #upd .sp-v {
+  margin-inline-start: auto;
+}

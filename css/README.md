@@ -65,7 +65,7 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(max-width: 439px)` | Phones: the bottom bar's five buttons (Prev, Home, Library, Reading, Next) close their gaps and slim the icon buttons |
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
-| `(min-width: 760px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own; Settings: below, the Reading tab tightened to fit one iPhone screen; from 760px a tab's groups in two columns, the preview beside the reading choices |
+| `(min-width: 760px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own; Settings: below, the tabs, the Reading tab tightened to fit one iPhone screen; from 760px (iPads upright and sideways, desktops) no tabs: the title beside Back and every group at once, in two columns (`.sp-c1`: the preview and the reading choices; `.sp-c2`: screen, profiles, about) |
 | `(max-width: 819px)` | Phones and small tablets: English names in the Vedic calendar's days a step smaller |
 | `(min-width: 820px)` | Tablets and up: wider spacing; the Vedic calendar shows the day card beside the month |
 | `(min-width: 600px) and (max-width: 1023px) and (orientation: portrait)` | Tablets held upright: Home with the picture large on top, the calendar's month above the day card, the Library in two columns |

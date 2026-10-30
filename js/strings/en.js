@@ -604,6 +604,7 @@ export default {
     smaller: " smaller",
     larger: " larger",
     allSettings: "All settings",
+    settings: "Settings",
     fontThemeLayout: "Font, theme, layout",
     defaultSize: "↺ Default size",
   },

@@ -1,7 +1,7 @@
 // Offline: once opened, the site works with no internet (service worker sw.js).
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { FIXED_NOW, PREFS_KEY, BASE_PREFS, TEXT_COUNT, buildAll } from "./helpers.mjs";
+import { FIXED_NOW, PREFS_KEY, BASE_PREFS, TEXT_COUNT, buildAll, settingsTab } from "./helpers.mjs";
 
 test.use({ serviceWorkers: "allow" });
 
@@ -49,7 +49,7 @@ test("offline ready only once every file is saved @chromium-only", async ({ page
   await page.goto("./");
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="more"]').click();
+  await settingsTab(page, "more");
   // the other files are saved, the picture is not: still saving
   await expect
     .poll(() => page.evaluate(async () => (await caches.open(document.querySelector('meta[name="version"]').content)).keys().then((k) => k.length)), {
@@ -111,7 +111,7 @@ test("Check for updates saves a changed file and reloads with it @chromium-only"
     await r.fulfill({ response: res, body: (await res.text()) + "\n#__changed{color:red}" });
   });
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="more"]').click();
+  await settingsTab(page, "more");
   await page.locator("#upd").click();
   await page.waitForEvent("load", { timeout: 25_000 });
   await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
@@ -140,7 +140,7 @@ test("Check for updates finds a new version installed while the old one is on sc
   });
   await page.evaluate(async () => caches.delete(document.querySelector('meta[name="version"]').content));
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="more"]').click();
+  await settingsTab(page, "more");
   const loaded = page.waitForEvent("load", { timeout: 25_000 });
   await page.locator("#upd").click();
   await loaded;
