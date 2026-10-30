@@ -1,11 +1,12 @@
 // Share, QR code and the Add to Home Screen buttons
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { flash } from "../core/page.js";
+import { note } from "../core/page.js";
 import { P } from "../core/state.js";
 import { skCache, skFmt, skLoc, skMid, skNext, skTemple } from "./sankashti.js";
 import { ovDone, ovPush } from "./history.js";
 import { focusBack } from "./more-menu.js";
+import { menuWords } from "../core/strings.js";
 
 export function init() {
   (function () {
@@ -40,38 +41,14 @@ export function init() {
       skNext();
       var C = skCache,
         L = skLoc(),
-        mr = P.ui === "mr";
-      var tip = mr
-        ? "\nफोनवर ॲपसारखे ठेवण्यासाठी: लिंक उघडा आणि होम स्क्रीनवर जोडा (Add to Home Screen) दाबा."
-        : "\nTip: open the link and tap Add to Home Screen to keep it on your phone like an app.";
-      if (!C || !L) return (mr ? title + " — पूजा आणि आरती" : title) + (sep ? "" : "\n" + url) + tip;
+        mr = P.ui === "mr",
+        w = menuWords("share");
+      if (!C || !L) return w.plain(title) + (sep ? "" : "\n" + url) + w.tip;
       var o = C.list[C.sel].day >= skMid() ? C.list[C.sel] : C.list[C.ni],
         f = skFmt(o),
         t = skTemple(L),
         ang = f.ang ? "Angaraki " : ""; // with the name, which is always English
-      if (mr)
-        return (
-          title +
-          " — पूजा आणि आरती\nपुढील " +
-          ang +
-          "Sankathara Chaturthi: " +
-          f.dmr +
-          (t ? " · पूजा सायं. ७:०० ते ८:३०, भारतीय हिंदू मंदिर, पॉवेल" : "") +
-          (o.rise ? " · चंद्रोदय " + f.tmr : "") +
-          (sep ? "" : "\n" + url) +
-          tip
-        );
-      return (
-        title +
-        "\nNext " +
-        ang +
-        "Sankathara Chaturthi: " +
-        f.den +
-        (t ? " · Pooja 7:00–8:30 pm at Bharatiya Hindu Temple, Powell" : "") +
-        (o.rise ? " · Moonrise " + f.ten : "") +
-        (sep ? "" : "\n" + url) +
-        tip
-      );
+      return w.next(title, ang, mr ? f.dmr : f.den, t ? w.temple : "", o.rise ? (mr ? f.tmr : f.ten) : "") + (sep ? "" : "\n" + url) + w.tip;
     }
     document.getElementById("shb").onclick = function () {
       var txt = shareText();
@@ -82,7 +59,7 @@ export function init() {
       } else {
         try {
           navigator.clipboard.writeText(txt).then(function () {
-            flash("संदेश कॉपी झाला", "Message copied");
+            note(menuWords("share").copied);
           });
         } catch (e) {
           window.open("https://wa.me/?text=" + encodeURIComponent(txt));

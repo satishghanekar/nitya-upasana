@@ -8,6 +8,7 @@ import { pn } from "../core/apply.js";
 import { apply, fsuMark } from "./bars.js";
 import { fsTap, szSet } from "./settings-panel.js";
 import { setJ, setP } from "./overlays.js";
+import { menuWords } from "../core/strings.js";
 
 var pz, szTm, szrTm, szaT, szt, szr, pzF, wz, wzT;
 // Where a pinch does nothing (neither resizes the text nor zooms): the home page
@@ -231,7 +232,7 @@ function dist(e) {
 }
 
 function showSz() {
-  var m = (P.ui === "mr" ? "अक्षरांचा आकार " : "Text size ") + Math.round((P.fs / (FSA || dfs())) * 100) + "%";
+  var m = menuWords("languages").size(String(Math.round((P.fs / (FSA || dfs())) * 100)));
   szt.textContent = m;
   // The bubble changes with every move of the fingers, so screen readers don't read it;
   // the size is announced once, when the fingers (or the wheel) stop

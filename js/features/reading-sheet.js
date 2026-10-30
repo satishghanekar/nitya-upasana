@@ -10,6 +10,7 @@ import { setP } from "./overlays.js";
 import { spTab } from "./settings-panel.js";
 import { refToggle } from "./dhrupad-button.js";
 import { ovDone, ovPush } from "./history.js";
+import { menuWords } from "../core/strings.js";
 
 var rsh, rsb, fsT, fsA;
 
@@ -102,19 +103,20 @@ function rsSettings(tab, focusId) {
 // The choices as they are now
 function rsSet() {
   var mr = P.ui === "mr",
+    w = menuWords("languages"),
     o = P.l2 ? [P.lead, P.l2, "both"] : [P.lead, "+"];
   document.getElementById("rsl").innerHTML = o
     .map(function (v) {
       var l = v === "both" || v === "+" ? (mr ? "mr" : "en") : LK(v) === "kn" ? "kn" : LK(v),
-        t = v === "both" ? (mr ? "दोन्ही" : "Both") : v === "+" ? (mr ? "+ दुसरी भाषा" : "+ Second language") : LANGS[LK(v)].n;
+        t = v === "both" ? w.both : v === "+" ? w.second : LANGS[LK(v)].n;
       return '<button type="button" data-v="' + v + '" lang="' + l + '"' + (v === "+" ? "" : ' aria-pressed="' + (v === P.lang) + '"') + ">" + t + "</button>";
     })
     .join("");
   [].forEach.call(document.querySelectorAll("#rsf button"), function (b) {
     b.setAttribute("aria-pressed", String(b.dataset.v === String(P.ref)));
   });
-  document.getElementById("rsx").setAttribute("aria-label", mr ? "बंद करा" : "Close");
-  document.getElementById("rsr").setAttribute("aria-label", mr ? "मूळ आकार" : "Reset text size");
+  document.getElementById("rsx").setAttribute("aria-label", w.close);
+  document.getElementById("rsr").setAttribute("aria-label", w.reset);
   rsPct();
 }
 
