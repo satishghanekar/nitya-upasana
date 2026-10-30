@@ -79,11 +79,11 @@ test("js/parts.js keeps every picture the page shows, at every time of day, for 
 // size when it was set, so the site can't grow by much unnoticed: when a change needs more, raise the limit in the same
 // change and say why. (Set 2026-10-29: scripts 247 KB, styles 63 KB, index.html 27 KB. Scripts raised 2026-10-30
 // to 275 KB for js/strings/kn.js, the Kannada menus: 265 KB then; to 295 KB for te.js and gu.js, the Telugu and
-// Gujarati menus: 284 KB then.)
+// Gujarati menus: 284 KB then; to 305 KB for js/core/fest-icons.js, a drawing for every festival: 296 KB then.)
 test("the scripts, styles and page stay within their size budget", () => {
   const parts = siteParts();
   const gz = (files) => files.reduce((n, f) => n + gzipSync(readFileSync(new URL("../" + f, import.meta.url))).length, 0);
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(295_000);
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(305_000);
   expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(66_000);
   expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(30_000);
 });
