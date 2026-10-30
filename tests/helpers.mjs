@@ -33,6 +33,8 @@ export const SETUPS = {
   "both-iast": { lang: "both", lead: "mr", l2: "en", tr: "iast" },
   "english-main-both": { lang: "both", lead: "en", l2: "mr" },
   kannada: { lang: "mr", lead: "mr", l2: "en", ind: "kn" },
+  telugu: { lang: "mr", lead: "mr", l2: "en", ind: "te" },
+  gujarati: { lang: "mr", lead: "mr", l2: "en", ind: "gu" },
   "kannada-both": { lang: "both", lead: "mr", l2: "en", ind: "kn" },
   "marathi-every-verse": { lang: "mr", lead: "mr", l2: "en", ref: 0 },
   "marathi-menus": { lang: "mr", lead: "mr", l2: "en", ui: "mr" },

@@ -428,6 +428,8 @@ for (const [setup, words] of [
   ["marathi", "सुखकर्ता दुःखहर्ता"],
   ["english", "Sukhkarta Dukhharta"],
   ["kannada", "ಸುಖಕರ್ತಾ"],
+  ["telugu", "సుఖకర్తా"],
+  ["gujarati", "સુખકર્તા"],
 ]) {
   test(`print pop-up offers Portrait and Landscape: ${setup} @chromium-only`, async ({ page }) => {
     await stubPrint(page);

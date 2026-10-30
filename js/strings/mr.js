@@ -465,7 +465,7 @@ export default {
     copied: "संदेश कॉपी झाला",
   },
   print: {
-    langs: { mr: "मराठी", kn: "कन्नड", en: "इंग्रजी" },
+    langs: { mr: "मराठी", kn: "कन्नड", te: "तेलुगू", gu: "गुजराती", en: "इंग्रजी" },
     portrait: "उभे",
     landscape: "आडवे",
     both: "दोन्ही",
