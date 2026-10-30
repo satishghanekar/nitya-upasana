@@ -338,9 +338,8 @@ export default {
       return "Showing " + d + " " + MONTHS.en[m] + ": " + what;
     },
     week: "This week",
-    /** Home's card of what comes next (#upw): the next two after the day shown */
+    /** Home's Coming up (#upw): the next three from the day shown */
     coming: "Coming up",
-    next15: "Next 15 days",
     day: "Day",
     month: "Month",
     up: "15 days",
@@ -371,9 +370,11 @@ export default {
     uUntil: function (d) {
       return "until " + d;
     },
-    uNext: "Next",
     uNone: "Nothing is marked on these days.",
     kinds: { fest: "Festivals", sk: "Sankashti", pradosh: "Pradosh", hol: "Holidays" },
+    /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
+    holHome: "Holidays in Coming up",
+    groups: { us: "US", in: "India", mh: "Maharashtra", ka: "Karnataka" },
   },
   // The top bar (js/features/bars.js)
   bar: {
