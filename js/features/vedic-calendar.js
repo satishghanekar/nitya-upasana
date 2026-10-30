@@ -565,10 +565,10 @@ function whenOf(k, today) {
     n = daysTo(k, today);
   return n === 0 ? w.uToday : n === 1 ? w.uTomorrow : n === -1 ? w.uYesterday : n < 0 ? w.uAgo(-n) : w.uIn(n);
 }
-/** An entry's drawing in its tinted circle (js/core/fest-icons.js): a festival's own, Sankashti's modak, a holiday's flag
+/** An entry's drawing in its tinted circle (js/core/fest-icons.js): a festival's own, Sankashti's moon, a holiday's flag
  * @param {Up} u */
 function upIcon(u) {
-  return u.kind === "sk" ? iconHtml("modak", "gan") : u.kind === "hol" ? holIcon(u.groups || []) : festIcon(u.id || "");
+  return u.kind === "sk" ? iconHtml("crescent", "gan") : u.kind === "hol" ? holIcon(u.groups || []) : festIcon(u.id || "");
 }
 
 /** An entry's tint (js/core/fest-icons.js), which Home's card takes on the entry's day @param {Up} u */
