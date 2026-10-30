@@ -438,10 +438,20 @@ export default {
   // Offline use and Check for updates (js/features/offline.js): Settings → More → About
   offline: {
     state: { idle: "ಆಫ್‌ಲೈನ್‌ಗೆ ಸಿದ್ಧ", save: "ಆಫ್‌ಲೈನ್‌ಗಾಗಿ ಉಳಿಸಲಾಗುತ್ತಿದೆ…", off: "ಉಳಿಸಿದ ಪ್ರತಿ ಬಳಕೆಯಲ್ಲಿದೆ" },
-    update: { check: "ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ", busy: "ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…", ok: "ಇತ್ತೀಚಿನ ಆವೃತ್ತಿ", off: "ಇಂಟರ್ನೆಟ್ ಇಲ್ಲ" },
+    update: {
+      check: "ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ",
+      busy: "ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…",
+      ok: "ಇತ್ತೀಚಿನ ಆವೃತ್ತಿ",
+      off: "ಇಂಟರ್ನೆಟ್ ಇಲ್ಲ",
+      restart: "ಮುಚ್ಚಿ ಮತ್ತೆ ತೆರೆಯಿರಿ",
+    },
     usingSaved: "ಇಂಟರ್ನೆಟ್ ಇಲ್ಲ. ಉಳಿಸಿದ ಪ್ರತಿಯನ್ನು ಬಳಸಲಾಗುತ್ತಿದೆ.",
     loading: "ಹೊಸ ಆವೃತ್ತಿ, ತೆರೆಯುತ್ತಿದೆ…",
     ready: "ಆಫ್‌ಲೈನ್ ಬಳಕೆಗೆ ಸಿದ್ಧ",
+    /** @param {string} v the new version ("v1.37.17") */
+    reopen: function (v) {
+      return "ಆವೃತ್ತಿ " + v + " ಉಳಿಸಲಾಗಿದೆ. ಪೂರ್ಣಗೊಳಿಸಲು ಆ್ಯಪ್ ಮುಚ್ಚಿ ಮತ್ತೆ ತೆರೆಯಿರಿ.";
+    },
   },
   // Search and Recent (js/text/search.js)
   search: {
