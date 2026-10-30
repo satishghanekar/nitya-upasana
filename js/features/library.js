@@ -298,7 +298,7 @@ export function libLang() {
     b = document.getElementById("lbbw");
   if (b && b.textContent !== w.open) {
     b.textContent = w.open;
-    b.lang = ui() === "mr" ? mrLang() : "en";
+    b.lang = ui() === "mr" ? mrLang() : ui();
   }
   if (sheet && !sheet.hidden && view === "list") {
     var box = /** @type {HTMLElement} */ (sheet.querySelector(".pfc"));
@@ -415,7 +415,7 @@ function renderCats() {
         "</span>" +
         (other && other !== name ? '<span class="lbo" lang="' + langOf(/** @type {"mr" | "en"} */ (l2)) + '">' + esc(other) + "</span>" : "") +
         '<small class="lbk" lang="' +
-        (ui() === "mr" ? mrLang() : "en") +
+        (ui() === "mr" ? mrLang() : ui()) +
         '">' +
         esc(w.count(n[c.id] || 0)) +
         "</small></div>" +

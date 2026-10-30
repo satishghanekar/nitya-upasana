@@ -11,6 +11,7 @@ import { openSite, SETUPS, openMore, tapMore, axeScan, axeEveryTheme, noViolatio
 const STATES = [
   ["home", SETUPS.marathi, null, true],
   ["home Marathi menus", SETUPS["marathi-menus"]],
+  ["home Kannada menus", SETUPS["kannada-menus"]],
   ["both languages", SETUPS.both],
   ["Kannada", SETUPS["kannada-both"]],
   ["English main", SETUPS["english-main-both"]],

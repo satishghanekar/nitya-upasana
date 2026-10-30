@@ -9,6 +9,7 @@ import { goHomeNav } from "./history.js";
 import { pageEls } from "./overlays.js";
 import { sessionStep } from "./today-card.js";
 import { menuWords } from "../core/strings.js";
+import { ui } from "../core/words.js";
 
 export var asc;
 
@@ -87,7 +88,7 @@ export function asLabel() {
       name = ss ? ss.label : t ? t.textContent : "";
     // the word in its own span: the smallest phones show only the arrow, to fit the bar (css/07-bottom-bar-folds.css)
     b.innerHTML = x[1].replace(/([^‹›]+)/, '<span class="asw2">$1</span>');
-    b.lang = mr ? "mr" : "en";
+    b.lang = ui();
     b.setAttribute("aria-label", x[1].replace(/[‹›]/g, "").trim() + (name ? ": " + name : ""));
     b.disabled = !a && !ss;
   });
