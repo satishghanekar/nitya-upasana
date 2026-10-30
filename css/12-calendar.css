@@ -1027,6 +1027,9 @@
   /* the lights in the drawings (a flame, the moon, gold), the kumkum, and the circle's faint ring */
   --fi-gold: #f2a516;
   --fi-kumkum: #c8102e;
+  --fi-peacock: #17607a;
+  --fi-flesh: #fffdf6;
+  --fi-shell: #6b3f1d;
   --fi-ring: rgb(57 26 14 / 24%);
 }
 @media (prefers-color-scheme: dark) {
@@ -1043,6 +1046,9 @@
     --fi-hol-ink: #b6c2bd;
     --fi-gold: #f5b942;
     --fi-kumkum: #ef5d6f;
+    --fi-peacock: #3fa9c4;
+    --fi-flesh: #efe3d4;
+    --fi-shell: #9a6435;
     --fi-ring: rgb(239 227 212 / 22%);
   }
 }
@@ -1059,6 +1065,9 @@
   --fi-hol-ink: #b6c2bd;
   --fi-gold: #f5b942;
   --fi-kumkum: #ef5d6f;
+  --fi-peacock: #3fa9c4;
+  --fi-flesh: #efe3d4;
+  --fi-shell: #9a6435;
   --fi-ring: rgb(239 227 212 / 22%);
 }
 :root[data-pref="sepia"] {
@@ -1074,6 +1083,9 @@
   --fi-hol-ink: #3f4843;
   --fi-gold: #e39b0e;
   --fi-kumkum: #b3122b;
+  --fi-peacock: #17607a;
+  --fi-flesh: #fffdf6;
+  --fi-shell: #6b3f1d;
   --fi-ring: rgb(59 42 23 / 26%);
 }
 /* high contrast: the drawing in plain lines in the text colour on the page, the circle its outline */
@@ -1092,7 +1104,7 @@
 :root[data-hc="1"] .fi {
   box-shadow: inset 0 0 0 1px var(--ink);
 }
-:root[data-hc="1"] :is(.fi, .fm) :is(.b, .fl, .ku) {
+:root[data-hc="1"] :is(.fi, .fm) :is(.b, .fl, .ku, .pk, .sh, .kf, .cv, .shd) {
   fill: none;
 }
 :root[data-hc="1"] .fi .sp {
@@ -1119,6 +1131,36 @@
 }
 :is(.fi, .fm) .ku {
   fill: var(--fi-kumkum);
+  stroke: var(--fi-kumkum);
+}
+/* the coconut: brown shell outside, white flesh inside */
+:is(.fi, .fm) .sh {
+  fill: var(--fi-shell);
+  stroke: var(--fi-shell);
+}
+:is(.fi, .fm) .kf {
+  fill: var(--fi-flesh);
+  stroke: var(--fi-shell);
+  stroke-width: 1.2;
+}
+/* (in 3D: the hollow inside, the shell's shaded side and its highlight) */
+:is(.fi, .fm) .cv {
+  fill: var(--fi-shell);
+  fill-opacity: 0.28;
+  stroke: none;
+}
+:is(.fi, .fm) .shd {
+  fill: rgb(0 0 0 / 28%);
+  stroke: none;
+}
+:is(.fi, .fm) .hl {
+  stroke: rgb(255 255 255 / 45%);
+  stroke-width: 1.2;
+}
+/* the eye of Krishna's peacock feather, and water */
+:is(.fi, .fm) .pk {
+  fill: var(--fi-peacock);
+  stroke: none;
 }
 .fi .sp {
   stroke: var(--fi-gold);

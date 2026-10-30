@@ -29,6 +29,8 @@ describe("festival drawings", () => {
     expect(festLook("guru-purnima")).toEqual(["pothi", "moon"]);
     expect(festLook("ganesh-chaturthi")).toEqual(["modak", "gan"]);
     expect(festLook("anant-chaturdashi")).toEqual(["visarjan", "gan"]);
+    expect(festLook("gokulashtami")).toEqual(["krishna", "sai"]);
+    expect(festLook("hanuman-jayanti")).toEqual(["gada", "sai"]);
   });
 
   test("each saint's days their own; a saint's day not drawn yet a lotus or the paduka, anything new a star", () => {
