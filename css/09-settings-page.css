@@ -609,17 +609,14 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   }
 }
 
-/* ==== About's version line and Check for updates (phones, a column on iPads): the button drops under the line
-   when both don't fit, rather than the line breaking in two ==== */
+/* ==== About's version line and Check for updates: side by side whenever both fit; else the button drops under the
+   line, at its start as the rows' second lines are, rather than the line breaking in two ==== */
 .sp #upd {
   flex-wrap: wrap;
   row-gap: 2px;
 }
 .sp #upd .sp-l {
-  flex: 1 1 15em;
-}
-.sp #upd .sp-v {
-  margin-inline-start: auto;
+  flex: 1 1 auto;
 }
 
 /* ==== Phones held sideways: the phone's tabs (the max-width: 759.98px rules above take them in too), and on Reading

@@ -717,3 +717,21 @@ test("scrolling up brings the bars back once the page stops, not mid-scroll @mob
   expect(await tucked()).toBe(true);
   await expect.poll(tucked).toBe(false);
 });
+
+// About's version line: "Close and reopen" (the longest word there) beside the version on a phone; on the narrowest
+// phone, under it at its start, never stranded at the right
+test("the version line keeps Check for updates beside it, or under its start", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.english);
+  await page.locator("#aa").click();
+  await settingsTab(page, "more");
+  // as on the phone in the report: saved for offline, and an update waiting
+  await page.locator("#offv").evaluate((e) => (e.textContent = "Offline ready"));
+  await page.locator("#updv").evaluate((e) => (e.textContent = "Close and reopen"));
+  const box = async (sel) => await page.locator(sel).boundingBox();
+  expect(Math.abs((await box("#upd .sp-l")).y - (await box("#updv")).y), "one line").toBeLessThan(4);
+  await page.setViewportSize({ width: 280, height: 640 });
+  const l = await box("#upd .sp-l"),
+    v = await box("#updv");
+  if (v.y > l.y + 4) expect(Math.abs(v.x - l.x), "under the version, at its start").toBeLessThan(2);
+});
