@@ -188,11 +188,6 @@ export default {
     ago: function (n) {
       return n + " రోజుల క్రితం";
     },
-    /** @param {string} d the weekday's name, as HTML */
-    showing: function (d) {
-      return "<b>" + d + "</b> చూపబడుతోంది";
-    },
-    back: "ఈరోజు ›",
   },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
@@ -340,14 +335,9 @@ export default {
     showing: function (d, m, what) {
       return d + " " + MONTHS.te[m] + ": " + what;
     },
-    fToday: "ఈరోజు: ",
-    fTomorrow: "రేపు: ",
-    fYesterday: "నిన్న: ",
-    /** @param {number} d the weekday */
-    fOn: function (d) {
-      return DAYS.te[d] + ": ";
-    },
     week: "ఈ వారం",
+    /** Home's card of what comes next (#upw): the next two after the day shown */
+    coming: "రాబోయే రోజుల్లో",
     next15: "తర్వాతి 15 రోజులు",
     day: "రోజు",
     month: "నెల",

@@ -179,11 +179,6 @@ export default {
     ago: function (n) {
       return n + " days ago";
     },
-    /** @param {string} d the weekday's name, as HTML */
-    showing: function (d) {
-      return "Showing <b>" + d + "</b>";
-    },
-    back: "Today ›",
   },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
@@ -342,14 +337,9 @@ export default {
     showing: function (d, m, what) {
       return "Showing " + d + " " + MONTHS.en[m] + ": " + what;
     },
-    fToday: "Today: ",
-    fTomorrow: "Tomorrow: ",
-    fYesterday: "Yesterday: ",
-    /** @param {number} d the weekday */
-    fOn: function (d) {
-      return DAYS.en[d] + ": ";
-    },
     week: "This week",
+    /** Home's card of what comes next (#upw): the next two after the day shown */
+    coming: "Coming up",
     next15: "Next 15 days",
     day: "Day",
     month: "Month",

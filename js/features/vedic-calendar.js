@@ -271,7 +271,6 @@ function homeRender() {
   if (!L || !pl) {
     box.hidden = true;
     box.innerHTML = "";
-    festHome(null);
     upHome(null);
     return;
   }
@@ -328,16 +327,61 @@ function homeRender() {
     '<span class="sr"> · ' +
     esc(w.loc) +
     "</span></button>" +
-    "</span></span>" +
-    '<button type="button" id="panb" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal" aria-labelledby="pn1 pn2 pnr pns pno">' +
+    "</span>" +
+    // the day's festivals, Pradosh or Sankashti, else the next one: one line on every day, so the card never changes
+    // height as ‹ › move through the days (Satish, 2026-10-30)
+    '<span class="p4" id="pn4">' +
+    dayLine(pl) +
+    "</span>" +
+    "</span>" +
+    '<button type="button" id="panb" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal" aria-labelledby="pn1 pn2 pnr pns pn4 pno">' +
     '<span class="sr" id="pno">' +
     esc(w.open) +
     "</span>" +
     ICON.chev +
     "</button></div>";
   box.hidden = false;
-  festHome(pl);
   upHome(pl);
+}
+
+/**
+ * Home's line for the day shown (#pn4), in the panchang's card: its festivals and holidays, Pradosh, or Sankashti with
+ * its moonrise; on a day with none, the next one after it ("Next: प्रदोष · Fri 6 Nov"). It takes the place of the
+ * festival and Sankashti lines that showed under the card on their days only, and made Home jump as the days changed.
+ * @param {{ lat: number, lon: number }} pl
+ */
+function dayLine(pl) {
+  var w = words(),
+    k = homeAt || keyOf(new Date()),
+    own = loaded.festivals ? upList(k, k, pl, true) : [],
+    hols = holsOn(k, pl).map(holName),
+    names = own
+      .map(function (u) {
+        var two = nameH2(u.name);
+        return (
+          "<b>" +
+          nameH(u.name) +
+          "</b>" +
+          // a festival of several days: which of them this is ("Day 5"), as Coming up's rows say it; Sankashti's
+          // moonrise. Before the second language's name, so a narrow phone cutting the line short keeps them
+          (u.d1 ? say(" · " + w.uDays(u.d1, u.d1)) : "") +
+          (u.kind === "sk" && u.rise ? say(" · " + txt(N.moonrise, nameLang()) + " " + clock(u.rise)) : "") +
+          (two ? say(" · ") + two : "")
+        );
+      })
+      .concat(
+        hols.map(function (h) {
+          var two = nameH2(h);
+          return "<b>" + nameH(h) + "</b>" + (two ? say(" · ") + two : "");
+        }),
+      );
+  if (names.length) {
+    var u0 = own[0],
+      icon = !u0 ? ICON.flag : u0.kind === "sk" ? ICON.crescent : u0.kind === "pradosh" ? ICON.dusk : ICON.star;
+    return '<span class="dot" aria-hidden="true">' + icon + "</span>" + names.join(say(", "));
+  }
+  var next = loaded.festivals ? upList(addDays(k, 1), addDays(k, 30), pl, true)[0] : null;
+  return next ? say(w.uNext + ": ") + "<b>" + nameH(next.name) + "</b>" + say(" · " + dayLabel(next.date)) : "";
 }
 
 // ----- festivals (content/festivals.json; js/core/festivals.js) -----
@@ -438,41 +482,6 @@ function festsOn(k, pl) {
   }
   return festivalsFor(k, pl, loaded.festivals);
 }
-/** "Today: " on Home's festival line; on another day shown there, "Tomorrow: ", "Yesterday: " or "Wednesday: " */
-function homeWhen() {
-  var w = words();
-  if (!homeAt) return w.fToday;
-  var n = Math.round((dateOf(homeAt).getTime() - dateOf(keyOf(new Date())).getTime()) / 864e5);
-  return n === 1 ? w.fTomorrow : n === -1 ? w.fYesterday : w.fOn(dateOf(homeAt).getDay());
-}
-/** Home, on a festival day only (#fst): "आज दसरा" / "Today: Dasara", with the second reading language after a dot
- * @param {{ lat: number, lon: number } | null} pl */
-function festHome(pl) {
-  var box = document.getElementById("fst");
-  if (!box) return;
-  var at = homeAt || new Date(),
-    fs = pl ? /** @type {Name[]} */ (festsOn(at, pl)).concat(holsOn(at, pl).map(holName)) : [];
-  if (!fs.length) {
-    box.hidden = true;
-    box.innerHTML = "";
-    return;
-  }
-  box.lang = ui();
-  box.innerHTML =
-    '<span class="dot" aria-hidden="true">' +
-    ICON.star +
-    "</span><span>" +
-    say(homeWhen()) +
-    fs
-      .map(function (f) {
-        var two = nameH2(f);
-        return "<b>" + fname(f) + "</b>" + (two ? say(" · ") + two : "");
-      })
-      .join(say(", ")) +
-    "</span>";
-  box.hidden = false;
-}
-
 // ----- Upcoming: 15 days at a time (the calendar's 15 days tab, #calu) and the next week on Home (#upw) -----
 // The festivals (Pradosh apart), Pradosh, Sankashti with its moonrise (the month's mark, as the calendar shows it) and
 // the public holidays; a festival of several days (the Utsav's Day 1 … Day 9) is one entry, "Day 1–9 · until Tue 28
@@ -562,14 +571,18 @@ function upList(from, to, pl, noHol) {
   });
 }
 
-/** One entry, a button that shows its day in the calendar @param {Up} u @param {string} today "YYYY-MM-DD" */
-function upRow(u, today) {
+/**
+ * One entry, a button that shows its day in the calendar
+ * @param {Up} u @param {string} today "YYYY-MM-DD" @param {boolean} [month] the month always (Home's Coming up, so its
+ *   row is one height on every day), not only when it is another month's
+ */
+function upRow(u, today, month) {
   var w = words(),
     E = nameLang() === "en",
     d = dateOf(u.date),
     n = Math.round((d.getTime() - dateOf(today).getTime()) / 864e5),
     when = n === 0 ? w.uToday : n === 1 ? w.uTomorrow : n === -1 ? w.uYesterday : n < 0 ? w.uAgo(-n) : w.uIn(n),
-    other = d.getMonth() !== dateOf(today).getMonth(),
+    other = !!month || d.getMonth() !== dateOf(today).getMonth(),
     full = menuWords("dates").day(d.getDay(), d.getDate(), d.getMonth()),
     icon =
       u.kind === "sk"
@@ -624,23 +637,19 @@ function upRow(u, today) {
   );
 }
 
-/** Home: the next 7 days (#upw), and the first entry after them; hidden when nothing is marked in the next month
+/** Home: Coming up (#upw), the next two after the day shown, on every day: the first as a row, the second as Next,
+ * so it keeps one height as ‹ › move through the days (it showed every entry of the 7 days after today, and made way
+ * for "Showing …" on another day; Satish, 2026-10-30); hidden when nothing is marked in the month after the day
  * @param {{ lat: number, lon: number } | null} pl */
 function upHome(pl) {
   var box = document.getElementById("upw");
   if (!box) return;
   var t = keyOf(new Date()),
-    wk = addDays(t, 7),
-    // another day shown on Home: This week (which counts from today) makes way for "Showing …" (#tdb)
-    off = !!homeAt && homeAt !== t,
-    all = pl && loaded.festivals && !off ? upList(addDays(t, 1), addDays(t, 30), pl, true) : [],
-    near = all.filter(function (u) {
-      return u.date <= wk;
-    }),
-    next = all.filter(function (u) {
-      return u.date > wk;
-    })[0];
-  if (off || (!near.length && !next)) {
+    k = homeAt || t,
+    all = pl && loaded.festivals ? upList(addDays(k, 1), addDays(k, 30), pl, true) : [],
+    near = all.slice(0, 1),
+    next = all[1];
+  if (!near.length && !next) {
     box.hidden = true;
     box.innerHTML = "";
     return;
@@ -649,7 +658,7 @@ function upHome(pl) {
   box.lang = ui();
   box.innerHTML =
     '<div class="uph"><h2 id="upwh">' +
-    say(w.week) +
+    say(w.coming) +
     "</h2>" +
     '<button type="button" id="upwm" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal">' +
     say(w.next15) +
@@ -659,7 +668,7 @@ function upHome(pl) {
       ? '<ul class="upl">' +
         near
           .map(function (u) {
-            return upRow(u, t);
+            return upRow(u, t, true);
           })
           .join("") +
         "</ul>"
@@ -717,7 +726,7 @@ function homeSoon() {
 // day, the place, the languages and the site's version, so today's are kept on this phone (localStorage): opening the
 // app again the same day draws them as they were, without working anything out. Another day shown on Home is not kept.
 var KEPT = "nitya-home-lines",
-  KEPT_BOXES = ["pan", "fst", "upw"];
+  KEPT_BOXES = ["pan", "upw"];
 /** Everything the lines depend on: a kept copy is used only when all of it is the same */
 function keptKey() {
   var tz = "";
@@ -1331,10 +1340,10 @@ export function homeDay(k) {
   if (k === homeAt) return;
   homeAt = k;
   skDay(k);
-  // the festival line named the day before: hidden until the new day's is worked out (homeSoon), so it never shows
-  // under the new date
-  var f = document.getElementById("fst");
-  if (f) f.hidden = true;
+  // the day's line named the day before: emptied (its height kept) until the new day's is worked out (homeSoon), so
+  // it never shows under the new date
+  var f = document.getElementById("pn4");
+  if (f) f.textContent = "";
   homeSoon();
 }
 

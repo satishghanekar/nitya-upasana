@@ -1,10 +1,11 @@
 // @ts-check
 // Home: what to chant now.
-// The time-of-day picture with the weekday's star (js/features/day-picture.js) beside the date in Marathi and English,
-// with ‹ › under it to show another day (#tdn: the day before or after, and between them Today, Tomorrow, Yesterday,
-// "In 3 days" or "3 days ago"). Home opens on today; on another day all of Home follows it (the Vedic calendar line,
-// the festival and Sankashti lines: homeDay() in js/features/vedic-calendar.js; the picture's star; the sessions'
-// texts), This week makes way for "Showing Wednesday" with Today › (#tdb), and a title reads that day's session. A new
+// The time-of-day picture with the weekday's star (js/features/day-picture.js) beside the date in the reading
+// languages, under the day bar, as the calendar's Day view has it (#tdn: ‹ the day ›, and Today on another day; the
+// day's word, Today, Tomorrow, "In 3 days", after the date). Every part keeps its place on every day, so nothing moves
+// as ‹ › go through the days (Satish, 2026-10-30). Home opens on today; on another day all of Home follows it (the
+// Vedic calendar line with the day's festival, Pradosh or Sankashti, and Coming up: homeDay() in
+// js/features/vedic-calendar.js; the picture's star; the sessions' texts), and a title reads that day's session. A new
 // day, or coming back to the page after AWAY, shows today again. A Morning | Afternoon | Evening switch (#tss, tabs: arrow keys move between them, Enter or Space picks),
 // opened at the session for the time now; a session with nothing set today is greyed ("Nothing set", aria-disabled,
 // still focusable, and picking it shows the empty state with Add texts); the picked session's texts, numbered, each
@@ -189,33 +190,36 @@ export function render() {
   // The date and the titles in the reading languages (Settings → Reading): the main one large, the second under it;
   // with no second language, the main one alone. Each in its own words: Kannada letters bring Kannada's days and
   // months, not Marathi's written in them (Satish, 2026-10-30)
-  var dd = /** @type {HTMLElement} */ (document.getElementById("tdd"));
-  [".d1", ".d2"].forEach(function (/** @type {string} */ sel, /** @type {number} */ i) {
-    var e = /** @type {HTMLElement} */ (dd.querySelector(sel)),
-      l = ls[i];
-    e.hidden = !l;
-    if (!l) return;
-    e.lang = code(l);
-    e.textContent = menuWords("dates", code(l)).dayYear(d.getDay(), d.getDate(), d.getMonth(), d.getFullYear());
-  });
-  // ‹ › and the day's word between them (Today greyed); "Showing Wednesday · Today ›" in place of This week
+  var dd = /** @type {HTMLElement} */ (document.getElementById("tdd")),
+    d1 = /** @type {HTMLElement} */ (dd.querySelector(".d1")),
+    d2 = /** @type {HTMLElement} */ (dd.querySelector(".d2")),
+    d2t = /** @type {HTMLElement} */ (dd.querySelector(".d2t")),
+    rel = /** @type {HTMLElement} */ (document.getElementById("tdr")),
+    dateIn = function (/** @type {"mr" | "en"} */ l) {
+      return menuWords("dates", code(l)).dayYear(d.getDay(), d.getDate(), d.getMonth(), d.getFullYear());
+    };
+  d1.lang = code(ls[0]);
+  d1.textContent = dateIn(ls[0]);
+  // the second line: the date in the second language, then the day's word in the menu language ("· Tomorrow"); with
+  // no second language, the word alone, so the card keeps its lines
+  d2.lang = ui;
+  d2t.lang = ls[1] ? code(ls[1]) : ui;
+  d2t.textContent = ls[1] ? dateIn(ls[1]) : ""; // (the dot before the word, .dsep, shows only after a date)
+  rel.textContent = dayWord(c.today, c.day);
+  // The day bar: ‹ the day › and Today on another day (its room kept on today)
   var other = c.day !== c.today,
     off = daysBetween(c.today, c.day),
-    rel = /** @type {HTMLElement} */ (document.getElementById("tdr")),
-    bar = /** @type {HTMLElement} */ (document.getElementById("tdb")),
     tp = /** @type {HTMLButtonElement} */ (document.getElementById("tdp")),
-    tx = /** @type {HTMLButtonElement} */ (document.getElementById("tdx"));
+    tx = /** @type {HTMLButtonElement} */ (document.getElementById("tdx")),
+    tt = /** @type {HTMLElement} */ (document.getElementById("tdt"));
   /** @type {HTMLElement} */ (document.getElementById("tdn")).lang = ui;
-  rel.textContent = dayWord(c.today, c.day);
-  rel.classList.toggle("on", other);
+  /** @type {HTMLElement} */ (document.getElementById("tdl")).textContent = menuWords("calendar").dayLabel(d.getDay(), d.getDate(), d.getMonth());
   tp.setAttribute("aria-label", w.prev);
   tx.setAttribute("aria-label", w.next);
   tp.disabled = off <= -SPAN;
   tx.disabled = off >= SPAN;
-  bar.lang = ui;
-  /** @type {HTMLElement} */ (document.getElementById("tdbt")).innerHTML = w.showing(esc(w.days[d.getDay()]));
-  /** @type {HTMLElement} */ (document.getElementById("tdbb")).textContent = w.back;
-  bar.hidden = !other;
+  tt.textContent = w.today;
+  tt.classList.toggle("off", !other);
   document.documentElement.toggleAttribute("data-day", other);
   homeDay(other ? c.day : "");
   // the session's heading in the reading languages, and how many texts it has
@@ -576,15 +580,16 @@ export function init() {
         toDay(/** @type {number} */ (x[1]));
       });
   });
-  var tb = document.getElementById("tdbb");
+  // Today, on another day: back to today, the focus on › (Today itself is out of sight on today)
+  var tb = document.getElementById("tdt");
   if (tb)
     tb.addEventListener("click", function () {
       toDay(0);
-      var h = document.getElementById("tsh");
-      if (h)
+      var x = document.getElementById("tdx");
+      if (x)
         try {
-          h.focus({ preventScroll: true });
-        } catch (x) {}
+          x.focus({ preventScroll: true });
+        } catch (e) {}
     });
   tabs.addEventListener("click", function (e) {
     var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('[role="tab"]'));
