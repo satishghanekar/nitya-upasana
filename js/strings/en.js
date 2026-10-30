@@ -638,4 +638,38 @@ export default {
   language: {
     name: "English",
   },
+  // The Sankashti line on Home, its place and its dates (js/features/sankashti.js); the Share message's date and time
+  sankashti: {
+    name: "Sankashti Chaturthi",
+    angName: "Sankashti Chaturthi (Angaraki)",
+    /** @param {string} name */
+    today: function (name) {
+      return name + " today";
+    },
+    /** @param {string} time */
+    moonrise: function (time) {
+      return "Moonrise <b>" + time + "</b>";
+    },
+    /** "Tue, Oct 28" (with the year when not this year: "Tue, Oct 28, 2027")
+     * @param {number} wd the weekday (0 = Sunday) @param {number} d @param {number} m (0 = January) @param {number} y or 0 */
+    day: function (wd, d, m, y) {
+      return DAYS.en[wd].slice(0, 3) + ", " + MONTHS.en[m].slice(0, 3) + " " + d + (y ? ", " + y : "");
+    },
+    /** A moonrise: "8:47 pm" @param {number} h 0–23 @param {string} mi two digits */
+    time: function (h, mi) {
+      return ((h + 11) % 12) + 1 + ":" + mi + (h >= 12 ? " pm" : " am");
+    },
+    late: " (after midnight)",
+    yourPlace: "Your location",
+    /** @param {string} place */
+    near: function (place) {
+      return "near " + place;
+    },
+    /** @param {string} place */
+    place: function (place) {
+      return "Place: " + place;
+    },
+    noGeo: "Location is not available in this browser",
+    noPlace: "Could not get your location",
+  },
 };

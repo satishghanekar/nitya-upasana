@@ -40,8 +40,7 @@ private.
   `index.html` in one language. A sentence with a value in it is a function, so each language puts the words in its
   own order. `ui()` is the menu language's code; `nameLang()` picks a two-language name (places, panchang names).
   Adding a menu language: `ARCHITECTURE.md`, "Adding a menu language". `tests/unit/strings.test.mjs` checks it all.
-- Digits and names: `num()` from `js/core/words.js`; day and month names `menuWords("dates")`. Not yet moved: the
-  Sankashti line (`js/features/sankashti.js`).
+- Digits and names: `num()` from `js/core/words.js`; day and month names `menuWords("dates")`.
 - The reading languages: `lead()`, `second()`; Marathi in another script through `scr()` and `SCR` (`js/render.js`,
   `SCRIPTS`). Put `lang` on every element whose language differs from its parent's.
 - A text's words live only in its file in `content/texts/`, never in code.
