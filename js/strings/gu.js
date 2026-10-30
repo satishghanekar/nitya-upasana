@@ -599,6 +599,7 @@ export default {
     smaller: " નાનું",
     larger: " મોટું",
     allSettings: "બધી સેટિંગ્સ",
+    settings: "સેટિંગ્સ",
     fontThemeLayout: "અક્ષર શૈલી, થીમ, ગોઠવણ",
     defaultSize: "↺ મૂળ કદ",
   },

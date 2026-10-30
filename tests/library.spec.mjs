@@ -4,7 +4,7 @@
 // same page.
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { openSite, settle, SETUPS, axeScan, axeEveryTheme, noViolations, useTestRoutine } from "./helpers.mjs";
+import { openSite, settle, SETUPS, axeScan, axeEveryTheme, noViolations, useTestRoutine, settingsTab } from "./helpers.mjs";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 // the bundled categories that have texts, in order (an empty one is left out of the list)
@@ -259,12 +259,18 @@ test("the top bar is the same on Home and while reading: the name, profile, Prin
   const bar = await page.locator(".bar").boundingBox(),
     sp = await page.locator("#panel").boundingBox();
   expect(sp.y).toBeGreaterThanOrEqual(bar.y + bar.height - 1);
-  // Back and the tabs in one row, the title for screen readers only, as on the Library and the calendar pages
-  await expect(page.locator("#spt")).toHaveText("सेटिंग्ज Settings");
-  const xc = await page.locator("#xc").boundingBox(),
-    tabs = await page.locator("#spv").boundingBox();
-  expect(Math.abs(xc.y - tabs.y)).toBeLessThan(4);
-  await expect(page.locator("#spv button")).toHaveText([/Reading$/, /Screen$/, /More$/]);
+  // Back and the tabs in one row, the title for screen readers only, as on the Library and the calendar pages; on
+  // desktops Back and the title, and no tabs (every group at once)
+  await expect(page.locator("#spt")).toHaveText("Settings");
+  if (page.viewportSize().width >= 760) {
+    await expect(page.locator("#spt")).toBeVisible();
+    await expect(page.locator("#spv")).toBeHidden();
+  } else {
+    const xc = await page.locator("#xc").boundingBox(),
+      tabs = await page.locator("#spv").boundingBox();
+    expect(Math.abs(xc.y - tabs.y)).toBeLessThan(4);
+    await expect(page.locator("#spv button")).toHaveText([/Reading$/, /Screen$/, /More$/]);
+  }
 });
 
 // Light is scanned in full, then dark, sepia and high contrast for colour (axeEveryTheme); Marathi menus in full
@@ -735,7 +741,7 @@ for (const [name, set] of [
   [
     "Marathi menus",
     async (page) => {
-      await page.locator('#spv button[data-v="screen"]').click();
+      await settingsTab(page, "screen");
       await page.locator('#su button[data-v="mr"]').click();
     },
   ],
@@ -743,7 +749,7 @@ for (const [name, set] of [
     "Kannada letters and menus",
     async (page) => {
       await page.locator("#sl1s").selectOption("kn");
-      await page.locator('#spv button[data-v="screen"]').click();
+      await settingsTab(page, "screen");
       await page.locator('#su button[data-v="kn"]').click();
     },
   ],

@@ -393,7 +393,7 @@ test("each text and session control has a name and a 44px target @mobile", async
   await expect(page.locator("#tss")).toHaveAccessibleName("Session");
   await expect(tab(page, "morning")).toHaveAccessibleName("Morning");
   await expect(tab(page, "afternoon")).toHaveAccessibleName("Afternoon Nothing set");
-  await expect(page.locator("#tmb")).toHaveAccessibleName("More");
+  await expect(page.locator("#tmb")).toHaveAccessibleName("Share");
   await expect(page.locator("#tdp")).toHaveAccessibleName("Previous day");
   await expect(page.locator("#tdx")).toHaveAccessibleName("Next day");
   // another day, so Today › shows too

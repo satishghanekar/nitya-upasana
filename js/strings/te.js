@@ -600,6 +600,7 @@ export default {
     smaller: " చిన్నది",
     larger: " పెద్దది",
     allSettings: "అన్ని సెట్టింగ్‌లు",
+    settings: "సెట్టింగ్‌లు",
     fontThemeLayout: "అక్షర శైలి, థీమ్, అమరిక",
     defaultSize: "↺ మొదటి పరిమాణం",
   },
