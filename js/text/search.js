@@ -20,6 +20,7 @@ import { goLine } from "../features/bars.js";
 import { jumpTo } from "../features/history.js";
 import { ul } from "../features/contents-list.js";
 import { menuWords } from "../core/strings.js";
+import { ui } from "../core/words.js";
 
 /** @typedef {import("./search-core.js").Index} Index */
 
@@ -265,15 +266,14 @@ function find() {
   // The results follow the language shown on the reading page (P.lang), as the list does; the group names the menus
   var frag = document.createDocumentFragment(),
     L = P.lang === "en" ? "en" : "mr",
-    LL = L === "en" ? "en" : scr().k || "mr",
-    mrUi = P.ui === "mr";
+    LL = L === "en" ? "en" : scr().k || "mr";
   /** @param {string} mr @param {string} en */
   /** @param {string} t */
   function head(t) {
     var li = document.createElement("li"),
       h = document.createElement("h3");
     li.className = "rh";
-    h.lang = mrUi ? "mr" : "en";
+    h.lang = ui();
     h.textContent = t;
     li.appendChild(h);
     frag.appendChild(li);
