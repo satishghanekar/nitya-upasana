@@ -87,3 +87,13 @@ test("the scripts, styles and page stay within their size budget", () => {
   expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(66_000);
   expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(30_000);
 });
+
+// The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):
+// files from this site only, and never an inline script
+test("every file carries the Content-Security-Policy: this site only, no inline scripts", async ({ request }) => {
+  for (const path of ["./", "sw.js", "js/main.js"]) {
+    const csp = (await request.get(path)).headers()["content-security-policy"] || "";
+    expect(csp, path).toContain("default-src 'self'");
+    expect(csp, path).toMatch(/script-src 'self'(;|$)/);
+  }
+});
