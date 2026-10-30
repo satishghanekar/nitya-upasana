@@ -56,8 +56,8 @@ Atho Ye Asya Sattvanoham Tebhyokarannamah |
 Pramuncha Dhanvanastvamubhayorartniyorjyam |
 याश्च॑ ते॒ हस्त॒ इष॑वः॒ परा॒ ता भ॑गवो वप ।
 Yashcha Te Hasta Ishavah Para Ta Bhagavo Vapa |
-अ॒व॒तत्य॒ धनु॒स्तवग्ं सह॑स्राक्ष॒ शते॑षुधे ।
-Avatatya Dhanustavagm Sahasraksha Shateshudhe |
+अ॒व॒तत्य॒ धनु॒स्त्वग्ं सह॑स्राक्ष॒ शते॑षुधे ।
+Avatatya Dhanustvagm Sahasraksha Shateshudhe |
 नि॒शीर्य॑ श॒ल्यानां॒ मुखा॑ शि॒वो नः॑ सु॒मना॑ भव ।
 Nishirya Shalyanam Mukha Shivo Nah Sumana Bhava |
 विज्यं॒ धनुः॑ कप॒र्दिनो॒ विश॑ल्यो॒ बाण॑वाग्ं उ॒त ।
@@ -152,7 +152,7 @@ Namah Sabhabhyah Sabhapatibhyashcha Vo Namo
 Namo Ashvebhyoshvapatibhyashcha Vo Namah || 3 ||
 
 [para 4]
-नम॑ आव्य॒धिनी᳚भ्यो वि॒विध्य॑न्तीभ्यश्च वो॒ नमो॒
+नम॑ आव्या॒धिनी᳚भ्यो वि॒विध्य॑न्तीभ्यश्च वो॒ नमो॒
 Nama Avyadhinibhyo Vividhyantibhyashcha Vo Namo
 नम॒ उग॑णाभ्यस्तृग्ंह॒तीभ्य॑श्च वो॒ नमो॒
 Nama Uganabhyastrugmhatibhyashcha Vo Namo
@@ -480,7 +480,7 @@ Purnataram Cha Mekshitishcha Me Kuyavashcha Mennam Cha Mekshuchcha Me
 Vrihayashcha Me Yavashcha Me Mashashcha Me Tilashcha Me Mudgashcha Me
 ख॒ल्वा᳚श्च मे गो॒धूमा᳚श्च मे म॒सुरा᳚श्च मे प्रि॒यंग॑वश्च॒ मेऽण॑वश्च मे
 Khalvashcha Me Godhumashcha Me Masurashcha Me Priyamgavashcha Menavashcha Me
-श्या॒मका᳚श्च मे नी॒वारा᳚श्च मे ॥ ४ ॥
+श्या॒माका᳚श्च मे नी॒वारा᳚श्च मे ॥ ४ ॥
 Shyamakashcha Me Nivarashcha Me || 4 ||
 
 [para 16]
@@ -596,7 +596,7 @@ Navavigmshatishcha Ma Ekatrigmshachcha Me Trayastrigmshachcha Me
 Chatasrashcha Meshtau Cha Me Dvadasha Cha Me Shodasha Cha Me Vigmshatishcha Me
 चतु॑र्विग्ंशतिश्च मे॒ऽष्टाविग्ं॑शतिश्च मे॒ द्वात्रिग्ं॑शच्च मे॒
 Chaturvigmshatishcha Meshtavigmshatishcha Me Dvatrigmshachcha Me
-षट्त्रिग्ं॑शच्च मे चत्वरि॒ग्ं॒शच्च॑ मे॒
+षट्त्रिग्ं॑शच्च मे चत्वारि॒ग्ं॒शच्च॑ मे॒
 Shattrigmshachcha Me Chatvarigmshachcha Me
 चतु॑श्चत्वारिग्ंशच्च मे॒ऽष्टाच॑त्वारिग्ंशच्च मे॒
 Chatushchatvarigmshachcha Meshtachatvarigmshachcha Me
