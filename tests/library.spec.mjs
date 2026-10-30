@@ -737,6 +737,13 @@ for (const [name, set] of [
       await page.locator('#su button[data-v="mr"]').click();
     },
   ],
+  [
+    "Kannada menus",
+    async (page) => {
+      await page.locator('#spv button[data-v="screen"]').click();
+      await page.locator('#su button[data-v="kn"]').click();
+    },
+  ],
 ]) {
   test(`${name}, changed in Settings: the Library as after a reload`, async ({ page }) => {
     await withPdfs(page);

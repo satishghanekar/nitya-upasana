@@ -802,7 +802,7 @@ function monthOf(y, m) {
 
 /** One row of the day card: a label (a name), a value and its small line @param {Name} dt @param {string} dd @param {string} small */
 function row(dt, dd, small) {
-  return "<dt>" + nameH(dt) + "</dt><dd>" + dd + (small ? '<small lang="' + (ui() === "mr" ? mrLang() : "en") + '">' + small + "</small>" : "") + "</dd>";
+  return "<dt>" + nameH(dt) + "</dt><dd>" + dd + (small ? '<small lang="' + (ui() === "mr" ? mrLang() : ui()) + '">' + small + "</small>" : "") + "</dd>";
 }
 
 /** The day card for view.day */

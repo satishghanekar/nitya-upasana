@@ -36,6 +36,7 @@ export const SETUPS = {
   "kannada-both": { lang: "both", lead: "mr", l2: "en", ind: "kn" },
   "marathi-every-verse": { lang: "mr", lead: "mr", l2: "en", ref: 0 },
   "marathi-menus": { lang: "mr", lead: "mr", l2: "en", ui: "mr" },
+  "kannada-menus": { lang: "mr", lead: "mr", l2: "en", ui: "kn" },
 };
 
 /**
