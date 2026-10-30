@@ -44,7 +44,7 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files and the 
 
 ## Menu languages
 
-The menus are in Marathi or English (Settings → Menus and buttons, `P.ui`). Every menu word is in a catalog, one file per language (`js/strings/en.js`, `js/strings/mr.js`), each part's words under its name:
+The menus are in English, Marathi or Kannada (Settings → Menus and buttons, `P.ui`). Every menu word is in a catalog, one file per language (`js/strings/en.js`, `js/strings/mr.js`, `js/strings/kn.js`), each part's words under its name:
 
 - a script reads them with `menuWords("part")` (`js/core/strings.js`); a sentence with a value in it ("until Mon 1:21 am", "सोमवारी रात्री १:२१ पर्यंत") is a function, so each language keeps its own word order;
 - the page's own words are `<span data-w="page.key">English</span>` in `index.html`, filled in the menu language by `fillWords()` when the page starts and when the menu language changes (the English inside is what shows without the script); an element filled takes the language's code as its class and `lang`, so the styles for `.mr` and `.en` still apply;
@@ -57,7 +57,7 @@ A word a language lacks is taken from English. `tests/unit/strings.test.mjs` che
 
 1. Copy `js/strings/en.js` to `js/strings/gu.js` and translate it (`language.name` is its own name, "ગુજરાતી"; the dates take its month and day names).
 2. Add it to `LANGS` in `js/core/strings.js`, to `js/parts.js` and as a `<link rel="modulepreload">` in `index.html`. Settings then offers it.
-3. If it is written in letters the site has no font for, add one (`fonts/`, `css/00-fonts.css`) and give `.gu` (the class the filled words take) that font.
+3. If it is written in letters the site has no font for, add one (`fonts/`, `css/00-fonts.css`) and give `.gu` (the class the filled words take) and `[data-lang="gu"]` (the menus the scripts write) that font, as `css/09-settings-page.css` does for Kannada.
 4. `npm run unit` says what is missing.
 
 The reading languages (the texts, their titles, and the calendar's names: tithi, nakshatra, festivals) are another matter: they follow `P.lead` and `P.l2`, and Marathi can be shown in Kannada letters (`SCRIPTS` in `js/render.js`).
