@@ -26,7 +26,8 @@ import { setR } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { shownSession } from "./today-card.js";
 import { createPicker } from "./text-picker.js";
-import { DAYS, dv, esc, lead, num, scr, scrKey, second, ui } from "../core/words.js";
+import { dv, esc, lead, num, scr, scrKey, second, ui } from "../core/words.js";
+import { menuWords } from "../core/strings.js";
 
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
@@ -34,175 +35,6 @@ import { DAYS, dv, esc, lead, num, scr, scrKey, second, ui } from "../core/words
  * @typedef {import("../core/routine.js").SessionPlan} SessionPlan
  * @typedef {import("./text-picker.js").PickText} PickText
  */
-
-const W = {
-  en: {
-    /** @param {string} n */
-    title: function (n) {
-      return n + "’s routine";
-    },
-    sessions: { morning: "Morning", afternoon: "Afternoon", evening: "Evening" },
-    sessionG: "Session",
-    modes: { fixed: "Same every day", weekday: "Different by weekday" },
-    modeG: "Which days",
-    days: DAYS.en,
-    short: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    dayG: "Day",
-    /** @param {number} n */
-    texts: function (n) {
-      return n + (n === 1 ? " text" : " texts");
-    },
-    /** @param {string} s @param {number | null} d */
-    what: function (s, d) {
-      return d === null ? s + ", every day" : this.days[d] + " " + s.toLowerCase();
-    },
-    copy: "Copy to other days…",
-    /** @param {string} w */
-    copyTo: function (w) {
-      return "Copy " + w + "’s list to:";
-    },
-    copyGo: "Copy",
-    cancel: "Cancel",
-    /** @param {string[]} d */
-    copied: function (d) {
-      return d.length ? "Copied to " + d.join(", ") : "No day chosen";
-    },
-    /** @param {string} t */
-    up: function (t) {
-      return "Move " + t + " up";
-    },
-    /** @param {string} t */
-    down: function (t) {
-      return "Move " + t + " down";
-    },
-    /** @param {string} t */
-    remove: function (t) {
-      return "Remove " + t;
-    },
-    /** @param {string} t @param {number} i @param {number} n */
-    moved: function (t, i, n) {
-      return t + " moved to " + i + " of " + n;
-    },
-    /** @param {string} t */
-    removed: function (t) {
-      return t + " removed";
-    },
-    /** @param {string} t @param {number} n */
-    added: function (t, n) {
-      return t + " added, " + n + " of " + n;
-    },
-    /** @param {string} w */
-    empty: function (w) {
-      return "No texts for " + w + " yet. Add texts to start.";
-    },
-    hint: "Alt+↑/↓ moves with a keyboard",
-    add: "Add texts",
-    /** @param {string} w */
-    addTo: function (w) {
-      return "Add texts to " + w;
-    },
-    search: "Search (Marathi or English)",
-    none: "Nothing found",
-    done: "Done",
-    /** @param {number} n */
-    found: function (n) {
-      return n === 1 ? "1 text found" : n + " texts found";
-    },
-    /** @param {string} d */
-    toFixed: function (d) {
-      return d + "’s list is now used every day";
-    },
-    toWeek: "Each weekday can now have its own list",
-    /** @param {string} d */
-    fixAsk: function (d) {
-      return "Use " + d + "’s list every day? The other days’ own lists will be removed.";
-    },
-    fixGo: "Use every day",
-  },
-  mr: {
-    /** @param {string} n */
-    title: function (n) {
-      return "दिनक्रम: " + n;
-    },
-    sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
-    sessionG: "वेळ",
-    modes: { fixed: "रोज तेच", weekday: "वारानुसार वेगळे" },
-    modeG: "कोणते दिवस",
-    days: DAYS.mr,
-    short: ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"],
-    dayG: "वार",
-    /** @param {number} n */
-    texts: function (n) {
-      return dv(n) + " रचना";
-    },
-    /** @param {string} s @param {number | null} d */
-    what: function (s, d) {
-      return d === null ? "रोज " + s : this.days[d] + " " + s;
-    },
-    copy: "इतर वारांना हीच यादी…",
-    /** @param {string} w */
-    copyTo: function (w) {
-      return w + "ची यादी या वारांना द्या:";
-    },
-    copyGo: "द्या",
-    cancel: "रद्द करा",
-    /** @param {string[]} d */
-    copied: function (d) {
-      return d.length ? d.join(", ") + " यांना दिली" : "एकही वार निवडला नाही";
-    },
-    /** @param {string} t */
-    up: function (t) {
-      return "वर हलवा: " + t;
-    },
-    /** @param {string} t */
-    down: function (t) {
-      return "खाली हलवा: " + t;
-    },
-    /** @param {string} t */
-    remove: function (t) {
-      return "काढा: " + t;
-    },
-    /** @param {string} t @param {number} i @param {number} n */
-    moved: function (t, i, n) {
-      return t + " " + dv(n) + " पैकी " + dv(i) + " वर हलवली";
-    },
-    /** @param {string} t */
-    removed: function (t) {
-      return t + " काढली";
-    },
-    /** @param {string} t @param {number} n */
-    added: function (t, n) {
-      return t + " जोडली, " + dv(n) + " पैकी " + dv(n);
-    },
-    /** @param {string} w */
-    empty: function (w) {
-      return w + "साठी अजून रचना नाहीत. सुरुवात करण्यासाठी रचना जोडा.";
-    },
-    hint: "कीबोर्डवर Alt+↑/↓ ने हलवा",
-    add: "रचना जोडा",
-    /** @param {string} w */
-    addTo: function (w) {
-      return w + "साठी रचना जोडा";
-    },
-    search: "शोधा (मराठी किंवा इंग्रजी)",
-    none: "काही सापडले नाही",
-    done: "झाले",
-    /** @param {number} n */
-    found: function (n) {
-      return dv(n) + " रचना सापडल्या";
-    },
-    /** @param {string} d */
-    toFixed: function (d) {
-      return "आता रोज " + d + "चीच यादी";
-    },
-    toWeek: "आता प्रत्येक वाराची यादी वेगळी ठेवता येईल",
-    /** @param {string} d */
-    fixAsk: function (d) {
-      return d + "ची यादी रोज वापरायची? इतर वारांच्या वेगळ्या याद्या काढल्या जातील.";
-    },
-    fixGo: "रोज वापरा",
-  },
-};
 
 const ICON = {
   morning:
@@ -251,7 +83,7 @@ function el(id) {
   return /** @type {HTMLElement} */ (document.getElementById(id));
 }
 function words() {
-  return W[ui()];
+  return menuWords("routine");
 }
 /** A text's title in a reading language: as written (Kannada letters when chosen), or its English name */
 /** @param {PickText} t @param {"mr" | "en"} l */

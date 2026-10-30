@@ -1,7 +1,9 @@
 // @ts-check
 // The menu words in Marathi (मराठी), every part's under its name, as in js/strings/en.js (js/core/strings.js).
 
-import { MONTHS } from "../core/words.js";
+import { DAYS, dv, MONTHS, num } from "../core/words.js";
+import { INITIALS_MAX, MAX_PROFILES } from "../store/profiles.js";
+import { MAX_ADDED } from "../core/library.js";
 
 export default {
   // Backup and restore (js/features/backup.js)
@@ -47,5 +49,325 @@ export default {
       empty: "या बॅकअपमध्ये एकही व्यक्ती नाही.",
       read: "फाइल वाचता आली नाही.",
     },
+  },
+  // People on this phone: the badge and the profile sheet (js/features/profiles.js)
+  profiles: {
+    title: "कोण वाचत आहे?",
+    add: "व्यक्ती जोडा",
+    info: "प्रत्येकाचा अक्षरांचा आकार, भाषा, रंगसंगती आणि दिनक्रम या फोनवर वेगळ्या राहतात.",
+    now: "आता वाचत आहे",
+    edit: "बदला",
+    addTitle: "व्यक्ती जोडा",
+    editTitle: "बदला: ",
+    name: "नाव",
+    initials: "बॅजवरील अक्षरे",
+    initialsHint: "जास्तीत जास्त " + "०१२३४५६७८९"[INITIALS_MAX] + ". रिकामे ठेवल्यास नावावरून.",
+    colour: "रंग",
+    save: "जतन करा",
+    cancel: "रद्द करा",
+    del: "ही व्यक्ती काढून टाका",
+    /** @param {string} n */
+    ask: function (n) {
+      return n + " यांना काढून टाकायचे? त्यांची सेटिंग्ज आणि दिनक्रम या फोनवरून काढले जातील. आधी जतन केलेल्या बॅकअप फाइलमध्ये ते राहतील.";
+    },
+    yes: "काढून टाका",
+    close: "बंद करा",
+    empty: "कृपया नाव लिहा.",
+    taken: "या फोनवर हे नाव आधीच आहे.",
+    full: "जास्तीत जास्त " + dv(MAX_PROFILES) + " व्यक्ती ठेवता येतात.",
+    /** @param {string} n */
+    switched: function (n) {
+      return "आता वाचत आहे: " + n;
+    },
+    /** @param {string} n */
+    deleted: function (n) {
+      return n + " काढले";
+    },
+    chip: "प्रोफाइल: ",
+  },
+  // The Library by category and the categories sheet (js/features/library.js)
+  library: {
+    open: "विभाग बदला",
+    title: "विभाग",
+    texts: "रचना",
+    textsInfo: "प्रत्येक रचना कोणत्या विभागात दिसावी ते निवडा.",
+    info: "हे या फोनवर इथे वाचणाऱ्या सर्वांसाठी राहते आणि बॅकअप फाइलमध्ये जतन होते. रचनांचे शब्द कधीही बदलत नाहीत.",
+    add: "विभाग जोडा",
+    rename: "नाव बदला",
+    addTitle: "विभाग जोडा",
+    renameTitle: "नाव बदला: ",
+    mrName: "मराठी नाव",
+    enName: "इंग्रजी नाव",
+    hint: "एक पुरे: तेच दोन्हीसाठी वापरले जाईल.",
+    save: "जतन करा",
+    cancel: "रद्द करा",
+    /** @param {string} n */
+    reset: function (n) {
+      return "मूळ नाव वापरा: " + n;
+    },
+    del: "हा विभाग काढून टाका",
+    builtIn: "मूळचा विभाग: या फोनवर नाव बदलता येते, काढता येत नाही.",
+    /** @param {string} n */
+    ask: function (n) {
+      return n + " काढून टाकायचा? त्यातील रचना आपापल्या मूळ विभागात परत जातील.";
+    },
+    yes: "काढून टाका",
+    close: "बंद करा",
+    empty: "कृपया नाव लिहा.",
+    taken: "हे नाव दुसऱ्या विभागाला आधीच आहे.",
+    full: "स्वतःचे जास्तीत जास्त " + dv(MAX_ADDED) + " विभाग ठेवता येतात.",
+    /** @param {number} n */
+    count: function (n) {
+      return n === 0 ? "अजून एकही रचना नाही (संग्रहात दिसत नाही)" : dv(n) + " रचना";
+    },
+    /** @param {string} t @param {string} c */
+    moved: function (t, c) {
+      return t + ": आता " + c + " विभागात";
+    },
+    /** @param {string} t */
+    catFor: function (t) {
+      return t + " हिचा विभाग";
+    },
+    /** @param {string} n */
+    added: function (n) {
+      return n + " जोडला";
+    },
+    /** @param {string} n */
+    renamed: function (n) {
+      return "नवे नाव: " + n;
+    },
+    /** @param {string} n */
+    deleted: function (n) {
+      return n + " काढला";
+    },
+  },
+  // Home: the date, the sessions and their texts (js/features/today-card.js)
+  today: {
+    days: DAYS.mr,
+    months: MONTHS.mr,
+    sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
+    tabs: "वेळ",
+    unset: "काहीच नाही",
+    /** @param {number} n */
+    texts: function (n) {
+      return dv(n) + " रचना";
+    },
+    none: "काही ठरलेले नाही",
+    /** @param {string} s */
+    empty: function (s) {
+      return s + "साठी अजून काही ठरवलेले नाही. ";
+    },
+    add: "रचना जोडा",
+    edit: "बदला",
+    /** @param {string} s */
+    editL: function (s) {
+      return "बदला: " + s + "चा दिनक्रम";
+    },
+    end: "आज",
+    ended: "या वेळेची उपासना पूर्ण",
+    prev: "आधीचा दिवस",
+    next: "पुढचा दिवस",
+    today: "आज",
+    tomorrow: "उद्या",
+    yesterday: "काल",
+    /** @param {number} n */
+    later: function (n) {
+      return dv(n) + " दिवसांनी";
+    },
+    /** @param {number} n */
+    ago: function (n) {
+      return dv(n) + " दिवसांपूर्वी";
+    },
+    /** @param {string} d the weekday's name, as HTML */
+    showing: function (d) {
+      return "<b>" + d + "</b> पाहत आहात";
+    },
+    back: "आज ›",
+  },
+  // The routine builder and its Add texts picker (js/features/routine-builder.js)
+  routine: {
+    /** @param {string} n */
+    title: function (n) {
+      return "दिनक्रम: " + n;
+    },
+    sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
+    sessionG: "वेळ",
+    modes: { fixed: "रोज तेच", weekday: "वारानुसार वेगळे" },
+    modeG: "कोणते दिवस",
+    days: DAYS.mr,
+    short: ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"],
+    dayG: "वार",
+    /** @param {number} n */
+    texts: function (n) {
+      return dv(n) + " रचना";
+    },
+    /** @param {string} s @param {number | null} d */
+    what: function (s, d) {
+      return d === null ? "रोज " + s : this.days[d] + " " + s;
+    },
+    copy: "इतर वारांना हीच यादी…",
+    /** @param {string} w */
+    copyTo: function (w) {
+      return w + "ची यादी या वारांना द्या:";
+    },
+    copyGo: "द्या",
+    cancel: "रद्द करा",
+    /** @param {string[]} d */
+    copied: function (d) {
+      return d.length ? d.join(", ") + " यांना दिली" : "एकही वार निवडला नाही";
+    },
+    /** @param {string} t */
+    up: function (t) {
+      return "वर हलवा: " + t;
+    },
+    /** @param {string} t */
+    down: function (t) {
+      return "खाली हलवा: " + t;
+    },
+    /** @param {string} t */
+    remove: function (t) {
+      return "काढा: " + t;
+    },
+    /** @param {string} t @param {number} i @param {number} n */
+    moved: function (t, i, n) {
+      return t + " " + dv(n) + " पैकी " + dv(i) + " वर हलवली";
+    },
+    /** @param {string} t */
+    removed: function (t) {
+      return t + " काढली";
+    },
+    /** @param {string} t @param {number} n */
+    added: function (t, n) {
+      return t + " जोडली, " + dv(n) + " पैकी " + dv(n);
+    },
+    /** @param {string} w */
+    empty: function (w) {
+      return w + "साठी अजून रचना नाहीत. सुरुवात करण्यासाठी रचना जोडा.";
+    },
+    hint: "कीबोर्डवर Alt+↑/↓ ने हलवा",
+    add: "रचना जोडा",
+    /** @param {string} w */
+    addTo: function (w) {
+      return w + "साठी रचना जोडा";
+    },
+    search: "शोधा (मराठी किंवा इंग्रजी)",
+    none: "काही सापडले नाही",
+    done: "झाले",
+    /** @param {number} n */
+    found: function (n) {
+      return dv(n) + " रचना सापडल्या";
+    },
+    /** @param {string} d */
+    toFixed: function (d) {
+      return "आता रोज " + d + "चीच यादी";
+    },
+    toWeek: "आता प्रत्येक वाराची यादी वेगळी ठेवता येईल",
+    /** @param {string} d */
+    fixAsk: function (d) {
+      return d + "ची यादी रोज वापरायची? इतर वारांच्या वेगळ्या याद्या काढल्या जातील.";
+    },
+    fixGo: "रोज वापरा",
+  },
+  // The print builder's What step: Texts, Today, Routine (js/print/what.js)
+  printWhat: {
+    what: "काय प्रिंट करायचे",
+    search: "संग्रहात शोधा",
+    all: "सर्व रचना",
+    selectAll: "सर्व निवडा",
+    clear: "सर्व काढा",
+    none: "अशी रचना नाही",
+    /** @param {number} n */
+    texts: function (n) {
+      return num(n) + " रचना";
+    },
+    pick: "किमान एक रचना निवडा",
+    tabs: { texts: "संग्रह", today: "आज", routine: "दिनक्रम" },
+    todayInfo: "सत्र निवडा: त्यातील रचना प्रिंट होतील.",
+    allToday: "आजचे सर्व",
+    /** @param {string} d the weekday */
+    allDay: function (d) {
+      return d + "चे सर्व";
+    },
+    empty: "एकही रचना नाही",
+    who: "कोणाचा दिनक्रम",
+    week: "पूर्ण आठवडा",
+    oneDay: "एक दिवस",
+    days: "वार",
+    sessions: "वेळ",
+    order: "प्रत्येक रचना एकदाच, दिनक्रमाच्या क्रमाने",
+    noTexts: "रचना नाहीत",
+    nothing: "निवडलेल्या वारी आणि वेळी एकही रचना नाही",
+  },
+  // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
+  calendar: {
+    open: " (पंचांग उघडा)",
+    sunrise: "सूर्योदय",
+    sunset: "सूर्यास्त",
+    noRise: "या दिवशी चंद्रोदय नाही",
+    /** @param {number} d @param {string} time */
+    until: function (d, time) {
+      return (d >= 0 ? DAYS.mr[d] + "ी " : "") + time + " पर्यंत";
+    },
+    amanta: "अमान्त",
+    today: "आज",
+    loc: "माझे ठिकाण वापरा",
+    pic: "चित्र मोठे पाहा",
+    prev: "मागचा महिना",
+    nextM: "पुढचा महिना",
+    key: ["शुद्ध पक्ष", "वद्य पक्ष", "पौर्णिमा", "अमावास्या"],
+    keyNote: "सूर्योदयाची तिथी · + पुढच्या सूर्योदयापूर्वीच संपणारी (क्षय) तिथी",
+    vriddhi: "आदल्या दिवसाचीच तिथी (वृद्धी)",
+    kshaya: "क्षय तिथी: ",
+    near: "सूर्योदयाच्या अगदी जवळ: छापील पंचांगात शेजारची तिथी असू शकते.",
+    /** @param {string} p */
+    note: function (p) {
+      return "हे पंचांग या फोनवर " + p + " साठी काढले आहे. तपशील पाहण्यासाठी एखादा दिवस निवडा.";
+    },
+    /** @param {number} d @param {number} m @param {string} what */
+    showing: function (d, m, what) {
+      return dv(d) + " " + MONTHS.mr[m] + ": " + what;
+    },
+    fToday: "आज ",
+    fTomorrow: "उद्या ",
+    fYesterday: "काल ",
+    /** @param {number} d the weekday */
+    fOn: function (d) {
+      return DAYS.mr[d] + "ी ";
+    },
+    week: "या आठवड्यात",
+    next15: "पुढचे १५ दिवस",
+    day: "दिवस",
+    month: "महिना",
+    up: "१५ दिवस",
+    prevDay: "मागचा दिवस",
+    nextDay: "पुढचा दिवस",
+    prevU: "मागचे १५ दिवस",
+    nextU: "पुढचे १५ दिवस",
+    todayB: "आज",
+    view: "दाखवा",
+    upTitle: "पुढचे १५ दिवस",
+    nextWeek: "पुढच्या आठवड्यात",
+    uYesterday: "काल",
+    /** @param {number} n */
+    uAgo: function (n) {
+      return dv(n) + " दिवसांपूर्वी";
+    },
+    uToday: "आज",
+    uTomorrow: "उद्या",
+    /** @param {number} n */
+    uIn: function (n) {
+      return dv(n) + " दिवसांनी";
+    },
+    /** @param {number} a @param {number} b */
+    uDays: function (a, b) {
+      return "दिवस " + dv(a) + (a === b ? "" : "–" + dv(b));
+    },
+    /** @param {string} d */
+    uUntil: function (d) {
+      return d + "पर्यंत";
+    },
+    uNext: "पुढे",
+    uNone: "या दिवसांत काही नाही.",
+    kinds: { fest: "सण", sk: "संकष्टी", pradosh: "प्रदोष", hol: "सुट्ट्या" },
   },
 };
