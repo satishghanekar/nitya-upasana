@@ -1271,9 +1271,14 @@ function upRender() {
     esc(w.prevU) +
     "</span></button>" +
     '<h3 id="cut" tabindex="-1">' +
-    say(now ? w.upTitle : range(s, end)) +
+    // the same lines on every day (the title, the dates, the place), each short enough for a phone, so the list below
+    // never moves as ‹ › go from today (the dates and the place on one line wrapped on phones on today only)
+    say(now ? w.upTitle : w.up) +
     '<span class="cms">' +
-    say((now ? range(s, end) + " · " : "") + placeName(L)) +
+    say(range(s, end)) +
+    "</span>" +
+    '<span class="cms">' +
+    say(placeName(L)) +
     "</span></h3>" +
     '<button type="button" class="cnav" data-u="15">' +
     ICON.next +
