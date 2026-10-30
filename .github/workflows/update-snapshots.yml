@@ -27,8 +27,11 @@ jobs:
       CI: "1"
       HOME: /root
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      # checkout v5, not v7 as in tests.yml: this job pushes from inside the Playwright container, and from v6 checkout
+      # keeps the login in a separate file (git config includeIf), which has had open issues with containers; v5
+      # runs on Node 24 too and keeps the login in .git/config, as v4 did
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
       - run: npm ci
