@@ -86,6 +86,17 @@ describe("the menu words", () => {
     }
   });
 
+  test("index.html: every word the page names (data-w) is in the catalog, and no Marathi / English span pairs are left", () => {
+    const html = readFileSync(new URL("../../index.html", import.meta.url), "utf8");
+    const named = [...html.matchAll(/data-w="([^"]+)"/g)].map((m) => m[1]);
+    expect(named.length).toBeGreaterThan(10);
+    for (const path of named) {
+      const v = path.split(".").reduce((o, k) => (o == null ? o : o[k]), en);
+      expect(typeof v, path).toBe("string");
+    }
+    expect(html.match(/<span class="mr">/g) || []).toEqual([]);
+  });
+
   test("the parts moved to the catalog keep no Marathi words of their own", () => {
     for (const f of MOVED) {
       // (comments may show an example)

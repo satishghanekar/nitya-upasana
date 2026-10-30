@@ -33,9 +33,22 @@ export function dv(n) {
   });
 }
 
-/** The menu language @returns {"mr" | "en"} */
+/** The menu languages there are words for (their codes): js/core/strings.js tells, from js/strings/ */
+var MENU = ["en", "mr"];
+/** @param {string[]} codes */
+export function menuLangs(codes) {
+  MENU = codes;
+}
+
+/** The menu language: its code, as its file in js/strings/ is named; English when there are no words for it */
 export function ui() {
-  return P && P.ui === "mr" ? "mr" : "en";
+  return P && MENU.indexOf(P.ui) >= 0 ? P.ui : "en";
+}
+
+/** Which of a name's two languages (Marathi, English: places, panchang names, titles) the menus show it in: Marathi
+ * in Marathi menus, else English @returns {"mr" | "en"} */
+export function nameLang() {
+  return ui() === "mr" ? "mr" : "en";
 }
 
 /** Digits as the menu language writes them @param {number | string} n */

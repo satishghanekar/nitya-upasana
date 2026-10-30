@@ -301,6 +301,10 @@ export default {
   },
   // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
   calendar: {
+    /** A festival's Wikipedia link, spoken @param {string} name */
+    wiki: function (name) {
+      return name + ": Wikipedia (opens in a new tab)";
+    },
     /** A clock time: "7:45 am" @param {number} h 0–23 @param {string} mi the minutes, two digits */
     clock: function (h, mi) {
       return ((h + 11) % 12) + 1 + ":" + mi + (h >= 12 ? " pm" : " am");
@@ -436,7 +440,7 @@ export default {
   // Offline use and Check for updates (js/features/offline.js): Settings → More → About
   offline: {
     state: { idle: "Offline ready", save: "Saving for offline…", off: "Saved copy in use" },
-    update: { "": "Check for updates", busy: "Checking…", ok: "Up to date", off: "No internet" },
+    update: { check: "Check for updates", busy: "Checking…", ok: "Up to date", off: "No internet" },
     usingSaved: "No internet. Using the saved copy.",
     loading: "New version, loading…",
     ready: "Ready to use offline",
@@ -499,5 +503,139 @@ export default {
     },
     week: "The week at a glance",
     contents: "Contents",
+  },
+  // The page's own words (index.html: data-w="page.…", filled by fillWords(), js/core/strings.js); {icon} is the
+  // icon written in the page, kept where each language puts it
+  page: {
+    appAddToHomeScreen: 'App<span class="sr"> (add to Home Screen)</span>',
+    share: "Share",
+    qrCode: 'QR<span class="sr"> code</span>',
+    help: "Help",
+    back: "Back",
+    chants: "Chants",
+    books: "Books",
+    recent: "Recent",
+    clear: "Clear",
+    nothingFound: "Nothing found",
+    reading: "Reading",
+    screen: "Screen",
+    more: "More",
+    preview: "Preview",
+    languageAndText: "Language and text",
+    mainLanguage: "Main language",
+    largeText: "Large text",
+    secondLanguage: "Second language",
+    smallerUnderEachLine: "Smaller, under each line",
+    show: "Show",
+    textSize: "Text size",
+    textFont: "Text font",
+    traditional: "Traditional",
+    modern: "Modern",
+    bold: "Bold",
+    verses: "Verses",
+    dhrupad: "Dhrupad",
+    once: "Once",
+    everyVerse: "Every verse",
+    layout: "Layout",
+    n1Column: "1 column",
+    n2Columns: "2 columns",
+    menusAndButtons: "Menus and buttons",
+    theme: "Theme",
+    auto: "Auto",
+    light: "Light",
+    sepia: "Sepia",
+    dark: "Dark",
+    highContrast: "High contrast",
+    keepScreenOn: "Keep screen on",
+    profilesAndBackup: "Profiles and backup",
+    thisBrowserCanTSave: "This browser can't save here. Use Save a backup file before closing.",
+    whoIsReading: "Who is reading",
+    routine: "Routine",
+    theTextsForEachSession: "The texts for each session, in order",
+    saveABackupFile: "Save a backup file",
+    restoreFromAFile: "Restore from a file",
+    aNityaFileSavedBefore: "A .nitya file saved before",
+    about: "About",
+    helpAndHowToUse: "Help and how to use",
+    addToHomeScreen: "Add to Home Screen",
+    nityaUpasana: "Nitya Upasana",
+    notNow: "Not now",
+    scanWithTheCameraTo: "Scan with the camera to open",
+    close: "Close",
+    whatToPrint: "‹ What to print",
+    printPdf: "Print / PDF",
+    whatToPrint2: "What to print",
+    howToPrint: "How to print",
+    language: "Language",
+    dhrupad2: 'Dhrupad (<span lang="mr">धृ</span>)',
+    once2: "Once",
+    page: "Page",
+    printFont: "Print font",
+    everyTextStartsOnA: 'Every text starts on a new page. Paper: <b class="prpaper">Letter</b>',
+    forLandscapePickItIn: "For Landscape, pick it in Safari's dialog too.",
+    pickA4PaperInSafari: 'Pick <span class="przp">A4</span> paper in Safari\'s dialog too.',
+    chromePrintsItBest: "Chrome prints it best.",
+    readyPrintNow: "Ready: Print now",
+    openInSafari: "Open in Safari",
+    copyLink: "Copy link",
+    printingDoesNotOpenFrom:
+      "Printing does not open from the Home Screen app on iPhone. Tap <b>Open in Safari</b>: your choices go with it and the printout is made ready there. If Safari does not open, copy the link and paste it into Safari.",
+    thisBrowserDidNotOpen:
+      "This browser did not open the print dialog. Tap the browser's <b>Share</b> button and choose <b>Print</b>. If this page opened inside another app, tap <b>Open in Safari</b>: your choices go with it.",
+    nextHowToPrint: "Next: how to print ›",
+    print: "Print",
+    addToHomeScreen2: "Add to Home Screen",
+    tapTheShareButtonAt: 'Tap the <b lang="en">Share</b> button {icon} (at the bottom in Safari, top right in Chrome).',
+    scrollDownAndTapAdd: 'Scroll down and tap <b lang="en">Add to Home Screen</b>.',
+    tapAdd: 'Tap <b lang="en">Add</b>.',
+    openThisPageInSafari: 'Open this page in <b lang="en">Safari</b> or <b lang="en">Chrome</b> (⋯ or Share → Open in Safari/Chrome).',
+    thenShareAddToHome: 'Then Share {icon} → <b lang="en">Add to Home Screen</b> → <b lang="en">Add</b>.',
+    openChromeSMenuTop: "Open Chrome's <b>⋮</b> menu (top right).",
+    tapAddToHomeScreen: 'Tap <b lang="en">Add to Home screen</b> or <b lang="en">Install app</b>.',
+    tapInstallOrAdd: 'Tap <b lang="en">Install</b> or <b lang="en">Add</b>.',
+    clickTheInstallIconAt: 'Click the install icon at the right end of the address bar, or choose <b lang="en">Install</b> from the browser menu.',
+    clickTheShareButtonIn: 'Click the <b lang="en">Share</b> button {icon} in Safari\'s toolbar, or open the <b lang="en">File</b> menu.',
+    chooseAddToDockThen: 'Choose <b lang="en">Add to Dock</b>, then click <b lang="en">Add</b>.',
+    firefoxCanTAddThis: "Firefox can't add this site as an app. Open this page in Chrome, Edge or Safari and tap this button again.",
+    itWillThenOpenLike: "It will then open like an app, even without internet.",
+    ok: "OK",
+    home: "Home",
+    library: "Library",
+    smaller: " smaller",
+    larger: " larger",
+    allSettings: "All settings",
+    fontThemeLayout: "Font, theme, layout",
+    defaultSize: "↺ Default size",
+  },
+  // Dates in the menu language: the names, and the dates the Vedic calendar writes (js/features/vedic-calendar.js)
+  dates: {
+    days: DAYS.en,
+    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    months: MONTHS.en,
+    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    /** "Tuesday, 28 July" @param {number} wd the weekday (0 = Sunday) @param {number} d @param {number} m the month (0 = January) */
+    day: function (wd, d, m) {
+      return DAYS.en[wd] + ", " + d + " " + MONTHS.en[m];
+    },
+    /** "Tuesday, 28 July 2026" @param {number} wd @param {number} d @param {number} m @param {number} y */
+    dayYear: function (wd, d, m, y) {
+      return DAYS.en[wd] + ", " + d + " " + MONTHS.en[m] + " " + y;
+    },
+    /** "July 2026" @param {number} m @param {number} y */
+    monthYear: function (m, y) {
+      return MONTHS.en[m] + " " + y;
+    },
+    /** A lunar month starting within the month: " from 5 Oct" @param {number} d @param {number} m */
+    from: function (d, m) {
+      return " from " + d + " " + MONTHS.en[m].slice(0, 3);
+    },
+    /** What a screen reader hears before a day of the month: " July, Tuesday, " @param {number} m @param {number} wd */
+    before: function (m, wd) {
+      return " " + MONTHS.en[m] + ", " + DAYS.en[wd] + ", ";
+    },
+  },
+  // The language's own name, in its own letters: Settings → Menus and buttons (js/features/settings-panel.js)
+  language: {
+    name: "English",
   },
 };

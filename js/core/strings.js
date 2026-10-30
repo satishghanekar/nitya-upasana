@@ -14,13 +14,14 @@
 
 import en from "../strings/en.js";
 import mr from "../strings/mr.js";
-import { ui } from "./words.js";
+import { menuLangs, ui } from "./words.js";
 
 /** @typedef {typeof en} Words */
 
 /** The menu languages: their code (as P.ui keeps it) and their words */
 /** @type {Record<string, Partial<Words>>} */
 export const LANGS = { en: en, mr: mr };
+menuLangs(Object.keys(LANGS));
 
 /** @type {Record<string, any>} */
 var made = {};
@@ -49,4 +50,33 @@ function fill(base, over) {
     out[key] = o === undefined ? b : b && typeof b === "object" && !Array.isArray(b) ? fill(b, o) : o;
   });
   return out;
+}
+
+/**
+ * The page's own words (index.html: data-w="page.key", or a deeper path such as "offline.state.idle") in the menu
+ * language. The element takes the language's code as its class and lang, so the styles written for Marathi and
+ * English menus (.mr, .en) still apply. A word with markup is set as HTML; {icon} in it is the icon the page wrote
+ * there (kept from the first time), so each language puts it where its words do.
+ * @param {ParentNode} [root] only the words inside it (a part that wrote new ones), else the whole page
+ */
+export function fillWords(root) {
+  var l = ui();
+  [].forEach.call((root || document).querySelectorAll("[data-w]"), function (/** @type {any} */ e) {
+    var path = String(e.getAttribute("data-w")).split("."),
+      /** @type {any} */
+      v = menuWords(/** @type {any} */ (path[0]));
+    for (var i = 1; i < path.length && v != null; i++) v = v[path[i]];
+    if (typeof v !== "string") return;
+    if (e._icon === undefined) {
+      var svg = e.querySelector("svg");
+      e._icon = svg ? svg.outerHTML : "";
+    }
+    if (/[<{]/.test(v)) e.innerHTML = v.replace("{icon}", e._icon);
+    else e.textContent = v;
+    Object.keys(LANGS).forEach(function (c) {
+      e.classList.remove(c);
+    });
+    e.classList.add(l);
+    e.lang = l;
+  });
 }

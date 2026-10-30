@@ -22,7 +22,7 @@ import { refit } from "../text/autofit.js";
 import { buildIX } from "../text/search.js";
 import { active, add, list, onChange, remove, switchTo, update } from "../store/store.js";
 import { canAdd, canDelete, COLOURS, initialsOf } from "../store/profiles.js";
-import { esc } from "../core/words.js";
+import { esc, nameLang, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
 
 /**
@@ -131,8 +131,8 @@ function show(v, id) {
   var w = words(),
     pfc = /** @type {HTMLElement} */ (sheet.querySelector(".pfc"));
   view = v;
-  pfc.setAttribute("data-lang", P.ui === "mr" ? "mr" : "en");
-  pfc.lang = P.ui === "mr" ? "mr" : "en";
+  pfc.setAttribute("data-lang", ui());
+  pfc.lang = ui();
   el("pfv1").hidden = v !== "list";
   el("pfv2").hidden = v !== "edit";
   el("pfv3").hidden = v !== "delete";
@@ -240,7 +240,7 @@ function renderList() {
 }
 
 function renderColours() {
-  var ui = /** @type {"mr" | "en"} */ (P.ui === "mr" ? "mr" : "en");
+  var ui = nameLang();
   el("pfcol").innerHTML = COLOURS.map(function (c) {
     return (
       '<label class="pfsw" style="--c:' +

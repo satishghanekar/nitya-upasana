@@ -133,14 +133,16 @@ export function tidy(P) {
   if (P.por !== "land" && P.por !== "up") P.por = "";
   if (["mr", "en", "both"].indexOf(P.plang) < 0) P.plang = "";
   if (["letter", "a4"].indexOf(P.ppr) < 0) P.ppr = "";
-  if (P.lead === "en" || P.ind !== "mr") P.ui = "en";
+  // Marathi menus go with the texts in Marathi letters (other menu languages are free: js/strings/)
+  if (P.ui === "mr" && (P.lead === "en" || P.ind !== "mr")) P.ui = "en";
   if (!P.l2 || [P.lead, P.l2, "both"].indexOf(P.lang) < 0) P.lang = P.lead;
   if (["auto", "light", "sepia", "dark"].indexOf(P.th) < 0) P.th = "auto";
   // three text fonts since v1.24: Handwritten and the printout's Best are gone (Traditional now does what Best did)
   if (["std", "classic", "bold"].indexOf(P.fnt) < 0) P.fnt = "classic";
   if (["std", "classic", "bold"].indexOf(P.pfn) < 0) P.pfn = "";
   if (P.tr !== "iast") P.tr = "simple";
-  if (P.ui !== "mr") P.ui = "en";
+  // a menu language's code (its file in js/strings/); one without words shows English (js/core/words.js ui())
+  if (typeof P.ui !== "string" || !/^[a-z]{2,3}$/.test(P.ui)) P.ui = "en";
   return P;
 }
 

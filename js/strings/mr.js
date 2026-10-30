@@ -300,6 +300,10 @@ export default {
   },
   // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
   calendar: {
+    /** @param {string} name */
+    wiki: function (name) {
+      return name + " — विकिपीडिया (नवीन टॅबमध्ये उघडेल)";
+    },
     /** "सकाळी ७:४५": the part of the day, then the time @param {number} h @param {string} mi */
     clock: function (h, mi) {
       var part = h < 4 ? "रात्री" : h < 6 ? "पहाटे" : h < 12 ? "सकाळी" : h < 16 ? "दुपारी" : h < 20 ? "सायं." : "रात्री";
@@ -425,7 +429,7 @@ export default {
   },
   offline: {
     state: { idle: "ऑफलाइन तयार", save: "ऑफलाइनसाठी जतन…", off: "जतन केलेली प्रत" },
-    update: { "": "अपडेट तपासा", busy: "तपासत आहे…", ok: "सर्व अद्ययावत आहे", off: "इंटरनेट नाही" },
+    update: { check: "अपडेट तपासा", busy: "तपासत आहे…", ok: "सर्व अद्ययावत आहे", off: "इंटरनेट नाही" },
     usingSaved: "इंटरनेट नाही. जतन केलेली प्रत वापरत आहे.",
     loading: "नवीन आवृत्ती, उघडत आहे…",
     ready: "ऑफलाइन वापरासाठी तयार",
@@ -484,5 +488,135 @@ export default {
     },
     week: "आठवडा एका नजरेत",
     contents: "अनुक्रमणिका",
+  },
+  page: {
+    appAddToHomeScreen: 'ॲप<span class="sr"> (होम स्क्रीनवर ठेवा)</span>',
+    share: "शेअर",
+    qrCode: 'QR<span class="sr"> कोड</span>',
+    help: "मदत",
+    back: "मागे",
+    chants: "पाठ",
+    books: "पोथी",
+    recent: "अलीकडे",
+    clear: "सर्व काढा",
+    nothingFound: "काही सापडले नाही",
+    reading: "वाचन",
+    screen: "स्क्रीन",
+    more: "अधिक",
+    preview: "नमुना",
+    languageAndText: "भाषा आणि अक्षरे",
+    mainLanguage: "मुख्य भाषा",
+    largeText: "मोठ्या अक्षरांत",
+    secondLanguage: "दुसरी भाषा",
+    smallerUnderEachLine: "लहान, प्रत्येक ओळीखाली",
+    show: "दाखवा",
+    textSize: "अक्षरांचा आकार",
+    textFont: "अक्षरशैली",
+    traditional: "पारंपरिक",
+    modern: "आधुनिक",
+    bold: "ठळक",
+    verses: "कडवी",
+    dhrupad: "ध्रुपद",
+    once: "एकदा",
+    everyVerse: "प्रत्येक कडव्यानंतर",
+    layout: "मांडणी",
+    n1Column: "१ स्तंभ",
+    n2Columns: "२ स्तंभ",
+    menusAndButtons: "मेनू आणि बटणे",
+    theme: "रंगसंगती",
+    auto: "आपोआप",
+    light: "फिकट",
+    sepia: "सेपिया",
+    dark: "गडद",
+    highContrast: "अधिक ठळक",
+    keepScreenOn: "स्क्रीन चालू ठेवा",
+    profilesAndBackup: "प्रोफाइल आणि बॅकअप",
+    thisBrowserCanTSave: "हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.",
+    whoIsReading: "कोण वाचत आहे",
+    routine: "दिनक्रम",
+    theTextsForEachSession: "प्रत्येक वेळेच्या रचना आणि त्यांचा क्रम",
+    saveABackupFile: "बॅकअप फाइल जतन करा",
+    restoreFromAFile: "फाइलमधून परत आणा",
+    aNityaFileSavedBefore: "आधी जतन केलेली .nitya फाइल",
+    about: "माहिती",
+    helpAndHowToUse: "मदत आणि वापर",
+    addToHomeScreen: "होम स्क्रीनवर ठेवा",
+    nityaUpasana: "नित्य उपासना",
+    notNow: "आता नको",
+    scanWithTheCameraTo: "उघडण्यासाठी कॅमेऱ्याने स्कॅन करा",
+    close: "बंद",
+    whatToPrint: "‹ काय प्रिंट करायचे",
+    printPdf: "प्रिंट / PDF",
+    whatToPrint2: "काय प्रिंट करायचे",
+    howToPrint: "कसे प्रिंट करायचे",
+    language: "भाषा",
+    dhrupad2: "ध्रुपद (धृ)",
+    once2: "एकदाच",
+    page: "पान",
+    printFont: "प्रिंटची अक्षरशैली",
+    everyTextStartsOnA: 'प्रत्येक रचना नव्या पानावर सुरू होते. कागद: <b class="prpaper">Letter</b>',
+    forLandscapePickItIn: 'आडव्या पानासाठी Safari च्या प्रिंट विंडोतही <span lang="en">Landscape</span> निवडा.',
+    pickA4PaperInSafari: 'Safari च्या प्रिंट विंडोतही <span class="przp" lang="en">A4</span> कागद निवडा.',
+    chromePrintsItBest: "Chrome मधून प्रिंट अधिक चांगली येते.",
+    readyPrintNow: "तयार आहे: प्रिंट करा",
+    openInSafari: "Safari मध्ये उघडा",
+    copyLink: "लिंक कॉपी करा",
+    printingDoesNotOpenFrom:
+      "iPhone वर होम स्क्रीनवरील ॲपमधून प्रिंट उघडत नाही. <b>Safari मध्ये उघडा</b> दाबा: तुमच्या निवडी सोबत जातात आणि तिथे प्रिंट तयार होते. Safari उघडले नाही तर लिंक कॉपी करा आणि Safari मध्ये पेस्ट करा.",
+    thisBrowserDidNotOpen:
+      "या ब्राउझरने प्रिंट विंडो उघडली नाही. ब्राउझरचे <b>शेअर</b> बटण दाबा आणि <b>प्रिंट</b> निवडा. दुसऱ्या ॲपमधून उघडले असल्यास <b>Safari मध्ये उघडा</b> दाबा: तुमच्या निवडी सोबत जातात.",
+    nextHowToPrint: "पुढे: कसे प्रिंट करायचे ›",
+    print: "प्रिंट",
+    addToHomeScreen2: "होम स्क्रीनवर जोडा",
+    tapTheShareButtonAt: "शेअर बटण {icon} दाबा (Safari मध्ये खाली, Chrome मध्ये वर उजवीकडे).",
+    scrollDownAndTapAdd: 'खाली स्क्रोल करून <b lang="en">Add to Home Screen</b> दाबा.',
+    tapAdd: '<b lang="en">Add</b> दाबा.',
+    openThisPageInSafari: 'हे पान <b lang="en">Safari</b> किंवा <b lang="en">Chrome</b> मध्ये उघडा (⋯ किंवा शेअर → Open in Safari/Chrome).',
+    thenShareAddToHome: 'मग शेअर {icon} → <b lang="en">Add to Home Screen</b> → <b lang="en">Add</b>.',
+    openChromeSMenuTop: "Chrome चा <b>⋮</b> मेनू (वर उजवीकडे) उघडा.",
+    tapAddToHomeScreen: '<b lang="en">Add to Home screen</b> किंवा <b lang="en">Install app</b> दाबा.',
+    tapInstallOrAdd: '<b lang="en">Install</b> किंवा <b lang="en">Add</b> दाबा.',
+    clickTheInstallIconAt: 'पत्त्याच्या पट्टीच्या उजव्या टोकाला असलेले Install चिन्ह दाबा, किंवा ब्राउझरच्या मेनूतून <b lang="en">Install</b> निवडा.',
+    clickTheShareButtonIn: 'Safari च्या टूलबारवरील शेअर बटण {icon} दाबा, किंवा <b lang="en">File</b> मेनू उघडा.',
+    chooseAddToDockThen: '<b lang="en">Add to Dock</b> निवडा, मग <b lang="en">Add</b> दाबा.',
+    firefoxCanTAddThis: "Firefox मध्ये हे ॲप म्हणून जोडता येत नाही. हे पान Chrome, Edge किंवा Safari मध्ये उघडा आणि हे बटण पुन्हा दाबा.",
+    itWillThenOpenLike: "मग ते ॲपसारखे उघडेल, इंटरनेटशिवायही.",
+    ok: "ठीक आहे",
+    home: "मुख्यपृष्ठ",
+    library: "संग्रह",
+    smaller: " लहान",
+    larger: " मोठे",
+    allSettings: "सर्व सेटिंग्ज",
+    fontThemeLayout: "अक्षरशैली, रंगसंगती, मांडणी",
+    defaultSize: "↺ मूळ आकार",
+  },
+  dates: {
+    days: DAYS.mr,
+    daysShort: ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"],
+    months: MONTHS.mr,
+    monthsShort: MONTHS.mr,
+    /** @param {number} wd @param {number} d @param {number} m */
+    day: function (wd, d, m) {
+      return DAYS.mr[wd] + ", " + dv(d) + " " + MONTHS.mr[m];
+    },
+    /** @param {number} wd @param {number} d @param {number} m @param {number} y */
+    dayYear: function (wd, d, m, y) {
+      return DAYS.mr[wd] + ", " + dv(d) + " " + MONTHS.mr[m] + " " + dv(y);
+    },
+    /** @param {number} m @param {number} y */
+    monthYear: function (m, y) {
+      return MONTHS.mr[m] + " " + dv(y);
+    },
+    /** @param {number} d @param {number} m */
+    from: function (d, m) {
+      return " (" + dv(d) + " " + MONTHS.mr[m] + "पासून)";
+    },
+    /** @param {number} m @param {number} wd */
+    before: function (m, wd) {
+      return " " + MONTHS.mr[m] + ", " + DAYS.mr[wd] + ", ";
+    },
+  },
+  language: {
+    name: "मराठी",
   },
 };

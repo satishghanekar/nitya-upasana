@@ -2,7 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { note, onPiece } from "../core/page.js";
-import { menuWords } from "../core/strings.js";
+import { fillWords, menuWords } from "../core/strings.js";
 
 var FONTS, IMAGES, hd, l1, m1, m2, ofb, offv, CACHE, me, upd, updv, PARTS, ofSaved, fill;
 // whether every file is in the saved copy: null until known, false while one is missing
@@ -38,16 +38,15 @@ export function init() {
     CACHE = (document.querySelector('meta[name="version"]') || {}).content || "aarti-v1.0";
     me = (CACHE.match(/^aarti-v([\d.]+)$/) || [])[1];
     document.getElementById("ver").textContent = me ? "v" + me : "";
-    // both menu languages, so the text follows a change of menu language (shown by data-lang, as index.html's words)
-    /** @param {(w: any) => string} pick */
-    function two(pick) {
-      return '<span class="mr">' + pick(menuWords("offline", "mr")) + '</span><span class="en" lang="en">' + pick(menuWords("offline", "en")) + "</span>";
+    // the words as the page's own (data-w), so they follow a change of menu language (js/core/strings.js fillWords)
+    /** @param {HTMLElement} el @param {string} path */
+    function words(el, path) {
+      el.innerHTML = '<span data-w="' + path + '"></span>';
+      fillWords(el);
     }
     function ofSet(st) {
       offv.setAttribute("data-s", st);
-      offv.innerHTML = two(function (w) {
-        return w.state[st];
-      });
+      words(offv, "offline.state." + st);
       ofb.hidden = st !== "off";
     }
     // Check for updates (Settings → More → About, a tap on the version line): what it says on the right, in the menu language
@@ -56,9 +55,7 @@ export function init() {
 
     function updSet(st) {
       upd.setAttribute("data-s", st);
-      updv.innerHTML = two(function (w) {
-        return w.update[st];
-      });
+      words(updv, "offline.update." + (st || "check"));
     }
     // Author lines: the Wikipedia link on a poet's name works only online; offline the name is plain text
     function crNet() {

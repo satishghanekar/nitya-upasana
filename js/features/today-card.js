@@ -35,7 +35,7 @@ import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, stepInSession, textsFor } from "../core/routine.js";
 import { onReread, routine } from "../store/store.js";
-import { dv, esc, scr, scrKey } from "../core/words.js";
+import { dv, esc, nameLang, scr, scrKey, ui as menuLang } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
 
 /**
@@ -154,14 +154,14 @@ function titleOf(id) {
 export function render() {
   var c = current(),
     w = words(),
-    ui = /** @type {"mr" | "en"} */ (P.ui === "mr" ? "mr" : "en"),
+    ui = nameLang(),
     d = fromKey(c.day),
     ids = idsFor(c.day, c.session),
     box = document.getElementById("tdy"),
     sc = document.getElementById("tsc");
   if (!box || !sc) return;
   shownToday = c.today;
-  langKey = ui + scrKey();
+  langKey = menuLang() + scrKey();
   sc.lang = ui;
   // the date, in Marathi (in Kannada letters when chosen) and in English
   var dd = /** @type {HTMLElement} */ (document.getElementById("tdd"));
@@ -491,8 +491,7 @@ export function shownSessions() {
 
 /** Re-draw when the menu language or the script changes (called by apply(), js/features/bars.js) */
 export function todayLang() {
-  var ui = P.ui === "mr" ? "mr" : "en";
-  if (ui + scrKey() !== langKey && document.getElementById("tdy")) render();
+  if (menuLang() + scrKey() !== langKey && document.getElementById("tdy")) render();
 }
 
 /** Another person is reading (js/features/profiles.js): their routine, and their menu language */
