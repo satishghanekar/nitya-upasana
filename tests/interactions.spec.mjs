@@ -43,7 +43,7 @@ test("Kannada menus: the bars, Settings and the Library in Kannada, marked as Ka
   await expect(page.locator("#asn")).toHaveAccessibleName(/^ಮುಂದೆ/);
   await page.locator("#aa").click();
   await page.locator('#spv button[data-v="screen"]').click();
-  await expect(page.locator("#su button")).toHaveText(["English", "मराठी", "ಕನ್ನಡ"]);
+  await expect(page.locator("#su button")).toHaveText(["English", "मराठी", "ಕನ್ನಡ", "తెలుగు", "ગુજરાતી"]);
   await expect(page.locator('#su button[data-v="kn"]')).toHaveAttribute("aria-pressed", "true");
   // back to English, at once
   await page.locator('#su button[data-v="en"]').click();
@@ -52,12 +52,14 @@ test("Kannada menus: the bars, Settings and the Library in Kannada, marked as Ka
   expect((await prefs(page)).ui).toBe("en");
 });
 
-// Marathi menus go with Marathi letters: picking Kannada letters turns them Kannada, Telugu letters (no menus of its
-// own) English; Kannada menus stay as they are whatever the letters
+// Marathi menus go with Marathi letters: picking Kannada, Telugu or Gujarati letters turns them into that language's;
+// other menus stay as they are whatever the letters
 for (const [from, pick, want] of [
   ["mr", "kn", "ಸಂಗ್ರಹ"],
-  ["mr", "te", "Library"],
+  ["mr", "te", "సంగ్రహం"],
+  ["mr", "gu", "સંગ્રહ"],
   ["kn", "gu", "ಸಂಗ್ರಹ"],
+  ["en", "te", "Library"],
 ])
   test(`${from} menus, then ${pick} letters picked in Settings: the menus follow the rule`, async ({ page }) => {
     await openSite(page, { ...SETUPS.marathi, ui: from }, { hash: "#a1" });
