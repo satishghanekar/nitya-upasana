@@ -76,14 +76,14 @@ export function scr(s) {
   return w.SCR && w.SCR.k ? w.SCR.to(s) : s;
 }
 
-/** The script the texts are shown in: "" as written, or "kn" (Kannada letters) */
+/** The script the texts are shown in: "" as written, or "kn", "te", "gu" (Kannada, Telugu, Gujarati letters) */
 export function scrKey() {
   /** @type {any} */
   var w = typeof window === "undefined" ? {} : window;
   return (w.SCR && w.SCR.k) || "";
 }
 
-/** The lang attribute for Marathi as shown: "mr", or "kn" in Kannada letters */
+/** The lang attribute for Marathi as shown: "mr", or "kn", "te", "gu" in those letters */
 export function mrLang() {
   return scrKey() || "mr";
 }

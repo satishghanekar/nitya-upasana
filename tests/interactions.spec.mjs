@@ -52,6 +52,23 @@ test("Kannada menus: the bars, Settings and the Library in Kannada, marked as Ka
   expect((await prefs(page)).ui).toBe("en");
 });
 
+// Marathi menus go with Marathi letters: picking Kannada letters turns them Kannada, Telugu letters (no menus of its
+// own) English; Kannada menus stay as they are whatever the letters
+for (const [from, pick, want] of [
+  ["mr", "kn", "ಸಂಗ್ರಹ"],
+  ["mr", "te", "Library"],
+  ["kn", "gu", "ಸಂಗ್ರಹ"],
+])
+  test(`${from} menus, then ${pick} letters picked in Settings: the menus follow the rule`, async ({ page }) => {
+    await openSite(page, { ...SETUPS.marathi, ui: from }, { hash: "#a1" });
+    await page.locator("#aa").click();
+    await page.locator("#sl1s").selectOption(pick);
+    await page.locator("#xc").click();
+    await untuck(page);
+    await expect(page.locator("#hm")).toHaveAccessibleName(want);
+    await expect(page.locator("#a1 .verse .mr").first()).toHaveAttribute("lang", pick);
+  });
+
 test("⋯ More opens App, Share, QR and Help under it while reading; a tap outside or Escape closes it @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a1" });
   await untuck(page);

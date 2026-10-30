@@ -129,7 +129,7 @@ export function migratePrefs(saved, env) {
 export function tidy(P) {
   if (P.lead !== "en") P.lead = "mr";
   if (P.l2 === P.lead || ["mr", "en", ""].indexOf(P.l2) < 0) P.l2 = P.lead === "en" ? "mr" : "en";
-  if (P.ind !== "kn") P.ind = "mr";
+  if (["kn", "te", "gu"].indexOf(P.ind) < 0) P.ind = "mr";
   if (P.por !== "land" && P.por !== "up") P.por = "";
   if (["mr", "en", "both"].indexOf(P.plang) < 0) P.plang = "";
   if (["letter", "a4"].indexOf(P.ppr) < 0) P.ppr = "";

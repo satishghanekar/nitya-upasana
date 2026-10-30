@@ -646,9 +646,8 @@ html[data-asb="1"] {
   padding: 0 8px;
   font: 600 16px/1.15 var(--lat);
 }
-.rs-seg button:lang(mr),
-.rs-seg button:lang(kn) {
-  font-family: "Noto Sans Kannada", var(--body);
+.rs-seg button:is(:lang(mr), :lang(kn), :lang(te), :lang(gu)) {
+  font-family: var(--ks, "Noto Sans Kannada"), var(--body);
 }
 .rs-sz {
   display: flex;
