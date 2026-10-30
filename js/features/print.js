@@ -13,7 +13,7 @@
 // Nothing is measured, so every browser prints the same way, at once, from the tap that asked for it. The contents
 // list the texts without page numbers (Satish, 2026-10-23: a browser cannot say where its pages break).
 
-import { flash, pieceEl, root } from "../core/page.js";
+import { note as message, pieceEl, root } from "../core/page.js";
 import { LEAD, P, change } from "../core/state.js";
 import { ovDone, ovDrop, ovPush } from "./history.js";
 import { focusBack } from "./more-menu.js";
@@ -25,9 +25,10 @@ import { shownSessions, shownDay, runDay, runIds, shownSession } from "./today-c
 import { cur } from "../core/apply.js";
 import { active, list as people } from "../store/store.js";
 import { loaded } from "../text/load.js";
-import { MONTHS, dv } from "../core/words.js";
+import { DAYS, dv } from "../core/words.js";
 import { TAG_WORDS, tagFor } from "../print/select.js";
 import { cleanRoutine, routinePart } from "../core/routine.js";
+import { menuWords } from "../core/strings.js";
 
 // The page each printout is made for: one language upright, both languages side by side on a sideways page
 var CHOICE = { one: { page: "up" }, both: { page: "land" } };
@@ -53,9 +54,8 @@ export function init() {
       /** @type {{ m: string, ids: string[] | null, rp: any, sp: { session: string } | null } | null} the printout just printed, until the reader is back */
       again = null,
       seen = false; // the browser has started printing (beforeprint) since the last window.print()
-    // the original's language, by the letters it is shown in (P.ind), as the Print pop-up names it: in Marathi
-    // menus, then in English. A new script (js/render.js) adds its name here.
-    var NAMES = { mr: ["मराठी", "Marathi"], kn: ["कन्नड", "Kannada"] };
+    // the original's language is named by the letters it is shown in (P.ind): menuWords("print").langs; a new script
+    // (js/render.js) adds its name there
 
     // ---- Writing the print view ----
     /** An element of the print view @param {string} tag @param {string} [cls] @param {string} [html] */
@@ -345,15 +345,13 @@ export function init() {
     function rtag(rp, id) {
       return rmr(tagFor(rp.where[id], rlang()));
     }
-    var DAYS_MR = ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
-      DAYS_EN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     // A session's printout heads its contents with its day and the session: "Tuesday · Evening" (all of a day: the day)
     /** @param {string} s @param {number} [day] the weekday (the day Home shows), else today */
     function sessionName(s, day) {
       var d = typeof day === "number" ? day : new Date().getDay(),
         mr = /** @type {Record<string, string>} */ (TAG_WORDS.mr.sessions)[s],
         en = /** @type {Record<string, string>} */ (TAG_WORDS.en.sessions)[s];
-      return { mr: DAYS_MR[d] + (mr ? " · " + mr : ""), en: DAYS_EN[d] + (en ? " · " + en : "") };
+      return { mr: DAYS.mr[d] + (mr ? " · " + mr : ""), en: DAYS.en[d] + (en ? " · " + en : "") };
     }
     // A title (a text's, the printout's, a category's) in the language printed: with both, the original's, the English
     // under it, smaller
@@ -414,15 +412,12 @@ export function init() {
       h.textContent = rp.name;
       cov.appendChild(h);
       var sub = mk("p", "pvsub");
-      sub.textContent =
-        L === "mr"
-          ? rmr("नित्य उपासना · " + MONTHS.mr[now.getMonth()] + " " + dv(now.getFullYear()))
-          : "Nitya Upasana · " + MONTHS.en[now.getMonth()] + " " + now.getFullYear();
+      sub.textContent = rmr(menuWords("print", L).cover(now.getMonth(), now.getFullYear()));
       cov.appendChild(sub);
       if (rp.grid.length) {
         var h3 = mk("h3", "pvcat");
-        h3.textContent = L === "mr" ? rmr("आठवडा एका नजरेत") : "The week at a glance";
-        if (rp.days.length === 1) h3.textContent = L === "mr" ? rmr(DAYS_MR[rp.days[0]]) : DAYS_EN[rp.days[0]];
+        h3.textContent = rmr(menuWords("print", L).week);
+        if (rp.days.length === 1) h3.textContent = rmr(DAYS[L === "mr" ? "mr" : "en"][rp.days[0]]);
         cov.appendChild(h3);
         var tb = mk("table", "pvgrid"),
           th0 = mk("thead"),
@@ -452,7 +447,7 @@ export function init() {
         cov.appendChild(tb);
       }
       var h4 = mk("h3", "pvcat");
-      h4.textContent = L === "mr" ? rmr("अनुक्रमणिका") : "Contents";
+      h4.textContent = rmr(menuWords("print", L).contents);
       cov.appendChild(h4);
       var ol = mk("ol", "pvtoc");
       src.secs.forEach(function (/** @type {HTMLElement} */ sec) {
@@ -673,14 +668,13 @@ export function init() {
     }
     function preview() {
       if (pm.hidden) return;
-      var M = P.ui === "mr",
-        ids = first(),
+      var ids = first(),
         rp = rplan(),
         m = dm(),
         k = ids ? [m, ids[0], plang(), LEAD, pref(), P.tr, P.ind, pfn(), land(m), letter(), rp ? rp.key : ""].join("|") : "",
         sh = sheet(m),
         w = 120; // its width (css/03-menus-print-view.css .prsheet)
-      shv.setAttribute("aria-label", M ? "पहिल्या पानाची झलक" : "Preview of the first page");
+      shv.setAttribute("aria-label", menuWords("print").preview);
       shv.style.height = Math.round((w * sh[1]) / sh[0]) + "px";
       if (k === pshown && shv.firstChild) return;
       pshown = k;
@@ -720,10 +714,9 @@ export function init() {
     }
     // the paper, and the button that changes it (Letter or A4)
     function paperRow() {
-      var M = P.ui === "mr",
-        o = letter() ? "A4" : "Letter";
+      var o = letter() ? "A4" : "Letter";
       document.getElementById("prp").textContent = document.getElementById("prq").textContent = letter() ? "Letter" : "A4";
-      document.getElementById("prpa").textContent = M ? o + " वापरा" : "Use " + o;
+      document.getElementById("prpa").textContent = menuWords("print").use(o);
       // Safari keeps the paper picked in its own dialog: when it is not the region's, it is told to pick it there
       [].forEach.call(document.querySelectorAll(".przp"), function (/** @type {HTMLElement} */ x) {
         x.textContent = letter() ? "Letter" : "A4";
@@ -990,7 +983,7 @@ export function init() {
       try {
         navigator.clipboard.writeText(u).then(
           function () {
-            flash("लिंक कॉपी झाली: Safari मध्ये पेस्ट करा", "Link copied: paste it into Safari");
+            message(menuWords("print").linkCopied);
           },
           function () {
             window.prompt("Copy this link and paste it into Safari", u);
@@ -1037,7 +1030,7 @@ export function init() {
       // nothing chosen that the Library has (a print link naming texts since removed): What, to choose again, never
       // the whole Library
       if (!what.total().texts) {
-        flash("निवडलेल्या रचना आता संग्रहात नाहीत: पुन्हा निवडा.", "The texts chosen are no longer in the Library: choose again.", 4000);
+        message(menuWords("print").gone, 4000);
         return openPrint({});
       }
       // the iPhone Home Screen app cannot print: straight to Safari (iOS 17 and later open it in the same tap), else
@@ -1066,14 +1059,14 @@ export function init() {
       pmMode(false);
       // the language names follow what is printed: the original's place holds Marathi or Kannada, and with
       // both languages shown the main one comes first (left, or on top)
-      var M = P.ui === "mr",
-        en = M ? "इंग्रजी" : "English",
-        or = (NAMES[P.ind] || NAMES.mr)[M ? 0 : 1],
+      var pw = menuWords("print"),
+        en = pw.langs.en,
+        or = P.ind === "kn" ? pw.langs.kn : pw.langs.mr,
         l1 = LEAD === "en" ? en : or,
         l2 = LEAD === "en" ? or : en;
       // the page: Portrait or Landscape (one language), a tap picks it; both languages: Landscape, side by side
       function opt(b, page) {
-        b.textContent = page === "land" ? (M ? "आडवे" : "Landscape") : M ? "उभे" : "Portrait";
+        b.textContent = page === "land" ? pw.landscape : pw.portrait;
         b.setAttribute("data-page", page);
         b.onclick = function () {
           change({ por: page });
@@ -1092,7 +1085,7 @@ export function init() {
         var b = document.createElement("button");
         b.type = "button";
         b.setAttribute("data-v", v);
-        b.textContent = v === "both" ? (M ? "दोन्ही" : "Both") : v === "en" ? en : or;
+        b.textContent = v === "both" ? pw.both : v === "en" ? en : or;
         lg.appendChild(b);
       });
       lg.onclick = function (e) {
@@ -1106,17 +1099,11 @@ export function init() {
         refresh();
       };
       langRow();
-      document.getElementById("prpv").textContent = !FEAT_SW
-        ? M
-          ? "उभे: वर " + l1 + ", खाली " + l2
-          : "Portrait: " + l1 + " above " + l2
-        : M
-          ? "आडवे: शेजारी शेजारी"
-          : "Landscape, side by side";
+      document.getElementById("prpv").textContent = !FEAT_SW ? pw.stacked(l1, l2) : pw.side;
       pages1();
       rows();
       paperRow();
-      document.getElementById("prx").setAttribute("aria-label", M ? "रद्द" : "Cancel");
+      document.getElementById("prx").setAttribute("aria-label", pw.cancel);
       // What, drawn afresh (the Library's categories, the reading languages and the menu language may have changed)
       // a session is the Today tab's choice, and the Library tab starts with nothing ticked, so a text ticked there
       // prints on its own (not with the session's texts)

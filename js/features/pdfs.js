@@ -15,6 +15,7 @@ import { loaded } from "../text/load.js";
 import { cleanPdfs, pdfFacts, pdfHref, pdfShelves } from "../core/pdfs.js";
 import { categories } from "./library.js";
 import { esc, scr as to, ui } from "../core/words.js";
+import { menuWords } from "../core/strings.js";
 
 /** @type {import("../core/pdfs.js").Pdf[]} */
 var pdfs = [];
@@ -87,8 +88,7 @@ function mark(saved) {
 
 /** What the cloud says, for screen readers, at the end of the row: in the menu language @param {boolean} saved */
 function said(saved) {
-  var mr = ui() === "mr";
-  return saved ? (mr ? "या फोनवर जतन" : "saved on this phone") : mr ? "फक्त ऑनलाइन" : "online only";
+  return saved ? menuWords("pdfs").saved : menuWords("pdfs").online;
 }
 
 /**
