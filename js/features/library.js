@@ -35,6 +35,7 @@ import { IA, titlesSet } from "../text/iast.js";
 import { buildIX } from "../text/search.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { dv, esc, lead, mrLang, scr as to, second, ui } from "../core/words.js";
+import { menuWords } from "../core/strings.js";
 
 /**
  * @typedef {import("../core/library.js").Category} Category
@@ -47,118 +48,6 @@ import { dv, esc, lead, mrLang, scr as to, second, ui } from "../core/words.js";
  */
 
 // The sheet's words, in the menu language (P.ui). Marathi: रचना for a text, विभाग for a category.
-const W = {
-  en: {
-    open: "Edit categories",
-    title: "Categories",
-    texts: "Texts",
-    textsInfo: "Choose the category each text is listed under.",
-    info: "Kept on this phone for everyone who reads here, and saved in backup files. The words of the texts never change.",
-    add: "Add a category",
-    rename: "Rename",
-    addTitle: "Add a category",
-    renameTitle: "Rename: ",
-    mrName: "Name in Marathi",
-    enName: "Name in English",
-    hint: "One is enough: it is used for both.",
-    save: "Save",
-    cancel: "Cancel",
-    /** @param {string} n */
-    reset: function (n) {
-      return "Use the original name: " + n;
-    },
-    del: "Delete this category",
-    builtIn: "Built in: it can be renamed on this phone, not deleted.",
-    /** @param {string} n */
-    ask: function (n) {
-      return "Delete " + n + "? Its texts go back to the categories they came with.";
-    },
-    yes: "Delete",
-    close: "Close",
-    empty: "Please type a name.",
-    taken: "Another category already has this name.",
-    full: "There is room for " + MAX_ADDED + " categories of your own.",
-    /** @param {number} n */
-    count: function (n) {
-      return n === 0 ? "No texts yet (not shown in the Library)" : n === 1 ? "1 text" : n + " texts";
-    },
-    /** @param {string} t @param {string} c */
-    moved: function (t, c) {
-      return t + ": now in " + c;
-    },
-    /** @param {string} t */
-    catFor: function (t) {
-      return "Category for " + t;
-    },
-    /** @param {string} n */
-    added: function (n) {
-      return n + " added";
-    },
-    /** @param {string} n */
-    renamed: function (n) {
-      return "Renamed: " + n;
-    },
-    /** @param {string} n */
-    deleted: function (n) {
-      return n + " deleted";
-    },
-  },
-  mr: {
-    open: "विभाग बदला",
-    title: "विभाग",
-    texts: "रचना",
-    textsInfo: "प्रत्येक रचना कोणत्या विभागात दिसावी ते निवडा.",
-    info: "हे या फोनवर इथे वाचणाऱ्या सर्वांसाठी राहते आणि बॅकअप फाइलमध्ये जतन होते. रचनांचे शब्द कधीही बदलत नाहीत.",
-    add: "विभाग जोडा",
-    rename: "नाव बदला",
-    addTitle: "विभाग जोडा",
-    renameTitle: "नाव बदला: ",
-    mrName: "मराठी नाव",
-    enName: "इंग्रजी नाव",
-    hint: "एक पुरे: तेच दोन्हीसाठी वापरले जाईल.",
-    save: "जतन करा",
-    cancel: "रद्द करा",
-    /** @param {string} n */
-    reset: function (n) {
-      return "मूळ नाव वापरा: " + n;
-    },
-    del: "हा विभाग काढून टाका",
-    builtIn: "मूळचा विभाग: या फोनवर नाव बदलता येते, काढता येत नाही.",
-    /** @param {string} n */
-    ask: function (n) {
-      return n + " काढून टाकायचा? त्यातील रचना आपापल्या मूळ विभागात परत जातील.";
-    },
-    yes: "काढून टाका",
-    close: "बंद करा",
-    empty: "कृपया नाव लिहा.",
-    taken: "हे नाव दुसऱ्या विभागाला आधीच आहे.",
-    full: "स्वतःचे जास्तीत जास्त " + dv(MAX_ADDED) + " विभाग ठेवता येतात.",
-    /** @param {number} n */
-    count: function (n) {
-      return n === 0 ? "अजून एकही रचना नाही (संग्रहात दिसत नाही)" : dv(n) + " रचना";
-    },
-    /** @param {string} t @param {string} c */
-    moved: function (t, c) {
-      return t + ": आता " + c + " विभागात";
-    },
-    /** @param {string} t */
-    catFor: function (t) {
-      return t + " हिचा विभाग";
-    },
-    /** @param {string} n */
-    added: function (n) {
-      return n + " जोडला";
-    },
-    /** @param {string} n */
-    renamed: function (n) {
-      return "नवे नाव: " + n;
-    },
-    /** @param {string} n */
-    deleted: function (n) {
-      return n + " काढला";
-    },
-  },
-};
 const PENCIL =
   '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>';
 
@@ -183,7 +72,7 @@ var editing = "";
 // ---- small helpers ----
 
 function words() {
-  return W[ui()];
+  return menuWords("library");
 }
 /** @param {string} id */
 function el(id) {

@@ -34,6 +34,7 @@ import { ovSub, ovSubDone } from "./history.js";
 import { IA } from "../text/iast.js";
 import { PAKSHA } from "../core/panchang-names.js";
 import { DAYS, MONTHS, dv, esc, lead, mrLang, num, scr, second, ui } from "../core/words.js";
+import { menuWords } from "../core/strings.js";
 
 /**
  * @typedef {import("../core/panchang.js").DayPanchang} DayPanchang
@@ -69,138 +70,6 @@ const N = {
 };
 
 // The words around the names, in the menu language
-const W = {
-  en: {
-    open: " (open the Vedic calendar)",
-    sunrise: "Sunrise",
-    sunset: "Sunset",
-    noRise: "No moonrise this day",
-    until: "until ",
-    amanta: "amanta",
-    today: "today",
-    loc: "Use my location",
-    pic: "show the picture full screen",
-    prev: "Previous month",
-    nextM: "Next month",
-    key: ["Shukla paksha", "Krishna paksha", "Purnima", "Amavasya"],
-    keyNote: "Tithi at sunrise · + a tithi that begins and ends before the next sunrise (kshaya)",
-    vriddhi: "same tithi as the day before (vriddhi)",
-    kshaya: "kshaya tithi: ",
-    near: "Close to sunrise: a printed calendar may give the neighbouring tithi.",
-    /** @param {string} p */
-    note: function (p) {
-      return "Worked out on this phone for " + p + ". Tap a day to see its details.";
-    },
-    showing: "Showing ",
-    fToday: "Today: ",
-    fTomorrow: "Tomorrow: ",
-    fYesterday: "Yesterday: ",
-    /** @param {number} d the weekday */
-    fOn: function (d) {
-      return DAYS.en[d] + ": ";
-    },
-    week: "This week",
-    next15: "Next 15 days",
-    day: "Day",
-    month: "Month",
-    up: "15 days",
-    prevDay: "Previous day",
-    nextDay: "Next day",
-    prevU: "Previous 15 days",
-    nextU: "Next 15 days",
-    todayB: "Today",
-    view: "Show",
-    upTitle: "The next 15 days",
-    nextWeek: "Next week",
-    uYesterday: "Yesterday",
-    /** @param {number} n */
-    uAgo: function (n) {
-      return n + " days ago";
-    },
-    uToday: "Today",
-    uTomorrow: "Tomorrow",
-    /** @param {number} n */
-    uIn: function (n) {
-      return "in " + n + " days";
-    },
-    /** @param {number} a @param {number} b */
-    uDays: function (a, b) {
-      return "Day " + a + (a === b ? "" : "–" + b);
-    },
-    /** @param {string} d */
-    uUntil: function (d) {
-      return "until " + d;
-    },
-    uNext: "Next",
-    uNone: "Nothing is marked on these days.",
-    kinds: { fest: "Festivals", sk: "Sankashti", pradosh: "Pradosh", hol: "Holidays" },
-  },
-  mr: {
-    open: " (पंचांग उघडा)",
-    sunrise: "सूर्योदय",
-    sunset: "सूर्यास्त",
-    noRise: "या दिवशी चंद्रोदय नाही",
-    until: "",
-    amanta: "अमान्त",
-    today: "आज",
-    loc: "माझे ठिकाण वापरा",
-    pic: "चित्र मोठे पाहा",
-    prev: "मागचा महिना",
-    nextM: "पुढचा महिना",
-    key: ["शुद्ध पक्ष", "वद्य पक्ष", "पौर्णिमा", "अमावास्या"],
-    keyNote: "सूर्योदयाची तिथी · + पुढच्या सूर्योदयापूर्वीच संपणारी (क्षय) तिथी",
-    vriddhi: "आदल्या दिवसाचीच तिथी (वृद्धी)",
-    kshaya: "क्षय तिथी: ",
-    near: "सूर्योदयाच्या अगदी जवळ: छापील पंचांगात शेजारची तिथी असू शकते.",
-    /** @param {string} p */
-    note: function (p) {
-      return "हे पंचांग या फोनवर " + p + " साठी काढले आहे. तपशील पाहण्यासाठी एखादा दिवस निवडा.";
-    },
-    showing: "",
-    fToday: "आज ",
-    fTomorrow: "उद्या ",
-    fYesterday: "काल ",
-    /** @param {number} d the weekday */
-    fOn: function (d) {
-      return DAYS.mr[d] + "ी ";
-    },
-    week: "या आठवड्यात",
-    next15: "पुढचे १५ दिवस",
-    day: "दिवस",
-    month: "महिना",
-    up: "१५ दिवस",
-    prevDay: "मागचा दिवस",
-    nextDay: "पुढचा दिवस",
-    prevU: "मागचे १५ दिवस",
-    nextU: "पुढचे १५ दिवस",
-    todayB: "आज",
-    view: "दाखवा",
-    upTitle: "पुढचे १५ दिवस",
-    nextWeek: "पुढच्या आठवड्यात",
-    uYesterday: "काल",
-    /** @param {number} n */
-    uAgo: function (n) {
-      return dv(n) + " दिवसांपूर्वी";
-    },
-    uToday: "आज",
-    uTomorrow: "उद्या",
-    /** @param {number} n */
-    uIn: function (n) {
-      return dv(n) + " दिवसांनी";
-    },
-    /** @param {number} a @param {number} b */
-    uDays: function (a, b) {
-      return "दिवस " + dv(a) + (a === b ? "" : "–" + dv(b));
-    },
-    /** @param {string} d */
-    uUntil: function (d) {
-      return d + "पर्यंत";
-    },
-    uNext: "पुढे",
-    uNone: "या दिवसांत काही नाही.",
-    kinds: { fest: "सण", sk: "संकष्टी", pradosh: "प्रदोष", hol: "सुट्ट्या" },
-  },
-};
 
 const ICON = {
   // the sunrise and sunset beside their times: the app's own round pictures, small (kept offline by js/parts.js)
@@ -243,7 +112,7 @@ var homeT;
 // ----- small helpers -----
 
 function words() {
-  return W[ui()];
+  return menuWords("calendar");
 }
 /** A Marathi name, escaped, in the chosen script, marked with its language @param {string} s @param {string} [cls] */
 function mr(s, cls) {
@@ -374,10 +243,7 @@ function clock(t) {
  * @param {Date} t @param {string} day
  */
 function until(t, day) {
-  var other = keyOf(t) !== day,
-    w = words();
-  if (ui() === "en") return w.until + (other ? DAYS.en[t.getDay()].slice(0, 3) + " " : "") + clock(t);
-  return (other ? DAYS.mr[t.getDay()] + "ी " : "") + clock(t) + " पर्यंत";
+  return words().until(keyOf(t) !== day ? t.getDay() : -1, clock(t));
 }
 /** The place's name in the menu language @param {Where} L */
 function placeName(L) {
@@ -1529,12 +1395,7 @@ function announce() {
   var live = document.getElementById("call"),
     p = /** @type {HTMLElement | null} */ (document.getElementById("cdt")),
     d = dateOf(view.day);
-  if (live)
-    live.textContent =
-      words().showing +
-      (ui() === "en" ? d.getDate() + " " + MONTHS.en[d.getMonth()] : dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()]) +
-      ": " +
-      (p ? p.textContent : "");
+  if (live) live.textContent = words().showing(d.getDate(), d.getMonth(), p ? p.textContent || "" : "");
 }
 // The Day tab at a day tapped in the month or the 15 days has its own step in the browser's history, so the
 // phone's Back returns to that tab, as the page's Back does (ovSub in js/features/history.js)

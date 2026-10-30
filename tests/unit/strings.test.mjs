@@ -5,8 +5,18 @@ import { readFileSync } from "node:fs";
 import { LANGS, menuWords } from "../../js/core/strings.js";
 import en from "../../js/strings/en.js";
 
+// The sentences that take a list of names, not one value
+const LISTS = ["routine.copied"];
+
 // The parts whose words are in the catalog; each one moved adds its file here
-const MOVED = ["js/features/backup.js"];
+const MOVED = [
+  "js/features/backup.js",
+  "js/features/profiles.js",
+  "js/features/library.js",
+  "js/features/today-card.js",
+  "js/features/routine-builder.js",
+  "js/print/what.js",
+];
 
 /** Every word's path in a set of words, with what kind it is: "string", "function/2" (two values), "list/12" */
 function shape(o, at = "") {
@@ -26,13 +36,20 @@ describe("the menu words", () => {
     });
     test(`${code}: no word is empty, and each sentence gives a sentence`, () => {
       for (const [path, kind] of shape(words)) {
-        const v = path.split(".").reduce((o, k) => o[k], words);
+        const keys = path.split("."),
+          on = keys.slice(0, -1).reduce((o, k) => o[k], words),
+          v = on[keys[keys.length - 1]];
         if (kind === "string") expect(v.trim(), path).not.toBe("");
         if (kind.startsWith("function/")) {
-          const out = v(...Array.from({ length: v.length }, (_, i) => "X" + i));
-          expect(typeof out, path).toBe("string");
-          // every value given is in the sentence
-          for (let i = 0; i < v.length; i++) expect(out, path).toContain("X" + i);
+          // (values as digits: a sentence may write them in Devanagari, or lowercase a name)
+          // (a sentence that takes a list: LISTS)
+          const list = LISTS.includes(path),
+            args = (i, x) => Array.from({ length: v.length }, (_, j) => (list ? [j === i ? x : "2"] : j === i ? x : "2"));
+          // (called as the parts call it: a sentence may use its part's other words, this.days)
+          const say = (a) => v.apply(on, a);
+          expect(typeof say(args(-1)), path).toBe("string");
+          // every value given changes the sentence
+          for (let i = 0; i < v.length; i++) expect(say(args(i, "3")), path + " value " + i).not.toBe(say(args(i, "5")));
         }
       }
     });
