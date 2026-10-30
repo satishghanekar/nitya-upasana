@@ -40,3 +40,30 @@ for (const W of [
     expect(got.split, "blocks that may be split").toBe(0);
   });
 }
+
+// What a text prints around its stanzas: the author line with its second line apart, no "3 times" after lines already
+// written out three times, and no "↻ dhrupad" between the dhrupad at the top and the first stanza
+for (const W of [
+  { name: "the dhrupad once", pref: 1 },
+  { name: "the dhrupad after every verse", pref: 0 },
+]) {
+  test(`the notes around a text's stanzas · ${W.name}`, async ({ page }) => {
+    await stubPrint(page);
+    await openSite(page, { ...SETUPS.english, pref: W.pref });
+    await printFromButton(page, "pr1");
+    const got = await page.evaluate(() => {
+      const sec = (id) => document.querySelector('#pv .pvs[data-sid="' + id + '"]');
+      const ks = (id) => [...sec(id).querySelectorAll(".pvk")].map((k) => k.textContent.replace(/\s+/g, " ").trim());
+      return {
+        credit: sec("a7").querySelector(".pvcr").textContent,
+        ghalinEnd: ks("a8").slice(-1)[0],
+        vitthalFirst: ks("a7")[0],
+      };
+    });
+    expect(got.credit).toContain("Nama (also credited");
+    if (W.pref === 0) expect(got.ghalinEnd).not.toContain("3 times");
+    else expect(got.ghalinEnd).toContain("3 times");
+    // the first block: the dhrupad at the top, the first stanza and, with the dhrupad once, the one ↻ after it
+    expect(got.vitthalFirst.match(/↻/g) || []).toHaveLength(W.pref === 1 ? 1 : 0);
+  });
+}
