@@ -1,5 +1,5 @@
 // Offline: once opened, the site works with no internet (service worker sw.js).
-import { test, expect } from "@playwright/test";
+import { test, expect, devices } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { FIXED_NOW, PREFS_KEY, BASE_PREFS, TEXT_COUNT, buildAll, settingsTab } from "./helpers.mjs";
 
@@ -119,6 +119,39 @@ test("Check for updates saves a changed file and reloads with it @chromium-only"
   // the page now runs with the changed file, from the saved copy
   const css = await page.evaluate(async () => (await (await fetch("css/99-fallbacks.css")).text()).includes("#__changed"));
   expect(css).toBe(true);
+});
+
+// Safari and every iPhone and iPad browser (WebKit) keep the scripts in memory until the app is closed, whatever
+// reloads the page: there Check for updates saves the new files and asks the reader to close the app and open it again,
+// rather than reloading into the old menus with the new page (Satish, 2026-10-30)
+test.describe("in Safari", () => {
+  test.use({ userAgent: devices["Desktop Safari"].userAgent });
+  test("Check for updates saves the changed file and asks to close and reopen the app @chromium-only", async ({ page, context }) => {
+    await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [PREFS_KEY, JSON.stringify(BASE_PREFS)]);
+    await page.goto("./");
+    await page.evaluate(async () => {
+      await navigator.serviceWorker.ready;
+      if (!navigator.serviceWorker.controller) await new Promise((r) => navigator.serviceWorker.addEventListener("controllerchange", r, { once: true }));
+    });
+    await page.reload();
+    await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+    await context.route(/\/css\/99-fallbacks\.css(\?|$)/, async (r) => {
+      const res = await r.fetch();
+      await r.fulfill({ response: res, body: (await res.text()) + "\n#__changed{color:red}" });
+    });
+    let reloaded = false;
+    page.on("load", () => (reloaded = true));
+    await page.locator("#aa").click();
+    await settingsTab(page, "more");
+    await page.locator("#upd").click();
+    await expect(page.locator("#upd")).toHaveAttribute("data-s", "restart", { timeout: 25_000 });
+    await expect(page.locator("#updv")).toHaveText("Close and reopen");
+    await expect(page.locator("#fl")).toContainText("Close the app and open it again to finish.");
+    expect(reloaded).toBe(false);
+    await context.unrouteAll({ behavior: "ignoreErrors" });
+    // the new file is saved for the next launch
+    expect(await page.evaluate(async () => (await (await fetch("css/99-fallbacks.css")).text()).includes("#__changed"))).toBe(true);
+  });
 });
 
 // Safari installs a new version as the app opens and removes the saved copy of the version still on screen: Check for
