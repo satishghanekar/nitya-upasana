@@ -9,10 +9,11 @@
 // The place: the reader's own (the place on Home's Vedic calendar line, with its pin: "Use my location", kept on this device as P.loc and
 // named from the built-in list below), else a city for the phone's time zone.
 
-import { flash } from "../core/page.js";
+import { note } from "../core/page.js";
 import { P, change } from "../core/state.js";
 import { SK } from "./astronomy.js";
-import { DAYS, MONTHS, dv } from "../core/words.js";
+import { nameLang, ui } from "../core/words.js";
+import { menuWords } from "../core/strings.js";
 import { dateKey } from "../core/routine.js";
 
 /** The next Sankashti, worked out once a day for the place (read by js/features/share.js), or null */
@@ -242,8 +243,10 @@ function near(lat, lon) {
       best = c;
     }
   });
+  var wm = menuWords("sankashti", "mr"),
+    we = menuWords("sankashti", "en");
   /** @type {Place} */
-  var o = { lat: lat, lon: lon, mr: "तुमचे ठिकाण", en: "Your location", own: 1 };
+  var o = { lat: lat, lon: lon, mr: wm.yourPlace, en: we.yourPlace, own: 1 };
   var s = /** @type {[number, number, string, string, number?] | null} */ (sub),
     bb = /** @type {[number, number, string, string, number?] | null} */ (best);
   if (s) {
@@ -253,8 +256,8 @@ function near(lat, lon) {
     o.mr = bb[2];
     o.en = bb[3];
   } else if (bb && bd <= 120) {
-    o.mr = bb[2] + " जवळ";
-    o.en = "near " + bb[3];
+    o.mr = wm.near(bb[2]);
+    o.en = we.near(bb[3]);
   }
   return o;
 }
@@ -283,27 +286,21 @@ export function skMid(t) {
 }
 
 /**
- * Date (with the year when it is not this year) and moonrise text for one Sankashti, in Marathi and English
+ * Date (with the year when it is not this year) and moonrise text for one Sankashti, in the menu language
+ * (js/strings/: sankashti)
  * @param {Sankashti} o
  */
 export function skFmt(o) {
-  var d = new Date(o.day),
+  var w = menuWords("sankashti"),
+    d = new Date(o.day),
     yr = d.getFullYear() !== new Date().getFullYear(),
     r = o.rise ? new Date(o.rise) : null,
-    h = r ? r.getHours() : 0,
-    mi = r ? ("0" + r.getMinutes()).slice(-2) : "",
-    h12 = r ? ((h + 11) % 12) + 1 : 0,
     late = !!r && r.getDate() !== d.getDate();
   return {
     d: d,
     ang: d.getDay() === 2,
-    dmr: DAYS.mr[d.getDay()] + ", " + dv(d.getDate()) + " " + MONTHS.mr[d.getMonth()] + (yr ? " " + dv(d.getFullYear()) : ""),
-    den: d.toLocaleDateString(
-      "en-US",
-      yr ? { weekday: "short", day: "numeric", month: "short", year: "numeric" } : { weekday: "short", day: "numeric", month: "short" },
-    ),
-    tmr: r ? (h >= 20 || h < 4 ? "रात्री " : h >= 16 ? "सायं. " : "") + dv(h12) + ":" + dv(mi) + (late ? " (मध्यरात्रीनंतर)" : "") : "—",
-    ten: r ? h12 + ":" + mi + (h >= 12 ? " pm" : " am") + (late ? " (after midnight)" : "") : "—",
+    day: w.day(d.getDay(), d.getDate(), d.getMonth(), yr ? d.getFullYear() : 0),
+    time: r ? w.time(r.getHours(), ("0" + r.getMinutes()).slice(-2)) + (late ? w.late : "") : "—",
   };
 }
 
@@ -391,19 +388,20 @@ export function skRender() {
     return;
   }
   var f = skFmt(o),
-    mr = P.ui === "mr";
-  box.lang = mr ? "mr" : "en";
+    w = menuWords("sankashti"),
+    n = f.ang ? w.angName : w.name;
+  box.lang = ui();
   // three parts, each kept whole on a narrow phone
   box.innerHTML =
     MOON +
     "<span>" +
     '<span class="skp">' +
     // ("today" only on today)
-    (mr ? (f.ang ? "अंगारकी " : "") + "संकष्टी चतुर्थी" + (at ? "" : " आज") : "Sankashti Chaturthi" + (at ? "" : " today") + (f.ang ? " (Angaraki)" : "")) +
+    (at ? n : w.today(n)) +
     '</span><span aria-hidden="true"> · </span><span class="skp">' +
-    (mr ? "चंद्रोदय <b>" + f.tmr + "</b>" : "Moonrise <b>" + f.ten + "</b>") +
+    w.moonrise(f.time) +
     '</span><span aria-hidden="true"> · </span><span class="skp">' +
-    (mr ? L.mr : L.en) +
+    L[nameLang()] +
     "</span></span>";
   box.hidden = false;
 }
@@ -450,7 +448,7 @@ function autoLocation() {
  */
 export function useMyLocation(quiet) {
   if (!navigator.geolocation) {
-    if (!quiet) flash("हे ब्राउझर ठिकाण देऊ शकत नाही", "Location is not available in this browser");
+    if (!quiet) note(menuWords("sankashti").noGeo);
     return;
   }
   navigator.geolocation.getCurrentPosition(
@@ -461,10 +459,10 @@ export function useMyLocation(quiet) {
       skLang();
       // the Vedic calendar (Home's line, the page when open) works the day out again there
       document.dispatchEvent(new Event("nitya-place"));
-      if (!quiet || (skLoc() || { en: "" }).en !== was) flash("ठिकाण: " + (skLoc() || { mr: "" }).mr, "Place: " + (skLoc() || { en: "" }).en);
+      if (!quiet || (skLoc() || { en: "" }).en !== was) note(menuWords("sankashti").place((skLoc() || { mr: "", en: "" })[nameLang()]));
     },
     function () {
-      if (!quiet) flash("ठिकाण मिळाले नाही", "Could not get your location");
+      if (!quiet) note(menuWords("sankashti").noPlace);
     },
     { timeout: 15000, maximumAge: quiet ? 3600000 : 86400000 },
   );
