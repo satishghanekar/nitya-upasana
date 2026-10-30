@@ -147,7 +147,7 @@
     <span id="ofb" role="img" hidden aria-label="No internet. Using the saved copy" title="No internet · using the saved copy"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.5a4 4 0 0 0 1.6-.33M20.8 14.5A4 4 0 0 0 18.1 10.05 6 6 0 0 0 9.2 5.6M6.4 9.1A4.5 4.5 0 0 0 7 18"/><path d="M3 3l18 18"/></svg></span>
     <!-- Print (js/features/print.js): up here since it is used now and then; the Library is in the bottom bar (Satish, 2026-10-27) -->
     <button id="asp" type="button" aria-label="Print" aria-haspopup="dialog" aria-controls="prm"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg></button>
-    <button id="tmb" type="button" aria-label="More" aria-expanded="false" aria-controls="shr"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg></button>
+    <button id="tmb" type="button" aria-expanded="false" aria-controls="shr"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span class="tmbw"><span data-w="page.share">Share</span></span></button>
     <button id="aa" type="button" aria-label="Settings" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
   </div>
 </div>
@@ -207,12 +207,13 @@
      Back and three tabs, Reading | Screen | More, each with its groups of rows in rounded cards, like phone settings ==== -->
 <div class="sp" id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="spt" tabindex="-1">
   <div class="sp-pg" id="sp-home">
-    <!-- Back (‹) and the tabs, Reading | Screen | More, in one row as on the Library and the calendar pages
-         (Satish, 2026-10-25; js/features/settings-panel.js spTab); the page's title is for screen readers only. Each
-         group below says which tab it is on (data-tab) -->
-    <h2 id="spt" class="sr"><span lang="mr">सेटिंग्ज</span> <span lang="en">Settings</span></h2>
+    <!-- Back (‹), the page's title and the tabs, Reading | Screen | More, in one row as on the Library and the calendar
+         pages (Satish, 2026-10-25; js/features/settings-panel.js spTab). Phones and tablets: the tabs, the title for
+         screen readers only. iPads and desktops: the title, every group at once, no tabs (Satish, 2026-10-30). Each group
+         below says which tab it is on (data-tab) -->
     <div class="sp-hd">
       <button type="button" id="xc"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span data-w="page.back">Back</span></span></button>
+      <h2 id="spt" class="sp-ttl"><span data-w="page.settings">Settings</span></h2>
       <div id="spv" role="group" aria-label="Settings">
         <button type="button" data-v="read" aria-pressed="true"><span data-w="page.reading">Reading</span></button>
         <button type="button" data-v="screen" aria-pressed="false"><span data-w="page.screen">Screen</span></button>
@@ -226,6 +227,9 @@
            shows in one card: the main and second language (the phone's own dropdown, an invisible <select> over each
            row; English is listed twice, once per spelling), text size and font. Then how a text is laid out, which the
            preview can't show: the dhrupad and the columns (Satish, 2026-10-25) -->
+      <!-- two columns on desktops (css/09-settings-page.css): the preview and the choices it shows; then the screen,
+           profiles and about. Elsewhere the groups lie as if these were not there (display: contents) -->
+      <div class="sp-c1">
       <section class="sp-grp sp-pvg" data-tab="read">
         <h3 class="sp-h"><span data-w="page.preview">Preview</span></h3>
         <!-- a few lines of the Ganapati aarti, as the pieces will show them (filled in by the script) -->
@@ -281,6 +285,8 @@
         </div>
       </section>
       <!-- Screen: the app around the texts: the language of the menus and buttons, the theme, contrast, screen on -->
+      </div>
+      <div class="sp-c2">
       <section class="sp-grp" data-tab="screen">
         <h3 class="sp-h"><span data-w="page.screen">Screen</span></h3>
         <div class="sp-card">
@@ -330,6 +336,7 @@
           <button type="button" class="sp-row" id="upd"><span class="sp-l"><span id="ver" lang="en"></span> · <span id="offv"></span></span><span class="sp-v" id="updv"></span></button>
         </div>
       </section>
+      </div>
     </div>
     <!-- who made the site, always in English, under every tab -->
     <p class="sp-by" lang="en">A volunteer offering by Satish Ghanekar<br><a href="mailto:satishghanekar1@gmail.com">satishghanekar1@gmail.com</a></p>

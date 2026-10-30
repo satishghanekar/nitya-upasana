@@ -587,6 +587,7 @@ export default {
     smaller: " लहान",
     larger: " मोठे",
     allSettings: "सर्व सेटिंग्ज",
+    settings: "सेटिंग्ज",
     fontThemeLayout: "अक्षरशैली, रंगसंगती, मांडणी",
     defaultSize: "↺ मूळ आकार",
   },
