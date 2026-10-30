@@ -3,8 +3,8 @@
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Home v2 (approved by Satish 2026-10-18, mockup A "Simple list"): the home page is what to chant
    now, in one column. Built by js/features/today-card.js: the time-of-day picture beside today's date (#tdy), a slot
-   for the Vedic calendar line (#pan), the festival line on the day (#fst, js/features/vedic-calendar.js), the Sankashti
-   line on the day (#skt, js/features/sankashti.js), the session's
+   for the Vedic calendar line (#pan, with the day's festival, Pradosh or Sankashti in it: js/features/vedic-calendar.js),
+   Coming up (#upw), the session's
    texts (#tsc) under the Morning | Afternoon | Evening switch (#tss, Home v3 option A, 2026-10-20); a title starts
    the session there. The Library (#jump) holds every
    text; the pieces are not shown under Home on its own (data-hv). On wide screens Home's column stays on the left
@@ -81,26 +81,27 @@
   font: 400 14px/1.35 var(--lat);
   color: var(--muted);
 }
-/* ‹ › under the date (js/features/today-card.js): the day before or after; between them the day's word, greyed on
-   today ("Today") and marked on another day ("Tomorrow", "3 days ago") */
+/* The day bar at the top of the card, as the calendar's Day view has it (js/features/today-card.js): ‹ the day ›, the
+   arrows close to it, and Today on the right on another day. Every part keeps its place on every day (the day one
+   width, Today's room kept while it is hidden), so nothing moves as ‹ › go through the days (Satish, 2026-10-30) */
 #tdn {
-  display: flex;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 12em) 44px 1fr;
   align-items: center;
-  gap: 10px;
-  margin: 4px 0 2px;
+  gap: 6px;
+  margin: 0 0 6px;
   cursor: default;
 }
 #tdn .tdnb {
   display: grid;
-  flex: none;
   place-items: center;
   width: 44px;
   height: 44px;
   margin: 0;
   padding: 0;
   border: 1px solid var(--hdrl);
-  border-radius: 50%;
-  background: var(--hdr);
+  border-radius: 12px;
+  background: var(--hdrt);
   color: var(--accent);
   cursor: pointer;
 }
@@ -108,108 +109,86 @@
   opacity: 0.4;
   cursor: default;
 }
-#tdn .tdnb:focus-visible,
-#tdbb:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
-#tdr {
-  padding: 1px 10px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  color: var(--muted);
-  font: 600 14px/1.6 var(--lat);
-}
-#tdn[lang="mr"] #tdr {
-  font-family: var(--body);
-}
-#tdr.on {
-  border-color: var(--accent);
-  background: var(--bg);
-  color: var(--accent);
-}
-/* another day shown: "Showing Wednesday" and Today ›, where This week is on today */
-#tdb[hidden] {
-  display: none;
-}
-#tdb {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin: 0 0 14px;
-  padding: 8px 8px 8px 12px;
-  border: 1px dashed var(--accent);
-  border-radius: 12px;
-  background: var(--hdrt);
+#tdl {
+  overflow: hidden;
   color: var(--ink);
-  font: 400 15px/1.35 var(--lat);
+  font: 600 15px/1.2 var(--lat);
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-#tdb[lang="mr"] {
+#tdn:not([lang="en"]) #tdl {
   font-family: var(--body);
 }
-#tdb b {
-  color: var(--accent);
-}
-#tdbb {
-  flex: none;
+#tdt {
+  justify-self: end;
   height: auto;
   min-height: 44px;
   margin: 0;
-  padding: 0 16px;
+  padding: 0 4px;
   border: 0;
-  border-radius: 999px;
-  background: var(--accent);
-  color: var(--bg);
-  font: 600 15px/1.2 var(--lat);
+  background: none;
+  color: var(--accent);
+  font: 600 14px/1.2 var(--lat);
   font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
   cursor: pointer;
+}
+/* on today: out of sight and out of reach, its room kept */
+#tdt.off {
+  visibility: hidden;
+}
+#tdn .tdnb:focus-visible,
+#tdt:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+/* the day's word after the second line of the date: Today, Tomorrow, In 3 days, 3 days ago */
+#tdr {
+  color: var(--accent);
+}
+/* (the dot between them only when there is a second date) */
+#tdd .d2t:empty + .dsep {
+  display: none;
 }
 #iconb:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
 
-/* ==== The festival and Sankashti lines (on the day only) and the Vedic calendar line's place (its look: css/12-calendar.css) ==== */
-#pan[hidden],
-#fst[hidden],
-#skt[hidden] {
+/* ==== The Vedic calendar line's place (its look: css/12-calendar.css), and the day's line in it (#pn4): the day's
+   festivals, Pradosh or Sankashti, else the next one, on every day, so the card keeps one height ==== */
+#pan[hidden] {
   display: none;
 }
 #pan {
   margin: 0 0 14px;
 }
-#fst,
-#skt {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 14px;
-  padding: 6px 12px;
-  border: 1px solid var(--hdrl);
-  border-radius: 12px;
-  background: var(--hdr);
-  color: var(--ink);
+#pan .p4 {
+  display: block;
+  overflow: hidden;
+  /* one line's height whatever is in it (the icon of a festival day was a few px taller than the words) */
+  height: calc(1.45em + 7px);
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
   font: 400 14px/1.45 var(--lat);
-}
-#skt .skp {
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
-#fst[lang="mr"],
-#skt[lang="mr"] {
+#pan[lang="mr"] .p4 {
   font-family: var(--body);
 }
-#fst svg,
-#skt svg {
-  flex: none;
+#pan .p4 .dot svg {
+  margin-right: 4px;
   color: var(--igold);
+  vertical-align: -3px;
 }
-#fst b,
-#skt b {
-  font-weight: 650;
-}
-#fst b {
+#pan .p4 b {
   color: var(--accent);
+  font-weight: 650;
 }
 
 /* ==== The session: texts, ticks ==== */
@@ -735,10 +714,7 @@
   }
   :root[data-hv="1"] #home > #tdy,
   :root[data-hv="1"] #home > #pan,
-  :root[data-hv="1"] #home > #fst,
-  :root[data-hv="1"] #home > #skt,
   :root[data-hv="1"] #home > #upw,
-  :root[data-hv="1"] #home > #tdb,
   :root[data-hv="1"] #home > #pfnt {
     grid-column: 1;
   }

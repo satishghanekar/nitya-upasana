@@ -949,3 +949,24 @@
     overflow-wrap: normal;
   }
 }
+
+/* Home's Coming up keeps one height on every day (Satish, 2026-10-30): its row's small line and Next each on one line,
+   cut with … (the calendar's 15 days has them whole) */
+#upw .upn {
+  min-width: 0;
+}
+#upw .upn small {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#upw .upx {
+  flex-wrap: nowrap;
+}
+#upw .upx b {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -178,11 +178,6 @@ export default {
     ago: function (n) {
       return dv(n) + " दिवसांपूर्वी";
     },
-    /** @param {string} d the weekday's name, as HTML */
-    showing: function (d) {
-      return "<b>" + d + "</b> पाहत आहात";
-    },
-    back: "आज ›",
   },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
@@ -340,14 +335,9 @@ export default {
     showing: function (d, m, what) {
       return dv(d) + " " + MONTHS.mr[m] + ": " + what;
     },
-    fToday: "आज ",
-    fTomorrow: "उद्या ",
-    fYesterday: "काल ",
-    /** @param {number} d the weekday */
-    fOn: function (d) {
-      return DAYS.mr[d] + "ी ";
-    },
     week: "या आठवड्यात",
+    /** Home's card of what comes next (#upw): the next two after the day shown */
+    coming: "येत्या दिवसांत",
     next15: "पुढचे १५ दिवस",
     day: "दिवस",
     month: "महिना",
