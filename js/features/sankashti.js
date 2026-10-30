@@ -12,7 +12,7 @@
 import { note } from "../core/page.js";
 import { P, change } from "../core/state.js";
 import { SK } from "./astronomy.js";
-import { nameLang, ui } from "../core/words.js";
+import { esc, nameOf, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
 import { dateKey } from "../core/routine.js";
 
@@ -401,7 +401,7 @@ export function skRender() {
     '</span><span aria-hidden="true"> · </span><span class="skp">' +
     w.moonrise(f.time) +
     '</span><span aria-hidden="true"> · </span><span class="skp">' +
-    L[nameLang()] +
+    esc(nameOf(L)) +
     "</span></span>";
   box.hidden = false;
 }
@@ -459,7 +459,7 @@ export function useMyLocation(quiet) {
       skLang();
       // the Vedic calendar (Home's line, the page when open) works the day out again there
       document.dispatchEvent(new Event("nitya-place"));
-      if (!quiet || (skLoc() || { en: "" }).en !== was) note(menuWords("sankashti").place((skLoc() || { mr: "", en: "" })[nameLang()]));
+      if (!quiet || (skLoc() || { en: "" }).en !== was) note(menuWords("sankashti").place(nameOf(skLoc() || { mr: "", en: "" })));
     },
     function () {
       if (!quiet) note(menuWords("sankashti").noPlace);

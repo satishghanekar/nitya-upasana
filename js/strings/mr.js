@@ -590,6 +590,7 @@ export default {
     ok: "ठीक आहे",
     home: "मुख्यपृष्ठ",
     library: "संग्रह",
+    vedicCalendar: "पंचांग",
     smaller: " लहान",
     larger: " मोठे",
     allSettings: "सर्व सेटिंग्ज",

@@ -609,6 +609,7 @@ export default {
     ok: "ಸರಿ",
     home: "ಮುಖಪುಟ",
     library: "ಸಂಗ್ರಹ",
+    vedicCalendar: "ಪಂಚಾಂಗ",
     smaller: " ಚಿಕ್ಕದು",
     larger: " ದೊಡ್ಡದು",
     allSettings: "ಎಲ್ಲ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",

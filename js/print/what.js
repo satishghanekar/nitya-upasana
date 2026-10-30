@@ -15,7 +15,7 @@
 // first language large, the second under it.
 // No init(): js/features/print.js creates it (createWhat) when it starts.
 
-import { esc, lead, nameLang, num, scr, scrKey, second, ui } from "../core/words.js";
+import { esc, lead, num, scr, scrKey, second, ui } from "../core/words.js";
 import { searchKey } from "../features/text-picker.js";
 import { SESSIONS } from "../core/routine.js";
 import { TAG_WORDS, selectRoutine, tagFor, weekGrid, weekOrder } from "./select.js";
@@ -175,9 +175,9 @@ export function createWhat(el, o) {
       key: [p.id, p.name, weekOrder(d).join(""), ses.join(",")].join("/"),
     };
   }
-  /** The tag in the menu language (Marathi in the chosen script) @param {RoutinePlan} r @param {string} id */
+  /** The tag in the menu language, in its own words @param {RoutinePlan} r @param {string} id */
   function tagIn(r, id) {
-    return ui() === "mr" ? scr(tagFor(r.where[id], "mr")) : tagFor(r.where[id], "en");
+    return tagFor(r.where[id], ui());
   }
   /** Draw the Routine tab's choices and list (again after each tap, keeping the focus on the button tapped) */
   function drawRoutine() {
@@ -186,7 +186,7 @@ export function createWhat(el, o) {
     var a = /** @type {HTMLElement | null} */ (document.activeElement),
       at = a && box.contains(a) ? a.getAttribute("data-rk") : null,
       w = whatWords(),
-      tw = TAG_WORDS[nameLang()],
+      tw = TAG_WORDS[ui()] || TAG_WORDS.en,
       l = lead(),
       s2 = second(),
       ps = people(),
@@ -239,7 +239,7 @@ export function createWhat(el, o) {
             '" aria-pressed="' +
             (d.indexOf(n) >= 0) +
             '">' +
-            esc(ui() === "mr" ? scr(tw.days[n]) : tw.days[n]) +
+            esc(tw.days[n]) +
             "</button>"
           );
         })
@@ -250,7 +250,7 @@ export function createWhat(el, o) {
       '">' +
       SESSIONS.map(function (s) {
         var any = !!p && hasTexts(p, s),
-          nm = ui() === "mr" ? scr(tw.sessions[s]) : tw.sessions[s];
+          nm = tw.sessions[s];
         return (
           '<button type="button" class="prchip" data-rk="ses-' +
           s +

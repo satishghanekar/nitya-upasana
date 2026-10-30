@@ -89,6 +89,7 @@ export function pieceEl(id) {
 export function flash(m, e, ms) {
   var x = document.getElementById("fl");
   x.textContent = P.ui === "mr" ? m : e;
+  x.lang = P.ui === "mr" ? "mr" : "en";
   x.classList.remove("err");
   x.classList.add("on");
   clearTimeout(flash.t);
@@ -101,4 +102,5 @@ export function flash(m, e, ms) {
  * @param {string} text @param {number} [ms] */
 export function note(text, ms) {
   flash(text, text, ms);
+  document.getElementById("fl").lang = P.ui; // (in the menu language, whichever it is)
 }

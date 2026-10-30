@@ -8,7 +8,19 @@
 // Sankashti (Wednesday).
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { openSite, settle, SETUPS, useTestRoutine, TEST_AARTIS, TEST_ROUTINE, TEXT_COUNT, axeScan, axeEveryTheme, noViolations } from "./helpers.mjs";
+import {
+  openSite,
+  settle,
+  SETUPS,
+  useTestRoutine,
+  TEST_AARTIS,
+  TEST_ROUTINE,
+  TEXT_COUNT,
+  axeScan,
+  axeEveryTheme,
+  noViolations,
+  langMismatches,
+} from "./helpers.mjs";
 import { textsFor } from "../js/core/routine.js";
 
 const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
@@ -443,6 +455,50 @@ test("Kannada letters: the titles in the list are shown in Kannada", async ({ pa
   await expect(rows(page).first().locator(".t1")).toHaveText(/^[ಀ-೿\s]+$/);
   await expect(rows(page).first().locator(".t2")).toHaveText("Sukhkarta Dukhharta");
 });
+
+// The card follows the reading languages (Settings → Reading), as the Vedic calendar's day card does: the main one
+// large, the second under it, the main one alone when there is no second; Kannada, Telugu and Gujarati letters bring
+// their own words for the date and the session, and every word is marked with its language (Satish, 2026-10-30)
+test("English as the main language: the date, the session and the titles in English first", async ({ page }) => {
+  await openSite(page, SETUPS["english-main-both"], { now: EVENING });
+  await expect(page.locator("#tdd .d1")).toHaveText("Sunday, 18 October 2026");
+  await expect(page.locator("#tdd .d1")).toHaveAttribute("lang", "en");
+  await expect(page.locator("#tdd .d2")).toHaveText("रविवार, १८ ऑक्टोबर २०२६");
+  await expect(page.locator("#tsh")).toHaveText("Evening · सायंकाळ");
+  await expect(rows(page).first().locator(".t1")).toHaveText("Sukhkarta Dukhharta");
+  await expect(rows(page).first().locator(".t2")).toHaveText(TITLE["aarti-sukhkarta"].title);
+  await expect(rows(page).first().locator(".tno")).toHaveText("1.");
+  // the top bar's title too, marked English
+  await expect(page.locator("#btt")).toHaveText("Nitya Upasana");
+  await expect(page.locator("#btt")).toHaveAttribute("lang", "en");
+});
+
+test("English alone: no Marathi on the card", async ({ page }) => {
+  await openSite(page, { ...SETUPS.english, lead: "en", l2: "", lang: "en" }, { now: EVENING });
+  await expect(page.locator("#tdd .d1")).toHaveText("Sunday, 18 October 2026");
+  await expect(page.locator("#tdd .d2")).toBeHidden();
+  await expect(page.locator("#tsh")).toHaveText("Evening");
+  await expect(rows(page).first().locator(".t2")).toHaveCount(0);
+  expect(await page.locator("#tdy, #tsc").evaluateAll((els) => els.map((e) => e.innerText).join(" "))).not.toMatch(/[\u0900-\u097F]/);
+});
+
+for (const [k, day, session] of [
+  ["kn", "ಭಾನುವಾರ, 18 ಅಕ್ಟೋಬರ್ 2026", "ಸಂಜೆ"],
+  ["te", "ఆదివారం, 18 అక్టోబర్ 2026", "సాయంత్రం"],
+  ["gu", "રવિવાર, 18 ઑક્ટોબર 2026", "સાંજ"],
+])
+  test(`${k} letters and menus: the card in that language's own words, each word marked with its language`, async ({ page }) => {
+    await openSite(page, { lang: "both", lead: "mr", l2: "en", ind: k, ui: k, loc: { lat: 39.96, lon: -83.0 } }, { now: EVENING });
+    await expect(page.locator("#tdd .d1")).toHaveText(day);
+    await expect(page.locator("#tdd .d1")).toHaveAttribute("lang", k);
+    await expect(page.locator("#tsh")).toHaveText(session + " · Evening");
+    expect(await langMismatches(page, ["#home", "body > .bar"])).toEqual([]);
+    await page.locator("#panb").click({ position: { x: 12, y: 12 } });
+    await expect(page.locator("#cal")).toBeVisible();
+    expect(await langMismatches(page, ["#cal"])).toEqual([]);
+    await page.locator('#calv [data-v="month"]').click();
+    expect(await langMismatches(page, ["#cal"])).toEqual([]);
+  });
 
 test("Home has no date card, week row or contents list: the Library has every text", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });

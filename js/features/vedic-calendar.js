@@ -33,7 +33,7 @@ import { setC } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { IA } from "../text/iast.js";
 import { PAKSHA } from "../core/panchang-names.js";
-import { DAYS, dv, esc, lead, mrLang, nameLang, num, scr, second, ui } from "../core/words.js";
+import { DAYS, dv, esc, lead, mrLang, nameLang, nameOf, num, scr, second, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
 
 /**
@@ -118,13 +118,9 @@ function words() {
 function mr(s, cls) {
   return '<span lang="' + mrLang() + '"' + (cls ? ' class="' + cls + '"' : "") + ">" + esc(scr(s)) + "</span>";
 }
-/** @param {string} s @param {string} [cls] */
-function en(s, cls) {
-  return '<span lang="en"' + (cls ? ' class="' + cls + '"' : "") + ">" + esc(s) + "</span>";
-}
 /** Text in the menu language, marked with it @param {string} s */
 function say(s) {
-  return ui() === "mr" ? mr(s) : en(s);
+  return ui() === "mr" ? mr(s) : '<span lang="' + ui() + '">' + esc(s) + "</span>";
 }
 /** @param {"mr" | "en"} l */
 function langOf(l) {
@@ -240,7 +236,7 @@ function until(t, day) {
 }
 /** The place's name in the menu language @param {Where} L */
 function placeName(L) {
-  return ui() === "mr" ? L.mr : L.en;
+  return nameOf(L);
 }
 /** @returns {{ lat: number, lon: number } | null} */
 function where() {

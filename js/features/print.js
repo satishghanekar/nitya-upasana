@@ -332,9 +332,10 @@ export function init() {
     function rlang() {
       return plang() === "both" ? (LEAD === "en" ? "en" : "mr") : plang() === "en" ? "en" : "mr";
     }
-    /** @param {string} s */
-    function rmr(s) {
-      return rlang() === "mr" ? SCR.to(s) : s;
+    /** The language a routine printout's words are in: English, Marathi, or with the original in other letters that
+     * language's own words (Kannada days and sessions, not Marathi's written in Kannada letters) */
+    function rw() {
+      return rlang() === "en" ? "en" : SCR.k || "mr";
     }
     /** @param {number} n */
     function rnum(n) {
@@ -352,15 +353,16 @@ export function init() {
     }
     /** A text's tag in a routine printout @param {import("../print/what.js").RoutinePlan} rp @param {string} id */
     function rtag(rp, id) {
-      return rmr(tagFor(rp.where[id], rlang()));
+      return tagFor(rp.where[id], rw());
     }
     // A session's printout heads its contents with its day and the session: "Tuesday · Evening" (all of a day: the day)
     /** @param {string} s @param {number} [day] the weekday (the day Home shows), else today */
     function sessionName(s, day) {
       var d = typeof day === "number" ? day : new Date().getDay(),
-        mr = /** @type {Record<string, string>} */ (TAG_WORDS.mr.sessions)[s],
+        k = SCR.k || "mr",
+        mr = /** @type {Record<string, string>} */ (TAG_WORDS[k].sessions)[s],
         en = /** @type {Record<string, string>} */ (TAG_WORDS.en.sessions)[s];
-      return { mr: DAYS.mr[d] + (mr ? " · " + mr : ""), en: DAYS.en[d] + (en ? " · " + en : "") };
+      return { mr: /** @type {any} */ (DAYS)[k][d] + (mr ? " · " + mr : ""), en: DAYS.en[d] + (en ? " · " + en : "") };
     }
     // A title (a text's, the printout's, a category's) in the language printed: with both, the original's, the English
     // under it, smaller
@@ -413,7 +415,7 @@ export function init() {
     // numbers of its texts), then the contents in printing order, each text with its tag
     /** @param {HTMLElement} into @param {any} src @param {import("../print/what.js").RoutinePlan} rp */
     function routinePage(into, src, rp) {
-      var L = rlang(),
+      var L = rw(),
         tw = TAG_WORDS[L],
         now = new Date(),
         cov = mk("section", "pvcov pvrt"),
@@ -421,12 +423,12 @@ export function init() {
       h.textContent = rp.name;
       cov.appendChild(h);
       var sub = mk("p", "pvsub");
-      sub.textContent = rmr(menuWords("print", L).cover(now.getMonth(), now.getFullYear()));
+      sub.textContent = menuWords("print", L).cover(now.getMonth(), now.getFullYear());
       cov.appendChild(sub);
       if (rp.grid.length) {
         var h3 = mk("h3", "pvcat");
-        h3.textContent = rmr(menuWords("print", L).week);
-        if (rp.days.length === 1) h3.textContent = rmr(DAYS[L === "mr" ? "mr" : "en"][rp.days[0]]);
+        h3.textContent = menuWords("print", L).week;
+        if (rp.days.length === 1) h3.textContent = /** @type {any} */ (DAYS)[L][rp.days[0]];
         cov.appendChild(h3);
         var tb = mk("table", "pvgrid"),
           th0 = mk("thead"),
@@ -434,7 +436,7 @@ export function init() {
         hr.appendChild(mk("th"));
         rp.days.forEach(function (d) {
           var th = mk("th");
-          th.textContent = rmr(tw.days[d]);
+          th.textContent = tw.days[d];
           hr.appendChild(th);
         });
         th0.appendChild(hr);
@@ -443,7 +445,7 @@ export function init() {
         rp.grid.forEach(function (row) {
           var tr = mk("tr"),
             th = mk("th");
-          th.textContent = rmr(tw.sessions[row.session]);
+          th.textContent = tw.sessions[row.session];
           tr.appendChild(th);
           row.cells.forEach(function (c) {
             var td = mk("td", c.nums.length ? "" : "pvnone");
@@ -456,7 +458,7 @@ export function init() {
         cov.appendChild(tb);
       }
       var h4 = mk("h3", "pvcat");
-      h4.textContent = rmr(menuWords("print", L).contents);
+      h4.textContent = menuWords("print", L).contents;
       cov.appendChild(h4);
       var ol = mk("ol", "pvtoc");
       src.secs.forEach(function (/** @type {HTMLElement} */ sec) {
@@ -1091,7 +1093,8 @@ export function init() {
       // the language: the main one, the other, or both (the main one first, as on the page). Both prints side by side
       // on Landscape, so the page row then says so instead of offering a choice
       var lg = document.getElementById("prlg"),
-        LV = LEAD === "en" ? ["en", "mr", "both"] : ["mr", "en", "both"];
+        // (the main language first, as Settings has it: LEAD is English only while both are shown)
+        LV = P.lead === "en" ? ["en", "mr", "both"] : ["mr", "en", "both"];
       lg.textContent = "";
       LV.forEach(function (v) {
         var b = document.createElement("button");

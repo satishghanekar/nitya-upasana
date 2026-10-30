@@ -603,6 +603,7 @@ export default {
     ok: "సరే",
     home: "ముఖపుట",
     library: "సంగ్రహం",
+    vedicCalendar: "పంచాంగం",
     smaller: " చిన్నది",
     larger: " పెద్దది",
     allSettings: "అన్ని సెట్టింగ్‌లు",
