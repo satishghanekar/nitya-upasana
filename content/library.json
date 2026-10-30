@@ -262,6 +262,69 @@
    "lines": 100
   },
   {
+   "id": "stotra-shant-ho-shriguru",
+   "file": "texts/stotra-shant-ho-shriguru.txt",
+   "title": "शांत हो श्रीगुरु",
+   "titleEn": "Shant Ho Shriguru",
+   "category": "stotra",
+   "language": "mr",
+   "lines": 21
+  },
+  {
+   "id": "stotra-shriguru-datta-jay",
+   "file": "texts/stotra-shriguru-datta-jay.txt",
+   "title": "श्रीगुरु दत्ता जय",
+   "titleEn": "Shriguru Datta Jay",
+   "category": "stotra",
+   "language": "mr",
+   "lines": 6
+  },
+  {
+   "id": "stotra-jay-karunaghan-nij",
+   "file": "texts/stotra-jay-karunaghan-nij.txt",
+   "title": "जय करुणाघन निज",
+   "titleEn": "Jay Karunaghan Nij",
+   "category": "stotra",
+   "language": "mr",
+   "lines": 6
+  },
+  {
+   "id": "stotra-ghorakashtoddharan",
+   "file": "texts/stotra-ghorakashtoddharan.txt",
+   "title": "घोरकष्टोद्धरणस्तोत्रम्",
+   "titleEn": "Ghorakashtoddharan Stotra",
+   "category": "stotra",
+   "language": "sa",
+   "lines": 14
+  },
+  {
+   "id": "stotra-vandu-guruchya-charanarvinda",
+   "file": "texts/stotra-vandu-guruchya-charanarvinda.txt",
+   "title": "वंदू गुरुच्या चरणारविंदा",
+   "titleEn": "Vandu Guruchya Charanaravinda",
+   "category": "stotra",
+   "language": "mr",
+   "lines": 16
+  },
+  {
+   "id": "stotra-martand-bavani",
+   "file": "texts/stotra-martand-bavani.txt",
+   "title": "श्री मार्तण्ड बावनी",
+   "titleEn": "Shri Martand Bavani",
+   "category": "stotra",
+   "language": "hi",
+   "lines": 54
+  },
+  {
+   "id": "stotra-sadguru-vandana",
+   "file": "texts/stotra-sadguru-vandana.txt",
+   "title": "श्री सदगुरु वंदना",
+   "titleEn": "Shri Sadguru Vandana",
+   "category": "stotra",
+   "language": "mr",
+   "lines": 49
+  },
+  {
    "id": "ashtak-sadguru-padukashtak",
    "file": "texts/ashtak-sadguru-padukashtak.txt",
    "title": "श्रीसद्गुरुपादुकाष्टक",

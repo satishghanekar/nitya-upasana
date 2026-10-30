@@ -182,6 +182,13 @@ describe("the default routine (content/routines.json)", () => {
         "aarti-ghalin-lotangan",
         "vedic-chant-mantra-pushpanjali",
         "ashtak-thursday",
+        "stotra-shant-ho-shriguru",
+        "stotra-shriguru-datta-jay",
+        "stotra-jay-karunaghan-nij",
+        "stotra-ghorakashtoddharan",
+        "stotra-vandu-guruchya-charanarvinda",
+        "stotra-martand-bavani",
+        "stotra-sadguru-vandana",
       ],
       fri: [
         "aarti-sukhkarta",
