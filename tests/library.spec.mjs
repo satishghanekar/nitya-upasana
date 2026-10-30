@@ -740,8 +740,9 @@ for (const [name, set] of [
     },
   ],
   [
-    "Kannada menus",
+    "Kannada letters and menus",
     async (page) => {
+      await page.locator("#sl1s").selectOption("kn");
       await page.locator('#spv button[data-v="screen"]').click();
       await page.locator('#su button[data-v="kn"]').click();
     },

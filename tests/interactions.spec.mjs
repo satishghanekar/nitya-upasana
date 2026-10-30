@@ -30,8 +30,9 @@ test("the bottom bar's words follow the menu language @mobile", async ({ page })
   await expect(page.locator("#rsb")).toHaveAccessibleName("वाचन");
 });
 
-// Kannada menus (js/strings/kn.js): the page's words and the scripts' words in Kannada, each marked lang="kn" so the
-// Kannada font and a screen reader's Kannada voice are used; Settings offers the three menu languages
+// Kannada menus (js/strings/kn.js), with the texts in Kannada letters: the page's words and the scripts' words in
+// Kannada, each marked lang="kn" so the Kannada font and a screen reader's Kannada voice are used; Settings offers
+// English and Kannada only (the menus are English or the language the texts are shown in)
 test("Kannada menus: the bars, Settings and the Library in Kannada, marked as Kannada @mobile", async ({ page }) => {
   await openSite(page, SETUPS["kannada-menus"], { hash: "#a1" });
   await untuck(page);
@@ -43,7 +44,7 @@ test("Kannada menus: the bars, Settings and the Library in Kannada, marked as Ka
   await expect(page.locator("#asn")).toHaveAccessibleName(/^ಮುಂದೆ/);
   await page.locator("#aa").click();
   await page.locator('#spv button[data-v="screen"]').click();
-  await expect(page.locator("#su button")).toHaveText(["English", "मराठी", "ಕನ್ನಡ", "తెలుగు", "ગુજરાતી"]);
+  await expect(page.locator("#su button:not([hidden])")).toHaveText(["English", "ಕನ್ನಡ"]);
   await expect(page.locator('#su button[data-v="kn"]')).toHaveAttribute("aria-pressed", "true");
   // back to English, at once
   await page.locator('#su button[data-v="en"]').click();
@@ -52,13 +53,12 @@ test("Kannada menus: the bars, Settings and the Library in Kannada, marked as Ka
   expect((await prefs(page)).ui).toBe("en");
 });
 
-// Marathi menus go with Marathi letters: picking Kannada, Telugu or Gujarati letters turns them into that language's;
-// other menus stay as they are whatever the letters
+// The menus are English or the language the texts are shown in, never mixed: picking other letters takes menus in
+// the old letters' language to the new letters' language, and leaves English menus English
 for (const [from, pick, want] of [
   ["mr", "kn", "ಸಂಗ್ರಹ"],
   ["mr", "te", "సంగ్రహం"],
   ["mr", "gu", "સંગ્રહ"],
-  ["kn", "gu", "ಸಂಗ್ರಹ"],
   ["en", "te", "Library"],
 ])
   test(`${from} menus, then ${pick} letters picked in Settings: the menus follow the rule`, async ({ page }) => {
@@ -69,7 +69,26 @@ for (const [from, pick, want] of [
     await untuck(page);
     await expect(page.locator("#hm")).toHaveAccessibleName(want);
     await expect(page.locator("#a1 .verse .mr").first()).toHaveAttribute("lang", pick);
+    await page.locator("#aa").click();
+    await page.locator('#spv button[data-v="screen"]').click();
+    await expect(page.locator("#su button:not([hidden])")).toHaveText(["English", { kn: "ಕನ್ನಡ", te: "తెలుగు", gu: "ગુજરાતી" }[pick]]);
   });
+
+// Menus in another language than the texts (saved before this rule) open in English; with English as the main
+// language there is no choice of menus
+test("menus never mixed: Telugu menus over Marathi letters open in English; English texts offer no menu choice", async ({ page }) => {
+  await openSite(page, { ...SETUPS.marathi, ui: "te" }, { hash: "#a1" });
+  await untuck(page);
+  await expect(page.locator("#hm")).toHaveAccessibleName("Library");
+  expect((await prefs(page)).ui).toBe("en");
+  await page.locator("#aa").click();
+  await page.locator('#spv button[data-v="screen"]').click();
+  await expect(page.locator("#su button:not([hidden])")).toHaveText(["English", "मराठी"]);
+  await page.locator('#spv button[data-v="read"]').click();
+  await page.locator("#sl1s").selectOption("en:simple");
+  await page.locator('#spv button[data-v="screen"]').click();
+  await expect(page.locator("#surow")).toBeHidden();
+});
 
 test("⋯ More opens App, Share, QR and Help under it while reading; a tap outside or Escape closes it @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a1" });

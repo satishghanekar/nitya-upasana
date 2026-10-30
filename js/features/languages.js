@@ -55,10 +55,11 @@ export function spSet() {
     var l = k.split(":")[0];
     return l === LK(P.lead) || (l !== "en" && k && P.lead !== "en");
   });
-  // menus: any language with words of its own (js/strings/), except Marathi beside texts not in Marathi letters
-  // (js/store/migrate.js tidy())
+  // menus: English, or the language the texts are shown in (js/store/migrate.js tidy()); nothing to pick with
+  // English as the main language
+  document.getElementById("surow").hidden = P.lead === "en";
   [].forEach.call(document.querySelectorAll("#su button"), function (b) {
-    b.hidden = b.dataset.v === "mr" && (P.lead === "en" || P.ind !== "mr");
+    b.hidden = b.dataset.v !== "en" && b.dataset.v !== P.ind;
   });
   // Show: one button per language and Both, named in their own language (as in the Aa sheet)
   document.getElementById("slwrow").hidden = !P.l2;
@@ -171,9 +172,9 @@ function spPick(w, k) {
   } else l2 = v;
   /** @type {Record<string, any>} */
   var ch = { lead: lead, l2: l2, lang: !l2 || role === 1 ? lead : role === 2 ? l2 : "both" };
-  // Marathi menus go with Marathi letters: in other letters, the menus in that language when it has words of its
-  // own, else English
-  if (P.ui === "mr" && (lead === "en" || ind !== "mr")) ch.ui = lead !== "en" && MENUS[ind] ? ind : "en";
+  // Menus in English, or in the language of the letters shown (js/store/migrate.js tidy()): menus in the old letters'
+  // language follow to the new letters' (when it has words of its own), and English as the main language means English
+  if (P.ui !== "en" && (lead === "en" || P.ui !== ind)) ch.ui = lead !== "en" && MENUS[ind] ? ind : "en";
   var sw = ind !== P.ind;
   if (sw) ch.ind = ind;
   change(ch, function () {

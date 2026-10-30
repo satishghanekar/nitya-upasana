@@ -214,11 +214,13 @@ describe("settings from every older version are upgraded as js/core/state.js alw
     expect(prefs.af).toEqual(["a9"]);
   });
 
-  test("the letters the original is shown in: Kannada, Telugu or Gujarati kept, anything else Marathi; Marathi menus only with Marathi letters, the others free", () => {
-    for (const ind of ["kn", "te", "gu"]) {
-      const p = migratePrefs({ ...SHAPES.v6, ind, ui: "kn" }, PHONE).prefs;
-      expect([p.ind, p.ui]).toEqual([ind, "kn"]);
-      expect(migratePrefs({ ...SHAPES.v6, ind, ui: "mr" }, PHONE).prefs.ui).toBe("en");
+  test("the letters the original is shown in: Kannada, Telugu or Gujarati kept, anything else Marathi; menus English or the letters' language, never mixed", () => {
+    for (const ind of ["mr", "kn", "te", "gu"]) {
+      expect(migratePrefs({ ...SHAPES.v6, lead: "mr", ind, ui: ind }, PHONE).prefs.ui).toBe(ind);
+      for (const other of ["mr", "kn", "te", "gu"].filter((x) => x !== ind))
+        expect(migratePrefs({ ...SHAPES.v6, lead: "mr", ind, ui: other }, PHONE).prefs.ui, ind + " letters, " + other + " menus").toBe("en");
+      // English as the main language: English menus
+      expect(migratePrefs({ ...SHAPES.v6, lead: "en", ind, ui: ind }, PHONE).prefs.ui).toBe("en");
     }
     expect(migratePrefs({ ...SHAPES.v6, ind: "ta" }, PHONE).prefs.ind).toBe("mr");
   });
