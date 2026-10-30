@@ -354,9 +354,14 @@
         <div class="sp-card">
           <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span data-w="page.helpAndHowToUse">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
           <button type="button" class="sp-row sp-go" id="inb2" hidden><span class="sp-l"><span data-w="page.addToHomeScreen">Add to Home Screen</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-          <!-- one line: the version and whether the site is saved for offline use; a tap checks for updates (fetches the
-               page and its files fresh; if any changed, saves the new copy and reloads with it, else says it is up to date) -->
-          <button type="button" class="sp-row" id="upd"><span class="sp-l"><span id="ver" lang="en"></span> · <span id="offv"></span></span><span class="sp-v" id="updv"></span></button>
+          <!-- the version, and under it whether the site is saved for offline use or what Check for updates found; the
+               round button checks (fetches the page and its files fresh; if any changed, saves the new copy and reloads
+               with it, else says it is up to date). Safari, iPhones and iPads finish an update only once the app is closed
+               and opened again: How? then opens the steps (#upm). js/features/offline.js -->
+          <div class="sp-row" id="upr">
+            <span class="sp-l"><span><span data-w="offline.version">Version</span> <span id="ver" lang="en"></span></span><small id="ups"><span id="offv"></span><span id="updv"></span><button type="button" id="uph" aria-haspopup="dialog" aria-controls="upm" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8 1c0 1.7-2.4 2.2-2.4 3.6"/><path d="M12 17.2h.01"/></svg><span data-w="offline.how">How?</span></button></small></span>
+            <button type="button" class="upb" id="upd" aria-describedby="ups"><span class="sr" id="updl"></span><svg class="vli vli-check" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg><svg class="vli vli-busy" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" opacity=".25"/><path d="M12 3a9 9 0 0 1 9 9"/></svg><svg class="vli vli-ok" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="vli vli-off" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M8.5 8.6A5 5 0 0 0 6.5 18H17"/><path d="M11 6.2A6 6 0 0 1 18 11a4 4 0 0 1 2.4 6.3"/></svg><svg class="vli vli-restart" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg></button>
+          </div>
         </div>
       </section>
       </div>
@@ -495,6 +500,12 @@
     <ol class="inl" id="inff" hidden><li><span data-w="page.firefoxCanTAddThis">Firefox can't add this site as an app. Open this page in Chrome, Edge or Safari and tap this button again.</span></li></ol>
     <p class="inn"><span data-w="page.itWillThenOpenLike">It will then open like an app, even without internet.</span></p>
     <button type="button" class="wide" id="inx"><span data-w="page.ok">OK</span></button></div>
+</div>
+<!-- ==== Finish the update (js/features/offline.js): after an update is saved on Safari, an iPhone or an iPad, how to
+     close the app and open it again, for each device (the reader's own first); written by the script in the menu
+     language ==== -->
+<div id="upm" hidden role="dialog" aria-modal="true" aria-labelledby="upmt">
+  <div class="qrc upc" tabindex="-1"></div>
 </div>
 <!-- ==== Profile sheet (js/features/profiles.js), opened by the profile chip in the top bar or Settings → Who is
      reading: the people on this phone (tap one to switch), Add a person, and for each, Edit (name, badge letters,
@@ -703,7 +714,7 @@
         <li><b>High contrast</b>: a switch; tap to turn it on or off.</li>
         <li><b>Keep screen on</b>: Off, 15, 30, 45 or 60 minutes after your last touch, key or scroll; after that the phone dims and locks as usual, so a phone left on its stand does not run its battery down. It starts at 30 on phones and tablets and Off on computers.</li>
         <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Routine</b> (see Your routine above), <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
-        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and one line with the version and whether the site is saved for offline use; tap it to check for updates (see Good to know below).</li>
+        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and the version, with whether the site is saved for offline use under it (a green dot: Offline ready); the round button beside it checks for updates (see Good to know below).</li>
       </ul>
 
       <h3>Print</h3>
@@ -726,7 +737,7 @@
       <h3>Good to know</h3>
       <ul>
         <li><b>Works without internet:</b> the first time you open the site it is saved on your phone, and Settings → More → About shows “Offline ready” beside the version once it is. With no internet, a small cloud with a line through it shows in the top bar: the saved copy is in use, and everything still works.</li>
-        <li><b>Getting updates:</b> the site opens straight from the copy saved on your phone, so it starts quickly even with a weak connection. When a new version is published it is saved in the background while you are online, and the next time you open the site you get it. To look straight away, open Settings → More and tap the version line under About: it shows “Checking…”, then “Up to date” (or “No internet”), or reloads with the new version. On an iPhone or iPad, and in Safari on a Mac, it saves the new version and says “Updated to v…. Close the app and open it again to finish.”</li>
+        <li><b>Getting updates:</b> the site opens straight from the copy saved on your phone, so it starts quickly even with a weak connection. When a new version is published it is saved in the background while you are online, and the next time you open the site you get it. To look straight away, open Settings → More and tap the round button beside the version under About: it turns while it looks, then shows a green ✓ and “You have the latest version” (or “No internet · tap to try again”), or reloads with the new version. On an iPhone or iPad, and in Safari on a Mac, the new version is saved but starts only once the app is closed and opened again: the line says “Saved. Close the app and open it again”, and <b>How?</b> beside it (or the round button) shows the steps for an iPhone, an iPad or a Mac.</li>
         <li><b>Privacy:</b> your people, settings and location stay on your phone. Nothing is sent anywhere; a backup file goes only where you save or send it.</li>
         <li>Moonrise times are calculated on your phone and may differ by a few minutes from printed calendars.</li>
       </ul>

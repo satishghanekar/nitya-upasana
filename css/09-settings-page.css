@@ -290,20 +290,6 @@ html[data-sp] {
   flex-direction: column;
   align-items: center;
 }
-/* About: the version line (version · offline state) in plain weight; a tap on it checks for updates, so the
-   right side reads "Check for updates" in the accent colour, then "Checking…", "Up to date" in green, or "No internet" in amber */
-.sp #upd .sp-l {
-  font-weight: 400;
-}
-.sp #upd:not([data-s="ok"], [data-s="off"]) #updv {
-  color: var(--accent);
-}
-.sp #upd[data-s="ok"] #updv {
-  color: var(--ok);
-}
-.sp #upd[data-s="off"] #updv {
-  color: var(--warn);
-}
 /* the preview's lines follow the pieces: the same text size (--fs) and share of it, line spacing and font */
 .sp-p1 {
   font: 400 var(--fs) / 1.7 var(--body);
@@ -609,14 +595,278 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   }
 }
 
-/* ==== About's version line and Check for updates: side by side whenever both fit; else the button drops under the
-   line, at its start as the rows' second lines are, rather than the line breaking in two ==== */
-.sp #upd {
-  flex-wrap: wrap;
-  row-gap: 2px;
+/* ==== About's version line (#upr): the version, under it the offline state or what Check for updates found, and the
+   round button that checks (#upd). data-s on both is the state: "" (check), busy, ok, off (no internet) or restart (an
+   update saved: How? opens #upm). Green for up to date, amber without internet, the accent otherwise ==== */
+.sp #upr {
+  gap: 12px;
 }
-.sp #upd .sp-l {
-  flex: 1 1 auto;
+.sp #ups {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 8px;
+}
+.sp #upr:not([data-s=""]) #offv,
+.sp #upr[data-s=""] #updv {
+  display: none;
+}
+.sp #offv::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-inline-end: 6px;
+  border-radius: 50%;
+  background: var(--ok);
+  vertical-align: 1px;
+}
+.sp #offv[data-s="save"]::before {
+  background: var(--accent);
+}
+.sp #offv[data-s="off"]::before {
+  background: var(--warn);
+}
+.sp #upr[data-s="ok"] #updv {
+  color: var(--ok);
+}
+.sp #upr[data-s="off"] #updv {
+  color: var(--warn);
+}
+.sp #upr[data-s="restart"] .sp-l > span {
+  color: var(--accent);
+}
+/* How?: a link's look, a 44px target that does not make the line taller */
+.sp #uph {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  margin-block: -12px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+}
+.sp #uph[hidden] {
+  display: none;
+}
+.sp #upd {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  background: none;
+  color: var(--accent);
+}
+/* the tint behind the icon, in the button's own colour */
+.sp #upd::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+}
+.sp #upd .vli {
+  display: none;
+  position: relative;
+}
+.sp #upd[data-s=""] .vli-check,
+.sp #upd[data-s="busy"] .vli-busy,
+.sp #upd[data-s="ok"] .vli-ok,
+.sp #upd[data-s="off"] .vli-off,
+.sp #upd[data-s="restart"] .vli-restart {
+  display: block;
+}
+.sp #upd:is([data-s="busy"], [data-s="ok"], [data-s="off"]) {
+  border-color: transparent;
+}
+.sp #upd:is([data-s="busy"], [data-s="ok"], [data-s="off"])::before {
+  opacity: 0.15;
+}
+.sp #upd[data-s="ok"] {
+  color: var(--ok);
+}
+.sp #upd[data-s="off"] {
+  color: var(--warn);
+}
+.sp #upd[data-s="restart"] {
+  background: var(--accent);
+  color: var(--bg);
+}
+.sp #upd[data-s="busy"] .vli-busy {
+  animation: upspin 0.9s linear infinite;
+}
+@keyframes upspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sp #upd[data-s="busy"] .vli-busy {
+    animation: none;
+  }
+}
+@media (hover: hover) {
+  .sp #upd:is([data-s=""], [data-s="restart"]):hover::before {
+    opacity: 0.15;
+  }
+}
+
+/* ==== Finish the update (#upm): over the page as the QR pop-up is, a sheet at the foot on phones and a card in the
+   middle from 760px; taller than the screen (a phone on its side) it scrolls, starting at the top ==== */
+#upm {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(0, 0, 0, 0.6);
+}
+#upm[hidden] {
+  display: none;
+}
+#upm > .upc {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(440px, 100%);
+  margin-top: auto;
+  padding: 18px 18px calc(20px + env(safe-area-inset-bottom));
+  border-radius: 18px 18px 0 0;
+  text-align: start;
+  outline: none;
+}
+@media (min-width: 760px) and (min-height: 521px) {
+  #upm {
+    padding: 20px;
+  }
+  #upm > .upc {
+    margin-block: auto;
+    padding-bottom: 18px;
+    border-radius: 16px;
+  }
+}
+.upmh {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.upmh > div {
+  flex: 1;
+  min-width: 0;
+}
+.upmh h2 {
+  margin: 0;
+  font: 600 18px/1.3 var(--body);
+  color: var(--ink);
+}
+.upmh p {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.upmi,
+.upmx {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+.upmi {
+  background: var(--accent);
+  color: var(--bg);
+}
+.upmx {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+}
+.upmd {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--surface);
+}
+.upmd button {
+  flex: 1 1 0;
+  min-height: 44px;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--muted);
+  font: 500 15px var(--lat);
+}
+.upmd button[aria-pressed="true"] {
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--rule);
+}
+.upms {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: upm;
+}
+.upms li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  column-gap: 12px;
+  counter-increment: upm;
+}
+.upms li::before {
+  content: counter(upm);
+  grid-row: span 2;
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  font: 600 14px/25px var(--lat);
+  text-align: center;
+}
+.upms b {
+  padding-top: 3px;
+  font-weight: 500;
+  font-size: 16px;
+}
+.upms small {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.upmk {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 14px;
+}
+.upmk::before {
+  content: "✓ ";
+  color: var(--ok);
+  font-weight: 700;
 }
 
 /* ==== Phones held sideways: the phone's tabs (the max-width: 759.98px rules above take them in too), and on Reading
