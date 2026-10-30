@@ -32,6 +32,7 @@ export const LAYERS = [
   { id: "qrm", trap: true, back: true },
   { id: "prm", trap: true, back: true },
   { id: "inm", trap: true, back: true },
+  { id: "upm", trap: true },
   { id: "pzv", trap: true, back: true },
   { id: "rsh", trap: true, back: true },
   { id: "panel", page: true, trap: true },

@@ -431,7 +431,52 @@ export default {
   // Offline use and Check for updates (js/features/offline.js): Settings → More → About
   offline: {
     state: { idle: "Offline ready", save: "Saving for offline…", off: "Saved copy in use" },
-    update: { check: "Check for updates", busy: "Checking…", ok: "Up to date", off: "No internet", restart: "Close and reopen" },
+    // the version line in Settings → More → About: what Check for updates found (under the version), and the round
+    // button's name in each state
+    update: {
+      check: "Check for updates",
+      busy: "Looking for a new version…",
+      ok: "You have the latest version",
+      off: "No internet · tap to try again",
+      restart: "Saved. Close the app and open it again",
+    },
+    button: { check: "Check for updates", busy: "Checking…", ok: "Check again", off: "Try again", restart: "How to finish the update" },
+    version: "Version",
+    how: "How?",
+    // How? after an update saved on Safari, iPhone or iPad: how to close the app and open it again, for each device
+    finish: {
+      title: "Finish the update",
+      /** @param {string} v the new version ("1.39.3") */
+      saved: function (v) {
+        return "Version " + v + " is saved on this device";
+      },
+      device: "Your device",
+      kept: "Your settings stay as they are.",
+      ok: "Got it",
+      close: "Close",
+      iphone: {
+        s1: "Swipe up from the bottom of the screen and pause",
+        h1: "Your open apps appear side by side.",
+        s2: "Swipe this app up and away",
+        h2: "Or Safari, if the site is open there. Nothing is lost.",
+        s3: "Tap its icon on the Home Screen",
+        h3: "It opens with the new version.",
+      },
+      ipad: {
+        s1: "Swipe up from the bottom of the screen and pause",
+        h1: "On an iPad with a Home button, press it twice.",
+        s2: "Swipe this app up and away",
+        h2: "Or Safari, if the site is open there. Nothing is lost.",
+        s3: "Tap its icon on the Home Screen",
+        h3: "It opens with the new version.",
+      },
+      mac: {
+        s1: "Press ⌘Q to quit",
+        h1: "Safari, or this app if you added it to the Dock.",
+        s2: "Open it again",
+        h2: "From the Dock, or open Safari and this site.",
+      },
+    },
     usingSaved: "No internet. Using the saved copy.",
     loading: "New version, loading…",
     /** @param {string} v the new version ("v1.37.17") */
