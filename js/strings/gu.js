@@ -187,11 +187,6 @@ export default {
     ago: function (n) {
       return n + " દિવસ પહેલાં";
     },
-    /** @param {string} d the weekday's name, as HTML */
-    showing: function (d) {
-      return "<b>" + d + "</b> બતાવે છે";
-    },
-    back: "આજ ›",
   },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
@@ -339,14 +334,9 @@ export default {
     showing: function (d, m, what) {
       return d + " " + MONTHS.gu[m] + ": " + what;
     },
-    fToday: "આજે: ",
-    fTomorrow: "આવતીકાલે: ",
-    fYesterday: "ગઈકાલે: ",
-    /** @param {number} d the weekday */
-    fOn: function (d) {
-      return DAYS.gu[d] + ": ";
-    },
     week: "આ અઠવાડિયે",
+    /** Home's card of what comes next (#upw): the next two after the day shown */
+    coming: "આવતા દિવસોમાં",
     next15: "પછીના 15 દિવસ",
     day: "દિવસ",
     month: "મહિનો",

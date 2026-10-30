@@ -188,11 +188,6 @@ export default {
     ago: function (n) {
       return n + " ದಿನಗಳ ಹಿಂದೆ";
     },
-    /** @param {string} d the weekday's name, as HTML */
-    showing: function (d) {
-      return "<b>" + d + "</b> ತೋರಿಸಲಾಗುತ್ತಿದೆ";
-    },
-    back: "ಇಂದು ›",
   },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
@@ -340,14 +335,9 @@ export default {
     showing: function (d, m, what) {
       return d + " " + MONTHS.kn[m] + ": " + what;
     },
-    fToday: "ಇಂದು: ",
-    fTomorrow: "ನಾಳೆ: ",
-    fYesterday: "ನಿನ್ನೆ: ",
-    /** @param {number} d the weekday */
-    fOn: function (d) {
-      return DAYS.kn[d] + ": ";
-    },
     week: "ಈ ವಾರ",
+    /** Home's card of what comes next (#upw): the next two after the day shown */
+    coming: "ಮುಂದಿನ ದಿನಗಳಲ್ಲಿ",
     next15: "ಮುಂದಿನ 15 ದಿನಗಳು",
     day: "ದಿನ",
     month: "ತಿಂಗಳು",
