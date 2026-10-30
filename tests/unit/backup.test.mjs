@@ -142,7 +142,7 @@ describe("a backup file", () => {
     expect(r.data.profiles[0].settings.extra).toBeUndefined();
     expect(r.data.profiles[0].colour).toBe(COLOURS[0].v);
     expect(r.data.activeProfile).toBe("paai");
-    expect(r.data.settings.wake).toBe(1);
+    expect(r.data.settings.wake).toBe(30);
     expect(r.data.settings.loc).toEqual({ lat: 1, lon: 2 });
     expect(r.data.settings.junk).toBeUndefined();
   });

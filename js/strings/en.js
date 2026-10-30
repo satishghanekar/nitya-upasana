@@ -551,6 +551,8 @@ export default {
     dark: "Dark",
     highContrast: "High contrast",
     keepScreenOn: "Keep screen on",
+    afterLastTouch: "Minutes after the last touch",
+    off: "Off",
     profilesAndBackup: "Profiles and backup",
     thisBrowserCanTSave: "This browser can't save here. Use Save a backup file before closing.",
     whoIsReading: "Who is reading",
