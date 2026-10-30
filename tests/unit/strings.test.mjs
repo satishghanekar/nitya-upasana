@@ -56,13 +56,21 @@ describe("the menu words", () => {
   }
 
   test("a word a language lacks comes from English", () => {
-    LANGS.zz = { backup: { saved: "zz saved", problems: { read: "zz read" } } };
+    // (the first part's first two words, and a level of words such as backup.problems when a part has one)
+    const part = Object.keys(en)[0],
+      [have, lack] = Object.keys(en[part]).filter((k) => typeof en[part][k] === "string"),
+      deep = Object.entries(en).flatMap(([p, w]) =>
+        Object.keys(w)
+          .filter((k) => w[k] && typeof w[k] === "object" && !Array.isArray(w[k]))
+          .map((k) => [p, k]),
+      )[0];
+    LANGS.zz = { [part]: { [have]: "zz" } };
+    if (deep) LANGS.zz[deep[0]] = { ...LANGS.zz[deep[0]], [deep[1]]: {} };
     try {
-      const w = menuWords("backup", "zz");
-      expect(w.saved).toBe("zz saved");
-      expect(w.never).toBe(en.backup.never);
-      expect(w.problems.read).toBe("zz read");
-      expect(w.problems.empty).toBe(en.backup.problems.empty);
+      const w = menuWords(part, "zz");
+      expect(w[have]).toBe("zz");
+      expect(w[lack]).toBe(en[part][lack]);
+      if (deep) expect(menuWords(deep[0], "zz")[deep[1]]).toEqual(en[deep[0]][deep[1]]);
     } finally {
       delete LANGS.zz;
     }
@@ -74,7 +82,8 @@ describe("the menu words", () => {
       const src = readFileSync(new URL("../../" + f, import.meta.url), "utf8")
         .replace(/\/\*[\s\S]*?\*\//g, "")
         .replace(/\/\/.*$/gm, "");
-      expect(src.match(/[ऀ-ॿ][^"'\n]*/g) || [], f).toEqual([]);
+      // (letters only: a danda or a Devanagari digit in a pattern is not a word)
+      expect(src.match(/[\u0900-\u0963\u0970-\u097F][^"'\n]*/g) || [], f).toEqual([]);
     }
   });
 });

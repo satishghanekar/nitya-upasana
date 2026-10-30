@@ -42,6 +42,12 @@ The site is one page, `index.html`, plus plain CSS and JavaScript files and the 
 - **`shared`** (`js/core/state.js`) holds the few values more than one part changes (a module can only change its own variables).
 - **The styles** read only those switches and variables. `css/README.md` lists them.
 
+## Menu languages
+
+The menus are in Marathi or English (Settings, `P.ui`). The scripts' menu words are in a catalog, one file per language (`js/strings/en.js`, `js/strings/mr.js`), each part's words under its name; a part reads them with `menuWords("part")` (`js/core/strings.js`), and a word a language lacks is taken from English. A sentence with a value in it ("until Mon 1:21 am", "सोमवारी रात्री १:२१ पर्यंत") is a function, so each language keeps its own word order. Adding a menu language is a new file in `js/strings/` and a line in `LANGS`; `tests/unit/strings.test.mjs` checks it has every word. Not all of the site is there yet: some parts still choose between two inline words, and `index.html` writes its words as a `.mr` and an `.en` span, shown by `data-lang`. These move to the catalog part by part.
+
+The reading languages (the texts, their titles, and the calendar's names: tithi, nakshatra, festivals) are another matter: they follow `P.lead` and `P.l2`, and Marathi can be shown in Kannada letters (`SCRIPTS` in `js/render.js`).
+
 ## Vedic calendar and moonrise
 
 Everything is worked out on the phone; nothing is fetched. `js/features/astronomy.js` has the sun and moon (Meeus), moonrise and the Sankashti rule. `js/core/panchang.js` gives a day's tithi, nakshatra, yoga and karana with their end times, sunrise, sunset, moonrise and the amanta month, Shaka year, samvatsara, ritu and ayana, as at that day's sunrise (Lahiri ayanamsha, the Kalnirnay / Drik convention), and a month's tithis. `js/core/festivals.js` applies the rules in `content/festivals.json` (the festival's tithi in its nija month at its part of the day: sunrise, madhyahna, aparahna, pradosh, nishita or moonrise; Makar Sankranti by the sun). They are pure functions, unit-tested against the Swiss Ephemeris and printed calendars. The place is the reader's own (Settings → Place for moonrise; the town is found in a built-in list, and only the rounded place is kept), else a city for the phone's time zone (`skLoc()` in `js/features/sankashti.js`).
