@@ -651,9 +651,10 @@ function runName(f) {
 /**
  * The entries from `from` to `to` (inclusive), in date order
  * @param {string} from "YYYY-MM-DD" @param {string} to @param {{ lat: number, lon: number }} pl
+ * @param {boolean} [noHol] leave the public holidays out (Home never shows them, and they take a while to work out)
  * @returns {Up[]}
  */
-function upList(from, to, pl) {
+function upList(from, to, pl, noHol) {
   /** @type {Up[]} */
   var out = [];
   /** @type {Record<string, Up>} the festival of several days running, by id */
@@ -691,7 +692,7 @@ function upList(from, to, pl) {
       out.push({ date: k, kind: "sk", name: m.vara === 2 ? N.angSkFull : N.skFull, rise: rise, moon: "" });
     }
   }
-  if (loaded.holidays)
+  if (loaded.holidays && !noHol)
     holidaysBetween(from, to, pl, loaded.holidays).forEach(function (h) {
       out.push({ date: h.date, kind: "hol", name: holName(h), moon: "" });
     });
@@ -779,12 +780,7 @@ function upHome(pl) {
     wk = addDays(t, 7),
     // another day shown on Home: This week (which counts from today) makes way for "Showing …" (#tdb)
     off = !!homeAt && homeAt !== t,
-    all =
-      pl && loaded.festivals
-        ? upList(addDays(t, 1), addDays(t, 30), pl).filter(function (u) {
-            return u.kind !== "hol";
-          })
-        : [],
+    all = pl && loaded.festivals && !off ? upList(addDays(t, 1), addDays(t, 30), pl, true) : [],
     near = all.filter(function (u) {
       return u.date <= wk;
     }),
@@ -846,7 +842,7 @@ function homeSoon() {
   // shows (about 30 ms); later, just after the page is drawn
   if (!document.documentElement.hasAttribute("data-ready")) {
     clearTimeout(homeT);
-    homeRender();
+    homeDraw();
     return;
   }
   var box = document.getElementById("pan");
@@ -857,9 +853,75 @@ function homeSoon() {
   }
   clearTimeout(homeT);
   homeT = setTimeout(function () {
-    homeRender();
+    homeDraw();
     if (isOpen()) calRender();
   }, 0);
+}
+
+// ----- Home's lines kept for the rest of the day -----
+// Working out the Home line, the festival line and This week takes about 30 ms on a phone (a month of tithis and the
+// festivals' rules), and is done before the page first shows, so nothing jumps. What they show depends only on the
+// day, the place, the languages and the site's version, so today's are kept on this phone (localStorage): opening the
+// app again the same day draws them as they were, without working anything out. Another day shown on Home is not kept.
+var KEPT = "nitya-home-lines",
+  KEPT_BOXES = ["pan", "fst", "upw"];
+/** Everything the lines depend on: a kept copy is used only when all of it is the same */
+function keptKey() {
+  var tz = "";
+  try {
+    tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch (e) {}
+  return [
+    (document.querySelector('meta[name="version"]') || /** @type {any} */ ({})).content,
+    keyOf(new Date()),
+    langKey(),
+    tz,
+    JSON.stringify(P.loc || null),
+    // the festival and holiday rules (the version covers the site's own; a test may give others)
+    hash(JSON.stringify([loaded.festivals || null, loaded.holidays || null])),
+  ].join("|");
+}
+/** A short fingerprint of a long string @param {string} s */
+function hash(s) {
+  var h = 0;
+  for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return s.length + ":" + h;
+}
+/** Draw Home's lines: today's from the kept copy when there is one, else worked out (and today's then kept) */
+function homeDraw() {
+  if (homeAt) {
+    homeRender();
+    return;
+  }
+  var k = keptKey();
+  try {
+    var o = JSON.parse(localStorage.getItem(KEPT) || "null");
+    if (o && o.k === k && o.b.length === KEPT_BOXES.length) {
+      KEPT_BOXES.forEach(function (id, i) {
+        var e = document.getElementById(id),
+          b = o.b[i];
+        if (e && b) {
+          e.hidden = b[0];
+          e.lang = b[1];
+          e.innerHTML = b[2];
+        }
+      });
+      return;
+    }
+  } catch (e) {}
+  homeRender();
+  try {
+    localStorage.setItem(
+      KEPT,
+      JSON.stringify({
+        k: k,
+        b: KEPT_BOXES.map(function (id) {
+          var e = document.getElementById(id);
+          return e ? [e.hidden, e.lang, e.innerHTML] : null;
+        }),
+      }),
+    );
+  } catch (e) {}
 }
 
 // ----- the calendar page -----
