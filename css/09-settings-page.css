@@ -377,7 +377,7 @@ html[data-sp] {
    for screen readers only (the window says what it is) and the window shorter; the language rows without their
    hints (the preview shows large and small); Show and Text font beside their labels; Verses' heading for screen
    readers only (Dhrupad says what it is); rows and headings closer */
-@media screen and (max-width: 759.98px) {
+@media screen and (max-width: 759.98px), screen and (orientation: landscape) and (max-height: 520px) {
   .sp-pvg > .sp-h,
   .sp-grp:has(#srf) > .sp-h {
     position: absolute;
@@ -444,7 +444,7 @@ html[data-sp] {
 /* ==== Wider screens (iPads and desktops): a tab's groups in two columns. Reading: its choices on the left and the
    preview beside them on the right, staying in view while the choices scroll; More: Profiles and backup beside
    About; a tab with one group (Screen) across both ==== */
-@media screen and (min-width: 760px) {
+@media screen and (min-width: 760px) and (min-height: 521px) {
   .sp-pg {
     max-width: 1000px;
   }
@@ -530,7 +530,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
 .sp-c2 {
   display: contents;
 }
-@media screen and (min-width: 760px) {
+@media screen and (min-width: 760px) and (min-height: 521px) {
   .sp-pg {
     max-width: 1080px;
   }
@@ -620,4 +620,32 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
 }
 .sp #upd .sp-v {
   margin-inline-start: auto;
+}
+
+/* ==== Phones held sideways: the phone's tabs (the max-width: 759.98px rules above take them in too), and on Reading
+   the preview on the left, staying in view, with its choices scrolling beside it. The iPads' layout (every group at
+   once) put the title, the headings and the preview over the whole screen, the choices below (Satish, 2026-10-30) ==== */
+@media screen and (orientation: landscape) and (max-height: 520px) {
+  .sp-pg {
+    max-width: 1000px;
+  }
+  .sp-body {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+    align-items: start;
+    padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));
+  }
+  .sp-grp {
+    grid-column: 1 / -1;
+  }
+  .sp-pvg {
+    position: sticky;
+    top: 64px; /* under Back and the tabs (.sp-hd) */
+    grid-row: 1 / span 2;
+    grid-column: 1;
+  }
+  .sp-pvg ~ .sp-grp {
+    grid-column: 2;
+  }
 }

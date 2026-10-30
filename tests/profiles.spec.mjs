@@ -159,7 +159,7 @@ test("theme and high contrast are per person (Q4); keep the screen on stays with
   await expect(page.locator("html")).not.toHaveAttribute("data-pref", "dark");
   await expect(page.locator("html")).toHaveAttribute("data-hc", "0");
   await page.locator("#aa").click();
-  await expect(page.locator("#tw")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator('#tw [data-v="30"]')).toHaveAttribute("aria-pressed", "true");
   await page.locator("#xc").click();
   await switchTo(page, "Me");
   await expect(page.locator("html")).toHaveAttribute("data-pref", "dark");

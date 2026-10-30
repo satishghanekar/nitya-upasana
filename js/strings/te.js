@@ -547,6 +547,8 @@ export default {
     dark: "ముదురు",
     highContrast: "అధిక కాంట్రాస్ట్",
     keepScreenOn: "తెరను ఆన్‌లో ఉంచు",
+    afterLastTouch: "చివరి స్పర్శ తర్వాత, నిమిషాలు",
+    off: "ఆఫ్",
     profilesAndBackup: "ప్రొఫైల్‌లు, బ్యాకప్",
     thisBrowserCanTSave: "ఈ బ్రౌజర్ ఇక్కడ సేవ్ చేయలేదు. మూసే ముందు బ్యాకప్ ఫైల్ సేవ్ చేయండి.",
     whoIsReading: "ఎవరు చదువుతున్నారు",
