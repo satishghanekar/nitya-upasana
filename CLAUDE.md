@@ -34,8 +34,14 @@ private.
 - Comments say why, in plain English, as the existing ones do.
 
 ## Words and languages
-- The menus are in Marathi and English. In `index.html`: `<span class="mr">…</span><span class="en" lang="en">…</span>`.
-  In scripts: `ui()`, `num()`, `MONTHS`, `DAYS` from `js/core/words.js`. Never write a menu word in one language only.
+- The menus are in Marathi and English. A script's menu words live in the catalog, one file per language
+  (`js/strings/en.js`, `js/strings/mr.js`, under the part's name), and the part reads them with
+  `menuWords("part")` (`js/core/strings.js`); never write a menu word in a part. A sentence with a value in it is a
+  function, so each language puts the words in its own order. `tests/unit/strings.test.mjs` checks every language has
+  every word; add a part to its `MOVED` list once it keeps no Marathi of its own.
+- Some parts still keep their words inline (`ui() === "mr" ? … : …`), and `index.html` writes its menu words as
+  `<span class="mr">…</span><span class="en" lang="en">…</span>`: these move to the catalog in turn.
+- Digits and names: `num()`, `MONTHS`, `DAYS` from `js/core/words.js`.
 - The reading languages: `lead()`, `second()`; Marathi in another script through `scr()` and `SCR` (`js/render.js`,
   `SCRIPTS`). Put `lang` on every element whose language differs from its parent's.
 - A text's words live only in its file in `content/texts/`, never in code.
