@@ -86,7 +86,7 @@ export function pieceEl(id) {
 // separate from the text-size bubble, so a pinch can't wipe it and screen readers hear it on its own.
 export function flash(m, e, ms) {
   var x = document.getElementById("fl");
-  x.textContent = P.ui === "en" ? e : m;
+  x.textContent = P.ui === "mr" ? m : e;
   x.classList.remove("err");
   x.classList.add("on");
   clearTimeout(flash.t);

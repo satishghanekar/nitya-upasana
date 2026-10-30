@@ -26,7 +26,7 @@ import { setR } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { shownSession } from "./today-card.js";
 import { createPicker } from "./text-picker.js";
-import { dv, esc, lead, num, scr, scrKey, second, ui } from "../core/words.js";
+import { dv, esc, lead, nameLang, num, scr, scrKey, second, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
 
 /**
@@ -153,7 +153,7 @@ function catWords() {
     t.category = categoryOf({ id: t.id, category: baseCat[t.id] || "" }, cats, local);
   });
   cats.forEach(function (c) {
-    o[c.id] = c.name[ui()] || c.name.en || c.name.mr;
+    o[c.id] = c.name[nameLang()] || c.name.en || c.name.mr;
   });
   return o;
 }

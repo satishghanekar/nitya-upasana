@@ -22,7 +22,7 @@ import { applyPrefs } from "./profiles.js";
 import { refresh as refreshLibrary } from "./library.js";
 import { describeRestore, fileName, makeBackup, needsReminder, parseBackup, serialise } from "../store/backup.js";
 import { exportData, getMeta, kind, list, markBackup, onChange, onSaveProblem, restore, saveFailed, snooze } from "../store/store.js";
-import { dv, esc } from "../core/words.js";
+import { dv, esc, num, ui } from "../core/words.js";
 
 /** @typedef {import("../store/backup.js").Payload} Payload */
 
@@ -170,7 +170,7 @@ export function offerRestore(text) {
   el("bkmt").textContent = w.ask;
   el("bkmd").innerHTML =
     "<p>" +
-    esc(w.from(day(r.backup.created), P.ui === "mr" ? dv(v) : v)) +
+    esc(w.from(day(r.backup.created), num(v))) +
     "</p>" +
     '<ul class="bkl">' +
     line(w.inFile, names) +
@@ -200,8 +200,8 @@ function showProblem(problem) {
 
 function openDialog() {
   var c = /** @type {HTMLElement} */ (dlg.querySelector(".pfc"));
-  c.setAttribute("data-lang", P.ui === "mr" ? "mr" : "en");
-  c.lang = P.ui === "mr" ? "mr" : "en";
+  c.setAttribute("data-lang", ui());
+  c.lang = ui();
   if (dlg.hidden) {
     ovPush();
     ret = ret || document.activeElement;

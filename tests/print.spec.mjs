@@ -183,7 +183,7 @@ test("print pop-up offers the right choices and closes cleanly @chromium-only", 
   await howStep(page);
   await expect(page.locator("#prpg")).toBeHidden();
   await expect(page.locator("#prpv")).toHaveText("Landscape, side by side");
-  await expect(page.locator("#prq")).toHaveText("Letter");
+  await expect(page.locator(".prpaper").first()).toHaveText("Letter");
   await expect(page.locator("#prgp")).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.locator("#prm")).toBeHidden();
@@ -1033,13 +1033,13 @@ test("print builder: the preview and the paper @chromium-only", async ({ browser
   await expect(title()).toContainText("Ganapati Atharvashirsha", { timeout: 20_000 });
   // the first text only
   expect(await page.frameLocator("#prsheet iframe").locator("#pv .pvs").count()).toBe(1);
-  await expect(page.locator("#prq")).toHaveText("Letter");
+  await expect(page.locator(".prpaper").first()).toHaveText("Letter");
   await expect(page.locator("#prpa")).toHaveText("Use A4");
   // Letter is taller for its width than A4
   const ratio = () => page.locator("#prsheet").evaluate((e) => e.offsetHeight / e.offsetWidth);
   expect(await ratio()).toBeCloseTo(279.4 / 215.9, 1);
   await page.locator("#prpa").click();
-  await expect(page.locator("#prq")).toHaveText("A4");
+  await expect(page.locator(".prpaper").first()).toHaveText("A4");
   await expect(page.locator("#prpa")).toHaveText("Use Letter");
   expect(await ratio()).toBeCloseTo(297 / 210, 1);
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("aarti2-prefs")).ppr)).toBe("a4");
