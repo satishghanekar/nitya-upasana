@@ -120,7 +120,9 @@ export async function addMarkers(page, when = "now") {
         // own letters: to the right from the start, to the left from the end (the box is right-to-left, its text inside
         // still left-to-right). So it takes no space, moves nothing, and never reaches past the block into the page's
         // margin, where Chrome cuts what it prints. (Absolutely placed, a marker ran off a line at the page's edge; at
-        // 1px, 19px wide, it ran past a last line shorter than itself: Durga Suktam in IAST, on Linux.)
+        // 1px, 19px wide, it ran past a last line shorter than itself.) The end's text sits 12px in from the line's end,
+        // moved without moving anything: a line may end a point past the column (Durga Suktam's "pracodayāt ||" in IAST,
+        // on Linux), and Chrome cut the marker there.
         // !important: the site's own !important font rules (Kannada letters set every .mr element's font) must not
         // reach the marker, or it is drawn in whatever font the machine falls back to and may not read back
         const s = document.createElement("span"),
@@ -141,7 +143,7 @@ export async function addMarkers(page, when = "now") {
         ]
           .map((d) => d + " !important")
           .join(";");
-        i.style.cssText = "direction:ltr !important;unicode-bidi:isolate !important";
+        i.style.cssText = "direction:ltr !important;unicode-bidi:isolate !important" + (end ? ";position:relative !important;left:-12px !important" : "");
         i.textContent = " [[" + t + "]] ";
         s.appendChild(i);
         return s;
