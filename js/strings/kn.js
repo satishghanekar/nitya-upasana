@@ -600,6 +600,7 @@ export default {
     smaller: " ಚಿಕ್ಕದು",
     larger: " ದೊಡ್ಡದು",
     allSettings: "ಎಲ್ಲ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+    settings: "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
     fontThemeLayout: "ಅಕ್ಷರಶೈಲಿ, ಥೀಮ್, ವಿನ್ಯಾಸ",
     defaultSize: "↺ ಮೂಲ ಗಾತ್ರ",
   },

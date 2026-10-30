@@ -1,6 +1,6 @@
 // Interactions: what readers do, checked in every browser engine (and on phone emulation for @mobile).
 import { test, expect } from "@playwright/test";
-import { openSite, settle, SETUPS, PREFS_KEY, openMore, tapMore, readText } from "./helpers.mjs";
+import { openSite, settle, SETUPS, PREFS_KEY, openMore, tapMore, readText, settingsTab } from "./helpers.mjs";
 
 const prefs = (page) => page.evaluate((k) => JSON.parse(localStorage.getItem(k)), PREFS_KEY);
 const rootAttr = (page, a) => page.evaluate((a) => document.documentElement.getAttribute(a), a);
@@ -15,7 +15,7 @@ test("while reading the top bar has Library and no Language or Dhrupad button; t
   await untuck(page);
   expect(await page.locator("#home-btn, #rb, #asq").count()).toBe(0);
   for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
-  await expect(page.locator("#tmb")).toHaveAccessibleName("More");
+  await expect(page.locator("#tmb")).toHaveAccessibleName("Share");
   // the bottom bar's middle buttons are named by the word under each icon, in the menu language
   await expect(page.locator("#ash")).toHaveAccessibleName("Home");
   await expect(page.locator("#hm")).toHaveAccessibleName("Library");
@@ -43,7 +43,7 @@ test("Kannada menus: the bars, Settings and the Library in Kannada, marked as Ka
   await expect(page.locator("#asn")).toHaveAttribute("lang", "kn");
   await expect(page.locator("#asn")).toHaveAccessibleName(/^ಮುಂದೆ/);
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="screen"]').click();
+  await settingsTab(page, "screen");
   await expect(page.locator("#su button:not([hidden])")).toHaveText(["English", "ಕನ್ನಡ"]);
   await expect(page.locator('#su button[data-v="kn"]')).toHaveAttribute("aria-pressed", "true");
   // back to English, at once
@@ -72,7 +72,7 @@ for (const [from, ind, pick] of [
     await expect(page.locator("#hm")).toHaveAccessibleName(want);
     await expect(page.locator("#a1 .verse .mr").first()).toHaveAttribute("lang", pick);
     await page.locator("#aa").click();
-    await page.locator('#spv button[data-v="screen"]').click();
+    await settingsTab(page, "screen");
     await expect(page.locator("#su button:not([hidden])")).toHaveText(["English", { kn: "ಕನ್ನಡ", te: "తెలుగు", gu: "ગુજરાતી" }[pick]]);
   });
 
@@ -84,11 +84,11 @@ test("menus never mixed: Telugu menus over Marathi letters open in English; Engl
   await expect(page.locator("#hm")).toHaveAccessibleName("Library");
   expect((await prefs(page)).ui).toBe("en");
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="screen"]').click();
+  await settingsTab(page, "screen");
   await expect(page.locator("#su button:not([hidden])")).toHaveText(["English", "मराठी"]);
-  await page.locator('#spv button[data-v="read"]').click();
+  await settingsTab(page, "read");
   await page.locator("#sl1s").selectOption("en:simple");
-  await page.locator('#spv button[data-v="screen"]').click();
+  await settingsTab(page, "screen");
   await expect(page.locator("#surow")).toBeHidden();
 });
 
@@ -171,7 +171,7 @@ test("search in Marathi letters finds the line", async ({ page }) => {
 test("Settings opens, changes theme, high contrast and font, and closes with Back", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="screen"]').click();
+  await settingsTab(page, "screen");
   await expect(page.locator("#panel")).toBeVisible();
   await page.locator('#st button[data-v="dark"]').click();
   expect(await rootAttr(page, "data-pref")).toBe("dark");
@@ -180,7 +180,7 @@ test("Settings opens, changes theme, high contrast and font, and closes with Bac
   await page.locator("#tc").click();
   expect(await rootAttr(page, "data-hc")).toBe("1");
   // three fonts, Traditional first (the default), then Modern and Bold, on the Reading tab
-  await page.locator('#spv button[data-v="read"]').click();
+  await settingsTab(page, "read");
   await expect(page.locator("#sfn button")).toHaveText(["Traditional", "Modern", "Bold"], { useInnerText: true });
   expect(await rootAttr(page, "data-font")).toBe("classic");
   await expect(page.locator('#sfn button[data-v="classic"]')).toHaveAttribute("aria-pressed", "true");
@@ -531,9 +531,10 @@ test.describe("pinch @chromium-only", () => {
   });
 });
 
-// Settings' tabs, Reading | Screen | More, beside Back: one tab's groups at a time, the credit under every tab, and
-// Settings opens on Reading again each time
+// Settings' tabs on phones and tablets, Reading | Screen | More, beside Back: one tab's groups at a time, the credit
+// under every tab, and Settings opens on Reading again each time
 test("Settings: Reading | Screen | More, one at a time; opens on Reading each time", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi);
   await page.locator("#aa").click();
   const tab = (v) => page.locator(`#spv button[data-v="${v}"]`);
@@ -556,6 +557,32 @@ test("Settings: Reading | Screen | More, one at a time; opens on Reading each ti
   await page.locator("#aa").click();
   await expect(tab("read")).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#bks")).toBeHidden();
+});
+
+// Settings on iPads and desktops: no tabs, the title beside Back, every group at once in two columns: the preview and
+// the reading choices on the left, the screen, profiles and about on the right (Satish, 2026-10-30); an iPad upright
+// too; narrowed to a phone, the tabs are back
+test("Settings on a desktop or an iPad: every group at once, in two columns, no tabs", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSite(page, SETUPS.marathi);
+  await page.locator("#aa").click();
+  await expect(page.locator("#spv")).toBeHidden();
+  await expect(page.locator("#spt")).toBeVisible();
+  await expect(page.locator("#spt")).toHaveText("Settings");
+  for (const id of ["#sprev", "#sl1", "#srf", "#st", "#su", "#bks", "#hlp2", "#upd"]) await expect(page.locator(id)).toBeVisible();
+  // the reading choices in the left column, the rest in the right
+  const x = async (sel) => (await page.locator(sel).boundingBox()).x;
+  expect(await x(".sp-c1")).toBeLessThan(await x(".sp-c2"));
+  for (const id of ["#sprev", "#sl1", "#srf"]) expect(await page.locator(".sp-c1 " + id).count(), id).toBe(1);
+  for (const id of ["#st", "#su", "#bks", "#upd"]) expect(await page.locator(".sp-c2 " + id).count(), id).toBe(1);
+  await page.setViewportSize({ width: 820, height: 1180 });
+  await expect(page.locator("#spv")).toBeHidden();
+  for (const id of ["#sl1", "#st", "#bks"]) await expect(page.locator(id)).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator("#spv")).toBeVisible();
+  await expect(page.locator("#st")).toBeHidden();
+  // (the title for screen readers only: a 1px box)
+  expect((await page.locator("#spt").boundingBox()).width).toBeLessThanOrEqual(1);
 });
 
 // Settings › Reading on a phone: the preview keeps one height whatever Show is (the cards below never jump), and at

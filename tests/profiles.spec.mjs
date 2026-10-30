@@ -4,7 +4,7 @@
 // warning when IndexedDB can't be opened, the backup reminder, and accessibility of the new dialogs.
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { FIXED_NOW, openSite, PREFS_KEY, settle, SETUPS, axeScan, axeEveryTheme, noViolations, useTestRoutine, TEST_AARTIS } from "./helpers.mjs";
+import { FIXED_NOW, openSite, PREFS_KEY, settle, SETUPS, axeScan, axeEveryTheme, noViolations, useTestRoutine, TEST_AARTIS, settingsTab } from "./helpers.mjs";
 
 const EVENING = new Date("2026-10-18T19:00:00-04:00"); // Sunday evening: the ten aartis
 const fs = (page) => page.evaluate(() => parseFloat(document.documentElement.style.getPropertyValue("--fs")));
@@ -237,7 +237,7 @@ test("Save a backup file → Restore from it: every person and setting comes bac
   await switchTo(page, "Aai");
   await pickLanguage(page, 1); // English, in the reading sheet (Aa)
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="more"]').click();
+  await settingsTab(page, "more");
   await expect(page.locator("#bksv")).toHaveText("Not saved yet");
   const [dl] = await Promise.all([page.waitForEvent("download"), page.locator("#bks").click()]);
   expect(dl.suggestedFilename()).toBe("nitya-upasana-2026-10-18.nitya");
@@ -289,7 +289,7 @@ test("Save a backup file → Restore from it: every person and setting comes bac
 test("Cancel leaves everything as it was; a changed file is refused with a plain message", async ({ page }, info) => {
   await openSite(page, SETUPS.marathi);
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="more"]').click();
+  await settingsTab(page, "more");
   const [dl] = await Promise.all([page.waitForEvent("download"), page.locator("#bks").click()]);
   const file = info.outputPath("b.nitya");
   await dl.saveAs(file);
@@ -325,7 +325,7 @@ test("on a phone the backup goes to the share sheet (Save to Files, AirDrop…) 
   let downloaded = false;
   page.on("download", () => (downloaded = true));
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="more"]').click();
+  await settingsTab(page, "more");
   await page.locator("#bks").click();
   await expect.poll(() => page.evaluate(() => window.__shared.length)).toBe(1);
   const s = await page.evaluate(() => window.__shared[0]);
@@ -345,7 +345,7 @@ test("closing the share sheet without choosing saves nothing and doesn't count a
   });
   await openSite(page, SETUPS.marathi);
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="more"]').click();
+  await settingsTab(page, "more");
   await page.locator("#bks").click();
   await page.waitForTimeout(300);
   await expect(page.locator("#bksv")).toHaveText("Not saved yet");
@@ -366,7 +366,7 @@ test("when IndexedDB can't be opened (Safari's first-open hang), the site works 
   await page.locator("#pfx").click();
   await switchTo(page, "Baba");
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="more"]').click();
+  await settingsTab(page, "more");
   await expect(page.locator("#stw2")).toBeVisible();
   // the warning's own button saves a backup
   await page.locator("#xc").click();
@@ -435,7 +435,7 @@ test("the phone's Back closes the sheet and returns focus to the chip @chromium-
 test("Settings → Who is reading opens the same sheet; the Settings rows show the person and the last backup", async ({ page }) => {
   await openSite(page, SETUPS["marathi-menus"]);
   await page.locator("#aa").click();
-  await page.locator('#spv button[data-v="more"]').click();
+  await settingsTab(page, "more");
   await expect(page.locator("#spfv")).toHaveText("Me");
   await expect(page.locator("#bksv")).toHaveText("अजून जतन केलेली नाही");
   await page.locator("#spf").click();
@@ -481,7 +481,7 @@ for (const [name, prefs, themes] of [
     await page.keyboard.press("Escape");
     expect(await scan(".bar")).toEqual(ok);
     await page.locator("#aa").click();
-    await page.locator('#spv button[data-v="more"]').click();
+    await settingsTab(page, "more");
     const [dl] = await Promise.all([page.waitForEvent("download"), page.locator("#bks").click()]);
     const file = info.outputPath("a.nitya");
     await dl.saveAs(file);
