@@ -430,7 +430,6 @@ export default {
     update: { check: "અપડેટ માટે તપાસો", busy: "તપાસે છે…", ok: "તાજું છે", off: "ઇન્ટરનેટ નથી", restart: "બંધ કરીને ફરી ખોલો" },
     usingSaved: "ઇન્ટરનેટ નથી. સાચવેલી નકલ વાપરીએ છીએ.",
     loading: "નવી આવૃત્તિ, ખૂલે છે…",
-    ready: "ઑફલાઇન વાપરવા તૈયાર",
     /** @param {string} v the new version ("v1.37.17") */
     reopen: function (v) {
       return "આવૃત્તિ " + v + " સચવાઈ ગઈ. પૂરું કરવા ઍપ બંધ કરીને ફરી ખોલો.";

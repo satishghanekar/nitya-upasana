@@ -876,7 +876,12 @@ function dayRender() {
         '<span class="sr">' +
         esc(w.nextDay) +
         "</span></button>" +
-        (k === today ? "" : '<button type="button" class="ctod" data-dd="0">' + say(w.todayB) + "</button>") +
+        // Today keeps its room on today (out of sight and out of reach), so ‹ the date › never move
+        '<button type="button" class="ctod' +
+        (k === today ? " off" : "") +
+        '" data-dd="0">' +
+        say(w.todayB) +
+        "</button>" +
         "</div>"
       : "") +
     '<div class="cdh">' +
@@ -1218,7 +1223,7 @@ function monthRender() {
   box.innerHTML = html;
 }
 
-/** The 15 days (#calu): from view.uFrom (today at first), by week, with ‹ › to the 15 before or after, and the buttons
+/** The 15 days (#calu): from view.uFrom (at first the day the calendar was opened at, or the Day tab's), by week, with ‹ › to the 15 before or after, and the buttons
  * that choose what it shows */
 function upRender() {
   var box = document.getElementById("calu"),
@@ -1266,9 +1271,14 @@ function upRender() {
     esc(w.prevU) +
     "</span></button>" +
     '<h3 id="cut" tabindex="-1">' +
-    say(now ? w.upTitle : range(s, end)) +
+    // the same lines on every day (the title, the dates, the place), each short enough for a phone, so the list below
+    // never moves as ‹ › go from today (the dates and the place on one line wrapped on phones on today only)
+    say(now ? w.upTitle : w.up) +
     '<span class="cms">' +
-    say((now ? range(s, end) + " · " : "") + placeName(L)) +
+    say(range(s, end)) +
+    "</span>" +
+    '<span class="cms">' +
+    say(placeName(L)) +
     "</span></h3>" +
     '<button type="button" class="cnav" data-u="15">' +
     ICON.next +
@@ -1276,7 +1286,12 @@ function upRender() {
     esc(w.nextU) +
     "</span></button>" +
     "</div>" +
-    (now ? "" : '<p class="cto"><button type="button" data-u="0">' + say(w.todayB) + "</button></p>") +
+    // Today keeps its room on today, so the list below does not jump down when the 15 days move away from today
+    '<p class="cto"><button type="button" data-u="0"' +
+    (now ? ' class="off"' : "") +
+    ">" +
+    say(w.todayB) +
+    "</button></p>" +
     '<div class="upk" role="group" aria-label="' +
     esc(w.view) +
     '">' +
@@ -1348,7 +1363,7 @@ export function homeDay(k) {
 }
 
 /**
- * Open the calendar at a tab: the day (today, or `day`), the next 15 days or the month
+ * Open the calendar at a tab: the day (today, or `day`), the 15 days from it or the month
  * @param {"day" | "month" | "up"} [mode] @param {string} [day] "YYYY-MM-DD"
  * @param {string} [by] the card it was opened from, "#panb" or "#upwm": only that one is marked open
  */
@@ -1362,7 +1377,8 @@ export function calOpen(mode, day, by) {
   view.mode = mode || "day";
   view.from = "";
   subOn = false;
-  view.uFrom = keyOf(new Date());
+  // the 15 days start at the day it was opened at (the day Home shows), as the Day tab and the month do
+  view.uFrom = view.day;
   // drawn before the page is shown, so it never shows empty for a moment (a day or 15 days take a few ms; on wide
   // screens the month too, about 50 ms, less once worked out)
   calRender();
@@ -1511,7 +1527,7 @@ export function init() {
         calOpen("day", r.dataset.d, "#upwm");
       }
       // Next 15 days, or anywhere else on the header, as the card above opens the calendar from anywhere on it
-      else if (t.closest("#upwm, .uph")) calOpen("up", undefined, "#upwm");
+      else if (t.closest("#upwm, .uph")) calOpen("up", homeAt || undefined, "#upwm");
     });
   if (c) {
     var bk = document.getElementById("cbk");
@@ -1536,6 +1552,8 @@ export function init() {
           view.y = vd.getFullYear();
           view.m = vd.getMonth() + 1;
         }
+        // the 15 days from the day shown on the Day tab or picked in the month
+        if (view.mode === "up") view.uFrom = view.day;
         calRender();
         var v = /** @type {HTMLElement | null} */ (document.querySelector('#calv [data-v="' + view.mode + '"]'));
         if (v) v.focus();

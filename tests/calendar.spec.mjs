@@ -647,7 +647,7 @@ test("the calendar's tabs: Day, 15 days, Month, one at a time, the same on every
   await expect(page.locator("#cald .cdnt")).toHaveText("Mon 19 Oct");
   await page.locator('#cald [data-dd="0"]').click();
   await expect(page.locator("#cald .cdd")).toHaveText("Sunday, 18 October 2026 · today");
-  await expect(page.locator('#cald [data-dd="0"]')).toHaveCount(0);
+  await expect(page.locator('#cald [data-dd="0"]')).toBeHidden();
   // a day tapped in the month shows on the Day tab; Back returns to the month, at that day
   await page.locator('#calv [data-v="month"]').click();
   await page.locator('#calm button[data-d="2026-10-28"]').click();
@@ -678,25 +678,59 @@ test("the calendar's tabs: Day, 15 days, Month, one at a time, the same on every
   await expect(page.locator("#cal")).toBeHidden();
 });
 
+// Satish, 2026-10-30: Today appearing beside ‹ the date › moved them, and the 15 days' Today pushed the list down;
+// the 15 days started at today whatever day Home or the Day tab showed
+test("the Day and 15 days tabs: nothing moves as ‹ › go from today, and the 15 days start at the day shown @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: NOW });
+  // Home at Tuesday 20: Next 15 days starts there
+  await page.locator("#tdx").click();
+  await page.locator("#tdx").click();
+  await page.locator("#upwm").click();
+  const u = page.locator("#calu");
+  await expect(u.locator("#cut")).toHaveText("15 daysTue 20 Oct – Tue 3 NovColumbus, OH");
+  await expect(u.locator('[data-u="0"]')).toBeVisible();
+  const list = async () => Math.round((await u.locator(".upk").boundingBox()).y);
+  const there = await list();
+  await u.locator('[data-u="0"]').click();
+  await expect(u.locator("#cut")).toContainText("The next 15 days");
+  await expect(u.locator('[data-u="0"]')).toBeHidden();
+  expect(await list()).toBe(there);
+  // the Day tab: ‹ › and the date keep their places, with Today or without
+  await page.locator('#calv [data-v="day"]').click();
+  await expect(page.locator("#cald .cdnt")).toHaveText("Tue 20 Oct");
+  await page.locator('#cald [data-dd="0"]').click();
+  const at = () => page.evaluate(() => [...document.querySelectorAll("#cald .cdnav > *")].map((e) => Math.round(e.getBoundingClientRect().left)).slice(0, 3));
+  const today = await at();
+  await expect(page.locator('#cald [data-dd="0"]')).toBeHidden();
+  for (let i = 0; i < 9; i++) {
+    await page.locator('#cald [data-dd="1"]').click();
+    await expect(page.locator('#cald [data-dd="0"]')).toBeVisible();
+    expect(await at()).toEqual(today);
+  }
+  // 15 days from the day on the Day tab (Tuesday 27)
+  await page.locator('#calv [data-v="up"]').click();
+  await expect(u.locator("#cut")).toHaveText("15 daysTue 27 Oct – Tue 10 NovColumbus, OH");
+});
+
 test("15 days: by week, ‹ › to the 15 before or after, and what it shows @mobile", async ({ page }) => {
   await openSite(page, ENGLISH_ONLY, { now: NOW });
   await page.locator("#upwm").click();
   const u = page.locator("#calu");
-  await expect(u.locator("#cut")).toHaveText("The next 15 daysSun 18 Oct – Sun 1 Nov · Columbus, OH");
+  await expect(u.locator("#cut")).toHaveText("The next 15 daysSun 18 Oct – Sun 1 NovColumbus, OH");
   await expect(u.locator(".uph4")).toHaveText(["This week", "Next week"]);
   expect(await dates(u.locator(".upr"))).toEqual(["2026-10-20 fest", "2026-10-23 pradosh", "2026-10-25 fest", "2026-10-28 sk"]);
   await expect(u.locator('.upr[data-d="2026-10-28"]')).toHaveAccessibleName("Wednesday, 28 October: Sankashti Chaturthi Moonrise 8:09 pm , in 10 days");
   // the next 15: Diwali
   await u.locator('[data-u="15"]').click();
   await expect(u.locator('[data-u="15"]')).toBeFocused();
-  await expect(u.locator("#cut")).toHaveText("Mon 2 Nov – Mon 16 NovColumbus, OH");
+  await expect(u.locator("#cut")).toHaveText("15 daysMon 2 Nov – Mon 16 NovColumbus, OH");
   await expect(u.locator(".uph4")).toHaveText(["Mon 2 Nov – Sun 8 Nov", "Mon 9 Nov – Mon 16 Nov"]);
   expect(await dates(u.locator(".upr"))).toEqual(["2026-11-06 pradosh", "2026-11-07 fest", "2026-11-08 fest", "2026-11-09 fest", "2026-11-10 fest"]);
   await expect(u.locator(".upr .mn.new")).toHaveCount(1); // Lakshmi Pujan, on the Amavasya
   // back, past today: days ago
   await u.locator('[data-u="-15"]').click();
   await u.locator('[data-u="-15"]').click();
-  await expect(u.locator("#cut")).toHaveText("Sat 3 Oct – Sat 17 OctColumbus, OH");
+  await expect(u.locator("#cut")).toHaveText("15 daysSat 3 Oct – Sat 17 OctColumbus, OH");
   await expect(u.locator('.upr[data-d="2026-10-11"] .upw')).toHaveText(", 7 days ago");
   await u.locator('[data-u="0"]').click();
   await expect(u.locator("#cut")).toBeFocused();
