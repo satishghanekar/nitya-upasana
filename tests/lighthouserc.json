@@ -28,9 +28,10 @@
           }
         ],
         "total-blocking-time": [
-          "warn",
+          "error",
           {
-            "maxNumericValue": 200
+            "maxNumericValue": 200,
+            "aggregationMethod": "median"
           }
         ],
         "cumulative-layout-shift": [
