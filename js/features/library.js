@@ -31,7 +31,7 @@ import {
   shelves,
 } from "../core/library.js";
 import { apply } from "./bars.js";
-import { IA, titlesSet } from "../text/iast.js";
+import { iaTitle, titlesSet } from "../text/iast.js";
 import { buildIX } from "../text/search.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { dv, esc, lead, mrLang, scr as to, second, ui } from "../core/words.js";
@@ -102,10 +102,7 @@ function nm(c) {
 /** @param {Entry} e */
 function tt(e) {
   if (lead() === "mr") return to(e.title);
-  if (P && P.tr === "iast")
-    return IA(e.title).replace(/(^|[\s(])([^\s(])/g, function (_, a, c) {
-      return a + c.toUpperCase();
-    });
+  if (P && P.tr === "iast") return iaTitle(e.title);
   return e.titleEn;
 }
 /** @param {string} id */

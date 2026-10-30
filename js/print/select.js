@@ -17,6 +17,7 @@ import { SESSIONS, WEEK_ORDER, textsFor } from "../core/routine.js";
  */
 
 /** The words of a tag: the weekdays, Sunday first (as Date.getDay() counts them), the sessions, and every day */
+/** @type {Record<string, { days: string[], sessions: Record<string, string>, daily: string }>} */
 export const TAG_WORDS = {
   en: {
     days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
@@ -27,6 +28,22 @@ export const TAG_WORDS = {
     days: ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"],
     sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
     daily: "रोज",
+  },
+  // the original printed or the menus in other letters take that language's own words, not Marathi's written in them
+  kn: {
+    days: ["ಭಾನು", "ಸೋಮ", "ಮಂಗಳ", "ಬುಧ", "ಗುರು", "ಶುಕ್ರ", "ಶನಿ"],
+    sessions: { morning: "ಬೆಳಿಗ್ಗೆ", afternoon: "ಮಧ್ಯಾಹ್ನ", evening: "ಸಂಜೆ" },
+    daily: "ಪ್ರತಿದಿನ",
+  },
+  te: {
+    days: ["ఆది", "సోమ", "మంగళ", "బుధ", "గురు", "శుక్ర", "శని"],
+    sessions: { morning: "ఉదయం", afternoon: "మధ్యాహ్నం", evening: "సాయంత్రం" },
+    daily: "ప్రతిరోజూ",
+  },
+  gu: {
+    days: ["રવિ", "સોમ", "મંગળ", "બુધ", "ગુરુ", "શુક્ર", "શનિ"],
+    sessions: { morning: "સવાર", afternoon: "બપોર", evening: "સાંજ" },
+    daily: "દરરોજ",
   },
 };
 
@@ -76,10 +93,10 @@ export function selectRoutine(routine, days, sessions, known) {
  * Days as a tag writes them: "Daily" for all seven, a run of three or more in a row (Monday first) as "Mon–Fri", the
  * rest one by one: "Mon, Sat, Sun"
  * @param {number[]} days
- * @param {"mr" | "en"} lang
+ * @param {string} lang  a menu or reading language: en, mr, kn, te or gu (English for any other)
  */
 export function dayList(days, lang) {
-  var w = TAG_WORDS[lang],
+  var w = TAG_WORDS[lang] || TAG_WORDS.en,
     ord = weekOrder(days);
   if (ord.length === 7) return w.daily;
   /** @type {string[]} */
@@ -98,10 +115,10 @@ export function dayList(days, lang) {
  * A text's tag: its sessions, grouped by the days they fall on: "Daily · Morning, Evening", or
  * "Daily · Evening; Mon, Sat, Sun · Morning" when they differ
  * @param {Partial<Record<Session, number[]>> | undefined} at  where the text is (Selection.where[id])
- * @param {"mr" | "en"} lang
+ * @param {string} lang  a menu or reading language: en, mr, kn, te or gu (English for any other)
  */
 export function tagFor(at, lang) {
-  var w = TAG_WORDS[lang];
+  var w = TAG_WORDS[lang] || TAG_WORDS.en;
   /** @type {{ days: string, names: string[] }[]} */
   var groups = [];
   SESSIONS.forEach(function (s) {

@@ -82,6 +82,7 @@ export function renderChip() {
   n.textContent = p.name;
   n.lang = langOf(p.name);
   el("whol").textContent = words().chip;
+  el("whol").lang = ui(); // (the page is in the reading language: js/features/bars.js)
   var v = document.getElementById("spfv");
   if (v) {
     v.textContent = p.name;

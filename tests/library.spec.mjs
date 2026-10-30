@@ -30,7 +30,7 @@ test("the Library button opens every text, grouped, with search @mobile", async 
   await btn.click();
   await expect(page.locator("#jump")).toBeVisible();
   await expect(btn).toHaveAttribute("aria-expanded", "true");
-  await expect(page.locator("#jump")).toHaveAccessibleName("संग्रह Library");
+  await expect(page.locator("#jump")).toHaveAccessibleName("Library");
   await expect(page.locator("#q")).toBeVisible();
   // by category (content/categories.json): वैदिक मंत्र, आरती, …, every text of the library in order
   await expect(page.locator("#jl .tocg:not(.pdfg) .gh .mr")).toHaveText(GROUPS);

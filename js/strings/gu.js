@@ -602,6 +602,7 @@ export default {
     ok: "બરાબર",
     home: "મુખ્ય પાનું",
     library: "સંગ્રહ",
+    vedicCalendar: "પંચાંગ",
     smaller: " નાનું",
     larger: " મોટું",
     allSettings: "બધી સેટિંગ્સ",
