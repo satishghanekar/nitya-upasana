@@ -629,9 +629,14 @@ export function init() {
       root.setAttribute("data-print", mode);
       root.setAttribute("data-font", pfn());
       root.setAttribute("data-ref", String(pref()));
+      // sideways pages: the printout is set a little tighter (css/15-print.css); a media query on orientation cannot
+      // say, as Chrome matches it against the sheet before @page turns it
+      if (land(mode)) root.setAttribute("data-land", "");
+      else root.removeAttribute("data-land");
     }
     function poff() {
       root.removeAttribute("data-print");
+      root.removeAttribute("data-land");
       root.setAttribute("data-font", P.fnt);
       root.setAttribute("data-ref", String(P.ref));
     }
@@ -724,6 +729,7 @@ export function init() {
           '<!doctype html><html data-print="' +
             m +
             '"' +
+            (land(m) ? " data-land" : "") +
             attrs() +
             '><head><base href="' +
             location.href.replace(/"/g, "%22") +
@@ -889,7 +895,7 @@ export function init() {
       var at = "";
       [].forEach.call(root.attributes, function (a) {
         var v = a.name === "data-font" ? pfn() : a.name === "data-ref" ? String(pref()) : a.value;
-        if (a.name !== "data-print") at += " " + a.name + '="' + v.replace(/&/g, "&amp;").replace(/"/g, "&quot;") + '"';
+        if (a.name !== "data-print" && a.name !== "data-land") at += " " + a.name + '="' + v.replace(/&/g, "&amp;").replace(/"/g, "&quot;") + '"';
       });
       return at;
     }
