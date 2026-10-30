@@ -116,10 +116,11 @@ export async function addMarkers(page, when = "now") {
   await page.evaluate((when) => {
     const run = () => {
       const mk = (t, end) => {
-        // A box of no width at the start or end of the block, its text (white, 1px) running out of it over the block's
+        // A box of no width at the start or end of the block, its text (white, 0.25px) running out of it over the block's
         // own letters: to the right from the start, to the left from the end (the box is right-to-left, its text inside
         // still left-to-right). So it takes no space, moves nothing, and never reaches past the block into the page's
-        // margin, where Chrome cuts what it prints. (Absolutely placed, a marker ran off a line at the page's edge.)
+        // margin, where Chrome cuts what it prints. (Absolutely placed, a marker ran off a line at the page's edge; at
+        // 1px, 19px wide, it ran past a last line shorter than itself: Durga Suktam in IAST, on Linux.)
         // !important: the site's own !important font rules (Kannada letters set every .mr element's font) must not
         // reach the marker, or it is drawn in whatever font the machine falls back to and may not read back
         const s = document.createElement("span"),
@@ -128,7 +129,7 @@ export async function addMarkers(page, when = "now") {
         s.style.cssText = [
           "display:inline-block",
           "width:0",
-          "font:1px/1 monospace",
+          "font:0.25px/1 monospace",
           "letter-spacing:0",
           "word-spacing:0",
           "text-transform:none",
