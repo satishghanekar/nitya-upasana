@@ -1,7 +1,7 @@
 // Offline use: home-screen app details and the service worker (sw.js)
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { note, onPiece } from "../core/page.js";
+import { note, onPiece, root } from "../core/page.js";
 import { fillWords, menuWords } from "../core/strings.js";
 
 var FONTS, IMAGES, hd, l1, m1, m2, ofb, offv, CACHE, me, upd, updv, PARTS, ofSaved, fill;
@@ -105,6 +105,8 @@ export function init() {
         return h ? caches.open(CACHE) : null;
       });
     }
+    /** The version the server's page names, found by partsChanged() ("aarti-v1.37.17"), or "" */
+    var newer = "";
     // Resolves to true if the page names another version than the one on screen, or the page or any of its parts
     // differs from the saved copy; false if not; fails with no internet.
     function partsChanged() {
@@ -130,6 +132,7 @@ export function init() {
               return r.text().then(function (t) {
                 // (the page: its <meta name="version">, which the saved copy may no longer have to compare with)
                 var v = i === 0 && /<meta name="version" content="([^"]+)"/.exec(t);
+                if (v) newer = v[1];
                 if (v && v[1] !== CACHE) return true;
                 return old[i] !== null && t !== old[i];
               });
@@ -209,9 +212,16 @@ export function init() {
           setTimeout(
             function () {
               if (changed) {
+                // Safari and every iPhone and iPad browser (WebKit, class "wk", js/core/page.js) keep the scripts they
+                // have in memory until the app is closed, whatever reloads the page (tests: a reload asks for no script
+                // at all, 2026-10-30): the page came back new, the menus behind it old. There the new version is
+                // saved and the reader asked to close the app and open it again; elsewhere the page reloads with it
+                var wk = root.classList.contains("wk");
                 note(menuWords("offline").loading);
                 newCopy().then(function () {
-                  location.reload();
+                  if (!wk) return location.reload();
+                  updSet("restart");
+                  note(menuWords("offline").reopen("v" + (newer || CACHE).replace(/^aarti-v/, "")), 12000);
                 });
                 return;
               }

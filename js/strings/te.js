@@ -438,10 +438,14 @@ export default {
   // Offline use and Check for updates (js/features/offline.js): Settings → More → About
   offline: {
     state: { idle: "ఆఫ్‌లైన్‌కు సిద్ధం", save: "ఆఫ్‌లైన్ కోసం సేవ్ అవుతోంది…", off: "సేవ్ చేసిన ప్రతి వాడుకలో ఉంది" },
-    update: { check: "అప్‌డేట్‌ల కోసం చూడు", busy: "చూస్తోంది…", ok: "తాజాగా ఉంది", off: "ఇంటర్నెట్ లేదు" },
+    update: { check: "అప్‌డేట్‌ల కోసం చూడు", busy: "చూస్తోంది…", ok: "తాజాగా ఉంది", off: "ఇంటర్నెట్ లేదు", restart: "మూసి మళ్లీ తెరవండి" },
     usingSaved: "ఇంటర్నెట్ లేదు. సేవ్ చేసిన ప్రతిని వాడుతున్నాం.",
     loading: "కొత్త వెర్షన్, తెరుచుకుంటోంది…",
     ready: "ఆఫ్‌లైన్ వాడకానికి సిద్ధం",
+    /** @param {string} v the new version ("v1.37.17") */
+    reopen: function (v) {
+      return "వెర్షన్ " + v + " సేవ్ అయింది. పూర్తి చేయడానికి యాప్‌ను మూసి మళ్లీ తెరవండి.";
+    },
   },
   // Search and Recent (js/text/search.js)
   search: {
