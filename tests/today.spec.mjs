@@ -1030,3 +1030,19 @@ test("with no routine file the card still works and the texts still load", async
   // only the missing file itself is reported, by the browser
   expect(errors.filter((e) => !/Failed to load resource/.test(e))).toEqual([]);
 });
+
+// A title tapped on Home: its text lands just under the top bar and stays there while the page settles (fonts arriving,
+// the text fitted again), in every font; Bold's texts above it once grew enough to scroll it out of view
+// (js/core/apply.js holdAim())
+for (const fnt of ["classic", "std", "bold"])
+  test(`the bundled default: a title tapped on Home stays just under the top bar, ${fnt} @mobile`, async ({ page }) => {
+    // (a morning of the bundled routine: Vedic chants first, whose height changes most as the page settles)
+    await openSite(page, { ...SETUPS.marathi, fnt }, { now: MORNING });
+    const link = rows(page).last().locator("a.tgo");
+    const id = (await link.getAttribute("href")).replace("./#", "");
+    await link.click();
+    await page.waitForTimeout(1000);
+    const top = await page.locator("#" + id).evaluate((e) => e.getBoundingClientRect().top);
+    expect(top).toBeGreaterThanOrEqual(0);
+    expect(top).toBeLessThan(120);
+  });
