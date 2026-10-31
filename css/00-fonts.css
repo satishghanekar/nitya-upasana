@@ -130,8 +130,8 @@
   unicode-range: U+0951-0952, U+0964-0965, U+0C80-0CF3, U+1CD0-1CFA, U+200C-200D, U+25CC;
 }
 
-/* Kannada letters in the Traditional and Bold text fonts (Settings → Text font): Noto Serif Kannada, at its regular
-   weight for Traditional and SemiBold for Bold. It has its own dandas and Vedic accent marks, which must come from the
+/* Kannada letters in the Bold text font (Settings → Text font): Noto Serif Kannada, set SemiBold (Traditional's is
+   Tiro Kannada, below). It has its own dandas and Vedic accent marks, which must come from the
    same font as the letter they sit on. */
 @font-face {
   font-family: "SC Kn Classic";
@@ -140,6 +140,25 @@
   font-display: swap;
   src: url(../fonts/noto-serif-kannada-kannada.woff2) format("woff2");
   unicode-range: U+0951-0952, U+0964-0965, U+0C80-0CF3, U+1CD0-1CFA, U+200C-200D, U+25CC;
+}
+
+/* Kannada and Telugu letters in Traditional: Tiro's, the same design as its Devanagari, with their own dandas and
+   Vedic marks (one weight: a bold line is drawn heavier by the browser) */
+@font-face {
+  font-family: "SC Kn Tiro";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../fonts/tiro-kannada-kannada.woff2) format("woff2");
+  unicode-range: U+0951-0952, U+0964-0965, U+0C80-0CF3, U+1CD0-1CFA, U+200C-200D, U+25CC;
+}
+@font-face {
+  font-family: "SC Te Tiro";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../fonts/tiro-telugu-telugu.woff2) format("woff2");
+  unicode-range: U+0951-0952, U+0964-0965, U+0C00-0C7F, U+1CD0-1CFA, U+200C-200D, U+25CC;
 }
 
 /* Telugu and Gujarati letters (Settings → Main language → తెలుగు, ગુજરાતી), as Kannada's above: Noto Sans for Modern,
@@ -179,13 +198,17 @@
   unicode-range: U+0951-0952, U+0964-0965, U+0A80-0AFF, U+200C-200D, U+25CC;
 }
 
-/* Text font choices (Settings → Text font, and the same three in the Print pop-up):
-   - Modern (std): the site's own fonts above, Noto Sans Devanagari and Inter;
-   - Traditional (classic): "SC Classic", Tiro Devanagari Marathi (the same files as above), with the Vedic chants in
-     Tiro Devanagari Sanskrit (css/07-bottom-bar-folds.css);
+/* Text font choices (Settings → Text font, and the same three in the Print pop-up), the same in Sankathara Chaturthi:
+   - Traditional (classic, the default): "SC Classic", Tiro Devanagari Marathi (the same files as above), with the
+     Vedic chants in Tiro Devanagari Sanskrit (css/07-bottom-bar-folds.css); Tiro Kannada and Telugu (Tiro has no
+     Gujarati: Noto Serif's); English in Noto Serif;
+   - Modern (std): Noto Sans Devanagari, and Noto Sans for the texts' English ("SC Sans": Inter, the menus' face, has
+     no IAST svara marks);
    - Bold (bold): "SC Bold", Noto Serif Devanagari and Noto Serif, set SemiBold.
-   All three draw the Vedic svara marks (udātta ॑, anudātta ॒, ᳚). Each family joins its Marathi and English letters;
-   a browser downloads a file only when someone picks that font (the service worker then keeps it for offline use). */
+   All three draw the Vedic svara marks (udātta ॑, anudātta ॒, ᳚), and the IAST ones (̍ ̎ ̱ ̐): each Latin file below
+   is one piece with its combining marks (Google's latin and latin-ext pieces leave them out, so they came from the
+   phone's own fonts). Each family joins its Marathi and English letters; a browser downloads a file only when it is
+   used (the service worker then keeps it for offline use). */
 @font-face {
   font-family: "SC Classic";
   font-style: normal;
@@ -197,22 +220,11 @@
 @font-face {
   font-family: "SC Classic";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
-  src: url(../fonts/tiro-marathi-latin.woff2) format("woff2");
+  src: url(../fonts/noto-serif-latin.woff2) format("woff2");
   unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: "SC Classic";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(../fonts/tiro-marathi-latin-ext.woff2) format("woff2");
-  unicode-range:
-    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
-    U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    U+0000-024F, U+0259, U+02B0-02FF, U+0300-036F, U+1E00-1EFF, U+2000-206F, U+20AC, U+20B9, U+2122, U+2190-2193, U+2212, U+2215, U+25CC, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: "SC Bold";
@@ -229,16 +241,14 @@
   font-display: swap;
   src: url(../fonts/noto-serif-latin.woff2) format("woff2");
   unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+    U+0000-024F, U+0259, U+02B0-02FF, U+0300-036F, U+1E00-1EFF, U+2000-206F, U+20AC, U+20B9, U+2122, U+2190-2193, U+2212, U+2215, U+25CC, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: "SC Bold";
+  font-family: "SC Sans";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 700;
   font-display: swap;
-  src: url(../fonts/noto-serif-latin-ext.woff2) format("woff2");
+  src: url(../fonts/noto-sans-latin.woff2) format("woff2");
   unicode-range:
-    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
-    U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    U+0000-024F, U+0259, U+02B0-02FF, U+0300-036F, U+1E00-1EFF, U+2000-206F, U+20AC, U+20B9, U+2122, U+2190-2193, U+2212, U+2215, U+25CC, U+FEFF, U+FFFD;
 }

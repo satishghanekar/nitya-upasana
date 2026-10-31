@@ -47,7 +47,7 @@
     --po: var(--body);
     --pved: var(--body);
     --pk: var(--ks, "Noto Sans Kannada"), var(--body);
-    --pe: var(--lat);
+    --pe: "SC Sans", var(--lat);
     --pob: var(--po);
     --peb: var(--pe);
     --pw: 400;

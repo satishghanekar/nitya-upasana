@@ -57,14 +57,19 @@ export function init() {
       /** @type {{ m: string, ids: string[] | null, rp: any, sp: { session: string } | null } | null} the printout just printed, until the reader is back */
       again = null,
       seen = false; // the browser has started printing (beforeprint) since the last window.print()
-    // the faces of the other scripts the original can be shown in (js/render.js SCRIPTS): Modern's, then Traditional's
-    // and Bold's (css/00-fonts.css)
+    // the faces of the other scripts the original can be shown in (js/render.js SCRIPTS): Modern's, Bold's and
+    // Traditional's (css/00-fonts.css: Tiro's Kannada and Telugu; Gujarati keeps Noto Serif's, as Tiro has none)
     /** @type {Record<string, string[]>} */
     var IND = {
-      kn: ["Noto Sans Kannada", "SC Kn Classic"],
-      te: ["Noto Sans Telugu", "SC Te Classic"],
-      gu: ["Noto Sans Gujarati", "SC Gu Classic"],
+      kn: ["Noto Sans Kannada", "SC Kn Classic", "SC Kn Tiro"],
+      te: ["Noto Sans Telugu", "SC Te Classic", "SC Te Tiro"],
+      gu: ["Noto Sans Gujarati", "SC Gu Classic", "SC Gu Classic"],
     };
+    // a font's place in IND
+    /** @param {string} f */
+    function indAt(f) {
+      return f === "std" ? 0 : f === "bold" ? 1 : 2;
+    }
     // the original's language is named by the letters it is shown in (P.ind): menuWords("print").langs; a new script
     // (js/render.js) adds its name there
 
@@ -625,8 +630,8 @@ export function init() {
             ? ['400 16px "SC Classic"', '700 16px "SC Bold"', '400 16px "Tiro Devanagari Sanskrit"']
             : f === "bold"
               ? ['600 16px "SC Bold"', '800 16px "SC Bold"']
-              : [];
-      if (IND[olang()]) want.push('400 16px "' + IND[olang()][f === "std" ? 0 : 1] + '"');
+              : ['400 16px "SC Sans"', '700 16px "SC Sans"'];
+      if (IND[olang()]) want.push('400 16px "' + IND[olang()][indAt(f)] + '"');
       want.forEach(function (x) {
         try {
           document.fonts.load(x, "कॅ॑A").catch(function () {});
@@ -1064,9 +1069,8 @@ export function init() {
     function fam(lang, font) {
       var f = font || pfn(),
         ind = IND[lang],
-        base = ind ? '"' + ind[0] + '", var(--body)' : lang === "en" ? "var(--lat)" : "var(--body)";
-      // (Kannada, Telugu and Gujarati letters: the serif face for Traditional and Bold alike, css/09-settings-page.css)
-      return f === "std" ? base : '"' + (ind ? ind[1] : FAM[f]) + '", ' + base;
+        base = ind ? '"' + ind[0] + '", var(--body)' : lang === "en" ? '"SC Sans", var(--lat)' : "var(--body)";
+      return f === "std" ? base : '"' + (ind ? ind[indAt(f)] : FAM[f]) + '", ' + base;
     }
     function words(k) {
       var a1 = pieceEl("a1"), // (built if not opened yet: js/core/page.js)
