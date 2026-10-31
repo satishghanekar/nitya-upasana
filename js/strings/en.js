@@ -546,20 +546,21 @@ export default {
     about: function (n) {
       return "about " + n + (+n === 1 ? " page" : " pages");
     },
-    // the hints under Dhrupad and Page; n: about how many pages more than the recommended choice (0: not known)
-    onceHint: "Fewest pages: the refrain is printed once, at the top.",
+    // the hints under Dhrupad and Page, short enough for one line on a phone; n: about how many pages more than the
+    // recommended choice (0: not known)
+    onceHint: "Fewest pages: the refrain once, at the top.",
     /** @param {number} n */
     everyHint: function (n) {
-      return "The refrain after every verse, as it is sung" + (+n > 0 ? ": about " + n + (+n === 1 ? " page" : " pages") + " more than Once." : ".");
+      return +n > 0 ? "As sung: about " + n + (+n === 1 ? " page" : " pages") + " more than Once." : "The refrain after every verse, as sung.";
     },
-    upHint: "Best for one language: the most on each page.",
+    upHint: "Best for one language: most per page.",
     /** @param {number} n */
     landHint: function (n) {
-      return "Larger, wider lines" + (+n > 0 ? ", but about " + n + (+n === 1 ? " page" : " pages") + " more than Portrait." : ".");
+      return +n > 0 ? "Larger lines: about " + n + (+n === 1 ? " page" : " pages") + " more." : "Larger, wider lines.";
     },
     /** @param {string} l2 the other language */
     sideHint: function (l2) {
-      return "Each line beside its " + l2 + ". Upright pages would wrap many more lines, and the rows would fall out of step.";
+      return "Each line beside its " + l2 + ", rows in step.";
     },
   },
   // The page's own words (index.html: data-w="page.…", filled by fillWords(), js/core/strings.js); {icon} is the
