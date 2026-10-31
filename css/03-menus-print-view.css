@@ -556,9 +556,10 @@ h2[tabindex="-1"]:focus {
   color: var(--muted);
   margin: 0 0 12px;
 }
-/* the one quiet line under the choices: the paper, and in Safari what its own dialog needs */
+/* the one quiet line under the choices: the paper, and in Safari what its own dialog needs (12px was small to read
+   on a phone) */
 .prnote {
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.4;
 }
 /* the preview of the first page (js/features/print.js preview: a page-sized frame made small), beside the note */
@@ -646,6 +647,7 @@ h2[tabindex="-1"]:focus {
 .prsum b {
   font-weight: 600;
   color: var(--ink);
+  white-space: nowrap;
 }
 /* the card is centred while it fits; taller than the screen (a phone on its side, or the iPhone's Open in
    Safari state), it starts at the top and the pop-up scrolls */
@@ -1168,23 +1170,29 @@ span.prwho {
 
 :root {
   --gold: #d8b27a;
+  --star: #a8761a;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not([data-pref]) {
     --gold: #8f6c3f;
+    --star: #d8b27a;
   }
 }
 :root[data-pref="dark"] {
   --gold: #8f6c3f;
+  --star: #d8b27a;
 }
 :root[data-pref="light"] {
   --gold: #d8b27a;
+  --star: #a8761a;
 }
 :root[data-pref="sepia"] {
   --gold: #b8925a;
+  --star: #8a5d14;
 }
 :root:root:root[data-hc="1"] {
   --gold: #fff;
+  --star: #ffd54a;
 }
 .rftop {
   position: static;
@@ -1228,4 +1236,49 @@ span.prwho {
 }
 .rftop {
   margin: 6px 10px 1.3em;
+}
+
+/* ==== The print pop-up: the recommended choices and the hints (js/features/print.js hints) ==== */
+/* Once and Portrait (one language) take the fewest pages: a small star in the button's top corner, and before the
+   hint under the row while chosen (--star: gold, a little darker on light pages so it shows on the pale track) */
+.prseg button {
+  position: relative;
+}
+.prseg button .prbest {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  width: 8px;
+  height: 8px;
+  fill: var(--star);
+}
+.prseg button[aria-pressed="true"] .prbest {
+  fill: var(--bg);
+  opacity: 0.85;
+}
+/* the hint: under the row's label and choices, quieter than both */
+.prrow .prhint {
+  grid-column: 1 / -1;
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.prrow .prhint[hidden] {
+  display: none;
+}
+.prhint .prbest {
+  width: 10px;
+  height: 10px;
+  margin-inline-end: 5px;
+  fill: var(--star);
+}
+/* tablets and computers have room for the hints and the notes a step larger */
+@media (min-width: 760px) {
+  .prrow .prhint {
+    font-size: 13.5px;
+  }
+  .prnote {
+    font-size: 13px;
+  }
 }
