@@ -70,7 +70,9 @@ export function zsplit(p, cut, sep) {
 // A Vedic chant shown in one language runs on as paragraphs (css/02-core.css, "Vedic chants in one language"):
 // there a row may break at any space, so each danda (। ॥ |), with a verse number between two of them, is glued
 // to the word before it (a nowrap span, .nb), and a line written on two rows (<br>) gets a space beside it
-// (.brs, shown only while the line runs on). The words themselves are not changed.
+// (.brs, shown only while the line runs on). A long word in English letters is glued by its last three letters only:
+// whole, it could be wider than a phone's row and run off the screen, where the rest of it may now break. The words
+// themselves are not changed.
 export function glue(p) {
   var w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT),
     ns = [],
@@ -83,10 +85,13 @@ export function glue(p) {
       at = 0,
       m;
     while ((m = re.exec(t))) {
-      var s = document.createElement("span");
+      var s = document.createElement("span"),
+        w0 = (/^\S+/.exec(m[0]) || [""])[0],
+        // (a long word in English letters: glued by its last three letters, each with its marks)
+        cut = /[A-Za-z]/.test(w0) && w0.length > 12 ? w0.length - ((/(?:\P{M}\p{M}*){3}$/u.exec(w0) || [""])[0].length || w0.length) : 0;
       s.className = "nb";
-      s.textContent = m[0];
-      f.appendChild(document.createTextNode(t.slice(at, m.index)));
+      s.textContent = m[0].slice(cut);
+      f.appendChild(document.createTextNode(t.slice(at, m.index + cut)));
       f.appendChild(s);
       at = m.index + m[0].length;
     }

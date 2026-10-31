@@ -424,8 +424,11 @@
 }
 
 /* Text font (Settings → Text font, and the same three in the Print pop-up: css/00-fonts.css):
-   Modern (std) keeps the site's own fonts; Traditional and Bold change the texts (Marathi and English), on screen
-   and in print alike. */
+   Modern (std) keeps the site's own fonts for the Marathi, with the texts' English in Noto Sans (it has the IAST svara
+   marks, Inter does not); Traditional and Bold change the texts (Marathi and English), on screen and in print alike. */
+:root[data-font="std"] {
+  --tf: "SC Sans";
+}
 :root[data-font="classic"] {
   --tf: "SC Classic";
 }
@@ -436,10 +439,10 @@
 :root[data-font]:not([data-font="std"]) .ash .rftop {
   font-family: var(--tf), var(--body);
 }
-:root[data-font]:not([data-font="std"]) .ash .items .en,
-:root[data-font]:not([data-font="std"]) .ash .rftop .en,
-:root[data-font]:not([data-font="std"]) .ash .items .en p,
-:root[data-font]:not([data-font="std"]) .ash .rftop .en p {
+:root[data-font] .ash .items .en,
+:root[data-font] .ash .rftop .en,
+:root[data-font] .ash .items .en p,
+:root[data-font] .ash .rftop .en p {
   font-family: var(--tf), var(--lat);
 }
 
