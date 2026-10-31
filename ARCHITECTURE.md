@@ -133,6 +133,7 @@ These were tried and don't work here:
 - **Making `js/parts.js` or `sw.js` a module:** the service worker loads `parts.js` with `importScripts`, and module service workers are a risk on iOS 15.4.
 - **Making print asynchronous** (a Worker, `requestAnimationFrame`): Safari opens the print dialog only straight from a tap.
 - **Decorative fonts Martel, Amita and Yatra One:** they draw the reph wrongly (दर्शन as दरशन).
+- **Other text fonts (2026-10-31):** Kalam (the old Handwritten) has no Vedic svara marks, 5 of the 15 IAST letters and no Kannada, Telugu or Gujarati face; Baloo 2, Hind and Anek have faces in every script, but no svara marks in Kannada, Telugu or Gujarati (Hind none at all, and no dandas in Kannada and Telugu); Annapurna SIL, Sahitya and Gotu are Devanagari only and lack ᳚. Only Tiro, Noto Serif and Noto Sans draw every mark the texts use (`fonts/README.md`).
 
 ## Checking a change
 
