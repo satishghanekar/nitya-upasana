@@ -34,7 +34,7 @@ test("Edit beside the session opens the builder for the reading person, at that 
   await expect(page.locator("#tsed")).toHaveAccessibleName("Edit routine: Evening");
   await openBuilder(page);
   await expect(page.locator("#rtbt")).toBeFocused();
-  await expect(page.locator("#rtbt")).toHaveText("M" + "Me’s routine");
+  await expect(page.locator("#rtbt")).toHaveText("SG" + "SG’s routine");
   await expect(page.locator('#rtss [aria-checked="true"]')).toHaveText("Evening");
   await expect(page.locator('#rtmd [aria-checked="true"]')).toHaveText("Same every day");
   await expect(page.locator("#rtwk")).toBeHidden();
@@ -290,13 +290,15 @@ test("each person has their own routine; Save a backup file → Restore brings i
   const json = JSON.parse(readFileSync(file, "utf8"));
   expect(json.app).toBe(readFileSync(new URL("../index.html", import.meta.url), "utf8").match(/<meta name="version" content="([^"]+)"/)[1]);
   expect(json.payload.profiles.map((p) => [p.name, p.routine && p.routine.evening.texts])).toEqual([
-    ["Me", ["aarti-sukhkarta", "aarti-ghalin-lotangan"]],
+    ["SG", ["aarti-sukhkarta", "aarti-ghalin-lotangan"]],
+    // RG's own, made from the default when the phone was first opened
+    ["RG", expect.any(Array)],
     ["Aai", null],
   ]);
   await page.locator("#xc").click();
-  // Me's routine changes after the backup
+  // SG's routine changes after the backup
   await page.locator("#who").click();
-  await page.locator("#pfl .pfp", { hasText: "Me" }).click();
+  await page.locator("#pfl .pfp", { hasText: "SG" }).click();
   await openBuilder(page);
   await btn(page, "aarti-ghalin-lotangan", "rm").click();
   await page.locator("#rbk").click();
@@ -306,11 +308,11 @@ test("each person has their own routine; Save a backup file → Restore brings i
   // (given as a buffer: the saved path, under a test-results folder named with "→", is not always accepted)
   await page.locator("#bkf").setInputFiles({ name: "b.nitya", mimeType: "application/json", buffer: Buffer.from(readFileSync(file, "utf8")) });
   expect(errors).toEqual([]);
-  await expect(page.locator("#bkmd")).toContainText("Replaced by the file's copy (settings and routine): Me, Aai");
+  await expect(page.locator("#bkmd")).toContainText("Replaced by the file's copy (settings and routine): SG, RG, Aai");
   await page.locator("#bkok").click();
   await expect(page.locator("#bkm")).toBeHidden();
   await page.locator("#who").click();
-  await page.locator("#pfl .pfp", { hasText: "Me" }).click();
+  await page.locator("#pfl .pfp", { hasText: "SG" }).click();
   expect(await homeIds(page)).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
   await page.reload();
   await settle(page);
@@ -342,7 +344,7 @@ test("Marathi menus: बदला, and the builder's words in Marathi @mobile", 
   await openSite(page, SETUPS["marathi-menus"], { now: MON_EVENING });
   await expect(page.locator("#tsed")).toHaveText("बदला");
   await openBuilder(page);
-  await expect(page.locator("#rtbt")).toContainText("दिनक्रम: Me");
+  await expect(page.locator("#rtbt")).toContainText("दिनक्रम: SG");
   await expect(page.locator('#rtss [aria-checked="true"]')).toHaveText("सायंकाळ");
   await expect(page.locator("#rtsum")).toHaveText("रोज सायंकाळ · १० रचना");
   await expect(page.locator("#rbk")).toHaveText("मागे", { useInnerText: true });
