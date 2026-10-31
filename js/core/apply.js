@@ -68,6 +68,36 @@ var aimEl = null,
 export function aimAt(el) {
   aimEl = el;
   aimY = scrollY;
+  holdAim(el);
+}
+
+// Just after the jump the page is still settling: fonts arrive and the text is fitted again, so the texts above the
+// piece change height, and with no scroll anchoring while a session is read (css/10-today.css) the piece drifted a few
+// hundred pixels from where the jump put it (Traditional's fonts, 2026-10-31). Until the reader scrolls, or for five
+// seconds, the piece is kept where it landed.
+/** @type {ResizeObserver | null} */
+var aimRO = null;
+/** @param {HTMLElement | null} el */
+function holdAim(el) {
+  if (aimRO) aimRO.disconnect();
+  aimRO = null;
+  if (!el || typeof ResizeObserver !== "function") return;
+  var top = el.getBoundingClientRect().top,
+    until = Date.now() + 5000,
+    ro = new ResizeObserver(function () {
+      if (aimEl !== el || Date.now() > until || Math.abs(scrollY - aimY) >= 2) {
+        ro.disconnect();
+        if (aimRO === ro) aimRO = null;
+        return;
+      }
+      var d = el.getBoundingClientRect().top - top;
+      if (Math.abs(d) >= 1) {
+        scrollBy(0, d);
+        aimY = scrollY;
+      }
+    });
+  aimRO = ro;
+  ro.observe(document.body);
 }
 
 // The piece being read: the last one whose top has passed just under the top bar
