@@ -317,7 +317,9 @@
 
   /* ---- The author line, under the last stanza ---- */
   #pv .pvcr {
-    margin: 8pt 0 0;
+    /* room above for the marks over its letters, as a title's, should it start a page (Vedic texts) */
+    margin: 5pt 0 0;
+    padding-top: 3pt;
     color: #555;
     font: 400 9.5pt/1.4 var(--po);
     text-align: center;
@@ -329,7 +331,7 @@
   /* ---- Both languages, side by side ---- */
   #pv .pvt {
     width: 100%;
-    margin: 0 0 9pt;
+    margin: 0 0 5pt;
     border-collapse: collapse;
     table-layout: fixed;
   }
@@ -340,6 +342,11 @@
     padding: 1pt 10pt;
     vertical-align: top;
     text-align: start;
+  }
+  /* room above a block's first row for the marks over its letters (Vedic svara marks), as a title's, should it start
+     a page: taken from the space under the block */
+  #pv .pvt tr:first-child td {
+    padding-top: 5pt;
   }
   #pv .pvt td:first-child {
     border-right: 0.5pt solid #bbb;
@@ -359,6 +366,12 @@
     line-height: 1.5;
     padding-inline-start: calc(10pt + 1.2em);
     text-indent: -1.2em;
+  }
+  #pv .pvved .pvt td {
+    /* the row's room above it, not below: a row of a Vedic paragraph may start a page, its svara marks rising above
+       the line (as the title's) */
+    padding-top: 2pt;
+    padding-bottom: 0;
   }
   #pv .pvved .pvt td.pvo {
     line-height: 1.75;
