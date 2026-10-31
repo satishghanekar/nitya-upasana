@@ -545,6 +545,24 @@ export default {
     },
     week: "ವಾರದ ನೋಟ",
     contents: "ಪರಿವಿಡಿ",
+    /** @param {number} n */
+    about: function (n) {
+      return "ಸುಮಾರು " + n + (+n === 1 ? " ಪುಟ" : " ಪುಟಗಳು");
+    },
+    onceHint: "ಕಡಿಮೆ ಪುಟಗಳು: ಧ್ರುಪದ ಮೇಲೆ ಒಮ್ಮೆ.",
+    /** @param {number} n */
+    everyHint: function (n) {
+      return +n > 0 ? "ಹಾಡುವಂತೆ: ‘ಒಮ್ಮೆ’ ಗಿಂತ ಸುಮಾರು " + n + (+n === 1 ? " ಪುಟ" : " ಪುಟಗಳು") + " ಹೆಚ್ಚು." : "ಹಾಡುವಂತೆ ಪ್ರತಿ ಪದ್ಯದ ನಂತರ ಧ್ರುಪದ.";
+    },
+    upHint: "ಒಂದು ಭಾಷೆಗೆ ಉತ್ತಮ: ಪುಟದಲ್ಲಿ ಹೆಚ್ಚು ಪಠ್ಯ.",
+    /** @param {number} n */
+    landHint: function (n) {
+      return +n > 0 ? "ದೊಡ್ಡ ಸಾಲುಗಳು: ಸುಮಾರು " + n + (+n === 1 ? " ಪುಟ" : " ಪುಟಗಳು") + " ಹೆಚ್ಚು." : "ದೊಡ್ಡ, ಅಗಲವಾದ ಸಾಲುಗಳು.";
+    },
+    /** @param {string} l2 */
+    sideHint: function (l2) {
+      return "ಪ್ರತಿ ಸಾಲಿನ ಪಕ್ಕ ಅದರ " + l2 + " ಸಾಲು, ಜೊತೆಯಾಗಿ.";
+    },
   },
   // The page's own words (index.html: data-w="page.…"); {icon} is the icon written in the page
   page: {
@@ -617,7 +635,9 @@ export default {
     everyTextStartsOnA: 'ಪ್ರತಿ ಪಠ್ಯ ಹೊಸ ಪುಟದಲ್ಲಿ ಆರಂಭವಾಗುತ್ತದೆ. ಕಾಗದ: <b class="prpaper">Letter</b>',
     forLandscapePickItIn: "ಅಡ್ಡ ಮುದ್ರಣಕ್ಕೆ, Safari ಯ ಸಂವಾದದಲ್ಲೂ ಅದನ್ನೇ ಆರಿಸಿ.",
     pickA4PaperInSafari: 'Safari ಯ ಸಂವಾದದಲ್ಲೂ <span class="przp">A4</span> ಕಾಗದವನ್ನು ಆರಿಸಿ.',
-    chromePrintsItBest: "Chrome ಇದನ್ನು ಅತ್ಯುತ್ತಮವಾಗಿ ಮುದ್ರಿಸುತ್ತದೆ.",
+    chromePrintsItBest: "Chrome ಇದನ್ನು ಪುಟ ಸಂಖ್ಯೆಗಳೊಂದಿಗೆ ಅತ್ಯುತ್ತಮವಾಗಿ ಮುದ್ರಿಸುತ್ತದೆ.",
+    safariPrintsSmaller: "Safari ಸ್ವಲ್ಪ ಚಿಕ್ಕದಾಗಿ, ಪುಟ ಸಂಖ್ಯೆಗಳಿಲ್ಲದೆ ಮುದ್ರಿಸುತ್ತದೆ.",
+    recommended: "ಶಿಫಾರಸು",
     readyPrintNow: "ಸಿದ್ಧ: ಈಗ ಮುದ್ರಿಸಿ",
     openInSafari: "Safari ಯಲ್ಲಿ ತೆರೆಯಿರಿ",
     copyLink: "ಲಿಂಕ್ ನಕಲಿಸಿ",

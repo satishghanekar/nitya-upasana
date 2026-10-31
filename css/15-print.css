@@ -109,7 +109,8 @@
 
   /* (no page frame: Safari can't repeat one on every page, so no browser gets one; Satish, 2026-10-23) */
 
-  /* ---- Pages: the four rules ---- */
+  /* ---- Pages: the four rules (the Print pop-up's "about 12 pages" reads them from each block, so it follows any
+     change here: js/features/print.js blocks()) ---- */
   /* 1. every text (and the contents) starts on a new page */
   #pv > section + section {
     break-before: page;

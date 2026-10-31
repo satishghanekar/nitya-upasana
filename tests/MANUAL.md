@@ -13,8 +13,8 @@ Automation covers the engines (Chromium, Firefox, WebKit) and emulated phones an
 | iPhone, the Home Screen app | Safari | Once a new version is published: Settings → More, the round button beside the version turns, then the line says "Saved. Close the app and open it again"; How? shows the iPhone steps first; following them opens the new version. |
 | Android phone | Chrome | Install from the App button; reopen offline; pinch; Print → Save as PDF (A4). Settings → About shows the version with "Offline ready" under it; the round button beside it turns, then shows ✓ and "You have the latest version". |
 | Android phone | Samsung Internet | Opens and reads; Settings; dark theme. |
-| Windows PC | Edge | Home's column and the text beside it sit right (the scrollbar doesn't push them); Ctrl + / −; Print (Letter) in Portrait and in Landscape. Settings → Accessibility → Contrast themes on: buttons, icons and the focus ring stay visible. |
-| Mac | Safari | Print → PDF in Portrait and in Landscape (pick Landscape in Safari's dialog too); a changed print Language, Font or Dhrupad prints, and the reading page keeps its own; File → Add to Dock. |
+| Windows PC | Edge | Home's column and the text beside it sit right (the scrollbar doesn't push them); Ctrl + / −; Print (Letter) in Portrait and in Landscape: the PDF has the pages the pop-up said ("about N pages"). Settings → Accessibility → Contrast themes on: buttons, icons and the focus ring stay visible. |
+| Mac | Safari | Print → PDF in Portrait and in Landscape (pick Landscape in Safari's dialog too; the pop-up says Safari prints a little smaller, without page numbers); a changed print Language, Font or Dhrupad prints, and the reading page keeps its own; File → Add to Dock. |
 | iPad | Safari | Upright: Home with the picture large on top. Sideways: Home stays on the left while a text is read on the right. Print from the Home Screen app goes to Open in Safari. |
 | Large monitor (≥ 2560 px) | any | The page uses the width without stretching lines. |
 

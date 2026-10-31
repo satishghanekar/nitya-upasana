@@ -18,7 +18,7 @@ Each file starts with a comment that lists its sections. Every section begins wi
 | `00-fonts.css` | `@font-face` rules for `fonts/`. `unicode-range` makes the browser download only the parts a page uses. |
 | `01-theme.css` | Colour and font variables on `:root` for the light, sepia and dark themes and high contrast. |
 | `02-core.css` | The first full set of rules for the reading page: page, top bar, contents, pieces, language switching, search, phones held sideways, section headings, and the splash shown while the page starts (`#spl`). Also the first print rules. |
-| `03-menus-print-view.css` | Top-bar title, the Share menu (`#tmb` opens `#shr`: App, Share, QR, Help), the QR pop-up, Add to Home Screen and its steps (`#inm`), the print builder (`#prm`: What, then How), the piece header card, and the dhrupad at the top of a piece. |
+| `03-menus-print-view.css` | Top-bar title, the Share menu (`#tmb` opens `#shr`: App, Share, QR, Help), the QR pop-up, Add to Home Screen and its steps (`#inm`), the print builder (`#prm`: What, then How; the recommended choices' star `.prbest` in `--star`, the hints `.prhint`, a step larger from 760px), the piece header card, and the dhrupad at the top of a piece. |
 | `04-columns-rail.css` | Two stanza columns (`data-cols`), piece and stanza numbers, both languages side by side on wide screens, the wide layout (`data-rail`), the reading progress line and the dhrupad markers as pills. |
 | `05-home-card.css` | The "paper sheet" under Home, the offline cloud in the top bar (`#ofb`), the lotus ornament at the end of each piece, quieter piece numbers, the fade-in, the tappable dhrupad markers and the repeated dhrupad. |
 | `06-help-polish.css` | Help (`#help`), the final rules for the Settings rows, and general polish rules that refine the earlier files. |
@@ -61,9 +61,9 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | Query | What changes |
 |---|---|
 | `(max-width: 359px)` | The smallest phones: Settings tightens |
-| `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon |
+| `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon; the Print pop-up's hints a step smaller, so each keeps to one line |
 | `(max-width: 399px)` | Phones up to 399px: the bottom bar's five buttons fit by showing only the arrows of Prev and Next |
-| `(max-width: 439px)` | Phones: the bottom bar's five buttons (Prev, Home, Library, Reading, Next) close their gaps and slim the icon buttons |
+| `(max-width: 439px)` | Phones: the bottom bar's five buttons (Prev, Home, Library, Reading, Next) close their gaps and slim the icon buttons; the Print pop-up's font tiles a little narrower at the sides |
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
 | `(min-width: 760px) and (min-height: 521px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own; Settings: below, the tabs, the Reading tab tightened to fit one iPhone screen; from 760px (iPads upright and sideways, desktops) no tabs: the title beside Back and every group at once, in two columns (`.sp-c1`: the preview and the reading choices; `.sp-c2`: screen, profiles, about). A phone held sideways (at most 520px high) keeps the tabs (the 521px height) |

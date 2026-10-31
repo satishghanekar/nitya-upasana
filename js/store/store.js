@@ -3,7 +3,8 @@
 // (js/store/db.js), with today's working copy in memory so the page never waits for the database.
 // - openStore() opens the database and reads it; js/main.js waits for it (with the texts) before the parts start.
 // - start() is called by js/core/state.js: it decides who is reading and their settings (startPlan in
-//   js/store/profiles.js), moving today's settings into the first profile on the first visit.
+//   js/store/profiles.js), moving today's settings into the first profile on the first visit (and adding the
+//   built-in people, SG and RG).
 // - The active person's settings are also written at once to localStorage["aarti2-prefs"] by state.js (the boot copy,
 //   read before the page script runs and by the previous version of the site); here they go to IndexedDB a moment
 //   later, and at once when the page is hidden.
@@ -14,6 +15,7 @@ import { canAdd, canDelete, cleanColour, cleanInitials, cleanName, cleanProfile,
 import { defaults, devicePart, joinPrefs, profilePart } from "./migrate.js";
 import { cleanRoutine } from "../core/routine.js";
 import { cleanLocal, emptyLocal } from "../core/library.js";
+import { loaded } from "../text/load.js";
 
 /**
  * @typedef {import("./db.js").DB} DB
@@ -119,9 +121,11 @@ export function start(saved, ticks, e, now) {
       ticks: ticks,
       env: env,
       now: (now || new Date()).toISOString(),
-      id: function () {
-        return makeId(/** @type {Profile[]} */ (list));
+      id: function (taken) {
+        return makeId(taken);
       },
+      // loaded before the parts start (js/main.js), so a built-in person's routine can be made from it
+      routine: loaded.routine,
     });
   profiles = plan.profiles;
   meta = plan.meta;
@@ -173,6 +177,7 @@ function cleanMeta(m) {
       : [],
   };
   if (m.library) out.library = cleanLocal(m.library);
+  if (m.builtIn === 1) out.builtIn = 1;
   return out;
 }
 
