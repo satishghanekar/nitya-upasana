@@ -1200,7 +1200,8 @@ test("print builder: the Routine tab lists each text once, in routine order, wit
   await expect(page.locator(".prrl .prtag")).toHaveText(P5_TAGS);
   await expect(page.locator("#prsum span").first()).toHaveText("4 texts");
   await expect(page.locator('[data-rses="afternoon"]')).toBeDisabled();
-  await expect(page.locator(".prwho")).toHaveText("Me");
+  // whose: SG and RG are built in, and SG, the one reading, is picked
+  await expect(page.locator(".prwho option:checked")).toHaveText("SG");
   // one day: today, Thursday
   await page.locator('[data-rspan="day"]').click();
   await expect(page.locator(".prchip[data-rday][aria-pressed=true]")).toHaveText(["Thu"]);
@@ -1242,7 +1243,7 @@ test("print: a routine printout, its week at a glance and tags @chromium-only", 
   expect(await page.locator("#pv .pvgrid tbody th").allTextContents()).toEqual(["Morning", "Evening"]);
   expect(await page.locator("#pv .pvgrid tbody tr").first().locator("td").allTextContents()).toEqual(["1 2", "2", "2", "2", "2", "2 4", "2"]);
   expect(await page.locator("#pv .pvgrid tbody tr").last().locator("td").allTextContents()).toEqual(Array(7).fill("3 2"));
-  await expect(page.locator("#pv .pvrh")).toHaveText("Me");
+  await expect(page.locator("#pv .pvrh")).toHaveText("SG");
   await expect(page.locator("#pv .pvtoc .pvtag")).toHaveText(P5_TAGS);
   await expect(page.locator("#pv .pvs h2 .pvtag")).toHaveText(P5_TAGS);
   await expect(page.locator("#pv .pvs h2 .pvnum")).toHaveText(["1.", "2.", "3.", "4."]);
@@ -1308,7 +1309,7 @@ test("iPhone Home Screen app: Open in Safari carries a routine printout @chromiu
   await sp.goto(href.replace(/^x-safari-/, ""));
   await expect(sp.locator("#prgo")).toBeVisible({ timeout: 15_000 });
   expect(await sp.evaluate(() => location.search)).toBe("");
-  await expect(sp.locator("#pv .pvrh")).toHaveText("Me");
+  await expect(sp.locator("#pv .pvrh")).toHaveText("SG");
   await expect(sp.locator("#pv .pvtoc .pvtag")).toHaveText(["Mon · Morning", "Daily · Morning", "Sat · Morning"]);
   await expect(sp.locator("#pv .pvgrid tbody th")).toHaveText(["Morning"]);
   await sf.close();

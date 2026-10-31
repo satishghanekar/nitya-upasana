@@ -235,6 +235,8 @@ test("delete asks first, never removes the last person, and moves to another per
   await expect(people(page)).toHaveText(["SG"]);
   await expect(chipName(page)).toHaveAccessibleName("Profile: SG");
   expect(await fs(page)).toBe(30);
+  // (saved a moment later: with SG and RG both written on the first visit, a reload at once could beat the delete)
+  await expect.poll(async () => (await idb(page)).profiles.map((p) => p.name)).toEqual(["SG"]);
   await page.reload();
   await settle(page);
   await page.locator("#who").click();
