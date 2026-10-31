@@ -3,7 +3,8 @@
 //   - every text is printed, in reading order, and listed in the contents; each starts on a new page
 //   - no stanza (or other block) is split between pages, and nothing is lost (a marker at each block's start and end)
 //   - every English line of every printed text is on paper, read against the texts themselves
-//   - the page footers; nothing screen-only prints
+//   - the page footers; nothing screen-only prints; nothing in a page's bottom margin but its footer
+//   - sideways (the dhrupad once), an aarti of three stanzas fits on one page
 // for one language and both, in each of the three fonts, with Kannada letters, IAST, and the dhrupad after every
 // verse; then the Print pop-up and builder, the iPhone's Print now and Open in Safari, and routine printouts.
 // PDFs can only be made by Chromium, so this suite is Chromium-only.
@@ -47,6 +48,18 @@ for (const W of WHOLE) {
     const paper = W.paper || "Letter";
     const r = await printOnce(browser, { prefs: W.prefs, choice: W.choice, mode: W.mode, paper, locale: W.locale || "en-US" });
     expect(r.pdf.landscape, "the PDF pages are sideways").toBe(W.choice === "pr2");
+    // the printout is set a little tighter sideways (data-land), so an aarti of three stanzas fits on one page
+    if (W.choice === "pr2" && W.prefs.ref !== 0) {
+      const at = markerPages(r.pdf.pages);
+      for (const id of ["a1", "a2", "a3"]) {
+        const pages = new Set(
+          Object.entries(at)
+            .filter(([k]) => k.startsWith(id + ":"))
+            .map(([, p]) => p),
+        );
+        expect([...pages], `${id} on one sideways page`).toHaveLength(1);
+      }
+    }
     // a printout that fails is kept with the test's results, so a failure on CI can be looked at
     try {
       checkPrintout(r);

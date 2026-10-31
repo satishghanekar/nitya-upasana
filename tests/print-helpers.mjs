@@ -195,13 +195,22 @@ export async function pdfPages(page, paper, save) {
     writeFileSync(f, buf);
   }
   const doc = await pdfjs.getDocument({ data: new Uint8Array(buf), useSystemFonts: false, verbosity: 0 }).promise;
-  const out = [];
+  const out = [],
+    low = [];
   for (let i = 1; i <= doc.numPages; i++) {
     const tc = await (await doc.getPage(i)).getTextContent();
     out.push(tc.items.map((x) => x.str).join(""));
+    // anything set on a line below the text area (19mm from the foot, css/15-print.css) but the "N / total" footer:
+    // the marks over the first line of the next page, which Chrome painted there (the markers, 0.25px, aside)
+    low.push(
+      tc.items
+        .filter((x) => x.transform[5] < 50 && Math.abs(x.transform[0]) > 2 && x.str.trim() && !/^[\p{Nd}\s/]+$/u.test(x.str))
+        .map((x) => x.str)
+        .join(""),
+    );
   }
   const v = (await doc.getPage(1)).view;
-  return { pages: out, bytes: buf.length, buf, landscape: v[2] > v[3] };
+  return { pages: out, low, bytes: buf.length, buf, landscape: v[2] > v[3] };
 }
 
 const SCREEN_ONLY = ["Open all", "Fold all", "Check for updates", "Settings", "Add to Home Screen", "Choose File", "No file chosen"];
@@ -273,6 +282,9 @@ export function checkPages(r) {
   // page footer "N / total" on every page
   const n = pdf.pages.length;
   pdf.pages.forEach((t, i) => expect(t.replace(/\s/g, ""), `footer on page ${i + 1}`).toContain(`${i + 1}/${n}`));
+  // nothing in the bottom margin but the footer
+  const low = pdf.low.map((t, i) => (t ? `page ${i + 1}: ${t}` : "")).filter(Boolean);
+  expect(low, "printed in the bottom margin").toEqual([]);
   // screen-only controls never print
   const all = pdf.pages.join("\n");
   for (const s of SCREEN_ONLY) expect(all, `"${s}" is screen-only`).not.toContain(s);
