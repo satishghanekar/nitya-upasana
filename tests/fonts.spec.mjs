@@ -72,29 +72,30 @@ for (const [pfn, aarti, vedic] of [
   });
 
 // The other scripts the original can be shown in, with their faces: Noto Sans in Modern, Noto Serif (named SC … Classic)
-// in Traditional and Bold; each draws the Vedic marks on its own letters (css/00-fonts.css)
+// in Bold, and Tiro's in Traditional (Gujarati: Noto Serif's, as Tiro has none); each draws the Vedic marks on its own
+// letters (css/00-fonts.css)
 const SCRIPT_FACES = [
-  ["Kannada", "kannada", "Noto Sans Kannada", "SC Kn Classic"],
-  ["Telugu", "telugu", "Noto Sans Telugu", "SC Te Classic"],
-  ["Gujarati", "gujarati", "Noto Sans Gujarati", "SC Gu Classic"],
+  ["Kannada", "kannada", "Noto Sans Kannada", "SC Kn Classic", "SC Kn Tiro"],
+  ["Telugu", "telugu", "Noto Sans Telugu", "SC Te Classic", "SC Te Tiro"],
+  ["Gujarati", "gujarati", "Noto Sans Gujarati", "SC Gu Classic", "SC Gu Classic"],
 ];
 
 // in print: their own face in each font, as on screen
-for (const [name, setup, sans, serif] of SCRIPT_FACES)
+for (const [name, setup, sans, , trad] of SCRIPT_FACES)
   for (const [pfn, want] of [
     ["std", [sans, "400"]],
-    ["classic", [serif, "400"]],
+    ["classic", [trad, "400"]],
   ])
     test(`in print, ${name} letters, ${pfn} @chromium-only`, async ({ page }) => {
       await stubPrint(page);
       expect(await printed(page, { ...SETUPS[setup], pfn }, "aarti-sukhkarta")).toEqual(want);
     });
 
-// on screen: the sans face in Modern, the serif in Traditional and Bold
-for (const [name, setup, sans, serif] of SCRIPT_FACES)
+// on screen: the sans face in Modern, Tiro's in Traditional, the serif in Bold
+for (const [name, setup, sans, serif, trad] of SCRIPT_FACES)
   for (const [fnt, want] of [
     ["std", [sans, "400"]],
-    ["classic", [serif, "400"]],
+    ["classic", [trad, "400"]],
     ["bold", [serif, "600"]],
   ])
     test(`${name} letters, ${fnt}`, async ({ page }) => {
@@ -102,3 +103,13 @@ for (const [name, setup, sans, serif] of SCRIPT_FACES)
       await readText(page, "p1");
       expect(await look(page, VEDIC)).toEqual(want);
     });
+
+// The texts' English: Noto Sans in Modern (Inter, the menus' face, has no IAST svara marks), Noto Serif in Traditional
+// and Bold; each Latin file holds the IAST marks (̍ ̎ ̱ ̐), so a mark comes from the same font as its letter
+const ENGLISH = { std: ["SC Sans", "400"], classic: ["SC Classic", "400"], bold: ["SC Bold", "600"] };
+for (const [fnt, want] of Object.entries(ENGLISH))
+  test(`the English of the texts, ${fnt}`, async ({ page }) => {
+    await openSite(page, { ...SETUPS["english-iast"], fnt });
+    await readText(page, "p1");
+    expect(await look(page, "#p1 .verse .en p")).toEqual(want);
+  });

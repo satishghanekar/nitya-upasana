@@ -330,7 +330,7 @@ html[data-sp] {
 :root[data-font]:not([data-font="std"]) .sp-pw > div {
   font-family: var(--tf), var(--body);
 }
-:root[data-font]:not([data-font="std"]) .sp-pw > [lang="en"] {
+:root[data-font] .sp-pw > [lang="en"] {
   font-family: var(--tf), var(--lat);
 }
 /* the maker's name and email, quiet, centred under all the cards (outside their columns) */
@@ -456,7 +456,7 @@ html[data-sp] {
 
 /* ==== Kannada, Telugu and Gujarati letters: the original text when it is shown in those letters (html[data-scr], set
    by js/render.js), and each language's name wherever it appears (the language pages in Settings, Help). Each script's
-   own faces (css/00-fonts.css): --ks for Modern, --kf for Traditional and Bold. The dandas and Vedic accent marks
+   own faces (css/00-fonts.css): --ks for Modern, --kf for Traditional and Bold (Tiro's in Traditional, Noto Serif's in Bold). The dandas and Vedic accent marks
    come from the same face as the letter they sit on ==== */
 html[data-scr="kn"],
 [lang="kn"],
@@ -475,6 +475,15 @@ html[data-scr="gu"],
 [data-lang="gu"] {
   --ks: "Noto Sans Gujarati";
   --kf: "SC Gu Classic";
+}
+/* Traditional's Kannada and Telugu: Tiro's (Gujarati keeps Noto Serif's: Tiro has none) */
+html[data-scr="kn"][data-font="classic"],
+:root[data-font="classic"] :is([lang="kn"], [data-lang="kn"]) {
+  --kf: "SC Kn Tiro";
+}
+html[data-scr="te"][data-font="classic"],
+:root[data-font="classic"] :is([lang="te"], [data-lang="te"]) {
+  --kf: "SC Te Tiro";
 }
 html[data-scr] .mr,
 html[data-scr] .mr *,
