@@ -44,6 +44,7 @@ Each file starts with a comment that lists its sections. Every section begins wi
   - `data-cols`: `1` or `2` columns.
   - `data-rail`: the wide layout (1024px and wider): Home's column on the left, the page beside it.
   - `data-print`: `one` or `side`, only while printing; then `data-font` and `data-ref` take the printout's font and dhrupad (Modern, Traditional or Bold, as in Settings).
+  - `data-land`: the printout is on sideways pages, only while printing (and in the pop-up's preview): set a little tighter.
   - `data-font`: the text font: `classic` (Traditional, the default), `std` (Modern) or `bold` (Bold).
   - `data-tuck`: the bars are tucked away.
   - `data-lead="en"`: English is the main language; `data-scr`: Kannada, Telugu or Gujarati letters (`kn`, `te`, `gu`).
