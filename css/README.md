@@ -61,9 +61,9 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | Query | What changes |
 |---|---|
 | `(max-width: 359px)` | The smallest phones: Settings tightens |
-| `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon |
+| `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon; the Print pop-up's hints a step smaller, so each keeps to one line |
 | `(max-width: 399px)` | Phones up to 399px: the bottom bar's five buttons fit by showing only the arrows of Prev and Next |
-| `(max-width: 439px)` | Phones: the bottom bar's five buttons (Prev, Home, Library, Reading, Next) close their gaps and slim the icon buttons |
+| `(max-width: 439px)` | Phones: the bottom bar's five buttons (Prev, Home, Library, Reading, Next) close their gaps and slim the icon buttons; the Print pop-up's font tiles a little narrower at the sides |
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
 | `(min-width: 760px) and (min-height: 521px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own; Settings: below, the tabs, the Reading tab tightened to fit one iPhone screen; from 760px (iPads upright and sideways, desktops) no tabs: the title beside Back and every group at once, in two columns (`.sp-c1`: the preview and the reading choices; `.sp-c2`: screen, profiles, about). A phone held sideways (at most 520px high) keeps the tabs (the 521px height) |

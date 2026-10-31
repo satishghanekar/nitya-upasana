@@ -1045,6 +1045,9 @@ export function init() {
       b.appendChild(x);
       b.appendChild(nm);
     });
+    // the font recommended for print: Traditional (classic), the book-style face (the fonts take the same pages, so
+    // it is the look that decides): a star, as on Once and Portrait, and no hint
+    best(/** @type {Element} */ (fn.querySelector('[data-v="classic"]')));
     fn.onclick = function (e) {
       var b = e.target.closest("button");
       if (!b) return;

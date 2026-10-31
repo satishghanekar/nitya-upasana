@@ -534,13 +534,24 @@ h2[tabindex="-1"]:focus {
   box-shadow: inset 0 0 0 1px var(--accent);
   color: var(--ink);
 }
+/* the sample word as large as its tile allows (a phone's tiles are narrow, and English words in the wider fonts ran
+   out of them): each tile is a container, and the word's size is capped by its width. Browsers without container
+   units (before Safari 16) keep the full size and cut the word short with … */
+#prfn button {
+  container-type: inline-size;
+}
 .prfx {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 22px;
+  font-size: min(22px, 100cqw / 3.3);
   line-height: 1.3;
   white-space: nowrap;
 }
 .prfx[lang="en"] {
   font-size: 19px;
+  font-size: min(19px, 100cqw / 5.3);
 }
 .prfm {
   color: var(--muted);
@@ -1239,22 +1250,30 @@ span.prwho {
 }
 
 /* ==== The print pop-up: the recommended choices and the hints (js/features/print.js hints) ==== */
-/* Once and Portrait (one language) take the fewest pages: a small star in the button's top corner, and before the
+/* Once and Portrait (one language) take the fewest pages: a small star in the button's top corner and a gold ring, and before the
    hint under the row while chosen (--star: gold, a little darker on light pages so it shows on the pale track) */
 .prseg button {
   position: relative;
 }
 .prseg button .prbest {
   position: absolute;
-  top: 2px;
-  right: 3px;
-  width: 8px;
-  height: 8px;
+  top: 3px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
   fill: var(--star);
 }
 .prseg button[aria-pressed="true"] .prbest {
   fill: var(--bg);
-  opacity: 0.85;
+}
+/* and a thin gold ring round the button (the star alone was hard to see on a phone), chosen or not */
+.prseg button[aria-describedby~="prrec"] {
+  box-shadow: inset 0 0 0 1.5px var(--star);
+}
+.prseg button[aria-describedby~="prrec"][aria-pressed="true"] {
+  box-shadow:
+    inset 0 0 0 1.5px var(--star),
+    0 1px 3px #0003;
 }
 /* the hint: under the row's label and choices, quieter than both */
 .prrow .prhint {
@@ -1280,5 +1299,17 @@ span.prwho {
   }
   .prnote {
     font-size: 13px;
+  }
+}
+/* phones: the font tiles' sides a little narrower, so the sample word stays large; on the narrowest phones the hints
+   a step smaller, so each keeps to one line */
+@media (max-width: 439px) {
+  #prfn button {
+    padding: 8px 8px;
+  }
+}
+@media (max-width: 379px) {
+  .prrow .prhint {
+    font-size: 12px;
   }
 }
