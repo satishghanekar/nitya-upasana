@@ -795,10 +795,8 @@ export function init() {
     // The printout is written as for printing into a hidden frame as wide as the page's text, and its blocks' places
     // are counted into pages by the print rules (js/print/pages.js). A count waits for the choices to settle, is kept by
     // what it was for, and is not shown once a newer choice has overtaken it
-    var SOLID = ".pvk:not(.pvflow), .pvtitle, .pvtoc li, .pvgrid, .pvt tr",
-      KEEP = ".pvtitle, .pvh, .pvcat",
-      /** @type {Record<string, number>} */
-      counted = {},
+    /** @type {Record<string, number>} */
+    var counted = {},
       /** @type {HTMLIFrameElement | null} */
       cf = null,
       cwait = 0, // the pause before counting
@@ -838,32 +836,35 @@ export function init() {
       var k = pageKey(o);
       return k in counted ? counted[k] : -1;
     }
-    // a text's blocks as laid out (js/print/pages.js Block): what is never split as one, a Vedic paragraph with the
-    // height of its lines, a title kept with what follows it
-    /** @param {Element} el @param {import("../print/pages.js").Block[]} out */
+    // a printout's blocks as laid out (js/print/pages.js Block), each text's in a list of its own, read from the print
+    // rules themselves (css/15-print.css), so the count follows them whatever they become: break-before: page starts a
+    // new text, break-inside: avoid is never split, break-after: avoid stays with what follows, and any other block
+    // with no blocks in it splits between its lines
+    /** @param {Element} el @param {import("../print/pages.js").Block[][]} out */
     function blocks(el, out) {
       var w = /** @type {Window} */ (el.ownerDocument.defaultView);
       [].forEach.call(el.children, function (/** @type {Element} */ c) {
-        var solid = c.matches(SOLID),
-          d = w.getComputedStyle(c).display;
-        if (d === "none") return;
-        // a box around blocks (a text's column, a stanza's wrapper without a box of its own): the blocks in it
+        var cs = w.getComputedStyle(c),
+          whole = /^avoid/.test(cs.breakInside) || /^avoid/.test(cs.pageBreakInside);
+        if (cs.display === "none") return;
+        if (/^(page|always|left|right)$/.test(cs.breakBefore) || cs.pageBreakBefore === "always") out.push([]);
+        // a box around blocks (a text, its column, a wrapper without a box of its own): the blocks in it
         if (
-          d === "contents" ||
-          (!solid &&
-            (c.querySelector(SOLID) ||
-              [].some.call(c.children, function (/** @type {Element} */ x) {
-                return !/^inline/.test(w.getComputedStyle(x).display);
-              })))
+          cs.display === "contents" ||
+          (!whole &&
+            // (a stanza centred as an inline-block is a box of its own too)
+            [].some.call(c.children, function (/** @type {Element} */ x) {
+              return w.getComputedStyle(x).display !== "inline";
+            }))
         )
           return blocks(c, out);
         var r = c.getBoundingClientRect();
         if (!r.height) return;
         /** @type {import("../print/pages.js").Block} */
         var b = { top: r.top, bottom: r.bottom };
-        if (c.matches(KEEP)) b.keep = true;
-        if (!solid && c.closest(".pvflow")) b.line = parseFloat(w.getComputedStyle(c).lineHeight) || 0;
-        out.push(b);
+        if (/^avoid/.test(cs.breakAfter) || /^avoid/.test(cs.pageBreakAfter)) b.keep = true;
+        if (!whole) b.line = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.2;
+        out[out.length - 1].push(b);
       });
       return out;
     }
@@ -914,12 +915,7 @@ export function init() {
       void d.body.offsetHeight; // laid out, so the fonts it uses are asked for before waiting for them
       return (d.fonts ? d.fonts.ready : Promise.resolve()).then(function () {
         if (round !== cnow || !cf || cf.contentDocument !== d) return null;
-        counted[k] = countPages(
-          [].map.call(d.querySelectorAll("#pv > section"), function (/** @type {Element} */ s) {
-            return blocks(s, []);
-          }),
-          h,
-        );
+        counted[k] = countPages(blocks(/** @type {Element} */ (d.getElementById("pv")), [[]]), h);
         return counted[k];
       });
     }
