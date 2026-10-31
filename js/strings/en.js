@@ -542,6 +542,26 @@ export default {
     },
     week: "The week at a glance",
     contents: "Contents",
+    /** About how many pages @param {number} n */
+    about: function (n) {
+      return "about " + n + (+n === 1 ? " page" : " pages");
+    },
+    // the hints under Dhrupad and Page, short enough for one line on a phone; n: about how many pages more than the
+    // recommended choice (0: not known)
+    onceHint: "Fewest pages: the refrain once, at the top.",
+    /** @param {number} n */
+    everyHint: function (n) {
+      return +n > 0 ? "As sung: about " + n + (+n === 1 ? " page" : " pages") + " more than Once." : "The refrain after every verse, as sung.";
+    },
+    upHint: "Best for one language: most per page.",
+    /** @param {number} n */
+    landHint: function (n) {
+      return +n > 0 ? "Larger lines: about " + n + (+n === 1 ? " page" : " pages") + " more." : "Larger, wider lines.";
+    },
+    /** @param {string} l2 the other language */
+    sideHint: function (l2) {
+      return "Each line beside its " + l2 + ", rows in step.";
+    },
   },
   // The page's own words (index.html: data-w="page.…", filled by fillWords(), js/core/strings.js); {icon} is the
   // icon written in the page, kept where each language puts it
@@ -615,7 +635,9 @@ export default {
     everyTextStartsOnA: 'Every text starts on a new page. Paper: <b class="prpaper">Letter</b>',
     forLandscapePickItIn: "For Landscape, pick it in Safari's dialog too.",
     pickA4PaperInSafari: 'Pick <span class="przp">A4</span> paper in Safari\'s dialog too.',
-    chromePrintsItBest: "Chrome prints it best.",
+    chromePrintsItBest: "Chrome prints it best, with page numbers.",
+    safariPrintsSmaller: "Safari prints a little smaller and without page numbers.",
+    recommended: "Recommended",
     readyPrintNow: "Ready: Print now",
     openInSafari: "Open in Safari",
     copyLink: "Copy link",

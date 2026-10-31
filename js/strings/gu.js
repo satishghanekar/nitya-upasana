@@ -533,6 +533,24 @@ export default {
     },
     week: "અઠવાડિયું એક નજરે",
     contents: "અનુક્રમણિકા",
+    /** @param {number} n */
+    about: function (n) {
+      return "આશરે " + n + (+n === 1 ? " પાનું" : " પાનાં");
+    },
+    onceHint: "સૌથી ઓછાં પાનાં: ધ્રુપદ ઉપર એક વાર.",
+    /** @param {number} n */
+    everyHint: function (n) {
+      return +n > 0 ? "ગવાય તેમ: ‘એક વાર’ કરતાં આશરે " + n + (+n === 1 ? " પાનું" : " પાનાં") + " વધુ." : "ગવાય તેમ દરેક કડી પછી ધ્રુપદ.";
+    },
+    upHint: "એક ભાષા માટે શ્રેષ્ઠ: પાને સૌથી વધુ લખાણ.",
+    /** @param {number} n */
+    landHint: function (n) {
+      return +n > 0 ? "મોટી પંક્તિઓ: આશરે " + n + (+n === 1 ? " પાનું" : " પાનાં") + " વધુ." : "મોટી, પહોળી પંક્તિઓ.";
+    },
+    /** @param {string} l2 */
+    sideHint: function (l2) {
+      return "દરેક પંક્તિની બાજુમાં તેની " + l2 + " પંક્તિ, મેળમાં.";
+    },
   },
   // The page's own words (index.html: data-w="page.…"); {icon} is the icon written in the page
   page: {
@@ -605,7 +623,9 @@ export default {
     everyTextStartsOnA: 'દરેક પાઠ નવા પાને શરૂ થાય છે. કાગળ: <b class="prpaper">Letter</b>',
     forLandscapePickItIn: "આડા માટે, Safari ના સંવાદમાં પણ તે જ પસંદ કરો.",
     pickA4PaperInSafari: 'Safari ના સંવાદમાં પણ <span class="przp">A4</span> કાગળ પસંદ કરો.',
-    chromePrintsItBest: "Chrome તેને સૌથી સારું છાપે છે.",
+    chromePrintsItBest: "Chrome તેને પાન નંબર સાથે સૌથી સારું છાપે છે.",
+    safariPrintsSmaller: "Safari થોડું નાનું અને પાન નંબર વગર છાપે છે.",
+    recommended: "ભલામણ",
     readyPrintNow: "તૈયાર: હમણાં છાપો",
     openInSafari: "Safari માં ખોલો",
     copyLink: "લિંકની નકલ કરો",

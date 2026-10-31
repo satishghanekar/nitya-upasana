@@ -11,7 +11,9 @@
 //      (with its dhrupad, marker or note) is never split; a Vedic paragraph splits only between lines and never leaves
 //      one line alone at the foot or top of a page; side by side, a row is never split.
 // Nothing is measured, so every browser prints the same way, at once, from the tap that asked for it. The contents
-// list the texts without page numbers (Satish, 2026-10-23: a browser cannot say where its pages break).
+// list the texts without page numbers (Satish, 2026-10-23: a browser cannot say where its pages break). The pop-up's
+// "about 12 pages" is counted apart, in a hidden frame, by the same rules (js/print/pages.js); the printout waits for
+// nothing of it.
 
 import { note as message, pieceEl, root } from "../core/page.js";
 import { LEAD, P, change } from "../core/state.js";
@@ -19,6 +21,7 @@ import { ovDone, ovDrop, ovPush } from "./history.js";
 import { focusBack } from "./more-menu.js";
 import { FEAT_SW } from "../core/features.js";
 import { compose } from "../print/compose.js";
+import { countPages } from "../print/pages.js";
 import { createWhat, whatWords } from "../print/what.js";
 import { shelvesNow } from "./library.js";
 import { shownSessions, shownDay, runDay, runIds, shownSession } from "./today-card.js";
@@ -569,7 +572,10 @@ export function init() {
       // has ticked (chosen()), set as Print is tapped, for that printout only. It is put back to null when the printout
       // is done, so the browser's own Print menu prints the whole Library
       /** @type {string[] | null} */
-      sel = null;
+      sel = null,
+      // a choice other than the one made, while the pages it would take are counted (the hints' "about 2 pages more")
+      /** @type {{ ref?: number, land?: boolean } | null} */
+      alt = null;
     // The pop-up's two choices, Portrait and Landscape, for what is printed: one language in a column, upright or
     // sideways; both languages side by side on sideways pages
     function choice() {
@@ -580,6 +586,7 @@ export function init() {
     function land(mode) {
       if (!FEAT_SW) return false;
       if (plang() === "both") return mode === "side";
+      if (alt && alt.land !== undefined) return alt.land;
       return (P.por || choice().page) === "land";
     }
     // Letter paper: as picked under How (P.ppr), else as the device's region suggests
@@ -605,6 +612,7 @@ export function init() {
     }
     // The printout's dhrupad (once, or after every verse) likewise: picked in the pop-up, else as the page shows it
     function pref() {
+      if (alt && alt.ref !== undefined) return alt.ref;
       return P.pref === 0 || P.pref === 1 ? P.pref : P.ref;
     }
     // The fonts the printout uses, asked for ahead (a browser prints only the faces it has loaded): the chosen font's
@@ -658,7 +666,7 @@ export function init() {
           return a ? a.id : "";
         },
         onChange: function () {
-          summary();
+          pagesSoon();
           preview();
         },
       }),
@@ -676,9 +684,9 @@ export function init() {
     function splan() {
       return what.session();
     }
-    // the bottom bar and the preview follow every choice
+    // the bottom bar, the hints and the preview follow every choice
     function refresh() {
-      summary();
+      pagesSoon();
       preview();
     }
     // The preview under How: the first page of the first text ticked, as it prints, made small. Written as the print
@@ -774,7 +782,226 @@ export function init() {
       a.textContent = t.one || (t.texts ? w.texts(t.texts) : w.pick);
       if (t.one) a.lang = t.oneLang;
       el.appendChild(a);
+      // and about how many pages, once counted
+      var n = t.texts ? count(null) : -1;
+      if (n > 0) {
+        var b = document.createElement("b");
+        b.textContent = menuWords("print").about(n);
+        el.appendChild(b);
+      }
       bpr.disabled = bnx.disabled = !t.texts;
+    }
+    // ---- About how many pages: the bottom bar ("about 12 pages") and the hints under Dhrupad and Page ----
+    // The printout is written as for printing into a hidden frame as wide as the page's text, and its blocks' places
+    // are counted into pages by the print rules (js/print/pages.js). A count waits for the choices to settle, is kept by
+    // what it was for, and is not shown once a newer choice has overtaken it
+    /** @type {Record<string, number>} */
+    var counted = {},
+      /** @type {HTMLIFrameElement | null} */
+      cf = null,
+      cwait = 0, // the pause before counting
+      cnow = 0, // the latest round of counts asked for
+      /** @type {Promise<any>} */
+      queue = Promise.resolve();
+    // what a count is for: what is printed and how, with one choice changed (o)
+    /** @param {{ ref?: number, land?: boolean } | null} o */
+    function pageKey(o) {
+      alt = o;
+      try {
+        var m = dm(),
+          c = chosen(),
+          rp = rplan(),
+          sp = splan();
+        return [
+          m,
+          c ? c.join(",") : "*",
+          plang(),
+          LEAD,
+          pref(),
+          P.tr,
+          P.ind,
+          pfn(),
+          land(m),
+          letter(),
+          rp ? rp.key : "",
+          sp ? sp.session + "@" + sp.day : "",
+        ].join("|");
+      } finally {
+        alt = null;
+      }
+    }
+    // the pages counted for it, or -1 while not yet
+    /** @param {{ ref?: number, land?: boolean } | null} o */
+    function count(o) {
+      var k = pageKey(o);
+      return k in counted ? counted[k] : -1;
+    }
+    // a printout's blocks as laid out (js/print/pages.js Block), each text's in a list of its own, read from the print
+    // rules themselves (css/15-print.css), so the count follows them whatever they become: break-before: page starts a
+    // new text, break-inside: avoid is never split, break-after: avoid stays with what follows, and any other block
+    // with no blocks in it splits between its lines
+    /** @param {Element} el @param {import("../print/pages.js").Block[][]} out */
+    function blocks(el, out) {
+      var w = /** @type {Window} */ (el.ownerDocument.defaultView);
+      [].forEach.call(el.children, function (/** @type {Element} */ c) {
+        var cs = w.getComputedStyle(c),
+          whole = /^avoid/.test(cs.breakInside) || /^avoid/.test(cs.pageBreakInside);
+        if (cs.display === "none") return;
+        if (/^(page|always|left|right)$/.test(cs.breakBefore) || cs.pageBreakBefore === "always") out.push([]);
+        // a box around blocks (a text, its column, a wrapper without a box of its own): the blocks in it
+        if (
+          cs.display === "contents" ||
+          (!whole &&
+            // (a stanza centred as an inline-block is a box of its own too)
+            [].some.call(c.children, function (/** @type {Element} */ x) {
+              return w.getComputedStyle(x).display !== "inline";
+            }))
+        )
+          return blocks(c, out);
+        var r = c.getBoundingClientRect();
+        if (!r.height) return;
+        /** @type {import("../print/pages.js").Block} */
+        var b = { top: r.top, bottom: r.bottom };
+        if (/^avoid/.test(cs.breakAfter) || /^avoid/.test(cs.pageBreakAfter)) b.keep = true;
+        if (!whole) b.line = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.2;
+        out[out.length - 1].push(b);
+      });
+      return out;
+    }
+    // count the pages, with one choice changed (o); null when a newer round has begun
+    /** @param {{ ref?: number, land?: boolean } | null} o @param {string} k @param {number} round @returns {Promise<number | null>} */
+    function countNow(o, k, round) {
+      if (round !== cnow || pm.hidden) return Promise.resolve(null);
+      var html = "",
+        h = 0;
+      alt = o;
+      try {
+        var m = dm(),
+          sh = sheet(m),
+          box = document.createElement("div");
+        box.id = "pv";
+        build(m, chosen(), rplan(), box, splan());
+        h = ((sh[1] - 36) * 96) / 25.4; // the page less its top and bottom margins (css/15-print.css @page)
+        html =
+          '<!doctype html><html data-print="' +
+          m +
+          '"' +
+          (land(m) ? " data-land" : "") +
+          attrs() +
+          '><head><base href="' +
+          location.href.replace(/"/g, "%22") +
+          '"><style>' +
+          pcss() +
+          "\nhtml,body{margin:0;background:#fff}body{width:" +
+          (sh[0] - 38) +
+          "mm}</style></head><body>" +
+          box.outerHTML +
+          "</body></html>";
+      } finally {
+        alt = null;
+      }
+      if (!cf) {
+        cf = document.createElement("iframe");
+        cf.setAttribute("aria-hidden", "true");
+        cf.tabIndex = -1;
+        cf.title = "Pages";
+        cf.style.cssText = "position:fixed;left:-10000px;top:0;width:1200px;height:900px;border:0;visibility:hidden";
+        document.body.appendChild(cf);
+      }
+      var d = /** @type {Document} */ (cf.contentDocument);
+      d.open();
+      d.write(html);
+      d.close();
+      void d.body.offsetHeight; // laid out, so the fonts it uses are asked for before waiting for them
+      return (d.fonts ? d.fonts.ready : Promise.resolve()).then(function () {
+        if (round !== cnow || !cf || cf.contentDocument !== d) return null;
+        counted[k] = countPages(blocks(/** @type {Element} */ (d.getElementById("pv")), [[]]), h);
+        return counted[k];
+      });
+    }
+    // the counts the pop-up shows: for the choices made; beside Every verse, Once's; beside one language on
+    // Landscape, Portrait's
+    function wants() {
+      /** @type {({ ref?: number, land?: boolean } | null)[]} */
+      var w = [null];
+      if (pref() === 0) w.push({ ref: 1 });
+      if (FEAT_SW && plang() !== "both" && land("one")) w.push({ land: false });
+      return w;
+    }
+    // the bottom bar and the hints now, with what is counted, and the counts still missing a moment later
+    function pagesSoon() {
+      clearTimeout(cwait);
+      var round = ++cnow;
+      summary();
+      hints();
+      if (pm.hidden || !what.total().texts) return;
+      cwait = setTimeout(function () {
+        wants().forEach(function (o) {
+          var k = pageKey(o);
+          if (k in counted) return;
+          queue = queue
+            .then(function () {
+              return countNow(o, k, round);
+            })
+            .then(function (n) {
+              if (n !== null && round === cnow) {
+                summary();
+                hints();
+              }
+            })
+            .catch(function (e) {
+              console.warn("Counting the pages failed", e);
+            });
+        });
+      }, 300);
+    }
+    function pagesStop() {
+      clearTimeout(cwait);
+      cnow++;
+      if (cf) cf.remove();
+      cf = null;
+    }
+    // The star on the recommended choices (Once, and Portrait for one language: the fewest pages) and before their hint
+    var SVG = "http://www.w3.org/2000/svg";
+    function star() {
+      var s = document.createElementNS(SVG, "svg"),
+        p = document.createElementNS(SVG, "path");
+      s.setAttribute("class", "prbest");
+      s.setAttribute("viewBox", "0 0 24 24");
+      s.setAttribute("aria-hidden", "true");
+      p.setAttribute("d", "M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z");
+      s.appendChild(p);
+      return s;
+    }
+    /** @param {Element} b */
+    function best(b) {
+      b.appendChild(star());
+      b.setAttribute("aria-describedby", "prrec");
+    }
+    // the hints under Dhrupad and Page: what the choice made gives, the recommended one's with its star; a choice
+    // that takes more pages says about how many more
+    function hints() {
+      var pw = menuWords("print"),
+        n = count(null),
+        side = plang() === "both",
+        up = !land("one"),
+        other = LEAD === "en" ? pw.langs[olang()] : pw.langs.en;
+      /** @param {{ ref?: number, land?: boolean }} o */
+      function more(o) {
+        var a = n > 0 ? count(o) : -1;
+        return a > 0 && n > a ? n - a : 0;
+      }
+      hint("prdhh", pref() === 1, pref() === 1 ? pw.onceHint : pw.everyHint(more({ ref: 1 })));
+      hint("prpgh", side || up, side ? pw.sideHint(other) : up ? pw.upHint : pw.landHint(more({ land: false })));
+      document.getElementById("prpgh").hidden = !FEAT_SW;
+    }
+    /** @param {string} id @param {boolean} starred @param {string} words */
+    function hint(id, starred, words) {
+      var p = document.getElementById(id);
+      p.textContent = "";
+      p.lang = ui();
+      if (starred) p.appendChild(star());
+      p.appendChild(document.createTextNode(words));
     }
     function step(s) {
       pm.setAttribute("data-step", s);
@@ -803,6 +1030,7 @@ export function init() {
     // a word of the text in each; neither changes the reading page
     var fn = document.getElementById("prfn"),
       dh = document.getElementById("prdg");
+    best(/** @type {Element} */ (dh.querySelector('[data-v="1"]')));
     [].forEach.call(document.querySelectorAll("#sfn button"), function (b) {
       fn.appendChild(b.cloneNode(true));
     });
@@ -817,6 +1045,9 @@ export function init() {
       b.appendChild(x);
       b.appendChild(nm);
     });
+    // the font recommended for print: Traditional (classic), the book-style face (the fonts take the same pages, so
+    // it is the look that decides): a star, as on Once and Portrait, and no hint
+    best(/** @type {Element} */ (fn.querySelector('[data-v="classic"]')));
     fn.onclick = function (e) {
       var b = e.target.closest("button");
       if (!b) return;
@@ -936,6 +1167,8 @@ export function init() {
       // Safari on a Mac and Firefox: Chrome turns the page itself and prints the border and page numbers (Satish,
       // 2026-10); Firefox drops the page numbers (no @page margin boxes, checked in Firefox 157)
       document.getElementById("prc").hidden = !((root.classList.contains("wk") && !iOS) || root.classList.contains("ff"));
+      // Safari (WebKit, every iPhone browser too) scales the printout down a little and has no page numbers
+      document.getElementById("prs").hidden = !root.classList.contains("wk");
       bgo.hidden = !ready;
       pw.hidden = pv2.hidden = bsf.hidden = bcp.hidden = true;
     }
@@ -1071,6 +1304,7 @@ export function init() {
       // the iPhone Home Screen app cannot print: straight to Safari (iOS 17 and later open it in the same tap), else
       // Open in Safari
       if (iOS && standalone) return toSafariNow();
+      pagesStop();
       pm.hidden = true;
       ovDrop();
       // the chosen button has just been hidden: keyboard focus goes back to Print, not to the top of the page
@@ -1102,6 +1336,7 @@ export function init() {
       // the page: Portrait or Landscape (one language), a tap picks it; both languages: Landscape, side by side
       function opt(b, page) {
         b.textContent = page === "land" ? pw.landscape : pw.portrait;
+        if (page === "up") best(b);
         b.setAttribute("data-page", page);
         b.onclick = function () {
           change({ por: page });
@@ -1199,6 +1434,7 @@ export function init() {
       openPrint(t ? { ids: [t.id], from: b } : { from: b });
     };
     function pmClose() {
+      pagesStop();
       unready();
       pm.hidden = true;
       ovDone();

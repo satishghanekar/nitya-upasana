@@ -78,11 +78,13 @@ describe("opening IndexedDB", () => {
 });
 
 describe("the store", () => {
-  test("first visit: version 1.3's settings and ticks move into 'Me', and are in IndexedDB on the next load", async () => {
+  test("first visit: version 1.3's settings and ticks move into SG (RG starts afresh), and are in IndexedDB on the next load", async () => {
     const r = await load(idb, V13, TICKS);
     expect(r.first).toBe(true);
     expect(store.kind()).toBe("idb");
-    expect(store.list().map((p) => p.name)).toEqual(["Me"]);
+    expect(store.list().map((p) => p.name)).toEqual(["SG", "RG"]);
+    expect(store.active().name).toBe("SG");
+    expect([store.list()[1].settings.fs, store.list()[1].checklist]).toEqual([24, null]);
     await store.settled();
     // next load, with the boot copy gone: everything comes from IndexedDB
     const r2 = await load(idb, null, null);
@@ -100,15 +102,15 @@ describe("the store", () => {
     expect(store.active().name).toBe("Baba");
     // Baba starts with the defaults; the device's screen setting is kept
     expect([next.fs, next.th, next.lang, next.wake]).toEqual([24, "auto", "mr", 0]);
-    // Baba picks a large size; back to Me, whose settings are as they were
+    // Baba picks a large size; back to SG, whose settings are as they were
     const back = store.switchTo(store.list()[0].id, { ...next, fs: 40, fsu: 1 });
     expect([back.fs, back.th, back.lang]).toEqual([30, "dark", "both"]);
-    expect(store.list()[1].settings.fs).toBe(40);
+    expect(store.list()[2].settings.fs).toBe(40);
     await store.settled();
     // and so it is after a reload
     await load(idb, null, null);
-    expect(store.active().name).toBe("Me");
-    expect(store.list()[1].settings.fs).toBe(40);
+    expect(store.active().name).toBe("SG");
+    expect(store.list()[2].settings.fs).toBe(40);
   });
 
   test("settings saved while reading reach IndexedDB (a moment later, or at once with flush)", async () => {
@@ -122,20 +124,21 @@ describe("the store", () => {
   test("add, rename, recolour; names can't repeat or be empty", async () => {
     await load(idb, null, null);
     expect(store.add({ name: "" })).toEqual({ ok: false, problem: "empty" });
-    expect(store.add({ name: "me" })).toEqual({ ok: false, problem: "taken" });
+    expect(store.add({ name: "sg" })).toEqual({ ok: false, problem: "taken" });
     const a = store.add({ name: "आई", initials: "आई" });
     expect(a.profile.initials).toBe("आई");
     const u = store.update(a.profile.id, { name: "Aai", initials: "", colour: "#2f6b3a" });
     expect([u.profile.name, u.profile.initials, u.profile.colour]).toEqual(["Aai", "A", "#2f6b3a"]);
-    expect(store.update(a.profile.id, { name: "Me" })).toEqual({ ok: false, problem: "taken" });
+    expect(store.update(a.profile.id, { name: "RG" })).toEqual({ ok: false, problem: "taken" });
     await store.settled();
     await load(idb, null, null);
-    expect(store.list().map((p) => p.name)).toEqual(["Me", "Aai"]);
+    expect(store.list().map((p) => p.name)).toEqual(["SG", "RG", "Aai"]);
   });
 
   test("delete: never the last person; deleting the person reading switches to another", async () => {
     await load(idb, V13, null);
     const me = store.active().id;
+    expect(store.remove(store.list()[1].id).ok).toBe(true);
     expect(store.remove(me).ok).toBe(false);
     const b = store.add({ name: "Baba" }).profile;
     store.switchTo(b.id, migratePrefs(V13, ENV).prefs);
@@ -145,7 +148,7 @@ describe("the store", () => {
     expect(r.switched.fs).toBe(30);
     await store.settled();
     await load(idb, null, null);
-    expect(store.list().map((p) => p.name)).toEqual(["Me"]);
+    expect(store.list().map((p) => p.name)).toEqual(["SG"]);
   });
 
   test("backup → restore into a fresh database: every person, setting and tick the same", async () => {
@@ -160,7 +163,7 @@ describe("the store", () => {
     // a new phone
     const other = new IDBFactory();
     await load(other, null, null);
-    expect(store.list().map((p) => p.name)).toEqual(["Me"]);
+    expect(store.list().map((p) => p.name)).toEqual(["SG", "RG"]);
     const r = parseBackup(text, ENV);
     expect(r.ok).toBe(true);
     const prefs = await store.restore(r.data);
@@ -242,6 +245,6 @@ describe("the store", () => {
     const r = store.start(V13, null, ENV);
     expect(r.prefs.fs).toBe(30);
     expect(store.add({ name: "Baba" }).ok).toBe(true);
-    expect(store.list()).toHaveLength(2);
+    expect(store.list()).toHaveLength(3);
   });
 });

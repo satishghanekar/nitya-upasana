@@ -539,6 +539,24 @@ export default {
     },
     week: "వారం ఒక చూపులో",
     contents: "విషయ సూచిక",
+    /** @param {number} n */
+    about: function (n) {
+      return "సుమారు " + n + (+n === 1 ? " పేజీ" : " పేజీలు");
+    },
+    onceHint: "తక్కువ పేజీలు: ధ్రుపదం పైన ఒక్కసారే.",
+    /** @param {number} n */
+    everyHint: function (n) {
+      return +n > 0 ? "పాడినట్లే: ‘ఒకసారి’ కంటే సుమారు " + n + (+n === 1 ? " పేజీ" : " పేజీలు") + " ఎక్కువ." : "పాడినట్లే ప్రతి పద్యం తర్వాత ధ్రుపదం.";
+    },
+    upHint: "ఒక భాషకు ఉత్తమం: పేజీలో ఎక్కువ పాఠం.",
+    /** @param {number} n */
+    landHint: function (n) {
+      return +n > 0 ? "పెద్ద పంక్తులు: సుమారు " + n + (+n === 1 ? " పేజీ" : " పేజీలు") + " ఎక్కువ." : "పెద్ద, వెడల్పైన పంక్తులు.";
+    },
+    /** @param {string} l2 */
+    sideHint: function (l2) {
+      return "ప్రతి పంక్తి పక్కనే దాని " + l2 + " పంక్తి, జతగా.";
+    },
   },
   // The page's own words (index.html: data-w="page.…"); {icon} is the icon written in the page
   page: {
@@ -611,7 +629,9 @@ export default {
     everyTextStartsOnA: 'ప్రతి పాఠం కొత్త పేజీలో మొదలవుతుంది. కాగితం: <b class="prpaper">Letter</b>',
     forLandscapePickItIn: "అడ్డం కోసం, Safari డైలాగ్‌లోనూ దాన్నే ఎంచుకోండి.",
     pickA4PaperInSafari: 'Safari డైలాగ్‌లోనూ <span class="przp">A4</span> కాగితం ఎంచుకోండి.',
-    chromePrintsItBest: "Chrome దీన్ని బాగా ముద్రిస్తుంది.",
+    chromePrintsItBest: "Chrome దీన్ని పేజీ సంఖ్యలతో బాగా ముద్రిస్తుంది.",
+    safariPrintsSmaller: "Safari కొంచెం చిన్నగా, పేజీ సంఖ్యలు లేకుండా ముద్రిస్తుంది.",
+    recommended: "సిఫార్సు",
     readyPrintNow: "సిద్ధం: ఇప్పుడు ముద్రించు",
     openInSafari: "Safari లో తెరువు",
     copyLink: "లింక్ కాపీ చేయి",

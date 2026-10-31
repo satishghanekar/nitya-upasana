@@ -146,6 +146,40 @@ export function cleanRoutine(r) {
 }
 
 /**
+ * The default routine without its Vedic chants (the "vedic-chant-…" texts), with one text first every morning: RG's
+ * routine (a built-in person, js/store/profiles.js). null when there is no default to make it from.
+ * @param {any} def
+ * @param {string} first
+ * @returns {Routine | null}
+ */
+export function withoutVedic(def, first) {
+  var r = cleanRoutine(def);
+  if (!r) return null;
+  /** @param {string[]} list @param {boolean} lead */
+  function keep(list, lead) {
+    return cleanList(
+      (lead ? [first] : []).concat(
+        list.filter(function (id) {
+          return id.indexOf("vedic-chant-") !== 0;
+        }),
+      ),
+    );
+  }
+  var out = /** @type {Routine} */ (r);
+  SESSIONS.forEach(function (s) {
+    var p = /** @type {SessionPlan} */ (out[s]),
+      lead = s === "morning";
+    if (p.mode === "weekday") {
+      var days = p.days;
+      DAY_KEYS.forEach(function (k) {
+        days[k] = keep(days[k] || [], lead);
+      });
+    } else out[s] = { mode: "fixed", texts: keep(p.texts, lead) };
+  });
+  return out;
+}
+
+/**
  * Just the days and sessions a routine printout shows (the print link to Safari carries no more of the routine)
  * @param {any} routine
  * @param {number[]} days  0 Sunday … 6 Saturday

@@ -91,6 +91,7 @@ var SITE_PARTS = (function () {
     "features/picture-viewer",
     "features/help",
     "print/compose",
+    "print/pages",
     "print/what",
     "print/select",
     "features/print",

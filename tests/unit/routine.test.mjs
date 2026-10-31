@@ -2,11 +2,12 @@
 // rules for the lists (js/core/routine.js: the same every day or different by weekday, copying a day's list to other
 // days, moving, adding and removing texts, cleaning what is read back), the routine kept in the profile
 // (js/store/profiles.js, js/store/store.js on fake-indexeddb), and backups: a file with routines restores them, a file
-// from before version 1.9 (no routine) leaves the default (content/routines.json, Q5).
+// from before version 1.9 (no routine) leaves the default (content/routines.json, Q5). And the built-in people: SG
+// follows the default, RG has it without the Vedic chants and with the Lalita Sahasranama every morning.
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
 import { readFileSync } from "node:fs";
-import { beforeEach, describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import {
   addTexts,
   byWeekday,
@@ -23,11 +24,14 @@ import {
   setMode,
   textsFor,
   WEEK_ORDER,
+  withoutVedic,
 } from "../../js/core/routine.js";
 import { cleanProfile, COLOURS, newProfile } from "../../js/store/profiles.js";
 import { makeBackup, parseBackup, serialise, sha256 } from "../../js/store/backup.js";
 import { defaults, devicePart, migratePrefs, profilePart } from "../../js/store/migrate.js";
 import * as store from "../../js/store/store.js";
+import { openDB } from "../../js/store/db.js";
+import { loaded } from "../../js/text/load.js";
 import { matches, searchKey } from "../../js/features/text-picker.js";
 
 const ROUTINE = JSON.parse(readFileSync(new URL("../../content/routines.json", import.meta.url), "utf8"));
@@ -259,7 +263,7 @@ describe("the store keeps the reading person's routine", () => {
     expect(store.routine()).toBeNull();
     await store.settled();
     await load(idb);
-    expect(store.list().map((p) => p.routine)).toEqual([mine, null]);
+    expect(store.list().map((p) => p.routine)).toEqual([mine, null, null]);
     store.switchTo(store.list()[0].id, migratePrefs(null, ENV).prefs);
     store.setRoutine(null);
     await store.settled();
@@ -279,6 +283,70 @@ describe("the store keeps the reading person's routine", () => {
     expect(store.routine()).toEqual(mine);
     await load(other);
     expect(store.routine()).toEqual(mine);
+  });
+});
+
+describe("the built-in people, SG and RG", () => {
+  const LALITA = "vedic-chant-lalita-sahasranama";
+  let idb;
+  async function load(db) {
+    store._reset();
+    await store.openStore({ idb: db, timeout: 500 });
+    return store.start(null, null, ENV, new Date(NOW));
+  }
+  beforeEach(() => {
+    idb = new IDBFactory();
+    loaded.routine = ROUTINE;
+  });
+  afterEach(() => {
+    loaded.routine = null;
+  });
+
+  test("RG's routine: the default without its Vedic chants, the Lalita Sahasranama first every morning", () => {
+    const rg = withoutVedic(ROUTINE, LALITA);
+    for (let d = 0; d < 7; d++) {
+      const morning = textsFor(rg, d, "morning");
+      expect(morning).toEqual([LALITA, ...textsFor(ROUTINE, d, "morning").filter((id) => !id.startsWith("vedic-chant-"))]);
+      for (const s of ["afternoon", "evening"]) expect(textsFor(rg, d, s)).toEqual(textsFor(ROUTINE, d, s).filter((id) => !id.startsWith("vedic-chant-")));
+    }
+    // the default itself is left as it was, and a session with one list gets the text too
+    expect(textsFor(ROUTINE, MON, "morning")[0]).toBe("vedic-chant-atharvashirsha");
+    expect(withoutVedic({ morning: { mode: "fixed", texts: ["vedic-chant-shri-sukta", "aarti-sukhkarta"] } }, LALITA).morning).toEqual({
+      mode: "fixed",
+      texts: [LALITA, "aarti-sukhkarta"],
+    });
+    expect(withoutVedic(null, LALITA)).toBeNull();
+  });
+
+  test("a new phone starts with SG (reading, the default routine) and RG (a routine of their own, made from the default)", async () => {
+    await load(idb);
+    expect(store.list().map((p) => [p.name, p.initials, p.colour])).toEqual([
+      ["SG", "SG", COLOURS[0].v],
+      ["RG", "RG", COLOURS[1].v],
+    ]);
+    expect(store.active().name).toBe("SG");
+    expect(store.list()[0].routine).toBeNull();
+    expect(store.list()[1].routine).toEqual(withoutVedic(ROUTINE, LALITA));
+    // a later change to the default does not reach RG's routine (it was made once)
+    loaded.routine = { morning: { mode: "fixed", texts: [] } };
+    await store.settled();
+    await load(idb);
+    expect(store.list()[1].routine).toEqual(withoutVedic(ROUTINE, LALITA));
+  });
+
+  test("a phone that already has people gets SG and RG once, after them; one deleted does not come back", async () => {
+    // a phone from before: one person, "Me", and no mark that the built-in people were added
+    const db = await openDB({ idb });
+    const me = newProfile({ id: "pme", name: "Me", settings: profilePart(defaults(ENV)), now: NOW });
+    await db.put("profiles", me);
+    await db.put("meta", { activeProfile: "pme", device: {}, since: NOW, lastBackup: "", snooze: "", schema: 1, order: ["pme"] }, "meta");
+    await load(idb);
+    expect(store.list().map((p) => p.name)).toEqual(["Me", "SG", "RG"]);
+    expect(store.active().name).toBe("Me");
+    store.remove(store.list()[2].id);
+    await store.settled();
+    await load(idb);
+    expect(store.list().map((p) => p.name)).toEqual(["Me", "SG"]);
   });
 });
 

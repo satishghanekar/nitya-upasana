@@ -527,6 +527,24 @@ export default {
     },
     week: "आठवडा एका नजरेत",
     contents: "अनुक्रमणिका",
+    /** @param {number} n */
+    about: function (n) {
+      return "सुमारे " + num(n) + (+n === 1 ? " पान" : " पाने");
+    },
+    onceHint: "सर्वात कमी पाने: ध्रुपद एकदाच, वर.",
+    /** @param {number} n */
+    everyHint: function (n) {
+      return +n > 0 ? "म्हणतात तसे: ‘एकदाच’ पेक्षा सुमारे " + num(n) + (+n === 1 ? " पान" : " पाने") + " जास्त." : "प्रत्येक कडव्यानंतर ध्रुपद, म्हणतात तसे.";
+    },
+    upHint: "एका भाषेसाठी उत्तम: पानावर सर्वाधिक मजकूर.",
+    /** @param {number} n */
+    landHint: function (n) {
+      return +n > 0 ? "मोठ्या ओळी: सुमारे " + num(n) + (+n === 1 ? " पान" : " पाने") + " जास्त." : "मोठ्या, रुंद ओळी.";
+    },
+    /** @param {string} l2 */
+    sideHint: function (l2) {
+      return "प्रत्येक ओळीशेजारी तिची " + l2 + " ओळ, जुळलेली.";
+    },
   },
   page: {
     appAddToHomeScreen: 'ॲप<span class="sr"> (होम स्क्रीनवर ठेवा)</span>',
@@ -598,7 +616,9 @@ export default {
     everyTextStartsOnA: 'प्रत्येक रचना नव्या पानावर सुरू होते. कागद: <b class="prpaper">Letter</b>',
     forLandscapePickItIn: 'आडव्या पानासाठी Safari च्या प्रिंट विंडोतही <span lang="en">Landscape</span> निवडा.',
     pickA4PaperInSafari: 'Safari च्या प्रिंट विंडोतही <span class="przp" lang="en">A4</span> कागद निवडा.',
-    chromePrintsItBest: "Chrome मधून प्रिंट अधिक चांगली येते.",
+    chromePrintsItBest: "Chrome मधून प्रिंट अधिक चांगली येते, पान क्रमांकांसह.",
+    safariPrintsSmaller: "Safari थोडी लहान प्रिंट काढते, पान क्रमांकांशिवाय.",
+    recommended: "सुचवलेले",
     readyPrintNow: "तयार आहे: प्रिंट करा",
     openInSafari: "Safari मध्ये उघडा",
     copyLink: "लिंक कॉपी करा",

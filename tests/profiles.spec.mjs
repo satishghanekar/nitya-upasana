@@ -63,20 +63,26 @@ async function pickLanguage(page, n) {
   await page.locator("#rsx").evaluate((b) => b.click());
 }
 
-test("first visit: version 1.3's settings become the first person, 'Me', shown on the chip @mobile", async ({ page }) => {
+test("first visit: version 1.3's settings become the first person, SG, shown on the chip; RG is there too @mobile", async ({ page }) => {
   await openSite(page, { ...SETUPS.both, fs: 30, fsu: 1, th: "sepia" });
-  await expect(chipName(page)).toHaveAccessibleName("Profile: Me");
-  await expect(page.locator("#who .pfa")).toHaveText("M");
+  await expect(chipName(page)).toHaveAccessibleName("Profile: SG");
+  await expect(page.locator("#who .pfa")).toHaveText("SG");
   expect(await fs(page)).toBe(30);
   expect(await textLang(page)).toBe("both");
   await expect(page.locator("html")).toHaveAttribute("data-pref", "sepia");
-  await expect.poll(async () => (await idb(page)).profiles?.length).toBe(1);
-  const db = await idb(page);
-  expect(db.profiles[0]).toMatchObject({ name: "Me", settings: { fs: 30, fsu: 1, th: "sepia", lang: "both" } });
-  expect(db.meta.activeProfile).toBe(db.profiles[0].id);
+  await expect.poll(async () => (await idb(page)).profiles?.length).toBe(2);
+  const db = await idb(page),
+    sg = db.profiles.find((p) => p.name === "SG"),
+    rg = db.profiles.find((p) => p.name === "RG");
+  expect(sg).toMatchObject({ settings: { fs: 30, fsu: 1, th: "sepia", lang: "both" }, routine: null });
+  // RG starts with the defaults, and a routine of their own: no Vedic chants, the Lalita Sahasranama every morning
+  expect(rg.settings.th).toBe("auto");
+  expect(rg.routine.morning.days.mon[0]).toBe("vedic-chant-lalita-sahasranama");
+  expect(rg.routine.evening.days.mon.filter((id) => id.startsWith("vedic-chant-"))).toEqual([]);
+  expect(db.meta.activeProfile).toBe(sg.id);
   // the boot copy names the person, and still reads as version 1.3's settings
   const boot = await page.evaluate((k) => JSON.parse(localStorage.getItem(k)), PREFS_KEY);
-  expect([boot.pid, boot.sv, boot.fs]).toEqual([db.profiles[0].id, 6, 30]);
+  expect([boot.pid, boot.sv, boot.fs]).toEqual([sg.id, 6, 30]);
 });
 
 test("first visit from an older version (settings version 4), with version 1.3's ticks left in storage", async ({ page }) => {
@@ -107,7 +113,7 @@ test("switching person changes the text size and language at once, and each keep
   const errors = [];
   await openSite(page, { ...SETUPS.marathi, fs: 30, fsu: 1 }, { errors });
   await addPerson(page, "Baba");
-  await expect(people(page)).toHaveText(["Me", "Baba"]);
+  await expect(people(page)).toHaveText(["SG", "RG", "Baba"]);
   await page.locator("#pfx").click();
   await switchTo(page, "Baba");
   // Baba starts with the defaults; he picks English and a larger size
@@ -119,8 +125,8 @@ test("switching person changes the text size and language at once, and each keep
   await page.locator("#xc").click();
   const babaFs = await fs(page);
   expect(babaFs).not.toBe(30);
-  // back to Me: Marathi, 30px
-  await switchTo(page, "Me");
+  // back to SG: Marathi, 30px
+  await switchTo(page, "SG");
   expect(await textLang(page)).toBe("mr");
   expect(await fs(page)).toBe(30);
   // and Baba again, also after a reload
@@ -144,7 +150,7 @@ test("switching to a person who reads in Kannada letters with IAST rewrites the 
   await page.locator("#sl2s").selectOption("en:iast");
   await page.locator("#xc").click();
   await expect(page.locator("#a1 .verse .mr p").first()).toHaveText(/[ಀ-೿]/);
-  await switchTo(page, "Me");
+  await switchTo(page, "SG");
   await expect(page.locator("#a1 .verse .mr p").first()).toHaveText(/[ऀ-ॿ]/);
   await expect(page.locator("#a1 .verse .en p").first()).not.toHaveClass(/\bia\b/);
   await switchTo(page, "Aaji");
@@ -161,7 +167,7 @@ test("theme and high contrast are per person (Q4); keep the screen on stays with
   await page.locator("#aa").click();
   await expect(page.locator('#tw [data-v="30"]')).toHaveAttribute("aria-pressed", "true");
   await page.locator("#xc").click();
-  await switchTo(page, "Me");
+  await switchTo(page, "SG");
   await expect(page.locator("html")).toHaveAttribute("data-pref", "dark");
   await expect(page.locator("html")).toHaveAttribute("data-hc", "1");
 });
@@ -174,24 +180,24 @@ test("add, rename, badge letters and colour; names must be filled in and differe
   await expect(page.locator("#pferr")).toHaveText("Please type a name.");
   await expect(page.locator("#pfname")).toHaveAttribute("aria-invalid", "true");
   await expect(page.locator("#pfname")).toBeFocused();
-  await page.locator("#pfname").fill("me");
+  await page.locator("#pfname").fill("sg");
   await page.locator("#pfsave").click();
   await expect(page.locator("#pferr")).toHaveText("Someone on this phone already has this name.");
   await page.locator("#pfname").fill("Aai");
   await page.locator("#pfini").fill("आई");
   await page.locator("#pfcol input").nth(3).check();
   await page.locator("#pfsave").click();
-  await expect(people(page)).toHaveText(["Me", "Aai"]);
-  const aai = page.locator("#pfl li").nth(1);
+  await expect(people(page)).toHaveText(["SG", "RG", "Aai"]);
+  const aai = page.locator("#pfl li").nth(2);
   await expect(aai.locator(".pfa")).toHaveText("आई");
   await expect(aai.locator(".pfa")).toHaveCSS("background-color", "rgb(47, 107, 58)");
-  // rename Me
+  // rename SG
   await page.locator("#pfl .pfe").first().click();
-  await expect(page.locator("#pfmt")).toHaveText("Edit: Me");
+  await expect(page.locator("#pfmt")).toHaveText("Edit: SG");
   await page.locator("#pfname").fill("Baba");
   await page.locator("#pfini").fill("");
   await page.locator("#pfsave").click();
-  await expect(people(page)).toHaveText(["Baba", "Aai"]);
+  await expect(people(page)).toHaveText(["Baba", "RG", "Aai"]);
   await page.locator("#pfx").click();
   await expect(chipName(page)).toHaveAccessibleName("Profile: Baba");
   await expect(page.locator("#who .pfa")).toHaveText("B");
@@ -199,12 +205,17 @@ test("add, rename, badge letters and colour; names must be filled in and differe
   await page.reload();
   await settle(page);
   await page.locator("#who").click();
-  await expect(people(page)).toHaveText(["Baba", "Aai"]);
+  await expect(people(page)).toHaveText(["Baba", "RG", "Aai"]);
 });
 
 test("delete asks first, never removes the last person, and moves to another person when the reader is deleted @mobile", async ({ page }) => {
   await openSite(page, { ...SETUPS.marathi, fs: 30, fsu: 1 });
   await page.locator("#who").click();
+  // RG goes first, so SG is the only person
+  await page.locator("#pfl .pfe").nth(1).click();
+  await page.locator("#pfdel").click();
+  await page.locator("#pfdy").click();
+  await expect(people(page)).toHaveText(["SG"]);
   await page.locator("#pfl .pfe").first().click();
   await expect(page.locator("#pfdel")).toBeHidden(); // the only person
   await page.locator("#pfcan").click();
@@ -221,13 +232,15 @@ test("delete asks first, never removes the last person, and moves to another per
   await expect(page.locator("#pfv2")).toBeVisible();
   await page.locator("#pfdel").click();
   await page.locator("#pfdy").click();
-  await expect(people(page)).toHaveText(["Me"]);
-  await expect(chipName(page)).toHaveAccessibleName("Profile: Me");
+  await expect(people(page)).toHaveText(["SG"]);
+  await expect(chipName(page)).toHaveAccessibleName("Profile: SG");
   expect(await fs(page)).toBe(30);
+  // (saved a moment later: with SG and RG both written on the first visit, a reload at once could beat the delete)
+  await expect.poll(async () => (await idb(page)).profiles.map((p) => p.name)).toEqual(["SG"]);
   await page.reload();
   await settle(page);
   await page.locator("#who").click();
-  await expect(people(page)).toHaveText(["Me"]);
+  await expect(people(page)).toHaveText(["SG"]);
 });
 
 test("Save a backup file → Restore from it: every person and setting comes back", async ({ page }, info) => {
@@ -247,14 +260,14 @@ test("Save a backup file → Restore from it: every person and setting comes bac
   // the app's version, as index.html names it
   const version = readFileSync(new URL("../index.html", import.meta.url), "utf8").match(/<meta name="version" content="([^"]+)"/)[1];
   expect([json.format, json.kind, json.app]).toEqual(["nitya", "backup", version]);
-  expect(json.payload.profiles.map((p) => p.name)).toEqual(["Me", "Aai"]);
+  expect(json.payload.profiles.map((p) => p.name)).toEqual(["SG", "RG", "Aai"]);
   await expect(page.locator("#bksv")).toHaveText("Last saved 18 October 2026");
   await page.locator("#xc").click();
 
   // things change after the backup: Aai is deleted, someone else is added
-  await switchTo(page, "Me");
+  await switchTo(page, "SG");
   await page.locator("#who").click();
-  await page.locator("#pfl .pfe").nth(1).click();
+  await page.locator("#pfl .pfe").nth(2).click();
   await page.locator("#pfdel").click();
   await page.locator("#pfdy").click();
   await addPerson(page, "Ajoba");
@@ -265,7 +278,7 @@ test("Save a backup file → Restore from it: every person and setting comes bac
   await page.locator("#bkf").setInputFiles(file);
   await expect(page.locator("#bkm")).toBeVisible();
   await expect(page.locator("#bkmt")).toHaveText("Restore from this file?");
-  await expect(page.locator("#bkmd")).toContainText("People in the file: Me, Aai");
+  await expect(page.locator("#bkmd")).toContainText("People in the file: SG, RG, Aai");
   await expect(page.locator("#bkmd")).toContainText("New on this phone: Aai");
   await expect(page.locator("#bkmd")).toContainText("Removed from this phone: Ajoba");
   await expect(page.locator("#bkmd")).toContainText("Reading next: Aai.");
@@ -274,16 +287,16 @@ test("Save a backup file → Restore from it: every person and setting comes bac
   await expect(page.locator("#bkm")).toBeHidden();
   await expect(chipName(page)).toHaveAccessibleName("Profile: Aai");
   expect(await textLang(page)).toBe("en");
-  await switchTo(page, "Me");
+  await switchTo(page, "SG");
   expect(await textLang(page)).toBe("mr");
   expect(await fs(page)).toBe(30);
   await page.locator("#who").click();
-  await expect(people(page)).toHaveText(["Me", "Aai"]);
+  await expect(people(page)).toHaveText(["SG", "RG", "Aai"]);
   // and after a reload
   await page.reload();
   await settle(page);
   await page.locator("#who").click();
-  await expect(people(page)).toHaveText(["Me", "Aai"]);
+  await expect(people(page)).toHaveText(["SG", "RG", "Aai"]);
 });
 
 test("Cancel leaves everything as it was; a changed file is refused with a plain message", async ({ page }, info) => {
@@ -330,7 +343,7 @@ test("on a phone the backup goes to the share sheet (Save to Files, AirDrop…) 
   await expect.poll(() => page.evaluate(() => window.__shared.length)).toBe(1);
   const s = await page.evaluate(() => window.__shared[0]);
   expect(s.name).toBe("nitya-upasana-2026-10-15.nitya");
-  expect(JSON.parse(s.text).payload.profiles[0].name).toBe("Me");
+  expect(JSON.parse(s.text).payload.profiles[0].name).toBe("SG");
   await expect(page.locator("#bksv")).toHaveText("Last saved 15 October 2026");
   expect(downloaded).toBe(false);
   await context.close();
@@ -436,7 +449,7 @@ test("Settings → Who is reading opens the same sheet; the Settings rows show t
   await openSite(page, SETUPS["marathi-menus"]);
   await page.locator("#aa").click();
   await settingsTab(page, "more");
-  await expect(page.locator("#spfv")).toHaveText("Me");
+  await expect(page.locator("#spfv")).toHaveText("SG");
   await expect(page.locator("#bksv")).toHaveText("अजून जतन केलेली नाही");
   await page.locator("#spf").click();
   await expect(page.locator("#pfm")).toBeVisible();
