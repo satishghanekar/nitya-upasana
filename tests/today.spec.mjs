@@ -1036,9 +1036,12 @@ test("with no routine file the card still works and the texts still load", async
 // (js/core/apply.js holdAim())
 for (const fnt of ["classic", "std", "bold"])
   test(`the bundled default: a title tapped on Home stays just under the top bar, ${fnt} @mobile`, async ({ page }) => {
-    // (a morning of the bundled routine: Vedic chants first, whose height changes most as the page settles)
+    // (a morning of the bundled routine: Vedic chants first, whose height changes most as the page settles; a title in
+    // the middle, as the last texts are short and on a tablet the page ends before they reach the top)
     await openSite(page, { ...SETUPS.marathi, fnt }, { now: MORNING });
-    const link = rows(page).last().locator("a.tgo");
+    const link = rows(page)
+      .nth(Math.floor((await rows(page).count()) / 2))
+      .locator("a.tgo");
     const id = (await link.getAttribute("href")).replace("./#", "");
     await link.click();
     await page.waitForTimeout(1000);
