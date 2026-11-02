@@ -955,6 +955,9 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  /* a step smaller on Home than in the 15 days: Home's column is narrow beside the picture on an iPad or a computer, and
+     a holiday named in a festival's row must show whole */
+  font-size: var(--fz-xs);
 }
 
 /* Every tab's ‹ › and Today as on Home's date (#tdd; option A, Satish, 2026-11-02): title left, ‹ › top right, Today
