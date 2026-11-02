@@ -55,7 +55,7 @@ const SIMPLE = {
 };
 
 describe("the rules for a person's lists", () => {
-  test("a person with no routine of their own edits a copy of the default (content/routines.json), unchanged", () => {
+  test("a person with no routine of their own edits a copy of the ready-made one they follow, unchanged", () => {
     expect(editable(null, ROUTINE)).toEqual(ROUTINE);
     // the copy is the person's own: changing it leaves the default as it was
     const DEF = {
@@ -153,7 +153,7 @@ describe("the rules for a person's lists", () => {
 });
 
 describe("a routine read back (IndexedDB or a file) is cleaned, never trusted", () => {
-  test("none, or not an object: null (the default routine)", () => {
+  test("none, or not an object: null (they follow a ready-made one)", () => {
     for (const x of [undefined, null, "x", 3, [], true]) expect(cleanRoutine(x)).toBeNull();
   });
 
@@ -190,7 +190,7 @@ describe("the routine in a profile and in a backup file", () => {
   const settings = profilePart(defaults(ENV));
   const MINE = setList(setMode(editable(null, ROUTINE), "evening", "weekday", MON), "evening", THU, ["aarti-ghalin-lotangan"]);
 
-  test("a new person has none (they follow content/routines.json, Q5); a profile from before 1.9 reads as none", () => {
+  test("a new person has none (they follow a ready-made one); a profile from before 1.9 reads as none", () => {
     expect(newProfile({ id: "p1", name: "Aai", settings, now: NOW }).routine).toBeNull();
     const old = { id: "p1", name: "Aai", initials: "A", colour: COLOURS[0].v, settings, checklist: null, created: NOW, updated: NOW };
     expect(cleanProfile(old, ENV).routine).toBeNull();
@@ -208,7 +208,7 @@ describe("the routine in a profile and in a backup file", () => {
     expect(r.data.profiles.map((p) => p.routine)).toEqual([MINE, null]);
   });
 
-  test("a backup from version 1.7 (no routine in it) restores everyone on the default routine", () => {
+  test("a backup from version 1.7 (no routine in it) restores everyone on a ready-made routine", () => {
     const old = {
       profiles: [
         {
@@ -252,7 +252,7 @@ describe("the store keeps the reading person's routine", () => {
     idb = new IDBFactory();
   });
 
-  test("none at first; a change is kept in IndexedDB for that person only, and null goes back to the default", async () => {
+  test("none at first; a change is kept in IndexedDB for that person only, and null goes back to the ready-made one", async () => {
     await load(idb);
     expect(store.routine()).toBeNull();
     const mine = setList(editable(null, ROUTINE), "afternoon", MON, ["aarti-jai-jagdish-hare"]);

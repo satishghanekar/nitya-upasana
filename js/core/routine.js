@@ -157,7 +157,7 @@ function cleanPlan(p) {
 
 /**
  * A routine read from IndexedDB or a backup file, cleaned (never trusted as it is): null when there is none (the
- * person follows content/routines.json), else every session with a well-formed plan.
+ * person follows a ready-made one), else every session with a well-formed plan.
  * @param {any} r
  * @returns {Routine | null}
  */
@@ -196,7 +196,7 @@ export function routinePart(routine, days, sessions) {
 }
 
 /**
- * A person's routine to edit: their own, or a copy of the default (content/routines.json) when they have none
+ * A person's routine to edit: their own, or a copy of the one given (the ready-made one they follow) when they have none
  * @param {Routine | null | undefined} mine
  * @param {Routine | null | undefined} fallback
  * @returns {Routine}

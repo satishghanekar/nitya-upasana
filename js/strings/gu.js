@@ -269,6 +269,50 @@ export default {
       return d + ": આ યાદી દરરોજ વાપરવી છે? બીજા દિવસોની પોતાની યાદીઓ નીકળી જશે.";
     },
     fixGo: "દરરોજ વાપરો",
+    bases: { short: "સંક્ષિપ્ત", daily: "દૈનિક", full: "પૂર્ણ", extended: "વિસ્તૃત" },
+    baseG: "તૈયાર દિનચર્યા",
+    baseInfo: {
+      short: "સવારે અથર્વશીર્ષ અને રોજની આરતીઓ, સાંજે આરતીઓ",
+      daily: "સવારે અથર્વશીર્ષ, પુરુષસૂક્ત, શ્રીસૂક્ત અને તે વારની આરતીઓ, સાંજે તે વારની આરતીઓ",
+      full: "દૈનિક, સાથે દરેક વારના અષ્ટક અને સ્તોત્રો",
+      extended: "પૂર્ણ, સાથે લઘુન્યાસ, શ્રીરુદ્ર, દુર્ગાસૂક્ત અને લાંબા સ્તોત્રો",
+    },
+    /** @param {number} a @param {number} b */
+    perDay: function (a, b) {
+      return "રોજ " + (a === b ? a : a + "–" + b) + " પાઠ";
+    },
+    /** @param {string} b */
+    follow: function (b) {
+      return "તમે " + b + " અનુસરો છો. તેમાં પછી ઉમેરાતા પાઠ તમને પણ મળશે.";
+    },
+    /** @param {string} b */
+    own: function (b) {
+      return b + " પરથી બનાવેલી તમારી પોતાની દિનચર્યા. તમે બનાવી તેવી જ રહેશે.";
+    },
+    /** @param {string} b */
+    goBack: function (b) {
+      return "ફરી " + b + " વાપરો";
+    },
+    /** @param {string} b */
+    replaceAsk: function (b) {
+      return "તમારી દિનચર્યાને બદલે " + b + " વાપરવી છે? તમારા ફેરફારો જશે.";
+    },
+    /** @param {string} b */
+    use: function (b) {
+      return b + " વાપરો";
+    },
+    /** @param {string} b */
+    now: function (b) {
+      return "હવે " + b + " દિનચર્યા";
+    },
+    /** Settings → Routine: the one followed @param {string} b */
+    setting: function (b) {
+      return b;
+    },
+    /** Settings → Routine: their own, and which it came from @param {string} b */
+    ownSetting: function (b) {
+      return "તમારી પોતાની, " + b + " પરથી";
+    },
   },
   // The print builder's What step: Texts, Today, Routine (js/print/what.js)
   printWhat: {

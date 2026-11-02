@@ -657,3 +657,48 @@
     display: none;
   }
 }
+
+/* ==== The ready-made routines (Short, Daily, Full, Extended): what the one checked holds, followed or their own with
+   Go back, and the question before their own routine is replaced (as Same every day asks, #rtfx) ==== */
+#rtbi {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+#rtbst {
+  flex: 1 1 14em;
+  padding: 6px 0;
+}
+#rtbk {
+  min-height: 44px;
+  height: auto;
+  margin: 0 -6px 0 0;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--accent);
+  font: 600 14.5px/1.2 var(--lat);
+  cursor: pointer;
+}
+#rtb[lang="mr"] #rtbk {
+  font-family: var(--body);
+}
+#rtbk[hidden],
+#rtrp[hidden] {
+  display: none;
+}
+#rtrp {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--hdrl);
+  border-radius: 14px;
+  background: var(--hdr);
+}
+#rtrpt {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 600;
+}

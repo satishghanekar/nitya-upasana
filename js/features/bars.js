@@ -8,6 +8,7 @@ import { markNow, todayLang } from "./today-card.js";
 import { calLang } from "./vedic-calendar.js";
 import { libLang } from "./library.js";
 import { pdfLang } from "./pdfs.js";
+import { routineLang } from "./routine-builder.js";
 import { autoFs, pullSoon } from "../text/autofit.js";
 import { cur, foldSet, unfold } from "../core/apply.js";
 import { asLabel, asShow, asc } from "./bottom-bar.js";
@@ -307,6 +308,10 @@ export function apply() {
   // the Books tab's "online only" / "saved on this phone" (menu language)
   try {
     pdfLang();
+  } catch (e) {}
+  // Settings → Routine: the routine followed (menu language)
+  try {
+    routineLang();
   } catch (e) {}
   [].forEach.call(document.querySelectorAll("#st button"), function (b) {
     b.setAttribute("aria-pressed", b.dataset.v === P.th);
