@@ -1236,8 +1236,8 @@ test("print builder: the Routine tab: which routine, when and which session @chr
   const heading = page.locator("#prtp-routine .prcg");
   // which routine (Satish, 2026-11-02: no "Whose routine"): the person reading's first, then the four ready-made ones
   await expect(page.locator(".prwho")).toHaveAccessibleName("Routine");
-  await expect(page.locator(".prwho option")).toHaveText(["Yours (Me)", "Short", "Daily", "Full", "Extended"]);
-  await expect(page.locator(".prwho option:checked")).toHaveText("Yours (Me)");
+  await expect(page.locator(".prwho option")).toHaveText(["Me", "Short", "Daily", "Full", "Extended"]);
+  await expect(page.locator(".prwho option:checked")).toHaveText("Me");
   // when: the day Home shows first, the whole week, then the other days, Monday first
   await expect(page.locator(".prwhen option")).toHaveText(["Today · Thursday", "Whole week", "Monday", "Tuesday", "Wednesday", "Friday", "Saturday", "Sunday"]);
   await expect(page.locator(".prwhen option:checked")).toHaveText("Today · Thursday");
@@ -1275,6 +1275,19 @@ test("print builder: the Routine tab: which routine, when and which session @chr
   await context.close();
 });
 
+// The Routine tab's lists in every engine (the 2026-11-02 walk-through: Safari kept them 24px tall, and an iPhone
+// zooms into a select under 16px): a whole tap target, 16px text
+test("print builder: Routine and When are 44px tall with 16px text, Safari too @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.english);
+  await openPrintBuilder(page);
+  await page.locator("#prtab-routine").click();
+  for (const sel of [".prwho", ".prwhen"]) {
+    const [h, f] = await page.locator(sel).evaluate((e) => [e.getBoundingClientRect().height, parseFloat(getComputedStyle(e).fontSize)]);
+    expect(h, sel).toBeGreaterThanOrEqual(44);
+    expect(f, sel).toBeGreaterThanOrEqual(16);
+  }
+});
+
 // A ready-made routine printed for someone without the app (Satish, 2026-11-02): its texts, and its name on page 1
 test("print builder: a ready-made routine prints in place of yours, named on page 1 @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ locale: "en-US", viewport: { width: 1280, height: 900 }, serviceWorkers: "block" });
@@ -1288,7 +1301,7 @@ test("print builder: a ready-made routine prints in place of yours, named on pag
   expect(await page.locator(".prrl li").evaluateAll((l) => l.map((x) => x.dataset.id))).toEqual(["vedic-chant-purusha-suktam", "aarti-ghalin-lotangan"]);
   await expect(page.locator(".prrl .prtag")).toHaveText(["Daily · Morning", "Daily · Evening"]);
   // back to yours, and Daily again
-  await page.locator(".prwho").selectOption({ label: "Yours (Me)" });
+  await page.locator(".prwho").selectOption({ label: "Me" });
   await expect(page.locator(".prrl li")).toHaveCount(4);
   await page.locator(".prwho").selectOption("base:daily");
   await printNow(page);

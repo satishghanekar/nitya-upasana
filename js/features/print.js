@@ -661,12 +661,12 @@ export function init() {
         shelves: shelvesNow,
         today: shownSessions,
         // the routines to print (Satish, 2026-11-02: no "Whose routine"; another person's prints once switched to): the
-        // person reading's, their own or the ready-made one they follow, then the four ready-made ones
+        // person reading's (named: their own or the ready-made one they follow), then the four ready-made ones
         // (content/routines.json), to print for someone without the app
         people: function () {
           var a = active(),
             bw = /** @type {Record<string, string>} */ (menuWords("routine").bases);
-          return (a ? [{ id: a.id, name: a.name, label: menuWords("printWhat").yours(a.name), routine: followed(a) }] : []).concat(
+          return (a ? [{ id: a.id, name: a.name, routine: followed(a) }] : []).concat(
             BASES.map(function (b) {
               return { id: "base:" + b, name: bw[b], routine: baseRoutine(loaded.routines, b) };
             }),

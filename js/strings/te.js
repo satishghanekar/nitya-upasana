@@ -339,10 +339,6 @@ export default {
     pick: "కనీసం ఒక పాఠాన్ని ఎంచుకోండి",
     tabs: { texts: "సంగ్రహం", routine: "దినచర్య" },
     who: "దినచర్య",
-    /** @param {string} n */
-    yours: function (n) {
-      return "మీది (" + n + ")";
-    },
     when: "ఎప్పుడు",
     /** The day Home shows, when it is today @param {string} d the weekday */
     today: function (d) {

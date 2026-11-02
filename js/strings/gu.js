@@ -338,10 +338,6 @@ export default {
     pick: "ઓછામાં ઓછો એક પાઠ પસંદ કરો",
     tabs: { texts: "સંગ્રહ", routine: "દિનચર્યા" },
     who: "દિનચર્યા",
-    /** @param {string} n */
-    yours: function (n) {
-      return "તમારી (" + n + ")";
-    },
     when: "ક્યારે",
     /** The day Home shows, when it is today @param {string} d the weekday */
     today: function (d) {
