@@ -704,17 +704,19 @@ test("scrolling up brings the bars back once the page stops, not mid-scroll @mob
   await openSite(page, SETUPS.marathi, { hash: "#vedic-chant-shree-rudra" }); // a long text, so the page goes on scrolling
   await page.waitForTimeout(800);
   const tucked = () => page.evaluate(() => document.documentElement.hasAttribute("data-tuck"));
+  // six steps a frame apart; whether the bars are tucked is read just after the last, in the page (on a busy machine a
+  // second round trip can take longer than the page takes to stop)
   const steps = (dy) =>
     page.evaluate(async (dy) => {
       for (let i = 0; i < 6; i++) {
         scrollBy(0, dy);
         await new Promise((r) => requestAnimationFrame(r));
       }
+      return document.documentElement.hasAttribute("data-tuck");
     }, dy);
   await steps(60);
   await expect.poll(tucked).toBe(true);
-  await steps(-30);
-  expect(await tucked()).toBe(true);
+  expect(await steps(-30)).toBe(true);
   await expect.poll(tucked).toBe(false);
 });
 
