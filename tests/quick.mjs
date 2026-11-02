@@ -37,7 +37,7 @@ const SUITES = [
   [/^css\/0[0-9]-/, () => ["layout", "visual", "compat"]],
   // the text fonts: what each sets the texts in, on screen and in print
   [/^css\/0[0279]-|^js\/features\/(print|settings-panel)\.js$|^js\/store\/migrate\.js$/, () => ["fonts"]],
-  [/^css\/01-theme\.css$/, () => ["a11y"]],
+  [/^css\/01-theme\.css$/, () => ["a11y", "text-size"]],
   [/^css\/(03-menus-print-view|15-print)\.css$/, () => ["print", "print-view"]],
   [/^css\/10-today\.css$/, () => ["today", "reading"]],
   [/^css\/11-profiles\.css$/, () => ["profiles", "welcome"]],
@@ -51,7 +51,7 @@ const SUITES = [
   [/^js\/render\.js$|^js\/text\/(iast|layout|line-breaks|stanza-numbers|dhrupad-markers)\.js$|^js\/features\/bars\.js$/, () => ["print", "print-view"]],
   [/^js\/text\/(iast|format|content|load|dhrupad-markers|stanza-numbers)\.js$/, () => ["content", "interactions"]],
   [/^js\/text\/search/, () => ["library", "interactions"]],
-  [/^js\/text\/(layout|line-breaks|autofit)\.js$/, () => ["layout", "visual"]],
+  [/^js\/text\/(layout|line-breaks|autofit)\.js$/, () => ["layout", "visual", "text-size"]],
   [/^js\/core\/(panchang|panchang-names|festivals)\.js$|^js\/features\/(vedic-calendar|astronomy|sankashti)\.js$/, () => ["calendar"]],
   [/^js\/core\/(routine|ticks|time-of-day)\.js$|^js\/features\/(today-card|day-picture)\.js$/, () => ["today", "reading"]],
   [/^js\/features\/(routine-builder|text-picker)\.js$/, () => ["builder"]],

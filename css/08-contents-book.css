@@ -56,11 +56,11 @@
     margin: 20px 0 4px;
     padding: 0;
     border: 0;
-    font: 500 15px/1.3 var(--head);
+    font: 500 var(--fz-m)/1.3 var(--head);
     color: var(--igold);
   }
   #jl .tocg[data-lang="en"] .gh {
-    font: 500 14px/1.3 var(--lat);
+    font: 500 var(--fz-m)/1.3 var(--lat);
     letter-spacing: 0.08em;
   }
   #jl .tocg .gh::before,
@@ -73,7 +73,7 @@
   #jl .tocg[data-lang="both"] .gh .en {
     display: inline;
     margin-left: 0.5em;
-    font: 500 13px/1.3 var(--lat);
+    font: 500 var(--fz-s)/1.3 var(--lat);
     color: var(--igold);
   }
   #jl .tocg ol.toc {
@@ -134,11 +134,11 @@
     flex: 1 0 auto;
     align-items: baseline;
     white-space: nowrap;
-    font: 400 15px/1 var(--body);
+    font: 400 var(--fz-m)/1 var(--body);
     color: var(--muted);
   }
   #jl .tocg[data-lang="en"] ol.toc .lt {
-    font: 400 13px/1 var(--lat);
+    font: 400 var(--fz-s)/1 var(--lat);
   }
   #jl .tocg[data-lang="both"] ol.toc .lt .en {
     display: none;
@@ -175,12 +175,12 @@
   text-align: center;
   color: var(--muted);
   font-family: Inter, "Noto Sans Devanagari", sans-serif;
-  font-size: 14px;
+  font-size: var(--fz-m);
   line-height: 1.55;
 }
 .cr small {
   display: block;
-  font-size: 12.5px;
+  font-size: var(--fz-s);
 }
 .cr a {
   color: inherit;
@@ -280,7 +280,7 @@ html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
   }
   /* the language tag on the right follows too: Marathi, Hindi, Sanskrit */
   html[data-lead="en"] #jl .tocg[data-lang="both"] ol.toc .lt {
-    font: 400 13px/1 var(--lat);
+    font: 400 var(--fz-s)/1 var(--lat);
   }
   html[data-lead="en"] #jl .tocg[data-lang="both"] ol.toc .lt .en {
     display: inline;
@@ -297,7 +297,7 @@ html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
   html[data-lead="en"] #jl .tocg[data-lang="both"] ol.toc .m > .mr {
     display: block;
     margin-top: 2px;
-    font: 400 13.5px/1.3 var(--body);
+    font: 400 var(--fz-s)/1.3 var(--body);
     color: var(--muted);
   }
 }

@@ -18,6 +18,17 @@
   --head: "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
   --body: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
   --fs: 21px;
+  /* The menus' and labels' sizes (Satish, 2026-11-02): six, the same on every screen, times the reader's own text size
+     (--ts, js/core/state.js textScale()). 11px is the month's day cells only; nothing else below 12px. The text read
+     has its own size (--fs). */
+  --ts: 1;
+  --fz-c: calc(11px * var(--ts));
+  --fz-xs: calc(12px * var(--ts));
+  --fz-s: calc(13px * var(--ts));
+  --fz-m: calc(15px * var(--ts));
+  --fz-l: calc(17px * var(--ts));
+  --fz-xl: calc(20px * var(--ts));
+  --fz-xxl: calc(24px * var(--ts));
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not([data-pref]) {

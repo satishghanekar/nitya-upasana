@@ -20,7 +20,7 @@
   color: var(--ink);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  font: 400 16px/1.55 var(--lat);
+  font: 400 var(--fz-l)/1.55 var(--lat);
 }
 #help[hidden] {
   display: none;
@@ -41,12 +41,12 @@
 }
 #help h2 {
   margin: 0;
-  font: 600 20px/1.2 var(--lat);
+  font: 600 var(--fz-xl)/1.2 var(--lat);
   color: var(--accent);
 }
 #hlpx {
   background: var(--surface);
-  font: 500 15px/1 var(--lat);
+  font: 500 var(--fz-m)/1 var(--lat);
   cursor: pointer;
 }
 #help .hlpin {
@@ -61,12 +61,12 @@
   margin: 26px 0 6px;
   padding-bottom: 4px;
   border-bottom: 2px solid var(--accent);
-  font: 600 17px/1.3 var(--lat);
+  font: 600 var(--fz-l)/1.3 var(--lat);
   color: var(--accent);
 }
 #help h4 {
   margin: 14px 0 4px;
-  font: 600 15px/1.3 var(--lat);
+  font: 600 var(--fz-m)/1.3 var(--lat);
 }
 #help ol,
 #help ul {
@@ -98,7 +98,7 @@
 }
 #help .hfig figcaption {
   margin-top: 4px;
-  font: 600 14px/1.3 var(--lat);
+  font: 600 var(--fz-m)/1.3 var(--lat);
   color: var(--muted);
 }
 #help .hfig .sc {
@@ -151,11 +151,11 @@
   grid-template-columns: minmax(0, 1fr) 46px minmax(0, 1fr);
 }
 [data-lang="both"] .pn > a > .en {
-  font: 400 12.5px/1.3 var(--lat);
+  font: 400 var(--fz-s)/1.3 var(--lat);
 }
 .pn > a {
   padding: 10px 12px;
-  font-size: 15.5px;
+  font-size: var(--fz-m);
   overflow-wrap: anywhere;
 }
 @media (max-width: 420px) {
@@ -165,7 +165,7 @@
   }
   .pn > a {
     padding-inline: 10px;
-    font-size: 14.5px;
+    font-size: var(--fz-m);
   }
 }
 /* Refrain marker in Marathi + English: one arrow ("↻ ध्रुपद · Refrain"), and a taller area to tap */
@@ -199,10 +199,10 @@
 }
 /* Small labels a little larger */
 .rftop .lab {
-  font-size: 12.5px;
+  font-size: var(--fz-s);
 }
 .ash header .tag {
-  font-size: 12.5px;
+  font-size: var(--fz-s);
 }
 
 /* Home page contents: the same two-column cards as the Contents panel (a group with one piece spans both columns) */
@@ -223,7 +223,7 @@
     font-size: 1em;
   }
   #jl .tocg[data-lang="both"] ol.toc .en {
-    font: 400 12.5px/1.3 var(--lat);
+    font: 400 var(--fz-s)/1.3 var(--lat);
     margin-top: 2px;
   }
   #jl .tocg .gh {
@@ -232,11 +232,11 @@
 }
 /* Top bar showing the piece being read: a little smaller, so most names fit */
 .bar .t.site.pc {
-  font-size: 16.5px;
+  font-size: var(--fz-l);
   gap: 4px;
 }
 .bar .t.site.pc[data-tl="en"] {
-  font-size: 14.5px;
+  font-size: var(--fz-m);
 }
 /* ==== Round 2 review (final rules) ==== */
 /* A+ is for the verses: the home page keeps its normal size, and very long names may wrap */

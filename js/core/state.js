@@ -16,6 +16,8 @@ var K, DESK;
 // location, layout and the Print pop-up's choices stay with the device.
 export function init() {
   K = "aarti2-prefs";
+  // the menus' sizes (css/01-theme.css, --ts) follow the reader's own text size, as the text does
+  document.documentElement.style.setProperty("--ts", String(textScale()));
   // A computer (no touch screen): the screen is kept on only if the reader turns it on
   DESK = !!(window.matchMedia && !matchMedia("(any-pointer:coarse)").matches);
   var saved = read(K),
@@ -47,11 +49,37 @@ function boot() {
   return Object.assign({}, P, a ? { pid: a.id } : {});
 }
 
-// Default text size: 28px on tablets, 24px on phones and computers (auto-fit may lower it).
+// Default text size, by how far the screen is read from (Satish, 2026-11-02: 115% of the old fit, about 22px, reads well
+// on an iPhone 16 Pro): a phone held close 22px (20px under 360px wide), an iPad on the puja stand 28px, a computer 24px
+// (26px on a large screen); every text the same, a long line wrapping rather than the text shrinking. Times the phone's
+// own text size (textScale()).
 export function dfs() {
   var s = Math.min(screen.width || innerWidth, screen.height || innerHeight),
-    co = window.matchMedia && matchMedia("(pointer:coarse)").matches;
-  return co && s >= 600 ? 28 : 24;
+    co = window.matchMedia && matchMedia("(pointer:coarse)").matches,
+    b = co ? (s >= 600 ? 28 : s < 360 ? 20 : 22) : (screen.width || innerWidth) >= 1600 ? 26 : 24;
+  return Math.round(b * textScale());
+}
+
+var TS = 0;
+/**
+ * The reader's own text size, as a share of the usual one (0.85 to 1.5): Larger Text on an iPhone or iPad (Dynamic
+ * Type, which Safari gives as -apple-system-body, 17px as it comes), else the browser's default size (16px as it comes:
+ * a browser's setting, or Android's font size where Chrome passes it on). The menus and the text both follow it.
+ */
+export function textScale() {
+  if (TS) return TS;
+  var r = 1;
+  try {
+    var apple = matchMedia("(pointer:coarse)").matches && CSS.supports("font", "-apple-system-body"),
+      e = document.createElement("span");
+    e.style.cssText = "position:absolute;visibility:hidden;font:" + (apple ? "-apple-system-body" : "medium sans-serif");
+    document.documentElement.appendChild(e);
+    var px = parseFloat(getComputedStyle(e).fontSize);
+    e.remove();
+    // (under 14px is not an iPhone's or iPad's: their smallest is 14px; a Mac's Safari gives 13px)
+    if (px && !(apple && px < 14)) r = px / (apple ? 17 : 16);
+  } catch (x) {}
+  return (TS = Math.max(0.85, Math.min(1.5, Math.round(r * 20) / 20)));
 }
 
 // Save the settings: at once to the boot copy in localStorage, and to the person's profile in IndexedDB a moment

@@ -153,7 +153,7 @@ body {
   margin-inline: -16px;
 }
 .bar .t {
-  font: 700 15px/1.2 var(--body);
+  font: 700 var(--fz-m)/1.2 var(--body);
   color: var(--accent);
   min-width: 0;
   overflow: hidden;
@@ -165,7 +165,7 @@ body {
   flex: none;
 }
 button {
-  font: 600 15px/1 var(--body);
+  font: 600 var(--fz-m)/1 var(--body);
   min-width: 44px;
   height: 44px;
   padding: 0 12px;
@@ -272,14 +272,14 @@ ol.toc .m {
   background: var(--surface);
   color: var(--ink);
   text-decoration: none;
-  font: 500 16.5px/1.3 var(--head);
+  font: 500 var(--fz-l)/1.3 var(--head);
   min-height: 64px;
 }
 .pn small {
   display: flex;
   align-items: center;
   gap: 3px;
-  font: 600 12.5px/1 var(--body);
+  font: 600 var(--fz-s)/1 var(--body);
   letter-spacing: 0.02em;
   color: var(--accent);
 }
@@ -461,7 +461,7 @@ ol.toc .m {
   background: var(--surface);
   color: var(--ink);
   text-decoration: none;
-  font: 500 15px/1.3 var(--body);
+  font: 500 var(--fz-m)/1.3 var(--body);
 }
 #jump a.on {
   background: var(--accent);
@@ -610,7 +610,7 @@ ol.toc .m {
   padding: 1px 12px;
   border: 1px solid var(--rule);
   border-radius: 99px;
-  font: 600 13px/1.7 var(--body);
+  font: 600 var(--fz-s)/1.7 var(--body);
   color: var(--muted);
 }
 .verse p {
@@ -697,7 +697,7 @@ p.fl {
   border: 1px solid var(--muted);
   border-radius: 10px;
   padding: 0 14px;
-  font: 16px var(--body);
+  font: var(--fz-l) var(--body);
   background: var(--surface);
   color: var(--ink);
 }
@@ -720,13 +720,13 @@ p.fl {
   background: none;
   border-radius: 0;
   padding: 10px 4px;
-  font: 400 16px/1.45 var(--body);
+  font: 400 var(--fz-l)/1.45 var(--body);
 }
 #res .rs {
   display: block;
   /* Inter for English names, the site's Devanagari font for Marathi ones (not the system's) */
   font:
-    600 12px "Inter",
+    600 var(--fz-xs) "Inter",
     var(--body);
   color: var(--muted);
 }
@@ -742,18 +742,18 @@ p.fl {
 }
 #res .rl2 {
   display: block;
-  font: 14px var(--lat);
+  font: var(--fz-m) var(--lat);
   color: var(--muted);
 }
 #none {
   padding: 10px 4px;
   color: var(--muted);
-  font-size: 15px;
+  font-size: var(--fz-m);
 }
 
 /* Print, in the top bar */
 #asp {
-  font-size: 22px;
+  font-size: var(--fz-xxl);
   padding-inline: 12px;
 }
 html,
@@ -771,7 +771,7 @@ body {
   color: var(--bg);
   padding: 8px 16px;
   border-radius: 99px;
-  font: 700 15px var(--lat);
+  font: 700 var(--fz-m) var(--lat);
   z-index: 9;
   pointer-events: none;
   opacity: 0;
@@ -794,7 +794,7 @@ body {
   border: 0;
   background: var(--accent);
   color: var(--bg);
-  font: 700 15px var(--lat);
+  font: 700 var(--fz-m) var(--lat);
   box-shadow: 0 2px 10px #0003;
 }
 #szr .mr {
@@ -1002,4 +1002,13 @@ ol.toc li.soon .m {
   :root:not([data-fsu]) .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items {
     font-size: min(1.05em, 100cqw / 33.6);
   }
+}
+/* A long line wraps rather than the text shrinking (js/text/autofit.js, Satish, 2026-11-02): its rows sit closer than two
+   lines and split evenly (no "॥ १ ॥" alone), so it reads as one line; a line that fits keeps its room (1.4 + 0.3 = the
+   page's 1.7). Not the Vedic chants run on as paragraphs (their spacing leaves room for the svara marks). */
+.ash:not(.prose) .verse .mr p,
+.rmkpop .verse .mr p {
+  padding-block: 0.15em;
+  line-height: 1.4;
+  text-wrap: balance;
 }
