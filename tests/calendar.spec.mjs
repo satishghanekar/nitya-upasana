@@ -116,7 +116,7 @@ test("the line opens the calendar page; the day card has today's panchang @mobil
   await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator("#asc")).toBeHidden();
   await expect(page.locator("#cdt")).toHaveText("आश्विन शुद्ध अष्टमी");
-  await expect(page.locator("#cald .cdd")).toHaveText("Sunday, 18 October 2026 · today");
+  await expect(page.locator("#cald .dnh")).toHaveText("Sunday, 18 October2026 · Today");
   await expect(page.locator("#cald img")).toHaveAttribute("alt", "");
   await expect(row(page, "तिथी")).toHaveText("शुद्ध अष्टमीShukla Ashtami · until Mon 1:21 am");
   await expect(row(page, "नक्षत्र")).toHaveText("उत्तराषाढाUttara Ashadha · until Mon 6:08 am");
@@ -172,7 +172,7 @@ test("tapping a day shows it in the day card @mobile", async ({ page }) => {
   await open(page);
   await tap(page, "2026-10-28");
   await expect(page.locator("#cdt")).toHaveText("आश्विन वद्य तृतीया");
-  await expect(page.locator("#cald .cdd")).toHaveText("Wednesday, 28 October 2026");
+  await expect(page.locator("#cald .cdd")).toHaveText("Wednesday, 28 October");
   await expect(page.locator("#cald .cdg")).toHaveText("संकष्टी");
   await expect(row(page, "चंद्रोदय")).toHaveText("8:09 pm");
   await expect(row(page, "तिथी")).toHaveText("वद्य तृतीयाKrishna Tritiya · until 3:37 pm");
@@ -222,7 +222,7 @@ test("previous and next month @mobile", async ({ page }) => {
   await expect(page.locator("#cmt")).toContainText("September 2026");
   await expect(page.locator("#calm button.cd")).toHaveCount(30);
   await tap(page, "2026-09-01");
-  await expect(page.locator("#cald .cdd")).toHaveText("Tuesday, 1 September 2026");
+  await expect(page.locator("#cald .dnh")).toHaveText("Tuesday, 1 September2026 · 47 days ago");
 });
 
 test("Back: the page's button and the browser's both close it, and focus returns to the line @mobile", async ({ page }) => {
@@ -269,7 +269,7 @@ test("keyboard: open, move through the month with the arrows, pick a day, Escape
   await page.keyboard.press("PageUp");
   await expect(page.locator('#calm button[data-d="2026-10-02"]')).toBeFocused();
   await page.keyboard.press(" ");
-  await expect(page.locator("#cald .cdd")).toHaveText("Friday, 2 October 2026");
+  await expect(page.locator("#cald .cdd")).toHaveText("Friday, 2 October");
   await page.keyboard.press("Escape");
   await expect(page.locator('#calm button[data-d="2026-10-02"]')).toBeFocused();
   await page.keyboard.press("Escape");
@@ -655,12 +655,11 @@ test("the calendar's tabs: Day, 15 days, Month, one at a time, the same on every
   await expect(page.locator("#calm")).toBeHidden();
   // ‹ › a day at a time, and Today
   await page.locator('#cald [data-dd="1"]').click();
-  await expect(page.locator("#cald .cdd")).toHaveText("Monday, 19 October 2026");
+  await expect(page.locator("#cald .dnh")).toHaveText("Monday, 19 October2026 · Tomorrow");
   await expect(page.locator('#cald [data-dd="1"]')).toBeFocused();
   await expect(page.locator("#call")).toHaveText("Showing 19 October: Ashvin Shukla Navami");
-  await expect(page.locator("#cald .cdnt")).toHaveText("Mon 19 Oct");
   await page.locator('#cald [data-dd="0"]').click();
-  await expect(page.locator("#cald .cdd")).toHaveText("Sunday, 18 October 2026 · today");
+  await expect(page.locator("#cald .dnh")).toHaveText("Sunday, 18 October2026 · Today");
   await expect(page.locator('#cald [data-dd="0"]')).toBeHidden();
   // a day tapped in the month shows on the Day tab; Back returns to the month, at that day
   await page.locator('#calv [data-v="month"]').click();
@@ -709,11 +708,16 @@ test("the Day and 15 days tabs: nothing moves as ‹ › go from today, and the 
   await expect(u.locator("#cut")).toContainText("The next 15 days");
   await expect(u.locator('[data-u="0"]')).toBeHidden();
   expect(await list()).toBe(there);
-  // the Day tab: ‹ › and the date keep their places, with Today or without
+  // the Day tab: ‹ ›, the date and the list under them keep their places, with Today or without
   await page.locator('#calv [data-v="day"]').click();
-  await expect(page.locator("#cald .cdnt")).toHaveText("Tue 20 Oct");
+  await expect(page.locator("#cald .cdd")).toHaveText("Tuesday, 20 October");
   await page.locator('#cald [data-dd="0"]').click();
-  const at = () => page.evaluate(() => [...document.querySelectorAll("#cald .cdnav > *")].map((e) => Math.round(e.getBoundingClientRect().left)).slice(0, 3));
+  const at = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll("#cald .dnh, #cald .cnav, #cald .cdh")]
+        .map((e) => e.getBoundingClientRect())
+        .map((b) => [Math.round(b.left), Math.round(b.top)]),
+    );
   const today = await at();
   await expect(page.locator('#cald [data-dd="0"]')).toBeHidden();
   for (let i = 0; i < 9; i++) {
@@ -912,4 +916,77 @@ test("the calendar's day card and month show each festival's drawing @mobile", a
   await page.locator('#calv [data-v="month"]').click();
   await expect(day(page, 20).locator(".fs .fm")).toHaveCount(1);
   await expect(day(page, 20).locator(".fs")).toHaveText("Dasara");
+});
+
+// One date bar on Home and the three tabs ("Nitya's date arrows", option A, Satish, 2026-11-02): the title on the left,
+// ‹ › together in the top right corner, the same 44px buttons, Today centred under them (each on another day)
+for (const [name, size] of [
+  ["a phone", { width: 390, height: 844 }],
+  ["a 320px phone", { width: 320, height: 640 }],
+  ["an iPad", { width: 820, height: 1180 }],
+  ["a computer", { width: 1280, height: 860 }],
+])
+  test(`Home, Day, 15 days and Month: the same ‹ › and Today, in the same place, on ${name}`, async ({ page }) => {
+    await page.setViewportSize(size);
+    await openSite(page, COLUMBUS, { now: NOW });
+    const bar = (prev, next, today, title, box) =>
+      page.evaluate(
+        ([prev, next, today, title, box]) => {
+          const r = (s) => document.querySelector(s).getBoundingClientRect();
+          const p = r(prev),
+            x = r(next),
+            t = r(today),
+            h = r(title),
+            b = r(box);
+          const cs = getComputedStyle(document.querySelector(prev));
+          return {
+            look: [p.width, p.height, cs.borderRadius, cs.color, cs.backgroundColor],
+            together: Math.round(x.left - p.right),
+            level: Math.round(x.top - p.top),
+            rightEdge: Math.round(b.right - x.right) <= 24,
+            titleLeft: h.right <= p.left && h.left - b.left <= 24,
+            todayUnder: t.top >= p.bottom - 1 && Math.abs((t.left + t.right) / 2 - (p.left + x.right) / 2) <= 1,
+          };
+        },
+        [prev, next, today, title, box],
+      );
+    await page.locator("#tdx").click();
+    const home = await bar("#tdp", "#tdx", "#tdt", "#tdd .d1", "#tdd");
+    await page.locator("#tdd .d1").click();
+    await page.locator('#cald [data-dd="1"]').click();
+    const day = await bar('#cald [data-dd="-1"]', '#cald [data-dd="1"]', '#cald [data-dd="0"]', "#cald .dnh", "#cald .dnav");
+    await page.locator('#calv [data-v="up"]').click();
+    await page.locator('#calu [data-u="15"]').click();
+    const up = await bar('#calu [data-u="-15"]', '#calu [data-u="15"]', '#calu [data-u="0"]', "#cut", "#calu .dnav");
+    await page.locator('#calv [data-v="month"]').click();
+    await page.locator("#caln").click();
+    const month = await bar("#calp", "#caln", "#calm [data-mt]", "#cmt", "#calm .dnav");
+    for (const [n, b] of Object.entries({ home, day, up, month })) {
+      expect(b.look, n).toEqual(home.look);
+      expect(b.look[0], n).toBe(44);
+      expect(b.together, n + ": ‹ › together").toBe(6);
+      expect(b.level, n).toBe(0);
+      expect(b.rightEdge, n + ": in the right-hand corner").toBe(true);
+      expect(b.titleLeft, n + ": the title on the left").toBe(true);
+      expect(b.todayUnder, n + ": Today under ‹ ›").toBe(true);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
+
+test("Month: Today goes back to this month, at today; on this month it keeps its room, out of sight @mobile", async ({ page }) => {
+  await open(page);
+  const t = page.locator("#calm [data-mt]");
+  await expect(t).toBeHidden();
+  const grid = async () => Math.round((await page.locator("#calm .cgr").boundingBox()).y);
+  const there = await grid();
+  await page.locator("#caln").click();
+  await page.locator("#caln").click();
+  await expect(page.locator("#cmt")).toContainText("December 2026");
+  await expect(t).toBeVisible();
+  await expect(t).toHaveText("Today");
+  expect(await grid()).toBe(there);
+  await t.click();
+  await expect(page.locator("#cmt")).toContainText("October 2026");
+  await expect(page.locator('#calm button[data-d="2026-10-18"]')).toBeFocused();
+  await expect(t).toBeHidden();
 });

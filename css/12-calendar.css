@@ -358,17 +358,9 @@
   border-radius: 18px;
   background: var(--hdr);
 }
-.cmh {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 4px 10px;
-}
 #cmt {
-  flex: 1;
   margin: 0;
   font: 400 19px/1.35 var(--head);
-  text-align: center;
 }
 .cms {
   display: block;
@@ -404,7 +396,7 @@
   border: 1px solid var(--hdrl);
   border-radius: 12px;
   background: var(--hdrt);
-  color: var(--ink);
+  color: var(--accent);
   cursor: pointer;
 }
 .cgr {
@@ -626,21 +618,15 @@
   background: var(--hdr);
 }
 #cut {
-  flex: 1;
   margin: 0;
   font: 400 19px/1.35 var(--head);
-  text-align: center;
 }
 #cut:focus,
+#cmt:focus,
 #cdt:focus {
   outline: none;
 }
-/* Today, when the tab shows other days; on phones the day card's ‹ › and Today */
-.cto {
-  margin: 0;
-  text-align: center;
-}
-.cto button,
+/* Today, under ‹ › when the tab shows another day, 15 days or month */
 .ctod {
   height: auto;
   min-height: 44px;
@@ -654,21 +640,6 @@
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
-}
-/* ‹ the date › together in the middle, Today after them */
-.cdnav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 4px 10px;
-  margin: -4px 0 0;
-}
-.cdnt {
-  min-width: 7.5em;
-  color: var(--muted);
-  font-size: 14px;
-  text-align: center;
 }
 .upk {
   display: flex;
@@ -986,29 +957,66 @@
   text-overflow: ellipsis;
 }
 
-/* Nothing moves as ‹ › go through the days (Satish, 2026-10-30), as on Home's day bar (#tdn, css/10-today.css): the Day
-   tab's ‹ the date › stay in the middle, the date one width, and Today, after them, keeps its room on today; so does
-   the 15 days' Today, so the list does not jump down */
-.cdnav {
+/* Every tab's ‹ › and Today as on Home's date (#tdd, css/10-today.css; the "Nitya's date arrows" mockups, option A,
+   Satish, 2026-11-02): the title's lines on the left, ‹ › together in the top right corner, Today under them. Nothing
+   moves as ‹ › go through the days (Satish, 2026-10-30): the title keeps its lines on every day, and Today keeps its room
+   while it is hidden */
+.dnav {
   display: grid;
-  grid-template-columns: 1fr 44px minmax(0, 9em) 44px 1fr;
-  gap: 4px 10px;
+  grid-template-columns: minmax(0, 1fr) 44px 44px;
+  grid-template-areas: "h p x" "h t t";
+  align-items: center;
+  gap: 2px 6px;
+  padding: 0 4px 10px;
 }
-.cdnav .cnav[data-dd="-1"] {
-  grid-column: 2;
-}
-.cdnt {
+.dnav > :first-child {
+  grid-area: h;
+  align-self: start;
   min-width: 0;
+  margin: 0;
+}
+.dnav .cnav[data-dd="-1"],
+.dnav .cnav[data-u="-15"],
+#calp {
+  grid-area: p;
+}
+.dnav .cnav[data-dd="1"],
+.dnav .cnav[data-u="15"],
+#caln {
+  grid-area: x;
+}
+/* (a 44px target that takes 32px of the row, as on Home) */
+.dnav .ctod {
+  grid-area: t;
+  justify-self: center;
+  margin: 0 0 -12px;
+  padding: 0 4px;
+}
+.ctod.off {
+  visibility: hidden;
+}
+/* the Day tab's date and the year with "Tomorrow" under it, each on one line (a long one is cut with …) */
+.dnh .cdd,
+.dnh .cms {
+  display: block;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.ctod {
-  justify-self: start;
+.dnh .cdd {
+  margin: 0;
+  color: var(--ink);
+  font: 400 19px/1.35 var(--head);
 }
-.ctod.off,
-.cto button.off {
-  visibility: hidden;
+/* (in English too in the heading font, as the 15 days' and the month's titles are) */
+.dnh .cdd [lang="en"] {
+  font-family: var(--head);
+}
+.cdr {
+  color: var(--accent);
+}
+#cald .dnav {
+  padding: 0 0 12px;
 }
 
 /* ==== The drawings of the festivals and the holidays' flags (js/core/fest-icons.js): in a tinted circle, the tint

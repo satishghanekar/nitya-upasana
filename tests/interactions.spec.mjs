@@ -472,6 +472,33 @@ test.describe("pinch @chromium-only", () => {
     expect(r.after).toBe(r.before);
     await expect(page.locator("#szt")).not.toHaveClass(/\bon\b/);
   });
+  // Over the calendar and the routine builder too (Satish, 2026-11-02): the text a pinch would resize is behind them
+  test("over the calendar's Day, 15 days and Month, and the routine builder, a pinch does nothing", async ({ page }) => {
+    await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 } });
+    await page.locator("#panb").click({ position: { x: 12, y: 12 } });
+    for (const [tab, box] of [
+      ["day", "#cald"],
+      ["up", "#calu"],
+      ["month", "#calm"],
+    ]) {
+      await page.locator(`#calv [data-v="${tab}"]`).click();
+      expect(await pinchStart(page, box), tab + ": no zoom").toBe(true);
+      const r = await pinchOut(page, box);
+      expect(r.after, tab).toBe(r.before);
+    }
+    await expect(page.locator("#szt")).not.toHaveClass(/\bon\b/);
+    // on a computer, Ctrl + is stopped there too (no page zoom) and leaves the size alone
+    const fs = () => page.evaluate(() => document.documentElement.style.getPropertyValue("--fs"));
+    const fs0 = await fs();
+    await page.keyboard.press("Control+Equal");
+    await page.evaluate(() => new Promise((ok) => requestAnimationFrame(() => requestAnimationFrame(ok))));
+    expect(await fs()).toBe(fs0);
+    await page.locator("#cbk").click();
+    await page.locator("#tsed").click();
+    await expect(page.locator("#rtb")).toBeVisible();
+    const r = await pinchOut(page, "#rtb");
+    expect(r.after).toBe(r.before);
+  });
   test("on a verse it resizes the text, with the size shown on screen", async ({ page }) => {
     await openSite(page, SETUPS.marathi);
     await readText(page, "a1");
