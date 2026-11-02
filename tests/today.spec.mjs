@@ -4,7 +4,8 @@
 // "Another text? Open the Library". Home ends there: the pieces show once a text is opened. On a Sankashti day only,
 // one line with moonrise. Every text is in the Library (the book button). These tests run on a fixed routine (TEST_ROUTINE
 // in helpers.mjs: Morning = Atharvashirsha, Evening = the ten aartis), so they don't change with Satish's schedule; the
-// bundled default (content/routines.json) has its own test below. 15 Oct 2026 is a Thursday, 18 Oct a Sunday, 28 Oct a
+// bundled routines (content/routines.json) have their own tests below: a new phone's Short, and Extended (the longest,
+// different by weekday) served as the one a new phone follows. 15 Oct 2026 is a Thursday, 18 Oct a Sunday, 28 Oct a
 // Sankashti (Wednesday).
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
@@ -29,13 +30,14 @@ const AARTIS = TEST_AARTIS;
 const MORNING = new Date("2026-10-15T10:00:00-04:00"); // Thursday
 const EVENING = new Date("2026-10-18T19:00:00-04:00"); // Sunday
 
-const BUNDLED = JSON.parse(readFileSync(new URL("../content/routines.json", import.meta.url), "utf8"));
+const ALL = JSON.parse(readFileSync(new URL("../content/routines.json", import.meta.url), "utf8"));
+const BUNDLED = ALL.extended;
 const ROUTINE = TEST_ROUTINE;
 const rows = (page) => page.locator("#tsl li");
 // a session's tab in the Morning | Afternoon | Evening switch; a greyed one is aria-disabled, so it is clicked with force
 const tab = (page, s) => page.locator(`#tss-${s}`);
 const pickTab = (page, s) => tab(page, s).click({ force: true });
-// the texts the default routine gives a session on a weekday (0 Sunday), as Home shows them
+// the texts a routine gives a session on a weekday (0 Sunday), as Home shows them
 const planned = (day, s) => textsFor(ROUTINE, day, s).filter((id) => TITLE[id]);
 const hash = (page) => page.evaluate(() => location.hash);
 // the piece the reader is on: the lowest one whose top has passed just under the top bar (js/core/apply.js cur())
@@ -62,15 +64,18 @@ const shown = (page) =>
   );
 
 test.beforeEach(async ({ page }, info) => {
-  if (!info.title.startsWith("the bundled default")) await useTestRoutine(page);
+  // Extended in Short's place, so a new phone follows it
+  if (info.title.startsWith("the bundled Extended"))
+    await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify({ short: ALL.extended }) }));
+  else if (!info.title.startsWith("the bundled default")) await useTestRoutine(page);
 });
 
-test("the bundled default: Home shows the day's lists from content/routines.json @mobile", async ({ page }) => {
+test("the bundled default: a new phone's Home shows Short's lists from content/routines.json @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
-  const ids = textsFor(BUNDLED, 4, "morning");
+  const ids = textsFor(ALL.short, 4, "morning");
   expect(await rows(page).locator(".t1").allTextContents()).toEqual(ids.map((id) => TITLE[id].title));
   await pickTab(page, "evening");
-  expect(await rows(page).locator(".t1").allTextContents()).toEqual(textsFor(BUNDLED, 4, "evening").map((id) => TITLE[id].title));
+  expect(await rows(page).locator(".t1").allTextContents()).toEqual(textsFor(ALL.short, 4, "evening").map((id) => TITLE[id].title));
 });
 
 // Every session of the bundled routine, every weekday, read through with Next at a phone's, an upright iPad's and a
@@ -82,7 +87,7 @@ for (const [name, vp] of [
   ["an upright iPad", { width: 820, height: 1180 }],
   ["a computer", { width: 1440, height: 900 }],
 ]) {
-  test(`the bundled default: every session of the week reads through to Home with Next, on ${name}`, async ({ page }) => {
+  test(`the bundled Extended: every session of the week reads through to Home with Next, on ${name}`, async ({ page }) => {
     test.setTimeout(240_000);
     await page.setViewportSize(vp);
     // Monday 19 to Sunday 25 October 2026
@@ -110,7 +115,7 @@ for (const [name, vp] of [
   });
 }
 // on a computer Home's column stays beside the text: the short last text is the one marked in Home's list
-test("the bundled default: on a computer the last text of the morning is marked in Home's list, with Prev going back", async ({ page }) => {
+test("the bundled Extended: on a computer the last text of the morning is marked in Home's list, with Prev going back", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openSite(page, SETUPS.marathi, { now: new Date("2026-10-19T08:00:00-04:00") });
   const ids = textsFor(BUNDLED, 1, "morning");
@@ -325,7 +330,10 @@ test("a text's title in the list opens it, in the session", async ({ page }) => 
 test("a session runs on in one scroll, in session order, with only its texts @mobile", async ({ page }) => {
   // a session whose order is not the Library's: the Ganapati aarti (a1) after the Devi aarti (a3)
   await page.route("**/content/routines.json", (r) =>
-    r.fulfill({ contentType: "application/json", body: JSON.stringify({ ...ROUTINE, evening: { mode: "fixed", texts: [AARTIS[2], AARTIS[0], AARTIS[1]] } }) }),
+    r.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({ short: { ...ROUTINE, evening: { mode: "fixed", texts: [AARTIS[2], AARTIS[0], AARTIS[1]] } } }),
+    }),
   );
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await rows(page).nth(0).locator("a.tgo").click();
@@ -564,7 +572,7 @@ for (const [name, size] of [
 ])
   test(`‹ › through the days: the bar's arrows and the session's switch stay put, ${name}`, async ({ page }) => {
     await page.setViewportSize(size);
-    await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 }, hol: ["ka"] }, { now: new Date("2026-10-27T09:00:00-04:00") });
+    await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 } }, { now: new Date("2026-10-27T09:00:00-04:00") });
     const where = () =>
       page.evaluate(() =>
         ["#tdp", "#tdx", "#upw", "#tss"].map((s) =>
@@ -581,9 +589,9 @@ for (const [name, size] of [
   });
 
 // ‹ › in the day bar (Satish, 2026-10-27; the calendar's day bar since 2026-10-30): Home shows the day before or after,
-// all of it: the date, the Vedic calendar line, the lists (the bundled default's differ by weekday), the picture's
+// all of it: the date, the Vedic calendar line, the lists (Extended's differ by weekday), the picture's
 // star; Today in the bar on another day. 15 Oct 2026 is a Thursday.
-test("the bundled default: ‹ › show another day's date, Vedic calendar line and lists; Today comes back @mobile", async ({ page }) => {
+test("the bundled Extended: ‹ › show another day's date, Vedic calendar line and lists; Today comes back @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
   const titles = () => rows(page).locator(".t2").allTextContents();
   const want = (day, s) => textsFor(BUNDLED, day, s).map((id) => TITLE[id].titleEn);
@@ -629,7 +637,7 @@ test("the bundled default: ‹ › show another day's date, Vedic calendar line 
   expect(await page.locator("#pan").innerText()).toEqual(line);
 });
 
-test("the bundled default: another day's session is read with Next in its own order, and Home comes back to that day @mobile", async ({ page }) => {
+test("the bundled Extended: another day's session is read with Next in its own order, and Home comes back to that day @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
   for (let i = 0; i < 4; i++) await page.locator("#tdp").click();
   await expect(page.locator("#tdd .d2t")).toHaveText("Sunday, 11 October");
@@ -644,7 +652,7 @@ test("the bundled default: another day's session is read with Next in its own or
   await expect(page.locator("#tdt")).not.toHaveClass(/off/);
 });
 
-test("the bundled default: Edit on another day opens the routine builder at that day @mobile", async ({ page }) => {
+test("the bundled Extended: Edit on another day opens the routine builder at that day @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: MORNING });
   await page.locator("#tdx").click();
   await page.locator("#tsed").click();
@@ -1035,7 +1043,7 @@ test("with no routine file the card still works and the texts still load", async
 // the text fitted again), in every font; Bold's texts above it once grew enough to scroll it out of view
 // (js/core/apply.js holdAim())
 for (const fnt of ["classic", "std", "bold"])
-  test(`the bundled default: a title tapped on Home stays just under the top bar, ${fnt} @mobile`, async ({ page }) => {
+  test(`the bundled Extended: a title tapped on Home stays just under the top bar, ${fnt} @mobile`, async ({ page }) => {
     // (a morning of the bundled routine: Vedic chants first, whose height changes most as the page settles; a title in
     // the middle, as the last texts are short and on a tablet the page ends before they reach the top)
     await openSite(page, { ...SETUPS.marathi, fnt }, { now: MORNING });

@@ -207,7 +207,15 @@ export function createPicker(el, o) {
   el.addEventListener("change", function (e) {
     var x = /** @type {HTMLInputElement} */ (e.target);
     if (x.type !== "checkbox") return;
-    o.toggle(x.value, x.checked);
+    var v = x.value;
+    o.toggle(v, x.checked);
+    // focus stays on the box ticked (drawn again, perhaps): Safari on a Mac or an iPad does not focus a box clicked, so
+    // Escape and Tab would no longer reach the sheet
+    var now = /** @type {HTMLInputElement | null} */ (el.querySelector('input[type="checkbox"][value="' + v + '"]'));
+    if (open && now && document.activeElement !== now)
+      try {
+        now.focus({ preventScroll: true });
+      } catch (x2) {}
   });
   el.addEventListener("input", function (e) {
     var x = /** @type {HTMLInputElement} */ (e.target);

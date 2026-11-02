@@ -103,6 +103,7 @@ var SITE_PARTS = (function () {
     "features/backup",
     "features/text-picker",
     "features/routine-builder",
+    "features/welcome",
   ].map(function (f) {
     return "js/" + f + ".js";
   });

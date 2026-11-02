@@ -1,177 +1,511 @@
 {
- "morning": {
-  "mode": "weekday",
-  "days": {
-   "sun": [
+ "short": {
+  "morning": {
+   "mode": "fixed",
+   "texts": [
     "vedic-chant-atharvashirsha",
-    "vedic-chant-laghunyasa",
-    "vedic-chant-shree-rudra",
-    "vedic-chant-purusha-suktam",
-    "vedic-chant-durga-suktam",
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
     "aarti-jaydeva-jaydeva-samartha",
     "aarti-ghalin-lotangan",
     "vedic-chant-mantra-pushpanjali"
-   ],
-   "mon": [
-    "vedic-chant-atharvashirsha",
-    "vedic-chant-laghunyasa",
-    "vedic-chant-shree-rudra",
-    "vedic-chant-purusha-suktam",
-    "vedic-chant-durga-suktam",
-    "ashtak-surya-ashtakam",
+   ]
+  },
+  "afternoon": {
+   "mode": "fixed",
+   "texts": []
+  },
+  "evening": {
+   "mode": "fixed",
+   "texts": [
     "aarti-sukhkarta",
     "aarti-durge-durghat-bhari",
-    "aarti-jaydeva-jaydeva-samartha",
-    "aarti-ovaloon-aarti-chaitanyabrahma",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali"
-   ],
-   "tue": [
-    "vedic-chant-atharvashirsha",
-    "vedic-chant-purusha-suktam",
-    "vedic-chant-shri-sukta",
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jaydeva-jaydeva-samartha",
-    "aarti-kariton-guruvar",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali"
-   ],
-   "wed": [
-    "vedic-chant-atharvashirsha",
-    "vedic-chant-purusha-suktam",
-    "vedic-chant-shri-sukta",
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jaydeva-jaydeva-samartha",
-    "aarti-belaguve",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali"
-   ],
-   "thu": [
-    "vedic-chant-atharvashirsha",
-    "vedic-chant-purusha-suktam",
-    "vedic-chant-shri-sukta",
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jaydeva-jaydeva-samartha",
-    "aarti-belaguve",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali"
-   ],
-   "fri": [
-    "vedic-chant-atharvashirsha",
-    "vedic-chant-purusha-suktam",
-    "vedic-chant-shri-sukta",
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jaydeva-jaydeva-samartha",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali"
-   ],
-   "sat": [
-    "vedic-chant-atharvashirsha",
-    "vedic-chant-laghunyasa",
-    "vedic-chant-shree-rudra",
-    "vedic-chant-purusha-suktam",
-    "vedic-chant-durga-suktam",
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jaydeva-jaydeva-samartha",
+    "aarti-jay-jay-aarti-shrigururaya",
     "aarti-ghalin-lotangan",
     "vedic-chant-mantra-pushpanjali"
    ]
   }
  },
- "afternoon": {
-  "mode": "fixed",
-  "texts": []
+ "daily": {
+  "morning": {
+   "mode": "weekday",
+   "days": {
+    "sun": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "mon": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "tue": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-kariton-guruvar",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "wed": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-belaguve",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "thu": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-belaguve",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "fri": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "sat": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ]
+   }
+  },
+  "afternoon": {
+   "mode": "fixed",
+   "texts": []
+  },
+  "evening": {
+   "mode": "weekday",
+   "days": {
+    "sun": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "mon": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-lavathavati-vikrala",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "tue": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-shendur-lal-chadhayo",
+     "aarti-kariton-guruvar",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "wed": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "thu": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-trigunatmak-traimurti",
+     "aarti-ovaloo-sapreme-aarti",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "fri": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "sat": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-dhanya-jagin-guruvarya",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ]
+   }
+  }
  },
- "evening": {
-  "mode": "weekday",
-  "days": {
-   "sun": [
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jay-jay-aarti-shrigururaya",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali",
-    "ashtak-sunday",
-    "ashtak-brahmachaitanya-sarikha",
-    "stotra-ram-raksha"
-   ],
-   "mon": [
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jay-jay-aarti-shrigururaya",
-    "aarti-lavathavati-vikrala",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali",
-    "ashtak-monday",
-    "ashtak-ananyata-maj-ghado"
-   ],
-   "tue": [
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jay-jay-aarti-shrigururaya",
-    "aarti-shendur-lal-chadhayo",
-    "aarti-kariton-guruvar",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali",
-    "ashtak-tuesday",
-    "ashtak-anudin-anutapen",
-    "stotra-maruti-stotra",
-    "stotra-hanuman-chalisa"
-   ],
-   "wed": [
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jay-jay-aarti-shrigururaya",
-    "aarti-ovaloon-aarti-chaitanyabrahma",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali",
-    "ashtak-wednesday",
-    "ashtak-sadguru-padukashtak"
-   ],
-   "thu": [
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jay-jay-aarti-shrigururaya",
-    "aarti-trigunatmak-traimurti",
-    "aarti-ovaloo-sapreme-aarti",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali",
-    "ashtak-thursday",
-    "stotra-shant-ho-shriguru",
-    "stotra-shriguru-datta-jay",
-    "stotra-jay-karunaghan-nij",
-    "stotra-ghorakashtoddharan",
-    "stotra-vandu-guruchya-charanarvinda",
-    "stotra-martand-bavani",
-    "stotra-sadguru-vandana"
-   ],
-   "fri": [
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jay-jay-aarti-shrigururaya",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali",
-    "ashtak-friday",
-    "ashtak-haachi-subodh"
-   ],
-   "sat": [
-    "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jay-jay-aarti-shrigururaya",
-    "aarti-dhanya-jagin-guruvarya",
-    "aarti-ghalin-lotangan",
-    "vedic-chant-mantra-pushpanjali",
-    "ashtak-saturday",
-    "stotra-maruti-stotra",
-    "stotra-hanuman-chalisa"
-   ]
+ "full": {
+  "morning": {
+   "mode": "weekday",
+   "days": {
+    "sun": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "mon": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "ashtak-surya-ashtakam",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "tue": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-kariton-guruvar",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "wed": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-belaguve",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "thu": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-belaguve",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "fri": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "sat": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ]
+   }
+  },
+  "afternoon": {
+   "mode": "fixed",
+   "texts": []
+  },
+  "evening": {
+   "mode": "weekday",
+   "days": {
+    "sun": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-sunday",
+     "ashtak-brahmachaitanya-sarikha"
+    ],
+    "mon": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-lavathavati-vikrala",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-monday",
+     "ashtak-ananyata-maj-ghado"
+    ],
+    "tue": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-shendur-lal-chadhayo",
+     "aarti-kariton-guruvar",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-tuesday",
+     "ashtak-anudin-anutapen"
+    ],
+    "wed": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-wednesday",
+     "ashtak-sadguru-padukashtak"
+    ],
+    "thu": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-trigunatmak-traimurti",
+     "aarti-ovaloo-sapreme-aarti",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-thursday"
+    ],
+    "fri": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-friday",
+     "ashtak-haachi-subodh"
+    ],
+    "sat": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-dhanya-jagin-guruvarya",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-saturday"
+    ]
+   }
+  }
+ },
+ "extended": {
+  "morning": {
+   "mode": "weekday",
+   "days": {
+    "sun": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-laghunyasa",
+     "vedic-chant-shree-rudra",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-durga-suktam",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "mon": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-laghunyasa",
+     "vedic-chant-shree-rudra",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-durga-suktam",
+     "ashtak-surya-ashtakam",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "tue": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-kariton-guruvar",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "wed": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-belaguve",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "thu": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-belaguve",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "fri": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-shri-sukta",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ],
+    "sat": [
+     "vedic-chant-atharvashirsha",
+     "vedic-chant-laghunyasa",
+     "vedic-chant-shree-rudra",
+     "vedic-chant-purusha-suktam",
+     "vedic-chant-durga-suktam",
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali"
+    ]
+   }
+  },
+  "afternoon": {
+   "mode": "fixed",
+   "texts": []
+  },
+  "evening": {
+   "mode": "weekday",
+   "days": {
+    "sun": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-sunday",
+     "ashtak-brahmachaitanya-sarikha",
+     "stotra-ram-raksha"
+    ],
+    "mon": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-lavathavati-vikrala",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-monday",
+     "ashtak-ananyata-maj-ghado"
+    ],
+    "tue": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-shendur-lal-chadhayo",
+     "aarti-kariton-guruvar",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-tuesday",
+     "ashtak-anudin-anutapen",
+     "stotra-maruti-stotra",
+     "stotra-hanuman-chalisa"
+    ],
+    "wed": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-wednesday",
+     "ashtak-sadguru-padukashtak"
+    ],
+    "thu": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-trigunatmak-traimurti",
+     "aarti-ovaloo-sapreme-aarti",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-thursday",
+     "stotra-shant-ho-shriguru",
+     "stotra-shriguru-datta-jay",
+     "stotra-jay-karunaghan-nij",
+     "stotra-ghorakashtoddharan",
+     "stotra-vandu-guruchya-charanarvinda",
+     "stotra-martand-bavani",
+     "stotra-sadguru-vandana"
+    ],
+    "fri": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-friday",
+     "ashtak-haachi-subodh"
+    ],
+    "sat": [
+     "aarti-sukhkarta",
+     "aarti-durge-durghat-bhari",
+     "aarti-jay-jay-aarti-shrigururaya",
+     "aarti-dhanya-jagin-guruvarya",
+     "aarti-ghalin-lotangan",
+     "vedic-chant-mantra-pushpanjali",
+     "ashtak-saturday",
+     "stotra-maruti-stotra",
+     "stotra-hanuman-chalisa"
+    ]
+   }
   }
  }
 }

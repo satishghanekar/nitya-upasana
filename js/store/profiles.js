@@ -7,10 +7,10 @@
 // The start-up rule (startPlan): the settings saved under localStorage["aarti2-prefs"] are the active person's
 // "boot copy", written at once on every change (IndexedDB writes are asynchronous and can be cut short when a phone
 // closes the page). So for the active person the boot copy wins, and on the first visit after this version it
-// becomes the first person (SG, below), with today's ticks.
+// becomes the first person, with today's ticks.
 
-import { cleanPerson, defaults, devicePart, migratePrefs, profilePart } from "./migrate.js";
-import { cleanRoutine, withoutVedic } from "../core/routine.js";
+import { cleanPerson, devicePart, migratePrefs, profilePart } from "./migrate.js";
+import { cleanBase, cleanRoutine, FIRST_BASE } from "../core/routine.js";
 
 /**
  * @typedef {import("./migrate.js").Env} Env
@@ -18,12 +18,13 @@ import { cleanRoutine, withoutVedic } from "../core/routine.js";
  * @typedef {{ date: string, done: Record<string, string[]> }} Checklist
  * @typedef {import("../core/routine.js").Routine} Routine
  * @typedef {{ id: string, name: string, initials: string, colour: string, settings: Prefs,
- *   checklist: Checklist | null, routine: Routine | null, created: string, updated: string }} Profile
- *   routine: their own (the routine builder, version 1.9), or null to follow content/routines.json (Q5)
+ *   checklist: Checklist | null, base: string, routine: Routine | null, created: string, updated: string }} Profile
+ *   base: the ready-made routine they chose (content/routines.json, BASES in js/core/routine.js); routine: their own
+ *   (the routine builder, version 1.9; made from base), or null to follow base
  * @typedef {{ activeProfile: string, device: Prefs, since: string, lastBackup: string, snooze: string,
- *   schema: number, order?: string[], library?: import("../core/library.js").LibraryLocal, builtIn?: number }} Meta
+ *   schema: number, order?: string[], library?: import("../core/library.js").LibraryLocal }} Meta
  *   order: the people's ids in the order they were added; library: the family's categories, renames and moves
- *   (js/core/library.js), for everyone on this phone; builtIn: 1 once the built-in people were added (BUILT_IN)
+ *   (js/core/library.js), for everyone on this phone
  */
 
 // The badge colours offered (white letters on each meet WCAG AA, 4.5:1 or more)
@@ -42,27 +43,6 @@ export const MAX_PROFILES = 8;
 export const NAME_MAX = 24;
 export const INITIALS_MAX = 4;
 export const FIRST_NAME = "Me";
-
-// The people every phone starts with (this app only): SG follows the default routine (content/routines.json); RG's
-// is the default without its Vedic chants, with the Lalita Sahasranama every morning, made once when RG is added
-// (so later changes to the default do not reach it). Added once: a person deleted does not come back.
-/** @type {{ name: string, colour: string, routine: (def: any) => Routine | null }[]} */
-export const BUILT_IN = [
-  {
-    name: "SG",
-    colour: COLOURS[0].v,
-    routine: function () {
-      return null;
-    },
-  },
-  {
-    name: "RG",
-    colour: COLOURS[1].v,
-    routine: function (def) {
-      return withoutVedic(def, "vedic-chant-lalita-sahasranama");
-    },
-  },
-];
 
 /** @param {string} s */
 export function cleanName(s) {
@@ -182,7 +162,7 @@ export function nameProblem(name, list, self) {
 
 /**
  * @param {{ id: string, name: string, initials?: string, colour?: string, settings: Prefs, checklist?: Checklist | null,
- *   routine?: Routine | null, now: string }} o
+ *   base?: string, routine?: Routine | null, now: string }} o
  * @returns {Profile}
  */
 export function newProfile(o) {
@@ -194,7 +174,8 @@ export function newProfile(o) {
     colour: cleanColour(o.colour || ""),
     settings: o.settings,
     checklist: o.checklist || null,
-    // a new person follows content/routines.json until they change their routine (Q5)
+    // a new person follows the shortest ready-made routine until they choose another or change it
+    base: cleanBase(o.base, FIRST_BASE),
     routine: cleanRoutine(o.routine),
     created: o.now,
     updated: o.now,
@@ -253,7 +234,9 @@ export function cleanProfile(p, env) {
     colour: cleanColour(p.colour),
     settings: cleanPerson(p.settings, env),
     checklist: cleanChecklist(p.checklist),
-    // a profile saved before version 1.9 (or a backup file from then) has none: the default routine
+    // a profile saved before the ready-made routines (2026-11-02) followed the one default, now Extended
+    base: cleanBase(p.base, "extended"),
+    // a profile saved before version 1.9 (or a backup file from then) has none: they follow base
     routine: cleanRoutine(p.routine),
     created: typeof p.created === "string" ? p.created : "",
     updated: typeof p.updated === "string" ? p.updated : "",
@@ -263,9 +246,9 @@ export function cleanProfile(p, env) {
 /**
  * How start-up goes, from what IndexedDB holds and the boot copy in localStorage (see the top of this file).
  * @param {{ profiles: Profile[], meta: Meta | null, saved: any, ticks: any, env: Env, now: string,
- *   id: (taken: Profile[]) => string, routine?: any }} o
+ *   id: (taken: Profile[]) => string, name: (ui: string) => string }} o
  *   saved: the parsed localStorage["aarti2-prefs"] or null; ticks: the parsed localStorage["nitya-ticks"] or null;
- *   id: a new id, not one in taken; routine: the default (content/routines.json), for RG's
+ *   id: a new id, not one in taken; name: the first person's name in a menu language ("Me", "मी")
  * @returns {{ profiles: Profile[], meta: Meta, prefs: Prefs, write: string[], writeMeta: boolean, first: boolean,
  *   saveBoot: boolean }}
  *   write: ids of profiles to save to IndexedDB; first: this is the move of today's settings into the first profile;
@@ -277,36 +260,37 @@ export function startPlan(o) {
     meta = o.meta;
   if (!profiles.length) {
     // The first visit since profiles arrived (or a new phone): today's settings, upgraded from whichever version
-    // saved them, become the first person (SG), and the other built-in people start with the defaults; the device
-    // settings go to meta. The old key is left as it is, so going back to the previous version still works.
+    // saved them, become the first person, named in the menu language; the device settings go to meta. The old key
+    // is left as it is, so going back to the previous version still works.
     var m = migratePrefs(saved, o.env),
       fam = o.ticks && o.ticks.profiles && o.ticks.profiles.family,
-      made = builtIns(o, [], m.prefs, cleanChecklist(fam));
+      first = newProfile({
+        id: o.id([]),
+        name: o.name(String(m.prefs.ui || "")),
+        colour: COLOURS[0].v,
+        settings: profilePart(m.prefs),
+        checklist: cleanChecklist(fam),
+        now: o.now,
+      });
     return {
-      profiles: made,
+      profiles: [first],
       meta: {
-        activeProfile: made[0].id,
+        activeProfile: first.id,
         device: devicePart(m.prefs),
         since: o.now,
         lastBackup: (meta && meta.lastBackup) || "",
         snooze: "",
         schema: 1,
-        builtIn: 1,
       },
       prefs: m.prefs,
-      write: made.map(function (p) {
-        return p.id;
-      }),
+      write: [first.id],
       writeMeta: true,
       first: true,
       saveBoot: true,
     };
   }
   var m0 = meta || { activeProfile: "", device: {}, since: o.now, lastBackup: "", snooze: "", schema: 1 },
-    // a phone that had people before the built-in ones arrived gets them too, once, after its own
-    added = m0.builtIn ? [] : builtIns(o, profiles, null, null);
-  profiles = profiles.concat(added);
-  var ids = profiles.map(function (p) {
+    ids = profiles.map(function (p) {
       return p.id;
     }),
     // the boot copy names its person (pid); if that person still exists, they are the one reading
@@ -317,9 +301,8 @@ export function startPlan(o) {
     prefs = mine
       ? migratePrefs(Object.assign({}, m0.device, saved), o.env).prefs
       : migratePrefs(Object.assign({}, saved ? pick(saved, m0.device) : m0.device, person.settings, { sv: 6 }), o.env).prefs,
-    write = added.map(function (p) {
-      return p.id;
-    }),
+    /** @type {string[]} */
+    write = [],
     settings = profilePart(prefs),
     device = devicePart(prefs);
   if (JSON.stringify(settings) !== JSON.stringify(person.settings)) {
@@ -327,7 +310,7 @@ export function startPlan(o) {
     profiles[ids.indexOf(active)] = person;
     write.push(active);
   }
-  var meta2 = Object.assign({}, m0, { activeProfile: active, device: device, builtIn: 1 });
+  var meta2 = Object.assign({}, m0, { activeProfile: active, device: device });
   return {
     profiles: profiles,
     meta: meta2,
@@ -337,39 +320,6 @@ export function startPlan(o) {
     first: false,
     saveBoot: !mine,
   };
-}
-
-/**
- * The built-in people missing from a list (by name), as many as there is room for: the first takes the given settings
- * and ticks when there are any, the others the defaults.
- * @param {{ env: Env, now: string, id: (taken: Profile[]) => string, routine?: any }} o
- * @param {Profile[]} list
- * @param {Prefs | null} prefs
- * @param {Checklist | null} checklist
- * @returns {Profile[]}
- */
-function builtIns(o, list, prefs, checklist) {
-  /** @type {Profile[]} */
-  var made = [];
-  BUILT_IN.forEach(function (b) {
-    var all = list.concat(made);
-    if (nameProblem(b.name, all) || !canAdd(all)) return;
-    var first = made.length ? null : prefs;
-    made.push(
-      newProfile({
-        id: o.id(all),
-        name: b.name,
-        // both letters on the badge (from a one-word name it would be one)
-        initials: b.name,
-        colour: b.colour,
-        settings: profilePart(first || defaults(o.env)),
-        checklist: first ? checklist : null,
-        routine: b.routine(o.routine),
-        now: o.now,
-      }),
-    );
-  });
-  return made;
 }
 
 /**

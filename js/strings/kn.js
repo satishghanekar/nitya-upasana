@@ -97,6 +97,7 @@ export default {
       return n + " ಅವರನ್ನು ಅಳಿಸಲಾಗಿದೆ";
     },
     chip: "ಪ್ರೊಫೈಲ್: ",
+    me: "ನಾನು",
   },
   // The Library by category and the categories sheet (js/features/library.js)
   library: {
@@ -189,6 +190,18 @@ export default {
       return n + " ದಿನಗಳ ಹಿಂದೆ";
     },
   },
+  welcome: {
+    title: "ನಿತ್ಯ ಉಪಾಸನಾಗೆ ಸ್ವಾಗತ",
+    name: "ನಿಮ್ಮ ಹೆಸರು",
+    routine: "ನಿಮ್ಮ ದಿನಚರಿ",
+    start: "ಪ್ರಾರಂಭಿಸಿ",
+    later: "ನಂತರ",
+    hint: "ಇವನ್ನು ಯಾವಾಗ ಬೇಕಾದರೂ ಬದಲಿಸಬಹುದು: ಮೇಲಿನ ಬ್ಯಾಡ್ಜ್ ಒತ್ತಿ, ಅಥವಾ ಸಮಯದ ಪಕ್ಕದಲ್ಲಿ ಬದಲಿಸಿ.",
+    /** @param {string} n */
+    done: function (n) {
+      return "ಸ್ವಾಗತ, " + n;
+    },
+  },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
     /** @param {string} n */
@@ -269,6 +282,50 @@ export default {
       return d + ": ಈ ಪಟ್ಟಿಯನ್ನು ಪ್ರತಿದಿನ ಬಳಸುವುದೇ? ಇತರ ದಿನಗಳ ಸ್ವಂತ ಪಟ್ಟಿಗಳು ತೆಗೆದುಹಾಕಲ್ಪಡುತ್ತವೆ.";
     },
     fixGo: "ಪ್ರತಿದಿನ ಬಳಸಿ",
+    bases: { short: "ಸಂಕ್ಷಿಪ್ತ", daily: "ದೈನಿಕ", full: "ಪೂರ್ಣ", extended: "ವಿಸ್ತೃತ" },
+    baseG: "ಸಿದ್ಧ ದಿನಚರಿ",
+    baseInfo: {
+      short: "ಬೆಳಿಗ್ಗೆ ಅಥರ್ವಶೀರ್ಷ ಮತ್ತು ದಿನನಿತ್ಯದ ಆರತಿಗಳು, ಸಂಜೆ ಆರತಿಗಳು",
+      daily: "ಬೆಳಿಗ್ಗೆ ಅಥರ್ವಶೀರ್ಷ, ಪುರುಷಸೂಕ್ತ, ಶ್ರೀಸೂಕ್ತ ಮತ್ತು ಆ ದಿನದ ಆರತಿಗಳು, ಸಂಜೆ ಆ ದಿನದ ಆರತಿಗಳು",
+      full: "ದೈನಿಕ, ಜೊತೆಗೆ ಪ್ರತಿ ದಿನದ ಅಷ್ಟಕಗಳು ಮತ್ತು ಸ್ತೋತ್ರಗಳು",
+      extended: "ಪೂರ್ಣ, ಜೊತೆಗೆ ಲಘುನ್ಯಾಸ, ಶ್ರೀರುದ್ರ, ದುರ್ಗಾಸೂಕ್ತ ಮತ್ತು ದೀರ್ಘ ಸ್ತೋತ್ರಗಳು",
+    },
+    /** @param {number} a @param {number} b */
+    perDay: function (a, b) {
+      return "ದಿನಕ್ಕೆ " + (a === b ? a : a + "–" + b) + " ಪಠ್ಯಗಳು";
+    },
+    /** @param {string} b */
+    follow: function (b) {
+      return "ನೀವು " + b + " ಅನುಸರಿಸುತ್ತೀರಿ. ಅದಕ್ಕೆ ಮುಂದೆ ಸೇರಿಸುವ ಪಠ್ಯಗಳು ನಿಮಗೂ ಬರುತ್ತವೆ.";
+    },
+    /** @param {string} b */
+    own: function (b) {
+      return b + " ಇಂದ ಮಾಡಿದ ನಿಮ್ಮದೇ ದಿನಚರಿ. ನೀವು ಮಾಡಿದಂತೆಯೇ ಉಳಿಯುತ್ತದೆ.";
+    },
+    /** @param {string} b */
+    goBack: function (b) {
+      return "ಮತ್ತೆ " + b + " ಬಳಸಿ";
+    },
+    /** @param {string} b */
+    replaceAsk: function (b) {
+      return "ನಿಮ್ಮ ದಿನಚರಿಯ ಬದಲು " + b + " ಬಳಸಬೇಕೆ? ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಹೋಗುತ್ತವೆ.";
+    },
+    /** @param {string} b */
+    use: function (b) {
+      return b + " ಬಳಸಿ";
+    },
+    /** @param {string} b */
+    now: function (b) {
+      return "ಈಗ " + b + " ದಿನಚರಿ";
+    },
+    /** Settings → Routine: the one followed @param {string} b */
+    setting: function (b) {
+      return b;
+    },
+    /** Settings → Routine: their own, and which it came from @param {string} b */
+    ownSetting: function (b) {
+      return "ನಿಮ್ಮದೇ, " + b + " ಇಂದ";
+    },
   },
   // The print builder's What step: Texts, Today, Routine (js/print/what.js)
   printWhat: {
@@ -281,7 +338,7 @@ export default {
     texts: texts,
     pick: "ಕನಿಷ್ಠ ಒಂದು ಪಠ್ಯವನ್ನು ಆರಿಸಿ",
     tabs: { texts: "ಸಂಗ್ರಹ", routine: "ದಿನಚರಿ" },
-    who: "ಯಾರ ದಿನಚರಿ",
+    who: "ದಿನಚರಿ",
     when: "ಯಾವಾಗ",
     /** The day Home shows, when it is today @param {string} d the weekday */
     today: function (d) {
@@ -367,7 +424,7 @@ export default {
     uNone: "ಈ ದಿನಗಳಲ್ಲಿ ಏನೂ ಗುರುತಿಸಿಲ್ಲ.",
     kinds: { fest: "ಹಬ್ಬಗಳು", sk: "ಸಂಕಷ್ಟಿ", pradosh: "ಪ್ರದೋಷ", hol: "ರಜಾದಿನಗಳು" },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
-    holHome: "ಮುಂದಿನ ದಿನಗಳಲ್ಲಿ ರಜಾದಿನಗಳು",
+    holHome: "ರಜಾದಿನಗಳನ್ನು ತೋರಿಸಿ",
     groups: { us: "ಅಮೆರಿಕ", in: "ಭಾರತ", mh: "ಮಹಾರಾಷ್ಟ್ರ", ka: "ಕರ್ನಾಟಕ" },
   },
   // The top bar (js/features/bars.js)

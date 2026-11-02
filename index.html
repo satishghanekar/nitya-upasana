@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.39.3">
+<meta name="version" content="aarti-v1.40.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -125,6 +125,7 @@
 <link rel="modulepreload" href="js/features/backup.js">
 <link rel="modulepreload" href="js/features/text-picker.js">
 <link rel="modulepreload" href="js/features/routine-builder.js">
+<link rel="modulepreload" href="js/features/welcome.js">
 </head>
 
 <body>
@@ -324,15 +325,13 @@
               <button type="button" data-v="60">60</button>
             </div>
           </div>
-          <!-- the public holidays Home's Coming up shows, each person's (P.hol; js/features/vedic-calendar.js): any of
-               the groups of content/holidays.json, none at first -->
+          <!-- the public holidays Home's Coming up shows, each person's (P.hol; js/features/vedic-calendar.js): the US's
+               and India's, both at first (the states' are in the calendar only) -->
           <div class="sp-row sp-stk" id="shrow">
-            <span class="sp-l"><span id="shl" data-w="calendar.holHome">Holidays in Coming up</span></span>
+            <span class="sp-l"><span id="shl" data-w="calendar.holHome">Show holidays from</span></span>
             <div class="sp-seg" id="shol" role="group" aria-labelledby="shl">
               <button type="button" data-v="us" aria-pressed="false"><span data-w="calendar.groups.us">US</span></button>
               <button type="button" data-v="in" aria-pressed="false"><span data-w="calendar.groups.in">India</span></button>
-              <button type="button" data-v="mh" aria-pressed="false"><span data-w="calendar.groups.mh">Maharashtra</span></button>
-              <button type="button" data-v="ka" aria-pressed="false"><span data-w="calendar.groups.ka">Karnataka</span></button>
             </div>
           </div>
         </div>
@@ -345,7 +344,7 @@
           <p class="sp-row sp-warn" id="stw2" hidden><span class="sp-l"><span data-w="page.thisBrowserCanTSave">This browser can't save here. Use Save a backup file before closing.</span></span></p>
           <button type="button" class="sp-row sp-go" id="spf"><span class="sp-l"><span data-w="page.whoIsReading">Who is reading</span></span><span class="sp-v" id="spfv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
           <!-- the reading person's routine: the routine builder (#rtb, js/features/routine-builder.js) -->
-          <button type="button" class="sp-row sp-go" id="sprt" aria-haspopup="dialog" aria-controls="rtb"><span class="sp-l"><span data-w="page.routine">Routine</span><small><span data-w="page.theTextsForEachSession">The texts for each session, in order</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button type="button" class="sp-row sp-go" id="sprt" aria-haspopup="dialog" aria-controls="rtb"><span class="sp-l"><span data-w="page.routine">Routine</span><small><span data-w="page.theTextsForEachSession">The texts for each session, in order</span></small></span><span class="sp-v" id="sprtv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
           <button type="button" class="sp-row sp-go" id="bks"><span class="sp-l"><span data-w="page.saveABackupFile">Save a backup file</span><small id="bksv"></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
           <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span data-w="page.restoreFromAFile">Restore from a file</span><small><span data-w="page.aNityaFileSavedBefore">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
         </div>
@@ -393,7 +392,8 @@
 </div>
 <!-- ==== Routine builder (js/features/routine-builder.js; Satish chose design A, "List per day", 2026-10-19): opened by
      Edit beside the session on Home, Add texts in an empty session, and Settings → Routine. Like the Library: under the
-     top bar, over the page, with Back (or the phone's Back, or Escape). The reading person's routine: the session
+     top bar, over the page, with Back (or the phone's Back, or Escape). The reading person's routine: the ready-made
+     routine followed (below), the session
      (Morning / Afternoon / Evening), the same every day or different by weekday (then a day row and Copy to other
      days…), the list with ↑ ↓ ✕ (and Alt+↑/↓, Delete; drag by the grip), and Add texts: the picker (#tpk,
      js/features/text-picker.js), beside the list on wide screens, a sheet on phones. Words written in by the script. ==== -->
@@ -404,6 +404,13 @@
     <button type="button" id="rbk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span data-w="page.back">Back</span></button>
     <h2 id="rtbt"><span class="pfa" id="rtba" aria-hidden="true"></span><span id="rtbn"></span></h2>
   </div>
+  <!-- The ready-made routines (content/routines.json; Satish, 2026-11-02): Short, Daily, Full, Extended, the one followed
+       (or made theirs from) checked; what it holds and how many texts a day; followed, or their own with Go back. One
+       chosen over their own routine asks first, as Same every day does -->
+  <div id="rtbs" class="rtseg" role="radiogroup"></div>
+  <p id="rtbi"></p>
+  <div class="rtcp" id="rtbo"><span id="rtbst"></span><button type="button" id="rtbk" hidden></button></div>
+  <div id="rtrp" role="group" aria-labelledby="rtrpt" hidden><p id="rtrpt"></p><div class="rtcpbs"><button type="button" id="rtrpo" class="pri"></button><button type="button" id="rtrpx"></button></div></div>
   <div id="rtss" class="rtseg" role="radiogroup"></div>
   <div id="rtmd" class="rtseg" role="radiogroup"></div>
   <!-- Same every day chosen while the weekdays' lists differ: asked first, as the other days' lists go -->
@@ -435,6 +442,17 @@
            with Today under them on another day (js/features/today-card.js) -->
       <p id="tdd"><span id="tdn"><button type="button" id="tdp" class="tdnb" aria-label="Previous day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" id="tdx" class="tdnb" aria-label="Next day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><button type="button" id="tdt" class="off"></button></span><span class="d1" lang="mr"></span><span class="d2" lang="en"><span class="d2t"></span><span class="dsep" aria-hidden="true"> · </span><span id="tdr"></span></span></p>
     </div>
+    <!-- Welcome (js/features/welcome.js; Satish, 2026-11-02): once, on a new phone's Home, never in the way (Home shows
+         under it): the first person's name and their ready-made routine (Short, Daily, Full, Extended; the lists below
+         follow the one picked), then Start, or Later (twice at most). Not when the site opens at a text (a shared link).
+         Words written in by the script -->
+    <form id="wlc" class="pfw" aria-labelledby="wlct" novalidate hidden>
+      <h2 id="wlct"></h2>
+      <label class="wlcf" for="wlcn"><span id="wlcnl"></span><input id="wlcn" type="text" maxlength="24" autocomplete="name" autocapitalize="words" spellcheck="false"></label>
+      <div id="wlcr"><span id="wlcrl"></span><div id="wlcb" class="rtseg" role="radiogroup" aria-labelledby="wlcrl"></div><p id="wlci"></p></div>
+      <div class="pfwb"><button type="submit" id="wlcs"></button><button type="button" id="wlcx"></button></div>
+      <p id="wlch"></p>
+    </form>
     <!-- The Vedic calendar card (js/features/vedic-calendar.js): the day's month, paksha and tithi, nakshatra, Shaka year
          and samvatsara, sunrise, sunset and the place; a tap opens the calendar page (#cal) -->
     <div id="pan" hidden></div>
@@ -627,13 +645,14 @@
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
                 <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the card under the date gives the day's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home's calendar card takes its colour, with its drawing). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Reading → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
-        <li><b>Coming up:</b> at the bottom of the Vedic calendar card, the next festivals, Pradosh and Sankashti from the day shown (three on a phone, five on a tablet or computer), each with its own small drawing: a kite for Sankranti, the gudi, the aapta leaves for Dasara, the moon and the milk for Kojagiri, a phuljhadi, Lakshmi's lotus, Bali's crown and the aarti thali for the four days of Diwali, the moon for Sankashti, the linga for Pradosh, and each saint's own for their days. Pradosh gives that evening's sunset and Sankashti its moonrise. The public holidays you choose in Settings (Screen: <b>Holidays in Coming up</b>: US, India, Maharashtra, Karnataka) show with their flag. Tap one to see its day in the calendar, or <b>Next 15 days</b> for the calendar's <b>15 days</b> tab. Tap <b>Coming up</b> to fold it to one line, the first of them; it stays folded for you until you open it again. On the day of a festival, Pradosh, Sankashti or a holiday you chose, the calendar card takes its colour, with its drawing after the tithi. The calendar has three tabs, <b>Day</b>, <b>15 days</b> and <b>Month</b>, each with ‹ ›; a day tapped in the month or the 15 days opens on Day, and Back returns.</li>
+        <li><b>Coming up:</b> at the bottom of the Vedic calendar card, the next festivals, Pradosh and Sankashti from the day shown (three on a phone, five on a tablet or computer), each with its own small drawing: a kite for Sankranti, the gudi, the aapta leaves for Dasara, the moon and the milk for Kojagiri, a phuljhadi, Lakshmi's lotus, Bali's crown and the aarti thali for the four days of Diwali, the moon for Sankashti, the linga for Pradosh, and each saint's own for their days. Pradosh gives that evening's sunset and Sankashti its moonrise. The US's and India's public holidays show with their flag (on the day of a festival, under its name); turn either off in Settings (Screen: <b>Show holidays from</b>). Maharashtra's and Karnataka's are in the calendar. Tap one to see its day in the calendar, or <b>Next 15 days</b> for the calendar's <b>15 days</b> tab. Tap <b>Coming up</b> to fold it to one line, the first of them; it stays folded for you until you open it again. On the day of a festival, Pradosh, Sankashti or a holiday you chose, the calendar card takes its colour, with its drawing after the tithi. The calendar has three tabs, <b>Day</b>, <b>15 days</b> and <b>Month</b>, each with ‹ ›; a day tapped in the month or the 15 days opens on Day, and Back returns.</li>
         <li><b>The place</b> is your phone's time zone until you tap the place, with its <b>pin</b>, on the Vedic calendar card on Home, which uses your phone's location (and keeps it up to date each time you open the app, while your phone allows it); the town is worked out on the phone and your location is never sent anywhere. Sunrise, sunset and moonrise are for that place.</li>
       </ul>
 
       <h3>Your routine</h3>
       <p>Each person chooses their own texts for each session, and their order. Tap <b>Edit</b> beside the session on Home (or Settings → More → Profiles and backup → <b>Routine</b>; <b>Add texts</b> when a session is empty).</p>
       <ul>
+        <li>There are four ready-made routines: <b>Short</b> (the Ganapati Atharvashirsha and the everyday aartis in the morning, the aartis in the evening), <b>Daily</b> (the Atharvashirsha, Purusha Suktam and Shri Sukta and the day's aartis), <b>Full</b> (Daily with the ashtaks and stotras) and <b>Extended</b> (with the longer Vedic chants and stotras as well). A new person starts on Short, and gets any texts added to it later. Choose another at the top of the routine page (Edit beside a session on Home, or Settings → More → <b>Routine</b>); each says what it holds and how many texts a day. Your first change makes the routine your own: it stays as you made it, and <b>Go back</b> (or choosing another) asks first, as your changes would be removed.</li>
         <li>Pick <b>Morning</b>, <b>Afternoon</b> or <b>Evening</b> at the top. <b>Same every day</b> keeps one list; <b>Different by weekday</b> gives each day its own, with a row of days (this week's dates) to choose which day you are changing. <b>Copy to other days…</b> gives the day's list to the days you tick.</li>
         <li><b>↑</b> and <b>↓</b> move a text, <b>✕</b> removes it. With a keyboard, Alt+↑ and Alt+↓ move the text whose button has focus, and Delete removes it. You can also drag a text by its dotted handle. Each change is read out by screen readers ("घालीन लोटांगण moved to 3 of 5").</li>
         <li><b>Add texts</b> lists every text, with a search box: tick one to add it at the end, untick it to remove it. On a computer the list is beside yours; on a phone or tablet it slides up, and <b>Done</b> (or Back) closes it.</li>
@@ -682,7 +701,7 @@
         <li><b>Add a person:</b> give a name; the badge letters come from the name (or type up to four), and pick a colour. There is room for eight.</li>
         <li><b>Edit</b> beside a name: rename, change the letters or the colour, or <b>Delete this person</b> (it asks first). The last person can't be deleted.</li>
         <li>The same list opens from Settings → More → <b>Who is reading</b>.</li>
-        <li><b>SG and RG</b> are on every phone from the start: SG reads first, with this phone's settings; RG starts with the usual settings and a routine of their own (the Lalita Sahasranama first every morning). After that they are like anyone else: rename, change or delete them. One deleted does not come back.</li>
+        <li>A new phone starts with one person, <b>Me</b> (in the language of the menus). A welcome card at the top of Home asks your name and which routine to follow (Short, Daily, Full or Extended; the texts below change as you pick); <b>Start</b> keeps them, <b>Later</b> asks again next time. You can also give your name with <b>Edit</b> here.</li>
       </ul>
 
       <h3>Backup</h3>
@@ -695,7 +714,7 @@
       </ul>
 
       <h3>Settings</h3>
-      <p>On a phone, Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages and which to show, text size, font and the dhrupad; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on, and the holidays in Coming up) and <b>More</b> (Profiles and backup, and About). It opens on Reading each time; on a phone held sideways the preview stays on the left while the choices scroll beside it. On an iPad or a computer there are no tabs: every group shows at once in two columns, the preview and the reading choices on the left, Screen, Profiles and backup and About on the right. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
+      <p>On a phone, Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages and which to show, text size, font and the dhrupad; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on, and <b>Show holidays from</b> US and India for Coming up) and <b>More</b> (Profiles and backup, and About). It opens on Reading each time; on a phone held sideways the preview stays on the left while the choices scroll beside it. On an iPad or a computer there are no tabs: every group shows at once in two columns, the preview and the reading choices on the left, Screen, Profiles and backup and About on the right. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
       <ul>
         <li><b>Main language:</b> the language you read in, in large text: <span lang="mr">मराठी</span> (the text as written), English (in English letters) or the same words in Kannada, Telugu or Gujarati letters (<span lang="kn">ಕನ್ನಡ</span>, <span lang="te">తెలుగు</span>, <span lang="gu">ગુજરાતી</span>). Tap it to pick from a list; English is there twice, once for each spelling (see English spelling below). With Kannada, Telugu or Gujarati letters the second language can be English or None.</li>
         <li><b>Second language:</b> shown smaller, under each line, when Show (below it, or Language under <b>Aa</b> in the bottom bar) is set to both. Pick the other language, or <b>None</b> to read in one language only. Picking your second language as the main one swaps the two.</li>
@@ -714,18 +733,19 @@
         <li><b>Layout</b> (wide screens only): one or two columns of stanzas.</li>
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b>: a switch; tap to turn it on or off.</li>
+        <li><b>Show holidays from</b> (US, India): the public holidays in Coming up on Home, both on at first. Maharashtra's and Karnataka's are in the calendar.</li>
         <li><b>Keep screen on</b>: Off, 15, 30, 45 or 60 minutes after your last touch, key or scroll; after that the phone dims and locks as usual, so a phone left on its stand does not run its battery down. It starts at 30 on phones and tablets and Off on computers.</li>
-        <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Routine</b> (see Your routine above), <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
+        <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Routine</b> (the ready-made routine you follow, or your own; see Your routine above), <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
         <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and the version, with whether the site is saved for offline use under it (a green dot: Offline ready); the round button beside it checks for updates (see Good to know below).</li>
       </ul>
 
       <h3>Print</h3>
       <p><b>Print</b> (the printer in the top bar) makes a printout or a PDF in two steps. On a phone they come one after the other (<b>Next</b>, and <b>‹ What to print</b> to go back); on an iPad or a computer they sit side by side. The bar at the bottom keeps the total ("5 texts").</p>
       <ul>
-        <li><b>What to print:</b> the <b>Library</b> tab has every text by category, each with a tick, a search box, and <b>Select all</b> or <b>Clear</b> for a category or for everything. The <b>Routine</b> tab prints from a routine with three choices: <b>Whose routine</b> (yours at first, when more than one person reads on this phone), <b>When</b> (today, or the day Home shows; the <b>Whole week</b>; or any other day) and the session: <b>All</b>, <b>Morning</b>, <b>Afternoon</b> or <b>Evening</b>, each with how many texts it has (one without any is greyed). One day prints in the order Home shows it, under the day and the session ("Tuesday · Evening"). The whole week prints each text once, in routine order, with when it is said ("Daily · Morning, Evening"), after a first page with the week at a glance. The tab on show is what prints.</li>
+        <li><b>What to print:</b> the <b>Library</b> tab has every text by category, each with a tick, a search box, and <b>Select all</b> or <b>Clear</b> for a category or for everything. The <b>Routine</b> tab prints from a routine with three choices: <b>Routine</b> (yours, under your name: your own or the ready-made one you follow; or Short, Daily, Full or Extended, to print one for someone without the app; to print another person's, switch to them first with the badge), <b>When</b> (today, or the day Home shows; the <b>Whole week</b>; or any other day) and the session: <b>All</b>, <b>Morning</b>, <b>Afternoon</b> or <b>Evening</b>, each with how many texts it has (one without any is greyed). One day prints in the order Home shows it, under the day and the session ("Tuesday · Evening"). The whole week prints each text once, in routine order, with when it is said ("Daily · Morning, Evening"), after a first page with the week at a glance. The tab on show is what prints.</li>
         <li><b>Print</b> opens with the session you are reading chosen on the <b>Routine</b> tab, at What to print (so another session is a tap away); on Home, the session Home shows, on the day it shows; else the text on screen, at How to print. The <b>Library</b> tab picks any other texts.</li>
         <li><b>How to print:</b> the <b>Language</b> (the original, English, or Both), the <b>Dhrupad</b> (Once or Every verse), the <b>Page</b> (Portrait or Landscape; Both always prints side by side on Landscape) and the <b>Print font</b>: the same three as Text font (Traditional, Modern or Bold). These start as you read, are remembered for your next printout, and leave the reading page as it is. Then tap <b>Print</b>.</li>
-        <li><b>Printing best:</b> a small star and a gold ring mark the choices that take the fewest pages: Dhrupad <b>Once</b>, and <b>Portrait</b> for one language; they also mark <b>Traditional</b>, the book-style font that prints best. Under Dhrupad and Page a line says what your choice gives, and for the other choice about how many pages more it takes. The bar at the bottom says about how many pages the printout takes (as Chrome prints it). The fonts make almost no difference to the pages.</li>
+        <li><b>Printing best:</b> a small star and a gold ring mark the choices that take the fewest pages: Dhrupad <b>Once</b>, and <b>Portrait</b> for one language; they also mark <b>Traditional</b>, the book-style font that prints best. Under Dhrupad and Page a line says what your choice gives, and for the other choice about how many pages more it takes. The bar at the bottom says about how many pages the printout takes (as Chrome prints it); on a phone it shows with How to print, as the language, page and font change it. The fonts make almost no difference to the pages.</li>
         <li><b>Preview and paper:</b> beside these, a small picture shows the first page as it will print. Under it is the paper: Letter in the US, Canada, Mexico and the Philippines, A4 elsewhere; tap <b>Use A4</b> or <b>Use Letter</b> to change it (in Safari, pick the same paper in its print dialog too).</li>
         <li><b>The printout:</b> each text starts on a new page. In one language an aarti or ashtak is centred on the page, its stanzas in one column, and the Vedic chants run on as paragraphs; with both languages, every line sits beside its English. A stanza is never split between pages. More than one text gets a contents page listing them, numbered 1, 2, 3… in each section as printed (without page numbers: the browser decides where the pages break). A routine's first page has your name and the month, the week at a glance (each day's texts by their numbers) and the contents, and each text's title has a small line saying when it is said.</li>
         <li><b>Safari:</b> for Landscape, also choose Landscape in Safari's print dialog, or the printout comes out small. Safari prints a little smaller than Chrome, often a page fewer, and without page numbers. In Safari on a Mac, and in Firefox, Chrome prints it best, with page numbers. On an iPhone, if it asks, tap <b>Ready: Print now</b>. The Home Screen app on an iPhone can't print, so <b>Print</b> there opens Safari, with your choices, ready to print. If Safari doesn't open, tap <b>Open in Safari</b> (or <b>Copy link</b> and paste it into Safari).</li>
