@@ -256,11 +256,13 @@ export function fileName(d) {
 
 /**
  * Whether to show the gentle reminder: no backup for REMIND_DAYS (or, never saved, FIRST_REMIND_DAYS after the first
- * person was made), and not put off with "Not now" in the last SNOOZE_DAYS.
+ * person was made, or at once when someone has made a routine their own: deleting the app would lose it, Satish,
+ * 2026-11-02), and not put off with "Not now" in the last SNOOZE_DAYS.
  * @param {{ since?: string, lastBackup?: string, snooze?: string }} meta
  * @param {Date} now
+ * @param {boolean} [own]  someone on this phone has their own routine
  */
-export function needsReminder(meta, now) {
+export function needsReminder(meta, now, own) {
   var day = 86400000,
     t = now.getTime(),
     at = function (/** @type {string | undefined} */ s) {
@@ -272,6 +274,7 @@ export function needsReminder(meta, now) {
     since = at(meta.since);
   if (!isNaN(snooze) && t - snooze < SNOOZE_DAYS * day) return false;
   if (!isNaN(last)) return t - last >= REMIND_DAYS * day;
+  if (own) return true;
   if (!isNaN(since)) return t - since >= FIRST_REMIND_DAYS * day;
   return false;
 }

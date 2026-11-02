@@ -28,7 +28,7 @@
   border-radius: 8px;
   background: none;
   color: var(--accent);
-  font: 600 15px/1.2 var(--lat);
+  font: 600 var(--fz-m)/1.2 var(--lat);
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
@@ -78,7 +78,7 @@
   padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   background: var(--bg);
   color: var(--ink);
-  font: 400 15px/1.45 var(--lat);
+  font: 400 var(--fz-m)/1.45 var(--lat);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -118,7 +118,7 @@
   border-radius: 10px;
   background: none;
   color: var(--accent);
-  font: 600 17px/1.2 var(--lat);
+  font: 600 var(--fz-l)/1.2 var(--lat);
   cursor: pointer;
 }
 #rtb .libhd[data-lang="mr"] #rbk {
@@ -136,11 +136,11 @@
   min-width: 0;
   margin: 0;
   color: var(--ink);
-  font: 650 20px/1.3 var(--lat);
+  font: 650 var(--fz-xl)/1.3 var(--lat);
   outline: none;
 }
 #rtb[lang="mr"] #rtbt {
-  font: 600 20px/1.35 var(--body);
+  font: 600 var(--fz-xl)/1.35 var(--body);
 }
 #rtbt:focus-visible {
   outline: 2px solid var(--ink);
@@ -176,7 +176,7 @@
   border-radius: 10px;
   background: none;
   color: var(--muted);
-  font: 500 14.5px/1.25 var(--lat);
+  font: 500 var(--fz-m)/1.25 var(--lat);
   text-align: center;
   cursor: pointer;
 }
@@ -214,7 +214,7 @@
   border-radius: 12px;
   background: var(--bg);
   color: var(--muted);
-  font: 400 12.5px/1.2 var(--lat);
+  font: 400 var(--fz-s)/1.2 var(--lat);
   cursor: pointer;
 }
 #rtb[lang="mr"] #rtwk button {
@@ -222,7 +222,7 @@
 }
 #rtwk button b {
   color: var(--ink);
-  font: 600 17px/1.2 var(--lat);
+  font: 600 var(--fz-l)/1.2 var(--lat);
 }
 #rtwk button.today .rtwd {
   text-decoration: underline;
@@ -245,7 +245,7 @@
   justify-content: space-between;
   gap: 0 8px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--fz-m);
 }
 #rtcpb {
   min-height: 44px;
@@ -256,7 +256,7 @@
   border-radius: 8px;
   background: none;
   color: var(--accent);
-  font: 600 14.5px/1.2 var(--lat);
+  font: 600 var(--fz-m)/1.2 var(--lat);
   cursor: pointer;
 }
 #rtb[lang="mr"] #rtcpb {
@@ -319,7 +319,7 @@
   border-radius: 12px;
   background: var(--bg);
   color: var(--ink);
-  font: 600 15px/1.2 var(--lat);
+  font: 600 var(--fz-m)/1.2 var(--lat);
   cursor: pointer;
 }
 .rtcpbs button.pri {
@@ -386,13 +386,13 @@
   min-width: 0;
 }
 #rtl .tt .t1 {
-  font-size: 18px;
+  font-size: var(--fz-l);
   line-height: 24px;
 }
 #rtl .tt .t1[lang="en"],
 #tpk .tt .t1[lang="en"] {
   font-family: var(--lat);
-  font-size: 16px;
+  font-size: var(--fz-l);
   line-height: 22px;
 }
 .rtbs {
@@ -435,7 +435,7 @@
 #rtnote {
   margin: -4px 0 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--fz-s);
   text-align: center;
 }
 #rtlive:not(:empty)::after {
@@ -455,7 +455,7 @@
   border-radius: 14px;
   background: var(--hdrt);
   color: var(--ink);
-  font: 600 16px/1.2 var(--lat);
+  font: 600 var(--fz-l)/1.2 var(--lat);
   cursor: pointer;
 }
 #rtb[lang="mr"] #rtadd {
@@ -509,7 +509,7 @@
 #tpkt {
   margin: 0;
   color: var(--muted);
-  font: 600 13px/1.3 var(--lat);
+  font: 600 var(--fz-s)/1.3 var(--lat);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   outline: none;
@@ -532,7 +532,7 @@
   border-radius: 12px;
   background: var(--accent);
   color: var(--bg);
-  font: 650 15px/1.2 var(--lat);
+  font: 650 var(--fz-m)/1.2 var(--lat);
   cursor: pointer;
 }
 #tpk[lang="mr"] .tpkx {
@@ -551,7 +551,7 @@
   border-radius: 12px;
   background: var(--bg);
   color: var(--ink);
-  font: 400 16px/1.2 var(--lat);
+  font: 400 var(--fz-l)/1.2 var(--lat);
 }
 .tpkq::placeholder {
   color: var(--muted);
@@ -614,13 +614,13 @@
 }
 #tpk .tt .t1 {
   display: block;
-  font: 400 17px/23px var(--head);
+  font: 400 var(--fz-l)/23px var(--head);
   overflow-wrap: anywhere;
 }
 #tpk .tt .t2 {
   display: block;
   color: var(--muted);
-  font: 400 12.5px/17px var(--lat);
+  font: 400 var(--fz-s)/17px var(--lat);
 }
 #tpk[lang="mr"] .ttg {
   font-family: var(--body);
@@ -662,7 +662,7 @@
 #rtbi {
   margin: 0;
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--fz-m);
 }
 #rtbst {
   flex: 1 1 14em;
@@ -677,7 +677,7 @@
   border-radius: 8px;
   background: none;
   color: var(--accent);
-  font: 600 14.5px/1.2 var(--lat);
+  font: 600 var(--fz-m)/1.2 var(--lat);
   cursor: pointer;
 }
 #rtb[lang="mr"] #rtbk {

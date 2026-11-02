@@ -412,6 +412,33 @@ test("the backup reminder: 14 days after the first visit, Not now puts it off, a
   await expect(page.locator("#bkn")).toBeHidden();
 });
 
+// A routine made one's own lives only on this phone: Home's reminder comes at once, in its own words, when no backup was
+// ever saved (Satish, 2026-11-02); Not now and a backup work as before
+test("the backup reminder comes at once when someone first makes a routine their own @mobile", async ({ page }) => {
+  await noShare(page);
+  await openSite(page, SETUPS.english);
+  await expect(page.locator("#bkn")).toBeHidden();
+  await page.locator("#tsed").click();
+  await page.locator('#rtl li button[data-a="rm"]').first().click();
+  await page.locator("#rbk").click();
+  await expect(page.locator("#bkn")).toBeVisible();
+  await expect(page.locator("#bknt")).toHaveText(
+    "Your routine is now your own, and it is kept only on this phone. Save a backup file so it is not lost if the app is deleted or the phone clears website data.",
+  );
+  await Promise.all([page.waitForEvent("download"), page.locator("#bkns").click()]);
+  await expect(page.locator("#bkn")).toBeHidden();
+  // (once the backup's date is written, and the routine of their own with it)
+  await expect
+    .poll(async () => {
+      const d = await idb(page);
+      return !!d.meta.lastBackup && d.profiles.some((p) => !!p.routine);
+    })
+    .toBe(true);
+  await page.reload();
+  await settle(page);
+  await expect(page.locator("#bkn")).toBeHidden();
+});
+
 test("keyboard: the sheet takes focus, Tab stays inside, Escape steps back and returns focus to the chip", async ({ page, browserName }) => {
   test.skip(browserName === "webkit", "Safari's default Tab skips buttons");
   await openSite(page, SETUPS.marathi);

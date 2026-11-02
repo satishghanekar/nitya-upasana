@@ -5,8 +5,11 @@
 // desktops and 2K / 4K monitors.
 // Recorded in Chromium; the site's fonts are its own files, so shots are the same on any Linux machine.
 import { test, expect } from "@playwright/test";
-import { openSite, settle, SETUPS, readText, tapMore, openPrintBuilder } from "./helpers.mjs";
+import { openSite, settle, SETUPS, readText, tapMore, openPrintBuilder, MAC_SKIPS_PIXELS } from "./helpers.mjs";
 import { printFromButton } from "./print-helpers.mjs";
+
+// (on a Mac these pictures can't match, as its text is drawn a little differently: left to CI, MAC_SKIPS_PIXELS)
+test.skip(MAC_SKIPS_PIXELS, "a Mac draws text a little differently from Linux: these pictures are checked on CI");
 
 const SIZES = {
   phone: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },

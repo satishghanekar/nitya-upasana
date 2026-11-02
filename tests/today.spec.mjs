@@ -688,7 +688,7 @@ test("the date opens the calendar at the day Home shows; ‹ › do not open it"
   await expect(page.locator("#cal")).toBeHidden();
   await page.locator("#tdd .d1").click();
   await expect(page.locator("#cal")).toBeVisible();
-  await expect(page.locator("#cal")).toContainText("Friday, 16 October 2026");
+  await expect(page.locator("#cald .dnh")).toHaveText("Friday, 16 October 2026 · Tomorrow", { useInnerText: true });
 });
 
 test("‹ › go no further than a year from today", async ({ page }) => {

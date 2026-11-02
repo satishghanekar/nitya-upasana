@@ -65,7 +65,10 @@ const N = {
   angaraki: { mr: "अंगारकी", en: "Angaraki" },
   angSk: { mr: "अंगारकी संकष्टी", en: "Angaraki Sankashti" },
   skFull: { mr: "संकष्टी चतुर्थी", en: "Sankashti Chaturthi" },
-  angSkFull: { mr: "अंगारकी संकष्टी चतुर्थी", en: "Angaraki Sankashti Chaturthi" },
+  angSkFull: {
+    mr: "अंगारकी संकष्टी चतुर्थी",
+    en: "Angaraki Sankashti Chaturthi",
+  },
   festival: { mr: "सण", en: "Festival", ia: "Festival" },
   holiday: { mr: "सुट्टी", en: "Holiday", ia: "Holiday" },
 };
@@ -164,7 +167,11 @@ function cat(sep, ns) {
 }
 /** "Shaka 1948", Devanagari digits in Marathi @param {number} y @returns {Name} */
 function shaka(y) {
-  return { mr: "शके\u00a0" + dv(y), en: "Shaka\u00a0" + y, ia: "Śaka\u00a0" + y };
+  return {
+    mr: "शके\u00a0" + dv(y),
+    en: "Shaka\u00a0" + y,
+    ia: "Śaka\u00a0" + y,
+  };
 }
 // Where an English name may break in a narrow day of the month ("Chatur-dashi"), when it must
 const HY = {
@@ -214,6 +221,20 @@ function addDays(k, n) {
 function dayLabel(k) {
   var d = dateOf(k);
   return words().dayLabel(d.getDay(), d.getDate(), d.getMonth());
+}
+
+/** "Today", "Tomorrow", "In 3 days", "3 days ago": Home's words beside its date @param {string} today @param {string} k */
+function dayWordOf(today, k) {
+  var w = menuWords("today"),
+    n = daysTo(k, today);
+  return n === 0 ? w.today : n === 1 ? w.tomorrow : n === -1 ? w.yesterday : n > 0 ? w.later(n) : w.ago(-n);
+}
+/**
+ * Today, under ‹ › on each tab as on Home: kept in its room on today (out of sight and out of reach), so nothing moves
+ * as ‹ › go through the days @param {boolean} off @param {string} data
+ */
+function todayB(off, data) {
+  return '<button type="button" class="ctod' + (off ? " off" : "") + '" ' + data + ">" + say(words().todayB) + "</button>";
 }
 
 /**
@@ -511,7 +532,17 @@ function upList(from, to, pl, groups) {
         r.d2 = f.n;
         return;
       }
-      out.push((runs[f.id] = { date: f.date, kind: kind, name: runName(f), id: f.id, end: f.date, d1: f.n, d2: f.n }));
+      out.push(
+        (runs[f.id] = {
+          date: f.date,
+          kind: kind,
+          name: runName(f),
+          id: f.id,
+          end: f.date,
+          d1: f.n,
+          d2: f.n,
+        }),
+      );
       return;
     }
     var set = null;
@@ -533,7 +564,12 @@ function upList(from, to, pl, groups) {
       try {
         rise = dayPanchang(k, pl).moonrise;
       } catch (e) {}
-      out.push({ date: k, kind: "sk", name: m.vara === 2 ? N.angSkFull : N.skFull, rise: rise });
+      out.push({
+        date: k,
+        kind: "sk",
+        name: m.vara === 2 ? N.angSkFull : N.skFull,
+        rise: rise,
+      });
     }
   }
   if (loaded.holidays && (!groups || groups.length))
@@ -544,7 +580,12 @@ function upList(from, to, pl, groups) {
           return groups.indexOf(g) >= 0;
         })
       )
-        out.push({ date: h.date, kind: "hol", name: holName(h), groups: h.groups });
+        out.push({
+          date: h.date,
+          kind: "hol",
+          name: holName(h),
+          groups: h.groups,
+        });
     });
   out.forEach(function (u) {
     if (!u.end && inRun[u.date]) u.also = inRun[u.date];
@@ -906,30 +947,33 @@ function dayRender() {
   var ritu = function (l) {
     return cat(" · ", [l === "mr" ? cat(" ", [p.ritu.name, { mr: "ऋतु", en: "" }]) : p.ritu.name, p.ayana.name]);
   };
-  var today = keyOf(new Date());
+  var today = keyOf(new Date()),
+    nav = view.mode === "day";
   box.innerHTML =
-    // on the Day tab, ‹ › to the day before or after, and Today
-    (view.mode === "day"
-      ? '<div class="cdnav">' +
+    // on the Day tab, as on Home: the date on the left (without the year, so it keeps one line), the year and "Tomorrow"
+    // under it, ‹ › to the day before or after, and Today under them. The date twice, in full and short ("Wed 30 Sep"):
+    // the short one where the full one would be cut, as "Wednesday, 30 September" on a phone (fitDate())
+    (nav
+      ? '<div class="dnav"><p class="dnh"><span class="cdd"><span class="dl">' +
+        say(menuWords("dates").day(d.getDay(), d.getDate(), d.getMonth())) +
+        '</span><span class="ds">' +
+        say(dayLabel(k)) +
+        '</span></span><span class="cms">' +
+        say(num(d.getFullYear()) + " · ") +
+        '<span class="cdr">' +
+        say(dayWordOf(today, k)) +
+        "</span></span></p>" +
         '<button type="button" class="cnav" data-dd="-1">' +
         ICON.prev +
         '<span class="sr">' +
         esc(w.prevDay) +
         "</span></button>" +
-        '<span class="cdnt">' +
-        say(dayLabel(k)) +
-        "</span>" +
         '<button type="button" class="cnav" data-dd="1">' +
         ICON.next +
         '<span class="sr">' +
         esc(w.nextDay) +
         "</span></button>" +
-        // Today keeps its room on today (out of sight and out of reach), so ‹ the date › never move
-        '<button type="button" class="ctod' +
-        (k === today ? " off" : "") +
-        '" data-dd="0">' +
-        say(w.todayB) +
-        "</button>" +
+        todayB(k === today, 'data-dd="0"') +
         "</div>"
       : "") +
     '<div class="cdh">' +
@@ -938,10 +982,7 @@ function dayRender() {
     '<h3 id="cdt" tabindex="-1">' +
     nameH(title(p)) +
     "</h3>" +
-    '<p class="cdd">' +
-    say(dateLine) +
-    (k === today ? " · " + say(w.today) : "") +
-    "</p>" +
+    (nav ? "" : '<p class="cdd">' + say(dateLine) + (k === today ? " · " + say(w.today) : "") + "</p>") +
     (tags.length || fs.length || hs.length
       ? '<p class="cdg">' +
         // each with its drawing (js/core/fest-icons.js)
@@ -1009,6 +1050,23 @@ function dayRender() {
     row(N.samvatsara, nameH(sam(lead())), two ? nameH2(sam(second() || "en")) : "") +
     row(N.rituAyana, nameH(ritu(lead())), two ? nameH2(ritu(second() || "en")) : "") +
     "</dl>";
+  fitDate();
+}
+
+/**
+ * The Day tab's date in full when it fits beside ‹ ›, else short ("Wed 30 Sep"), and a step smaller when even that does
+ * not (Kannada's short date keeps the whole names), rather than cut with …
+ */
+function fitDate() {
+  var q = document.querySelector("#cald .dnh .cdd");
+  if (!q) return;
+  var c = q;
+  c.classList.remove("short", "small");
+  var over = function () {
+    return c.scrollWidth > c.clientWidth + 1;
+  };
+  if (over()) c.classList.add("short");
+  if (over()) c.classList.add("small");
 }
 
 /** The tithi name for 1–30 (for kshaya notes) @param {number} n @returns {Name} */
@@ -1083,7 +1141,12 @@ function monthRender() {
   });
   var mName = menuWords("dates").monthYear(m - 1, y);
   var html =
-    '<div class="cmh">' +
+    '<div class="dnav">' +
+    '<h3 id="cmt" tabindex="-1">' +
+    say(mName) +
+    '<span class="cms">' +
+    sub +
+    "</span></h3>" +
     '<button type="button" class="cnav" id="calp" data-y="' +
     py +
     '" data-m="' +
@@ -1095,11 +1158,6 @@ function monthRender() {
     ": " +
     esc(menuWords("dates").monthYear(pm - 1, py)) +
     "</span></button>" +
-    '<h3 id="cmt">' +
-    say(mName) +
-    '<span class="cms">' +
-    sub +
-    "</span></h3>" +
     '<button type="button" class="cnav" id="caln" data-y="' +
     ny +
     '" data-m="' +
@@ -1111,10 +1169,16 @@ function monthRender() {
     ": " +
     esc(menuWords("dates").monthYear(nm - 1, ny)) +
     "</span></button>" +
+    // back to this month (Satish, 2026-11-02: the Month tab had no Today)
+    todayB(today.slice(0, 7) === y + "-" + ("0" + m).slice(-2), "data-mt") +
     "</div>" +
     '<table class="cgr" aria-labelledby="cmt"><thead><tr>' +
     MR_WD.map(function (x, i) {
-      var wd = { mr: x, en: DAYS.en[i].slice(0, 3), ia: DAYS.en[i].slice(0, 3) };
+      var wd = {
+        mr: x,
+        en: DAYS.en[i].slice(0, 3),
+        ia: DAYS.en[i].slice(0, 3),
+      };
       return (
         '<th scope="col"><span aria-hidden="true" lang="' +
         langOf(lead()) +
@@ -1314,12 +1378,7 @@ function upRender() {
       : "";
   }
   box.innerHTML =
-    '<div class="cmh">' +
-    '<button type="button" class="cnav" data-u="-15">' +
-    ICON.prev +
-    '<span class="sr">' +
-    esc(w.prevU) +
-    "</span></button>" +
+    '<div class="dnav">' +
     '<h3 id="cut" tabindex="-1">' +
     // the same lines on every day (the title, the dates, the place), each short enough for a phone, so the list below
     // never moves as ‹ › go from today (the dates and the place on one line wrapped on phones on today only)
@@ -1330,18 +1389,18 @@ function upRender() {
     '<span class="cms">' +
     say(placeName(L)) +
     "</span></h3>" +
+    '<button type="button" class="cnav" data-u="-15">' +
+    ICON.prev +
+    '<span class="sr">' +
+    esc(w.prevU) +
+    "</span></button>" +
     '<button type="button" class="cnav" data-u="15">' +
     ICON.next +
     '<span class="sr">' +
     esc(w.nextU) +
     "</span></button>" +
+    todayB(now, 'data-u="0"') +
     "</div>" +
-    // Today keeps its room on today, so the list below does not jump down when the 15 days move away from today
-    '<p class="cto"><button type="button" data-u="0"' +
-    (now ? ' class="off"' : "") +
-    ">" +
-    say(w.todayB) +
-    "</button></p>" +
     '<div class="upk" role="group" aria-label="' +
     esc(w.view) +
     '">' +
@@ -1544,6 +1603,9 @@ function holSet() {
 }
 
 export function init() {
+  // the Day tab's date: in full or short again for a phone turned, or a window resized, and once the fonts are in
+  addEventListener("resize", fitDate);
+  if (document.fonts) document.fonts.ready.then(fitDate);
   // Settings: a holiday group's button adds it to Coming up, or takes it away
   var shol = document.getElementById("shol");
   if (shol)
@@ -1659,6 +1721,10 @@ export function init() {
         announce();
         var again2 = /** @type {HTMLElement | null} */ (dd ? document.querySelector('#cald [data-dd="' + dd + '"]') : document.getElementById("cdt"));
         if (again2) again2.focus();
+      } else if (b.hasAttribute("data-mt")) {
+        // Today: this month, today's day focused
+        var tn = new Date();
+        showMonth(tn.getFullYear(), tn.getMonth() + 1, keyOf(tn));
       } else if (b.classList.contains("cnav")) {
         var id = b.id;
         showMonth(+(b.dataset.y || 0), +(b.dataset.m || 0));

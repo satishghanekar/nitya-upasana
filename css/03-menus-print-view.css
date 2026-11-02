@@ -23,12 +23,12 @@
   white-space: nowrap;
 }
 .bar .t.site {
-  font: 400 23px/1.25 var(--head);
+  font: 400 var(--fz-xxl)/1.25 var(--head);
   color: var(--accent);
 }
 /* Title follows the text language: English only when the text is English */
 .bar .t.site[data-tl="en"] {
-  font: 600 19px/1.25 var(--lat);
+  font: 600 var(--fz-xl)/1.25 var(--lat);
 }
 #home {
   padding-top: 6px;
@@ -131,7 +131,7 @@ a.t {
   width: fit-content;
   max-width: 92vw;
   box-sizing: border-box;
-  font: 600 16px/1.3 var(--body);
+  font: 600 var(--fz-l)/1.3 var(--body);
   padding: 10px 18px;
   text-align: center;
 }
@@ -141,7 +141,7 @@ a.t {
   box-sizing: border-box;
   border-radius: 14px;
   text-align: center;
-  font-size: 14px;
+  font-size: var(--fz-m);
 }
 
 /* ==== Share menu (App, Share, QR, Help); Share / QR / Print buttons, QR pop-up ==== */
@@ -178,7 +178,7 @@ a.t {
   border-radius: 10px;
   background: none;
   color: var(--ink);
-  font: 500 16px/1.2 var(--lat);
+  font: 500 var(--fz-l)/1.2 var(--lat);
   text-align: left;
 }
 #shr button .mr {
@@ -235,7 +235,7 @@ a.t {
   text-align: center;
 }
 .qrt {
-  font: 600 17px/1.35 var(--body);
+  font: 600 var(--fz-l)/1.35 var(--body);
   color: var(--accent);
   margin-bottom: 12px;
 }
@@ -248,7 +248,7 @@ a.t {
   margin: 0 auto;
 }
 .qru {
-  font: 13px/1.4 var(--lat);
+  font: var(--fz-s)/1.4 var(--lat);
   color: var(--muted);
   margin: 10px 0 14px;
   overflow-wrap: anywhere;
@@ -263,7 +263,7 @@ a.t {
   height: auto;
   min-height: 48px;
   margin: 22px 0 0;
-  font: 16px/1.3 var(--lat);
+  font: var(--fz-l)/1.3 var(--lat);
 }
 .inb .mr {
   font-family: var(--body);
@@ -273,7 +273,7 @@ a.t {
 }
 .inl {
   text-align: left;
-  font: 16px/1.5 var(--lat);
+  font: var(--fz-l)/1.5 var(--lat);
   margin: 0 0 10px;
   padding-left: 24px;
 }
@@ -284,7 +284,7 @@ a.t {
   margin-top: 6px;
 }
 .inn {
-  font: 14px/1.45 var(--lat);
+  font: var(--fz-m)/1.45 var(--lat);
   color: var(--muted);
   margin: 0 0 14px;
 }
@@ -298,7 +298,7 @@ a.t {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 21px;
+  font-size: var(--fz-xl);
 }
 .bar .brand {
   /* takes the room the name took, so who is reading stays beside the tools */
@@ -354,7 +354,7 @@ a.t {
   border-radius: 8px;
   background: var(--ink);
   color: var(--bg);
-  font: 600 15px/1.2 var(--lat);
+  font: 600 var(--fz-m)/1.2 var(--lat);
 }
 .skip:focus {
   top: calc(8px + env(safe-area-inset-top));
@@ -385,7 +385,7 @@ h2[tabindex="-1"]:focus {
   font: 600 0.95em/1.3 var(--lat);
 }
 #jump li.jh {
-  font: 600 16px/1.3 var(--head);
+  font: 600 var(--fz-l)/1.3 var(--head);
   padding: 10px 2px 2px;
 }
 
@@ -420,7 +420,7 @@ h2[tabindex="-1"]:focus {
   height: auto;
   min-height: 50px;
   padding: 8px 12px;
-  font-size: 16px;
+  font-size: var(--fz-l);
   line-height: 1.3;
 }
 /* the choices, one group of rows: the printout's dhrupad, its page, and its font with a short sample line (all
@@ -445,7 +445,7 @@ h2[tabindex="-1"]:focus {
   padding: 8px 12px;
   border: 0;
   border-radius: 0;
-  font-size: 14px;
+  font-size: var(--fz-m);
   text-align: start;
 }
 .prrow + .prrow {
@@ -488,7 +488,7 @@ h2[tabindex="-1"]:focus {
   background: none;
   box-shadow: none;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--fz-s);
   font-weight: 500;
   line-height: 1.15;
 }
@@ -545,18 +545,18 @@ h2[tabindex="-1"]:focus {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 22px;
+  font-size: var(--fz-xxl);
   font-size: min(22px, 100cqw / 3.3);
   line-height: 1.3;
   white-space: nowrap;
 }
 .prfx[lang="en"] {
-  font-size: 19px;
+  font-size: var(--fz-xl);
   font-size: min(19px, 100cqw / 5.3);
 }
 .prfm {
   color: var(--muted);
-  font-size: 12.5px;
+  font-size: var(--fz-s);
   font-weight: 500;
 }
 #prfn button[aria-pressed="true"] .prfm {
@@ -564,14 +564,14 @@ h2[tabindex="-1"]:focus {
   font-weight: 600;
 }
 .prn {
-  font-size: 13px;
+  font-size: var(--fz-s);
   color: var(--muted);
   margin: 0 0 12px;
 }
 /* the one quiet line under the choices: the paper, and in Safari what its own dialog needs (12px was small to read
    on a phone) */
 .prnote {
-  font-size: 12.5px;
+  font-size: var(--fz-s);
   line-height: 1.4;
 }
 /* the preview of the first page (js/features/print.js preview: a page-sized frame made small), beside the note */
@@ -611,7 +611,7 @@ h2[tabindex="-1"]:focus {
   min-width: 0;
   margin: 6px 0 0;
   padding: 0 10px;
-  font-size: 13px;
+  font-size: var(--fz-s);
   font-weight: 600;
   color: var(--accent);
   display: block;
@@ -653,7 +653,7 @@ h2[tabindex="-1"]:focus {
   justify-content: space-between;
   gap: 10px;
   margin: 0;
-  font: 400 14px/1.35 var(--lat);
+  font: 400 var(--fz-m)/1.35 var(--lat);
   color: var(--muted);
 }
 .prsum [lang="mr"],
@@ -661,7 +661,7 @@ h2[tabindex="-1"]:focus {
 .prsum [lang="te"],
 .prsum [lang="gu"] {
   font-family: var(--body);
-  font-size: 15px;
+  font-size: var(--fz-m);
   color: var(--ink);
 }
 .prsum b {
@@ -736,7 +736,7 @@ h2[tabindex="-1"]:focus {
   background: none;
   box-shadow: none;
   color: var(--accent);
-  font-size: 15px;
+  font-size: var(--fz-m);
   font-weight: 600;
 }
 @media (max-width: 759.98px) {
@@ -753,7 +753,7 @@ h2[tabindex="-1"]:focus {
 }
 .prsh {
   margin: 6px 0 8px;
-  font: 600 13px/1.3 var(--lat);
+  font: 600 var(--fz-s)/1.3 var(--lat);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
@@ -777,7 +777,7 @@ h2[tabindex="-1"]:focus {
   background: none;
   box-shadow: none;
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--fz-m);
   font-weight: 500;
 }
 .prtabs button[aria-selected="true"] {
@@ -806,7 +806,7 @@ h2[tabindex="-1"]:focus {
   gap: 4px;
   min-width: 0;
   color: var(--muted);
-  font: 600 13px/1.3 var(--lat);
+  font: 600 var(--fz-s)/1.3 var(--lat);
 }
 .prwho,
 .prwhen {
@@ -825,7 +825,7 @@ h2[tabindex="-1"]:focus {
     var(--bg);
   color: var(--ink);
   /* 16px: an iPhone zooms into a select under 16px */
-  font: 600 16px/42px var(--lat);
+  font: 600 var(--fz-l)/42px var(--lat);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -853,11 +853,11 @@ h2[tabindex="-1"]:focus {
   background: none;
   box-shadow: none;
   color: var(--ink);
-  font: 500 13.5px/1.2 var(--lat);
+  font: 500 var(--fz-s)/1.2 var(--lat);
 }
 .prss .prsc {
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--fz-xs);
   font-weight: 400;
 }
 .prss button[aria-pressed="true"] {
@@ -897,19 +897,19 @@ h2[tabindex="-1"]:focus {
   flex: none;
   min-width: 22px;
   color: var(--muted);
-  font: 400 15px/23px var(--body);
+  font: 400 var(--fz-m)/23px var(--body);
   text-align: end;
 }
 .prtag {
   display: block;
   margin-top: 2px;
   color: var(--accent);
-  font: 500 13px/1.35 var(--lat);
+  font: 500 var(--fz-s)/1.35 var(--lat);
 }
 .prre {
   margin: 12px 0;
   color: var(--muted);
-  font: 400 14px/1.4 var(--lat);
+  font: 400 var(--fz-m)/1.4 var(--lat);
 }
 /* What: search, then each category with Select all or Clear, and its texts with a tick and their pages */
 .prwq {
@@ -922,7 +922,7 @@ h2[tabindex="-1"]:focus {
   gap: 10px;
   margin-top: 10px;
   border-bottom: 1px solid var(--rule);
-  font: 600 13px/1.3 var(--lat);
+  font: 600 var(--fz-s)/1.3 var(--lat);
   color: var(--muted);
 }
 .prcg span[lang="mr"],
@@ -930,7 +930,7 @@ h2[tabindex="-1"]:focus {
 .prcg span[lang="te"],
 .prcg span[lang="gu"] {
   font-family: var(--body);
-  font-size: 14px;
+  font-size: var(--fz-m);
 }
 .prcga {
   margin-top: 6px;
@@ -944,7 +944,7 @@ h2[tabindex="-1"]:focus {
   background: none;
   box-shadow: none;
   color: var(--accent);
-  font-size: 14px;
+  font-size: var(--fz-m);
   font-weight: 600;
 }
 .prgr[hidden] {
@@ -956,30 +956,30 @@ h2[tabindex="-1"]:focus {
 }
 #prwl .tt .t1 {
   display: block;
-  font: 400 17px/23px var(--head);
+  font: 400 var(--fz-l)/23px var(--head);
   overflow-wrap: anywhere;
 }
 #prwl .tt .t1[lang="en"] {
   font-family: var(--lat);
-  font-size: 16px;
+  font-size: var(--fz-l);
   line-height: 22px;
 }
 #prwl .tt .t2 {
   display: block;
   color: var(--muted);
-  font: 400 12.5px/17px var(--lat);
+  font: 400 var(--fz-s)/17px var(--lat);
 }
 #prwl .tt .t2[lang="mr"],
 #prwl .tt .t2[lang="kn"],
 #prwl .tt .t2[lang="te"],
 #prwl .tt .t2[lang="gu"] {
   font-family: var(--body);
-  font-size: 13.5px;
+  font-size: var(--fz-s);
 }
 .prsc {
   flex: none;
   color: var(--muted);
-  font: 400 13px/1.3 var(--lat);
+  font: 400 var(--fz-s)/1.3 var(--lat);
 }
 #prwl[lang="mr"] .prsc,
 #prwl[lang="mr"] .prcb,
@@ -1171,7 +1171,7 @@ h2[tabindex="-1"]:focus {
   background: none;
   padding: 0;
   margin: 0 0 4px;
-  font: 600 11px/1.4 var(--body);
+  font: 600 var(--fz-xs)/1.4 var(--body);
   color: var(--muted);
   letter-spacing: 0.03em;
 }
@@ -1231,7 +1231,7 @@ h2[tabindex="-1"]:focus {
   grid-column: 1 / -1;
   margin: 2px 0 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--fz-s);
   line-height: 1.4;
 }
 .prrow .prhint[hidden] {
@@ -1246,10 +1246,10 @@ h2[tabindex="-1"]:focus {
 /* tablets and computers have room for the hints and the notes a step larger */
 @media (min-width: 760px) {
   .prrow .prhint {
-    font-size: 13.5px;
+    font-size: var(--fz-s);
   }
   .prnote {
-    font-size: 13px;
+    font-size: var(--fz-s);
   }
 }
 /* phones: the font tiles' sides a little narrower, so the sample word stays large; on the narrowest phones the hints
@@ -1261,6 +1261,6 @@ h2[tabindex="-1"]:focus {
 }
 @media (max-width: 379px) {
   .prrow .prhint {
-    font-size: 12px;
+    font-size: var(--fz-xs);
   }
 }

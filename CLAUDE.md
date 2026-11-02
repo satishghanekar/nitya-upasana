@@ -55,6 +55,8 @@ private.
 - Only the breakpoints listed in `css/README.md`; a new one is added there first (`tests/edge.spec.mjs` checks).
 - No new `!important` or `:root:root`: the same test caps both at today's count.
 - Colours come from the theme variables (`css/01-theme.css`); check light, sepia, dark and high contrast.
+- Sizes of menus and labels come from the six in `css/01-theme.css` (`--fz-xs` … `--fz-xxl`), never a pixel size; the
+  text read is sized in `em` from `--fs`. `tests/edge.spec.mjs` checks.
 - Hover colours go inside `@media (hover: hover)`.
 - The printout's look is `css/15-print.css` only (the print view, `#pv`). While printing, everything else on the page
   is hidden, so no other file needs print rules for screen-only parts.
