@@ -100,20 +100,8 @@
 #tdx {
   grid-area: x;
 }
-#tdn .tdnb {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  margin: 0;
-  padding: 0;
-  border: 1px solid var(--hdrl);
-  border-radius: 22px;
-  background: var(--hdrt);
-  color: var(--accent);
-  cursor: pointer;
-}
-#tdn .tdnb:disabled {
+/* (the buttons are the calendar's, .cnav, css/12-calendar.css: the same on Home and on every tab) */
+#tdn .cnav:disabled {
   opacity: 0.4;
   cursor: default;
 }
@@ -138,7 +126,7 @@
 #tdt.off {
   visibility: hidden;
 }
-#tdn .tdnb:focus-visible,
+#tdn .cnav:focus-visible,
 #tdt:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
