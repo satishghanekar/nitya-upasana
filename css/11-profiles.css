@@ -450,9 +450,7 @@
 }
 /* (nothing here moves, so reduced motion needs no rule) */
 
-/* ==== Welcome (#wlc, js/features/welcome.js): once, on a new phone's Home, as a note (.pfw) at its top: the name, the
-   ready-made routines (the builder's radio row, .rtseg, css/14-builder.css), what the one checked holds, Start /
-   Later and where to change them later ==== */
+/* ==== Welcome (#wlc, js/features/welcome.js): a note (.pfw) at Home's top; the routines are .rtseg ==== */
 #wlc[hidden],
 #wlcr[hidden] {
   display: none;
