@@ -957,10 +957,8 @@
   text-overflow: ellipsis;
 }
 
-/* Every tab's ‹ › and Today as on Home's date (#tdd, css/10-today.css; the "Nitya's date arrows" mockups, option A,
-   Satish, 2026-11-02): the title's lines on the left, ‹ › together in the top right corner, Today under them. Nothing
-   moves as ‹ › go through the days (Satish, 2026-10-30): the title keeps its lines on every day, and Today keeps its room
-   while it is hidden */
+/* Every tab's ‹ › and Today as on Home's date (#tdd; option A, Satish, 2026-11-02): title left, ‹ › top right, Today
+   under them, its room kept, so nothing moves */
 .dnav {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 44px 44px;
@@ -985,7 +983,6 @@
 #caln {
   grid-area: x;
 }
-/* (a 44px target that takes 32px of the row, as on Home) */
 .dnav .ctod {
   grid-area: t;
   justify-self: center;
@@ -995,7 +992,7 @@
 .ctod.off {
   visibility: hidden;
 }
-/* the Day tab's date and the year with "Tomorrow" under it, each on one line (a long one is cut with …) */
+/* the Day tab's date, and the year with "Tomorrow", one line each */
 .dnh .cdd,
 .dnh .cms {
   display: block;
@@ -1008,12 +1005,22 @@
   color: var(--ink);
   font: 400 19px/1.35 var(--head);
 }
-/* (in English too in the heading font, as the 15 days' and the month's titles are) */
 .dnh .cdd [lang="en"] {
   font-family: var(--head);
 }
 .cdr {
   color: var(--accent);
+}
+/* the date short ("Wed 30 Sep") where the full one would be cut (fitDate()) */
+.dnh .ds,
+.dnh .short .dl {
+  display: none;
+}
+.dnh .short .ds {
+  display: inline;
+}
+.dnh .cdd.small {
+  font-size: 16px;
 }
 #cald .dnav {
   padding: 0 0 12px;

@@ -2,7 +2,7 @@
  "about": "The public holidays the Vedic calendar marks (js/core/holidays.js applies the rules; Satish, 2026-10-24): US federal, India national (and the gazetted holidays kept across India), Maharashtra and Karnataka. groups: us, in, mh, ka. mr / en are the full names, short the label for a day in the month grid, wiki the Wikipedia page (English and, where there is one, Marathi) linked from the day card. A rule is a date (\"MM-DD\", every year), the nth weekday of a month (month 1–12, weekday 0 Sunday … 6 Saturday, nth 1–5 or -1 for the last), days from Easter Sunday (easter: -2 is Good Friday), or a lunar rule as in content/festivals.json. Holidays set by the moon's sighting (Eid) are left out: they cannot be worked out ahead.",
  "version": 1,
  "groups": {
-  "us": { "mr": "अमेरिका", "en": "US" },
+  "us": { "mr": "अमेरिका", "en": "USA" },
   "in": { "mr": "भारत", "en": "India" },
   "mh": { "mr": "महाराष्ट्र", "en": "Maharashtra" },
   "ka": { "mr": "कर्नाटक", "en": "Karnataka" }

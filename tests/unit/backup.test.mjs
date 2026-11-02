@@ -183,6 +183,13 @@ describe("the file's name and the reminder", () => {
     expect(needsReminder({ since: NOW, lastBackup: "", snooze: day(20).toISOString() }, day(33))).toBe(false);
     expect(needsReminder({ since: NOW, lastBackup: "", snooze: day(20).toISOString() }, day(34))).toBe(true);
   });
+  // a routine of their own would be lost with the app (Satish, 2026-11-02): never saved, the reminder comes at once
+  test("someone's own routine, never saved: a reminder at once; saved, or Not now, as before", () => {
+    expect(needsReminder({ since: NOW, lastBackup: "" }, day(1), true)).toBe(true);
+    expect(needsReminder({ since: NOW, lastBackup: "" }, day(1), false)).toBe(false);
+    expect(needsReminder({ since: NOW, lastBackup: NOW }, day(1), true)).toBe(false);
+    expect(needsReminder({ since: NOW, lastBackup: "", snooze: day(1).toISOString() }, day(2), true)).toBe(false);
+  });
   test("nothing known: no reminder", () => {
     expect(needsReminder({}, day(100))).toBe(false);
   });

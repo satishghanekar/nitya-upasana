@@ -85,13 +85,35 @@ export function closeForBack() {
   return shut;
 }
 
+// The button last pressed: Safari on a Mac or an iPad does not focus a button that is clicked or tapped, so the one that
+// opened a page is known from the press instead (Satish, 2026-11-02)
+/** @type {Element | null} */
+var pressed = null,
+  pressedAt = 0;
+
+export function init() {
+  // (before the button's own handler opens the page)
+  document.addEventListener(
+    "click",
+    function (e) {
+      var t = /** @type {Element} */ (e.target);
+      pressed = t && t.closest ? t.closest("button, a[href], [tabindex]") : null;
+      pressedAt = Date.now();
+    },
+    true,
+  );
+}
+
 // Keyboard and screen reader users: opening a page moves focus into it; closing it puts focus back on
 // the button that opened it (only if focus was still in the page, so a jump to a piece isn't undone)
 /** @param {any} el @param {boolean} o */
 function ovFocus(el, o) {
   var a = document.activeElement;
   if (o) {
-    if (el.hidden) el._ret = a;
+    // a control with focus is the one to return to (or one a part focused for it before opening: Nitya's routine builder,
+    // opened from Settings, puts it on ⚙); with none (Safari leaves focus on the page after a click), the button pressed
+    var control = !!a && a.matches("button, a[href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+    if (el.hidden) el._ret = !control && pressed && pressed.isConnected && Date.now() - pressedAt < 1000 ? pressed : a;
     return;
   }
   var r = el._ret;

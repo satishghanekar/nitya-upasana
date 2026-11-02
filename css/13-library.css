@@ -238,10 +238,15 @@
 #lbtl select {
   width: 100%;
   min-height: 44px;
-  padding: 0 8px;
+  padding: 0 30px 0 8px;
   border: 1px solid var(--muted);
   border-radius: 10px;
-  background: var(--bg);
+  /* Safari keeps its own look 30px tall: off, as .prwho */
+  appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%) right 15px center / 6px 6px no-repeat,
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%) right 9px center / 6px 6px no-repeat,
+    var(--bg);
   color: var(--ink);
   font: 400 16px/1.2 var(--lat); /* 16px: iPhone doesn't zoom into it */
 }

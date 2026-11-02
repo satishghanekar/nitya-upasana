@@ -100,7 +100,7 @@
 #tdx {
   grid-area: x;
 }
-/* (the buttons are the calendar's, .cnav, css/12-calendar.css: the same on Home and on every tab) */
+/* (the buttons are the calendar's .cnav) */
 #tdn .cnav:disabled {
   opacity: 0.4;
   cursor: default;

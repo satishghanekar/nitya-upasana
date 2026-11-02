@@ -951,11 +951,14 @@ function dayRender() {
     nav = view.mode === "day";
   box.innerHTML =
     // on the Day tab, as on Home: the date on the left (without the year, so it keeps one line), the year and "Tomorrow"
-    // under it, ‹ › to the day before or after, and Today under them
+    // under it, ‹ › to the day before or after, and Today under them. The date twice, in full and short ("Wed 30 Sep"):
+    // the short one where the full one would be cut, as "Wednesday, 30 September" on a phone (fitDate())
     (nav
-      ? '<div class="dnav"><p class="dnh"><span class="cdd">' +
+      ? '<div class="dnav"><p class="dnh"><span class="cdd"><span class="dl">' +
         say(menuWords("dates").day(d.getDay(), d.getDate(), d.getMonth())) +
-        '</span><span class="cms">' +
+        '</span><span class="ds">' +
+        say(dayLabel(k)) +
+        '</span></span><span class="cms">' +
         say(num(d.getFullYear()) + " · ") +
         '<span class="cdr">' +
         say(dayWordOf(today, k)) +
@@ -1047,6 +1050,23 @@ function dayRender() {
     row(N.samvatsara, nameH(sam(lead())), two ? nameH2(sam(second() || "en")) : "") +
     row(N.rituAyana, nameH(ritu(lead())), two ? nameH2(ritu(second() || "en")) : "") +
     "</dl>";
+  fitDate();
+}
+
+/**
+ * The Day tab's date in full when it fits beside ‹ ›, else short ("Wed 30 Sep"), and a step smaller when even that does
+ * not (Kannada's short date keeps the whole names), rather than cut with …
+ */
+function fitDate() {
+  var q = document.querySelector("#cald .dnh .cdd");
+  if (!q) return;
+  var c = q;
+  c.classList.remove("short", "small");
+  var over = function () {
+    return c.scrollWidth > c.clientWidth + 1;
+  };
+  if (over()) c.classList.add("short");
+  if (over()) c.classList.add("small");
 }
 
 /** The tithi name for 1–30 (for kshaya notes) @param {number} n @returns {Name} */
@@ -1583,6 +1603,9 @@ function holSet() {
 }
 
 export function init() {
+  // the Day tab's date: in full or short again for a phone turned, or a window resized, and once the fonts are in
+  addEventListener("resize", fitDate);
+  if (document.fonts) document.fonts.ready.then(fitDate);
   // Settings: a holiday group's button adds it to Coming up, or takes it away
   var shol = document.getElementById("shol");
   if (shol)
