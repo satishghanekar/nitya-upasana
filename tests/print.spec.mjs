@@ -601,6 +601,31 @@ test("print pop-up: the recommended choices, the hints and about how many pages 
   expect((await pdfPages(page, "Letter")).pages.length).toBe(once);
 });
 
+// About how many pages depends on How to print (language, page, font): on a phone, What to print shows only how many
+// texts, and the pages come with How to print; from 760px both steps show at once, and so does the count
+for (const [name, size, first] of [
+  ["a phone", { width: 390, height: 844 }, false],
+  ["an upright iPad", { width: 820, height: 1180 }, true],
+  ["a computer", { width: 1440, height: 900 }, true],
+])
+  test(`print pop-up: about how many pages on What to print only when How to print shows too, ${name} @chromium-only`, async ({ page }) => {
+    await page.setViewportSize(size);
+    await openSite(page, SETUPS.marathi);
+    await openPrintBuilder(page, { ids: TEST_AARTIS });
+    if (await page.locator("#prbk").isVisible()) await page.locator("#prbk").click();
+    await expect(page.locator("#prsum span").first()).toHaveText(`${TEST_AARTIS.length} texts`);
+    if (first) await expect(page.locator("#prsum b")).toHaveText(/^about \d+ pages$/);
+    else {
+      await page.locator("#prnx").click();
+      await expect(page.locator("#prsum b")).toHaveText(/^about \d+ pages$/);
+      // back to What to print: counted, but not shown
+      await page.locator("#prbk").click();
+      await expect(page.locator("#prsum b")).toHaveCount(1);
+      await expect(page.locator("#prsum b")).toBeHidden();
+      await expect(page.locator("#prsum span").first()).toBeVisible();
+    }
+  });
+
 // A saved page is kept from one visit to the next
 test("print pop-up: a saved Landscape choice is kept @chromium-only", async ({ page }) => {
   await stubPrint(page);
