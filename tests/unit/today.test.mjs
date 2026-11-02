@@ -7,7 +7,8 @@ import { pictureAt, pictureFor, sessionAt } from "../../js/core/time-of-day.js";
 import { dateKey, SESSIONS, stepInSession, textsFor, weekOf } from "../../js/core/routine.js";
 import { PROFILE, TICKS_KEY } from "../../js/core/ticks.js";
 
-const ROUTINE = JSON.parse(readFileSync(new URL("../../content/routines.json", import.meta.url), "utf8"));
+const ALL = JSON.parse(readFileSync(new URL("../../content/routines.json", import.meta.url), "utf8"));
+const ROUTINE = ALL.extended;
 const LIBRARY = JSON.parse(readFileSync(new URL("../../content/library.json", import.meta.url), "utf8"));
 // 18 October 2026 is a Sunday
 const at = (day, h = 9, m = 0) => new Date(2026, 9, day, h, m);
@@ -41,9 +42,9 @@ describe("the picture for the day and session picked on the card", () => {
   });
 });
 
-describe("the default routine (content/routines.json)", () => {
+describe("the ready-made routines (content/routines.json)", () => {
   const DAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-  // (2026-10-23: the starting routine everyone gets; each person changes it in the routine builder)
+  // Extended: the starting routine everyone got from 2026-10-23, the longest of the four since 2026-11-02
   const EXPECT = {
     morning: {
       sun: [
@@ -212,12 +213,71 @@ describe("the default routine (content/routines.json)", () => {
       ],
     },
   };
-  test.each(["morning", "afternoon", "evening"])("%s, each day as planned", (s) => {
+  test.each(["morning", "afternoon", "evening"])("Extended: %s, each day as planned", (s) => {
     for (let d = 0; d < 7; d++) expect(textsFor(ROUTINE, d, s), s + " " + DAYS[d]).toEqual(EXPECT[s][DAYS[d]]);
   });
-  test("every text the routine names is in content/library.json", () => {
+  test("every text the routines name is in content/library.json", () => {
     const ids = new Set(LIBRARY.texts.map((t) => t.id));
-    for (const s of SESSIONS) for (let d = 0; d < 7; d++) for (const id of textsFor(ROUTINE, d, s)) expect(ids.has(id), id).toBe(true);
+    for (const r of Object.values(ALL))
+      for (const s of SESSIONS) for (let d = 0; d < 7; d++) for (const id of textsFor(r, d, s)) expect(ids.has(id), id).toBe(true);
+  });
+
+  // The other three are made from Extended (Satish, 2026-11-02)
+  const MP = "vedic-chant-mantra-pushpanjali";
+  const TRIO = ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam", "vedic-chant-shri-sukta"];
+  // Extended's long evening stotras: the seven to the Guru on Thursday, the Ram Raksha, the Maruti Stotra and the
+  // Hanuman Chalisa
+  const LONG = [
+    "stotra-shant-ho-shriguru",
+    "stotra-shriguru-datta-jay",
+    "stotra-jay-karunaghan-nij",
+    "stotra-ghorakashtoddharan",
+    "stotra-vandu-guruchya-charanarvinda",
+    "stotra-martand-bavani",
+    "stotra-sadguru-vandana",
+    "stotra-ram-raksha",
+    "stotra-maruti-stotra",
+    "stotra-hanuman-chalisa",
+  ];
+  const aarti = (id) => id.startsWith("aarti-") || id === MP;
+  const more = (id) => aarti(id) || id.startsWith("ashtak-") || (id.startsWith("stotra-") && !LONG.includes(id));
+  test("Short: the Atharvashirsha and the everyday aartis in the morning, the aartis in the evening, the same every day", () => {
+    for (let d = 0; d < 7; d++) {
+      expect(textsFor(ALL.short, d, "morning")).toEqual([
+        "vedic-chant-atharvashirsha",
+        "aarti-sukhkarta",
+        "aarti-durge-durghat-bhari",
+        "aarti-jaydeva-jaydeva-samartha",
+        "aarti-ghalin-lotangan",
+        MP,
+      ]);
+      expect(textsFor(ALL.short, d, "evening")).toEqual([
+        "aarti-sukhkarta",
+        "aarti-durge-durghat-bhari",
+        "aarti-jay-jay-aarti-shrigururaya",
+        "aarti-ghalin-lotangan",
+        MP,
+      ]);
+      expect(textsFor(ALL.short, d, "afternoon")).toEqual([]);
+    }
+  });
+  test("Daily: the Atharvashirsha, Purusha Suktam and Shri Sukta, then the day's aartis in the morning; the day's aartis in the evening", () => {
+    for (let d = 0; d < 7; d++) {
+      expect(textsFor(ALL.daily, d, "morning"), DAYS[d]).toEqual([...TRIO, ...textsFor(ROUTINE, d, "morning").filter(aarti)]);
+      expect(textsFor(ALL.daily, d, "evening"), DAYS[d]).toEqual(textsFor(ROUTINE, d, "evening").filter(aarti));
+    }
+  });
+  test("Full: Daily with Extended's ashtaks and stotras, but not the long evening stotras", () => {
+    for (let d = 0; d < 7; d++) {
+      expect(textsFor(ALL.full, d, "morning"), DAYS[d]).toEqual([...TRIO, ...textsFor(ROUTINE, d, "morning").filter(more)]);
+      expect(textsFor(ALL.full, d, "evening"), DAYS[d]).toEqual(textsFor(ROUTINE, d, "evening").filter(more));
+    }
+    // every long stotra is in Extended, so the list above names real ones
+    for (const id of LONG)
+      expect(
+        DAYS.some((k, d) => textsFor(ROUTINE, d, "evening").includes(id)),
+        id,
+      ).toBe(true);
   });
 });
 

@@ -85,6 +85,8 @@ export default {
       return n + " was deleted";
     },
     chip: "Profile: ",
+    // the first person on a new phone, until they give their name
+    me: "Me",
   },
   // The Library by category and the categories sheet (js/features/library.js)
   library: {

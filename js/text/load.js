@@ -4,8 +4,9 @@
 // js/main.js waits for this before it starts the other parts. The pieces themselves are built one at a time, the
 // first time each is opened (js/core/page.js, with js/render.js).
 // The files are on the offline list (js/parts.js), so this works without internet too.
-// It also fetches content/routines.json, the default routine the Today card shows (js/features/today-card.js),
-// at the same time; without it the texts still load and the card shows empty sessions. And content/festivals.json, the
+// It also fetches content/routines.json, the ready-made routines (js/core/routine.js BASES) the Today card shows for a
+// person who follows one (js/features/today-card.js), at the same time; without it the texts still load and the card
+// shows empty sessions. And content/festivals.json, the
 // festival rules the Vedic calendar marks (js/core/festivals.js); without it no festivals are marked. And
 // content/holidays.json, the public holidays it marks (js/core/holidays.js); without it no holidays are marked. And
 // content/categories.json, the library's categories, which also set the reading order and the numbers
@@ -16,18 +17,18 @@ import { buildContent } from "./content.js";
 
 /**
  * What was loaded, for the parts that need it after start-up: the library (content/library.json) and the
- * routine (content/routines.json; null when it could not be loaded) and the festival rules (content/festivals.json;
+ * ready-made routines by id (content/routines.json; null when it could not be loaded) and the festival rules (content/festivals.json;
  * null when it could not be loaded) and the holidays (content/holidays.json; null when it could not be loaded) and the categories (content/categories.json; null when it could not be loaded) and the PDFs (content/pdfs.json, as read; null when it could not be loaded).
  * @type {{
  *   library: import("./content.js").Library | null,
- *   routine: import("../core/routine.js").Routine | null,
+ *   routines: Record<string, import("../core/routine.js").Routine> | null,
  *   festivals: import("../core/festivals.js").FestivalList | null,
  *   holidays: import("../core/holidays.js").HolidayList | null,
  *   categories: import("../core/library.js").BundledCategory[] | null,
  *   pdfs: unknown
  * }}
  */
-export const loaded = { library: null, routine: null, festivals: null, holidays: null, categories: null, pdfs: null };
+export const loaded = { library: null, routines: null, festivals: null, holidays: null, categories: null, pdfs: null };
 
 /**
  * @param {string} url
@@ -47,8 +48,8 @@ export function load() {
       return r.json();
     })
     .then(
-      function (/** @type {import("../core/routine.js").Routine} */ o) {
-        loaded.routine = o && typeof o === "object" ? o : null;
+      function (/** @type {Record<string, import("../core/routine.js").Routine>} */ o) {
+        loaded.routines = o && typeof o === "object" ? o : null;
       },
       function (/** @type {unknown} */ e) {
         console.warn(e);

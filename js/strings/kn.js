@@ -97,6 +97,7 @@ export default {
       return n + " ಅವರನ್ನು ಅಳಿಸಲಾಗಿದೆ";
     },
     chip: "ಪ್ರೊಫೈಲ್: ",
+    me: "ನಾನು",
   },
   // The Library by category and the categories sheet (js/features/library.js)
   library: {

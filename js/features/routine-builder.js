@@ -20,7 +20,7 @@
 import { loaded } from "../text/load.js";
 import { sessionAt } from "../core/time-of-day.js";
 import { DAY_KEYS, WEEK_ORDER, addTexts, byWeekday, copyDays, editable, moveItem, removeText, setList, setMode, textsFor, weekOf } from "../core/routine.js";
-import { active, getLibrary, onChange, routine, setRoutine } from "../store/store.js";
+import { active, followed, getLibrary, onChange, setRoutine } from "../store/store.js";
 import { categoriesOf, categoryOf } from "../core/library.js";
 import { setR } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
@@ -557,7 +557,7 @@ export function openBuilder(o) {
   buildInfo();
   view.session = o.session || shownSession() || sessionAt(new Date());
   view.day = typeof o.day === "number" ? o.day : new Date().getDay();
-  view.r = editable(routine(), loaded.routine);
+  view.r = editable(followed(), null);
   weekBefore = {};
   opener = /** @type {HTMLElement | null} */ (o.from || null);
   // focus is where it was opened from, so Back returns it there (js/features/overlays.js)
@@ -726,7 +726,7 @@ export function init() {
   // another person reading (or a restore): their routine
   onChange(function () {
     if (!isOpen()) return;
-    view.r = editable(routine(), loaded.routine);
+    view.r = editable(followed(), null);
     weekBefore = {};
     render();
   });

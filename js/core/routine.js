@@ -3,10 +3,9 @@
 // in order. Pure functions only (no page), so the unit tests (tests/unit/today.test.mjs) run them in Node;
 // js/features/today-card.js puts the answer on the page.
 //
-// The routine comes from content/routines.json: for each session, either the same
-// list every day ({ mode: "fixed", texts }) or one list per weekday ({ mode: "weekday", days: { mon: […], … } }).
-// The default is content/routines.json, for a person who has not changed theirs: a starting routine (2026-10-23)
-// that each person changes in the routine builder.
+// A routine: for each session, either the same list every day ({ mode: "fixed", texts }) or one list per weekday
+// ({ mode: "weekday", days: { mon: […], … } }). content/routines.json holds the four ready-made ones (BASES, 2026-11-02:
+// Short, Daily, Full, Extended); each person follows one until they change it in the routine builder.
 // Which session it is now: sessionAt() in js/core/time-of-day.js.
 
 /**
@@ -87,9 +86,36 @@ export function stepInSession(ids, id, dir) {
 }
 
 // ---- Each person's own routine (the routine builder, js/features/routine-builder.js) ----
-// A person's routine is kept in their profile (Profile.routine, js/store/profiles.js), in the same shape as
-// content/routines.json. null means "never changed": they follow content/routines.json (Q5), so a new person starts
-// from it. The functions below never change what they are given: each returns a new routine or list.
+// A person's routine is kept in their profile (Profile.routine, js/store/profiles.js), in the same shape as each of
+// content/routines.json. null means "never changed": they follow the ready-made routine they chose (Profile.base), so
+// later changes to it reach them; their first change makes a copy of their own, which no update touches. The functions
+// below never change what they are given: each returns a new routine or list.
+
+/** The ready-made routines, shortest first: their ids in content/routines.json and in the menu words @type {string[]} */
+export const BASES = ["short", "daily", "full", "extended"];
+// what a new person follows
+export const FIRST_BASE = "short";
+
+/**
+ * A ready-made routine's id as read from storage or a file, or the given one when it is not one of BASES
+ * @param {unknown} id
+ * @param {string} other
+ */
+export function cleanBase(id, other) {
+  return typeof id === "string" && BASES.indexOf(id) >= 0 ? id : other;
+}
+
+/**
+ * A ready-made routine from content/routines.json (as loaded): the one asked for, else the first the file has
+ * @param {any} all
+ * @param {string} id
+ * @returns {Routine | null}
+ */
+export function baseRoutine(all, id) {
+  if (!all || typeof all !== "object") return null;
+  var r = all[id] || all[Object.keys(all)[0]];
+  return r && typeof r === "object" ? r : null;
+}
 
 /** The weekday row of the builder, Monday first (A4), as Date.getDay() numbers @type {number[]} */
 export const WEEK_ORDER = [1, 2, 3, 4, 5, 6, 0];
@@ -141,40 +167,6 @@ export function cleanRoutine(r) {
   var out = {};
   SESSIONS.forEach(function (s) {
     out[s] = cleanPlan(r[s]);
-  });
-  return out;
-}
-
-/**
- * The default routine without its Vedic chants (the "vedic-chant-…" texts), with one text first every morning: RG's
- * routine (a built-in person, js/store/profiles.js). null when there is no default to make it from.
- * @param {any} def
- * @param {string} first
- * @returns {Routine | null}
- */
-export function withoutVedic(def, first) {
-  var r = cleanRoutine(def);
-  if (!r) return null;
-  /** @param {string[]} list @param {boolean} lead */
-  function keep(list, lead) {
-    return cleanList(
-      (lead ? [first] : []).concat(
-        list.filter(function (id) {
-          return id.indexOf("vedic-chant-") !== 0;
-        }),
-      ),
-    );
-  }
-  var out = /** @type {Routine} */ (r);
-  SESSIONS.forEach(function (s) {
-    var p = /** @type {SessionPlan} */ (out[s]),
-      lead = s === "morning";
-    if (p.mode === "weekday") {
-      var days = p.days;
-      DAY_KEYS.forEach(function (k) {
-        days[k] = keep(days[k] || [], lead);
-      });
-    } else out[s] = { mode: "fixed", texts: keep(p.texts, lead) };
   });
   return out;
 }

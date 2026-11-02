@@ -84,6 +84,7 @@ export default {
       return n + " काढले";
     },
     chip: "प्रोफाइल: ",
+    me: "मी",
   },
   // The Library by category and the categories sheet (js/features/library.js)
   library: {

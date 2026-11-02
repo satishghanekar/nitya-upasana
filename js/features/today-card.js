@@ -15,7 +15,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
 // What it reads: the reading person's routine (their own, made in the routine builder, js/features/routine-builder.js,
-// or else content/routines.json) and the titles (content/library.json), both loaded by
+// or else the ready-made one they follow, content/routines.json) and the titles (content/library.json), both loaded by
 // js/text/load.js; which texts a session has and the walk through it: js/core/routine.js. Titles are always the
 // library's, never typed here. Switching person re-draws the list with their routine (profileChanged()).
 // Reading a session: a title in the list opens the reading page with the session's texts one after another, in session
@@ -35,7 +35,7 @@ import { homeDay } from "./vedic-calendar.js";
 import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, stepInSession, textsFor } from "../core/routine.js";
-import { onReread, routine } from "../store/store.js";
+import { followed, onReread } from "../store/store.js";
 import { dv, esc, lead, mrLang, nameLang, scr, scrKey, second, ui as menuLang } from "../core/words.js";
 import { iaTitle } from "../text/iast.js";
 import { menuWords } from "../core/strings.js";
@@ -111,7 +111,7 @@ function dayWord(today, day) {
 /** The texts of a session on a day, from the reading person's routine, keeping only those in the library */
 /** @param {string} day @param {Session} session */
 function idsFor(day, session) {
-  return textsFor(routine() || loaded.routine, fromKey(day).getDay(), session).filter(function (id) {
+  return textsFor(followed(), fromKey(day).getDay(), session).filter(function (id) {
     return !!info[id];
   });
 }

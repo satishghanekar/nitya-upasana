@@ -97,6 +97,7 @@ export default {
       return n + " తొలగించబడ్డారు";
     },
     chip: "ప్రొఫైల్: ",
+    me: "నేను",
   },
   // The Library by category and the categories sheet (js/features/library.js)
   library: {
