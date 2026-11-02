@@ -629,7 +629,7 @@ export default {
       "iPhone પર હોમ સ્ક્રીન ઍપમાંથી છાપવાનું ખૂલતું નથી. <b>Safari માં ખોલો</b> દબાવો: તમારી પસંદગીઓ સાથે જશે અને છાપવાનું ત્યાં તૈયાર થશે. Safari ન ખૂલે તો, લિંકની નકલ કરી Safari માં ચોંટાડો.",
     thisBrowserDidNotOpen:
       'આ બ્રાઉઝરે છાપવાનો સંવાદ ખોલ્યો નહીં. બ્રાઉઝરનું <b lang="en">Share</b> બટન દબાવી <b lang="en">Print</b> પસંદ કરો. આ પાનું બીજી ઍપની અંદર ખૂલ્યું હોય તો, <b>Safari માં ખોલો</b> દબાવો: તમારી પસંદગીઓ સાથે જશે.',
-    changeHow: "બદલો",
+    nextHowToPrint: "આગળ: કેવી રીતે છાપવું ›",
     print: "છાપો",
     addToHomeScreen2: "હોમ સ્ક્રીન પર ઉમેરો",
     tapTheShareButtonAt: '<b lang="en">Share</b> બટન {icon} દબાવો (Safari માં નીચે, Chrome માં ઉપર જમણે).',
