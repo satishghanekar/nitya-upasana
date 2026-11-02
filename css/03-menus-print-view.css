@@ -627,13 +627,14 @@ h2[tabindex="-1"]:focus {
 .pract button {
   margin: 0;
 }
-.pract #prgp {
+.pract #prgp,
+.pract #prnx {
   background: var(--accent);
   color: var(--bg);
   font-weight: 600;
 }
 .pract #prgp[hidden],
-.prhow[hidden],
+.pract #prnx[hidden],
 .prsum[hidden],
 .prst[hidden] {
   display: none;
@@ -658,33 +659,6 @@ h2[tabindex="-1"]:focus {
   font-weight: 600;
   color: var(--ink);
   white-space: nowrap;
-}
-/* A phone's What step: how it will print, and Change (How) beside it; Print under them */
-.prhow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  color: var(--muted);
-  font: 400 13px/1.35 var(--lat);
-}
-#prhowt {
-  flex: 1;
-  min-width: 0;
-}
-#prhowt:not([lang="en"]) {
-  font-family: var(--body);
-}
-.pract #prnx {
-  flex: none;
-  min-height: 44px;
-  padding: 0 14px;
-  border: 1px solid var(--rule);
-  border-radius: 10px;
-  background: var(--bg);
-  box-shadow: none;
-  color: var(--accent);
-  font-weight: 600;
 }
 /* the card is centred while it fits; taller than the screen (a phone on its side, or the iPhone's Open in
    Safari state), it starts at the top and the pop-up scrolls */
@@ -760,8 +734,9 @@ h2[tabindex="-1"]:focus {
   #prm:not([data-step="how"]) .prbk,
   #prm[data-step="how"] .prhd .qrt,
   #prm[data-step="what"] .prhw,
+  #prm[data-step="what"] #prgp,
   #prm[data-step="how"] .prwh,
-  #prm[data-step="how"] .prhow {
+  #prm[data-step="how"] #prnx {
     display: none;
   }
 }
@@ -1012,7 +987,7 @@ h2[tabindex="-1"]:focus {
     padding-right: 6px;
   }
   #prm .prbk,
-  #prm .prhow {
+  #prm .pract #prnx {
     display: none;
   }
   .pract {
