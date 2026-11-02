@@ -21,7 +21,7 @@ html[data-sp] {
   overscroll-behavior: contain;
   background: var(--bg);
   color: var(--ink);
-  font: 400 16px/1.35 var(--lat);
+  font: 400 var(--fz-l)/1.35 var(--lat);
 }
 .sp:focus {
   outline: none;
@@ -83,13 +83,13 @@ html[data-sp] {
 }
 .sp-h {
   margin: 22px 6px 8px;
-  font: 600 12.5px/1.2 var(--lat);
+  font: 600 var(--fz-s)/1.2 var(--lat);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
 }
 .sp-h .mr {
-  font: 600 14px/1.2 var(--body);
+  font: 600 var(--fz-m)/1.2 var(--body);
   letter-spacing: 0;
 }
 .sp-card {
@@ -126,14 +126,14 @@ html[data-sp] {
 .sp-l small {
   display: block;
   margin-top: 2px;
-  font-size: 13px;
+  font-size: var(--fz-s);
   font-weight: 400;
   color: var(--muted);
 }
 .sp-v {
   flex: none;
   color: var(--muted);
-  font-size: 15px;
+  font-size: var(--fz-m);
 }
 .sp-ch {
   flex: none;
@@ -158,7 +158,7 @@ html[data-sp] {
   width: 100%;
   height: 100%;
   opacity: 0;
-  font-size: 16px; /* iPhone zooms into a select under 16px */
+  font-size: var(--fz-l); /* iPhone zooms into a select under 16px */
   cursor: pointer;
 }
 /* segmented controls: a soft track with the chosen option raised */
@@ -178,7 +178,7 @@ html[data-sp] {
   padding: 4px 10px;
   border-radius: 8px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--fz-m);
   font-weight: 500;
   text-align: center;
   line-height: 1.15;
@@ -200,7 +200,7 @@ html[data-sp] {
 .sp-seg small {
   display: block;
   margin-top: 2px;
-  font-size: 11.5px;
+  font-size: var(--fz-xs);
   font-weight: 400;
   color: var(--muted);
 }
@@ -217,7 +217,7 @@ html[data-sp] {
 .sp-szv {
   align-self: center;
   min-width: 3.4em;
-  font-size: 13px;
+  font-size: var(--fz-s);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-align: center;
@@ -343,7 +343,7 @@ html[data-sp] {
 /* the maker's name and email, quiet, centred under all the cards (outside their columns) */
 .sp-by {
   margin: 18px 22px 8px;
-  font: 400 13px/1.6 var(--lat);
+  font: 400 var(--fz-s)/1.6 var(--lat);
   text-align: center;
   color: var(--muted);
 }
@@ -359,11 +359,11 @@ html[data-sp] {
   }
   .sp .sp-seg button {
     padding: 4px 6px;
-    font-size: 13px;
+    font-size: var(--fz-s);
   }
   .sp .sp-stk .sp-seg button {
     padding-inline: 2px;
-    font-size: 12.5px;
+    font-size: var(--fz-s);
   }
 }
 /* Phones: the Reading tab, preview and every choice, on one iPhone screen (Satish, 2026-10-27): the preview's heading
@@ -550,7 +550,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
     overflow: visible;
     clip: auto;
     margin: 0 0 0 6px;
-    font: 600 22px/1.2 var(--lat);
+    font: 600 var(--fz-xxl)/1.2 var(--lat);
     color: var(--ink);
   }
   .sp-ttl .mr {
@@ -607,7 +607,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
     height: auto;
     overflow: visible;
     clip: auto;
-    font-size: 15px;
+    font-size: var(--fz-m);
   }
 }
 
@@ -786,12 +786,12 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
 }
 .upmh h2 {
   margin: 0;
-  font: 600 18px/1.3 var(--body);
+  font: 600 var(--fz-l)/1.3 var(--body);
   color: var(--ink);
 }
 .upmh p {
   margin: 2px 0 0;
-  font-size: 14px;
+  font-size: var(--fz-m);
   color: var(--muted);
 }
 .upmi,
@@ -828,7 +828,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   border-radius: 9px;
   background: none;
   color: var(--muted);
-  font: 500 15px var(--lat);
+  font: 500 var(--fz-m) var(--lat);
 }
 .upmd button[aria-pressed="true"] {
   background: var(--bg);
@@ -859,16 +859,16 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   border: 1.5px solid var(--accent);
   border-radius: 50%;
   color: var(--accent);
-  font: 600 14px/25px var(--lat);
+  font: 600 var(--fz-m)/25px var(--lat);
   text-align: center;
 }
 .upms b {
   padding-top: 3px;
   font-weight: 500;
-  font-size: 16px;
+  font-size: var(--fz-l);
 }
 .upms small {
-  font-size: 14px;
+  font-size: var(--fz-m);
   line-height: 1.4;
   color: var(--muted);
 }
@@ -877,7 +877,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   padding: 10px 12px;
   border-radius: 12px;
   background: var(--surface);
-  font-size: 14px;
+  font-size: var(--fz-m);
 }
 .upmk::before {
   content: "✓ ";

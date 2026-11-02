@@ -81,11 +81,11 @@
   align-self: start;
 }
 #tdd .d1 {
-  font: 400 22px/1.3 var(--head);
+  font: 400 var(--fz-xxl)/1.3 var(--head);
   color: var(--ink);
 }
 #tdd .d2 {
-  font: 400 14px/1.35 var(--lat);
+  font: 400 var(--fz-m)/1.35 var(--lat);
   color: var(--muted);
 }
 /* ‹ › beside the date, and Today under them on another day: every part keeps its place on every day (Today's room kept
@@ -100,20 +100,8 @@
 #tdx {
   grid-area: x;
 }
-#tdn .tdnb {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  margin: 0;
-  padding: 0;
-  border: 1px solid var(--hdrl);
-  border-radius: 22px;
-  background: var(--hdrt);
-  color: var(--accent);
-  cursor: pointer;
-}
-#tdn .tdnb:disabled {
+/* (the buttons are the calendar's .cnav) */
+#tdn .cnav:disabled {
   opacity: 0.4;
   cursor: default;
 }
@@ -128,7 +116,7 @@
   border: 0;
   background: none;
   color: var(--accent);
-  font: 600 14px/1.2 var(--lat);
+  font: 600 var(--fz-m)/1.2 var(--lat);
   font-family: inherit;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -138,7 +126,7 @@
 #tdt.off {
   visibility: hidden;
 }
-#tdn .tdnb:focus-visible,
+#tdn .cnav:focus-visible,
 #tdt:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
@@ -177,7 +165,7 @@
   padding: 0;
   border: 0;
   background: none;
-  font: 400 15px/1.4 var(--lat);
+  font: 400 var(--fz-m)/1.4 var(--lat);
   scroll-margin-top: 72px;
 }
 #tsc[lang="mr"] {
@@ -192,7 +180,7 @@
 }
 #tsh {
   margin: 0;
-  font: 400 22px/29px var(--head);
+  font: 400 var(--fz-xxl)/29px var(--head);
   color: var(--accent);
   outline: none;
 }
@@ -206,7 +194,7 @@
 #tsn {
   flex: none;
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--fz-m);
 }
 #tsl {
   margin: 0;
@@ -239,7 +227,7 @@
   flex: none;
   min-width: 1.6em;
   color: var(--muted);
-  font: 400 14px/1 var(--body);
+  font: 400 var(--fz-m)/1 var(--body);
   text-align: right;
 }
 .tt {
@@ -248,13 +236,13 @@
 }
 .tt .t1 {
   display: block;
-  font: 400 19px/26px var(--head);
+  font: 400 var(--fz-xl)/26px var(--head);
   overflow-wrap: anywhere;
 }
 .tt .t2 {
   display: block;
   color: var(--muted);
-  font: 400 12.5px/17px var(--lat);
+  font: 400 var(--fz-s)/17px var(--lat);
 }
 .ttg {
   flex: none;
@@ -263,7 +251,7 @@
   border-radius: 10px;
   background: var(--surface);
   color: var(--muted);
-  font-size: 11.5px;
+  font-size: var(--fz-xs);
   white-space: nowrap;
 }
 #tsc[lang="mr"] .ttg {
@@ -314,7 +302,7 @@
   border-radius: 10px;
   background: none;
   color: var(--ink);
-  font: 550 14.5px/1.25 var(--lat);
+  font: 550 var(--fz-m)/1.25 var(--lat);
   text-align: center;
   cursor: pointer;
 }
@@ -335,7 +323,7 @@
 }
 #tss .tshn {
   color: var(--muted);
-  font-size: 11.5px;
+  font-size: var(--fz-xs);
   font-weight: 500;
   line-height: 1.2;
 }
@@ -558,7 +546,7 @@
 }
 #jlt {
   margin: 0;
-  font: 400 22px/1.3 var(--head);
+  font: 400 var(--fz-xxl)/1.3 var(--head);
   color: var(--accent);
 }
 #jlt [lang="en"] {
@@ -634,14 +622,14 @@
     padding: 6px 2px;
   }
   :root[data-rail="1"] #cal .cd b {
-    font-size: 17px;
+    font-size: var(--fz-l);
   }
   :root[data-rail="1"] #cal .cd .t,
   :root[data-rail="1"] #cal .cd .f,
   :root[data-rail="1"] #cal .cd .fs {
     overflow-wrap: normal;
     word-break: keep-all;
-    font-size: 11.5px;
+    font-size: var(--fz-xs);
   }
   /* Settings across the whole width, as the Library is (its two columns: 09-settings-page.css) */
   :root[data-rail="1"] #panel .sp-pg {
@@ -745,7 +733,7 @@
    days), not the date again in the second language ==== */
 @media (max-width: 379px) {
   #tdd .d1 {
-    font-size: 19px;
+    font-size: var(--fz-xl);
   }
   #tdd .d2t,
   #tdd .dsep {

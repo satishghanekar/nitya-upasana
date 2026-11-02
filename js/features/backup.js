@@ -10,7 +10,7 @@
 // - The browser is asked to keep the data (navigator.storage.persist()) after a backup, a restore or a new person:
 //   not at start-up, because some browsers ask the reader first.
 // - A gentle reminder on the home page (#bkn) when no backup was saved for 30 days (or never, 14 days after the first
-//   visit), with Not now; and a warning (#stw) when this browser can't save here (IndexedDB could not be opened, or a
+//   visit, or at once once someone has made a routine their own and nothing was ever saved), with Not now; and a warning (#stw) when this browser can't save here (IndexedDB could not be opened, or a
 //   write to it failed: until one lands again).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
@@ -260,11 +260,14 @@ export function notes() {
   var w = words(),
     m = getMeta(),
     mem = kind() === "memory" || saveFailed(),
-    remind = !mem && needsReminder(m, new Date());
+    own = list().some(function (p) {
+      return !!p.routine;
+    }),
+    remind = !mem && needsReminder(m, new Date(), own);
   el("stw").hidden = !mem;
   el("stw2").hidden = !mem;
   el("bkn").hidden = !remind;
-  if (remind) el("bknt").textContent = m.lastBackup ? w.remind(day(m.lastBackup)) : w.remindFirst;
+  if (remind) el("bknt").textContent = m.lastBackup ? w.remind(day(m.lastBackup)) : own ? w.remindOwn : w.remindFirst;
   el("pfnt").hidden = !mem && !remind;
   el("bksv").textContent = m.lastBackup ? w.last(day(m.lastBackup)) : w.never;
 }
@@ -275,6 +278,8 @@ export function init() {
   notes();
   onChange(notes);
   onSaveProblem(notes);
+  // a routine made someone's own (js/features/routine-builder.js): never backed up, the reminder comes at once
+  document.addEventListener("nitya-routine", notes);
   // the menu language may change: the notes follow it
   document.addEventListener("click", function (e) {
     if (/** @type {HTMLElement} */ (e.target).closest && /** @type {HTMLElement} */ (e.target).closest("#su")) setTimeout(notes);

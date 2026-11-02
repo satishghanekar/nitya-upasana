@@ -7,12 +7,26 @@ import { FSA } from "../text/autofit.js";
 import { pn } from "../core/apply.js";
 import { apply, fsuMark } from "./bars.js";
 import { fsTap, szSet } from "./settings-panel.js";
-import { setJ, setP } from "./overlays.js";
+import { LAYERS, setJ, setP } from "./overlays.js";
 import { menuWords } from "../core/strings.js";
 
 var pz, szTm, szrTm, szaT, szt, szr, pzF, wz, wzT;
 // Where a pinch does nothing (neither resizes the text nor zooms): the home page
 var NO_PINCH = "#home";
+// What may be open over the text while a pinch still resizes it: Settings (its preview follows the fingers), the
+// Library (its list has the text's size) and the reading sheet. Over anything else (the calendar, the routine builder, a
+// dialog) a pinch does nothing, as on Home: the text it would resize is hidden behind it (Satish, 2026-11-02).
+var PINCH_OVER = ["panel", "jump", "rsh", "pzv"];
+
+/** A pinch (or Ctrl + and −) here leaves the text size alone @param {EventTarget | null} t */
+function still(t) {
+  var el = /** @type {Element | null} */ (t);
+  if (el && el.closest && el.closest(NO_PINCH)) return true;
+  return LAYERS.some(function (l) {
+    var e = document.getElementById(l.id);
+    return PINCH_OVER.indexOf(l.id) < 0 && !!e && !e.hidden;
+  });
+}
 
 export function init() {
   pz = null;
@@ -38,13 +52,17 @@ export function init() {
     function (e) {
       if (e.touches.length === 2 && document.getElementById("pzv").hidden) {
         if (e.cancelable) e.preventDefault();
-        if (e.target.closest && e.target.closest(NO_PINCH)) {
+        if (still(e.target)) {
           pz = null;
           return;
         }
         szr.hidden = true;
         // the words between the fingers stay between them as the text grows or shrinks
-        pz = { d: dist(e) || 1, fs: P.fs, at: anchorAt((e.touches[0].clientX + e.touches[1].clientX) / 2, (e.touches[0].clientY + e.touches[1].clientY) / 2) };
+        pz = {
+          d: dist(e) || 1,
+          fs: P.fs,
+          at: anchorAt((e.touches[0].clientX + e.touches[1].clientX) / 2, (e.touches[0].clientY + e.touches[1].clientY) / 2),
+        };
       }
     },
     { passive: false },
@@ -52,7 +70,7 @@ export function init() {
   document.addEventListener(
     "touchmove",
     function (e) {
-      // a two-finger move that is not resizing the text (it began on the home page) is stopped too
+      // a two-finger move that is not resizing the text (it began on Home or over the calendar) is stopped too
       if (!pz && e.touches.length === 2 && e.cancelable && document.getElementById("pzv").hidden) e.preventDefault();
       if (pz && e.touches.length === 2) {
         if (e.cancelable) e.preventDefault();
@@ -137,6 +155,7 @@ export function init() {
     function (e) {
       if (!e.ctrlKey || !document.getElementById("pzv").hidden) return;
       e.preventDefault();
+      if (still(e.target)) return;
       wz = (wz || P.fs) * Math.exp(-e.deltaY * 0.01);
       clearTimeout(wzT);
       wzT = setTimeout(function () {
@@ -150,11 +169,11 @@ export function init() {
   document.addEventListener("keydown", function (e) {
     if (!(e.ctrlKey || e.metaKey) || e.altKey || !document.getElementById("pzv").hidden) return;
     var k = e.key;
-    if (k === "+" || k === "=") deskSz(P.fs + 2, 1);
-    else if (k === "-" || k === "_") deskSz(P.fs - 2, 1);
-    else if (k === "0") deskSz(0, 0);
-    else return;
+    if (k !== "+" && k !== "=" && k !== "-" && k !== "_" && k !== "0") return;
     e.preventDefault();
+    if (still(null)) return;
+    if (k === "0") deskSz(0, 0);
+    else deskSz(P.fs + (k === "+" || k === "=" ? 2 : -2), 1);
   });
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {

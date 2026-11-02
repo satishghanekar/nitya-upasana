@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.40.0">
+<meta name="version" content="aarti-v1.41.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -330,7 +330,7 @@
           <div class="sp-row sp-stk" id="shrow">
             <span class="sp-l"><span id="shl" data-w="calendar.holHome">Show holidays from</span></span>
             <div class="sp-seg" id="shol" role="group" aria-labelledby="shl">
-              <button type="button" data-v="us" aria-pressed="false"><span data-w="calendar.groups.us">US</span></button>
+              <button type="button" data-v="us" aria-pressed="false"><span data-w="calendar.groups.us">USA</span></button>
               <button type="button" data-v="in" aria-pressed="false"><span data-w="calendar.groups.in">India</span></button>
             </div>
           </div>
@@ -440,7 +440,7 @@
       <button type="button" id="iconb" aria-label="Show the picture full screen: Sunrise picture"><img src="picture-sunrise-360.webp" srcset="picture-sunrise-360.webp 360w, picture-sunrise.webp 940w" sizes="(min-width: 1100px) 440px, 76px" fetchpriority="high" alt="" width="360" height="360"><span id="iconr" hidden></span></button>
       <!-- the date in the reading languages, the day's word after it (Today, Tomorrow, In 3 days), and beside it ‹ ›,
            with Today under them on another day (js/features/today-card.js) -->
-      <p id="tdd"><span id="tdn"><button type="button" id="tdp" class="tdnb" aria-label="Previous day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" id="tdx" class="tdnb" aria-label="Next day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><button type="button" id="tdt" class="off"></button></span><span class="d1" lang="mr"></span><span class="d2" lang="en"><span class="d2t"></span><span class="dsep" aria-hidden="true"> · </span><span id="tdr"></span></span></p>
+      <p id="tdd"><span id="tdn"><button type="button" id="tdp" class="cnav" aria-label="Previous day"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" id="tdx" class="cnav" aria-label="Next day"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><button type="button" id="tdt" class="off"></button></span><span class="d1" lang="mr"></span><span class="d2" lang="en"><span class="d2t"></span><span class="dsep" aria-hidden="true"> · </span><span id="tdr"></span></span></p>
     </div>
     <!-- Welcome (js/features/welcome.js; Satish, 2026-11-02): once, on a new phone's Home, never in the way (Home shows
          under it): the first person's name and their ready-made routine (Short, Daily, Full, Extended; the lists below
@@ -461,7 +461,7 @@
          day in the calendar; "Next 15 days" opens the calendar's 15 days tab -->
     <section id="upw" aria-labelledby="upwh" hidden></section>
     <!-- Notes about saving (js/features/backup.js): this browser can't save here (IndexedDB could not be opened), or a
-         gentle reminder to save a backup file (none for 30 days, or never and 14 days since the first visit) -->
+         gentle reminder to save a backup file (none for 30 days, or never and 14 days since the first visit, or never and someone has made a routine their own) -->
     <div id="pfnt" hidden>
       <div id="stw" class="pfw warn" hidden><p><span data-w="page.thisBrowserCanTSave">This browser can't save here. Use Save a backup file before closing.</span></p><div class="pfwb"><button type="button" id="stws"><span data-w="page.saveABackupFile">Save a backup file</span></button></div></div>
       <div id="bkn" class="pfw" hidden><p id="bknt"></p><div class="pfwb"><button type="button" id="bkns"><span data-w="page.saveABackupFile">Save a backup file</span></button><button type="button" id="bknx"><span data-w="page.notNow">Not now</span></button></div></div>
@@ -645,7 +645,7 @@
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
                 <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the card under the date gives the day's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home's calendar card takes its colour, with its drawing). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Reading → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
-        <li><b>Coming up:</b> at the bottom of the Vedic calendar card, the next festivals, Pradosh and Sankashti from the day shown (three on a phone, five on a tablet or computer), each with its own small drawing: a kite for Sankranti, the gudi, the aapta leaves for Dasara, the moon and the milk for Kojagiri, a phuljhadi, Lakshmi's lotus, Bali's crown and the aarti thali for the four days of Diwali, the moon for Sankashti, the linga for Pradosh, and each saint's own for their days. Pradosh gives that evening's sunset and Sankashti its moonrise. The US's and India's public holidays show with their flag (on the day of a festival, under its name); turn either off in Settings (Screen: <b>Show holidays from</b>). Maharashtra's and Karnataka's are in the calendar. Tap one to see its day in the calendar, or <b>Next 15 days</b> for the calendar's <b>15 days</b> tab. Tap <b>Coming up</b> to fold it to one line, the first of them; it stays folded for you until you open it again. On the day of a festival, Pradosh, Sankashti or a holiday you chose, the calendar card takes its colour, with its drawing after the tithi. The calendar has three tabs, <b>Day</b>, <b>15 days</b> and <b>Month</b>, each with ‹ ›; a day tapped in the month or the 15 days opens on Day, and Back returns.</li>
+        <li><b>Coming up:</b> at the bottom of the Vedic calendar card, the next festivals, Pradosh and Sankashti from the day shown (three on a phone, five on a tablet or computer), each with its own small drawing: a kite for Sankranti, the gudi, the aapta leaves for Dasara, the moon and the milk for Kojagiri, a phuljhadi, Lakshmi's lotus, Bali's crown and the aarti thali for the four days of Diwali, the moon for Sankashti, the linga for Pradosh, and each saint's own for their days. Pradosh gives that evening's sunset and Sankashti its moonrise. The US's and India's public holidays show with their flag (on the day of a festival, under its name); turn either off in Settings (Screen: <b>Show holidays from</b>). Maharashtra's and Karnataka's are in the calendar. Tap one to see its day in the calendar, or <b>Next 15 days</b> for the calendar's <b>15 days</b> tab. Tap <b>Coming up</b> to fold it to one line, the first of them; it stays folded for you until you open it again. On the day of a festival, Pradosh, Sankashti or a holiday you chose, the calendar card takes its colour, with its drawing after the tithi. The calendar has three tabs, <b>Day</b>, <b>15 days</b> and <b>Month</b>, each with ‹ › at the top right, as on Home, and <b>Today</b> under them to come back to today (on Month, to this month); a day tapped in the month or the 15 days opens on Day, and Back returns.</li>
         <li><b>The place</b> is your phone's time zone until you tap the place, with its <b>pin</b>, on the Vedic calendar card on Home, which uses your phone's location (and keeps it up to date each time you open the app, while your phone allows it); the town is worked out on the phone and your location is never sent anywhere. Sunrise, sunset and moonrise are for that place.</li>
       </ul>
 
@@ -676,7 +676,7 @@
         <li><b>Vedic chants</b> (Shree Rudra, the Atharvashirsha, the Purusha Suktam) in one language run on as paragraphs, like a printed booklet. With both languages the lines stay in pairs.</li>
         <li><b>Fold a text:</b> a tap anywhere on its heading (or its round ⌃) folds it down to its heading; tap it again to open it. Your phone remembers this, and going to a folded text from the Library or search opens it.</li>
         <li><b>More room to read:</b> on phones and tablets, while you read a text the top and bottom bars slide away as you scroll down (on Home they stay), leaving a thin strip with the name of the text. Scroll up a little, tap a blank part of the page or the strip, or reach the end of the page to bring them back.</li>
-        <li><b>Pinch</b> (on a computer: a trackpad pinch, or Ctrl + / Ctrl − and Ctrl 0 to reset; ⌘ on a Mac) or use A− / A+ (under <b>Aa</b> in the bottom bar, or in Settings) to change the text size. The page itself never zooms, and on Home a pinch does nothing. The bubble shows the size (100% is the normal size for your screen); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
+        <li><b>Pinch</b> (on a computer: a trackpad pinch, or Ctrl + / Ctrl − and Ctrl 0 to reset; ⌘ on a Mac) or use A− / A+ (under <b>Aa</b> in the bottom bar, or in Settings) to change the text size. The page itself never zooms, and on Home, in the calendar and in the routine builder a pinch does nothing. The bubble shows the size (100% is the normal size for your screen: the same for every text, a little larger on an iPad, and larger again if you have set larger text on your phone or in your browser; a line too long for the screen goes onto a second row, set a little closer, rather than the text shrinking); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
         <li><b>Bottom bar:</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring texts (in a session, the session's); <b>Home</b> (a house with a lamp) goes back to Home; <b>Library</b> (open book) opens the Library and its search; <b>Reading</b> (Aa) opens the reading choices. Each has its word under the icon; on a phone on its side the words are left out to keep the bar low, and on the smallest phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch.</li>
         <li><b>Reading</b> (Aa, bottom bar): slides up the reading choices within reach of your thumb: <b>Language</b> (main, second or both), <b>Text size</b> (A− and A+, with ↺ to go back to the normal size) and <b>Dhrupad</b> (once at the top, or after every verse; in “once” mode, tap <b>↻ ध्रुपद</b> under a stanza to see the refrain, and tap anywhere to close it), plus <b>All settings</b>. Your place stays put as you change them. Tap outside it, ✕ or your phone's Back to close it.</li>
         <li><b>Back:</b> your phone's Back button (or swipe) closes an open menu or box, then goes back to where you were before the last jump, for example from an aarti back to Home.</li>
@@ -709,7 +709,7 @@
       <ul>
         <li><b>Save a backup file</b> (Settings → More → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and routines, and this phone's Library categories, nothing else.</li>
         <li><b>Restore from a file:</b> pick a <i>.nitya</i> file. The site checks it, then shows who will be added, replaced or removed before anything changes; tap <b>Restore</b> to go ahead. Restoring replaces the people on this phone with the ones in the file.</li>
-        <li>A short reminder to save a backup shows on Home now and then (two weeks after you start, then a month after each backup). <b>Not now</b> hides it for two weeks.</li>
+        <li>A short reminder to save a backup shows on Home now and then (two weeks after you start, then a month after each backup). If you change your routine before you have ever saved a backup, it shows straight away: your own routine is kept only on this phone, and deleting the app would lose it. <b>Not now</b> hides it for two weeks.</li>
         <li>If the browser can't save anything (some private windows), a note says so: everything works, but is forgotten when the page closes, so save a backup file first.</li>
       </ul>
 
@@ -733,7 +733,7 @@
         <li><b>Layout</b> (wide screens only): one or two columns of stanzas.</li>
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b>: a switch; tap to turn it on or off.</li>
-        <li><b>Show holidays from</b> (US, India): the public holidays in Coming up on Home, both on at first. Maharashtra's and Karnataka's are in the calendar.</li>
+        <li><b>Show holidays from</b> (USA, India): the public holidays in Coming up on Home, both on at first. Maharashtra's and Karnataka's are in the calendar.</li>
         <li><b>Keep screen on</b>: Off, 15, 30, 45 or 60 minutes after your last touch, key or scroll; after that the phone dims and locks as usual, so a phone left on its stand does not run its battery down. It starts at 30 on phones and tablets and Off on computers.</li>
         <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Routine</b> (the ready-made routine you follow, or your own; see Your routine above), <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
         <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and the version, with whether the site is saved for offline use under it (a green dot: Offline ready); the round button beside it checks for updates (see Good to know below).</li>
@@ -786,7 +786,7 @@
   </div>
 </div>
 <!-- ==== Reading sheet: Aa in the bottom bar slides it up over the bar. Language (main, second, both), text size
-     (A− / A+, back to the fitted size) and dhrupad (once, every verse), within thumb reach; All settings opens
+     (A− / A+, back to the normal size) and dhrupad (once, every verse), within thumb reach; All settings opens
      Settings. A tap outside, ✕, Escape or the phone's Back closes it (js/features/reading-sheet.js) ==== -->
 <div id="rsh" hidden>
   <div class="rsc" role="dialog" aria-labelledby="rsht" tabindex="-1">

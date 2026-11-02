@@ -10,10 +10,14 @@ import { createRequire } from "node:module";
 
 export const PREFS_KEY = "aarti2-prefs";
 
-// Screenshots and printed page counts depend on the machine's font rendering, so each machine type keeps
-// its own: "cloud" (the Claude cloud session, the reference set) and "ci" (GitHub Actions, in the Playwright Docker image).
-// Text snapshots are the same everywhere and are shared.
-export const SNAP_ENV = process.env.SNAPSHOT_ENV || (process.env.CI ? "ci" : "cloud");
+// Screenshots depend on the machine's font rendering. One set is kept: "ci" (GitHub Actions, in the Playwright Docker
+// image), which a Linux machine matches too; a Mac skips them (MAC_SKIPS_PIXELS below). The Claude cloud's own set
+// ("cloud") went out of date and was removed (Satish, 2026-11-02). Text snapshots are the same everywhere.
+export const SNAP_ENV = process.env.SNAPSHOT_ENV || "ci";
+// A Mac draws text a little differently from Linux (CI's Docker image, the Claude cloud), so its screenshots and printed
+// page counts can match neither set: there the comparisons are skipped and left to CI, which checks them on every push
+// (Satish, 2026-11-02). SNAPSHOT_ENV=ci set by hand compares anyway.
+export const MAC_SKIPS_PIXELS = process.platform === "darwin" && !process.env.CI && !process.env.SNAPSHOT_ENV;
 // 2026-10-15 10:00 in Columbus: a normal day, a few days before the next Sankashti
 export const FIXED_NOW = new Date("2026-10-15T10:00:00-04:00");
 

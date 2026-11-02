@@ -497,3 +497,17 @@ test("CSS: no new !important, :root:root boosts or unlisted breakpoints (L1, L2)
   const unlisted = widths.filter((w) => !readme.includes(w + "px"));
   expect(unlisted, "breakpoints missing from css/README.md").toEqual([]);
 });
+
+// The menus' and labels' sizes come from the six in css/01-theme.css (--fz-*, Satish, 2026-11-02); the text read has its
+// own (--fs, em); the printout has its own (pt). Left in pixels: two glyphs (the splash's, A+ in the reading sheet).
+test("CSS: menu and label sizes only from the six in css/01-theme.css", () => {
+  const dir = new URL("../css/", import.meta.url);
+  const css = readdirSync(dir)
+    .filter((f) => f.endsWith(".css") && !/^(00-fonts|01-theme|15-print)/.test(f))
+    .map((f) => readFileSync(new URL(f, dir), "utf8"))
+    .join("\n");
+  const bare = [...css.matchAll(/font-size:\s*([\d.]+)px/g)].map((m) => m[1]).sort();
+  expect(bare, "font-size in px").toEqual(["26", "30"]);
+  const short = [...css.matchAll(/\bfont:\s*(?:(?:italic|normal|small-caps|bold|\d{3})\s+)*([\d.]+)px/g)].map((m) => m[0]);
+  expect(short, "font: … Npx").toEqual([]);
+});

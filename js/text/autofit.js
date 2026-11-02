@@ -2,32 +2,18 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root, secs } from "../core/page.js";
-import { LEAD, P, dfs } from "../core/state.js";
-import { ZW } from "./line-breaks.js";
+import { P, dfs } from "../core/state.js";
 
-var VW, MQL, FR, CW, MQP;
+var MQP;
 // FSA: the automatic size for this screen (read by the size readouts in Settings, the reading sheet and the pinch);
 // fontN: how many web fonts had loaded at the last fit
 export var FSA = 0;
 var fontN = -1;
 
 export function init() {
-  // Performance: the window size, read once and kept until the window is resized. On phones the browser has to
-  // lay the whole page out before it can answer innerWidth/innerHeight if anything on the page changed, so
-  // reading them in apply() and the auto-fit (after a language switch, say) cost an extra full-page layout.
-  // (Where only a comparison is needed, apply() and ratio() ask media queries instead, which never wait for layout.)
-  VW = 0;
-  MQL = matchMedia("(orientation: landscape)");
-  addEventListener("resize", vwReset);
-  addEventListener("orientationchange", vwReset);
-  // Auto-fit: largest text size (up to the device default) at which every verse line fits the screen width on one row.
-  FR = {};
   // FSA: the automatic size for this screen, worked out even when the reader has chosen a size,
   // so the pinch bubble can show sizes as a percentage of it (100% = default)
   FSA = 0;
-  // The column width depends only on the window and layout, not on the text size or language,
-  // so it is remembered: reading it would make the browser lay out the whole page an extra time
-  CW = {};
   addEventListener("resize", pullSoon);
   fontN = -1;
   MQP = matchMedia("print");
@@ -42,100 +28,12 @@ export function init() {
   }
 }
 
-function vw() {
-  return VW || (VW = innerWidth);
-}
-
-function vwReset() {
-  VW = 0;
-}
-
-function segs(p) {
-  var o = [],
-    t = "";
-  [].forEach.call(p.childNodes, function (n) {
-    if (n.nodeName === "BR") {
-      o.push(t);
-      t = "";
-    } else {
-      t += n.textContent;
-    }
-  });
-  o.push(t);
-  var r = [];
-  o.forEach(function (x) {
-    x.split(ZW).forEach(function (y) {
-      y = y.trim();
-      if (y) r.push(y);
-    });
-  });
-  return r;
-}
-
-function ratio() {
-  // cached per language / dhrupad / layout / orientation
-  var k = [P.lang, LEAD, P.ind, P.fnt, P.tr, P.ref, root.getAttribute("data-cols"), root.getAttribute("data-rail"), MQL.matches ? "l" : "p", fontsN()].join(
-    "|",
-  );
-  if (FR[k]) return FR[k];
-  // measured at the device default size, as on first load: some layouts (two columns) size their columns in em,
-  // so measuring at the current size would give a different answer each time and the size would creep down
-  var was = root.style.getPropertyValue("--fs"),
-    base = dfs(),
-    // (setting the same size again would still make the browser redo the page's styles, so it is skipped)
-    same = was === base + "px";
-  if (!same) root.style.setProperty("--fs", base + "px");
-  // Performance: the page is read in three passes so the browser lays it out only twice, instead of once
-  // for every verse line (the old one-span-per-line loop cost over a second on a mid-range phone).
-  // 1. read: each visible line's free width and font (every read here shares one layout)
-  var w = document.querySelector(".wrap"),
-    W = w ? w.clientWidth : vw() - 32,
-    r = 0,
-    rows = [];
-  [].forEach.call(document.querySelectorAll(P.lang === "en" || LEAD === "en" ? ".verse .en p" : ".verse .mr p"), function (p) {
-    if (!p.offsetParent) return;
-    // a Vedic chant in one language runs on as paragraphs, so its long lines need not fit on one row
-    if (P.lang !== "both" && p.closest(".ash.prose")) return;
-    var cs = getComputedStyle(p),
-      avail = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    if (!avail) return;
-    rows.push({ p: p, inset: (W - avail) / base, ff: cs.fontFamily, fz: cs.fontSize, fw: cs.fontWeight });
-  });
-  // 2. write: one off-screen span per line segment, in the paragraph's font, each on its own row
-  var m = document.createElement("div"),
-    spans = [];
-  m.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;contain:layout style size;width:0;height:0";
-  rows.forEach(function (row) {
-    segs(row.p).forEach(function (t) {
-      var s = document.createElement("span");
-      s.style.fontFamily = row.ff;
-      s.style.fontSize = row.fz;
-      s.style.fontWeight = row.fw;
-      s.textContent = t;
-      m.appendChild(s);
-      m.appendChild(document.createElement("br"));
-      spans.push({ s: s, inset: row.inset });
-    });
-  });
-  document.body.appendChild(m);
-  // 3. read: the widths (one layout for all of them); the widest line, in ems plus its column's inset, wins
-  spans.forEach(function (x) {
-    var q = x.s.getBoundingClientRect().width / base + x.inset;
-    if (q > r) r = q;
-  });
-  m.remove();
-  if (!same) root.style.setProperty("--fs", was);
-  return (FR[k] = r);
-}
-
+// The text's size: the default for this screen (dfs(), js/core/state.js), the same for every text, unless the reader
+// chose one (pinch, A− / A+). It once shrank (to 18px) until the widest line fitted the screen, measured on the first
+// text opened, so texts read small on phones and the size hung on which text came first (Satish, 2026-11-02): a long
+// line now wraps instead, its two rows closer together than two lines (css/02-core.css).
 export function autoFs() {
-  // ratio() first: it lays the page out anyway, so the reads below come free (when the size is unchanged)
-  var r = ratio(),
-    wk = [vw(), root.getAttribute("data-cols"), root.getAttribute("data-rail")].join("|"),
-    w = document.querySelector(".wrap"),
-    cw = CW[wk] || (CW[wk] = w ? w.clientWidth : vw() - 32);
-  if (!r || !cw) return;
-  var f = Math.max(18, Math.min(dfs(), Math.floor((cw * 0.98) / r)));
+  var f = dfs();
   FSA = f;
   // the Library's list is sized from it: the same share of its own size as the text is of this one (13-library.css)
   root.style.setProperty("--fsa", String(f));
@@ -148,7 +46,6 @@ export function autoFs() {
 
 // Web fonts can arrive after the first fit; measure again once they have loaded
 export function refit() {
-  for (var k in FR) delete FR[k];
   autoFs();
   pullSoon();
 }

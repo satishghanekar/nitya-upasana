@@ -18,6 +18,8 @@ export default {
     saved: "Backup file saved",
     shared: "Backup file ready",
     remindFirst: "Your settings and routine are kept only on this phone. Save a backup file now and then, in case the phone clears website data.",
+    remindOwn:
+      "Your routine is now your own, and it is kept only on this phone. Save a backup file so it is not lost if the app is deleted or the phone clears website data.",
     /** @param {string} d */
     remind: function (d) {
       return "Your last backup file was saved on " + d + ". Save a new one?";
@@ -430,7 +432,7 @@ export default {
     kinds: { fest: "Festivals", sk: "Sankashti", pradosh: "Pradosh", hol: "Holidays" },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
     holHome: "Show holidays from",
-    groups: { us: "US", in: "India", mh: "Maharashtra", ka: "Karnataka" },
+    groups: { us: "USA", in: "India", mh: "Maharashtra", ka: "Karnataka" },
   },
   // The top bar (js/features/bars.js)
   bar: {
