@@ -40,7 +40,8 @@ There is no build step. The files in this repository are exactly what the site s
 | `picture-sunrise.webp`, `picture-midday.webp`, `picture-sunset.webp` and their `-360` versions | The app's picture for each time of day: 360px for Home, 940px for the full-screen view. |
 | `icon-*.png`, `apple-touch-icon*.png`, `favicon-midday-32.png`, `favicon-sunset-32.png` | The app icon (the sunrise picture; phones copy it when the app is installed, so it does not change with the time of day) and the browser tab icons for the afternoon and evening. |
 | `share.jpg` | The picture shown in link previews (WhatsApp and others). |
-| `originals/` | The pictures exactly as Satish supplied them. Not loaded by the site; the site's pictures are cut from them. |
+
+The pictures exactly as Satish supplied them, which these were cut from, were removed on 2026-11-02 (everything here is published, and the site has what it needs); they are in the repository's history, `originals/`, if ever needed.
 | `manifest.json` | Name, colours and icons used when the site is added to a Home Screen. |
 | `_headers` | How long phones may keep each kind of file before asking again (read by Cloudflare Pages). |
 | `tests/` | The automated tests (see `tests/README.md`). Not part of the site. |
