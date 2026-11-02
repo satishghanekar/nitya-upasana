@@ -1275,6 +1275,28 @@ test("print builder: the Routine tab: which routine, when and which session @chr
   await context.close();
 });
 
+// The preview and the page count are drawn in frames of their own, without a <base>: Safari refuses one there (the
+// Content-Security-Policy's base-uri) and says so in the console, at times only (the 2026-11-02 walk-through found it
+// as a person on Daily printed Full for the week). The frames have the page's address anyway (document.open()).
+test("print builder: the preview and the page count drawn without a <base>, nothing in the console @mobile", async ({ page }) => {
+  const errors = [];
+  await openSite(page, SETUPS.marathi, { errors, welcome: true });
+  await page.locator('#wlcb [data-v="daily"]').click();
+  await page.locator("#wlcs").click();
+  await openPrintBuilder(page);
+  await page.locator("#prtab-routine").click();
+  await page.locator(".prwho").selectOption("base:full");
+  await page.locator(".prwhen").selectOption("week");
+  if (await page.locator("#prnx").isVisible()) await page.locator("#prnx").click();
+  await expect(page.locator("#prsum b")).toHaveText(/^about \d+ pages$/);
+  const frames = page.locator('iframe[title="Preview"], iframe[title="Pages"]');
+  await expect(frames).toHaveCount(2);
+  for (const f of await frames.all()) expect(await f.evaluate((x) => x.contentDocument.querySelectorAll("base").length)).toBe(0);
+  // and the preview's text is in the site's own fonts (they load by the page's address)
+  await expect.poll(() => page.locator('iframe[title="Preview"]').evaluate((x) => [...x.contentDocument.fonts].some((f) => f.status === "loaded"))).toBe(true);
+  expect(errors).toEqual([]);
+});
+
 // The Routine tab's lists in every engine (the 2026-11-02 walk-through: Safari kept them 24px tall, and an iPhone
 // zooms into a select under 16px): a whole tap target, 16px text
 test("print builder: Routine and When are 44px tall with 16px text, Safari too @mobile", async ({ page }) => {
