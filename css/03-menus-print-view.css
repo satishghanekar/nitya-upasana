@@ -736,7 +736,9 @@ h2[tabindex="-1"]:focus {
   #prm[data-step="what"] .prhw,
   #prm[data-step="what"] #prgp,
   #prm[data-step="how"] .prwh,
-  #prm[data-step="how"] #prnx {
+  #prm[data-step="how"] #prnx,
+  /* about how many pages: only once How to print is chosen, as the language, page and font change it (Satish, 2026-11-02) */
+  #prm[data-step="what"] #prsum b {
     display: none;
   }
 }
