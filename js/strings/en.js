@@ -277,21 +277,17 @@ export default {
       return n + (n === 1 ? " text" : " texts");
     },
     pick: "Pick at least one text",
-    tabs: { texts: "Library", today: "Today", routine: "Routine" },
-    todayInfo: "Tap a session to print its texts.",
-    allToday: "All of today",
-    /** @param {string} d the weekday */
-    allDay: function (d) {
-      return "All of " + d;
-    },
-    empty: "No texts",
+    tabs: { texts: "Library", routine: "Routine" },
     who: "Whose routine",
+    when: "When",
+    /** The day Home shows, when it is today @param {string} d the weekday */
+    today: function (d) {
+      return "Today · " + d;
+    },
     week: "Whole week",
-    oneDay: "One day",
-    days: "Days",
     sessions: "Sessions",
+    allS: "All",
     order: "Printed once each, in routine order",
-    noTexts: "no texts",
     nothing: "No texts on the days and at the times chosen",
   },
   // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
@@ -645,7 +641,7 @@ export default {
       "Printing does not open from the Home Screen app on iPhone. Tap <b>Open in Safari</b>: your choices go with it and the printout is made ready there. If Safari does not open, copy the link and paste it into Safari.",
     thisBrowserDidNotOpen:
       "This browser did not open the print dialog. Tap the browser's <b>Share</b> button and choose <b>Print</b>. If this page opened inside another app, tap <b>Open in Safari</b>: your choices go with it.",
-    nextHowToPrint: "Next: how to print ›",
+    changeHow: "Change",
     print: "Print",
     addToHomeScreen2: "Add to Home Screen",
     tapTheShareButtonAt: 'Tap the <b lang="en">Share</b> button {icon} (at the bottom in Safari, top right in Chrome).',

@@ -32,7 +32,7 @@
   .sp-seg,
   .prrow .prseg,
   .prtabs,
-  .prses[aria-pressed="true"],
+  .prss,
   #prfn button[aria-pressed="true"],
   .sp-prev {
     background: var(--surface);
