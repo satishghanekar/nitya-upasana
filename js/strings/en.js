@@ -339,10 +339,6 @@ export default {
     pick: "Pick at least one text",
     tabs: { texts: "Library", routine: "Routine" },
     who: "Routine",
-    /** the person reading's routine, first in Routine @param {string} n */
-    yours: function (n) {
-      return "Yours (" + n + ")";
-    },
     when: "When",
     /** The day Home shows, when it is today @param {string} d the weekday */
     today: function (d) {

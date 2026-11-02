@@ -94,11 +94,12 @@ test("Later puts it off to the next visit, twice at most @mobile", async ({ page
   await expect(page.locator("#who")).toHaveAccessibleName("Profile: Me");
 });
 
-test("Start with the name left empty: still Me @mobile", async ({ page }) => {
+test("Start with the name left empty: still Me, and no greeting by a name not given @mobile", async ({ page }) => {
   await openSite(page, SETUPS.english, { welcome: true, now: MORNING });
   await page.locator("#wlcs").click();
   await expect(card(page)).toBeHidden();
   await expect(page.locator("#who")).toHaveAccessibleName("Profile: Me");
+  await expect(page.locator("#fl")).not.toContainText("Welcome");
 });
 
 test("opened at a text (a shared link): no card, and the visit not counted, so Home's next visit has it @mobile", async ({ page }) => {

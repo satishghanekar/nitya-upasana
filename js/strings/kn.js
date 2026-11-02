@@ -339,10 +339,6 @@ export default {
     pick: "ಕನಿಷ್ಠ ಒಂದು ಪಠ್ಯವನ್ನು ಆರಿಸಿ",
     tabs: { texts: "ಸಂಗ್ರಹ", routine: "ದಿನಚರಿ" },
     who: "ದಿನಚರಿ",
-    /** @param {string} n */
-    yours: function (n) {
-      return "ನಿಮ್ಮದು (" + n + ")";
-    },
     when: "ಯಾವಾಗ",
     /** The day Home shows, when it is today @param {string} d the weekday */
     today: function (d) {

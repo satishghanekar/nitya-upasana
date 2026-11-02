@@ -144,7 +144,8 @@ export function init() {
     if (p && typed && typed !== p.name) update(p.id, { name: typed, initials: "", colour: p.colour });
     var now = active();
     close(ENOUGH);
-    if (now) note(menuWords("welcome").done(now.name), 2500);
+    // greeted by the name typed ("Welcome, Me" would read oddly)
+    if (now && typed) note(menuWords("welcome").done(now.name), 2500);
   });
   el("wlcx").addEventListener("click", function () {
     close(seen() + 1);

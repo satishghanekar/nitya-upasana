@@ -26,9 +26,9 @@ import { menuWords } from "../core/strings.js";
  * @typedef {{ category: { id: string, name: { mr: string, en: string } }, texts: WhatText[] }} WhatShelf
  * @typedef {{ session: string, name: string, ids: string[], day?: number, today?: boolean }} WhatSession  one of the
  *   sessions of the day Home shows and its texts, with that day's weekday and whether it is today
- * @typedef {{ id: string, name: string, label?: string, routine: import("../core/routine.js").Routine | null }} WhatPerson
- *   a routine to print: the person reading's (their own, or the ready-made one they follow; label "Yours (Aai)") or a
- *   ready-made one; name heads a week's printout
+ * @typedef {{ id: string, name: string, routine: import("../core/routine.js").Routine | null }} WhatPerson  a routine to
+ *   print: the person reading's, by their name (their own, or the ready-made one they follow), or a ready-made one; the
+ *   name is the list's and heads a week's printout
  * @typedef {{ shelves: () => WhatShelf[], today: () => WhatSession[], people: () => WhatPerson[], me: () => string,
  *   onChange: () => void }} WhatOptions
  * @typedef {{ who: string, span: "week" | "day", days: number[], day: number, sessions: string[] }} RoutineChoice  the
@@ -246,7 +246,7 @@ export function createWhat(el, o) {
       '<select class="prwho" data-rk="who">' +
       ps
         .map(function (x) {
-          return '<option value="' + esc(x.id) + '"' + (x.id === me ? " selected" : "") + ">" + esc(x.label || x.name) + "</option>";
+          return '<option value="' + esc(x.id) + '"' + (x.id === me ? " selected" : "") + ">" + esc(x.name) + "</option>";
         })
         .join("") +
       "</select>" +
