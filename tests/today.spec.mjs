@@ -694,15 +694,15 @@ test("‹ › go no further than a year from today", async ({ page }) => {
   await expect(page.locator("#tdx")).toBeEnabled();
 });
 
-test("on another day, Print on Home prints that day's session, its tab named by the day @mobile", async ({ page }) => {
+test("on another day, Print on Home prints that day's session, When named by the day @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#tdx").click();
   await page.locator("#asp").click();
-  await expect(page.locator("#prtab-today")).toHaveText("Monday");
-  await expect(page.locator("#prtab-today")).toHaveAttribute("aria-selected", "true");
-  await expect(page.locator('#prtp-today .prses[data-s="evening"]')).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator('#prtp-today .prses[data-s="all"] .prsn')).toHaveText("All of Monday");
+  await expect(page.locator("#prtab-routine")).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(".prwhen option:checked")).toHaveText("Monday");
+  await expect(page.locator('#prtp-routine [data-rses="evening"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#prtp-routine .prcg")).toHaveText("Monday · Evening");
 });
 
 test("a page hidden for over half an hour on another day shows today when it comes back @mobile", async ({ page }) => {
@@ -779,15 +779,15 @@ test("Home has no Print this session or Library line; Print in the top bar print
   await expect(page.locator("#prm")).toBeVisible();
   await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
 });
-// on a phone it opens at What, on the Today tab with that session chosen, so another one is a tap away
-test("on Home, Print in the bottom bar prints the session Home shows, chosen on the Today tab @mobile", async ({ page }) => {
+// on a phone it opens at What, on the Routine tab with that session chosen, so another one is a tap away
+test("on Home, Print in the bottom bar prints the session Home shows, chosen on the Routine tab @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#asp").click();
   await expect(page.locator("#prm")).toBeVisible();
   await expect(page.locator("#prm")).toHaveAttribute("data-step", "what");
-  await expect(page.locator("#prtab-today")).toHaveAttribute("aria-selected", "true");
-  await expect(page.locator('#prtp-today .prses[data-s="evening"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#prtab-routine")).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator('#prtp-routine [data-rses="evening"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
 });
 // a session left running (the phone's Back to Home leaves it so) does not change that: on Home, Print prints what Home shows
@@ -801,8 +801,8 @@ test("on Home, Print prints the session Home shows, not one still being read @mo
   await expect(page.locator("html")).toHaveAttribute("data-run", "1");
   await pickTab(page, "evening");
   await page.locator("#asp").click();
-  await expect(page.locator("#prtab-today")).toHaveAttribute("aria-selected", "true");
-  await expect(page.locator('#prtp-today .prses[data-s="evening"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#prtab-routine")).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator('#prtp-routine [data-rses="evening"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
 });
 test("Home on its own: the pieces show once a text is opened, and go again on the way home @mobile", async ({ page }) => {

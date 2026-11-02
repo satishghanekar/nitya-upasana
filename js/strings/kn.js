@@ -280,21 +280,17 @@ export default {
     none: "ಯಾವ ಪಠ್ಯವೂ ಹೊಂದುವುದಿಲ್ಲ",
     texts: texts,
     pick: "ಕನಿಷ್ಠ ಒಂದು ಪಠ್ಯವನ್ನು ಆರಿಸಿ",
-    tabs: { texts: "ಸಂಗ್ರಹ", today: "ಇಂದು", routine: "ದಿನಚರಿ" },
-    todayInfo: "ಒಂದು ಸಮಯದ ಪಠ್ಯಗಳನ್ನು ಮುದ್ರಿಸಲು ಅದನ್ನು ಒತ್ತಿ.",
-    allToday: "ಇಂದಿನ ಎಲ್ಲವೂ",
-    /** @param {string} d the weekday */
-    allDay: function (d) {
-      return d + ": ಎಲ್ಲವೂ";
-    },
-    empty: "ಪಠ್ಯಗಳಿಲ್ಲ",
+    tabs: { texts: "ಸಂಗ್ರಹ", routine: "ದಿನಚರಿ" },
     who: "ಯಾರ ದಿನಚರಿ",
+    when: "ಯಾವಾಗ",
+    /** The day Home shows, when it is today @param {string} d the weekday */
+    today: function (d) {
+      return "ಇಂದು · " + d;
+    },
     week: "ಇಡೀ ವಾರ",
-    oneDay: "ಒಂದು ದಿನ",
-    days: "ದಿನಗಳು",
     sessions: "ಸಮಯಗಳು",
+    allS: "ಎಲ್ಲ",
     order: "ಪ್ರತಿಯೊಂದೂ ಒಮ್ಮೆ, ದಿನಚರಿಯ ಕ್ರಮದಲ್ಲಿ",
-    noTexts: "ಪಠ್ಯಗಳಿಲ್ಲ",
     nothing: "ಆರಿಸಿದ ದಿನಗಳಲ್ಲಿ ಮತ್ತು ಸಮಯಗಳಲ್ಲಿ ಪಠ್ಯಗಳಿಲ್ಲ",
   },
   // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
@@ -645,7 +641,7 @@ export default {
       "iPhone ನಲ್ಲಿ ಹೋಮ್ ಸ್ಕ್ರೀನ್ ಆ್ಯಪ್‌ನಿಂದ ಮುದ್ರಣ ತೆರೆಯುವುದಿಲ್ಲ. <b>Safari ಯಲ್ಲಿ ತೆರೆಯಿರಿ</b> ಒತ್ತಿ: ನಿಮ್ಮ ಆಯ್ಕೆಗಳು ಜೊತೆಗೆ ಹೋಗುತ್ತವೆ ಮತ್ತು ಮುದ್ರಣ ಅಲ್ಲಿ ಸಿದ್ಧವಾಗುತ್ತದೆ. Safari ತೆರೆಯದಿದ್ದರೆ, ಲಿಂಕ್ ನಕಲಿಸಿ Safari ಯಲ್ಲಿ ಅಂಟಿಸಿ.",
     thisBrowserDidNotOpen:
       'ಈ ಬ್ರೌಸರ್ ಮುದ್ರಣ ಸಂವಾದವನ್ನು ತೆರೆಯಲಿಲ್ಲ. ಬ್ರೌಸರ್‌ನ <b lang="en">Share</b> ಬಟನ್ ಒತ್ತಿ <b lang="en">Print</b> ಆರಿಸಿ. ಈ ಪುಟ ಬೇರೆ ಆ್ಯಪ್‌ನೊಳಗೆ ತೆರೆದಿದ್ದರೆ, <b>Safari ಯಲ್ಲಿ ತೆರೆಯಿರಿ</b> ಒತ್ತಿ: ನಿಮ್ಮ ಆಯ್ಕೆಗಳು ಜೊತೆಗೆ ಹೋಗುತ್ತವೆ.',
-    nextHowToPrint: "ಮುಂದೆ: ಹೇಗೆ ಮುದ್ರಿಸಬೇಕು ›",
+    changeHow: "ಬದಲಿಸಿ",
     print: "ಮುದ್ರಿಸಿ",
     addToHomeScreen2: "ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಸೇರಿಸಿ",
     tapTheShareButtonAt: '<b lang="en">Share</b> ಬಟನ್ {icon} ಒತ್ತಿ (Safari ಯಲ್ಲಿ ಕೆಳಗೆ, Chrome ನಲ್ಲಿ ಮೇಲೆ ಬಲಕ್ಕೆ).',

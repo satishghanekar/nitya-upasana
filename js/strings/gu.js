@@ -279,21 +279,17 @@ export default {
     none: "કોઈ પાઠ મળતો નથી",
     texts: texts,
     pick: "ઓછામાં ઓછો એક પાઠ પસંદ કરો",
-    tabs: { texts: "સંગ્રહ", today: "આજ", routine: "દિનચર્યા" },
-    todayInfo: "કોઈ સમયના પાઠ છાપવા તેને દબાવો.",
-    allToday: "આજનું બધું",
-    /** @param {string} d the weekday */
-    allDay: function (d) {
-      return d + ": બધું";
-    },
-    empty: "પાઠ નથી",
+    tabs: { texts: "સંગ્રહ", routine: "દિનચર્યા" },
     who: "કોની દિનચર્યા",
+    when: "ક્યારે",
+    /** The day Home shows, when it is today @param {string} d the weekday */
+    today: function (d) {
+      return "આજે · " + d;
+    },
     week: "આખું અઠવાડિયું",
-    oneDay: "એક દિવસ",
-    days: "દિવસો",
     sessions: "સમય",
+    allS: "બધું",
     order: "દરેક એક વાર, દિનચર્યાના ક્રમમાં",
-    noTexts: "પાઠ નથી",
     nothing: "પસંદ કરેલા દિવસો અને સમયે પાઠ નથી",
   },
   // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
@@ -633,7 +629,7 @@ export default {
       "iPhone પર હોમ સ્ક્રીન ઍપમાંથી છાપવાનું ખૂલતું નથી. <b>Safari માં ખોલો</b> દબાવો: તમારી પસંદગીઓ સાથે જશે અને છાપવાનું ત્યાં તૈયાર થશે. Safari ન ખૂલે તો, લિંકની નકલ કરી Safari માં ચોંટાડો.",
     thisBrowserDidNotOpen:
       'આ બ્રાઉઝરે છાપવાનો સંવાદ ખોલ્યો નહીં. બ્રાઉઝરનું <b lang="en">Share</b> બટન દબાવી <b lang="en">Print</b> પસંદ કરો. આ પાનું બીજી ઍપની અંદર ખૂલ્યું હોય તો, <b>Safari માં ખોલો</b> દબાવો: તમારી પસંદગીઓ સાથે જશે.',
-    nextHowToPrint: "આગળ: કેવી રીતે છાપવું ›",
+    changeHow: "બદલો",
     print: "છાપો",
     addToHomeScreen2: "હોમ સ્ક્રીન પર ઉમેરો",
     tapTheShareButtonAt: '<b lang="en">Share</b> બટન {icon} દબાવો (Safari માં નીચે, Chrome માં ઉપર જમણે).',

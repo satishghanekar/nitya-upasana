@@ -276,21 +276,17 @@ export default {
       return num(n) + " रचना";
     },
     pick: "किमान एक रचना निवडा",
-    tabs: { texts: "संग्रह", today: "आज", routine: "दिनक्रम" },
-    todayInfo: "सत्र निवडा: त्यातील रचना प्रिंट होतील.",
-    allToday: "आजचे सर्व",
-    /** @param {string} d the weekday */
-    allDay: function (d) {
-      return d + "चे सर्व";
-    },
-    empty: "एकही रचना नाही",
+    tabs: { texts: "संग्रह", routine: "दिनक्रम" },
     who: "कोणाचा दिनक्रम",
+    when: "केव्हा",
+    /** The day Home shows, when it is today @param {string} d the weekday */
+    today: function (d) {
+      return "आज · " + d;
+    },
     week: "पूर्ण आठवडा",
-    oneDay: "एक दिवस",
-    days: "वार",
     sessions: "वेळ",
+    allS: "सर्व",
     order: "प्रत्येक रचना एकदाच, दिनक्रमाच्या क्रमाने",
-    noTexts: "रचना नाहीत",
     nothing: "निवडलेल्या वारी आणि वेळी एकही रचना नाही",
   },
   // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
@@ -626,7 +622,7 @@ export default {
       "iPhone वर होम स्क्रीनवरील ॲपमधून प्रिंट उघडत नाही. <b>Safari मध्ये उघडा</b> दाबा: तुमच्या निवडी सोबत जातात आणि तिथे प्रिंट तयार होते. Safari उघडले नाही तर लिंक कॉपी करा आणि Safari मध्ये पेस्ट करा.",
     thisBrowserDidNotOpen:
       "या ब्राउझरने प्रिंट विंडो उघडली नाही. ब्राउझरचे <b>शेअर</b> बटण दाबा आणि <b>प्रिंट</b> निवडा. दुसऱ्या ॲपमधून उघडले असल्यास <b>Safari मध्ये उघडा</b> दाबा: तुमच्या निवडी सोबत जातात.",
-    nextHowToPrint: "पुढे: कसे प्रिंट करायचे ›",
+    changeHow: "बदला",
     print: "प्रिंट",
     addToHomeScreen2: "होम स्क्रीनवर जोडा",
     tapTheShareButtonAt: "शेअर बटण {icon} दाबा (Safari मध्ये खाली, Chrome मध्ये वर उजवीकडे).",

@@ -280,21 +280,17 @@ export default {
     none: "ఏ పాఠమూ సరిపోలలేదు",
     texts: texts,
     pick: "కనీసం ఒక పాఠాన్ని ఎంచుకోండి",
-    tabs: { texts: "సంగ్రహం", today: "ఈరోజు", routine: "దినచర్య" },
-    todayInfo: "ఒక సమయం పాఠాలను ముద్రించడానికి దాన్ని నొక్కండి.",
-    allToday: "ఈరోజువన్నీ",
-    /** @param {string} d the weekday */
-    allDay: function (d) {
-      return d + ": అన్నీ";
-    },
-    empty: "పాఠాలు లేవు",
+    tabs: { texts: "సంగ్రహం", routine: "దినచర్య" },
     who: "ఎవరి దినచర్య",
+    when: "ఎప్పుడు",
+    /** The day Home shows, when it is today @param {string} d the weekday */
+    today: function (d) {
+      return "ఈరోజు · " + d;
+    },
     week: "వారమంతా",
-    oneDay: "ఒక రోజు",
-    days: "రోజులు",
     sessions: "సమయాలు",
+    allS: "అన్నీ",
     order: "ప్రతిదీ ఒకసారి, దినచర్య క్రమంలో",
-    noTexts: "పాఠాలు లేవు",
     nothing: "ఎంచుకున్న రోజుల్లో, సమయాల్లో పాఠాలు లేవు",
   },
   // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
@@ -639,7 +635,7 @@ export default {
       "iPhone లో హోమ్ స్క్రీన్ యాప్ నుండి ముద్రణ తెరుచుకోదు. <b>Safari లో తెరువు</b> నొక్కండి: మీ ఎంపికలు దానితో వెళ్తాయి, ముద్రణ అక్కడ సిద్ధమవుతుంది. Safari తెరుచుకోకపోతే, లింక్ కాపీ చేసి Safari లో అతికించండి.",
     thisBrowserDidNotOpen:
       'ఈ బ్రౌజర్ ముద్రణ డైలాగ్‌ను తెరవలేదు. బ్రౌజర్ <b lang="en">Share</b> బటన్ నొక్కి <b lang="en">Print</b> ఎంచుకోండి. ఈ పేజీ వేరే యాప్ లోపల తెరుచుకుంటే, <b>Safari లో తెరువు</b> నొక్కండి: మీ ఎంపికలు దానితో వెళ్తాయి.',
-    nextHowToPrint: "తర్వాత: ఎలా ముద్రించాలి ›",
+    changeHow: "మార్చండి",
     print: "ముద్రించు",
     addToHomeScreen2: "హోమ్ స్క్రీన్‌కు జోడించు",
     tapTheShareButtonAt: '<b lang="en">Share</b> బటన్ {icon} నొక్కండి (Safari లో కింద, Chrome లో పైన కుడివైపు).',

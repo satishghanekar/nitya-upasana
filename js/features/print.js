@@ -333,8 +333,8 @@ export function init() {
     // mode: "one" (one language) or "side" (both, side by side). ids: the texts printed (their Library ids), or null for
     // every text. rp: a routine printout (the builder's Routine tab): its texts in routine order, page 1 with the week at
     // a glance, and each text's tag under its title. into: where to write it (the print view, or the preview's page)
-    // sp: a session from Home (the builder's Today tab): its texts in Home's order, the contents headed by the day and
-    // the session
+    // sp: one day (the builder's Routine tab, one day): its texts in order (Home's, for the day Home shows), the contents
+    // headed by the day and the session
     /**
      * @param {string} mode @param {string[] | null} ids @param {import("../print/what.js").RoutinePlan | null} [rp]
      * @param {HTMLElement} [into] @param {{ session: string } | null} [sp]
@@ -675,8 +675,7 @@ export function init() {
           preview();
         },
       }),
-      bnx = document.getElementById("prnx"),
-      wide = window.matchMedia ? matchMedia("(min-width: 760px)") : null;
+      bnx = document.getElementById("prnx");
     // the texts ticked (their Library ids), or null for every text; on the Routine tab, the routine's in routine order
     function chosen() {
       return what.pick();
@@ -685,7 +684,7 @@ export function init() {
     function rplan() {
       return what.plan();
     }
-    // a session's printout (the Today tab on show), else null
+    // one day's printout (the Routine tab on show, one day), else null
     function splan() {
       return what.session();
     }
@@ -693,6 +692,29 @@ export function init() {
     function refresh() {
       pagesSoon();
       preview();
+      howLine();
+    }
+    // On a phone's What step the bottom bar says how it will print, the choice made in each row under How ("Marathi ·
+    // Dhrupad (धृ): Once · Portrait · Traditional"), with Change beside it: Print is a tap away, How only when wanted
+    // (Satish, 2026-11-01)
+    function howLine() {
+      /** @param {string} id */
+      function on(id) {
+        var b = document.querySelector("#" + id + ' [aria-pressed="true"]');
+        return b ? /** @type {string} */ (b.textContent) : "";
+      }
+      var pg = document.getElementById("prpg"),
+        f = document.querySelector('#prfn [aria-pressed="true"] .prfm'),
+        t = document.getElementById("prhowt");
+      t.textContent = [
+        on("prlg"),
+        on("prdg") && document.querySelector("#prdh .prk").textContent + ": " + on("prdg"),
+        pg.hidden ? document.getElementById("prpv").textContent : on("prpg"),
+        f ? f.textContent : "",
+      ]
+        .filter(Boolean)
+        .join(" · ");
+      t.lang = ui();
     }
     // The preview under How: the first page of the first text ticked, as it prints, made small. Written as the print
     // view is (build), into a frame the size of the page, cut off at the page's foot
@@ -1158,7 +1180,7 @@ export function init() {
     // the pop-up: the choices (ready false), or Print now (ready true)
     function pmMode(ready) {
       bpr.hidden = pn.hidden = po.hidden = ready;
-      document.getElementById("prst").hidden = document.getElementById("prsum").hidden = bnx.hidden = ready;
+      document.getElementById("prst").hidden = document.getElementById("prsum").hidden = document.getElementById("prhow").hidden = ready;
       // (neither step: the title shows, without ‹ What to print)
       if (ready) pm.setAttribute("data-step", "ready");
       // both languages print side by side on Landscape only (stacked took a third more paper): no choice to
@@ -1322,8 +1344,8 @@ export function init() {
       pon(mode);
       tryPrint(false);
     }
-    // Open the builder: at What with the ticks as last left; with a session (tab "today"), at What on the Today tab with
-    // it chosen; with a text, just it ticked and at How (on a phone; ‹ What to print shows the choice)
+    // Open the builder: at What with the ticks as last left; with a session (tab "today"), at What on the Routine tab
+    // with it chosen; with a text, just it ticked and at How (on a phone; ‹ What to print shows the choice)
     /** @param {{ ids?: string[], tab?: string, session?: string, from?: HTMLElement | null }} [o] */
     function openPrint(o) {
       o = o || {};
@@ -1380,7 +1402,7 @@ export function init() {
       paperRow();
       document.getElementById("prx").setAttribute("aria-label", pw.cancel);
       // What, drawn afresh (the Library's categories, the reading languages and the menu language may have changed)
-      // a session is the Today tab's choice, and the Library tab starts with nothing ticked, so a text ticked there
+      // a session is the Routine tab's choice, and the Library tab starts with nothing ticked, so a text ticked there
       // prints on its own (not with the session's texts)
       if (o.ids && o.tab === "today") {
         what.today(o.ids, o.session, o.day);
@@ -1389,15 +1411,15 @@ export function init() {
       what.tab(o.tab || "texts");
       what.render();
       fontsAhead();
-      // on a phone, a session (the Today tab, with the session chosen) opens at What, so another one is a tap away;
-      // a text opens at How
+      // on a phone, a session (the Routine tab, with the session chosen) opens at What, so another one is a tap away,
+      // and Print is in the bottom bar; a text opens at How
       var how = !!o.ids && o.tab !== "today";
       step(how ? "how" : "what");
       ovPush();
       pm.hidden = false;
       refresh();
-      // (a card taller than the screen stays at its top: Next or Print is in the bar at the bottom)
-      (how || (wide && wide.matches) ? bpr : bnx).focus({ preventScroll: true });
+      // (a card taller than the screen stays at its top: Print is in the bar at the bottom)
+      bpr.focus({ preventScroll: true });
     }
     var opener = /** @type {HTMLElement | null} */ (null);
     function langRow() {
@@ -1413,7 +1435,7 @@ export function init() {
     });
     // Print in the bottom bar: while reading, the session being read (js/features/today-card.js runIds), else the text
     // on screen; on Home, the session Home shows, on the day it shows, even with a session still being read (Home in the
-    // bottom bar leaves it running). A session opens at What on the Today tab, with it chosen and headed by its day; a
+    // bottom bar leaves it running). A session opens at What on the Routine tab, with it chosen and headed by its day; a
     // text at How
     document.getElementById("asp").onclick = function () {
       var b = document.getElementById("asp"),
@@ -1485,7 +1507,7 @@ export function init() {
     if (window.PRQ) {
       var mode = window.PRQ;
       window.PRQ = "";
-      // a session from Home: the Today tab with its texts in Home's order (js/render.js reads it)
+      // a session from Home: the Routine tab with its texts in Home's order (js/render.js reads it)
       if (window.PRO) {
         what.today(window.PRT || [], window.PRO, window.PROD);
         what.tab("today");
