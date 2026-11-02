@@ -51,7 +51,8 @@ export default defineConfig({
   // Snapshots are shared by every OS (text) or kept per browser (screenshots, which differ by engine)
   snapshotPathTemplate: "__snapshots__/{testFilePath}/{projectName}/{arg}{ext}",
   fullyParallel: true,
-  workers: process.env.CI ? 2 : undefined,
+  // GitHub's Linux machines have 4 cores for a public repository (2 left them half idle: a run took 15 minutes)
+  workers: process.env.CI ? 4 : undefined,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : [["list"]],
   use: {
