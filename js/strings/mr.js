@@ -180,6 +180,18 @@ export default {
       return dv(n) + " दिवसांपूर्वी";
     },
   },
+  welcome: {
+    title: "नित्य उपासनेत स्वागत",
+    name: "तुमचे नाव",
+    routine: "तुमचा दिनक्रम",
+    start: "सुरू करा",
+    later: "नंतर",
+    hint: "हे केव्हाही बदलता येते: वरच्या बॅजवर टॅप करा, किंवा वेळेशेजारी बदला.",
+    /** @param {string} n */
+    done: function (n) {
+      return "स्वागत, " + n;
+    },
+  },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
     /** @param {string} n */

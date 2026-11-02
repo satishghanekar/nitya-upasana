@@ -32,6 +32,7 @@ import {
   copyDays,
   editable,
   moveItem,
+  perDay,
   removeText,
   setList,
   setMode,
@@ -209,19 +210,6 @@ function keep(r) {
 /** A ready-made routine's name in the menu language @param {string} id */
 function baseName(id) {
   return /** @type {Record<string, string>} */ (words().bases)[id] || id;
-}
-
-/** The fewest and most texts a day in a routine, over the week @param {Routine | null} r @returns {[number, number]} */
-function perDay(r) {
-  var a = Infinity,
-    b = 0;
-  for (var d = 0; d < 7; d++) {
-    var n = 0;
-    for (var i = 0; i < SESSIONS.length; i++) n += textsFor(r, d, SESSIONS[i]).length;
-    a = Math.min(a, n);
-    b = Math.max(b, n);
-  }
-  return [a === Infinity ? 0 : a, b];
 }
 
 /** The four, what the one checked holds, and whether the person follows it or has made it their own */

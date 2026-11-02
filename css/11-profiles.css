@@ -449,3 +449,58 @@
   border-color: var(--ink);
 }
 /* (nothing here moves, so reduced motion needs no rule) */
+
+/* ==== Welcome (#wlc, js/features/welcome.js): once, on a new phone's Home, as a note (.pfw) at its top: the name, the
+   ready-made routines (the builder's radio row, .rtseg, css/14-builder.css), what the one checked holds, Start /
+   Later and where to change them later ==== */
+#wlc[hidden],
+#wlcr[hidden] {
+  display: none;
+}
+#wlc {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 12px;
+  font: 400 14.5px/1.45 var(--lat);
+}
+#wlc:not([lang="en"]),
+#wlc:not([lang="en"]) .rtseg button,
+#wlc:not([lang="en"]) #wlcn {
+  font-family: var(--body);
+}
+#wlct {
+  margin: 0;
+  color: var(--ink);
+  font: 600 18px/1.3 var(--body);
+}
+.wlcf {
+  display: grid;
+  gap: 4px;
+  font-weight: 600;
+}
+#wlcn {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--hdrl);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--ink);
+  /* 16px: Safari on an iPhone zooms into anything smaller */
+  font: 400 16px/1.2 var(--lat);
+}
+#wlcr {
+  display: grid;
+  gap: 6px;
+}
+#wlcrl {
+  font-weight: 600;
+}
+#wlci,
+#wlch {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+#wlc .pfwb {
+  margin-top: 0;
+}

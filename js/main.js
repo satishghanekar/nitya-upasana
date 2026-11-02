@@ -65,6 +65,7 @@ import { init as startOffline } from "./features/offline.js";
 import { init as startProfiles } from "./features/profiles.js";
 import { init as startBackup } from "./features/backup.js";
 import { init as startRoutineBuilder } from "./features/routine-builder.js";
+import { init as startWelcome } from "./features/welcome.js";
 
 // One part that fails to start is reported and passed over, so the parts after it still start (a part that needs
 // it may then fail too, but no more than that)
@@ -122,6 +123,7 @@ function start() {
     run(startProfiles); // People on this phone: the profile chip in the top bar and its sheet (switch, add, edit, delete)
     run(startBackup); // Save a backup file / Restore from a file, the backup reminder, keeping the data (storage.persist)
     run(startRoutineBuilder); // The routine builder (#rtb): each person's texts per session, in order, with the Add texts picker
+    run(startWelcome); // Welcome (#wlc): once, on a new phone's Home, the first person's name and ready-made routine
   } finally {
     // Show the page (see "data-ready" in css/02-core.css), even if a part failed to start
     document.documentElement.setAttribute("data-ready", "");
