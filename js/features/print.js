@@ -750,9 +750,9 @@ export function init() {
             '"' +
             (land(m) ? " data-land" : "") +
             attrs() +
-            '><head><base href="' +
-            location.href.replace(/"/g, "%22") +
-            '"><style>' +
+            // no <base>: a frame written with document.open() has the page's own address already, and Safari refuses a
+            // <base> there (the Content-Security-Policy's base-uri), with an error in the console
+            "><head><style>" +
             pcss() +
             "\nhtml,body{margin:0;overflow:hidden;background:#fff}body{box-sizing:content-box;padding:17mm 19mm 0;height:" +
             (sh[1] - 36) +
@@ -899,9 +899,8 @@ export function init() {
           '"' +
           (land(m) ? " data-land" : "") +
           attrs() +
-          '><head><base href="' +
-          location.href.replace(/"/g, "%22") +
-          '"><style>' +
+          // (no <base>: as in the preview above)
+          "><head><style>" +
           pcss() +
           "\nhtml,body{margin:0;background:#fff}body{width:" +
           (sh[0] - 38) +
