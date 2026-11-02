@@ -641,7 +641,7 @@ export default {
       "Printing does not open from the Home Screen app on iPhone. Tap <b>Open in Safari</b>: your choices go with it and the printout is made ready there. If Safari does not open, copy the link and paste it into Safari.",
     thisBrowserDidNotOpen:
       "This browser did not open the print dialog. Tap the browser's <b>Share</b> button and choose <b>Print</b>. If this page opened inside another app, tap <b>Open in Safari</b>: your choices go with it.",
-    changeHow: "Change",
+    nextHowToPrint: "Next: how to print ›",
     print: "Print",
     addToHomeScreen2: "Add to Home Screen",
     tapTheShareButtonAt: 'Tap the <b lang="en">Share</b> button {icon} (at the bottom in Safari, top right in Chrome).',
