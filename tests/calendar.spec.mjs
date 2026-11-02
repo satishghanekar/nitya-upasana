@@ -174,7 +174,7 @@ test("tapping a day shows it in the day card @mobile", async ({ page }) => {
   await open(page);
   await tap(page, "2026-10-28");
   await expect(page.locator("#cdt")).toHaveText("आश्विन वद्य तृतीया");
-  await expect(page.locator("#cald .cdd")).toHaveText("Wednesday, 28 October", { useInnerText: true });
+  await expect(page.locator("#cald .cdd .dl")).toHaveText("Wednesday, 28 October");
   await expect(page.locator("#cald .cdg")).toHaveText("संकष्टी");
   await expect(row(page, "चंद्रोदय")).toHaveText("8:09 pm");
   await expect(row(page, "तिथी")).toHaveText("वद्य तृतीयाKrishna Tritiya · until 3:37 pm");
@@ -271,7 +271,7 @@ test("keyboard: open, move through the month with the arrows, pick a day, Escape
   await page.keyboard.press("PageUp");
   await expect(page.locator('#calm button[data-d="2026-10-02"]')).toBeFocused();
   await page.keyboard.press(" ");
-  await expect(page.locator("#cald .cdd")).toHaveText("Friday, 2 October", { useInnerText: true });
+  await expect(page.locator("#cald .cdd .dl")).toHaveText("Friday, 2 October");
   await page.keyboard.press("Escape");
   await expect(page.locator('#calm button[data-d="2026-10-02"]')).toBeFocused();
   await page.keyboard.press("Escape");
@@ -712,7 +712,7 @@ test("the Day and 15 days tabs: nothing moves as ‹ › go from today, and the 
   expect(await list()).toBe(there);
   // the Day tab: ‹ ›, the date and the list under them keep their places, with Today or without
   await page.locator('#calv [data-v="day"]').click();
-  await expect(page.locator("#cald .cdd")).toHaveText("Tuesday, 20 October", { useInnerText: true });
+  await expect(page.locator("#cald .cdd .dl")).toHaveText("Tuesday, 20 October");
   await page.locator('#cald [data-dd="0"]').click();
   const at = () =>
     page.evaluate(() =>

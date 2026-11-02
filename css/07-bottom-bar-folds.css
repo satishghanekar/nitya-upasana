@@ -65,7 +65,7 @@
 }
 /* Buttons as in the top bar (fixed pixel sizes, so text size and pinch leave the bar alone) */
 #asc .asx {
-  font: 600 15px/1 var(--lat);
+  font: 600 var(--fz-m)/1 var(--lat);
   white-space: nowrap;
 }
 #asc .asx:lang(mr) {
@@ -86,17 +86,17 @@
 #hm,
 #rsb {
   align-content: center;
-  row-gap: 3px;
+  row-gap: 1px;
   min-width: 58px;
   padding: 0 6px;
 }
 .asil {
-  font: 600 11px/1.1 var(--lat);
+  font: 600 var(--fz-s)/1 var(--lat);
   white-space: nowrap;
 }
 .asil .mr {
   font-family: var(--body);
-  font-size: 11.5px;
+  font-size: var(--fz-s);
 }
 /* a phone on its side: the bar stays as low as it was; the words are kept for screen readers only */
 @media (orientation: landscape) and (max-height: 520px) {
@@ -134,7 +134,7 @@
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--rule);
-  font: 600 14px/1 var(--body);
+  font: 600 var(--fz-m)/1 var(--body);
   color: var(--accent);
   visibility: hidden;
 }
@@ -234,18 +234,18 @@
   }
   /* the same type as the section rows: 19 px Marathi, 16 px English, so pieces and sections line up */
   .ash header h2 {
-    font-size: 19px;
+    font-size: var(--fz-xl);
     line-height: 1.3;
     flex: 1 1 auto;
     text-wrap: pretty;
   }
   .ash[data-lang="en"] header h2 {
-    font-size: 16px;
+    font-size: var(--fz-l);
   }
   [data-lang="both"] .ash header h2 .en,
   .ash[data-lang="both"] header h2 .en {
     margin: 1px 0 0;
-    font: 600 14px/1.25 var(--lat);
+    font: 600 var(--fz-m)/1.25 var(--lat);
     color: var(--muted);
   }
   .ash header .tag {
@@ -415,7 +415,7 @@
   bottom: calc(18px + env(safe-area-inset-bottom));
   text-align: center;
   color: rgb(255 255 255 / 0.7);
-  font: 500 13px/1.3 var(--lat);
+  font: 500 var(--fz-s)/1.3 var(--lat);
   pointer-events: none;
 }
 
@@ -579,7 +579,7 @@ html[data-asb="1"] {
   border-bottom: 0;
   border-radius: 18px 18px 0 0;
   box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.22);
-  font: 400 15px/1.3 var(--lat);
+  font: 400 var(--fz-m)/1.3 var(--lat);
   color: var(--ink);
   text-align: left;
 }
@@ -613,7 +613,7 @@ html[data-asb="1"] {
 }
 .rs-hd h2 {
   margin: 0;
-  font: 600 18px/1.3 var(--lat);
+  font: 600 var(--fz-l)/1.3 var(--lat);
 }
 #rsh .mr {
   font-family: var(--body);
@@ -635,7 +635,7 @@ html[data-asb="1"] {
 }
 .rs-l {
   font-weight: 500;
-  font-size: 14px;
+  font-size: var(--fz-m);
   color: var(--muted);
 }
 .rs-seg {
@@ -647,7 +647,7 @@ html[data-asb="1"] {
   min-width: 0;
   height: 48px;
   padding: 0 8px;
-  font: 600 16px/1.15 var(--lat);
+  font: 600 var(--fz-l)/1.15 var(--lat);
 }
 .rs-seg button:is(:lang(mr), :lang(kn), :lang(te), :lang(gu)) {
   font-family: var(--ks, "Noto Sans Kannada"), var(--body);
@@ -664,10 +664,10 @@ html[data-asb="1"] {
   height: 56px;
   padding: 0;
   border-radius: 12px;
-  font: 600 18px/1 var(--lat);
+  font: 600 var(--fz-l)/1 var(--lat);
 }
 #rsm .rsa {
-  font-size: 15px;
+  font-size: var(--fz-m);
 }
 #rsp .rsa {
   font-size: 26px;
@@ -675,7 +675,7 @@ html[data-asb="1"] {
 #rsv {
   flex: 1;
   text-align: center;
-  font: 600 22px/1 var(--lat);
+  font: 600 var(--fz-xxl)/1 var(--lat);
   font-variant-numeric: tabular-nums;
 }
 #rsr {
@@ -703,15 +703,15 @@ html[data-asb="1"] {
   background: none;
   color: var(--ink);
   text-align: left;
-  font: 500 16px/1.3 var(--lat);
+  font: 500 var(--fz-l)/1.3 var(--lat);
 }
 .rs-go .rs-l {
-  font-size: 16px;
+  font-size: var(--fz-l);
   color: var(--ink);
 }
 .rs-go small {
   display: block;
-  font: 400 13px/1.3 var(--lat);
+  font: 400 var(--fz-s)/1.3 var(--lat);
   color: var(--muted);
 }
 .rs-go svg {
