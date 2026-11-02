@@ -125,6 +125,7 @@
 <link rel="modulepreload" href="js/features/backup.js">
 <link rel="modulepreload" href="js/features/text-picker.js">
 <link rel="modulepreload" href="js/features/routine-builder.js">
+<link rel="modulepreload" href="js/features/welcome.js">
 </head>
 
 <body>
@@ -441,6 +442,17 @@
            with Today under them on another day (js/features/today-card.js) -->
       <p id="tdd"><span id="tdn"><button type="button" id="tdp" class="tdnb" aria-label="Previous day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" id="tdx" class="tdnb" aria-label="Next day"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><button type="button" id="tdt" class="off"></button></span><span class="d1" lang="mr"></span><span class="d2" lang="en"><span class="d2t"></span><span class="dsep" aria-hidden="true"> · </span><span id="tdr"></span></span></p>
     </div>
+    <!-- Welcome (js/features/welcome.js; Satish, 2026-11-02): once, on a new phone's Home, never in the way (Home shows
+         under it): the first person's name and their ready-made routine (Short, Daily, Full, Extended; the lists below
+         follow the one picked), then Start, or Later (twice at most). Not when the site opens at a text (a shared link).
+         Words written in by the script -->
+    <form id="wlc" class="pfw" aria-labelledby="wlct" novalidate hidden>
+      <h2 id="wlct"></h2>
+      <label class="wlcf" for="wlcn"><span id="wlcnl"></span><input id="wlcn" type="text" maxlength="24" autocomplete="name" autocapitalize="words" spellcheck="false"></label>
+      <div id="wlcr"><span id="wlcrl"></span><div id="wlcb" class="rtseg" role="radiogroup" aria-labelledby="wlcrl"></div><p id="wlci"></p></div>
+      <div class="pfwb"><button type="submit" id="wlcs"></button><button type="button" id="wlcx"></button></div>
+      <p id="wlch"></p>
+    </form>
     <!-- The Vedic calendar card (js/features/vedic-calendar.js): the day's month, paksha and tithi, nakshatra, Shaka year
          and samvatsara, sunrise, sunset and the place; a tap opens the calendar page (#cal) -->
     <div id="pan" hidden></div>
@@ -689,7 +701,7 @@
         <li><b>Add a person:</b> give a name; the badge letters come from the name (or type up to four), and pick a colour. There is room for eight.</li>
         <li><b>Edit</b> beside a name: rename, change the letters or the colour, or <b>Delete this person</b> (it asks first). The last person can't be deleted.</li>
         <li>The same list opens from Settings → More → <b>Who is reading</b>.</li>
-        <li>A new phone starts with one person, <b>Me</b> (in the language of the menus): tap <b>Edit</b> to give your name.</li>
+        <li>A new phone starts with one person, <b>Me</b> (in the language of the menus). A welcome card at the top of Home asks your name and which routine to follow (Short, Daily, Full or Extended; the texts below change as you pick); <b>Start</b> keeps them, <b>Later</b> asks again next time. You can also give your name with <b>Edit</b> here.</li>
       </ul>
 
       <h3>Backup</h3>

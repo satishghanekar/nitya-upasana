@@ -85,7 +85,8 @@ test("js/parts.js keeps every picture the page shows, at every time of day, for 
 test("the scripts, styles and page stay within their size budget", () => {
   const parts = siteParts();
   const gz = (files) => files.reduce((n, f) => n + gzipSync(readFileSync(new URL("../" + f, import.meta.url))).length, 0);
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(315_000);
+  // (320 KB since 2026-11-02: the ready-made routines, the welcome card and the print Routine list)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(320_000);
   expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(70_000);
   expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(30_000);
 });

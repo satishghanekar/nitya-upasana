@@ -189,6 +189,18 @@ export default {
       return n + " દિવસ પહેલાં";
     },
   },
+  welcome: {
+    title: "નિત્ય ઉપાસનામાં સ્વાગત",
+    name: "તમારું નામ",
+    routine: "તમારી દિનચર્યા",
+    start: "શરૂ કરો",
+    later: "પછી",
+    hint: "આ ગમે ત્યારે બદલી શકાય: ઉપરના બેજ પર ટૅપ કરો, અથવા સમયની બાજુમાં બદલો.",
+    /** @param {string} n */
+    done: function (n) {
+      return "સ્વાગત, " + n;
+    },
+  },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
     /** @param {string} n */

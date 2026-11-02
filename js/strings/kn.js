@@ -190,6 +190,18 @@ export default {
       return n + " ದಿನಗಳ ಹಿಂದೆ";
     },
   },
+  welcome: {
+    title: "ನಿತ್ಯ ಉಪಾಸನಾಗೆ ಸ್ವಾಗತ",
+    name: "ನಿಮ್ಮ ಹೆಸರು",
+    routine: "ನಿಮ್ಮ ದಿನಚರಿ",
+    start: "ಪ್ರಾರಂಭಿಸಿ",
+    later: "ನಂತರ",
+    hint: "ಇವನ್ನು ಯಾವಾಗ ಬೇಕಾದರೂ ಬದಲಿಸಬಹುದು: ಮೇಲಿನ ಬ್ಯಾಡ್ಜ್ ಒತ್ತಿ, ಅಥವಾ ಸಮಯದ ಪಕ್ಕದಲ್ಲಿ ಬದಲಿಸಿ.",
+    /** @param {string} n */
+    done: function (n) {
+      return "ಸ್ವಾಗತ, " + n;
+    },
+  },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
     /** @param {string} n */

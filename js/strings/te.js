@@ -190,6 +190,18 @@ export default {
       return n + " రోజుల క్రితం";
     },
   },
+  welcome: {
+    title: "నిత్య ఉపాసనకు స్వాగతం",
+    name: "మీ పేరు",
+    routine: "మీ దినచర్య",
+    start: "ప్రారంభించు",
+    later: "తర్వాత",
+    hint: "వీటిని ఎప్పుడైనా మార్చవచ్చు: పైన ఉన్న బ్యాడ్జ్ నొక్కండి, లేదా సమయం పక్కన మార్చండి.",
+    /** @param {string} n */
+    done: function (n) {
+      return "స్వాగతం, " + n;
+    },
+  },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
     /** @param {string} n */

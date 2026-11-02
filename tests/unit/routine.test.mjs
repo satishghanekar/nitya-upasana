@@ -26,6 +26,7 @@ import {
   WEEK_ORDER,
   BASES,
   baseRoutine,
+  perDay,
   cleanBase,
   FIRST_BASE,
 } from "../../js/core/routine.js";
@@ -309,6 +310,14 @@ describe("the ready-made routines (content/routines.json)", () => {
     expect(Object.keys(ALL)).toEqual(BASES);
     for (const id of BASES) expect(cleanRoutine(ALL[id])).toEqual(ALL[id]);
     expect(FIRST_BASE).toBe("short");
+  });
+
+  test("the fewest and most texts a day: Short the same every day, Extended differing by weekday; none, 0", () => {
+    const short = textsFor(ALL.short, 0, "morning").length + textsFor(ALL.short, 0, "evening").length;
+    expect(perDay(ALL.short)).toEqual([short, short]);
+    const days = [0, 1, 2, 3, 4, 5, 6].map((d) => ["morning", "afternoon", "evening"].reduce((n, s) => n + textsFor(ALL.extended, d, s).length, 0));
+    expect(perDay(ALL.extended)).toEqual([Math.min(...days), Math.max(...days)]);
+    expect(perDay(null)).toEqual([0, 0]);
   });
 
   test("one asked for by id; an unknown id is the first in the file; no file, none", () => {

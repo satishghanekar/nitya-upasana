@@ -182,6 +182,19 @@ export default {
       return n + " days ago";
     },
   },
+  // Welcome: once, on a new phone's Home (js/features/welcome.js)
+  welcome: {
+    title: "Welcome to Nitya Upasana",
+    name: "Your name",
+    routine: "Your routine",
+    start: "Start",
+    later: "Later",
+    hint: "Change either any time: tap your badge at the top, or Edit beside a session.",
+    /** @param {string} n */
+    done: function (n) {
+      return "Welcome, " + n;
+    },
+  },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
     /** @param {string} n */

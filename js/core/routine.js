@@ -106,6 +106,23 @@ export function cleanBase(id, other) {
 }
 
 /**
+ * The fewest and most texts a day in a routine, over the week (what a ready-made one says it takes)
+ * @param {Routine | null | undefined} r
+ * @returns {[number, number]}
+ */
+export function perDay(r) {
+  var a = Infinity,
+    b = 0;
+  for (var d = 0; d < 7; d++) {
+    var n = 0;
+    for (var i = 0; i < SESSIONS.length; i++) n += textsFor(r, d, SESSIONS[i]).length;
+    a = Math.min(a, n);
+    b = Math.max(b, n);
+  }
+  return [a === Infinity ? 0 : a, b];
+}
+
+/**
  * A ready-made routine from content/routines.json (as loaded): the one asked for, else the first the file has
  * @param {any} all
  * @param {string} id
