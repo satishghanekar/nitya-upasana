@@ -89,11 +89,12 @@ Text and screenshots are kept in `__snapshots__/`. They are the accepted look of
 npx playwright test --update-snapshots
 ```
 
-Screenshots depend a little on the machine (font smoothing), so each machine type keeps its own set in `__snapshots__/visual.spec.mjs/chromium/`. The text snapshots are the same everywhere and are shared.
+Screenshots depend a little on the machine (font smoothing), so they are kept for one machine type: `ci/`, in `__snapshots__/visual.spec.mjs/chromium/`. The text snapshots are the same everywhere and are shared.
 
-- **`cloud/`** is the reference set. It is recorded in a Claude session in the cloud (Linux, the pre-installed Chromium: `PW_CHROMIUM_PATH=/opt/pw-browsers/chromium`). It is the default whenever `CI` is not set. Refresh it there with `--update-snapshots`, and look at the changed pictures before committing them.
-- **`ci/`** is GitHub Actions' set (`CI` set). To refresh it, push a commit with `[update-snapshots]` in its message: the *Update CI snapshots* workflow (`.github/workflows/update-snapshots.yml`) commits the new pictures to that branch. On a Mac neither set matches its font smoothing, so the screenshots are skipped there (`MAC_SKIPS_PIXELS` in `helpers.mjs`, 2026-11-02) and left to CI, which compares them on every push; a Mac run is then green whenever the site is right.
-- `SNAPSHOT_ENV=cloud` or `SNAPSHOT_ENV=ci` picks a set by hand.
+- **`ci/`** is used by the GitHub test run (in Playwright's Docker image) and by any other Linux machine (a Claude session in the cloud). To refresh it, push a commit with `[update-snapshots]` in its message: the *Update CI snapshots* workflow (`.github/workflows/update-snapshots.yml`) commits the new pictures to that branch. Look at them in the pull request before merging. Never run `--update-snapshots` for the pictures on your own machine: they would replace CI's.
+- **On a Mac** the screenshots are skipped (`MAC_SKIPS_PIXELS` in `helpers.mjs`): a Mac's text is drawn a little differently, so they could never match, and CI compares them on every push. A Mac run is then green whenever the site is right.
+- The cloud's own set (`cloud/`) was kept until 2026-11-02; only a Claude session in the cloud refreshed it, so it went out of date and was removed. In such a session, run the screenshots with `--grep-invert screenshot` if CI's pictures differ there.
+- `SNAPSHOT_ENV=ci` compares on a Mac anyway (expect differences).
 
 ## What automation can't cover
 
