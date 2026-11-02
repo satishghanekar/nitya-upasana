@@ -116,7 +116,9 @@ test("the line opens the calendar page; the day card has today's panchang @mobil
   await expect(page.locator("#panb")).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator("#asc")).toBeHidden();
   await expect(page.locator("#cdt")).toHaveText("आश्विन शुद्ध अष्टमी");
-  await expect(page.locator("#cald .dnh")).toHaveText("Sunday, 18 October2026 · Today");
+  // (the Day card, hidden behind the Month tab: its full date and its word)
+  await expect(page.locator("#cald .dnh .dl")).toHaveText("Sunday, 18 October");
+  await expect(page.locator("#cald .dnh .cdr")).toHaveText("Today");
   await expect(page.locator("#cald img")).toHaveAttribute("alt", "");
   await expect(row(page, "तिथी")).toHaveText("शुद्ध अष्टमीShukla Ashtami · until Mon 1:21 am");
   await expect(row(page, "नक्षत्र")).toHaveText("उत्तराषाढाUttara Ashadha · until Mon 6:08 am");
@@ -172,7 +174,7 @@ test("tapping a day shows it in the day card @mobile", async ({ page }) => {
   await open(page);
   await tap(page, "2026-10-28");
   await expect(page.locator("#cdt")).toHaveText("आश्विन वद्य तृतीया");
-  await expect(page.locator("#cald .cdd")).toHaveText("Wednesday, 28 October");
+  await expect(page.locator("#cald .cdd")).toHaveText("Wednesday, 28 October", { useInnerText: true });
   await expect(page.locator("#cald .cdg")).toHaveText("संकष्टी");
   await expect(row(page, "चंद्रोदय")).toHaveText("8:09 pm");
   await expect(row(page, "तिथी")).toHaveText("वद्य तृतीयाKrishna Tritiya · until 3:37 pm");
@@ -192,7 +194,7 @@ test("a public holiday shows in the month and the day card, with its country or 
   await expect(page.locator('#calm button[data-d="2026-10-02"] .hs')).toHaveText("गांधी जयंती");
   await tap(page, "2026-10-12");
   await expect(page.locator("#cald .cdg .tag.hol")).toHaveText("कोलंबस डे (अमेरिका)");
-  await expect(row(page, "सुट्टी")).toHaveText("कोलंबस डे (अमेरिका) ↗Columbus Day (US)");
+  await expect(row(page, "सुट्टी")).toHaveText("कोलंबस डे (अमेरिका) ↗Columbus Day (USA)");
   await expect(row(page, "सुट्टी").locator("a")).toHaveAttribute("href", "https://en.wikipedia.org/wiki/Columbus_Day");
 });
 
@@ -222,7 +224,7 @@ test("previous and next month @mobile", async ({ page }) => {
   await expect(page.locator("#cmt")).toContainText("September 2026");
   await expect(page.locator("#calm button.cd")).toHaveCount(30);
   await tap(page, "2026-09-01");
-  await expect(page.locator("#cald .dnh")).toHaveText("Tuesday, 1 September2026 · 47 days ago");
+  await expect(page.locator("#cald .dnh")).toHaveText("Tuesday, 1 September 2026 · 47 days ago", { useInnerText: true });
 });
 
 test("Back: the page's button and the browser's both close it, and focus returns to the line @mobile", async ({ page }) => {
@@ -269,7 +271,7 @@ test("keyboard: open, move through the month with the arrows, pick a day, Escape
   await page.keyboard.press("PageUp");
   await expect(page.locator('#calm button[data-d="2026-10-02"]')).toBeFocused();
   await page.keyboard.press(" ");
-  await expect(page.locator("#cald .cdd")).toHaveText("Friday, 2 October");
+  await expect(page.locator("#cald .cdd")).toHaveText("Friday, 2 October", { useInnerText: true });
   await page.keyboard.press("Escape");
   await expect(page.locator('#calm button[data-d="2026-10-02"]')).toBeFocused();
   await page.keyboard.press("Escape");
@@ -655,11 +657,11 @@ test("the calendar's tabs: Day, 15 days, Month, one at a time, the same on every
   await expect(page.locator("#calm")).toBeHidden();
   // ‹ › a day at a time, and Today
   await page.locator('#cald [data-dd="1"]').click();
-  await expect(page.locator("#cald .dnh")).toHaveText("Monday, 19 October2026 · Tomorrow");
+  await expect(page.locator("#cald .dnh")).toHaveText("Monday, 19 October 2026 · Tomorrow", { useInnerText: true });
   await expect(page.locator('#cald [data-dd="1"]')).toBeFocused();
   await expect(page.locator("#call")).toHaveText("Showing 19 October: Ashvin Shukla Navami");
   await page.locator('#cald [data-dd="0"]').click();
-  await expect(page.locator("#cald .dnh")).toHaveText("Sunday, 18 October2026 · Today");
+  await expect(page.locator("#cald .dnh")).toHaveText("Sunday, 18 October 2026 · Today", { useInnerText: true });
   await expect(page.locator('#cald [data-dd="0"]')).toBeHidden();
   // a day tapped in the month shows on the Day tab; Back returns to the month, at that day
   await page.locator('#calv [data-v="month"]').click();
@@ -710,7 +712,7 @@ test("the Day and 15 days tabs: nothing moves as ‹ › go from today, and the 
   expect(await list()).toBe(there);
   // the Day tab: ‹ ›, the date and the list under them keep their places, with Today or without
   await page.locator('#calv [data-v="day"]').click();
-  await expect(page.locator("#cald .cdd")).toHaveText("Tuesday, 20 October");
+  await expect(page.locator("#cald .cdd")).toHaveText("Tuesday, 20 October", { useInnerText: true });
   await page.locator('#cald [data-dd="0"]').click();
   const at = () =>
     page.evaluate(() =>
@@ -848,14 +850,14 @@ for (const d of ["2026-10-20", "2026-10-23", "2026-10-25", "2026-10-28", "2026-1
 test("Settings: Show holidays from US and India, both at first; one turned off leaves Coming up, and stays off @mobile", async ({ page }) => {
   await openSite(page, ENGLISH_ONLY, { now: new Date("2026-11-23T19:00:00-04:00") });
   const w = page.locator("#upw");
-  // Guru Nanak Jayanti (India) and Thanksgiving (US)
+  // Guru Nanak Jayanti (India) and Thanksgiving (USA)
   await expect(w.locator('.upr.hol[data-d="2026-11-24"]')).toHaveCount(1);
   const us = w.locator('.upr.hol[data-d="2026-11-26"]');
-  await expect(us).toHaveAccessibleName(/^Thursday, 26 November: Thanksgiving \(US\)/);
+  await expect(us).toHaveAccessibleName(/^Thursday, 26 November: Thanksgiving \(USA\)/);
   await expect(us.locator(".fi.hol .flag")).toHaveCount(1);
   await page.locator("#aa").click();
   await settingsTab(page, "screen");
-  await expect(page.locator("#shol button")).toHaveText(["US", "India"]);
+  await expect(page.locator("#shol button")).toHaveText(["USA", "India"]);
   await expect(page.locator("#shol")).toHaveAccessibleName("Show holidays from");
   for (const v of ["us", "in"]) await expect(page.locator(`#shol [data-v="${v}"]`)).toHaveAttribute("aria-pressed", "true");
   await page.locator('#shol [data-v="us"]').click();
@@ -878,8 +880,8 @@ test("Coming up: a holiday on a festival's day joins its row @mobile", async ({ 
   const jan1 = w.locator('.upr[data-d="2027-01-01"]');
   await expect(jan1).toHaveCount(1);
   await expect(jan1).toHaveClass(/\bfest\b/);
-  await expect(jan1.locator("small")).toContainText("New Year's Day (US)");
-  await expect(jan1).toHaveAccessibleName(/New Year's Day \(US\)/);
+  await expect(jan1.locator("small")).toContainText("New Year's Day (USA)");
+  await expect(jan1).toHaveAccessibleName(/New Year's Day \(USA\)/);
 });
 
 // …and its name is never the part cut off, on an iPad or a computer's narrow column either (the small line is one line)
@@ -892,7 +894,7 @@ for (const [name, size] of [
     await page.setViewportSize(size);
     await openSite(page, ENGLISH_ONLY, { now: new Date("2026-12-27T19:00:00-04:00") });
     const small = page.locator('#upw .upr[data-d="2027-01-01"] small');
-    await expect(small).toContainText("New Year's Day (US)");
+    await expect(small).toContainText("New Year's Day (USA)");
     const [line, hol] = await small.evaluate((s) => {
       const h = [...s.querySelectorAll("span")].find((x) => /New Year/.test(x.textContent));
       return [s.getBoundingClientRect().right, h.getBoundingClientRect().right];
@@ -990,3 +992,23 @@ test("Month: Today goes back to this month, at today; on this month it keeps its
   await expect(page.locator('#calm button[data-d="2026-10-18"]')).toBeFocused();
   await expect(t).toBeHidden();
 });
+
+// The Day tab's date is never cut with …: in full where it fits, else short ("Wed 30 Sep": in English already on a 390px
+// phone for the longest day and month), else a step smaller too (Kannada), in each menu language
+for (const [lang, prefs, full, short] of [
+  ["English", COLUMBUS, "Wed 30 Sep", "Wed 30 Sep"],
+  ["Marathi", { ...COLUMBUS, ui: "mr" }, "बुधवार, ३० सप्टेंबर", null],
+  ["Kannada", { ...COLUMBUS, ind: "kn", ui: "kn" }, null, null],
+])
+  test(`the Day tab's date fits, in full or short, on a 320px and a 390px phone: ${lang} menus`, async ({ page }) => {
+    for (const width of [390, 320]) {
+      await page.setViewportSize({ width, height: 700 });
+      await openSite(page, prefs, { now: new Date("2026-09-30T10:00:00-04:00") });
+      await page.locator("#panb").click(CORNER);
+      await page.locator('#calv [data-v="day"]').click();
+      const d = page.locator("#cald .dnh .cdd");
+      const want = width === 390 ? full : short;
+      if (want) await expect(d).toHaveText(want, { useInnerText: true });
+      expect(await d.evaluate((e) => e.scrollWidth <= e.clientWidth), `${width}px: not cut`).toBe(true);
+    }
+  });

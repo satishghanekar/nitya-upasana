@@ -330,7 +330,7 @@
           <div class="sp-row sp-stk" id="shrow">
             <span class="sp-l"><span id="shl" data-w="calendar.holHome">Show holidays from</span></span>
             <div class="sp-seg" id="shol" role="group" aria-labelledby="shl">
-              <button type="button" data-v="us" aria-pressed="false"><span data-w="calendar.groups.us">US</span></button>
+              <button type="button" data-v="us" aria-pressed="false"><span data-w="calendar.groups.us">USA</span></button>
               <button type="button" data-v="in" aria-pressed="false"><span data-w="calendar.groups.in">India</span></button>
             </div>
           </div>
@@ -461,7 +461,7 @@
          day in the calendar; "Next 15 days" opens the calendar's 15 days tab -->
     <section id="upw" aria-labelledby="upwh" hidden></section>
     <!-- Notes about saving (js/features/backup.js): this browser can't save here (IndexedDB could not be opened), or a
-         gentle reminder to save a backup file (none for 30 days, or never and 14 days since the first visit) -->
+         gentle reminder to save a backup file (none for 30 days, or never and 14 days since the first visit, or never and someone has made a routine their own) -->
     <div id="pfnt" hidden>
       <div id="stw" class="pfw warn" hidden><p><span data-w="page.thisBrowserCanTSave">This browser can't save here. Use Save a backup file before closing.</span></p><div class="pfwb"><button type="button" id="stws"><span data-w="page.saveABackupFile">Save a backup file</span></button></div></div>
       <div id="bkn" class="pfw" hidden><p id="bknt"></p><div class="pfwb"><button type="button" id="bkns"><span data-w="page.saveABackupFile">Save a backup file</span></button><button type="button" id="bknx"><span data-w="page.notNow">Not now</span></button></div></div>
@@ -709,7 +709,7 @@
       <ul>
         <li><b>Save a backup file</b> (Settings → More → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and routines, and this phone's Library categories, nothing else.</li>
         <li><b>Restore from a file:</b> pick a <i>.nitya</i> file. The site checks it, then shows who will be added, replaced or removed before anything changes; tap <b>Restore</b> to go ahead. Restoring replaces the people on this phone with the ones in the file.</li>
-        <li>A short reminder to save a backup shows on Home now and then (two weeks after you start, then a month after each backup). <b>Not now</b> hides it for two weeks.</li>
+        <li>A short reminder to save a backup shows on Home now and then (two weeks after you start, then a month after each backup). If you change your routine before you have ever saved a backup, it shows straight away: your own routine is kept only on this phone, and deleting the app would lose it. <b>Not now</b> hides it for two weeks.</li>
         <li>If the browser can't save anything (some private windows), a note says so: everything works, but is forgotten when the page closes, so save a backup file first.</li>
       </ul>
 
@@ -733,7 +733,7 @@
         <li><b>Layout</b> (wide screens only): one or two columns of stanzas.</li>
         <li><b>Theme</b> (Auto, Light, Sepia, Dark).</li>
         <li><b>High contrast</b>: a switch; tap to turn it on or off.</li>
-        <li><b>Show holidays from</b> (US, India): the public holidays in Coming up on Home, both on at first. Maharashtra's and Karnataka's are in the calendar.</li>
+        <li><b>Show holidays from</b> (USA, India): the public holidays in Coming up on Home, both on at first. Maharashtra's and Karnataka's are in the calendar.</li>
         <li><b>Keep screen on</b>: Off, 15, 30, 45 or 60 minutes after your last touch, key or scroll; after that the phone dims and locks as usual, so a phone left on its stand does not run its battery down. It starts at 30 on phones and tablets and Off on computers.</li>
         <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Routine</b> (the ready-made routine you follow, or your own; see Your routine above), <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
         <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and the version, with whether the site is saved for offline use under it (a green dot: Offline ready); the round button beside it checks for updates (see Good to know below).</li>

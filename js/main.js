@@ -49,6 +49,7 @@ import { init as startBars } from "./features/bars.js";
 import { init as startSettingsPanel } from "./features/settings-panel.js";
 import { init as startReadingSheet } from "./features/reading-sheet.js";
 import { init as startWakeLock } from "./features/wake-lock.js";
+import { init as startOverlays } from "./features/overlays.js";
 import { init as startHistory } from "./features/history.js";
 import { init as startLanguages } from "./features/languages.js";
 import { init as startContentsList } from "./features/contents-list.js";
@@ -107,6 +108,7 @@ function start() {
     run(startSettingsPanel); // Settings panel
     run(startReadingSheet); // Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad
     run(startWakeLock); // Keep the screen on (Wake Lock). Browsers drop the lock when the page is hidden, so it is re-requested.
+    run(startOverlays); // The pages over the page: which button opened one, for focus to go back to (Safari focuses none)
     run(startHistory); // Back button
     run(startLanguages); // Settings page: languages
     run(startContentsList); // Library: every text by category, with search (#jump), opened by the book button in the top bar
