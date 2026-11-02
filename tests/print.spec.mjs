@@ -690,16 +690,20 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await openPrintBuilder(page);
   await expect(page.locator("#prwh")).toBeVisible();
   await expect(page.locator("#prhw")).toBeHidden();
-  await expect(page.locator("#prgp")).toBeHidden();
-  await expect(page.locator("#prnx")).toBeFocused();
+  // Print is in the bottom bar at once, under how it will print and Change (How)
+  await expect(page.locator("#prgp")).toBeFocused();
+  await expect(page.locator("#prhowt")).toHaveText("Marathi · Dhrupad (धृ): Once · Portrait · Traditional");
+  await expect(page.locator("#prnx")).toHaveAccessibleName("Change");
+  await expect(page.locator("#prnx")).toHaveAccessibleDescription("Marathi · Dhrupad (धृ): Once · Portrait · Traditional");
   const boxes = page.locator("#prwl .tpkl input");
   await expect(boxes).toHaveCount(TEXT_COUNT);
   expect(await boxes.evaluateAll((l) => l.every((x) => x.checked))).toBe(true);
   await expect(page.locator("#prsum")).toContainText(`${TEXT_COUNT} texts`);
-  // Clear everything: nothing to print, so Next waits
+  // Clear everything: nothing to print, so Print and Change wait
   await page.locator('.prcb[data-cat=""]').click();
   await expect(page.locator("#prsum")).toContainText("Pick at least one text");
   await expect(page.locator("#prnx")).toBeDisabled();
+  await expect(page.locator("#prgp")).toBeDisabled();
   await expect(page.locator('.prcb[data-cat=""]')).toHaveText("Select all");
   // two texts, found by search
   await page.locator(".prwq").fill("sukhkarta");
@@ -708,15 +712,18 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await page.locator(".prwq").fill("");
   await page.locator('#prwl .tpkl li[data-id="vedic-chant-atharvashirsha"] input').check();
   await expect(page.locator("#prsum span").first()).toHaveText("2 texts");
-  // Next, and back
+  // Change, a choice there (the line follows it), and back
   await page.locator("#prnx").click();
   await expect(page.locator("#prhw")).toBeVisible();
   await expect(page.locator("#prwh")).toBeHidden();
+  await expect(page.locator("#prhow")).toBeHidden();
   await expect(page.locator("#prgp")).toBeFocused();
+  await page.locator('#prdg [data-v="0"]').click();
   await page.locator("#prbk").click();
   await expect(page.locator("#prwh")).toBeVisible();
+  await expect(page.locator("#prhowt")).toHaveText("Marathi · Dhrupad (धृ): Every verse · Portrait · Traditional");
   await expect(page.locator('#prwl .tpkl li[data-id="vedic-chant-atharvashirsha"] input')).toBeChecked();
-  await page.locator("#prnx").click();
+  // Print from What
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
   if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
@@ -751,7 +758,7 @@ test("print builder: a category's Select all and Clear, and one text alone @chro
   await openPrintBuilder(page);
   await expect(page.locator("#prwh")).toBeVisible();
   await expect(page.locator("#prhw")).toBeVisible();
-  await expect(page.locator("#prnx")).toBeHidden();
+  await expect(page.locator("#prhow")).toBeHidden();
   await expect(page.locator("#prgp")).toBeFocused();
   const groups = page.locator("#prwl .prgr");
   const first = groups.first(),
@@ -825,10 +832,10 @@ test("print builder: Open in Safari carries the texts ticked @chromium-only", as
   await context.close();
 });
 
-// Print in the bottom bar, while reading a session: the builder opens at What, on the Today tab with that session
-// chosen, Next › going on to How. Today offers each session and all of today, one tap each (the test routine:
-// Morning the Atharvashirsha, Afternoon empty, Evening ten aartis; 10 am, so Home shows Morning).
-test("print builder: the bottom bar's Print while reading a session, and the Today tab @chromium-only", async ({ browser }) => {
+// Print in the bottom bar, while reading a session: the builder opens at What, on the Routine tab with that session
+// chosen, Print in reach. The sessions and all of the day are one tap each (the test routine: Morning the
+// Atharvashirsha, Afternoon empty, Evening ten aartis; 10 am, so Home shows Morning).
+test("print builder: the bottom bar's Print while reading a session, and the Routine tab @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
@@ -837,31 +844,31 @@ test("print builder: the bottom bar's Print while reading a session, and the Tod
   await page.locator("#tsl a.tgo").first().click();
   await page.locator("#asp").click();
   await expect(page.locator("#prm")).toHaveAttribute("data-step", "what");
-  await expect(page.locator("#prnx")).toBeFocused();
+  await expect(page.locator("#prgp")).toBeFocused();
   await expect(page.locator("#prsum span").first()).toHaveText("गणपत्यथर्वशीर्षोपनिषत्");
-  await expect(page.locator("#prtab-today")).toHaveAttribute("aria-selected", "true");
-  await expect(page.locator('.prses[data-s="morning"]')).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator('.prses[data-s="afternoon"]')).toBeDisabled();
+  await expect(page.locator("#prtab-routine")).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator('[data-rses="morning"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator('[data-rses="afternoon"]')).toBeDisabled();
   // Evening, then all of today
-  await page.locator('.prses[data-s="evening"]').click();
+  await page.locator('[data-rses="evening"]').click();
   await expect(page.locator("#prsum span").first()).toHaveText(`${TEST_AARTIS.length} texts`);
-  await expect(page.locator('.prses[data-s="morning"]')).toHaveAttribute("aria-pressed", "false");
-  await page.locator('.prses[data-s="all"]').click();
+  await expect(page.locator('[data-rses="morning"]')).toHaveAttribute("aria-pressed", "false");
+  await page.locator('[data-rses="all"]').click();
   await expect(page.locator("#prsum span").first()).toHaveText(`${TEST_AARTIS.length + 1} texts`);
   // the Library tab keeps its own ticks, none when opened at a session: one text ticked there prints on its own
   await page.locator("#prtab-texts").click();
   await expect(page.locator("#prtp-texts")).toBeVisible();
-  await expect(page.locator("#prtp-today")).toBeHidden();
+  await expect(page.locator("#prtp-routine")).toBeHidden();
   await expect(page.locator("#prwl .tpkl input:checked")).toHaveCount(0);
   await expect(page.locator("#prgp")).toBeDisabled();
   await page.locator("#prwl .tpkl input").first().check();
   await expect(page.locator("#prwl .tpkl input:checked")).toHaveCount(1);
   await expect(page.locator("#prsum span").first()).not.toHaveText(/texts$/);
-  // back on Today, the session chosen is still the choice; Evening prints just its texts, and Safari laying the page
+  // back on Routine, the session chosen is still the choice; Evening prints just its texts, and Safari laying the page
   // out again after afterprint (its print sheet) still prints them, not the whole Library
-  await page.locator("#prtab-today").click();
-  await expect(page.locator('.prses[data-s="all"]')).toHaveAttribute("aria-pressed", "true");
-  await page.locator('.prses[data-s="evening"]').click();
+  await page.locator("#prtab-routine").click();
+  await expect(page.locator('[data-rses="all"]')).toHaveAttribute("aria-pressed", "true");
+  await page.locator('[data-rses="evening"]').click();
   await page.locator("#prnx").click();
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
@@ -899,7 +906,7 @@ test("print builder: a session prints in Home's order, in the app and in Safari 
   await useTestRoutine(page);
   await openSite(page, SETUPS.marathi);
   await page.locator("#asp").click();
-  await page.locator('.prses[data-s="evening"]').click();
+  await page.locator('[data-rses="evening"]').click();
   const day = await page.evaluate(() => ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"][new Date().getDay()]);
   /** @param {import("@playwright/test").Page} p */
   const printed = (p) =>
@@ -942,7 +949,7 @@ test("print builder: a session prints in Home's order, in the app and in Safari 
   await useTestRoutine(hp);
   await openSite(hp, SETUPS.marathi);
   await hp.locator("#asp").click();
-  await hp.locator('.prses[data-s="evening"]').click();
+  await hp.locator('[data-rses="evening"]').click();
   await hp.locator("#prnx").click();
   await hp.locator("#prgp").click();
   await hp.locator("#prsf").click();
@@ -980,8 +987,8 @@ test("print builder: a session of another day is headed by that day, in the app 
   await page.locator("#tdx").click();
   await expect(page.locator("#tdd .d2t")).toHaveText("Friday, 16 October");
   await page.locator("#asp").click();
-  await expect(page.locator("#prtab-today")).toHaveText("Friday");
-  await page.locator('.prses[data-s="evening"]').click();
+  await expect(page.locator(".prwhen option:checked")).toHaveText("Friday");
+  await page.locator('[data-rses="evening"]').click();
   const heads = (p) => p.evaluate(() => [...document.querySelectorAll("#pv .pvcov .pvcat")].map((e) => e.textContent.trim()));
   await page.locator("#prnx").click();
   await page.locator("#prgp").click();
@@ -1001,7 +1008,7 @@ test("print builder: a session of another day is headed by that day, in the app 
   await openSite(hp, SETUPS.marathi);
   await hp.locator("#tdx").click();
   await hp.locator("#asp").click();
-  await hp.locator('.prses[data-s="evening"]').click();
+  await hp.locator('[data-rses="evening"]').click();
   await hp.locator("#prnx").click();
   await hp.locator("#prgp").click();
   await hp.locator("#prsf").click();
@@ -1174,10 +1181,12 @@ const P5_TAGS = ["Mon · Morning", "Daily · Morning, Evening", "Daily · Evenin
 async function useP5Routine(page) {
   await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(P5_ROUTINE) }));
 }
-async function openRoutineTab(page) {
+/** The Routine tab, the whole week (else as it opens: the day Home shows) */
+async function openRoutineTab(page, week = true) {
   await openPrintBuilder(page);
   await page.locator("#prtab-routine").click();
   await expect(page.locator("#prtp-routine")).toBeVisible();
+  if (week) await page.locator(".prwhen").selectOption("week");
 }
 async function printNow(page) {
   if (await page.locator("#prnx").isVisible()) await page.locator("#prnx").click();
@@ -1187,36 +1196,49 @@ async function printNow(page) {
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
 }
 
-// The Routine tab: the whole week at first, each text once in routine order with its tag; One day is today (the
-// fixed test date is a Thursday); a session with no texts is greyed; a day or session taken off leaves its texts out
-test("print builder: the Routine tab lists each text once, in routine order, with its tag @chromium-only", async ({ browser }) => {
+// The Routine tab (Today and Routine made one, 2026-11-01): whose, when and which session. It opens at the day Home
+// shows (the fixed test date is a Thursday), its texts as Home lists them under the day, without tags; each session
+// says how many texts it has, one without any greyed. The whole week lists each text once in routine order with its tag.
+test("print builder: the Routine tab: whose, when and which session @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
   await useP5Routine(page);
   await openSite(page, SETUPS.english);
-  await openRoutineTab(page);
+  await openRoutineTab(page, false);
   const ids = () => page.locator(".prrl li").evaluateAll((l) => l.map((x) => x.dataset.id));
-  expect(await ids()).toEqual(P5_ORDER);
-  await expect(page.locator(".prrl .prtag")).toHaveText(P5_TAGS);
-  await expect(page.locator("#prsum span").first()).toHaveText("4 texts");
-  await expect(page.locator('[data-rses="afternoon"]')).toBeDisabled();
+  const heading = page.locator("#prtp-routine .prcg");
   // whose: SG and RG are built in, and SG, the one reading, is picked
   await expect(page.locator(".prwho option:checked")).toHaveText("SG");
-  // one day: today, Thursday
-  await page.locator('[data-rspan="day"]').click();
-  await expect(page.locator(".prchip[data-rday][aria-pressed=true]")).toHaveText(["Thu"]);
+  // when: the day Home shows first, the whole week, then the other days, Monday first
+  await expect(page.locator(".prwhen option")).toHaveText(["Today · Thursday", "Whole week", "Monday", "Tuesday", "Wednesday", "Friday", "Saturday", "Sunday"]);
+  await expect(page.locator(".prwhen option:checked")).toHaveText("Today · Thursday");
+  await expect(page.locator("[data-rses] .prsc")).toHaveText(["2", "1", "–", "2"]);
+  await expect(page.locator('[data-rses="all"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator('[data-rses="afternoon"]')).toBeDisabled();
+  await expect(heading).toHaveText("Thursday");
   expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari"]);
-  await expect(page.locator(".prrl .prtag")).toHaveText(["Thu · Morning, Evening", "Thu · Evening"]);
-  await page.locator('[data-rday="6"]').click();
-  expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan", "aarti-durge-durghat-bhari"]);
-  // the whole week, without Monday, and mornings only
-  await page.locator('[data-rspan="week"]').click();
-  await page.locator('[data-rday="1"]').click();
+  await expect(page.locator(".prrl .prtag")).toHaveCount(0);
+  // one session, in Home's order
   await page.locator('[data-rses="evening"]').click();
-  expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
-  await expect(page.locator(".prrl .prtag")).toHaveText(["Tue–Sun · Morning", "Sat · Morning"]);
-  // the arrow keys move through the three tabs
+  await expect(heading).toHaveText("Thursday · Evening");
+  expect(await ids()).toEqual(["aarti-durge-durghat-bhari", "aarti-sukhkarta"]);
+  await expect(page.locator("#prsum span").first()).toHaveText("2 texts");
+  // another day keeps the session; All gives the whole day
+  await page.locator(".prwhen").selectOption("6");
+  await expect(heading).toHaveText("Saturday · Evening");
+  await page.locator('[data-rses="all"]').click();
+  expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan", "aarti-durge-durghat-bhari"]);
+  // the whole week: each text once, in routine order, with its tag; then mornings only
+  await page.locator(".prwhen").selectOption("week");
+  await expect(heading).toHaveText("Printed once each, in routine order");
+  expect(await ids()).toEqual(P5_ORDER);
+  await expect(page.locator(".prrl .prtag")).toHaveText(P5_TAGS);
+  await expect(page.locator("[data-rses] .prsc")).toHaveText(["4", "3", "–", "2"]);
+  await page.locator('[data-rses="morning"]').click();
+  expect(await ids()).toEqual(["vedic-chant-atharvashirsha", "aarti-sukhkarta", "aarti-ghalin-lotangan"]);
+  await expect(page.locator(".prrl .prtag")).toHaveText(["Mon · Morning", "Daily · Morning", "Sat · Morning"]);
+  // the arrow keys move between the two tabs
   await page.locator("#prtab-routine").focus();
   await page.keyboard.press("ArrowRight");
   await expect(page.locator("#prtab-texts")).toBeFocused();
@@ -1273,7 +1295,7 @@ test("print: a Library printout has no tags or week grid @chromium-only", async 
 });
 
 // Open in Safari carries the routine printout: Safari keeps its own storage, so the link holds whose routine (name and
-// routine) and the days and sessions; Safari opens at the Routine tab's printout, ready to print
+// routine) and the sessions; Safari opens at the Routine tab's printout, ready to print
 test("iPhone Home Screen app: Open in Safari carries a routine printout @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
@@ -1287,14 +1309,13 @@ test("iPhone Home Screen app: Open in Safari carries a routine printout @chromiu
   await useP5Routine(page);
   await openSite(page, SETUPS.english);
   await openRoutineTab(page);
-  await page.locator('[data-rses="evening"]').click();
-  await page.locator("#prnx").click();
+  await page.locator('[data-rses="morning"]').click();
   await page.locator("#prgp").click();
   await expect(page.locator("#prsf")).toBeVisible();
   await page.locator("#prsf").click();
   const href = await page.locator("#prsf").getAttribute("data-to");
   expect(href).toMatch(/&r=/);
-  // of the routine, just what is printed: Evening was taken off, so the link has none of its texts
+  // of the routine, just what is printed: mornings only, so the link has no evening texts
   const carried = JSON.parse(decodeURIComponent(/&r=([^&]*)/.exec(href)[1])).r;
   expect(carried.evening).toEqual({ mode: "fixed", texts: [] });
   expect(carried.afternoon).toEqual({ mode: "fixed", texts: [] });

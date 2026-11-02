@@ -137,13 +137,13 @@
       // only some texts (their Library ids, comma separated): js/features/print.js prints just those
       var t = /[?&]t=([a-z0-9,-]+)/.exec(location.search);
       if (t) window.PRT = t[1].split(",").filter(Boolean);
-      // a session from Home (the print builder's Today tab): its texts print in the order given, headed by the session
+      // one day (the print builder's Routine tab, one day): its texts print in the order given, headed by the session
       var o = /[?&]o=(morning|afternoon|evening|all)(?:&|#|$)/.exec(location.search);
       if (o) window.PRO = o[1];
       // and its day (the weekday Home showed), for the heading
       var od = /[?&]od=([0-6])(?:&|#|$)/.exec(location.search);
       if (od) window.PROD = +od[1];
-      // a routine printout (the print builder's Routine tab): whose (name and routine) and the days and sessions;
+      // a week's printout (the print builder's Routine tab, the whole week): whose (name and routine) and the sessions;
       // js/features/print.js cleans the routine before using it
       var r = /[?&]r=([^&#]*)/.exec(location.search);
       if (r) {

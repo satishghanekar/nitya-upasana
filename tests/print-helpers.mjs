@@ -55,7 +55,7 @@ export async function stubPrint(page) {
   });
 }
 
-/** The print builder on a phone shows What first: Next goes on to How (from 760px wide both are on screen) */
+/** The print builder on a phone shows What first, Print with it: Change goes on to How (from 760px wide both are on screen) */
 export async function howStep(page) {
   if (await page.locator("#prnx").isVisible()) await page.locator("#prnx").click();
   await page.locator("#prgp").waitFor({ state: "visible" });
