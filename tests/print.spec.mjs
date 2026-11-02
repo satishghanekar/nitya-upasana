@@ -690,20 +690,16 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await openPrintBuilder(page);
   await expect(page.locator("#prwh")).toBeVisible();
   await expect(page.locator("#prhw")).toBeHidden();
-  // Print is in the bottom bar at once, under how it will print and Change (How)
-  await expect(page.locator("#prgp")).toBeFocused();
-  await expect(page.locator("#prhowt")).toHaveText("Marathi · Dhrupad (धृ): Once · Portrait · Traditional");
-  await expect(page.locator("#prnx")).toHaveAccessibleName("Change");
-  await expect(page.locator("#prnx")).toHaveAccessibleDescription("Marathi · Dhrupad (धृ): Once · Portrait · Traditional");
+  await expect(page.locator("#prgp")).toBeHidden();
+  await expect(page.locator("#prnx")).toBeFocused();
   const boxes = page.locator("#prwl .tpkl input");
   await expect(boxes).toHaveCount(TEXT_COUNT);
   expect(await boxes.evaluateAll((l) => l.every((x) => x.checked))).toBe(true);
   await expect(page.locator("#prsum")).toContainText(`${TEXT_COUNT} texts`);
-  // Clear everything: nothing to print, so Print and Change wait
+  // Clear everything: nothing to print, so Next waits
   await page.locator('.prcb[data-cat=""]').click();
   await expect(page.locator("#prsum")).toContainText("Pick at least one text");
   await expect(page.locator("#prnx")).toBeDisabled();
-  await expect(page.locator("#prgp")).toBeDisabled();
   await expect(page.locator('.prcb[data-cat=""]')).toHaveText("Select all");
   // two texts, found by search
   await page.locator(".prwq").fill("sukhkarta");
@@ -712,18 +708,15 @@ test("print builder: pick texts on a phone, then print just those @chromium-only
   await page.locator(".prwq").fill("");
   await page.locator('#prwl .tpkl li[data-id="vedic-chant-atharvashirsha"] input').check();
   await expect(page.locator("#prsum span").first()).toHaveText("2 texts");
-  // Change, a choice there (the line follows it), and back
+  // Next, and back
   await page.locator("#prnx").click();
   await expect(page.locator("#prhw")).toBeVisible();
   await expect(page.locator("#prwh")).toBeHidden();
-  await expect(page.locator("#prhow")).toBeHidden();
   await expect(page.locator("#prgp")).toBeFocused();
-  await page.locator('#prdg [data-v="0"]').click();
   await page.locator("#prbk").click();
   await expect(page.locator("#prwh")).toBeVisible();
-  await expect(page.locator("#prhowt")).toHaveText("Marathi · Dhrupad (धृ): Every verse · Portrait · Traditional");
   await expect(page.locator('#prwl .tpkl li[data-id="vedic-chant-atharvashirsha"] input')).toBeChecked();
-  // Print from What
+  await page.locator("#prnx").click();
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
   if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
@@ -758,7 +751,7 @@ test("print builder: a category's Select all and Clear, and one text alone @chro
   await openPrintBuilder(page);
   await expect(page.locator("#prwh")).toBeVisible();
   await expect(page.locator("#prhw")).toBeVisible();
-  await expect(page.locator("#prhow")).toBeHidden();
+  await expect(page.locator("#prnx")).toBeHidden();
   await expect(page.locator("#prgp")).toBeFocused();
   const groups = page.locator("#prwl .prgr");
   const first = groups.first(),
@@ -833,7 +826,7 @@ test("print builder: Open in Safari carries the texts ticked @chromium-only", as
 });
 
 // Print in the bottom bar, while reading a session: the builder opens at What, on the Routine tab with that session
-// chosen, Print in reach. The sessions and all of the day are one tap each (the test routine: Morning the
+// chosen, Next › going on to How. The sessions and all of the day are one tap each (the test routine: Morning the
 // Atharvashirsha, Afternoon empty, Evening ten aartis; 10 am, so Home shows Morning).
 test("print builder: the bottom bar's Print while reading a session, and the Routine tab @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
@@ -844,7 +837,7 @@ test("print builder: the bottom bar's Print while reading a session, and the Rou
   await page.locator("#tsl a.tgo").first().click();
   await page.locator("#asp").click();
   await expect(page.locator("#prm")).toHaveAttribute("data-step", "what");
-  await expect(page.locator("#prgp")).toBeFocused();
+  await expect(page.locator("#prnx")).toBeFocused();
   await expect(page.locator("#prsum span").first()).toHaveText("गणपत्यथर्वशीर्षोपनिषत्");
   await expect(page.locator("#prtab-routine")).toHaveAttribute("aria-selected", "true");
   await expect(page.locator('[data-rses="morning"]')).toHaveAttribute("aria-pressed", "true");
@@ -1310,6 +1303,7 @@ test("iPhone Home Screen app: Open in Safari carries a routine printout @chromiu
   await openSite(page, SETUPS.english);
   await openRoutineTab(page);
   await page.locator('[data-rses="morning"]').click();
+  await page.locator("#prnx").click();
   await page.locator("#prgp").click();
   await expect(page.locator("#prsf")).toBeVisible();
   await page.locator("#prsf").click();
