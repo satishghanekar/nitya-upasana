@@ -37,7 +37,7 @@ const rows = (page) => page.locator("#tsl li");
 // a session's tab in the Morning | Afternoon | Evening switch; a greyed one is aria-disabled, so it is clicked with force
 const tab = (page, s) => page.locator(`#tss-${s}`);
 const pickTab = (page, s) => tab(page, s).click({ force: true });
-// the texts the default routine gives a session on a weekday (0 Sunday), as Home shows them
+// the texts a routine gives a session on a weekday (0 Sunday), as Home shows them
 const planned = (day, s) => textsFor(ROUTINE, day, s).filter((id) => TITLE[id]);
 const hash = (page) => page.evaluate(() => location.hash);
 // the piece the reader is on: the lowest one whose top has passed just under the top bar (js/core/apply.js cur())

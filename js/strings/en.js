@@ -265,6 +265,51 @@ export default {
       return "Use " + d + "’s list every day? The other days’ own lists will be removed.";
     },
     fixGo: "Use every day",
+    // The ready-made routines (content/routines.json), at the top of the builder
+    bases: { short: "Short", daily: "Daily", full: "Full", extended: "Extended" },
+    baseG: "Ready-made routine",
+    baseInfo: {
+      short: "The Atharvashirsha and the everyday aartis in the morning, the aartis in the evening",
+      daily: "The Atharvashirsha, Purusha Suktam and Shri Sukta and the day’s aartis in the morning, the day’s aartis in the evening",
+      full: "Daily, with each day’s ashtaks and stotras",
+      extended: "Full, with the Laghunyasa, Shree Rudra and Durga Suktam and the longer stotras",
+    },
+    /** @param {number} a @param {number} b */
+    perDay: function (a, b) {
+      return (a === b ? a : a + "–" + b) + " texts a day";
+    },
+    /** @param {string} b */
+    follow: function (b) {
+      return "You follow " + b + ". Texts added to it later come to you too.";
+    },
+    /** @param {string} b */
+    own: function (b) {
+      return "Your own routine, made from " + b + ". It stays as you made it.";
+    },
+    /** @param {string} b */
+    goBack: function (b) {
+      return "Go back to " + b;
+    },
+    /** @param {string} b */
+    replaceAsk: function (b) {
+      return "Use " + b + " in place of your own routine? Your changes will be removed.";
+    },
+    /** @param {string} b */
+    use: function (b) {
+      return "Use " + b;
+    },
+    /** @param {string} b */
+    now: function (b) {
+      return "Now following " + b;
+    },
+    /** Settings → Routine: the one followed @param {string} b */
+    setting: function (b) {
+      return b;
+    },
+    /** Settings → Routine: their own, and which it came from @param {string} b */
+    ownSetting: function (b) {
+      return "Your own, from " + b;
+    },
   },
   // The print builder's What step: Texts, Today, Routine (js/print/what.js)
   printWhat: {

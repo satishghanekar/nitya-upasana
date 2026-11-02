@@ -52,6 +52,8 @@ export var IA = (function () {
   var O = { ॐ: "om̐", ऽ: "'", "।": "|", "॥": "||" };
   return function (t) {
     t = SCR.from(t); // from Kannada letters back to the Devanagari the rules below read
+    // the Vedic anusvara written as one sign (ꣳ, as in the Shri Sukta's ईश्वरीꣳ) is the ग्ं written elsewhere: gṃ
+    t = t.replace(/\uA8F3/g, "ग्ं");
     var o = "",
       i = 0,
       n = t.length,

@@ -270,6 +270,50 @@ export default {
       return d + ": ఈ జాబితాను ప్రతిరోజూ వాడాలా? ఇతర రోజుల సొంత జాబితాలు తీసివేయబడతాయి.";
     },
     fixGo: "ప్రతిరోజూ వాడు",
+    bases: { short: "సంక్షిప్త", daily: "దైనిక", full: "పూర్ణ", extended: "విస్తృత" },
+    baseG: "సిద్ధమైన దినచర్య",
+    baseInfo: {
+      short: "ఉదయం అథర్వశీర్షం మరియు రోజువారీ హారతులు, సాయంత్రం హారతులు",
+      daily: "ఉదయం అథర్వశీర్షం, పురుషసూక్తం, శ్రీసూక్తం మరియు ఆ రోజు హారతులు, సాయంత్రం ఆ రోజు హారతులు",
+      full: "దైనిక, దానితో పాటు ప్రతి రోజు అష్టకాలు మరియు స్తోత్రాలు",
+      extended: "పూర్ణ, దానితో పాటు లఘున్యాసం, శ్రీరుద్రం, దుర్గాసూక్తం మరియు పెద్ద స్తోత్రాలు",
+    },
+    /** @param {number} a @param {number} b */
+    perDay: function (a, b) {
+      return "రోజుకు " + (a === b ? a : a + "–" + b) + " పాఠాలు";
+    },
+    /** @param {string} b */
+    follow: function (b) {
+      return "మీరు " + b + " అనుసరిస్తున్నారు. దానికి తర్వాత చేర్చే పాఠాలు మీకూ వస్తాయి.";
+    },
+    /** @param {string} b */
+    own: function (b) {
+      return b + " నుండి చేసిన మీ సొంత దినచర్య. మీరు చేసినట్లే ఉంటుంది.";
+    },
+    /** @param {string} b */
+    goBack: function (b) {
+      return "మళ్ళీ " + b + " వాడు";
+    },
+    /** @param {string} b */
+    replaceAsk: function (b) {
+      return "మీ దినచర్యకు బదులుగా " + b + " వాడాలా? మీ మార్పులు పోతాయి.";
+    },
+    /** @param {string} b */
+    use: function (b) {
+      return b + " వాడు";
+    },
+    /** @param {string} b */
+    now: function (b) {
+      return "ఇప్పుడు " + b + " దినచర్య";
+    },
+    /** Settings → Routine: the one followed @param {string} b */
+    setting: function (b) {
+      return b;
+    },
+    /** Settings → Routine: their own, and which it came from @param {string} b */
+    ownSetting: function (b) {
+      return "మీ సొంతం, " + b + " నుండి";
+    },
   },
   // The print builder's What step: Texts, Today, Routine (js/print/what.js)
   printWhat: {

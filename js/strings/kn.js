@@ -270,6 +270,50 @@ export default {
       return d + ": ಈ ಪಟ್ಟಿಯನ್ನು ಪ್ರತಿದಿನ ಬಳಸುವುದೇ? ಇತರ ದಿನಗಳ ಸ್ವಂತ ಪಟ್ಟಿಗಳು ತೆಗೆದುಹಾಕಲ್ಪಡುತ್ತವೆ.";
     },
     fixGo: "ಪ್ರತಿದಿನ ಬಳಸಿ",
+    bases: { short: "ಸಂಕ್ಷಿಪ್ತ", daily: "ದೈನಿಕ", full: "ಪೂರ್ಣ", extended: "ವಿಸ್ತೃತ" },
+    baseG: "ಸಿದ್ಧ ದಿನಚರಿ",
+    baseInfo: {
+      short: "ಬೆಳಿಗ್ಗೆ ಅಥರ್ವಶೀರ್ಷ ಮತ್ತು ದಿನನಿತ್ಯದ ಆರತಿಗಳು, ಸಂಜೆ ಆರತಿಗಳು",
+      daily: "ಬೆಳಿಗ್ಗೆ ಅಥರ್ವಶೀರ್ಷ, ಪುರುಷಸೂಕ್ತ, ಶ್ರೀಸೂಕ್ತ ಮತ್ತು ಆ ದಿನದ ಆರತಿಗಳು, ಸಂಜೆ ಆ ದಿನದ ಆರತಿಗಳು",
+      full: "ದೈನಿಕ, ಜೊತೆಗೆ ಪ್ರತಿ ದಿನದ ಅಷ್ಟಕಗಳು ಮತ್ತು ಸ್ತೋತ್ರಗಳು",
+      extended: "ಪೂರ್ಣ, ಜೊತೆಗೆ ಲಘುನ್ಯಾಸ, ಶ್ರೀರುದ್ರ, ದುರ್ಗಾಸೂಕ್ತ ಮತ್ತು ದೀರ್ಘ ಸ್ತೋತ್ರಗಳು",
+    },
+    /** @param {number} a @param {number} b */
+    perDay: function (a, b) {
+      return "ದಿನಕ್ಕೆ " + (a === b ? a : a + "–" + b) + " ಪಠ್ಯಗಳು";
+    },
+    /** @param {string} b */
+    follow: function (b) {
+      return "ನೀವು " + b + " ಅನುಸರಿಸುತ್ತೀರಿ. ಅದಕ್ಕೆ ಮುಂದೆ ಸೇರಿಸುವ ಪಠ್ಯಗಳು ನಿಮಗೂ ಬರುತ್ತವೆ.";
+    },
+    /** @param {string} b */
+    own: function (b) {
+      return b + " ಇಂದ ಮಾಡಿದ ನಿಮ್ಮದೇ ದಿನಚರಿ. ನೀವು ಮಾಡಿದಂತೆಯೇ ಉಳಿಯುತ್ತದೆ.";
+    },
+    /** @param {string} b */
+    goBack: function (b) {
+      return "ಮತ್ತೆ " + b + " ಬಳಸಿ";
+    },
+    /** @param {string} b */
+    replaceAsk: function (b) {
+      return "ನಿಮ್ಮ ದಿನಚರಿಯ ಬದಲು " + b + " ಬಳಸಬೇಕೆ? ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಹೋಗುತ್ತವೆ.";
+    },
+    /** @param {string} b */
+    use: function (b) {
+      return b + " ಬಳಸಿ";
+    },
+    /** @param {string} b */
+    now: function (b) {
+      return "ಈಗ " + b + " ದಿನಚರಿ";
+    },
+    /** Settings → Routine: the one followed @param {string} b */
+    setting: function (b) {
+      return b;
+    },
+    /** Settings → Routine: their own, and which it came from @param {string} b */
+    ownSetting: function (b) {
+      return "ನಿಮ್ಮದೇ, " + b + " ಇಂದ";
+    },
   },
   // The print builder's What step: Texts, Today, Routine (js/print/what.js)
   printWhat: {

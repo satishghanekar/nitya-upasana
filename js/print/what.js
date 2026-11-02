@@ -27,7 +27,7 @@ import { menuWords } from "../core/strings.js";
  * @typedef {{ session: string, name: string, ids: string[], day?: number, today?: boolean }} WhatSession  one of the
  *   sessions of the day Home shows and its texts, with that day's weekday and whether it is today
  * @typedef {{ id: string, name: string, routine: import("../core/routine.js").Routine | null }} WhatPerson  a person and
- *   their routine (their own, or the default one)
+ *   their routine (their own, or the ready-made one they follow)
  * @typedef {{ shelves: () => WhatShelf[], today: () => WhatSession[], people: () => WhatPerson[], me: () => string,
  *   onChange: () => void }} WhatOptions
  * @typedef {{ who: string, span: "week" | "day", days: number[], day: number, sessions: string[] }} RoutineChoice  the

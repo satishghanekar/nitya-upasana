@@ -1313,7 +1313,7 @@ test("iPhone Home Screen app: Open in Safari carries a routine printout @chromiu
   const carried = JSON.parse(decodeURIComponent(/&r=([^&]*)/.exec(href)[1])).r;
   expect(carried.evening).toEqual({ mode: "fixed", texts: [] });
   expect(carried.afternoon).toEqual({ mode: "fixed", texts: [] });
-  // Safari: a fresh browser, with the default routine (the link brings the person's own)
+  // Safari: a fresh browser, on Short (the link brings the person's own)
   const sf = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const sp = await sf.newPage();
   await sp.addInitScript(() => {

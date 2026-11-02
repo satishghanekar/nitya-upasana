@@ -878,6 +878,24 @@ test("Coming up: a holiday on a festival's day joins its row @mobile", async ({ 
   await expect(jan1).toHaveAccessibleName(/New Year's Day \(US\)/);
 });
 
+// …and its name is never the part cut off, on an iPad or a computer's narrow column either (the small line is one line)
+for (const [name, size] of [
+  ["an upright iPad", { width: 820, height: 1180 }],
+  ["an iPad sideways", { width: 1180, height: 820 }],
+  ["a computer", { width: 1440, height: 900 }],
+])
+  test(`Coming up on ${name}: a holiday joined to a festival's row is shown whole`, async ({ page }) => {
+    await page.setViewportSize(size);
+    await openSite(page, ENGLISH_ONLY, { now: new Date("2026-12-27T19:00:00-04:00") });
+    const small = page.locator('#upw .upr[data-d="2027-01-01"] small');
+    await expect(small).toContainText("New Year's Day (US)");
+    const [line, hol] = await small.evaluate((s) => {
+      const h = [...s.querySelectorAll("span")].find((x) => /New Year/.test(x.textContent));
+      return [s.getBoundingClientRect().right, h.getBoundingClientRect().right];
+    });
+    expect(hol).toBeLessThanOrEqual(line + 0.5);
+  });
+
 // A state's holidays chosen before 2026-11-02 (Karnataka) no longer show in Coming up: they are in the calendar only
 // (the calendar's day card still names Valmiki Jayanti, Karnataka's: "a public holiday shows in the month…" above)
 test("Coming up: a state's holidays chosen before are left out @mobile", async ({ page }) => {

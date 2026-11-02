@@ -15,7 +15,7 @@ Automation covers the engines (Chromium, Firefox, WebKit) and emulated phones an
 | Android phone | Samsung Internet | Opens and reads; Settings; dark theme. |
 | Windows PC | Edge | Home's column and the text beside it sit right (the scrollbar doesn't push them); Ctrl + / −; Print (Letter) in Portrait and in Landscape: the PDF has the pages the pop-up said ("about N pages"). Settings → Accessibility → Contrast themes on: buttons, icons and the focus ring stay visible. |
 | Mac | Safari | Print → PDF in Portrait and in Landscape (pick Landscape in Safari's dialog too; the pop-up says Safari prints a little smaller, without page numbers); a changed print Language, Font or Dhrupad prints, and the reading page keeps its own; File → Add to Dock. |
-| iPad | Safari | Upright: Home with the picture large on top. Sideways: Home stays on the left while a text is read on the right. Print from the Home Screen app goes to Open in Safari. |
+| iPad | Safari | Upright: Home with the picture large on top. Sideways: Home stays on the left while a text is read on the right. Print from the Home Screen app goes to Open in Safari. Edit beside a session: Short, Daily, Full and Extended in one row; choose Daily, Home's lists change; remove a text, then Go back asks first. |
 | Large monitor (≥ 2560 px) | any | The page uses the width without stretching lines. |
 
 ## Screen readers

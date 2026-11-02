@@ -601,12 +601,12 @@ function upRow(u, today, home) {
             ? w.sunset + " " + clock(u.set)
             : "",
     two = nameH2(u.name),
-    small = [two, det ? say(det) : "", u.also ? nameH(u.also) : ""]
-      .concat(
-        (u.hols || []).map(function (h) {
-          return nameH(h);
-        }),
-      )
+    // a holiday of the same day first, so a narrow column (a computer's Home) cuts the second-language name, not it
+    small = (u.hols || [])
+      .map(function (h) {
+        return nameH(h);
+      })
+      .concat([two, det ? say(det) : "", u.also ? nameH(u.also) : ""])
       .filter(Boolean)
       .join(say(" · "));
   // on Home the date starts the small line (heard already, in full, before the name)
