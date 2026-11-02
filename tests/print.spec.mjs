@@ -1172,7 +1172,7 @@ const P5_ROUTINE = {
 const P5_ORDER = ["vedic-chant-atharvashirsha", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"];
 const P5_TAGS = ["Mon · Morning", "Daily · Morning, Evening", "Daily · Evening", "Sat · Morning"];
 async function useP5Routine(page) {
-  await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(P5_ROUTINE) }));
+  await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify({ short: P5_ROUTINE }) }));
 }
 /** The Routine tab, the whole week (else as it opens: the day Home shows) */
 async function openRoutineTab(page, week = true) {
@@ -1201,8 +1201,8 @@ test("print builder: the Routine tab: whose, when and which session @chromium-on
   await openRoutineTab(page, false);
   const ids = () => page.locator(".prrl li").evaluateAll((l) => l.map((x) => x.dataset.id));
   const heading = page.locator("#prtp-routine .prcg");
-  // whose: SG and RG are built in, and SG, the one reading, is picked
-  await expect(page.locator(".prwho option:checked")).toHaveText("SG");
+  // whose: the one person on a new phone, Me, named (nothing to choose)
+  await expect(page.locator(".prwho")).toHaveText("Me");
   // when: the day Home shows first, the whole week, then the other days, Monday first
   await expect(page.locator(".prwhen option")).toHaveText(["Today · Thursday", "Whole week", "Monday", "Tuesday", "Wednesday", "Friday", "Saturday", "Sunday"]);
   await expect(page.locator(".prwhen option:checked")).toHaveText("Today · Thursday");
@@ -1259,7 +1259,7 @@ test("print: a routine printout, its week at a glance and tags @chromium-only", 
   expect(await page.locator("#pv .pvgrid tbody th").allTextContents()).toEqual(["Morning", "Evening"]);
   expect(await page.locator("#pv .pvgrid tbody tr").first().locator("td").allTextContents()).toEqual(["1 2", "2", "2", "2", "2", "2 4", "2"]);
   expect(await page.locator("#pv .pvgrid tbody tr").last().locator("td").allTextContents()).toEqual(Array(7).fill("3 2"));
-  await expect(page.locator("#pv .pvrh")).toHaveText("SG");
+  await expect(page.locator("#pv .pvrh")).toHaveText("Me");
   await expect(page.locator("#pv .pvtoc .pvtag")).toHaveText(P5_TAGS);
   await expect(page.locator("#pv .pvs h2 .pvtag")).toHaveText(P5_TAGS);
   await expect(page.locator("#pv .pvs h2 .pvnum")).toHaveText(["1.", "2.", "3.", "4."]);
@@ -1325,7 +1325,7 @@ test("iPhone Home Screen app: Open in Safari carries a routine printout @chromiu
   await sp.goto(href.replace(/^x-safari-/, ""));
   await expect(sp.locator("#prgo")).toBeVisible({ timeout: 15_000 });
   expect(await sp.evaluate(() => location.search)).toBe("");
-  await expect(sp.locator("#pv .pvrh")).toHaveText("SG");
+  await expect(sp.locator("#pv .pvrh")).toHaveText("Me");
   await expect(sp.locator("#pv .pvtoc .pvtag")).toHaveText(["Mon · Morning", "Daily · Morning", "Sat · Morning"]);
   await expect(sp.locator("#pv .pvgrid tbody th")).toHaveText(["Morning"]);
   await sf.close();

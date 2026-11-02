@@ -301,9 +301,9 @@ export const TEST_ROUTINE = {
   afternoon: { mode: "fixed", texts: [] },
   evening: { mode: "fixed", texts: TEST_AARTIS },
 };
-/** Serve TEST_ROUTINE in place of content/routines.json (call before openSite). */
+/** Serve TEST_ROUTINE in place of content/routines.json, as Short, the one a new phone follows (call before openSite). */
 export async function useTestRoutine(page) {
-  await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(TEST_ROUTINE) }));
+  await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify({ short: TEST_ROUTINE }) }));
 }
 
 /** Settings → one tab (Reading, Screen, More) on phones and tablets; on desktops every group shows at once and there

@@ -2,8 +2,8 @@
 // rules for the lists (js/core/routine.js: the same every day or different by weekday, copying a day's list to other
 // days, moving, adding and removing texts, cleaning what is read back), the routine kept in the profile
 // (js/store/profiles.js, js/store/store.js on fake-indexeddb), and backups: a file with routines restores them, a file
-// from before version 1.9 (no routine) leaves the default (content/routines.json, Q5). And the built-in people: SG
-// follows the default, RG has it without the Vedic chants and with the Lalita Sahasranama every morning.
+// from before version 1.9 (no routine) leaves the person on a ready-made one. And the ready-made routines
+// (content/routines.json, BASES): a new phone's one person follows Short; a person follows one until they change it.
 import "fake-indexeddb/auto";
 import { IDBFactory } from "fake-indexeddb";
 import { readFileSync } from "node:fs";
@@ -24,17 +24,21 @@ import {
   setMode,
   textsFor,
   WEEK_ORDER,
-  withoutVedic,
+  BASES,
+  baseRoutine,
+  cleanBase,
+  FIRST_BASE,
 } from "../../js/core/routine.js";
 import { cleanProfile, COLOURS, newProfile } from "../../js/store/profiles.js";
 import { makeBackup, parseBackup, serialise, sha256 } from "../../js/store/backup.js";
 import { defaults, devicePart, migratePrefs, profilePart } from "../../js/store/migrate.js";
 import * as store from "../../js/store/store.js";
-import { openDB } from "../../js/store/db.js";
 import { loaded } from "../../js/text/load.js";
 import { matches, searchKey } from "../../js/features/text-picker.js";
 
-const ROUTINE = JSON.parse(readFileSync(new URL("../../content/routines.json", import.meta.url), "utf8"));
+const ALL = JSON.parse(readFileSync(new URL("../../content/routines.json", import.meta.url), "utf8"));
+// the longest ready-made routine, different by weekday: the rules below are shown on it
+const ROUTINE = ALL.extended;
 const ENV = { desk: false, fs: 24 };
 const NOW = "2026-10-19T19:00:00.000Z";
 const MON = 1,
@@ -263,7 +267,7 @@ describe("the store keeps the reading person's routine", () => {
     expect(store.routine()).toBeNull();
     await store.settled();
     await load(idb);
-    expect(store.list().map((p) => p.routine)).toEqual([mine, null, null]);
+    expect(store.list().map((p) => p.routine)).toEqual([mine, null]);
     store.switchTo(store.list()[0].id, migratePrefs(null, ENV).prefs);
     store.setRoutine(null);
     await store.settled();
@@ -286,8 +290,7 @@ describe("the store keeps the reading person's routine", () => {
   });
 });
 
-describe("the built-in people, SG and RG", () => {
-  const LALITA = "vedic-chant-lalita-sahasranama";
+describe("the ready-made routines (content/routines.json)", () => {
   let idb;
   async function load(db) {
     store._reset();
@@ -296,57 +299,69 @@ describe("the built-in people, SG and RG", () => {
   }
   beforeEach(() => {
     idb = new IDBFactory();
-    loaded.routine = ROUTINE;
+    loaded.routines = ALL;
   });
   afterEach(() => {
-    loaded.routine = null;
+    loaded.routines = null;
   });
 
-  test("RG's routine: the default without its Vedic chants, the Lalita Sahasranama first every morning", () => {
-    const rg = withoutVedic(ROUTINE, LALITA);
-    for (let d = 0; d < 7; d++) {
-      const morning = textsFor(rg, d, "morning");
-      expect(morning).toEqual([LALITA, ...textsFor(ROUTINE, d, "morning").filter((id) => !id.startsWith("vedic-chant-"))]);
-      for (const s of ["afternoon", "evening"]) expect(textsFor(rg, d, s)).toEqual(textsFor(ROUTINE, d, s).filter((id) => !id.startsWith("vedic-chant-")));
-    }
-    // the default itself is left as it was, and a session with one list gets the text too
-    expect(textsFor(ROUTINE, MON, "morning")[0]).toBe("vedic-chant-atharvashirsha");
-    expect(withoutVedic({ morning: { mode: "fixed", texts: ["vedic-chant-shri-sukta", "aarti-sukhkarta"] } }, LALITA).morning).toEqual({
-      mode: "fixed",
-      texts: [LALITA, "aarti-sukhkarta"],
-    });
-    expect(withoutVedic(null, LALITA)).toBeNull();
+  test("the file has the four, shortest first, each read back unchanged", () => {
+    expect(Object.keys(ALL)).toEqual(BASES);
+    for (const id of BASES) expect(cleanRoutine(ALL[id])).toEqual(ALL[id]);
+    expect(FIRST_BASE).toBe("short");
   });
 
-  test("a new phone starts with SG (reading, the default routine) and RG (a routine of their own, made from the default)", async () => {
+  test("one asked for by id; an unknown id is the first in the file; no file, none", () => {
+    expect(baseRoutine(ALL, "daily")).toBe(ALL.daily);
+    expect(baseRoutine(ALL, "weekly")).toBe(ALL.short);
+    expect(baseRoutine(null, "daily")).toBeNull();
+    expect(cleanBase("full", "short")).toBe("full");
+    expect(cleanBase("weekly", "short")).toBe("short");
+    expect(cleanBase(3, "extended")).toBe("extended");
+  });
+
+  test("a new phone starts with one person, on Short; a profile saved before the four followed the one default, now Extended", async () => {
     await load(idb);
-    expect(store.list().map((p) => [p.name, p.initials, p.colour])).toEqual([
-      ["SG", "SG", COLOURS[0].v],
-      ["RG", "RG", COLOURS[1].v],
-    ]);
-    expect(store.active().name).toBe("SG");
-    expect(store.list()[0].routine).toBeNull();
-    expect(store.list()[1].routine).toEqual(withoutVedic(ROUTINE, LALITA));
-    // a later change to the default does not reach RG's routine (it was made once)
-    loaded.routine = { morning: { mode: "fixed", texts: [] } };
+    expect(store.list().map((p) => [p.name, p.initials, p.colour, p.base, p.routine])).toEqual([["Me", "M", COLOURS[0].v, "short", null]]);
+    expect(store.followed()).toBe(ALL.short);
+    const settings = profilePart(defaults(ENV));
+    const old = { id: "p1", name: "Aai", initials: "A", colour: COLOURS[0].v, settings, checklist: null, created: NOW, updated: NOW };
+    expect(cleanProfile(old, ENV).base).toBe("extended");
+    expect(cleanProfile({ ...old, base: "daily" }, ENV).base).toBe("daily");
+    expect(store.add({ name: "Baba" }).profile.base).toBe("short");
+  });
+
+  test("a person follows their ready-made routine until they change it; then it is theirs, and choosing one again leaves it", async () => {
+    await load(idb);
+    store.setBase("daily");
+    expect([store.base(), store.routine()]).toEqual(["daily", null]);
+    expect(store.followed()).toBe(ALL.daily);
+    // a later change to Daily reaches them
+    const newer = { ...ALL, daily: { morning: { mode: "fixed", texts: ["aarti-sukhkarta"] } } };
+    loaded.routines = newer;
+    expect(store.followed()).toBe(newer.daily);
+    // their first change makes a copy of their own, which no update reaches; it remembers where it came from
+    const mine = setList(editable(store.followed(), null), "morning", MON, ["aarti-ghalin-lotangan"]);
+    store.setRoutine(mine);
+    loaded.routines = ALL;
+    expect([store.base(), store.followed()]).toEqual(["daily", mine]);
+    // kept in IndexedDB
     await store.settled();
     await load(idb);
-    expect(store.list()[1].routine).toEqual(withoutVedic(ROUTINE, LALITA));
+    expect([store.base(), store.routine()]).toEqual(["daily", mine]);
+    // choosing a ready-made one leaves their own
+    store.setBase("extended");
+    expect([store.base(), store.routine(), store.followed()]).toEqual(["extended", null, ALL.extended]);
+    // an unknown id changes nothing
+    store.setBase("weekly");
+    expect(store.base()).toBe("extended");
   });
 
-  test("a phone that already has people gets SG and RG once, after them; one deleted does not come back", async () => {
-    // a phone from before: one person, "Me", and no mark that the built-in people were added
-    const db = await openDB({ idb });
-    const me = newProfile({ id: "pme", name: "Me", settings: profilePart(defaults(ENV)), now: NOW });
-    await db.put("profiles", me);
-    await db.put("meta", { activeProfile: "pme", device: {}, since: NOW, lastBackup: "", snooze: "", schema: 1, order: ["pme"] }, "meta");
+  test("a backup keeps which one each person follows", async () => {
     await load(idb);
-    expect(store.list().map((p) => p.name)).toEqual(["Me", "SG", "RG"]);
-    expect(store.active().name).toBe("Me");
-    store.remove(store.list()[2].id);
-    await store.settled();
-    await load(idb);
-    expect(store.list().map((p) => p.name)).toEqual(["Me", "SG"]);
+    store.setBase("full");
+    const text = serialise(makeBackup(store.exportData(), { app: "aarti-v1.9", created: NOW }));
+    expect(parseBackup(text, ENV).data.profiles.map((p) => [p.base, p.routine])).toEqual([["full", null]]);
   });
 });
 

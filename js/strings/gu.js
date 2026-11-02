@@ -96,6 +96,7 @@ export default {
       return n + " ને કાઢી નાખ્યા";
     },
     chip: "પ્રોફાઇલ: ",
+    me: "હું",
   },
   // The Library by category and the categories sheet (js/features/library.js)
   library: {

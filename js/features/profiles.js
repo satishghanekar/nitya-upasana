@@ -52,10 +52,12 @@ function words() {
   return menuWords("profiles");
 }
 
-/** The language a name is written in, for screen readers: English for Latin letters, else Marathi */
+/** The language a name is written in, for screen readers: English for Latin letters, Kannada, Telugu or Gujarati for
+ *  their letters (the first person's name in those menus: "ನಾನು"), else Marathi */
 /** @param {string} s */
 function langOf(s) {
-  return /^[\s\x20-\x7eÀ-ɏ]*$/.test(s) ? "en" : "mr";
+  if (/^[\s\x20-\x7eÀ-ɏ]*$/.test(s)) return "en";
+  return /[ಀ-೿]/.test(s) ? "kn" : /[ఀ-౿]/.test(s) ? "te" : /[઀-૿]/.test(s) ? "gu" : "mr";
 }
 
 /** @param {string} id */

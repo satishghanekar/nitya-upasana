@@ -25,7 +25,8 @@
    ===================================================================== */
 
 import { load as loadTexts } from "./text/load.js";
-import { openStore } from "./store/store.js";
+import { nameFirst, openStore } from "./store/store.js";
+import { menuWords } from "./core/strings.js";
 import { init as startPage } from "./core/page.js";
 import { init as startState } from "./core/state.js";
 import { init as startFeatures } from "./core/features.js";
@@ -79,6 +80,11 @@ function run(init) {
 function start() {
   try {
     run(startPage); // Page basics: the <html> element, the short message (flash), and the pieces on the reading page
+    // the first person on a new phone is named in the menu language ("Me", "मी"; js/store/store.js can't import the menu
+    // words: they import its importers)
+    nameFirst(function (code) {
+      return menuWords("profiles", code).me;
+    });
     run(startState); // Settings (P), loaded from this device
     run(startFeatures); // Features held back for a later release
     run(startDayPicture); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed

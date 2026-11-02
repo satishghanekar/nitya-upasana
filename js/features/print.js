@@ -26,8 +26,7 @@ import { createWhat, whatWords } from "../print/what.js";
 import { shelvesNow } from "./library.js";
 import { shownSessions, shownDay, runDay, runIds, shownSession } from "./today-card.js";
 import { cur } from "../core/apply.js";
-import { active, list as people } from "../store/store.js";
-import { loaded } from "../text/load.js";
+import { active, followed, list as people } from "../store/store.js";
 import { DAYS, dv, ui } from "../core/words.js";
 import { TAG_WORDS, tagFor } from "../print/select.js";
 import { cleanRoutine, routinePart } from "../core/routine.js";
@@ -660,10 +659,10 @@ export function init() {
     var what = createWhat(/** @type {HTMLElement} */ (document.getElementById("prwl")), {
         shelves: shelvesNow,
         today: shownSessions,
-        // each person's routine: their own, else the default one (content/routines.json)
+        // each person's routine: their own, else the ready-made one they follow (content/routines.json)
         people: function () {
           return people().map(function (p) {
-            return { id: p.id, name: p.name, routine: p.routine || loaded.routine || null };
+            return { id: p.id, name: p.name, routine: followed(p) };
           });
         },
         me: function () {
