@@ -81,7 +81,7 @@ export function defaults(env) {
     as: 3, // autoscroll speed for a piece not yet adjusted, 1–10
     ason: 0, // autoscroll button shown
     asp: {}, // autoscroll speed per piece
-    hol: [], // the public holidays Home's Coming up shows: groups of content/holidays.json ("us", "in", "mh", "ka")
+    hol: ["us", "in"], // the public holidays Home's Coming up shows: the US's and India's (HOME_HOLIDAYS)
     upf: 0, // Home's Coming up folded
   };
 }
@@ -145,12 +145,20 @@ export function migratePrefs(saved, env) {
   return { prefs: P, changed: changed };
 }
 
+// the groups of content/holidays.json that Home's Coming up can show (Settings → Screen)
+export const HOME_HOLIDAYS = ["us", "in"];
+
 /**
  * Keep the language choices consistent: two different languages, English menus when English is the main one, and
  * only the chosen languages shown (as js/core/state.js has always done after loading)
  * @param {Prefs} P
  */
 export function tidy(P) {
+  // Home's Coming up shows only the countries' holidays (Satish, 2026-11-02): the states' (Maharashtra, Karnataka) are
+  // in the calendar only
+  P.hol = (Array.isArray(P.hol) ? P.hol : []).filter(function (/** @type {string} */ g) {
+    return HOME_HOLIDAYS.indexOf(g) >= 0;
+  });
   if (P.lead !== "en") P.lead = "mr";
   if (P.l2 === P.lead || ["mr", "en", ""].indexOf(P.l2) < 0) P.l2 = P.lead === "en" ? "mr" : "en";
   if (["kn", "te", "gu"].indexOf(P.ind) < 0) P.ind = "mr";

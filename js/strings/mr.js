@@ -368,7 +368,7 @@ export default {
     uNone: "या दिवसांत काही नाही.",
     kinds: { fest: "सण", sk: "संकष्टी", pradosh: "प्रदोष", hol: "सुट्ट्या" },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
-    holHome: "येत्या दिवसांत सुट्ट्या",
+    holHome: "सुट्ट्या दाखवा",
     groups: { us: "अमेरिका", in: "भारत", mh: "महाराष्ट्र", ka: "कर्नाटक" },
   },
   bar: {

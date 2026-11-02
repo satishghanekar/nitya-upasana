@@ -368,7 +368,7 @@ export default {
     uNone: "ఈ రోజుల్లో ఏదీ గుర్తించలేదు.",
     kinds: { fest: "పండుగలు", sk: "సంకష్టి", pradosh: "ప్రదోషం", hol: "సెలవులు" },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
-    holHome: "రాబోయే రోజుల్లో సెలవులు",
+    holHome: "సెలవులు చూపించు",
     groups: { us: "అమెరికా", in: "భారత్", mh: "మహారాష్ట్ర", ka: "కర్ణాటక" },
   },
   // The top bar (js/features/bars.js)
