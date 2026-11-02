@@ -4,6 +4,9 @@
 // Vedic calendar (#rtb: under the top bar, Back, the phone's Back, Escape), opened by Edit beside the session on Home,
 // Add texts in an empty session (js/features/today-card.js, the event "nitya-routine-edit") and Settings → Routine.
 //
+// - The ready-made routines (content/routines.json, Satish 2026-11-02): Short, Daily, Full, Extended, a radio group with
+//   what the one checked holds and its texts a day. A person follows one (updates reach them) until their first change
+//   here makes the routine theirs; then Go back (or another one chosen) asks first, as their changes would go.
 // - Morning / Afternoon / Evening (a radio group), then "Same every day" or "Different by weekday"; with weekdays, a
 //   row Monday … Sunday (this week's dates) picks the day being edited, and "Copy to other days…" gives its list to
 //   the days chosen.
@@ -13,14 +16,30 @@
 // - Add texts: the picker (js/features/text-picker.js), every text in the library with search and a checkbox each,
 //   beside the list on wide screens, a sheet on phones.
 // Every change is kept at once in the person's profile (setRoutine(), js/store/store.js; backed up with them) and Home
-// is told ("nitya-routine"). Until the first change a person follows content/routines.json (Q5). The rules for the
+// is told ("nitya-routine"). Until the first change a person follows a ready-made routine. The rules for the
 // lists (pure, unit-tested): js/core/routine.js. Titles follow the reading languages (Settings → Reading → Languages), as the
 // Vedic calendar's names do: the first language large, the second under it; the words around them follow the menus.
 
 import { loaded } from "../text/load.js";
 import { sessionAt } from "../core/time-of-day.js";
-import { DAY_KEYS, WEEK_ORDER, addTexts, byWeekday, copyDays, editable, moveItem, removeText, setList, setMode, textsFor, weekOf } from "../core/routine.js";
-import { active, getLibrary, onChange, routine, setRoutine } from "../store/store.js";
+import {
+  BASES,
+  DAY_KEYS,
+  WEEK_ORDER,
+  addTexts,
+  baseRoutine,
+  byWeekday,
+  copyDays,
+  editable,
+  moveItem,
+  perDay,
+  removeText,
+  setList,
+  setMode,
+  textsFor,
+  weekOf,
+} from "../core/routine.js";
+import { active, base, followed, getLibrary, onChange, routine, setBase, setRoutine } from "../store/store.js";
 import { categoriesOf, categoryOf } from "../core/library.js";
 import { setR } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
@@ -75,6 +94,8 @@ var picker;
 var page = null;
 /** @type {HTMLElement | null} */
 var opener = null;
+// the ready-made routine asked about (one chosen over the person's own routine), "" when not asking
+var asking = "";
 
 // ----- small helpers -----
 
@@ -180,6 +201,75 @@ function keep(r) {
   view.r = r;
   setRoutine(r);
   document.dispatchEvent(new Event("nitya-routine"));
+  // the first change makes the routine the person's own
+  drawBase();
+}
+
+// ----- the ready-made routines -----
+
+/** A ready-made routine's name in the menu language @param {string} id */
+function baseName(id) {
+  return /** @type {Record<string, string>} */ (words().bases)[id] || id;
+}
+
+/** The four, what the one checked holds, and whether the person follows it or has made it their own */
+function drawBase() {
+  var w = words(),
+    b = base(),
+    mine = !!routine();
+  radios(
+    el("rtbs"),
+    w.baseG,
+    BASES.map(function (id) {
+      return { v: id, html: "<span>" + esc(baseName(id)) + "</span>", on: id === b };
+    }),
+  );
+  var n = perDay(baseRoutine(loaded.routines, b));
+  el("rtbi").textContent = /** @type {Record<string, string>} */ (w.baseInfo)[b] + " · " + w.perDay(n[0], n[1]);
+  el("rtbst").textContent = mine ? w.own(baseName(b)) : w.follow(baseName(b));
+  var bk = el("rtbk");
+  bk.hidden = !mine;
+  bk.textContent = w.goBack(baseName(b));
+  routineLang();
+}
+
+/** Settings → Routine: the routine followed, or their own (and which it came from), in the menu language (also called
+ *  by apply(), js/features/bars.js) */
+export function routineLang() {
+  var v = document.getElementById("sprtv");
+  if (v && active()) v.textContent = routine() ? words().ownSetting(baseName(base())) : words().setting(baseName(base()));
+}
+
+/** Their own routine would go: asked first @param {string} id  the ready-made routine chosen ("" to stop asking) */
+function replacePanel(id) {
+  var w = words();
+  asking = id;
+  el("rtrp").hidden = !id;
+  if (!id) return;
+  el("rtrpt").textContent = w.replaceAsk(baseName(id));
+  el("rtrpo").textContent = w.use(baseName(id));
+  el("rtrpx").textContent = w.cancel;
+  el("rtrpo").focus();
+}
+
+/** Follow a ready-made routine: at once, or asked first over the person's own @param {string} id @param {boolean} [sure] */
+function chooseBase(id, sure) {
+  if (!routine() && id === base()) return;
+  if (routine() && !sure) {
+    copyPanel(false);
+    fixPanel(false);
+    replacePanel(id);
+    return;
+  }
+  replacePanel("");
+  // the store tells everyone (onChange, below, draws the page again)
+  setBase(id);
+  view.r = editable(followed(), null);
+  weekBefore = {};
+  document.dispatchEvent(new Event("nitya-routine"));
+  render();
+  focusRadio("rtbs");
+  say(words().now(baseName(id)) + " · " + what() + " · " + words().texts(list().length));
 }
 
 /** Put a changed list in place (keeping texts not in the library, so nothing is lost) @param {string[]} ids */
@@ -215,6 +305,7 @@ function render() {
     badge.classList.toggle("long", p.initials.length > 2);
     el("rtbn").textContent = w.title(p.name);
   }
+  drawBase();
   // Morning / Afternoon / Evening
   radios(
     el("rtss"),
@@ -557,7 +648,7 @@ export function openBuilder(o) {
   buildInfo();
   view.session = o.session || shownSession() || sessionAt(new Date());
   view.day = typeof o.day === "number" ? o.day : new Date().getDay();
-  view.r = editable(routine(), loaded.routine);
+  view.r = editable(followed(), null);
   weekBefore = {};
   opener = /** @type {HTMLElement | null} */ (o.from || null);
   // focus is where it was opened from, so Back returns it there (js/features/overlays.js)
@@ -566,6 +657,7 @@ export function openBuilder(o) {
       opener.focus({ preventScroll: true });
     } catch (e) {}
   copyPanel(false);
+  replacePanel("");
   el("rtlive").textContent = "";
   render();
   setR(true);
@@ -586,6 +678,7 @@ export function init() {
   page = document.getElementById("rtb");
   if (!page) return;
   buildInfo();
+  routineLang();
   var pk = el("tpk");
   picker = createPicker(pk, {
     texts: function () {
@@ -621,6 +714,7 @@ export function init() {
   page.addEventListener("rtb-closed", function () {
     if (picker.isOpen()) picker.close();
     copyPanel(false);
+    replacePanel("");
     var o = opener;
     opener = null;
     setTimeout(function () {
@@ -640,7 +734,13 @@ export function init() {
       b = /** @type {HTMLElement | null} */ (t.closest("button"));
     if (!b) return;
     var g = b.parentElement && b.parentElement.id;
-    if (g === "rtss" && b.dataset.v) {
+    if (g === "rtbs" && b.dataset.v) chooseBase(b.dataset.v);
+    else if (b.id === "rtbk") chooseBase(base());
+    else if (b.id === "rtrpo") chooseBase(asking, true);
+    else if (b.id === "rtrpx") {
+      replacePanel("");
+      focusRadio("rtbs");
+    } else if (g === "rtss" && b.dataset.v) {
       view.session = /** @type {Session} */ (b.dataset.v);
       copyPanel(false);
       render();
@@ -718,6 +818,9 @@ export function init() {
       if (!el("rtcpf").hidden) {
         copyPanel(false);
         el("rtcpb").focus();
+      } else if (asking) {
+        replacePanel("");
+        focusRadio("rtbs");
       } else setR(false);
     },
     true,
@@ -725,8 +828,9 @@ export function init() {
   dragInit();
   // another person reading (or a restore): their routine
   onChange(function () {
+    routineLang();
     if (!isOpen()) return;
-    view.r = editable(routine(), loaded.routine);
+    view.r = editable(followed(), null);
     weekBefore = {};
     render();
   });

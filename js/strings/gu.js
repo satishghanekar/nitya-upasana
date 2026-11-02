@@ -96,6 +96,7 @@ export default {
       return n + " ને કાઢી નાખ્યા";
     },
     chip: "પ્રોફાઇલ: ",
+    me: "હું",
   },
   // The Library by category and the categories sheet (js/features/library.js)
   library: {
@@ -188,6 +189,18 @@ export default {
       return n + " દિવસ પહેલાં";
     },
   },
+  welcome: {
+    title: "નિત્ય ઉપાસનામાં સ્વાગત",
+    name: "તમારું નામ",
+    routine: "તમારી દિનચર્યા",
+    start: "શરૂ કરો",
+    later: "પછી",
+    hint: "આ ગમે ત્યારે બદલી શકાય: ઉપરના બેજ પર ટૅપ કરો, અથવા સમયની બાજુમાં બદલો.",
+    /** @param {string} n */
+    done: function (n) {
+      return "સ્વાગત, " + n;
+    },
+  },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
     /** @param {string} n */
@@ -268,6 +281,50 @@ export default {
       return d + ": આ યાદી દરરોજ વાપરવી છે? બીજા દિવસોની પોતાની યાદીઓ નીકળી જશે.";
     },
     fixGo: "દરરોજ વાપરો",
+    bases: { short: "સંક્ષિપ્ત", daily: "દૈનિક", full: "પૂર્ણ", extended: "વિસ્તૃત" },
+    baseG: "તૈયાર દિનચર્યા",
+    baseInfo: {
+      short: "સવારે અથર્વશીર્ષ અને રોજની આરતીઓ, સાંજે આરતીઓ",
+      daily: "સવારે અથર્વશીર્ષ, પુરુષસૂક્ત, શ્રીસૂક્ત અને તે વારની આરતીઓ, સાંજે તે વારની આરતીઓ",
+      full: "દૈનિક, સાથે દરેક વારના અષ્ટક અને સ્તોત્રો",
+      extended: "પૂર્ણ, સાથે લઘુન્યાસ, શ્રીરુદ્ર, દુર્ગાસૂક્ત અને લાંબા સ્તોત્રો",
+    },
+    /** @param {number} a @param {number} b */
+    perDay: function (a, b) {
+      return "રોજ " + (a === b ? a : a + "–" + b) + " પાઠ";
+    },
+    /** @param {string} b */
+    follow: function (b) {
+      return "તમે " + b + " અનુસરો છો. તેમાં પછી ઉમેરાતા પાઠ તમને પણ મળશે.";
+    },
+    /** @param {string} b */
+    own: function (b) {
+      return b + " પરથી બનાવેલી તમારી પોતાની દિનચર્યા. તમે બનાવી તેવી જ રહેશે.";
+    },
+    /** @param {string} b */
+    goBack: function (b) {
+      return "ફરી " + b + " વાપરો";
+    },
+    /** @param {string} b */
+    replaceAsk: function (b) {
+      return "તમારી દિનચર્યાને બદલે " + b + " વાપરવી છે? તમારા ફેરફારો જશે.";
+    },
+    /** @param {string} b */
+    use: function (b) {
+      return b + " વાપરો";
+    },
+    /** @param {string} b */
+    now: function (b) {
+      return "હવે " + b + " દિનચર્યા";
+    },
+    /** Settings → Routine: the one followed @param {string} b */
+    setting: function (b) {
+      return b;
+    },
+    /** Settings → Routine: their own, and which it came from @param {string} b */
+    ownSetting: function (b) {
+      return "તમારી પોતાની, " + b + " પરથી";
+    },
   },
   // The print builder's What step: Texts, Today, Routine (js/print/what.js)
   printWhat: {
@@ -280,7 +337,7 @@ export default {
     texts: texts,
     pick: "ઓછામાં ઓછો એક પાઠ પસંદ કરો",
     tabs: { texts: "સંગ્રહ", routine: "દિનચર્યા" },
-    who: "કોની દિનચર્યા",
+    who: "દિનચર્યા",
     when: "ક્યારે",
     /** The day Home shows, when it is today @param {string} d the weekday */
     today: function (d) {
@@ -366,7 +423,7 @@ export default {
     uNone: "આ દિવસોમાં કંઈ નોંધ્યું નથી.",
     kinds: { fest: "તહેવારો", sk: "સંકષ્ટી", pradosh: "પ્રદોષ", hol: "રજાઓ" },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
-    holHome: "આવતા દિવસોમાં રજાઓ",
+    holHome: "રજાઓ બતાવો",
     groups: { us: "અમેરિકા", in: "ભારત", mh: "મહારાષ્ટ્ર", ka: "કર્ણાટક" },
   },
   // The top bar (js/features/bars.js)

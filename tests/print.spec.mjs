@@ -601,6 +601,31 @@ test("print pop-up: the recommended choices, the hints and about how many pages 
   expect((await pdfPages(page, "Letter")).pages.length).toBe(once);
 });
 
+// About how many pages depends on How to print (language, page, font): on a phone, What to print shows only how many
+// texts, and the pages come with How to print; from 760px both steps show at once, and so does the count
+for (const [name, size, first] of [
+  ["a phone", { width: 390, height: 844 }, false],
+  ["an upright iPad", { width: 820, height: 1180 }, true],
+  ["a computer", { width: 1440, height: 900 }, true],
+])
+  test(`print pop-up: about how many pages on What to print only when How to print shows too, ${name} @chromium-only`, async ({ page }) => {
+    await page.setViewportSize(size);
+    await openSite(page, SETUPS.marathi);
+    await openPrintBuilder(page, { ids: TEST_AARTIS });
+    if (await page.locator("#prbk").isVisible()) await page.locator("#prbk").click();
+    await expect(page.locator("#prsum span").first()).toHaveText(`${TEST_AARTIS.length} texts`);
+    if (first) await expect(page.locator("#prsum b")).toHaveText(/^about \d+ pages$/);
+    else {
+      await page.locator("#prnx").click();
+      await expect(page.locator("#prsum b")).toHaveText(/^about \d+ pages$/);
+      // back to What to print: counted, but not shown
+      await page.locator("#prbk").click();
+      await expect(page.locator("#prsum b")).toHaveCount(1);
+      await expect(page.locator("#prsum b")).toBeHidden();
+      await expect(page.locator("#prsum span").first()).toBeVisible();
+    }
+  });
+
 // A saved page is kept from one visit to the next
 test("print pop-up: a saved Landscape choice is kept @chromium-only", async ({ page }) => {
   await stubPrint(page);
@@ -1171,8 +1196,16 @@ const P5_ROUTINE = {
 };
 const P5_ORDER = ["vedic-chant-atharvashirsha", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"];
 const P5_TAGS = ["Mon · Morning", "Daily · Morning, Evening", "Daily · Evening", "Sat · Morning"];
+// a ready-made Daily of its own, the same every day, to print in place of the person reading's
+const P5_DAILY = {
+  morning: { mode: "fixed", texts: ["vedic-chant-purusha-suktam"] },
+  afternoon: { mode: "fixed", texts: [] },
+  evening: { mode: "fixed", texts: ["aarti-ghalin-lotangan"] },
+};
 async function useP5Routine(page) {
-  await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(P5_ROUTINE) }));
+  await page.route("**/content/routines.json", (r) =>
+    r.fulfill({ contentType: "application/json", body: JSON.stringify({ short: P5_ROUTINE, daily: P5_DAILY }) }),
+  );
 }
 /** The Routine tab, the whole week (else as it opens: the day Home shows) */
 async function openRoutineTab(page, week = true) {
@@ -1192,7 +1225,7 @@ async function printNow(page) {
 // The Routine tab (Today and Routine made one, 2026-11-01): whose, when and which session. It opens at the day Home
 // shows (the fixed test date is a Thursday), its texts as Home lists them under the day, without tags; each session
 // says how many texts it has, one without any greyed. The whole week lists each text once in routine order with its tag.
-test("print builder: the Routine tab: whose, when and which session @chromium-only", async ({ browser }) => {
+test("print builder: the Routine tab: which routine, when and which session @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
@@ -1201,8 +1234,10 @@ test("print builder: the Routine tab: whose, when and which session @chromium-on
   await openRoutineTab(page, false);
   const ids = () => page.locator(".prrl li").evaluateAll((l) => l.map((x) => x.dataset.id));
   const heading = page.locator("#prtp-routine .prcg");
-  // whose: SG and RG are built in, and SG, the one reading, is picked
-  await expect(page.locator(".prwho option:checked")).toHaveText("SG");
+  // which routine (Satish, 2026-11-02: no "Whose routine"): the person reading's first, then the four ready-made ones
+  await expect(page.locator(".prwho")).toHaveAccessibleName("Routine");
+  await expect(page.locator(".prwho option")).toHaveText(["Me", "Short", "Daily", "Full", "Extended"]);
+  await expect(page.locator(".prwho option:checked")).toHaveText("Me");
   // when: the day Home shows first, the whole week, then the other days, Monday first
   await expect(page.locator(".prwhen option")).toHaveText(["Today · Thursday", "Whole week", "Monday", "Tuesday", "Wednesday", "Friday", "Saturday", "Sunday"]);
   await expect(page.locator(".prwhen option:checked")).toHaveText("Today · Thursday");
@@ -1240,6 +1275,61 @@ test("print builder: the Routine tab: whose, when and which session @chromium-on
   await context.close();
 });
 
+// The preview and the page count are drawn in frames of their own, without a <base>: Safari refuses one there (the
+// Content-Security-Policy's base-uri) and says so in the console, at times only (the 2026-11-02 walk-through found it
+// as a person on Daily printed Full for the week). The frames have the page's address anyway (document.open()).
+test("print builder: the preview and the page count drawn without a <base>, nothing in the console @mobile", async ({ page }) => {
+  const errors = [];
+  await openSite(page, SETUPS.marathi, { errors, welcome: true });
+  await page.locator('#wlcb [data-v="daily"]').click();
+  await page.locator("#wlcs").click();
+  await openPrintBuilder(page);
+  await page.locator("#prtab-routine").click();
+  await page.locator(".prwho").selectOption("base:full");
+  await page.locator(".prwhen").selectOption("week");
+  if (await page.locator("#prnx").isVisible()) await page.locator("#prnx").click();
+  await expect(page.locator("#prsum b")).toHaveText(/^about \d+ pages$/);
+  const frames = page.locator('iframe[title="Preview"], iframe[title="Pages"]');
+  await expect(frames).toHaveCount(2);
+  for (const f of await frames.all()) expect(await f.evaluate((x) => x.contentDocument.querySelectorAll("base").length)).toBe(0);
+  // and the preview's text is in the site's own fonts (they load by the page's address)
+  await expect.poll(() => page.locator('iframe[title="Preview"]').evaluate((x) => [...x.contentDocument.fonts].some((f) => f.status === "loaded"))).toBe(true);
+  expect(errors).toEqual([]);
+});
+
+// The Routine tab's lists in every engine (the 2026-11-02 walk-through: Safari kept them 24px tall, and an iPhone
+// zooms into a select under 16px): a whole tap target, 16px text
+test("print builder: Routine and When are 44px tall with 16px text, Safari too @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.english);
+  await openPrintBuilder(page);
+  await page.locator("#prtab-routine").click();
+  for (const sel of [".prwho", ".prwhen"]) {
+    const [h, f] = await page.locator(sel).evaluate((e) => [e.getBoundingClientRect().height, parseFloat(getComputedStyle(e).fontSize)]);
+    expect(h, sel).toBeGreaterThanOrEqual(44);
+    expect(f, sel).toBeGreaterThanOrEqual(16);
+  }
+});
+
+// A ready-made routine printed for someone without the app (Satish, 2026-11-02): its texts, and its name on page 1
+test("print builder: a ready-made routine prints in place of yours, named on page 1 @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "en-US", viewport: { width: 1280, height: 900 }, serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await useP5Routine(page);
+  await openSite(page, SETUPS.english);
+  await openRoutineTab(page);
+  await page.locator(".prwho").selectOption("base:daily");
+  await expect(page.locator(".prrl li")).toHaveCount(2);
+  expect(await page.locator(".prrl li").evaluateAll((l) => l.map((x) => x.dataset.id))).toEqual(["vedic-chant-purusha-suktam", "aarti-ghalin-lotangan"]);
+  await expect(page.locator(".prrl .prtag")).toHaveText(["Daily · Morning", "Daily · Evening"]);
+  // back to yours, and Daily again
+  await page.locator(".prwho").selectOption({ label: "Me" });
+  await expect(page.locator(".prrl li")).toHaveCount(4);
+  await page.locator(".prwho").selectOption("base:daily");
+  await printNow(page);
+  await expect(page.locator("#pv .pvrh")).toHaveText("Daily");
+});
+
 // The printout (PLAN §3 A and B): page 1 has whose routine, the week at a glance and the contents with each text's tag
 // and the page it really starts on; then the texts in routine order, numbered 1, 2, 3…, each with its tag under its
 // title. A Library printout has no tags and keeps its plain contents.
@@ -1259,7 +1349,7 @@ test("print: a routine printout, its week at a glance and tags @chromium-only", 
   expect(await page.locator("#pv .pvgrid tbody th").allTextContents()).toEqual(["Morning", "Evening"]);
   expect(await page.locator("#pv .pvgrid tbody tr").first().locator("td").allTextContents()).toEqual(["1 2", "2", "2", "2", "2", "2 4", "2"]);
   expect(await page.locator("#pv .pvgrid tbody tr").last().locator("td").allTextContents()).toEqual(Array(7).fill("3 2"));
-  await expect(page.locator("#pv .pvrh")).toHaveText("SG");
+  await expect(page.locator("#pv .pvrh")).toHaveText("Me");
   await expect(page.locator("#pv .pvtoc .pvtag")).toHaveText(P5_TAGS);
   await expect(page.locator("#pv .pvs h2 .pvtag")).toHaveText(P5_TAGS);
   await expect(page.locator("#pv .pvs h2 .pvnum")).toHaveText(["1.", "2.", "3.", "4."]);
@@ -1313,7 +1403,7 @@ test("iPhone Home Screen app: Open in Safari carries a routine printout @chromiu
   const carried = JSON.parse(decodeURIComponent(/&r=([^&]*)/.exec(href)[1])).r;
   expect(carried.evening).toEqual({ mode: "fixed", texts: [] });
   expect(carried.afternoon).toEqual({ mode: "fixed", texts: [] });
-  // Safari: a fresh browser, with the default routine (the link brings the person's own)
+  // Safari: a fresh browser, on Short (the link brings the person's own)
   const sf = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const sp = await sf.newPage();
   await sp.addInitScript(() => {
@@ -1325,7 +1415,7 @@ test("iPhone Home Screen app: Open in Safari carries a routine printout @chromiu
   await sp.goto(href.replace(/^x-safari-/, ""));
   await expect(sp.locator("#prgo")).toBeVisible({ timeout: 15_000 });
   expect(await sp.evaluate(() => location.search)).toBe("");
-  await expect(sp.locator("#pv .pvrh")).toHaveText("SG");
+  await expect(sp.locator("#pv .pvrh")).toHaveText("Me");
   await expect(sp.locator("#pv .pvtoc .pvtag")).toHaveText(["Mon · Morning", "Daily · Morning", "Sat · Morning"]);
   await expect(sp.locator("#pv .pvgrid tbody th")).toHaveText(["Morning"]);
   await sf.close();

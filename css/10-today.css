@@ -688,6 +688,7 @@
     min-width: 0;
   }
   :root[data-hv="1"] #home > #tdy,
+  :root[data-hv="1"] #home > #wlc,
   :root[data-hv="1"] #home > #pan,
   :root[data-hv="1"] #home > #upw,
   :root[data-hv="1"] #home > #pfnt {

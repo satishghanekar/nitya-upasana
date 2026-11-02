@@ -25,7 +25,8 @@
    ===================================================================== */
 
 import { load as loadTexts } from "./text/load.js";
-import { openStore } from "./store/store.js";
+import { nameFirst, openStore } from "./store/store.js";
+import { menuWords } from "./core/strings.js";
 import { init as startPage } from "./core/page.js";
 import { init as startState } from "./core/state.js";
 import { init as startFeatures } from "./core/features.js";
@@ -64,6 +65,7 @@ import { init as startOffline } from "./features/offline.js";
 import { init as startProfiles } from "./features/profiles.js";
 import { init as startBackup } from "./features/backup.js";
 import { init as startRoutineBuilder } from "./features/routine-builder.js";
+import { init as startWelcome } from "./features/welcome.js";
 
 // One part that fails to start is reported and passed over, so the parts after it still start (a part that needs
 // it may then fail too, but no more than that)
@@ -79,6 +81,11 @@ function run(init) {
 function start() {
   try {
     run(startPage); // Page basics: the <html> element, the short message (flash), and the pieces on the reading page
+    // the first person on a new phone is named in the menu language ("Me", "मी"; js/store/store.js can't import the menu
+    // words: they import its importers)
+    nameFirst(function (code) {
+      return menuWords("profiles", code).me;
+    });
     run(startState); // Settings (P), loaded from this device
     run(startFeatures); // Features held back for a later release
     run(startDayPicture); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed
@@ -116,6 +123,7 @@ function start() {
     run(startProfiles); // People on this phone: the profile chip in the top bar and its sheet (switch, add, edit, delete)
     run(startBackup); // Save a backup file / Restore from a file, the backup reminder, keeping the data (storage.persist)
     run(startRoutineBuilder); // The routine builder (#rtb): each person's texts per session, in order, with the Add texts picker
+    run(startWelcome); // Welcome (#wlc): once, on a new phone's Home, the first person's name and ready-made routine
   } finally {
     // Show the page (see "data-ready" in css/02-core.css), even if a part failed to start
     document.documentElement.setAttribute("data-ready", "");

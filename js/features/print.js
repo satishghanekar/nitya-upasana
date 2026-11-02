@@ -26,11 +26,11 @@ import { createWhat, whatWords } from "../print/what.js";
 import { shelvesNow } from "./library.js";
 import { shownSessions, shownDay, runDay, runIds, shownSession } from "./today-card.js";
 import { cur } from "../core/apply.js";
-import { active, list as people } from "../store/store.js";
-import { loaded } from "../text/load.js";
+import { active, followed } from "../store/store.js";
 import { DAYS, dv, ui } from "../core/words.js";
 import { TAG_WORDS, tagFor } from "../print/select.js";
-import { cleanRoutine, routinePart } from "../core/routine.js";
+import { BASES, baseRoutine, cleanRoutine, routinePart } from "../core/routine.js";
+import { loaded } from "../text/load.js";
 import { menuWords } from "../core/strings.js";
 
 // The page each printout is made for: one language upright, both languages side by side on a sideways page
@@ -660,11 +660,17 @@ export function init() {
     var what = createWhat(/** @type {HTMLElement} */ (document.getElementById("prwl")), {
         shelves: shelvesNow,
         today: shownSessions,
-        // each person's routine: their own, else the default one (content/routines.json)
+        // the routines to print (Satish, 2026-11-02: no "Whose routine"; another person's prints once switched to): the
+        // person reading's (named: their own or the ready-made one they follow), then the four ready-made ones
+        // (content/routines.json), to print for someone without the app
         people: function () {
-          return people().map(function (p) {
-            return { id: p.id, name: p.name, routine: p.routine || loaded.routine || null };
-          });
+          var a = active(),
+            bw = /** @type {Record<string, string>} */ (menuWords("routine").bases);
+          return (a ? [{ id: a.id, name: a.name, routine: followed(a) }] : []).concat(
+            BASES.map(function (b) {
+              return { id: "base:" + b, name: bw[b], routine: baseRoutine(loaded.routines, b) };
+            }),
+          );
         },
         me: function () {
           var a = active();
@@ -744,9 +750,9 @@ export function init() {
             '"' +
             (land(m) ? " data-land" : "") +
             attrs() +
-            '><head><base href="' +
-            location.href.replace(/"/g, "%22") +
-            '"><style>' +
+            // no <base>: a frame written with document.open() has the page's own address already, and Safari refuses a
+            // <base> there (the Content-Security-Policy's base-uri), with an error in the console
+            "><head><style>" +
             pcss() +
             "\nhtml,body{margin:0;overflow:hidden;background:#fff}body{box-sizing:content-box;padding:17mm 19mm 0;height:" +
             (sh[1] - 36) +
@@ -893,9 +899,8 @@ export function init() {
           '"' +
           (land(m) ? " data-land" : "") +
           attrs() +
-          '><head><base href="' +
-          location.href.replace(/"/g, "%22") +
-          '"><style>' +
+          // (no <base>: as in the preview above)
+          "><head><style>" +
           pcss() +
           "\nhtml,body{margin:0;background:#fff}body{width:" +
           (sh[0] - 38) +

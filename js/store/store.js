@@ -3,17 +3,29 @@
 // (js/store/db.js), with today's working copy in memory so the page never waits for the database.
 // - openStore() opens the database and reads it; js/main.js waits for it (with the texts) before the parts start.
 // - start() is called by js/core/state.js: it decides who is reading and their settings (startPlan in
-//   js/store/profiles.js), moving today's settings into the first profile on the first visit (and adding the
-//   built-in people, SG and RG).
+//   js/store/profiles.js), moving today's settings into the first profile on the first visit.
 // - The active person's settings are also written at once to localStorage["aarti2-prefs"] by state.js (the boot copy,
 //   read before the page script runs and by the previous version of the site); here they go to IndexedDB a moment
 //   later, and at once when the page is hidden.
 // Everything stays on this device. Nothing is sent anywhere.
 
 import { openDB } from "./db.js";
-import { canAdd, canDelete, cleanColour, cleanInitials, cleanName, cleanProfile, makeId, nameProblem, newProfile, nextColour, startPlan } from "./profiles.js";
+import {
+  canAdd,
+  canDelete,
+  cleanColour,
+  cleanInitials,
+  cleanName,
+  cleanProfile,
+  FIRST_NAME,
+  makeId,
+  nameProblem,
+  newProfile,
+  nextColour,
+  startPlan,
+} from "./profiles.js";
 import { defaults, devicePart, joinPrefs, profilePart } from "./migrate.js";
-import { cleanRoutine } from "../core/routine.js";
+import { baseRoutine, cleanBase, cleanRoutine } from "../core/routine.js";
 import { cleanLocal, emptyLocal } from "../core/library.js";
 import { loaded } from "../text/load.js";
 
@@ -101,6 +113,17 @@ export function reason() {
   return db ? db.reason : "";
 }
 
+// The first person's name on a new phone, in the menu language: js/main.js gives it before start-up (the menu words
+// can't be imported here: they import this file's importers); "Me" without it, as in the unit tests
+/** @type {(ui: string) => string} */
+var firstName = function () {
+  return FIRST_NAME;
+};
+/** @param {(ui: string) => string} fn */
+export function nameFirst(fn) {
+  firstName = fn;
+}
+
 /**
  * Who is reading, and their settings with the device's: called once at start-up by js/core/state.js
  * @param {any} saved  the parsed localStorage["aarti2-prefs"] (the boot copy), or null
@@ -124,8 +147,7 @@ export function start(saved, ticks, e, now) {
       id: function (taken) {
         return makeId(taken);
       },
-      // loaded before the parts start (js/main.js), so a built-in person's routine can be made from it
-      routine: loaded.routine,
+      name: firstName,
     });
   profiles = plan.profiles;
   meta = plan.meta;
@@ -177,7 +199,6 @@ function cleanMeta(m) {
       : [],
   };
   if (m.library) out.library = cleanLocal(m.library);
-  if (m.builtIn === 1) out.builtIn = 1;
   return out;
 }
 
@@ -374,7 +395,7 @@ export function switchTo(id, P) {
 
 /**
  * Add a person, with the settings a new reader starts with (the defaults: text size, Marathi with English…) and the
- * default routine (content/routines.json, Q5)
+ * shortest ready-made routine (FIRST_BASE, js/core/routine.js)
  * @param {{ name: string, initials?: string, colour?: string }} o
  * @returns {{ ok: true, profile: Profile } | { ok: false, problem: "empty" | "taken" | "full" }}
  */
@@ -453,7 +474,7 @@ export function remove(id) {
 
 // ---- the reading person's routine (the routine builder, js/features/routine-builder.js) ----
 /**
- * Their own routine, or null when they follow content/routines.json
+ * Their own routine, or null when they follow a ready-made one
  * @returns {import("../core/routine.js").Routine | null}
  */
 export function routine() {
@@ -462,8 +483,41 @@ export function routine() {
 }
 
 /**
+ * The routine a person reads by: their own, else the ready-made one they follow (content/routines.json); null when
+ * neither is there (the file could not be loaded)
+ * @param {Profile | null} [p]  the person reading when left out
+ * @returns {import("../core/routine.js").Routine | null}
+ */
+export function followed(p) {
+  var q = p || active();
+  if (!q) return null;
+  return q.routine || baseRoutine(loaded.routines, q.base);
+}
+
+/** Which ready-made routine the person reading follows, or made theirs from (BASES, js/core/routine.js) */
+export function base() {
+  var p = active();
+  return p ? p.base : "";
+}
+
+/**
+ * Follow a ready-made routine: the person reading leaves their own (if they had one) for it
+ * @param {string} id  one of BASES
+ */
+export function setBase(id) {
+  var p = active();
+  if (!p) return writing;
+  p.base = cleanBase(id, p.base);
+  p.routine = null;
+  p.updated = new Date().toISOString();
+  var w = putProfile(p);
+  changed();
+  return w;
+}
+
+/**
  * Keep a changed routine for the person reading, in their profile, written to IndexedDB at once
- * @param {import("../core/routine.js").Routine | null} r  null: back to content/routines.json
+ * @param {import("../core/routine.js").Routine | null} r  null: back to the ready-made routine they follow
  */
 export function setRoutine(r) {
   var p = active();

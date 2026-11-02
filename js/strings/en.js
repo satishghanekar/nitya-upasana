@@ -85,6 +85,8 @@ export default {
       return n + " was deleted";
     },
     chip: "Profile: ",
+    // the first person on a new phone, until they give their name
+    me: "Me",
   },
   // The Library by category and the categories sheet (js/features/library.js)
   library: {
@@ -180,6 +182,19 @@ export default {
       return n + " days ago";
     },
   },
+  // Welcome: once, on a new phone's Home (js/features/welcome.js)
+  welcome: {
+    title: "Welcome to Nitya Upasana",
+    name: "Your name",
+    routine: "Your routine",
+    start: "Start",
+    later: "Later",
+    hint: "Change either any time: tap your badge at the top, or Edit beside a session.",
+    /** @param {string} n */
+    done: function (n) {
+      return "Welcome, " + n;
+    },
+  },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
     /** @param {string} n */
@@ -263,6 +278,51 @@ export default {
       return "Use " + d + "’s list every day? The other days’ own lists will be removed.";
     },
     fixGo: "Use every day",
+    // The ready-made routines (content/routines.json), at the top of the builder
+    bases: { short: "Short", daily: "Daily", full: "Full", extended: "Extended" },
+    baseG: "Ready-made routine",
+    baseInfo: {
+      short: "The Atharvashirsha and the everyday aartis in the morning, the aartis in the evening",
+      daily: "The Atharvashirsha, Purusha Suktam and Shri Sukta and the day’s aartis in the morning, the day’s aartis in the evening",
+      full: "Daily, with each day’s ashtaks and stotras",
+      extended: "Full, with the Laghunyasa, Shree Rudra and Durga Suktam and the longer stotras",
+    },
+    /** @param {number} a @param {number} b */
+    perDay: function (a, b) {
+      return (a === b ? a : a + "–" + b) + " texts a day";
+    },
+    /** @param {string} b */
+    follow: function (b) {
+      return "You follow " + b + ". Texts added to it later come to you too.";
+    },
+    /** @param {string} b */
+    own: function (b) {
+      return "Your own routine, made from " + b + ". It stays as you made it.";
+    },
+    /** @param {string} b */
+    goBack: function (b) {
+      return "Go back to " + b;
+    },
+    /** @param {string} b */
+    replaceAsk: function (b) {
+      return "Use " + b + " in place of your own routine? Your changes will be removed.";
+    },
+    /** @param {string} b */
+    use: function (b) {
+      return "Use " + b;
+    },
+    /** @param {string} b */
+    now: function (b) {
+      return "Now following " + b;
+    },
+    /** Settings → Routine: the one followed @param {string} b */
+    setting: function (b) {
+      return b;
+    },
+    /** Settings → Routine: their own, and which it came from @param {string} b */
+    ownSetting: function (b) {
+      return "Your own, from " + b;
+    },
   },
   // The print builder's What step: Texts, Today, Routine (js/print/what.js)
   printWhat: {
@@ -278,7 +338,7 @@ export default {
     },
     pick: "Pick at least one text",
     tabs: { texts: "Library", routine: "Routine" },
-    who: "Whose routine",
+    who: "Routine",
     when: "When",
     /** The day Home shows, when it is today @param {string} d the weekday */
     today: function (d) {
@@ -369,7 +429,7 @@ export default {
     uNone: "Nothing is marked on these days.",
     kinds: { fest: "Festivals", sk: "Sankashti", pradosh: "Pradosh", hol: "Holidays" },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
-    holHome: "Holidays in Coming up",
+    holHome: "Show holidays from",
     groups: { us: "US", in: "India", mh: "Maharashtra", ka: "Karnataka" },
   },
   // The top bar (js/features/bars.js)

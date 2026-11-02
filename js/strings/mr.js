@@ -84,6 +84,7 @@ export default {
       return n + " काढले";
     },
     chip: "प्रोफाइल: ",
+    me: "मी",
   },
   // The Library by category and the categories sheet (js/features/library.js)
   library: {
@@ -179,6 +180,18 @@ export default {
       return dv(n) + " दिवसांपूर्वी";
     },
   },
+  welcome: {
+    title: "नित्य उपासनेत स्वागत",
+    name: "तुमचे नाव",
+    routine: "तुमचा दिनक्रम",
+    start: "सुरू करा",
+    later: "नंतर",
+    hint: "हे केव्हाही बदलता येते: वरच्या बॅजवर टॅप करा, किंवा वेळेशेजारी बदला.",
+    /** @param {string} n */
+    done: function (n) {
+      return "स्वागत, " + n;
+    },
+  },
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
     /** @param {string} n */
@@ -262,6 +275,50 @@ export default {
       return d + "ची यादी रोज वापरायची? इतर वारांच्या वेगळ्या याद्या काढल्या जातील.";
     },
     fixGo: "रोज वापरा",
+    bases: { short: "संक्षिप्त", daily: "दैनिक", full: "पूर्ण", extended: "विस्तृत" },
+    baseG: "तयार दिनक्रम",
+    baseInfo: {
+      short: "सकाळी अथर्वशीर्ष आणि रोजच्या आरत्या, सायंकाळी आरत्या",
+      daily: "सकाळी अथर्वशीर्ष, पुरुषसूक्त, श्रीसूक्त आणि त्या वाराच्या आरत्या, सायंकाळी त्या वाराच्या आरत्या",
+      full: "दैनिक, आणि प्रत्येक वाराची अष्टके व स्तोत्रे",
+      extended: "पूर्ण, आणि लघुन्यास, श्रीरुद्र, दुर्गासूक्त व मोठी स्तोत्रे",
+    },
+    /** @param {number} a @param {number} b */
+    perDay: function (a, b) {
+      return "रोज " + (a === b ? dv(a) : dv(a) + "–" + dv(b)) + " रचना";
+    },
+    /** @param {string} b */
+    follow: function (b) {
+      return "तुम्ही " + b + " दिनक्रम पाळता. त्यात पुढे जोडलेल्या रचना तुमच्याकडेही येतील.";
+    },
+    /** @param {string} b */
+    own: function (b) {
+      return b + " वरून केलेला तुमचा स्वतःचा दिनक्रम. तुम्ही केला तसाच राहील.";
+    },
+    /** @param {string} b */
+    goBack: function (b) {
+      return "पुन्हा " + b + " घ्या";
+    },
+    /** @param {string} b */
+    replaceAsk: function (b) {
+      return "तुमच्या दिनक्रमाऐवजी " + b + " घ्यायचा? तुम्ही केलेले बदल जातील.";
+    },
+    /** @param {string} b */
+    use: function (b) {
+      return b + " घ्या";
+    },
+    /** @param {string} b */
+    now: function (b) {
+      return "आता " + b + " दिनक्रम";
+    },
+    /** Settings → Routine: the one followed @param {string} b */
+    setting: function (b) {
+      return b;
+    },
+    /** Settings → Routine: their own, and which it came from @param {string} b */
+    ownSetting: function (b) {
+      return "तुमचा स्वतःचा, " + b + " वरून";
+    },
   },
   // The print builder's What step: Texts, Today, Routine (js/print/what.js)
   printWhat: {
@@ -277,7 +334,7 @@ export default {
     },
     pick: "किमान एक रचना निवडा",
     tabs: { texts: "संग्रह", routine: "दिनक्रम" },
-    who: "कोणाचा दिनक्रम",
+    who: "दिनक्रम",
     when: "केव्हा",
     /** The day Home shows, when it is today @param {string} d the weekday */
     today: function (d) {
@@ -367,7 +424,7 @@ export default {
     uNone: "या दिवसांत काही नाही.",
     kinds: { fest: "सण", sk: "संकष्टी", pradosh: "प्रदोष", hol: "सुट्ट्या" },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
-    holHome: "येत्या दिवसांत सुट्ट्या",
+    holHome: "सुट्ट्या दाखवा",
     groups: { us: "अमेरिका", in: "भारत", mh: "महाराष्ट्र", ka: "कर्नाटक" },
   },
   bar: {

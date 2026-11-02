@@ -34,7 +34,7 @@ test("Edit beside the session opens the builder for the reading person, at that 
   await expect(page.locator("#tsed")).toHaveAccessibleName("Edit routine: Evening");
   await openBuilder(page);
   await expect(page.locator("#rtbt")).toBeFocused();
-  await expect(page.locator("#rtbt")).toHaveText("SG" + "SG’s routine");
+  await expect(page.locator("#rtbt")).toHaveText("M" + "Me’s routine");
   await expect(page.locator('#rtss [aria-checked="true"]')).toHaveText("Evening");
   await expect(page.locator('#rtmd [aria-checked="true"]')).toHaveText("Same every day");
   await expect(page.locator("#rtwk")).toBeHidden();
@@ -273,7 +273,7 @@ test("each person has their own routine; Save a backup file → Restore brings i
   expect(await ids(page)).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
   await page.locator("#rbk").click();
   expect(await homeIds(page)).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
-  // another person starts from the default routine
+  // another person starts on Short (here the test routine)
   await page.locator("#who").click();
   await page.locator("#pfadd").click();
   await page.locator("#pfname").fill("Aai");
@@ -290,15 +290,13 @@ test("each person has their own routine; Save a backup file → Restore brings i
   const json = JSON.parse(readFileSync(file, "utf8"));
   expect(json.app).toBe(readFileSync(new URL("../index.html", import.meta.url), "utf8").match(/<meta name="version" content="([^"]+)"/)[1]);
   expect(json.payload.profiles.map((p) => [p.name, p.routine && p.routine.evening.texts])).toEqual([
-    ["SG", ["aarti-sukhkarta", "aarti-ghalin-lotangan"]],
-    // RG's own, made from the default when the phone was first opened
-    ["RG", expect.any(Array)],
+    ["Me", ["aarti-sukhkarta", "aarti-ghalin-lotangan"]],
     ["Aai", null],
   ]);
   await page.locator("#xc").click();
-  // SG's routine changes after the backup
+  // Me's routine changes after the backup
   await page.locator("#who").click();
-  await page.locator("#pfl .pfp", { hasText: "SG" }).click();
+  await page.locator("#pfl .pfp", { hasText: "Me" }).click();
   await openBuilder(page);
   await btn(page, "aarti-ghalin-lotangan", "rm").click();
   await page.locator("#rbk").click();
@@ -308,11 +306,11 @@ test("each person has their own routine; Save a backup file → Restore brings i
   // (given as a buffer: the saved path, under a test-results folder named with "→", is not always accepted)
   await page.locator("#bkf").setInputFiles({ name: "b.nitya", mimeType: "application/json", buffer: Buffer.from(readFileSync(file, "utf8")) });
   expect(errors).toEqual([]);
-  await expect(page.locator("#bkmd")).toContainText("Replaced by the file's copy (settings and routine): SG, RG, Aai");
+  await expect(page.locator("#bkmd")).toContainText("Replaced by the file's copy (settings and routine): Me, Aai");
   await page.locator("#bkok").click();
   await expect(page.locator("#bkm")).toBeHidden();
   await page.locator("#who").click();
-  await page.locator("#pfl .pfp", { hasText: "SG" }).click();
+  await page.locator("#pfl .pfp", { hasText: "Me" }).click();
   expect(await homeIds(page)).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
   await page.reload();
   await settle(page);
@@ -344,7 +342,7 @@ test("Marathi menus: बदला, and the builder's words in Marathi @mobile", 
   await openSite(page, SETUPS["marathi-menus"], { now: MON_EVENING });
   await expect(page.locator("#tsed")).toHaveText("बदला");
   await openBuilder(page);
-  await expect(page.locator("#rtbt")).toContainText("दिनक्रम: SG");
+  await expect(page.locator("#rtbt")).toContainText("दिनक्रम: मी");
   await expect(page.locator('#rtss [aria-checked="true"]')).toHaveText("सायंकाळ");
   await expect(page.locator("#rtsum")).toHaveText("रोज सायंकाळ · १० रचना");
   await expect(page.locator("#rbk")).toHaveText("मागे", { useInnerText: true });
@@ -476,3 +474,167 @@ test("a 320px phone: the builder's buttons stay on the screen, in English and Ma
   }
   await context.close();
 });
+
+// The ready-made routines (Satish, 2026-11-02): four small ones of their own here, so the tests don't change with
+// content/routines.json. A new phone follows Short; another one chosen applies at once while following; the first
+// change makes the routine the person's own; then another one (or Go back) asks first, as the changes would go.
+const FOUR = {
+  short: {
+    morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha"] },
+    afternoon: { mode: "fixed", texts: [] },
+    evening: { mode: "fixed", texts: ["aarti-sukhkarta"] },
+  },
+  daily: {
+    morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam"] },
+    afternoon: { mode: "fixed", texts: [] },
+    evening: { mode: "fixed", texts: ["aarti-sukhkarta", "aarti-ghalin-lotangan"] },
+  },
+  full: {
+    morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam", "vedic-chant-shri-sukta"] },
+    afternoon: { mode: "fixed", texts: [] },
+    evening: { mode: "fixed", texts: ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"] },
+  },
+  extended: {
+    morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha", "vedic-chant-shree-rudra"] },
+    afternoon: { mode: "fixed", texts: ["aarti-sukhkarta"] },
+    evening: { mode: "fixed", texts: ["aarti-sukhkarta", "aarti-ghalin-lotangan", "stotra-ram-raksha"] },
+  },
+};
+const useFour = (page) => page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(FOUR) }));
+const savedBase = (page) =>
+  page.evaluate(
+    () =>
+      new Promise((ok) => {
+        const q = indexedDB.open("nitya");
+        q.onsuccess = () => {
+          const g = q.result.transaction("profiles").objectStore("profiles").getAll();
+          g.onsuccess = () => ok(g.result.map((p) => [p.base, !!p.routine]));
+        };
+      }),
+  );
+
+test("ready-made routines: Short at first; another one at once; the first change makes it your own @mobile", async ({ page }) => {
+  await useFour(page);
+  await openSite(page, SETUPS.english, { now: MON_EVENING });
+  expect(await homeIds(page)).toEqual(["aarti-sukhkarta"]);
+  // Settings → Routine names it
+  await page.locator("#aa").click();
+  await settingsTab(page, "more");
+  await expect(page.locator("#sprtv")).toHaveText("Short");
+  await page.locator("#sprt").click();
+  await expect(page.locator("#rtb")).toBeVisible();
+  await expect(page.locator("#rtbs")).toHaveAccessibleName("Ready-made routine");
+  await expect(page.locator("#rtbs button")).toHaveText(["Short", "Daily", "Full", "Extended"]);
+  await expect(page.locator('#rtbs [aria-checked="true"]')).toHaveText("Short");
+  await expect(page.locator("#rtbi")).toContainText("2 texts a day");
+  await expect(page.locator("#rtbst")).toHaveText("You follow Short. Texts added to it later come to you too.");
+  await expect(page.locator("#rtbk")).toBeHidden();
+  // Daily: at once, and Home follows
+  await page.locator('#rtbs [data-v="daily"]').click();
+  await expect(page.locator('#rtbs [data-v="daily"]')).toBeFocused();
+  await expect(page.locator("#rtlive")).toHaveText("Now following Daily · Evening, every day · 2 texts");
+  await expect(page.locator("#rtbi")).toContainText("4 texts a day");
+  await expect(page.locator("#rtrp")).toBeHidden();
+  expect(await ids(page)).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan"]);
+  // a week that differs by day says the fewest and the most
+  await page.locator('#rtbs [data-v="extended"]').click();
+  await expect(page.locator("#rtbi")).toContainText("6 texts a day");
+  await page.locator('#rtbs [data-v="daily"]').click();
+  // the first change: their own, made from Daily
+  await btn(page, "aarti-ghalin-lotangan", "rm").click();
+  await expect(page.locator("#rtbst")).toHaveText("Your own routine, made from Daily. It stays as you made it.");
+  await expect(page.locator("#rtbk")).toHaveText("Go back to Daily");
+  await expect(page.locator('#rtbs [aria-checked="true"]')).toHaveText("Daily");
+  await expect.poll(() => savedBase(page)).toEqual([["daily", true]]);
+  await page.locator("#rbk").click();
+  expect(await homeIds(page)).toEqual(["aarti-sukhkarta"]);
+  await page.locator("#aa").click();
+  await settingsTab(page, "more");
+  await expect(page.locator("#sprtv")).toHaveText("Your own, from Daily");
+});
+
+test("ready-made routines: over your own routine, another one or Go back asks first; Cancel and Escape keep it @mobile", async ({ page }) => {
+  await useFour(page);
+  await openSite(page, SETUPS.english, { now: MON_EVENING });
+  await page.locator("#tsed").click();
+  await btn(page, "aarti-sukhkarta", "rm").click();
+  await expect(page.locator("#rtbk")).toBeVisible();
+  // Full: asked first, the answer focused
+  await page.locator('#rtbs [data-v="full"]').click();
+  await expect(page.locator("#rtrp")).toBeVisible();
+  await expect(page.locator("#rtrpt")).toHaveText("Use Full in place of your own routine? Your changes will be removed.");
+  await expect(page.locator("#rtrpo")).toHaveText("Use Full");
+  await expect(page.locator("#rtrpo")).toBeFocused();
+  // Cancel: nothing changes
+  await page.locator("#rtrpx").click();
+  await expect(page.locator("#rtrp")).toBeHidden();
+  await expect(page.locator('#rtbs [aria-checked="true"]')).toHaveText("Short");
+  await expect(page.locator("#rtbs [aria-checked='true']")).toBeFocused();
+  await expect(items(page)).toHaveCount(0);
+  // Escape closes the question, not the page
+  await page.locator("#rtbk").click();
+  await expect(page.locator("#rtrpt")).toHaveText("Use Short in place of your own routine? Your changes will be removed.");
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#rtrp")).toBeHidden();
+  await expect(page.locator("#rtb")).toBeVisible();
+  // Use Full: following it again, their own routine gone
+  await page.locator('#rtbs [data-v="full"]').click();
+  await page.locator("#rtrpo").click();
+  await expect(page.locator("#rtrp")).toBeHidden();
+  await expect(page.locator("#rtbst")).toHaveText("You follow Full. Texts added to it later come to you too.");
+  await expect(page.locator("#rtbk")).toBeHidden();
+  expect(await ids(page)).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"]);
+  await expect.poll(() => savedBase(page)).toEqual([["full", false]]);
+  // kept after a reload
+  await page.reload();
+  await settle(page);
+  expect(await homeIds(page)).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"]);
+});
+
+test("ready-made routines: in Marathi menus, संक्षिप्त दैनिक पूर्ण विस्तृत @mobile", async ({ page }) => {
+  await useFour(page);
+  await openSite(page, SETUPS["marathi-menus"], { now: MON_EVENING });
+  await page.locator("#tsed").click();
+  await expect(page.locator("#rtbs button")).toHaveText(["संक्षिप्त", "दैनिक", "पूर्ण", "विस्तृत"]);
+  await expect(page.locator("#rtbs")).toHaveAccessibleName("तयार दिनक्रम");
+  await expect(page.locator("#rtbi")).toContainText("रोज २ रचना");
+  await expect(page.locator("#rtbst")).toHaveText("तुम्ही संक्षिप्त दिनक्रम पाळता. त्यात पुढे जोडलेल्या रचना तुमच्याकडेही येतील.");
+});
+
+test("axe: the ready-made routines with the question over your own routine, in every theme", async ({ page }) => {
+  await useFour(page);
+  await page.setViewportSize(PHONE);
+  await openSite(page, SETUPS.marathi, { now: MON_EVENING });
+  await page.locator("#tsed").click();
+  await btn(page, "aarti-sukhkarta", "rm").click();
+  await page.locator('#rtbs [data-v="daily"]').click();
+  await expect(page.locator("#rtrp")).toBeVisible();
+  expect(await axeEveryTheme(page, "#rtb")).toEqual(noViolations());
+});
+
+// Every screen (Satish, 2026-11-02: desktops and iPads too): the four on one row, each a whole tap target on the
+// screen; the question and its buttons on the screen; nothing wider than the screen
+for (const [name, size] of [
+  ["a 320px phone", { width: 320, height: 640 }],
+  ["an upright iPad", { width: 820, height: 1180 }],
+  ["an iPad sideways", { width: 1180, height: 820 }],
+  ["a computer", { width: 1440, height: 900 }],
+])
+  test(`ready-made routines on ${name}: one row, on the screen, the question too`, async ({ page }) => {
+    await useFour(page);
+    await page.setViewportSize(size);
+    await openSite(page, SETUPS["marathi-menus"], { now: MON_EVENING });
+    await page.locator("#tsed").click();
+    await btn(page, "aarti-sukhkarta", "rm").click();
+    await page.locator('#rtbs [data-v="full"]').click();
+    await expect(page.locator("#rtrp")).toBeVisible();
+    const boxes = await page.locator("#rtbs button").evaluateAll((bs) => bs.map((b) => b.getBoundingClientRect().toJSON()));
+    expect(new Set(boxes.map((b) => Math.round(b.top))).size, "one row").toBe(1);
+    for (const b of boxes) {
+      expect(b.height).toBeGreaterThanOrEqual(44);
+      expect(b.left).toBeGreaterThanOrEqual(0);
+      expect(b.right).toBeLessThanOrEqual(size.width);
+    }
+    for (const sel of ["#rtrpo", "#rtrpx", "#rtbk"]) await expect(page.locator(sel)).toBeInViewport({ ratio: 1 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });

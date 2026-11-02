@@ -349,7 +349,8 @@ a.t {
   left: max(8px, env(safe-area-inset-left, 0px));
   top: -60px;
   z-index: 100;
-  padding: 10px 14px;
+  /* 44px tall */
+  padding: 13px 14px;
   border-radius: 8px;
   background: var(--ink);
   color: var(--bg);
@@ -602,8 +603,10 @@ h2[tabindex="-1"]:focus {
 .prsheet.prsw {
   opacity: 0.6;
 }
-/* Use A4 / Use Letter */
+/* Use A4 / Use Letter: it looks 32px, its tap area 44px (6px more above and below, over the line under it) */
 .prnote .prpa {
+  position: relative;
+  z-index: 1;
   height: 32px;
   min-width: 0;
   margin: 6px 0 0;
@@ -612,6 +615,12 @@ h2[tabindex="-1"]:focus {
   font-weight: 600;
   color: var(--accent);
   display: block;
+}
+.prnote .prpa::after {
+  content: "";
+  position: absolute;
+  /* 7px: measured inside its 1px border */
+  inset: -7px 0;
 }
 /* The bottom bar: the running total ("5 texts · ~8 pages") and Next (a phone's What step) or Print, always in view
    under the steps (they scroll) */
@@ -736,7 +745,9 @@ h2[tabindex="-1"]:focus {
   #prm[data-step="what"] .prhw,
   #prm[data-step="what"] #prgp,
   #prm[data-step="how"] .prwh,
-  #prm[data-step="how"] #prnx {
+  #prm[data-step="how"] #prnx,
+  /* about how many pages: only once How to print is chosen, as the language, page and font change it (Satish, 2026-11-02) */
+  #prm[data-step="what"] #prsum b {
     display: none;
   }
 }
@@ -803,12 +814,18 @@ h2[tabindex="-1"]:focus {
   width: 100%;
   min-height: 44px;
   margin: 0;
-  padding: 0 10px;
+  padding: 0 32px 0 10px;
   border: 1px solid var(--rule);
   border-radius: 10px;
-  background: var(--bg);
+  /* Safari keeps its own look 24px tall: off, with an arrow in the theme's colour */
+  appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%) right 17px center / 6px 6px no-repeat,
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%) right 11px center / 6px 6px no-repeat,
+    var(--bg);
   color: var(--ink);
-  font: 600 15px/42px var(--lat);
+  /* 16px: an iPhone zooms into a select under 16px */
+  font: 600 16px/42px var(--lat);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
