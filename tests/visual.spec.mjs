@@ -118,7 +118,7 @@ const CASES = [
   ["print-dialog", "phone", SETUPS.marathi, printBuilder],
   ["print-how-phone", "phone", SETUPS.marathi, async (p) => (await printBuilder(p), p.locator("#prnx").click())],
   ["print-builder-desktop", "desktop", SETUPS.marathi, printBuilder],
-  // the Routine tab: the default routine, the whole week, each text once with its tag
+  // the Routine tab: whose, when (the day Home shows) and which session, then that day's texts
   [
     "print-routine-phone",
     "phone",
@@ -126,6 +126,18 @@ const CASES = [
     async (p) => {
       await printBuilder(p);
       await p.locator("#prtab-routine").click();
+      await expect(p.locator(".prrl li").first()).toBeVisible();
+    },
+  ],
+  // and the whole week, each text once with its tag
+  [
+    "print-routine-week-phone",
+    "phone",
+    SETUPS.marathi,
+    async (p) => {
+      await printBuilder(p);
+      await p.locator("#prtab-routine").click();
+      await p.locator(".prwhen").selectOption("week");
       await expect(p.locator(".prrl .prtag").first()).toHaveText(/\w/);
     },
   ],
