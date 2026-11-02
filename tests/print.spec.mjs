@@ -1196,8 +1196,16 @@ const P5_ROUTINE = {
 };
 const P5_ORDER = ["vedic-chant-atharvashirsha", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"];
 const P5_TAGS = ["Mon · Morning", "Daily · Morning, Evening", "Daily · Evening", "Sat · Morning"];
+// a ready-made Daily of its own, the same every day, to print in place of the person reading's
+const P5_DAILY = {
+  morning: { mode: "fixed", texts: ["vedic-chant-purusha-suktam"] },
+  afternoon: { mode: "fixed", texts: [] },
+  evening: { mode: "fixed", texts: ["aarti-ghalin-lotangan"] },
+};
 async function useP5Routine(page) {
-  await page.route("**/content/routines.json", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify({ short: P5_ROUTINE }) }));
+  await page.route("**/content/routines.json", (r) =>
+    r.fulfill({ contentType: "application/json", body: JSON.stringify({ short: P5_ROUTINE, daily: P5_DAILY }) }),
+  );
 }
 /** The Routine tab, the whole week (else as it opens: the day Home shows) */
 async function openRoutineTab(page, week = true) {
@@ -1217,7 +1225,7 @@ async function printNow(page) {
 // The Routine tab (Today and Routine made one, 2026-11-01): whose, when and which session. It opens at the day Home
 // shows (the fixed test date is a Thursday), its texts as Home lists them under the day, without tags; each session
 // says how many texts it has, one without any greyed. The whole week lists each text once in routine order with its tag.
-test("print builder: the Routine tab: whose, when and which session @chromium-only", async ({ browser }) => {
+test("print builder: the Routine tab: which routine, when and which session @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
@@ -1226,8 +1234,10 @@ test("print builder: the Routine tab: whose, when and which session @chromium-on
   await openRoutineTab(page, false);
   const ids = () => page.locator(".prrl li").evaluateAll((l) => l.map((x) => x.dataset.id));
   const heading = page.locator("#prtp-routine .prcg");
-  // whose: the one person on a new phone, Me, named (nothing to choose)
-  await expect(page.locator(".prwho")).toHaveText("Me");
+  // which routine (Satish, 2026-11-02: no "Whose routine"): the person reading's first, then the four ready-made ones
+  await expect(page.locator(".prwho")).toHaveAccessibleName("Routine");
+  await expect(page.locator(".prwho option")).toHaveText(["Yours (Me)", "Short", "Daily", "Full", "Extended"]);
+  await expect(page.locator(".prwho option:checked")).toHaveText("Yours (Me)");
   // when: the day Home shows first, the whole week, then the other days, Monday first
   await expect(page.locator(".prwhen option")).toHaveText(["Today · Thursday", "Whole week", "Monday", "Tuesday", "Wednesday", "Friday", "Saturday", "Sunday"]);
   await expect(page.locator(".prwhen option:checked")).toHaveText("Today · Thursday");
@@ -1263,6 +1273,26 @@ test("print builder: the Routine tab: whose, when and which session @chromium-on
   await page.keyboard.press("ArrowLeft");
   await expect(page.locator("#prtab-routine")).toBeFocused();
   await context.close();
+});
+
+// A ready-made routine printed for someone without the app (Satish, 2026-11-02): its texts, and its name on page 1
+test("print builder: a ready-made routine prints in place of yours, named on page 1 @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "en-US", viewport: { width: 1280, height: 900 }, serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await useP5Routine(page);
+  await openSite(page, SETUPS.english);
+  await openRoutineTab(page);
+  await page.locator(".prwho").selectOption("base:daily");
+  await expect(page.locator(".prrl li")).toHaveCount(2);
+  expect(await page.locator(".prrl li").evaluateAll((l) => l.map((x) => x.dataset.id))).toEqual(["vedic-chant-purusha-suktam", "aarti-ghalin-lotangan"]);
+  await expect(page.locator(".prrl .prtag")).toHaveText(["Daily · Morning", "Daily · Evening"]);
+  // back to yours, and Daily again
+  await page.locator(".prwho").selectOption({ label: "Yours (Me)" });
+  await expect(page.locator(".prrl li")).toHaveCount(4);
+  await page.locator(".prwho").selectOption("base:daily");
+  await printNow(page);
+  await expect(page.locator("#pv .pvrh")).toHaveText("Daily");
 });
 
 // The printout (PLAN §3 A and B): page 1 has whose routine, the week at a glance and the contents with each text's tag
