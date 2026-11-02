@@ -3,8 +3,8 @@
 // lists them (the family's own categories too), a checkbox for each text, search, Select all or Clear for each
 // category and for everything. (No page counts: the browser lays the pages out as it prints, js/features/print.js.)
 // Tab two, Routine (Satish, 2026-11-01: Today and Routine made one, three choices in place of a dozen buttons), prints
-// from a person's routine: whose (the person reading at first), when (the day Home shows, the whole week, or another
-// day) and which session (all, or one; each shows how many texts it has, and one without any is greyed). One day prints
+// from a routine: which (the person reading's, or one of the four ready-made ones, Satish 2026-11-02), when (the day
+// Home shows, the whole week, or another day) and which session (all, or one; each shows how many texts it has, and one without any is greyed). One day prints
 // as Home lists it, one list headed by the day and the session; for the person reading on the day Home shows, Home's own
 // lists. The whole week prints each text once in routine order with a tag saying when it is said, after page 1, the
 // week at a glance (js/print/select.js). The tab on show is what prints: Library its ticks, Routine its list. A session
@@ -26,8 +26,9 @@ import { menuWords } from "../core/strings.js";
  * @typedef {{ category: { id: string, name: { mr: string, en: string } }, texts: WhatText[] }} WhatShelf
  * @typedef {{ session: string, name: string, ids: string[], day?: number, today?: boolean }} WhatSession  one of the
  *   sessions of the day Home shows and its texts, with that day's weekday and whether it is today
- * @typedef {{ id: string, name: string, routine: import("../core/routine.js").Routine | null }} WhatPerson  a person and
- *   their routine (their own, or the ready-made one they follow)
+ * @typedef {{ id: string, name: string, label?: string, routine: import("../core/routine.js").Routine | null }} WhatPerson
+ *   a routine to print: the person reading's (their own, or the ready-made one they follow; label "Yours (Aai)") or a
+ *   ready-made one; name heads a week's printout
  * @typedef {{ shelves: () => WhatShelf[], today: () => WhatSession[], people: () => WhatPerson[], me: () => string,
  *   onChange: () => void }} WhatOptions
  * @typedef {{ who: string, span: "week" | "day", days: number[], day: number, sessions: string[] }} RoutineChoice  the
@@ -125,7 +126,7 @@ export function createWhat(el, o) {
         )
       : ps;
   }
-  /** Whose routine prints: as picked, else the person reading */
+  /** The routine printed: as picked, else the person reading's */
   function person() {
     var ps = people();
     function find(/** @type {string} */ id) {
@@ -242,15 +243,13 @@ export function createWhat(el, o) {
       '<div class="prrf"><label class="prfl"><span>' +
       esc(w.who) +
       "</span>" +
-      (ps.length > 1
-        ? '<select class="prwho" data-rk="who">' +
-          ps
-            .map(function (x) {
-              return '<option value="' + esc(x.id) + '"' + (x.id === me ? " selected" : "") + ">" + esc(x.name) + "</option>";
-            })
-            .join("") +
-          "</select>"
-        : '<span class="prwho">' + esc(p ? p.name : "") + "</span>") +
+      '<select class="prwho" data-rk="who">' +
+      ps
+        .map(function (x) {
+          return '<option value="' + esc(x.id) + '"' + (x.id === me ? " selected" : "") + ">" + esc(x.label || x.name) + "</option>";
+        })
+        .join("") +
+      "</select>" +
       '</label><label class="prfl"><span>' +
       esc(w.when) +
       '</span><select class="prwhen" data-rk="when">' +
@@ -319,7 +318,7 @@ export function createWhat(el, o) {
     var f = at && /** @type {HTMLElement | null} */ (box.querySelector('[data-rk="' + at + '"]'));
     if (f) f.focus();
   }
-  /** A choice on the Routine tab: whose, when, or a session @param {HTMLElement} t */
+  /** A choice on the Routine tab: which routine, when, or a session @param {HTMLElement} t */
   function routinePick(t) {
     if (t.classList.contains("prwho")) rc.who = /** @type {HTMLSelectElement} */ (t).value;
     else if (t.classList.contains("prwhen")) {

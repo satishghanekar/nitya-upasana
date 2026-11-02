@@ -26,10 +26,11 @@ import { createWhat, whatWords } from "../print/what.js";
 import { shelvesNow } from "./library.js";
 import { shownSessions, shownDay, runDay, runIds, shownSession } from "./today-card.js";
 import { cur } from "../core/apply.js";
-import { active, followed, list as people } from "../store/store.js";
+import { active, followed } from "../store/store.js";
 import { DAYS, dv, ui } from "../core/words.js";
 import { TAG_WORDS, tagFor } from "../print/select.js";
-import { cleanRoutine, routinePart } from "../core/routine.js";
+import { BASES, baseRoutine, cleanRoutine, routinePart } from "../core/routine.js";
+import { loaded } from "../text/load.js";
 import { menuWords } from "../core/strings.js";
 
 // The page each printout is made for: one language upright, both languages side by side on a sideways page
@@ -659,11 +660,17 @@ export function init() {
     var what = createWhat(/** @type {HTMLElement} */ (document.getElementById("prwl")), {
         shelves: shelvesNow,
         today: shownSessions,
-        // each person's routine: their own, else the ready-made one they follow (content/routines.json)
+        // the routines to print (Satish, 2026-11-02: no "Whose routine"; another person's prints once switched to): the
+        // person reading's, their own or the ready-made one they follow, then the four ready-made ones
+        // (content/routines.json), to print for someone without the app
         people: function () {
-          return people().map(function (p) {
-            return { id: p.id, name: p.name, routine: followed(p) };
-          });
+          var a = active(),
+            bw = /** @type {Record<string, string>} */ (menuWords("routine").bases);
+          return (a ? [{ id: a.id, name: a.name, label: menuWords("printWhat").yours(a.name), routine: followed(a) }] : []).concat(
+            BASES.map(function (b) {
+              return { id: "base:" + b, name: bw[b], routine: baseRoutine(loaded.routines, b) };
+            }),
+          );
         },
         me: function () {
           var a = active();

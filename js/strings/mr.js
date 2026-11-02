@@ -322,7 +322,11 @@ export default {
     },
     pick: "किमान एक रचना निवडा",
     tabs: { texts: "संग्रह", routine: "दिनक्रम" },
-    who: "कोणाचा दिनक्रम",
+    who: "दिनक्रम",
+    /** @param {string} n */
+    yours: function (n) {
+      return "तुमचा (" + n + ")";
+    },
     when: "केव्हा",
     /** The day Home shows, when it is today @param {string} d the weekday */
     today: function (d) {
