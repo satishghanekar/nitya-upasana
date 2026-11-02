@@ -92,7 +92,7 @@ npx playwright test --update-snapshots
 Screenshots depend a little on the machine (font smoothing), so each machine type keeps its own set in `__snapshots__/visual.spec.mjs/chromium/`. The text snapshots are the same everywhere and are shared.
 
 - **`cloud/`** is the reference set. It is recorded in a Claude session in the cloud (Linux, the pre-installed Chromium: `PW_CHROMIUM_PATH=/opt/pw-browsers/chromium`). It is the default whenever `CI` is not set. Refresh it there with `--update-snapshots`, and look at the changed pictures before committing them.
-- **`ci/`** is GitHub Actions' set (`CI` set). To refresh it, push a commit with `[update-snapshots]` in its message: the *Update CI snapshots* workflow (`.github/workflows/update-snapshots.yml`) commits the new pictures to that branch. On a Mac neither set matches its font smoothing, so `visual.spec.mjs` fails there; run it for its other checks and leave the pictures to CI.
+- **`ci/`** is GitHub Actions' set (`CI` set). To refresh it, push a commit with `[update-snapshots]` in its message: the *Update CI snapshots* workflow (`.github/workflows/update-snapshots.yml`) commits the new pictures to that branch. On a Mac neither set matches its font smoothing, so the screenshots are skipped there (`MAC_SKIPS_PIXELS` in `helpers.mjs`, 2026-11-02) and left to CI, which compares them on every push; a Mac run is then green whenever the site is right.
 - `SNAPSHOT_ENV=cloud` or `SNAPSHOT_ENV=ci` picks a set by hand.
 
 ## What automation can't cover
