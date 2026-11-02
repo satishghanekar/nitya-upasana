@@ -831,36 +831,59 @@ test("no prompt on opening; once the pin has set the place, a later open brings 
 });
 
 // Every tint of the calendar card on its day, in every theme (the "Nitya Home cards" mockups, Satish, 2026-10-30):
-// Dasara saffron, Pradosh indigo, Kojagiri Purnima the moon's, Sankashti Ganesh's red, a holiday grey
-for (const d of ["2026-10-20", "2026-10-23", "2026-10-25", "2026-10-28", "2026-11-01"])
+// Dasara saffron, Pradosh indigo, Kojagiri Purnima the moon's, Sankashti Ganesh's red, a holiday grey (Columbus Day)
+for (const d of ["2026-10-20", "2026-10-23", "2026-10-25", "2026-10-28", "2026-10-12"])
   test(`axe: Home on ${d}, its tint in every theme @mobile`, async ({ page }) => {
-    await openSite(page, { ...COLUMBUS, hol: ["us", "in", "ka", "mh"] }, { now: new Date(d + "T19:00:00-04:00") });
+    await openSite(page, COLUMBUS, { now: new Date(d + "T19:00:00-04:00") });
     await expect(page.locator("#pan .pcard.fday")).toHaveCount(1);
     expect(await axeEveryTheme(page, "#home")).toEqual(noViolations());
   });
 
-// The public holidays in Coming up (Satish, 2026-10-30): none at first; each group chosen in Settings adds its own, with
-// its flag (India's with the state's letters for Maharashtra and Karnataka); they are the person's, kept with them
-test("Settings: the holidays chosen show in Coming up with their flags, and are kept @mobile", async ({ page }) => {
-  await openSite(page, { ...ENGLISH_ONLY, hol: [] }, { now: new Date("2026-10-30T19:00:00-04:00") });
+// The public holidays in Coming up (Satish, 2026-10-30; 2026-11-02: the US's and India's only, both at first): each
+// with its flag; turning a country off in Settings takes its holidays away, kept for the person
+test("Settings: Show holidays from US and India, both at first; one turned off leaves Coming up, and stays off @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: new Date("2026-11-23T19:00:00-04:00") });
   const w = page.locator("#upw");
-  await expect(w.locator(".upr.hol")).toHaveCount(0);
+  // Guru Nanak Jayanti (India) and Thanksgiving (US)
+  await expect(w.locator('.upr.hol[data-d="2026-11-24"]')).toHaveCount(1);
+  const us = w.locator('.upr.hol[data-d="2026-11-26"]');
+  await expect(us).toHaveAccessibleName(/^Thursday, 26 November: Thanksgiving \(US\)/);
+  await expect(us.locator(".fi.hol .flag")).toHaveCount(1);
   await page.locator("#aa").click();
   await settingsTab(page, "screen");
-  const b = page.locator("#shol button");
-  await expect(b).toHaveText(["US", "India", "Maharashtra", "Karnataka"]);
-  await expect(page.locator("#shol")).toHaveAccessibleName("Holidays in Coming up");
-  await page.locator('#shol [data-v="ka"]').click();
-  await expect(page.locator('#shol [data-v="ka"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#shol button")).toHaveText(["US", "India"]);
+  await expect(page.locator("#shol")).toHaveAccessibleName("Show holidays from");
+  for (const v of ["us", "in"]) await expect(page.locator(`#shol [data-v="${v}"]`)).toHaveAttribute("aria-pressed", "true");
+  await page.locator('#shol [data-v="us"]').click();
+  await expect(page.locator('#shol [data-v="us"]')).toHaveAttribute("aria-pressed", "false");
   await page.keyboard.press("Escape");
-  // Karnataka Rajyotsava on Sunday 1 November: India's flag with "KA"
-  const r = w.locator('.upr.hol[data-d="2026-11-01"]');
-  await expect(r).toHaveCount(1);
-  await expect(r.locator(".fi.hol .flag")).toHaveCount(1);
-  await expect(r.locator(".fst")).toHaveAttribute("data-s", "KA");
-  await expect(r).toHaveAccessibleName(/^Sunday, 1 November: Karnataka Rajyotsava \(Karnataka\)/);
+  await expect(us).toHaveCount(0);
+  await expect(w.locator('.upr.hol[data-d="2026-11-24"]')).toHaveCount(1);
   await page.reload();
-  await expect(page.locator('#upw .upr.hol[data-d="2026-11-01"]')).toHaveCount(1);
+  await expect(page.locator('#upw .upr.hol[data-d="2026-11-24"]')).toHaveCount(1);
+  await expect(page.locator('#upw .upr.hol[data-d="2026-11-26"]')).toHaveCount(0);
+});
+
+// One row a day on Home (Satish, 2026-11-02): a holiday on the day of a festival is named on the festival's small line
+// (on a day of its own it keeps its row and flag: Thanksgiving, above). 1 January 2027: Shri Gondavalekar Maharaj's
+// day and New Year's Day.
+test("Coming up: a holiday on a festival's day joins its row @mobile", async ({ page }) => {
+  await openSite(page, ENGLISH_ONLY, { now: new Date("2026-12-27T19:00:00-04:00") });
+  const w = page.locator("#upw");
+  await expect(w.locator('.upr.hol[data-d="2027-01-01"]')).toHaveCount(0);
+  const jan1 = w.locator('.upr[data-d="2027-01-01"]');
+  await expect(jan1).toHaveCount(1);
+  await expect(jan1).toHaveClass(/\bfest\b/);
+  await expect(jan1.locator("small")).toContainText("New Year's Day (US)");
+  await expect(jan1).toHaveAccessibleName(/New Year's Day \(US\)/);
+});
+
+// A state's holidays chosen before 2026-11-02 (Karnataka) no longer show in Coming up: they are in the calendar only
+// (the calendar's day card still names Valmiki Jayanti, Karnataka's: "a public holiday shows in the month…" above)
+test("Coming up: a state's holidays chosen before are left out @mobile", async ({ page }) => {
+  await openSite(page, { ...ENGLISH_ONLY, hol: ["ka"] }, { now: new Date("2026-10-30T19:00:00-04:00") });
+  await expect(page.locator("#upw .upr").first()).toBeVisible();
+  await expect(page.locator("#upw .upr.hol")).toHaveCount(0);
 });
 
 // The drawings (js/core/fest-icons.js): in the day card beside the festival's tag, and before its name in the month

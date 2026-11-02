@@ -367,7 +367,7 @@ export default {
     uNone: "આ દિવસોમાં કંઈ નોંધ્યું નથી.",
     kinds: { fest: "તહેવારો", sk: "સંકષ્ટી", pradosh: "પ્રદોષ", hol: "રજાઓ" },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
-    holHome: "આવતા દિવસોમાં રજાઓ",
+    holHome: "રજાઓ બતાવો",
     groups: { us: "અમેરિકા", in: "ભારત", mh: "મહારાષ્ટ્ર", ka: "કર્ણાટક" },
   },
   // The top bar (js/features/bars.js)

@@ -368,7 +368,7 @@ export default {
     uNone: "ಈ ದಿನಗಳಲ್ಲಿ ಏನೂ ಗುರುತಿಸಿಲ್ಲ.",
     kinds: { fest: "ಹಬ್ಬಗಳು", sk: "ಸಂಕಷ್ಟಿ", pradosh: "ಪ್ರದೋಷ", hol: "ರಜಾದಿನಗಳು" },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
-    holHome: "ಮುಂದಿನ ದಿನಗಳಲ್ಲಿ ರಜಾದಿನಗಳು",
+    holHome: "ರಜಾದಿನಗಳನ್ನು ತೋರಿಸಿ",
     groups: { us: "ಅಮೆರಿಕ", in: "ಭಾರತ", mh: "ಮಹಾರಾಷ್ಟ್ರ", ka: "ಕರ್ನಾಟಕ" },
   },
   // The top bar (js/features/bars.js)

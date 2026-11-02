@@ -371,7 +371,7 @@ export default {
     uNone: "Nothing is marked on these days.",
     kinds: { fest: "Festivals", sk: "Sankashti", pradosh: "Pradosh", hol: "Holidays" },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
-    holHome: "Holidays in Coming up",
+    holHome: "Show holidays from",
     groups: { us: "US", in: "India", mh: "Maharashtra", ka: "Karnataka" },
   },
   // The top bar (js/features/bars.js)

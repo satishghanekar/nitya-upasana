@@ -463,9 +463,9 @@ function festsOn(k, pl) {
 /**
  * @typedef {"fest" | "pradosh" | "sk" | "hol"} UpKind
  * @typedef {{ date: string, kind: UpKind, name: Name, id?: string, groups?: string[], end?: string, d1?: number, d2?: number,
- *   rise?: Date | null, set?: Date | null, also?: Name }} Up  one entry; id: a festival's (its drawing); groups: a holiday's
- *   (its flag); end, d1, d2: a festival of several days (its last date and day numbers); rise: Sankashti's moonrise;
- *   set: Pradosh's sunset
+ *   rise?: Date | null, set?: Date | null, also?: Name, hols?: Name[] }} Up  one entry; id: a festival's (its drawing);
+ *   groups: a holiday's (its flag); end, d1, d2: a festival of several days (its last date and day numbers); rise:
+ *   Sankashti's moonrise; set: Pradosh's sunset; hols: on Home, the holidays of the same day, named on its small line
  */
 
 /** What the 15 days show (its buttons), while the app is open */
@@ -601,7 +601,14 @@ function upRow(u, today, home) {
             ? w.sunset + " " + clock(u.set)
             : "",
     two = nameH2(u.name),
-    small = [two, det ? say(det) : "", u.also ? nameH(u.also) : ""].filter(Boolean).join(say(" · "));
+    small = [two, det ? say(det) : "", u.also ? nameH(u.also) : ""]
+      .concat(
+        (u.hols || []).map(function (h) {
+          return nameH(h);
+        }),
+      )
+      .filter(Boolean)
+      .join(say(" · "));
   // on Home the date starts the small line (heard already, in full, before the name)
   if (home) small = '<span aria-hidden="true">' + say(dayLabel(u.date) + (small ? " · " : "")) + "</span>" + small;
   return (
@@ -638,9 +645,30 @@ function upRow(u, today, home) {
   );
 }
 
+/**
+ * Home's entries with a holiday joined to the festival, Pradosh or Sankashti of its day (Satish, 2026-11-02: one row a
+ * day, the holiday named on its small line); a holiday on a day with nothing else keeps its own row, with its flag
+ * @param {Up[]} list @returns {Up[]}
+ */
+function oneRowADay(list) {
+  /** @type {Up[]} */
+  var out = [];
+  list.forEach(function (u) {
+    var host =
+      u.kind === "hol" &&
+      out.filter(function (x) {
+        return x.date === u.date && x.kind !== "hol";
+      })[0];
+    if (host) host.hols = (host.hols || []).concat([u.name]);
+    else out.push(u);
+  });
+  return out;
+}
+
 /** Home: Coming up (#upw), at the bottom of the calendar card: the next three from the day shown (five on tablets and
  * computers; its own first, "today"),
- * festivals, Pradosh, Sankashti and the public holidays chosen in Settings (P.hol), each with its drawing (Satish,
+ * festivals, Pradosh, Sankashti and the public holidays chosen in Settings (P.hol; one on the day of another joins
+ * its row, oneRowADay()), each with its drawing (Satish,
  * 2026-10-30: the "Nitya Home cards" mockups). Its heading folds it (P.upf, each person's): folded, one line with the
  * first ("दसरा · in 2 days"). The same number of rows on every day, so it keeps one height as ‹ › move through the days; hidden
  * when nothing is marked in the month from the day.
@@ -651,7 +679,7 @@ function upHome(pl) {
   var t = keyOf(new Date()),
     k = homeAt || t,
     // five: phones show three, tablets and computers all five (css/12-calendar.css)
-    rows = pl && loaded.festivals ? upList(k, addDays(k, 30), pl, (P && P.hol) || []).slice(0, 5) : [];
+    rows = pl && loaded.festivals ? oneRowADay(upList(k, addDays(k, 30), pl, (P && P.hol) || [])).slice(0, 5) : [];
   if (!rows.length) {
     box.hidden = true;
     box.innerHTML = "";

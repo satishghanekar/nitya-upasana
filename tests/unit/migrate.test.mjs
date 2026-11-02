@@ -319,6 +319,15 @@ describe("settings from every older version are upgraded as js/core/state.js alw
   });
 });
 
+describe("the holidays in Home's Coming up (P.hol)", () => {
+  test("the US's and India's at first; a state's chosen before (Maharashtra, Karnataka) is left out, the calendar has them", () => {
+    expect(migratePrefs(null, PHONE).prefs.hol).toEqual(["us", "in"]);
+    expect(migratePrefs({ sv: 6, hol: ["ka", "us", "mh"] }, PHONE).prefs.hol).toEqual(["us"]);
+    expect(migratePrefs({ sv: 6, hol: [] }, PHONE).prefs.hol).toEqual([]);
+    expect(migratePrefs({ sv: 6, hol: "us" }, PHONE).prefs.hol).toEqual(["us", "in"]);
+  });
+});
+
 describe("a person's settings and the device's", () => {
   test("every setting belongs to exactly one side (Q4: theme and high contrast are per person)", () => {
     const all = Object.keys(defaults(PHONE)).sort();

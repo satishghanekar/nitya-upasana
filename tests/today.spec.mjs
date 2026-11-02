@@ -572,7 +572,7 @@ for (const [name, size] of [
 ])
   test(`‹ › through the days: the bar's arrows and the session's switch stay put, ${name}`, async ({ page }) => {
     await page.setViewportSize(size);
-    await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 }, hol: ["ka"] }, { now: new Date("2026-10-27T09:00:00-04:00") });
+    await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 } }, { now: new Date("2026-10-27T09:00:00-04:00") });
     const where = () =>
       page.evaluate(() =>
         ["#tdp", "#tdx", "#upw", "#tss"].map((s) =>
