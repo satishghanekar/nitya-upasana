@@ -658,8 +658,7 @@
   }
 }
 
-/* ==== The ready-made routines (Short, Daily, Full, Extended): what the one checked holds, followed or their own with
-   Go back, and the question before their own routine is replaced (as Same every day asks, #rtfx) ==== */
+/* ==== The ready-made routines: what the one checked holds, Go back, and the question (as #rtfx) ==== */
 #rtbi {
   margin: 0;
   color: var(--muted);

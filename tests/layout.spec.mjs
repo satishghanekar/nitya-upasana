@@ -2,7 +2,7 @@
 // Checks the things that break first on an unfamiliar screen: a sideways scroll, a bar that is off
 // screen, text that is too small to read, and controls too small to tap.
 import { test, expect } from "@playwright/test";
-import { openSite, hasSidewaysScroll, SETUPS, buildAll, readText } from "./helpers.mjs";
+import { openSite, hasSidewaysScroll, SETUPS, buildAll, readText, openPrintBuilder, settingsTab } from "./helpers.mjs";
 
 export const SCREENS = [
   { name: "phone-320", width: 320, height: 640, mobile: true },
@@ -169,3 +169,48 @@ test("Vedic chants: the run-on paragraphs survive a switch to IAST", async ({ pa
   expect(nb, "dandas glued again in IAST").toBeGreaterThan(100);
   for (const id of PROSE) expect(await dandasStartingRows(page, id, "en"), id).toEqual([]);
 });
+
+// Tap targets that look smaller than 44px (Settings' choices, 32px, so the Reading tab fits one iPhone screen; Use A4)
+// reach 44px with an invisible area above and below (the 2026-11-02 walk-through): a tap 5px outside what is drawn
+// still reaches the button, and no button's own middle is taken by another's area
+async function reach(page, sel) {
+  return page.evaluate((s) => {
+    const out = [];
+    const bs = [...document.querySelectorAll(s)].filter((b) => b.getClientRects().length && !b.closest("[hidden]"));
+    for (const b of bs) {
+      b.scrollIntoView({ block: "center" });
+      const r = b.getBoundingClientRect(),
+        x = r.left + r.width / 2,
+        name = b.textContent.trim().slice(0, 20);
+      // (44px: 6px more above and below what is drawn; checked 5.5px out)
+      for (const y of [r.top - 5.5, r.bottom + 5.5, r.top + r.height / 2]) {
+        const hit = document.elementFromPoint(x, y);
+        if (!hit || !(hit === b || b.contains(hit)))
+          out.push(`${name} at ${Math.round(y - r.top)}: ${hit ? hit.tagName + "#" + hit.id + "." + hit.className : "nothing"}`);
+      }
+    }
+    return { n: bs.length, out };
+  }, sel);
+}
+for (const [name, size] of [
+  ["a phone", { width: 390, height: 844 }],
+  ["an upright iPad", { width: 820, height: 1180 }],
+  ["a computer", { width: 1440, height: 900 }],
+])
+  test(`tap targets: Settings' choices and Use A4 reach 44px, ${name}`, async ({ page }) => {
+    await page.setViewportSize(size);
+    await openSite(page, SETUPS.marathi);
+    await page.locator("#aa").click();
+    for (const tab of ["read", "screen"]) {
+      await settingsTab(page, tab);
+      const r = await reach(page, "#panel .sp-seg button");
+      expect(r.n, tab).toBeGreaterThan(5);
+      expect(r.out, tab).toEqual([]);
+    }
+    await page.keyboard.press("Escape");
+    await openPrintBuilder(page);
+    if (await page.locator("#prnx").isVisible()) await page.locator("#prnx").click();
+    await expect(page.locator("#prpa")).toBeVisible();
+    expect((await reach(page, "#prpa")).out).toEqual([]);
+    for (const b of await page.locator(".wide:visible").all()) expect((await b.boundingBox()).height).toBeGreaterThanOrEqual(44);
+  });

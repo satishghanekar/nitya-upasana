@@ -805,7 +805,8 @@ body {
 }
 .wide {
   width: 100%;
-  height: 42px;
+  /* a whole tap target (Add a person, Next, Print…) */
+  height: 44px;
   border-color: var(--accent);
   color: var(--accent);
 }
