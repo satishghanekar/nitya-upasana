@@ -70,7 +70,7 @@
  "tests/a11y.spec.mjs": 79,
  "tests/compat.spec.mjs": 0,
  "tests/content.spec.mjs": 7,
- "tests/edge.spec.mjs": 55,
+ "tests/edge.spec.mjs": 58,
  "tests/eslint.config.mjs": 2,
  "tests/helpers.mjs": 158,
  "tests/interactions.spec.mjs": 1159,

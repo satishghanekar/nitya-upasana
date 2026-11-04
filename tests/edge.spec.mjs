@@ -456,6 +456,18 @@ test("the ↻ ध्रुपद bubble stays open until the next tap (WCAG 2.2.
   await expect(m).toHaveAttribute("aria-expanded", "false");
 });
 
+// (refrain-before-first: Jai Ganesh Deva's dhrupad is sung before the first stanza too; its ↻ marks that stanza)
+test("the ↻ ध्रुपद before the first stanza sits by that stanza, not under the dhrupad @chromium-only", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "a9");
+  const sec = page.locator("section.ash:visible");
+  const top = await sec.locator(".rftop .verse").boundingBox(),
+    m = await sec.locator(".items > .rmk.rmkt").first().boundingBox(),
+    st = await sec.locator(".items > .item:not(.rf) .verse p").first().boundingBox();
+  expect(st.y - (m.y + m.height), "marker to the first stanza").toBeLessThan(m.y - (top.y + top.height));
+});
+
 test("a 320px phone: the home buttons show their words, and a note sits under the top bar, on screen @chromium-only", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await openSite(page, SETUPS.both);

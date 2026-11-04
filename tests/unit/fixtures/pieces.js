@@ -92,11 +92,16 @@ window.CONTENT = {
          "l": "p1l8",
          "mr": "स्व॒स्ति नो॒ बृह॒स्पति॑र्दधातु ॥",
          "en": "Svasti No Bruhaspatirdadhatu ||"
-        },
+        }
+       ]
+      },
+      {
+       "kind": "dh",
+       "lines": [
         {
          "l": "p1l9",
-         "mr": "ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥",
-         "en": "Om Shantih Shantih Shantih ||"
+         "mr": "॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥",
+         "en": "|| Om Shantih Shantih Shantih ||"
         }
        ]
       },
@@ -591,6 +596,51 @@ window.CONTENT = {
        "lines": [
         {
          "l": "p1l95",
+         "mr": "ॐ भ॒द्रं कर्णे॑भिः शृणु॒याम॑ देवाः ।",
+         "en": "Om Bhadram Karnebhih Shrunuyama Devah |"
+        },
+        {
+         "l": "p1l96",
+         "mr": "भ॒द्रं प॑श्येमा॒क्षभि॒र्यज॑त्राः ।",
+         "en": "Bhadram Pashyemakshabhiryajatrah |"
+        },
+        {
+         "l": "p1l97",
+         "mr": "स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ं स॑स्त॒नूभिः॑ ।",
+         "en": "Sthirairangaistushtuvagm Sastanubhih |"
+        },
+        {
+         "l": "p1l98",
+         "mr": "व्यशे॑म दे॒वहि॑तं॒ यदायुः॑ ।",
+         "en": "Vyashema Devahitam Yadayuh |"
+        },
+        {
+         "l": "p1l99",
+         "mr": "स्व॒स्ति न॒ इन्द्रो॑ वृ॒द्धश्र॑वाः ।",
+         "en": "Svasti Na Indro Vruddhashravah |"
+        },
+        {
+         "l": "p1l100",
+         "mr": "स्व॒स्ति नः॑ पू॒षा वि॒श्ववे॑दाः ।",
+         "en": "Svasti Nah Pusha Vishvavedah |"
+        },
+        {
+         "l": "p1l101",
+         "mr": "स्व॒स्ति न॒स्तार्क्ष्यो॒ अरि॑ष्टनेमिः ।",
+         "en": "Svasti Nastarkshyo Arishtanemih |"
+        },
+        {
+         "l": "p1l102",
+         "mr": "स्व॒स्ति नो॒ बृह॒स्पति॑र्दधातु ॥",
+         "en": "Svasti No Bruhaspatirdadhatu ||"
+        }
+       ]
+      },
+      {
+       "kind": "dh",
+       "lines": [
+        {
+         "l": "p1l103",
          "mr": "॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥",
          "en": "|| Om Shantih Shantih Shantih ||"
         }

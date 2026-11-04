@@ -204,8 +204,9 @@ export function parseText(raw, name) {
   if (t.refrain === "every-verse") {
     if (!bl[d] || bl[d].kind !== "dhrupad" || bl[d].bold)
       fail(file, "refrain: every-verse needs a [dhrupad] block first (only [once] lines and [note]s may come before it)");
+    // (a later [dhrupad bold] is a closing line said once, as in a text without a dhrupad: ॥ जय जय रघुवीर समर्थ ॥)
     bl.slice(d + 1).forEach(function (b) {
-      if (b.kind === "dhrupad") fail(file, "refrain: every-verse has one [dhrupad] block, the first");
+      if (b.kind === "dhrupad" && !b.bold) fail(file, "refrain: every-verse has one [dhrupad] block, the first");
     });
     bl.slice(d, d + 2).forEach(function (b) {
       if (

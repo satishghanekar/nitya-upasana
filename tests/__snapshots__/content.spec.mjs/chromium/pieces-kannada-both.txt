@@ -19,8 +19,6 @@ Ganapati Atharvashirsha
 
 ಸ್ವ॒ಸ್ತಿ ನೋ॒ ಬೃಹ॒ಸ್ಪತಿ॑ರ್ದಧಾತು ॥
 
-ಓಂ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॑ ॥
-
 Om Bhadram Karnebhih Shrunuyama Devah |
 
 Bhadram Pashyemakshabhiryajatrah |
@@ -37,7 +35,9 @@ Svasti Nastarkshyo Arishtanemih |
 
 Svasti No Bruhaspatirdadhatu ||
 
-Om Shantih Shantih Shantih ||
+॥ ಓಂ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॑ ॥
+
+|| Om Shantih Shantih Shantih ||
 
 ಓಂ ನಮ॑ಸ್ತೇ ಗ॒ಣಪ॑ತಯೇ ।
 
@@ -411,6 +411,38 @@ Sa Sarvavidbhavati Sa Sarvavidbhavati |
 
 Ya Evam Veda | Ityupanishat || 14 ||
 
+ಓಂ ಭ॒ದ್ರಂ ಕರ್ಣೇ॑ಭಿಃ ಶೃಣು॒ಯಾಮ॑ ದೇವಾಃ ।
+
+ಭ॒ದ್ರಂ ಪ॑ಶ್ಯೇಮಾ॒ಕ್ಷಭಿ॒ರ್ಯಜ॑ತ್ರಾಃ ।
+
+ಸ್ಥಿ॒ರೈರಙ್ಗೈ᳚ಸ್ತುಷ್ಟು॒ವಾಗ್ಂ ಸ॑ಸ್ತ॒ನೂಭಿಃ॑ ।
+
+ವ್ಯಶೇ॑ಮ ದೇ॒ವಹಿ॑ತಂ॒ ಯದಾಯುಃ॑ ।
+
+ಸ್ವ॒ಸ್ತಿ ನ॒ ಇನ್ದ್ರೋ॑ ವೃ॒ದ್ಧಶ್ರ॑ವಾಃ ।
+
+ಸ್ವ॒ಸ್ತಿ ನಃ॑ ಪೂ॒ಷಾ ವಿ॒ಶ್ವವೇ॑ದಾಃ ।
+
+ಸ್ವ॒ಸ್ತಿ ನ॒ಸ್ತಾರ್ಕ್ಷ್ಯೋ॒ ಅರಿ॑ಷ್ಟನೇಮಿಃ ।
+
+ಸ್ವ॒ಸ್ತಿ ನೋ॒ ಬೃಹ॒ಸ್ಪತಿ॑ರ್ದಧಾತು ॥
+
+Om Bhadram Karnebhih Shrunuyama Devah |
+
+Bhadram Pashyemakshabhiryajatrah |
+
+Sthirairangaistushtuvagm Sastanubhih |
+
+Vyashema Devahitam Yadayuh |
+
+Svasti Na Indro Vruddhashravah |
+
+Svasti Nah Pusha Vishvavedah |
+
+Svasti Nastarkshyo Arishtanemih |
+
+Svasti No Bruhaspatirdadhatu ||
+
 ॥ ಓಂ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॑ ॥
 
 || Om Shantih Shantih Shantih ||
@@ -434,8 +466,6 @@ Purusha Suktam
 
 ಶನ್ನೋ॑ ಅಸ್ತು ದ್ವಿ॒ಪದೇ᳚ । ಶಂ ಚತು॑ಷ್ಪದೇ ॥
 
-ಓಂ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॑ ॥
-
 Om Tachchham Yoravrunimahe |
 
 Gatum Yadnyaya | Gatum Yadnyapataye |
@@ -448,7 +478,9 @@ Urdhvam Jigatu Bheshajam |
 
 Shanno Astu Dvipade | Sham Chatushpade ||
 
-Om Shantih Shantih Shantih ||
+॥ ಓಂ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॑ ॥
+
+|| Om Shantih Shantih Shantih ||
 
 ಓಂ ಸ॒ಹಸ್ರ॑ಶೀರ್ಷಾ॒ ಪುರು॑ಷಃ ।
 
@@ -841,6 +873,30 @@ Ashvinau Vyattam |
 Ishtam Manishana | Amum Manishana |
 
 Sarvam Manishana || 10 ||
+
+ಓಂ ತಚ್ಛಂ॒ ಯೋರಾವೃ॑ಣೀಮಹೇ ।
+
+ಗಾ॒ತುಂ ಯ॒ಜ್ಞಾಯ॑ । ಗಾ॒ತುಂ ಯ॒ಜ್ಞಪ॑ತಯೇ ।
+
+ದೈವೀಃ᳚ ಸ್ವ॒ಸ್ತಿರ॑ಸ್ತು ನಃ ।
+
+ಸ್ವ॒ಸ್ತಿರ್ಮಾನು॑ಷೇಭ್ಯಃ ।
+
+ಊ॒ರ್ಧ್ವಂ ಜಿ॑ಗಾತು ಭೇಷ॒ಜಮ್ ।
+
+ಶನ್ನೋ॑ ಅಸ್ತು ದ್ವಿ॒ಪದೇ᳚ । ಶಂ ಚತು॑ಷ್ಪದೇ ॥
+
+Om Tachchham Yoravrunimahe |
+
+Gatum Yadnyaya | Gatum Yadnyapataye |
+
+Daivih Svastirastu Nah |
+
+Svastirmanushebhyah |
+
+Urdhvam Jigatu Bheshajam |
+
+Shanno Astu Dvipade | Sham Chatushpade ||
 
 ॥ ಓಂ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॑ ॥
 
@@ -4372,6 +4428,10 @@ Om Ekadantaya Vidmahe Vakratundaya Dhimahi |
 Tanno Danti Prachodayat ||
 
 Mantrapushpanjalim Samarpayami ||
+
+॥ ಓಂ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॒ ಶಾನ್ತಿಃ॑ ॥
+
+|| Om Shantih Shantih Shantih ||
 
 ### a1
 1.
@@ -7939,6 +7999,10 @@ Patitapavan Sitaram ||
 
 || Janaki Jivan Smaran Jay Jay Ram ||
 
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
+
 ### ashtak-anudin-anutapen
 3.
 ಅನುದಿನ ಅನುತಾಪೇಂ ತಾಪಲೋಂ
@@ -8184,6 +8248,10 @@ Bhumidharanigamansi Varnavena Jayasi |
 
 Sakalabhuvanavasi Bheti De Ramadasin || 15 ||
 
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
+
 ### ashtak-monday
 4.
 ಸೋಮವಾರ – ನಸೇ ಭಕ್ತಿ ನಾ
@@ -8284,6 +8352,10 @@ Tayacheni He Phitali Sarva Chinta |
 Samartha Taya Kay Uttirna Vhaven |
 
 Sada Sarvada Nam Vache Vadaven || 6 ||
+
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
 
 ### ashtak-tuesday
 5.
@@ -8434,6 +8506,10 @@ Sute Brid Aamhansi Sanduni Jatan |
 
 Raghunayaka Maganen Henchi Aatan || 9 ||
 
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
+
 ### ashtak-wednesday
 6.
 ಬುಧವಾರ – ಯುಕ್ತಿ ನಾಹೀಂ ಬುದ್ಧಿ
@@ -8582,6 +8658,10 @@ Aanik Nalage Kanhin, Buddhi De Raghunayaka || 17 ||
 Ramadas Mhane Majha Sansar Tuj Lagala |
 
 Sanshayo Vatato Potin, Buddhi De Raghunayaka || 18 ||
+
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
 
 ### ashtak-thursday
 7.
@@ -8748,6 +8828,10 @@ Pahaven Tula Hen Jivin Aarta Mothen |
 
 Udasin Ha Kal Kothen Na Kanthe || 10 ||
 
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
+
 ### ashtak-friday
 8.
 ಶುಕ್ರವಾರ – ಉದಾಸೀನ ಹಾ ಕಾಳ
@@ -8816,6 +8900,10 @@ Janin Vertha Sansar Ha Vayachala ||
 Tujha Mi, Tula Pusaton Sarvabhaven |
 
 Raghunayaka Kay Kaisen Karaven ? || 4 ||
+
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
 
 ### ashtak-saturday
 9.
@@ -8901,6 +8989,10 @@ Karunyasindhu Maj Sodavin Re ||
 Krupakatakshen Sambhalin Dina |
 
 Tujavin Rama Maj Kanthavena || 5 ||
+
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
 
 ### ashtak-sunday
 10.
@@ -9035,6 +9127,10 @@ Bahu Svarthabuddhinen Re Kashtavilon |
 
 Tujha Das Mi Vyartha Janmasi Aalon || 8 ||
 
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
+
 ### ashtak-haachi-subodh
 11.
 ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ
@@ -9146,9 +9242,9 @@ Hachi Subodh Guruncha, Gururayala Tahan Premachi || 13 ||
 
 ॥ ಸದ್‌ಗುರುನಾಥ ಮಹಾರಾಜ ಕೀ ಜಯ ॥
 
-॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
-
 || Sadgurunath Maharaj Ki Jay ||
+
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
 
 || Jay Jay Raghuvir Samartha ||
 
@@ -9249,6 +9345,10 @@ To Gondavalekar | Tyache Payin Mukti Char |
 Dasadasachen Maher | Aisa Nahin Pahila || 8 ||
 
 ↻ ಧ್ರುಪದRefrain
+
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
 
 ### ashtak-swami-majha-pahila
 13.
@@ -9355,6 +9455,10 @@ Tujhen Rup Hen Sagun | Tujhen Rup Hen Sagun |
 Sada Raho Dola Ya Managangatirin || 6 ||
 
 ↻ ಧ್ರುಪದRefrain
+
+॥ ಜಯ ಜಯ ರಘುವೀರ ಸಮರ್ಥ ॥
+
+|| Jay Jay Raghuvir Samartha ||
 
 ### ashtak-surya-ashtakam
 14.

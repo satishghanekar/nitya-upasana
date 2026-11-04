@@ -26,8 +26,10 @@ Svasti Nah Pusha Vishvavedah |
 Svasti Nastarkshyo Arishtanemih |
 स्व॒स्ति नो॒ बृह॒स्पति॑र्दधातु ॥
 Svasti No Bruhaspatirdadhatu ||
-ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
-Om Shantih Shantih Shantih ||
+
+[dhrupad]
+॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
+|| Om Shantih Shantih Shantih ||
 
 [para 1]
 ॐ नम॑स्ते ग॒णप॑तये ।
@@ -226,6 +228,24 @@ Mahapratyavayat Pramuchyate |
 Sa Sarvavidbhavati Sa Sarvavidbhavati |
 य ए॑वं वे॒द । इत्यु॑प॒निष॑त् ॥ १४ ॥
 Ya Evam Veda | Ityupanishat || 14 ||
+
+[dhrupad]
+ॐ भ॒द्रं कर्णे॑भिः शृणु॒याम॑ देवाः ।
+Om Bhadram Karnebhih Shrunuyama Devah |
+भ॒द्रं प॑श्येमा॒क्षभि॒र्यज॑त्राः ।
+Bhadram Pashyemakshabhiryajatrah |
+स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ं स॑स्त॒नूभिः॑ ।
+Sthirairangaistushtuvagm Sastanubhih |
+व्यशे॑म दे॒वहि॑तं॒ यदायुः॑ ।
+Vyashema Devahitam Yadayuh |
+स्व॒स्ति न॒ इन्द्रो॑ वृ॒द्धश्र॑वाः ।
+Svasti Na Indro Vruddhashravah |
+स्व॒स्ति नः॑ पू॒षा वि॒श्ववे॑दाः ।
+Svasti Nah Pusha Vishvavedah |
+स्व॒स्ति न॒स्तार्क्ष्यो॒ अरि॑ष्टनेमिः ।
+Svasti Nastarkshyo Arishtanemih |
+स्व॒स्ति नो॒ बृह॒स्पति॑र्दधातु ॥
+Svasti No Bruhaspatirdadhatu ||
 
 [dhrupad]
 ॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥

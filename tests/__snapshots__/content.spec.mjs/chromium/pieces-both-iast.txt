@@ -19,8 +19,6 @@ Gaṇapatyatharvaśīrṣopaniṣat
 
 स्व॒स्ति नो॒ बृह॒स्पति॑र्दधातु ॥
 
-ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
-
 om̐ bha̱draṃ karṇe̍bhiḥ śṛṇu̱yāma̍ devāḥ |
 
 bha̱draṃ pa̍śyemā̱kṣabhi̱ryaja̍trāḥ |
@@ -37,7 +35,9 @@ sva̱sti na̱stārkṣyo̱ ari̍ṣṭanemiḥ |
 
 sva̱sti no̱ bṛha̱spati̍rdadhātu ||
 
-om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
+॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
+
+|| om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 
 ॐ नम॑स्ते ग॒णप॑तये ।
 
@@ -411,6 +411,38 @@ sa sarvavidbhavati sa sarva̍vidbha̱vati |
 
 ya e̍vaṃ ve̱da | ityu̍pa̱niṣa̍t || 14 ||
 
+ॐ भ॒द्रं कर्णे॑भिः शृणु॒याम॑ देवाः ।
+
+भ॒द्रं प॑श्येमा॒क्षभि॒र्यज॑त्राः ।
+
+स्थि॒रैरङ्गै᳚स्तुष्टु॒वाग्ं स॑स्त॒नूभिः॑ ।
+
+व्यशे॑म दे॒वहि॑तं॒ यदायुः॑ ।
+
+स्व॒स्ति न॒ इन्द्रो॑ वृ॒द्धश्र॑वाः ।
+
+स्व॒स्ति नः॑ पू॒षा वि॒श्ववे॑दाः ।
+
+स्व॒स्ति न॒स्तार्क्ष्यो॒ अरि॑ष्टनेमिः ।
+
+स्व॒स्ति नो॒ बृह॒स्पति॑र्दधातु ॥
+
+om̐ bha̱draṃ karṇe̍bhiḥ śṛṇu̱yāma̍ devāḥ |
+
+bha̱draṃ pa̍śyemā̱kṣabhi̱ryaja̍trāḥ |
+
+sthi̱rairaṅgai̎stuṣṭu̱vāgṃ sa̍sta̱nūbhi̍ḥ |
+
+vyaśe̍ma de̱vahi̍ta̱ṃ yadāyu̍ḥ |
+
+sva̱sti na̱ indro̍ vṛ̱ddhaśra̍vāḥ |
+
+sva̱sti na̍ḥ pū̱ṣā vi̱śvave̍dāḥ |
+
+sva̱sti na̱stārkṣyo̱ ari̍ṣṭanemiḥ |
+
+sva̱sti no̱ bṛha̱spati̍rdadhātu ||
+
 ॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
 
 || om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
@@ -434,8 +466,6 @@ Puruṣasūktam
 
 शन्नो॑ अस्तु द्वि॒पदे᳚ । शं चतु॑ष्पदे ॥
 
-ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
-
 om̐ taccha̱ṃ yorāvṛ̍ṇīmahe |
 
 gā̱tuṃ ya̱jñāya̍ | gā̱tuṃ ya̱jñapa̍taye |
@@ -448,7 +478,9 @@ sva̱stirmānu̍ṣebhyaḥ |
 
 śanno̍ astu dvi̱pade̎ | śaṃ catu̍ṣpade ||
 
-om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
+॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
+
+|| om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 
 ॐ स॒हस्र॑शीर्षा॒ पुरु॑षः ।
 
@@ -841,6 +873,30 @@ a̱śvinau̱ vyāttam̎ |
 i̱ṣṭaṃ ma̍niṣāṇa | a̱muṃ ma̍niṣāṇa |
 
 sarva̍ṃ maniṣāṇa || 10 ||
+
+ॐ तच्छं॒ योरावृ॑णीमहे ।
+
+गा॒तुं य॒ज्ञाय॑ । गा॒तुं य॒ज्ञप॑तये ।
+
+दैवीः᳚ स्व॒स्तिर॑स्तु नः ।
+
+स्व॒स्तिर्मानु॑षेभ्यः ।
+
+ऊ॒र्ध्वं जि॑गातु भेष॒जम् ।
+
+शन्नो॑ अस्तु द्वि॒पदे᳚ । शं चतु॑ष्पदे ॥
+
+om̐ taccha̱ṃ yorāvṛ̍ṇīmahe |
+
+gā̱tuṃ ya̱jñāya̍ | gā̱tuṃ ya̱jñapa̍taye |
+
+daivī̎ḥ sva̱stira̍stu naḥ |
+
+sva̱stirmānu̍ṣebhyaḥ |
+
+ū̱rdhvaṃ ji̍gātu bheṣa̱jam |
+
+śanno̍ astu dvi̱pade̎ | śaṃ catu̍ṣpade ||
 
 ॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
 
@@ -4372,6 +4428,10 @@ om̐ eka̍dantāya vi̱dmahe̍ vakratu̱ṇḍāya̍ dhīmahi |
 tanno̍ dantī praco̱dayā̍t ||
 
 mantrapuṣpāñjaliṃ samarpayāmi ||
+
+॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
+
+|| om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 
 ### a1
 1.
@@ -7947,6 +8007,10 @@ patitapāvana sītārāma ||
 
 || jānakī jīvana smaraṇa jaya jaya rāma ||
 
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
+
 ### ashtak-anudin-anutapen
 3.
 अनुदिन अनुतापें तापलों
@@ -8192,6 +8256,10 @@ bhumidharanigamāṃsī varṇavenā jayāsī |
 
 sakalabhuvanavāsī bheṭi de rāmadāsīṃ || 15 ||
 
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
+
 ### ashtak-monday
 4.
 सोमवार – नसे भक्ति ना
@@ -8292,6 +8360,10 @@ tayāceni he phīṭalī sarva cintā |
 samarthā tayā kāya uttīrṇa vhāveṃ |
 
 sadā sarvadā nāma vāce vadāveṃ || 6 ||
+
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
 
 ### ashtak-tuesday
 5.
@@ -8442,6 +8514,10 @@ suṭe brīda āmhāṃsi sāṇḍūni jātāṃ |
 
 raghūnāyakā māgaṇeṃ heñci ātāṃ || 9 ||
 
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
+
 ### ashtak-wednesday
 6.
 बुधवार – युक्ति नाहीं बुद्धि
@@ -8590,6 +8666,10 @@ mī eka raṅka durbuddhi, buddhi de raghunāyakā || 16 ||
 rāmadāsa mhaṇe mājhā saṃsāra tuja lāgalā |
 
 saṃśayo vāṭato poṭīṃ, buddhi de raghunāyakā || 18 ||
+
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
 
 ### ashtak-thursday
 7.
@@ -8756,6 +8836,10 @@ pāhāveṃ tulā heṃ jivīṃ ārta moṭheṃ |
 
 udāsīna hā kāḷa koṭheṃ na kaṇṭhe || 10 ||
 
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
+
 ### ashtak-friday
 8.
 शुक्रवार – उदासीन हा काळ
@@ -8824,6 +8908,10 @@ janīṃ vertha saṃsāra hā vāyacāḷā ||
 tujhā mī, tulā pūsatoṃ sarvabhāveṃ |
 
 raghūnāyakā kāya kaiseṃ karāveṃ ? || 4 ||
+
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
 
 ### ashtak-saturday
 9.
@@ -8909,6 +8997,10 @@ kāruṇyasindhū maja soḍavīṃ re ||
 kṛpākaṭākṣeṃ sāmbhāḷiṃ dīnā |
 
 tujavīṇa rāmā maja kaṇṭhavenā || 5 ||
+
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
 
 ### ashtak-sunday
 10.
@@ -9043,6 +9135,10 @@ bahu svārthabuddhīneṃ re kaṣṭavīloṃ |
 
 tujhā dāsa mī vyartha janmāsi āloṃ || 8 ||
 
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
+
 ### ashtak-haachi-subodh
 11.
 हाचि सुबोध गुरूंचा
@@ -9154,9 +9250,9 @@ hāci subodha gurūñcā, gururāyālā tahāna premācī || 13 ||
 
 ॥ सद्‌गुरुनाथ महाराज की जय ॥
 
-॥ जय जय रघुवीर समर्थ ॥
-
 || sad‌gurunātha mahārāja kī jaya ||
+
+॥ जय जय रघुवीर समर्थ ॥
 
 || jaya jaya raghuvīra samartha ||
 
@@ -9257,6 +9353,10 @@ to gondāvalekara | tyāce pāyīṃ mukti cāra |
 dāsadāsāceṃ māhera | aisā nāhīṃ pāhilā || 8 ||
 
 ↻ ध्रुपदRefrain
+
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
 
 ### ashtak-swami-majha-pahila
 13.
@@ -9363,6 +9463,10 @@ tujheṃ rūpa heṃ saguṇa | ​tujheṃ rūpa heṃ saguṇa |
 sadā rāho ḍoḷā yā māṇagaṅgātīrīṃ || 6 ||
 
 ↻ ध्रुपदRefrain
+
+॥ जय जय रघुवीर समर्थ ॥
+
+|| jaya jaya raghuvīra samartha ||
 
 ### ashtak-surya-ashtakam
 14.
