@@ -70,6 +70,12 @@ describe("blocks", () => {
     expect(t.blocks[0].lines).toEqual([{ orig: "क", en: "K", rf: false }]);
     expect(formatText(t)).toBe(HEAD + "refrain: every-verse\n---\n" + body);
   });
+  test("every-verse: a [dhrupad bold] after the verses is a closing line, said once", () => {
+    const body = "[dhrupad]\nक\nK\n\n[1]\nग\nG\n\n[dhrupad bold]\nघ\nGh\n";
+    const t = parse(body, "refrain: every-verse\n");
+    expect(t.blocks.map((b) => b.kind + (b.bold ? " bold" : ""))).toEqual(["dhrupad", "stanza", "dhrupad bold"]);
+    expect(formatText(t)).toBe(HEAD + "refrain: every-verse\n---\n" + body);
+  });
   test.each([
     ["an English line missing", "[1]\nक\n\n", /an original line with no English line/],
     ["two original lines in a row", "[1]\nक\nख\n", /expected the everyday English line/],

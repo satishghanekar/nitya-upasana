@@ -20,8 +20,10 @@ Svastirmanushebhyah |
 Urdhvam Jigatu Bheshajam |
 शन्नो॑ अस्तु द्वि॒पदे᳚ । शं चतु॑ष्पदे ॥
 Shanno Astu Dvipade | Sham Chatushpade ||
-ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
-Om Shantih Shantih Shantih ||
+
+[dhrupad]
+॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
+|| Om Shantih Shantih Shantih ||
 
 [para 1]
 ॐ स॒हस्र॑शीर्षा॒ पुरु॑षः ।
@@ -238,6 +240,20 @@ Ashvinau Vyattam |
 Ishtam Manishana | Amum Manishana |
 सर्वं॑ मनिषाण ॥ १० ॥
 Sarvam Manishana || 10 ||
+
+[dhrupad]
+ॐ तच्छं॒ योरावृ॑णीमहे ।
+Om Tachchham Yoravrunimahe |
+गा॒तुं य॒ज्ञाय॑ । गा॒तुं य॒ज्ञप॑तये ।
+Gatum Yadnyaya | Gatum Yadnyapataye |
+दैवीः᳚ स्व॒स्तिर॑स्तु नः ।
+Daivih Svastirastu Nah |
+स्व॒स्तिर्मानु॑षेभ्यः ।
+Svastirmanushebhyah |
+ऊ॒र्ध्वं जि॑गातु भेष॒जम् ।
+Urdhvam Jigatu Bheshajam |
+शन्नो॑ अस्तु द्वि॒पदे᳚ । शं चतु॑ष्पदे ॥
+Shanno Astu Dvipade | Sham Chatushpade ||
 
 [dhrupad]
 ॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥

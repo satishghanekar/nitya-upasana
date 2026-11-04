@@ -142,7 +142,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 | `[para 3]` | A stanza that starts a new paragraph in a `layout: prose` text. |
 | `[dhrupad]` | With `refrain: every-verse`: the dhrupad, first in the file (only `[once]` lines and `[note]`s may come before it). Otherwise: lines said once, where they stand (in a Vedic chant, the opening and closing peace chants). |
 | `[once]` | With `refrain: every-verse`: lines said once, where they stand, with no dhrupad after them: an invocation before the dhrupad (Aarti Belaguve's ॥ श्रीराम समर्थ ॥, shown above it) or a closing line (Nana Maharaj's aarti). In other texts: lines said once, shown above the text when they come first (Surya Ashtakam's ॥ श्री गणेशाय नमः ॥), otherwise where they stand, like `[dhrupad]`. |
-| `[dhrupad bold]` | The same, shown in bold (Ghalin Lotangan's closing mantra). |
+| `[dhrupad bold]` | The same, shown in bold (Ghalin Lotangan's closing mantra; every ashtak's closing ॥ जय जय रघुवीर समर्थ ॥). With `refrain: every-verse`, after the stanzas: a closing line said once, in bold, with no dhrupad after it. |
 | `[dhrupad repeated]` | Right after `[dhrupad]`, only when the repeats are written differently from the top (the Vitthal Aarti). |
 | `[refrain]` | Inside a block: the lines after it are refrain lines (shown as the refrain, or hidden with the dhrupad set to once). |
 | `[note: ↻ ३ वेळा \| 3 times]` | A small note between blocks, in both languages, always shown (whatever the dhrupad setting). One that starts with ↻ is about the lines before it ("repeat 3 times") and prints with them; any other note (`[note: फलश्रुति \| Phalashruti]`) is a heading for what follows and prints with it. Only a note that starts with ↻ shows the ↻ in English too. |
