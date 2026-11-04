@@ -242,3 +242,13 @@
     border-inline-start: 0;
   }
 }
+
+/* ==== The marker before the first stanza (refrain-before-first: the dhrupad is sung before it too): it belongs to
+   that stanza, so it sits just above it, apart from the dhrupad, not pulled up under the dhrupad as the others are
+   under the stanza before them ==== */
+@media screen {
+  [data-ref="1"] .items > .rmk.rmkt:first-child {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

@@ -7,7 +7,7 @@
    "titleEn": "Ganapati Atharvashirsha",
    "category": "vedic-chant",
    "language": "sa",
-   "lines": 95
+   "lines": 103
   },
   {
    "id": "vedic-chant-purusha-suktam",
@@ -16,7 +16,7 @@
    "titleEn": "Purusha Suktam",
    "category": "vedic-chant",
    "language": "sa",
-   "lines": 106
+   "lines": 112
   },
   {
    "id": "vedic-chant-shri-sukta",
@@ -70,7 +70,7 @@
    "titleEn": "Mantra Pushpanjali",
    "category": "vedic-chant",
    "language": "sa",
-   "lines": 13
+   "lines": 14
   },
   {
    "id": "aarti-sukhkarta",
@@ -340,7 +340,7 @@
    "titleEn": "Ananyata Maj Ghado Svanandarupin",
    "category": "ashtak",
    "language": "mr",
-   "lines": 103
+   "lines": 104
   },
   {
    "id": "ashtak-anudin-anutapen",
@@ -349,7 +349,7 @@
    "titleEn": "Anudin Anutapen Tapalon",
    "category": "ashtak",
    "language": "mr",
-   "lines": 60
+   "lines": 61
   },
   {
    "id": "ashtak-monday",
@@ -358,7 +358,7 @@
    "titleEn": "Monday – Nase Bhakti Na",
    "category": "ashtak",
    "language": "mr",
-   "lines": 24
+   "lines": 25
   },
   {
    "id": "ashtak-tuesday",
@@ -367,7 +367,7 @@
    "titleEn": "Tuesday – Udasin He Vrutti",
    "category": "ashtak",
    "language": "mr",
-   "lines": 36
+   "lines": 37
   },
   {
    "id": "ashtak-wednesday",
@@ -376,7 +376,7 @@
    "titleEn": "Wednesday – Yukti Nahin Buddhi",
    "category": "ashtak",
    "language": "mr",
-   "lines": 36
+   "lines": 37
   },
   {
    "id": "ashtak-thursday",
@@ -385,7 +385,7 @@
    "titleEn": "Thursday – Samadhan Sadhujanacheni Yogen",
    "category": "ashtak",
    "language": "mr",
-   "lines": 40
+   "lines": 41
   },
   {
    "id": "ashtak-friday",
@@ -394,7 +394,7 @@
    "titleEn": "Friday – Udasin Ha Kal",
    "category": "ashtak",
    "language": "mr",
-   "lines": 16
+   "lines": 17
   },
   {
    "id": "ashtak-saturday",
@@ -403,7 +403,7 @@
    "titleEn": "Saturday – Tujhiya Viyogen Jivitva",
    "category": "ashtak",
    "language": "mr",
-   "lines": 20
+   "lines": 21
   },
   {
    "id": "ashtak-sunday",
@@ -412,7 +412,7 @@
    "titleEn": "Sunday – Asankhyat Te Bhakta",
    "category": "ashtak",
    "language": "mr",
-   "lines": 32
+   "lines": 33
   },
   {
    "id": "ashtak-haachi-subodh",
@@ -430,7 +430,7 @@
    "titleEn": "Shribrahmachaitanyasarikha Nahin Pahila",
    "category": "ashtak",
    "language": "mr",
-   "lines": 19
+   "lines": 20
   },
   {
    "id": "ashtak-swami-majha-pahila",
@@ -439,7 +439,7 @@
    "titleEn": "Svami Majha Pahila",
    "category": "ashtak",
    "language": "mr",
-   "lines": 22
+   "lines": 23
   },
   {
    "id": "ashtak-surya-ashtakam",

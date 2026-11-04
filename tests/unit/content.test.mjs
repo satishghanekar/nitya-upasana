@@ -69,6 +69,13 @@ describe("CONTENT from the text files", () => {
     expect(p.items.map((i) => i.kind || (i.rmk ? "rmk" : "stanza"))).toEqual(["stanza", "rmk", "rf", "dh"]);
     expect(p.items.flatMap((i) => (i.lines || []).map((l) => l.l))).toEqual(["x.2", "x.3", "x.4"]);
   });
+  // a closing [dhrupad bold] in a text with a dhrupad: said once, bold, with no dhrupad after it
+  test("every-verse: a closing [dhrupad bold] is said once, in bold", () => {
+    const head = "id: x\ntitle: क\ntitle-en: K\ncategory: ashtak\nlanguage: mr\nrefrain: every-verse\n---\n";
+    const p = toPiece(parseText(head + "[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[dhrupad bold]\nघ\nGh\n"), 1, lib);
+    expect(p.items.map((i) => i.kind || (i.rmk ? "rmk" : "stanza"))).toEqual(["stanza", "rmk", "rf", "dh"]);
+    expect(p.items[3]).toEqual({ kind: "dh", bold: true, lines: [{ l: "x.3", mr: "घ", en: "Gh" }] });
+  });
   // with no dhrupad: [once] lines at the top go above the text (lead), later ones stand where they are
   test("no dhrupad: [once] lines at the top lead, later ones stand where they are", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\ncategory: ashtak\nlanguage: sa\n---\n";
