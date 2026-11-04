@@ -86,7 +86,8 @@ test("the scripts, styles and page stay within their size budget", () => {
   const parts = siteParts();
   const gz = (files) => files.reduce((n, f) => n + gzipSync(readFileSync(new URL("../" + f, import.meta.url))).length, 0);
   // (320 KB since 2026-11-02: the ready-made routines, the welcome card and the print Routine list)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(320_000);
+  // (322 KB since 2026-11-04: the Listen test page, js/features/listen-test.js)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(322_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css)
   expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(71_000);
   expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(30_000);

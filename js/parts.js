@@ -104,6 +104,7 @@ var SITE_PARTS = (function () {
     "features/text-picker",
     "features/routine-builder",
     "features/welcome",
+    "features/listen-test",
   ].map(function (f) {
     return "js/" + f + ".js";
   });
