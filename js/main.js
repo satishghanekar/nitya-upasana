@@ -67,6 +67,7 @@ import { init as startProfiles } from "./features/profiles.js";
 import { init as startBackup } from "./features/backup.js";
 import { init as startRoutineBuilder } from "./features/routine-builder.js";
 import { init as startWelcome } from "./features/welcome.js";
+import { init as startListenTest } from "./features/listen-test.js";
 
 // One part that fails to start is reported and passed over, so the parts after it still start (a part that needs
 // it may then fail too, but no more than that)
@@ -126,6 +127,7 @@ function start() {
     run(startBackup); // Save a backup file / Restore from a file, the backup reminder, keeping the data (storage.persist)
     run(startRoutineBuilder); // The routine builder (#rtb): each person's texts per session, in order, with the Add texts picker
     run(startWelcome); // Welcome (#wlc): once, on a new phone's Home, the first person's name and ready-made routine
+    run(startListenTest); // Listen test (#listen-test only): what the phone's speech recognition hears, for trying it on chanting
   } finally {
     // Show the page (see "data-ready" in css/02-core.css), even if a part failed to start
     document.documentElement.setAttribute("data-ready", "");
