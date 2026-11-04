@@ -55,12 +55,13 @@
   -webkit-user-select: none;
   user-select: none;
 }
-/* the date's two lines on the left, ‹ › on the right, Today under them */
+/* the date's first line on the left, ‹ › on the right; the second date under it across the card; then the day's word,
+   with Today on its line under ‹ › (Satish, 2026-11-04) */
 #tdd {
   display: grid;
   flex: 1;
   grid-template-columns: minmax(0, 1fr) 44px 44px;
-  grid-template-areas: "d1 p x" "d2 t t";
+  grid-template-areas: "d1 p x" "d2 d2 d2" "dr t t";
   align-items: center;
   gap: 2px 6px;
   min-width: 0;
@@ -68,7 +69,8 @@
 }
 /* each line on one line, so the header keeps one height on every day (a long one is cut with …) */
 #tdd .d1,
-#tdd .d2 {
+#tdd .d2,
+#tdr {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -105,13 +107,13 @@
   opacity: 0.4;
   cursor: default;
 }
-/* (a 44px target that takes 32px of the row: it reaches into the space under the date) */
+/* (a 44px target that takes the word's line: it reaches above and below it) */
 #tdt {
   grid-area: t;
   justify-self: center;
   height: auto;
   min-height: 44px;
-  margin: 0 0 -12px;
+  margin: -11px 0;
   padding: 0 4px;
   border: 0;
   background: none;
@@ -131,12 +133,18 @@
   outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
-/* the day's word after the second line of the date: Today, Tomorrow, In 3 days, 3 days ago */
+/* the day's word on a line of its own under the date: Today, Tomorrow, In 3 days, 3 days ago. Once it followed the
+   second date on its line, and the longer words were cut on a phone ("Wednesday, 11 November · ७ दि…"; Satish,
+   2026-11-04) */
 #tdr {
+  grid-area: dr;
+  align-self: start;
+  font: 600 var(--fz-m)/1.35 var(--lat);
   color: var(--accent);
 }
-/* (the dot between them only when there is a second date) */
-#tdd .d2t:empty + .dsep {
+/* with no second language there is no second date (hidden by js/features/today-card.js): the word comes right under
+   the first */
+#tdd .d2[hidden] {
   display: none;
 }
 #iconb:focus-visible {
@@ -729,14 +737,10 @@
   }
 }
 
-/* ==== Narrow phones: the date a step smaller, so it fits beside ‹ ›, and under it the day's word alone (Today, In 2
-   days), not the date again in the second language ==== */
+/* ==== Narrow phones: the date a step smaller, so it fits beside ‹ › (the second date fits as it is, with the day's
+   word on its own line) ==== */
 @media (max-width: 379px) {
   #tdd .d1 {
     font-size: var(--fz-xl);
-  }
-  #tdd .d2t,
-  #tdd .dsep {
-    display: none;
   }
 }

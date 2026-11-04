@@ -201,11 +201,12 @@ export function render() {
     };
   d1.lang = code(ls[0]);
   d1.textContent = dateIn(ls[0]);
-  // the second line: the date in the second language, then the day's word in the menu language ("· Tomorrow"); with
-  // no second language, the word alone, so the card keeps its lines
-  d2.lang = ui;
+  // the second line: the date in the second language (none with no second language: the line is left out); under it,
+  // on its own line, the day's word in the menu language (Tomorrow)
   d2t.lang = ls[1] ? code(ls[1]) : ui;
-  d2t.textContent = ls[1] ? dateIn(ls[1]) : ""; // (the dot before the word, .dsep, shows only after a date)
+  d2t.textContent = ls[1] ? dateIn(ls[1]) : "";
+  d2.hidden = !ls[1];
+  rel.lang = ui;
   rel.textContent = dayWord(c.today, c.day);
   // ‹ › beside the date, and Today under them on another day (its room kept on today)
   var other = c.day !== c.today,
