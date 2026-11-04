@@ -484,9 +484,8 @@ test("English as the main language: the date, the session and the titles in Engl
 test("English alone: no Marathi on the card", async ({ page }) => {
   await openSite(page, { ...SETUPS.english, lead: "en", l2: "", lang: "en" }, { now: EVENING });
   await expect(page.locator("#tdd .d1")).toHaveText("Sunday, 18 October");
-  // the second line: the day's word alone, without the dot
-  await expect(page.locator("#tdd .d2t")).toHaveText("");
-  await expect(page.locator("#tdd .dsep")).toBeHidden();
+  // no second date: its line left out, the day's word right under the date
+  await expect(page.locator("#tdd .d2")).toBeHidden();
   await expect(page.locator("#tdr")).toHaveText("Today");
   await expect(page.locator("#tsh")).toHaveText("Evening");
   await expect(rows(page).first().locator(".t2")).toHaveCount(0);
@@ -680,6 +679,30 @@ test("Marathi menus: another day in Marathi, and the Sankashti line without आ�
   await expect(page.locator("#tdt")).toHaveText("आज");
   await expect(first(page).locator("small")).toHaveText(/^बुधवार २८ ऑक्टोबर · Sankashti Chaturthi · चंद्रोदय .+$/);
   await expect(page.locator("#tdp")).toHaveAccessibleName("आधीचा दिवस");
+});
+
+// The day's word on its own line under the two dates: after the second date, the longer ones were cut on a phone
+// ("Wednesday, 11 November · ७ दि…"; Satish, 2026-11-04)
+test("Marathi menus on phones: the dates and the day's word whole on every day of a month, the word under the dates", async ({ page }) => {
+  for (const width of [360, 390]) {
+    await page.setViewportSize({ width, height: 800 });
+    await openSite(page, { ...SETUPS["marathi-menus"], lang: "both" }, { now: new Date("2026-11-04T10:00:00-05:00") });
+    const d2 = await page.locator("#tdd .d2").boundingBox(),
+      rel = await page.locator("#tdr").boundingBox();
+    expect(rel.y).toBeGreaterThanOrEqual(d2.y + d2.height - 1);
+    const cut = [];
+    for (let i = 0; i < 30; i++) {
+      cut.push(
+        ...(await page.locator("#tdd .d1, #tdd .d2, #tdr").evaluateAll((els) => els.filter((e) => e.scrollWidth > e.clientWidth).map((e) => e.textContent))),
+      );
+      await page.locator("#tdx").click();
+    }
+    expect(cut, width + "px").toEqual([]);
+    // on another day, Today on the day's word's line, not between lines
+    const t = await page.locator("#tdt").boundingBox(),
+      w = await page.locator("#tdr").boundingBox();
+    expect(Math.abs(t.y + t.height / 2 - (w.y + w.height / 2))).toBeLessThan(3);
+  }
 });
 
 test("the date opens the calendar at the day Home shows; ‹ › do not open it", async ({ page }) => {
