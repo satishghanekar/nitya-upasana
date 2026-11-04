@@ -86,5 +86,7 @@ Hachi Subodh Guruncha, Gururayala Tahan Premachi || 13 ||
 [dhrupad]
 ॥ सद्‌गुरुनाथ महाराज की जय ॥
 || Sadgurunath Maharaj Ki Jay ||
+
+[dhrupad bold]
 ॥ जय जय रघुवीर समर्थ ॥
 || Jay Jay Raghuvir Samartha ||

@@ -143,15 +143,21 @@ export function toPiece(t, n, lib) {
         }),
       });
     };
-    // a [note] of the text's own, or [once] lines (shown as a line said once): where they stand, no dhrupad after them
+    // a [note] of the text's own, [once] lines or a closing [dhrupad bold] (shown as a line said once, the last in bold):
+    // where they stand, no dhrupad after them
     /** @param {import("./format.js").Block} b @returns {Item} */
     var own = function (b) {
-      return b.kind === "note" ? { rmk: pair(/** @type {Pair} */ (b.note)), nt: true } : { kind: "dh", lines: b.lines.map(line) };
+      if (b.kind === "note") return { rmk: pair(/** @type {Pair} */ (b.note)), nt: true };
+      /** @type {Item} */
+      var it = { kind: "dh" };
+      if (b.bold) it.bold = true;
+      it.lines = b.lines.map(line);
+      return it;
     };
     if (lead.length) p.lead = lead.map(own);
     if (t.refrainFirst) again();
     blocks.forEach(function (b) {
-      if (b.kind === "note" || b.kind === "once") items.push(own(b));
+      if (b.kind === "note" || b.kind === "once" || b.kind === "dhrupad") items.push(own(b));
       else {
         items.push(b.para ? { para: true, lines: b.lines.map(line) } : { lines: b.lines.map(line) });
         again();
