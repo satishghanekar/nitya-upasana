@@ -74,7 +74,7 @@
  "tests/eslint.config.mjs": 2,
  "tests/helpers.mjs": 158,
  "tests/interactions.spec.mjs": 1159,
- "tests/layout.spec.mjs": 175,
+ "tests/layout.spec.mjs": 198,
  "tests/library.spec.mjs": 691,
  "tests/offline.spec.mjs": 142,
  "tests/perf.spec.mjs": 15,

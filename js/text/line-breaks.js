@@ -102,7 +102,8 @@ export function zsplit(p, cut, sep) {
 // there a row may break at any space, so each danda (। ॥ |), with a verse number between two of them (a reference
 // such as ॥ ९.००१.०१ ॥ too: Pavamana Suktam's Rigveda hymn and verse; its booklet sometimes leaves the last ॥ out,
 // or sets it against the number, and the number is glued all the same), is glued
-// to the word before it (a nowrap span, .nb), and a line written on two rows (<br>) gets a space beside it
+// to the word before it (to the last part of a word joined by hyphens, शक्ति-कूट-…-धारिणी: whole, it may be wider than a
+// phone's row) (a nowrap span, .nb), and a line written on two rows (<br>) gets a space beside it
 // (.brs, shown only while the line runs on). A long word in English letters is glued by its last three letters only:
 // whole, it could be wider than a phone's row and run off the screen, where the rest of it may now break. The words
 // themselves are not changed.
@@ -112,7 +113,7 @@ export function glue(p) {
     n;
   while ((n = w.nextNode())) ns.push(n);
   ns.forEach(function (n) {
-    var re = /\S+(?: +(?:[।॥|]+|[0-9०-९೦-೯]+(?:\.[0-9०-९೦-೯]+)*(?= *[॥|]| *$)))+/g,
+    var re = /[^\s-]+(?: +(?:[।॥|]+|[0-9०-९೦-೯]+(?:\.[0-9०-९೦-೯]+)*(?= *[॥|]| *$)))+/g,
       t = n.data,
       f = document.createDocumentFragment(),
       at = 0,

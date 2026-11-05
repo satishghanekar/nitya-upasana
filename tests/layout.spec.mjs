@@ -231,6 +231,29 @@ for (const [setup, width] of [
     expect(r.lines).toBeGreaterThan(1200);
   });
 
+// Lalita Sahasranama is set line by line too (layout: lines), its Nyasa and Dhyanam (said once) as well: on a phone
+// every line starts at the same edge, and no row runs off the screen, a long name joined by hyphens included
+// (शक्ति-कूटैकतापन्न-कट्यधोभाग-धारिणी ॥ ३५ ॥: its number is glued to its last part only)
+test("Lalita Sahasranama on a phone: line by line, nothing wider than the screen", async ({ page }) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await openSite(page, SETUPS.marathi, { hash: "#vedic-chant-lalita-sahasranama" });
+  const r = await page.evaluate(() => {
+    const sec = document.getElementById("vedic-chant-lalita-sahasranama");
+    const ps = [...sec.querySelectorAll(".item .verse > .mr > p")].filter((p) => p.getClientRects().length);
+    const rows = ps.flatMap((p) => [...p.getClientRects()]);
+    // (a single line said once is centred, as a heading)
+    const many = ps.filter((p) => !p.matches(":only-child") || !p.closest(".item.dh"));
+    return {
+      lines: ps.length,
+      starts: new Set(many.map((p) => Math.round(p.getClientRects()[0].left))).size,
+      over: rows.filter((b) => b.right > innerWidth + 0.5 || b.left < -0.5).length,
+    };
+  });
+  expect(r.lines).toBeGreaterThan(300);
+  expect(r.starts).toBe(1);
+  expect(r.over).toBe(0);
+});
+
 // Tap targets that look smaller than 44px (Settings' choices, 32px, so the Reading tab fits one iPhone screen; Use A4)
 // reach 44px with an invisible area above and below (the 2026-11-02 walk-through): a tap 5px outside what is drawn
 // still reaches the button, and no button's own middle is taken by another's area
