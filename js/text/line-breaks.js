@@ -33,6 +33,37 @@ export function breakLines(/** @type {ParentNode} */ r) {
     zsplit(p, enCut, "");
   });
   [].forEach.call(r.querySelectorAll(".ash.prose .verse p"), glue);
+  [].forEach.call(r.querySelectorAll(".ash.lines .verse p"), shortRef);
+}
+
+// The digits of every script a text is shown in (Latin, Devanagari, Kannada, Telugu, Gujarati), zero first
+var DIGITS = "0123456789०१२३४५६७८९೦೧೨೩೪೫೬೭೮೯౦౧౨౩౪౫౬౭౮౯૦૧૨૩૪૫૬૭૮૯";
+var REF = new RegExp("[" + DIGITS + "]+(?:\\.[" + DIGITS + "]+)+(?=[\\s॥|]*$)");
+
+// A text set line by line (layout: lines) may number its verses by a long reference (Pavamana Suktam: ॥ ९.००१.०६ ॥,
+// the Rigveda's book, hymn and verse). A phone's row has no room for it, so the reference is wrapped (.ref > span) with
+// its last part, the verse, as a short number (data-short: ६, its zeros dropped), which css/02-core.css shows instead on a
+// phone; the first verse of each hymn keeps its whole reference, so the reader still sees which hymn it is. The words
+// are not changed: the reference stays in the text, for search, the printout and a screen reader.
+export function shortRef(/** @type {HTMLElement} */ p) {
+  var w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT),
+    t,
+    last = null;
+  // (the last text with more than dandas in it: a ॥ set against the number is glued outside it)
+  while ((t = w.nextNode())) if (/[^\s॥|]/.test(t.data)) last = t;
+  var m = last && REF.exec(last.data);
+  if (!m || !last || (last.parentElement && last.parentElement.closest(".ref"))) return;
+  var verse = m[0].slice(m[0].lastIndexOf(".") + 1),
+    short = verse.replace(new RegExp("^[" + DIGITS.replace(/[^0०೦౦૦]/g, "") + "]+(?=.)"), ""),
+    s = document.createElement("span");
+  s.className = "ref";
+  // (a hymn's first verse: no short number)
+  if (DIGITS.indexOf(short) % 10 !== 1 || short.length !== 1) s.setAttribute("data-short", short);
+  var tail = last.splitText(m.index);
+  tail.splitText(m[0].length);
+  tail.parentNode.replaceChild(s, tail);
+  // (the whole reference in a span of its own, which a phone hides)
+  s.appendChild(document.createElement("span")).appendChild(tail);
 }
 
 export function enCut(t) {
