@@ -85,8 +85,9 @@ test("js/parts.js keeps every picture the page shows, at every time of day, for 
 test("the scripts, styles and page stay within their size budget", () => {
   const parts = siteParts();
   const gz = (files) => files.reduce((n, f) => n + gzipSync(readFileSync(new URL("../" + f, import.meta.url))).length, 0);
-  // (320 KB since 2026-11-02: the ready-made routines, the welcome card and the print Routine list)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(320_000);
+  // (320 KB since 2026-11-02: the ready-made routines, the welcome card and the print Routine list; 330 KB since
+  // 2026-11-05: the chanting model's arithmetic and the Listen lab, which goes when Listen is built)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(330_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper)
   expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(72_000);
@@ -94,11 +95,12 @@ test("the scripts, styles and page stay within their size budget", () => {
 });
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):
-// files from this site only, and never an inline script
+// files from this site only, and never an inline script; WebAssembly may be compiled, for the chanting model
+// (vendor/onnxruntime/, CLAUDE.md), and nothing else is allowed beside 'self'
 test("every file carries the Content-Security-Policy: this site only, no inline scripts", async ({ request }) => {
   for (const path of ["./", "sw.js", "js/main.js"]) {
     const csp = (await request.get(path)).headers()["content-security-policy"] || "";
     expect(csp, path).toContain("default-src 'self'");
-    expect(csp, path).toMatch(/script-src 'self'(;|$)/);
+    expect(csp, path).toMatch(/script-src 'self' 'wasm-unsafe-eval'(;|$)/);
   }
 });

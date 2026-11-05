@@ -99,6 +99,17 @@ These hold for every text, so a new text prints correctly as soon as its file ex
 - **Printing on an iPhone:** Safari opens the print dialog only in answer to a tap. The print view is written at once, so Print prints from that tap; should a browser still ignore it, the builder asks for one more tap (Ready: Print now). The Home Screen app can't print at all, so Print there opens Safari in the same tap on iOS 17 and later (an `x-safari-https://` address, with the choices and the ticks in it) and closes the builder once the app is left; if Safari does not open, and on older iOS, it offers Open in Safari and Copy link.
 - **Tests:** `tests/print.spec.mjs` prints the whole Library in each language, font and layout (Kannada letters, IAST and the dhrupad after every verse too) and checks the PDF: every text printed, listed in the contents and starting on a new page; no block split; every English line of every text on paper, read against the texts themselves (`sourceLines`); the footers; nothing screen-only. It also checks the builder, routine printouts and the iPhone paths. `tests/fonts.spec.mjs` checks the printout's fonts.
 
+## Hearing the chanting (Listen, being built)
+
+A small speech model (`models/chant-vN/`: Whisper base, int8, 76 MB, trained in the shravan-model repository) hears
+the chanting on the phone itself, so the app can follow along. Nothing leaves the phone. The model is downloaded only
+when Listen is used, never with the page, in pieces of at most 20 MB (Cloudflare Pages serves none over 25 MiB), each
+checked against its SHA-256 in `model.json`. It runs in ONNX Runtime Web (`vendor/onnxruntime/`, the one exception to
+"no runtime packages", with `'wasm-unsafe-eval'` in the security policy), on the CPU or through WebGPU. The arithmetic
+around it is plain, unit-tested JavaScript (`js/core/hearing.js`): sound into the model's input, its tokens into
+letters. For now only the Listen lab (`#listen-lab`) uses it, to measure how fast phones are; the service worker keeps
+none of it, as the lab fetches with `no-store`.
+
 ## Offline use and updates
 
 - `sw.js` keeps the page and every file in `js/parts.js` (styles, scripts, texts, the main fonts, the pictures and icons) in a cache named after the version.
