@@ -9,6 +9,10 @@ private.
 ## The stack: keep it
 - No build step, no framework, no bundler, no runtime npm packages. `index.html`, plain CSS and ES modules are served
   exactly as they are in the repository.
+- One exception (agreed 2026-11-05): ONNX Runtime Web, copied unchanged into `vendor/onnxruntime/`, to run the
+  chanting model (`models/chant-vN/`), and `'wasm-unsafe-eval'` in the security policy for it. Loaded only when Listen
+  is used, never with the page; nothing else goes into `vendor/`. `vendor/onnxruntime/README.md` says how to update it.
+- A file over 20 MB is cut into pieces (Cloudflare Pages serves none over 25 MiB) and joined by the code that loads it.
 - All tooling lives in `tests/` (its own `package.json`: eslint, stylelint, tsc, Vitest, Playwright, Lighthouse). Never
   add a `package.json` at the root.
 - Oldest browsers supported: `tests/.browserslistrc` (iOS / Safari 15.4, Chrome and Firefox 100). `npm run lint` fails

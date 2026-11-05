@@ -9,7 +9,13 @@ import { gzipSync } from "node:zlib";
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const PORT = Number(process.env.PORT || 4173);
 // the Content-Security-Policy _headers gives every file (Cloudflare Pages sends it), so the tests run under it too
-const CSP = (/^\/\*\n(?:  .*\n)*?  Content-Security-Policy: (.+)$/m.exec(await readFile(join(ROOT, "_headers"), "utf8")) || [])[1];
+const HEADERS_FILE = await readFile(join(ROOT, "_headers"), "utf8");
+/** A header _headers gives every file (the /* block), or undefined @param {string} name */
+const forAll = (name) => (new RegExp("^/\\*\\n(?:  .*\\n)*?  " + name + ": (.+)$", "m").exec(HEADERS_FILE) || [])[1];
+const CSP = forAll("Content-Security-Policy");
+// cross-origin isolation, where the site asks for it (Nitya Upasana: the chanting model on every core)
+const COOP = forAll("Cross-Origin-Opener-Policy");
+const COEP = forAll("Cross-Origin-Embedder-Policy");
 const TYPES = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
@@ -37,6 +43,8 @@ createServer(async (req, res) => {
     let body = await readFile(file);
     const headers = { "Content-Type": type, "Cache-Control": "no-cache" };
     if (CSP) headers["Content-Security-Policy"] = CSP;
+    if (COOP) headers["Cross-Origin-Opener-Policy"] = COOP;
+    if (COEP) headers["Cross-Origin-Embedder-Policy"] = COEP;
     // Cloudflare compresses text files, so Lighthouse here should see the same transfer sizes
     if (/^(text|application\/(json|manifest))|svg/.test(type) && /\bgzip\b/.test(req.headers["accept-encoding"] || "")) {
       body = gzipSync(body);

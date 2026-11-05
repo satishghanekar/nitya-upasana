@@ -42,6 +42,7 @@ var SITE_PARTS = (function () {
     "core/page",
     "core/state",
     "core/words",
+    "core/hearing",
     "strings/en",
     "strings/mr",
     "strings/kn",
@@ -104,6 +105,7 @@ var SITE_PARTS = (function () {
     "features/text-picker",
     "features/routine-builder",
     "features/welcome",
+    "features/listen-lab",
   ].map(function (f) {
     return "js/" + f + ".js";
   });
