@@ -135,19 +135,44 @@ describe("content checks", () => {
     expect(raw === raw.normalize("NFC")).toBe(true);
   });
   // A verse number typed in a line (॥ १० ॥, || 10 ||) is the same in both languages and a whole number: a slip such as
-  // "|| 1. ||" for ॥ १० ॥ printed wrong in English and IAST (Satish's PDFs, 2026-10-22)
+  // "|| 1. ||" for ॥ १० ॥ printed wrong in English and IAST (Satish's PDFs, 2026-10-22). A reference in parts
+  // (Pavamana Suktam's ॥ ९.००१.०१ ॥, Rigveda 9.1.1) has a number on each side of every dot.
   test.each(lib.texts.map((t) => [t.id]))("%s: verse numbers agree in both languages", (id) => {
     const DV = "०१२३४५६७८९";
     const nums = (s, re) => [...s.matchAll(re)].map((m) => m[1]);
     const t = parseText(files[id], id);
     t.blocks.forEach((b) =>
       b.lines.forEach((l) => {
-        const mr = nums(l.orig, /॥\s*([०-९]+)\s*॥/g).map((d) => d.replace(/./g, (c) => DV.indexOf(c)));
+        const mr = nums(l.orig, /॥\s*([०-९]+(?:\.[०-९]+)*)\s*॥/g).map((d) => d.replace(/[०-९]/g, (c) => DV.indexOf(c)));
         const en = nums(l.en, /\|\|\s*([0-9.]+)\s*\|\|/g);
-        en.forEach((n) => expect(n, `${id}: "${l.en}"`).toMatch(/^[0-9]+$/));
+        en.forEach((n) => expect(n, `${id}: "${l.en}"`).toMatch(/^[0-9]+(\.[0-9]+)*$/));
         if (mr.length && en.length) expect(en, `${id}: "${l.orig}" / "${l.en}"`).toEqual(mr);
       }),
     );
+  });
+  // Pavamana Suktam, from the 107-page booklet (content/pdfs/pavamana-suktam.pdf, "Collection by M. Pramod"): every
+  // verse of Rigveda 9.1–9.67 once, in order, each hymn starting a paragraph
+  test("Pavamana Suktam: Rigveda 9.1.1 to 9.67.32, every verse once and in order", () => {
+    const t = parseText(files["vedic-chant-pavamana-suktam"], "vedic-chant-pavamana-suktam");
+    const refs = [];
+    const paras = [];
+    t.blocks.forEach((b) => {
+      const all = b.lines.map((l) => l.en).join(" ");
+      const m = /\|\| 9\.(\d{3})\.(\d{2})/.exec(all);
+      if (b.kind === "stanza") {
+        expect(m, `block ${b.n} has its reference`).toBeTruthy();
+        refs.push([+m[1], +m[2]]);
+        if (b.para) paras.push(+m[1]);
+      }
+    });
+    expect(refs.length).toBe(610);
+    expect(refs[0]).toEqual([1, 1]);
+    expect(refs[refs.length - 1]).toEqual([67, 32]);
+    refs.slice(1).forEach(([h, v], i) => {
+      const [ph, pv] = refs[i];
+      expect(h === ph ? v === pv + 1 : h === ph + 1 && v === 1, `9.${h}.${v} after 9.${ph}.${pv}`).toBe(true);
+    });
+    expect(paras).toEqual(Array.from({ length: 67 }, (_, i) => i + 1));
   });
   test("categories: Vedic Chant, Aarti, Stotra, Ashtak", () => {
     expect(categories.map((c) => c.id)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak"]);
