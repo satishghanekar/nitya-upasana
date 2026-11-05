@@ -151,7 +151,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 
 - `¦` marks a place where a long line may break on a narrow phone (it shows as nothing). Put it after the space: `निढळावरी कर, ¦निढळावरी कर`. English lines need none: on a phone they break after a single `|` or a comma by themselves.
 - ` // ` (a space, two slashes, a space) always breaks the line there. The spaces belong to the mark: `|  // ` (two spaces) keeps one real space before the break.
-- **Verse numbers typed in a line** (`॥ १० ॥` in the original, `|| 10 ||` in English) must be the same number in both; the checks name any line where they differ.
+- **Verse numbers typed in a line** (`॥ १० ॥` in the original, `|| 10 ||` in English) must be the same number in both; the checks name any line where they differ. A reference in parts, as Pavamana Suktam's Rigveda hymn and verse (`॥ ९.००१.०१ ॥`, `|| 9.001.01 ||`), is checked the same way and kept whole on its row.
 - **Vedic svara marks** (॑ ॒ ᳚) must be kept exactly. A mark that belongs with a visarga goes **after** the ः, otherwise it shows as a dotted circle.
 - **Only the original line and the everyday English line are typed.** The scholarly English (IAST) is made from the original line, so a spelling fix there fixes the scholarly English too.
 
