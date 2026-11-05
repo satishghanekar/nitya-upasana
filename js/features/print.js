@@ -283,6 +283,26 @@ export function init() {
       b.appendChild(p);
       return b;
     }
+    // One language, a Vedic text set line by line (layout: lines): as its booklet, each line a row of its own starting
+    // at the left, each verse a block never split between pages, a hymn (a paragraph) further apart
+    /** @param {HTMLElement[]} g @param {string} k */
+    function linesBlock(g, k) {
+      if (g[0].classList.contains("rmk")) return proseBlock(g, k);
+      var box = mk("div", "pvlines");
+      g.forEach(function (u, i) {
+        var ls = linesOf(u, k),
+          one = u.classList.contains("dh") && ls.length === 1,
+          v = mk("div", "pvk pvlv" + (one ? " pvcen" : "") + (i === 0 ? " pvpara" : ""));
+        ls.forEach(function (l) {
+          var p = inLang("p", "pvl pvll", k, l.html.replace(/<br[^>]*>/gi, " "));
+          p.normalize();
+          glue(p);
+          v.appendChild(p);
+        });
+        box.appendChild(v);
+      });
+      return box;
+    }
     // Both languages, side by side: a table, each line of the original beside its English line
     /** @param {HTMLElement[]} us @param {boolean} flow  a Vedic paragraph (its rows may run on to the next page) */
     function sideBlock(us, flow) {
@@ -503,6 +523,7 @@ export function init() {
       else if (src.secs.length > 1) contents(into, src);
       src.secs.forEach(function (/** @type {HTMLElement} */ sec) {
         var vedic = sec.classList.contains("prose"),
+          byLine = sec.classList.contains("lines"),
           box = mk("section", "pvs" + (vedic ? " pvved" : ""));
         box.setAttribute("data-sid", sec.id);
         var hd = titleOf(sec, "h2", "pvtitle");
@@ -522,7 +543,7 @@ export function init() {
               return x.el;
             }),
           ).forEach(function (g) {
-            box.appendChild(side ? sideBlock(g, !g[0].classList.contains("rmk")) : proseBlock(g, k));
+            box.appendChild(side ? sideBlock(g, !g[0].classList.contains("rmk")) : byLine ? linesBlock(g, k) : proseBlock(g, k));
           });
         else if (side)
           group(ps).forEach(function (g) {

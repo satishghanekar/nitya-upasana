@@ -85,6 +85,14 @@ describe("CONTENT from the text files", () => {
     expect(p.items.map((i) => i.kind || "stanza")).toEqual(["stanza", "dh"]);
     expect(p.items.flatMap((i) => i.lines.map((l) => l.l))).toEqual(["x.2", "x.3"]);
   });
+  // layout: lines is a Vedic chant (prose: its font, its glued references, its printout) set line by line (lines)
+  test("layout: lines is a Vedic chant set line by line", () => {
+    const head = "id: x\ntitle: क\ntitle-en: K\ncategory: vedic-chant\nlanguage: sa\nlayout: lines\n---\n";
+    const p = toPiece(parseText(head + "[1]\nक\nK\n"), 1, lib);
+    expect(p.prose).toBe(true);
+    expect(p.cls).toBe("lines");
+    expect(toPiece(parseText(head.replace("lines", "prose") + "[1]\nक\nK\n"), 1, lib).cls).toBeUndefined();
+  });
   test("a text missing from the files stops the build", () => {
     expect(() => buildContent(lib, { ...files, "aarti-sukhkarta": undefined })).toThrow("texts/aarti-sukhkarta.txt: not loaded");
   });

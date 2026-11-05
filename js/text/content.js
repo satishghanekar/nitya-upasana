@@ -107,7 +107,10 @@ export function toPiece(t, n, lib) {
   if (t.refrain === "always") p.cls = "norf";
   // stanza-numbers: as-written: the numbers are part of the text, so js/text/stanza-numbers.js adds none
   if (t.stanzaNumbers === "as-written") p.cls = (p.cls ? p.cls + " " : "") + "ownsn";
-  if (t.layout === "prose") p.prose = true;
+  // layout: lines is a Vedic chant too (its font, its references glued, its printout), set line by line as its booklet
+  // is rather than run on (css/02-core.css, "Vedic chants line by line")
+  if (t.layout === "prose" || t.layout === "lines") p.prose = true;
+  if (t.layout === "lines") p.cls = (p.cls ? p.cls + " " : "") + "lines";
   p.no = {
     mr:
       String(n).replace(/[0-9]/g, function (d) {

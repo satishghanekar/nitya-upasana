@@ -46,7 +46,7 @@ There is no build step: the browser loads these files as they are.
 | `core/ticks.js` | The old ticks' storage key and name (`TICKS_KEY`, `PROFILE`), read once when moving them into the first person, and the shape of a profile's `checklist`, which is kept and carried in backups; Home no longer shows or sets ticks (no `init()`) |
 | `text/dhrupad-markers.js` | Tappable dhrupad markers (every text with refrain: every-verse) |
 | `text/stanza-numbers.js` | Stanza numbers |
-| `text/line-breaks.js` | Preferred line breaks |
+| `text/line-breaks.js` | Preferred line breaks; a Vedic chant's dandas and references glued to their word (`glue`); a long verse reference given its short form for phones (`shortRef`, `layout: lines`) |
 | `text/autofit.js` | The text size: the default for this screen (`dfs()`, `core/state.js`, times the reader's own text size, `textScale()`), the same for every text, unless the reader chose one; a long line wraps rather than the text shrinking. Also the two columns' pull |
 | `core/apply.js` | Current piece (`cur()`; `aimAt()` keeps the piece just gone to as current until the reader scrolls, so a short last text counts), folds and menus |
 | `features/bottom-bar.js` | Bottom bar (#asc): Prev, Home, Library, Aa, Next (Print is in the top bar on every page) |

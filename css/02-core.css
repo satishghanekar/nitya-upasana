@@ -1003,6 +1003,54 @@ ol.toc li.soon .m {
     font-size: min(1.05em, 100cqw / 33.6);
   }
 }
+/* ==== Vedic chants line by line, as their booklet sets them ====
+   A piece with "layout: lines" (Pavamana Suktam, Lalita Sahasranama) is a Vedic chant like the ones above, its
+   measure and size theirs, but in one language each line (of a verse, or of a part said once) starts a row of its
+   own, the verses a little apart and a hymn (a stanza marked para) further apart, as the printed booklet has it. A line too long for the row wraps with the rest of it
+   indented, so it still reads as one line. A long verse reference (॥ ९.००१.०६ ॥) shows on a phone as just the verse
+   (॥ ६ ॥; a hymn's first verse keeps it whole: js/text/line-breaks.js shortRef), in either language. */
+@media screen {
+  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .items > .item:not(.dh),
+  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .item .verse,
+  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .item .verse > :is(.mr, .en) {
+    display: block;
+    text-align: start;
+  }
+  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .items > .item:not(.dh) {
+    margin-bottom: 0.7em;
+  }
+  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .items > .item.para:not(.dh)::before {
+    height: 0.8em;
+  }
+  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .item .verse p {
+    display: block;
+    padding-inline-start: 1.5em;
+    text-indent: -1.5em;
+  }
+  /* a part said once (Nyasa, Dhyanam, the opening prayers) line by line too; one of a single line (॥ अथ पवमानसूक्तम् ॥)
+     centred, as a heading */
+  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse > :is(.mr, .en):has(> p:only-child) {
+    text-align: center;
+  }
+  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse > :is(.mr, .en) > p:only-child {
+    padding-inline-start: 0;
+    text-indent: 0;
+  }
+  .ash.lines .ref[data-short] > span {
+    display: none;
+  }
+  .ash.lines .ref[data-short]::after {
+    content: attr(data-short);
+  }
+}
+@media screen and (min-width: 600px) {
+  .ash.lines .ref[data-short] > span {
+    display: inline;
+  }
+  .ash.lines .ref[data-short]::after {
+    content: none;
+  }
+}
 /* A long line wraps rather than the text shrinking (js/text/autofit.js, Satish, 2026-11-02): its rows sit closer than two
    lines and split evenly (no "॥ १ ॥" alone), so it reads as one line; a line that fits keeps its room (1.4 + 0.3 = the
    page's 1.7). Not the Vedic chants run on as paragraphs (their spacing leaves room for the svara marks). */

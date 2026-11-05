@@ -130,7 +130,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 | `refrain` | `every-verse`: the `[dhrupad]` is shown once at the top, and after every stanza the app adds the "↻ ध्रुपद" note and the dhrupad again (when the reader picks "after every verse"; with "once", a tap on the note shows the dhrupad). Every aarti and ashtak with a dhrupad uses it. `always`: the refrain lines are written inside the stanzas and always shown (no text uses it now). Leave it out for none. |
 | `refrain-before-first` | `yes` when the dhrupad is also sung before the first stanza (Vitthal Aarti, Jai Ganesh Deva, Aarti Belaguve, Dhanya Jagin Ya Guruvarya, Jay Jay Aarti Shrigururaya, Jayadeva Jayadeva Jay Jay Samartha, Aarti Kariton Guruvar, Aarti Shri Nana Maharajanchi, Ovalun Aarti Sadguru Chaitanyabrahma, Svastha Karin Shayan Prabho Manchakavari). |
 | `stanza-numbers` | `as-written`: the stanza numbers (॥ १ ॥) are typed in the text and the app adds none (ashtaks whose numbers restart, or are written differently in English). |
-| `layout` | `prose`: a Vedic chant (Shree Rudra, the Atharvashirsha, the Purusha Suktam). In one language it runs on as paragraphs, on screen and in print, and Traditional (the default text font) sets it in Tiro Devanagari Sanskrit. |
+| `layout` | `prose`: a Vedic chant (Shree Rudra, the Atharvashirsha, the Purusha Suktam). In one language it runs on as paragraphs, on screen and in print, and Traditional (the default text font) sets it in Tiro Devanagari Sanskrit. `lines`: a Vedic chant set line by line, as its booklet is (Pavamana Suktam, Lalita Sahasranama): each line its own row from the left, a verse never split between pages, a hymn (`[para]`) further apart; a long verse reference (॥ ९.००१.०६ ॥) shows on a phone as just the verse (॥ ६ ॥), a hymn's first verse whole. |
 | `credit`, `credit-en` | The author or source line in each language. `[name](address)` becomes a link that opens in a new tab. |
 | `credit-note`, `credit-note-en` | A second, smaller author line (Vitthal Aarti: "also credited to Sant Namdev"). |
 
@@ -139,7 +139,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 | Block | |
 |---|---|
 | `[1]`, `[2]`, … | A stanza, numbered in order. The app adds ॥ १ ॥ at its end (after its last line that is not a refrain line); do not type it. In a `layout: prose` text the numbers are part of the text, and the blocks are simply counted. |
-| `[para 3]` | A stanza that starts a new paragraph in a `layout: prose` text. |
+| `[para 3]` | A stanza that starts a new paragraph in a `layout: prose` text (a new hymn, further apart, in a `layout: lines` text). |
 | `[dhrupad]` | With `refrain: every-verse`: the dhrupad, first in the file (only `[once]` lines and `[note]`s may come before it). Otherwise: lines said once, where they stand (in a Vedic chant, the opening and closing peace chants). |
 | `[once]` | With `refrain: every-verse`: lines said once, where they stand, with no dhrupad after them: an invocation before the dhrupad (Aarti Belaguve's ॥ श्रीराम समर्थ ॥, shown above it) or a closing line (Nana Maharaj's aarti). In other texts: lines said once, shown above the text when they come first (Surya Ashtakam's ॥ श्री गणेशाय नमः ॥), otherwise where they stand, like `[dhrupad]`. |
 | `[dhrupad bold]` | The same, shown in bold (Ghalin Lotangan's closing mantra; every ashtak's closing ॥ जय जय रघुवीर समर्थ ॥). With `refrain: every-verse`, after the stanzas: a closing line said once, in bold, with no dhrupad after it. |

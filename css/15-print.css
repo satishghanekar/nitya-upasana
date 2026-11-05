@@ -316,6 +316,35 @@
     text-align: center;
   }
 
+  /* ---- One language, a Vedic text set line by line (layout: lines): as its booklet, each line its own row from the
+     left, each verse a block (never split: rule 2), a hymn further apart. A line too long for the page wraps with
+     the rest of it indented. ---- */
+  #pv .pvved .pvlines > .pvk {
+    margin: 0 0 7pt;
+  }
+  #pv .pvved .pvlines > .pvpara {
+    margin-top: 9pt;
+  }
+  #pv .pvll {
+    margin: 0;
+    padding-inline-start: 1.5em;
+    font-size: 15pt;
+    line-height: 2;
+    text-align: start;
+    text-indent: -1.5em;
+  }
+  #pv .pvll.pve {
+    line-height: 1.75;
+  }
+  #pv .pvll .zs {
+    display: inline;
+  }
+  #pv .pvcen .pvll {
+    padding-inline-start: 0;
+    text-align: center;
+    text-indent: 0;
+  }
+
   /* ---- The author line, under the last stanza ---- */
   #pv .pvcr {
     /* room above for the marks over its letters, as a title's, should it start a page (Vedic texts) */

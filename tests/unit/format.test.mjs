@@ -35,6 +35,7 @@ describe("header", () => {
     ["an unknown refrain", HEAD + "refrain: sometimes\n---\n", /refrain must be one of/],
     ["no end of header", HEAD, /no "---" line/],
     ["a line that is not a field", HEAD + "just words\n---\n", /expected "name: value"/],
+    ["an unknown layout", HEAD + "layout: poem\n---\n", /layout can only be "prose" or "lines"/],
   ])("refuses %s", (_, raw, err) => {
     expect(() => parseText(raw, "x.txt")).toThrow(err);
   });
