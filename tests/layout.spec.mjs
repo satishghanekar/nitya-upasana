@@ -170,6 +170,22 @@ test("Vedic chants: the run-on paragraphs survive a switch to IAST", async ({ pa
   for (const id of PROSE) expect(await dandasStartingRows(page, id, "en"), id).toEqual([]);
 });
 
+// Pavamana Suktam numbers each verse by its Rigveda hymn and verse (॥ ९.००१.०१ ॥): a phone's row never breaks inside
+// one, in either language (24 of them have no closing ॥ in the booklet, or one set against the number: kept so)
+for (const setup of ["marathi", "english"])
+  test(`Pavamana Suktam · ${setup}: each verse reference stays whole on its row`, async ({ page }) => {
+    await page.setViewportSize({ width: 393, height: 852 });
+    await openSite(page, SETUPS[setup], { hash: "#vedic-chant-pavamana-suktam" });
+    const r = await page.evaluate((lang) => {
+      const sec = document.getElementById("vedic-chant-pavamana-suktam");
+      const refs = [...sec.querySelectorAll(".verse ." + lang + " p")].filter((p) => /[0-9०-९]\.[0-9०-९]{3}\./.test(p.textContent));
+      const whole = refs.filter((p) => [...p.querySelectorAll(".nb")].some((s) => /[॥|]+ [0-9०-९]\.[0-9०-९]{3}\.[0-9०-९]{2}/.test(s.textContent)));
+      return { refs: refs.length, whole: whole.length };
+    }, SETUPS[setup].lang);
+    expect(r.refs).toBe(610);
+    expect(r.whole).toBe(610);
+  });
+
 // Tap targets that look smaller than 44px (Settings' choices, 32px, so the Reading tab fits one iPhone screen; Use A4)
 // reach 44px with an invisible area above and below (the 2026-11-02 walk-through): a tap 5px outside what is drawn
 // still reaches the button, and no button's own middle is taken by another's area

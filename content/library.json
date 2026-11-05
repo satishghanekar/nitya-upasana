@@ -55,6 +55,15 @@
    "lines": 17
   },
   {
+   "id": "vedic-chant-pavamana-suktam",
+   "file": "texts/vedic-chant-pavamana-suktam.txt",
+   "title": "पवमानसूक्तम्",
+   "titleEn": "Pavamana Suktam",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 1277
+  },
+  {
    "id": "vedic-chant-lalita-sahasranama",
    "file": "texts/vedic-chant-lalita-sahasranama.txt",
    "title": "श्रीललितासहस्रनामस्तोत्रम्",
