@@ -186,6 +186,51 @@ for (const setup of ["marathi", "english"])
     expect(r.whole).toBe(610);
   });
 
+// Pavamana Suktam (layout: lines) is set as its booklet is: in one language each line of a verse starts a row of its
+// own at the left. Its long references show on a phone as just the verse (॥ ६ ॥), a hymn's first verse whole
+// (॥ ९.००२.०१ ॥), and whole everywhere on a wider screen; the words in the page stay the same (js/text/line-breaks.js)
+for (const [setup, width] of [
+  ["marathi", 393],
+  ["english", 393],
+  ["marathi", 1280],
+  ["both", 393],
+])
+  test(`Pavamana Suktam · ${setup} at ${width}px: line by line, as the booklet, the references short on a phone`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 852 });
+    await openSite(page, SETUPS[setup], { hash: "#vedic-chant-pavamana-suktam" });
+    const r = await page.evaluate(() => {
+      const sec = document.getElementById("vedic-chant-pavamana-suktam");
+      const refs = [...sec.querySelectorAll(".ref")].filter((e) => e.getClientRects().length);
+      const shown = (e) =>
+        getComputedStyle(e.firstElementChild).display === "none" ? getComputedStyle(e, "::after").content.replace(/"/g, "") : e.textContent;
+      // the rows of the verses: each line's first row starts where the verse's other lines do
+      const starts = [...sec.querySelectorAll(".item:not(.dh) .verse > :not([hidden]) > p")]
+        .filter((p) => p.getClientRects().length)
+        .map((p) => Math.round(p.getClientRects()[0].left));
+      return {
+        refs: refs.length,
+        texts: refs.map((e) => e.textContent),
+        shown: refs.map(shown),
+        starts: [...new Set(starts)].length,
+        lines: starts.length,
+      };
+    });
+    // 610 verses, in each language shown
+    expect(r.refs).toBe(setup === "both" ? 1220 : 610);
+    expect(r.texts.every((t) => /^[0-9०-९]\.[0-9०-९]{3}\.[0-9०-९]{2}$/.test(t))).toBe(true);
+    const short = r.shown.filter((s) => /^[0-9०-९]{1,2}$/.test(s)).length;
+    if (width < 600) {
+      // all but each hymn's first verse (67 hymns), shown as the verse alone, its zeros dropped
+      expect(short).toBe(r.refs - (setup === "both" ? 134 : 67));
+      // (the second verse; with both languages each verse's reference comes twice, the original first)
+      expect(r.shown[setup === "both" ? 2 : 1]).toBe(setup === "english" ? "2" : "२");
+      expect(r.shown.filter((s) => /^[0०]/.test(s))).toEqual([]);
+    } else expect(short).toBe(0);
+    // one language: every line starts at the same left edge (both languages keep their own layout)
+    if (setup !== "both") expect(r.starts).toBe(1);
+    expect(r.lines).toBeGreaterThan(1200);
+  });
+
 // Tap targets that look smaller than 44px (Settings' choices, 32px, so the Reading tab fits one iPhone screen; Use A4)
 // reach 44px with an invisible area above and below (the 2026-11-02 walk-through): a tap 5px outside what is drawn
 // still reaches the button, and no button's own middle is taken by another's area

@@ -2,7 +2,7 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { P } from "../core/state.js";
-import { enCut, glue, zsplit } from "./line-breaks.js";
+import { enCut, glue, shortRef, zsplit } from "./line-breaks.js";
 import { onPiece } from "../core/page.js";
 
 var TRL, TRT;
@@ -179,6 +179,7 @@ export function trSet(st, fin) {
     if (sn) p.appendChild(sn);
     if (fin) zsplit(p, enCut, "");
     if (fin && p.closest(".ash.prose")) glue(p);
+    if (fin && p.closest(".ash.lines")) shortRef(p);
   });
   titlesSet(ia);
 }
