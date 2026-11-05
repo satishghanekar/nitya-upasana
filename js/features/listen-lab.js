@@ -55,9 +55,10 @@ function button(label, fn) {
         margin: "4px 6px 4px 0",
         font: "inherit",
         borderRadius: "10px",
-        border: "1px solid var(--line, #ccc)",
-        background: "var(--card, #fff)",
+        border: "1px solid var(--rule, #ccc)",
+        background: "var(--surface, #f4ecd8)",
         color: "var(--ink, #222)",
+        fontWeight: "600",
       },
       label,
     )
@@ -83,7 +84,10 @@ function setBusy(on) {
   busy = on;
   if (box)
     [].forEach.call(box.querySelectorAll("button"), function (/** @type {HTMLButtonElement} */ b) {
-      if (b.textContent !== "Close") b.disabled = on;
+      if (b.textContent === "Close") return;
+      b.disabled = on;
+      // (greyed out plainly while another button's work runs: the theme's own colours, at half strength)
+      b.style.opacity = on ? "0.45" : "1";
     });
 }
 
