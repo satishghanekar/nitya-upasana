@@ -310,7 +310,7 @@ Barhih Prachinamojasa Pavamanah Strunanharih |
 Deveshu Deva Iyate || 9.005.04 ||
 
 [45]
-उदातै᳚र्जिहते बृ॒हद्द्वारो᳚ दे॒वीर्हि॑र॒ण्ययीः᳚ ।
+उदातै᳚र्जिहते बृ॒हद्‌द्वारो᳚ दे॒वीर्हि॑र॒ण्ययीः᳚ ।
 Udatairjihate Bruhaddvaro Devirhiranyayih |
 पव॑मानेन॒ सुष्टु॑ताः ॥ ९.००५.०५ ॥
 Pavamanena Sushtutah || 9.005.05 ||
@@ -1078,7 +1078,7 @@ Pari Vishvani Chetasa Mrushase Pavase Mati |
 Sa Na Soma Shravo Vidah || 9.020.03 ||
 
 [173]
-अ॒भ्य॑र्ष बृ॒हद्यशो᳚ म॒घव॑द्भ्यो ध्रु॒वं र॒यिम् ।
+अ॒भ्य॑र्ष बृ॒हद्यशो᳚ म॒घव॑द्‌भ्यो ध्रु॒वं र॒यिम् ।
 Abhyarsha Bruhadyasho Maghavadbhyo Dhruvam Rayim |
 इषं᳚ स्तो॒तृभ्य॒ आ भ॑र ॥ ९.०२०.०४ ॥
 Isham Stotrubhya A Bhara || 9.020.04 ||
@@ -1272,11 +1272,11 @@ Devaviraghashamsaha || 9.024.07 ||
 [para 205]
 पव॑स्व दक्ष॒साध॑नो दे॒वेभ्य॑ पी॒तये᳚ हरे ।
 Pavasva Dakshasadhano Devebhya Pitaye Hare |
-म॒रुद्भ्यो᳚ वा॒यवे॒ मदः॑ ॥ ९.०२५.०१ ॥
+म॒रुद्‌भ्यो᳚ वा॒यवे॒ मदः॑ ॥ ९.०२५.०१ ॥
 Marudbhyo Vayave Madah || 9.025.01 ||
 
 [206]
-पव॑मान धि॒या हि॒तो॒३॒॑ऽभि योनिं॒ कनि॑क्रदत् ।
+पव॑मान धि॒या हि॒तो॒॑३॒ऽभि योनिं॒ कनि॑क्रदत् ।
 Pavamana Dhiya Hitobhi Yonim Kanikradat |
 धर्म॑णा वा॒युमा वि॑श ॥ ९.०२५.०२ ॥
 Dharmana Vayuma Visha || 9.025.02 ||
@@ -1552,7 +1552,7 @@ Abhi Gavo Anushata Yosha Jaramiva Priyam |
 Agannajim Yatha Hitam || 9.032.05 ||
 
 [252]
-अ॒स्मे धे᳚हि द्यु॒मद्यशो᳚ म॒घव॑द्भ्यश्च॒ मह्यं᳚ च ।
+अ॒स्मे धे᳚हि द्यु॒मद्यशो᳚ म॒घव॑द्‌भ्यश्च॒ मह्यं᳚ च ।
 Asme Dhehi Dyumadyasho Maghavadbhyashcha Mahyam Cha |
 स॒निं मे॒धामु॒त श्रवः॑ ॥ ९.०३२.०६ ॥
 Sanim Medhamuta Shravah || 9.032.06 ||
@@ -1570,7 +1570,7 @@ Abhi Dronani Babhrava Shukra Rutasya Dharaya |
 Vajam Gomantamaksharan || 9.033.02 ||
 
 [255]
-सु॒ता इन्द्रा᳚य वा॒यवे॒ वरु॑णाय म॒रुद्भ्यः॑ ।
+सु॒ता इन्द्रा᳚य वा॒यवे॒ वरु॑णाय म॒रुद्‌भ्यः॑ ।
 Suta Indraya Vayave Varunaya Marudbhyah |
 सोमा᳚ अर्षन्ति॒ विष्ण॑वे ॥ ९.०३३.०३ ॥
 Soma Arshanti Vishnave || 9.033.03 ||
@@ -1600,7 +1600,7 @@ Pra Suvano Dharaya Tanendurhinvano Arshati |
 Rujaddrulha Vyojasa || 9.034.01 ||
 
 [260]
-सु॒त इन्द्रा᳚य वा॒यवे॒ वरु॑णाय म॒रुद्भ्यः॑ ।
+सु॒त इन्द्रा᳚य वा॒यवे॒ वरु॑णाय म॒रुद्‌भ्यः॑ ।
 Suta Indraya Vayave Varunaya Marudbhyah |
 सोमो᳚ अर्षति॒ विष्ण॑वे ॥ ९.०३४.०२ ॥
 Somo Arshati Vishnave || 9.034.02 ||
@@ -2392,7 +2392,7 @@ Pavasva Gojidashvajidvishvajitsoma Ranyajit |
 Prajavadratnama Bhara || 9.059.01 ||
 
 [392]
-पव॑स्वा॒द्भ्यो अदा᳚भ्य॒ पव॒स्वौष॑धीभ्यः ।
+पव॑स्वा॒द्‌भ्यो अदा᳚भ्य॒ पव॒स्वौष॑धीभ्यः ।
 Pavasvadbhyo Adabhya Pavasvaushadhibhyah |
 पव॑स्व धि॒षणा᳚भ्यः ॥ ९.०५९.०२ ॥
 Pavasva Dhishanabhyah || 9.059.02 ||
@@ -2500,7 +2500,7 @@ Ena Vishvanyarya A Dyumnani Manushanam |
 Sishasanto Vanamahe || 9.061.11 ||
 
 [410]
-स न॒ इन्द्रा᳚य॒ यज्य॑वे॒ वरु॑णाय म॒रुद्भ्यः॑ ।
+स न॒ इन्द्रा᳚य॒ यज्य॑वे॒ वरु॑णाय म॒रुद्‌भ्यः॑ ।
 Sa Na Indraya Yajyave Varunaya Marudbhyah |
 व॒रि॒वो॒वित्परि॑ स्रव ॥ ९.०६१.१२ ॥
 Varivovitpari Srava || 9.061.12 ||
@@ -2566,7 +2566,7 @@ Sa Pavasva Ya Avithendram Vrutraya Hantave |
 Vavrivamsam Mahirapah || 9.061.22 ||
 
 [421]
-सु॒वीरा᳚सो व॒यं धना॒ जये᳚म सोम मीढ्वः ।
+सु॒वीरा᳚सो व॒यं धना॒ जये᳚म सोम मीढ्‌वः ।
 Suviraso Vayam Dhana Jayema Soma Midhvah |
 पु॒ना॒नो व॑र्ध नो॒ गिरः॑ ॥ ९.०६१.२३ ॥
 Punano Vardha No Girah || 9.061.23 ||
@@ -3268,7 +3268,7 @@ Arsha Soma Dyumattamobhi Dronani Roruvat |
 Sidanchhyeno Na Yonima || 9.065.19 ||
 
 [538]
-अ॒प्सा इन्द्रा᳚य वा॒यवे॒ वरु॑णाय म॒रुद्भ्यः॑ ।
+अ॒प्सा इन्द्रा᳚य वा॒यवे॒ वरु॑णाय म॒रुद्‌भ्यः॑ ।
 Apsa Indraya Vayave Varunaya Marudbhyah |
 सोमो᳚ अर्षति॒ विष्ण॑वे ॥ ९.०६५.२० ॥
 Somo Arshati Vishnave || 9.065.20 ||
@@ -3658,7 +3658,7 @@ Ubhabhyam Deva Savitah Pavitrena Savena Cha |
 Mam Punihi Vishvatah || 9.067.25 ||
 
 [604]
-त्रि॒भिष्ट्वं दे᳚व सवित॒र्वर्षि॑ष्ठैः सोम॒ धाम॑भिः ।
+त्रि॒भिष्ट्‌वं दे᳚व सवित॒र्वर्षि॑ष्ठैः सोम॒ धाम॑भिः ।
 Tribhishtvam Deva Savitarvarshishthaih Soma Dhamabhih |
 अग्ने॒ दक्षैः᳚ पुनीहि नः ॥ ९.०६७.२६ ॥
 Agne Dakshaih Punihi Nah || 9.067.26 ||
@@ -3712,7 +3712,7 @@ Rushibhih Sambhruto Raso Brahmaneshvamrutam Hitam ||
 [dhrupad]
 पा॒व॒मा॒नीर्दि॑शन्तु न इ॒मं लो॒कमथो᳚ अ॒मुम् ।
 Pavamanirdishantu Na Imam Lokamatho Amum |
-कामा॒न् सम॑र्धयन्तु नो दे॒वीर्देवैः स॒माहि॑ता ॥
+कामा॒न् सम॑र्धयन्तु नो दे॒वीर्‌देवैः स॒माहि॑ता ॥
 Kaman Samardhayantu No Devirdevaih Samahita ||
 
 [dhrupad]
