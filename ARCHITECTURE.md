@@ -107,7 +107,9 @@ when Listen is used, never with the page, in pieces of at most 20 MB (Cloudflare
 checked against its SHA-256 in `model.json`. It runs in ONNX Runtime Web (`vendor/onnxruntime/`, the one exception to
 "no runtime packages", with `'wasm-unsafe-eval'` in the security policy), on the CPU or through WebGPU. The arithmetic
 around it is plain, unit-tested JavaScript (`js/core/hearing.js`): sound into the model's input, its tokens into
-letters. For now only the Listen lab (`#listen-lab`) uses it, to measure how fast phones are; the service worker keeps
+letters. It runs on the CPU on every core: the site is cross-origin isolated (`Cross-Origin-Opener-Policy` and
+`-Embedder-Policy` in `_headers`; it loads nothing from other sites anyway). Through WebGPU, an iPhone's Safari
+computed nonsense with the int8 model, and slower (2026-11-05), so the CPU it is. For now only the Listen lab (`#listen-lab`) uses it, to measure how fast phones are; the service worker keeps
 none of it, as the lab fetches with `no-store`.
 
 ## Offline use and updates

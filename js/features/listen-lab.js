@@ -9,6 +9,8 @@
 //   token (models/chant-v2/check.json). Proves this phone computes what the Mac does.
 // - Listen 6 s: six seconds from the microphone, then what the model heard and how long each step took.
 // - Again: the last recording once more, for the timing alone.
+// - Most tokens: how much each window may write (25, 40 or 60): about 25 are enough to find the place.
+// The page is cross-origin isolated (_headers), so the model runs on every core (up to 4); "isolated" says so.
 // Take it out when Listen is built (main.js, parts.js, index.html's modulepreload, its test).
 
 import { features, nextToken, resample, tokensToText } from "../core/hearing.js";
@@ -22,7 +24,9 @@ var WASM_SHA256 = "3ad23231b5bd6d9dda55a7f84606315e0bf35b6750c28ee993c987c54caca
 /** @type {any} */ var ort = null;
 /** @type {any} */ var model = null;
 /** @type {Float32Array | null} */ var last = null;
-var busy = false;
+var busy = false,
+  // the most tokens one window may write: about 25 are enough to find the place, and each takes about 20 ms
+  most = 25;
 /** @type {string[]} */ var log = [];
 
 export function init() {
@@ -128,6 +132,12 @@ function show() {
       return load("webgpu");
     }),
     button("Check", runCheck),
+    button("Most tokens: 25", function () {
+      most = most === 25 ? 40 : most === 40 ? 60 : 25;
+      var b = /** @type {HTMLElement} */ (box && box.querySelector("[data-most]"));
+      if (b) b.textContent = "Most tokens: " + most;
+      say("Each window now writes at most " + most + " tokens.");
+    }),
     button("Listen 6 s", listen),
     button("Again", again),
     button("Copy", function () {
@@ -139,6 +149,8 @@ function show() {
       history.back();
     }),
   );
+  var mostButton = row.children[3];
+  if (mostButton) mostButton.setAttribute("data-most", "");
   out = el("pre", { whiteSpace: "pre-wrap", font: "14px/1.45 ui-monospace, monospace", margin: "12px 0 0" });
   out.setAttribute("aria-live", "polite");
   box.append(h, about, row, out);
@@ -231,7 +243,7 @@ async function load(ep) {
   model = { info: info, mel: new Float32Array(melBuf), texts: texts, encoder: encoder, decoder: decoder, ep: ep };
   say(
     "Model loaded on the " +
-      (ep === "webgpu" ? "GPU" : "CPU") +
+      (ep === "webgpu" ? "GPU" : "CPU (" + ort.env.wasm.numThreads + (ort.env.wasm.numThreads > 1 ? " cores)" : " core)")) +
       ": download " +
       Math.round(t2 - t1) +
       " ms, start " +
@@ -281,8 +293,8 @@ async function decode(hidden, force) {
   var step = info.start.slice(),
     /** @type {number[]} */ wrote = [],
     /** @type {[number, number][]} */ choices = [],
-    most = force ? force.length : 60;
-  for (var n = 0; n < most; n++) {
+    limit = force ? force.length : most;
+  for (var n = 0; n < limit; n++) {
     var feed = Object.assign(
       {
         input_ids: new ort.Tensor("int64", BigInt64Array.from(step.map(BigInt)), [1, step.length]),
