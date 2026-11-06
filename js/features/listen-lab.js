@@ -1,6 +1,7 @@
 // @ts-check
 // Listen lab (Satish, 2026-11-05): the chanting model (models/chant-v2/) run on the phone itself, to see before Listen
-// is built whether a phone is fast enough to follow along. Opened only by the address …/#listen-lab, no button or menu;
+// is built whether a phone is fast enough to follow along. Opened by the address …/#listen-lab, or, in the app on the
+// Home Screen (which has no address bar), by tapping the version in Settings → More five times; no button or menu;
 // its words are English only and its look is set here, as the earlier Listen test's were. Nothing is kept: the model
 // is downloaded each time it is loaded (76 MB, with cache "no-store", so the service worker leaves it alone), and the
 // sound recorded is only held until it is transcribed.
@@ -32,6 +33,19 @@ var busy = false,
 export function init() {
   window.addEventListener("hashchange", check);
   check();
+  // five taps on the version within three seconds open the lab
+  var ver = document.getElementById("ver"),
+    taps = 0,
+    first = 0;
+  if (ver)
+    ver.addEventListener("click", function () {
+      var now = Date.now();
+      if (now - first > 3000) {
+        first = now;
+        taps = 0;
+      }
+      if (++taps === 5) location.hash = "#listen-lab";
+    });
 }
 
 function check() {
