@@ -21,3 +21,14 @@ test("#listen-lab loads the chanting model and its check chooses as the Mac does
   await expect(box).toHaveCount(0);
   expect(errors).toEqual([]);
 });
+
+test("five taps on the version in Settings open the Listen lab (the Home Screen app has no address bar) @chromium-only", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await page.evaluate(() => {
+    const v = document.getElementById("ver");
+    for (let i = 0; i < 4; i++) v.click();
+  });
+  await expect(page.getByRole("dialog", { name: "Listen lab" })).toHaveCount(0);
+  await page.evaluate(() => document.getElementById("ver").click());
+  await expect(page.getByRole("dialog", { name: "Listen lab" })).toBeVisible();
+});
