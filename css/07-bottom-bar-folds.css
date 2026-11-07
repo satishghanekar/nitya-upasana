@@ -84,7 +84,8 @@
    The button keeps the bar's 44px height. */
 #ash,
 #hm,
-#rsb {
+#rsb,
+#lsb {
   align-content: center;
   row-gap: 1px;
   min-width: 58px;
@@ -526,7 +527,7 @@ html[data-asb="1"] {
   color: var(--bg);
   border-color: var(--accent);
 }
-/* The bar holds five buttons (Prev, Home, Library, Reading, Next): phones close the gaps and slim the icon
+/* The bar holds six buttons (Prev, Home, Library, Reading, Listen, Next): phones close the gaps and slim the icon
    buttons, and narrow ones show only the arrows of Prev and Next (their names stay for screen readers and voice
    control) */
 @media (max-width: 439px) {
@@ -535,7 +536,8 @@ html[data-asb="1"] {
   }
   #ash,
   #hm,
-  #rsb {
+  #rsb,
+  #lsb {
     min-width: 52px;
     padding: 0 2px;
   }
@@ -717,4 +719,76 @@ html[data-asb="1"] {
 .rs-go svg {
   flex: none;
   color: var(--muted);
+}
+
+/* ==== Listen (js/features/listen.js, Satish 2026-11-06): the ear in the bottom bar (#lsb, its word under it as
+   Home's, the Library's and Reading's; pressed while Listen is on, button[aria-pressed] in css/02-core.css), its panel
+   over the bar (#lsn: what Listen is doing and its buttons) and the line being chanted (.lsn) ==== */
+#lsb[hidden],
+#lsn[hidden],
+#lsnp[hidden],
+.lsnb button[hidden],
+[data-menu] #lsn {
+  display: none;
+}
+/* six buttons: the icon buttons a little slimmer still, so the bar fits a 320px phone */
+@media (max-width: 399px) {
+  #ash,
+  #hm,
+  #rsb,
+  #lsb {
+    min-width: 46px;
+  }
+}
+#lsn {
+  position: fixed;
+  z-index: 7;
+  left: max(12px, env(safe-area-inset-left, 0px));
+  right: max(12px, env(safe-area-inset-right, 0px));
+  bottom: calc(61px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)));
+  max-width: 34rem;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  font: var(--fz-m)/1.4 var(--body);
+}
+/* (the bar tucked away while reading: the panel at the foot of the screen) */
+[data-tuck] #lsn {
+  bottom: max(12px, env(safe-area-inset-bottom, 0px));
+}
+#lsnm {
+  flex: 1 1 12rem;
+  margin: 0;
+}
+#lsnp {
+  order: 3;
+  flex: 1 1 100%;
+  height: 6px;
+  accent-color: var(--accent);
+}
+.lsnb {
+  display: flex;
+  gap: 8px;
+  margin-inline-start: auto;
+}
+#lsny {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+/* a dot while Listen is listening */
+#lsn.on #lsnm::before {
+  content: "● ";
+  color: var(--accent);
+}
+.verse p.lsn {
+  background: var(--hl);
+  box-shadow: inset 3px 0 0 var(--accent);
 }

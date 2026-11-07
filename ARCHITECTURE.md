@@ -99,7 +99,7 @@ These hold for every text, so a new text prints correctly as soon as its file ex
 - **Printing on an iPhone:** Safari opens the print dialog only in answer to a tap. The print view is written at once, so Print prints from that tap; should a browser still ignore it, the builder asks for one more tap (Ready: Print now). The Home Screen app can't print at all, so Print there opens Safari in the same tap on iOS 17 and later (an `x-safari-https://` address, with the choices and the ticks in it) and closes the builder once the app is left; if Safari does not open, and on older iOS, it offers Open in Safari and Copy link.
 - **Tests:** `tests/print.spec.mjs` prints the whole Library in each language, font and layout (Kannada letters, IAST and the dhrupad after every verse too) and checks the PDF: every text printed, listed in the contents and starting on a new page; no block split; every English line of every text on paper, read against the texts themselves (`sourceLines`); the footers; nothing screen-only. It also checks the builder, routine printouts and the iPhone paths. `tests/fonts.spec.mjs` checks the printout's fonts.
 
-## Hearing the chanting (Listen, being built)
+## Hearing the chanting (Listen)
 
 A small speech model (`models/chant-vN/`: Whisper base, int8, 76 MB, trained in the shravan-model repository) hears
 the chanting on the phone itself, so the app can follow along. Nothing leaves the phone. The model is downloaded only
@@ -109,8 +109,12 @@ checked against its SHA-256 in `model.json`. It runs in ONNX Runtime Web (`vendo
 around it is plain, unit-tested JavaScript (`js/core/hearing.js`): sound into the model's input, its tokens into
 letters. It runs on the CPU on every core: the site is cross-origin isolated (`Cross-Origin-Opener-Policy` and
 `-Embedder-Policy` in `_headers`; it loads nothing from other sites anyway). Through WebGPU, an iPhone's Safari
-computed nonsense with the int8 model, and slower (2026-11-05), so the CPU it is. For now only the Listen lab (`#listen-lab`) uses it, to measure how fast phones are; the service worker keeps
-none of it, as the lab fetches with `no-store`.
+computed nonsense with the int8 model, and slower (2026-11-05), so the CPU it is. **Listen** (`js/features/listen.js`, the microphone in the bottom bar) uses it: the first time, after the reader
+agrees, it downloads the model and the library (about 105 MB) into the cache `nitya-listen`, which `sw.js` keeps
+across versions and gives the library and the microphone tap (`js/worklets/listen-tap.js`) from, so Listen works
+offline. An iPhone with 4 cores hears 5 s of chanting in about 1.7 s (2026-11-06); each time, `js/core/follow.js`
+finds what was heard in the texts (near the last place, then the text, then every text) and the line being chanted is
+marked and kept in view.
 
 ## Offline use and updates
 

@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.45.2">
+<meta name="version" content="aarti-v1.46">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -65,6 +65,7 @@
 <link rel="modulepreload" href="js/core/state.js">
 <link rel="modulepreload" href="js/core/words.js">
 <link rel="modulepreload" href="js/core/hearing.js">
+<link rel="modulepreload" href="js/core/follow.js">
 <link rel="modulepreload" href="js/strings/en.js">
 <link rel="modulepreload" href="js/strings/mr.js">
 <link rel="modulepreload" href="js/strings/kn.js">
@@ -127,7 +128,7 @@
 <link rel="modulepreload" href="js/features/text-picker.js">
 <link rel="modulepreload" href="js/features/routine-builder.js">
 <link rel="modulepreload" href="js/features/welcome.js">
-<link rel="modulepreload" href="js/features/listen-lab.js">
+<link rel="modulepreload" href="js/features/listen.js">
 </head>
 
 <body>
@@ -679,7 +680,8 @@
         <li><b>Fold a text:</b> a tap anywhere on its heading (or its round ⌃) folds it down to its heading; tap it again to open it. Your phone remembers this, and going to a folded text from the Library or search opens it.</li>
         <li><b>More room to read:</b> on phones and tablets, while you read a text the top and bottom bars slide away as you scroll down (on Home they stay), leaving a thin strip with the name of the text. Scroll up a little, tap a blank part of the page or the strip, or reach the end of the page to bring them back.</li>
         <li><b>Pinch</b> (on a computer: a trackpad pinch, or Ctrl + / Ctrl − and Ctrl 0 to reset; ⌘ on a Mac) or use A− / A+ (under <b>Aa</b> in the bottom bar, or in Settings) to change the text size. The page itself never zooms, and on Home, in the calendar and in the routine builder a pinch does nothing. The bubble shows the size (100% is the normal size for your screen: the same for every text, a little larger on an iPad, and larger again if you have set larger text on your phone or in your browser; a line too long for the screen goes onto a second row, set a little closer, rather than the text shrinking); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
-        <li><b>Bottom bar:</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring texts (in a session, the session's); <b>Home</b> (a house with a lamp) goes back to Home; <b>Library</b> (open book) opens the Library and its search; <b>Reading</b> (Aa) opens the reading choices. Each has its word under the icon; on a phone on its side the words are left out to keep the bar low, and on the smallest phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch.</li>
+        <li><b>Listen:</b> while an aarti or a chant is going on, tap <b>Listen</b> in the bottom bar. The phone hears the chanting, opens the text if another one is on screen, marks the line being chanted and keeps it in view as the chanting goes on, until you tap <b>Stop</b> (or Listen again). If you scroll yourself, it waits a few seconds before moving the page. The first time it downloads about 105 MB (best on Wi-Fi), kept on the phone so it works offline after that. Nothing it hears leaves the phone.</li>
+        <li><b>Bottom bar:</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring texts (in a session, the session's); <b>Home</b> (a house with a lamp) goes back to Home; <b>Library</b> (open book) opens the Library and its search; <b>Reading</b> (Aa) opens the reading choices; <b>Listen</b> (a microphone) follows the chanting (see below). Each has its word under the icon; on a phone on its side the words are left out to keep the bar low, and on the smallest phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch.</li>
         <li><b>Reading</b> (Aa, bottom bar): slides up the reading choices within reach of your thumb: <b>Language</b> (main, second or both), <b>Text size</b> (A− and A+, with ↺ to go back to the normal size) and <b>Dhrupad</b> (once at the top, or after every verse; in “once” mode, tap <b>↻ ध्रुपद</b> under a stanza to see the refrain, and tap anywhere to close it), plus <b>All settings</b>. Your place stays put as you change them. Tap outside it, ✕ or your phone's Back to close it.</li>
         <li><b>Back:</b> your phone's Back button (or swipe) closes an open menu or box, then goes back to where you were before the last jump, for example from an aarti back to Home.</li>
         <li>The screen stays on while you read, until some minutes after your last touch (Settings → Screen → <b>Keep screen on</b>). If you switch away and come back within 12 hours, it reopens where you were reading.</li>
@@ -777,15 +779,23 @@
      The Library is here, within thumb reach; Print is in the top bar (Satish, 2026-10-27) ==== -->
 <!-- slim strip with the piece name, shown while the bars are tucked away on phones and tablets (data-tuck) -->
 <div id="tuck" aria-hidden="true"><span id="tkt"></span><i id="tkp"></i></div>
-<div id="asc" hidden role="navigation" aria-label="Previous, home, library, reading, next">
+<div id="asc" hidden role="navigation" aria-label="Previous, home, library, reading, listen, next">
   <div id="asi">
     <button type="button" id="asv" class="asx"></button>
     <button type="button" id="ash" class="asi"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.6 12 3.5l9 7.1"/><path d="M5.2 9v11h13.6V9"/><path d="M12 11.2c1.3 1.5 1.6 2.8 0 4.3-1.6-1.5-1.3-2.8 0-4.3z"/><path d="M9.3 17.6h5.4"/></svg><span class="asil"><span data-w="page.home">Home</span></span></button>
     
     <button type="button" id="hm" class="asi" aria-expanded="false" aria-controls="jump"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5C5.6 4.6 8.9 4.9 12 7c3.1-2.1 6.4-2.4 9.5-1.5v13.3c-3.1-.9-6.4-.6-9.5 1.5-3.1-2.1-6.4-2.4-9.5-1.5z"/><path d="M12 7v13.3"/></svg><span class="asil"><span data-w="page.library">Library</span></span></button>
     <button type="button" id="rsb" class="asi" aria-expanded="false" aria-controls="rsh"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 19l3.6-9 3.6 9M3.9 15.6h4.4"/><path d="M11.5 19l5-13 5 13M13.4 14h6.2"/></svg><span class="asil"><span data-w="page.reading">Reading</span></span></button>
+    <button type="button" id="lsb" class="asi" aria-pressed="false" hidden><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21"/></svg><span class="asil"><span data-w="page.listen">Listen</span></span></button>
     <button type="button" id="asn" class="asx"></button>
   </div>
+</div>
+<!-- ==== Listen's panel (js/features/listen.js): over the bottom bar, what Listen is doing (the download question, the
+     download, listening, the text it follows) and its buttons; a status, read out as it changes ==== -->
+<div id="lsn" hidden>
+  <p id="lsnm" role="status"></p>
+  <progress id="lsnp" max="100" value="0" aria-labelledby="lsnm" hidden></progress>
+  <div class="lsnb"><button type="button" id="lsny" hidden></button><button type="button" id="lsnx"></button></div>
 </div>
 <!-- ==== Reading sheet: Aa in the bottom bar slides it up over the bar. Language (main, second, both), text size
      (A− / A+, back to the normal size) and dhrupad (once, every verse), within thumb reach; All settings opens
