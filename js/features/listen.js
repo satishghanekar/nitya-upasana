@@ -8,8 +8,9 @@
 //   agrees, and kept in their own cache, "nitya-listen", which a new version of the site leaves alone (sw.js). Each
 //   piece is checked against its SHA-256 before it is kept.
 // - The microphone feeds an AudioWorklet (js/worklets/listen-tap.js), so no sound is lost while the model works.
-//   Every EVERY seconds of new sound (or as soon as the model is free after that), it hears the last WINDOW seconds
-//   and js/core/follow.js finds the place. The model writes a letter for each 20 ms it hears, so it says when the
+//   Every EVERY seconds of new sound (or as soon as the model is free after that), it hears the last WINDOW seconds.
+//   Near the mark, its scores are lined up with the text there (js/core/align.js); when they don't fit, or the place
+//   isn't known yet, js/core/follow.js looks for the letters it heard in the texts. The model writes a letter for each 20 ms it hears, so it says when the
 //   last letter it heard was said, as well as what it was (Satish, 2026-11-07: in place of Whisper, which took about
 //   1.7 s on an iPhone for every 5 s window, whatever it heard, and wrote only about 18 letters of it).
 // - Each place found is where the chanting was when that letter was said, a moment before the model answers; from
@@ -20,6 +21,7 @@
 // - The page scrolls only while the reader leaves it alone (CALM after a touch, a wheel or a key).
 
 import { choices, normalize, readLetters, resample } from "../core/hearing.js";
+import { align, logProbs, target } from "../core/align.js";
 import { PACE, ahead, correct, lineAt, locate, makeDoc, nextPace, pieceLines } from "../core/follow.js";
 import { pieceEl, root } from "../core/page.js";
 import { unfold } from "../core/apply.js";
@@ -46,7 +48,15 @@ var MODEL = "models/chant-v3/",
   // ms after the reader's own touch, wheel or key before Listen scrolls the page again
   CALM = 5000,
   // ms with nothing found (while there is sound) before the mark stops moving on
-  LOST = 12000;
+  LOST = 12000,
+  // lining the window up with the text near the mark (js/core/align.js): how far back and ahead of it, in letters; the
+  // least fit believed (a step's log-probability below the model's own reading), and the fewest letters covered.
+  // On the held-out recordings (2026-11-07) it found the place in 97% of the windows of SJ's Lalita Sahasranama
+  // against 71% by the letters, as close (about 2 letters), and as often elsewhere; 0.7 ms a window
+  BACK = 60,
+  FORTH = 250,
+  FIT = -0.6,
+  COVER = 10;
 
 /** off: nothing; ask: the download question; load: downloading and starting; run: listening @type {"off" | "ask" | "load" | "run"} */
 var phase = "off";
@@ -310,7 +320,11 @@ async function load() {
     ort.env.wasm.numThreads = window.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 1) : 1;
   }
   var opts = { executionProviders: ["wasm"] };
-  model = { info: info, names: names, session: await ort.InferenceSession.create(weights, opts) };
+  /** @type {Record<string, number>} */ var ids = {};
+  names.forEach(function (/** @type {string} */ n, /** @type {number} */ i) {
+    if (n && n !== "|") ids[n] = i;
+  });
+  model = { info: info, names: names, ids: ids, session: await ort.InferenceSession.create(weights, opts) };
   if (c)
     tidy(
       c,
@@ -422,23 +436,41 @@ async function loop() {
       continue;
     }
     try {
-      var h = await hear(audio);
+      var out = await scores(audio);
     } catch (e) {
       console.warn("Listen:", e);
       await sleep(500);
       continue;
     }
     if (phase !== "run") break;
-    // when the last letter heard was said: the window began its length before `at`, and the letter its step into it
-    if (h.last >= 0) follow(h.text, at - (1000 * heard.length) / rate + (h.last + 1) * model.info.step_ms);
+    // a step's moment: the window began its length before `at`, and the step is that many 20 ms into it
+    var began = at - (1000 * heard.length) / rate,
+      outputs = out.dims[2];
+    // near the mark: the window lined up with the text there; else (or if it doesn't fit) its letters looked for
+    if (mark && alignAt(logProbs(out.data, outputs), outputs, began)) continue;
+    var h = readLetters(choices(out.data, outputs), model.names, model.info.blank, model.info.word);
+    if (h.last >= 0) follow(h.text, began + (h.last + 1) * model.info.step_ms);
   }
 }
 
-/** What the model hears in 16 kHz sound: its words, and the step (of step_ms) its last letter began on
- * @param {Float32Array} audio @returns {Promise<{ text: string, last: number }>} */
-async function hear(audio) {
-  var out = await scores(audio);
-  return readLetters(choices(out.data, out.dims[2]), model.names, model.info.blank, model.info.word);
+/** The window lined up with the text around where the mark is now; the place, if it fits, followed. Whether it did.
+ * @param {Float32Array} lp  the window's log-probabilities @param {number} outputs @param {number} began  when the
+ *   window's sound began (performance.now()) */
+function alignAt(lp, outputs, began) {
+  if (!mark) return false;
+  var doc = texts()[mark.doc],
+    now = performance.now(),
+    here = ahead(mark, pace, now, doc.text.length),
+    from = Math.max(0, Math.floor(here - BACK)),
+    tg = target(doc.text.slice(from, Math.ceil(here + FORTH)), model.ids, from),
+    a = align(lp, outputs, tg.ids, model.info.blank, model.info.word);
+  if (!a || a.fit < FIT || a.letters < COVER) return false;
+  var pos = tg.at[a.end] + 1;
+  // the dhrupad said again after a stanza (lined up back where it is written, once): the mark waits where it is until
+  // the text goes on, as locate() has it; the first time through, it is followed like any line
+  if (doc.refrain[lineAt(doc, pos - 1)] && pos < here - COVER) pauseAt(now);
+  else place(mark.doc, pos, began + (a.step + 1) * model.info.step_ms);
+  return true;
 }
 
 /** The model's scores for each step of 16 kHz sound, each output's in turn (once Listen has started). Exported for
@@ -493,13 +525,20 @@ export function follow(heard, end) {
     return;
   }
   pending = null;
-  /** @type {import("../core/follow.js").Mark} */ var found = { doc: r.doc, pos: r.end, t: at };
+  place(r.doc, r.end, at);
+}
+
+/** A place found: the letter `pos` of a text was chanted at `at` (performance.now()); the mark set from there, the
+ * pace measured, the text opened if it is another @param {number} doc @param {number} pos @param {number} at */
+function place(doc, pos, at) {
+  var all = texts(),
+    /** @type {import("../core/follow.js").Mark} */ found = { doc: doc, pos: pos, t: at };
   pace = nextPace(pace, before, found);
   before = found;
-  var moved = !mark || mark.doc !== r.doc;
-  mark = correct(mark, pace, found, all[r.doc].text.length);
-  seenAt = now;
-  if (moved) open(order[r.doc].id);
+  var moved = !mark || mark.doc !== doc;
+  mark = correct(mark, pace, found, all[doc].text.length);
+  seenAt = performance.now();
+  if (moved) open(order[doc].id);
   tick();
 }
 
