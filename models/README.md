@@ -1,21 +1,27 @@
 # The chanting models
 
 Each `chant-vN/` is a model that hears chanting and writes it as plain Devanagari, so the app can follow along
-(Listen). They are trained, tested and packed in the shravan-model repository (`scripts/export.py`,
-`scripts/to_site.py`), never here; only the packed folder is copied in.
+(Listen). They are trained, tested and packed in the shravan-model repository (`scripts/train_ctc.py`,
+`scripts/export.py`, `scripts/to_site.py`), never here; only the packed folder is copied in.
 
 | File | What |
 |---|---|
-| `encoder.onnx`, `decoder.onnx` (and `.2`, `.3`) | the model (Whisper base, int8), cut into pieces of at most 20,000,000 bytes: Cloudflare Pages serves no file over 25 MiB; `model.json` lists them with each piece's SHA-256 |
-| `mel.bin` | the 80 mel filters (float32, 201 × 80): sound into the model's input (`js/core/hearing.js`) |
-| `tokens.json` | each token's text: the model's output into letters |
-| `model.json` | the pieces, the sound settings, the tokens it starts with, ends on and never writes |
-| `check.json` | what a check sound must give (sound features, tokens, text): the unit tests and Listen's check compare against it |
+| `model.onnx` (and `.2` … `.6`) | the model (a CTC model, wav2vec2 base, int8), cut into pieces of at most 20,000,000 bytes: Cloudflare Pages serves no file over 25 MiB; `model.json` lists them with each piece's SHA-256 |
+| `letters.json` | each of the model's outputs as its letter: `"|"` the word break, `""` the tokens that are not letters |
+| `model.json` | the pieces, the sample rate (16 kHz), the ms of sound each output covers (20), the blank and the word break |
+| `check.json` | what the model gives for a check sound (its choice at each step, and its scores at three steps): the unit tests and Listen's test compare against it |
 
-A model is downloaded only when Listen is first used, never with the page (76 MB).
+A model is downloaded only when Listen is first used, never with the page (108 MB, and the library 28 MB).
 
-## chant-v2 (2026-11-05)
+## chant-v3 (2026-11-07)
 
-Trained on a published Pavamana Suktam recording and SG's recordings at home. On recordings it never trained on, the
-right place found within 3 seconds, following: SG's Purusha Suktam 100%, SJ's Lalita Sahasranama 96.6%, Pavamana
-hymns 61–63 98.7%.
+Vakyansh's Sanskrit wav2vec2 (`Harveenchadha/vakyansh-wav2vec2-sanskrit-sam-60`) trained on the same recordings as
+chant-v2. Letters wrong on recordings it never trained on: Pavamana hymns 61–63 11.9%, SG's Purusha Suktam 15.4%
+(chant-v2: 24.6%), SJ's Lalita Sahasranama 38.5%; the right place found within 3 seconds, following: 100%, 100%,
+96.6%. It hears 4 s of sound in about a quarter of the time Whisper took for a window, so Listen hears every half
+second instead of every two (on the Mac's CPU, 4 threads: 112 ms against 398 ms).
+
+## chant-v2 (2026-11-05, replaced)
+
+Whisper base, 76 MB. Too slow on a phone to follow along (about 1.7 s for each 5 s window on an iPhone), and it
+wrote only about 18 letters a window. In git history.

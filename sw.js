@@ -1,11 +1,11 @@
 // Service worker: keeps a copy of the site on the phone so it opens without internet.
 // V is the site's version (shown as "v1.9" in Settings → About). It must match <meta name="version"> in index.html; change both on a new release.
-const V = "aarti-v1.46.1";
+const V = "aarti-v1.47.0";
 // The page's styles and scripts, the font files and the pictures to keep: one list for the page and this worker, in js/parts.js
 importScripts("js/parts.js");
 const PARTS = SITE_PARTS.all;
 // Listen's download (the chanting model and the library that runs it, js/features/listen.js) is kept in a cache of its
-// own, which a new version leaves alone: about 105 MB, downloaded once. Its library and microphone tap are given from
+// own, which a new version leaves alone: about 136 MB, downloaded once. Its library and microphone tap are given from
 // there, so Listen works offline too.
 const LISTEN = "nitya-listen";
 const FONTS = SITE_PARTS.fonts;

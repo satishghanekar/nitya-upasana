@@ -1,0 +1,40 @@
+{
+ "name": "chant-v3",
+ "kind": "ctc",
+ "model": [
+  {
+   "file": "model.onnx",
+   "bytes": 20000000,
+   "sha256": "b65dc1214c7257774961ab4e14f42bf46b9a9fa9c4065adb99e1a606a2912e99"
+  },
+  {
+   "file": "model.onnx.2",
+   "bytes": 20000000,
+   "sha256": "8bf279896efce1c9507064f39c000069b6790d10714d00ce0e2b53c1b4815fd2"
+  },
+  {
+   "file": "model.onnx.3",
+   "bytes": 20000000,
+   "sha256": "08d6dcb2ef1836d0d0db89dd414261e423ff82c28e0e27d8990ba2f5068597e6"
+  },
+  {
+   "file": "model.onnx.4",
+   "bytes": 20000000,
+   "sha256": "ac90fcf12c88fcf663a984fd94099208bef862b2c27877709fb5b99598e3abde"
+  },
+  {
+   "file": "model.onnx.5",
+   "bytes": 20000000,
+   "sha256": "bbbd3509379fbdb439ae1a91fa368c746f8425f82ede8638e313893b1f58aa79"
+  },
+  {
+   "file": "model.onnx.6",
+   "bytes": 7709893,
+   "sha256": "6eb7b80220f6433271027375b69c7e3ae9e8041fd5bf92d0394402a25f82f2d6"
+  }
+ ],
+ "rate": 16000,
+ "step_ms": 20.0,
+ "blank": 0,
+ "word": 4
+}
