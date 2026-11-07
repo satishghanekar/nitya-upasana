@@ -10,11 +10,15 @@
 // - The microphone feeds an AudioWorklet (js/worklets/listen-tap.js), so no sound is lost while the model works.
 //   Every time the model is free, it hears the last WINDOW seconds (at most MOST tokens: on an iPhone with 4 cores,
 //   about 1.1 s for the encoder and 20 ms a token, measured 2026-11-06) and js/core/follow.js finds the place.
+// - Each place found is where the chanting was when that sound was heard, a second or two before the model answers;
+//   from there the mark moves on by itself at the chanting's pace (letters a second, measured from the places found,
+//   js/core/follow.js nextPace), line by line, and the next place found puts it right (Satish, 2026-11-06: following
+//   the model's answers alone lagged). It waits during the dhrupad and silence, and stops after LOST with nothing found.
 // - Moving to another text needs it heard twice in a row, so one misheard window never takes the reader away.
 // - The page scrolls only while the reader leaves it alone (CALM after a touch, a wheel or a key).
 
 import { features, nextToken, resample, tokensToText } from "../core/hearing.js";
-import { locate, makeDoc, pieceLines } from "../core/follow.js";
+import { PACE, ahead, correct, letters, lineAt, locate, makeDoc, nextPace, pieceLines } from "../core/follow.js";
 import { pieceEl, root } from "../core/page.js";
 import { unfold } from "../core/apply.js";
 import { menuWords } from "../core/strings.js";
@@ -41,7 +45,9 @@ var MODEL = "models/chant-v2/",
   // quieter than this (the sound's RMS) is silence, not worth hearing
   QUIET = 0.003,
   // ms after the reader's own touch, wheel or key before Listen scrolls the page again
-  CALM = 5000;
+  CALM = 5000,
+  // ms with nothing found (while there is sound) before the mark stops moving on
+  LOST = 12000;
 
 /** off: nothing; ask: the download question; load: downloading and starting; run: listening @type {"off" | "ask" | "load" | "run"} */
 var phase = "off";
@@ -61,7 +67,14 @@ var got = 0;
 /** @type {any} */ var wake = null;
 /** the texts searched: every piece, in the page's order, and each one's letters @type {any[]} */ var order = [];
 /** @type {import("../core/follow.js").Doc[] | null} */ var docs = null;
-/** @type {{ doc: number, line: number } | null} */ var here = null;
+/** where the chanting was at a moment, moving on at `pace` letters a second @type {import("../core/follow.js").Mark | null} */ var mark = null;
+var pace = PACE.start;
+/** the place found before, for the pace @type {import("../core/follow.js").Mark | null} */ var before = null;
+// when a place was last found; the line marked now; whether the page just went to another text; the ticker
+var seenAt = 0,
+  shown = -1,
+  jumped = false,
+  ticker = 0;
 /** another text heard once, waiting to be heard again @type {{ doc: number, line: number } | null} */ var pending = null;
 var touched = 0;
 
@@ -152,7 +165,11 @@ function stop() {
   ctx = null;
   if (wake) wake.release().catch(function () {});
   wake = null;
-  here = null;
+  clearInterval(ticker);
+  mark = null;
+  before = null;
+  pace = PACE.start;
+  shown = -1;
   pending = null;
   [].forEach.call(document.querySelectorAll(".lsn"), function (/** @type {Element} */ x) {
     x.classList.remove("lsn");
@@ -354,6 +371,7 @@ async function run(s) {
   // (the tap writes nothing out; joined to the speakers only so that every browser runs it)
   node.connect(ctx.destination);
   phase = "run";
+  ticker = setInterval(tick, 250);
   panel(esc(menuWords("listen").listening), { no: menuWords("listen").stop, on: true });
   /** @type {any} */ var nav = navigator;
   if (nav.wakeLock)
@@ -402,23 +420,32 @@ async function loop() {
       continue;
     }
     used = got;
-    var audio = resample(last(), rate, model.info.sound.rate),
+    var at = performance.now(),
+      audio = resample(last(), rate, model.info.sound.rate),
       power = 0;
     for (var i = 0; i < audio.length; i++) power += audio[i] * audio[i];
-    if (Math.sqrt(power / audio.length) < QUIET) continue;
+    // silence: the mark waits
+    if (Math.sqrt(power / audio.length) < QUIET) {
+      pauseAt(at);
+      continue;
+    }
     try {
-      var text = await hear(audio);
+      var h = await hear(audio);
     } catch (e) {
       console.warn("Listen:", e);
       await sleep(500);
       continue;
     }
     if (phase !== "run") break;
-    follow(text);
+    // when what was heard ends: the window's end, a moment before (the model's last word); if the model stopped at
+    // MOST tokens, as far into the window as its letters go at the chanting's pace
+    var said = letters(h.text).length;
+    follow(h.text, h.cut ? Math.min(at - 300, at - WINDOW * 1000 + (1000 * said) / pace) : at - 300);
   }
 }
 
-/** What the model hears in up to 30 s of 16 kHz sound @param {Float32Array} audio @returns {Promise<string>} */
+/** What the model hears in up to 30 s of 16 kHz sound, and whether it stopped at MOST tokens (cut) rather than at its
+ * end @param {Float32Array} audio @returns {Promise<{ text: string, cut: boolean }>} */
 async function hear(audio) {
   var info = model.info,
     feats = features(audio, model.mel, info.sound),
@@ -457,73 +484,112 @@ async function hear(audio) {
     });
     step = [token];
   }
-  return tokensToText(wrote, model.texts, info.first_special);
+  return { text: tokensToText(wrote, model.texts, info.first_special), cut: wrote.length === MOST };
 }
 
 // ==== Following ====
 
-/** What the model heard, followed: the place found, marked and kept in view (exported for the tests, which give it
- * what the model would write) @param {string} heard */
-export function follow(heard) {
-  if (!docs) {
-    /** @type {any} */ var C = /** @type {any} */ (window).CONTENT;
-    order = [];
-    C.categories.forEach(function (/** @type {any} */ c) {
-      c.pieces.forEach(function (/** @type {any} */ p) {
-        order.push(p);
-      });
+/** The texts searched: every piece, in the page's order, and each one's letters */
+function texts() {
+  if (docs) return docs;
+  /** @type {any} */ var C = /** @type {any} */ (window).CONTENT;
+  order = [];
+  C.categories.forEach(function (/** @type {any} */ c) {
+    c.pieces.forEach(function (/** @type {any} */ p) {
+      order.push(p);
     });
-    docs = order.map(function (p) {
-      return makeDoc(pieceLines(p));
-    });
+  });
+  return (docs = order.map(function (p) {
+    return makeDoc(pieceLines(p));
+  }));
+}
+
+/** The mark, stopped where it is now @param {number} now */
+function pauseAt(now) {
+  if (mark) mark = { doc: mark.doc, pos: ahead(mark, pace, now, texts()[mark.doc].text.length), t: now, paused: true };
+}
+
+/** What the model heard, followed: the place found becomes the mark, which moves on at the chanting's pace (tick)
+ * until the next place found. Exported for the tests, which give it what the model would write.
+ * @param {string} heard @param {number} [end]  when the sound heard ended (performance.now()), so the time the
+ *   model took is made up for */
+export function follow(heard, end) {
+  var all = texts(),
+    now = performance.now(),
+    at = end === undefined ? now : end,
+    cur = mark ? { doc: mark.doc, line: lineAt(all[mark.doc], Math.max(0, ahead(mark, pace, now, all[mark.doc].text.length) - 1)) } : null,
+    r = locate(heard, all, cur);
+  if (!r) return;
+  // the dhrupad: the mark waits where it is until the text goes on
+  if (r.held) {
+    pauseAt(now);
+    return;
   }
-  var r = locate(heard, docs, here);
-  if (!r || r.held) return;
   // another text: only once it is heard twice in a row
-  if (here && r.doc !== here.doc && !(pending && pending.doc === r.doc)) {
+  if (cur && r.doc !== cur.doc && !(pending && pending.doc === r.doc)) {
     pending = { doc: r.doc, line: r.line };
     return;
   }
   pending = null;
-  var moved = !here || here.doc !== r.doc;
-  here = { doc: r.doc, line: r.line };
-  show(order[r.doc].id, r.line, moved);
+  /** @type {import("../core/follow.js").Mark} */ var found = { doc: r.doc, pos: r.end, t: at };
+  pace = nextPace(pace, before, found);
+  before = found;
+  var moved = !mark || mark.doc !== r.doc;
+  mark = correct(mark, pace, found, all[r.doc].text.length);
+  seenAt = now;
+  if (moved) open(order[r.doc].id);
+  tick();
 }
 
-/** Mark the line being chanted and keep it in view, opening its text first if another is on screen
- * @param {string} id @param {number} line @param {boolean} moved */
-function show(id, line, moved) {
+/** The text being chanted on screen, and its name in the panel @param {string} id */
+function open(id) {
   var el = pieceEl(id);
   if (!el) return;
-  var away = root.hasAttribute("data-hv") || !el.getClientRects().length;
-  if (away) {
-    unfold(el);
+  if (root.hasAttribute("data-hv") || !el.getClientRects().length) {
     var to = el;
+    unfold(to);
     jumpTo(function () {
       to.scrollIntoView();
     }, "#" + id);
+    jumped = true;
   }
+  shown = -1;
+  var en = nameLang() !== "mr";
+  msg.innerHTML = menuWords("listen").following('<b lang="' + (en ? "en" : "mr") + '">' + esc(titleText(id, en)) + "</b>");
+}
+
+/** Move the mark on: the line where the chanting is now marked and kept in view. Runs a few times a second while
+ * listening, and at once when a place is found */
+function tick() {
+  if (!mark) return;
+  var now = performance.now(),
+    doc = texts()[mark.doc];
+  // nothing found for a while (a long pause, or talk): the mark stops rather than run on alone
+  if (!mark.paused && now - seenAt > LOST) pauseAt(now);
+  var line = lineAt(doc, Math.max(0, ahead(mark, pace, now, doc.text.length) - 1));
+  if (line === shown) return;
+  shown = line;
+  var el = pieceEl(order[mark.doc].id);
+  if (!el) return;
+  var mr = el.querySelectorAll(".verse .mr p"),
+    en = el.querySelectorAll(".verse .en p"),
+    lines = [mr[line], en[line]].filter(Boolean),
+    target = lines.filter(seen)[0];
+  // (a line the page doesn't show, the dhrupad said again where it is shown once: the mark stays where it was)
+  if (!target) return;
   [].forEach.call(document.querySelectorAll(".lsn"), function (/** @type {Element} */ x) {
     x.classList.remove("lsn");
   });
-  var mr = el.querySelectorAll(".verse .mr p"),
-    en = el.querySelectorAll(".verse .en p"),
-    marked = [mr[line], en[line]].filter(Boolean);
-  // (a dhrupad said again where the page shows it once: the dhrupad at the top)
-  if (!marked.some(seen)) marked = [].slice.call(el.querySelectorAll(".rftop .verse p"));
-  marked.forEach(function (x) {
+  lines.forEach(function (x) {
     x.classList.add("lsn");
   });
-  if (moved) {
-    var en2 = nameLang() !== "mr";
-    msg.innerHTML = menuWords("listen").following('<b lang="' + (en2 ? "en" : "mr") + '">' + esc(titleText(id, en2)) + "</b>");
-  }
-  var target = marked.filter(seen)[0];
-  if (!target || (!away && Date.now() - touched < CALM)) return;
+  var force = jumped;
+  jumped = false;
+  if (!force && Date.now() - touched < CALM) return;
   var box = target.getBoundingClientRect(),
     top = topEdge() + 24,
     low = innerHeight * 0.6;
-  if (away || box.top < top || box.bottom > low)
+  if (force || box.top < top || box.bottom > low)
     scrollBy({ top: box.top - Math.max(top, innerHeight * 0.3), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
 }
 

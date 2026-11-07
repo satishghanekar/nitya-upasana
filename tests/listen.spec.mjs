@@ -70,6 +70,24 @@ test("what the model heard is found: from Home, the text opens with the line bei
   await expect(page.locator(".verse p.lsn:visible")).toBeInViewport();
 });
 
+test("the model's delay is made up for: what was heard 10 seconds ago marks a line further on @chromium-only", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  const r = await page.evaluate(async () => {
+    const p = window.CONTENT.categories.flatMap((c) => c.pieces).find((x) => x.text === "vedic-chant-pavamana-suktam");
+    const lines = p.items.flatMap((i) => i.lines || []);
+    const at = lines.findIndex((l) => l.mr.includes("९.००१.०२"));
+    const heard = (lines[at - 1].mr + " " + lines[at].mr).replace(/<[^>]*>/g, "").replace(/[\u0951-\u0954\u1CD0-\u1CFF।॥०-९.]/g, "");
+    const m = await import(new URL("js/features/listen.js", document.baseURI).href);
+    m.follow(heard, performance.now() - 10_000);
+    const el = document.querySelector(".verse .mr p.lsn");
+    return { heardLine: lines[at].l, marked: el && el.getAttribute("data-l") };
+  });
+  const n = (id) => Number(id.split(".").pop());
+  // at the starting pace (7 letters a second), 10 seconds is 70 letters: a verse and a half on
+  expect(n(r.marked)).toBeGreaterThan(n(r.heardLine));
+  expect(n(r.marked)).toBeLessThan(n(r.heardLine) + 6);
+});
+
 test("every text's lines, as Listen counts them, are the lines the page shows, in order @chromium-only", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await buildAll(page);

@@ -113,8 +113,10 @@ computed nonsense with the int8 model, and slower (2026-11-05), so the CPU it is
 agrees, it downloads the model and the library (about 105 MB) into the cache `nitya-listen`, which `sw.js` keeps
 across versions and gives the library and the microphone tap (`js/worklets/listen-tap.js`) from, so Listen works
 offline. An iPhone with 4 cores hears 5 s of chanting in about 1.7 s (2026-11-06); each time, `js/core/follow.js`
-finds what was heard in the texts (near the last place, then the text, then every text) and the line being chanted is
-marked and kept in view.
+finds what was heard in the texts (near the last place, then the text, then every text). The model answers a second or
+two after the sound and only every two seconds or so, too late to follow along by itself, so each place found is
+taken as where the chanting was when that sound was heard, and the mark moves on line by line at the chanting's own
+pace (measured from the places found) until the next one puts it right.
 
 ## Offline use and updates
 
