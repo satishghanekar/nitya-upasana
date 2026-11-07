@@ -19,7 +19,7 @@ test("Listen asks before its one-time download; Not now leaves the page as it wa
   await expect(ear).toHaveAccessibleName("Listen");
   await ear.click();
   const panel = page.locator("#lsn");
-  await expect(panel.getByRole("status")).toContainText("136 MB");
+  await expect(panel.getByRole("status")).toContainText("122 MB");
   await expect(ear).toHaveAttribute("aria-pressed", "true");
   await panel.getByRole("button", { name: "Not now" }).click();
   await expect(panel).toBeHidden();
@@ -42,7 +42,8 @@ test("Download, then listening to the microphone until Stop; the second time it 
       "/models/chant-v3/model.onnx",
       "/models/chant-v3/model.onnx.6",
       "/models/chant-v3/letters.json",
-      "/vendor/onnxruntime/ort.bundle.min.mjs",
+      "/vendor/onnxruntime/ort.wasm.bundle.min.mjs",
+      "/vendor/onnxruntime/ort-wasm-simd-threaded.wasm",
     ]),
   );
   // the model, run by ONNX Runtime Web here, scores the check sound as the model's Python side did (check.json): the

@@ -11,7 +11,7 @@ Each `chant-vN/` is a model that hears chanting and writes it as plain Devanagar
 | `model.json` | the pieces, the sample rate (16 kHz), the ms of sound each output covers (20), the blank and the word break |
 | `check.json` | what the model gives for a check sound (its choice at each step, and its scores at three steps): the unit tests and Listen's test compare against it |
 
-A model is downloaded only when Listen is first used, never with the page (108 MB, and the library 28 MB).
+A model is downloaded only when Listen is first used, never with the page (108 MB, and the library 14 MB).
 
 ## chant-v3 (2026-11-07)
 
