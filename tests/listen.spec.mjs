@@ -19,7 +19,7 @@ test("Listen asks before its one-time download; Not now leaves the page as it wa
   await expect(ear).toHaveAccessibleName("Listen");
   await ear.click();
   const panel = page.locator("#lsn");
-  await expect(panel.getByRole("status")).toContainText("105 MB");
+  await expect(panel.getByRole("status")).toContainText("136 MB");
   await expect(ear).toHaveAttribute("aria-pressed", "true");
   await panel.getByRole("button", { name: "Not now" }).click();
   await expect(panel).toBeHidden();
@@ -37,7 +37,33 @@ test("Download, then listening to the microphone until Stop; the second time it 
   await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 180_000 });
   // kept in its own cache, which a new version of the site leaves alone (sw.js)
   const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
-  expect(kept).toEqual(expect.arrayContaining(["/models/chant-v2/encoder.onnx", "/models/chant-v2/decoder.onnx.3", "/vendor/onnxruntime/ort.bundle.min.mjs"]));
+  expect(kept).toEqual(
+    expect.arrayContaining([
+      "/models/chant-v3/model.onnx",
+      "/models/chant-v3/model.onnx.6",
+      "/models/chant-v3/letters.json",
+      "/vendor/onnxruntime/ort.bundle.min.mjs",
+    ]),
+  );
+  // the model, run by ONNX Runtime Web here, scores the check sound as the model's Python side did (check.json): the
+  // same choice at every step, and scores within 0.3 of its own, which run from about -13 to 10 (the int8 arithmetic
+  // rounds a little differently in WebAssembly: up to 0.18 apart, 2026-11-07)
+  const got = await page.evaluate(async () => {
+    const check = await (await fetch("models/chant-v3/check.json")).json();
+    const a = new Float32Array(48000);
+    for (let i = 0; i < a.length; i++) {
+      const t = i / 16000;
+      a[i] = 0.3 * Math.sin(2 * Math.PI * (220 + 60 * t) * t) + 0.2 * Math.sin(2 * Math.PI * 440 * t) * Math.cos(2 * Math.PI * 0.5 * t);
+    }
+    const [m, h] = await Promise.all(["js/features/listen.js", "js/core/hearing.js"].map((f) => import(new URL(f, document.baseURI).href)));
+    const out = await m.scores(a);
+    const n = out.dims[2];
+    let far = 0;
+    for (const [step, row] of Object.entries(check.scores)) row.forEach((v, o) => (far = Math.max(far, Math.abs(out.data[Number(step) * n + o] - v))));
+    return { same: JSON.stringify(h.choices(out.data, n)) === JSON.stringify(check.ids), far };
+  });
+  expect(got.same).toBe(true);
+  expect(got.far).toBeLessThan(0.3);
   await panel.getByRole("button", { name: "Stop" }).click();
   await expect(panel).toBeHidden();
   await page.locator("#lsb").click();

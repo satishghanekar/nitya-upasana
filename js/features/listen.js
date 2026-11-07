@@ -3,22 +3,24 @@
 // bar) while an aarti or a chant is going on: the line being chanted is marked (.lsn) and kept in view, the text is
 // opened if another one is on screen, and the place follows the chanting until Stop. Everything happens on the phone:
 // no sound leaves it.
-// - The model (models/chant-v2/, Whisper base trained in the shravan-model repository, about 76 MB) and the library
-//   that runs it (vendor/onnxruntime/, about 28 MB) are downloaded once, the first time, after the reader agrees, and
-//   kept in their own cache, "nitya-listen", which a new version of the site leaves alone (sw.js). Each piece is
-//   checked against its SHA-256 before it is kept.
+// - The model (models/chant-v3/, a CTC model, wav2vec2, trained in the shravan-model repository, about 108 MB) and the
+//   library that runs it (vendor/onnxruntime/, about 28 MB) are downloaded once, the first time, after the reader
+//   agrees, and kept in their own cache, "nitya-listen", which a new version of the site leaves alone (sw.js). Each
+//   piece is checked against its SHA-256 before it is kept.
 // - The microphone feeds an AudioWorklet (js/worklets/listen-tap.js), so no sound is lost while the model works.
-//   Every time the model is free, it hears the last WINDOW seconds (at most MOST tokens: on an iPhone with 4 cores,
-//   about 1.1 s for the encoder and 20 ms a token, measured 2026-11-06) and js/core/follow.js finds the place.
-// - Each place found is where the chanting was when that sound was heard, a second or two before the model answers;
-//   from there the mark moves on by itself at the chanting's pace (letters a second, measured from the places found,
+//   Every EVERY seconds of new sound (or as soon as the model is free after that), it hears the last WINDOW seconds
+//   and js/core/follow.js finds the place. The model writes a letter for each 20 ms it hears, so it says when the
+//   last letter it heard was said, as well as what it was (Satish, 2026-11-07: in place of Whisper, which took about
+//   1.7 s on an iPhone for every 5 s window, whatever it heard, and wrote only about 18 letters of it).
+// - Each place found is where the chanting was when that letter was said, a moment before the model answers; from
+//   there the mark moves on by itself at the chanting's pace (letters a second, measured from the places found,
 //   js/core/follow.js nextPace), line by line, and the next place found puts it right (Satish, 2026-11-06: following
 //   the model's answers alone lagged). It waits during the dhrupad and silence, and stops after LOST with nothing found.
 // - Moving to another text needs it heard twice in a row, so one misheard window never takes the reader away.
 // - The page scrolls only while the reader leaves it alone (CALM after a touch, a wheel or a key).
 
-import { features, nextToken, resample, tokensToText } from "../core/hearing.js";
-import { PACE, ahead, correct, letters, lineAt, locate, makeDoc, nextPace, pieceLines } from "../core/follow.js";
+import { choices, normalize, readLetters, resample } from "../core/hearing.js";
+import { PACE, ahead, correct, lineAt, locate, makeDoc, nextPace, pieceLines } from "../core/follow.js";
 import { pieceEl, root } from "../core/page.js";
 import { unfold } from "../core/apply.js";
 import { menuWords } from "../core/strings.js";
@@ -27,7 +29,7 @@ import { titleText } from "../text/iast.js";
 import { jumpTo } from "./history.js";
 import { topEdge } from "./bottom-bar.js";
 
-var MODEL = "models/chant-v2/",
+var MODEL = "models/chant-v3/",
   ORT = "vendor/onnxruntime/",
   TAP = "js/worklets/listen-tap.js",
   CACHE = "nitya-listen",
@@ -37,11 +39,11 @@ var MODEL = "models/chant-v2/",
     { file: "ort-wasm-simd-threaded.jsep.wasm.2", bytes: 8312028 },
   ],
   WASM_SHA256 = "3ad23231b5bd6d9dda55a7f84606315e0bf35b6750c28ee993c987c54cacab0f",
-  // the download, in MB, as the question names it: the model's pieces (models/chant-v2/model.json) and the library
-  SIZE_MB = 105,
-  // seconds of sound heard each time, and the most tokens written for it: about 30 letters, the whole window
-  WINDOW = 5,
-  MOST = 40,
+  // the download, in MB, as the question names it: the model's pieces (models/chant-v3/model.json) and the library
+  SIZE_MB = 136,
+  // seconds of sound heard each time (about 30 letters, enough to tell the place), and of new sound before the next
+  WINDOW = 4,
+  EVERY = 0.5,
   // quieter than this (the sound's RMS) is silence, not worth hearing
   QUIET = 0.003,
   // ms after the reader's own touch, wheel or key before Listen scrolls the page again
@@ -197,14 +199,14 @@ async function stored() {
   var m = await c.match(abs(MODEL + "model.json"));
   if (!m) return false;
   var info = await m.json(),
-    files = [MODEL + "mel.bin", MODEL + "tokens.json", ORT + "ort.bundle.min.mjs", TAP]
+    files = [MODEL + "letters.json", ORT + "ort.bundle.min.mjs", TAP]
       .concat(
         WASM.map(function (x) {
           return ORT + x.file;
         }),
       )
       .concat(
-        info.encoder.concat(info.decoder).map(function (/** @type {any} */ x) {
+        info.model.map(function (/** @type {any} */ x) {
           return MODEL + x.file;
         }),
       );
@@ -273,7 +275,7 @@ async function load() {
   if (model) return;
   var c = await box(),
     info = JSON.parse(new TextDecoder().decode(await file(c, MODEL + "model.json"))),
-    pieces = info.encoder.concat(info.decoder),
+    pieces = info.model,
     total =
       pieces.reduce(function (/** @type {number} */ n, /** @type {any} */ x) {
         return n + x.bytes;
@@ -297,10 +299,8 @@ async function load() {
     for (var p of list) out.push(await file(c, MODEL + p.file, p.sha256, tick));
     return join(out);
   }
-  var enc = await joined(info.encoder),
-    dec = await joined(info.decoder),
-    mel = await file(c, MODEL + "mel.bin"),
-    texts = JSON.parse(new TextDecoder().decode(await file(c, MODEL + "tokens.json")));
+  var weights = await joined(info.model),
+    names = JSON.parse(new TextDecoder().decode(await file(c, MODEL + "letters.json")));
   // kept here too, so the service worker can give them offline (sw.js)
   await file(c, ORT + "ort.bundle.min.mjs");
   await file(c, TAP);
@@ -313,17 +313,11 @@ async function load() {
     ort.env.wasm.numThreads = window.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 1) : 1;
   }
   var opts = { executionProviders: ["wasm"] };
-  model = {
-    info: info,
-    mel: new Float32Array(mel.buffer, mel.byteOffset, mel.length / 4),
-    texts: texts,
-    encoder: await ort.InferenceSession.create(enc, opts),
-    decoder: await ort.InferenceSession.create(dec, opts),
-  };
+  model = { info: info, names: names, session: await ort.InferenceSession.create(weights, opts) };
   if (c)
     tidy(
       c,
-      [MODEL + "model.json", MODEL + "mel.bin", MODEL + "tokens.json", ORT + "ort.bundle.min.mjs", TAP].concat(
+      [MODEL + "model.json", MODEL + "letters.json", ORT + "ort.bundle.min.mjs", TAP].concat(
         WASM.map(function (w) {
           return ORT + w.file;
         }),
@@ -414,14 +408,15 @@ async function loop() {
   var used = 0;
   while (phase === "run" && ctx) {
     var rate = ctx.sampleRate;
-    // at first, 3 seconds; then a second of new sound at least
-    if (got - used < rate * (used ? 1 : 3)) {
-      await sleep(200);
+    // at first, 2 seconds; then EVERY seconds of new sound at least
+    if (got - used < rate * (used ? EVERY : 2)) {
+      await sleep(100);
       continue;
     }
     used = got;
     var at = performance.now(),
-      audio = resample(last(), rate, model.info.sound.rate),
+      heard = last(),
+      audio = resample(heard, rate, model.info.rate),
       power = 0;
     for (var i = 0; i < audio.length; i++) power += audio[i] * audio[i];
     // silence: the mark waits
@@ -437,54 +432,24 @@ async function loop() {
       continue;
     }
     if (phase !== "run") break;
-    // when what was heard ends: the window's end, a moment before (the model's last word); if the model stopped at
-    // MOST tokens, as far into the window as its letters go at the chanting's pace
-    var said = letters(h.text).length;
-    follow(h.text, h.cut ? Math.min(at - 300, at - WINDOW * 1000 + (1000 * said) / pace) : at - 300);
+    // when the last letter heard was said: the window began its length before `at`, and the letter its step into it
+    if (h.last >= 0) follow(h.text, at - (1000 * heard.length) / rate + (h.last + 1) * model.info.step_ms);
   }
 }
 
-/** What the model hears in up to 30 s of 16 kHz sound, and whether it stopped at MOST tokens (cut) rather than at its
- * end @param {Float32Array} audio @returns {Promise<{ text: string, cut: boolean }>} */
+/** What the model hears in 16 kHz sound: its words, and the step (of step_ms) its last letter began on
+ * @param {Float32Array} audio @returns {Promise<{ text: string, last: number }>} */
 async function hear(audio) {
-  var info = model.info,
-    feats = features(audio, model.mel, info.sound),
-    input = new ort.Tensor("float32", feats, [1, info.sound.mels, feats.length / info.sound.mels]),
-    hidden = (await model.encoder.run({ input_features: input })).last_hidden_state;
-  // the decoder, token by token through its cache (as the model's Python side runs it)
-  /** @type {Record<string, any>} */ var past = {};
-  var empty = new ort.Tensor("float32", new Float32Array(0), [1, 8, 0, 64]);
-  for (var l = 0; l < info.layers; l++)
-    ["decoder", "encoder"].forEach(function (s) {
-      ["key", "value"].forEach(function (k) {
-        past["past_key_values." + l + "." + s + "." + k] = empty;
-      });
-    });
-  var step = info.start.slice(),
-    /** @type {number[]} */ wrote = [];
-  for (var n = 0; n < MOST; n++) {
-    var res = await model.decoder.run(
-        Object.assign(
-          {
-            input_ids: new ort.Tensor("int64", BigInt64Array.from(step.map(BigInt)), [1, step.length]),
-            encoder_hidden_states: hidden,
-            use_cache_branch: new ort.Tensor("bool", [n > 0], [1]),
-          },
-          past,
-        ),
-      ),
-      logits = res.logits,
-      vocab = logits.dims[2],
-      token = nextToken(logits.data.subarray((logits.dims[1] - 1) * vocab, logits.dims[1] * vocab), info.never, info.never_first, n === 0);
-    if (token === info.end) break;
-    wrote.push(token);
-    Object.keys(past).forEach(function (k) {
-      // (the encoder's keys and values are made on the first step only, then kept)
-      if (n === 0 || k.indexOf(".decoder.") >= 0) past[k] = res[k.replace("past_key_values", "present")];
-    });
-    step = [token];
-  }
-  return { text: tokensToText(wrote, model.texts, info.first_special), cut: wrote.length === MOST };
+  var out = await scores(audio);
+  return readLetters(choices(out.data, out.dims[2]), model.names, model.info.blank, model.info.word);
+}
+
+/** The model's scores for each step of 16 kHz sound, each output's in turn (once Listen has started). Exported for
+ * the tests, which compare them with the model's Python side (models/chant-vN/check.json)
+ * @param {Float32Array} audio @returns {Promise<{ data: Float32Array, dims: number[] }>} */
+export async function scores(audio) {
+  var input = new ort.Tensor("float32", normalize(audio), [1, audio.length]);
+  return (await model.session.run({ input_values: input })).logits;
 }
 
 // ==== Following ====
