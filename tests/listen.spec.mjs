@@ -57,7 +57,9 @@ test("what the model heard is found: from Home, the text opens with the line bei
     // the two lines of the verse, as the model writes them: no svara marks, no verse number
     const heard = (lines[at - 1].mr + " " + lines[at].mr).replace(/<[^>]*>/g, "").replace(/[॑-॔᳐-᳿।॥०-९.]/g, "");
     const m = await import(new URL("js/features/listen.js", document.baseURI).href);
-    m.follow(heard);
+    // (heard as ending a little later than now: the mark moves on at the chanting's pace from when the sound ended, and
+    // what was heard ends on the verse's last letter, so a slow machine could carry it into the next line meanwhile)
+    m.follow(heard, performance.now() + 5000);
     await new Promise((r) => setTimeout(r, 300));
     const el = document.querySelector(".verse .mr p.lsn");
     return { id: el && el.closest(".ash").id, text: el && el.textContent, home: document.documentElement.hasAttribute("data-hv"), want: p.id };
