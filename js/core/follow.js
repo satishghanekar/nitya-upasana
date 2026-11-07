@@ -129,8 +129,9 @@ var NEAR = 0.4,
  * @param {string} heard  what the model wrote
  * @param {Doc[]} docs  the texts that may be chanted (the one being read, the session's, the Library's)
  * @param {{ doc: number, line: number } | null} here  the place last found, if any
- * @returns {{ doc: number, line: number, scope: "near" | "text" | "any", held: boolean, rate: number } | null}
- *   held: the place stays where it was, as what was heard is the dhrupad */
+ * @returns {{ doc: number, line: number, end: number, scope: "near" | "text" | "any", held: boolean, rate: number } | null}
+ *   end: the letter (in docs[doc].text) just after what was heard; held: the place stays where it was, as what was heard
+ *   is the dhrupad (end is then -1) */
 export function locate(heard, docs, here) {
   var h = letters(heard);
   if (h.length < LEAST) return null;
@@ -141,8 +142,8 @@ export function locate(heard, docs, here) {
       rate = r.cost / h.length;
     if (rate > most || r.end <= from) return null;
     var line = lineAt(doc, r.end - 1);
-    if (doc.refrain[line] && here) return { doc: here.doc, line: here.line, scope: scope, held: true, rate: rate };
-    return { doc: k, line: line, scope: scope, held: false, rate: rate };
+    if (doc.refrain[line] && here) return { doc: here.doc, line: here.line, end: -1, scope: scope, held: true, rate: rate };
+    return { doc: k, line: line, end: r.end, scope: scope, held: false, rate: rate };
   }
   if (here && docs[here.doc]) {
     var d = docs[here.doc],
@@ -158,4 +159,45 @@ export function locate(heard, docs, here) {
     if (r && (!best || r.rate < best.rate)) best = r;
   }
   return best;
+}
+
+// ==== The pace: the model hears each window a second or two after it was chanted, and only every two seconds or so,
+// too late and too seldom to follow along by itself (Satish, 2026-11-06). So the place found is the place at the time
+// the sound was heard, and between one place found and the next the mark moves on at the pace the chanting goes,
+// measured from the places found ====
+
+// Letters (as letters() counts them) chanted a second: to start with, and the least and most believed
+export var PACE = { start: 7, least: 3, most: 14 };
+
+/** A place in a text at a moment: `pos` a letter of docs[doc].text, `t` in ms; `paused`: not moving on (the dhrupad,
+ * silence, or nothing found for a while)
+ * @typedef {{ doc: number, pos: number, t: number, paused?: boolean }} Mark */
+
+/** The pace, from the place found before and the one found now in the same text: each new measure counts for a
+ * third, so one odd window doesn't upset it; a jump (a part skipped or said again) doesn't count
+ * @param {number} pace @param {Mark | null} before @param {Mark} now @returns {number} */
+export function nextPace(pace, before, now) {
+  if (!before || before.doc !== now.doc) return pace;
+  var dt = (now.t - before.t) / 1000,
+    dp = now.pos - before.pos;
+  if (dt < 1.5 || dp <= 0 || dp > dt * PACE.most * 1.5) return pace;
+  return pace * 0.67 + Math.min(PACE.most, Math.max(PACE.least, dp / dt)) * 0.33;
+}
+
+/** Where the chanting is at `t`: the mark moved on at the pace (not past the text's end)
+ * @param {Mark} m @param {number} pace @param {number} t @param {number} length @returns {number} */
+export function ahead(m, pace, t, length) {
+  if (m.paused) return m.pos;
+  return Math.min(length, m.pos + (pace * Math.max(0, t - m.t)) / 1000);
+}
+
+/** The place found now (`found`, at the moment its sound ended), taken with the mark moving on: a place just behind
+ * the mark (less than a few words) is met halfway, so the mark doesn't step back and forth; anything else is taken as
+ * it is @param {Mark | null} m @param {number} pace @param {Mark} found @param {number} length @returns {Mark} */
+export function correct(m, pace, found, length) {
+  if (!m || m.doc !== found.doc || m.paused) return found;
+  var guess = ahead(m, pace, found.t, length),
+    behind = guess - found.pos;
+  if (behind > 0 && behind < 25) return { doc: found.doc, pos: found.pos + behind / 2, t: found.t };
+  return found;
 }
