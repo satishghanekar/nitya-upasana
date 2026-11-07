@@ -436,6 +436,26 @@ export default {
     },
     find: "रचना किंवा ओळ शोधा",
   },
+  listen: {
+    download: "डाउनलोड करा",
+    notNow: "आता नको",
+    /** @param {string} mb */
+    ask: function (mb) {
+      return "‘ऐका’ जप ऐकून तो कुठे चालला आहे ते दाखवते. पहिल्यांदा " + mb + " MB डाउनलोड होईल (Wi-Fi असताना करा). ऐकलेले सर्व या फोनवरच राहते.";
+    },
+    downloading: "‘ऐका’ डाउनलोड होत आहे…",
+    starting: "‘ऐका’ सुरू होत आहे…",
+    listening: "ऐकत आहे…",
+    /** @param {string} t  the text's title, as HTML */
+    following: function (t) {
+      return "चालू आहे: " + t;
+    },
+    stop: "थांबा",
+    close: "बंद करा",
+    noMic: "‘ऐका’ साठी मायक्रोफोन लागतो. फोनच्या सेटिंग्जमध्ये या साइटला परवानगी द्या आणि पुन्हा प्रयत्न करा.",
+    offline: "इंटरनेट नाही. ‘ऐका’ एकदाच डाउनलोड होते; इंटरनेट असताना पुन्हा प्रयत्न करा.",
+    failed: "या फोनवर ‘ऐका’ सुरू होऊ शकले नाही.",
+  },
   bottomBar: {
     prev: "‹ मागील",
     next: "पुढील ›",
@@ -699,6 +719,7 @@ export default {
     itWillThenOpenLike: "मग ते ॲपसारखे उघडेल, इंटरनेटशिवायही.",
     ok: "ठीक आहे",
     home: "मुख्यपृष्ठ",
+    listen: "ऐका",
     library: "संग्रह",
     vedicCalendar: "पंचांग",
     smaller: " लहान",

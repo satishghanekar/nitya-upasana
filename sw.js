@@ -1,9 +1,13 @@
 // Service worker: keeps a copy of the site on the phone so it opens without internet.
 // V is the site's version (shown as "v1.9" in Settings → About). It must match <meta name="version"> in index.html; change both on a new release.
-const V = "aarti-v1.45.2";
+const V = "aarti-v1.46";
 // The page's styles and scripts, the font files and the pictures to keep: one list for the page and this worker, in js/parts.js
 importScripts("js/parts.js");
 const PARTS = SITE_PARTS.all;
+// Listen's download (the chanting model and the library that runs it, js/features/listen.js) is kept in a cache of its
+// own, which a new version leaves alone: about 105 MB, downloaded once. Its library and microphone tap are given from
+// there, so Listen works offline too.
+const LISTEN = "nitya-listen";
 const FONTS = SITE_PARTS.fonts;
 const IMAGES = SITE_PARTS.images;
 // A new version (a new V) saves a whole fresh copy before it takes over. The font files never change in place, so they
@@ -16,7 +20,7 @@ self.addEventListener("install", (e) => {
   e.waitUntil(
     (async () => {
       const c = await caches.open(V);
-      const old = (await caches.keys()).filter((x) => x !== V);
+      const old = (await caches.keys()).filter((x) => x !== V && x !== LISTEN);
       const fonts = [];
       for (const f of FONTS) {
         let m = null;
@@ -59,7 +63,7 @@ self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches
       .keys()
-      .then((k) => Promise.all(k.filter((x) => x !== V).map((x) => caches.delete(x))))
+      .then((k) => Promise.all(k.filter((x) => x !== V && x !== LISTEN).map((x) => caches.delete(x))))
       .then(() => self.clients.claim()),
   );
 });
@@ -94,6 +98,7 @@ self.addEventListener("fetch", (e) => {
     const c = await wait(caches.open(V), 2000);
     let m = c ? await wait(c.match(key), 2000) : null;
     if (m && m.redirected) m = null; // Safari refuses a redirected copy for a page
+    if (!m && /\/(vendor\/onnxruntime|js\/worklets)\//.test(u.pathname)) m = await wait(caches.match(key, { cacheName: LISTEN }), 2000);
     if (m) return m;
     const net = () =>
       fetch(nav ? key : u.origin + u.pathname, { cache: "no-cache", credentials: "same-origin" })

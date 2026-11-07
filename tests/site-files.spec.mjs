@@ -86,11 +86,13 @@ test("the scripts, styles and page stay within their size budget", () => {
   const parts = siteParts();
   const gz = (files) => files.reduce((n, f) => n + gzipSync(readFileSync(new URL("../" + f, import.meta.url))).length, 0);
   // (320 KB since 2026-11-02: the ready-made routines, the welcome card and the print Routine list; 330 KB since
-  // 2026-11-05: the chanting model's arithmetic and the Listen lab, which goes when Listen is built)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(330_000);
+  // 2026-11-05: the chanting model's arithmetic and the Listen lab; 336 KB since 2026-11-06: Listen in place of the lab,
+  // js/core/follow.js and Listen's words in five languages: 333 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(336_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
-  // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(72_000);
+  // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
+  // panel and marked line, 72.03 KB then)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(73_000);
   expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(30_000);
 });
 

@@ -442,6 +442,27 @@ export default {
     },
     find: "Find a text or a line",
   },
+  // Listen (js/features/listen.js): the ear in the bottom bar and its panel
+  listen: {
+    download: "Download",
+    notNow: "Not now",
+    /** @param {string} mb */
+    ask: function (mb) {
+      return "Listen hears the chanting and shows where it is. The first time, it downloads " + mb + " MB (Wi-Fi is best). What it hears stays on this phone.";
+    },
+    downloading: "Downloading Listen…",
+    starting: "Starting Listen…",
+    listening: "Listening…",
+    /** @param {string} t  the text's title, as HTML */
+    following: function (t) {
+      return "Following " + t;
+    },
+    stop: "Stop",
+    close: "Close",
+    noMic: "Listen needs the microphone. Allow it for this site in the phone's settings, then try again.",
+    offline: "No internet. Listen downloads once; try again when online.",
+    failed: "Listen could not start on this phone.",
+  },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js): the arrow stays, the word may be left out on small phones
   bottomBar: {
     prev: "‹ Prev",
@@ -721,6 +742,7 @@ export default {
     itWillThenOpenLike: "It will then open like an app, even without internet.",
     ok: "OK",
     home: "Home",
+    listen: "Listen",
     library: "Library",
     vedicCalendar: "Vedic calendar",
     smaller: " smaller",
