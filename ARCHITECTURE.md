@@ -101,22 +101,23 @@ These hold for every text, so a new text prints correctly as soon as its file ex
 
 ## Hearing the chanting (Listen)
 
-A small speech model (`models/chant-vN/`: Whisper base, int8, 76 MB, trained in the shravan-model repository) hears
+A small speech model (`models/chant-vN/`: a CTC model, wav2vec2 base, int8, 108 MB, trained in the shravan-model
+repository) hears
 the chanting on the phone itself, so the app can follow along. Nothing leaves the phone. The model is downloaded only
 when Listen is used, never with the page, in pieces of at most 20 MB (Cloudflare Pages serves none over 25 MiB), each
 checked against its SHA-256 in `model.json`. It runs in ONNX Runtime Web (`vendor/onnxruntime/`, the one exception to
 "no runtime packages", with `'wasm-unsafe-eval'` in the security policy), on the CPU or through WebGPU. The arithmetic
-around it is plain, unit-tested JavaScript (`js/core/hearing.js`): sound into the model's input, its tokens into
-letters. It runs on the CPU on every core: the site is cross-origin isolated (`Cross-Origin-Opener-Policy` and
+around it is plain, unit-tested JavaScript (`js/core/hearing.js`): sound into the model's input, its answer (the
+likeliest letter for every 20 ms) into words. It runs on the CPU on every core: the site is cross-origin isolated (`Cross-Origin-Opener-Policy` and
 `-Embedder-Policy` in `_headers`; it loads nothing from other sites anyway). Through WebGPU, an iPhone's Safari
 computed nonsense with the int8 model, and slower (2026-11-05), so the CPU it is. **Listen** (`js/features/listen.js`, the microphone in the bottom bar) uses it: the first time, after the reader
-agrees, it downloads the model and the library (about 105 MB) into the cache `nitya-listen`, which `sw.js` keeps
+agrees, it downloads the model and the library (about 136 MB) into the cache `nitya-listen`, which `sw.js` keeps
 across versions and gives the library and the microphone tap (`js/worklets/listen-tap.js`) from, so Listen works
-offline. An iPhone with 4 cores hears 5 s of chanting in about 1.7 s (2026-11-06); each time, `js/core/follow.js`
-finds what was heard in the texts (near the last place, then the text, then every text). The model answers a second or
-two after the sound and only every two seconds or so, too late to follow along by itself, so each place found is
-taken as where the chanting was when that sound was heard, and the mark moves on line by line at the chanting's own
-pace (measured from the places found) until the next one puts it right.
+offline. Every half second of new sound it hears the last 4 s; each time, `js/core/follow.js` finds what was heard
+in the texts (near the last place, then the text, then every text). The model says when its last letter was said (its
+step), so each place found is where the chanting was at that moment, and between places found the mark moves on line
+by line at the chanting's own pace (measured from the places found). (The first model, Whisper base, took about 1.7 s
+on an iPhone for every 5 s window, too slow to follow along: replaced 2026-11-07.)
 
 ## Offline use and updates
 
