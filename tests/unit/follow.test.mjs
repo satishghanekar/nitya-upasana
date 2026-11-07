@@ -3,7 +3,7 @@
 import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
 import { buildContent } from "../../js/text/content.js";
-import { letters, lineAt, locate, makeDoc, match, pieceLines } from "../../js/core/follow.js";
+import { PACE, ahead, correct, letters, lineAt, locate, makeDoc, match, nextPace, pieceLines } from "../../js/core/follow.js";
 
 const read = (p) => readFileSync(new URL("../../" + p, import.meta.url), "utf8");
 const lib = JSON.parse(read("content/library.json"));
@@ -59,6 +59,8 @@ describe("locate, on the site's texts", () => {
     const i = lineWith(pv, "९.००१.०२");
     const r = locate(heard(pv, i - 1, i), docs, null);
     expect(r).toMatchObject({ doc: pv, line: i, scope: "any", held: false });
+    // (and the letter it ends at, in that line)
+    expect(lineAt(docs[pv], r.end - 1)).toBe(i);
   });
   test("following: the next verse is found near the last place", () => {
     const i = lineWith(pv, "९.००१.०१");
@@ -93,5 +95,45 @@ describe("locate, on the site's texts", () => {
     const t0 = performance.now();
     locate(heard(pv, i - 1, i), docs, null);
     expect(performance.now() - t0).toBeLessThan(1000);
+  });
+});
+
+describe("the pace: the mark moves on between the places found", () => {
+  test("moves on at the pace from where the chanting was, not past the text's end; a paused mark stays", () => {
+    const m = { doc: 0, pos: 100, t: 1000 };
+    expect(ahead(m, 8, 3000, 1000)).toBe(116);
+    expect(ahead(m, 8, 900, 1000)).toBe(100);
+    expect(ahead(m, 8, 100000, 300)).toBe(300);
+    expect(ahead({ ...m, paused: true }, 8, 3000, 1000)).toBe(100);
+  });
+  test("measured from two places found in the same text, a third at a time", () => {
+    const a = { doc: 0, pos: 100, t: 0 };
+    expect(nextPace(7, a, { doc: 0, pos: 140, t: 4000 })).toBeCloseTo(7 * 0.67 + 10 * 0.33);
+    // too soon after, another text, a step back or a jump don't count
+    expect(nextPace(7, a, { doc: 0, pos: 110, t: 1000 })).toBe(7);
+    expect(nextPace(7, a, { doc: 1, pos: 140, t: 4000 })).toBe(7);
+    expect(nextPace(7, a, { doc: 0, pos: 90, t: 4000 })).toBe(7);
+    expect(nextPace(7, a, { doc: 0, pos: 500, t: 4000 })).toBe(7);
+    expect(nextPace(7, null, a)).toBe(7);
+    // never faster than PACE.most
+    expect(nextPace(PACE.most, a, { doc: 0, pos: 100 + 4 * 20, t: 4000 })).toBeCloseTo(PACE.most);
+  });
+  test("a place found just behind the moving mark is met halfway; anything else is taken as it is", () => {
+    const m = { doc: 0, pos: 100, t: 0 };
+    // the mark is at 120 at t = 2000 (pace 10); found at 110: halfway, 115
+    expect(correct(m, 10, { doc: 0, pos: 110, t: 2000 }, 1000)).toEqual({ doc: 0, pos: 115, t: 2000 });
+    // found ahead, far behind, in another text, or after a pause: as found
+    expect(correct(m, 10, { doc: 0, pos: 130, t: 2000 }, 1000).pos).toBe(130);
+    expect(correct(m, 10, { doc: 0, pos: 60, t: 2000 }, 1000).pos).toBe(60);
+    expect(correct(m, 10, { doc: 1, pos: 110, t: 2000 }, 1000).pos).toBe(110);
+    expect(correct({ ...m, paused: true }, 10, { doc: 0, pos: 90, t: 2000 }, 1000).pos).toBe(90);
+    expect(correct(null, 10, { doc: 0, pos: 90, t: 2000 }, 1000).pos).toBe(90);
+  });
+  test("a Pavamana verse at the starting pace takes about as long as it is chanted (5 to 15 seconds)", () => {
+    const pv = at("vedic-chant-pavamana-suktam");
+    const i = lineWith(pv, "९.००१.०२");
+    const letters = docs[pv].ends[i] - docs[pv].ends[i - 2];
+    expect(letters / PACE.start).toBeGreaterThan(5);
+    expect(letters / PACE.start).toBeLessThan(15);
   });
 });
