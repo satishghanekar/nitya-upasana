@@ -106,12 +106,13 @@ repository) hears
 the chanting on the phone itself, so the app can follow along. Nothing leaves the phone. The model is downloaded only
 when Listen is used, never with the page, in pieces of at most 20 MB (Cloudflare Pages serves none over 25 MiB), each
 checked against its SHA-256 in `model.json`. It runs in ONNX Runtime Web (`vendor/onnxruntime/`, the one exception to
-"no runtime packages", with `'wasm-unsafe-eval'` in the security policy), on the CPU or through WebGPU. The arithmetic
+"no runtime packages", with `'wasm-unsafe-eval'` in the security policy), on the CPU (its WebAssembly build only, 14 MB). The arithmetic
 around it is plain, unit-tested JavaScript (`js/core/hearing.js`): sound into the model's input, its answer (the
 likeliest letter for every 20 ms) into words. It runs on the CPU on every core: the site is cross-origin isolated (`Cross-Origin-Opener-Policy` and
 `-Embedder-Policy` in `_headers`; it loads nothing from other sites anyway). Through WebGPU, an iPhone's Safari
-computed nonsense with the int8 model, and slower (2026-11-05), so the CPU it is. **Listen** (`js/features/listen.js`, the microphone in the bottom bar) uses it: the first time, after the reader
-agrees, it downloads the model and the library (about 136 MB) into the cache `nitya-listen`, which `sw.js` keeps
+computed nonsense with the int8 model, and slower (2026-11-05), so the CPU it is, and the library's build without
+WebGPU (14 MB instead of 28, 2026-11-07). **Listen** (`js/features/listen.js`, the microphone in the bottom bar) uses it: the first time, after the reader
+agrees, it downloads the model and the library (about 122 MB) into the cache `nitya-listen`, which `sw.js` keeps
 across versions and gives the library and the microphone tap (`js/worklets/listen-tap.js`) from, so Listen works
 offline. Every half second of new sound it hears the last 4 s; each time, `js/core/follow.js` finds what was heard
 in the texts (near the last place, then the text, then every text). The model says when its last letter was said (its

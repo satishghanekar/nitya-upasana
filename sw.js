@@ -5,7 +5,7 @@ const V = "aarti-v1.47.0";
 importScripts("js/parts.js");
 const PARTS = SITE_PARTS.all;
 // Listen's download (the chanting model and the library that runs it, js/features/listen.js) is kept in a cache of its
-// own, which a new version leaves alone: about 136 MB, downloaded once. Its library and microphone tap are given from
+// own, which a new version leaves alone: about 122 MB, downloaded once. Its library and microphone tap are given from
 // there, so Listen works offline too.
 const LISTEN = "nitya-listen";
 const FONTS = SITE_PARTS.fonts;

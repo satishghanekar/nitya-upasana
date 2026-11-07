@@ -4,7 +4,7 @@
 // opened if another one is on screen, and the place follows the chanting until Stop. Everything happens on the phone:
 // no sound leaves it.
 // - The model (models/chant-v3/, a CTC model, wav2vec2, trained in the shravan-model repository, about 108 MB) and the
-//   library that runs it (vendor/onnxruntime/, about 28 MB) are downloaded once, the first time, after the reader
+//   library that runs it (vendor/onnxruntime/, about 14 MB) are downloaded once, the first time, after the reader
 //   agrees, and kept in their own cache, "nitya-listen", which a new version of the site leaves alone (sw.js). Each
 //   piece is checked against its SHA-256 before it is kept.
 // - The microphone feeds an AudioWorklet (js/worklets/listen-tap.js), so no sound is lost while the model works.
@@ -33,14 +33,11 @@ var MODEL = "models/chant-v3/",
   ORT = "vendor/onnxruntime/",
   TAP = "js/worklets/listen-tap.js",
   CACHE = "nitya-listen",
-  // the library's WebAssembly, in two pieces (vendor/onnxruntime/README.md), checked whole
-  WASM = [
-    { file: "ort-wasm-simd-threaded.jsep.wasm", bytes: 20000000 },
-    { file: "ort-wasm-simd-threaded.jsep.wasm.2", bytes: 8312028 },
-  ],
-  WASM_SHA256 = "3ad23231b5bd6d9dda55a7f84606315e0bf35b6750c28ee993c987c54cacab0f",
+  // the library's WebAssembly (its CPU build, vendor/onnxruntime/README.md), in pieces if ever over 20 MB, checked whole
+  WASM = [{ file: "ort-wasm-simd-threaded.wasm", bytes: 14239897 }],
+  WASM_SHA256 = "3398c10d07d229bd91b364548e130e0e51a8e5704b88c7c083ebbeb78842dee2",
   // the download, in MB, as the question names it: the model's pieces (models/chant-v3/model.json) and the library
-  SIZE_MB = 136,
+  SIZE_MB = 122,
   // seconds of sound heard each time (about 30 letters, enough to tell the place), and of new sound before the next
   WINDOW = 4,
   EVERY = 0.5,
@@ -199,7 +196,7 @@ async function stored() {
   var m = await c.match(abs(MODEL + "model.json"));
   if (!m) return false;
   var info = await m.json(),
-    files = [MODEL + "letters.json", ORT + "ort.bundle.min.mjs", TAP]
+    files = [MODEL + "letters.json", ORT + "ort.wasm.bundle.min.mjs", TAP]
       .concat(
         WASM.map(function (x) {
           return ORT + x.file;
@@ -302,12 +299,12 @@ async function load() {
   var weights = await joined(info.model),
     names = JSON.parse(new TextDecoder().decode(await file(c, MODEL + "letters.json")));
   // kept here too, so the service worker can give them offline (sw.js)
-  await file(c, ORT + "ort.bundle.min.mjs");
+  await file(c, ORT + "ort.wasm.bundle.min.mjs");
   await file(c, TAP);
   if (phase === "off") throw new Error("stopped");
   panel(esc(menuWords("listen").starting), { no: menuWords("listen").stop });
   if (!ort) {
-    ort = await import(/* @vite-ignore */ abs(ORT + "ort.bundle.min.mjs"));
+    ort = await import(/* @vite-ignore */ abs(ORT + "ort.wasm.bundle.min.mjs"));
     ort.env.wasm.wasmBinary = binary.buffer;
     // every core (up to 4): the page is cross-origin isolated (_headers)
     ort.env.wasm.numThreads = window.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 1) : 1;
@@ -317,7 +314,7 @@ async function load() {
   if (c)
     tidy(
       c,
-      [MODEL + "model.json", MODEL + "letters.json", ORT + "ort.bundle.min.mjs", TAP].concat(
+      [MODEL + "model.json", MODEL + "letters.json", ORT + "ort.wasm.bundle.min.mjs", TAP].concat(
         WASM.map(function (w) {
           return ORT + w.file;
         }),
