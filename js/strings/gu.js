@@ -437,6 +437,26 @@ export default {
     find: "પાઠ કે લીટી શોધો",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js)
+  listen: {
+    download: "ડાઉનલોડ કરો",
+    notNow: "હમણાં નહીં",
+    /** @param {string} mb */
+    ask: function (mb) {
+      return "‘સાંભળો’ પાઠ સાંભળીને તે ક્યાં ચાલે છે તે બતાવે છે. પહેલી વાર " + mb + " MB ડાઉનલોડ થશે (Wi-Fi સારું). સાંભળેલું આ ફોનમાં જ રહે છે.";
+    },
+    downloading: "‘સાંભળો’ ડાઉનલોડ થાય છે…",
+    starting: "‘સાંભળો’ શરૂ થાય છે…",
+    listening: "સાંભળે છે…",
+    /** @param {string} t  the text's title, as HTML */
+    following: function (t) {
+      return "હમણાં: " + t;
+    },
+    stop: "થોભો",
+    close: "બંધ કરો",
+    noMic: "‘સાંભળો’ માટે માઇક્રોફોન જોઈએ. ફોનના સેટિંગ્સમાં આ સાઇટને મંજૂરી આપો, પછી ફરી પ્રયાસ કરો.",
+    offline: "ઇન્ટરનેટ નથી. ‘સાંભળો’ એક જ વાર ડાઉનલોડ થાય છે; ઇન્ટરનેટ હોય ત્યારે ફરી પ્રયાસ કરો.",
+    failed: "આ ફોનમાં ‘સાંભળો’ શરૂ ન થઈ શક્યું.",
+  },
   bottomBar: {
     prev: "‹ પાછળ",
     next: "આગળ ›",
@@ -706,6 +726,7 @@ export default {
     itWillThenOpenLike: "પછી તે ઇન્ટરનેટ વિના પણ ઍપની જેમ ખૂલશે.",
     ok: "બરાબર",
     home: "મુખ્ય પાનું",
+    listen: "સાંભળો",
     library: "સંગ્રહ",
     vedicCalendar: "પંચાંગ",
     smaller: " નાનું",

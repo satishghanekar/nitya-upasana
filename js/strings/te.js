@@ -438,6 +438,26 @@ export default {
     find: "పాఠం లేదా పంక్తిని వెతుకు",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js)
+  listen: {
+    download: "డౌన్‌లోడ్ చేయండి",
+    notNow: "ఇప్పుడు వద్దు",
+    /** @param {string} mb */
+    ask: function (mb) {
+      return "‘వినండి’ పఠనాన్ని విని అది ఎక్కడ ఉందో చూపిస్తుంది. మొదటిసారి " + mb + " MB డౌన్‌లోడ్ అవుతుంది (Wi-Fi మంచిది). విన్నది ఈ ఫోన్‌లోనే ఉంటుంది.";
+    },
+    downloading: "‘వినండి’ డౌన్‌లోడ్ అవుతోంది…",
+    starting: "‘వినండి’ ప్రారంభమవుతోంది…",
+    listening: "వింటోంది…",
+    /** @param {string} t  the text's title, as HTML */
+    following: function (t) {
+      return "ఇప్పుడు: " + t;
+    },
+    stop: "ఆపండి",
+    close: "మూసివేయండి",
+    noMic: "‘వినండి’కి మైక్రోఫోన్ కావాలి. ఫోన్ సెట్టింగ్స్‌లో ఈ సైట్‌కు అనుమతి ఇచ్చి, మళ్ళీ ప్రయత్నించండి.",
+    offline: "ఇంటర్నెట్ లేదు. ‘వినండి’ ఒక్కసారి మాత్రమే డౌన్‌లోడ్ అవుతుంది; ఇంటర్నెట్ ఉన్నప్పుడు మళ్ళీ ప్రయత్నించండి.",
+    failed: "ఈ ఫోన్‌లో ‘వినండి’ ప్రారంభం కాలేదు.",
+  },
   bottomBar: {
     prev: "‹ ముందటిది",
     next: "తర్వాతి ›",
@@ -712,6 +732,7 @@ export default {
     itWillThenOpenLike: "తర్వాత ఇది ఇంటర్నెట్ లేకపోయినా యాప్ లాగా తెరుచుకుంటుంది.",
     ok: "సరే",
     home: "ముఖపుట",
+    listen: "వినండి",
     library: "సంగ్రహం",
     vedicCalendar: "పంచాంగం",
     smaller: " చిన్నది",

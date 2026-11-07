@@ -438,6 +438,26 @@ export default {
     find: "ಪಠ್ಯ ಅಥವಾ ಸಾಲನ್ನು ಹುಡುಕಿ",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js)
+  listen: {
+    download: "ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+    notNow: "ಈಗ ಬೇಡ",
+    /** @param {string} mb */
+    ask: function (mb) {
+      return "‘ಆಲಿಸಿ’ ಪಠಣವನ್ನು ಕೇಳಿ ಅದು ಎಲ್ಲಿದೆ ಎಂದು ತೋರಿಸುತ್ತದೆ. ಮೊದಲ ಬಾರಿ " + mb + " MB ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತದೆ (Wi-Fi ಉತ್ತಮ). ಕೇಳಿದ್ದು ಈ ಫೋನಿನಲ್ಲೇ ಉಳಿಯುತ್ತದೆ.";
+    },
+    downloading: "‘ಆಲಿಸಿ’ ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ…",
+    starting: "‘ಆಲಿಸಿ’ ಪ್ರಾರಂಭವಾಗುತ್ತಿದೆ…",
+    listening: "ಆಲಿಸುತ್ತಿದೆ…",
+    /** @param {string} t  the text's title, as HTML */
+    following: function (t) {
+      return "ಈಗ: " + t;
+    },
+    stop: "ನಿಲ್ಲಿಸಿ",
+    close: "ಮುಚ್ಚಿ",
+    noMic: "‘ಆಲಿಸಿ’ಗೆ ಮೈಕ್ರೋಫೋನ್ ಬೇಕು. ಫೋನಿನ ಸೆಟ್ಟಿಂಗ್ಸ್‌ನಲ್ಲಿ ಈ ಸೈಟ್‌ಗೆ ಅನುಮತಿ ನೀಡಿ, ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+    offline: "ಇಂಟರ್ನೆಟ್ ಇಲ್ಲ. ‘ಆಲಿಸಿ’ ಒಮ್ಮೆ ಮಾತ್ರ ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತದೆ; ಇಂಟರ್ನೆಟ್ ಇರುವಾಗ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+    failed: "ಈ ಫೋನಿನಲ್ಲಿ ‘ಆಲಿಸಿ’ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ.",
+  },
   bottomBar: {
     prev: "‹ ಹಿಂದೆ",
     next: "ಮುಂದೆ ›",
@@ -718,6 +738,7 @@ export default {
     itWillThenOpenLike: "ನಂತರ ಇದು ಇಂಟರ್ನೆಟ್ ಇಲ್ಲದಿದ್ದರೂ ಆ್ಯಪ್‌ನಂತೆ ತೆರೆಯುತ್ತದೆ.",
     ok: "ಸರಿ",
     home: "ಮುಖಪುಟ",
+    listen: "ಆಲಿಸಿ",
     library: "ಸಂಗ್ರಹ",
     vedicCalendar: "ಪಂಚಾಂಗ",
     smaller: " ಚಿಕ್ಕದು",
