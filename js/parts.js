@@ -43,6 +43,7 @@ var SITE_PARTS = (function () {
     "core/state",
     "core/words",
     "core/hearing",
+    "core/align",
     "core/follow",
     "strings/en",
     "strings/mr",
