@@ -108,7 +108,7 @@ html[data-sp] {
   border-top: 1px solid var(--rule);
 }
 .sp-card > :first-child,
-.sp-card > [hidden] + .sp-row:not([hidden]) {
+.sp-card > [hidden]:first-child + .sp-row:not([hidden]) {
   border-top: 0;
 }
 .sp-row[hidden] {
@@ -911,4 +911,42 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   .sp-pvg ~ .sp-grp {
     grid-column: 2;
   }
+}
+
+/* ==== About's Listen line (#lswr): where Listen runs its model here (js/features/listen.js showWay). A chip icon in a
+   tinted square (with a bolt on the GPU), the title with a line under it, and a badge: green "Optimized" on the GPU,
+   a muted "Standard" on the CPU. data-way is "gpu" or "cpu" ==== */
+.sp #lswr {
+  gap: 12px;
+}
+.lsw-ic {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+#lswr[data-way="cpu"] .lsw-ic {
+  color: var(--muted);
+  background: color-mix(in srgb, var(--muted) 14%, transparent);
+}
+#lswr[data-way="gpu"] .lsw-cpu,
+#lswr[data-way="cpu"] .lsw-gpu {
+  display: none;
+}
+.lsw-b {
+  flex: none;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: var(--fz-xs);
+  font-weight: 700;
+  color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 13%, transparent);
+}
+#lswr[data-way="cpu"] .lsw-b {
+  color: var(--muted);
+  background: color-mix(in srgb, var(--muted) 16%, transparent);
 }
