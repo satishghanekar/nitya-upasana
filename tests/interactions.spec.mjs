@@ -782,7 +782,7 @@ test("scrolling through a text: every verse on screen is shown at once, with no 
   await page.goto("./#" + id);
   await page.waitForTimeout(600);
   for (let i = 0; i < 4; i++) {
-    await page.mouse.wheel(0, 900);
+    await page.evaluate(() => scrollBy(0, 900));
     const hidden = await page.evaluate(async () => {
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       return [...document.querySelectorAll(".ash .item")]
