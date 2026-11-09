@@ -82,7 +82,7 @@ export function defaults(env) {
     ason: 0, // autoscroll button shown
     asp: {}, // autoscroll speed per piece
     hol: ["us", "in"], // the public holidays Home's Coming up shows: the US's and India's (HOME_HOLIDAYS)
-    upf: 0, // Home's Coming up folded
+    upf: 0, // Home's Coming up: 0 as the screen suits (folded on phones and tablets, open on wide screens), 1 folded, 2 open
   };
 }
 
