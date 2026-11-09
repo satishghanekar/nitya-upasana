@@ -13,6 +13,14 @@
    theme colour instead. They sit inside @supports not (...), so browsers that have color-mix() never see them
    and nothing changes there. Selectors repeat the originals exactly so they win by coming later. ==== */
 @supports not (color: color-mix(in srgb, red 50%, blue)) {
+  /* About's Listen line: its icon square and badge outlined instead of tinted */
+  .lsw-ic,
+  #lswr[data-way="cpu"] .lsw-ic,
+  .lsw-b,
+  #lswr[data-way="cpu"] .lsw-b {
+    background: none;
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
   :root {
     --sheet: var(--bg);
   }

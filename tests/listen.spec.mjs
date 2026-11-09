@@ -243,7 +243,13 @@ test("Settings → About says where Listen runs its model: the CPU here, the GPU
   await openSite(page, SETUPS.english, { errors });
   // (headless Chromium gives no GPU adapter: the CPU)
   await expect(page.locator("#lswr")).not.toHaveAttribute("hidden", "");
-  await expect(page.locator("#lsw")).toHaveText("Listen runs on the CPU (processor)");
+  await expect(page.locator("#lswr")).toHaveAttribute("data-way", "cpu");
+  await expect(page.locator("#lsw")).toHaveText("Listen: CPU");
+  await expect(page.locator("#lswn")).toHaveText("Works on every phone, uses more battery");
+  await expect(page.locator("#lswb")).toHaveText("Standard");
+  // the Listen line comes before the version, which is last in About
+  expect(await page.evaluate(() => document.getElementById("lswr").nextElementSibling.id)).toBe("upr");
+  expect(await page.evaluate(() => document.getElementById("upr").nextElementSibling)).toBeNull();
   expect(errors).toEqual([]);
 });
 
@@ -253,6 +259,12 @@ test("Settings → About says the GPU when the browser has WebGPU and an adapter
     Object.defineProperty(navigator, "gpu", { value: { requestAdapter: () => Promise.resolve({}) }, configurable: true });
   });
   await openSite(page, SETUPS.english, { errors });
-  await expect(page.locator("#lsw")).toHaveText("Listen runs on the GPU (graphics chip)");
+  await expect(page.locator("#lswr")).toHaveAttribute("data-way", "gpu");
+  await expect(page.locator("#lsw")).toHaveText("Listen: GPU");
+  await expect(page.locator("#lswn")).toHaveText("About 3× faster, lighter on battery");
+  await expect(page.locator("#lswb")).toHaveText("Optimized");
+  // only the GPU's icon (the chip with a bolt) shows
+  await expect(page.locator("#lswr .lsw-gpu")).not.toHaveCSS("display", "none");
+  await expect(page.locator("#lswr .lsw-cpu")).toHaveCSS("display", "none");
   expect(errors).toEqual([]);
 });
