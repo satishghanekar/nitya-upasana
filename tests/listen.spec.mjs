@@ -212,3 +212,24 @@ test("follow() says whether what was heard was found, so the newest letters alon
   });
   expect(r).toEqual({ found: true, nothing: false });
 });
+
+test("while listening, the page's own thread stays free: the model runs in a worker @chromium-only", async ({ page }) => {
+  // (Satish, 2026-11-09: scrolling felt stuck while Listen was on; each hearing held the page for up to half a second)
+  test.setTimeout(240_000);
+  await openSite(page, SETUPS.english);
+  const panel = page.locator("#lsn");
+  await page.locator("#lsb").click();
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 180_000 });
+  const long = await page.evaluate(
+    () =>
+      new Promise((done) => {
+        const seen = [];
+        const o = new PerformanceObserver((l) => l.getEntries().forEach((e) => seen.push(Math.round(e.duration))));
+        o.observe({ type: "longtask" });
+        setTimeout(() => (o.disconnect(), done(seen)), 5000);
+      }),
+  );
+  expect(long.filter((ms) => ms > 100)).toEqual([]);
+  await page.locator("#lsb").click();
+});

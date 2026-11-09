@@ -5,34 +5,6 @@ import { onPiece } from "../core/page.js";
 
 export function init() {
   onPiece(gridItems);
-  // Gentle fade-in for verses that scroll into view (never for content already on screen; skipped if the device asks for less motion)
-  (function () {
-    if (!("IntersectionObserver" in window) || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
-    var ready = false;
-    var io = new IntersectionObserver(
-      function (es) {
-        es.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          io.unobserve(e.target);
-          if (!ready) return;
-          var t = e.target;
-          t.classList.add("fx-in");
-          setTimeout(function () {
-            t.classList.remove("fx-in");
-          }, 700);
-        });
-      },
-      { rootMargin: "0px 0px -8% 0px" },
-    );
-    onPiece(function (sec) {
-      [].forEach.call(sec.querySelectorAll("header,.item,.rftop,.fin"), function (x) {
-        io.observe(x);
-      });
-    });
-    setTimeout(function () {
-      ready = true;
-    }, 400);
-  })();
 }
 
 // Where each stanza and line sits in the grid of every piece inside r (the page, or a printout's copy:

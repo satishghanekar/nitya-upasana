@@ -334,6 +334,9 @@ async function load() {
     ort.env.wasm.wasmBinary = binary.buffer;
     // every core (up to 4): the page is cross-origin isolated (_headers)
     ort.env.wasm.numThreads = window.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 1) : 1;
+    // the model run in a worker of its own, not on the page's thread: there, each hearing held the page for up to half
+    // a second, 42 s of every minute listening (Chromium on the M4, 2026-11-09), so scrolling and taps stuck
+    ort.env.wasm.proxy = true;
   }
   var opts = { executionProviders: ["wasm"] };
   /** @type {Record<string, number>} */ var ids = {};
