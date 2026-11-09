@@ -947,6 +947,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   background: color-mix(in srgb, var(--ok) 13%, transparent);
 }
 #lswr[data-way="cpu"] .lsw-b {
-  color: var(--muted);
+  /* ink, not muted: small bold words on the muted tint fell under 4.5:1 in light and sepia */
+  color: var(--ink);
   background: color-mix(in srgb, var(--muted) 16%, transparent);
 }
