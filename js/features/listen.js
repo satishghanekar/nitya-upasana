@@ -200,14 +200,21 @@ export async function way() {
   return how === WAYS.gpu ? "gpu" : "cpu";
 }
 
-/** Settings → More → About: where Listen runs its model on this device (#lswr), in the menu language
- * @param {"gpu" | "cpu"} w */
+/** Settings → More → About: where Listen runs its model on this device (#lswr): a chip icon (with a bolt on the GPU),
+ * "Listen: GPU" or "Listen: CPU", a line under it and a badge, in the menu language @param {"gpu" | "cpu"} w */
 function showWay(w) {
-  var row = document.getElementById("lswr"),
-    el = document.getElementById("lsw");
-  if (!row || !el) return;
-  el.innerHTML = '<span data-w="listen.' + (w === "gpu" ? "onGpu" : "onCpu") + '"></span>';
-  fillWords(el);
+  var row = document.getElementById("lswr");
+  if (!row) return;
+  row.setAttribute("data-way", w);
+  [
+    ["lsw", ""],
+    ["lswn", "Note"],
+    ["lswb", "Badge"],
+  ].forEach(function (x) {
+    var el = document.getElementById(x[0]);
+    if (el) el.innerHTML = '<span data-w="listen.' + w + x[1] + '"></span>';
+  });
+  fillWords(row);
   row.hidden = false;
 }
 

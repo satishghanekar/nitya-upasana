@@ -16,6 +16,15 @@
   :root {
     --sheet: var(--bg);
   }
+  .lsw-ic,
+  #lswr[data-way="cpu"] .lsw-ic,
+  .lsw-b,
+  #lswr[data-way="cpu"] .lsw-b {
+    /* About's Listen line: its icon square and badge outlined instead of tinted. This note sits inside the rule
+       because compat.spec looks for each selector right after the end of the rule before it. */
+    background: none;
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
   :root[data-pref="dark"],
   :root:root:root[data-hc="1"] {
     --sheet: var(--surface);

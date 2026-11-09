@@ -114,7 +114,8 @@ likeliest letter for every 20 ms) into words. Where the browser has WebGPU it ru
 (remembered), it runs on the CPU on every core: the 8-bit model (`models/chant-v4/`) and the library's CPU build
 (14 MB), in the library's own worker, never on the page's thread; the site is cross-origin isolated
 (`Cross-Origin-Opener-Policy` and `-Embedder-Policy` in `_headers`; it loads nothing from other sites anyway). A
-phone downloads only the way it uses. (Through the older WebGPU build an iPhone computed nonsense with the 8-bit
+phone downloads only the way it uses, and Settings → More → About says which, above the version: a chip icon
+(with a bolt on the GPU), "Listen: GPU" with a green Optimized badge or "Listen: CPU" with a muted Standard one. (Through the older WebGPU build an iPhone computed nonsense with the 8-bit
 model, 2026-11-05, so until 1.49 Listen used the CPU only.) **Listen** (`js/features/listen.js`, the microphone in the bottom bar) uses it: the first time, after the reader
 agrees, it downloads the model and the library (about 117 MB for the GPU, 122 MB for the CPU) into the cache `nitya-listen`, which `sw.js` keeps
 across versions and gives the library and the microphone tap (`js/worklets/listen-tap.js`) from, so Listen works
