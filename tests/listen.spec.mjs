@@ -180,3 +180,22 @@ test("a Library text heard while the day's routine is read: the session is left 
   await expect(line).toContainText("९.००१.०२");
   await expect(page.locator("html")).not.toHaveAttribute("data-run", "1");
 });
+
+test("after 5 minutes with no chanting followed, Listen stops by itself and says so @chromium-only", async ({ page }) => {
+  // (Satish, 2026-11-09: a phone left listening runs its battery down; the fake microphone's beep is not chanting)
+  test.setTimeout(240_000);
+  const errors = [];
+  await openSite(page, SETUPS.english, { errors, running: true });
+  const panel = page.locator("#lsn");
+  await page.locator("#lsb").click();
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 180_000 });
+  await page.clock.fastForward("04:30");
+  await expect(panel.getByRole("status")).toHaveText("Listening…");
+  await page.clock.fastForward("01:00");
+  await expect(panel.getByRole("status")).toHaveText("Listen stopped: no chanting heard for 5 minutes. Tap Listen to start again.");
+  await expect(page.locator("#lsb")).toHaveAttribute("aria-pressed", "false");
+  await panel.getByRole("button", { name: "Close" }).click();
+  await expect(panel).toBeHidden();
+  expect(errors).toEqual([]);
+});
