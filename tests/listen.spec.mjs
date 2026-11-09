@@ -134,3 +134,49 @@ test("every text's lines, as Listen counts them, are the lines the page shows, i
   });
   expect(wrong).toEqual([]);
 });
+
+test("another text heard while reading one: its text unfolds and the page goes to the line being chanted @chromium-only", async ({ page }) => {
+  // (Satish, 2026-11-09: the panel said Following and named the right text, but a folded text on the page stayed
+  // folded and the screen stayed where it was)
+  await openSite(page, { ...SETUPS.marathi, af: ["vedic-chant-pavamana-suktam"] }, { hash: "#aarti-sukhkarta" });
+  const r = await page.evaluate(async () => {
+    const p = window.CONTENT.categories.flatMap((c) => c.pieces).find((x) => x.text === "vedic-chant-pavamana-suktam");
+    const lines = p.items.flatMap((i) => i.lines || []);
+    const at = lines.findIndex((l) => l.mr.includes("९.००१.०२"));
+    const heard = (lines[at - 1].mr + " " + lines[at].mr).replace(/<[^>]*>/g, "").replace(/[॑-॔᳐-᳿।॥०-९.]/g, "");
+    const m = await import(new URL("js/features/listen.js", document.baseURI).href);
+    m.follow(heard, performance.now() + 5000);
+    return p.id;
+  });
+  const line = page.locator(".verse .mr p.lsn");
+  await expect(line).toHaveCount(1);
+  await expect(line).toBeVisible();
+  await expect(line).toBeInViewport();
+  await expect(line).toContainText("९.००१.०२");
+  // as if the reader had gone to it: the address names it, so Back returns to the text before
+  expect(new URL(page.url()).hash).toBe("#" + r);
+});
+
+test("a Library text heard while the day's routine is read: the session is left and the text shown, its line marked @chromium-only", async ({ page }) => {
+  // (Satish, 2026-11-09: in the routine, chanting a text from the Library, the panel said Following and named it, but
+  // the page showed only the session's texts, so the text stayed hidden and the screen stuck)
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.marathi);
+  await page.locator("a.tgo:visible").first().click();
+  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
+  const inRun = await page.evaluate(() => [...document.querySelectorAll(".ash.inrun")].map((x) => x.id));
+  expect(inRun).not.toContain("vedic-chant-pavamana-suktam");
+  await page.evaluate(async () => {
+    const p = window.CONTENT.categories.flatMap((c) => c.pieces).find((x) => x.text === "vedic-chant-pavamana-suktam");
+    const lines = p.items.flatMap((i) => i.lines || []);
+    const at = lines.findIndex((l) => l.mr.includes("९.००१.०२"));
+    const heard = (lines[at - 1].mr + " " + lines[at].mr).replace(/<[^>]*>/g, "").replace(/[॑-॔᳐-᳿।॥०-९.]/g, "");
+    const m = await import(new URL("js/features/listen.js", document.baseURI).href);
+    m.follow(heard, performance.now() + 5000);
+  });
+  const line = page.locator(".verse .mr p.lsn");
+  await expect(line).toBeVisible();
+  await expect(line).toBeInViewport();
+  await expect(line).toContainText("९.००१.०२");
+  await expect(page.locator("html")).not.toHaveAttribute("data-run", "1");
+});

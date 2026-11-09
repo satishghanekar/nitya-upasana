@@ -414,6 +414,16 @@ function stale(r) {
   return r.day !== dateKey(new Date()) && !(typeof r.at === "number" && Date.now() - r.at < RUN_KEEP);
 }
 
+/** A text gone to by Listen (js/features/listen.js): one outside the session being read leaves the session, as going
+ * to it from the Library does, so the page can show it; one in the session keeps it @param {Element} el  the piece */
+export function leaveFor(el) {
+  if (!run || el.classList.contains("inrun")) return;
+  runEnd();
+  setTimeout(function () {
+    document.dispatchEvent(new Event("nitya-session"));
+  });
+}
+
 /** The session being read (its Library ids, in order), or null: the bottom bar's Print (js/features/print.js) */
 export function runIds() {
   return run ? run.ids.slice() : null;
