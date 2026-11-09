@@ -256,3 +256,30 @@ test("Settings → About says the GPU when the browser has WebGPU and an adapter
   await expect(page.locator("#lsw")).toHaveText("Listen runs on the GPU (graphics chip)");
   expect(errors).toEqual([]);
 });
+
+test("Listen never plays to the speakers and tells Safari it records, so iOS can leave another app's music playing @chromium-only", async ({ page }) => {
+  test.setTimeout(240_000);
+  const errors = [];
+  await page.addInitScript(() => {
+    // Safari 17+'s audio session, which Chromium lacks; and every connection to the speakers counted
+    Object.defineProperty(navigator, "audioSession", { value: { type: "auto" }, configurable: true });
+    window.__toSpeakers = 0;
+    const connect = AudioNode.prototype.connect;
+    AudioNode.prototype.connect = function (to, ...rest) {
+      if (to instanceof AudioDestinationNode) window.__toSpeakers++;
+      return connect.call(this, to, ...rest);
+    };
+  });
+  await openSite(page, SETUPS.english, { errors });
+  const panel = page.locator("#lsn");
+  await page.locator("#lsb").click();
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 180_000 });
+  expect(await page.evaluate(() => navigator.audioSession.type)).toBe("play-and-record");
+  // past the second and a half after which a browser that heard nothing is joined to the speakers
+  await page.waitForTimeout(2500);
+  expect(await page.evaluate(() => window.__toSpeakers)).toBe(0);
+  await panel.getByRole("button", { name: "Stop" }).click();
+  expect(await page.evaluate(() => navigator.audioSession.type)).toBe("auto");
+  expect(errors).toEqual([]);
+});
