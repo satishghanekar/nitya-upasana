@@ -6,8 +6,12 @@
 import { test, expect } from "@playwright/test";
 import { buildAll, openSite, SETUPS } from "./helpers.mjs";
 
+// (launchOptions here replace the config's, so the pre-installed Chromium, PW_CHROMIUM_PATH, is named again)
 test.use({
-  launchOptions: { args: ["--use-fake-device-for-media-stream", "--use-fake-ui-for-media-stream"] },
+  launchOptions: {
+    args: ["--use-fake-device-for-media-stream", "--use-fake-ui-for-media-stream"],
+    ...(process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {}),
+  },
   permissions: ["microphone"],
 });
 
@@ -232,4 +236,23 @@ test("while listening, the page's own thread stays free: the model runs in a wor
   );
   expect(long.filter((ms) => ms > 100)).toEqual([]);
   await page.locator("#lsb").click();
+});
+
+test("Settings → About says where Listen runs its model: the CPU here, the GPU where the browser gives one @chromium-only", async ({ page }) => {
+  const errors = [];
+  await openSite(page, SETUPS.english, { errors });
+  // (headless Chromium gives no GPU adapter: the CPU)
+  await expect(page.locator("#lswr")).not.toHaveAttribute("hidden", "");
+  await expect(page.locator("#lsw")).toHaveText("Listen runs on the CPU (processor)");
+  expect(errors).toEqual([]);
+});
+
+test("Settings → About says the GPU when the browser has WebGPU and an adapter @chromium-only", async ({ page }) => {
+  const errors = [];
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "gpu", { value: { requestAdapter: () => Promise.resolve({}) }, configurable: true });
+  });
+  await openSite(page, SETUPS.english, { errors });
+  await expect(page.locator("#lsw")).toHaveText("Listen runs on the GPU (graphics chip)");
+  expect(errors).toEqual([]);
 });

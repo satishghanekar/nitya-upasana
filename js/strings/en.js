@@ -466,6 +466,9 @@ export default {
     idle: function (n) {
       return "Listen stopped: no chanting heard for " + n + " minutes. Tap Listen to start again.";
     },
+    // Settings → More → About: where Listen runs its model on this device
+    onGpu: "Listen runs on the GPU (graphics chip)",
+    onCpu: "Listen runs on the CPU (processor)",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js): the arrow stays, the word may be left out on small phones
   bottomBar: {
