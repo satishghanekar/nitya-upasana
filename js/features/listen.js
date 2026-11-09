@@ -214,7 +214,14 @@ function showWay(w) {
 // In the tap (Listen, or Download): Safari starts sound and asks for the microphone only in one
 function begin() {
   var w = menuWords("listen");
-  /** @type {any} */ var win = window;
+  /** @type {any} */ var win = window,
+    /** @type {any} */ nav = navigator;
+  // (Safari 17+: say the page records, before the microphone starts, so iOS may leave another app's music playing;
+  // set back on Stop)
+  if (nav.audioSession)
+    try {
+      nav.audioSession.type = "play-and-record";
+    } catch (e) {}
   ctx = new (win.AudioContext || win.webkitAudioContext)();
   var mic = navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
   phase = "load";
@@ -241,6 +248,11 @@ function stop() {
     });
   if (node) node.port.onmessage = null;
   if (ctx) ctx.close().catch(function () {});
+  /** @type {any} */ var nav = navigator;
+  if (nav.audioSession)
+    try {
+      nav.audioSession.type = "auto";
+    } catch (e) {}
   stream = null;
   node = null;
   ctx = null;
@@ -463,13 +475,24 @@ async function run(s) {
   if (off() || !ctx) return;
   ring = new Float32Array(Math.round(ctx.sampleRate * WINDOW));
   got = 0;
-  node = new AudioWorkletNode(ctx, "listen-tap");
-  node.port.onmessage = function (e) {
+  // The tap has no output and is not joined to the speakers: a page that plays sound makes iOS pause another app's
+  // music. A browser that runs it only when joined to the speakers (no sound in a second and a half): joined then.
+  var tap = new AudioWorkletNode(ctx, "listen-tap", { numberOfOutputs: 0 });
+  node = tap;
+  tap.port.onmessage = function (e) {
     push(e.data);
   };
-  ctx.createMediaStreamSource(s).connect(node);
-  // (the tap writes nothing out; joined to the speakers only so that every browser runs it)
-  node.connect(ctx.destination);
+  ctx.createMediaStreamSource(s).connect(tap);
+  setTimeout(function () {
+    if (node === tap && !got && ctx) {
+      var out = new AudioWorkletNode(ctx, "listen-tap");
+      out.port.onmessage = tap.port.onmessage;
+      tap.port.onmessage = null;
+      node = out;
+      ctx.createMediaStreamSource(s).connect(out);
+      out.connect(ctx.destination);
+    }
+  }, 1500);
   phase = "run";
   aliveAt = performance.now();
   ticker = setInterval(tick, 250);
