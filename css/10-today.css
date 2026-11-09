@@ -368,8 +368,9 @@
 }
 
 /* ==== A session being read (data-run, js/features/today-card.js): only its texts (.inrun) are on the reading page,
-   not the rest of the Library, one after another in one scroll, in session order (each piece's CSS order, set by
-   runOne(); the page itself keeps the Library's order). Screen only, and only the page's own pieces (#main > .ash): Print builds its own from
+   not the rest of the Library, one after another in one scroll, in session order (runMark() moves them into it in the
+   page, and each has its CSS order too), each numbered by its place in the session (.rno) instead of the Library's
+   number. Screen only, and only the page's own pieces (#main > .ash): Print builds its own from
    the texts (js/print/compose.js), and it reads what is shown of them, so a broader rule printed every text empty,
    title only (Satish, 2026-10-22) ==== */
 @media screen {
@@ -379,6 +380,9 @@
   :root[data-run="1"]:not([data-hv]) #main {
     display: flex;
     flex-direction: column;
+  }
+  :root[data-run="1"] #main > .ash.inrun h2 > .no:not(.rno) {
+    display: none;
   }
   /* no scroll anchoring while a session runs: the browser picks its anchor in the page's order, not the session's, and
      when a text above grows (fonts, line breaks) it could throw the reader thousands of pixels back, onto another
