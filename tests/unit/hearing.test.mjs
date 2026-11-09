@@ -1,12 +1,12 @@
 // Hearing the chanting (js/core/hearing.js): the sound brought to the model and its answer read as letters must be
 // exactly as the model's Python side does it, or the model hears something else on the phone than it was tested on.
-// models/chant-v3/check.json holds what the model chose at each step of the check sound (shravan/package.py tone),
+// models/chant-v4/check.json holds what the model chose at each step of the check sound (shravan/package.py tone),
 // and the words the Python side read from it.
 import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
 import { choices, normalize, readLetters, resample } from "../../js/core/hearing.js";
 
-const dir = new URL("../../models/chant-v3/", import.meta.url);
+const dir = new URL("../../models/chant-v4/", import.meta.url);
 const model = JSON.parse(readFileSync(new URL("model.json", dir), "utf8"));
 const check = JSON.parse(readFileSync(new URL("check.json", dir), "utf8"));
 const names = JSON.parse(readFileSync(new URL("letters.json", dir), "utf8"));

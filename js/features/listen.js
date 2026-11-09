@@ -3,10 +3,11 @@
 // bar) while an aarti or a chant is going on: the line being chanted is marked (.lsn) and kept in view, the text is
 // opened if another one is on screen, and the place follows the chanting until Stop. Everything happens on the phone:
 // no sound leaves it.
-// - The model (models/chant-v3/, a CTC model, wav2vec2, trained in the shravan-model repository, about 108 MB) and the
+// - The model (models/chant-v4/, a CTC model, wav2vec2, trained in the shravan-model repository, about 108 MB) and the
 //   library that runs it (vendor/onnxruntime/, about 14 MB) are downloaded once, the first time, after the reader
 //   agrees, and kept in their own cache, "nitya-listen", which a new version of the site leaves alone (sw.js). Each
-//   piece is checked against its SHA-256 before it is kept.
+//   piece is checked against its SHA-256 before it is kept. (chant-v4, 2026-11-09: trained on four times as much
+//   chanting as v3, it hears the family's voices and the Lalita Sahasranama a little better, at the same size and speed.)
 // - The microphone feeds an AudioWorklet (js/worklets/listen-tap.js), so no sound is lost while the model works.
 //   Every EVERY seconds of new sound (or as soon as the model is free after that), it hears the last WINDOW seconds.
 //   Near the mark, its scores are lined up with the text there (js/core/align.js); when they don't fit, or the place
@@ -31,14 +32,14 @@ import { titleText } from "../text/iast.js";
 import { jumpTo } from "./history.js";
 import { topEdge } from "./bottom-bar.js";
 
-var MODEL = "models/chant-v3/",
+var MODEL = "models/chant-v4/",
   ORT = "vendor/onnxruntime/",
   TAP = "js/worklets/listen-tap.js",
   CACHE = "nitya-listen",
   // the library's WebAssembly (its CPU build, vendor/onnxruntime/README.md), in pieces if ever over 20 MB, checked whole
   WASM = [{ file: "ort-wasm-simd-threaded.wasm", bytes: 14239897 }],
   WASM_SHA256 = "3398c10d07d229bd91b364548e130e0e51a8e5704b88c7c083ebbeb78842dee2",
-  // the download, in MB, as the question names it: the model's pieces (models/chant-v3/model.json) and the library
+  // the download, in MB, as the question names it: the model's pieces (models/chant-v4/model.json) and the library
   SIZE_MB = 122,
   // seconds of sound heard each time (about 30 letters, enough to tell the place), and of new sound before the next
   WINDOW = 4,

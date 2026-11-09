@@ -39,18 +39,19 @@ test("Download, then listening to the microphone until Stop; the second time it 
   const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
   expect(kept).toEqual(
     expect.arrayContaining([
-      "/models/chant-v3/model.onnx",
-      "/models/chant-v3/model.onnx.6",
-      "/models/chant-v3/letters.json",
+      "/models/chant-v4/model.onnx",
+      "/models/chant-v4/model.onnx.6",
+      "/models/chant-v4/letters.json",
       "/vendor/onnxruntime/ort.wasm.bundle.min.mjs",
       "/vendor/onnxruntime/ort-wasm-simd-threaded.wasm",
     ]),
   );
   // the model, run by ONNX Runtime Web here, scores the check sound as the model's Python side did (check.json): the
-  // same choice at every step, and scores within 0.3 of its own, which run from about -13 to 10 (the int8 arithmetic
-  // rounds a little differently in WebAssembly: up to 0.18 apart, 2026-11-07)
+  // same choice at every step, and scores within 0.4 of its own, which run from about -14 to 11 (the int8 arithmetic
+  // rounds a little differently in WebAssembly: chant-v3 up to 0.18 apart, chant-v4 0.31, 2026-11-09; at every step
+  // of the check sound the first choice is at least 7 above the second, so this never changes what is heard)
   const got = await page.evaluate(async () => {
-    const check = await (await fetch("models/chant-v3/check.json")).json();
+    const check = await (await fetch("models/chant-v4/check.json")).json();
     const a = new Float32Array(48000);
     for (let i = 0; i < a.length; i++) {
       const t = i / 16000;
@@ -64,7 +65,7 @@ test("Download, then listening to the microphone until Stop; the second time it 
     return { same: JSON.stringify(h.choices(out.data, n)) === JSON.stringify(check.ids), far };
   });
   expect(got.same).toBe(true);
-  expect(got.far).toBeLessThan(0.3);
+  expect(got.far).toBeLessThan(0.4);
   await panel.getByRole("button", { name: "Stop" }).click();
   await expect(panel).toBeHidden();
   await page.locator("#lsb").click();
