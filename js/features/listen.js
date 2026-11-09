@@ -28,7 +28,7 @@ import { align, latest, logProbs, target } from "../core/align.js";
 import { LEAST, PACE, ahead, correct, letters, lineAt, locate, makeDoc, nextPace, pieceLines } from "../core/follow.js";
 import { pieceEl, root } from "../core/page.js";
 import { unfold } from "../core/apply.js";
-import { menuWords } from "../core/strings.js";
+import { fillWords, menuWords } from "../core/strings.js";
 import { esc, nameLang, num } from "../core/words.js";
 import { titleText } from "../text/iast.js";
 import { jumpTo } from "./history.js";
@@ -139,6 +139,8 @@ export function init() {
   if (!btn || !bar) return;
   // (a phone with no microphone access or no AudioWorklet can't listen: no button)
   btn.hidden = !(navigator.mediaDevices && window.AudioWorkletNode && window.WebAssembly);
+  // (Settings → More → About says where the model runs here: the same choice Listen makes when started)
+  if (!btn.hidden) way().then(showWay);
   btn.addEventListener("click", function () {
     if (phase === "off") start();
     else stop();
@@ -196,6 +198,17 @@ export async function way() {
     how = gpu ? WAYS.gpu : WAYS.cpu;
   }
   return how === WAYS.gpu ? "gpu" : "cpu";
+}
+
+/** Settings → More → About: where Listen runs its model on this device (#lswr), in the menu language
+ * @param {"gpu" | "cpu"} w */
+function showWay(w) {
+  var row = document.getElementById("lswr"),
+    el = document.getElementById("lsw");
+  if (!row || !el) return;
+  el.innerHTML = '<span data-w="listen.' + (w === "gpu" ? "onGpu" : "onCpu") + '"></span>';
+  fillWords(el);
+  row.hidden = false;
 }
 
 // In the tap (Listen, or Download): Safari starts sound and asks for the microphone only in one
@@ -402,6 +415,7 @@ async function load() {
       localStorage.setItem(NO_GPU, "1");
     } catch (x) {}
     how = WAYS.cpu;
+    showWay("cpu");
     ort = null;
     return load();
   }
