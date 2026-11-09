@@ -30,6 +30,7 @@ import { menuWords } from "../core/strings.js";
 import { esc, nameLang, num } from "../core/words.js";
 import { titleText } from "../text/iast.js";
 import { jumpTo } from "./history.js";
+import { leaveFor } from "./today-card.js";
 import { topEdge } from "./bottom-bar.js";
 
 var MODEL = "models/chant-v4/",
@@ -547,14 +548,18 @@ function place(doc, pos, at) {
 function open(id) {
   var el = pieceEl(id);
   if (!el) return;
+  // (Satish, 2026-11-09: a Library text chanted during the day's routine was named but never shown: the page shows only
+  // the session's texts while one is read. Now the session is left for it, as the Library does, and the text unfolded
+  // if folded; and the page always goes to the line being chanted, even just after the reader touched it)
+  leaveFor(el);
+  unfold(el);
   if (root.hasAttribute("data-hv") || !el.getClientRects().length) {
     var to = el;
-    unfold(to);
     jumpTo(function () {
       to.scrollIntoView();
     }, "#" + id);
-    jumped = true;
   }
+  jumped = true;
   shown = -1;
   var en = nameLang() !== "mr";
   msg.innerHTML = menuWords("listen").following('<b lang="' + (en ? "en" : "mr") + '">' + esc(titleText(id, en)) + "</b>");
