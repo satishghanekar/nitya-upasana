@@ -769,3 +769,30 @@ test("the version line: the version, its state under it, and the round Check for
     expect(Math.round(b.width) + "x" + Math.round(b.height), w + ": 44px").toBe("44x44");
   }
 });
+
+test("scrolling through a text: every verse on screen is shown at once, with no fade-in to blank it @mobile", async ({ page }) => {
+  // (Satish, 2026-11-09: each verse used to show, go blank and fade back in once it was well on screen, so a page read
+  // flickered all the way down; the same in both apps)
+  const errors = [];
+  await openSite(page, SETUPS.english, { errors });
+  const id = await page.evaluate(() => {
+    const ps = window.CONTENT.categories.flatMap((c) => c.pieces);
+    return ps.reduce((a, b) => ((b.items || []).length > (a.items || []).length ? b : a)).id;
+  });
+  await page.goto("./#" + id);
+  await page.waitForTimeout(600);
+  for (let i = 0; i < 4; i++) {
+    await page.mouse.wheel(0, 900);
+    const hidden = await page.evaluate(async () => {
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      return [...document.querySelectorAll(".ash .item")]
+        .filter((x) => {
+          const r = x.getBoundingClientRect();
+          return r.bottom > 0 && r.top < innerHeight && r.height > 0;
+        })
+        .filter((x) => x.getAnimations().length || getComputedStyle(x).opacity !== "1").length;
+    });
+    expect(hidden).toBe(0);
+  }
+  expect(errors).toEqual([]);
+});
