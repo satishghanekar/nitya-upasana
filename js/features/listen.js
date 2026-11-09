@@ -22,8 +22,8 @@
 // - The page scrolls only while the reader leaves it alone (CALM after a touch, a wheel or a key).
 
 import { choices, normalize, readLetters, resample } from "../core/hearing.js";
-import { align, logProbs, target } from "../core/align.js";
-import { PACE, ahead, correct, lineAt, locate, makeDoc, nextPace, pieceLines } from "../core/follow.js";
+import { align, latest, logProbs, target } from "../core/align.js";
+import { LEAST, PACE, ahead, correct, letters, lineAt, locate, makeDoc, nextPace, pieceLines } from "../core/follow.js";
 import { pieceEl, root } from "../core/page.js";
 import { unfold } from "../core/apply.js";
 import { menuWords } from "../core/strings.js";
@@ -62,7 +62,15 @@ var MODEL = "models/chant-v4/",
   BACK = 60,
   FORTH = 250,
   FIT = -0.6,
-  COVER = 10;
+  COVER = 10,
+  // seconds at the end of the window that must fit near the mark too, or the place is looked for afresh: after a jump,
+  // the window is mostly the old chanting for a second or two and fits there as a whole
+  RECENT = 1,
+  // when the window doesn't fit near the mark, the letters of only its last TAIL seconds are looked for first: for a
+  // second or two after a jump the whole window is half the old chanting, which matches neither place. Together, on a
+  // recording that jumps to another text every 45 s (2026-11-09): a new place found in 3.8 s on average instead of
+  // 4.4, the jump into SJ's group chanting in 11 s instead of 25, and steady chanting followed as before (97–100%)
+  TAIL = 2.5;
 
 /** off: nothing; ask: the download question; load: downloading and starting; run: listening @type {"off" | "ask" | "load" | "run"} */
 var phase = "off";
@@ -463,7 +471,11 @@ async function loop() {
       outputs = out.dims[2];
     // near the mark: the window lined up with the text there; else (or if it doesn't fit) its letters looked for
     if (mark && alignAt(logProbs(out.data, outputs), outputs, began)) continue;
-    var h = readLetters(choices(out.data, outputs), model.names, model.info.blank, model.info.word);
+    var ch = choices(out.data, outputs),
+      cut = Math.max(0, ch.length - Math.round((TAIL * 1000) / model.info.step_ms)),
+      t = mark && cut ? readLetters(ch.slice(cut), model.names, model.info.blank, model.info.word) : null;
+    if (t && letters(t.text).length >= LEAST && follow(t.text, began + (cut + t.last + 1) * model.info.step_ms)) continue;
+    var h = readLetters(ch, model.names, model.info.blank, model.info.word);
     if (h.last >= 0) follow(h.text, began + (h.last + 1) * model.info.step_ms);
   }
 }
@@ -480,6 +492,8 @@ function alignAt(lp, outputs, began) {
     tg = target(doc.text.slice(from, Math.ceil(here + FORTH)), model.ids, from),
     a = align(lp, outputs, tg.ids, model.info.blank, model.info.word);
   if (!a || a.fit < FIT || a.letters < COVER) return false;
+  var fresh = align(latest(lp, outputs, Math.round((RECENT * 1000) / model.info.step_ms)), outputs, tg.ids, model.info.blank, model.info.word);
+  if (!fresh || fresh.fit < FIT) return false;
   var pos = tg.at[a.end] + 1;
   // the dhrupad said again after a stanza (lined up back where it is written, once): the mark waits where it is until
   // the text goes on, as locate() has it; the first time through, it is followed like any line
@@ -521,26 +535,27 @@ function pauseAt(now) {
 /** What the model heard, followed: the place found becomes the mark, which moves on at the chanting's pace (tick)
  * until the next place found. Exported for the tests, which give it what the model would write.
  * @param {string} heard @param {number} [end]  when the sound heard ended (performance.now()), so the time the
- *   model took is made up for */
+ *   model took is made up for @returns {boolean} whether it was found (or another text heard, to be heard again) */
 export function follow(heard, end) {
   var all = texts(),
     now = performance.now(),
     at = end === undefined ? now : end,
     cur = mark ? { doc: mark.doc, line: lineAt(all[mark.doc], Math.max(0, ahead(mark, pace, now, all[mark.doc].text.length) - 1)) } : null,
     r = locate(heard, all, cur);
-  if (!r) return;
+  if (!r) return false;
   // the dhrupad: the mark waits where it is until the text goes on
   if (r.held) {
     pauseAt(now);
-    return;
+    return true;
   }
   // another text: only once it is heard twice in a row
   if (cur && r.doc !== cur.doc && !(pending && pending.doc === r.doc)) {
     pending = { doc: r.doc, line: r.line };
-    return;
+    return true;
   }
   pending = null;
   place(r.doc, r.end, at);
+  return true;
 }
 
 /** A place found: the letter `pos` of a text was chanted at `at` (performance.now()); the mark set from there, the
