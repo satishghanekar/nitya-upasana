@@ -108,32 +108,12 @@
   font-weight: 500;
 }
 
-/* ==== Gentle fade-in on scroll (class added and removed by the script) ==== */
-@keyframes fxin {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.fx-in {
-  animation: fxin 0.5s ease-out;
-}
-@media (prefers-reduced-motion: reduce) {
-  .fx-in {
-    animation: none;
-  }
-}
+/* (no fade-in of verses as they scroll into view: it began only once a verse was well on screen, so each one showed,
+   went blank and came back, and a page being read flickered all the way down; Satish, 2026-11-09) */
 @media print {
   #prog,
   .fin {
     display: none !important;
-  }
-  .fx-in {
-    animation: none !important;
   }
   .rmk {
     background: none !important;
