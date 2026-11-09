@@ -360,6 +360,47 @@ test("a session runs on in one scroll, in session order, with only its texts @mo
   await expect.poll(() => shown(page)).toEqual(["a3", "a1", "a2"]);
 });
 
+test("a session's texts are in session order in the page itself, numbered by the session, for screen readers and Tab @mobile", async ({ page }) => {
+  // a session whose order is not the Library's: the Ganapati aarti (a1) after the Devi aarti (a3)
+  await page.route("**/content/routines.json", (r) =>
+    r.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({ short: { ...ROUTINE, evening: { mode: "fixed", texts: [AARTIS[2], AARTIS[0], AARTIS[1]] } } }),
+    }),
+  );
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await rows(page).nth(0).locator("a.tgo").click();
+  await expect.poll(() => onPiece(page)).toBe("a3");
+  // the page's own order (what screen readers and Tab follow), not only the order shown
+  const inPage = () => page.evaluate(() => [...document.querySelectorAll("#main > .ash.inrun")].map((x) => x.id));
+  expect(await inPage()).toEqual(["a3", "a1", "a2"]);
+  // each numbered by its place in the session, as on Home's list; the Library's number hidden while it runs
+  const numbers = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll("#main > .ash.inrun h2")].map((h) =>
+        [...h.querySelectorAll(".no > span")]
+          .filter((n) => n.getClientRects().length)
+          .map((n) => n.textContent)
+          .join(" "),
+      ),
+    );
+  expect(await numbers()).toEqual(["१.", "२.", "३."]);
+  // Tab goes from the first text's fold button to the second's, each told apart by its text's title
+  await page.locator("#a3 .afb").focus();
+  await expect(page.locator("#a3 .afb")).toHaveAccessibleDescription(/देवीची आरती/);
+  let next = "";
+  for (let i = 0; i < 40 && !next; i++) {
+    await page.keyboard.press("Tab");
+    next = await page.evaluate(() => (document.activeElement.matches(".afb") ? document.activeElement.closest(".ash").id : ""));
+  }
+  expect(next).toBe("a1");
+  // leaving the session puts the pieces back in the Library's order, with the Library's numbers
+  await page.locator("#ash").click();
+  await expect(page.locator("html")).not.toHaveAttribute("data-run", "1");
+  expect(await page.evaluate(() => [...document.querySelectorAll("#main > .ash")].map((x) => x.id))).toEqual(["a1", "a2", "a3"]);
+  await expect(page.locator("#main .rno")).toHaveCount(0);
+});
+
 // The bug Satish found (2026-10-22): ‹ Prev on a session's first text opened the Library's text before it, outside the
 // session, and Next then followed the Library
 test("‹ Prev on a session's first text goes back to Home, never out of the session @mobile", async ({ page }) => {

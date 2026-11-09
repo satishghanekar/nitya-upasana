@@ -84,6 +84,35 @@ export function pieceEl(id) {
   return el;
 }
 
+/**
+ * Put the pieces built so far in this order in the page: the ones named first (a session being read, in its order),
+ * then the rest in reading order; with none named, all of them in reading order. Screen readers and the Tab key follow
+ * the page's order, so a session must be in it, not only shown in it (WCAG 1.3.2, 2.4.3). A piece already in its
+ * place is not moved.
+ * @param {string[] | null} first  the pieces' ids
+ */
+export function arrange(first) {
+  var mark = document.getElementById("pieces");
+  if (!mark || !mark.parentNode) return;
+  /** @type {HTMLElement[]} */
+  var lead = [];
+  (first || []).forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el && secs.indexOf(el) >= 0 && lead.indexOf(el) < 0) lead.push(el);
+  });
+  var want = lead.concat(
+      secs.filter(function (s) {
+        return lead.indexOf(s) < 0;
+      }),
+    ),
+    box = mark.parentNode;
+  // from the end: each piece goes just before the one that should follow it
+  for (var i = want.length - 1, after = /** @type {Element} */ (mark); i >= 0; i--) {
+    if (want[i].nextElementSibling !== after) box.insertBefore(want[i], after);
+    after = want[i];
+  }
+}
+
 // Short message near the top of the screen (Marathi text m, English text e). It has its own element,
 // separate from the text-size bubble, so a pinch can't wipe it and screen readers hear it on its own.
 export function flash(m, e, ms) {

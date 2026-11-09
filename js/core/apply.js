@@ -41,6 +41,13 @@ export function init() {
       scrollBy(0, h.getBoundingClientRect().top - y);
       mark();
     };
+    // the text it folds, heard after its name ("Fold this piece, सुखकर्ता दुःखहर्ता"): every piece's button has the same
+    // name, so a screen reader moving through a session can tell them apart
+    var t = h.querySelector("h2");
+    if (t) {
+      if (!t.id) t.id = x.id + "-h";
+      b.setAttribute("aria-describedby", t.id);
+    }
     h.appendChild(b);
     // One-hand use: a tap anywhere on the heading folds or opens the piece, not only on ⌃
     // (the ⌃ stays for keyboards and screen readers; links in the heading still work)
