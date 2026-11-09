@@ -1,7 +1,7 @@
 // Lining the sound up with the text (js/core/align.js): made-up scores, as the model would give them for a stretch of
 // chanting, lined up with a text; the letter it ends on, when that letter began, and how well it fits.
 import { describe, expect, test } from "vitest";
-import { align, logProbs, target } from "../../js/core/align.js";
+import { align, latest, logProbs, target } from "../../js/core/align.js";
 
 // a small alphabet: 0 the blank, 1 the word break, then the letters
 const IDS = { क: 2, म: 3, ल: 4, न: 5, ग: 6 };
@@ -63,5 +63,22 @@ describe("align", () => {
   });
   test("an empty stretch: nothing", () => {
     expect(align(scores([2, 3]), O, [], 0, 1)).toBeNull();
+  });
+});
+
+describe("latest", () => {
+  // a jump: the window is mostly the old place (क म ल, in the stretch) and ends on another text (न ग, never in it)
+  const stretch = target("कमलकमल", IDS, 0).ids;
+  const lp = scores([2, 2, 0, 3, 3, 0, 4, 4, 0, 2, 2, 0, 3, 3, 5, 5, 6, 6, 5, 6]);
+  test("the window as a whole still fits the old place better than its newest steps do", () => {
+    const whole = align(lp, O, stretch, 0, 1);
+    const fresh = align(latest(lp, O, 6), O, stretch, 0, 1);
+    expect(whole.fit).toBeGreaterThan(fresh === null ? -Infinity : fresh.fit);
+    expect(fresh === null || fresh.fit < -0.6).toBe(true);
+  });
+  test("its last steps, each with every output; the whole window when it is shorter", () => {
+    expect(latest(lp, O, 6).length).toBe(6 * O);
+    expect(Array.from(latest(lp, O, 6))).toEqual(Array.from(lp.slice(14 * O)));
+    expect(latest(lp, O, 50)).toBe(lp);
   });
 });
