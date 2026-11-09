@@ -462,6 +462,10 @@ export default {
     noMic: "Listen needs the microphone. Allow it for this site in the phone's settings, then try again.",
     offline: "No internet. Listen downloads once; try again when online.",
     failed: "Listen could not start on this phone.",
+    /** @param {string} n  minutes */
+    idle: function (n) {
+      return "Listen stopped: no chanting heard for " + n + " minutes. Tap Listen to start again.";
+    },
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js): the arrow stays, the word may be left out on small phones
   bottomBar: {
