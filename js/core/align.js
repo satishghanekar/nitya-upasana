@@ -124,3 +124,12 @@ export function align(lp, outputs, ids, blank, word) {
   if (lastL[best] < 0) return null;
   return { end: lastL[best], step: lastT[best], letters: lastL[best] - firstL[best] + 1, fit: (cur[best] - own) / steps };
 }
+
+/** The last `steps` steps of a window's log-probabilities (logProbs), to line up on their own: whether the newest
+ * sound still fits where the whole window does. After a jump to another place, a window is mostly the old chanting for
+ * a second or two and still fits there as a whole (Satish, 2026-11-09)
+ * @param {Float32Array} lp @param {number} outputs @param {number} steps @returns {Float32Array} */
+export function latest(lp, outputs, steps) {
+  var all = lp.length / outputs;
+  return all > steps ? lp.subarray((all - steps) * outputs) : lp;
+}

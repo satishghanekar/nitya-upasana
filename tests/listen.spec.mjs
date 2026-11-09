@@ -199,3 +199,16 @@ test("after 5 minutes with no chanting followed, Listen stops by itself and says
   await expect(panel).toBeHidden();
   expect(errors).toEqual([]);
 });
+
+test("follow() says whether what was heard was found, so the newest letters alone are tried before the whole window @chromium-only", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  const r = await page.evaluate(async () => {
+    const p = window.CONTENT.categories.flatMap((c) => c.pieces).find((x) => x.text === "vedic-chant-pavamana-suktam");
+    const lines = p.items.flatMap((i) => i.lines || []);
+    const at = lines.findIndex((l) => l.mr.includes("९.००१.०२"));
+    const heard = (lines[at - 1].mr + " " + lines[at].mr).replace(/<[^>]*>/g, "").replace(/[॑-॔᳐-᳿।॥०-९.]/g, "");
+    const m = await import(new URL("js/features/listen.js", document.baseURI).href);
+    return { found: m.follow(heard, performance.now()), nothing: m.follow("क्ष्क्ष्क्ष्क्ष्क्ष्क्ष्क्ष्क्ष्क्ष्क्ष्", performance.now()) };
+  });
+  expect(r).toEqual({ found: true, nothing: false });
+});
