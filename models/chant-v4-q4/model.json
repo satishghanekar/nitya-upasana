@@ -1,0 +1,35 @@
+{
+ "name": "chant-v4-q4",
+ "kind": "ctc",
+ "model": [
+  {
+   "file": "model.onnx",
+   "bytes": 20000000,
+   "sha256": "162f3bfb59cf659eb06a20bd44faf99602f9f1a0d92f2e40b215e2aeddd5da6f"
+  },
+  {
+   "file": "model.onnx.2",
+   "bytes": 20000000,
+   "sha256": "a79da5a8a7ced6c38bd8620fee37f3269813f4b859903d5d32c2de4f5edb5529"
+  },
+  {
+   "file": "model.onnx.3",
+   "bytes": 20000000,
+   "sha256": "58a38c1f2cfde2aafe122300eebf8828fdaa2ea98b626b8cbfd821e73b003900"
+  },
+  {
+   "file": "model.onnx.4",
+   "bytes": 20000000,
+   "sha256": "81a15d6ab8a63778cfe3e3b5d14419be5ed8f149c20020932e9df56859db4413"
+  },
+  {
+   "file": "model.onnx.5",
+   "bytes": 9699661,
+   "sha256": "0fe9ddfed32c53cf7fa8fd19d91c977e8e463b02de30ca094f9908ce15c8948e"
+  }
+ ],
+ "rate": 16000,
+ "step_ms": 20.0,
+ "blank": 0,
+ "word": 4
+}

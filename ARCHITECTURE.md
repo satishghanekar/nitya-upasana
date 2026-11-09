@@ -106,13 +106,17 @@ repository) hears
 the chanting on the phone itself, so the app can follow along. Nothing leaves the phone. The model is downloaded only
 when Listen is used, never with the page, in pieces of at most 20 MB (Cloudflare Pages serves none over 25 MiB), each
 checked against its SHA-256 in `model.json`. It runs in ONNX Runtime Web (`vendor/onnxruntime/`, the one exception to
-"no runtime packages", with `'wasm-unsafe-eval'` in the security policy), on the CPU (its WebAssembly build only, 14 MB). The arithmetic
+"no runtime packages", with `'wasm-unsafe-eval'` in the security policy). The arithmetic
 around it is plain, unit-tested JavaScript (`js/core/hearing.js`): sound into the model's input, its answer (the
-likeliest letter for every 20 ms) into words. It runs on the CPU on every core: the site is cross-origin isolated (`Cross-Origin-Opener-Policy` and
-`-Embedder-Policy` in `_headers`; it loads nothing from other sites anyway). Through WebGPU, an iPhone's Safari
-computed nonsense with the int8 model, and slower (2026-11-05), so the CPU it is, and the library's build without
-WebGPU (14 MB instead of 28, 2026-11-07). **Listen** (`js/features/listen.js`, the microphone in the bottom bar) uses it: the first time, after the reader
-agrees, it downloads the model and the library (about 122 MB) into the cache `nitya-listen`, which `sw.js` keeps
+likeliest letter for every 20 ms) into words. Where the browser has WebGPU it runs on the GPU: the model with its weights in 4 bits
+(`models/chant-v4-q4/`, 90 MB) and the library's WebGPU build (27 MB), three times quicker on an iPhone than the CPU
+(233 ms a hearing against 712, 2026-11-09) and far less work for the phone. Elsewhere, or if the GPU fails to start it
+(remembered), it runs on the CPU on every core: the 8-bit model (`models/chant-v4/`) and the library's CPU build
+(14 MB), in the library's own worker, never on the page's thread; the site is cross-origin isolated
+(`Cross-Origin-Opener-Policy` and `-Embedder-Policy` in `_headers`; it loads nothing from other sites anyway). A
+phone downloads only the way it uses. (Through the older WebGPU build an iPhone computed nonsense with the 8-bit
+model, 2026-11-05, so until 1.49 Listen used the CPU only.) **Listen** (`js/features/listen.js`, the microphone in the bottom bar) uses it: the first time, after the reader
+agrees, it downloads the model and the library (about 117 MB for the GPU, 122 MB for the CPU) into the cache `nitya-listen`, which `sw.js` keeps
 across versions and gives the library and the microphone tap (`js/worklets/listen-tap.js`) from, so Listen works
 offline. Every half second of new sound it hears the last 4 s. Near the mark, the model's scores are lined up with
 the text there (`js/core/align.js`, CTC forced alignment); when they don't fit, or the place isn't known yet,
