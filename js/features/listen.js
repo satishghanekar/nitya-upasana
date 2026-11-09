@@ -3,10 +3,12 @@
 // bar) while an aarti or a chant is going on: the line being chanted is marked (.lsn) and kept in view, the text is
 // opened if another one is on screen, and the place follows the chanting until Stop. Everything happens on the phone:
 // no sound leaves it.
-// - The model (models/chant-v4/, a CTC model, wav2vec2, trained in the shravan-model repository, about 108 MB) and the
-//   library that runs it (vendor/onnxruntime/, about 14 MB) are downloaded once, the first time, after the reader
-//   agrees, and kept in their own cache, "nitya-listen", which a new version of the site leaves alone (sw.js). Each
-//   piece is checked against its SHA-256 before it is kept. (chant-v4, 2026-11-09: trained on four times as much
+// - The model (a CTC model, wav2vec2, trained in the shravan-model repository) and the library that runs it
+//   (vendor/onnxruntime/) are downloaded once, the first time, after the reader agrees: on the GPU where the browser
+//   has WebGPU (models/chant-v4-q4/, 4-bit, and the library's WebGPU build, about 117 MB), else on the CPU
+//   (models/chant-v4/, 8-bit, and its CPU build, about 122 MB; WAYS, way()), and kept in their own cache,
+//   "nitya-listen", which a new version of the site leaves alone (sw.js). Each piece is checked against its SHA-256
+//   before it is kept. (chant-v4, 2026-11-09: trained on four times as much
 //   chanting as v3, it hears the family's voices and the Lalita Sahasranama a little better, at the same size and speed.)
 // - The microphone feeds an AudioWorklet (js/worklets/listen-tap.js), so no sound is lost while the model works.
 //   Every EVERY seconds of new sound (or as soon as the model is free after that), it hears the last WINDOW seconds.
@@ -33,15 +35,38 @@ import { jumpTo } from "./history.js";
 import { leaveFor } from "./today-card.js";
 import { topEdge } from "./bottom-bar.js";
 
-var MODEL = "models/chant-v4/",
-  ORT = "vendor/onnxruntime/",
+var ORT = "vendor/onnxruntime/",
   TAP = "js/worklets/listen-tap.js",
   CACHE = "nitya-listen",
-  // the library's WebAssembly (its CPU build, vendor/onnxruntime/README.md), in pieces if ever over 20 MB, checked whole
-  WASM = [{ file: "ort-wasm-simd-threaded.wasm", bytes: 14239897 }],
-  WASM_SHA256 = "3398c10d07d229bd91b364548e130e0e51a8e5704b88c7c083ebbeb78842dee2",
-  // the download, in MB, as the question names it: the model's pieces (models/chant-v4/model.json) and the library
-  SIZE_MB = 122,
+  /** The two ways to run the model (Satish, 2026-11-09): on the GPU where the browser has WebGPU, else on the CPU. On
+   * an iPhone (Safari 27) a 4 s hearing took 712 ms on the CPU and 233 ms on the GPU with 4-bit weights (the 8-bit
+   * model on the GPU: 825 ms; 16-bit: 142 ms but 189 MB), each hearing as well on the held-out recordings. Each way:
+   * its model, its library (vendor/onnxruntime/README.md) and the library's WebAssembly, in pieces under 20 MB and
+   * checked whole, and the download in MB as the question names it.
+   * @type {Record<"gpu" | "cpu", { model: string, lib: string, wasm: { file: string, bytes: number }[], sha256: string, mb: number, ep: string }>} */
+  WAYS = {
+    gpu: {
+      model: "models/chant-v4-q4/",
+      lib: "ort.webgpu.bundle.min.mjs",
+      wasm: [
+        { file: "ort-wasm-simd-threaded.asyncify.wasm", bytes: 20000000 },
+        { file: "ort-wasm-simd-threaded.asyncify.wasm.2", bytes: 6781914 },
+      ],
+      sha256: "39f9f0894d478800487ed9f7dbe92618498db320cf55c8e3d89adff8dce658da",
+      mb: 117,
+      ep: "webgpu",
+    },
+    cpu: {
+      model: "models/chant-v4/",
+      lib: "ort.wasm.bundle.min.mjs",
+      wasm: [{ file: "ort-wasm-simd-threaded.wasm", bytes: 14239897 }],
+      sha256: "3398c10d07d229bd91b364548e130e0e51a8e5704b88c7c083ebbeb78842dee2",
+      mb: 122,
+      ep: "wasm",
+    },
+  },
+  // remembered when the GPU failed to start the model on this phone: the CPU from then on
+  NO_GPU = "nitya-listen-cpu",
   // seconds of sound heard each time (about 30 letters, enough to tell the place), and of new sound before the next
   WINDOW = 4,
   EVERY = 0.5,
@@ -81,6 +106,7 @@ var phase = "off";
 /** @type {HTMLButtonElement} */ var yes;
 /** @type {HTMLButtonElement} */ var no;
 /** @type {any} */ var ort = null;
+/** the way the model runs on this phone, once chosen (way()) @type {(typeof WAYS)["cpu"] | null} */ var how = null;
 /** @type {any} */ var model = null;
 /** @type {AudioContext | null} */ var ctx = null;
 /** @type {MediaStream | null} */ var stream = null;
@@ -151,8 +177,25 @@ async function start() {
   var w = menuWords("listen");
   phase = "ask";
   btn.setAttribute("aria-pressed", "true");
+  await way();
   if (model || (await stored())) begin();
-  else panel(esc(w.ask(num(SIZE_MB))), { yes: w.download, no: w.notNow });
+  else panel(esc(w.ask(num(/** @type {any} */ (how).mb))), { yes: w.download, no: w.notNow });
+}
+
+/** The GPU where the browser has WebGPU and a GPU to give (and it hasn't failed here before), else the CPU. Exported for
+ * the tests @returns {Promise<"gpu" | "cpu">} */
+export async function way() {
+  if (!how) {
+    /** @type {any} */ var nav = navigator,
+      gpu = false;
+    try {
+      gpu = !!nav.gpu && !localStorage.getItem(NO_GPU) && !!(await nav.gpu.requestAdapter());
+    } catch (e) {
+      gpu = false;
+    }
+    how = gpu ? WAYS.gpu : WAYS.cpu;
+  }
+  return how === WAYS.gpu ? "gpu" : "cpu";
 }
 
 // In the tap (Listen, or Download): Safari starts sound and asks for the microphone only in one
@@ -219,18 +262,19 @@ function abs(path) {
 async function stored() {
   var c = await box();
   if (!c) return false;
-  var m = await c.match(abs(MODEL + "model.json"));
+  var h = /** @type {(typeof WAYS)["cpu"]} */ (how),
+    m = await c.match(abs(h.model + "model.json"));
   if (!m) return false;
   var info = await m.json(),
-    files = [MODEL + "letters.json", ORT + "ort.wasm.bundle.min.mjs", TAP]
+    files = [h.model + "letters.json", ORT + h.lib, TAP]
       .concat(
-        WASM.map(function (x) {
+        h.wasm.map(function (x) {
           return ORT + x.file;
         }),
       )
       .concat(
         info.model.map(function (/** @type {any} */ x) {
-          return MODEL + x.file;
+          return h.model + x.file;
         }),
       );
   for (var f of files) if (!(await c.match(abs(f)))) return false;
@@ -296,14 +340,17 @@ function join(parts, size) {
 /** The library and the model, from the cache or downloaded; the progress bar counts the bytes */
 async function load() {
   if (model) return;
-  var c = await box(),
-    info = JSON.parse(new TextDecoder().decode(await file(c, MODEL + "model.json"))),
+  await way();
+  var h = /** @type {(typeof WAYS)["cpu"]} */ (how),
+    dir = h.model,
+    c = await box(),
+    info = JSON.parse(new TextDecoder().decode(await file(c, dir + "model.json"))),
     pieces = info.model,
     total =
       pieces.reduce(function (/** @type {number} */ n, /** @type {any} */ x) {
         return n + x.bytes;
       }, 0) +
-      WASM.reduce(function (n, x) {
+      h.wasm.reduce(function (n, x) {
         return n + x.bytes;
       }, 0),
     done = 0;
@@ -313,46 +360,61 @@ async function load() {
     prog.value = Math.min(100, Math.round((100 * done) / total));
   }
   var wasm = [];
-  for (var x of WASM) wasm.push(await file(c, ORT + x.file, undefined, tick));
+  for (var x of h.wasm) wasm.push(await file(c, ORT + x.file, undefined, tick));
   var binary = join(wasm);
-  if ((await sha256(binary)) !== WASM_SHA256) throw new Error("the library's WebAssembly is damaged");
+  if ((await sha256(binary)) !== h.sha256) throw new Error("the library's WebAssembly is damaged");
   /** @param {any[]} list */
   async function joined(list) {
     var out = [];
-    for (var p of list) out.push(await file(c, MODEL + p.file, p.sha256, tick));
+    for (var p of list) out.push(await file(c, dir + p.file, p.sha256, tick));
     return join(out);
   }
   var weights = await joined(info.model),
-    names = JSON.parse(new TextDecoder().decode(await file(c, MODEL + "letters.json")));
+    names = JSON.parse(new TextDecoder().decode(await file(c, dir + "letters.json")));
   // kept here too, so the service worker can give them offline (sw.js)
-  await file(c, ORT + "ort.wasm.bundle.min.mjs");
+  await file(c, ORT + h.lib);
   await file(c, TAP);
   if (phase === "off") throw new Error("stopped");
   panel(esc(menuWords("listen").starting), { no: menuWords("listen").stop });
   if (!ort) {
-    ort = await import(/* @vite-ignore */ abs(ORT + "ort.wasm.bundle.min.mjs"));
+    ort = await import(/* @vite-ignore */ abs(ORT + h.lib));
     ort.env.wasm.wasmBinary = binary.buffer;
     // every core (up to 4): the page is cross-origin isolated (_headers)
     ort.env.wasm.numThreads = window.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 1) : 1;
-    // the model run in a worker of its own, not on the page's thread: there, each hearing held the page for up to half
-    // a second, 42 s of every minute listening (Chromium on the M4, 2026-11-09), so scrolling and taps stuck
-    ort.env.wasm.proxy = true;
+    // on the CPU, the model run in a worker of its own, not on the page's thread: there, each hearing held the page for
+    // up to half a second, 42 s of every minute listening (Chromium on the M4, 2026-11-09), so scrolling and taps
+    // stuck. (On the GPU the work is the GPU's, and the library has no worker for it)
+    ort.env.wasm.proxy = h.ep === "wasm";
+    // only real errors: on the GPU it notes, as an error, the few shape steps it leaves to the CPU (as meant)
+    ort.env.logLevel = "error";
   }
-  var opts = { executionProviders: ["wasm"] };
   /** @type {Record<string, number>} */ var ids = {};
   names.forEach(function (/** @type {string} */ n, /** @type {number} */ i) {
     if (n && n !== "|") ids[n] = i;
   });
-  model = { info: info, names: names, ids: ids, session: await ort.InferenceSession.create(weights, opts) };
+  try {
+    var session = await ort.InferenceSession.create(weights, { executionProviders: [h.ep], logSeverityLevel: 3 });
+  } catch (e) {
+    if (h.ep === "wasm") throw e;
+    // the GPU couldn't run it here: the CPU from now on, on this phone (its own model and library, downloaded now)
+    console.warn("Listen: the GPU failed, the CPU instead:", e);
+    try {
+      localStorage.setItem(NO_GPU, "1");
+    } catch (x) {}
+    how = WAYS.cpu;
+    ort = null;
+    return load();
+  }
+  model = { info: info, names: names, ids: ids, session: session };
   if (c)
     tidy(
       c,
-      [MODEL + "model.json", MODEL + "letters.json", ORT + "ort.wasm.bundle.min.mjs", TAP].concat(
-        WASM.map(function (w) {
+      [dir + "model.json", dir + "letters.json", ORT + h.lib, TAP].concat(
+        h.wasm.map(function (w) {
           return ORT + w.file;
         }),
         pieces.map(function (/** @type {any} */ p) {
-          return MODEL + p.file;
+          return dir + p.file;
         }),
       ),
     );
