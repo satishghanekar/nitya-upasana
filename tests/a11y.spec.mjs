@@ -113,29 +113,49 @@ test("keyboard: the first Tab shows the skip link, which moves to the texts", as
 
 // WCAG 2.5.3 Label in Name: a control's accessible name must contain the words shown on it, so
 // voice control users can say what they see.
-test("label in name: every labelled control's name contains its visible text", async ({ page }) => {
+test("label in name: every labelled control's name contains its visible text, on Home and in Settings", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
-  const bad = await page.evaluate(() =>
-    [...document.querySelectorAll("button[aria-label], a[aria-label]")]
-      .filter((b) => b.getClientRects().length)
-      .map((b) => {
-        // the visible words, from shown text nodes only (icons and hidden language spans excluded)
-        const w = document.createTreeWalker(b, NodeFilter.SHOW_TEXT);
-        let t = "",
-          n;
-        while ((n = w.nextNode())) if (n.parentElement.getClientRects().length && !n.parentElement.closest("svg")) t += n.data;
-        t = t.replace(/\s+/g, " ").trim();
-        const name = b.getAttribute("aria-label");
-        return { id: b.id, t, name };
-      })
-      // compared as words only: case, spaces and arrows (‹ › ↗) don't count
-      .filter((x) => {
-        const w = (s) => s.toLowerCase().replace(/[\s‹›↗,.:;()—-]+/g, "");
-        return w(x.t) && !w(x.name).includes(w(x.t));
-      })
-      .map((x) => `${x.id}: shows "${x.t}", named "${x.name}"`),
-  );
-  expect(bad).toEqual([]);
+  const check = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll("button[aria-label], a[aria-label]")]
+        .filter((b) => b.getClientRects().length)
+        .map((b) => {
+          // the visible words, from shown text nodes only (icons and hidden language spans excluded)
+          const w = document.createTreeWalker(b, NodeFilter.SHOW_TEXT);
+          let t = "",
+            n;
+          while ((n = w.nextNode())) if (n.parentElement.getClientRects().length && !n.parentElement.closest("svg")) t += n.data;
+          t = t.replace(/\s+/g, " ").trim();
+          const name = b.getAttribute("aria-label");
+          return { id: b.id, t, name };
+        })
+        // compared as words only: case, spaces and arrows (‹ › ↗) don't count
+        .filter((x) => {
+          const w = (s) => s.toLowerCase().replace(/[\s‹›↗,.:;()—-]+/g, "");
+          return w(x.t) && !w(x.name).includes(w(x.t));
+        })
+        .map((x) => `${x.id}: shows "${x.t}", named "${x.name}"`),
+    );
+  expect(await check()).toEqual([]);
+  // Settings' Text size: A− and A+ are named by what they show (a voice-control user says "tap A plus")
+  await page.locator("#aa").click();
+  await expect(page.locator("#sm")).toBeVisible();
+  expect(await check()).toEqual([]);
+});
+
+test("keyboard: the picture is one Tab stop on a wide Home, the top bar's; the large one stays a tap", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 820 });
+  await openSite(page, SETUPS.marathi);
+  await expect(page.locator("#iconb")).toBeVisible();
+  const stops = [];
+  for (let i = 0; i < 12; i++) {
+    await page.keyboard.press("Tab");
+    stops.push(await page.evaluate(() => document.activeElement.id));
+  }
+  expect(stops).toContain("bti");
+  expect(stops).not.toContain("iconb");
+  await page.locator("#iconb").click();
+  await expect(page.locator("#pzv")).toBeVisible();
 });
 
 test("reduced motion: no transitions longer than 0.01s when the reader asks for less motion", async ({ browser }) => {

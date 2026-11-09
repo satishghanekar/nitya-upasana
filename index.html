@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.50.0">
+<meta name="version" content="aarti-v1.50.1">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -256,9 +256,9 @@
           <div class="sp-row">
             <span class="sp-l"><span data-w="page.textSize">Text size</span></span>
             <div class="sp-seg sp-sz" role="group" aria-label="Text size">
-              <button id="sm" type="button" aria-label="Smaller">A−</button>
+              <button id="sm" type="button" aria-label="A− Smaller">A−</button>
               <span id="szv" class="sp-szv" role="status"></span>
-              <button id="lg" type="button" aria-label="Larger">A+</button>
+              <button id="lg" type="button" aria-label="A+ Larger">A+</button>
               <button id="sr" type="button" aria-label="Reset text size"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
             </div>
           </div>
@@ -441,9 +441,10 @@
     <h1 class="sr"><span data-w="page.nityaUpasana">Nitya Upasana</span></h1>
     <!-- Today (js/features/today-card.js): the app's picture, which follows the time of day
          (sunrise, midday, sunset) with a ring on today's weekday star (#iconr, placed by js/features/day-picture.js; a
-         tap opens it full screen, #pzv), beside the date in the reading languages (written in by the script) -->
+         tap opens it full screen, #pzv), beside the date in the reading languages (written in by the script). Out of
+         the Tab order: the top bar's small picture (#bti) does the same, so a keyboard meets it once -->
     <div id="tdy">
-      <button type="button" id="iconb" aria-label="Show the picture full screen: Sunrise picture"><img src="picture-sunrise-360.webp" srcset="picture-sunrise-360.webp 360w, picture-sunrise.webp 940w" sizes="(min-width: 1100px) 440px, 76px" fetchpriority="high" alt="" width="360" height="360"><span id="iconr" hidden></span></button>
+      <button type="button" id="iconb" tabindex="-1" aria-label="Show the picture full screen: Sunrise picture"><img src="picture-sunrise-360.webp" srcset="picture-sunrise-360.webp 360w, picture-sunrise.webp 940w" sizes="(min-width: 1100px) 440px, 76px" fetchpriority="high" alt="" width="360" height="360"><span id="iconr" hidden></span></button>
       <!-- the date in the reading languages, the day's word after it (Today, Tomorrow, In 3 days), and beside it ‹ ›,
            with Today under them on another day (js/features/today-card.js) -->
       <p id="tdd"><span id="tdn"><button type="button" id="tdp" class="cnav" aria-label="Previous day"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" id="tdx" class="cnav" aria-label="Next day"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><button type="button" id="tdt" class="off"></button></span><span class="d1" lang="mr"></span><span class="d2" lang="en"><span class="d2t"></span></span><span id="tdr"></span></p>
@@ -647,7 +648,7 @@
         <li><b>Morning, Afternoon, Evening:</b> Home opens at the session for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. Tap another to see its texts for today; the next day starts again from the clock. A session with nothing set today is greyed out ("Nothing set"); tap it to add texts. To start with, everyone has the usual routine: Vedic chants and the Ganapati and Devi aartis in the morning, aartis and an ashtak in the evening, and a free afternoon. Each person can change theirs (see Your routine below).</li>
         <li><b>The list</b> has the session's texts in order.</li>
         <li><b>Another day:</b> <b>‹</b> and <b>›</b> beside the date show the day before or after, and under the date it says which day it is: Today, Tomorrow, Yesterday, "In 3 days" or "3 days ago". All of Home follows that day: its date, the Vedic calendar card and Coming up, the picture's star, and the texts of each session, so you can read them or print them. Tap <b>Today</b>, under the arrows, to come back. Nothing on Home moves as you go from day to day. The next day, or when you come back to the app after half an hour away, Home shows today again.</li>
-        <li><b>Reading the session:</b> tap a title to start there. The session's texts follow one another in one scroll, in the session's order, and nothing else is in between. <b>Next ›</b> and <b>‹ Prev</b> in the bottom bar jump to the next or previous text of the session; <b>Next ›</b> after the last one, or <b>‹ Prev</b> on the first, brings you back here, and so does <b>Home</b>, which ends the session (on another day, Home is still on that day). Open the app again the next day and it starts afresh from Home's list. <b>Print</b> in the top bar prints the session.</li>
+        <li><b>Reading the session:</b> tap a title to start there. The session's texts follow one another in one scroll, in the session's order and numbered as on Home, and nothing else is in between. <b>Next ›</b> and <b>‹ Prev</b> in the bottom bar jump to the next or previous text of the session; <b>Next ›</b> after the last one, or <b>‹ Prev</b> on the first, brings you back here, and so does <b>Home</b>, which ends the session (on another day, Home is still on that day). Open the app again the next day and it starts afresh from Home's list. <b>Print</b> in the top bar prints the session.</li>
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
                 <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the card under the date gives the day's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home's calendar card takes its colour, with its drawing). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Reading → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
