@@ -95,7 +95,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then)
   expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(73_000);
-  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(30_000);
+  // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
+  // then)
+  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(31_000);
 });
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):
