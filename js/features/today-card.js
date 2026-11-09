@@ -27,7 +27,7 @@
 // each change, and the list is drawn again (a removed text's tick just no longer shows).
 
 import { P } from "../core/state.js";
-import { note, onPiece, pieceEl } from "../core/page.js";
+import { arrange, note, onPiece, pieceEl } from "../core/page.js";
 import { cur, unfold } from "../core/apply.js";
 import { homeAlone, jumpTo } from "./history.js";
 import { setView } from "./day-picture.js";
@@ -335,9 +335,11 @@ function openText(id) {
 
 /**
  * While a session is being read (started from a text of the list), the reading page shows that session's texts, one
- * after another in session order, in one scroll (data-run on <html>, .inrun and a CSS order on each of its pieces:
+ * after another in session order, in one scroll (data-run on <html> and .inrun on each of its pieces:
  * css/10-today.css), and nothing else; going to a text another way (the Library, search, the side menu) leaves the
- * session and shows one text at a time again.
+ * session and shows one text at a time again. The session's pieces are moved into its order in the page itself
+ * (arrange(), js/core/page.js), so screen readers and the Tab key meet them in the order they are seen, and put back
+ * in the Library's order when it ends.
  */
 function runMark() {
   var r = document.documentElement;
@@ -345,20 +347,39 @@ function runMark() {
   [].forEach.call(document.querySelectorAll(".ash"), function (/** @type {HTMLElement} */ x) {
     runOne(x);
   });
+  arrange(
+    run
+      ? run.ids.map(function (x) {
+          return info[x] ? info[x].sec : "";
+        })
+      : null,
+  );
   if (run) r.setAttribute("data-run", "1");
   else r.removeAttribute("data-run");
 }
 
 /**
- * A piece in the session being read is marked .inrun (also one built later: js/core/page.js)
+ * A piece in the session being read is marked .inrun (also one built later: js/core/page.js), with its place in the
+ * session as its number, as on Home's list: "२." for the second text, not its number in the Library (.rno, shown in
+ * place of the Library's .no while the session runs: css/10-today.css)
  * @param {HTMLElement} x
  */
 function runOne(x) {
   var id = bySec[x.id],
-    i = run && id ? run.ids.indexOf(id) : -1;
+    i = run && id ? run.ids.indexOf(id) : -1,
+    h = x.querySelector("header h2"),
+    old = h && h.querySelector(".rno");
   x.classList.toggle("inrun", i >= 0);
-  // its place in the session (the page keeps the Library's order)
+  // its place in the session, also for the flex column the session is shown in
   x.style.order = i >= 0 ? String(i + 1) : "";
+  if (old) old.remove();
+  if (i < 0 || !h) return;
+  var no = document.createElement("span");
+  no.className = "no rno";
+  no.innerHTML = '<span class="nm">' + dv(i + 1) + '.</span><span class="ne">' + (i + 1) + ".</span>";
+  h.insertBefore(no, h.firstChild);
+  // in Kannada, Telugu or Gujarati letters, as the rest of the piece (js/render.js), put back with it
+  /** @type {any} */ (window).SCR.add(no);
 }
 
 /** Read the session shown from this text on */
