@@ -4,7 +4,7 @@
 // its line marked. (No real chanting here: the family's recordings stay private; the model's own tests, in the
 // shravan-model repository, hear real chanting.)
 import { test, expect } from "@playwright/test";
-import { buildAll, openSite, SETUPS } from "./helpers.mjs";
+import { axeEveryTheme, buildAll, noViolations, openSite, SETUPS } from "./helpers.mjs";
 
 // (launchOptions here replace the config's, so the pre-installed Chromium, PW_CHROMIUM_PATH, is named again)
 test.use({
@@ -250,6 +250,9 @@ test("Settings → About says where Listen runs its model: the CPU here, the GPU
   // the Listen line comes before the version, which is last in About
   expect(await page.evaluate(() => document.getElementById("lswr").nextElementSibling.id)).toBe("upr");
   expect(await page.evaluate(() => document.getElementById("upr").nextElementSibling)).toBeNull();
+  // the Standard badge reads at 4.5:1 in every theme (a11y.spec scans Settings too, but never sees the GPU line)
+  await page.locator("#aa").click();
+  expect(await axeEveryTheme(page, "#lswr")).toEqual(noViolations());
   expect(errors).toEqual([]);
 });
 
@@ -266,5 +269,7 @@ test("Settings → About says the GPU when the browser has WebGPU and an adapter
   // only the GPU's icon (the chip with a bolt) shows
   await expect(page.locator("#lswr .lsw-gpu")).not.toHaveCSS("display", "none");
   await expect(page.locator("#lswr .lsw-cpu")).toHaveCSS("display", "none");
+  await page.locator("#aa").click();
+  expect(await axeEveryTheme(page, "#lswr")).toEqual(noViolations());
   expect(errors).toEqual([]);
 });
