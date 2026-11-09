@@ -624,6 +624,33 @@ test("Home: Coming up, the next three from the day shown, with their drawings, e
   await expect(page.locator("#upwl")).toBeVisible();
 });
 
+// Satish, 2026-11-09 (Home mockup A): until the person chooses, Coming up is one line on phones and tablets, so the
+// session's texts are on the first screen; on wide screens, where Home's column has room, it starts open
+for (const [name, size, open] of [
+  ["a phone", { width: 390, height: 844 }, false],
+  ["an iPad held upright", { width: 820, height: 1180 }, false],
+  ["a computer", { width: 1280, height: 820 }, true],
+]) {
+  test(`Coming up starts ${open ? "open" : "folded"} on ${name} until the person chooses, then as they chose`, async ({ page }) => {
+    await page.setViewportSize(size);
+    await openSite(page, { ...ENGLISH_ONLY, upf: 0 }, { now: NOW });
+    const f = page.locator("#upwf");
+    await expect(f).toHaveAttribute("aria-expanded", String(open));
+    await expect(page.locator("#upwl")).toBeVisible({ visible: open });
+    if (!open) {
+      // folded: one line naming the first, and the session's first text on the first screen
+      await expect(f).toHaveAccessibleName("Coming up Dasara (Vijayadashami) · in 2 days");
+      const row = await page.locator("#tsl li").first().boundingBox();
+      expect(row.y + row.height).toBeLessThanOrEqual(size.height - 90); // above the bottom bar
+    }
+    // the person's own choice is kept, whatever the screen
+    await f.click();
+    await expect(f).toHaveAttribute("aria-expanded", String(!open));
+    await page.reload();
+    await expect(page.locator("#upwf")).toHaveAttribute("aria-expanded", String(!open));
+  });
+}
+
 test("on a wide screen, This week or the date card clicked while the calendar is open switches it, and only that one is marked", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 820 });
   await openSite(page, ENGLISH_ONLY, { now: NOW });

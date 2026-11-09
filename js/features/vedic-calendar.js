@@ -711,7 +711,8 @@ function oneRowADay(list) {
  * festivals, Pradosh, Sankashti and the public holidays chosen in Settings (P.hol; one on the day of another joins
  * its row, oneRowADay()), each with its drawing (Satish,
  * 2026-10-30: the "Nitya Home cards" mockups). Its heading folds it (P.upf, each person's): folded, one line with the
- * first ("दसरा · in 2 days"). The same number of rows on every day, so it keeps one height as ‹ › move through the days; hidden
+ * first ("दसरा · in 2 days"); until the person chooses, folded on phones and tablets, open on wide screens (upOpen()).
+ * The same number of rows on every day, so it keeps one height as ‹ › move through the days; hidden
  * when nothing is marked in the month from the day.
  * @param {{ lat: number, lon: number } | null} pl */
 function upHome(pl) {
@@ -727,7 +728,7 @@ function upHome(pl) {
     return;
   }
   var w = words(),
-    open = !(P && P.upf);
+    open = upOpen();
   box.lang = ui();
   box.innerHTML =
     '<div class="uph"><h2 id="upwh">' +
@@ -761,6 +762,12 @@ function upHome(pl) {
   box.hidden = false;
 }
 
+/** Coming up starts open: by the person's choice (P.upf 2 open, 1 folded), else only on wide screens (data-rail) */
+function upOpen() {
+  var u = P ? P.upf : 0;
+  return u === 2 || (u !== 1 && document.documentElement.getAttribute("data-rail") === "1");
+}
+
 /** Fold or open Coming up (its heading's button), and keep it so for the person reading */
 function upFold() {
   var b = document.getElementById("upwf"),
@@ -769,7 +776,7 @@ function upFold() {
   var open = b.getAttribute("aria-expanded") !== "true";
   b.setAttribute("aria-expanded", String(open));
   l.hidden = !open;
-  change({ upf: open ? 0 : 1 });
+  change({ upf: open ? 2 : 1 });
 }
 
 /** What the words and names are drawn in: the menu language, the script and the reading languages */
@@ -784,7 +791,7 @@ function homeOwn() {
 
 /** Re-draw the Home line and This week (soon after the page is shown), when the languages, the day or the place changed */
 function homeSoon() {
-  var k = langKey() + new Date().toDateString() + homeAt + JSON.stringify(P.loc || null) + homeOwn();
+  var k = langKey() + new Date().toDateString() + homeAt + JSON.stringify(P.loc || null) + homeOwn() + upOpen();
   if (k === homeKey) return;
   homeKey = k;
   // before the page is first shown (js/main.js data-ready), drawn at once, with This week, so nothing jumps when it
@@ -856,6 +863,13 @@ function homeDraw() {
           e.innerHTML = b[2];
         }
       });
+      // (kept maybe on a screen of another width)
+      var f = document.getElementById("upwf"),
+        l = document.getElementById("upwl");
+      if (f && l) {
+        f.setAttribute("aria-expanded", String(upOpen()));
+        l.hidden = !upOpen();
+      }
       return;
     }
   } catch (e) {}
