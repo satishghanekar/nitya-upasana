@@ -19,7 +19,8 @@ private.
   on anything newer; a fallback goes in `css/99-fallbacks.css`.
 
 ## JavaScript
-- One part per topic in `js/core`, `js/text`, `js/store`, `js/features`, `js/print`. A part exports `init()`, which
+- One part per topic in `js/core`, `js/text`, `js/store`, `js/features`, `js/print`; core, text and store never import a
+  feature or print (a page event instead; `tests/site-files.spec.mjs` checks). A part exports `init()`, which
   does its start-up work; loading a module does nothing else. A new `init()` goes into `js/main.js` (`run(…)`) at the
   right place in the order.
 - A new file goes into `js/parts.js` too (the offline copy); `tests/site-files.spec.mjs` checks this.
@@ -28,6 +29,8 @@ private.
   (`tests/site-files.spec.mjs` checks the line is there).
 - Settings change only through `change({ key: value }, then)` (`js/core/state.js`). A variable belongs to the part
   that sets it; the others import it and only read it.
+- A new id or class says what it is in words (`#place-hint`, not `#ph`); the short ones already there stay until their
+  code is rewritten anyway (both apps share them).
 - A new page, dialog or sheet goes into `PAGES` / `LAYERS` in `js/features/overlays.js` (Back, focus kept inside,
   Escape).
 - Match the code around you: `var` and `function` in the parts. Layout is Prettier's (`cd tests && npm run format`;

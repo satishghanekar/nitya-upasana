@@ -126,3 +126,19 @@ test("every script is type-checked", () => {
   const unchecked = all.filter((f) => !readFileSync(new URL("../" + f, import.meta.url), "utf8").startsWith("// @ts-check")).sort();
   expect(unchecked, "files without // @ts-check on their first line").toEqual(UNCHECKED);
 });
+
+// The layers (js/README.md): core, text and store are the ground the features stand on, so they never import a feature
+// or the printout; a feature that needs to know is told through a page event ("nitya-fold"). The parts that only
+// start things up or show things are features.
+test("core, text and store import no feature", () => {
+  const low = readdirSync(new URL("../js/", import.meta.url), { recursive: true })
+    .map((f) => String(f).split("\\").join("/"))
+    .filter((f) => /^(core|text|store)\/.*\.js$/.test(f));
+  const up = low.flatMap((f) =>
+    [...readFileSync(new URL("../js/" + f, import.meta.url), "utf8").matchAll(/^import [^;]*? from "([^"]+)";/gms)]
+      .map((m) => m[1])
+      .filter((m) => /\/(features|print)\//.test(m))
+      .map((m) => f + " → " + m),
+  );
+  expect(up).toEqual([]);
+});

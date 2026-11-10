@@ -10,7 +10,7 @@
 // - a day's tithi, nakshatra, yoga, karana and month are the ones in effect at that day's sunrise at the place
 // - sunrise and sunset are the upper limb on a sea-level horizon with standard refraction (centre at −0.833°)
 //
-// Positions come from js/features/astronomy.js (SK: Meeus's low-precision sun and moon, also used for the Sankashti
+// Positions come from js/core/astronomy.js (SK: Meeus's low-precision sun and moon, also used for the Sankashti
 // card), taken at Terrestrial Time (UT + ΔT). Against the Swiss Ephemeris over 2020–2032 (tests/unit/panchang.test.mjs,
 // every 11th day at Pune and Columbus): sunrise and sunset within 0.2 minute; tithi end times within 1.5 minutes
 // (typically 0.5), nakshatra within 0.5, yoga within 1.5. So a day whose tithi begins or ends within BORDERLINE_MIN
@@ -18,7 +18,7 @@
 // Moonrise is SK.rise, exactly as the Sankashti card shows it: within 0.5 minute of the Swiss Ephemeris's
 // upper-limb moonrise (typically 0.1).
 
-import { SK, init as initSky } from "../features/astronomy.js";
+import { SK, init as initSky } from "./astronomy.js";
 import { AYANA, KARANA, MASA, NAKSHATRA, PAKSHA, RITU, SAMVATSARA, VARA, YOGA, ADHIKA, tithiName } from "./panchang-names.js";
 
 /**
@@ -45,7 +45,7 @@ import { AYANA, KARANA, MASA, NAKSHATRA, PAKSHA, RITU, SAMVATSARA, VARA, YOGA, A
  *   kshaya: tithis (1–30) that begin and end between this sunrise and the next, so are at no sunrise;
  *   vriddhi: this day has the same tithi at sunrise as the day before; purnima / amavasya / ekadashi: that tithi is
  *   at this sunrise or is a kshaya tithi of this day; sankashti: the app's Sankashti day (the Sankashti card's own
- *   rule in js/features/astronomy.js, in the phone's time zone)
+ *   rule in js/core/astronomy.js, in the phone's time zone)
  * @typedef {{
  *   elong: (t: number) => number, moonLon: (t: number) => number, sunLon: (t: number) => number,
  *   rise: (t0: number, t1: number, lat: number, lon: number) => number | null,
@@ -468,7 +468,7 @@ export function monthPanchang(year, month, place) {
   var nums = days.map(function (x) {
     return tithiIx(x.ref) + 1;
   });
-  // Sankashti days, exactly as the Sankashti card finds them (phone's time zone, js/features/astronomy.js)
+  // Sankashti days, exactly as the Sankashti card finds them (phone's time zone, js/core/astronomy.js)
   /** @type {Record<string, boolean>} */
   var sank = {};
   sk()

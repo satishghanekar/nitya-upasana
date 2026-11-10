@@ -26,14 +26,13 @@
 import { choices, normalize, readLetters, resample } from "../core/hearing.js";
 import { align, latest, logProbs, target } from "../core/align.js";
 import { LEAST, PACE, ahead, correct, letters, lineAt, locate, makeDoc, nextPace, pieceLines } from "../core/follow.js";
-import { pieceEl, root } from "../core/page.js";
+import { pieceEl, root, topEdge } from "../core/page.js";
 import { unfold } from "../core/apply.js";
 import { fillWords, menuWords } from "../core/strings.js";
 import { esc, nameLang, num } from "../core/words.js";
 import { titleText } from "../text/iast.js";
 import { jumpTo } from "./history.js";
 import { leaveFor } from "./today-card.js";
-import { topEdge } from "./bottom-bar.js";
 
 var ORT = "vendor/onnxruntime/",
   TAP = "js/worklets/listen-tap.js",

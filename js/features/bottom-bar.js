@@ -69,12 +69,6 @@ export function init() {
   });
 }
 
-// the bottom of whatever sits at the top of the screen: the top bar, or the slim strip while it is tucked away
-export function topEdge() {
-  var bar = document.querySelector(root.hasAttribute("data-tuck") ? "#tuck" : "body > .bar");
-  return bar ? Math.max(0, bar.getBoundingClientRect().bottom) : 60;
-}
-
 // Prev and Next named for where they go, in the menu language
 export function asLabel() {
   // the titles named in the buttons' spoken labels: in the menu language's letters (js/core/words.js nameLang())
