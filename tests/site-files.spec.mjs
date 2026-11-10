@@ -90,8 +90,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // js/core/follow.js and Listen's words in five languages: 333 KB then; 338 KB since 2026-11-07: js/core/align.js,
   // the sound lined up with the text: 336.4 KB then; 340 KB since 2026-11-09: Listen stopping by itself in five
   // languages, quicker after a jump, and on the GPU where there is one: 338.5 KB then; 341 KB since 2026-11-09: a
-  // session in the page's own order, numbered by the session, and Coming up folded on phones: 340.1 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(341_000);
+  // session in the page's own order, numbered by the session, and Coming up folded on phones: 340.1 KB then; 345 KB
+  // since 2026-11-10: the JSDoc types the type checks need, file by file (UNCHECKED below): 341.3 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(345_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then)
@@ -139,12 +140,6 @@ const UNCHECKED = [
   "js/parts.js",
   "js/print/compose.js",
   "js/render.js",
-  "js/text/autofit.js",
-  "js/text/dhrupad-markers.js",
-  "js/text/iast.js",
-  "js/text/layout.js",
-  "js/text/line-breaks.js",
-  "js/text/stanza-numbers.js",
 ];
 
 test("every script is type-checked, except the files still waiting for it", () => {
