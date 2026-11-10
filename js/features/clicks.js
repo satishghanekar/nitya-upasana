@@ -1,3 +1,4 @@
+// @ts-check
 // Clicks: contents links (data-go) jump to a piece; tapping a verse line highlights it
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
@@ -10,27 +11,30 @@ import { hlMark } from "../core/startup.js";
 
 export function init() {
   document.addEventListener("click", function (e) {
-    var a = e.target.closest && e.target.closest("a[data-go]");
+    /** @type {any} */
+    var tg = e.target;
+    var a = tg && tg.closest && tg.closest("a[data-go]");
     if (a) {
       e.preventDefault();
-      var el = pieceEl(a.getAttribute("data-go"));
+      var el = pieceEl(a.getAttribute("data-go") || "");
       unfold(el);
-      if (el)
+      if (el) {
+        var to = el;
         jumpTo(
           function () {
-            if (el.id === "home") scrollTo(0, 0);
-            else el.scrollIntoView();
+            if (to.id === "home") scrollTo(0, 0);
+            else to.scrollIntoView();
           },
-          el.id === "home" ? location.pathname : "#" + el.id,
+          to.id === "home" ? location.pathname : "#" + to.id,
         );
-      else setJ(false);
+      } else setJ(false);
       return;
     }
-    var p = e.target.closest && e.target.closest(".verse p[data-l]");
+    var p = tg && tg.closest && tg.closest(".verse p[data-l]");
     if (p) {
-      var id = p.getAttribute("data-l"),
+      var id = p.getAttribute("data-l") || "",
         was = p.classList.contains("hl");
-      [].forEach.call(document.querySelectorAll("p.hl, .hli"), function (x) {
+      document.querySelectorAll("p.hl, .hli").forEach(function (x) {
         x.classList.remove("hl", "hli");
       });
       if (!was) hlMark(id);
@@ -43,8 +47,9 @@ export function init() {
   document.addEventListener(
     "click",
     function (e) {
+      /** @type {any} */
       var x = e.target;
-      if (!x.closest) return;
+      if (!x || !x.closest) return;
       if (x.closest("#panel,#jump,#lbm,#upm,.bar,[data-keep]")) return;
       if (!pn.hidden || !jp.hidden) {
         setP(false);
