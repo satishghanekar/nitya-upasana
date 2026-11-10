@@ -1,3 +1,4 @@
+// @ts-check
 // Reading sheet: Aa in the bottom bar slides up language, text size and dhrupad, within thumb reach
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
@@ -11,21 +12,30 @@ import { spTab } from "./settings-panel.js";
 import { refToggle } from "./dhrupad-button.js";
 import { ovDone, ovPush } from "./history.js";
 import { menuWords } from "../core/strings.js";
+import { byId } from "../core/page.js";
 import { ui } from "../core/words.js";
 
-var rsh, rsb, fsT, fsA;
+/** @type {HTMLElement} */
+var rsh;
+/** @type {HTMLElement} */
+var rsb;
+// the timer that lays the page out once the A− / A+ taps stop, and the line kept in place meanwhile
+/** @type {ReturnType<typeof setTimeout> | number} */
+var fsT;
+/** @type {{ el: HTMLElement, t: number } | null} */
+var fsA = null;
 
 export function init() {
   // The same choices as the top bar's language and dhrupad buttons and Settings → Text size, in one sheet over
   // the bottom bar. A tap outside it, ✕, Escape or the phone's Back closes it (history.js lists #rsh with the
   // other dialogs). The page under it doesn't scroll while it is open.
-  rsh = document.getElementById("rsh");
-  rsb = document.getElementById("rsb");
+  rsh = byId("rsh");
+  rsb = byId("rsb");
   fsT = 0;
   rsb.onclick = function () {
     rsOpen(rsh.hidden);
   };
-  document.getElementById("rsx").onclick = function () {
+  byId("rsx").onclick = function () {
     rsOpen(false);
   };
   // the dimmed page around the sheet (the bottom bar too, Aa included): a tap there closes it
@@ -36,8 +46,8 @@ export function init() {
     if (e.key === "Escape" && !rsh.hidden) rsOpen(false);
   });
   // Language: what the top bar's button cycles through (main, second, both), each one tap away
-  document.getElementById("rsl").onclick = function (e) {
-    var b = e.target.closest("button");
+  byId("rsl").onclick = function (e) {
+    var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest("button"));
     if (!b) return;
     if (b.dataset.v === "+") return rsSettings("read", "sl2s");
     if (b.dataset.v === P.lang) return;
@@ -48,26 +58,27 @@ export function init() {
   };
   // Text size: A− / A+ in steps of 2px, as in Settings; the page is laid out again once the taps stop,
   // with the line at the top of the screen kept in place
-  document.getElementById("rsm").onclick = function () {
+  byId("rsm").onclick = function () {
     rsSize(Math.max(14, P.fs - 2), 1);
   };
-  document.getElementById("rsp").onclick = function () {
+  byId("rsp").onclick = function () {
     rsSize(Math.min(52, P.fs + 2), 1);
   };
-  document.getElementById("rsr").onclick = function () {
+  byId("rsr").onclick = function () {
     rsSize(dfs(), 0);
   };
   // Dhrupad: switched as the top bar's dhrupad button does, keeping the reader's place
-  document.getElementById("rsf").onclick = function (e) {
-    var b = e.target.closest("button");
+  byId("rsf").onclick = function (e) {
+    var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest("button"));
     if (b && b.dataset.v !== String(P.ref)) refToggle(true);
     rsSet();
   };
-  document.getElementById("rsall").onclick = function () {
+  byId("rsall").onclick = function () {
     rsSettings("read");
   };
 }
 
+/** @param {boolean} o */
 export function rsOpen(o) {
   if (o === !rsh.hidden) return;
   if (o) ovPush();
@@ -77,9 +88,9 @@ export function rsOpen(o) {
   document.documentElement.style.overflow = o ? "hidden" : "";
   if (o) {
     // the sheet sits on the bottom bar, which stays in sight under the dimmed page
-    rsh.style.setProperty("--rsb", Math.round(innerHeight - document.getElementById("asc").getBoundingClientRect().top) + "px");
+    rsh.style.setProperty("--rsb", Math.round(innerHeight - byId("asc").getBoundingClientRect().top) + "px");
     rsSet();
-    rsh.querySelector(".rsc").focus({ preventScroll: true });
+    /** @type {HTMLElement} */ (rsh.querySelector(".rsc")).focus({ preventScroll: true });
   } else {
     try {
       rsb.focus({ preventScroll: true });
@@ -98,32 +109,33 @@ function rsSettings(tab, focusId) {
   document.documentElement.style.overflow = "";
   setP(true);
   spTab(tab);
-  if (focusId) document.getElementById(focusId).focus();
+  if (focusId) byId(focusId).focus();
 }
 
 // The choices as they are now
 function rsSet() {
   var w = menuWords("languages"),
     o = P.l2 ? [P.lead, P.l2, "both"] : [P.lead, "+"];
-  document.getElementById("rsl").innerHTML = o
-    .map(function (v) {
+  byId("rsl").innerHTML = o
+    .map(function (/** @type {string} */ v) {
       var l = v === "both" || v === "+" ? ui() : LK(v) === "kn" ? "kn" : LK(v),
         t = v === "both" ? w.both : v === "+" ? w.second : LANGS[LK(v)].n;
       return '<button type="button" data-v="' + v + '" lang="' + l + '"' + (v === "+" ? "" : ' aria-pressed="' + (v === P.lang) + '"') + ">" + t + "</button>";
     })
     .join("");
-  [].forEach.call(document.querySelectorAll("#rsf button"), function (b) {
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#rsf button")).forEach(function (b) {
     b.setAttribute("aria-pressed", String(b.dataset.v === String(P.ref)));
   });
-  document.getElementById("rsx").setAttribute("aria-label", w.close);
-  document.getElementById("rsr").setAttribute("aria-label", w.reset);
+  byId("rsx").setAttribute("aria-label", w.close);
+  byId("rsr").setAttribute("aria-label", w.reset);
   rsPct();
 }
 
 function rsPct() {
-  document.getElementById("rsv").textContent = Math.round((P.fs / (FSA || dfs())) * 100) + "%";
+  byId("rsv").textContent = Math.round((P.fs / (FSA || dfs())) * 100) + "%";
 }
 
+/** @param {number} fs @param {0 | 1} fsu */
 function rsSize(fs, fsu) {
   if (!fsT) fsA = rsAnchor();
   change({ fs: fs, fsu: fsu });
@@ -144,8 +156,8 @@ function rsFlush() {
 
 // the first verse line below the top bar, and where it is on screen
 function rsAnchor() {
-  var bb = document.querySelector(".bar").getBoundingClientRect().bottom,
-    ps = document.querySelectorAll(".items .verse p");
+  var bb = /** @type {HTMLElement} */ (document.querySelector(".bar")).getBoundingClientRect().bottom,
+    ps = /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll(".items .verse p"));
   for (var i = 0; i < ps.length; i++) {
     var r = ps[i].getBoundingClientRect();
     if (r.height && r.bottom > bb + 4) return { el: ps[i], t: r.top };
