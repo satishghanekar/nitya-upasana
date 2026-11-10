@@ -1,3 +1,4 @@
+// @ts-check
 // More (⋯ in the top bar): App, Share, QR and Help in a small menu under the button, on every page (Print is in the bottom bar)
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
@@ -13,6 +14,7 @@ export function init() {
     menu.style.top = Math.round(r.bottom + 6) + "px";
     menu.style.right = Math.max(8, Math.round(document.documentElement.clientWidth - r.right)) + "px";
   }
+  /** @param {boolean} open @param {boolean} focusBack */
   function show(open, focusBack) {
     more.setAttribute("aria-expanded", String(open));
     menu.hidden = !open;

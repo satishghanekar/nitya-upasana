@@ -1,3 +1,4 @@
+// @ts-check
 // Dhrupad: toggle once / after every stanza, keeping the reader's place (the Reading sheet and Settings)
 // One part of the site script, used by the parts that offer the choice. See js/README.md.
 
@@ -7,11 +8,13 @@ import { apply } from "./bars.js";
 import { menuWords } from "../core/strings.js";
 
 // quiet: from the reading sheet, which shows the new choice itself (a note would cover the sheet)
+/** @param {boolean} [quiet] */
 export function refToggle(quiet) {
-  var bb = document.querySelector(".bar").getBoundingClientRect().bottom,
+  var bb = /** @type {HTMLElement} */ (document.querySelector(".bar")).getBoundingClientRect().bottom,
+    /** @type {HTMLElement | null} */
     a = null,
     t = 0,
-    ps = document.querySelectorAll(".items .verse p");
+    ps = /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll(".items .verse p"));
   for (var i = 0; i < ps.length; i++) {
     var x = ps[i];
     if (x.classList.contains("rf") || x.closest(".item.rf")) continue;

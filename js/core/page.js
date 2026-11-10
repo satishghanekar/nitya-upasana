@@ -144,3 +144,9 @@ export function warn(text) {
   note(text, 9000);
   /** @type {HTMLElement} */ (document.getElementById("fl")).classList.add("err");
 }
+
+/** An element index.html always has, by its id (for the type checks: never null)
+ * @param {string} id @returns {HTMLElement} */
+export function byId(id) {
+  return /** @type {HTMLElement} */ (document.getElementById(id));
+}

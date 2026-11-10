@@ -1,3 +1,4 @@
+// @ts-check
 // Library (#jump): every text by category (js/features/library.js builds the list), with search
 // (js/text/search.js: the box at the foot of the page on phones, and Recent). Opened by the book button in the bottom
 // bar (#hm) and at the end of each piece; a title opens its
@@ -13,6 +14,7 @@ import { setJ } from "./overlays.js";
 import { hasPdfs, marks } from "./pdfs.js";
 
 /** The list of texts; search hides it while results are shown */
+/** @type {HTMLElement} */
 export var ul;
 
 /** The search starts empty again, with the whole list */
@@ -45,7 +47,7 @@ export function libTab(v) {
 }
 
 export function init() {
-  ul = document.getElementById("jl");
+  ul = /** @type {HTMLElement} */ (document.getElementById("jl"));
   var bk = document.getElementById("jbk");
   if (bk)
     bk.onclick = function () {
