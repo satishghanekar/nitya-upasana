@@ -117,16 +117,11 @@ test("every file carries the Content-Security-Policy: this site only, no inline 
 // the files still waiting for theirs, one change at a time: the list may only get shorter, and a new file starts
 // with it (CLAUDE.md).
 const UNCHECKED = [
-  "js/features/astronomy.js",
   "js/features/bars.js",
   "js/features/history.js",
-  "js/features/languages.js",
   "js/features/offline.js",
   "js/features/overlays.js",
-  "js/features/picture-viewer.js",
-  "js/features/pinch.js",
   "js/features/print.js",
-  "js/features/settings-panel.js",
   "js/main.js",
   "js/parts.js",
   "js/print/compose.js",
