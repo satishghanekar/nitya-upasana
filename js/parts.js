@@ -1,3 +1,4 @@
+// @ts-check
 // The files the site is built from, listed once. Read by:
 // - js/features/offline.js: "Check for updates" compares them with the saved copy, and the offline badge waits for them;
 // - sw.js (importScripts): the files saved on the phone for offline use;

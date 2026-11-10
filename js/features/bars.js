@@ -1,7 +1,8 @@
+// @ts-check
 // Bars tuck away while reading (CSS: "Bars tuck away while reading")
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { onPiece, root } from "../core/page.js";
+import { byId, onPiece, root } from "../core/page.js";
 import { P, setLead } from "../core/state.js";
 import { skLang } from "./sankashti.js";
 import { markNow, todayLang } from "./today-card.js";
@@ -19,8 +20,19 @@ import { spSet } from "./languages.js";
 import { fillWords, menuWords } from "../core/strings.js";
 import { num, shown, ui } from "../core/words.js";
 
+/** @type {{ y: number, acc: number, hold: number, h: number, show: any }} the tucking bars: the last scroll, the scroll
+ * added up, no tucking until, the page height, the timer that brings them back */
 export var TK;
-var tkStrip, MQ900, MQ1000, MQ1024, tailF;
+/** @type {HTMLElement} */
+var tkStrip;
+/** @type {MediaQueryList} */
+var MQ900;
+/** @type {MediaQueryList} */
+var MQ1000;
+/** @type {MediaQueryList} */
+var MQ1024;
+/** @type {number} the frame apply() finishes in */
+var tailF;
 
 export function init() {
   // Phones and tablets without the side menu. Scrolling down past the top of the page tucks the top and
@@ -40,7 +52,7 @@ export function init() {
     new ResizeObserver(function () {
       TK.h = document.documentElement.scrollHeight;
     }).observe(document.body);
-  tkStrip = document.getElementById("tuck");
+  tkStrip = byId("tuck");
   addEventListener(
     "scroll",
     function () {
@@ -65,15 +77,19 @@ export function init() {
   addEventListener("hashchange", tuckHold);
   // a tap on a blank part of the page (not a line, a link, a button or a dhrupad marker) brings the bars back
   document.addEventListener("click", function (e) {
-    if (!root.hasAttribute("data-tuck") || !e.target.closest) return;
-    if (e.target.closest(".verse p, a, button, input, select, label, .rmk, .rmkpop, #asc, .bar")) return;
+    /** @type {any} */
+    var t = e.target;
+    if (!root.hasAttribute("data-tuck") || !t || !t.closest) return;
+    if (t.closest(".verse p, a, button, input, select, label, .rmk, .rmkpop, #asc, .bar")) return;
     tuck(false);
   });
   tkStrip.addEventListener("click", function () {
     tuck(false);
   });
   document.addEventListener("focusin", function (e) {
-    if (e.target.closest && e.target.closest(".bar, #asc")) tuck(false);
+    /** @type {any} */
+    var t = e.target;
+    if (t && t.closest && t.closest(".bar, #asc")) tuck(false);
   });
   // Both languages, English first (Settings → In Both, show first). Each stanza's English block and each piece
   // title's English part are moved in front of the Marathi, so the page, screen readers, the dhrupad bubble and
@@ -90,6 +106,7 @@ export function init() {
   tailF = 0;
 }
 
+/** @param {boolean} on */
 function tuck(on) {
   // never on Home (data-home): its bars stay put. A long Home (the week, a session of eleven texts) scrolled past the
   // tuck point, and the bars hid and came back mid-scroll, which iPhones drew in the middle of the page (Satish,
@@ -128,35 +145,35 @@ export function mark() {
   // Top bar title: the site's name, or once a piece's heading has scrolled under the bar, that piece ("३. देवीची आरती"),
   // in the first reading language shown: English when it is the main one, with both shown too (Satish, 2026-10-30)
   var en = shown()[0] === "en",
-    tt = en ? "Nitya Upasana" : SCR.to("नित्य उपासना"),
-    bt0 = document.getElementById("bt"),
+    tt = en ? "Nitya Upasana" : /** @type {any} */ (window).SCR.to("नित्य उपासना"),
+    bt0 = byId("bt"),
     hd = c && c.classList.contains("ash") && c.querySelector("header");
-  if (hd && hd.getBoundingClientRect().bottom < 64) {
+  if (c && hd && hd.getBoundingClientRect().bottom < 64) {
     var no = c.querySelector("h2 .no ." + (en ? "ne" : "nm")),
       nm = c.querySelector("h2 > ." + (en ? "en" : "mr"));
     if (nm) tt = (no ? no.textContent + " " : "") + nm.textContent;
     bt0.classList.add("pc");
   } else bt0.classList.remove("pc");
-  var btt = document.getElementById("btt");
+  var btt = byId("btt");
   if (btt.textContent !== tt) btt.textContent = tt;
-  btt.lang = en ? "en" : SCR.k || "mr";
+  btt.lang = en ? "en" : /** @type {any} */ (window).SCR.k || "mr";
   // its spoken name starts with what it does and contains the words shown (WCAG 2.5.3)
   var bl = menuWords("bar").home(tt);
   if (bt0.getAttribute("aria-label") !== bl) bt0.setAttribute("aria-label", bl);
   bt0.lang = ui(); // its spoken name is in the menu language, the title in it in its own (btt)
   // the slim strip shown while the bars are tucked away carries the same name and progress line
-  var tkt = document.getElementById("tkt");
+  var tkt = byId("tkt");
   if (tkt.textContent !== tt) tkt.textContent = tt;
-  tkt.lang = en ? "en" : SCR.k || "mr";
+  tkt.lang = en ? "en" : /** @type {any} */ (window).SCR.k || "mr";
   bt0.setAttribute("data-tl", en ? "en" : "mr");
-  [].forEach.call(document.querySelectorAll("#jump a"), function (a) {
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#jump a")).forEach(function (a) {
     a.classList.toggle("on", !!c && a.getAttribute("data-go") === c.id);
   });
   markNow(c);
   var pg = document.getElementById("prog");
   if (pg) {
     var dh = document.documentElement.scrollHeight - innerHeight;
-    pg.style.transform = document.getElementById("tkp").style.transform = "scaleX(" + (dh > 0 ? Math.min(1, Math.max(0, scrollY / dh)) : 0) + ")";
+    pg.style.transform = byId("tkp").style.transform = "scaleX(" + (dh > 0 ? Math.min(1, Math.max(0, scrollY / dh)) : 0) + ")";
   }
 }
 
@@ -167,8 +184,10 @@ export function goHome() {
 }
 
 // A line's Marathi and English <p> share a data-l id; return the one currently visible.
+/** @param {string} id @returns {HTMLElement | null} */
 function lineEl(id) {
-  var l = [].slice.call(document.querySelectorAll('[data-l="' + id + '"]'));
+  /** @type {HTMLElement[]} */
+  var l = Array.prototype.slice.call(document.querySelectorAll('[data-l="' + id + '"]'));
   for (var i = 0; i < l.length; i++) {
     if (l[i].offsetParent !== null) return l[i];
   }
@@ -176,6 +195,7 @@ function lineEl(id) {
 }
 
 // Scroll to a line (from search) and flash it
+/** @param {string} id @param {boolean} [flash] */
 export function goLine(id, flash) {
   unfold(document.querySelector('[data-l="' + id + '"]'));
   var el = lineEl(id);
@@ -189,7 +209,7 @@ export function goLine(id, flash) {
   // Upper third of the screen, clear of the top bar and of the phone's toolbar at the bottom
   scrollTo(0, Math.max(0, el.getBoundingClientRect().top + scrollY - innerHeight * 0.3));
   if (flash) {
-    [].forEach.call(document.querySelectorAll('[data-l="' + id + '"]'), function (p) {
+    /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll('[data-l="' + id + '"]')).forEach(function (p) {
       p.classList.remove("fl");
       void p.offsetWidth;
       p.classList.add("fl");
@@ -198,6 +218,7 @@ export function goLine(id, flash) {
 }
 
 // The language read first: English first only when both are shown and English leads
+/** @returns {"mr" | "en"} */
 function leadOf() {
   return P.lang === "both" && P.lead === "en" ? "en" : "mr";
 }
@@ -248,30 +269,29 @@ export function apply() {
   if (P.th === "auto") root.removeAttribute("data-pref");
   else root.setAttribute("data-pref", P.th);
   // Text language on the pieces and the printout; menu language on the bar, menus, home page and dialogs
-  [].forEach.call(document.querySelectorAll(".wrap > .ash,#pv,#jl"), function (e) {
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll(".wrap > .ash,#pv,#jl")).forEach(function (e) {
     e.setAttribute("data-lang", P.lang);
   });
-  [].forEach.call(
-    document.querySelectorAll(".bar,#shr,#asc,#none,.libhd,.rch,#jtb,#spv,#panel,#home > *,#qrm,#prm,#inm,#upm,#rsh,#szt,#szr,#fl"),
-    function (e) {
-      e.setAttribute("data-lang", P.ui);
-    },
-  );
+  /** @type {NodeListOf<HTMLElement>} */ (
+    document.querySelectorAll(".bar,#shr,#asc,#none,.libhd,.rch,#jtb,#spv,#panel,#home > *,#qrm,#prm,#inm,#upm,#rsh,#szt,#szr,#fl")
+  ).forEach(function (e) {
+    e.setAttribute("data-lang", P.ui);
+  });
   // the page's own words (index.html data-w), when the menu language is not the one they show
   if (filled !== P.ui) {
     filled = P.ui;
     fillWords();
   }
-  root.lang = SCR.k || "mr"; // the page is Marathi (or Kannada); English parts carry lang="en" themselves (screen readers pick the voice from this)
-  [].forEach.call(document.querySelectorAll("#su button"), function (b) {
+  root.lang = /** @type {any} */ (window).SCR.k || "mr"; // the page is Marathi (or Kannada); English parts carry lang="en" themselves (screen readers pick the voice from this)
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#su button")).forEach(function (b) {
     b.setAttribute("aria-pressed", String(b.dataset.v === P.ui));
   });
   if (["std", "classic", "bold"].indexOf(P.fnt) < 0) P.fnt = "classic";
   root.setAttribute("data-font", P.fnt);
-  [].forEach.call(document.querySelectorAll("#sfn button"), function (b) {
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#sfn button")).forEach(function (b) {
     b.setAttribute("aria-pressed", String(b.dataset.v === P.fnt));
   });
-  var qi = document.getElementById("q");
+  var qi = /** @type {HTMLInputElement} */ (byId("q"));
   qi.placeholder = menuWords("bar").find;
   qi.setAttribute("aria-label", qi.placeholder);
   root.setAttribute("data-ref", String(P.ref));
@@ -282,8 +302,8 @@ export function apply() {
   root.setAttribute("data-cols", two ? "2" : "1");
   if (MQ1024.matches) root.setAttribute("data-rail", "1");
   else root.removeAttribute("data-rail");
-  document.getElementById("colrow").hidden = !wide;
-  [].forEach.call(document.querySelectorAll("#sc button"), function (b) {
+  byId("colrow").hidden = !wide;
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#sc button")).forEach(function (b) {
     b.setAttribute("aria-pressed", String(b.dataset.v === (two ? "2" : "1")));
   });
   leadSet();
@@ -318,13 +338,13 @@ export function apply() {
   try {
     welcomeLang();
   } catch (e) {}
-  [].forEach.call(document.querySelectorAll("#st button"), function (b) {
-    b.setAttribute("aria-pressed", b.dataset.v === P.th);
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#st button")).forEach(function (b) {
+    b.setAttribute("aria-pressed", String(b.dataset.v === P.th));
   });
-  document.getElementById("tc").setAttribute("aria-pressed", String(!!P.hc));
+  byId("tc").setAttribute("aria-pressed", String(!!P.hc));
   // Keep screen on: the minutes chosen, in the menu language's digits
-  [].forEach.call(document.querySelectorAll("#tw button"), function (/** @type {HTMLElement} */ b) {
-    var v = +b.dataset.v;
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#tw button")).forEach(function (b) {
+    var v = Number(b.dataset.v);
     b.setAttribute("aria-pressed", String(v === P.wake));
     if (v) b.textContent = num(v);
   });
