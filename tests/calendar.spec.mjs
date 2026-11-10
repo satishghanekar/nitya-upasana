@@ -1039,3 +1039,33 @@ for (const [lang, prefs, full, short] of [
       expect(await d.evaluate((e) => e.scrollWidth <= e.clientWidth), `${width}px: not cut`).toBe(true);
     }
   });
+
+// Both reading languages: a holiday joined to a festival's row is named on the small line in the second language, as
+// the festival's own second name there is, never Marathi letters on the English line (review B5, 2026-11-10)
+test("Coming up: a joined holiday is in the small line's language @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.both, { now: new Date("2026-12-27T19:00:00-04:00") });
+  const small = page.locator('#upw .upr[data-d="2027-01-01"] small');
+  await expect(small).toContainText("New Year's Day (USA)");
+  await expect(small).not.toContainText("नववर्ष");
+});
+
+// A time zone with no city of its own (Berlin): no calendar is worked out, but Home says why, and its pin asks the
+// phone where it is (review B4, 2026-11-10)
+test.describe("a time zone with no known city", () => {
+  test.use({ timezoneId: "Europe/Berlin" });
+  test("Home asks for the place, and the calendar shows once it is known @mobile", async ({ page }) => {
+    await page.context().grantPermissions(["geolocation"]);
+    await page.context().setGeolocation({ latitude: 52.52, longitude: 13.4 });
+    await openSite(page, SETUPS.english);
+    const pin = page.locator("#ploc");
+    await expect(pin).toHaveText("Use your location to see the Vedic calendar");
+    await expect(page.locator("#panb")).toHaveCount(0);
+    const box = await pin.boundingBox();
+    expect(box.height).toBeGreaterThanOrEqual(44);
+    // every theme, the muted words on the card's tint too
+    expect(await axeEveryTheme(page, "#pan", { mismatch: true })).toEqual(noViolations());
+    await pin.click();
+    await expect(page.locator("#panb")).toBeVisible();
+    await expect(page.locator("#pan .p1")).not.toBeEmpty();
+  });
+});

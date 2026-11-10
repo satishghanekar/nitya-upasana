@@ -200,6 +200,8 @@ export default {
     title: function (n) {
       return "दिनक्रम: " + n;
     },
+    /** The first person's, while they are still named "Me" */
+    mine: "माझा दिनक्रम",
     sessions: { morning: "सकाळ", afternoon: "दुपार", evening: "सायंकाळ" },
     sessionG: "वेळ",
     modes: { fixed: "रोज तेच", weekday: "वारानुसार वेगळे" },
@@ -374,6 +376,8 @@ export default {
     amanta: "अमान्त",
     today: "आज",
     loc: "माझे ठिकाण वापरा",
+    // Home, where the time zone names no city: the card's place, a tap uses the phone's location
+    noLoc: "पंचांग पाहण्यासाठी आपले ठिकाण वापरा",
     pic: "चित्र मोठे पाहा",
     prev: "मागचा महिना",
     nextM: "पुढचा महिना",
