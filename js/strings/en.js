@@ -203,6 +203,8 @@ export default {
     title: function (n) {
       return n + "’s routine";
     },
+    /** The first person's, while they are still named "Me" */
+    mine: "Your routine",
     sessions: { morning: "Morning", afternoon: "Afternoon", evening: "Evening" },
     sessionG: "Session",
     modes: { fixed: "Same every day", weekday: "Different by weekday" },
@@ -378,6 +380,8 @@ export default {
     amanta: "amanta",
     today: "today",
     loc: "Use my location",
+    // Home, where the time zone names no city: the card's place, a tap uses the phone's location
+    noLoc: "Use your location to see the Vedic calendar",
     pic: "show the picture full screen",
     prev: "Previous month",
     nextM: "Next month",

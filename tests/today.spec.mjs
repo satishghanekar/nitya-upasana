@@ -1121,3 +1121,28 @@ for (const fnt of ["classic", "std", "bold"])
     expect(top).toBeGreaterThanOrEqual(0);
     expect(top).toBeLessThan(120);
   });
+
+// The top bar names the piece once its heading has scrolled under the bar, but a page over it (the Library) is not
+// that piece: the app's name then (review B6, 2026-11-10)
+test("the top bar names the app while the Library is open, and the piece again after @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.english, { now: EVENING, hash: "#p1" });
+  await page.evaluate(() => scrollBy(0, 600));
+  await expect(page.locator("#bt")).toHaveClass(/\bpc\b/);
+  const piece = await page.locator("#btt").textContent();
+  await page.evaluate(() => /** @type {HTMLElement} */ (document.getElementById("hm")).click());
+  await expect(page.locator("#jump")).toBeVisible();
+  await expect(page.locator("#btt")).toHaveText("Nitya Upasana");
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#jump")).toBeHidden();
+  await expect(page.locator("#btt")).toHaveText(piece);
+});
+
+// The smallest phones: the app's name would show as "नि…", so the picture alone stands for it there; a piece's
+// title still shows (review B6, 2026-11-10)
+test("at 320px the top bar shows the picture, not a cut name", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openSite(page, SETUPS.english, { now: EVENING });
+  await expect(page.locator("#bti")).toBeVisible();
+  await expect(page.locator("#bt")).toBeHidden();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
+});

@@ -15,7 +15,7 @@ import { autoFs, pullSoon } from "../text/autofit.js";
 import { cur, foldSet, unfold } from "../core/apply.js";
 import { asLabel, asShow, asc } from "./bottom-bar.js";
 import { szSet } from "./settings-panel.js";
-import { setJ, setP } from "./overlays.js";
+import { pageOpen, setJ, setP } from "./overlays.js";
 import { spSet } from "./languages.js";
 import { fillWords, menuWords } from "../core/strings.js";
 import { num, shown, ui } from "../core/words.js";
@@ -142,13 +142,14 @@ export function mark() {
   // keeps only Print and Reading (css/10-today.css)
   if (c) root.removeAttribute("data-home");
   else if (!root.hasAttribute("data-home")) root.setAttribute("data-home", "1");
-  // Top bar title: the site's name, or once a piece's heading has scrolled under the bar, that piece ("३. देवीची आरती"),
+  // Top bar title: the site's name, or once a piece's heading has scrolled under the bar, that piece ("३. देवीची आरती")
+  // (not while a page covers it: the Library, Settings, the calendar, the builder),
   // in the first reading language shown: English when it is the main one, with both shown too (Satish, 2026-10-30)
   var en = shown()[0] === "en",
     tt = en ? "Nitya Upasana" : /** @type {any} */ (window).SCR.to("नित्य उपासना"),
     bt0 = byId("bt"),
     hd = c && c.classList.contains("ash") && c.querySelector("header");
-  if (c && hd && hd.getBoundingClientRect().bottom < 64) {
+  if (c && hd && hd.getBoundingClientRect().bottom < 64 && !pageOpen()) {
     var no = c.querySelector("h2 .no ." + (en ? "ne" : "nm")),
       nm = c.querySelector("h2 > ." + (en ? "en" : "mr"));
     if (nm) tt = (no ? no.textContent + " " : "") + nm.textContent;

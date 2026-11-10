@@ -34,7 +34,8 @@ test("Edit beside the session opens the builder for the reading person, at that 
   await expect(page.locator("#tsed")).toHaveAccessibleName("Edit routine: Evening");
   await openBuilder(page);
   await expect(page.locator("#rtbt")).toBeFocused();
-  await expect(page.locator("#rtbt")).toHaveText("M" + "Me’s routine");
+  // the first person, still "Me": "Your routine", not "Me’s routine"
+  await expect(page.locator("#rtbt")).toHaveText("M" + "Your routine");
   await expect(page.locator('#rtss [aria-checked="true"]')).toHaveText("Evening");
   await expect(page.locator('#rtmd [aria-checked="true"]')).toHaveText("Same every day");
   await expect(page.locator("#rtwk")).toBeHidden();
@@ -342,7 +343,7 @@ test("Marathi menus: बदला, and the builder's words in Marathi @mobile", 
   await openSite(page, SETUPS["marathi-menus"], { now: MON_EVENING });
   await expect(page.locator("#tsed")).toHaveText("बदला");
   await openBuilder(page);
-  await expect(page.locator("#rtbt")).toContainText("दिनक्रम: मी");
+  await expect(page.locator("#rtbt")).toContainText("माझा दिनक्रम");
   await expect(page.locator('#rtss [aria-checked="true"]')).toHaveText("सायंकाळ");
   await expect(page.locator("#rtsum")).toHaveText("रोज सायंकाळ · १० रचना");
   await expect(page.locator("#rbk")).toHaveText("मागे", { useInnerText: true });

@@ -210,6 +210,8 @@ export default {
     title: function (n) {
       return n + " దినచర్య";
     },
+    /** The first person's, while they are still named "Me" */
+    mine: "నా దినచర్య",
     sessions: { morning: "ఉదయం", afternoon: "మధ్యాహ్నం", evening: "సాయంత్రం" },
     sessionG: "సమయం",
     modes: { fixed: "ప్రతిరోజూ ఒకటే", weekday: "వారంలో రోజును బట్టి వేరు" },
@@ -374,6 +376,8 @@ export default {
     amanta: "అమాంత",
     today: "ఈరోజు",
     loc: "నా స్థానాన్ని వాడు",
+    // Home, where the time zone names no city: the card's place, a tap uses the phone's location
+    noLoc: "పంచాంగం చూడటానికి మీ స్థానాన్ని వాడండి",
     pic: "చిత్రాన్ని పూర్తి తెరపై చూపు",
     prev: "ముందటి నెల",
     nextM: "తర్వాతి నెల",
