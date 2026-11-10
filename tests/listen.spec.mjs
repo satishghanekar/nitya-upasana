@@ -240,9 +240,21 @@ test("while listening, the page's own thread stays free: the model runs in a wor
 
 test("Settings → About says where Listen runs its model: the CPU here, the GPU where the browser gives one @chromium-only", async ({ page }) => {
   const errors = [];
+  // the GPU is asked for only when Settings opens: never on opening the page
+  await page.addInitScript(() => {
+    // (a GPU that has no adapter to give, as headless Chromium: counted)
+    window.__gpuAsked = 0;
+    const requestAdapter = () => (window.__gpuAsked++, Promise.resolve(null));
+    Object.defineProperty(navigator, "gpu", { value: { requestAdapter }, configurable: true });
+  });
   await openSite(page, SETUPS.english, { errors });
-  // (headless Chromium gives no GPU adapter: the CPU)
+  await page.waitForTimeout(500);
+  expect(await page.evaluate(() => window.__gpuAsked)).toBe(0);
+  await expect(page.locator("#lswr")).toHaveAttribute("hidden", "");
+  await page.locator("#aa").click();
+  // (no GPU adapter: the CPU)
   await expect(page.locator("#lswr")).not.toHaveAttribute("hidden", "");
+  expect(await page.evaluate(() => window.__gpuAsked)).toBe(1);
   await expect(page.locator("#lswr")).toHaveAttribute("data-way", "cpu");
   await expect(page.locator("#lsw")).toHaveText("Listen: CPU");
   await expect(page.locator("#lswn")).toHaveText("Works on every phone, uses more battery");
@@ -251,7 +263,6 @@ test("Settings → About says where Listen runs its model: the CPU here, the GPU
   expect(await page.evaluate(() => document.getElementById("lswr").nextElementSibling.id)).toBe("upr");
   expect(await page.evaluate(() => document.getElementById("upr").nextElementSibling)).toBeNull();
   // the Standard badge reads at 4.5:1 in every theme (a11y.spec scans Settings too, but never sees the GPU line)
-  await page.locator("#aa").click();
   expect(await axeEveryTheme(page, "#lswr")).toEqual(noViolations());
   expect(errors).toEqual([]);
 });
@@ -262,6 +273,7 @@ test("Settings → About says the GPU when the browser has WebGPU and an adapter
     Object.defineProperty(navigator, "gpu", { value: { requestAdapter: () => Promise.resolve({}) }, configurable: true });
   });
   await openSite(page, SETUPS.english, { errors });
+  await page.locator("#aa").click();
   await expect(page.locator("#lswr")).toHaveAttribute("data-way", "gpu");
   await expect(page.locator("#lsw")).toHaveText("Listen: GPU");
   await expect(page.locator("#lswn")).toHaveText("About 3× faster, lighter on battery");
@@ -269,7 +281,6 @@ test("Settings → About says the GPU when the browser has WebGPU and an adapter
   // only the GPU's icon (the chip with a bolt) shows
   await expect(page.locator("#lswr .lsw-gpu")).not.toHaveCSS("display", "none");
   await expect(page.locator("#lswr .lsw-cpu")).toHaveCSS("display", "none");
-  await page.locator("#aa").click();
   expect(await axeEveryTheme(page, "#lswr")).toEqual(noViolations());
   expect(errors).toEqual([]);
 });

@@ -139,8 +139,11 @@ export function init() {
   if (!btn || !bar) return;
   // (a phone with no microphone access or no AudioWorklet can't listen: no button)
   btn.hidden = !(navigator.mediaDevices && window.AudioWorkletNode && window.WebAssembly);
-  // (Settings → More → About says where the model runs here: the same choice Listen makes when started)
-  if (!btn.hidden) way().then(showWay);
+  // (Settings → More → About says where the model runs here: the same choice Listen makes when started; asked only
+  // when Settings opens, as asking for the GPU wakes it, and logs a warning where there is none)
+  document.addEventListener("nitya-settings", function () {
+    if (!btn.hidden) way().then(showWay);
+  });
   btn.addEventListener("click", function () {
     if (phase === "off") start();
     else stop();
