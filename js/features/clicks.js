@@ -7,7 +7,7 @@ import { pieceEl } from "../core/page.js";
 import { jp, unfold, pn } from "../core/apply.js";
 import { setJ, setP } from "./overlays.js";
 import { jumpTo } from "./history.js";
-import { hlMark } from "../core/startup.js";
+import { hlMark } from "./startup.js";
 
 export function init() {
   document.addEventListener("click", function (e) {

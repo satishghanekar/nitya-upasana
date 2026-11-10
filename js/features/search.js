@@ -9,20 +9,20 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { P, change } from "../core/state.js";
-import { IA, englishStyle, titleText } from "./iast.js";
-import { numberStanzas } from "./stanza-numbers.js";
-import { breakLines } from "./line-breaks.js";
+import { IA, englishStyle, titleText } from "../text/iast.js";
+import { numberStanzas } from "../text/stanza-numbers.js";
+import { breakLines } from "../text/line-breaks.js";
 import { pieceEl } from "../core/page.js";
 import { jp, unfold } from "../core/apply.js";
-import { buildIndex, fold, marks, search } from "./search-core.js";
-import { categoryOfSection, textsForSearch } from "../features/library.js";
-import { goLine } from "../features/bars.js";
-import { jumpTo } from "../features/history.js";
-import { ul } from "../features/contents-list.js";
+import { buildIndex, fold, marks, search } from "../text/search-core.js";
+import { categoryOfSection, textsForSearch } from "./library.js";
+import { goLine } from "./bars.js";
+import { jumpTo } from "./history.js";
+import { ul } from "./contents-list.js";
 import { menuWords } from "../core/strings.js";
 import { ui } from "../core/words.js";
 
-/** @typedef {import("./search-core.js").Index} Index */
+/** @typedef {import("../text/search-core.js").Index} Index */
 
 /** @type {Index | null} */
 var IX = null;
@@ -362,7 +362,7 @@ function ix() {
   breakLines(all);
   /** @type {Record<string, number>} */
   var seen = {};
-  /** @type {import("./search-core.js").LineIn[]} */
+  /** @type {import("../text/search-core.js").LineIn[]} */
   var lines = [];
   var from = scr().from;
   [].forEach.call(all.querySelectorAll(".ash .mr p[data-l]"), function (/** @type {HTMLElement} */ p) {

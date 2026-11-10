@@ -2,13 +2,13 @@
 // Start-up
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { P } from "./state.js";
-import { onPiece, pieceEl } from "./page.js";
+import { P } from "../core/state.js";
+import { onPiece, pieceEl } from "../core/page.js";
 import { fontsNow } from "../text/autofit.js";
-import { cur } from "./apply.js";
-import { apply, mark } from "../features/bars.js";
-import { wake } from "../features/wake-lock.js";
-import { homeAlone, homeInView, homeView, solo } from "../features/history.js";
+import { cur } from "../core/apply.js";
+import { apply, mark } from "./bars.js";
+import { wake } from "./wake-lock.js";
+import { homeAlone, homeInView, homeView, solo } from "./history.js";
 
 /** @type {number} */
 var tk;

@@ -6,7 +6,7 @@
 // the end of the list opens the categories sheet (#lbm) over the Library: add a category, rename one (a built-in one
 // only on this phone; it can't be deleted), delete one the family added, and move a text to another category. What
 // the family changes is kept on this phone for everyone on it (js/store/store.js, meta.library) and in backup files;
-// the rules are in js/core/library.js. Search (js/text/search.js) finds texts by their category's name too.
+// the rules are in js/core/library.js. Search (js/features/search.js) finds texts by their category's name too.
 // Words: the sheet's words follow the menu language (P.ui); the names of categories and texts follow the reading
 // languages, as the Vedic calendar's do: the first language (P.lead), with the second (P.l2) as a small line under a
 // category's name; Marathi in Kannada letters when that is the script, a title in English plain or scholarly (P.tr).
@@ -32,7 +32,7 @@ import {
 } from "../core/library.js";
 import { apply } from "./bars.js";
 import { iaTitle, titlesSet } from "../text/iast.js";
-import { buildIX } from "../text/search.js";
+import { buildIX } from "./search.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { dv, esc, lead, mrLang, scr as to, second, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
@@ -172,7 +172,7 @@ export function shelvesNow() {
 }
 
 /**
- * Every text for search (js/text/search.js): id, its id without its category (sukhkarta, of aarti-sukhkarta),
+ * Every text for search (js/features/search.js): id, its id without its category (sukhkarta, of aarti-sukhkarta),
  * section, titles and its category's names
  * @returns {{ id: string, name: string, sec: string, title: string, titleEn: string, categories: string[] }[]}
  */

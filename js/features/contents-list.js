@@ -1,6 +1,6 @@
 // @ts-check
 // Library (#jump): every text by category (js/features/library.js builds the list), with search
-// (js/text/search.js: the box at the foot of the page on phones, and Recent). Opened by the book button in the bottom
+// (js/features/search.js: the box at the foot of the page on phones, and Recent). Opened by the book button in the bottom
 // bar (#hm) and at the end of each piece; a title opens its
 // text (js/features/clicks.js), and Back (the button here, the phone's Back, or Escape) returns. Home v2 moved the
 // list here from the home page.

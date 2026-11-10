@@ -577,7 +577,7 @@ export default {
       return "ಆವೃತ್ತಿ " + v + " ಉಳಿಸಲಾಗಿದೆ. ಪೂರ್ಣಗೊಳಿಸಲು ಆ್ಯಪ್ ಮುಚ್ಚಿ ಮತ್ತೆ ತೆರೆಯಿರಿ.";
     },
   },
-  // Search and Recent (js/text/search.js)
+  // Search and Recent (js/features/search.js)
   search: {
     /** @param {string} name */
     remove: function (name) {

@@ -12,7 +12,7 @@ import { trSet } from "../text/iast.js";
 import { refit } from "../text/autofit.js";
 import { cur, pn } from "../core/apply.js";
 import { apply } from "./bars.js";
-import { buildIX } from "../text/search.js";
+import { buildIX } from "./search.js";
 import { fitPreview } from "./languages.js";
 import { LANGS, menuWords } from "../core/strings.js";
 import { esc } from "../core/words.js";

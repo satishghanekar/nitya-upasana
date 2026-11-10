@@ -1,7 +1,7 @@
 // @ts-check
 // Builds the HTML of a piece from CONTENT (made from the text files in content/texts/ by js/text/content.js): for the
 // reading page the first time the piece is opened (js/core/page.js), for the printout (js/print/compose.js) and
-// for the search index (js/text/search.js).
+// for the search index (js/features/search.js).
 // Each line keeps its two languages side by side in the data; this file decides how they are shown.
 /**
  * @typedef {import("./text/content.js").Piece} Piece
