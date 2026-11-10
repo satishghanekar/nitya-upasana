@@ -191,6 +191,35 @@ test("a Library text heard while the day's routine is read: the session is left 
   await expect(page.locator("html")).not.toHaveAttribute("data-run", "1");
 });
 
+test("Listen started on Home: a text of the session Home shows starts that session there, the next texts below it @chromium-only", async ({ page }) => {
+  // (Satish, 2026-11-10: opened on its own, the page ended with the first aarti and the next one could not be scrolled to)
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.marathi);
+  await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
+  const ids = await page.locator("#tsl a.tgo").evaluateAll((a) => a.map((x) => x.dataset.t));
+  expect(ids.length).toBeGreaterThan(1);
+  const sec = await page.evaluate(async (id) => {
+    const p = window.CONTENT.categories.flatMap((c) => c.pieces).find((x) => x.text === id);
+    const lines = p.items.flatMap((i) => i.lines || []);
+    const heard = (lines[0].mr + " " + lines[1].mr).replace(/<[^>]*>/g, "").replace(/[॑-॔᳐-᳿।॥०-९.]/g, "");
+    const m = await import(new URL("js/features/listen.js", document.baseURI).href);
+    m.follow(heard, performance.now() + 2000);
+    return p.id;
+  }, ids[0]);
+  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
+  await expect(page.locator("#" + sec + " .verse .mr p.lsn")).toBeInViewport();
+  // the session's next text is on the page, below the one being chanted
+  const below = await page.evaluate(
+    ([a, b]) => {
+      const x = document.querySelector("#main > .ash.inrun[style*='order: 2']");
+      return { next: x && x.id, after: x ? x.getBoundingClientRect().top > document.getElementById(a).getBoundingClientRect().bottom - 1 : false, b };
+    },
+    [sec, ids[1]],
+  );
+  expect(below.next).toBeTruthy();
+  expect(below.after).toBe(true);
+});
+
 test("after 5 minutes with no chanting followed, Listen stops by itself and says so @chromium-only", async ({ page }) => {
   // (Satish, 2026-11-09: a phone left listening runs its battery down; the fake microphone's beep is not chanting)
   test.setTimeout(240_000);
