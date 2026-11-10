@@ -210,6 +210,8 @@ export default {
     title: function (n) {
       return n + " ಅವರ ದಿನಚರಿ";
     },
+    /** The first person's, while they are still named "Me" */
+    mine: "ನನ್ನ ದಿನಚರಿ",
     sessions: { morning: "ಬೆಳಿಗ್ಗೆ", afternoon: "ಮಧ್ಯಾಹ್ನ", evening: "ಸಂಜೆ" },
     sessionG: "ಸಮಯ",
     modes: { fixed: "ಪ್ರತಿದಿನ ಒಂದೇ", weekday: "ವಾರದ ದಿನಕ್ಕೆ ತಕ್ಕಂತೆ ಬೇರೆ" },
@@ -374,6 +376,8 @@ export default {
     amanta: "ಅಮಾಂತ",
     today: "ಇಂದು",
     loc: "ನನ್ನ ಸ್ಥಳ ಬಳಸಿ",
+    // Home, where the time zone names no city: the card's place, a tap uses the phone's location
+    noLoc: "ಪಂಚಾಂಗ ನೋಡಲು ನಿಮ್ಮ ಸ್ಥಳ ಬಳಸಿ",
     pic: "ಚಿತ್ರವನ್ನು ಪೂರ್ಣ ಪರದೆಯಲ್ಲಿ ತೋರಿಸಿ",
     prev: "ಹಿಂದಿನ ತಿಂಗಳು",
     nextM: "ಮುಂದಿನ ತಿಂಗಳು",

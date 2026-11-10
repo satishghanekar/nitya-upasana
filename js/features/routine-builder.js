@@ -46,7 +46,7 @@ import { ovSub, ovSubDone } from "./history.js";
 import { shownSession } from "./today-card.js";
 import { createPicker } from "./text-picker.js";
 import { dv, esc, lead, nameOf as menuName, num, scr, scrKey, second, ui } from "../core/words.js";
-import { menuWords } from "../core/strings.js";
+import { LANGS, menuWords } from "../core/strings.js";
 
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
@@ -303,7 +303,11 @@ function render() {
     badge.style.background = p.colour;
     badge.lang = /^[\s\x20-\x7eÀ-ɏ]*$/.test(p.initials) ? "en" : "mr";
     badge.classList.toggle("long", p.initials.length > 2);
-    el("rtbn").textContent = w.title(p.name);
+    // the first person, still named "Me" (in any menu language): "Your routine", never "Me's routine"
+    var me = Object.keys(LANGS).some(function (c) {
+      return menuWords("profiles", c).me === p.name;
+    });
+    el("rtbn").textContent = me ? w.mine : w.title(p.name);
   }
   drawBase();
   // Morning / Afternoon / Evening
