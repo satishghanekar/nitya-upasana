@@ -1,10 +1,11 @@
+// @ts-check
 // Settings panel. Its tabs, Reading | Screen | More (#spv, Satish, 2026-10-25; Reading has the languages too), beside Back as on the
 // Library and the calendar pages: one tab's groups at a time (each .sp-grp says its tab, data-tab); Settings opens
 // on Reading each time, or on the tab its opener asks for (js/features/reading-sheet.js). On desktops (WIDE) there
 // are no tabs: every group at once, in two columns (css/09-settings-page.css; Satish, 2026-10-30).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { warn } from "../core/page.js";
+import { btnV, byId, warn } from "../core/page.js";
 import { P, change, dfs } from "../core/state.js";
 import { FSA } from "../text/autofit.js";
 import { trSet } from "../text/iast.js";
@@ -16,6 +17,7 @@ import { fitPreview } from "./languages.js";
 import { LANGS, menuWords } from "../core/strings.js";
 import { esc } from "../core/words.js";
 
+/** @type {ReturnType<typeof setTimeout> | number} */
 var fsT;
 /** The tab last chosen, kept for when a desktop window is narrowed to tabs again */
 var tab = "read";
@@ -62,18 +64,18 @@ export function init() {
   // Text size: the Settings page and its preview change at once; the long page under it is laid out
   // again once the taps stop (or when Settings closes). Laying it out on every tap made A−/A+ feel stuck on phones.
   fsT = 0;
-  document.getElementById("lg").onclick = function () {
+  byId("lg").onclick = function () {
     fsTap(Math.min(52, P.fs + 2), 1);
   };
-  document.getElementById("sr").onclick = function () {
+  byId("sr").onclick = function () {
     fsTap(dfs(), 0);
   };
-  document.getElementById("sm").onclick = function () {
+  byId("sm").onclick = function () {
     fsTap(Math.max(14, P.fs - 2), 1);
   };
   // Text font: switched at once; the text size is fitted again when the new font has arrived
-  document.getElementById("sfn").onclick = function (e) {
-    var v = (e.target.closest("button") || { dataset: {} }).dataset.v;
+  byId("sfn").onclick = function (e) {
+    var v = btnV(e);
     if (!v || v === P.fnt) return;
     change({ fnt: v }, apply);
     refit();
@@ -86,22 +88,22 @@ export function init() {
     })
     .join("");
   su.onclick = function (e) {
-    var v = (e.target.closest("button") || { dataset: {} }).dataset.v;
+    var v = btnV(e);
     if (v) {
       change({ ui: v }, apply);
     }
   };
-  document.getElementById("st").onclick = function (e) {
-    var v = (e.target.closest("button") || { dataset: {} }).dataset.v;
+  byId("st").onclick = function (e) {
+    var v = btnV(e);
     if (v) {
       change({ th: v }, apply);
     }
   };
-  document.getElementById("tc").onclick = function () {
+  byId("tc").onclick = function () {
     change({ hc: P.hc ? 0 : 1 }, apply);
   };
-  document.getElementById("sc").onclick = function (e) {
-    var v = (e.target.closest("button") || { dataset: {} }).dataset.v;
+  byId("sc").onclick = function (e) {
+    var v = btnV(e);
     if (!v) return;
     var c = cur();
     change({ cols: +v }, apply);
@@ -109,6 +111,7 @@ export function init() {
   };
 }
 
+/** @param {number} fs @param {0 | 1} fsu */
 export function fsTap(fs, fsu) {
   change({ fs: fs, fsu: fsu });
   pn.style.setProperty("--fs", P.fs + "px");
@@ -120,7 +123,7 @@ export function fsTap(fs, fsu) {
 
 // The size shown between A− and A+: a share of the size Reset gives (the fitted size), as the pinch shows it
 export function szSet() {
-  document.getElementById("szv").textContent = Math.round((P.fs / (FSA || dfs())) * 100) + "%";
+  byId("szv").textContent = Math.round((P.fs / (FSA || dfs())) * 100) + "%";
 }
 
 export function fsFlush() {
@@ -133,13 +136,15 @@ export function fsFlush() {
 
 // English style (picked with English in the language lists): switched in place (lines, titles, search list),
 // then the text size is fitted again
+/** @param {string} v */
 export function trPick(v) {
   if (v && v !== P.tr) {
     change({ tr: v });
     // each step runs on its own, so a failure in one (named with the browser's message, so it can be traced)
     // can't stop the others or leave the switch showing the old choice; apply() below always runs
+    /** @type {string[]} */
     var bad = [];
-    [
+    /** @type {[string, () => void][]} */ ([
       [
         "lines",
         function () {
@@ -154,11 +159,11 @@ export function trPick(v) {
           if (P.lang === "en") refit();
         },
       ],
-    ].forEach(function (st) {
+    ]).forEach(function (st) {
       try {
         st[1]();
       } catch (er) {
-        bad.push(st[0] + ": " + ((er && er.message) || er));
+        bad.push(st[0] + ": " + ((er && /** @type {any} */ (er).message) || er));
       }
     });
     if (bad.length) {

@@ -1,3 +1,4 @@
+// @ts-check
 // Settings page: languages
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
@@ -8,71 +9,72 @@ import { apply } from "./bars.js";
 import { trPick } from "./settings-panel.js";
 import { buildIX } from "../text/search.js";
 import { refToggle } from "./dhrupad-button.js";
-import { pieceEl } from "../core/page.js";
+import { btnV, byId, pieceEl } from "../core/page.js";
 import { menuWords } from "../core/strings.js";
 
+/** @type {string[]} */
 var PICK;
 
 export function init() {
   // The language lists: each language once, English twice (one per spelling), and None for the second language.
   // A pick is "mr", "en:simple", "en:iast", or the Marathi in other letters: "kn", "te", "gu".
   PICK = ["mr", "en:simple", "en:iast", "kn", "te", "gu"];
-  document.getElementById("sl1s").onchange = function () {
-    spPick(1, this.value);
+  byId("sl1s").onchange = function (e) {
+    spPick(1, /** @type {HTMLSelectElement} */ (e.currentTarget).value);
   };
-  document.getElementById("sl2s").onchange = function () {
-    spPick(2, this.value);
+  byId("sl2s").onchange = function (e) {
+    spPick(2, /** @type {HTMLSelectElement} */ (e.currentTarget).value);
   };
   // Show: the main language, the second or both, as Language in the Aa sheet does
-  document.getElementById("slw").onclick = function (e) {
-    var b = e.target.closest("button");
-    if (!b || b.dataset.v === P.lang) return;
+  byId("slw").onclick = function (e) {
+    var v = btnV(e);
+    if (!v || v === P.lang) return;
     var c = cur();
-    change({ lang: b.dataset.v }, apply);
+    change({ lang: v }, apply);
     if (c) c.scrollIntoView();
   };
-  document.getElementById("srf").onclick = function (e) {
-    var b = e.target.closest("button");
-    if (b && b.dataset.v !== String(P.ref)) refToggle();
+  byId("srf").onclick = function (e) {
+    var v = btnV(e);
+    if (v !== undefined && v !== String(P.ref)) refToggle();
   };
 }
 
 // Show the settings that depend on the language choice
 export function spSet() {
-  var v1 = document.getElementById("sl1v"),
-    v2 = document.getElementById("sl2v");
+  var v1 = byId("sl1v"),
+    v2 = byId("sl2v");
   var k1 = spKey(P.lead),
     k2 = P.l2 ? spKey(P.l2) : "";
   v1.textContent = spName(k1);
   v1.lang = LK(P.lead);
   v2.textContent = spName(k2);
   v2.lang = P.l2 ? LK(P.l2) : P.ui;
-  spOpts(document.getElementById("sl1s"), PICK, k1, function () {
+  spOpts(/** @type {HTMLSelectElement} */ (byId("sl1s")), PICK, k1, function () {
     return false;
   });
   // the second language can't be the main one, nor (for now) a second Indian language beside it
-  spOpts(document.getElementById("sl2s"), PICK.concat([""]), k2, function (k) {
+  spOpts(/** @type {HTMLSelectElement} */ (byId("sl2s")), PICK.concat([""]), k2, function (k) {
     var l = k.split(":")[0];
-    return l === LK(P.lead) || (l !== "en" && k && P.lead !== "en");
+    return l === LK(P.lead) || (l !== "en" && !!k && P.lead !== "en");
   });
   // menus: English, or the language the texts are shown in (js/store/migrate.js tidy()); nothing to pick with
   // English as the main language
-  document.getElementById("surow").hidden = P.lead === "en";
-  [].forEach.call(document.querySelectorAll("#su button"), function (b) {
+  byId("surow").hidden = P.lead === "en";
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#su button")).forEach(function (b) {
     b.hidden = b.dataset.v !== "en" && b.dataset.v !== P.ind;
   });
   // Show: one button per language and Both, named in their own language (as in the Aa sheet)
-  document.getElementById("slwrow").hidden = !P.l2;
-  document.getElementById("slw").innerHTML = P.l2
+  byId("slwrow").hidden = !P.l2;
+  byId("slw").innerHTML = P.l2
     ? [P.lead, P.l2, "both"]
-        .map(function (v) {
+        .map(function (/** @type {string} */ v) {
           var l = v === "both" ? P.ui : LK(v),
             t = v === "both" ? menuWords("languages").both : LANGS[LK(v)].n;
           return '<button type="button" data-v="' + v + '" lang="' + l + '" aria-pressed="' + (v === P.lang) + '">' + t + "</button>";
         })
         .join("")
     : "";
-  [].forEach.call(document.querySelectorAll("#srf button"), function (b) {
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#srf button")).forEach(function (b) {
     b.setAttribute("aria-pressed", String(b.dataset.v === String(P.ref)));
   });
   if (pn.hidden) return; // the rest is the preview, made when Settings is open
@@ -83,17 +85,20 @@ export function spSet() {
   // font buttons change it at once.
   var a1 = pieceEl("a1"); // (built if not opened yet: js/core/page.js)
   if (!a1) return;
+  var piece = a1;
   var both = P.lang === "both",
     ls = both ? [P.lead, P.l2] : [P.lang],
     // the lines of one block (the dhrupad at the top, or the first verse) in each language shown
+    /** @type {(sel: string, n: number) => string[][]} */
     lines = function (sel, n) {
-      return ls.map(function (l) {
-        return [].slice.call(a1.querySelectorAll(sel + " .verse > ." + l + " p"), 0, n).map(function (p) {
+      return ls.map(function (/** @type {string} */ l) {
+        return Array.prototype.slice.call(piece.querySelectorAll(sel + " .verse > ." + l + " p"), 0, n).map(function (/** @type {HTMLElement} */ p) {
           return p.innerHTML.replace(/ ([।॥|])/g, "\u00a0$1"); // a danda never starts a line
         });
       });
     },
     // one line: the main language, and the second under it
+    /** @type {(b: string[][], k: number, cls?: string) => string} */
     row = function (b, k, cls) {
       return b
         .map(function (ps, w) {
@@ -109,7 +114,7 @@ export function spSet() {
   for (var k = 0; k < vs[0].length; k++) h += row(vs, k);
   h += P.ref ? '<div class="sp-pn">' + menuWords("languages").refrain + "</div>" : row(dh, 0, "sp-pd");
   // (its heading, Preview, is the group's, in index.html)
-  document.getElementById("sprev").innerHTML = '<div class="sp-pw">' + h + "</div>";
+  byId("sprev").innerHTML = '<div class="sp-pw">' + h + "</div>";
   fitPreview();
 }
 
@@ -126,7 +131,7 @@ export function fitPreview() {
   if (P.fsu || !pw.clientWidth) return;
   var avail = pw.clientWidth - 12, // (inside its faded edges)
     widest = 0;
-  [].forEach.call(pw.querySelectorAll("p"), function (/** @type {HTMLElement} */ p) {
+  pw.querySelectorAll("p").forEach(function (p) {
     widest = Math.max(widest, p.getBoundingClientRect().width);
   });
   if (widest <= avail) return;
@@ -134,16 +139,19 @@ export function fitPreview() {
   pw.style.setProperty("--fs", Math.max(18, Math.floor((fs * avail) / widest)) + "px");
 }
 
+/** @param {string} slot */
 function spKey(slot) {
   return LK(slot) === "en" ? "en:" + P.tr : LK(slot);
 }
 
+/** @param {string} k */
 function spName(k) {
   if (!k) return menuWords("languages").none;
   var l = k.split(":");
   return LANGS[l[0]].n + (l[1] ? " · " + (l[1] === "iast" ? "sukhakartā" : "Sukhkarta") : "");
 }
 
+/** @param {HTMLSelectElement} sel @param {string[]} ks @param {string} cur @param {(k: string) => boolean} off */
 function spOpts(sel, ks, cur, off) {
   sel.innerHTML = ks
     .map(function (k) {
@@ -154,6 +162,7 @@ function spOpts(sel, ks, cur, off) {
 }
 
 // w: 1 main, 2 second
+/** @param {1 | 2} w @param {string} k */
 function spPick(w, k) {
   var c = cur(),
     // keep showing the same thing: the main language, the second, or both
@@ -179,7 +188,7 @@ function spPick(w, k) {
   if (sw) ch.ind = ind;
   change(ch, function () {
     if (sw) {
-      SCR.set(ind);
+      /** @type {any} */ (window).SCR.set(ind);
       buildIX();
     }
     apply();
