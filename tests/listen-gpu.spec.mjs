@@ -50,10 +50,16 @@ test("the GPU's way: the 4-bit model and the library's WebGPU build, kept, and h
     const n = out.dims[2];
     let far = 0;
     for (const [step, row] of Object.entries(check.scores)) row.forEach((v, o) => (far = Math.max(far, Math.abs(data[Number(step) * n + o] - v))));
-    return { way: await m.way(), same: JSON.stringify(h.choices(data, n)) === JSON.stringify(check.ids), far };
+    // each output's mean over every step: a difference at a step the three above leave out shows here. Averaged, the
+    // rounding of 8-bit arithmetic mostly cancels out: 0.1 apart in WebAssembly on chant-v4 (2026-11-10)
+    const sum = new Float64Array(n);
+    data.forEach((v, at) => (sum[at % n] += v));
+    const offMean = Math.max(...check.means.map((v, o) => Math.abs((sum[o] * n) / data.length - v)));
+    return { way: await m.way(), same: JSON.stringify(h.choices(data, n)) === JSON.stringify(check.ids), far, offMean };
   });
   expect(got.way).toBe("gpu");
   expect(got.same).toBe(true);
   expect(got.far).toBeLessThan(0.4);
+  expect(got.offMean).toBeLessThan(0.15);
   expect(errors).toEqual([]);
 });
