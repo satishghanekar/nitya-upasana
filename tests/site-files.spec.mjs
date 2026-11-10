@@ -91,7 +91,7 @@ test("the scripts, styles and page stay within their size budget", () => {
   // the sound lined up with the text: 336.4 KB then; 340 KB since 2026-11-09: Listen stopping by itself in five
   // languages, quicker after a jump, and on the GPU where there is one: 338.5 KB then; 341 KB since 2026-11-09: a
   // session in the page's own order, numbered by the session, and Coming up folded on phones: 340.1 KB then; 345 KB
-  // since 2026-11-10: the JSDoc types the type checks need, file by file (UNCHECKED below): 341.3 KB then)
+  // since 2026-11-10: the JSDoc types the type checks need, in every script: 341.3 KB then)
   expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(345_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
@@ -113,22 +113,11 @@ test("every file carries the Content-Security-Policy: this site only, no inline 
   }
 });
 
-// Type checks (npm run types) cover only the files that start with "// @ts-check" (tests/tsconfig.json). These are
-// the files still waiting for theirs, one change at a time: the list may only get shorter, and a new file starts
-// with it (CLAUDE.md).
-const UNCHECKED = [
-  "js/features/bars.js",
-  "js/features/history.js",
-  "js/features/offline.js",
-  "js/features/overlays.js",
-  "js/features/print.js",
-  "js/main.js",
-  "js/parts.js",
-  "js/print/compose.js",
-  "js/render.js",
-];
+// Type checks (npm run types) cover only the files that start with "// @ts-check" (tests/tsconfig.json). Every script
+// has it now; a new file starts with it too (CLAUDE.md). The list of files waiting for it stays empty.
+const UNCHECKED = [];
 
-test("every script is type-checked, except the files still waiting for it", () => {
+test("every script is type-checked", () => {
   const all = readdirSync(new URL("../js/", import.meta.url), { recursive: true })
     .map(String)
     .filter((f) => f.endsWith(".js"))

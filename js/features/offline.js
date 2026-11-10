@@ -1,13 +1,34 @@
+// @ts-check
 // Offline use: home-screen app details and the service worker (sw.js)
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { note, onPiece, root } from "../core/page.js";
+import { byId, note, onPiece, root } from "../core/page.js";
 import { fillWords, menuWords } from "../core/strings.js";
 import { esc } from "../core/words.js";
 import { ovSub, ovSubDone } from "./history.js";
 
-var FONTS, IMAGES, hd, l1, m1, m2, ofb, offv, CACHE, me, upd, updv, PARTS, ofSaved, fill, upmVer;
+/** @type {string[]} */
+var FONTS;
+/** @type {string[]} */
+var IMAGES;
+/** @type {string[]} the files the page is built from besides itself */
+var PARTS;
+/** @type {HTMLElement} the cloud in the top bar while offline */
+var ofb;
+/** @type {HTMLElement} Settings → About: saved for offline use or not */
+var offv;
+/** @type {HTMLElement} Check for updates */
+var upd;
+/** @type {HTMLElement} what Check for updates found */
+var updv;
+/** @type {string} the offline copy's name ("aarti-v1.0") */
+var CACHE;
+/** @type {string | undefined} the version shown ("1.0") */
+var me;
+/** @type {string | undefined} the version an update saved, for Finish the update */
+var upmVer;
 // whether every file is in the saved copy: null until known, false while one is missing
+/** @type {boolean | null} */
 var whole = null;
 
 export function init() {
@@ -17,35 +38,37 @@ export function init() {
   IMAGES = SITE_PARTS.images;
   if (/^https?:$/.test(location.protocol)) {
     try {
-      hd = document.head;
-      l1 = document.createElement("link");
+      var hd = document.head,
+        l1 = document.createElement("link"),
+        m1 = document.createElement("meta"),
+        m2 = document.createElement("meta");
       l1.rel = "manifest";
       l1.href = "manifest.json";
       hd.appendChild(l1);
-      m1 = document.createElement("meta");
       m1.name = "apple-mobile-web-app-capable";
       m1.content = "yes";
       hd.appendChild(m1);
-      m2 = document.createElement("meta");
       m2.name = "apple-mobile-web-app-title";
       m2.content = "Nitya Upasana";
       hd.appendChild(m2);
     } catch (e) {}
     // Offline: a small cloud in the top bar while there is no internet (#ofb), and in Settings → More → About whether the
     // site is saved for offline use (#offv). A short note says so once, when the first visit has saved it.
-    ofb = document.getElementById("ofb");
-    offv = document.getElementById("offv");
+    ofb = byId("ofb");
+    offv = byId("offv");
 
     // The offline copy's name ("aarti-v1.0") from <meta name="version"> in index.html, and the version shown ("1.0")
-    CACHE = (document.querySelector('meta[name="version"]') || {}).content || "aarti-v1.0";
+    var vm = /** @type {HTMLMetaElement | null} */ (document.querySelector('meta[name="version"]'));
+    CACHE = (vm && vm.content) || "aarti-v1.0";
     me = (CACHE.match(/^aarti-v([\d.]+)$/) || [])[1];
-    document.getElementById("ver").textContent = me || "";
+    byId("ver").textContent = me || "";
     // the words as the page's own (data-w), so they follow a change of menu language (js/core/strings.js fillWords)
     /** @param {HTMLElement} el @param {string} path */
     function words(el, path) {
       el.innerHTML = '<span data-w="' + path + '"></span>';
       fillWords(el);
     }
+    /** @param {string} st */
     function ofSet(st) {
       offv.setAttribute("data-s", st);
       words(offv, "offline.state." + st);
@@ -53,11 +76,12 @@ export function init() {
     }
     // Check for updates (Settings → More → About, the round button): its icon and name, and under the version what it
     // found (the offline state while there is nothing to say), in the menu language. The row's look follows data-s.
-    upd = document.getElementById("upd");
-    updv = document.getElementById("updv");
-    var upr = document.getElementById("upr"),
-      uph = document.getElementById("uph");
+    upd = byId("upd");
+    updv = byId("updv");
+    var upr = byId("upr"),
+      uph = byId("uph");
 
+    /** @param {string} st */
     function updSet(st) {
       upd.setAttribute("data-s", st);
       upr.setAttribute("data-s", st);
@@ -69,13 +93,14 @@ export function init() {
     // Author lines: the Wikipedia link on a poet's name works only online; offline the name is plain text
     function crNet() {
       var on = navigator.onLine !== false;
-      [].forEach.call(document.querySelectorAll(".cr a"), function (a) {
-        if (on && a.getAttribute("data-href")) {
-          a.setAttribute("href", a.getAttribute("data-href"));
+      document.querySelectorAll(".cr a").forEach(function (a) {
+        var dh = a.getAttribute("data-href");
+        if (on && dh) {
+          a.setAttribute("href", dh);
           a.removeAttribute("data-href");
           a.removeAttribute("aria-disabled");
         } else if (!on && a.hasAttribute("href")) {
-          a.setAttribute("data-href", a.getAttribute("href"));
+          a.setAttribute("data-href", a.getAttribute("href") || "");
           a.removeAttribute("href");
           a.setAttribute("aria-disabled", "true");
         }
@@ -137,7 +162,7 @@ export function init() {
         return Promise.all(
           files.map(function (u, i) {
             return fetch(fresh(u), { cache: "no-store" }).then(function (r) {
-              if (!r.ok) throw new Error(r.status);
+              if (!r.ok) throw new Error(String(r.status));
               return r.text().then(function (t) {
                 // (the page: its <meta name="version">, which the saved copy may no longer have to compare with)
                 var v = i === 0 && /<meta name="version" content="([^"]+)"/.exec(t);
@@ -157,13 +182,14 @@ export function init() {
     // Resolves once that is done, or after 20 s at most. Every file is fetched before any is saved, so a file that fails
     // leaves the saved copy as it was (as addAll did).
     function newCopy() {
+      /** @type {Promise<any>} */
       var saved = Promise.resolve();
       if ("caches" in window) {
         var files = ["./"].concat(PARTS);
         saved = Promise.all(
           files.map(function (u) {
             return fetch(fresh(u), { cache: "reload" }).then(function (r) {
-              if (!r.ok) throw new Error(r.status);
+              if (!r.ok) throw new Error(String(r.status));
               return r;
             });
           }),
@@ -181,6 +207,7 @@ export function init() {
           })
           .catch(function () {});
       }
+      /** @type {Promise<any>} */
       var next = Promise.resolve();
       if ("serviceWorker" in navigator)
         next = navigator.serviceWorker
@@ -192,7 +219,9 @@ export function init() {
                 // a new version is installing: wait until it is in charge
                 if (!g.installing && !g.waiting) return;
                 return new Promise(function (res) {
-                  navigator.serviceWorker.addEventListener("controllerchange", res);
+                  navigator.serviceWorker.addEventListener("controllerchange", function () {
+                    res(undefined);
+                  });
                 });
               })
             );
@@ -232,7 +261,7 @@ export function init() {
                 newCopy().then(function () {
                   if (!wk) return location.reload();
                   var v = (newer || CACHE).replace(/^aarti-v/, "");
-                  document.getElementById("ver").textContent = v;
+                  byId("ver").textContent = v;
                   upmVer = v;
                   updSet("restart");
                   note(menuWords("offline").reopen("v" + v), 12000);
@@ -256,7 +285,7 @@ export function init() {
       // saved (a weak connection) is tried again when the internet is back or the page is shown again, and until then
       // the badge keeps saying "Saving for offline…" (sw.js saves the same files, but goes on without one that fails).
       // The badge says it; no message over the page (Satish, 2026-10-30: it covered the home card on every first visit)
-      ofSaved = function () {
+      var ofSaved = function () {
         whole = true;
         if (offv.getAttribute("data-s") !== "save") return;
         ofSet("idle");
@@ -265,7 +294,7 @@ export function init() {
       var files = PARTS.concat(FONTS, IMAGES),
         filling = false;
       // Keep the page, its parts, every font file and the pictures (each one not saved yet), then say so
-      fill = function () {
+      var fill = function () {
         if (filling || whole || !("caches" in window) || navigator.onLine === false) return;
         filling = true;
         caches
@@ -273,15 +302,19 @@ export function init() {
           .then(function (c) {
             // the page too, only when the saved copy lacks it: it is downloaded again only with a new version (sw.js)
             c.match("./")
-              .then(function (h) {
-                return h || c.add(new Request("./", { cache: "reload" }));
-              })
+              .then(
+                /** @param {Response | undefined} h @returns {any} */ function (h) {
+                  return h || c.add(new Request("./", { cache: "reload" }));
+                },
+              )
               .catch(function () {});
             return Promise.all(
               files.map(function (u) {
-                return c.match(u).then(function (h) {
-                  return h || c.add(u);
-                });
+                return c.match(u).then(
+                  /** @param {Response | undefined} h @returns {any} */ function (h) {
+                    return h || c.add(u);
+                  },
+                );
               }),
             );
           })
@@ -323,12 +356,12 @@ function upmInit(opener) {
     '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
   function draw() {
     var w = menuWords("offline").finish,
-      st = /** @type {Record<string, string>} */ (w[dev]),
+      st = /** @type {Record<string, string>} */ (/** @type {any} */ (w)[dev]),
       li = "";
     for (var i = 1; st["s" + i]; i++) li += "<li><b>" + esc(st["s" + i]) + "</b><small>" + esc(st["h" + i]) + "</small></li>";
     box.innerHTML =
       '<div class="upmh"><span class="upmi" aria-hidden="true">' +
-      document.querySelector("#upd .vli-restart").outerHTML +
+      /** @type {Element} */ (document.querySelector("#upd .vli-restart")).outerHTML +
       '</span><div><h2 id="upmt">' +
       esc(w.title) +
       "</h2><p>" +
@@ -348,7 +381,7 @@ function upmInit(opener) {
             '" aria-pressed="' +
             (k === dev) +
             '">' +
-            { iphone: "iPhone", ipad: "iPad", mac: "Mac" }[k] +
+            /** @type {Record<string, string>} */ ({ iphone: "iPhone", ipad: "iPad", mac: "Mac" })[k] +
             "</button>"
           );
         })

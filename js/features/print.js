@@ -1,3 +1,4 @@
+// @ts-check
 // Print
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
@@ -15,7 +16,7 @@
 // "about 12 pages" is counted apart, in a hidden frame, by the same rules (js/print/pages.js); the printout waits for
 // nothing of it.
 
-import { note as message, pieceEl, root } from "../core/page.js";
+import { byId, note as message, pieceEl, root } from "../core/page.js";
 import { LEAD, P, change } from "../core/state.js";
 import { ovDone, ovDrop, ovPush } from "./history.js";
 import { focusBack } from "./more-menu.js";
@@ -38,19 +39,19 @@ var CHOICE = { one: { page: "up" }, both: { page: "land" } };
 
 export function init() {
   (function () {
-    var pm = document.getElementById("prm"),
-      pv = /** @type {HTMLElement} */ (document.getElementById("pv")),
-      b1 = document.getElementById("pr1"),
-      b2 = document.getElementById("pr2"),
-      bgo = document.getElementById("prgo"),
-      bpr = document.getElementById("prgp"),
-      po = pm.querySelector(".pro"),
-      pw = document.getElementById("prw"),
-      pv2 = document.getElementById("prv"),
-      bsf = document.getElementById("prsf"),
-      bcp = document.getElementById("prcp"),
+    var pm = byId("prm"),
+      pv = /** @type {HTMLElement} */ (byId("pv")),
+      b1 = byId("pr1"),
+      b2 = byId("pr2"),
+      bgo = byId("prgo"),
+      bpr = /** @type {HTMLButtonElement} */ (byId("prgp")),
+      po = /** @type {HTMLElement} */ (pm.querySelector(".pro")),
+      pw = byId("prw"),
+      pv2 = byId("prv"),
+      bsf = byId("prsf"),
+      bcp = byId("prcp"),
       last = "as", // the layout last chosen, carried to Safari
-      pn = pm.querySelector(".prn:not(#prw):not(#prv)"),
+      pn = /** @type {HTMLElement} */ (pm.querySelector(".prn:not(#prw):not(#prv)")),
       busy = false,
       /** @type {{ m: string, ids: string[] | null, rp: any, sp: { session: string } | null } | null} the printout being made from the builder */
       job = null,
@@ -124,8 +125,8 @@ export function init() {
       el.normalize();
       var w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT),
         n;
-      while ((n = w.nextNode()))
-        n.data = n.data.replace(/\S+(?: +(?:[।॥|]+|[0-9०-९೦-೯]+(?= +[॥|])))+/g, function (run) {
+      while ((n = /** @type {Text | null} */ (w.nextNode())))
+        n.data = n.data.replace(/\S+(?: +(?:[।॥|]+|[0-9०-९೦-೯]+(?= +[॥|])))+/g, function (/** @type {string} */ run) {
           return run.replace(/ +/g, "\u00a0");
         });
     }
@@ -136,8 +137,9 @@ export function init() {
     // Returns its parts in order, each with its role.
     /** @param {HTMLElement} sec @returns {{ el: HTMLElement, role: string }[]} */
     function parts(sec) {
-      var once = pref() === 1,
-        out = [];
+      var once = pref() === 1;
+      /** @type {{ el: HTMLElement, role: string }[]} */
+      var out = [];
       // in the page's order: [once] lines and [note]s before the dhrupad at the top come first (.items.lead)
       [].forEach.call(sec.querySelectorAll(".rftop, .items > .item, .items > .rmk"), function (/** @type {HTMLElement} */ u) {
         var role = "";
@@ -146,7 +148,7 @@ export function init() {
           // a note of the text's own: "↻ ३ वेळा" (repeat the lines above) belongs to what is before it, a heading such
           // as फलश्रुति to what follows. With the dhrupad after every verse, lines already written out again (the
           // repeats after the first, refrain lines) need no "3 times" too, or it reads as nine.
-          var rep = /^\s*↻/.test((u.querySelector(".mr") || u).textContent),
+          var rep = /^\s*↻/.test((u.querySelector(".mr") || u).textContent || ""),
             prev = out[out.length - 1];
           role = !rep ? "before" : !once && prev && prev.el.querySelector(".verse p.rf") ? "" : "after";
         } else if (u.classList.contains("rmk"))
@@ -168,8 +170,11 @@ export function init() {
     // or a "3 times" with the stanza before it; the dhrupad at the top with the first stanza
     /** @param {{ el: HTMLElement, role: string }[]} ps @returns {HTMLElement[][]} */
     function group(ps) {
+      /** @type {HTMLElement[][]} */
       var out = [],
+        /** @type {HTMLElement[]} */
         head = [],
+        /** @type {HTMLElement | null} */
         top = null;
       ps.forEach(function (x) {
         var last = out[out.length - 1];
@@ -182,7 +187,9 @@ export function init() {
           top = null;
         }
       });
-      if (head.length || top) out.push((top ? [top] : []).concat(head));
+      // (set in the loop above, which the type checks cannot follow)
+      var last = /** @type {HTMLElement | null} */ (top);
+      if (head.length || last) out.push((last ? [last] : []).concat(head));
       return out;
     }
     // The lines of a part (a stanza, the dhrupad, a line said once) in a language: each as written, with the stanza
@@ -240,7 +247,9 @@ export function init() {
     // of the text's own (फलश्रुति) between them
     /** @param {HTMLElement[]} units @returns {HTMLElement[][]} */
     function paras(units) {
+      /** @type {HTMLElement[][]} */
       var gs = [],
+        /** @type {HTMLElement[] | null} */
         cur = null;
       units.forEach(function (u) {
         if (u.classList.contains("rmk")) {
@@ -254,7 +263,7 @@ export function init() {
           cur = [];
           gs.push(cur);
         }
-        cur.push(u);
+        /** @type {HTMLElement[]} */ (cur).push(u);
         if (dh) cur = null;
       });
       return gs;
@@ -262,9 +271,11 @@ export function init() {
     // One language, a Vedic text: running paragraphs, as in a printed booklet (a line of verse runs on after the last)
     /** @param {HTMLElement[]} g @param {string} k */
     function proseBlock(g, k) {
-      if (g[0].classList.contains("rmk")) return mk("div", "pvk", "").appendChild(inLang("p", "pvnote", k, note(g[0], k))).parentNode;
+      if (g[0].classList.contains("rmk"))
+        return /** @type {HTMLElement} */ (mk("div", "pvk", "").appendChild(inLang("p", "pvnote", k, note(g[0], k))).parentNode);
       // the lines run on as one text, not a span each: Safari printed the space between two such spans so narrow that
       // the words ran together. (pvLines: the lines, for the tests)
+      /** @type {string[]} */
       var ls = [];
       g.forEach(function (u) {
         linesOf(u, k).forEach(function (l) {
@@ -320,7 +331,7 @@ export function init() {
       function across(x, cls) {
         var tr = mk("tr", cls),
           td = mk("td");
-        td.colSpan = 2;
+        /** @type {HTMLTableCellElement} */ (td).colSpan = 2;
         order.forEach(function (k, i) {
           var h = cls === "pvnoterow" ? note(x, k) : part(x, k);
           if (!h) return;
@@ -346,7 +357,7 @@ export function init() {
           body.appendChild(tr);
         });
       });
-      return mk("div", flow ? "pvk pvflow" : "pvk pvst").appendChild(t).parentNode;
+      return /** @type {HTMLElement} */ (mk("div", flow ? "pvk pvflow" : "pvk pvst").appendChild(t).parentNode);
     }
 
     // Build the print view: contents (when more than one text prints, or a routine's page 1), then every text.
@@ -357,7 +368,7 @@ export function init() {
     // headed by the day and the session
     /**
      * @param {string} mode @param {string[] | null} ids @param {import("../print/what.js").RoutinePlan | null} [rp]
-     * @param {HTMLElement} [into] @param {{ session: string } | null} [sp]
+     * @param {HTMLElement} [into] @param {{ session: string, day?: number } | null} [sp]
      */
     function build(mode, ids, rp, into, sp) {
       var src = compose(ids, plang(), rp ? true : sp ? sessionName(sp.session, sp.day) : false);
@@ -374,11 +385,11 @@ export function init() {
     /** The language a routine printout's words are in: English, Marathi, or with the original in other letters that
      * language's own words (Kannada days and sessions, not Marathi's written in Kannada letters) */
     function rw() {
-      return rlang() === "en" ? "en" : SCR.k || "mr";
+      return rlang() === "en" ? "en" : /** @type {any} */ (window).SCR.k || "mr";
     }
     /** @param {number} n */
     function rnum(n) {
-      return rlang() === "mr" ? SCR.to(dv(n)) : String(n);
+      return rlang() === "mr" ? /** @type {any} */ (window).SCR.to(dv(n)) : String(n);
     }
     /** A piece's text id (content/library.json) from its section's id on the page @param {string} sid */
     function textOf(sid) {
@@ -398,7 +409,7 @@ export function init() {
     /** @param {string} s @param {number} [day] the weekday (the day Home shows), else today */
     function sessionName(s, day) {
       var d = typeof day === "number" ? day : new Date().getDay(),
-        k = SCR.k || "mr",
+        k = /** @type {any} */ (window).SCR.k || "mr",
         mr = /** @type {Record<string, string>} */ (TAG_WORDS[k].sessions)[s],
         en = /** @type {Record<string, string>} */ (TAG_WORDS.en.sessions)[s];
       return { mr: /** @type {any} */ (DAYS)[k][d] + (mr ? " · " + mr : ""), en: DAYS.en[d] + (en ? " · " + en : "") };
@@ -426,7 +437,7 @@ export function init() {
     /** @param {HTMLElement} into @param {any} src */
     function contents(into, src) {
       var cov = mk("section", "pvcov");
-      cov.appendChild(title("h1", "pvh", SCR.to("नित्य उपासना"), "Nitya Upasana"));
+      cov.appendChild(title("h1", "pvh", /** @type {any} */ (window).SCR.to("नित्य उपासना"), "Nitya Upasana"));
       src.groups.forEach(function (/** @type {any} */ g) {
         if (!g.secs.length) return;
         var nm = mk("div");
@@ -438,13 +449,14 @@ export function init() {
         // its first row are one such box too (.pvhead), so a heading never ends a page alone.
         var rows = mk("div", "pvtocw"),
           head = rows.appendChild(mk("div", "pvhead")),
+          /** @type {HTMLElement | null} */
           ol = null;
         head.appendChild(title("h3", "pvcat", part(nm, "mr"), part(nm, "en")));
-        g.secs.forEach(function (/** @type {HTMLElement} */ sec, i) {
+        g.secs.forEach(function (/** @type {HTMLElement} */ sec, /** @type {number} */ i) {
           var li = titleOf(sec, "li", "");
           li.setAttribute("data-sid", sec.id);
           if (i % 2 === 0) ol = (i ? rows : head).appendChild(mk("ol", "pvtoc pvtr"));
-          ol.appendChild(li);
+          /** @type {HTMLElement} */ (ol).appendChild(li);
         });
         cov.appendChild(rows);
       });
@@ -609,6 +621,7 @@ export function init() {
     }
     // Sideways pages for a layout ("one" or "side"): with both languages, side by side; with one, as the reader
     // last chose in the pop-up (P.por), or its default; upright only while Landscape is held back (FEAT_SW)
+    /** @param {string} mode */
     function land(mode) {
       if (!FEAT_SW) return false;
       if (plang() === "both") return mode === "side";
@@ -620,6 +633,7 @@ export function init() {
       return P.ppr ? P.ppr === "letter" : LTR;
     }
     // the sheet as it prints, [width, height] in mm
+    /** @param {string} mode */
     function sheet(mode) {
       var pp = letter() ? [215.9, 279.4] : [210, 297]; // upright
       return land(mode) ? [pp[1], pp[0]] : pp;
@@ -659,6 +673,7 @@ export function init() {
         } catch (e) {}
       });
     }
+    /** @param {string} mode */
     function pon(mode) {
       root.setAttribute("data-print", mode);
       root.setAttribute("data-font", pfn());
@@ -678,7 +693,7 @@ export function init() {
     // ---- The print builder (print redesign P4, mockup 1): What (js/print/what.js), then How (the rows below) ----
     // On a phone one step at a time (data-step on #prm: Next, and ‹ What to print back); from 760px side by side
     // (css/03-menus-print-view.css). The bottom bar keeps the running total and Next or Print.
-    var what = createWhat(/** @type {HTMLElement} */ (document.getElementById("prwl")), {
+    var what = createWhat(/** @type {HTMLElement} */ (byId("prwl")), {
         shelves: shelvesNow,
         today: shownSessions,
         // the routines to print (Satish, 2026-11-02: no "Whose routine"; another person's prints once switched to): the
@@ -702,8 +717,8 @@ export function init() {
           preview();
         },
       }),
-      bnx = document.getElementById("prnx"),
-      wide = window.matchMedia ? matchMedia("(min-width: 760px)") : null;
+      bnx = /** @type {HTMLButtonElement} */ (byId("prnx")),
+      wide = typeof window.matchMedia === "function" ? matchMedia("(min-width: 760px)") : null;
     // the texts ticked (their Library ids), or null for every text; on the Routine tab, the routine's in routine order
     function chosen() {
       return what.pick();
@@ -723,11 +738,12 @@ export function init() {
     }
     // The preview under How: the first page of the first text ticked, as it prints, made small. Written as the print
     // view is (build), into a frame the size of the page, cut off at the page's foot
-    var shv = document.getElementById("prsheet"),
+    var shv = byId("prsheet"),
       pshown = "";
     // the first text ticked, in the Library's order as this phone lists it (as it prints); a routine's or a session's first text
     function first() {
       var c = chosen(),
+        /** @type {string | null} */
         f = null;
       if (rplan() || splan()) return c && c.length ? [c[0]] : null;
       shelvesNow().forEach(function (sh) {
@@ -790,14 +806,14 @@ export function init() {
       [].forEach.call(document.querySelectorAll(".prpaper"), function (/** @type {HTMLElement} */ x) {
         x.textContent = letter() ? "Letter" : "A4";
       });
-      document.getElementById("prpa").textContent = menuWords("print").use(o);
+      byId("prpa").textContent = menuWords("print").use(o);
       // Safari keeps the paper picked in its own dialog: when it is not the region's, it is told to pick it there
       [].forEach.call(document.querySelectorAll(".przp"), function (/** @type {HTMLElement} */ x) {
         x.textContent = letter() ? "Letter" : "A4";
       });
-      document.getElementById("prz").hidden = !(root.classList.contains("wk") && letter() !== LTR);
+      byId("prz").hidden = !(root.classList.contains("wk") && letter() !== LTR);
     }
-    document.getElementById("prpa").onclick = function () {
+    byId("prpa").onclick = function () {
       change({ ppr: letter() ? "a4" : "letter" });
       paperRow();
       refresh();
@@ -806,7 +822,7 @@ export function init() {
     function summary() {
       var w = whatWords(),
         t = what.total(),
-        el = document.getElementById("prsum");
+        el = byId("prsum");
       el.textContent = "";
       el.lang = ui();
       var a = document.createElement("span");
@@ -1016,7 +1032,7 @@ export function init() {
         n = count(null),
         side = plang() === "both",
         up = !land("one"),
-        other = LEAD === "en" ? pw.langs[olang()] : pw.langs.en;
+        other = LEAD === "en" ? /** @type {Record<string, string>} */ (pw.langs)[olang()] : pw.langs.en;
       /** @param {{ ref?: number, land?: boolean }} o */
       function more(o) {
         var a = n > 0 ? count(o) : -1;
@@ -1024,16 +1040,17 @@ export function init() {
       }
       hint("prdhh", pref() === 1, pref() === 1 ? pw.onceHint : pw.everyHint(more({ ref: 1 })));
       hint("prpgh", side || up, side ? pw.sideHint(other) : up ? pw.upHint : pw.landHint(more({ land: false })));
-      document.getElementById("prpgh").hidden = !FEAT_SW;
+      byId("prpgh").hidden = !FEAT_SW;
     }
     /** @param {string} id @param {boolean} starred @param {string} words */
     function hint(id, starred, words) {
-      var p = document.getElementById(id);
+      var p = byId(id);
       p.textContent = "";
       p.lang = ui();
       if (starred) p.appendChild(star());
       p.appendChild(document.createTextNode(words));
     }
+    /** @param {string} s */
     function step(s) {
       pm.setAttribute("data-step", s);
       pm.scrollTop = 0;
@@ -1042,7 +1059,7 @@ export function init() {
       step("how");
       bpr.focus({ preventScroll: true });
     };
-    document.getElementById("prbk").onclick = function () {
+    byId("prbk").onclick = function () {
       step("what");
       bnx.focus({ preventScroll: true });
     };
@@ -1052,6 +1069,7 @@ export function init() {
     var pst = document.createElement("style");
     pst.media = "print";
     document.head.appendChild(pst);
+    /** @param {string} mode */
     function setPage(mode) {
       // the paper only when picked under How: otherwise the printer's own, as before
       var sz = P.ppr ? (letter() ? "letter " : "A4 ") : "";
@@ -1059,14 +1077,14 @@ export function init() {
     }
     // Above the choices: the dhrupad setting for the printout and its font (the three of Settings → Text font), with
     // a word of the text in each; neither changes the reading page
-    var fn = document.getElementById("prfn"),
-      dh = document.getElementById("prdg");
+    var fn = byId("prfn"),
+      dh = byId("prdg");
     best(/** @type {Element} */ (dh.querySelector('[data-v="1"]')));
-    [].forEach.call(document.querySelectorAll("#sfn button"), function (b) {
+    [].forEach.call(document.querySelectorAll("#sfn button"), function (/** @type {any} */ b) {
       fn.appendChild(b.cloneNode(true));
     });
     // each font a tile: a word of the text in that font (set in rows), over the font's name (mockup 1)
-    [].forEach.call(fn.children, function (b) {
+    [].forEach.call(fn.children, function (/** @type {any} */ b) {
       var nm = document.createElement("span"),
         x = document.createElement("span");
       nm.className = "prfm";
@@ -1080,7 +1098,7 @@ export function init() {
     // it is the look that decides): a star, as on Once and Portrait, and no hint
     best(/** @type {Element} */ (fn.querySelector('[data-v="classic"]')));
     fn.onclick = function (e) {
-      var b = e.target.closest("button");
+      var b = /** @type {HTMLElement | null} */ (/** @type {Element} */ (e.target).closest("button"));
       if (!b) return;
       change({ pfn: b.dataset.v });
       fontsAhead();
@@ -1088,6 +1106,7 @@ export function init() {
       refresh();
     };
     // the sample line in the printout's font (set here: the page's own font rules follow the text font)
+    /** @type {Record<string, string>} */
     var FAM = { classic: "SC Classic", bold: "SC Bold" };
     // the sample: the first words of the first verse, in each language printed (the main one first), in the
     // printout's font. Set here: the page's own font rules follow the text font
@@ -1098,6 +1117,7 @@ export function init() {
         base = ind ? '"' + ind[0] + '", var(--body)' : lang === "en" ? '"SC Sans", var(--lat)' : "var(--body)";
       return f === "std" ? base : '"' + (ind ? ind[indAt(f)] : FAM[f]) + '", ' + base;
     }
+    /** @param {string} k */
     function words(k) {
       var a1 = pieceEl("a1"), // (built if not opened yet: js/core/page.js)
         p = a1 && a1.querySelector(".item:not(.dh) .verse ." + k + " p"),
@@ -1108,14 +1128,14 @@ export function init() {
     function rows() {
       var or = olang(),
         ks = plang() === "both" ? (LEAD === "en" ? ["en", "mr"] : ["mr", "en"]) : [plang() === "en" ? "en" : "mr"];
-      [].forEach.call(dh.children, function (b) {
+      [].forEach.call(dh.children, function (/** @type {any} */ b) {
         b.setAttribute("aria-pressed", b.dataset.v === String(pref()) ? "true" : "false");
       });
       // each tile: the first word of the text in the main language printed, in that tile's font (in the language of
       // the word, not as .mr or .en: those follow the menus' language here)
       var lang = ks[0] === "en" ? "en" : or,
         w = words(ks[0]).split(" ")[0].replace(/…$/, "");
-      [].forEach.call(fn.children, function (b) {
+      [].forEach.call(fn.children, function (/** @type {any} */ b) {
         b.setAttribute("aria-pressed", b.dataset.v === pfn() ? "true" : "false");
         var x = b.querySelector(".prfx");
         x.textContent = w;
@@ -1125,18 +1145,22 @@ export function init() {
       });
     }
     dh.onclick = function (e) {
-      var b = e.target.closest("button");
+      var b = /** @type {HTMLElement | null} */ (/** @type {Element} */ (e.target).closest("button"));
       if (!b) return;
-      change({ pref: +b.dataset.v });
+      change({ pref: Number(b.dataset.v) });
       rows();
       refresh();
     };
     // the site's CSS as the printer sees it: print rules on, screen-only rules off, no @page
+    /** @type {string} the site's CSS for the printer, worked out once */
+    var pcssT = "";
     function pcss() {
-      if (pcss.t) return pcss.t;
+      if (pcssT) return pcssT;
+      /** @type {string[]} */
       var out = [];
+      /** @param {any} rules */
       function walk(rules) {
-        [].forEach.call(rules, function (r) {
+        [].forEach.call(rules, function (/** @type {any} */ r) {
           if (r.type === 4) {
             var m = r.media.mediaText;
             if (/print/.test(m)) walk(r.cssRules);
@@ -1144,17 +1168,17 @@ export function init() {
           } else if (r.type !== 6) out.push(r.cssText);
         });
       }
-      [].forEach.call(document.styleSheets, function (sh) {
+      [].forEach.call(document.styleSheets, function (/** @type {any} */ sh) {
         try {
           walk(sh.cssRules);
         } catch (e) {}
       });
-      return (pcss.t = out.join("\n"));
+      return (pcssT = out.join("\n"));
     }
     // the page's own attributes as the printout has them (its font and dhrupad), for a copy of it in a frame
     function attrs() {
       var at = "";
-      [].forEach.call(root.attributes, function (a) {
+      [].forEach.call(root.attributes, function (/** @type {any} */ a) {
         var v = a.name === "data-font" ? pfn() : a.name === "data-ref" ? String(pref()) : a.value;
         if (a.name !== "data-print" && a.name !== "data-land") at += " " + a.name + '="' + v.replace(/&/g, "&amp;").replace(/"/g, "&quot;") + '"';
       });
@@ -1169,36 +1193,37 @@ export function init() {
     // (nothing is measured), so Print opens it from the same tap; should a browser still ignore it, the pop-up comes
     // back with one button, Print now, whose own tap opens the dialog.
     var iOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1),
-      standalone = navigator.standalone || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
+      standalone = /** @type {any} */ (navigator).standalone || (typeof window.matchMedia === "function" && matchMedia("(display-mode: standalone)").matches);
     // the page choice as chosen, and Safari's Landscape note with it
     function pages1() {
       var up = !land("one");
       b1.setAttribute("aria-pressed", String(up));
       b2.setAttribute("aria-pressed", String(!up));
-      document.getElementById("prl").hidden = !(root.classList.contains("wk") && land(dm()));
+      byId("prl").hidden = !(root.classList.contains("wk") && land(dm()));
     }
     bpr.onclick = function () {
       var m = dm();
       go(m === "one" ? "as" : m);
     };
     // the pop-up: the choices (ready false), or Print now (ready true)
+    /** @param {boolean} ready */
     function pmMode(ready) {
       bpr.hidden = pn.hidden = po.hidden = ready;
-      document.getElementById("prst").hidden = document.getElementById("prsum").hidden = bnx.hidden = ready;
+      byId("prst").hidden = byId("prsum").hidden = bnx.hidden = ready;
       // (neither step: the title shows, without ‹ What to print)
       if (ready) pm.setAttribute("data-step", "ready");
       // both languages print side by side on Landscape only (stacked took a third more paper): no choice to
       // make, the row just says so; upright only while Landscape is held back (FEAT_SW)
       var one = !FEAT_SW || plang() === "both";
-      document.getElementById("prpg").hidden = one;
-      document.getElementById("prpv").hidden = !one;
+      byId("prpg").hidden = one;
+      byId("prpv").hidden = !one;
       // Safari keeps the sheet picked in its own dialog: it is told to pick Landscape there
-      document.getElementById("prl").hidden = !(root.classList.contains("wk") && land(dm()));
+      byId("prl").hidden = !(root.classList.contains("wk") && land(dm()));
       // Safari on a Mac and Firefox: Chrome turns the page itself and prints the border and page numbers (Satish,
       // 2026-10); Firefox drops the page numbers (no @page margin boxes, checked in Firefox 157)
-      document.getElementById("prc").hidden = !((root.classList.contains("wk") && !iOS) || root.classList.contains("ff"));
+      byId("prc").hidden = !((root.classList.contains("wk") && !iOS) || root.classList.contains("ff"));
       // Safari (WebKit, every iPhone browser too) scales the printout down a little and has no page numbers
-      document.getElementById("prs").hidden = !root.classList.contains("wk");
+      byId("prs").hidden = !root.classList.contains("wk");
       bgo.hidden = !ready;
       pw.hidden = pv2.hidden = bsf.hidden = bcp.hidden = true;
     }
@@ -1207,7 +1232,9 @@ export function init() {
     // Print now there. iOS 17 and later open an x-safari-https:// address in Safari; Copy link is for the rest.
     // On Satish's iPhone neither the Print tap nor a second one (Print now) opened the dialog in the app, so the
     // app goes straight to this step once a layout is chosen.
+    /** @param {string} mode */
     function link(mode) {
+      /** @type {Record<string, any>} */
       var s = {};
       ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "ppr", "tr", "por"].forEach(function (k) {
         s[k] = P[k];
@@ -1237,6 +1264,7 @@ export function init() {
     // open: the pop-up is already open (its Back step is in place); tapped: Print now was tapped and the
     // dialog still did not open (not the Home Screen app: another app's browser, or Safari holding it back),
     // so the note names Share → Print too
+    /** @param {boolean} open @param {boolean} [tapped] */
     function toSafari(open, tapped) {
       pmMode(true);
       bgo.hidden = true;
@@ -1292,6 +1320,7 @@ export function init() {
       }
     };
     // print, and if the browser ignored it, offer Print now (or, after a Print now tap, say why)
+    /** @param {boolean} again */
     function tryPrint(again) {
       seen = false;
       window.print();
@@ -1323,6 +1352,7 @@ export function init() {
       sel = null;
       poff();
     }
+    /** @param {string} mode */
     function go(mode) {
       last = mode;
       // nothing chosen that the Library has (a print link naming texts since removed): What, to choose again, never
@@ -1338,7 +1368,7 @@ export function init() {
       pm.hidden = true;
       ovDrop();
       // the chosen button has just been hidden: keyboard focus goes back to Print, not to the top of the page
-      focusBack(opener || document.getElementById("asp"));
+      focusBack(opener || byId("asp"));
       busy = true;
       if (mode === "as") mode = "one";
       sel = chosen();
@@ -1350,20 +1380,21 @@ export function init() {
     }
     // Open the builder: at What with the ticks as last left; with a session (tab "today"), at What on the Routine tab
     // with it chosen; with a text, just it ticked and at How (on a phone; ‹ What to print shows the choice)
-    /** @param {{ ids?: string[], tab?: string, session?: string, from?: HTMLElement | null }} [o] */
+    /** @param {{ ids?: string[], tab?: string, session?: string, day?: number, from?: HTMLElement | null }} [o] */
     function openPrint(o) {
       o = o || {};
-      opener = o.from || document.getElementById("asp");
+      opener = o.from || byId("asp");
       unready();
       pmMode(false);
       // the language names follow what is printed: the original's place holds Marathi or Kannada, and with
       // both languages shown the main one comes first (left, or on top)
       var pw = menuWords("print"),
         en = pw.langs.en,
-        or = pw.langs[olang()],
+        or = /** @type {Record<string, string>} */ (pw.langs)[olang()],
         l1 = LEAD === "en" ? en : or,
         l2 = LEAD === "en" ? or : en;
       // the page: Portrait or Landscape (one language), a tap picks it; both languages: Landscape, side by side
+      /** @param {HTMLElement} b @param {string} page */
       function opt(b, page) {
         b.textContent = page === "land" ? pw.landscape : pw.portrait;
         if (page === "up") best(b);
@@ -1378,7 +1409,7 @@ export function init() {
       opt(b2, "land");
       // the language: the main one, the other, or both (the main one first, as on the page). Both prints side by side
       // on Landscape, so the page row then says so instead of offering a choice
-      var lg = document.getElementById("prlg"),
+      var lg = byId("prlg"),
         // (the main language first, as Settings has it: LEAD is English only while both are shown)
         LV = P.lead === "en" ? ["en", "mr", "both"] : ["mr", "en", "both"];
       lg.textContent = "";
@@ -1400,11 +1431,11 @@ export function init() {
         refresh();
       };
       langRow();
-      document.getElementById("prpv").textContent = !FEAT_SW ? pw.stacked(l1, l2) : pw.side;
+      byId("prpv").textContent = !FEAT_SW ? pw.stacked(l1, l2) : pw.side;
       pages1();
       rows();
       paperRow();
-      document.getElementById("prx").setAttribute("aria-label", pw.cancel);
+      byId("prx").setAttribute("aria-label", pw.cancel);
       // What, drawn afresh (the Library's categories, the reading languages and the menu language may have changed)
       // a session is the Routine tab's choice, and the Library tab starts with nothing ticked, so a text ticked there
       // prints on its own (not with the session's texts)
@@ -1427,7 +1458,7 @@ export function init() {
     }
     var opener = /** @type {HTMLElement | null} */ (null);
     function langRow() {
-      [].forEach.call(document.getElementById("prlg").children, function (b) {
+      [].forEach.call(byId("prlg").children, function (/** @type {any} */ b) {
         b.setAttribute("aria-pressed", String(b.getAttribute("data-v") === plang()));
       });
     }
@@ -1441,11 +1472,12 @@ export function init() {
     // on screen; on Home, the session Home shows, on the day it shows, even with a session still being read (Home in the
     // bottom bar leaves it running). A session opens at What on the Routine tab, with it chosen and headed by its day; a
     // text at How
-    document.getElementById("asp").onclick = function () {
-      var b = document.getElementById("asp"),
+    byId("asp").onclick = function () {
+      var b = byId("asp"),
         sec = cur(),
         ids = sec ? runIds() : null,
         s = "",
+        /** @type {{ id: string } | null} */
         t = null;
       if (!sec) {
         s = shownSession();
@@ -1461,16 +1493,17 @@ export function init() {
           if (sec && x.sec === sec.id) t = x;
         });
       });
-      openPrint(t ? { ids: [t.id], from: b } : { from: b });
+      var one = /** @type {{ id: string } | null} */ (t);
+      openPrint(one ? { ids: [one.id], from: b } : { from: b });
     };
     function pmClose() {
       pagesStop();
       unready();
       pm.hidden = true;
       ovDone();
-      focusBack(opener || document.getElementById("asp"));
+      focusBack(opener || byId("asp"));
     }
-    document.getElementById("prx").onclick = pmClose;
+    byId("prx").onclick = pmClose;
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && !pm.hidden) pmClose();
     });
@@ -1508,14 +1541,16 @@ export function init() {
     });
     // Opened by the Home Screen app's Open in Safari (see js/render.js): the printout once the fonts are in, then
     // Print now asks for the tap that Safari needs
-    if (window.PRQ) {
-      var mode = window.PRQ;
-      window.PRQ = "";
+    /** @type {any} what js/render.js hands over from Open in Safari */
+    var W = window;
+    if (W.PRQ) {
+      var mode = W.PRQ;
+      W.PRQ = "";
       // a session from Home: the Routine tab with its texts in Home's order (js/render.js reads it)
-      if (window.PRO) {
-        what.today(window.PRT || [], window.PRO, window.PROD);
+      if (W.PRO) {
+        what.today(W.PRT || [], W.PRO, W.PROD);
         what.tab("today");
-      } else what.set(window.PRT || null);
+      } else what.set(W.PRT || null);
       // a routine printout (Open in Safari carries it: js/render.js reads it)
       var rr = /** @type {any} */ (window).PRR;
       if (rr && rr.days.length)
