@@ -2,8 +2,7 @@
 // Tappable dhrupad markers (every text with refrain: every-verse)
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { topEdge } from "../features/bottom-bar.js";
-import { onPiece } from "../core/page.js";
+import { onPiece, topEdge } from "../core/page.js";
 
 // The open bubble, { m: its marker, el: the bubble, place: puts it on screen, ro: watches its size }, or null
 /** @type {{ m: HTMLElement, el: HTMLElement, place: () => void, ro: ResizeObserver | null } | null} */

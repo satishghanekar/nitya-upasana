@@ -1,5 +1,5 @@
 // @ts-check
-// Sankashti (Sankathara Chaturthi), worked out on this device (js/features/astronomy.js; nothing is sent anywhere).
+// Sankashti (Sankathara Chaturthi), worked out on this device (js/core/astronomy.js; nothing is sent anywhere).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
 // Home v2: the home page no longer has the date card. On a Sankashti day only, one
@@ -11,7 +11,7 @@
 
 import { note } from "../core/page.js";
 import { P, change } from "../core/state.js";
-import { SK } from "./astronomy.js";
+import { SK } from "../core/astronomy.js";
 import { esc, nameOf, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
 import { dateKey } from "../core/routine.js";

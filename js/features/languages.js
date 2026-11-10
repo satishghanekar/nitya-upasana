@@ -7,7 +7,7 @@ import { refit } from "../text/autofit.js";
 import { LANGS, LK, cur, pn } from "../core/apply.js";
 import { apply } from "./bars.js";
 import { trPick } from "./settings-panel.js";
-import { buildIX } from "../text/search.js";
+import { buildIX } from "./search.js";
 import { refToggle } from "./dhrupad-button.js";
 import { btnV, byId, pieceEl } from "../core/page.js";
 import { menuWords } from "../core/strings.js";

@@ -289,7 +289,7 @@ export function jumpTo(go, url) {
 // Home on its own: while data-hv is on <html>, the page ends after Home (More and the
 // Library line) and the pieces below it are not shown (css/10-today.css, screen only). It is set by going home (the top-bar
 // title, Home in the side menu or the bottom bar, the end of a session, Back to the bare address) and at start-up
-// with no piece to open (js/core/startup.js), and taken off before the page goes to a piece (jumpTo(), Back to a
+// with no piece to open (js/features/startup.js), and taken off before the page goes to a piece (jumpTo(), Back to a
 // piece's address, a link such as #a3, the reading position), so reading a text, ‹ Prev and Next ›, and scrolling
 // between pieces work as before. Scrolling up from a piece back to Home, or picking a session there, sets it again
 // (homeOnScroll(), js/features/today-card.js).
@@ -310,7 +310,7 @@ export function homeView(on) {
 
 // The text being read (.solo on its piece): the page shows only that one text, on every screen (css/10-today.css);
 // ‹ Prev / Next › in the bottom bar or the side menu change it. Set
-// wherever the page goes to a piece: jumpTo(), Back, and start-up (js/core/startup.js). Another address (Home)
+// wherever the page goes to a piece: jumpTo(), Back, and start-up (js/features/startup.js). Another address (Home)
 // leaves it where it was.
 /** @param {string} id  the piece's id (a3) */
 export function solo(id) {

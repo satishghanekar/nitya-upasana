@@ -4,7 +4,6 @@
 
 import { onPiece, secs } from "./page.js";
 import { P, change } from "./state.js";
-import { mark } from "../features/bars.js";
 import { menuWords } from "./strings.js";
 
 /** @type {HTMLElement} */
@@ -48,7 +47,9 @@ export function init() {
       change({ af: af }, foldSet);
       // keep the heading where it was on screen
       scrollBy(0, hd.getBoundingClientRect().top - y);
-      mark();
+      // the top bar's title and the progress line follow (js/features/bars.js mark()): told, not imported, as core
+      // imports no feature
+      document.dispatchEvent(new Event("nitya-fold"));
     }
     b.onclick = toggle;
     // the text it folds, heard after its name ("Fold this piece, सुखकर्ता दुःखहर्ता"): every piece's button has the same

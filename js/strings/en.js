@@ -578,7 +578,7 @@ export default {
       return "Updated to " + v + ". Close the app and open it again to finish.";
     },
   },
-  // Search and Recent (js/text/search.js)
+  // Search and Recent (js/features/search.js)
   search: {
     /** @param {string} name */
     remove: function (name) {

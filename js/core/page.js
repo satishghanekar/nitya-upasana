@@ -157,3 +157,9 @@ export function btnV(e) {
     b = t && t.closest ? /** @type {HTMLElement | null} */ (t.closest("button")) : null;
   return b ? b.dataset.v : undefined;
 }
+
+// the bottom of whatever sits at the top of the screen: the top bar, or the slim strip while it is tucked away
+export function topEdge() {
+  var bar = document.querySelector(root.hasAttribute("data-tuck") ? "#tuck" : "body > .bar");
+  return bar ? Math.max(0, bar.getBoundingClientRect().bottom) : 60;
+}

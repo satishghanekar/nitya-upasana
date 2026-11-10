@@ -114,7 +114,7 @@ function fontsIn() {
   pullSoon();
 }
 
-// The fonts in place at start-up (a repeat visit) need no second fit (js/core/startup.js); fontsIn() handles any that
+// The fonts in place at start-up (a repeat visit) need no second fit (js/features/startup.js); fontsIn() handles any that
 // arrive later
 export function fontsNow() {
   fontN = fontsN();

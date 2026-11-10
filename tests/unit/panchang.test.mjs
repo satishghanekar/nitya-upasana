@@ -5,12 +5,12 @@
 //   Swiss Ephemeris reproduces to the minute;
 // - 2026 festival dates in Maharashtra (Pune): Gudi Padwa 19 Mar, Ganesh Chaturthi 14 Sep, Dasara 20 Oct,
 //   Lakshmi Pujan 8 Nov, Bali Pratipada 10 Nov, and Adhika Jyeshtha 17 May – 15 Jun;
-// - the app's own Sankashti days (js/features/astronomy.js), which must not move.
+// - the app's own Sankashti days (js/core/astronomy.js), which must not move.
 import { readFileSync } from "node:fs";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { BORDERLINE_MIN, dayPanchang, fullMoonAfter, monthPanchang, newMoonAfter, tithiAt } from "../../js/core/panchang.js";
 import * as N from "../../js/core/panchang-names.js";
-import { init, SK } from "../../js/features/astronomy.js";
+import { init, SK } from "../../js/core/astronomy.js";
 
 const REF = JSON.parse(readFileSync(new URL("./fixtures/panchang-swisseph.json", import.meta.url), "utf8"));
 const PUNE = { lat: 18.52, lon: 73.86, tz: "Asia/Kolkata" };

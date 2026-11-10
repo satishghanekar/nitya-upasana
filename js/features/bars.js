@@ -35,6 +35,8 @@ var MQ1024;
 var tailF;
 
 export function init() {
+  // a piece folded or opened (js/core/apply.js): the title and progress line follow
+  document.addEventListener("nitya-fold", mark);
   // Phones and tablets without the side menu. Scrolling down past the top of the page tucks the top and
   // bottom bars away (data-tuck); scrolling up, the end of the page, a tap on a blank part of the page,
   // a menu opening, keyboard focus in a bar or a jump (Contents, Prev / Next) brings them back.
