@@ -209,6 +209,8 @@ export default {
     title: function (n) {
       return n + " ની દિનચર્યા";
     },
+    /** The first person's, while they are still named "Me" */
+    mine: "મારી દિનચર્યા",
     sessions: { morning: "સવાર", afternoon: "બપોર", evening: "સાંજ" },
     sessionG: "સમય",
     modes: { fixed: "દરરોજ એક જ", weekday: "વારે વારે જુદું" },
@@ -373,6 +375,8 @@ export default {
     amanta: "અમાંત",
     today: "આજે",
     loc: "મારું સ્થાન વાપરો",
+    // Home, where the time zone names no city: the card's place, a tap uses the phone's location
+    noLoc: "પંચાંગ જોવા તમારું સ્થાન વાપરો",
     pic: "ચિત્ર આખા પડદે બતાવો",
     prev: "આગલો મહિનો",
     nextM: "પછીનો મહિનો",

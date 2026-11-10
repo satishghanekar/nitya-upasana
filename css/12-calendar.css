@@ -1338,3 +1338,19 @@
     vertical-align: -3px;
   }
 }
+/* no place known (a time zone with no city): the card is one line, its pin and the hint, a 44px button across it */
+#pan .pnol {
+  padding: 0 12px;
+  border-bottom: 1px solid var(--hdrl);
+  border-radius: 14px;
+}
+#pan .pnol #ploc {
+  flex: 1;
+  gap: 8px;
+  min-height: 44px;
+  margin: 0 -6px;
+  overflow: visible;
+  color: var(--muted);
+  text-align: start;
+  white-space: normal;
+}

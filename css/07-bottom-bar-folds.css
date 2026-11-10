@@ -539,7 +539,8 @@ html[data-asb="1"] {
   #rsb,
   #lsb {
     min-width: 52px;
-    padding: 0 2px;
+    /* room between a word ("Library", "Reading") and the border */
+    padding: 0 5px;
   }
   #asc .asx {
     padding: 0 8px;

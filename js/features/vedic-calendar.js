@@ -287,8 +287,11 @@ function homeRender() {
     pl = where();
   if (!box) return;
   if (!L || !pl) {
-    box.hidden = true;
-    box.innerHTML = "";
+    // a time zone with no known city (most of Europe, Japan, Africa): a hint in the card's place, its pin asking the
+    // phone where it is (as the place's pin does), so the calendar is not simply missing
+    box.lang = ui();
+    box.innerHTML = '<div class="pcard pnol"><button type="button" id="ploc">' + ICON.pin + say(words().noLoc) + "</button></div>";
+    box.hidden = false;
     upHome(null);
     return;
   }
@@ -643,9 +646,11 @@ function upRow(u, today, home) {
             : "",
     two = nameH2(u.name),
     // a holiday of the same day first, so a narrow column (a computer's Home) cuts the second-language name, not it
+    // (in the second reading language, as the festival's name beside it, when there is one: never Marathi letters on
+    // an English line)
     small = (u.hols || [])
       .map(function (h) {
-        return nameH(h);
+        return nameH2(h) || nameH(h);
       })
       .concat([two, det ? say(det) : "", u.also ? nameH(u.also) : ""])
       .filter(Boolean)

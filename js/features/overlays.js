@@ -243,6 +243,8 @@ function page(id, o) {
     if (p.below) e.style.top = Math.round(/** @type {HTMLElement} */ (document.querySelector(".bar")).getBoundingClientRect().bottom) + "px";
     ovFocus(e, true);
     e.hidden = false;
+    // the top bar names the app, not the piece under the page (bars.js mark())
+    if (p.below) mark();
     expanded(p.openers, true);
     if (p.shown) p.shown();
     // the others close after this one is shown, so their closing does not take this page's Back step
@@ -259,7 +261,17 @@ function page(id, o) {
   ovFocus(e, false);
   expanded(p.openers, false);
   if (p.hidden) p.hidden(was);
+  if (p.below) mark();
   ovDone();
+}
+
+/** Whether a page under the top bar is open (the Library, Settings, the calendar, the builder): the top bar then
+ * names the app, not the piece under it */
+export function pageOpen() {
+  return Object.keys(PAGES).some(function (k) {
+    var e = PAGES[k].below && PAGES[k].el();
+    return !!e && !e.hidden;
+  });
 }
 
 /** Settings @param {boolean} o */

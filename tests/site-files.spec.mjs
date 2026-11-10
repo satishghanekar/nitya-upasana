@@ -91,8 +91,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // the sound lined up with the text: 336.4 KB then; 340 KB since 2026-11-09: Listen stopping by itself in five
   // languages, quicker after a jump, and on the GPU where there is one: 338.5 KB then; 341 KB since 2026-11-09: a
   // session in the page's own order, numbered by the session, and Coming up folded on phones: 340.1 KB then; 345 KB
-  // since 2026-11-10: the JSDoc types the type checks need, in every script: 341.3 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(345_000);
+  // since 2026-11-10: the JSDoc types the type checks need, in every script: 341.3 KB then; 347 KB since 2026-11-10:
+  // Home's place hint and "Your routine" in five languages: 345.7 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(347_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then)
