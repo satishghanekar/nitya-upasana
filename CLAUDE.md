@@ -24,8 +24,8 @@ private.
   right place in the order.
 - A new file goes into `js/parts.js` too (the offline copy); `tests/site-files.spec.mjs` checks this.
 - Logic that needs no page goes in `js/core` or `js/text` as pure functions, unit-tested in `tests/unit` (Vitest).
-- New files start with `// @ts-check`, typed with JSDoc; `npm run types` must pass. The files still without it are
-  listed in `UNCHECKED` (`tests/site-files.spec.mjs`); the list only gets shorter.
+- Every script starts with `// @ts-check`, typed with JSDoc, a new file too; `npm run types` must pass
+  (`tests/site-files.spec.mjs` checks the line is there).
 - Settings change only through `change({ key: value }, then)` (`js/core/state.js`). A variable belongs to the part
   that sets it; the others import it and only read it.
 - A new page, dialog or sheet goes into `PAGES` / `LAYERS` in `js/features/overlays.js` (Back, focus kept inside,

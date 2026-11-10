@@ -1,18 +1,34 @@
+// @ts-check
 // Back button
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { bt, onPiece, pieceEl } from "../core/page.js";
+import { bt, byId, onPiece, pieceEl } from "../core/page.js";
 import { aa, aimAt, cur, jp, unfold, pn } from "../core/apply.js";
 import { TK, apply, goHome, mark, tuckHold } from "./bars.js";
 import { anyOpen, closeForBack, pageEls, setC, setJ, setP, setR, trapped } from "./overlays.js";
 
-var NAV, popSkip, adT, hmb, ovFrom, sub, subSkip, keep;
+/** @type {boolean} the browser keeps steps of its own (history.pushState) */
+var NAV;
+/** @type {number} Back steps the site took itself, whose popstate does nothing more */
+var popSkip;
+/** @type {any} the timer that writes the address as the reader scrolls */
+var adT;
+/** @type {HTMLElement} the Library button in the bottom bar */
+var hmb;
+/** @type {Element | null} the control a panel or dialog was opened from */
+var ovFrom = null;
+/** @type {(() => void) | null} closes the sheet whose Back step is on top */
+var sub = null;
+/** @type {number} that sheet's Back step was taken off by the site */
+var subSkip;
+/** @type {HTMLElement | null} where focus goes back to after a close */
+var keep = null;
 
 export function init() {
   // Opening a panel or dialog adds a Back step, so the phone's Back closes it instead of leaving the site.
   // Going to a piece (or home) adds a Back step that returns to where you were. As you read, the address
   // follows the piece on screen (#a5) without adding steps. Each step remembers its scroll position (y).
-  NAV = !!(history.pushState && history.replaceState);
+  NAV = typeof history.pushState === "function" && typeof history.replaceState === "function";
   popSkip = 0;
   homeOnScroll();
   // The script puts the page back in place itself (the browser's own guess can land at the top)
@@ -39,9 +55,10 @@ export function init() {
     // screen reader doesn't start again from the top of the page (WCAG 2.4.3)
     if (shut) {
       document.documentElement.style.overflow = "";
-      if (ovFrom && ovFrom.isConnected && ovFrom.getClientRects().length)
+      var from = /** @type {HTMLElement | null} */ (ovFrom);
+      if (from && from.isConnected && from.getClientRects().length)
         try {
-          ovFrom.focus({ preventScroll: true });
+          from.focus({ preventScroll: true });
         } catch (x) {}
     }
     if (popSkip) {
@@ -65,7 +82,7 @@ export function init() {
     }
     if (was) return;
     var st = e.state,
-      el = location.hash && pieceEl(location.hash.slice(1));
+      el = location.hash ? pieceEl(location.hash.slice(1)) : null;
     // back on the bare address: Home on its own; on a piece's address: the reading page
     homeView(!el || el.id === "home");
     solo(el ? el.id : "");
@@ -84,12 +101,16 @@ export function init() {
     // jump back to the top of Settings, so the rest of the page could not be reached by keyboard (WCAG 2.1.1).
     // Visibility is tested with getClientRects, which (unlike offsetParent) also works inside fixed layers.
     // (a tab list's other tabs, tabindex -1, are reached with the arrow keys, not Tab)
-    var f = [].filter.call(d.querySelectorAll("button,a[href],input,select,textarea,summary,[tabindex]:not([tabindex='-1'])"), function (x) {
-      return !x.disabled && x.tabIndex >= 0 && x.getClientRects().length > 0 && getComputedStyle(x).visibility !== "hidden";
-    });
+    /** @type {HTMLElement[]} */
+    var f = Array.prototype.filter.call(
+      d.querySelectorAll("button,a[href],input,select,textarea,summary,[tabindex]:not([tabindex='-1'])"),
+      function (/** @type {any} */ x) {
+        return !x.disabled && x.tabIndex >= 0 && x.getClientRects().length > 0 && getComputedStyle(x).visibility !== "hidden";
+      },
+    );
     if (!f.length) return;
     var a = document.activeElement,
-      i = f.indexOf(a);
+      i = f.indexOf(/** @type {HTMLElement} */ (a));
     // Firefox also stops on a box that scrolls (the print builder's list): that is still inside, so Tab goes on from
     // it as usual rather than back to the top
     if (i < 0 && a && d.contains(a)) return;
@@ -113,35 +134,35 @@ export function init() {
     },
     { passive: true },
   );
-  bt.addEventListener("click", function (e) {
+  /** @type {HTMLElement} */ (bt).addEventListener("click", function (e) {
     e.preventDefault();
     goHomeNav();
   });
-  hmb = document.getElementById("hm");
+  hmb = byId("hm");
   hmb.onclick = function () {
     setJ(jp.hidden);
     // With a mouse and keyboard, the cursor goes straight into the search box (on phones it doesn't,
     // so the keyboard doesn't pop up over the list)
-    if (!jp.hidden && matchMedia("(hover: hover) and (pointer: fine)").matches) document.getElementById("q").focus();
+    if (!jp.hidden && matchMedia("(hover: hover) and (pointer: fine)").matches) byId("q").focus();
   };
   // Home and Search at the end of each piece do exactly what the bottom bar's Home and Library do
   onPiece(function (sec) {
-    [].forEach.call(sec.querySelectorAll(".pnh"), function (h) {
+    sec.querySelectorAll(".pnh").forEach(function (h) {
       h.addEventListener("click", function (e) {
         e.preventDefault();
         goHomeNav();
       });
     });
-    [].forEach.call(sec.querySelectorAll(".pns"), function (b) {
+    /** @type {NodeListOf<HTMLElement>} */ (sec.querySelectorAll(".pns")).forEach(function (b) {
       b.onclick = hmb.onclick;
     });
   });
   // Skip link: focus goes to the first text on screen (a piece, or the page), without changing the address
-  document.getElementById("skip").addEventListener("click", function (e) {
+  byId("skip").addEventListener("click", function (e) {
     e.preventDefault();
     var c = cur(),
       h = c && c.querySelector("h2"),
-      m = document.getElementById("main");
+      m = byId("main");
     if (h) h.tabIndex = -1;
     try {
       (h || m).focus({ preventScroll: !!h });
@@ -150,20 +171,20 @@ export function init() {
   // Tabbing out of an open panel closes it, so it doesn't stay over the page you have moved on to
   pageEls().forEach(function (el) {
     el.addEventListener("focusout", function (e) {
-      var t = e.relatedTarget;
+      var t = /** @type {Element | null} */ (e.relatedTarget);
       // (not into the categories sheet, which opens over the Library, nor the profile sheet, over the routine builder,
       // nor Finish the update, over Settings)
       // (nor into Home's calendar card or This week, which open the calendar at another view: closing it first would
       // let its Back step close the calendar they open)
       if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help,#lbm,#pfm,#upm,#pan,#tdd,#upw")) return;
-      el._ret = null;
+      /** @type {any} */ (el)._ret = null;
       if (el === pn) setP(false);
       else if (el === jp) setJ(false);
       else if (el.id === "rtb") setR(false);
       else setC(false);
     });
   });
-  document.getElementById("xc").onclick = function () {
+  byId("xc").onclick = function () {
     setP(false);
   };
   aa.onclick = function () {
@@ -191,6 +212,7 @@ export function ovPush() {
 
 // A sheet opened over a page that is open already (the routine builder's Add texts on a phone): a Back step of its
 // own, so the phone's Back closes the sheet (close is called) and leaves the page open
+/** @param {() => void} close */
 export function ovSub(close) {
   if (!NAV || !hs().ov) return;
   sub = close;
@@ -232,6 +254,7 @@ export function ovDrop() {
 }
 
 // Go somewhere in the page: go() scrolls, url is "#a3" (a piece) or the bare address (home)
+/** @param {() => void} go @param {string} url */
 export function jumpTo(go, url) {
   var ov = NAV && hs().ov;
   if (typeof TK === "object" && TK) tuckHold();

@@ -1,3 +1,4 @@
+// @ts-check
 // Print: the pieces to print, built from the texts (CONTENT) rather than copied from the reading page
 // Called by js/features/print.js each time it builds the print view. The reading page shows one text at a time
 // and hides the rest in several ways (Home, a session being read, folded sections), so print no longer copies it:

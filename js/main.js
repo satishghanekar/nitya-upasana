@@ -1,3 +1,4 @@
+// @ts-check
 /* =====================================================================
    SITE SCRIPT: start-up order
    The behaviour is split into parts (ES modules), one per topic, in the

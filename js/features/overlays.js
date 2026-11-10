@@ -1,3 +1,4 @@
+// @ts-check
 // Overlays: everything that opens over the page, listed once.
 // - The four pages: Settings (#panel, setP), the Library (#jump, setJ), the Vedic calendar (#cal, setC,
 //   js/features/vedic-calendar.js) and the routine builder (#rtb, setR, js/features/routine-builder.js). One is open at
