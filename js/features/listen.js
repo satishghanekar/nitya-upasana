@@ -32,7 +32,7 @@ import { fillWords, menuWords } from "../core/strings.js";
 import { esc, nameLang, num } from "../core/words.js";
 import { titleText } from "../text/iast.js";
 import { jumpTo } from "./history.js";
-import { leaveFor } from "./today-card.js";
+import { leaveFor, startFor } from "./today-card.js";
 
 var ORT = "vendor/onnxruntime/",
   TAP = "js/worklets/listen-tap.js",
@@ -149,6 +149,14 @@ export function init() {
   });
   yes.addEventListener("click", begin);
   no.addEventListener("click", stop);
+  // while the panel shows it covers the foot of the page, over the bottom bar: the page leaves that much more room at
+  // its end (--lsnh, css/07-bottom-bar-folds.css), so the last lines of a text can still be scrolled up above it
+  if (window.ResizeObserver)
+    new ResizeObserver(function () {
+      var h = bar.offsetHeight;
+      if (h) root.style.setProperty("--lsnh", h + "px");
+      else root.style.removeProperty("--lsnh");
+    }).observe(bar);
   ["touchstart", "wheel", "keydown"].forEach(function (ev) {
     addEventListener(
       ev,
@@ -669,7 +677,7 @@ function open(id) {
   // if folded; and the page always goes to the line being chanted, even just after the reader touched it)
   leaveFor(el);
   unfold(el);
-  if (root.hasAttribute("data-hv") || !el.getClientRects().length) {
+  if ((root.hasAttribute("data-hv") || !el.getClientRects().length) && !startFor(el)) {
     var to = el;
     jumpTo(function () {
       to.scrollIntoView();

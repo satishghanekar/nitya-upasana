@@ -445,6 +445,18 @@ export function leaveFor(el) {
   });
 }
 
+/** A text Listen opens while no session is read (Listen started on Home): one of the session Home shows starts that
+ * session there, as tapping its title does, so the texts after it run on below it and the reader can scroll on to the
+ * next (Satish, 2026-11-10: opened on its own, the page ended with the first aarti). True when the text was opened.
+ * @param {Element} el  the piece */
+export function startFor(el) {
+  var id = bySec[el.id],
+    c = current();
+  if (run || !id || idsFor(c.day, c.session).indexOf(id) < 0) return false;
+  startAt(id);
+  return true;
+}
+
 /** The session being read (its Library ids, in order), or null: the bottom bar's Print (js/features/print.js) */
 export function runIds() {
   return run ? run.ids.slice() : null;
