@@ -1,3 +1,4 @@
+// @ts-check
 // Full-screen picture (#pzv): pinch or double-tap to zoom (1x to 5x), drag to move
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
@@ -21,29 +22,34 @@ export function openPicture(name, b) {
 export function init() {
   // Works with fingers and a mouse (scroll wheel zooms). The text-size pinch is off while it is open.
   (function () {
-    var v = document.getElementById("pzv"),
-      im = document.getElementById("pzi"),
-      wrap = document.getElementById("pzw"),
-      ring = document.getElementById("pzr"),
-      ib = document.getElementById("iconb"),
+    // (typed as found: the line after them stops here if index.html lacks one)
+    var v = /** @type {HTMLElement} */ (document.getElementById("pzv")),
+      im = /** @type {HTMLImageElement} */ (document.getElementById("pzi")),
+      wrap = /** @type {HTMLElement} */ (document.getElementById("pzw")),
+      ring = /** @type {HTMLElement} */ (document.getElementById("pzr")),
+      ib = /** @type {HTMLElement} */ (document.getElementById("iconb")),
       // the small picture in the top bar opens it too (on phones the only one: Home's card has no picture there)
       tb = document.getElementById("bti"),
       /** @type {HTMLElement} the button that opened it, where focus returns */
       from = ib,
-      hint = document.getElementById("pzh"),
+      hint = /** @type {HTMLElement} */ (document.getElementById("pzh")),
       /** @type {{ src: string | null, alt: string, label: string | null } | null} the time of day's picture, kept while another shows */
       kept = null;
     if (!v || !im || !wrap || !ring || !ib) return;
     // the ring on a picture's star for a weekday (0 Sunday … 6 Saturday)
+    /** @param {string} name @param {number} day */
     function mark(name, day) {
-      var st = (STARS[name] || STARS.sunrise)[day];
+      var all = /** @type {Record<string, [number, number][]>} */ (STARS),
+        st = (all[name] || STARS.sunrise)[day];
       ring.style.left = st[0] + "%";
       ring.style.top = st[1] + "%";
     }
     var s = 1,
       tx = 0,
       ty = 0,
+      /** @type {Record<string, { x: number, y: number }>} the fingers down, by pointer id */
       pts = {},
+      /** @type {any} the gesture under way: a drag (x, y, tx, ty) or a pinch (d, s, mx, my) */
       g = null,
       lastTap = 0,
       moved = false;
@@ -63,6 +69,7 @@ export function init() {
       v.classList.toggle("zoomed", s > 1);
     }
     // zoom to scale ns, keeping the screen point (px, py) still
+    /** @param {number} ns @param {number} px @param {number} py */
     function zoomAt(ns, px, py) {
       ns = Math.max(1, Math.min(5, ns));
       var r = v.getBoundingClientRect(),
@@ -79,7 +86,7 @@ export function init() {
       if (!own) mark(ib.getAttribute("data-picture") || "sunrise", Number(ib.getAttribute("data-day")) || 0);
       // the full-size picture (about 75 KB; which one follows the time of day, features/day-picture.js) is fetched on the first open, not with the page (the service worker
       // still keeps a copy for offline use); the small card picture shows until it arrives
-      if (!im.getAttribute("src")) im.src = im.getAttribute("data-src");
+      if (!im.getAttribute("src")) im.src = im.getAttribute("data-src") || "";
       ovPush();
       s = 1;
       tx = ty = 0;
@@ -87,8 +94,9 @@ export function init() {
       hint.textContent = menuWords("pictureViewer").hint;
       v.hidden = false;
       document.documentElement.style.overflow = "hidden";
-      document.getElementById("pzx").focus();
+      /** @type {HTMLElement} */ (document.getElementById("pzx")).focus();
     }
+    /** @param {boolean} [fromPop] */
     function close(fromPop) {
       if (v.hidden) return;
       v.hidden = true;
@@ -124,7 +132,7 @@ export function init() {
       from = b;
       open(true);
     };
-    document.getElementById("pzx").onclick = function () {
+    /** @type {HTMLElement} */ (document.getElementById("pzx")).onclick = function () {
       close();
     };
     addEventListener("popstate", function () {
@@ -137,7 +145,7 @@ export function init() {
       if (e.key === "-") zoomAt(s / 1.5, innerWidth / 2, innerHeight / 2);
     });
     v.addEventListener("pointerdown", function (e) {
-      if (e.target.closest("#pzx")) return;
+      if (/** @type {Element} */ (e.target).closest("#pzx")) return;
       try {
         v.setPointerCapture(e.pointerId);
       } catch (x) {}
@@ -172,6 +180,7 @@ export function init() {
         }
       }
     });
+    /** @param {PointerEvent} e */
     function up(e) {
       if (!pts[e.pointerId]) return;
       delete pts[e.pointerId];
