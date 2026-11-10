@@ -169,6 +169,8 @@ const PAGES = {
       szSet(); // a pinch on the page changes the size without passing through here
       // the Settings page covers the whole page; the page under it doesn't scroll
       root.setAttribute("data-sp", "1");
+      // for what Settings shows only once opened (js/features/listen.js: where Listen runs)
+      document.dispatchEvent(new Event("nitya-settings"));
     },
     hidden: function () {
       fsFlush();
