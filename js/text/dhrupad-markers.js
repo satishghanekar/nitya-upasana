@@ -1,11 +1,12 @@
+// @ts-check
 // Tappable dhrupad markers (every text with refrain: every-verse)
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { topEdge } from "../features/bottom-bar.js";
 import { onPiece } from "../core/page.js";
 
-// The open bubble, { m: its marker, el: the bubble }, or null (read by js/features/bottom-bar.js)
-/** @type {any} */
+// The open bubble, { m: its marker, el: the bubble, place: puts it on screen, ro: watches its size }, or null
+/** @type {{ m: HTMLElement, el: HTMLElement, place: () => void, ro: ResizeObserver | null } | null} */
 export var rmkPop = null;
 
 export function init() {
@@ -16,7 +17,7 @@ export function init() {
   document.addEventListener(
     "click",
     function (e) {
-      var m = e.target.closest && e.target.closest(".rmkt");
+      var m = tapped(e);
       if (m) {
         e.stopPropagation();
         rmkOpen(m);
@@ -26,7 +27,7 @@ export function init() {
   );
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && rmkPop) return rmkClose();
-    var m = e.target.closest && e.target.closest(".rmkt");
+    var m = tapped(e);
     if (m && (e.key === "Enter" || e.key === " ")) {
       e.preventDefault();
       rmkOpen(m);
@@ -40,16 +41,23 @@ export function init() {
     { passive: true },
   );
   addEventListener("resize", function () {
-    if (rmkPop) rmkPop.el.place();
+    if (rmkPop) rmkPop.place();
   });
+}
+
+/** The tappable marker an event happened in, if any @param {Event} e @returns {HTMLElement | null} */
+function tapped(e) {
+  var t = /** @type {any} */ (e.target);
+  return t && t.closest ? t.closest(".rmkt") : null;
 }
 
 // The tappable markers in the pieces inside r (the page, or a printout's copy: js/print/compose.js, which keeps them
 // as the page has them, so the printout is laid out the same)
 // Every dhrupad marker (not a [note] of the text's own, .nt) in a piece with the dhrupad at the top (.rftop)
 export function markTappable(/** @type {ParentNode} */ r) {
-  [].forEach.call(r.querySelectorAll(".ash .items > .rmk:not(.nt)"), function (m) {
-    if (!m.closest("section.ash").querySelector(".rftop .verse")) return;
+  r.querySelectorAll(".ash .items > .rmk:not(.nt)").forEach(function (m) {
+    var sec = m.closest("section.ash");
+    if (!sec || !sec.querySelector(".rftop .verse")) return;
     m.classList.add("rmkt");
     m.setAttribute("role", "button");
     m.setAttribute("tabindex", "0");
@@ -60,16 +68,18 @@ export function markTappable(/** @type {ParentNode} */ r) {
 export function rmkClose() {
   if (!rmkPop) return;
   rmkPop.m.setAttribute("aria-expanded", "false");
-  if (rmkPop.el.ro) rmkPop.el.ro.disconnect();
+  if (rmkPop.ro) rmkPop.ro.disconnect();
   rmkPop.el.remove();
   rmkPop = null;
 }
 
+/** @param {HTMLElement} m */
 export function rmkOpen(m) {
   var was = rmkPop && rmkPop.m === m;
   rmkClose();
   if (was) return;
-  var src = m.closest("section.ash").querySelector(".rftop .verse");
+  var sec = m.closest("section.ash"),
+    src = sec && sec.querySelector(".rftop .verse");
   if (!src) return;
   var el = document.createElement("div");
   el.className = "rmkpop";
@@ -104,14 +114,14 @@ export function rmkOpen(m) {
   place();
   var r = el.getBoundingClientRect();
   if (r.top < topEdge() + 4) el.classList.add("below");
-  el.place = place;
+  var ro = null;
   if (window.ResizeObserver) {
-    el.ro = new ResizeObserver(function () {
+    ro = new ResizeObserver(function () {
       place();
     });
-    el.ro.observe(el);
+    ro.observe(el);
   }
   // no time limit (WCAG 2.2.1): a refrain can take longer to sing than any timer; it closes on a second tap,
   // a tap elsewhere, Escape, or when its marker scrolls out of sight
-  rmkPop = { m: m, el: el };
+  rmkPop = { m: m, el: el, place: place, ro: ro };
 }
