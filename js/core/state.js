@@ -1,14 +1,19 @@
+// @ts-check
 // Settings (P), loaded from this device: the person reading's, with the device's
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { active, flush, saveSettings, start } from "../store/store.js";
 import { TICKS_KEY } from "./ticks.js";
 
+/** @type {import("../store/migrate.js").Prefs} */
 export var P;
 // The language that leads, "en" or "mr": English only with both languages shown and English first. Set by apply()
 // (js/features/bars.js, setLead()), read by the auto-fit and print.
 export var LEAD = "mr";
-var K, DESK;
+/** @type {string} */
+var K;
+/** @type {boolean} */
+var DESK;
 
 // The settings: who is reading (js/store/store.js, which has opened IndexedDB before this runs) and their settings,
 // upgraded from whichever version saved them (js/store/migrate.js keeps the steps and the defaults). Each person
@@ -19,7 +24,7 @@ export function init() {
   // the menus' sizes (css/01-theme.css, --ts) follow the reader's own text size, as the text does
   document.documentElement.style.setProperty("--ts", String(textScale()));
   // A computer (no touch screen): the screen is kept on only if the reader turns it on
-  DESK = !!(window.matchMedia && !matchMedia("(any-pointer:coarse)").matches);
+  DESK = !!(typeof window.matchMedia === "function" && !matchMedia("(any-pointer:coarse)").matches);
   var saved = read(K),
     r = start(saved, read(TICKS_KEY), { desk: DESK, fs: dfs() });
   P = r.prefs;
@@ -55,7 +60,7 @@ function boot() {
 // own text size (textScale()).
 export function dfs() {
   var s = Math.min(screen.width || innerWidth, screen.height || innerHeight),
-    co = window.matchMedia && matchMedia("(pointer:coarse)").matches,
+    co = typeof window.matchMedia === "function" && matchMedia("(pointer:coarse)").matches,
     b = co ? (s >= 600 ? 28 : s < 360 ? 20 : 22) : (screen.width || innerWidth) >= 1600 ? 26 : 24;
   return Math.round(b * textScale());
 }
@@ -106,6 +111,7 @@ export function change(changes, then) {
 
 // Another person's settings (a switch, a delete or a restore; js/features/profiles.js): P is changed in place, so
 // every part that holds it sees the new values
+/** @param {Record<string, any>} prefs */
 export function setAll(prefs) {
   for (var k in prefs) P[k] = prefs[k];
   save();

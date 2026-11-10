@@ -4,7 +4,7 @@
 // are no tabs: every group at once, in two columns (css/09-settings-page.css; Satish, 2026-10-30).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { flash, note } from "../core/page.js";
+import { warn } from "../core/page.js";
 import { P, change, dfs } from "../core/state.js";
 import { FSA } from "../text/autofit.js";
 import { trSet } from "../text/iast.js";
@@ -162,13 +162,7 @@ export function trPick(v) {
       }
     });
     if (bad.length) {
-      note(menuWords("settings").failed(bad.join("; ")));
-      var zt = document.getElementById("fl");
-      zt.classList.add("err");
-      clearTimeout(flash.t);
-      flash.t = setTimeout(function () {
-        zt.classList.remove("on", "err");
-      }, 9000);
+      warn(menuWords("settings").failed(bad.join("; ")));
     }
     apply();
   }

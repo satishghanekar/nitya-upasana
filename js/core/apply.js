@@ -1,3 +1,4 @@
+// @ts-check
 // Current piece, menus and apply()
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
@@ -6,12 +7,19 @@ import { P, change } from "./state.js";
 import { mark } from "../features/bars.js";
 import { menuWords } from "./strings.js";
 
-export var pn, aa, jp, LANGS;
+/** @type {HTMLElement} */
+export var pn;
+/** @type {HTMLElement} */
+export var aa;
+/** @type {HTMLElement} */
+export var jp;
+/** @type {Record<string, { n: string }>} */
+export var LANGS;
 
 export function init() {
-  pn = document.getElementById("panel");
-  aa = document.getElementById("aa");
-  jp = document.getElementById("jump");
+  pn = /** @type {HTMLElement} */ (document.getElementById("panel"));
+  aa = /** @type {HTMLElement} */ (document.getElementById("aa"));
+  jp = /** @type {HTMLElement} */ (document.getElementById("jump"));
   // The languages a piece can be read in: n is the name in its own script
   LANGS = {
     mr: { n: "मराठी" },
@@ -25,22 +33,24 @@ export function init() {
   onPiece(function (x) {
     var h = x.querySelector("header");
     if (!h) return;
+    var hd = h;
     var b = document.createElement("button");
     b.type = "button";
     b.className = "afb";
     b.innerHTML =
       '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>';
-    b.onclick = function () {
-      var y = h.getBoundingClientRect().top,
+    function toggle() {
+      var y = hd.getBoundingClientRect().top,
         af = P.af.slice(),
         i = af.indexOf(x.id);
       if (i >= 0) af.splice(i, 1);
       else af.push(x.id);
       change({ af: af }, foldSet);
       // keep the heading where it was on screen
-      scrollBy(0, h.getBoundingClientRect().top - y);
+      scrollBy(0, hd.getBoundingClientRect().top - y);
       mark();
-    };
+    }
+    b.onclick = toggle;
     // the text it folds, heard after its name ("Fold this piece, सुखकर्ता दुःखहर्ता"): every piece's button has the same
     // name, so a screen reader moving through a session can tell them apart
     var t = h.querySelector("h2");
@@ -52,8 +62,8 @@ export function init() {
     // One-hand use: a tap anywhere on the heading folds or opens the piece, not only on ⌃
     // (the ⌃ stays for keyboards and screen readers; links in the heading still work)
     h.addEventListener("click", function (e) {
-      if (e.target.closest("a,button,input") || String(getSelection()).trim()) return;
-      b.onclick();
+      if (/** @type {Element} */ (e.target).closest("a,button,input") || String(getSelection()).trim()) return;
+      toggle();
     });
     foldOne(x);
   });
@@ -61,6 +71,7 @@ export function init() {
 
 // The page has two places for text: the original ("mr", which shows Marathi or, in Kannada letters, Kannada)
 // and English ("en"). P.lead, P.l2 and P.lang name the place; LK gives the language in it.
+/** @param {string} slot */
 export function LK(slot) {
   return slot === "mr" ? P.ind : slot;
 }
@@ -109,6 +120,7 @@ function holdAim(el) {
 
 // The piece being read: the last one whose top has passed just under the top bar
 export function cur() {
+  /** @type {HTMLElement | null} */
   var c = null,
     y = 90,
     best = -Infinity;
@@ -128,7 +140,7 @@ export function cur() {
     }
   });
   // a short text read on its own on a wide screen (.solo, css/10-today.css) may never reach the top: it is still the one
-  var s = !c && document.querySelector(".ash.solo"),
+  var s = !c && /** @type {HTMLElement | null} */ (document.querySelector(".ash.solo")),
     h = document.getElementById("home");
   if (s && s.offsetParent !== null && h && h.offsetParent === null) c = s;
   return c;
@@ -152,13 +164,15 @@ function foldOne(x) {
 }
 
 // Going to a piece (or a line in it) opens it if it is folded
+/** @param {Element | null | undefined} el */
 export function unfold(el) {
-  var sec = el && el.closest && el.closest(".ash");
-  if (sec && P.af.indexOf(sec.id) >= 0)
+  var sec = el && el.closest && el.closest(".ash"),
+    id = sec ? sec.id : "";
+  if (id && P.af.indexOf(id) >= 0)
     change(
       {
-        af: P.af.filter(function (x) {
-          return x !== sec.id;
+        af: P.af.filter(function (/** @type {string} */ x) {
+          return x !== id;
         }),
       },
       foldSet,
