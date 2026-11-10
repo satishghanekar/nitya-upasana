@@ -1,9 +1,11 @@
+// @ts-check
 // Preferred line breaks
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { P, dfs } from "../core/state.js";
 import { onPiece } from "../core/page.js";
 
+/** @type {string} */
 export var ZW;
 
 export function init() {
@@ -19,21 +21,25 @@ export function init() {
 
 // The preferred breaks in every line inside r (the page, or a printout's copy: js/print/compose.js)
 export function breakLines(/** @type {ParentNode} */ r) {
-  [].forEach.call(r.querySelectorAll(".verse .mr p"), function (p) {
-    if (p.textContent.indexOf(ZW) >= 0)
+  r.querySelectorAll(".verse .mr p").forEach(function (p) {
+    if ((p.textContent || "").indexOf(ZW) >= 0)
       zsplit(
         p,
-        function (t) {
+        function (/** @type {string} */ t) {
           return t.split(ZW);
         },
         ZW,
       );
   });
-  [].forEach.call(r.querySelectorAll(".verse .en p"), function (p) {
+  r.querySelectorAll(".verse .en p").forEach(function (p) {
     zsplit(p, enCut, "");
   });
-  [].forEach.call(r.querySelectorAll(".ash.prose .verse p"), glue);
-  [].forEach.call(r.querySelectorAll(".ash.lines .verse p"), shortRef);
+  /** @type {NodeListOf<HTMLElement>} */ (r.querySelectorAll(".ash.prose .verse p")).forEach(function (p) {
+    glue(p);
+  });
+  /** @type {NodeListOf<HTMLElement>} */ (r.querySelectorAll(".ash.lines .verse p")).forEach(function (p) {
+    shortRef(p);
+  });
 }
 
 // The digits of every script a text is shown in (Latin, Devanagari, Kannada, Telugu, Gujarati), zero first
@@ -47,10 +53,11 @@ var REF = new RegExp("[" + DIGITS + "]+(?:\\.[" + DIGITS + "]+)+(?=[\\s॥|]*$)"
 // are not changed: the reference stays in the text, for search, the printout and a screen reader.
 export function shortRef(/** @type {HTMLElement} */ p) {
   var w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT),
-    t,
-    last = null;
+    t;
+  /** @type {Text | null} */
+  var last = null;
   // (the last text with more than dandas in it: a ॥ set against the number is glued outside it)
-  while ((t = w.nextNode())) if (/[^\s॥|]/.test(t.data)) last = t;
+  while ((t = /** @type {Text | null} */ (w.nextNode()))) if (/[^\s॥|]/.test(t.data)) last = t;
   var m = last && REF.exec(last.data);
   if (!m || !last || (last.parentElement && last.parentElement.closest(".ref"))) return;
   var verse = m[0].slice(m[0].lastIndexOf(".") + 1),
@@ -61,17 +68,20 @@ export function shortRef(/** @type {HTMLElement} */ p) {
   if (DIGITS.indexOf(short) % 10 !== 1 || short.length !== 1) s.setAttribute("data-short", short);
   var tail = last.splitText(m.index);
   tail.splitText(m[0].length);
-  tail.parentNode.replaceChild(s, tail);
+  /** @type {ParentNode} */ (tail.parentNode).replaceChild(s, tail);
   // (the whole reference in a span of its own, which a phone hides)
   s.appendChild(document.createElement("span")).appendChild(tail);
 }
 
+/** @param {string} t */
 export function enCut(t) {
   return t.replace(/([^|]\||,)( +)(?=\S)/g, "$1$2\u0000").split("\u0000");
 }
 
+/** @param {Element} p @param {(t: string) => string[]} cut @param {string} sep */
 export function zsplit(p, cut, sep) {
-  [].slice.call(p.childNodes).forEach(function (n) {
+  Array.prototype.slice.call(p.childNodes).forEach(function (/** @type {Text} */ n) {
+    // (by nodeType: a printout's copy may be in another document, whose Text is not this window's)
     if (n.nodeType !== 3) return;
     var a = cut(n.data);
     if (a.length < 2) return;
@@ -79,7 +89,7 @@ export function zsplit(p, cut, sep) {
     a.forEach(function (part, i) {
       if (i && sep) f.appendChild(document.createTextNode(sep));
       // spaces at either end stay outside the span, so they show between parts
-      var m = /^(\s*)([\s\S]*?)(\s*)$/.exec(part);
+      var m = /** @type {RegExpExecArray} */ (/^(\s*)([\s\S]*?)(\s*)$/.exec(part));
       if (m[1]) f.appendChild(document.createTextNode(m[1]));
       if (m[2]) {
         var s = document.createElement("span");
@@ -93,6 +103,7 @@ export function zsplit(p, cut, sep) {
   });
   // keep the stanza number with the last part of the line
   var sn = p.lastElementChild,
+    /** @type {any} */
     last = sn && sn.previousSibling;
   while (last && last.nodeType === 3 && !last.data.trim()) last = last.previousSibling;
   if (sn && sn.className === "sn" && last && last.className === "zs") last.appendChild(sn);
@@ -107,11 +118,13 @@ export function zsplit(p, cut, sep) {
 // (.brs, shown only while the line runs on). A long word in English letters is glued by its last three letters only:
 // whole, it could be wider than a phone's row and run off the screen, where the rest of it may now break. The words
 // themselves are not changed.
+/** @param {HTMLElement} p */
 export function glue(p) {
   var w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT),
-    ns = [],
     n;
-  while ((n = w.nextNode())) ns.push(n);
+  /** @type {Text[]} */
+  var ns = [];
+  while ((n = /** @type {Text | null} */ (w.nextNode()))) ns.push(n);
   ns.forEach(function (n) {
     var re = /[^\s-]+(?: +(?:[।॥|]+|[0-9०-९೦-೯]+(?:\.[0-9०-९೦-೯]+)*(?= *[॥|]| *$)))+/g,
       t = n.data,
@@ -131,21 +144,22 @@ export function glue(p) {
     }
     if (!at) return;
     f.appendChild(document.createTextNode(t.slice(at)));
-    n.parentNode.replaceChild(f, n);
+    /** @type {ParentNode} */ (n.parentNode).replaceChild(f, n);
   });
-  [].forEach.call(p.querySelectorAll("br"), function (b) {
+  p.querySelectorAll("br").forEach(function (b) {
     var s = document.createElement("span");
     s.className = "brs";
     s.textContent = " ";
-    b.parentNode.insertBefore(s, b);
+    /** @type {ParentNode} */ (b.parentNode).insertBefore(s, b);
   });
 }
 
 // Latin digits → Devanagari digits
+/** @param {number | string} n */
 export function DV(n) {
-  return SCR.to(
+  return /** @type {any} */ (globalThis).SCR.to(
     String(n).replace(/[0-9]/g, function (d) {
-      return "०१२३४५६७८९"[d];
+      return "०१२३४५६७८९"[+d];
     }),
   ); // (Kannada digits in Kannada letters)
 }

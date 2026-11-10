@@ -1,3 +1,4 @@
+// @ts-check
 // Stanza numbers
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
@@ -14,9 +15,9 @@ export function numberStanzas(/** @type {ParentNode} */ r) {
   // (the Atharvashirsha's numbers are part of its text) and those whose file says "stanza-numbers: as-written"
   // (section class ownsn: the numbers are written in the text, as in some ashtaks). By class, not by id, so a text without a legacy-id
   // (its section id is its own id, aarti-belaguve) is numbered too.
-  [].forEach.call(r.querySelectorAll("section.ash:not(.prose):not(.ownsn) .items"), function (b) {
+  r.querySelectorAll("section.ash:not(.prose):not(.ownsn) .items").forEach(function (b) {
     var n = 0;
-    [].forEach.call(b.querySelectorAll(".item:not(.rf):not(.dh)"), function (it) {
+    b.querySelectorAll(".item:not(.rf):not(.dh)").forEach(function (it) {
       n++;
       [
         [".mr", DV(n), "॥"],
@@ -27,25 +28,27 @@ export function numberStanzas(/** @type {ParentNode} */ r) {
         if (!p) return;
         var e = document.createElement("span");
         e.className = "sn";
-        var end = p.textContent.trim();
+        var end = (p.textContent || "").trim();
         e.textContent = (end.slice(-x[2].length) === x[2] ? " " : " " + x[2] + " ") + x[1] + " " + x[2];
         p.appendChild(e);
       });
     });
   });
   // A number written in the text (stanza-numbers: as-written) looks like the ones added: "॥ १ ॥" at the end of a line
-  [].forEach.call(r.querySelectorAll("section.ash.ownsn:not(.prose) .verse p"), function (p) {
+  r.querySelectorAll("section.ash.ownsn:not(.prose) .verse p").forEach(function (p) {
     var w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT),
-      t,
-      last = null;
-    while ((t = w.nextNode())) if (t.data.trim()) last = t;
-    var m = last && /\s*(॥|\|\|)\s*([०-९0-9]+)\s*(॥|\|\|)\s*$/.exec(last.data);
+      t;
+    /** @type {Text | null} */
+    var last = null;
+    while ((t = /** @type {Text | null} */ (w.nextNode()))) if (t.data.trim()) last = t;
+    if (!last) return;
+    var m = /\s*(॥|\|\|)\s*([०-९0-9]+)\s*(॥|\|\|)\s*$/.exec(last.data);
     if (!m || (last.parentElement && last.parentElement.classList.contains("sn"))) return;
     var e = document.createElement("span");
     e.className = "sn";
     // (the words kept exactly as written: only wrapped)
     e.textContent = last.data.slice(m.index);
     last.data = last.data.slice(0, m.index);
-    last.parentNode.insertBefore(e, last.nextSibling);
+    if (last.parentNode) last.parentNode.insertBefore(e, last.nextSibling);
   });
 }

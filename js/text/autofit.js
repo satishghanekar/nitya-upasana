@@ -1,10 +1,14 @@
+// @ts-check
 // Auto-fit text size
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root, secs } from "../core/page.js";
 import { P, dfs } from "../core/state.js";
 
+/** @type {MediaQueryList} */
 var MQP;
+/** @type {ReturnType<typeof setTimeout> | undefined} */
+var pullT;
 // FSA: the automatic size for this screen (read by the size readouts in Settings, the reading sheet and the pinch);
 // fontN: how many web fonts had loaded at the last fit
 export var FSA = 0;
@@ -63,14 +67,16 @@ function pull() {
       var lw = 0,
         cw = 0,
         rg = document.createRange();
-      [].forEach.call(sec.querySelectorAll(".items > .c1 .verse ." + P.lang + " p, .items > .c2 .verse ." + P.lang + " p"), function (p) {
-        if (!p.offsetParent) return;
-        rg.selectNodeContents(p);
-        var w = rg.getBoundingClientRect().width,
-          cs = getComputedStyle(p);
-        if (w > lw) lw = w;
-        cw = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-      });
+      /** @type {NodeListOf<HTMLElement>} */ (sec.querySelectorAll(".items > .c1 .verse ." + P.lang + " p, .items > .c2 .verse ." + P.lang + " p")).forEach(
+        function (p) {
+          if (!p.offsetParent) return;
+          rg.selectNodeContents(p);
+          var w = rg.getBoundingClientRect().width,
+            cs = getComputedStyle(p);
+          if (w > lw) lw = w;
+          cw = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        },
+      );
       // the column gap is 64px; the widest lines of the two columns end up 48px apart
       if (lw && cw) v = Math.max(0, Math.floor((cw - lw) / 2 + 8));
     }
@@ -80,8 +86,8 @@ function pull() {
 }
 
 export function pullSoon() {
-  clearTimeout(pull.tm);
-  pull.tm = setTimeout(pull, 80);
+  clearTimeout(pullT);
+  pullT = setTimeout(pull, 80);
 }
 
 // How many web fonts have arrived. Part of the auto-fit cache key, and the font events below fit the
