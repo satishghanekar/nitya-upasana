@@ -111,3 +111,47 @@ test("every file carries the Content-Security-Policy: this site only, no inline 
     expect(csp, path).toMatch(/script-src 'self' 'wasm-unsafe-eval'(;|$)/);
   }
 });
+
+// Type checks (npm run types) cover only the files that start with "// @ts-check" (tests/tsconfig.json). These are
+// the files still waiting for theirs, one change at a time: the list may only get shorter, and a new file starts
+// with it (CLAUDE.md).
+const UNCHECKED = [
+  "js/features/astronomy.js",
+  "js/features/bars.js",
+  "js/features/bottom-bar.js",
+  "js/features/clicks.js",
+  "js/features/contents-list.js",
+  "js/features/dhrupad-button.js",
+  "js/features/help.js",
+  "js/features/history.js",
+  "js/features/languages.js",
+  "js/features/more-menu.js",
+  "js/features/offline.js",
+  "js/features/overlays.js",
+  "js/features/picture-viewer.js",
+  "js/features/pinch.js",
+  "js/features/print.js",
+  "js/features/reading-sheet.js",
+  "js/features/settings-panel.js",
+  "js/features/share.js",
+  "js/features/wake-lock.js",
+  "js/main.js",
+  "js/parts.js",
+  "js/print/compose.js",
+  "js/render.js",
+  "js/text/autofit.js",
+  "js/text/dhrupad-markers.js",
+  "js/text/iast.js",
+  "js/text/layout.js",
+  "js/text/line-breaks.js",
+  "js/text/stanza-numbers.js",
+];
+
+test("every script is type-checked, except the files still waiting for it", () => {
+  const all = readdirSync(new URL("../js/", import.meta.url), { recursive: true })
+    .map(String)
+    .filter((f) => f.endsWith(".js"))
+    .map((f) => "js/" + f.split("\\").join("/"));
+  const unchecked = all.filter((f) => !readFileSync(new URL("../" + f, import.meta.url), "utf8").startsWith("// @ts-check")).sort();
+  expect(unchecked, "files without // @ts-check on their first line").toEqual(UNCHECKED);
+});

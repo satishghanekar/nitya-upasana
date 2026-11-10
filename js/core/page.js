@@ -1,3 +1,4 @@
+// @ts-check
 // Page basics: the <html> element, the short message (flash), and the pieces on the reading page
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
@@ -113,17 +114,21 @@ export function arrange(first) {
   }
 }
 
+/** @type {ReturnType<typeof setTimeout> | undefined} */
+var flashT;
+
 // Short message near the top of the screen (Marathi text m, English text e). It has its own element,
 // separate from the text-size bubble, so a pinch can't wipe it and screen readers hear it on its own.
+/** @param {string} m @param {string} e @param {number} [ms] */
 export function flash(m, e, ms) {
-  var x = document.getElementById("fl");
+  var x = /** @type {HTMLElement} */ (document.getElementById("fl"));
   x.textContent = P.ui === "mr" ? m : e;
   x.lang = P.ui === "mr" ? "mr" : "en";
   x.classList.remove("err");
   x.classList.add("on");
-  clearTimeout(flash.t);
-  flash.t = setTimeout(function () {
-    x.classList.remove("on");
+  clearTimeout(flashT);
+  flashT = setTimeout(function () {
+    x.classList.remove("on", "err");
   }, ms || 1600);
 }
 
@@ -131,5 +136,11 @@ export function flash(m, e, ms) {
  * @param {string} text @param {number} [ms] */
 export function note(text, ms) {
   flash(text, text, ms);
-  document.getElementById("fl").lang = P.ui; // (in the menu language, whichever it is)
+  /** @type {HTMLElement} */ (document.getElementById("fl")).lang = P.ui; // (in the menu language, whichever it is)
+}
+
+/** The short message as a warning, in red and kept up longer, so there is time to read it @param {string} text */
+export function warn(text) {
+  note(text, 9000);
+  /** @type {HTMLElement} */ (document.getElementById("fl")).classList.add("err");
 }

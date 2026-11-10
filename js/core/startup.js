@@ -1,3 +1,4 @@
+// @ts-check
 // Start-up
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
@@ -9,7 +10,24 @@ import { apply, mark } from "../features/bars.js";
 import { wake } from "../features/wake-lock.js";
 import { homeAlone, homeInView, homeView, solo } from "../features/history.js";
 
-var tk, rzT, h, el, PK, posT, sp, moved, goPos;
+/** @type {number} */
+var tk;
+/** @type {ReturnType<typeof setTimeout> | number} */
+var rzT;
+/** @type {ReturnType<typeof setTimeout> | number} */
+var posT;
+/** @type {string} */
+var h;
+/** @type {string} */
+var PK;
+/** @type {HTMLElement | null | "" | undefined} the piece a link such as …/#a3 opens at */
+var el;
+/** @type {{ id: string, y: number, t: number } | null} the reading position kept (savePos()) */
+var sp;
+/** @type {boolean} */
+var moved;
+/** @type {() => void} */
+var goPos;
 
 // The page width without the scrollbar, for the styles that centre the text column and the side rail
 // (--vw; css/04-columns-rail.css). 100vw includes a classic scrollbar (Windows, or a Mac set to always
@@ -71,7 +89,7 @@ export function init() {
     // (a folded piece stays folded here: the address follows the piece you read, so a reload would open it)
     if (el && el.classList.contains("ash"))
       setTimeout(function () {
-        el.scrollIntoView();
+        if (el) el.scrollIntoView();
       }, 50);
   }
   if (P.wake) wake(true);
@@ -100,7 +118,7 @@ export function init() {
     if (sp && Date.now() - sp.t < 12 * 3600000 && (sp.id || sp.y > 0)) {
       moved = false;
       goPos = function () {
-        if (moved) return;
+        if (moved || !sp) return;
         var el = sp.id && pieceEl(sp.id);
         // a piece not shown: stay at the top, on Home on its own
         if (el && el.offsetParent === null) return homeView(true);
@@ -131,8 +149,9 @@ export function init() {
 
 // highlight a tapped line (each copy of it: Marathi, English, a repeated dhrupad) and the stanza around it, in the
 // page or in one piece (r)
+/** @param {string} id @param {ParentNode} [r] */
 export function hlMark(id, r) {
-  [].forEach.call((r || document).querySelectorAll('[data-l="' + id + '"]'), function (x) {
+  (r || document).querySelectorAll('[data-l="' + id + '"]').forEach(function (x) {
     x.classList.add("hl");
     var st = x.closest(".items > .item, .rftop");
     if (st) st.classList.add("hli");
