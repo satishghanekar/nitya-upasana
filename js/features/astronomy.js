@@ -1,6 +1,14 @@
+// @ts-check
 // Astronomy for the Next Sankathara Chaturthi card
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
+/**
+ * @typedef {{ day: number, rise: number | null, start: number, end: number, atRise: boolean }} Sankashti
+ * @typedef {{ elong: (t: number) => number, rise: (t0: number, t1: number, lat: number, lon: number) => number | null,
+ *   upcoming: (from: number, lat: number, lon: number, count: number) => Sankashti[], moonLon: (t: number) => number,
+ *   sunLon: (t: number) => number }} Sky
+ */
+/** @type {Sky} */
 export var SK;
 
 export function init() {
@@ -8,13 +16,16 @@ export function init() {
   // lunar day (tithi), moonrise, and the Sankashti rule: Krishna-paksha Chaturthi prevailing at moonrise.
   SK = (function () {
     var D2R = Math.PI / 180;
+    /** @param {number} t */
     function jd(t) {
       return t / 86400000 + 2440587.5;
     }
+    /** @param {number} x */
     function n360(x) {
       x %= 360;
       return x < 0 ? x + 360 : x;
     }
+    /** @param {number} T */
     function sunLon(T) {
       var L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T,
         M = (357.52911 + 35999.05029 * T - 0.0001537 * T * T) * D2R;
@@ -97,6 +108,7 @@ export function init() {
       [4, 0, -1, -1, 1828],
       [0, 1, 0, 1, -1794],
     ];
+    /** @param {number} T */
     function moon(T) {
       var Lp = n360(218.3164477 + 481267.88123421 * T - 0.0015786 * T * T),
         D = n360(297.8501921 + 445267.1114034 * T - 0.0018819 * T * T),
@@ -130,14 +142,17 @@ export function init() {
       var om = (125.04452 - 1934.136261 * T) * D2R;
       return { lon: n360(Lp + sl / 1e6 - 0.00478 * Math.sin(om)), lat: sb / 1e6 };
     }
+    /** @param {number} t */
     function T(t) {
       return (jd(t) - 2451545) / 36525;
     }
     // elongation of moon from sun, 0..360 (tithi = floor(elong/12))
+    /** @param {number} t */
     function elong(t) {
       var x = T(t);
       return n360(moon(x).lon - sunLon(x));
     }
+    /** @param {number} t @param {number} lat @param {number} lon */
     function altMoon(t, lat, lon) {
       var x = T(t),
         m = moon(T(t + (63.8 + 0.2 * (t / 31557600000 - 30)) * 1000)), // the moon at TT = UT + ΔT (~69 s)
@@ -153,6 +168,7 @@ export function init() {
     }
     // moonrise within [t0,t1): first upward crossing of +0.125 deg geocentric altitude of the centre (upper limb on the
     // horizon with refraction, semidiameter and parallax); within ~0.5 min of the Swiss Ephemeris, 2020-2032
+    /** @param {number} t0 @param {number} t1 @param {number} lat @param {number} lon */
     function rise(t0, t1, lat, lon) {
       var h0 = 0.125,
         st = 10 * 60000,
@@ -176,6 +192,7 @@ export function init() {
     // Sankashti = Krishna Chaturthi (elongation 216-228 deg). Observed on the local date whose moonrise falls inside it
     // (first such date if two); if no moonrise falls inside, the date on which it is in effect at sunrise (~06:30).
     // Dates and times use the device's own time zone.
+    /** @param {number} a @param {number} b @param {number} target */
     function cross(a, b, target) {
       for (var i = 0; i < 30; i++) {
         var m = (a + b) / 2;
@@ -184,15 +201,19 @@ export function init() {
       }
       return b;
     }
+    /** @param {number} t */
     function mid(t) {
       var d = new Date(t);
       return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
     }
+    /** @param {number} m */
     function addDay(m) {
       var d = new Date(m);
       return new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1).getTime();
     }
+    /** @param {number} from @param {number} lat @param {number} lon @param {number} count */
     function upcoming(from, lat, lon, count) {
+      /** @type {Sankashti[]} */
       var out = [],
         t = from - 3 * 86400000,
         end = from + (count + 1) * 31 * 86400000,
@@ -206,7 +227,9 @@ export function init() {
           var q = s;
           while (elong(q) < 228 && q - s < 3 * 86400000) q += h;
           en = cross(q - h, q, 228);
+          /** @type {number | null} */
           var pick = null,
+            /** @type {number | null} */
             rs = null;
           for (var d = mid(s) - 86400000; d < en; d = addDay(d)) {
             var r = rise(d + 12 * h, addDay(d) + 12 * h, lat, lon);
@@ -238,9 +261,11 @@ export function init() {
       elong: elong,
       rise: rise,
       upcoming: upcoming,
+      /** @param {number} t */
       moonLon: function (t) {
         return moon(T(t)).lon;
       },
+      /** @param {number} t */
       sunLon: function (t) {
         return sunLon(T(t));
       },
