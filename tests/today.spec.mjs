@@ -360,6 +360,41 @@ test("a session runs on in one scroll, in session order, with only its texts @mo
   await expect.poll(() => shown(page)).toEqual(["a3", "a1", "a2"]);
 });
 
+test("at the end of a session the last lines scroll up well clear of the bottom bar, and of Listen's panel @mobile", async ({ page }) => {
+  // (Satish, 2026-11-10: on an iPhone the last two or three lines of the morning were out of reach)
+  await openSite(page, SETUPS.marathi, { now: EVENING });
+  await rows(page).nth(0).locator("a.tgo").click();
+  await expect(page.locator("html")).toHaveAttribute("data-run", "1");
+  // the last line of the session's last text, and how far above the bottom bar it sits with the page at its end
+  const clear = () =>
+    page.evaluate(async () => {
+      scrollTo(0, document.documentElement.scrollHeight);
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      const last = [...document.querySelectorAll("#main > .ash.inrun .verse p")].filter((x) => x.getClientRects().length).pop();
+      const lsn = document.getElementById("lsn");
+      const top = lsn.hidden ? document.getElementById("asc").getBoundingClientRect().top : lsn.getBoundingClientRect().top;
+      return { gap: top - last.getBoundingClientRect().bottom, quarter: innerHeight / 4 };
+    });
+  const bare = await clear();
+  expect(bare.gap).toBeGreaterThanOrEqual(bare.quarter - 2);
+  // Listen's panel over the bar: the page grows by its height, so the last line still clears it
+  await page.evaluate(() => {
+    const p = document.getElementById("lsn");
+    document.getElementById("lsnm").textContent = "Listening…";
+    p.hidden = false;
+  });
+  await expect.poll(() => page.evaluate(() => document.documentElement.style.getPropertyValue("--lsnh"))).not.toBe("");
+  const listening = await clear();
+  expect(listening.gap).toBeGreaterThanOrEqual(listening.quarter - 2);
+  // Home ends with its own list, with no room added under it
+  await page.evaluate(() => (document.getElementById("lsn").hidden = true));
+  await page.evaluate(() => scrollTo(0, 0));
+  await page.locator("#ash").click();
+  await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
+  const pad = await page.evaluate(() => parseFloat(getComputedStyle(document.body).paddingBottom));
+  expect(pad).toBeLessThan(100);
+});
+
 test("a session's texts are in session order in the page itself, numbered by the session, for screen readers and Tab @mobile", async ({ page }) => {
   // a session whose order is not the Library's: the Ganapati aarti (a1) after the Devi aarti (a3)
   await page.route("**/content/routines.json", (r) =>

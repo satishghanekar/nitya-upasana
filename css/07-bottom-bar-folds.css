@@ -46,8 +46,16 @@
     display: block;
   }
 }
+/* (and Listen's panel over the bar while it shows: --lsnh, its height, js/features/listen.js) */
 [data-asb="1"] body {
-  padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)));
+  padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)) + var(--lsnh, 0px));
+}
+/* A text's end scrolls well clear of the foot of the screen, a quarter of the screen above the bar, so whatever covers
+   the foot there leaves the last lines in reach (on an iPhone, Safari's own toolbar comes back over the page at its
+   end: the last two or three lines of a session were out of reach, Satish 2026-11-10). Not on Home, which ends with
+   its own list */
+[data-asb="1"]:not([data-hv]) body {
+  padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)) + var(--lsnh, 0px) + 25vh);
 }
 #asi {
   display: flex;
@@ -509,7 +517,7 @@
 /* Keyboard focus never lands behind the bottom bar (WCAG 2.4.11): the browser keeps this much room
    below a focused item when it scrolls it into view */
 html[data-asb="1"] {
-  scroll-padding-bottom: calc(61px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)));
+  scroll-padding-bottom: calc(61px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)) + var(--lsnh, 0px));
 }
 
 /* ==== The date card: next Chaturthi date first, More dates folded ====
