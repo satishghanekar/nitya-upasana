@@ -1,7 +1,8 @@
+// @ts-check
 // Share, QR code and the Add to Home Screen buttons
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { note } from "../core/page.js";
+import { byId, note } from "../core/page.js";
 import { skCache, skFmt, skLoc, skMid, skNext, skTemple } from "./sankashti.js";
 import { ovDone, ovPush } from "./history.js";
 import { focusBack } from "./more-menu.js";
@@ -11,21 +12,22 @@ export function init() {
   (function () {
     var url = location.origin + location.pathname,
       title = "Nitya Upasana"; // the app's name is always in English (share, install, page title)
-    var qm = document.getElementById("qrm");
+    var qm = byId("qrm");
+    /** @param {boolean} o */
     function qr(o) {
       if (o) ovPush();
       qm.hidden = !o;
       if (!o) ovDone();
       if (o) {
-        document.getElementById("qrx").focus();
+        byId("qrx").focus();
       } else {
-        focusBack(document.getElementById("qrb"));
+        focusBack(byId("qrb"));
       }
     }
-    document.getElementById("qrb").onclick = function () {
+    byId("qrb").onclick = function () {
       qr(true);
     };
-    document.getElementById("qrx").onclick = function () {
+    byId("qrx").onclick = function () {
       qr(false);
     };
     qm.addEventListener("click", function (e) {
@@ -36,6 +38,7 @@ export function init() {
     });
     // Share: the app's name, then a ready reminder for the group chat (next Sankathara Chaturthi, pooja time near the temple, moonrise) plus the link
     // sep = true: leave the link out, because the share sheet is given it separately (it lands at the end)
+    /** @param {boolean} [sep] */
     function shareText(sep) {
       skNext();
       var C = skCache,
@@ -48,7 +51,7 @@ export function init() {
         ang = f.ang ? "Angaraki " : ""; // with the name, which is always English
       return w.next(title, ang, f.day, t ? w.temple : "", o.rise ? f.time : "") + (sep ? "" : "\n" + url) + w.tip;
     }
-    document.getElementById("shb").onclick = function () {
+    byId("shb").onclick = function () {
       var txt = shareText();
       if (navigator.share) {
         // The link goes in url, not inside the text, so the iPhone/Android share sheet shows the site's
@@ -66,15 +69,18 @@ export function init() {
     };
     var ua = navigator.userAgent,
       ios = !/Android/.test(ua) && (/iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)),
-      standalone = navigator.standalone || (window.matchMedia && matchMedia("(display-mode: standalone)").matches),
+      standalone = /** @type {any} */ (navigator).standalone || (typeof window.matchMedia === "function" && matchMedia("(display-mode: standalone)").matches),
       safari = ios && (/CriOS|FxiOS|EdgiOS/.test(ua) || /Safari\//.test(ua)) && !/GSA\/|FBAN|FBAV|Instagram|WhatsApp|Line\/|Snapchat/.test(ua),
+      /** @type {any} the browser's install prompt, kept until a button asks for it */
       deferred = null;
     // Add to Home Screen buttons (home page and Settings), always there until the site is opened from its icon.
     // Chrome/Edge/Android: the browser's own install prompt when it offers one; otherwise (iPhone, or the prompt
     // already used or dismissed) a pop-up with the steps for this device.
-    var ib = [document.getElementById("inb"), document.getElementById("inb2")],
-      im = document.getElementById("inm"),
+    var ib = [byId("inb"), byId("inb2")],
+      im = byId("inm"),
+      /** @type {HTMLElement | null} */
       ibFrom = null;
+    /** @param {boolean} o */
     function ibShow(o) {
       ib.forEach(function (b) {
         b.hidden = !o;
@@ -83,6 +89,7 @@ export function init() {
     function installed() {
       ibShow(false);
     }
+    /** @param {boolean} o */
     function steps(o) {
       if (o) ovPush();
       im.hidden = !o;
@@ -100,18 +107,19 @@ export function init() {
                 ? "inmac"
                 : "indesk";
         ["inios", "inapp", "inand", "indesk", "inmac", "inff"].forEach(function (id) {
-          document.getElementById(id).hidden = id !== which;
+          byId(id).hidden = id !== which;
         });
-        document.getElementById("inx").focus();
+        byId("inx").focus();
       } else if (ibFrom) focusBack(ibFrom);
     }
+    /** @param {Event} [e] */
     function install(e) {
-      ibFrom = e && e.currentTarget;
+      ibFrom = e ? /** @type {HTMLElement} */ (e.currentTarget) : null;
       if (!deferred) return steps(true);
       var d = deferred;
       deferred = null;
       d.prompt();
-      d.userChoice.then(function (c) {
+      d.userChoice.then(function (/** @type {any} */ c) {
         if (c && c.outcome === "accepted") installed();
       });
     }
@@ -119,7 +127,7 @@ export function init() {
     ib.forEach(function (b) {
       b.onclick = install;
     });
-    document.getElementById("inx").onclick = function () {
+    byId("inx").onclick = function () {
       steps(false);
     };
     im.addEventListener("click", function (e) {

@@ -1,3 +1,4 @@
+// @ts-check
 // Keep the screen on (Wake Lock) for the minutes chosen in Settings (P.wake: 0 off, 15, 30, 45 or 60), counted from
 // the last touch, key or scroll (autoscroll too), so a phone left on the stand dims and locks as it normally would
 // (Satish, 2026-10-30). Browsers drop the lock when the page is hidden, so it is asked for again on the way back.
@@ -21,11 +22,11 @@ export function init() {
   asking = false;
   last = Date.now();
   tm = 0;
-  if (!("wakeLock" in navigator)) document.getElementById("twrow").hidden = true;
-  document.getElementById("tw").onclick = function (e) {
+  if (!("wakeLock" in navigator)) /** @type {HTMLElement} */ (document.getElementById("twrow")).hidden = true;
+  /** @type {HTMLElement} */ (document.getElementById("tw")).onclick = function (e) {
     var b = /** @type {HTMLElement} */ (e.target).closest("button");
     if (!b) return;
-    change({ wake: +b.dataset.v }, apply);
+    change({ wake: Number(b.dataset.v) }, apply);
     // the minutes chosen count from now (a shorter choice must not wait out the longer one's timer)
     clearTimeout(tm);
     tm = 0;
