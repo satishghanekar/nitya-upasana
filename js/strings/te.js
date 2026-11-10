@@ -571,7 +571,7 @@ export default {
       return "వెర్షన్ " + v + " సేవ్ అయింది. పూర్తి చేయడానికి యాప్‌ను మూసి మళ్లీ తెరవండి.";
     },
   },
-  // Search and Recent (js/text/search.js)
+  // Search and Recent (js/features/search.js)
   search: {
     /** @param {string} name */
     remove: function (name) {

@@ -7,7 +7,7 @@
 // - Spellings people type still match ("sukhakarta" = "sukhkarta", "vithal" = "vitthal", "chi" = "ci"), Devanagari
 //   typed is also matched through its English letters ("सुखकर्ता" finds the text whose id is aarti-sukhkarta), and a typo
 //   is forgiven: one wrong letter per four typed.
-// Pure: js/text/search.js gives it the texts and lines from the page and shows the results; the unit test
+// Pure: js/features/search.js gives it the texts and lines from the page and shows the results; the unit test
 // (tests/unit/search.test.mjs) gives it the text files and checks the ranking.
 
 /**

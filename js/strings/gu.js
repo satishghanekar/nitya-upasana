@@ -565,7 +565,7 @@ export default {
       return "આવૃત્તિ " + v + " સચવાઈ ગઈ. પૂરું કરવા ઍપ બંધ કરીને ફરી ખોલો.";
     },
   },
-  // Search and Recent (js/text/search.js)
+  // Search and Recent (js/features/search.js)
   search: {
     /** @param {string} name */
     remove: function (name) {

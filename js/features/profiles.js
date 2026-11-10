@@ -12,14 +12,14 @@
 import { P, setAll } from "../core/state.js";
 import { note } from "../core/page.js";
 import { cur } from "../core/apply.js";
-import { hlMark } from "../core/startup.js";
+import { hlMark } from "./startup.js";
 import { apply } from "./bars.js";
 import { setP } from "./overlays.js";
 import { ovDone, ovPush } from "./history.js";
 import { profileChanged } from "./today-card.js";
 import { trSet } from "../text/iast.js";
 import { refit } from "../text/autofit.js";
-import { buildIX } from "../text/search.js";
+import { buildIX } from "./search.js";
 import { active, add, list, onChange, remove, switchTo, update } from "../store/store.js";
 import { canAdd, canDelete, COLOURS, initialsOf } from "../store/profiles.js";
 import { esc, nameLang, ui } from "../core/words.js";

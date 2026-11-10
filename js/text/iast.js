@@ -265,7 +265,7 @@ export function iaTitle(s) {
 }
 
 // A piece's title as its heading shows it, built or not: in English (en) in the chosen style, else in the chosen
-// script (js/text/search.js)
+// script (js/features/search.js)
 /** @param {string} id @param {boolean} [en] */
 export function titleText(id, en) {
   var t = TRT && TRT[id];

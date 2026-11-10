@@ -17,7 +17,7 @@ const MOVED = [
   "js/features/routine-builder.js",
   "js/print/what.js",
   "js/features/offline.js",
-  "js/text/search.js",
+  "js/features/search.js",
   "js/features/share.js",
   "js/features/reading-sheet.js",
   "js/features/languages.js",
