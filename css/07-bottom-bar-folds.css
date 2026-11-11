@@ -799,7 +799,22 @@ html[data-asb="1"] {
   content: "● ";
   color: var(--accent);
 }
-.verse p.lsn {
-  background: var(--hl);
-  box-shadow: inset 3px 0 0 var(--accent);
+/* Spotlight (Satish, 2026-11-11, in place of a filled band with a bar): the line in the accent colour, the rest of the
+   text followed stepping back, so the place shows from a step away without a box around it; back as it was at Stop */
+.lsn-text .verse p {
+  opacity: 0.5;
+  transition: opacity 0.4s;
+}
+.lsn-text .verse p.lsn {
+  opacity: 1;
+  color: var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lsn-text .verse p {
+    transition: none;
+  }
+}
+/* high contrast: every line kept at full contrast, the accent colour alone marking the line */
+[data-hc="1"] .lsn-text .verse p {
+  opacity: 1;
 }

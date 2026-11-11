@@ -72,11 +72,23 @@ describe("locate, on the site's texts", () => {
     const r = locate(heard(pv, i - 1, i), docs, { doc: pv, line: lineWith(pv, "९.०६६.०४") });
     expect(r).toMatchObject({ doc: pv, line: i, scope: "text" });
   });
-  test("following an aarti: its dhrupad, sung after a stanza, keeps the place", () => {
+  test("following an aarti: its dhrupad, sung after a stanza, is followed there (the repeat right after it)", () => {
+    // (Satish, 2026-11-11: the mark stayed on the stanza while the dhrupad was sung)
     const lines = pieceLines(pieces[sk]);
     const stanza = lines.findIndex((l) => l.text.includes("मुक्ताफळांची"));
     const r = locate(heard(sk, 0, 2), docs, { doc: sk, line: stanza });
-    expect(r).toMatchObject({ doc: sk, line: stanza, held: true });
+    expect(r).toMatchObject({ doc: sk, held: false });
+    expect(r.line).toBeGreaterThan(stanza);
+    expect(lines.slice(stanza + 1, r.line + 1).every((l) => l.refrain)).toBe(true);
+    // and sung twice, it stays on that repeat rather than jump to the one after the next stanza
+    const again = locate(heard(sk, 0, 2), docs, { doc: sk, line: r.line });
+    expect(again).toMatchObject({ doc: sk, line: r.line, held: false });
+  });
+  test("following an aarti: its dhrupad heard in the middle of a stanza can't be told apart, and keeps the place", () => {
+    const lines = pieceLines(pieces[sk]);
+    const mid = lines.findIndex((l) => l.text.includes("चंदनाची"));
+    const r = locate(heard(sk, 0, 2), docs, { doc: sk, line: mid });
+    expect(r).toMatchObject({ doc: sk, line: mid, held: true });
   });
   test("the next stanza of an aarti is found", () => {
     const lines = pieceLines(pieces[sk]);

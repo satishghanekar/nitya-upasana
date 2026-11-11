@@ -1,7 +1,7 @@
 // @ts-check
 // Listen (Satish, 2026-11-06): the phone hears the chanting and shows where it is. Tap Listen (the ear in the bottom
 // bar) while an aarti or a chant is going on: the line being chanted is marked (.lsn) and kept in view, the text is
-// opened if another one is on screen, and the place follows the chanting until Stop. Everything happens on the phone:
+// opened if another one is on screen, the dhrupad shown after every stanza, and the place follows the chanting until Stop. Everything happens on the phone:
 // no sound leaves it.
 // - The model (a CTC model, wav2vec2, trained in the shravan-model repository) and the library that runs it
 //   (vendor/onnxruntime/) are downloaded once, the first time, after the reader agrees: on the GPU where the browser
@@ -19,7 +19,9 @@
 // - Each place found is where the chanting was when that letter was said, a moment before the model answers; from
 //   there the mark moves on by itself at the chanting's pace (letters a second, measured from the places found,
 //   js/core/follow.js nextPace), line by line, and the next place found puts it right (Satish, 2026-11-06: following
-//   the model's answers alone lagged). It waits during the dhrupad and silence, and stops after LOST with nothing found.
+//   the model's answers alone lagged). The dhrupad sung after the stanza it is at is followed
+//   too; one heard anywhere else (or sung again further on) keeps the mark where it is. It waits during silence, and
+//   stops after LOST with nothing found.
 // - Moving to another text needs it heard twice in a row, so one misheard window never takes the reader away.
 // - The page scrolls only while the reader leaves it alone (CALM after a touch, a wheel or a key).
 
@@ -31,6 +33,8 @@ import { unfold } from "../core/apply.js";
 import { fillWords, menuWords } from "../core/strings.js";
 import { esc, nameLang, num } from "../core/words.js";
 import { titleText } from "../text/iast.js";
+import { P } from "../core/state.js";
+import { keepPlace } from "./dhrupad-button.js";
 import { jumpTo } from "./history.js";
 import { leaveFor, startFor } from "./today-card.js";
 
@@ -269,9 +273,14 @@ function stop() {
   pace = PACE.start;
   shown = -1;
   pending = null;
-  [].forEach.call(document.querySelectorAll(".lsn"), function (/** @type {Element} */ x) {
-    x.classList.remove("lsn");
+  [].forEach.call(document.querySelectorAll(".lsn, .lsn-text"), function (/** @type {Element} */ x) {
+    x.classList.remove("lsn", "lsn-text");
   });
+  if (root.hasAttribute("data-following"))
+    keepPlace(function () {
+      root.removeAttribute("data-following");
+      root.setAttribute("data-ref", String(P.ref));
+    });
   bar.hidden = true;
   btn.setAttribute("aria-pressed", "false");
 }
@@ -488,6 +497,13 @@ async function run(s) {
   // (the tap writes nothing out; joined to the speakers only so that every browser runs it)
   node.connect(ctx.destination);
   phase = "run";
+  // the dhrupad after every stanza while it listens, whatever the reader shows (Satish, 2026-11-11: with it shown once,
+  // the mark had nowhere to go while it was sung); the reader's setting is left as it is (data-following, read by
+  // js/features/bars.js apply())
+  keepPlace(function () {
+    root.setAttribute("data-following", "");
+    root.setAttribute("data-ref", "0");
+  });
   aliveAt = performance.now();
   ticker = setInterval(tick, 250);
   panel(esc(menuWords("listen").listening), { no: menuWords("listen").stop, on: true });
@@ -639,7 +655,7 @@ export function follow(heard, end) {
     cur = mark ? { doc: mark.doc, line: lineAt(all[mark.doc], Math.max(0, ahead(mark, pace, now, all[mark.doc].text.length) - 1)) } : null,
     r = locate(heard, all, cur);
   if (!r) return false;
-  // the dhrupad: the mark waits where it is until the text goes on
+  // a dhrupad that can't be told apart from its other repeats: the mark waits where it is until the text goes on
   if (r.held) {
     pauseAt(now);
     return true;
@@ -708,12 +724,14 @@ function tick() {
     target = lines.filter(seen)[0];
   // (a line the page doesn't show, the dhrupad said again where it is shown once: the mark stays where it was)
   if (!target) return;
-  [].forEach.call(document.querySelectorAll(".lsn"), function (/** @type {Element} */ x) {
-    x.classList.remove("lsn");
+  [].forEach.call(document.querySelectorAll(".lsn, .lsn-text"), function (/** @type {Element} */ x) {
+    x.classList.remove("lsn", "lsn-text");
   });
   lines.forEach(function (x) {
     x.classList.add("lsn");
   });
+  // (the text being followed: its other lines step back, css/07-bottom-bar-folds.css)
+  el.classList.add("lsn-text");
   var force = jumped;
   jumped = false;
   if (!force && Date.now() - touched < CALM) return;
