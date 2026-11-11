@@ -91,7 +91,7 @@
  "tests/text-size.spec.mjs": 0,
  "tests/tools/migrate.mjs": 15,
  "tests/tools/sister-check.mjs": 0,
- "tests/unit/content.test.mjs": 225,
+ "tests/unit/content.test.mjs": 232,
  "tests/unit/fixtures/pieces.js": 0,
  "tests/unit/format.test.mjs": 0,
  "tests/unit/iast.test.mjs": 0,
