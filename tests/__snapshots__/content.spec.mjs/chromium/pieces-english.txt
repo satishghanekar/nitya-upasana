@@ -209,33 +209,8 @@ Svasti No Bruhaspatirdadhatu ||
 
 An Atharva Veda Upanishad ↗
 
-### vedic-chant-ganapati-sarasvati-prarthana
-2. Ganapati and Sarasvati Prarthana
-
-Shri Gurubhyo Namah | Harih Om ||
-
-Gananam Tva Ganapatim Havamahe Kavim Kavinamupamashravastamam |
-
-Jyeshtharajam Brahmanam Brahmanaspata A Nah Shrunvannutibhih Sida Sadanam ||
-
-Shri Mahaganapataye Namah ||
-
-Pra No Devi Sarasvati Vajebhirvajinivati |
-
-Dhinamavitryavatu ||
-
-Shri Mahasarasvatyai Namah ||
-
-Veda Vatasya Vartanimurorrushvasya Bruhatah |
-
-Veda Ye Adhyasate ||
-
-Shri Vedapurushaya Namah ||
-
-Rigveda ↗
-
 ### vedic-chant-purusha-suktam
-3. Purusha Suktam
+2. Purusha Suktam
 
 Om Tachchham Yoravrunimahe |
 
@@ -464,7 +439,7 @@ Shanno Astu Dvipade | Sham Chatushpade ||
 Krishna Yajurveda, Taittiriya Aranyaka ↗
 
 ### vedic-chant-shri-sukta
-4. Shri Sukta
+3. Shri Sukta
 
 Om || Hiranyavarnam Harinim Suvarnarajatasrajam |
 
@@ -643,7 +618,7 @@ Tanno Lakshmih Prachodayat ||
 Rig Veda (Khila Sukta)
 
 ### vedic-chant-laghunyasa
-5. Laghunyasa
+4. Laghunyasa
 
 Om Athatmanagm Shivatmanag Shrirudrarupam Dhyayet ||
 
@@ -814,7 +789,7 @@ Mebhayam Cha Me Sugam Cha Me Shayanam Cha Me Susha Cha Me Sudinam Cha Me ||
 || Om Shantih Shantih Shantih ||
 
 ### vedic-chant-shree-rudra
-6. Shree Rudra
+5. Shree Rudra
 
 Om Namo Bhagavate Rudraya ||
 
@@ -1375,7 +1350,7 @@ Om Shantih Shantih Shantih ||
 Krishna Yajurveda, Taittiriya Samhita ↗
 
 ### vedic-chant-durga-suktam
-7. Durga Suktam
+6. Durga Suktam
 
 Om Jatavedase Sunavama Soma Maratiyato Nidahati Vedah |
 
@@ -1414,9 +1389,29 @@ Tanno Durgih Prachodayat ||
 Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)
 
 ### vedic-chant-pavamana-suktam
-8. Pavamana Suktam
+7. Pavamana Suktam
 
 || Pavamanasuktam ||
+
+Shri Gurubhyo Namah | Harih Om ||
+
+Gananam Tva Ganapatim Havamahe Kavim Kavinamupamashravastamam |
+
+Jyeshtharajam Brahmanam Brahmanaspata A Nah Shrunvannutibhih Sida Sadanam ||
+
+Shri Mahaganapataye Namah ||
+
+Pra No Devi Sarasvati Vajebhirvajinivati |
+
+Dhinamavitryavatu ||
+
+Shri Mahasarasvatyai Namah ||
+
+Veda Vatasya Vartanimurorrushvasya Bruhatah |
+
+Veda Ye Adhyasate ||
+
+Shri Vedapurushaya Namah ||
 
 Shatadharamutsamakshiyamanam Vipashchitam Pitaram Vaktvanam |
 
@@ -3969,7 +3964,7 @@ Shiva Dishah Pradisha Uddisho Na Apo Vishvatah Paripantu Sarvashah Shanti Shanti
 Rigveda, Mandala 9 ↗
 
 ### vedic-chant-lalita-sahasranama
-9. Shri Lalita Sahasranama
+8. Shri Lalita Sahasranama
 Nyasa
 
 Asya Shrilalitasahasranamastotramala Mantrasya |
@@ -4765,7 +4760,7 @@ Shrilalita Sahasranama Stotra Kathanam Sampurnam ||
 Brahmanda Purana ↗
 
 ### vedic-chant-mantra-pushpanjali
-10. Mantra Pushpanjali
+9. Mantra Pushpanjali
 
 Om Yadnyena Yadnyamayajanta Devastani Dharmani Prathamanyasan |
 
