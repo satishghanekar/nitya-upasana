@@ -199,19 +199,21 @@ describe("content checks", () => {
       ["Chaturtha Adhyaya", "9.065.01"],
     ]);
   });
-  // The prayer the Bhats chant before Purusha Suktam and Pavamana Suktam (Ganapati, Sarasvati and the Veda, each with
-  // its namah line) is a text of its own, read before Purusha Suktam; Pavamana Suktam no longer opens with its mantras
-  test("Ganapati and Sarasvati Prarthana: before Purusha Suktam, and its mantras only there", () => {
-    const ids = lib.texts.map((t) => t.id);
-    expect(ids.indexOf("vedic-chant-ganapati-sarasvati-prarthana")).toBe(ids.indexOf("vedic-chant-purusha-suktam") - 1);
-    const prayer = parseText(files["vedic-chant-ganapati-sarasvati-prarthana"], "vedic-chant-ganapati-sarasvati-prarthana");
-    const said = prayer.blocks.flatMap((b) => b.lines.map((l) => l.en));
-    expect(said[0]).toBe("Shri Gurubhyo Namah | Harih Om ||");
-    ["Shri Mahaganapataye Namah ||", "Shri Mahasarasvatyai Namah ||", "Shri Vedapurushaya Namah ||"].forEach((l) => expect(said).toContain(l));
-    ["गणानां᳚ त्वा", "प्र णो᳚ दे॒वी", "वेद॒ वात॑स्य"].forEach((m) => {
-      expect(files["vedic-chant-ganapati-sarasvati-prarthana"]).toContain(m);
-      expect(files["vedic-chant-pavamana-suktam"]).not.toContain(m);
-    });
+  // Pavamana Suktam opens with the prayer to Ganapati, Sarasvati and the Veda as the Bhats chant it: Shri Gurubhyo
+  // Namah, Harih Om, then each mantra with its namah line. It was a text of its own in 1.52.0; it belongs here, in
+  // Pavamana Suktam, once (Satish, 2026-11-11)
+  test("Pavamana Suktam opens with the Ganapati and Sarasvati prayer, each mantra with its namah line", () => {
+    expect(lib.texts.map((t) => t.id)).not.toContain("vedic-chant-ganapati-sarasvati-prarthana");
+    const t = parseText(files["vedic-chant-pavamana-suktam"], "vedic-chant-pavamana-suktam");
+    const opening = t.blocks.slice(0, 5).map((b) => b.lines.map((l) => l.en));
+    expect(opening[0]).toEqual(["|| Pavamanasuktam ||"]);
+    expect(opening[1]).toEqual(["Shri Gurubhyo Namah | Harih Om ||"]);
+    expect(opening.slice(2).map((b) => b[b.length - 1])).toEqual([
+      "Shri Mahaganapataye Namah ||",
+      "Shri Mahasarasvatyai Namah ||",
+      "Shri Vedapurushaya Namah ||",
+    ]);
+    ["गणानां᳚ त्वा", "प्र णो᳚ दे॒वी", "वेद॒ वात॑स्य"].forEach((m) => expect(files["vedic-chant-pavamana-suktam"].split(m).length).toBe(2));
   });
   test("categories: Vedic Chant, Aarti, Stotra, Ashtak", () => {
     expect(categories.map((c) => c.id)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak"]);
