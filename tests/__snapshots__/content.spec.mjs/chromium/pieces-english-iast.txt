@@ -209,8 +209,33 @@ sva̱sti no̱ bṛha̱spati̍rdadhātu ||
 
 An Atharva Veda Upanishad ↗
 
+### vedic-chant-ganapati-sarasvati-prarthana
+2. Gaṇapati Sarasvatī Prārthanā
+
+śrī gurubhyo namaḥ | hariḥ om ||
+
+gaṇānā̎ṃ tvā ga̱ṇapa̍tiṃ havāmahe ka̱viṃ ka̍vī̱nāmu̍pa̱maśra̍vastamam |
+
+jye̱ṣṭha̱rāja̱ṃ brahma̍ṇāṃ brahmaṇaspata̱ ā na̍ḥ śṛ̱ṇvannū̱tibhi̍ḥ sīda̱ sāda̍nam ||
+
+śrī mahāgaṇapataye namaḥ ||
+
+pra ṇo̎ de̱vī sara̍svatī̱ vāje̎bhirvā̱jinī̎vatī |
+
+dhī̱nāma̍vi̱trya̍vatu ||
+
+śrī mahāsarasvatyai namaḥ ||
+
+veda̱ vāta̍sya varta̱nimu̱rorṛ̱ṣvasya̍ bṛha̱taḥ |
+
+vedā̱ ye a̱dhyāsa̍te ||
+
+śrī vedapuruṣāya namaḥ ||
+
+Rigveda ↗
+
 ### vedic-chant-purusha-suktam
-2. Puruṣasūktam
+3. Puruṣasūktam
 
 om̐ taccha̱ṃ yorāvṛ̍ṇīmahe |
 
@@ -439,7 +464,7 @@ sva̱stirmānu̍ṣebhyaḥ |
 Krishna Yajurveda, Taittiriya Aranyaka ↗
 
 ### vedic-chant-shri-sukta
-3. Śrīsūkta
+4. Śrīsūkta
 
 om̐ || hiraṇyavarṇāṃ hariṇīṃ suvarṇarajatasrajām |
 
@@ -618,7 +643,7 @@ tanno lakṣmīḥ pracodayāt ||
 Rig Veda (Khila Sukta)
 
 ### vedic-chant-laghunyasa
-4. Laghunyāsaḥ
+5. Laghunyāsaḥ
 
 om̐ athātmānagṃ śivātmānag śrīrudrarūpaṃ dhyāyet ||
 
@@ -789,7 +814,7 @@ me'bha̍yaṃ ca me su̱gaṃ ca̍ me̱ śaya̍naṃ ca me sū̱ṣā ca̍ me su
 || om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 
 ### vedic-chant-shree-rudra
-5. Śrī Rudrapraśnaḥ
+6. Śrī Rudrapraśnaḥ
 
 om̐ namo bhagavate̍ rudrā̱ya ||
 
@@ -1350,7 +1375,7 @@ om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 Krishna Yajurveda, Taittiriya Samhita ↗
 
 ### vedic-chant-durga-suktam
-6. Durgā Sūktam
+7. Durgā Sūktam
 
 om̐ jā̱tave̍dase sunavāma̱ soma̍ marātīya̱to nida̍hāti̱ veda̍ḥ |
 
@@ -1389,21 +1414,9 @@ tanno̍ durgiḥ praco̱dayā̎t ||
 Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)
 
 ### vedic-chant-pavamana-suktam
-7. Pavamānasūktam
+8. Pavamānasūktam
 
 || pavamānasūktam ||
-
-gaṇānā̎ṃ tvā ga̱ṇapa̍tiṃ havāmahe ka̱viṃ ka̍vī̱nāmu̍pa̱maśra̍vastamam |
-
-jye̱ṣṭha̱rāja̱ṃ brahma̍ṇāṃ brahmaṇaspata̱ ā na̍ḥ śṛ̱ṇvannū̱tibhi̍ḥ sīda̱ sāda̍nam ||
-
-pra ṇo̎ de̱vī sara̍svatī̱ vāje̎bhirvā̱jinī̎vatī |
-
-dhī̱nāma̍vi̱trya̍vatu ||
-
-veda̱ vāta̍sya varta̱nimu̱rorṛ̱ṣvasya̍ bṛha̱taḥ |
-
-vedā̱ ye a̱dhyāsa̍te ||
 
 śa̱tadhā̎ra̱mutsa̱makṣī̎yamāṇaṃ vipa̱ścita̎ṃ pi̱tara̱ṃ vaktvā̎nām |
 
@@ -1414,6 +1427,8 @@ me̱ḷiṃ mada̎ntaṃ pi̱troru̱pasthe̱ taṃ ro̎dasī pipṛtaṃ satya̱
 yastanna veda̱ kimṛ̱cā ka̍riṣyati̱ ya ittadvi̱dusta i̱me samā̎sate ||
 
 || atha pavamānasūktam ||
+
+Prathama Adhyaya
 
 svādi̍ṣṭhayā̱ madi̍ṣṭhayā̱ pava̍sva soma̱ dhāra̍yā |
 
@@ -1870,6 +1885,8 @@ vipra̍sya̱ dhāra̍yā ka̱viḥ || 9.012.08 ||
 ā pa̍vamāna dhāraya ra̱yiṃ sa̱hasra̍varcasam |
 
 a̱sme i̎ndo svā̱bhuvam̎ || 9.012.09
+
+Dvitiya Adhyaya
 
 soma̍ punā̱no a̍rṣati sa̱hasra̍dhāro̱ atya̍viḥ |
 
@@ -2687,6 +2704,8 @@ pava̍sva̱ vāja̍sātaye̱ vipra̍sya gṛṇa̱to vṛ̱dhe |
 
 soma̱ rāsva̍ su̱vīryam̎ || 9.043.06||
 
+Tritiya Adhyaya
+
 pra ṇa̍ indo ma̱he tana̍ ū̱rmiṃ na bibhra̍darṣasi |
 
 a̱bhi de̱vāṃ a̱yāsya̍ḥ || 9.044.01 ||
@@ -3487,6 +3506,8 @@ sīda̎nto va̱nuṣo̎ yathā || 9.064.29 ||
 
 pava̍sva̱ sūryo̎ dṛ̱śe || 9.064.30 ||
 
+Chaturtha Adhyaya
+
 hi̱nvanti̱ sūra̱musra̍ya̱ svasā̎ro jā̱maya̱spati̍m |
 
 ma̱hāmindu̎ṃ mahī̱yuva̍ḥ || 9.065.01 ||
@@ -3948,7 +3969,7 @@ bha̱draṃ no̱ api̍ vātaya̱ mana̍ḥ ||
 Rigveda, Mandala 9 ↗
 
 ### vedic-chant-lalita-sahasranama
-8. Śrīlalitāsahasranāmastotram
+9. Śrīlalitāsahasranāmastotram
 Nyasa
 
 asya śrīlalitāsahasranāmastotramālā mantrasya |
@@ -4744,7 +4765,7 @@ evaṃ śrīlalitā devyā nāmnāṃ sāhasrakaṃ jaguḥ ||
 Brahmanda Purana ↗
 
 ### vedic-chant-mantra-pushpanjali
-9. Mantrapuṣpāñjaliḥ
+10. Mantrapuṣpāñjaliḥ
 
 om̐ ya̱jñena̍ ya̱jñama̍yajanta de̱vāstāni̱ dharmā̍ṇi pratha̱mānyā̍san |
 
