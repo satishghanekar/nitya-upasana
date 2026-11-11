@@ -670,7 +670,8 @@ test("print pop-up shows the dhrupad and font settings @chromium-only", async ({
   const font = (v) => page.locator(`#prfn [data-v="${v}"] .prfx`).evaluate((e) => getComputedStyle(e).fontFamily);
   expect(await font("classic")).toContain("SC Classic");
   expect(await font("bold")).toContain("SC Bold");
-  expect(await font("std")).not.toContain("SC ");
+  // (Modern: neither of the others' faces; the symbols' face, SC Symbols, heads every list)
+  expect(await font("std")).not.toMatch(/SC (Classic|Bold)/);
   // a font picked here is the printout's only: the reading page keeps its own,
   // and the page takes it just while it prints
   await page.locator('#prfn [data-v="classic"]').click();

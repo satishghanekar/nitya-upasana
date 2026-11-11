@@ -208,6 +208,9 @@ var SITE_PARTS = (function () {
     "noto-serif-latin",
     "noto-serif-deva-devanagari",
     "noto-sans-kannada-kannada",
+    "sc-symbols-math",
+    "sc-symbols-2",
+    "sc-symbols",
     "tiro-kannada-kannada",
   ].map(function (f) {
     return "fonts/" + f + ".woff2";
