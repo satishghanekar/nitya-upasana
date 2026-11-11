@@ -148,3 +148,18 @@ test("core, text and store import no feature", () => {
   );
   expect(up).toEqual([]);
 });
+
+// Every script, style file and test suite is described in its README (2026-11-11: a test suite had gone undescribed),
+// so a new file comes with its line there (CLAUDE.md: "When a part or a file changes, update js/README.md or
+// css/README.md in the same change")
+test("every script, style file and test suite is named in its README", () => {
+  const read = (p) => readFileSync(new URL("../" + p, import.meta.url), "utf8");
+  const list = (dir, re) =>
+    readdirSync(new URL("../" + dir, import.meta.url), { recursive: true })
+      .map(String)
+      .filter((f) => re.test(f));
+  const missing = (doc, dir, re) => list(dir, re).filter((f) => !read(doc).includes(f.replace(/\\/g, "/")));
+  expect(missing("js/README.md", "js/", /^(?!strings\/).*\.js$/), "js/README.md").toEqual([]);
+  expect(missing("css/README.md", "css/", /\.css$/), "css/README.md").toEqual([]);
+  expect(missing("tests/README.md", "tests/", /^[^/]+\.spec\.mjs$/), "tests/README.md").toEqual([]);
+});
