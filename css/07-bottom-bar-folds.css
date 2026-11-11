@@ -794,10 +794,86 @@ html[data-asb="1"] {
   color: var(--bg);
   border-color: var(--accent);
 }
-/* a dot while Listen is listening */
-#lsn.on #lsnm::before {
-  content: "● ";
-  color: var(--accent);
+/* While listening, a pill (Satish, 2026-11-11, in place of the card with a dot and Stop in words): as wide as what it
+   says, centred over the bottom bar; a sound wave, the text's name as its heading shows it, a round stop button. The
+   download question and its progress keep the card above, as they need words and two buttons (js/features/listen.js) */
+#lsn.on {
+  width: fit-content;
+  max-width: min(34rem, calc(100% - 32px));
+  flex-wrap: nowrap;
+  gap: 12px;
+  padding: 6px 6px 6px 16px;
+  border-radius: 999px;
+  box-shadow: 0 6px 24px #0000004d;
+}
+#lsn.on #lsnm {
+  flex: 0 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+.lsn-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  font-size: 1.08em;
+}
+#lsn.on #lsnx {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: var(--bg);
+  border: 0;
+}
+/* the wave: four bars, each its own share of the sound's level (--lsnlv, set a few times a second while listening) */
+.lsn-wave {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 2.5px;
+  height: 18px;
+}
+.lsn-wave i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleY(calc(0.2 + 0.8 * var(--lsnlv, 0) * var(--k)));
+  transition: transform 0.12s ease-out;
+}
+.lsn-wave i:nth-child(1) {
+  --k: 0.5;
+}
+.lsn-wave i:nth-child(2) {
+  --k: 1;
+}
+.lsn-wave i:nth-child(3) {
+  --k: 0.75;
+}
+.lsn-wave i:nth-child(4) {
+  --k: 0.35;
+}
+/* (with Home's column beside the text, over the text's side, centred on the bottom bar as it is: #asc above) */
+@media screen and (min-width: 1024px) {
+  [data-rail="1"] #lsn {
+    left: calc(var(--L) + var(--S));
+    right: max(16px, var(--L));
+  }
+}
+/* (motion turned off: the bars stand still, at heights that still read as a wave) */
+@media (prefers-reduced-motion: reduce) {
+  .lsn-wave i {
+    transition: none;
+    transform: scaleY(calc(0.3 + 0.6 * var(--k)));
+  }
 }
 /* Spotlight (Satish, 2026-11-11, in place of a filled band with a bar): the line in the accent colour, the rest of the
    text followed stepping back, so the place shows from a step away without a box around it; back as it was at Stop */
