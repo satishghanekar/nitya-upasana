@@ -297,7 +297,8 @@ export function apply() {
   var qi = /** @type {HTMLInputElement} */ (byId("q"));
   qi.placeholder = menuWords("bar").find;
   qi.setAttribute("aria-label", qi.placeholder);
-  root.setAttribute("data-ref", String(P.ref));
+  // (while Follow listens, the dhrupad after every stanza: js/features/listen.js)
+  root.setAttribute("data-ref", root.hasAttribute("data-following") ? "0" : String(P.ref));
   root.setAttribute("data-hc", String(P.hc));
   // (media queries answer without laying the page out; innerWidth would, right after the changes above)
   var wide = MQ900.matches,

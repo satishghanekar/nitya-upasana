@@ -125,13 +125,24 @@ var NEAR = 0.4,
   TEXT = 0.35,
   ANY = 0.3;
 
+/** The dhrupad sung right after `line` (or the one `line` is in): its first and last lines, or null when the next line
+ * is not the dhrupad @param {Doc} doc @param {number} line @returns {[number, number] | null} */
+export function refrainAfter(doc, line) {
+  var a = doc.refrain[line] ? line : line + 1;
+  if (!doc.refrain[a]) return null;
+  while (a > 0 && doc.refrain[a - 1]) a--;
+  var z = a;
+  while (doc.refrain[z + 1]) z++;
+  return [a, z];
+}
+
 /** Where the chanting is
  * @param {string} heard  what the model wrote
  * @param {Doc[]} docs  the texts that may be chanted (the one being read, the session's, the Library's)
  * @param {{ doc: number, line: number } | null} here  the place last found, if any
  * @returns {{ doc: number, line: number, end: number, scope: "near" | "text" | "any", held: boolean, rate: number } | null}
  *   end: the letter (in docs[doc].text) just after what was heard; held: the place stays where it was, as what was heard
- *   is the dhrupad (end is then -1) */
+ *   is the dhrupad, and not the one right after the place (end is then -1) */
 export function locate(heard, docs, here) {
   var h = letters(heard);
   if (h.length < LEAST) return null;
@@ -142,7 +153,16 @@ export function locate(heard, docs, here) {
       rate = r.cost / h.length;
     if (rate > most || r.end <= from) return null;
     var line = lineAt(doc, r.end - 1);
-    if (doc.refrain[line] && here) return { doc: here.doc, line: here.line, end: -1, scope: scope, held: true, rate: rate };
+    if (doc.refrain[line] && here) {
+      // the dhrupad sung right after the stanza the place is at (or the one it is in) is followed there; any other
+      // repeat of it can't be told apart, so the place stays (Satish, 2026-11-11: the mark stayed on the stanza)
+      var b = k === here.doc ? refrainAfter(doc, here.line) : null,
+        first = b ? doc.ends[b[0] - 1] || 0 : 0,
+        there = b && match(h, doc.text, first, doc.ends[b[1]]);
+      if (there && there.cost / h.length <= most && there.end > first)
+        return { doc: k, line: lineAt(doc, there.end - 1), end: there.end, scope: scope, held: false, rate: there.cost / h.length };
+      return { doc: here.doc, line: here.line, end: -1, scope: scope, held: true, rate: rate };
+    }
     return { doc: k, line: line, end: r.end, scope: scope, held: false, rate: rate };
   }
   if (here && docs[here.doc]) {

@@ -1,5 +1,5 @@
 // @ts-check
-// Dhrupad: toggle once / after every stanza, keeping the reader's place (the Reading sheet and Settings)
+// Dhrupad: toggle once / after every stanza, keeping the reader's place (the Reading sheet and Settings, and Follow)
 // One part of the site script, used by the parts that offer the choice. See js/README.md.
 
 import { note } from "../core/page.js";
@@ -10,6 +10,16 @@ import { menuWords } from "../core/strings.js";
 // quiet: from the reading sheet, which shows the new choice itself (a note would cover the sheet)
 /** @param {boolean} [quiet] */
 export function refToggle(quiet) {
+  keepPlace(function () {
+    change({ ref: P.ref ? 0 : 1 }, apply);
+  });
+  if (quiet) return;
+  note(P.ref ? menuWords("dhrupad").once : menuWords("dhrupad").every);
+}
+
+/** Shows or hides the dhrupad's repeats (`show`), the first stanza line in view kept where it was on screen. Also used by
+ * Follow, which shows them while it listens (js/features/listen.js) @param {() => void} show */
+export function keepPlace(show) {
   var bb = /** @type {HTMLElement} */ (document.querySelector(".bar")).getBoundingClientRect().bottom,
     /** @type {HTMLElement | null} */
     a = null,
@@ -25,10 +35,8 @@ export function refToggle(quiet) {
       break;
     }
   }
-  change({ ref: P.ref ? 0 : 1 }, apply);
+  show();
   if (a && a.offsetParent !== null) {
     window.scrollBy(0, a.getBoundingClientRect().top - t);
   }
-  if (quiet) return;
-  note(P.ref ? menuWords("dhrupad").once : menuWords("dhrupad").every);
 }
