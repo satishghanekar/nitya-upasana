@@ -154,8 +154,9 @@ test("core, text and store import no feature", () => {
 // css/README.md in the same change")
 test("every script, style file and test suite is named in its README", () => {
   const read = (p) => readFileSync(new URL("../" + p, import.meta.url), "utf8");
+  // (the test suites sit at the top of tests/, which the test runner also writes into while it runs: no deeper there)
   const list = (dir, re) =>
-    readdirSync(new URL("../" + dir, import.meta.url), { recursive: true })
+    readdirSync(new URL("../" + dir, import.meta.url), { recursive: dir !== "tests/" })
       .map(String)
       .filter((f) => re.test(f));
   const missing = (doc, dir, re) => list(dir, re).filter((f) => !read(doc).includes(f.replace(/\\/g, "/")));
