@@ -79,15 +79,31 @@ export function LK(slot) {
 
 // The piece just gone to (Next, a title on Home, the Library) and where the page then stood: until the reader
 // scrolls, that piece is the one being read, even when it is too short to reach the top bar (the last text of a
-// session on an iPad or a computer, where the page ends below it)
+// session on an iPad or a computer, where the page ends below it). The reader has scrolled when the piece has moved
+// on the screen, not merely when the scroll has: as fonts arrive the texts above grow, and the browser scrolls by as
+// much to keep the piece where it was (scroll anchoring), which once read as the reader leaving it (an iPad, the
+// morning's last text, when Traditional's bold and the symbols' faces came, 2026-11-11)
 /** @type {HTMLElement | null} */
 var aimEl = null,
-  aimY = 0;
+  aimY = 0,
+  aimTop = 0;
 /** @param {HTMLElement | null} el */
 export function aimAt(el) {
   aimEl = el;
   aimY = scrollY;
+  aimTop = el ? el.getBoundingClientRect().top : 0;
   holdAim(el);
+}
+/**
+ * The reader has scrolled away from the piece gone to: the scroll moved, and the piece moved on the screen with it,
+ * by about as much. When the page grows above it the browser moves the scroll a long way and the piece hardly at all
+ * (740 px and 27 px on that iPad): the page moved under the reader, who is still there.
+ * @param {HTMLElement} el
+ */
+function scrolledAway(el) {
+  var ds = Math.abs(scrollY - aimY),
+    dt = Math.abs(el.getBoundingClientRect().top - aimTop);
+  return ds >= 2 && dt >= ds / 2;
 }
 
 // Just after the jump the page is still settling: fonts arrive and the text is fitted again, so the texts above the
@@ -104,16 +120,15 @@ function holdAim(el) {
   var top = el.getBoundingClientRect().top,
     until = Date.now() + 5000,
     ro = new ResizeObserver(function () {
-      if (aimEl !== el || Date.now() > until || Math.abs(scrollY - aimY) >= 2) {
+      if (aimEl !== el || Date.now() > until || scrolledAway(el)) {
         ro.disconnect();
         if (aimRO === ro) aimRO = null;
         return;
       }
       var d = el.getBoundingClientRect().top - top;
-      if (Math.abs(d) >= 1) {
-        scrollBy(0, d);
-        aimY = scrollY;
-      }
+      if (Math.abs(d) >= 1) scrollBy(0, d);
+      aimY = scrollY;
+      aimTop = el.getBoundingClientRect().top;
     });
   aimRO = ro;
   ro.observe(document.body);
@@ -128,7 +143,7 @@ export function cur() {
   if (aimEl) {
     // (the page may get shorter just after, pulling the scroll up with it at its end: still where it was left)
     var end = scrollY >= document.documentElement.scrollHeight - innerHeight - 2 && aimY >= scrollY;
-    if ((Math.abs(scrollY - aimY) < 2 || end) && aimEl.offsetParent !== null) return aimEl;
+    if ((!scrolledAway(aimEl) || end) && aimEl.offsetParent !== null) return aimEl;
     aimEl = null;
   }
   // the lowest piece whose top has reached the top bar (a session shows its texts in session order, which may not be
