@@ -10,6 +10,15 @@
    "lines": 103
   },
   {
+   "id": "vedic-chant-ganapati-sarasvati-prarthana",
+   "file": "texts/vedic-chant-ganapati-sarasvati-prarthana.txt",
+   "title": "गणपति सरस्वती प्रार्थना",
+   "titleEn": "Ganapati and Sarasvati Prarthana",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 10
+  },
+  {
    "id": "vedic-chant-purusha-suktam",
    "file": "texts/vedic-chant-purusha-suktam.txt",
    "title": "पुरुषसूक्तम्",
@@ -61,7 +70,7 @@
    "titleEn": "Pavamana Suktam",
    "category": "vedic-chant",
    "language": "sa",
-   "lines": 1277
+   "lines": 1271
   },
   {
    "id": "vedic-chant-lalita-sahasranama",
