@@ -31,8 +31,9 @@ describe("CONTENT from the text files", () => {
   const OLD_IDS = new Set(pieces(OLD).map((p) => p.id));
   const same = pieces(C)
     .filter((p) => OLD_IDS.has(p.id))
-    // (and each [note] is now marked as one, nt, which the old file did not have either: Ghalin Lotangan's ↻ ३ वेळा)
-    .map(({ text, ...p }) => ({ ...p, items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
+    // (and each [note] is now marked as one, nt, which the old file did not have either: Ghalin Lotangan's ↻ ३ वेळा;
+    // nor a recording to hear under the credit, since 2026-11-11: the Atharvashirsha's)
+    .map(({ text, ...p }) => ({ ...p, credit: p.credit.replace(/<span class="rec".*$/, ""), items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
   const OLD_C = { categories: [{ pieces: same }] };
   const byId = (Cx, id) => pieces(Cx).find((p) => p.id === id);
   test("is identical to the old content/pieces.js", () => {
@@ -265,4 +266,21 @@ describe("content checks", () => {
   test("categories: Vedic Chant, Aarti, Stotra, Ashtak", () => {
     expect(categories.map((c) => c.id)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak"]);
   });
+});
+
+// Recordings to hear (Satish, 2026-11-11), each checked against the text: the Challakere Brothers' Rudradhyaya video
+// (its chapters: Atharvashirsha after the album's 90-second invocation, Namakam 11:25, Shivopasana 42:14, Durga Suktam
+// 46:18) and two Pavamana videos from the start. Laghunyasa is left out: their Nyasam starts at its fifth part.
+test("the texts with a recording link to it, at the second each starts", () => {
+  const at = (id) => parseText(files[id], id).recording;
+  expect(at("vedic-chant-atharvashirsha")).toBe("[Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90)");
+  expect(at("vedic-chant-shree-rudra")).toMatch(/OQhyYdoKW1k&t=685\)$/);
+  expect(at("vedic-chant-shivopasana-mantra")).toMatch(/OQhyYdoKW1k&t=2534\)$/);
+  expect(at("vedic-chant-durga-suktam")).toMatch(/OQhyYdoKW1k&t=2778\)$/);
+  expect(at("vedic-chant-pavamana-suktam").split(", ")).toHaveLength(2);
+  expect(at("vedic-chant-laghunyasa")).toBeUndefined();
+  // Rajshri Soul's Lalita from 1:27, after its music, at the names (it chants no Nyasa or Dhyanam); Kalabhairava, a
+  // voice-only recording Satish chose (not the one aligned: it is shorter)
+  expect(at("vedic-chant-lalita-sahasranama")).toBe("[Rajshri Soul](https://www.youtube.com/watch?v=DtSBLpQStT4&t=87)");
+  expect(at("ashtak-kalabhairava-ashtakam")).toMatch(/RQ85ltEoPAE\)$/);
 });

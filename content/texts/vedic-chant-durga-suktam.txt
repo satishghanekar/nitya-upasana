@@ -6,6 +6,7 @@ language: sa
 layout: prose
 credit: कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक (महानारायणोपनिषत्)
 credit-en: Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)
+recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=2778)
 ---
 [para 1]
 ॐ जा॒तवे॑दसे सुनवाम॒ सोम॑ मरातीय॒तो निद॑हाति॒ वेदः॑ ।

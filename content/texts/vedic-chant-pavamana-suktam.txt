@@ -6,6 +6,7 @@ language: sa
 layout: lines
 credit: [ऋग्वेद, मण्डल ९](https://mr.wikipedia.org/wiki/ऋग्वेद)
 credit-en: [Rigveda, Mandala 9](https://en.wikipedia.org/wiki/Mandala_9)
+recording: [Challakere Brothers](https://www.youtube.com/watch?v=UjwjdI1hRCI), [Anantha Padmanabha Bhat and Govind Prakash Bhat](https://www.youtube.com/watch?v=mozgkHM8h2U)
 ---
 [dhrupad]
 ॥ पवमानसूक्तम् ॥

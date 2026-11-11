@@ -6,6 +6,7 @@ language: sa
 stanza-numbers: as-written
 credit: [आदि शंकराचार्य](https://mr.wikipedia.org/wiki/आदि_शंकराचार्य) यांचे मानले जाते
 credit-en: Attributed to [Adi Shankaracharya](https://en.wikipedia.org/wiki/Adi_Shankara)
+recording: [Vocal Melodies](https://www.youtube.com/watch?v=RQ85ltEoPAE)
 ---
 [1]
 देवराजसेव्यमानपावनाङ्घ्रिपङ्कजं व्यालयज्ञसूत्रमिन्दुशेखरं कृपाकरम् ।

@@ -36,9 +36,21 @@ describe("header", () => {
     ["no end of header", HEAD, /no "---" line/],
     ["a line that is not a field", HEAD + "just words\n---\n", /expected "name: value"/],
     ["an unknown layout", HEAD + "layout: poem\n---\n", /layout can only be "prose" or "lines"/],
+    // a recording: YouTube only, a watch link, its start a whole second
+    ["a recording that is not YouTube", HEAD + "recording: [X](https://music.apple.com/album/1)\n---\n", /recording is/],
+    ["a short youtu.be link", HEAD + "recording: [X](https://youtu.be/OQhyYdoKW1k)\n---\n", /recording is/],
+    ["a recording link with tracking", HEAD + "recording: [X](https://www.youtube.com/watch?v=OQhyYdoKW1k&si=abc)\n---\n", /recording is/],
+    ["a recording with no name", HEAD + "recording: https://www.youtube.com/watch?v=OQhyYdoKW1k\n---\n", /recording is/],
   ])("refuses %s", (_, raw, err) => {
     expect(() => parseText(raw, "x.txt")).toThrow(err);
   });
+});
+
+test("a recording line: one or more YouTube links, each with the second its text starts at if not at once", () => {
+  const two = "[A B](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90), [C](https://www.youtube.com/watch?v=mozgkHM8h2U)";
+  const t = parse("[1]\nक\nK\n", "recording: " + two + "\n");
+  expect(t.recording).toBe(two);
+  expect(parseText(formatText(t))).toEqual(t);
 });
 
 describe("blocks", () => {
