@@ -789,11 +789,16 @@ test("A–Z puts each category's texts in alphabetical order, each keeping its n
         ),
       lang,
     );
-  // in order, by the browser's own collator for that language
-  const sorted = (lang, cats) => {
-    const c = new Intl.Collator(lang, { sensitivity: "base", numeric: true });
-    return cats.map((xs) => [...xs].sort((a, b) => c.compare(a.t, b.t)));
-  };
+  // in order, by the browser's own collator for that language (Firefox has no Marathi rule of its own, so ज्ञ comes
+  // among the ज there and last, after ळ and क्ष, in Chrome and Safari: each browser is checked against its own)
+  const sorted = (lang, cats) =>
+    page.evaluate(
+      ([l, cs]) => {
+        const c = new Intl.Collator(l, { sensitivity: "base", numeric: true });
+        return cs.map((xs) => [...xs].sort((a, b) => c.compare(a.t, b.t)));
+      },
+      [lang, cats],
+    );
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#hm").click();
   const order = page.locator("#library-order");
@@ -804,7 +809,7 @@ test("A–Z puts each category's texts in alphabetical order, each keeping its n
   await order.locator('button[data-sort="az"]').click();
   await expect(order.locator('button[data-sort="az"]')).toHaveAttribute("aria-pressed", "true");
   const az = await listed("mr");
-  expect(az).toEqual(sorted("mr", book));
+  expect(az).toEqual(await sorted("mr", book));
   expect(az).not.toEqual(book);
   // each text keeps its number: Kalabhairava is still 18 among the ashtakams, and no longer last
   const ashtak = az[az.length - 1];
@@ -825,7 +830,7 @@ test("A–Z with English shown sorts by the English titles @mobile", async ({ pa
   await openSite(page, { ...SETUPS.english, libSort: "az" }, { now: EVENING });
   await page.locator("#hm").click();
   const titles = await page.evaluate(() => [...document.querySelectorAll('#jl .tocg[data-cat="aarti"] a[data-go] .m .en')].map((x) => x.textContent));
-  expect(titles).toEqual([...titles].sort(new Intl.Collator("en", { sensitivity: "base", numeric: true }).compare));
+  expect(titles).toEqual(await page.evaluate((ts) => [...ts].sort(new Intl.Collator("en", { sensitivity: "base", numeric: true }).compare), titles));
 });
 
 test("Book order | A–Z speaks Marathi with Marathi menus @mobile", async ({ page }) => {
