@@ -284,3 +284,21 @@ test("the texts with a recording link to it, at the second each starts", () => {
   expect(at("vedic-chant-lalita-sahasranama")).toBe("[Rajshri Soul](https://www.youtube.com/watch?v=DtSBLpQStT4&t=87)");
   expect(at("ashtak-kalabhairava-ashtakam")).toMatch(/RQ85ltEoPAE\)$/);
 });
+
+// Shri Sukta as the family chants it (Satish's sheet, 2026-11-11): the fifteen verses of the hymn, then
+// सर्वमङ्गलमाङ्गल्ये with गौरि and नारायणि नमोऽस्तु ते three times, the Lakshmi and Bhudevi Gayatris and the shanti;
+// verse 16 (यः शुचिः, which names the hymn "the fifteen verses") and the later verses are the Shri Sukta Phalashruti
+test("Shri Sukta is the hymn as chanted at home; its phalashruti and later verses are a text of their own", () => {
+  const ss = parseText(files["vedic-chant-shri-sukta"], "ss");
+  expect(ss.blocks.filter((b) => b.kind === "stanza").map((b) => b.n)).toEqual([...Array(15)].map((_, i) => i + 1));
+  const tail = ss.blocks.filter((b) => b.kind === "once").map((b) => b.lines.map((l) => l.orig).join(" "));
+  expect(tail).toHaveLength(4);
+  expect(tail[0]).toMatch(/त्र्यम्बके गौरि नारायणि नमोऽस्तु ते ॥ नारायणि नमोऽस्तु ते ॥ नारायणि नमोऽस्तु ते ॥$/);
+  expect(tail[1]).toMatch(/^ॐ महादेव्यै च विद्महे/);
+  expect(tail[2]).toBe("ॐ धनुर्धरायै विद्महे सर्वसिद्ध्यै च धीमहि । तन्नो धरा प्रचोदयात् ॥");
+  expect(tail[3]).toMatch(/शान्तिः/);
+  const ph = parseText(files["vedic-chant-shri-sukta-phalashruti"], "ph");
+  expect(ph.blocks.find((b) => b.kind === "stanza").lines[0].orig).toMatch(/^यः शुचिः प्रयतो भूत्वा/);
+  // nothing lost: every line of the old text is in one of the two, but सर्वमङ्गल now as chanted
+  expect(ss.blocks.concat(ph.blocks).reduce((n, b) => n + b.lines.length, 0)).toBe(84 - 5 + 8);
+});

@@ -135,6 +135,7 @@ var SITE_PARTS = (function () {
     "texts/vedic-chant-mantra-pushpanjali.txt",
     "texts/vedic-chant-mantrapushpam.txt",
     "texts/vedic-chant-chakshushopanishad.txt",
+    "texts/vedic-chant-shri-sukta-phalashruti.txt",
     "texts/aarti-sukhkarta.txt",
     "texts/aarti-shendur-lal-chadhayo.txt",
     "texts/aarti-durge-durghat-bhari.txt",

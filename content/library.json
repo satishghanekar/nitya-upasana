@@ -25,7 +25,7 @@
    "titleEn": "Shri Sukta",
    "category": "vedic-chant",
    "language": "sa",
-   "lines": 84
+   "lines": 38
   },
   {
    "id": "vedic-chant-laghunyasa",
@@ -107,6 +107,15 @@
    "category": "vedic-chant",
    "language": "sa",
    "lines": 21
+  },
+  {
+   "id": "vedic-chant-shri-sukta-phalashruti",
+   "file": "texts/vedic-chant-shri-sukta-phalashruti.txt",
+   "title": "श्रीसूक्त फलश्रुति",
+   "titleEn": "Shri Sukta Phalashruti",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 49
   },
   {
    "id": "aarti-sukhkarta",
