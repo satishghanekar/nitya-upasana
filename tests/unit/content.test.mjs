@@ -215,6 +215,15 @@ describe("content checks", () => {
     ]);
     ["गणानां᳚ त्वा", "प्र णो᳚ दे॒वी", "वेद॒ वात॑स्य"].forEach((m) => expect(files["vedic-chant-pavamana-suktam"].split(m).length).toBe(2));
   });
+  // Purusha Suktam: each verse a paragraph of its own, a space after every ॥ १ ॥ as Shree Rudra has after each
+  // anuvaka; Shri Sukta line by line, as Lalita and Pavamana (Satish, 2026-11-10)
+  test("Purusha Suktam's every verse starts a paragraph; Shri Sukta is set line by line", () => {
+    const pu = parseText(files["vedic-chant-purusha-suktam"], "vedic-chant-purusha-suktam");
+    const verses = pu.blocks.filter((b) => b.kind !== "dhrupad");
+    expect(verses).toHaveLength(10);
+    expect(verses.every((b) => b.para)).toBe(true);
+    expect(parseText(files["vedic-chant-shri-sukta"], "vedic-chant-shri-sukta").layout).toBe("lines");
+  });
   test("categories: Vedic Chant, Aarti, Stotra, Ashtak", () => {
     expect(categories.map((c) => c.id)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak"]);
   });

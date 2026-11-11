@@ -1006,8 +1006,9 @@ ol.toc li.soon .m {
 /* ==== Vedic chants line by line, as their booklet sets them ====
    A piece with "layout: lines" (Pavamana Suktam, Lalita Sahasranama) is a Vedic chant like the ones above, its
    measure and size theirs, but in one language each line (of a verse, or of a part said once) starts a row of its
-   own, the verses a little apart and a hymn (a stanza marked para) further apart, as the printed booklet has it. A line too long for the row wraps with the rest of it
-   indented, so it still reads as one line. A long verse reference (॥ ९.००१.०६ ॥) shows on a phone as just the verse
+   own, the verses a little apart and a hymn (a stanza marked para) further apart, as the printed booklet has it. A line too long for the row wraps, the rest of it starting
+   at the left as well: an indented rest looked like stray spaces on a phone (Satish 2026-11-10; the printout
+   too, css/15-print.css). A long verse reference (॥ ९.००१.०६ ॥) shows on a phone as just the verse
    (॥ ६ ॥; a hymn's first verse keeps it whole: js/text/line-breaks.js shortRef), in either language. */
 @media screen {
   .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .items > .item:not(.dh),
@@ -1024,17 +1025,11 @@ ol.toc li.soon .m {
   }
   .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .item .verse p {
     display: block;
-    padding-inline-start: 1.5em;
-    text-indent: -1.5em;
   }
   /* a part said once (Nyasa, Dhyanam, the opening prayers) line by line too; one of a single line (॥ अथ पवमानसूक्तम् ॥)
      centred, as a heading */
   .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse > :is(.mr, .en):has(> p:only-child) {
     text-align: center;
-  }
-  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .item.dh .verse > :is(.mr, .en) > p:only-child {
-    padding-inline-start: 0;
-    text-indent: 0;
   }
   .ash.lines .ref[data-short] > span {
     display: none;
