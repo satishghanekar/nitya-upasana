@@ -49,19 +49,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # (sized to what each engine runs, tests/playwright.config.mjs: Chromium every suite, 653 tests; WebKit the
+        # drawing and the reading flows, 258; the iPhone every phone test, 172; Firefox the drawing, 112; the iPad
+        # and Pixel 97. 2026-11-11)
         include:
-          - { projects: chromium, shard: 1/3 }
-          - { projects: chromium, shard: 2/3 }
-          - { projects: chromium, shard: 3/3 }
-          - { projects: firefox, shard: 1/3 }
-          - { projects: firefox, shard: 2/3 }
-          - { projects: firefox, shard: 3/3 }
-          - { projects: webkit, shard: 1/3 }
-          - { projects: webkit, shard: 2/3 }
-          - { projects: webkit, shard: 3/3 }
-          - { projects: "iphone,ipad,pixel", shard: 1/3 }
-          - { projects: "iphone,ipad,pixel", shard: 2/3 }
-          - { projects: "iphone,ipad,pixel", shard: 3/3 }
+          - { projects: chromium, shard: 1/4 }
+          - { projects: chromium, shard: 2/4 }
+          - { projects: chromium, shard: 3/4 }
+          - { projects: chromium, shard: 4/4 }
+          - { projects: webkit, shard: 1/2 }
+          - { projects: webkit, shard: 2/2 }
+          - { projects: iphone, shard: 1/1 }
+          - { projects: firefox, shard: 1/1 }
+          - { projects: "ipad,pixel", shard: 1/1 }
     defaults:
       run:
         working-directory: tests
@@ -73,6 +73,8 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: tests/package-lock.json
       - run: npm ci
       - run: npx playwright test --shard=${{ matrix.shard }}
         env:
