@@ -27,7 +27,7 @@
  *   id: string, title: string, titleEn: string, category: string, language: string,
  *   legacyId?: string, lineIds?: string, lineIdExceptions?: Record<string, string>,
  *   refrain: "every-verse" | "always" | "none", refrainFirst?: boolean, layout?: "prose" | "lines", stanzaNumbers?: "as-written",
- *   credit?: string, creditEn?: string, creditNote?: string, creditNoteEn?: string, source?: string,
+ *   credit?: string, creditEn?: string, creditNote?: string, creditNoteEn?: string, source?: string, recording?: string,
  *   blocks: Block[]
  * }} Text
  */
@@ -52,7 +52,11 @@ const FIELDS = [
   ["credit-note", "creditNote", false],
   ["credit-note-en", "creditNoteEn", false],
   ["source", "source", false],
+  ["recording", "recording", false],
 ];
+// A recording of the text to hear (Satish, 2026-11-11): YouTube only, a watch link with, when the text starts later
+// in the video, its second (t=…), checked against the recording; two or more separated by ", "
+export const RECORDING = /^\[([^\]]+)\]\((https:\/\/www\.youtube\.com\/watch\?v=[\w-]{11}(?:&t=\d+)?)\)$/;
 export const LANGUAGES = ["mr", "hi", "sa", "te", "kn", "ta"];
 const REFRAINS = ["every-verse", "always", "none"];
 // Letters of the Indian scripts (Devanagari to Malayalam, Vedic extensions): an original line has at least one,
@@ -114,6 +118,13 @@ export function parseText(raw, name) {
     if (key === "refrain" && REFRAINS.indexOf(val) < 0) fail(at, "refrain must be one of " + REFRAINS.join(", "));
     if (key === "layout" && val !== "prose" && val !== "lines") fail(at, 'layout can only be "prose" or "lines"');
     if (key === "stanza-numbers" && val !== "as-written") fail(at, 'stanza-numbers can only be "as-written"');
+    if (
+      key === "recording" &&
+      !val.split(", ").every(function (r) {
+        return RECORDING.test(r);
+      })
+    )
+      fail(at, 'recording is "[who](https://www.youtube.com/watch?v=…)", with "&t=" and the second it starts at if not at once');
     if (key === "refrain-before-first") {
       if (val !== "yes") fail(at, 'refrain-before-first can only be "yes"');
       t[prop] = true;

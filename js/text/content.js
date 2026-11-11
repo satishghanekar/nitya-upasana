@@ -12,7 +12,7 @@
 // - line ids: the text's "line-ids" prefix and a count of the lines as shown (repeats included);
 // - the credit links: [name](address) becomes a link that opens in a new tab, with its label and ↗.
 
-import { parseText, toHtml } from "./format.js";
+import { parseText, RECORDING, toHtml } from "./format.js";
 
 /**
  * @typedef {import("./format.js").Text} Text
@@ -67,6 +67,27 @@ function credit(s, side) {
     last = re.lastIndex;
   }
   return out + esc(s.slice(last));
+}
+/**
+ * The recordings to hear, under the credit: "▶ YouTube: Challakere Brothers ↗", each opening in a new tab at the second
+ * the text starts. YouTube and the chanters' names read the same in every language, so the line has no menu words.
+ * @param {string} [s]  the header's recording line, checked by js/text/format.js
+ */
+function recordings(s) {
+  if (!s) return "";
+  var links = s.split(", ").map(function (r) {
+    var m = /** @type {RegExpExecArray} */ (RECORDING.exec(r));
+    return (
+      '<a href="' +
+      esc(m[2]) +
+      '" target="_blank" rel="noopener" aria-label="' +
+      esc(m[1] + ": YouTube (opens in a new tab)") +
+      '">' +
+      esc(m[1]) +
+      '<span class="crx" aria-hidden="true"> ↗</span></a>'
+    );
+  });
+  return '<span class="rec" lang="en"><span aria-hidden="true">▶ </span>YouTube: ' + links.join(" · ") + "</span>";
 }
 /**
  * @param {string} [mr]
@@ -190,7 +211,10 @@ export function toPiece(t, n, lib) {
     });
   }
   p.items = items;
-  p.credit = credits(t.credit, t.creditEn) + (t.creditNote || t.creditNoteEn ? "<small>" + credits(t.creditNote, t.creditNoteEn) + "</small>" : "");
+  p.credit =
+    credits(t.credit, t.creditEn) +
+    (t.creditNote || t.creditNoteEn ? "<small>" + credits(t.creditNote, t.creditNoteEn) + "</small>" : "") +
+    recordings(t.recording);
   return p;
 }
 
