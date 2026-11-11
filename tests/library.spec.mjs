@@ -334,6 +334,7 @@ test("the Library lists the texts by category; empty categories are left out; ea
     "aarti-belaguve",
     "aarti-svastha-karin-shayan",
     "aarti-ovaloo-sapreme-aarti",
+    "aarti-jai-shiv-omkara",
   ]);
   // numbered from 1 in each category (Satish, 2026-10-21), in Marathi and English digits
   for (const g of await page.locator("#jl .tocg").all()) {
