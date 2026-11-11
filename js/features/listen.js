@@ -99,6 +99,15 @@ var ORT = "vendor/onnxruntime/",
   // recording that jumps to another text every 45 s (2026-11-09): a new place found in 3.8 s on average instead of
   // 4.4, the jump into SJ's group chanting in 11 s instead of 25, and steady chanting followed as before (97–100%)
   TAIL = 2.5;
+// The panel while listening, a pill (Satish, 2026-11-11, in place of a card with a dot and Stop in words): a sound wave
+// that moves with what the microphone hears, the text's name as its heading shows it, and a round stop button, named
+// Stop for screen readers (css/07-bottom-bar-folds.css)
+var WAVE = '<span class="lsn-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>',
+  STOP = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg>',
+  // how often the wave follows the sound's level, in ms, and the level (the sound's RMS) that fills it
+  LEVEL_EVERY = 90,
+  LEVEL_FULL = 0.12;
+var levelAt = 0;
 
 /** off: nothing; ask: the download question; load: downloading and starting; run: listening @type {"off" | "ask" | "load" | "run"} */
 var phase = "off";
@@ -181,11 +190,17 @@ export function init() {
 function panel(text, o) {
   bar.hidden = false;
   bar.classList.toggle("on", !!o.on);
-  msg.innerHTML = text;
+  msg.innerHTML = (o.on ? WAVE : "") + text;
   prog.hidden = !o.progress;
   yes.hidden = !o.yes;
   yes.textContent = o.yes || "";
-  no.textContent = o.no;
+  if (o.on) {
+    no.innerHTML = STOP;
+    no.setAttribute("aria-label", o.no);
+  } else {
+    no.textContent = o.no;
+    no.removeAttribute("aria-label");
+  }
   btn.setAttribute("aria-pressed", phase === "off" ? "false" : "true");
 }
 
@@ -525,8 +540,17 @@ function off() {
 
 /** @param {Float32Array} chunk */
 function push(chunk) {
-  for (var i = 0; i < chunk.length; i++) ring[(got + i) % ring.length] = chunk[i];
+  var power = 0;
+  for (var i = 0; i < chunk.length; i++) {
+    ring[(got + i) % ring.length] = chunk[i];
+    power += chunk[i] * chunk[i];
+  }
   got += chunk.length;
+  // the wave in the panel, a few times a second (--lsnlv, 0 to 1)
+  var now = performance.now();
+  if (now - levelAt < LEVEL_EVERY || !chunk.length) return;
+  levelAt = now;
+  bar.style.setProperty("--lsnlv", Math.min(1, Math.sqrt(power / chunk.length) / LEVEL_FULL).toFixed(2));
 }
 
 /** The last WINDOW seconds (or what there is), oldest first */
@@ -701,8 +725,29 @@ function open(id) {
   }
   jumped = true;
   shown = -1;
-  var en = nameLang() !== "mr";
-  msg.innerHTML = menuWords("listen").following('<b lang="' + (en ? "en" : "mr") + '">' + esc(titleText(id, en)) + "</b>");
+  var en = nameLang() !== "mr",
+    said = menuWords("listen").following('<b lang="' + (en ? "en" : "mr") + '">' + esc(titleText(id, en)) + "</b>"),
+    // the name as the text's heading shows it (its language, its letters, its font); the whole sentence for screen readers
+    h = el.querySelector("header h2"),
+    /** @type {Element[]} */ parts = h ? Array.prototype.slice.call(h.children) : [],
+    name = parts.filter(function (x) {
+      return !x.classList.contains("no") && x.getClientRects().length > 0;
+    })[0];
+  if (!name) {
+    msg.innerHTML = WAVE + said;
+    return;
+  }
+  var lang = /** @type {HTMLElement | null} */ (name.closest("[lang]"));
+  msg.innerHTML =
+    WAVE +
+    '<span class="sr">' +
+    said +
+    '</span><b class="lsn-name" aria-hidden="true" lang="' +
+    (lang ? lang.lang : "mr") +
+    '">' +
+    esc(name.textContent || "") +
+    "</b>";
+  /** @type {HTMLElement} */ (msg.lastChild).style.fontFamily = getComputedStyle(name).fontFamily;
 }
 
 /** Move the mark on: the line where the chanting is now marked and kept in view. Runs a few times a second while

@@ -44,6 +44,10 @@ test("Download, then listening to the microphone until Stop; the second time it 
   await panel.getByRole("button", { name: "Download" }).click();
   await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 180_000 });
   await expect(html).toHaveAttribute("data-ref", "0");
+  // the pill (Satish, 2026-11-11): its wave follows the microphone (the fake one beeps), and its round button is named Stop
+  await expect(panel).toHaveClass(/\bon\b/);
+  await expect.poll(() => panel.evaluate((e) => Number(e.style.getPropertyValue("--lsnlv")) > 0)).toBe(true);
+  await expect(panel.getByRole("button", { name: "Stop" })).toHaveJSProperty("textContent", "");
   // kept in its own cache, which a new version of the site leaves alone (sw.js)
   const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
   expect(kept).toEqual(
@@ -167,6 +171,14 @@ test("an aarti's dhrupad sung after a stanza: the mark goes to the dhrupad shown
     return { color: getComputedStyle(on).color, want, on: getComputedStyle(on).opacity, other: getComputedStyle(other).opacity };
   });
   expect(look.color).toBe(look.want);
+  // the panel shows the text's name as its heading does, and says the whole sentence to screen readers
+  const said = await page.evaluate(() => {
+    const h = [...document.querySelector("#a1 header h2").children].find((x) => !x.classList.contains("no") && x.getClientRects().length);
+    return { shown: document.querySelector("#lsnm .lsn-name").textContent, heading: h.textContent, sr: document.querySelector("#lsnm .sr").textContent };
+  });
+  expect(said.shown).toBe(said.heading);
+  // (in the menu language, English here, with the name in it as before)
+  expect(said.sr).toMatch(/^Following \S/);
   expect(Number(look.on)).toBe(1);
   expect(Number(look.other)).toBeLessThan(0.7);
 });
