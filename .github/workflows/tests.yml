@@ -51,7 +51,7 @@ jobs:
       matrix:
         # (sized to what each engine runs, tests/playwright.config.mjs: Chromium every suite, 653 tests; WebKit the
         # drawing and the reading flows, 258; the iPhone every phone test, 172; Firefox the drawing, 112; the iPad
-        # and Pixel 97. 2026-11-11)
+        # and Pixel 97. The iPhone in two: alone it was the slowest job, 7.2 min. 2026-11-11)
         include:
           - { projects: chromium, shard: 1/4 }
           - { projects: chromium, shard: 2/4 }
@@ -59,7 +59,8 @@ jobs:
           - { projects: chromium, shard: 4/4 }
           - { projects: webkit, shard: 1/2 }
           - { projects: webkit, shard: 2/2 }
-          - { projects: iphone, shard: 1/1 }
+          - { projects: iphone, shard: 1/2 }
+          - { projects: iphone, shard: 2/2 }
           - { projects: firefox, shard: 1/1 }
           - { projects: "ipad,pixel", shard: 1/1 }
     defaults:
