@@ -190,7 +190,8 @@ var SITE_PARTS = (function () {
     return "content/" + f;
   });
   // Font files kept for offline use: Modern and Traditional, the default, with their English (the Latin files with the
-  // IAST marks) and Kannada (Bold's Noto Serif, and Telugu and Gujarati letters, download when first used)
+  // IAST marks), Traditional's bold (Noto Serif Devanagari, Bold's too) and Kannada (Telugu and Gujarati letters
+  // download when first used)
   var fonts = [
     "inter-latin",
     "inter-latin-ext",
@@ -205,6 +206,7 @@ var SITE_PARTS = (function () {
     "tiro-sanskrit-latin",
     "tiro-sanskrit-latin-ext",
     "noto-serif-latin",
+    "noto-serif-deva-devanagari",
     "noto-sans-kannada-kannada",
     "tiro-kannada-kannada",
   ].map(function (f) {
