@@ -5,7 +5,7 @@
    in place of पूजा / आरती; this file adds the "Edit categories" button at the end of the list (#lbr), the categories
    sheet (#lbm: categories, Add, Rename, Delete, and the category of each text) and the search results' groups:
    texts, then lines; and the tabs Chants | Books (#jtb) with the books (.pdfg in #jl). Built by
-   js/features/library.js, js/features/pdfs.js and js/text/search.js. Sizes in px, like the bars. No
+   js/features/library.js, js/features/pdfs.js and js/features/search.js. Sizes in px, like the bars. No
    color-mix() here, so nothing needs a fallback in 99.
    Sections:
    - Chants | Books
@@ -331,14 +331,14 @@
    one stuck to the foot of the scroll made the iPhone scroll the list back to the box's place at its end, so the
    first results went out of reach.) The scroll reaches both edges of the screen; its contents keep the Library's
    column (--lw). When the phone's keyboard opens, the Library keeps covering the page under it and lifts its
-   contents by the keyboard's height (--kb, js/text/search.js), so the box sits just above it, without the room
+   contents by the keyboard's height (--kb, js/features/search.js), so the box sits just above it, without the room
    kept for the home bar, which the keyboard covers. On wide screens (the Library beside Home) the whole Library
    scrolls and the box stays at the top, under the tabs ==== */
 :root:not([data-rail="1"]) #jump {
   bottom: 0;
   padding: 0 0 var(--kb, 0px);
   overflow: hidden;
-  /* the iPhone's slide when its keyboard opens, undone (--vvt, js/text/search.js) */
+  /* the iPhone's slide when its keyboard opens, undone (--vvt, js/features/search.js) */
   transform: translateY(var(--vvt, 0px));
 }
 #jump .libin {
