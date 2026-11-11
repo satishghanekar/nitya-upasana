@@ -100,8 +100,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
-  // Mac, where Node's gzip gives a little more than GitHub's)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(73_500);
+  // Mac, where Node's gzip gives a little more than GitHub's; 74 KB since 2026-11-11: Traditional's English face at
+  // each weight and its bold lines in Noto Serif Devanagari, 73.75 KB with them on a Mac)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(74_000);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then)
   expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(31_000);
