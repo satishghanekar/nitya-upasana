@@ -93,6 +93,10 @@ export default {
   // The Library by category and the categories sheet (js/features/library.js)
   library: {
     open: "Edit categories",
+    // Book order | A–Z at the top of the list
+    order: "Order of the texts",
+    bookOrder: "Book order",
+    aToZ: "A–Z",
     title: "Categories",
     texts: "Texts",
     textsInfo: "Choose the category each text is listed under.",

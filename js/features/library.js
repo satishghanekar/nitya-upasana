@@ -14,11 +14,12 @@
 // The titles come from content/library.json, never typed here; the texts themselves are never touched.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
-import { P } from "../core/state.js";
+import { change, P } from "../core/state.js";
 import { loaded } from "../text/load.js";
 import { getLibrary, onReread, setLibrary } from "../store/store.js";
 import {
   addCategory,
+  aToZ,
   categoriesOf,
   categoryOf,
   counts,
@@ -60,6 +61,9 @@ var local = emptyLocal();
 /** @type {Category[]} */
 var cats = [];
 var ready = false;
+// the order the list is in ("book", or "az:" and the language it was put A to Z in), so a change of the language shown
+// or of the person reading puts it in theirs (libLang())
+var sortedAs = "";
 
 /** @type {HTMLElement | null} */
 var sheet = null;
@@ -205,10 +209,14 @@ function listHtml() {
       return s.texts.length;
     })
     .map(function (s) {
-      // numbered from 1 in each category (Satish, 2026-10-21), not by the text's place on the reading page
-      var items = s.texts
-        .map(function (id, i) {
-          var e = /** @type {Entry} */ (
+      // numbered from 1 in each category (Satish, 2026-10-21), not by the text's place on the reading page; A to Z
+      // (P.libSort), each text keeps its number in the book's order, the one the printout and its page show
+      var ids = s.texts;
+      if (az()) ids = aToZ(ids, sortTitle, shown());
+      var items = ids
+        .map(function (id) {
+          var i = s.texts.indexOf(id),
+            e = /** @type {Entry} */ (
               entries.filter(function (x) {
                 return x.id === id;
               })[0]
@@ -252,6 +260,33 @@ function listHtml() {
     .join("");
 }
 
+/** The list A to Z (P.libSort) rather than in the book's order */
+function az() {
+  return !!P && P.libSort === "az";
+}
+/** The language the list's titles are read in: the one shown (the अ/A button, P.lang), or with both, the first */
+function shown() {
+  return P && (P.lang === "en" || P.lang === "mr") ? P.lang : lead();
+}
+/** A text's title to sort by, in that language: Marathi as written (its order holds in Kannada, Telugu and Gujarati
+ * letters too), English in the plain style @param {string} id */
+function sortTitle(id) {
+  var e = entries.filter(function (x) {
+    return x.id === id;
+  })[0];
+  return e ? (shown() === "mr" ? e.title : e.titleEn) : "";
+}
+/** The order the list should be in now */
+function sortKey() {
+  return az() ? "az:" + shown() : "book";
+}
+/** Book order | A–Z: the pressed one */
+function orderButtons() {
+  [].forEach.call(document.querySelectorAll("#library-order button"), function (/** @type {HTMLElement} */ b) {
+    b.setAttribute("aria-pressed", String((b.dataset.sort === "az") === az()));
+  });
+}
+
 /** Put the list in the Library, before the Edit categories button (the PDFs, js/features/pdfs.js, come after it) */
 function renderList() {
   var jl = document.getElementById("jl"),
@@ -261,6 +296,8 @@ function renderList() {
     g.remove();
   });
   at.insertAdjacentHTML("beforebegin", listHtml());
+  sortedAs = sortKey();
+  orderButtons();
 }
 
 /** After a change: the list (and the PDFs' categories), the English style of the titles, the switches and search */
@@ -297,9 +334,23 @@ export function libLang() {
     b.textContent = w.open;
     b.lang = ui() === "mr" ? mrLang() : ui();
   }
+  // Book order | A–Z and its name, the same way (a class from fillWords() would be hidden in the list as a title's is)
+  [].forEach.call(document.querySelectorAll("#library-order-name, #library-order [data-word]"), function (/** @type {HTMLElement} */ s) {
+    var t = /** @type {any} */ (w)[s.dataset.word || "order"];
+    if (s.textContent !== t) {
+      s.textContent = t;
+      s.lang = ui() === "mr" ? mrLang() : ui();
+    }
+  });
   if (sheet && !sheet.hidden && view === "list") {
     var box = /** @type {HTMLElement} */ (sheet.querySelector(".pfc"));
     if (box.lang !== ui()) show("list");
+  }
+  // another language shown (A to Z), or another person with another order: the list in theirs, its titles in the style
+  // shown again
+  if (ready && sortedAs !== sortKey()) {
+    renderList();
+    titlesSet();
   }
 }
 
@@ -528,6 +579,18 @@ export function init() {
   ready = true;
   renderList();
   libLang();
+  // Book order | A–Z, kept for the person reading (Satish, 2026-11-11)
+  var ord = document.getElementById("library-order");
+  if (ord)
+    ord.addEventListener("click", function (e) {
+      var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest("button[data-sort]"));
+      if (!b || (b.dataset.sort === "az") === az()) return;
+      change({ libSort: b.dataset.sort }, function () {
+        renderList();
+        titlesSet();
+        apply();
+      });
+    });
   var btn = document.getElementById("lbb");
   if (!sheet || !btn) return;
   var sh = /** @type {HTMLElement} */ (sheet);

@@ -93,12 +93,14 @@ test("the scripts, styles and page stay within their size budget", () => {
   // session in the page's own order, numbered by the session, and Coming up folded on phones: 340.1 KB then; 345 KB
   // since 2026-11-10: the JSDoc types the type checks need, in every script: 341.3 KB then; 347 KB since 2026-11-10:
   // Home's place hint and "Your routine" in five languages: 345.7 KB then; 348 KB since 2026-11-10: Listen started on
-  // Home opening the session, and room for its panel at the page's end: 347.3 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(348_000);
+  // Home opening the session, and room for its panel at the page's end: 347.3 KB then; 350 KB since 2026-11-11: the
+  // Library's Book order | A–Z in five languages, about 1.6 KB, 349.6 KB with it on a Mac)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(350_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
-  // panel and marked line, 72.03 KB then)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(73_000);
+  // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
+  // Mac, where Node's gzip gives a little more than GitHub's)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(73_500);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then)
   expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(31_000);
