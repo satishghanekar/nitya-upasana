@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.54.0">
+<meta name="version" content="aarti-v1.55.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -199,8 +199,11 @@
   <div id="srs" class="sr" role="status"></div>
   <!-- Every text by category (js/features/library.js): Vedic Chant, Aarti and any the family added, each with its texts
        in reading order and their numbers on the reading page, built from content/library.json and content/categories.json
-       with this phone's changes; categories with no texts are left out. Last, the button that opens the categories sheet (#lbm). -->
+       with this phone's changes; categories with no texts are left out. Last, the button that opens the categories sheet (#lbm).
+       First, Book order | A–Z: the texts in each category as the book has them, or A to Z, each keeping its number (its
+       words, like the button's, written by js/features/library.js: a data-w word's class would be hidden in #jl). -->
   <div id="jl">
+  <div id="library-order" role="group" aria-labelledby="library-order-name"><span id="library-order-name" class="sr" lang="en">Order of the texts</span><button type="button" data-sort="" aria-pressed="true"><span data-word="bookOrder" lang="en">Book order</span></button><button type="button" data-sort="az" aria-pressed="false"><span data-word="aToZ" lang="en">A–Z</span></button></div>
   <div id="lbr"><button type="button" id="lbb" aria-haspopup="dialog" aria-expanded="false" aria-controls="lbm"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h4v16H4zM10 4h4v16h-4z"/><path d="M15 5.2l3.9-1 3.6 14.6-3.9 1z"/></svg><span id="lbbw" lang="en">Edit categories</span></button></div>
   </div>
   </div>

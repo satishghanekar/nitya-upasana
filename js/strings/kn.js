@@ -104,6 +104,10 @@ export default {
   // The Library by category and the categories sheet (js/features/library.js)
   library: {
     open: "ವಿಭಾಗಗಳನ್ನು ಬದಲಿಸಿ",
+    // Book order | A–Z at the top of the list
+    order: "ಪಠ್ಯಗಳ ಕ್ರಮ",
+    bookOrder: "ಮೂಲ ಕ್ರಮ",
+    aToZ: "ಅಕಾರಾದಿ",
     title: "ವಿಭಾಗಗಳು",
     texts: "ಪಠ್ಯಗಳು",
     textsInfo: "ಪ್ರತಿ ಪಠ್ಯವು ಯಾವ ವಿಭಾಗದಲ್ಲಿ ಇರಬೇಕು ಎಂದು ಆರಿಸಿ.",
