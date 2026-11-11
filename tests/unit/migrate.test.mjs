@@ -326,6 +326,13 @@ describe("the holidays in Home's Coming up (P.hol)", () => {
     expect(migratePrefs({ sv: 6, hol: [] }, PHONE).prefs.hol).toEqual([]);
     expect(migratePrefs({ sv: 6, hol: "us" }, PHONE).prefs.hol).toEqual(["us", "in"]);
   });
+
+  test("the Library's order: the book's unless A to Z was chosen; anything else is the book's", () => {
+    expect(migratePrefs({ sv: 6 }, PHONE).prefs.libSort).toBe("");
+    expect(migratePrefs({ sv: 6, libSort: "az" }, PHONE).prefs.libSort).toBe("az");
+    expect(migratePrefs({ sv: 6, libSort: "za" }, PHONE).prefs.libSort).toBe("");
+    expect(PROFILE_KEYS).toContain("libSort");
+  });
 });
 
 describe("a person's settings and the device's", () => {

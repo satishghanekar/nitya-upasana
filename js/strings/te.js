@@ -104,6 +104,10 @@ export default {
   // The Library by category and the categories sheet (js/features/library.js)
   library: {
     open: "విభాగాలను మార్చు",
+    // Book order | A–Z at the top of the list
+    order: "పాఠ్యాల క్రమం",
+    bookOrder: "అసలు క్రమం",
+    aToZ: "అకారాది",
     title: "విభాగాలు",
     texts: "పాఠాలు",
     textsInfo: "ప్రతి పాఠం ఏ విభాగంలో ఉండాలో ఎంచుకోండి.",

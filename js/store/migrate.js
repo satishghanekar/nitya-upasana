@@ -7,7 +7,8 @@
 // backup file.
 //
 // Per person: text size, languages, English style, font, dhrupad, theme, high contrast,
-// autoscroll, folds, the highlighted line, the Library's Recent, the holidays in Coming up and Coming up folded. Per device: keep the screen on, location, layout on wide screens, the
+// autoscroll, folds, the highlighted line, the Library's Recent and its order, the holidays in Coming up and Coming up
+// folded. Per device: keep the screen on, location, layout on wide screens, the
 // Print pop-up's choices and the folded home card.
 
 /**
@@ -39,6 +40,7 @@ export const PROFILE_KEYS = [
   "tf",
   "hl",
   "rc",
+  "libSort",
   "hol",
   "upf",
 ];
@@ -68,6 +70,7 @@ export function defaults(env) {
     loc: null, // { lat, lon } from "Use my location"
     hl: "", // data-l id of the highlighted line
     rc: [], // Recent in the Library, newest first: a text's id, or its id and a line's ("a3|s3l5"), at most 8
+    libSort: "", // the Library's texts in each category: "" in the book's order | "az" A to Z
     por: "", // the page last chosen in the Print pop-up: "" | "up" | "land"
     fnt: "classic", // text font: std (Modern) | classic (Traditional) | bold (Bold)
     pref: "", // dhrupad in the printout: "" as on the page | 0 | 1
@@ -174,6 +177,7 @@ export function tidy(P) {
   if (["std", "classic", "bold"].indexOf(P.fnt) < 0) P.fnt = "classic";
   if (["std", "classic", "bold"].indexOf(P.pfn) < 0) P.pfn = "";
   if (P.tr !== "iast") P.tr = "simple";
+  if (P.libSort !== "az") P.libSort = "";
   // Keep screen on was a switch (1 on) before it took minutes (Satish, 2026-10-30): on is 30 minutes
   if ([0, 15, 30, 45, 60].indexOf(P.wake) < 0) P.wake = P.wake ? 30 : 0;
   // a menu language's code (its file in js/strings/); one without words shows English (js/core/words.js ui())

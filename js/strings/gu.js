@@ -103,6 +103,10 @@ export default {
   // The Library by category and the categories sheet (js/features/library.js)
   library: {
     open: "વિભાગો બદલો",
+    // Book order | A–Z at the top of the list
+    order: "રચનાઓનો ક્રમ",
+    bookOrder: "મૂળ ક્રમ",
+    aToZ: "અકારાદિ",
     title: "વિભાગો",
     texts: "પાઠ",
     textsInfo: "દરેક પાઠ કયા વિભાગમાં હોય તે પસંદ કરો.",

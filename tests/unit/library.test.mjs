@@ -4,6 +4,7 @@ import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
 import {
   addCategory,
+  aToZ,
   categoriesOf,
   categoryOf,
   cleanLocal,
@@ -186,5 +187,35 @@ describe("what storage or a backup file holds is checked", () => {
     l = renameCategory(l, BUNDLED, "aarti", { mr: "आरत्या", en: "Aartis" }).local;
     l = moveText(l, categoriesOf(BUNDLED, l), TEXTS[1], "bhajan").local;
     expect(cleanLocal(JSON.parse(JSON.stringify(l)))).toEqual(l);
+  });
+});
+
+// The Library's A–Z (Satish, 2026-11-11): each category's texts by their titles in the language shown
+describe("aToZ", () => {
+  const T = { a: "सुखकर्ता दुःखहर्ता", b: "आरती जय गणेश देवा", c: "अनन्यता मज घडो", d: "ज्ञानेश्वरांची आरती", e: "कालभैरवाष्टकम्" };
+  const E = { a: "Sukhkarta Dukhharta", b: "aarti Jai Ganesh Deva", c: "Shri Rudrashtakam", d: "Ekadashi Aarti", e: "shri Hanuman Chalisa" };
+  test("Marathi in the order of the Marathi alphabet: अ आ … क … स … ह ळ क्ष ज्ञ, ज्ञ last as Marathi lists it", () => {
+    expect(aToZ(["a", "b", "c", "d", "e"], (id) => T[id], "mr")).toEqual(["c", "b", "e", "a", "d"]);
+  });
+  test("English A to Z, ignoring case", () => {
+    expect(aToZ(["a", "b", "c", "d", "e"], (id) => E[id], "en")).toEqual(["b", "d", "e", "c", "a"]);
+  });
+  test("two the same keep their book order; the list given is left as it was", () => {
+    const ids = ["x", "y", "z"];
+    expect(aToZ(ids, (id) => (id === "z" ? "A" : "B"), "en")).toEqual(["z", "x", "y"]);
+    expect(ids).toEqual(["x", "y", "z"]);
+  });
+  test("every category of the Library sorts to the same texts, each once", () => {
+    for (const s of shelves(
+      TEXTS,
+      categoriesOf(
+        BUNDLED.map((c, i) => ({ id: c.id, name: c.name, order: i + 1 })),
+        emptyLocal(),
+      ),
+      emptyLocal(),
+    )) {
+      const t = (id) => lib.texts.find((x) => x.id === id).title;
+      expect([...aToZ(s.texts, t, "mr")].sort()).toEqual([...s.texts].sort());
+    }
   });
 });
