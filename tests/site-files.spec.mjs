@@ -174,3 +174,20 @@ test("every suite the other engines are given exists", () => {
   const suites = readdirSync(new URL("./", import.meta.url)).filter((f) => f.endsWith(".spec.mjs"));
   expect(names.filter((n) => !suites.includes(n + ".spec.mjs"))).toEqual([]);
 });
+
+// CI's jobs all run at once only while there are at most 20 (a free account's limit, .github/workflows/tests.yml);
+// each browser's shards numbered 1/n … n/n, none left out, so every test still runs
+test("CI's test jobs fit in the jobs run at once, and each browser's shards cover all its tests", () => {
+  const ci = readFileSync(new URL("../.github/workflows/tests.yml", import.meta.url), "utf8");
+  const shards = [...ci.matchAll(/projects: "?([a-z,]+)"?, shard: (\d+)\/(\d+)/g)].map((m) => [m[1], +m[2], +m[3]]);
+  const others = [...ci.matchAll(/^ {2}[a-z-]+:\n {4}runs-on/gm)].length - 1;
+  expect(shards.length + others).toBeLessThanOrEqual(20);
+  for (const [p, , n] of shards)
+    expect(
+      shards
+        .filter((s) => s[0] === p)
+        .map((s) => s[1])
+        .sort((a, b) => a - b),
+      p,
+    ).toEqual(Array.from({ length: n }, (_, i) => i + 1));
+});
