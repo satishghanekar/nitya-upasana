@@ -139,9 +139,10 @@ async function drawn(page, cdp, sel) {
 const share = (fonts, name) => (fonts[name] || 0) / Object.values(fonts).reduce((a, b) => a + b, 0);
 for (const fnt of ["std", "classic", "bold"])
   for (const script of ["mr", "kn", "te", "gu"])
-    test(`${fnt}, ${script} letters with English and IAST: each drawn in its own font, on screen and in print @chromium-only`, async ({ browser }) => {
+    test(`${fnt}, ${script} letters with English (IAST): each drawn in its own font, on screen and in print @chromium-only`, async ({ browser }) => {
       test.setTimeout(180_000);
-      for (const tr of ["simple", "iast"]) {
+      // (IAST only: the same font files as the everyday English, and the accent marks only it has, 2026-11-11)
+      for (const tr of ["iast"]) {
         const c = await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: "block" });
         const page = await c.newPage();
         const cdp = await c.newCDPSession(page);

@@ -164,3 +164,13 @@ test("every script, style file and test suite is named in its README", () => {
   expect(missing("css/README.md", "css/", /\.css$/), "css/README.md").toEqual([]);
   expect(missing("tests/README.md", "tests/", /^[^/]+\.spec\.mjs$/), "tests/README.md").toEqual([]);
 });
+
+// The suites the other engines run are named in playwright.config.mjs (ENGINE, FLOWS): a suite renamed there would
+// quietly stop running outside Chromium, so every name must be a suite that exists (2026-11-11)
+test("every suite the other engines are given exists", () => {
+  const config = readFileSync(new URL("./playwright.config.mjs", import.meta.url), "utf8");
+  const names = [...config.matchAll(/\/\(([a-z|-]+)\)\\\.spec/g)].flatMap((m) => m[1].split("|"));
+  expect(names.length).toBeGreaterThan(10);
+  const suites = readdirSync(new URL("./", import.meta.url)).filter((f) => f.endsWith(".spec.mjs"));
+  expect(names.filter((n) => !suites.includes(n + ".spec.mjs"))).toEqual([]);
+});
