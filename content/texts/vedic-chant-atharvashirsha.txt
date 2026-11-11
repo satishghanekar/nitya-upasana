@@ -8,6 +8,7 @@ line-ids: p1l
 layout: prose
 credit: [अथर्ववेदीय उपनिषद](https://mr.wikipedia.org/wiki/गणपती_अथर्वशीर्ष)
 credit-en: [An Atharva Veda Upanishad](https://en.wikipedia.org/wiki/Ganapati_Atharvaśīrṣa)
+recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90)
 ---
 [dhrupad]
 ॐ भ॒द्रं कर्णे॑भिः शृणु॒याम॑ देवाः ।

@@ -7,6 +7,7 @@ layout: lines
 stanza-numbers: as-written
 credit: [ब्रह्माण्डपुराण](https://en.wikipedia.org/wiki/Lalita_Sahasranama)
 credit-en: [Brahmanda Purana](https://en.wikipedia.org/wiki/Lalita_Sahasranama)
+recording: [Rajshri Soul](https://www.youtube.com/watch?v=DtSBLpQStT4&t=87)
 ---
 [note: न्यासः | Nyasa]
 

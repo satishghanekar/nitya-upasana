@@ -94,8 +94,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // since 2026-11-10: the JSDoc types the type checks need, in every script: 341.3 KB then; 347 KB since 2026-11-10:
   // Home's place hint and "Your routine" in five languages: 345.7 KB then; 348 KB since 2026-11-10: Listen started on
   // Home opening the session, and room for its panel at the page's end: 347.3 KB then; 350 KB since 2026-11-11: the
-  // Library's Book order | A–Z in five languages, about 1.6 KB, 349.6 KB with it on a Mac)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(350_000);
+  // Library's Book order | A–Z in five languages, about 1.6 KB, 349.6 KB with it on a Mac; 351 KB since 2026-11-11: a
+  // text's recordings on YouTube under its credit, 350.15 KB with them on a Mac)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(351_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a

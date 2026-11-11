@@ -64,3 +64,28 @@ test("Back from a text shows Home again", async ({ page }) => {
   await page.goBack();
   await expect(page.locator("#home")).toBeVisible();
 });
+
+test("a text with a recording shows it under the credit: YouTube, the chanters, opening in a new tab where it starts @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await page.locator("#hm").click();
+  // a text's section, by its title in the Library
+  const sec = (title) => page.evaluate((t) => [...document.querySelectorAll("#jl a[data-go]")].find((x) => x.textContent.includes(t)).dataset.go, title);
+  const ath = await sec("गणपत्यथर्वशीर्ष");
+  const pav = await sec("पवमान");
+  await page.locator(`#jl a[data-go="${ath}"]`).click();
+  const rec = page.locator(`#${ath} .cr .rec`);
+  await expect(rec).toBeVisible();
+  await expect(rec).toHaveText("▶ YouTube: Challakere Brothers ↗");
+  const a = rec.locator("a");
+  await expect(a).toHaveAttribute("href", "https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90");
+  await expect(a).toHaveAttribute("target", "_blank");
+  await expect(a).toHaveAttribute("rel", "noopener");
+  await expect(a).toHaveAccessibleName("Challakere Brothers: YouTube (opens in a new tab)");
+  // two recordings, the long name wrapping inside the screen
+  await page.locator("#hm").click();
+  await page.locator(`#jl a[data-go="${pav}"]`).click();
+  const pv = page.locator(`#${pav} .cr .rec`);
+  await expect(pv.locator("a")).toHaveCount(2);
+  const box = await pv.boundingBox();
+  expect(box.x + box.width).toBeLessThanOrEqual(await page.evaluate(() => document.documentElement.clientWidth));
+});

@@ -331,3 +331,12 @@ html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
     font-size: 0.78em;
   }
 }
+/* A recording to hear, under the credit (js/text/content.js recordings()): a line of its own, smaller; a long name of
+   chanters wraps, unlike a credit's link, so a phone never scrolls sideways */
+.cr .rec {
+  display: block;
+  font-size: var(--fz-s);
+}
+.cr .rec a {
+  white-space: normal;
+}
