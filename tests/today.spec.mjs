@@ -373,10 +373,12 @@ test("at the end of a session the last lines scroll up well clear of the bottom 
       const last = [...document.querySelectorAll("#main > .ash.inrun .verse p")].filter((x) => x.getClientRects().length).pop();
       const lsn = document.getElementById("lsn");
       const top = lsn.hidden ? document.getElementById("asc").getBoundingClientRect().top : lsn.getBoundingClientRect().top;
-      return { gap: top - last.getBoundingClientRect().bottom, quarter: innerHeight / 4 };
+      return { gap: top - last.getBoundingClientRect().bottom, room: innerHeight * 0.12 };
     });
   const bare = await clear();
-  expect(bare.gap).toBeGreaterThanOrEqual(bare.quarter - 2);
+  expect(bare.gap).toBeGreaterThanOrEqual(bare.room - 2);
+  // but no more than that and the end's ornament: a quarter of the screen left half a phone empty (2026-11-11)
+  expect(bare.gap).toBeLessThanOrEqual(bare.room + 160);
   // Listen's panel over the bar: the page grows by its height, so the last line still clears it
   await page.evaluate(() => {
     const p = document.getElementById("lsn");
@@ -385,7 +387,7 @@ test("at the end of a session the last lines scroll up well clear of the bottom 
   });
   await expect.poll(() => page.evaluate(() => document.documentElement.style.getPropertyValue("--lsnh"))).not.toBe("");
   const listening = await clear();
-  expect(listening.gap).toBeGreaterThanOrEqual(listening.quarter - 2);
+  expect(listening.gap).toBeGreaterThanOrEqual(listening.room - 2);
   // Home ends with its own list, with no room added under it
   await page.evaluate(() => (document.getElementById("lsn").hidden = true));
   await page.evaluate(() => scrollTo(0, 0));
