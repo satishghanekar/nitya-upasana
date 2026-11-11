@@ -21,13 +21,21 @@ const SNAP_ENV = process.env.SNAPSHOT_ENV || "ci";
 const PORT = Number(process.env.PW_PORT || 4173);
 const exe = process.env.PW_CHROMIUM_PATH;
 const chromiumLaunch = exe ? { launchOptions: { executablePath: exe } } : {};
+// Which suites each engine runs (2026-11-11: two thirds of every CI run repeated, in other engines, tests of plain
+// JavaScript that no engine can make differ, the calendar's sums, the Library's categories, the builder's lists):
+// - ENGINE, how the page is drawn and printed, where engines do differ: every engine runs them;
+// - FLOWS, reading, Home, the bars, accessibility and offline: WebKit too, Safari's engine, as most readers are on
+//   iPhones and iPads (the iPhone runs every @mobile test, as before);
+// - the rest is logic, run once, in Chromium.
+const ENGINE = /(smoke|layout|text-size|edge|compat|print-view|fonts)\.spec\.mjs$/;
+const FLOWS = /(smoke|layout|text-size|edge|compat|print-view|fonts|interactions|a11y|offline|reading|today|welcome)\.spec\.mjs$/;
 const all = {
   chromium: { use: { ...devices["Desktop Chrome"], ...chromiumLaunch } },
-  firefox: { use: { ...devices["Desktop Firefox"] }, grepInvert: /@chromium-only/ },
-  webkit: { use: { ...devices["Desktop Safari"] }, grepInvert: /@chromium-only/ },
+  firefox: { use: { ...devices["Desktop Firefox"] }, grepInvert: /@chromium-only/, testMatch: ENGINE },
+  webkit: { use: { ...devices["Desktop Safari"] }, grepInvert: /@chromium-only/, testMatch: FLOWS },
   iphone: { use: { ...devices["iPhone 13"] }, grep: /@mobile/ },
-  ipad: { use: { ...devices["iPad (gen 7)"] }, grep: /@mobile/ },
-  pixel: { use: { ...devices["Pixel 7"], ...chromiumLaunch }, grep: /@mobile/ },
+  ipad: { use: { ...devices["iPad (gen 7)"] }, grep: /@mobile/, testMatch: FLOWS },
+  pixel: { use: { ...devices["Pixel 7"], ...chromiumLaunch }, grep: /@mobile/, testMatch: /(smoke|layout|text-size|edge|compat|interactions)\.spec\.mjs$/ },
 };
 const wanted = (process.env.PW_PROJECTS || (process.env.CI ? Object.keys(all).join(",") : "chromium")).split(",");
 
