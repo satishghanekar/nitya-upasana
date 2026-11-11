@@ -96,8 +96,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // Home opening the session, and room for its panel at the page's end: 347.3 KB then; 350 KB since 2026-11-11: the
   // Library's Book order | A–Z in five languages, about 1.6 KB, 349.6 KB with it on a Mac; 351 KB since 2026-11-11: a
   // text's recordings on YouTube under its credit, 350.15 KB with them on a Mac; 352 KB since 2026-11-11: Follow
-  // following the dhrupad and showing it after every stanza, and its Spotlight, 351.4 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(352_000);
+  // following the dhrupad and showing it after every stanza, and its Spotlight, 351.4 KB then; 353 KB since 2026-11-11:
+  // Follow's pill, its wave following the microphone, 352.1 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(353_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
