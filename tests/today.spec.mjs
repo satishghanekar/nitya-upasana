@@ -78,10 +78,11 @@ test("the bundled default: a new phone's Home shows Short's lists from content/r
   expect(await rows(page).locator(".t1").allTextContents()).toEqual(textsFor(ALL.short, 4, "evening").map((id) => TITLE[id].title));
 });
 
-// Every session of the bundled routine, every weekday, read through with Next at a phone's, an upright iPad's and a
-// computer's width: the address follows each text in Home's order, and Next after the last goes Home. A title tapped
-// last is the text read, however short (the Mantra Pushpanjali ends every morning: on an iPad or a computer the page
-// ends before it can reach the top bar, js/core/apply.js aimAt()).
+// Every session of the bundled routine, every weekday, read through with Next at a phone's width: the address follows
+// each text in Home's order, and Next after the last goes Home. A title tapped last is the text read, however short
+// (the Mantra Pushpanjali ends every morning: on an iPad or a computer the page ends before it can reach the top bar,
+// js/core/apply.js aimAt()). The wider screens read the mornings, the sessions with that short last text, every day:
+// the evenings there read as the phone's do (the whole week on each width took 32 s a width, 2026-11-11).
 for (const [name, vp] of [
   ["a phone", { width: 390, height: 844 }],
   ["an upright iPad", { width: 820, height: 1180 }],
@@ -92,7 +93,7 @@ for (const [name, vp] of [
     await page.setViewportSize(vp);
     // Monday 19 to Sunday 25 October 2026
     for (let d = 19; d <= 25; d++)
-      for (const at of ["08:00", "19:00"]) {
+      for (const at of name === "a phone" ? ["08:00", "19:00"] : ["08:00"]) {
         await openSite(page, SETUPS.marathi, { now: new Date(`2026-10-${d}T${at}:00-04:00`) });
         const secs = await page.$$eval("#tsl a.tgo", (as) => as.map((a) => a.getAttribute("href").replace("./", "")));
         const where = `${d} Oct ${at}`;
