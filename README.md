@@ -1,6 +1,6 @@
 # नित्य उपासना / Nitya Upasana
 
-A small web app for daily upasana (worship): Vedic chants, aartis and ashtaks in Marathi, Hindi and Sanskrit, with English transliteration, and a Home page that shows what to chant now from each person's own routine.
+A small web app for daily upasana (worship): Vedic chants, aartis, stotras and ashtaks in Marathi, Hindi and Sanskrit, with English transliteration, and a Home page that shows what to chant now from each person's own routine.
 
 **Live site:** https://nitya-upasana.pages.dev
 
@@ -11,8 +11,9 @@ Everything runs on the phone or computer. Nothing is sent anywhere, there is no 
 What a reader sees and can do is described in the site's own **Help** (Share in the top bar → Help, or Settings → More → About). Its text is in `index.html`, in the `<template id="hlpc">`; keep it up to date with every change a reader can see. In short:
 
 - **Home** is what to chant now: the picture for the time of day (sunrise, midday, sunset) with the weekday's star ringed, the date in the reading languages, the Vedic calendar card with Coming up at its bottom (the next festivals, Pradosh, Sankashti and the US's and India's public holidays, each with its own drawing; a holiday on a festival's day shares its row), and a Morning / Afternoon / Evening switch that opens at the session for the time now (Morning before 12:00, Afternoon 12:00 to 17:00, Evening from 17:00). The session's texts come from the reading person's routine for today's weekday. A title starts the session there: its texts follow one another in one scroll, in session order, and ‹ Prev and Next › jump between them and never leave the session. On a festival, Pradosh, Sankashti or chosen holiday the calendar card takes that day's colour and drawing. ‹ › beside the date show the day before or after: all of Home follows that day (date, calendar card, Coming up, the lists), so its texts can be read or printed, and Today under the arrows comes back. Nothing on Home moves from day to day. On wide screens (from 1024px) Home's column stays on the left while a text is read on the right.
-- **Library** (the open-book button in the bottom bar): every text by category (Vedic Chant, Aarti, Stotra, Ashtak, and any the family adds), numbered from 1 in each, with search across every title and line (the box at the foot of the page on phones) and **Recent**, the last places each person went to from it. Categories can be added, renamed and texts moved on each phone. When the site has PDFs, a **Books** (पोथी) tab beside **Chants** (पाठ) lists them under the same categories; each shows its pages and size, opens in the phone's own PDF viewer and is kept on the phone once opened (a cloud before each title shows which are: ↓ online only, ✓ saved).
-- **Reading:** a session in one scroll, or one text at a time from the Library or search, in the main language, the second language or both; everyday English (*Sukhkarta*) or scholarly IAST (*sukhakartā*, with the Vedic swara marks); Marathi letters or the same words in Kannada, Telugu or Gujarati letters; three text fonts (Traditional, Modern, Bold), text size, themes and high contrast; dhrupad once or after every verse. The Vedic chants run on as paragraphs in one language. The bottom bar has ‹ Prev, Home, Library, Reading (Aa) and Next ›; Print, in the top bar, prints the session being read, else the text.
+- **Library** (the open-book button in the bottom bar): every text by category (Vedic Chant, Aarti, Stotra, Ashtak, and any the family adds), numbered from 1 in each, in the book's order or A to Z (each person's choice; a text keeps its number either way), with search across every title and line (the box at the foot of the page on phones) and **Recent**, the last places each person went to from it. Categories can be added, renamed and texts moved on each phone. When the site has PDFs, a **Books** (पोथी) tab beside **Chants** (पाठ) lists them under the same categories; each shows its pages and size, opens in the phone's own PDF viewer and is kept on the phone once opened (a cloud before each title shows which are: ↓ online only, ✓ saved).
+- **Reading:** a session in one scroll, or one text at a time from the Library or search, in the main language, the second language or both; everyday English (*Sukhkarta*) or scholarly IAST (*sukhakartā*, with the Vedic swara marks); Marathi letters or the same words in Kannada, Telugu or Gujarati letters; three text fonts (Traditional, Modern, Bold), text size, themes and high contrast; dhrupad once or after every verse. The Vedic chants run on as paragraphs in one language. Under a text's credit, a recording of it on YouTube where one has been checked against the text, opening where the text starts. The bottom bar has ‹ Prev, Home, Library, Reading (Aa), Follow and Next ›; Print, in the top bar, prints the session being read, else the text.
+- **Follow** (the microphone in the bottom bar): the phone hears the chanting and marks the line being chanted, keeping it in view; a speech model on the phone itself (downloaded once, about 120 MB), nothing leaving the phone (see `ARCHITECTURE.md`, *Hearing the chanting*).
 - **Vedic calendar** (panchang): tithi, nakshatra, yoga, sunrise, sunset, moonrise, month and samvatsara for the reader's place, a 15 days view, a month view, 35 festivals (Maharashtrian festivals and the days of Shri Gondavalekar Maharaj, Shri Swami Samarth and Shri Nana Maharaj Taranekar), and the public holidays of the US, India, Maharashtra and Karnataka, all worked out on the phone.
 - **Routine builder:** each person's texts for each session, the same every day or by weekday. A new person follows Short, one of four ready-made routines in `content/routines.json` (Short, Daily, Full, Extended), and chooses another at the top of the builder; their first change makes it their own (Go back returns to the ready-made one).
 - **People on one phone:** up to eight profiles, each with their own settings and routine (a new phone starts with one, "Me", and a welcome card on Home asks their name and routine), and `.nitya` backup files to save and restore them.
@@ -41,13 +42,14 @@ There is no build step. The files in this repository are exactly what the site s
 | `icon-*.png`, `apple-touch-icon*.png`, `favicon-midday-32.png`, `favicon-sunset-32.png` | The app icon (the sunrise picture; phones copy it when the app is installed, so it does not change with the time of day) and the browser tab icons for the afternoon and evening. |
 | `share.jpg` | The picture shown in link previews (WhatsApp and others). |
 
-The pictures exactly as Satish supplied them, which these were cut from, were removed on 2026-11-02 (everything here is published, and the site has what it needs); they are in the repository's history, `originals/`, if ever needed.
 | `manifest.json` | Name, colours and icons used when the site is added to a Home Screen. |
 | `_headers` | How long phones may keep each kind of file before asking again (read by Cloudflare Pages). |
 | `tests/` | The automated tests (see `tests/README.md`). Not part of the site. |
 | `.github/workflows/` | The test run on every pull request and push to `main`, and the job that refreshes its screenshots. |
 | `ARCHITECTURE.md` | How the page, styles and scripts fit together, for anyone changing the code. |
 | `CLAUDE.md`, `.cursorrules` | The short list of rules for changing the site, for people and AI assistants (`.cursorrules` points Cursor to `CLAUDE.md`). |
+
+The pictures exactly as Satish supplied them, which these were cut from, were removed on 2026-11-02 (everything here is published, and the site has what it needs); they are in the repository's history, `originals/`, if ever needed.
 
 ## How publishing works
 
@@ -153,7 +155,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 - `¦` marks a place where a long line may break on a narrow phone (it shows as nothing). Put it after the space: `निढळावरी कर, ¦निढळावरी कर`. English lines need none: on a phone they break after a single `|` or a comma by themselves.
 - ` // ` (a space, two slashes, a space) always breaks the line there. The spaces belong to the mark: `|  // ` (two spaces) keeps one real space before the break.
 - **Verse numbers typed in a line** (`॥ १० ॥` in the original, `|| 10 ||` in English) must be the same number in both; the checks name any line where they differ. A reference in parts, as Pavamana Suktam's Rigveda hymn and verse (`॥ ९.००१.०१ ॥`, `|| 9.001.01 ||`), is checked the same way and kept whole on its row.
-- **Vedic svara marks** (॑ ॒ ᳚) must be kept exactly. A mark that belongs with a visarga goes **after** the ः, otherwise it shows as a dotted circle.
+- **Vedic svara marks** (॑ ॒ ᳚) must be kept exactly. A mark that belongs with a visarga goes **after** the ः, otherwise it shows as a dotted circle. After a Rigveda kampa numeral with marks (१॒॑), no anusvara or visarga: it goes before the numeral (`दू॒त्यं१॒॑`, not `दू॒त्य१॒॑ं`), and the Vedic anusvara is written ग्ं, not the one sign ꣳ, which the Kannada, Telugu and Gujarati fonts lack. The unit tests name any line that breaks this.
 - **Only the original line and the everyday English line are typed.** The scholarly English (IAST) is made from the original line, so a spelling fix there fixes the scholarly English too.
 
 ### Adding it to the site
@@ -172,7 +174,7 @@ When **editing** a text, only the file changes, unless a title or the number of 
 
 When the English spelling is *sukhakartā*, `js/text/iast.js` writes each English line from the original line beside it, along with the titles, the first time they are needed; switching spelling happens in place. The rules:
 
-- Standard IAST letters: ā ī ū ṛ, ṭ ṭh ḍ ḍh ṇ, ś ṣ, ṅ ñ, ḷ for ळ, ḥ for the visarga, `'` for ऽ, om̐ for ॐ, gṃ for the Vedic anusvara (ग्ं, or ꣳ as one sign).
+- Standard IAST letters: ā ī ū ṛ, ṭ ṭh ḍ ḍh ṇ, ś ṣ, ṅ ñ, ḷ for ळ, ḥ for the visarga, `'` for ऽ, om̐ for ॐ, gṃ for the Vedic anusvara (ग्ं).
 - The inherent "a" is always written (*jaya deva*, *suravaravandanā*), as in strict IAST.
 - Anusvara (ं): before k/g it is ṅ, before c/j ñ, before ṭ/ḍ ṇ, before t/d/n n, before p/b/m m (*sarvāṅgī*, *sundara*, *vakratuṇḍa*, *lambodara*). Otherwise, and in Marathi plural endings and nasal vowels, it stays ṃ (*muktāphaḷāṃcī*, *sumanāṃcyā*, *kaiṃcā*). Chandrabindu (ँ) is m̐.
 - Swara marks in the Vedic chants: ॒ (anudatta) becomes a line under the vowel, ॑ (svarita) a tick above, ᳚ a double tick, matching the group's printed śivāñjali booklet.

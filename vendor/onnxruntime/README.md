@@ -5,7 +5,7 @@ package `onnxruntime-web@1.30.0` (`dist/`). It runs the chanting model (`models/
 
 **The one exception to "no runtime packages" (CLAUDE.md), agreed 2026-11-05:** a model can't run in a page without a
 runtime like this, and writing one is out of reach. It is kept to two builds, served from this site like everything
-else, with no npm, no bundler and no build step; it is loaded only when Listen is used, never with the page, and a
+else, with no npm, no bundler and no build step; it is loaded only when Follow (Listen until 2026-11-11) is used, never with the page, and a
 phone downloads only the build it uses (`WAYS` in `js/features/listen.js`).
 
 | File | What |
