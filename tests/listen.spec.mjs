@@ -20,7 +20,7 @@ test("Listen asks before its one-time download; Not now leaves the page as it wa
   await openSite(page, SETUPS.english, { errors });
   const ear = page.locator("#lsb");
   await expect(ear).toBeVisible();
-  await expect(ear).toHaveAccessibleName("Listen");
+  await expect(ear).toHaveAccessibleName("Follow");
   await ear.click();
   const panel = page.locator("#lsn");
   await expect(panel.getByRole("status")).toContainText("122 MB");
@@ -232,7 +232,7 @@ test("after 5 minutes with no chanting followed, Listen stops by itself and says
   await page.clock.fastForward("04:30");
   await expect(panel.getByRole("status")).toHaveText("Listening…");
   await page.clock.fastForward("01:00");
-  await expect(panel.getByRole("status")).toHaveText("Listen stopped: no chanting heard for 5 minutes. Tap Listen to start again.");
+  await expect(panel.getByRole("status")).toHaveText("Follow stopped: no chanting heard for 5 minutes. Tap Follow to start again.");
   await expect(page.locator("#lsb")).toHaveAttribute("aria-pressed", "false");
   await panel.getByRole("button", { name: "Close" }).click();
   await expect(panel).toBeHidden();
@@ -291,7 +291,7 @@ test("Settings → About says where Listen runs its model: the CPU here, the GPU
   await expect(page.locator("#lswr")).not.toHaveAttribute("hidden", "");
   expect(await page.evaluate(() => window.__gpuAsked)).toBe(1);
   await expect(page.locator("#lswr")).toHaveAttribute("data-way", "cpu");
-  await expect(page.locator("#lsw")).toHaveText("Listen: CPU");
+  await expect(page.locator("#lsw")).toHaveText("Follow: CPU");
   await expect(page.locator("#lswn")).toHaveText("Works on every phone, uses more battery");
   await expect(page.locator("#lswb")).toHaveText("Standard");
   // the Listen line comes before the version, which is last in About
@@ -310,7 +310,7 @@ test("Settings → About says the GPU when the browser has WebGPU and an adapter
   await openSite(page, SETUPS.english, { errors });
   await page.locator("#aa").click();
   await expect(page.locator("#lswr")).toHaveAttribute("data-way", "gpu");
-  await expect(page.locator("#lsw")).toHaveText("Listen: GPU");
+  await expect(page.locator("#lsw")).toHaveText("Follow: GPU");
   await expect(page.locator("#lswn")).toHaveText("About 3× faster, lighter on battery");
   await expect(page.locator("#lswb")).toHaveText("Optimized");
   // only the GPU's icon (the chip with a bolt) shows
