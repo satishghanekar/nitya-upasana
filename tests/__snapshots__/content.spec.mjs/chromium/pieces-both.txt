@@ -449,8 +449,55 @@ Svasti No Bruhaspatirdadhatu ||
 
 अथर्ववेदीय उपनिषद ↗
 
-### vedic-chant-purusha-suktam
+### vedic-chant-ganapati-sarasvati-prarthana
 2.
+गणपति सरस्वती प्रार्थना
+Ganapati and Sarasvati Prarthana
+
+श्री गुरुभ्यो नमः । हरिः ओम् ॥
+
+Shri Gurubhyo Namah | Harih Om ||
+
+गणानां᳚ त्वा ग॒णप॑तिं हवामहे क॒विं क॑वी॒नामु॑प॒मश्र॑वस्तमम् ।
+
+ज्ये॒ष्ठ॒राजं॒ ब्रह्म॑णां ब्रह्मणस्पत॒ आ नः॑ शृ॒ण्वन्नू॒तिभिः॑ सीद॒ साद॑नम् ॥
+
+श्री महागणपतये नमः ॥
+
+Gananam Tva Ganapatim Havamahe Kavim Kavinamupamashravastamam |
+
+Jyeshtharajam Brahmanam Brahmanaspata A Nah Shrunvannutibhih Sida Sadanam ||
+
+Shri Mahaganapataye Namah ||
+
+प्र णो᳚ दे॒वी सर॑स्वती॒ वाजे᳚भिर्वा॒जिनी᳚वती ।
+
+धी॒नाम॑वि॒त्र्य॑वतु ॥
+
+श्री महासरस्वत्यै नमः ॥
+
+Pra No Devi Sarasvati Vajebhirvajinivati |
+
+Dhinamavitryavatu ||
+
+Shri Mahasarasvatyai Namah ||
+
+वेद॒ वात॑स्य वर्त॒निमु॒रोरृ॒ष्वस्य॑ बृह॒तः ।
+
+वेदा॒ ये अ॒ध्यास॑ते ॥
+
+श्री वेदपुरुषाय नमः ॥
+
+Veda Vatasya Vartanimurorrushvasya Bruhatah |
+
+Veda Ye Adhyasate ||
+
+Shri Vedapurushaya Namah ||
+
+ऋग्वेद ↗
+
+### vedic-chant-purusha-suktam
+3.
 पुरुषसूक्तम्
 Purusha Suktam
 
@@ -905,7 +952,7 @@ Shanno Astu Dvipade | Sham Chatushpade ||
 कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक ↗
 
 ### vedic-chant-shri-sukta
-3.
+4.
 श्रीसूक्त
 Shri Sukta
 
@@ -1254,7 +1301,7 @@ Tanno Lakshmih Prachodayat ||
 ऋग्वेद (खिलसूक्त)
 
 ### vedic-chant-laghunyasa
-4.
+5.
 लघुन्यासः
 Laghunyasa
 
@@ -1593,7 +1640,7 @@ Mebhayam Cha Me Sugam Cha Me Shayanam Cha Me Susha Cha Me Sudinam Cha Me ||
 || Om Shantih Shantih Shantih ||
 
 ### vedic-chant-shree-rudra
-5.
+6.
 श्री रुद्रप्रश्नः
 Shree Rudra
 
@@ -2712,7 +2759,7 @@ Om Shantih Shantih Shantih ||
 कृष्ण यजुर्वेद, तैत्तिरीय संहिता ↗
 
 ### vedic-chant-durga-suktam
-6.
+7.
 दुर्गा सूक्तम्
 Durga Suktam
 
@@ -2787,37 +2834,13 @@ Tanno Durgih Prachodayat ||
 कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक (महानारायणोपनिषत्)
 
 ### vedic-chant-pavamana-suktam
-7.
+8.
 पवमानसूक्तम्
 Pavamana Suktam
 
 ॥ पवमानसूक्तम् ॥
 
 || Pavamanasuktam ||
-
-गणानां᳚ त्वा ग॒णप॑तिं हवामहे क॒विं क॑वी॒नामु॑प॒मश्र॑वस्तमम् ।
-
-ज्ये॒ष्ठ॒राजं॒ ब्रह्म॑णां ब्रह्मणस्पत॒ आ नः॑ शृ॒ण्वन्नू॒तिभिः॑ सीद॒ साद॑नम् ॥
-
-Gananam Tva Ganapatim Havamahe Kavim Kavinamupamashravastamam |
-
-Jyeshtharajam Brahmanam Brahmanaspata A Nah Shrunvannutibhih Sida Sadanam ||
-
-प्र णो᳚ दे॒वी सर॑स्वती॒ वाजे᳚भिर्वा॒जिनी᳚वती ।
-
-धी॒नाम॑वि॒त्र्य॑वतु ॥
-
-Pra No Devi Sarasvati Vajebhirvajinivati |
-
-Dhinamavitryavatu ||
-
-वेद॒ वात॑स्य वर्त॒निमु॒रोरृ॒ष्वस्य॑ बृह॒तः ।
-
-वेदा॒ ये अ॒ध्यास॑ते ॥
-
-Veda Vatasya Vartanimurorrushvasya Bruhatah |
-
-Veda Ye Adhyasate ||
 
 श॒तधा᳚र॒मुत्स॒मक्षी᳚यमाणं विप॒श्चितं᳚ पि॒तरं॒ वक्त्वा᳚नाम् ।
 
@@ -2838,6 +2861,8 @@ Yastanna Veda Kimrucha Karishyati Ya Ittadvidusta Ime Samasate ||
 ॥ अथ पवमानसूक्तम् ॥
 
 || Atha Pavamanasuktam ||
+
+प्रथमोऽध्यायःPrathama Adhyaya
 
 स्वादि॑ष्ठया॒ मदि॑ष्ठया॒ पव॑स्व सोम॒ धार॑या ।
 
@@ -3750,6 +3775,8 @@ Viprasya Dharaya Kavih || 9.012.08 ||
 A Pavamana Dharaya Rayim Sahasravarchasam |
 
 Asme Indo Svabhuvam || 9.012.09
+
+द्वितीयोऽध्यायःDvitiya Adhyaya
 
 सोम॑ पुना॒नो अ॑र्षति स॒हस्र॑धारो॒ अत्य॑विः ।
 
@@ -5383,6 +5410,8 @@ Pavasva Vajasataye Viprasya Grunato Vrudhe |
 
 Soma Rasva Suviryam || 9.043.06 ||
 
+तृतीयोऽध्यायःTritiya Adhyaya
+
 प्र ण॑ इन्दो म॒हे तन॑ ऊ॒र्मिं न बिभ्र॑दर्षसि ।
 
 अ॒भि दे॒वां अ॒यास्यः॑ ॥ ९.०४४.०१ ॥
@@ -6983,6 +7012,8 @@ Rudhaksoma Svastaye Sanjagmano Divah Kavih |
 
 Pavasva Suryo Drushe || 9.064.30 ||
 
+चतुर्थोऽध्यायःChaturtha Adhyaya
+
 हि॒न्वन्ति॒ सूर॒मुस्र॑य॒ स्वसा᳚रो जा॒मय॒स्पति॑म् ।
 
 म॒हामिन्दुं᳚ मही॒युवः॑ ॥ ९.०६५.०१ ॥
@@ -7902,7 +7933,7 @@ Shiva Dishah Pradisha Uddisho Na Apo Vishvatah Paripantu Sarvashah Shanti Shanti
 ऋग्वेद, मण्डल ९ ↗
 
 ### vedic-chant-lalita-sahasranama
-8.
+9.
 श्रीललितासहस्रनामस्तोत्रम्
 Shri Lalita Sahasranama
 न्यासःNyasa
@@ -9488,7 +9519,7 @@ Shrilalita Sahasranama Stotra Kathanam Sampurnam ||
 ब्रह्माण्डपुराण ↗
 
 ### vedic-chant-mantra-pushpanjali
-9.
+10.
 मन्त्रपुष्पाञ्जलिः
 Mantra Pushpanjali
 

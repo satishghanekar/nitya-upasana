@@ -449,8 +449,55 @@ Svasti No Bruhaspatirdadhatu ||
 
 ಅಥರ್ವವೇದೀಯ ಉಪನಿಷದ ↗
 
-### vedic-chant-purusha-suktam
+### vedic-chant-ganapati-sarasvati-prarthana
 2.
+ಗಣಪತಿ ಸರಸ್ವತೀ ಪ್ರಾರ್ಥನಾ
+Ganapati and Sarasvati Prarthana
+
+ಶ್ರೀ ಗುರುಭ್ಯೋ ನಮಃ । ಹರಿಃ ಓಮ್ ॥
+
+Shri Gurubhyo Namah | Harih Om ||
+
+ಗಣಾನಾಂ᳚ ತ್ವಾ ಗ॒ಣಪ॑ತಿಂ ಹವಾಮಹೇ ಕ॒ವಿಂ ಕ॑ವೀ॒ನಾಮು॑ಪ॒ಮಶ್ರ॑ವಸ್ತಮಮ್ ।
+
+ಜ್ಯೇ॒ಷ್ಠ॒ರಾಜಂ॒ ಬ್ರಹ್ಮ॑ಣಾಂ ಬ್ರಹ್ಮಣಸ್ಪತ॒ ಆ ನಃ॑ ಶೃ॒ಣ್ವನ್ನೂ॒ತಿಭಿಃ॑ ಸೀದ॒ ಸಾದ॑ನಮ್ ॥
+
+ಶ್ರೀ ಮಹಾಗಣಪತಯೇ ನಮಃ ॥
+
+Gananam Tva Ganapatim Havamahe Kavim Kavinamupamashravastamam |
+
+Jyeshtharajam Brahmanam Brahmanaspata A Nah Shrunvannutibhih Sida Sadanam ||
+
+Shri Mahaganapataye Namah ||
+
+ಪ್ರ ಣೋ᳚ ದೇ॒ವೀ ಸರ॑ಸ್ವತೀ॒ ವಾಜೇ᳚ಭಿರ್ವಾ॒ಜಿನೀ᳚ವತೀ ।
+
+ಧೀ॒ನಾಮ॑ವಿ॒ತ್ರ್ಯ॑ವತು ॥
+
+ಶ್ರೀ ಮಹಾಸರಸ್ವತ್ಯೈ ನಮಃ ॥
+
+Pra No Devi Sarasvati Vajebhirvajinivati |
+
+Dhinamavitryavatu ||
+
+Shri Mahasarasvatyai Namah ||
+
+ವೇದ॒ ವಾತ॑ಸ್ಯ ವರ್ತ॒ನಿಮು॒ರೋರೃ॒ಷ್ವಸ್ಯ॑ ಬೃಹ॒ತಃ ।
+
+ವೇದಾ॒ ಯೇ ಅ॒ಧ್ಯಾಸ॑ತೇ ॥
+
+ಶ್ರೀ ವೇದಪುರುಷಾಯ ನಮಃ ॥
+
+Veda Vatasya Vartanimurorrushvasya Bruhatah |
+
+Veda Ye Adhyasate ||
+
+Shri Vedapurushaya Namah ||
+
+ಋಗ್ವೇದ ↗
+
+### vedic-chant-purusha-suktam
+3.
 ಪುರುಷಸೂಕ್ತಮ್
 Purusha Suktam
 
@@ -905,7 +952,7 @@ Shanno Astu Dvipade | Sham Chatushpade ||
 ಕೃಷ್ಣ ಯಜುರ್ವೇದ, ತೈತ್ತಿರೀಯ ಆರಣ್ಯಕ ↗
 
 ### vedic-chant-shri-sukta
-3.
+4.
 ಶ್ರೀಸೂಕ್ತ
 Shri Sukta
 
@@ -1254,7 +1301,7 @@ Tanno Lakshmih Prachodayat ||
 ಋಗ್ವೇದ (ಖಿಲಸೂಕ್ತ)
 
 ### vedic-chant-laghunyasa
-4.
+5.
 ಲಘುನ್ಯಾಸಃ
 Laghunyasa
 
@@ -1593,7 +1640,7 @@ Mebhayam Cha Me Sugam Cha Me Shayanam Cha Me Susha Cha Me Sudinam Cha Me ||
 || Om Shantih Shantih Shantih ||
 
 ### vedic-chant-shree-rudra
-5.
+6.
 ಶ್ರೀ ರುದ್ರಪ್ರಶ್ನಃ
 Shree Rudra
 
@@ -2712,7 +2759,7 @@ Om Shantih Shantih Shantih ||
 ಕೃಷ್ಣ ಯಜುರ್ವೇದ, ತೈತ್ತಿರೀಯ ಸಂಹಿತಾ ↗
 
 ### vedic-chant-durga-suktam
-6.
+7.
 ದುರ್ಗಾ ಸೂಕ್ತಮ್
 Durga Suktam
 
@@ -2787,37 +2834,13 @@ Tanno Durgih Prachodayat ||
 ಕೃಷ್ಣ ಯಜುರ್ವೇದ, ತೈತ್ತಿರೀಯ ಆರಣ್ಯಕ (ಮಹಾನಾರಾಯಣೋಪನಿಷತ್)
 
 ### vedic-chant-pavamana-suktam
-7.
+8.
 ಪವಮಾನಸೂಕ್ತಮ್
 Pavamana Suktam
 
 ॥ ಪವಮಾನಸೂಕ್ತಮ್ ॥
 
 || Pavamanasuktam ||
-
-ಗಣಾನಾಂ᳚ ತ್ವಾ ಗ॒ಣಪ॑ತಿಂ ಹವಾಮಹೇ ಕ॒ವಿಂ ಕ॑ವೀ॒ನಾಮು॑ಪ॒ಮಶ್ರ॑ವಸ್ತಮಮ್ ।
-
-ಜ್ಯೇ॒ಷ್ಠ॒ರಾಜಂ॒ ಬ್ರಹ್ಮ॑ಣಾಂ ಬ್ರಹ್ಮಣಸ್ಪತ॒ ಆ ನಃ॑ ಶೃ॒ಣ್ವನ್ನೂ॒ತಿಭಿಃ॑ ಸೀದ॒ ಸಾದ॑ನಮ್ ॥
-
-Gananam Tva Ganapatim Havamahe Kavim Kavinamupamashravastamam |
-
-Jyeshtharajam Brahmanam Brahmanaspata A Nah Shrunvannutibhih Sida Sadanam ||
-
-ಪ್ರ ಣೋ᳚ ದೇ॒ವೀ ಸರ॑ಸ್ವತೀ॒ ವಾಜೇ᳚ಭಿರ್ವಾ॒ಜಿನೀ᳚ವತೀ ।
-
-ಧೀ॒ನಾಮ॑ವಿ॒ತ್ರ್ಯ॑ವತು ॥
-
-Pra No Devi Sarasvati Vajebhirvajinivati |
-
-Dhinamavitryavatu ||
-
-ವೇದ॒ ವಾತ॑ಸ್ಯ ವರ್ತ॒ನಿಮು॒ರೋರೃ॒ಷ್ವಸ್ಯ॑ ಬೃಹ॒ತಃ ।
-
-ವೇದಾ॒ ಯೇ ಅ॒ಧ್ಯಾಸ॑ತೇ ॥
-
-Veda Vatasya Vartanimurorrushvasya Bruhatah |
-
-Veda Ye Adhyasate ||
 
 ಶ॒ತಧಾ᳚ರ॒ಮುತ್ಸ॒ಮಕ್ಷೀ᳚ಯಮಾಣಂ ವಿಪ॒ಶ್ಚಿತಂ᳚ ಪಿ॒ತರಂ॒ ವಕ್ತ್ವಾ᳚ನಾಮ್ ।
 
@@ -2838,6 +2861,8 @@ Yastanna Veda Kimrucha Karishyati Ya Ittadvidusta Ime Samasate ||
 ॥ ಅಥ ಪವಮಾನಸೂಕ್ತಮ್ ॥
 
 || Atha Pavamanasuktam ||
+
+ಪ್ರಥಮೋಽಧ್ಯಾಯಃPrathama Adhyaya
 
 ಸ್ವಾದಿ॑ಷ್ಠಯಾ॒ ಮದಿ॑ಷ್ಠಯಾ॒ ಪವ॑ಸ್ವ ಸೋಮ॒ ಧಾರ॑ಯಾ ।
 
@@ -3750,6 +3775,8 @@ Viprasya Dharaya Kavih || 9.012.08 ||
 A Pavamana Dharaya Rayim Sahasravarchasam |
 
 Asme Indo Svabhuvam || 9.012.09
+
+ದ್ವಿತೀಯೋಽಧ್ಯಾಯಃDvitiya Adhyaya
 
 ಸೋಮ॑ ಪುನಾ॒ನೋ ಅ॑ರ್ಷತಿ ಸ॒ಹಸ್ರ॑ಧಾರೋ॒ ಅತ್ಯ॑ವಿಃ ।
 
@@ -5383,6 +5410,8 @@ Pavasva Vajasataye Viprasya Grunato Vrudhe |
 
 Soma Rasva Suviryam || 9.043.06 ||
 
+ತೃತೀಯೋಽಧ್ಯಾಯಃTritiya Adhyaya
+
 ಪ್ರ ಣ॑ ಇನ್ದೋ ಮ॒ಹೇ ತನ॑ ಊ॒ರ್ಮಿಂ ನ ಬಿಭ್ರ॑ದರ್ಷಸಿ ।
 
 ಅ॒ಭಿ ದೇ॒ವಾಂ ಅ॒ಯಾಸ್ಯಃ॑ ॥ ೯.೦೪೪.೦೧ ॥
@@ -6983,6 +7012,8 @@ Rudhaksoma Svastaye Sanjagmano Divah Kavih |
 
 Pavasva Suryo Drushe || 9.064.30 ||
 
+ಚತುರ್ಥೋಽಧ್ಯಾಯಃChaturtha Adhyaya
+
 ಹಿ॒ನ್ವನ್ತಿ॒ ಸೂರ॒ಮುಸ್ರ॑ಯ॒ ಸ್ವಸಾ᳚ರೋ ಜಾ॒ಮಯ॒ಸ್ಪತಿ॑ಮ್ ।
 
 ಮ॒ಹಾಮಿನ್ದುಂ᳚ ಮಹೀ॒ಯುವಃ॑ ॥ ೯.೦೬೫.೦೧ ॥
@@ -7902,7 +7933,7 @@ Shiva Dishah Pradisha Uddisho Na Apo Vishvatah Paripantu Sarvashah Shanti Shanti
 ಋಗ್ವೇದ, ಮಣ್ಡಲ ೯ ↗
 
 ### vedic-chant-lalita-sahasranama
-8.
+9.
 ಶ್ರೀಲಲಿತಾಸಹಸ್ರನಾಮಸ್ತೋತ್ರಮ್
 Shri Lalita Sahasranama
 ನ್ಯಾಸಃNyasa
@@ -9488,7 +9519,7 @@ Shrilalita Sahasranama Stotra Kathanam Sampurnam ||
 ಬ್ರಹ್ಮಾಣ್ಡಪುರಾಣ ↗
 
 ### vedic-chant-mantra-pushpanjali
-9.
+10.
 ಮನ್ತ್ರಪುಷ್ಪಾಞ್ಜಲಿಃ
 Mantra Pushpanjali
 
