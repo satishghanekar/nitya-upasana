@@ -108,3 +108,18 @@ describe("the menu words", () => {
     }
   });
 });
+
+// The microphone button is Follow, not Listen (Satish, 2026-11-11: Listen read as the phone playing a recording): its
+// name in every menu language, and no message of its panel still calling it by the old name
+test("the microphone button is called Follow in every language, and its panel says so", () => {
+  const names = { en: "Follow", mr: "सोबत", kn: "ಜೊತೆ", te: "వెంట", gu: "સાથે" };
+  const old = { en: /\bListen\b/, mr: /ऐका/, kn: /ಆಲಿಸಿ/, te: /వినండి/, gu: /સાંભળો/ };
+  for (const [l, n] of Object.entries(names)) {
+    expect(menuWords("page", l).listen, l).toBe(n);
+    const said = Object.values(menuWords("listen", l)).map((v) => (typeof v === "function" ? v("5") : v));
+    expect(
+      said.filter((v) => old[l].test(v)),
+      l,
+    ).toEqual([]);
+  }
+});

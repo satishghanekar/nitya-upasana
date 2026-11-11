@@ -456,10 +456,10 @@ export default {
     notNow: "Not now",
     /** @param {string} mb */
     ask: function (mb) {
-      return "Listen hears the chanting and shows where it is. The first time, it downloads " + mb + " MB (Wi-Fi is best). What it hears stays on this phone.";
+      return "Follow hears the chanting and shows where it is. The first time, it downloads " + mb + " MB (Wi-Fi is best). What it hears stays on this phone.";
     },
-    downloading: "Downloading Listen…",
-    starting: "Starting Listen…",
+    downloading: "Downloading Follow…",
+    starting: "Starting Follow…",
     listening: "Listening…",
     /** @param {string} t  the text's title, as HTML */
     following: function (t) {
@@ -467,18 +467,18 @@ export default {
     },
     stop: "Stop",
     close: "Close",
-    noMic: "Listen needs the microphone. Allow it for this site in the phone's settings, then try again.",
-    offline: "No internet. Listen downloads once; try again when online.",
-    failed: "Listen could not start on this phone.",
+    noMic: "Follow needs the microphone. Allow it for this site in the phone's settings, then try again.",
+    offline: "No internet. Follow downloads once; try again when online.",
+    failed: "Follow could not start on this phone.",
     /** @param {string} n  minutes */
     idle: function (n) {
-      return "Listen stopped: no chanting heard for " + n + " minutes. Tap Listen to start again.";
+      return "Follow stopped: no chanting heard for " + n + " minutes. Tap Follow to start again.";
     },
-    // Settings → More → About: where Listen runs its model on this device (title, a line under it, a badge)
-    gpu: "Listen: GPU",
+    // Settings → More → About: where Follow runs its model on this device (title, a line under it, a badge)
+    gpu: "Follow: GPU",
     gpuNote: "About 3× faster, lighter on battery",
     gpuBadge: "Optimized",
-    cpu: "Listen: CPU",
+    cpu: "Follow: CPU",
     cpuNote: "Works on every phone, uses more battery",
     cpuBadge: "Standard",
   },
@@ -761,7 +761,7 @@ export default {
     itWillThenOpenLike: "It will then open like an app, even without internet.",
     ok: "OK",
     home: "Home",
-    listen: "Listen",
+    listen: "Follow",
     library: "Library",
     vedicCalendar: "Vedic calendar",
     smaller: " smaller",
