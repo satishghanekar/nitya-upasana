@@ -502,117 +502,19 @@ Tam Ma Avaha Jatavedo Lakshmimanapagaminim |
 
 Yasyam Hiranyam Prabhutam Gavo Dasyoshvanvindeyam Purushanaham || 15 ||
 
-Yah Shuchih Prayato Bhutva Juhuyadajya Manvaham |
+Sarvamangalamangalye Shive Sarvarthasadhike |
 
-Shriyah Panchadasharcham Cha Shrikamah Satatam Japet || 16 ||
+Sharanye Tryambake Gauri Narayani Namostu Te ||
 
-Phalashruti
-
-Padmanane Padma Uru Padmakshi Padmasambhave |
-
-Tvam Mam Bhajasva Padmakshi Yena Saukhyam Labhamyaham ||
-
-Ashvadayi Godayi Dhanadayi Mahadhane |
-
-Dhanam Me Jushatam Devi Sarvakamamshcha Dehi Me ||
-
-Putrapautra Dhanam Dhanyam Hastyashvadigave Ratham |
-
-Prajanam Bhavasi Mata Ayushmantam Karotu Mam ||
-
-Dhanamagnirdhanam Vayurdhanam Suryo Dhanam Vasuh |
-
-Dhanamindro Bruhaspatirvarunam Dhanamashnu Te ||
-
-Vainateya Somam Piba Somam Pibatu Vrutraha |
-
-Somam Dhanasya Somino Mahyam Dadatu Sominah ||
-
-Na Krodho Na Cha Matsaryam Na Lobho Nashubha Matih ||
-
-Bhavanti Krutapunyanam Bhaktanam Shrisuktam Japetsada ||
-
-Varshantu Te Vibhavari Divo Abhrasya Vidyutah |
-
-Rohantu Sarvabijanyava Brahma Dvisho Jahi ||
-
-Padmapriye Padmini Padmahaste Padmalaye Padmadalayatakshi |
-
-Vishvapriye Vishnu Manonukule Tvatpadapadmam Mayi Sannidhatsva ||
-
-Ya Sa Padmasanastha Vipulakatitati Padmapatrayatakshi |
-
-Gambhira Vartanabhih Stanabhara Namita Shubhra Vastrottariya |
-
-Lakshmirdivyairgajendrairmanigana Khachitaissnapita Hemakumbhaih |
-
-Nityam Sa Padmahasta Mama Vasatu Gruhe Sarvamangalyayukta ||
-
-Lakshmim Kshirasamudra Rajatanayam Shrirangadhameshvarim |
-
-Dasibhutasamasta Deva Vanitam Lokaika Dipankuram |
-
-Shrimanmandakatakshalabdha Vibhava Brahmendragangadharam |
-
-Tvam Trailokya Kutumbinim Sarasijam Vande Mukundapriyam ||
-
-Siddhalakshmirmokshalakshmirjayalakshmissarasvati |
-
-Shrilakshmirvaralakshmishcha Prasanna Mama Sarvada ||
-
-Varankushau Pashamabhitimudram Karairvahantim Kamalasanastham |
-
-Balarka Koti Pratibham Trinetram Bhajehamadyam Jagadishvarim Tam ||
-
-Sarvamangalamangalye Shive Sarvartha Sadhike |
-
-Sharanye Tryambake Devi Narayani Namostu Te ||
-
-Sarasijanilaye Sarojahaste Dhavalataramshuka Gandhamalyashobhe |
-
-Bhagavati Harivallabhe Manodnye Tribhuvanabhutikariprasida Mahyam ||
-
-Vishnupatnim Kshamam Devim Madhavim Madhavapriyam |
-
-Vishnoh Priyasakhimm Devim Namamyachyutavallabham ||
-
-Mahalakshmi Cha Vidmahe Vishnupatni Cha Dhimahi |
-
-Tanno Lakshmih Prachodayat ||
-
-Variant reading
-
-Anandah Kardamah Shridashchiklita Iti Vishrutah |
-
-Rushayah Shriyah Putrashcha Shrirdevirdevata Matah (Svayam
-
-Shrireva Devata || )
-
-Variant reading
-
-Chandrabham Lakshmimishanam Suryabham Shriyamishvarim |
-
-Chandra Suryagni Sarvabham Shrimahalakshmimupasmahe ||
-
-Shrivarchasyamayushyamarogyamavidhat Pavamanam Mahiyate |
-
-Dhanam Dhanyam Pashum Bahuputralabham Shatasamvatsaram Dirghamayuh ||
-
-Runarogadidaridryapapakshudapamrutyavah |
-
-Bhayashokamanastapa Nashyantu Mama Sarvada ||
-
-Shriye Jata Shriya Aniryaya Shriyam Vayo Janitrubhyo Dadhatu |
-
-Shriyam Vasana Amrutatvamayan Bhajanti Sadyah Savita Vidadhyun ||
-
-Shriya Evainam Tachchhriyamadadhati | Santatamrucha Vashatkrutyam
-
-Sandhattam Sandhiyate Prajaya Pashubhih | Ya Evam Veda |
+Narayani Namostu Te || Narayani Namostu Te ||
 
 Om Mahadevyai Cha Vidmahe Vishnupatni Cha Dhimahi |
 
 Tanno Lakshmih Prachodayat ||
+
+Om Dhanurdharayai Vidmahe Sarvasiddhyai Cha Dhimahi |
+
+Tanno Dhara Prachodayat ||
 
 || Om Shantih Shantih Shantih ||
 
@@ -5098,6 +5000,114 @@ Na Tasya Kule Andho Bhavati |
 Ashtau Brahmanan Samyag Grahayitva Vidyasiddhirbhavati |
 
 Om Namo Bhagavate Adityaya Ahovahini Ahovahini Svaha ||
+
+### vedic-chant-shri-sukta-phalashruti
+13. Shri Sukta Phalashruti
+Phalashruti
+
+Yah Shuchih Prayato Bhutva Juhuyadajya Manvaham |
+
+Shriyah Panchadasharcham Cha Shrikamah Satatam Japet ||
+
+Padmanane Padma Uru Padmakshi Padmasambhave |
+
+Tvam Mam Bhajasva Padmakshi Yena Saukhyam Labhamyaham ||
+
+Ashvadayi Godayi Dhanadayi Mahadhane |
+
+Dhanam Me Jushatam Devi Sarvakamamshcha Dehi Me ||
+
+Putrapautra Dhanam Dhanyam Hastyashvadigave Ratham |
+
+Prajanam Bhavasi Mata Ayushmantam Karotu Mam ||
+
+Dhanamagnirdhanam Vayurdhanam Suryo Dhanam Vasuh |
+
+Dhanamindro Bruhaspatirvarunam Dhanamashnu Te ||
+
+Vainateya Somam Piba Somam Pibatu Vrutraha |
+
+Somam Dhanasya Somino Mahyam Dadatu Sominah ||
+
+Na Krodho Na Cha Matsaryam Na Lobho Nashubha Matih ||
+
+Bhavanti Krutapunyanam Bhaktanam Shrisuktam Japetsada ||
+
+Varshantu Te Vibhavari Divo Abhrasya Vidyutah |
+
+Rohantu Sarvabijanyava Brahma Dvisho Jahi ||
+
+Padmapriye Padmini Padmahaste Padmalaye Padmadalayatakshi |
+
+Vishvapriye Vishnu Manonukule Tvatpadapadmam Mayi Sannidhatsva ||
+
+Ya Sa Padmasanastha Vipulakatitati Padmapatrayatakshi |
+
+Gambhira Vartanabhih Stanabhara Namita Shubhra Vastrottariya |
+
+Lakshmirdivyairgajendrairmanigana Khachitaissnapita Hemakumbhaih |
+
+Nityam Sa Padmahasta Mama Vasatu Gruhe Sarvamangalyayukta ||
+
+Lakshmim Kshirasamudra Rajatanayam Shrirangadhameshvarim |
+
+Dasibhutasamasta Deva Vanitam Lokaika Dipankuram |
+
+Shrimanmandakatakshalabdha Vibhava Brahmendragangadharam |
+
+Tvam Trailokya Kutumbinim Sarasijam Vande Mukundapriyam ||
+
+Siddhalakshmirmokshalakshmirjayalakshmissarasvati |
+
+Shrilakshmirvaralakshmishcha Prasanna Mama Sarvada ||
+
+Varankushau Pashamabhitimudram Karairvahantim Kamalasanastham |
+
+Balarka Koti Pratibham Trinetram Bhajehamadyam Jagadishvarim Tam ||
+
+Sarasijanilaye Sarojahaste Dhavalataramshuka Gandhamalyashobhe |
+
+Bhagavati Harivallabhe Manodnye Tribhuvanabhutikariprasida Mahyam ||
+
+Vishnupatnim Kshamam Devim Madhavim Madhavapriyam |
+
+Vishnoh Priyasakhimm Devim Namamyachyutavallabham ||
+
+Mahalakshmi Cha Vidmahe Vishnupatni Cha Dhimahi |
+
+Tanno Lakshmih Prachodayat ||
+
+Variant reading
+
+Anandah Kardamah Shridashchiklita Iti Vishrutah |
+
+Rushayah Shriyah Putrashcha Shrirdevirdevata Matah (Svayam
+
+Shrireva Devata || )
+
+Variant reading
+
+Chandrabham Lakshmimishanam Suryabham Shriyamishvarim |
+
+Chandra Suryagni Sarvabham Shrimahalakshmimupasmahe ||
+
+Shrivarchasyamayushyamarogyamavidhat Pavamanam Mahiyate |
+
+Dhanam Dhanyam Pashum Bahuputralabham Shatasamvatsaram Dirghamayuh ||
+
+Runarogadidaridryapapakshudapamrutyavah |
+
+Bhayashokamanastapa Nashyantu Mama Sarvada ||
+
+Shriye Jata Shriya Aniryaya Shriyam Vayo Janitrubhyo Dadhatu |
+
+Shriyam Vasana Amrutatvamayan Bhajanti Sadyah Savita Vidadhyun ||
+
+Shriya Evainam Tachchhriyamadadhati | Santatamrucha Vashatkrutyam
+
+Sandhattam Sandhiyate Prajaya Pashubhih | Ya Evam Veda |
+
+Rig Veda (Khila Sukta), with later verses
 
 ### a1
 1. Sukhkarta Dukhharta
