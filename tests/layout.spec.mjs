@@ -1,6 +1,7 @@
 // Layout across screen sizes: from the smallest phones to large monitors, in portrait and landscape.
 // Checks the things that break first on an unfamiliar screen: a sideways scroll, a bar that is off
 // screen, text that is too small to read, and controls too small to tap.
+import { readdirSync, readFileSync } from "node:fs";
 import { test, expect } from "@playwright/test";
 import { openSite, hasSidewaysScroll, SETUPS, buildAll, readText, openPrintBuilder, settingsTab } from "./helpers.mjs";
 
@@ -230,6 +231,50 @@ for (const [setup, width] of [
     if (setup !== "both") expect(r.starts).toBe(1);
     expect(r.lines).toBeGreaterThan(1200);
   });
+
+// A line too long for a phone's row wraps with the rest of it at the left edge too, not indented (an indented rest
+// looked like stray spaces, Satish 2026-11-10): Pavamana's opening prayer and verses, Lalita's names, and Shri Sukta,
+// set line by line as they are since then
+for (const [id, name, least] of [
+  ["vedic-chant-pavamana-suktam", "Pavamana Suktam", 50],
+  ["vedic-chant-lalita-sahasranama", "Lalita Sahasranama", 5],
+  ["vedic-chant-shri-sukta", "Shri Sukta", 5],
+])
+  for (const setup of ["marathi", "english"])
+    test(`${name} · ${setup} on a phone: line by line, a wrapped line's rows all start at the left edge`, async ({ page }) => {
+      await page.setViewportSize({ width: 393, height: 852 });
+      await openSite(page, SETUPS[setup], { hash: "#" + id });
+      const r = await page.evaluate(
+        ([lang, id]) => {
+          const sec = document.getElementById(id);
+          const ps = [...sec.querySelectorAll(".item .verse > ." + lang + " > p")].filter(
+            (p) => p.getClientRects().length && !p.matches(".item.dh p:only-child"),
+          );
+          const range = document.createRange();
+          /** each row's left edge: the leftmost of the text's boxes on it */
+          const rows = (p) => {
+            range.selectNodeContents(p);
+            const left = new Map();
+            for (const b of range.getClientRects()) if (b.width) left.set(Math.round(b.top), Math.min(left.get(Math.round(b.top)) ?? 1e9, b.left));
+            return [...left.values()];
+          };
+          const wrapped = ps.map(rows).filter((l) => l.length > 1);
+          const edge = Math.round(ps[0].getBoundingClientRect().left);
+          return { lines: sec.classList.contains("lines"), wrapped: wrapped.length, off: wrapped.filter((l) => l.some((x) => Math.abs(x - edge) > 1)).length };
+        },
+        [SETUPS[setup].lang, id],
+      );
+      expect(r.lines).toBe(true);
+      expect(r.wrapped).toBeGreaterThan(least);
+      expect(r.off).toBe(0);
+    });
+
+// nor on paper, nor anywhere else: no stylesheet indents the rest of a wrapped line (a negative text-indent)
+test("no text's wrapped line is indented, on screen or printed", () => {
+  const dir = new URL("../css/", import.meta.url);
+  const hanging = readdirSync(dir).filter((f) => f.endsWith(".css") && /text-indent:\s*-/.test(readFileSync(new URL(f, dir), "utf8")));
+  expect(hanging).toEqual([]);
+});
 
 // Lalita Sahasranama is set line by line too (layout: lines), its Nyasa and Dhyanam (said once) as well: on a phone
 // every line starts at the same edge, and no row runs off the screen, a long name joined by hyphens included
