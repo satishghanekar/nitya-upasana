@@ -134,6 +134,7 @@ var SITE_PARTS = (function () {
     "texts/vedic-chant-lalita-sahasranama.txt",
     "texts/vedic-chant-mantra-pushpanjali.txt",
     "texts/vedic-chant-mantrapushpam.txt",
+    "texts/vedic-chant-chakshushopanishad.txt",
     "texts/aarti-sukhkarta.txt",
     "texts/aarti-shendur-lal-chadhayo.txt",
     "texts/aarti-durge-durghat-bhari.txt",
@@ -183,6 +184,7 @@ var SITE_PARTS = (function () {
     "texts/ashtak-lingashtakam.txt",
     "texts/ashtak-nandikeshvara-ashtakam.txt",
     "texts/ashtak-rudrashtakam.txt",
+    "texts/ashtak-kalabhairava-ashtakam.txt",
   ].map(function (f) {
     return "content/" + f;
   });
