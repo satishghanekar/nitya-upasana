@@ -21,6 +21,13 @@ Baloo 2, Hind and Anek do not.
 
 The menus are in Inter and Noto Sans Devanagari, in every text font.
 
+**Symbols** (`sc-symbols-math`, `sc-symbols-2`, `sc-symbols`: "SC Symbols", 2026-11-11). The ↻ ↺ ↗ ▶ ✕ ⋯ ⋮ ✓ ⌘ ⌃ ⚙ ☆ ● ○ □ ⌂ ⊞ ⧉ ≈ and
+arrows the menus, the dhrupad markers and the credits use are in none of the fonts above, so each phone drew them in
+its own (or not at all). Three tiny pieces, about 4 KB together, from Google Fonts' own subsetting (`&text=`): Noto
+Sans Math for most, Noto Sans Symbols 2 for ✕ ⌘, Noto Sans Symbols for ⌃ ⚙. A new symbol in the site's words goes into
+the matching piece (fetch it again with the whole list) and into its `unicode-range` in `css/00-fonts.css`;
+`tests/fonts.spec.mjs` fails on any sign a page draws from the phone's fonts.
+
 **The English (IAST) svara marks.** IAST writes the marks as combining accents (̍ ̎ ̱ ̐). Google's `latin` and
 `latin-ext` pieces leave them out, so they came from whatever font the phone had, and Inter and Tiro's Latin have
 none at all. `noto-serif-latin` and `noto-sans-latin` are therefore cut here, one piece each, from the full fonts with

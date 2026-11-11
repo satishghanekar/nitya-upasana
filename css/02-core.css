@@ -329,7 +329,9 @@ ol.toc .m {
 
 /* ==== Language switching: .mr and .en parts shown according to data-lang ==== */
 :root {
-  --lat: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  /* (and the site's own Devanagari, or the chosen script's, before the phone's fonts: a Marathi word in an English
+     place, a festival on Home's Coming up line, is drawn in it, not in the phone's, 2026-11-11) */
+  --lat: "SC Symbols", "Inter", var(--sc), "Noto Sans Devanagari", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
 }
 /* the Marathi part shows in Marathi and in both; in English or any other menu language (js/strings/), the English
    part does, as nameLang() picks (js/core/words.js) */
