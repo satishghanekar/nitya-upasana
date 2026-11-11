@@ -100,6 +100,15 @@
    "lines": 88
   },
   {
+   "id": "vedic-chant-chakshushopanishad",
+   "file": "texts/vedic-chant-chakshushopanishad.txt",
+   "title": "चाक्षुषोपनिषद्",
+   "titleEn": "Chakshushopanishad",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 21
+  },
+  {
    "id": "aarti-sukhkarta",
    "file": "texts/aarti-sukhkarta.txt",
    "title": "सुखकर्ता दुःखहर्ता",
@@ -539,6 +548,15 @@
    "category": "ashtak",
    "language": "sa",
    "lines": 16
+  },
+  {
+   "id": "ashtak-kalabhairava-ashtakam",
+   "file": "texts/ashtak-kalabhairava-ashtakam.txt",
+   "title": "श्रीकालभैरवाष्टकम्",
+   "titleEn": "Shri Kalabhairava Ashtakam",
+   "category": "ashtak",
+   "language": "sa",
+   "lines": 18
   }
  ],
  "pageLanguage": "mr",

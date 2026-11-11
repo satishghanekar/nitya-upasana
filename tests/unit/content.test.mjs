@@ -237,6 +237,10 @@ describe("content checks", () => {
     "ashtak-lingashtakam": 18,
     "ashtak-nandikeshvara-ashtakam": 16,
     "ashtak-rudrashtakam": 16,
+    // not in the book, two more Shiva and Surya pieces Satish sent: Kalabhairava Ashtakam (sanskritdocuments.org, checked
+    // line by line against the Chamara metre) and the Chakshushopanishad (its copy's typing slips corrected)
+    "ashtak-kalabhairava-ashtakam": 18,
+    "vedic-chant-chakshushopanishad": 21,
   };
   test("the Shivanjali pieces are texts, each once, with all their lines", () => {
     for (const [id, n] of Object.entries(SHIVANJALI)) {

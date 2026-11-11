@@ -50,12 +50,12 @@
 [data-asb="1"] body {
   padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)) + var(--lsnh, 0px));
 }
-/* A text's end scrolls well clear of the foot of the screen, a quarter of the screen above the bar, so whatever covers
+/* A text's end scrolls well clear of the foot of the screen, an eighth of the screen above the bar, so whatever covers
    the foot there leaves the last lines in reach (on an iPhone, Safari's own toolbar comes back over the page at its
-   end: the last two or three lines of a session were out of reach, Satish 2026-11-10). Not on Home, which ends with
-   its own list */
+   end: the last two or three lines of a session were out of reach, Satish 2026-11-10). A quarter left half a phone's
+   screen empty below the end (Satish 2026-11-11). Not on Home, which ends with its own list */
 [data-asb="1"]:not([data-hv]) body {
-  padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)) + var(--lsnh, 0px) + 25vh);
+  padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)) + var(--lsnh, 0px) + 12vh);
 }
 #asi {
   display: flex;
