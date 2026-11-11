@@ -481,9 +481,11 @@
    chosen font first. The home page's buttons and offline line, and the Open all / Fold all pill, stay in the site's own fonts (they are controls). */
 :root[data-font]:not([data-font="std"]) #home,
 :root[data-font]:not([data-font="std"]) .ash header {
-  --head: var(--tf), "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
-  --body: var(--tf), "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
-  --lat: var(--tf), "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  --head:
+    "SC Symbols", var(--sc), var(--tf), "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal,
+    serif;
+  --body: "SC Symbols", var(--sc), var(--tf), "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
+  --lat: "SC Symbols", var(--tf), "Inter", var(--sc), "Noto Sans Devanagari", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
 }
 /* and the home page's Table of Contents: piece names, numbers and languages */
 :root[data-font]:not([data-font="std"]) #jl .tocg ol.toc .m,
