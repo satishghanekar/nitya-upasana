@@ -113,15 +113,7 @@ test("the Library covers the page to the foot of the screen, its search box insi
       // no scroll between the box and the Library on phones (on wide screens the whole Library scrolls)
       let sc = false;
       for (let e = b.parentElement; e && e !== j; e = e.parentElement) if (/auto|scroll/.test(getComputedStyle(e).overflowY)) sc = true;
-      return {
-        jb: jr.bottom,
-        bt: br.top,
-        bb: br.bottom,
-        sc,
-        pos: getComputedStyle(b).position,
-        h: innerHeight,
-        sx: j.scrollWidth - j.clientWidth,
-      };
+      return { jb: jr.bottom, bt: br.top, bb: br.bottom, sc, pos: getComputedStyle(b).position, h: innerHeight, sx: j.scrollWidth - j.clientWidth };
     });
   for (const end of [false, true]) {
     if (end) await page.locator("#jump").evaluate((j) => [j, j.querySelector(".libsc")].forEach((e) => (e.scrollTop = e.scrollHeight)));

@@ -170,7 +170,7 @@
 </div>
 <!-- ==== Library (js/features/contents-list.js): opened by the book button in the bottom bar (on every page, Satish 2026-10-27),
      and at the end of each piece. Every text by category (js/features/library.js), with search across the
-     library (texts, then lines: js/text/search.js). A title opens it; Back (or the phone's Back) returns. Over the page,
+     library (texts, then lines: js/features/search.js). A title opens it; Back (or the phone's Back) returns. Over the page,
      under the top bar; the bottom bar steps aside while it is open. Chants | Books (#jtb) when content/pdfs.json lists a
      PDF: the Books tab lists the PDFs (js/features/pdfs.js), each opening in the phone's own PDF viewer. ==== -->
 <div id="jump" hidden role="dialog" aria-labelledby="jlt" tabindex="-1">
@@ -188,7 +188,7 @@
       <button type="button" data-v="pdf" aria-pressed="false"><span data-w="page.books">Books</span></button>
     </div>
   </div>
-  <!-- Recent (js/text/search.js rcShow): the last places this person went to from search or from here, newest first,
+  <!-- Recent (js/features/search.js rcShow): the last places this person went to from search or from here, newest first,
        while the search box is empty; × takes one away, Clear all of them (Satish, 2026-10-27) -->
   <section id="rcn" hidden aria-labelledby="rcnh">
     <div class="rch"><h3 id="rcnh"><span data-w="page.recent">Recent</span></h3><button type="button" id="rcc"><span data-w="page.clear">Clear</span></button></div>
