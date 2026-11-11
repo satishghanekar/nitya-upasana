@@ -367,3 +367,27 @@ export function counts(sh) {
   });
   return o;
 }
+
+/**
+ * A category's texts A to Z by their titles in one language (the Library's A–Z, Satish 2026-11-11): Marathi in the
+ * order of the Marathi alphabet (अ आ इ … क ख … ह ळ क्ष ज्ञ), English in the English one, ignoring case and accents;
+ * two the same keep their book order. Kannada, Telugu and Gujarati letters stand one for one for Devanagari, so the
+ * Marathi order serves them too.
+ * @param {string[]} ids  the texts in the book's order
+ * @param {(id: string) => string} titleOf  a text's title in that language
+ * @param {"mr" | "en"} lang
+ * @returns {string[]}
+ */
+export function aToZ(ids, titleOf, lang) {
+  var c = new Intl.Collator(lang === "mr" ? "mr" : "en", { sensitivity: "base", numeric: true });
+  return ids
+    .map(function (id, i) {
+      return { id: id, i: i, t: titleOf(id) };
+    })
+    .sort(function (a, b) {
+      return c.compare(a.t, b.t) || a.i - b.i;
+    })
+    .map(function (x) {
+      return x.id;
+    });
+}

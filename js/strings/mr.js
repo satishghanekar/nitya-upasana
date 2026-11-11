@@ -91,6 +91,10 @@ export default {
   // The Library by category and the categories sheet (js/features/library.js)
   library: {
     open: "विभाग बदला",
+    // Book order | A–Z at the top of the list
+    order: "रचनांचा क्रम",
+    bookOrder: "मूळ क्रम",
+    aToZ: "अकारविल्हे",
     title: "विभाग",
     texts: "रचना",
     textsInfo: "प्रत्येक रचना कोणत्या विभागात दिसावी ते निवडा.",
