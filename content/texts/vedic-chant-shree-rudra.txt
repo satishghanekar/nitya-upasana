@@ -6,6 +6,7 @@ language: sa
 layout: prose
 credit: [कृष्ण यजुर्वेद, तैत्तिरीय संहिता](https://mr.wikipedia.org/wiki/रुद्राध्याय)
 credit-en: [Krishna Yajurveda, Taittiriya Samhita](https://en.wikipedia.org/wiki/Shri_Rudram)
+recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=685)
 ---
 [dhrupad]
 ॐ नमो भगवते॑ रुद्रा॒य ॥
