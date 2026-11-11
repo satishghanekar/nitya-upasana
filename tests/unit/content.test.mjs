@@ -224,6 +224,40 @@ describe("content checks", () => {
     expect(verses.every((b) => b.para)).toBe(true);
     expect(parseText(files["vedic-chant-shri-sukta"], "vedic-chant-shri-sukta").layout).toBe("lines");
   });
+  // The Shivanjali book (Bharatiya Hindu Temple, Columbus): its pieces the site did not have yet, made from the book's
+  // English edition and checked against its Sanskrit one (Satish, 2026-11-11). Ganapati Atharvashirsha, Laghunyasa,
+  // Shree Rudra (with Chamakam), Purusha Suktam and Durga Suktam were here already.
+  const SHIVANJALI = {
+    "vedic-chant-shivopasana-mantra": 36,
+    "vedic-chant-mantrapushpam": 88,
+    "aarti-jai-shiv-omkara": 16,
+    "stotra-shiva-panchakshara": 12,
+    "stotra-shiva-ashtottara-shatanamavali": 108,
+    "stotra-prarthana-shlokas": 16,
+    "ashtak-lingashtakam": 18,
+    "ashtak-nandikeshvara-ashtakam": 16,
+    "ashtak-rudrashtakam": 16,
+  };
+  test("the Shivanjali pieces are texts, each once, with all their lines", () => {
+    for (const [id, n] of Object.entries(SHIVANJALI)) {
+      expect(
+        lib.texts.filter((t) => t.id === id),
+        id,
+      ).toHaveLength(1);
+      const t = parseText(files[id], id);
+      expect(
+        t.blocks.reduce((a, b) => a + b.lines.length, 0),
+        id,
+      ).toBe(n);
+    }
+    // the 108 names, each once, numbered every ten as the book does, the last ॥ १०८ ॥
+    const names = parseText(files["stotra-shiva-ashtottara-shatanamavali"], "x").blocks.flatMap((b) => b.lines.map((l) => l.orig));
+    expect(new Set(names.map((l) => l.replace(/[।॥०-९ ]/g, ""))).size).toBe(108);
+    expect(names.every((l) => l.startsWith("ॐ ") && /नमः/.test(l))).toBe(true);
+    expect(names[107]).toBe("ॐ परमेश्वराय नमः ॥ १०८ ॥");
+    // the arati sung with its refrain after every verse, as the other aartis
+    expect(parseText(files["aarti-jai-shiv-omkara"], "x").refrain).toBe("every-verse");
+  });
   test("categories: Vedic Chant, Aarti, Stotra, Ashtak", () => {
     expect(categories.map((c) => c.id)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak"]);
   });
