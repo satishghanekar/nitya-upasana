@@ -22,7 +22,9 @@
     margin: 17mm 19mm 19mm;
     @bottom-center {
       content: counter(page) " / " counter(pages);
-      font: 9pt sans-serif;
+      font:
+        9pt Inter,
+        sans-serif;
       color: #555;
       vertical-align: top;
       padding-top: 3mm;
@@ -541,5 +543,10 @@
   }
   :root[data-land] #pv .pvt tr.pvend td {
     padding-bottom: 5pt;
+  }
+
+  /* a text's recording (▶ YouTube, js/text/content.js): a link, of no use on paper */
+  #pv .rec {
+    display: none;
   }
 }

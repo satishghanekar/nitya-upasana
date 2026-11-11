@@ -302,3 +302,17 @@ test("Shri Sukta is the hymn as chanted at home; its phalashruti and later verse
   // nothing lost: every line of the old text is in one of the two, but सर्वमङ्गल now as chanted
   expect(ss.blocks.concat(ph.blocks).reduce((n, b) => n + b.lines.length, 0)).toBe(84 - 5 + 8);
 });
+
+// Every line displays in every script without a dotted circle (◌), checked with HarfBuzz and the site's own fonts
+// (2026-11-11): accent marks on a Rigveda kampa numeral (दू॒त्यं१॒॑) cannot carry an anusvara or visarga after them, so
+// these come before the numeral; and no sign the Kannada, Telugu and Gujarati fonts lack (the Vedic ꣳ)
+test("no line has a sign that breaks its display: ं or ः after a kampa numeral's accents, or ꣳ", () => {
+  for (const [id, raw] of Object.entries(files)) {
+    const t = parseText(raw, id);
+    for (const b of t.blocks)
+      for (const l of b.lines) {
+        expect(l.orig, id).not.toMatch(/[०-९][॒॑᳚]+[ंः]/);
+        expect(l.orig, id).not.toMatch(/ꣳ/);
+      }
+  }
+});

@@ -15,8 +15,13 @@
   --accent: #7b1113;
   --rule: #d9c9b4;
   --bar: #fcf9f4ee;
-  --head: "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
-  --body: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
+  /* (each list starts with the symbols, css/00-fonts.css, and the face of the letters the texts are shown in, --sc:
+     Kannada, Telugu or Gujarati, css/09-settings-page.css; each face's unicode-range keeps it to its own letters, so
+     every title, credit, list and printout gets them, not only the lines named there, 2026-11-11) */
+  --sc: "SC Symbols";
+  --head:
+    "SC Symbols", var(--sc), "Tiro Devanagari Marathi", "Kohinoor Devanagari", "Noto Sans Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, serif;
+  --body: "SC Symbols", var(--sc), "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", Mangal, sans-serif;
   --fs: 21px;
   /* The menus' and labels' sizes (Satish, 2026-11-02): six, the same on every screen, times the reader's own text size
      (--ts, js/core/state.js textScale()). 11px is for the tiniest cells only (Nitya's month); nothing else below 12px.

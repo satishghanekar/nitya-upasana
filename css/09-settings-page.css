@@ -492,6 +492,14 @@ html[data-scr="te"][data-font="classic"],
 :root[data-font="classic"] :is([lang="te"], [data-lang="te"]) {
   --kf: "SC Te Tiro";
 }
+/* and the same face at the head of the site's font lists (--sc, css/01-theme.css), for every other place the texts'
+   words appear: Home's list, titles, credits, the printout's contents */
+html[data-scr] {
+  --sc: var(--ks);
+}
+html[data-scr][data-font]:not([data-font="std"]) {
+  --sc: var(--kf), var(--ks);
+}
 html[data-scr] .mr,
 html[data-scr] .mr *,
 html[data-scr] #home .nm,

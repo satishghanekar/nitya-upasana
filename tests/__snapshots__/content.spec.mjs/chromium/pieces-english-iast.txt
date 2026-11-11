@@ -476,7 +476,7 @@ abhūtimasamṛddhiṃ ca sarvāṃ nirṇuda me gṛhāt || 8||
 
 gandhadvārāṃ durādharṣāṃ nityapuṣṭāṃ karīṣiṇīm |
 
-īśvarīgṃ sarvabhūtānāṃ tāmihopahvaye śriyam || 9||
+īśvarīṃ sarvabhūtānāṃ tāmihopahvaye śriyam || 9||
 
 manasaḥ kāmamākūtiṃ vācaḥ satyamaśīmahi |
 
@@ -2370,7 +2370,7 @@ su̱notā̱ madhu̍mattama̱ṃ soma̱mindrā̎ya va̱jriṇe̎ |
 
 cāru̱ṃ śardhā̎ya matsa̱ram || 9.030.06 ||
 
-pra somā̎saḥ svā̱dhya1̱̍ḥ pava̍mānāso akramuḥ |
+pra somā̎saḥ svā̱dhyaḥ1̱̍ pava̍mānāso akramuḥ |
 
 ra̱yiṃ kṛ̎ṇvanti̱ ceta̍nam || 9.031.01 ||
 
@@ -2712,7 +2712,7 @@ sa pa̍vasva̱ madā̎ya̱ kaṃ nṛ̱cakṣā̎ de̱vavī̎taye |
 
 inda̱vindrā̎ya pī̱taye̎ || 9.045.01 ||
 
-sa no̎ arṣā̱bhi dū̱tya1̱̍ṃ tvamindrā̎ya tośase |
+sa no̎ arṣā̱bhi dū̱tyaṃ1̱̍ tvamindrā̎ya tośase |
 
 de̱vānsakhi̍bhya̱ ā varam̎ || 9.045.02 ||
 
@@ -3526,7 +3526,7 @@ vṛṣā̎ pavasva̱ dhāra̍yā ma̱rutva̍te ca matsa̱raḥ |
 
 viśvā̱ dadhā̎na̱ oja̍sā || 9.065.10 ||
 
-taṃ tvā̎ dha̱rtāra̍mo̱ṇyo̱3̱̍ḥ pava̍māna sva̱rdṛśam̎ |
+taṃ tvā̎ dha̱rtāra̍mo̱ṇyo̱ḥ3̱̍ pava̍māna sva̱rdṛśam̎ |
 
 hi̱nve vāje̎ṣu vā̱jinam̎ || 9.065.11 ||
 
