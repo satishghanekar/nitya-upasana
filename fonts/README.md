@@ -15,7 +15,7 @@ Baloo 2, Hind and Anek do not.
 
 | Choice | Devanagari | English | Kannada, Telugu, Gujarati letters |
 |---|---|---|---|
-| **Traditional** (`classic`, the default) | Tiro Devanagari Marathi; the Vedic chants in Tiro Devanagari Sanskrit | Noto Serif | Tiro Kannada, Tiro Telugu; Noto Serif Gujarati (Tiro has none) |
+| **Traditional** (`classic`, the default) | Tiro Devanagari Marathi; the Vedic chants in Tiro Devanagari Sanskrit; its bold lines (Tiro has no bold) in Noto Serif Devanagari's | Noto Serif | Tiro Kannada, Tiro Telugu; Noto Serif Gujarati (Tiro has none) |
 | **Modern** (`std`) | Noto Sans Devanagari | Noto Sans | Noto Sans Kannada, Telugu, Gujarati |
 | **Bold** (`bold`) | Noto Serif Devanagari, SemiBold | Noto Serif, SemiBold | Noto Serif Kannada, Telugu, Gujarati, SemiBold |
 
