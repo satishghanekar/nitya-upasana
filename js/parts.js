@@ -124,7 +124,6 @@ var SITE_PARTS = (function () {
     "holidays.json",
     "pdfs.json",
     "texts/vedic-chant-atharvashirsha.txt",
-    "texts/vedic-chant-ganapati-sarasvati-prarthana.txt",
     "texts/vedic-chant-purusha-suktam.txt",
     "texts/vedic-chant-shri-sukta.txt",
     "texts/vedic-chant-laghunyasa.txt",
