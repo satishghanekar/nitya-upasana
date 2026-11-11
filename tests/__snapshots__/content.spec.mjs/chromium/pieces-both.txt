@@ -976,7 +976,7 @@ Abhutimasamruddhim Cha Sarvam Nirnuda Me Gruhat || 8 ||
 
 गंधद्वारां दुराधर्षां नित्यपुष्टां करीषिणीम् ।
 
-ईश्वरीꣳ सर्वभूतानां तामिहोपह्वये श्रियम् ॥ ९॥
+ईश्वरीं सर्वभूतानां तामिहोपह्वये श्रियम् ॥ ९॥
 
 Gandhadvaram Duradharsham Nityapushtam Karishinim |
 
@@ -4744,7 +4744,7 @@ Sunota Madhumattamam Somamindraya Vajrine |
 
 Charum Shardhaya Matsaram || 9.030.06 ||
 
-प्र सोमा᳚सः स्वा॒ध्य१॒॑ः पव॑मानासो अक्रमुः ।
+प्र सोमा᳚सः स्वा॒ध्यः१॒॑ पव॑मानासो अक्रमुः ।
 
 र॒यिं कृ᳚ण्वन्ति॒ चेत॑नम् ॥ ९.०३१.०१ ॥
 
@@ -5426,7 +5426,7 @@ Sa Pavasva Madaya Kam Nruchaksha Devavitaye |
 
 Indavindraya Pitaye || 9.045.01 ||
 
-स नो᳚ अर्षा॒भि दू॒त्य१॒॑ं त्वमिन्द्रा᳚य तोशसे ।
+स नो᳚ अर्षा॒भि दू॒त्यं१॒॑ त्वमिन्द्रा᳚य तोशसे ।
 
 दे॒वान्सखि॑भ्य॒ आ वरम्᳚ ॥ ९.०४५.०२ ॥
 
@@ -7052,7 +7052,7 @@ Vrusha Pavasva Dharaya Marutvate Cha Matsarah |
 
 Vishva Dadhana Ojasa || 9.065.10 ||
 
-तं त्वा᳚ ध॒र्तार॑मो॒ण्यो॒३॒॑ः पव॑मान स्व॒र्दृशम्᳚ ।
+तं त्वा᳚ ध॒र्तार॑मो॒ण्योः॒३॒॑ पव॑मान स्व॒र्दृशम्᳚ ।
 
 हि॒न्वे वाजे᳚षु वा॒जिनम्᳚ ॥ ९.०६५.११ ॥
 
