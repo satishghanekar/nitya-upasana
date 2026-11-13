@@ -76,8 +76,9 @@
   .bar .tools button[aria-expanded="true"] {
     border-radius: 999px;
   }
+  /* (round: the button is an icon alone) */
   #asi button:is([aria-expanded="true"], [aria-pressed="true"]) {
-    border-radius: 12px;
+    border-radius: 999px;
   }
   /* the Reading sheet stood on the strip: over a pill it is a card of its own, rounded all round */
   #rsh .rsc {

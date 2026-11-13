@@ -18,10 +18,14 @@ test("while reading the top bar has Share and Settings; the bottom bar has Home,
   for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   expect(await page.locator(".bar .tools button:visible").evaluateAll((l) => l.map((b) => b.id))).toEqual(["tmb", "aa"]);
   await expect(page.locator("#tmb")).toHaveAccessibleName("Share");
-  // the bottom bar's middle buttons are named by the word under each icon, in the menu language
+  // the bottom bar's middle buttons are icons alone (Satish 2026-11-13: the words under them crowded a phone), each
+  // still named by its word, in the menu language, for screen readers and voice control
   await expect(page.locator("#ash")).toHaveAccessibleName("Home");
   await expect(page.locator("#hm")).toHaveAccessibleName("Library");
   await expect(page.locator("#rsb")).toHaveAccessibleName("Reading");
+  for (const b of ["#ash", "#hm", "#rsb"]) expect(await page.locator(b + " .asil").evaluate((e) => getComputedStyle(e).height)).toBe("1px");
+  // and the bar is no taller than its round Prev and Next buttons need
+  expect(await page.locator("#asi").evaluate((e) => e.getBoundingClientRect().height)).toBeLessThanOrEqual(58);
 });
 
 test("the bottom bar's words follow the menu language @mobile", async ({ page }) => {
