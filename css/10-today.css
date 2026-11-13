@@ -660,10 +660,11 @@
   }
 }
 
-/* ==== Tablets held upright: Home is one larger column ==== */
+/* ==== Tablets held upright: Home is one larger column, as wide as the text column (46rem, css/02-core.css; at 40rem
+   an 834px iPad left a tenth of the screen empty at each side, Satish 2026-11-13) ==== */
 @media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
   :root[data-hv="1"] #home {
-    max-width: 40rem;
+    max-width: 46rem;
     font-size: 1.08em;
   }
   :root[data-hv="1"] #tsl li {

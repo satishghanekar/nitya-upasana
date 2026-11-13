@@ -74,10 +74,13 @@ for (const s of [
     });
     const page = await context.newPage();
     await openSite(page, SETUPS.marathi);
+    // no more than the page's own edge (24px on a tablet) empty on each side, until the column reaches 46rem: on Home
+    // (its own column, as wide as the text's) and in a text
+    const edge = Math.max(24, (s.width - 46 * 16) / 2) + 1;
+    expect((s.width - (await page.locator("#home").evaluate((e) => e.getBoundingClientRect().width))) / 2, "empty beside Home").toBeLessThanOrEqual(edge);
     await readText(page, "a1");
     const width = await page.locator("main.wrap").evaluate((e) => e.getBoundingClientRect().width);
-    // no more than the page's own edge (24px on a tablet) empty on each side, until the column reaches 46rem
-    expect((s.width - width) / 2, "empty on each side").toBeLessThanOrEqual(Math.max(24, (s.width - 46 * 16) / 2) + 1);
+    expect((s.width - width) / 2, "empty beside the text").toBeLessThanOrEqual(edge);
     await context.close();
   });
 
