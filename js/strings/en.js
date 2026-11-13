@@ -675,6 +675,7 @@ export default {
     recent: "Recent",
     clear: "Clear",
     nothingFound: "Nothing found",
+    nothingHint: "Try fewer letters or another spelling. Marathi and English letters both work.",
     reading: "Reading",
     screen: "Screen",
     more: "More",

@@ -701,3 +701,39 @@
   color: var(--ink);
   font-weight: 600;
 }
+
+/* ==== A routine's rows on a phone ====
+   Beside the grip, the number and three 44px buttons a title had 135px of a 390px phone, so a long one broke in the
+   middle of a word (गणपत्यथर्वशीर्षोपनिष / त्) and its three lines touched the card's edge. There the title has the
+   row's whole width, and the second name and the buttons share the line under it (Satish, 2026-11-12) */
+#rtl li {
+  padding-block: 6px;
+}
+@media (max-width: 439px) {
+  #rtl li {
+    display: grid;
+    grid-template-columns: 28px auto 1fr auto;
+    column-gap: 4px;
+  }
+  #rtl .rtg {
+    grid-row: 1 / span 2;
+  }
+  #rtl .tno {
+    grid-row: 1;
+  }
+  /* (the two names lay themselves out as the row's own items) */
+  #rtl .tt {
+    display: contents;
+  }
+  #rtl .tt .t1 {
+    grid-area: 1 / 3 / auto / -1;
+  }
+  #rtl .tt .t2 {
+    grid-area: 2 / 3;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  #rtl .rtbs {
+    grid-area: 2 / 4;
+  }
+}

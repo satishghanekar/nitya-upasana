@@ -157,6 +157,9 @@ test("search finds a line with forgiving spelling and opens it @mobile", async (
   expect(n).toBeGreaterThan(0);
   await page.locator("#q").fill("zzzzqqq");
   await expect(page.locator("#none")).toBeVisible();
+  // with what to try next, under it (Satish, 2026-11-12)
+  await expect(page.locator("#none")).toHaveText("Nothing found" + "Try fewer letters or another spelling. Marathi and English letters both work.");
+  await expect(page.locator("#none .none-hint")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.locator("#jump")).toBeHidden();
 });
