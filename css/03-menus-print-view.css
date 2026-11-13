@@ -11,6 +11,7 @@
    - Print builder (#prm: What, then How); print view (#pv, built by the script just before printing)
    - Piece header card (saffron, maroon top edge)
    - Dhrupad at the top: small label above, thin rule on the left (final look below)
+   - Print: in the Share menu on a phone, its own button in the top bar from 760px
 */
 
 /* ==== Top-bar title, heading for screen readers, contents overlay refinements ==== */
@@ -197,7 +198,7 @@ a.t {
   outline: 2px solid var(--ink);
   outline-offset: -2px;
 }
-/* Help sits apart from the four sharing choices */
+/* Help sits apart from the choices above it */
 #shr #hlpb {
   margin-top: 4px;
   border-top: 1px solid var(--rule);
@@ -1262,5 +1263,20 @@ h2[tabindex="-1"]:focus {
 @media (max-width: 379px) {
   .prrow .prhint {
     font-size: var(--fz-xs);
+  }
+}
+
+/* ==== Print: in the Share menu on a phone, its own button in the top bar from 760px ==== */
+/* On a phone the bar's Print button (#asp) is hidden and Print is in the Share menu (#menu-print), so the title has the
+   room while reading; iPads and computers have the room, and keep the button (Satish, 2026-11-12). Hidden with
+   display, so only one of the two is ever there for the keyboard and screen readers. */
+@media (max-width: 759.98px) {
+  #asp {
+    display: none;
+  }
+}
+@media (min-width: 760px) {
+  #shr #menu-print {
+    display: none;
   }
 }

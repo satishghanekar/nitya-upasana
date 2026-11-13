@@ -10,7 +10,8 @@
 // opened at the session for the time now; a session with nothing set today is greyed ("Nothing set", aria-disabled,
 // still focusable, and picking it shows the empty state with Add texts); the picked session's texts, numbered, each
 // title starting the session there. The Library is the top bar's book button; App, Share, QR, Print and Help are under
-// More (⋯) in the top bar (js/features/more-menu.js), and Print is in the bottom bar while reading. Every text, with search, is in the Library (#jump, js/features/contents-list.js);
+// Share in the top bar (js/features/more-menu.js). Every text, with search, is in the Library (#jump,
+// js/features/contents-list.js);
 // the reading page's pieces are not shown under Home (data-hv, js/features/history.js).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 //
