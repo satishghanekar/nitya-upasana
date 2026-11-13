@@ -234,20 +234,20 @@ test("the bottom bar's Library button opens the Library while reading", async ({
   await expect.poll(() => onPiece(page)).toBe("a7");
 });
 
-test("the top bar is the same on Home and while reading: the name, profile, Print, More and Settings, in the same places @mobile", async ({ page }) => {
+test("the top bar is the same on Home and while reading: the name, profile, Share and Settings, in the same places @mobile", async ({ page }) => {
   await useTestRoutine(page);
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  const where = () => page.evaluate(() => ["#who", "#asp", "#tmb", "#aa"].map((s) => Math.round(document.querySelector(s).getBoundingClientRect().x)));
-  for (const b of ["#who", "#asp", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  const where = () => page.evaluate(() => ["#who", "#tmb", "#aa"].map((s) => Math.round(document.querySelector(s).getBoundingClientRect().x)));
+  for (const b of ["#who", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   const home = await where();
   await page.locator("#tsl a.tgo").first().click();
   await expect.poll(() => onPiece(page)).toBe("a1");
-  for (const b of ["#who", "#asp", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  for (const b of ["#who", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   expect(await where()).toEqual(home);
   // Settings, the Library and the calendar open under it, so it stays; their headers alike: Back, then the tabs
   await page.locator("#aa").click();
   await expect(page.locator("#panel")).toBeVisible();
-  await expect(page.locator("#asp")).toBeVisible();
+  await expect(page.locator("#tmb")).toBeVisible();
   const bar = await page.locator(".bar").boundingBox(),
     sp = await page.locator("#panel").boundingBox();
   expect(sp.y).toBeGreaterThanOrEqual(bar.y + bar.height - 1);

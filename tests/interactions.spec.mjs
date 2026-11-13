@@ -8,13 +8,17 @@ const rootAttr = (page, a) => page.evaluate((a) => document.documentElement.getA
 // Opened at a piece on a phone, the bars start tucked away (a tap on the page brings them back)
 const untuck = (page) => page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
 
-// The top bar while reading, as on Home: the name, who is reading, Library, ⋯ More and Settings. Language and Dhrupad
-// are in the reading sheet (Aa)
-test("while reading the top bar has Library and no Language or Dhrupad button; the bottom bar has Home, Print and Reading @mobile", async ({ page }) => {
+// The top bar while reading, as on Home: the name, who is reading, Share and Settings, and Print from 760px. Language
+// and Dhrupad are in the reading sheet (Aa); on a phone Print is in the Share menu, so the title has the room (Satish,
+// 2026-11-12)
+test("while reading the top bar has Share and Settings, and Print only from 760px; the bottom bar has Home, Library and Reading @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a1" });
   await untuck(page);
   expect(await page.locator("#home-btn, #rb, #asq").count()).toBe(0);
   for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
+  expect(await page.locator(".bar .tools button:visible").evaluateAll((l) => l.map((b) => b.id))).toEqual(
+    page.viewportSize().width >= 760 ? ["asp", "tmb", "aa"] : ["tmb", "aa"],
+  );
   await expect(page.locator("#tmb")).toHaveAccessibleName("Share");
   // the bottom bar's middle buttons are named by the word under each icon, in the menu language
   await expect(page.locator("#ash")).toHaveAccessibleName("Home");
@@ -92,7 +96,7 @@ test("menus never mixed: Telugu menus over Marathi letters open in English; Engl
   await expect(page.locator("#surow")).toBeHidden();
 });
 
-test("⋯ More opens App, Share, QR and Help under it while reading; a tap outside or Escape closes it @mobile", async ({ page }) => {
+test("Share opens App, Share, QR and Help (and Print on a phone) under it while reading; a tap outside or Escape closes it @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a1" });
   await untuck(page);
   const more = page.locator("#tmb"),
@@ -102,8 +106,15 @@ test("⋯ More opens App, Share, QR and Help under it while reading; a tap outsi
   await expect(menu).toBeVisible();
   await expect(more).toHaveAttribute("aria-expanded", "true");
   for (const id of ["#shb", "#qrb", "#hlpb"]) await expect(page.locator(id)).toBeVisible();
-  // (Print is its own button in the top bar, not here)
-  await expect(page.locator("#shr #prb, #shr #prt")).toHaveCount(0);
+  // Print is here on a phone and not in the bar, named by its word and as tall as a finger needs; from 760px it is
+  // the bar's own button and not here
+  const phone = page.viewportSize().width < 760;
+  await expect(page.locator("#shr #menu-print")).toBeVisible({ visible: phone });
+  await expect(page.locator(".bar #asp")).toBeVisible({ visible: !phone });
+  if (phone) {
+    await expect(page.locator("#menu-print")).toHaveAccessibleName("Print");
+    expect((await page.locator("#menu-print").boundingBox()).height).toBeGreaterThanOrEqual(44);
+  }
   // under the button, on screen
   const b = await more.boundingBox(),
     m = await menu.boundingBox(),
@@ -120,7 +131,7 @@ test("⋯ More opens App, Share, QR and Help under it while reading; a tap outsi
   await expect(more).toBeFocused();
 });
 
-test("a choice in ⋯ More closes the menu, and focus comes back to ⋯ when its pop-up closes", async ({ page }) => {
+test("a choice in the Share menu closes the menu, and focus comes back to Share when its pop-up closes", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { hash: "#a1" });
   await page.locator("#tmb").click();
   await page.locator("#qrb").click();
@@ -135,6 +146,27 @@ test("a choice in ⋯ More closes the menu, and focus comes back to ⋯ when its
   await page.keyboard.press("Escape");
   await expect(page.locator("#help")).toBeHidden();
   await expect(page.locator("#tmb")).toBeFocused();
+});
+
+// On a phone Print is a choice in the Share menu (Satish, 2026-11-12): like the others it closes the menu, and focus
+// comes back to Share when the builder closes; from 760px the bar's own button opens it and takes focus back
+test("Print opens from the Share menu on a phone and from its own button from 760px, and focus comes back there", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  await untuck(page);
+  await tapMore(page, "#menu-print");
+  await expect(page.locator("#shr")).toBeHidden();
+  await expect(page.locator("#prm")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#prm")).toBeHidden();
+  await expect(page.locator("#tmb")).toBeFocused();
+  await page.setViewportSize({ width: 820, height: 1180 });
+  await untuck(page);
+  await page.locator("#asp").click();
+  await expect(page.locator("#prm")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#prm")).toBeHidden();
+  await expect(page.locator("#asp")).toBeFocused();
 });
 
 test("a Library link jumps to a piece and moves focus to its heading", async ({ page }) => {

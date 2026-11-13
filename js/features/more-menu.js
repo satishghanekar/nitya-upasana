@@ -1,5 +1,6 @@
 // @ts-check
-// More (⋯ in the top bar): App, Share, QR and Help in a small menu under the button, on every page (Print is in the bottom bar)
+// The Share menu (#tmb in the top bar, once ⋯ More): App, Share, QR and Help, and on a phone Print, in a small menu
+// under the button, on every page
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 export function init() {

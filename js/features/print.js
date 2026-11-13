@@ -826,7 +826,8 @@ export function init() {
       pagesStop();
       pm.hidden = true;
       ovDrop();
-      // the chosen button has just been hidden: keyboard focus goes back to Print, not to the top of the page
+      // the chosen button has just been hidden: keyboard focus goes back to where Print was opened from (its button
+      // in the top bar; on a phone Share, as Print is in its closed menu), not to the top of the page
       focusBack(opener || byId("asp"));
       busy = true;
       if (mode === "as") mode = "one";
@@ -922,18 +923,19 @@ export function init() {
       });
     }
     // The builder opened from elsewhere (the tests; a future entry point): the event "nitya-print", its detail as for
-    // openPrint ({ ids, tab }). Print and Print this text are no longer in the Share menu (Satish, 2026-10-22): Print in the
-    // top bar opens it, at the session or the text being read, and its Library tab picks any texts
+    // openPrint ({ ids, tab }). One Print (in the top bar; on a phone in its Share menu; not also Print this text,
+    // Satish, 2026-10-22) opens it, at the session or the text being read, and its Library tab picks any texts
     document.addEventListener("nitya-print", function (e) {
       openPrint(/** @type {CustomEvent} */ (e).detail || {});
     });
-    // Print in the bottom bar: while reading, the session being read (js/features/today-card.js runIds), else the text
+    // Print (#asp in the top bar from 760px, #menu-print in the Share menu on a phone, css/03-menus-print-view.css):
+    // while reading, the session being read (js/features/today-card.js runIds), else the text
     // on screen; on Home, the session Home shows, on the day it shows, even with a session still being read (Home in the
     // bottom bar leaves it running). A session opens at What on the Routine tab, with it chosen and headed by its day; a
     // text at How
-    byId("asp").onclick = function () {
-      var b = byId("asp"),
-        sec = cur(),
+    /** @param {HTMLElement} b the Print button tapped */
+    function printFrom(b) {
+      var sec = cur(),
         ids = sec ? runIds() : null,
         s = "",
         /** @type {{ id: string } | null} */
@@ -954,7 +956,12 @@ export function init() {
       });
       var one = /** @type {{ id: string } | null} */ (t);
       openPrint(one ? { ids: [one.id], from: b } : { from: b });
-    };
+    }
+    ["asp", "menu-print"].forEach(function (id) {
+      byId(id).onclick = function () {
+        printFrom(byId(id));
+      };
+    });
     function pmClose() {
       pagesStop();
       unready();

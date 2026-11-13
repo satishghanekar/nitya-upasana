@@ -102,7 +102,7 @@ for (const s of [
     expect(strip).toEqual(["rgba(0, 0, 0, 0)", "none"]);
     // a button at rest has no box; Prev and Next are round, and every button is in its pill
     expect((await look("#hm")).bg).toBe("rgba(0, 0, 0, 0)");
-    expect((await look("#asp")).bg).toBe("rgba(0, 0, 0, 0)");
+    expect((await look("#tmb")).bg).toBe("rgba(0, 0, 0, 0)");
     const pill = await look("#asi");
     for (const id of ["#asv", "#asn"]) {
       const b = await look(id);
