@@ -59,6 +59,28 @@ for (const s of SCREENS)
     });
   }
 
+// Upright iPads are 744 (mini), 810 (gen 7 to 9) and 820 to 834px wide: the text column takes the tablet width on all of
+// them, not a phone's column with a third of the screen empty beside it (Satish 2026-11-13)
+for (const s of [
+  { name: "an iPad mini", width: 744, height: 1133 },
+  { name: "an iPad", width: 810, height: 1080 },
+  { name: "an iPad Air", width: 820, height: 1180 },
+])
+  test(`${s.name} upright: the text column takes the tablet width`, async ({ browser, browserName }) => {
+    const context = await browser.newContext({
+      viewport: { width: s.width, height: s.height },
+      ...(browserName !== "firefox" ? { isMobile: true, hasTouch: true } : {}),
+      serviceWorkers: "block",
+    });
+    const page = await context.newPage();
+    await openSite(page, SETUPS.marathi);
+    await readText(page, "a1");
+    const width = await page.locator("main.wrap").evaluate((e) => e.getBoundingClientRect().width);
+    // no more than the page's own edge (24px on a tablet) empty on each side, until the column reaches 46rem
+    expect((s.width - width) / 2, "empty on each side").toBeLessThanOrEqual(Math.max(24, (s.width - 46 * 16) / 2) + 1);
+    await context.close();
+  });
+
 // Satish, 2026-11-12 (mockup E): the top bar and the bottom bar are each one solid, rounded pill floating over the page
 // (css/16-floating-bars.css), their buttons without boxes; Prev and Next are round buttons of their own
 for (const s of [
