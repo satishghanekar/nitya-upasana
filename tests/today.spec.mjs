@@ -859,9 +859,9 @@ test("Share in the top bar opens App / Share / QR / Help under it at every width
     await page.locator("#tmb").click();
     await expect(page.locator("#tmb")).toHaveAttribute("aria-expanded", "true");
     for (const b of ["#shb", "#qrb", "#hlpb"]) await expect(page.locator(b), `${b} ${width}px`).toBeVisible();
-    // Print: in the menu on a phone, so the title has the room; its own button in the bar from 760px, never both
-    await expect(page.locator("#menu-print"), `Print in the menu ${width}px`).toBeVisible({ visible: width < 760 });
-    await expect(page.locator("#asp"), `Print in the bar ${width}px`).toBeVisible({ visible: width >= 760 });
+    // Print: in the menu on every width, so the title has the room, and no button of its own in the bar
+    await expect(page.locator("#menu-print"), `Print in the menu ${width}px`).toBeVisible();
+    await expect(page.locator("#asp"), `no Print in the bar ${width}px`).toHaveCount(0);
     // under the button, on screen, its right edge at the button's
     const menu = await page.locator("#shr").boundingBox();
     expect(menu.y, `${width}px`).toBeGreaterThanOrEqual(more.y + more.height);
@@ -881,16 +881,15 @@ test("Share in the top bar opens App / Share / QR / Help under it at every width
 });
 
 // Home is just the session's texts (Satish, 2026-10-22): no Print this session and no Library line (the Library is in
-// the bottom bar); Print in the top bar (on a phone, in its Share menu) prints the session being read
-test("Home has no Print this session or Library line; Print in the top bar or its Share menu prints the session @mobile", async ({ page }) => {
+// the bottom bar); Print in the top bar's Share menu prints the session being read
+test("Home has no Print this session or Library line; Print in the Share menu prints the session @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(page.locator("#tspr, #tlib, #tlibb")).toHaveCount(0);
   await expect(page.locator("#hm")).toBeVisible();
   await rows(page).nth(1).locator("a.tgo").click();
   await expect.poll(() => onPiece(page)).toBe("a2");
-  const wide = page.viewportSize().width >= 760;
-  if (!wide) await openMore(page);
-  const print = page.locator(wide ? "#asp" : "#menu-print");
+  await openMore(page);
+  const print = page.locator("#menu-print");
   await expect(print).toBeVisible();
   await expect(print).toHaveAccessibleName("Print");
   await print.click();
