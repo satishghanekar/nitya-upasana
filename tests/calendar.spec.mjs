@@ -170,6 +170,67 @@ test("the month: weekdays, tithi at sunrise, paksha shading, moons, Ekadashi, Sa
   await expect(page.locator(".ckey")).toContainText("Krishna paksha");
 });
 
+// Satish, 2026-11-12 (review mockup 3): in a phone's narrow days a name broke in the middle of a word, so a day shows
+// its drawing alone and the names are whole in a list under the month; from 600px the names fit and stay in the days
+test("the month on a phone: a day shows its drawing, and the names are whole in This month under it; wider, in the days", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await open(page);
+  const day = (d) => page.locator(`#calm button[data-d="2026-10-${String(d).padStart(2, "0")}"]`);
+  // Dasara's day: the drawing shows, the name is kept for screen readers only (one pixel), and the tithi stays
+  await expect(day(20).locator(".fs .fm")).toBeVisible();
+  const name = await day(20).locator(".fs .cell-name").boundingBox();
+  expect(name.width).toBeLessThanOrEqual(1);
+  await expect(day(20).locator(".t")).toBeVisible();
+  await expect(day(20)).toHaveAccessibleName(/20 October, Tuesday, .*Dasara/);
+  // no day is taller than a number, a tithi of two lines and a drawing
+  for (const b of await page.locator("#calm button.cd").all()) expect((await b.boundingBox()).width).toBeGreaterThanOrEqual(40);
+  // the list: a heading, then a row a day's name, in date order, each at least 44px high
+  const list = page.locator("#calm .month-list");
+  await expect(list.locator("h3")).toHaveText("This month");
+  const rows = list.locator(".month-list-row");
+  await expect(rows.filter({ hasText: "दसरा" })).toHaveAccessibleName("20 October, Tuesday, दसरा");
+  await expect(rows.filter({ hasText: "दसरा" }).locator(".fm")).toBeVisible();
+  await expect(rows.filter({ hasText: "एकादशी" })).toHaveCount(2);
+  await expect(rows.filter({ hasText: "संकष्टी" })).toHaveCount(1);
+  const dates = await rows.evaluateAll((l) => l.map((b) => /** @type {HTMLElement} */ (b).dataset.date));
+  expect(dates).toEqual([...dates].sort());
+  for (const r of await rows.all()) {
+    const box = await r.boundingBox();
+    expect(box.height).toBeGreaterThanOrEqual(44);
+    expect(await r.evaluate((e) => e.scrollWidth <= e.clientWidth)).toBe(true);
+  }
+  // the key's swatches are the shape of a day, wider than high (a small square read as an empty tick box)
+  const sw = await page.locator(".ckey i.ks").boundingBox();
+  expect(sw.width).toBeGreaterThan(sw.height);
+  expect(await axeEveryTheme(page, "#cal", { mismatch: true })).toEqual(noViolations());
+  // a row opens its day, as the day itself does, and Back returns to the month
+  await rows.filter({ hasText: "संकष्टी" }).click();
+  await expect(page.locator("#cald .cdd .dl")).toHaveText("Wednesday, 28 October");
+  await page.goBack();
+  await expect(page.locator("#calm")).toBeVisible();
+  // from 600px the names are in the days and there is no list
+  await page.setViewportSize({ width: 600, height: 900 });
+  await expect(list).toBeHidden();
+  expect((await day(20).locator(".fs .cell-name").boundingBox()).width).toBeGreaterThan(10);
+});
+
+// 12 November 2026 in Columbus: tritiya at sunrise for the second day (vriddhi). The word is in the language of the
+// tithi over it, not the menus' ("vriddhi" under तृतीया read as a stray English word)
+for (const [name, prefs, word, lang] of [
+  ["Marathi first", COLUMBUS, "वृद्धी", "mr"],
+  ["English first", { ...SETUPS["english-main-both"], loc: COLUMBUS.loc }, "vriddhi", "en"],
+]) {
+  test(`the month, ${name}: a repeated tithi is marked in the tithi's language`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await open(page, prefs);
+    await page.locator("#caln").click();
+    const vriddhi = page.locator('#calm button[data-d="2026-11-12"] .vr');
+    await expect(vriddhi).toHaveText(word);
+    await expect(vriddhi).toHaveAttribute("lang", lang);
+    await expect(page.locator("#calm .month-list h3")).toHaveText("This month");
+  });
+}
+
 test("tapping a day shows it in the day card @mobile", async ({ page }) => {
   await open(page);
   await tap(page, "2026-10-28");
@@ -624,12 +685,15 @@ test("Home: Coming up, the next three from the day shown, with their drawings, e
   await expect(page.locator("#upwl")).toBeVisible();
 });
 
-// Satish, 2026-11-09 (Home mockup A): until the person chooses, Coming up is one line on phones and tablets, so the
-// session's texts are on the first screen; on wide screens, where Home's column has room, it starts open
+// Satish, 2026-11-12 (review mockups 1A and 2A): until the person chooses, Coming up is one line wherever its rows
+// would push the session's texts off the first screen (a phone, and Home's narrow column beside the picture on a
+// tablet held sideways or a computer); on a tablet held upright, where half the screen was empty, it starts open
 for (const [name, size, open] of [
   ["a phone", { width: 390, height: 844 }, false],
-  ["an iPad held upright", { width: 820, height: 1180 }, false],
-  ["a computer", { width: 1280, height: 820 }, true],
+  ["an iPad held upright", { width: 820, height: 1180 }, true],
+  ["a small iPad held upright", { width: 744, height: 1133 }, true],
+  ["an iPad held sideways", { width: 1180, height: 820 }, false],
+  ["a computer", { width: 1440, height: 900 }, false],
 ]) {
   test(`Coming up starts ${open ? "open" : "folded"} on ${name} until the person chooses, then as they chose`, async ({ page }) => {
     await page.setViewportSize(size);
@@ -642,6 +706,11 @@ for (const [name, size, open] of [
       await expect(f).toHaveAccessibleName("Coming up Dasara (Vijayadashami) · in 2 days");
       const row = await page.locator("#tsl li").first().boundingBox();
       expect(row.y + row.height).toBeLessThanOrEqual(size.height - 90); // above the bottom bar
+    } else {
+      // open: its rows, and still the whole of the session's list above the bottom bar
+      await expect(page.locator("#upwl li")).toHaveCount(5);
+      const last = await page.locator("#tsl li").last().boundingBox();
+      expect(last.y + last.height).toBeLessThanOrEqual(size.height - 60);
     }
     // the person's own choice is kept, whatever the screen
     await f.click();
