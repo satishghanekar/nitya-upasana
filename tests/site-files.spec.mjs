@@ -105,8 +105,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // Mac, where Node's gzip gives a little more than GitHub's; 74 KB since 2026-11-11: Traditional's English face at
   // each weight and its bold lines in Noto Serif Devanagari, 73.75 KB with them on a Mac; 75 KB since 2026-11-11: the
   // symbols' face and the chosen script's at the head of every font list, 74.55 KB with them on a Mac; 76 KB since
-  // 2026-11-12: the month on a phone, a drawing alone in a day and the names in the list under it, 75.67 KB then)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(76_000);
+  // 2026-11-12: the month on a phone, a drawing alone in a day and the names in the list under it, 75.67 KB then; 78 KB since
+  // 2026-11-13: the bars as floating pills, css/16-floating-bars.css, 77.8 KB then)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(78_000);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then)
   expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(31_000);
