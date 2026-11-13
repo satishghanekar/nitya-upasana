@@ -560,3 +560,12 @@
 #library-order [lang]:not([lang="en"]) {
   font-family: var(--body);
 }
+
+/* ==== Nothing found: what to try next, under it (search takes Marathi or English letters and forgives a slip or two,
+   js/text/search-core.js, so the hint says what else can help) ==== */
+.none-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--fz-s);
+  line-height: 1.45;
+}

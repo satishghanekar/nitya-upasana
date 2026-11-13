@@ -658,6 +658,7 @@ export default {
     recent: "તાજેતરના",
     clear: "સાફ કરો",
     nothingFound: "કંઈ મળ્યું નહીં",
+    nothingHint: "ઓછા અક્ષરો અથવા જુદી જોડણી અજમાવો. મરાઠી અને અંગ્રેજી, બંને અક્ષરો ચાલે છે.",
     reading: "વાંચન",
     screen: "પડદો",
     more: "વધુ",
