@@ -65,6 +65,7 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(max-width: 399px)` | Phones up to 399px: the bottom bar's six buttons fit by showing only the arrows of Prev and Next and slimming the icon buttons to 46px |
 | `(max-width: 439px)` | Phones: the bottom bar's six buttons (Prev, Home, Library, Reading, Follow, Next) close their gaps and slim the icon buttons; the Print pop-up's font tiles a little narrower at the sides |
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
+| `(max-width: 599px)` | Phones: a day in the Vedic calendar's month shows its drawing alone, and the names are in the list under the month |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |
 | `(min-width: 760px) and (min-height: 521px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own; Settings: below, the tabs, the Reading tab tightened to fit one iPhone screen; from 760px (iPads upright and sideways, desktops) no tabs: the title beside Back and every group at once, in two columns (`.sp-c1`: the preview and the reading choices; `.sp-c2`: screen, profiles, about). A phone held sideways (at most 520px high) keeps the tabs (the 521px height) |
 | `(max-width: 819px)` | Phones and small tablets: English names in the Vedic calendar's days a step smaller |
