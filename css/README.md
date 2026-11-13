@@ -64,7 +64,7 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(max-width: 359px)` | The smallest phones: Settings tightens |
 | `(max-width: 379px)` | Narrow phones: the home buttons put their word under the icon; the Print pop-up's hints a step smaller, so each keeps to one line |
 | `(max-width: 399px)` | Phones up to 399px: the bottom bar's six buttons fit by showing only the arrows of Prev and Next and slimming the icon buttons to 46px |
-| `(max-width: 439px)` | Phones: the bottom bar's six buttons (Prev, Home, Library, Reading, Follow, Next) close their gaps and slim the icon buttons; the Print pop-up's font tiles a little narrower at the sides |
+| `(max-width: 439px)` | Phones: a routine's rows in the builder give the title a line of its own, with the second name and the buttons under it; the bottom bar's six buttons (Prev, Home, Library, Reading, Follow, Next) close their gaps and slim the icon buttons; the Print pop-up's font tiles a little narrower at the sides |
 | `(max-width: 420px)` | Phones: Prev / Next at the end of a piece take a narrower middle column; the profile chip shows the badge alone |
 | `(max-width: 599px)` | Phones: a day in the Vedic calendar's month shows its drawing alone, and the names are in the list under the month |
 | `(min-width: 600px)` | Large phones and tablets: a larger home-page text limit |

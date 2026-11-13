@@ -47,6 +47,33 @@ test("Edit beside the session opens the builder for the reading person, at that 
   await expect(page.locator("#tsed")).toBeFocused();
 });
 
+// Satish, 2026-11-12: beside the grip, the number and three buttons a long title broke in the middle of a word on a
+// phone (गणपत्यथर्वशीर्षोपनिष / त्) and touched the card's edge; there the title has the row's width, the second name
+// and the buttons the line under it
+for (const width of [320, 360, 390])
+  test(`a routine's rows on a ${width}px phone: every title whole on its own line, the buttons under it`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await openSite(page, SETUPS.marathi, { now: new Date("2026-10-19T08:00:00-04:00") });
+    await openBuilder(page);
+    await expect(items(page)).toHaveCount(1); // the test routine's morning: Ganapati Atharvashirsha, the longest word
+    const li = items(page).first();
+    const [row, title, name, up] = await Promise.all([li, li.locator(".t1"), li.locator(".t2"), li.locator('button[data-a="up"]')].map((l) => l.boundingBox()));
+    // the title on one line, inside the row and clear of its edges
+    expect(await li.locator(".t1").evaluate((e) => e.getClientRects().length)).toBe(1);
+    expect(title.height).toBeLessThanOrEqual(30);
+    expect(title.y).toBeGreaterThanOrEqual(row.y + 5);
+    expect(title.x + title.width).toBeLessThanOrEqual(row.x + row.width);
+    // the buttons under it, 44px, beside the second name, which never runs under them
+    expect(up.y).toBeGreaterThanOrEqual(title.y + title.height - 1);
+    expect(name.x + name.width).toBeLessThanOrEqual(up.x + 1);
+    for (const b of await li.locator("button").all()) {
+      const r = await b.boundingBox();
+      expect(Math.min(r.width, r.height)).toBeGreaterThanOrEqual(44);
+      expect(r.y + r.height).toBeLessThanOrEqual(row.y + row.height - 5);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
+
 test("build Monday's morning: different by weekday, add with the picker, reorder with buttons and keys, remove, copy to Thursday; Home follows, after a reload too @mobile", async ({
   page,
 }) => {
