@@ -88,40 +88,24 @@
   display: grid;
   place-items: center;
 }
-/* Home, Library and Reading: the icon with its word under it, in the menu language (the word is the button's name).
-   The button keeps the bar's 44px height. */
+/* Home, Library, Reading and Follow: an icon alone, so the bar stays as low as the top bar (six buttons with four words
+   under them crowded a phone, Satish 2026-11-13; a phone on its side had already left the words out). Each word stays
+   in its button for screen readers and voice control, in the menu language: it is the button's name, and Help lists
+   what each icon is. */
 #ash,
 #hm,
 #rsb,
 #lsb {
-  align-content: center;
-  row-gap: 1px;
-  min-width: 58px;
+  min-width: 44px;
   padding: 0 6px;
 }
 .asil {
-  font: 600 var(--fz-s)/1 var(--lat);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
-}
-.asil .mr {
-  font-family: var(--body);
-  font-size: var(--fz-s);
-}
-/* a phone on its side: the bar stays as low as it was; the words are kept for screen readers only */
-@media (orientation: landscape) and (max-height: 520px) {
-  .asil {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  #ash,
-  #hm,
-  #rsb {
-    min-width: 44px;
-  }
 }
 /* ==== Bars tuck away while reading (phones and tablets without the side menu) ====
    Scrolling down slides the top and bottom bars out of view, leaving a slim strip with the piece name;
@@ -548,9 +532,8 @@ html[data-asb="1"] {
   #hm,
   #rsb,
   #lsb {
-    min-width: 52px;
-    /* room between a word ("Library", "Reading") and the border */
-    padding: 0 5px;
+    min-width: 44px;
+    padding: 0 4px;
   }
   #asc .asx {
     padding: 0 8px;
@@ -732,7 +715,7 @@ html[data-asb="1"] {
   color: var(--muted);
 }
 
-/* ==== Listen (js/features/listen.js, Satish 2026-11-06): the ear in the bottom bar (#lsb, its word under it as
+/* ==== Listen (js/features/listen.js, Satish 2026-11-06): the microphone in the bottom bar (#lsb, an icon alone as
    Home's, the Library's and Reading's; pressed while Listen is on, button[aria-pressed] in css/02-core.css), its panel
    over the bar (#lsn: what Listen is doing and its buttons) and the line being chanted (.lsn) ==== */
 #lsb[hidden],
@@ -741,15 +724,6 @@ html[data-asb="1"] {
 .lsnb button[hidden],
 [data-menu] #lsn {
   display: none;
-}
-/* six buttons: the icon buttons a little slimmer still, so the bar fits a 320px phone */
-@media (max-width: 399px) {
-  #ash,
-  #hm,
-  #rsb,
-  #lsb {
-    min-width: 46px;
-  }
 }
 #lsn {
   position: fixed;
