@@ -1,5 +1,5 @@
 /* 16-floating-bars.css: The top bar and the bottom bar as floating pills
-   Part 17 of 17 of the site styles. index.html loads the parts in number order, and the order
+   The last part of the site styles but the fallbacks. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Sections:
    - Floating bars
@@ -11,6 +11,13 @@
    nearly the same at the 86% it needs to keep its words readable (WCAG 1.4.3) and costs a blur on every scroll.
    Everything a bar does stays as it was (css/02-core.css, css/07-bottom-bar-folds.css): where it sits, when it tucks
    away, which buttons it holds. Only the look is here, so the two apps can share this file as it is. */
+/* The room the bottom pill takes at the foot of the screen: 8px over it, the pill's 58px, and the space under it (on
+   iPhones without a home button the pill sits partly in the home-bar zone, as Safari's own toolbar does). The page
+   ends that much lower, focus is never scrolled behind the pill (WCAG 2.4.11), and whatever stands on the bar starts
+   there (css/07-bottom-bar-folds.css and the wide screens' columns use it) */
+:root {
+  --pill-foot: calc(66px + max(12px, calc(env(safe-area-inset-bottom, 0px) - 10px)));
+}
 @media screen {
   :root {
     --pill-shadow: 0 6px 22px #00000026, 0 1px 3px #0000001a;
@@ -57,33 +64,6 @@
     width: fit-content;
     gap: 10px;
     padding-inline: 14px;
-  }
-
-  /* the room the bottom pill takes at the foot of the screen (8px over it, the pill's 58px, and the space under it):
-     the page ends that much lower, focus is never scrolled behind it (WCAG 2.4.11), and Follow's panel sits on it */
-  :root {
-    --pill-foot: calc(66px + max(12px, calc(env(safe-area-inset-bottom, 0px) - 10px)));
-  }
-  /* (wide screens: Home's column, the Library and the calendar beside it end at the bar, css/10-today.css) */
-  @media (min-width: 1024px) {
-    :root[data-rail="1"] {
-      --asbh: var(--pill-foot);
-    }
-  }
-  [data-asb="1"] body {
-    padding-bottom: calc(var(--pill-foot) + var(--lsnh, 0px));
-  }
-  [data-asb="1"]:not([data-hv]) body {
-    padding-bottom: calc(var(--pill-foot) + var(--lsnh, 0px) + 12vh);
-  }
-  html[data-asb="1"] {
-    scroll-padding-bottom: calc(var(--pill-foot) + 8px + var(--lsnh, 0px));
-  }
-  #lsn {
-    bottom: calc(var(--pill-foot) + 2px);
-  }
-  [data-tuck] #lsn {
-    bottom: max(12px, env(safe-area-inset-bottom, 0px));
   }
 
   /* ---- buttons sit on a pill with no box of their own; the one in use keeps its filled tile ---- */

@@ -465,7 +465,7 @@
 @media screen and (min-width: 1024px) {
   :root[data-rail="1"] {
     /* the bottom bar's height, which Home's column and the pages beside it stop above */
-    --asbh: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)));
+    --asbh: var(--pill-foot);
   }
   :root[data-rail="1"]:not([data-hv]) #main > #home {
     position: fixed;
