@@ -61,6 +61,7 @@ const N = {
   purnima: { mr: "पौर्णिमा", en: "Purnima" },
   amavasya: { mr: "अमावास्या", en: "Amavasya" },
   ekadashi: { mr: "एकादशी", en: "Ekadashi" },
+  vriddhi: { mr: "वृद्धी", en: "vriddhi" },
   sankashti: { mr: "संकष्टी", en: "Sankashti" },
   angaraki: { mr: "अंगारकी", en: "Angaraki" },
   angSk: { mr: "अंगारकी संकष्टी", en: "Angaraki Sankashti" },
@@ -716,7 +717,7 @@ function oneRowADay(list) {
  * festivals, Pradosh, Sankashti and the public holidays chosen in Settings (P.hol; one on the day of another joins
  * its row, oneRowADay()), each with its drawing (Satish,
  * 2026-10-30: the "Nitya Home cards" mockups). Its heading folds it (P.upf, each person's): folded, one line with the
- * first ("दसरा · in 2 days"); until the person chooses, folded on phones and tablets, open on wide screens (upOpen()).
+ * first ("दसरा · in 2 days"); until the person chooses, open on a tablet held upright, folded everywhere else (upOpen()).
  * The same number of rows on every day, so it keeps one height as ‹ › move through the days; hidden
  * when nothing is marked in the month from the day.
  * @param {{ lat: number, lon: number } | null} pl */
@@ -767,11 +768,17 @@ function upHome(pl) {
   box.hidden = false;
 }
 
-/** Coming up starts open: by the person's choice (P.upf 2 open, 1 folded), else only on wide screens (data-rail) */
+/** Coming up starts open: by the person's choice (P.upf 2 open, 1 folded), else only where the session's texts stay
+ * on the first screen with it open: a tablet held upright. Beside the picture on a wide screen (data-rail) Home's
+ * column is as narrow as a phone's and the screen far shorter, so open it pushed the texts off the first screen of a
+ * laptop (Satish, 2026-11-12) */
 function upOpen() {
   var u = P ? P.upf : 0;
-  return u === 2 || (u !== 1 && document.documentElement.getAttribute("data-rail") === "1");
+  return u === 2 || (u !== 1 && document.documentElement.getAttribute("data-rail") !== "1" && matchMedia(UP_ROOM).matches);
 }
+
+// A tablet held upright: wide enough for Coming up's rows on one line each, tall enough for the session under them
+const UP_ROOM = "(min-width: 600px) and (min-height: 900px) and (orientation: portrait)";
 
 /** Fold or open Coming up (its heading's button), and keep it so for the person reading */
 function upFold() {
@@ -1130,7 +1137,18 @@ function marks(md) {
  * @param {Name} n @param {string} cls @param {string} [mark] a small drawing before it (a festival's, a holiday's flag) */
 function cell(n, cls, mark) {
   var l = lead();
-  return '<span lang="' + langOf(l) + '" class="' + cls + '">' + (mark || "") + (l === "en" ? hy(esc(txt(n, l))) : esc(txt(n, l))) + "</span>";
+  // the name in a span of its own: on a phone a day shows the drawing alone, and the name is in the list under the month
+  return (
+    '<span lang="' +
+    langOf(l) +
+    '" class="' +
+    cls +
+    '">' +
+    (mark || "") +
+    '<span class="cell-name">' +
+    (l === "en" ? hy(esc(txt(n, l))) : esc(txt(n, l))) +
+    "</span></span>"
+  );
 }
 
 /** The month table for view.y / view.m */
@@ -1210,6 +1228,8 @@ function monthRender() {
     }).join("") +
     "</tr></thead><tbody><tr>";
   var col = 0;
+  /** @type {{ date: string, day: number, vara: number, mark: string, flag?: boolean, name: Name }[]} every day with a name, for the list under the month */
+  var named = [];
   for (; col < first; col++) html += '<td class="ce"></td>';
   // the one day Tab lands on: the day shown in the card when it is in this month, else today, else the 1st
   var focusDay = days.some(function (d) {
@@ -1275,12 +1295,48 @@ function monthRender() {
         .concat(isT ? [w.today] : [])
         .filter(Boolean)
         .join(", ");
+    fs.forEach(function (f) {
+      named.push({
+        date: d.date,
+        day: d.day,
+        vara: d.vara,
+        mark: festMark(f.id),
+        name: { mr: f.mr, en: f.en },
+      });
+    });
+    hs.forEach(function (h) {
+      named.push({
+        date: d.date,
+        day: d.day,
+        vara: d.vara,
+        mark: holMark(h.groups),
+        flag: true,
+        name: { mr: h.mr, en: h.en },
+      });
+    });
+    if (lab)
+      named.push({
+        date: d.date,
+        day: d.day,
+        vara: d.vara,
+        mark: "",
+        name: lab,
+      });
+    if (skl)
+      named.push({
+        date: d.date,
+        day: d.day,
+        vara: d.vara,
+        mark: markHtml("crescent"),
+        name: skl,
+      });
     html +=
       '<td class="' +
       (kr ? "kr" : "sh") +
       '">' +
       '<button type="button" class="cd' +
       (isT ? " today" : "") +
+      (lab ? " ekadashi" : "") +
       '" data-d="' +
       d.date +
       '" tabindex="' +
@@ -1325,7 +1381,8 @@ function monthRender() {
         .join("") +
       (lab ? cell(lab, "f") : "") +
       (skl ? cell(skl, "f", markHtml("crescent")) : "") +
-      (d.vriddhi ? '<span class="vr" aria-hidden="true">' + (E ? "vriddhi" : esc(scr("वृद्धी"))) + "</span>" : "") +
+      // (in the language of the tithi over it, not the menus': "vriddhi" under तृतीया read as a stray English word)
+      (d.vriddhi ? '<span class="vr" lang="' + langOf(lead()) + '" aria-hidden="true">' + esc(txt(N.vriddhi, lead())) + "</span>" : "") +
       '<span class="sr" lang="' +
       (E ? "en" : mrLang()) +
       '">, ' +
@@ -1336,6 +1393,38 @@ function monthRender() {
   for (; col < 7; col++) html += '<td class="ce"></td>';
   html +=
     "</tr></tbody></table>" +
+    // Phones: a day is too narrow for a name (राज्योत्सव broke as राज्योत्स / व), so there it shows the drawing alone
+    // and the names are listed here, whole, each a button to its day like the day itself (css/12-calendar.css shows
+    // one or the other; Satish, 2026-11-12)
+    (named.length
+      ? '<div class="month-list"><h3>' +
+        say(w.thisMonth) +
+        "</h3><ul>" +
+        named
+          .map(function (x) {
+            return (
+              '<li><button type="button" class="month-list-row" data-date="' +
+              x.date +
+              '"><b lang="' +
+              (E ? "en" : mrLang()) +
+              '">' +
+              num(x.day) +
+              '</b><span class="sr" lang="' +
+              (E ? "en" : mrLang()) +
+              '">' +
+              esc(scr(menuWords("dates").before(m - 1, x.vara))) +
+              '</span><span class="month-list-mark' +
+              (x.flag ? " flag-mark" : "") +
+              '">' +
+              x.mark +
+              "</span>" +
+              nameH(x.name) +
+              "</button></li>"
+            );
+          })
+          .join("") +
+        "</ul></div>"
+      : "") +
     '<p class="ckey">' +
     '<span><i class="ks" aria-hidden="true"></i>' +
     say(w.key[0]) +
@@ -1697,9 +1786,10 @@ export function init() {
       var t = /** @type {HTMLElement} */ (e.target),
         b = /** @type {HTMLElement | null} */ (t.closest("button"));
       if (!b) return;
-      if (b.classList.contains("cd") && b.dataset.d) {
-        // a day in the month: its day on the Day tab (Back returns to the month)
-        toDay(b.dataset.d, "month");
+      var day = b.classList.contains("cd") ? b.dataset.d : b.classList.contains("month-list-row") ? b.dataset.date : "";
+      if (day) {
+        // a day in the month, or its row in the list under it: its day on the Day tab (Back returns to the month)
+        toDay(day, "month");
       } else if (b.dataset.v) {
         // Day | 15 days | Month
         view.mode = /** @type {"day" | "month" | "up"} */ (b.dataset.v);
