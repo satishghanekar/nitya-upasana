@@ -21,6 +21,8 @@ import {
   axeEveryTheme,
   noViolations,
   langMismatches,
+  openMore,
+  tapPrint,
 } from "./helpers.mjs";
 import { textsFor } from "../js/core/routine.js";
 
@@ -808,7 +810,7 @@ test("on another day, Print on Home prints that day's session, When named by the
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#tdx").click();
-  await page.locator("#asp").click();
+  await tapPrint(page);
   await expect(page.locator("#prtab-routine")).toHaveAttribute("aria-selected", "true");
   await expect(page.locator(".prwhen option:checked")).toHaveText("Monday");
   await expect(page.locator('#prtp-routine [data-rses="evening"]')).toHaveAttribute("aria-pressed", "true");
@@ -841,7 +843,7 @@ test("axe: Home on another day, every theme @mobile", async ({ page }) => {
   expect(await axeEveryTheme(page, "#home")).toEqual(noViolations());
 });
 
-test("⋯ More in the top bar opens App / Share / QR / Help under it, at every width", async ({ browser }) => {
+test("Share in the top bar opens App / Share / QR / Help under it at every width, and Print only on a phone", async ({ browser }) => {
   for (const width of [390, 820, 1280]) {
     const context = await browser.newContext({ viewport: { width, height: 844 }, serviceWorkers: "block" });
     const page = await context.newPage();
@@ -857,6 +859,9 @@ test("⋯ More in the top bar opens App / Share / QR / Help under it, at every w
     await page.locator("#tmb").click();
     await expect(page.locator("#tmb")).toHaveAttribute("aria-expanded", "true");
     for (const b of ["#shb", "#qrb", "#hlpb"]) await expect(page.locator(b), `${b} ${width}px`).toBeVisible();
+    // Print: in the menu on a phone, so the title has the room; its own button in the bar from 760px, never both
+    await expect(page.locator("#menu-print"), `Print in the menu ${width}px`).toBeVisible({ visible: width < 760 });
+    await expect(page.locator("#asp"), `Print in the bar ${width}px`).toBeVisible({ visible: width >= 760 });
     // under the button, on screen, its right edge at the button's
     const menu = await page.locator("#shr").boundingBox();
     expect(menu.y, `${width}px`).toBeGreaterThanOrEqual(more.y + more.height);
@@ -876,24 +881,27 @@ test("⋯ More in the top bar opens App / Share / QR / Help under it, at every w
 });
 
 // Home is just the session's texts (Satish, 2026-10-22): no Print this session and no Library line (the Library is in
-// the bottom bar); Print in the top bar prints the session being read
-test("Home has no Print this session or Library line; Print in the top bar prints the session @mobile", async ({ page }) => {
+// the bottom bar); Print in the top bar (on a phone, in its Share menu) prints the session being read
+test("Home has no Print this session or Library line; Print in the top bar or its Share menu prints the session @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(page.locator("#tspr, #tlib, #tlibb")).toHaveCount(0);
   await expect(page.locator("#hm")).toBeVisible();
   await rows(page).nth(1).locator("a.tgo").click();
   await expect.poll(() => onPiece(page)).toBe("a2");
-  await expect(page.locator("#asp")).toBeVisible();
-  await expect(page.locator("#asp")).toHaveAccessibleName("Print");
-  await page.locator("#asp").click();
+  const wide = page.viewportSize().width >= 760;
+  if (!wide) await openMore(page);
+  const print = page.locator(wide ? "#asp" : "#menu-print");
+  await expect(print).toBeVisible();
+  await expect(print).toHaveAccessibleName("Print");
+  await print.click();
   await expect(page.locator("#prm")).toBeVisible();
   await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
 });
 // on a phone it opens at What, on the Routine tab with that session chosen, so another one is a tap away
-test("on Home, Print in the bottom bar prints the session Home shows, chosen on the Routine tab @mobile", async ({ page }) => {
+test("on Home, Print prints the session Home shows, chosen on the Routine tab @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi, { now: EVENING });
-  await page.locator("#asp").click();
+  await tapPrint(page);
   await expect(page.locator("#prm")).toBeVisible();
   await expect(page.locator("#prm")).toHaveAttribute("data-step", "what");
   await expect(page.locator("#prtab-routine")).toHaveAttribute("aria-selected", "true");
@@ -910,7 +918,7 @@ test("on Home, Print prints the session Home shows, not one still being read @mo
   await expect(page.locator("#tdy")).toBeVisible();
   await expect(page.locator("html")).toHaveAttribute("data-run", "1");
   await pickTab(page, "evening");
-  await page.locator("#asp").click();
+  await tapPrint(page);
   await expect(page.locator("#prtab-routine")).toHaveAttribute("aria-selected", "true");
   await expect(page.locator('#prtp-routine [data-rses="evening"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#prsum span").first()).toHaveText(`${AARTIS.length} texts`);
@@ -977,12 +985,12 @@ test("the greyed session's words are at least 4.5:1 on the switch, in every them
   }
 });
 
-test("on a phone Home ends with the session's texts, with no Start button; the bottom bar has only Print and Reading @mobile", async ({ page }) => {
+test("on a phone Home ends with the session's texts, with no Start button; the bottom bar has only Library, Reading and Follow @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(page.locator("#tst, #tsb")).toHaveCount(0);
   await expect(page.locator("#asc")).toBeVisible();
-  for (const id of ["#asp", "#rsb"]) await expect(page.locator(id)).toBeVisible();
+  for (const id of ["#hm", "#rsb"]) await expect(page.locator(id)).toBeVisible();
   for (const id of ["#asv", "#ash", "#asq", "#asn"]) await expect(page.locator(id)).toBeHidden();
   // scrolled to the end of the home page, the last text is on screen
   await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));

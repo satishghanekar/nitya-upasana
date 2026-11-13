@@ -373,7 +373,7 @@ test("keyboard only: Tab to Print, choose a layout, print, and focus comes back 
   await stubPrint(page);
   await page.setViewportSize({ width: 1280, height: 800 });
   await openSite(page, SETUPS.both);
-  // Print is in the bottom bar while a text is read
+  // Print is in the top bar at this width (on a phone it is in the Share menu)
   await readText(page, "a1");
   let found = false;
   for (let i = 0; i < 80 && !found; i++) {
@@ -422,13 +422,13 @@ for (const size of [
 
 test("the phone's Back closes QR, Print and the picture and returns focus to their button (WCAG 2.4.3) @chromium-only", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
-  // (Print last: it is in the bottom bar while a text is read, and the picture is on Home)
+  // (Print last: it is tried while a text is read, and the picture is on Home)
   for (const [open, dlg] of [
     ["#qrb", "#qrm"],
     ["#iconb", "#pzv"],
     ["#asp", "#prm"],
   ]) {
-    // (Print is in the bottom bar while a text is read: focus comes back to it)
+    // (Print is in the top bar at this width: focus comes back to it)
     if (open === "#asp") await readText(page, "a1");
     else if (open !== "#iconb") await openMore(page);
     await page.locator(open).focus();
@@ -436,7 +436,7 @@ test("the phone's Back closes QR, Print and the picture and returns focus to the
     await expect(page.locator(dlg)).toBeVisible();
     await page.goBack();
     await expect(page.locator(dlg)).toBeHidden();
-    // QR and Print are in the ⋯ More menu, closed by then: focus comes back to ⋯
+    // QR is in the Share menu, closed by then: focus comes back to Share
     expect(await page.evaluate(() => "#" + document.activeElement.id), `focus after Back from ${dlg}`).toBe(open === "#qrb" ? "#tmb" : open);
     expect(await page.evaluate(() => document.documentElement.style.overflow), "page scrolls again").toBe("");
   }

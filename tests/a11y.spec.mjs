@@ -59,7 +59,7 @@ const DIALOGS = [
   ["Settings", "#aa", "#panel"],
   ["Help", "#hlpb", "#help"],
   ["QR", "#qrb", "#qrm"],
-  // Print: in the bottom bar while a text is read
+  // Print: in the top bar at this width, tried while a text is read
   ["Print", "#asp", "#prm"],
 ];
 for (const [name, opener, dialog] of DIALOGS) {

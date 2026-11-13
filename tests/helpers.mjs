@@ -154,6 +154,11 @@ export async function tapMore(page, id) {
   await openMore(page);
   await page.locator(id).click();
 }
+/** Print: its own button in the top bar from 760px; on a phone it is in the Share menu (css/03-menus-print-view.css) */
+export async function tapPrint(page) {
+  if (await page.locator("#asp").isVisible()) await page.locator("#asp").click();
+  else await tapMore(page, "#menu-print");
+}
 
 /**
  * Open the print builder at What, as last left (Print and Print this text are no longer in ⋯ More: Print in the top

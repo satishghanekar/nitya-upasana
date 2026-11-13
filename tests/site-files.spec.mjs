@@ -110,8 +110,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // routine's rows on a phone, the title on a line of its own, and the hint under Nothing found, 78.25 KB then)
   expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(79_000);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
-  // then)
-  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(31_000);
+  // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
+  // saying so: 31.06 KB then)
+  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(31_500);
 });
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):
