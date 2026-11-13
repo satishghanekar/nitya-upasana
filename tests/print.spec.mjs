@@ -9,7 +9,7 @@
 // verse; then the Print pop-up and builder, the iPhone's Print now and Open in Safari, and routine printouts.
 // PDFs can only be made by Chromium, so this suite is Chromium-only.
 import { test, expect, devices } from "@playwright/test";
-import { openSite, SETUPS, TEXT_COUNT, openMore, tapMore, readText, useTestRoutine, TEST_AARTIS, openPrintBuilder, FIXED_NOW } from "./helpers.mjs";
+import { openSite, SETUPS, TEXT_COUNT, openMore, tapPrint, readText, useTestRoutine, TEST_AARTIS, openPrintBuilder, FIXED_NOW } from "./helpers.mjs";
 import {
   printOnce,
   checkPrintout,
@@ -170,16 +170,16 @@ test("the printout does not depend on what the reading page shows @chromium-only
 
 // While a session is being read (Start on Home: data-run), the printout still has every text in full. Before
 // version 1.21.2 the page's rule for a session hid the copy the printout is built from: titles only (Satish's PDF)
-test("a session being read: Print in the bottom bar prints the texts in full @chromium-only", async ({ browser }) => {
+test("a session being read: Print prints the texts in full @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
   await useTestRoutine(page);
   await openSite(page, SETUPS.marathi);
-  // reading the Morning session (data-run is on, hiding every other text on the page), Print in the bottom bar
+  // reading the Morning session (data-run is on, hiding every other text on the page), Print in the top bar
   await page.locator("#tsl a.tgo").first().click();
   await expect(page.locator("html")).toHaveAttribute("data-run", "1");
-  await page.locator("#asp").click();
+  await tapPrint(page);
   await page.locator("#prgp").click();
   await page.waitForFunction(() => window.__printed > 0 || !document.getElementById("prgo").hidden, null, { timeout: 15_000 });
   if (await page.locator("#prgo").isVisible()) await page.locator("#prgo").click();
@@ -206,7 +206,7 @@ test("print pop-up offers the right choices and closes cleanly @chromium-only", 
   await expect(page.locator("#prgp")).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.locator("#prm")).toBeHidden();
-  // opened from elsewhere (no button named): focus comes back to Print in the bottom bar, on Home too
+  // opened from elsewhere (no button named): focus comes back to Print in the top bar, on Home too
   await expect(page.locator("#asp")).toBeFocused();
   await openPrintBuilder(page);
   await howStep(page);
@@ -854,14 +854,14 @@ test("print builder: Open in Safari carries the texts ticked @chromium-only", as
 // Print in the bottom bar, while reading a session: the builder opens at What, on the Routine tab with that session
 // chosen, Next › going on to How. The sessions and all of the day are one tap each (the test routine: Morning the
 // Atharvashirsha, Afternoon empty, Evening ten aartis; 10 am, so Home shows Morning).
-test("print builder: the bottom bar's Print while reading a session, and the Routine tab @chromium-only", async ({ browser }) => {
+test("print builder: Print while reading a session, and the Routine tab @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
   await useTestRoutine(page);
   await openSite(page, SETUPS.english);
   await page.locator("#tsl a.tgo").first().click();
-  await page.locator("#asp").click();
+  await tapPrint(page);
   await expect(page.locator("#prm")).toHaveAttribute("data-step", "what");
   await expect(page.locator("#prnx")).toBeFocused();
   await expect(page.locator("#prsum span").first()).toHaveText("गणपत्यथर्वशीर्षोपनिषत्");
@@ -924,7 +924,7 @@ test("print builder: a session prints in Home's order, in the app and in Safari 
   await stubPrint(page);
   await useTestRoutine(page);
   await openSite(page, SETUPS.marathi);
-  await page.locator("#asp").click();
+  await tapPrint(page);
   await page.locator('[data-rses="evening"]').click();
   const day = await page.evaluate(() => ["रविवार", "सोमवार", "मंगळवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"][new Date().getDay()]);
   /** @param {import("@playwright/test").Page} p */
@@ -967,7 +967,7 @@ test("print builder: a session prints in Home's order, in the app and in Safari 
   });
   await useTestRoutine(hp);
   await openSite(hp, SETUPS.marathi);
-  await hp.locator("#asp").click();
+  await tapPrint(hp);
   await hp.locator('[data-rses="evening"]').click();
   await hp.locator("#prnx").click();
   await hp.locator("#prgp").click();
@@ -1005,7 +1005,7 @@ test("print builder: a session of another day is headed by that day, in the app 
   await openSite(page, SETUPS.marathi);
   await page.locator("#tdx").click();
   await expect(page.locator("#tdd .d2t")).toHaveText("Friday, 16 October");
-  await page.locator("#asp").click();
+  await tapPrint(page);
   await expect(page.locator(".prwhen option:checked")).toHaveText("Friday");
   await page.locator('[data-rses="evening"]').click();
   const heads = (p) => p.evaluate(() => [...document.querySelectorAll("#pv .pvcov .pvcat")].map((e) => e.textContent.trim()));
@@ -1026,7 +1026,7 @@ test("print builder: a session of another day is headed by that day, in the app 
   await useTestRoutine(hp);
   await openSite(hp, SETUPS.marathi);
   await hp.locator("#tdx").click();
-  await hp.locator("#asp").click();
+  await tapPrint(hp);
   await hp.locator('[data-rses="evening"]').click();
   await hp.locator("#prnx").click();
   await hp.locator("#prgp").click();
@@ -1052,18 +1052,19 @@ test("print builder: a session of another day is headed by that day, in the app 
   await context.close();
 });
 
-// Print in the bottom bar while a text is read (Print and Print this text left ⋯ More, 2026-10-22): just that text, at
-// How, named in the bar
-test("print builder: Print in the bottom bar prints the text being read @chromium-only", async ({ browser }) => {
+// Print in the Share menu while a text is read (one Print, with no Print this text beside it, 2026-10-22): just that
+// text, at How, named in the bar
+test("print builder: Print in the Share menu prints the text being read @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ ...IPHONE, locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
   await openSite(page, SETUPS.marathi);
   await openMore(page);
-  await expect(page.locator("#shr #prt, #shr #prb")).toHaveCount(0);
+  await expect(page.locator("#shr #prt")).toHaveCount(0);
+  await expect(page.locator("#shr #menu-print")).toBeVisible();
   await page.keyboard.press("Escape");
   await readText(page, "a7");
-  await page.locator("#asp").click();
+  await tapPrint(page);
   await expect(page.locator("#prhw")).toBeVisible();
   const name = await page.evaluate(() =>
     document
