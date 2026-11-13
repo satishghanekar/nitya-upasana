@@ -3,7 +3,7 @@
 // screen, text that is too small to read, and controls too small to tap.
 import { readdirSync, readFileSync } from "node:fs";
 import { test, expect } from "@playwright/test";
-import { openSite, hasSidewaysScroll, SETUPS, buildAll, readText, openPrintBuilder, settingsTab } from "./helpers.mjs";
+import { openSite, hasSidewaysScroll, SETUPS, buildAll, readText, openPrintBuilder, settingsTab, axeEveryTheme, noViolations } from "./helpers.mjs";
 
 export const SCREENS = [
   { name: "phone-320", width: 320, height: 640, mobile: true },
@@ -58,6 +58,81 @@ for (const s of SCREENS)
       await context.close();
     });
   }
+
+// Satish, 2026-11-12 (mockup E): the top bar and the bottom bar are each one solid, rounded pill floating over the page
+// (css/16-floating-bars.css), their buttons without boxes; Prev and Next are round buttons of their own
+for (const s of [
+  { name: "a 320px phone", width: 320, height: 640 },
+  { name: "a phone", width: 390, height: 844 },
+  { name: "an iPad", width: 820, height: 1180 },
+  { name: "a computer", width: 1440, height: 900 },
+])
+  test(`the top and bottom bars are floating pills on ${s.name}`, async ({ page }) => {
+    await page.setViewportSize({ width: s.width, height: s.height });
+    await openSite(page, SETUPS.marathi, { hash: "#a1" });
+    const look = (sel) =>
+      page.locator(sel).evaluate((e) => {
+        const c = getComputedStyle(e),
+          r = e.getBoundingClientRect();
+        return {
+          bg: c.backgroundColor,
+          radius: parseFloat(c.borderTopLeftRadius),
+          shadow: c.boxShadow,
+          left: r.left,
+          right: r.right,
+          top: r.top,
+          bottom: r.bottom,
+          h: r.height,
+        };
+      });
+    for (const sel of ["body > .bar", "#asi"]) {
+      const p = await look(sel);
+      // rounded ends, a shadow, a solid colour (no see-through: the words on it keep their contrast over any text)
+      expect(p.radius, sel).toBeGreaterThanOrEqual(p.h / 2 - 1);
+      expect(p.shadow, sel).not.toBe("none");
+      expect(p.bg, sel).toMatch(/^rgb\(/);
+      // floating: clear of the screen's edges
+      expect(p.left, sel).toBeGreaterThanOrEqual(7);
+      expect(p.right, sel).toBeLessThanOrEqual(s.width - 7);
+      expect(p.top, sel).toBeGreaterThanOrEqual(5);
+      expect(p.bottom, sel).toBeLessThanOrEqual(s.height - 11);
+    }
+    // the strip behind the bottom pill is gone, and lets taps through to the page beside the pill
+    const strip = await page.locator("#asc").evaluate((e) => [getComputedStyle(e).backgroundColor, getComputedStyle(e).pointerEvents]);
+    expect(strip).toEqual(["rgba(0, 0, 0, 0)", "none"]);
+    // a button at rest has no box; Prev and Next are round, and every button is in its pill
+    expect((await look("#hm")).bg).toBe("rgba(0, 0, 0, 0)");
+    expect((await look("#asp")).bg).toBe("rgba(0, 0, 0, 0)");
+    const pill = await look("#asi");
+    for (const id of ["#asv", "#asn"]) {
+      const b = await look(id);
+      expect(b.radius, id).toBeGreaterThanOrEqual(b.h / 2 - 1);
+      expect(b.bg, id).not.toBe("rgba(0, 0, 0, 0)");
+    }
+    for (const b of await page.locator("#asi button:visible").all()) {
+      const r = await b.boundingBox();
+      expect(r.x).toBeGreaterThanOrEqual(pill.left);
+      expect(r.x + r.width).toBeLessThanOrEqual(pill.right);
+      expect(r.height).toBeGreaterThanOrEqual(44);
+      expect(r.width).toBeGreaterThanOrEqual(44);
+      // no word cut or run into its neighbour
+      expect(await b.evaluate((e) => e.scrollWidth <= e.clientWidth + 1)).toBe(true);
+    }
+    // the button in use keeps its filled tile, so it still stands out
+    await page.locator("#rsb").click();
+    expect((await look("#rsb")).bg).not.toBe("rgba(0, 0, 0, 0)");
+    await page.keyboard.press("Escape");
+    // the last line of the text ends above the pill
+    await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+    const end = await page.evaluate(() => document.querySelector("#a1").getBoundingClientRect().bottom);
+    expect(end).toBeLessThanOrEqual((await look("#asi")).top);
+  });
+
+test("the bars' words keep their contrast on the pills in every theme", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  expect(await axeEveryTheme(page, ["body > .bar", "#asc"])).toEqual(noViolations());
+});
 
 test("tap targets in the top and bottom bars are at least 44px @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi);

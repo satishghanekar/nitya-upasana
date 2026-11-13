@@ -1,5 +1,5 @@
 /* 07-bottom-bar-folds.css: Bottom bar, bars tucking away, folding contents and pieces, bigger tap areas
-   Part 8 of 16 of the site styles. index.html loads the parts in number order, and the order
+   Part 8 of 17 of the site styles. index.html loads the parts in number order, and the order
    matters: a later rule for the same element refines an earlier one (see css/README.md).
    Sections:
    - Bottom bar (footer menu on every page; replaced the Previous / Next cards at the end of each piece)
@@ -48,14 +48,14 @@
 }
 /* (and Listen's panel over the bar while it shows: --lsnh, its height, js/features/listen.js) */
 [data-asb="1"] body {
-  padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)) + var(--lsnh, 0px));
+  padding-bottom: calc(var(--pill-foot) + var(--lsnh, 0px));
 }
 /* A text's end scrolls well clear of the foot of the screen, an eighth of the screen above the bar, so whatever covers
    the foot there leaves the last lines in reach (on an iPhone, Safari's own toolbar comes back over the page at its
    end: the last two or three lines of a session were out of reach, Satish 2026-11-10). A quarter left half a phone's
    screen empty below the end (Satish 2026-11-11). Not on Home, which ends with its own list */
 [data-asb="1"]:not([data-hv]) body {
-  padding-bottom: calc(53px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)) + var(--lsnh, 0px) + 12vh);
+  padding-bottom: calc(var(--pill-foot) + var(--lsnh, 0px) + 12vh);
 }
 #asi {
   display: flex;
@@ -519,7 +519,7 @@
 /* Keyboard focus never lands behind the bottom bar (WCAG 2.4.11): the browser keeps this much room
    below a focused item when it scrolls it into view */
 html[data-asb="1"] {
-  scroll-padding-bottom: calc(61px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)) + var(--lsnh, 0px));
+  scroll-padding-bottom: calc(var(--pill-foot) + 8px + var(--lsnh, 0px));
 }
 
 /* ==== The date card: next Chaturthi date first, More dates folded ====
@@ -756,7 +756,7 @@ html[data-asb="1"] {
   z-index: 7;
   left: max(12px, env(safe-area-inset-left, 0px));
   right: max(12px, env(safe-area-inset-right, 0px));
-  bottom: calc(61px + max(8px, calc(env(safe-area-inset-bottom, 0px) - 16px)));
+  bottom: calc(var(--pill-foot) + 2px);
   max-width: 34rem;
   margin: 0 auto;
   display: flex;
