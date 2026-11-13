@@ -389,6 +389,7 @@ export default {
     pic: "show the picture full screen",
     prev: "Previous month",
     nextM: "Next month",
+    thisMonth: "This month",
     key: ["Shukla paksha", "Krishna paksha", "Purnima", "Amavasya"],
     keyNote: "Tithi at sunrise · + a tithi that begins and ends before the next sunrise (kshaya)",
     vriddhi: "same tithi as the day before (vriddhi)",
