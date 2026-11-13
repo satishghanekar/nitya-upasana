@@ -385,11 +385,17 @@ ol.toc .m {
 
 /* ==== Settings panel ==== */
 
-/* ==== Wider screens (820px and up) ==== */
-@media (min-width: 820px) {
+/* ==== Tablets (600px and up): the text column at its full reading width. Upright iPads are 744 to 834px wide, so the
+   820px step below missed most of them and left a third of the screen empty beside a phone's column (Satish
+   2026-11-13) ==== */
+@media (min-width: 600px) {
   .wrap {
     max-width: 46rem;
   }
+}
+
+/* ==== Wider screens (820px and up) ==== */
+@media (min-width: 820px) {
   ol.toc {
     display: grid;
     grid-template-columns: 1fr 1fr;
