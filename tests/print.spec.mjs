@@ -206,8 +206,8 @@ test("print pop-up offers the right choices and closes cleanly @chromium-only", 
   await expect(page.locator("#prgp")).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.locator("#prm")).toBeHidden();
-  // opened from elsewhere (no button named): focus comes back to Print in the top bar, on Home too
-  await expect(page.locator("#asp")).toBeFocused();
+  // opened from elsewhere (no button named): focus comes back to Share in the top bar, on Home too
+  await expect(page.locator("#tmb")).toBeFocused();
   await openPrintBuilder(page);
   await howStep(page);
   await page.locator("#prx").click();
