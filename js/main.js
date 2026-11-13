@@ -122,7 +122,7 @@ function start() {
     run(startHelp); // Help: opens over the page; the phone's Back button closes it
     run(startPrint); // Print
     run(startShare); // Share, QR code and the Add to Home Screen buttons
-    run(startMoreMenu); // Share in the top bar: App, Share, QR and Help in a small menu (and Print, on a phone)
+    run(startMoreMenu); // Share in the top bar: App, Share, QR, Print and Help in a small menu
     run(startOffline); // Offline use: home-screen app details and the service worker (sw.js)
     run(startProfiles); // People on this phone: the profile chip in the top bar and its sheet (switch, add, edit, delete)
     run(startBackup); // Save a backup file / Restore from a file, the backup reminder, keeping the data (storage.persist)

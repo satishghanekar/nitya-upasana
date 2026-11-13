@@ -1,7 +1,7 @@
 // @ts-check
 // Bottom bar (#asc): ‹ Prev, Home, Library (#hm, js/features/history.js), Aa (the reading sheet), Listen (#lsb,
 // js/features/listen.js), Next ›; on Home only
-// Library, Aa and Listen. Print is in the top bar (on a phone, in its Share menu).
+// Library, Aa and Listen. Print is in the top bar's Share menu.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { root } from "../core/page.js";
