@@ -128,7 +128,7 @@ test("the Library covers the page to the foot of the screen, its search box insi
     } else expect(r.bb).toBeLessThan(r.jb);
   }
   // a short list of results: the box stays at the foot
-  await page.locator("#q").fill("nurvi");
+  await page.locator("#q").fill("nurvi purvi");
   await expect(page.locator("#res button").first()).toBeVisible();
   const r = await m();
   if (vp.width < 1024) expect(Math.abs(r.bb - r.h)).toBeLessThan(1);
@@ -193,7 +193,7 @@ test("Recent: the places gone to from search, newest first; × takes one away, C
   await page.locator("#res li.rt button").first().click();
   await expect.poll(() => onPiece(page)).toBe("a1");
   await page.evaluate(() => document.getElementById("hm").click());
-  await page.locator("#q").fill("nurvi");
+  await page.locator("#q").fill("nurvi purvi");
   await page.locator("#res li:not(.rh):not(.rt) button").first().click();
   await expect(page.locator("#jump")).toBeHidden();
   await page.evaluate(() => document.getElementById("hm").click());

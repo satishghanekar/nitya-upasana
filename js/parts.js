@@ -133,6 +133,7 @@ var SITE_PARTS = (function () {
     "texts/vedic-chant-shivopasana-mantra.txt",
     "texts/vedic-chant-pavamana-suktam.txt",
     "texts/vedic-chant-lalita-sahasranama.txt",
+    "texts/vedic-chant-vishnu-sahasranama.txt",
     "texts/vedic-chant-mantra-pushpanjali.txt",
     "texts/vedic-chant-mantrapushpam.txt",
     "texts/vedic-chant-chakshushopanishad.txt",

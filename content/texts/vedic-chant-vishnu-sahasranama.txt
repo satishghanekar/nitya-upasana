@@ -1,0 +1,1160 @@
+id: vedic-chant-vishnu-sahasranama
+title: श्रीविष्णुसहस्रनामस्तोत्रम्
+title-en: Shri Vishnu Sahasranama
+category: vedic-chant
+language: sa
+layout: lines
+stanza-numbers: as-written
+credit: [महाभारत, अनुशासनपर्व](https://mr.wikipedia.org/wiki/विष्णुसहस्रनाम)
+credit-en: [Mahabharata, Anushasana Parva](https://en.wikipedia.org/wiki/Vishnu_Sahasranama)
+recording: [Challakere Brothers](https://www.youtube.com/watch?v=ayqZpzFo5xA&t=11)
+---
+[once]
+श्रीगुरुभ्यो नमः हरिः ॐ ॥
+Shrigurubhyo Namah Harih Om ||
+
+[note: पूर्वभागः | Purva Bhaga]
+
+[para 1]
+शुक्लाम्बरधरं विष्णुं शशिवर्णं चतुर्भुजम् ।
+Shuklambaradharam Vishnum Shashivarnam Chaturbhujam |
+प्रसन्नवदनं ध्यायेत् सर्वविघ्नोपशान्तये ॥ १ ॥
+Prasannavadanam Dhyayet Sarvavighnopashantaye || 1 ||
+
+[2]
+नारायणं नमस्कृत्य नरं चैव नरोत्तमम् ।
+Narayanam Namaskrutya Naram Chaiva Narottamam |
+देवीं सरस्वतीं व्यासं ततो जयमुदीरयेत् ॥ २ ॥
+Devim Sarasvatim Vyasam Tato Jayamudirayet || 2 ||
+
+[3]
+व्यासं वसिष्ठनप्तारं शक्तेः पौत्रमकल्मषम् ।
+Vyasam Vasishthanaptaram Shakteh Pautramakalmasham |
+पराशरात्मजं वन्दे शुकतातं तपोनिधिम् ॥ ३ ॥
+Parasharatmajam Vande Shukatatam Taponidhim || 3 ||
+
+[4]
+व्यासाय विष्णुरूपाय व्यासरूपाय विष्णवे ।
+Vyasaya Vishnurupaya Vyasarupaya Vishnave |
+नमो वै ब्रह्मनिधये वासिष्ठाय नमो नमः ॥ ४ ॥
+Namo Vai Brahmanidhaye Vasishthaya Namo Namah || 4 ||
+
+[5]
+अविकाराय शुद्धाय नित्याय परमात्मने ।
+Avikaraya Shuddhaya Nityaya Paramatmane |
+सदैकरूपरूपाय विष्णवे सर्वजिष्णवे ॥ ५ ॥
+Sadaikaruparupaya Vishnave Sarvajishnave || 5 ||
+
+[6]
+यस्य स्मरणमात्रेण जन्मसंसारबन्धनात् ।
+Yasya Smaranamatrena Janmasamsarabandhanat |
+विमुच्यते नमस्तस्मै विष्णवे प्रभविष्णवे ॥ ६ ॥
+Vimuchyate Namastasmai Vishnave Prabhavishnave || 6 ||
+
+[once]
+ॐ नमो विष्णवे प्रभविष्णवे ।
+Om Namo Vishnave Prabhavishnave |
+
+[7]
+श्रीवैशम्पायन उवाच
+Shrivaishampayana Uvacha
+श्रुत्वा धर्मानशेषेण पावनानि च सर्वशः ।
+Shrutva Dharmanasheshena Pavanani Cha Sarvashah |
+युधिष्ठिरः शान्तनवं पुनरेवाभ्यभाषत ॥ ७ ॥
+Yudhishthirah Shantanavam Punarevabhyabhashata || 7 ||
+
+[8]
+युधिष्ठिर उवाच
+Yudhishthira Uvacha
+किमेकं दैवतं लोके किं वाप्येकं परायणम् ।
+Kimekam Daivatam Loke Kim Vapyekam Parayanam |
+स्तुवन्तः कं कमर्चन्तः प्राप्नुयुर्मानवाः शुभम् ॥ ८ ॥
+Stuvantah Kam Kamarchantah Prapnuyurmanavah Shubham || 8 ||
+
+[9]
+को धर्मः सर्वधर्माणां भवतः परमो मतः ।
+Ko Dharmah Sarvadharmanam Bhavatah Paramo Matah |
+किं जपन्मुच्यते जन्तुर्जन्मसंसारबन्धनात् ॥ ९ ॥
+Kim Japanmuchyate Janturjanmasamsarabandhanat || 9 ||
+
+[10]
+भीष्म उवाच
+Bhishma Uvacha
+जगत्प्रभुं देवदेवमनन्तं पुरुषोत्तमम् ।
+Jagatprabhum Devadevamanantam Purushottamam |
+स्तुवन् नामसहस्रेण पुरुषः सततोत्थितः ॥ १० ॥
+Stuvan Namasahasrena Purushah Satatotthitah || 10 ||
+
+[11]
+तमेव चार्चयन्नित्यं भक्त्या पुरुषमव्ययम् ।
+Tameva Charchayannityam Bhaktya Purushamavyayam |
+ध्यायन् स्तुवन् नमस्यंश्च यजमानस्तमेव च ॥ ११ ॥
+Dhyayan Stuvan Namasyamshcha Yajamanastameva Cha || 11 ||
+
+[12]
+अनादिनिधनं विष्णुं सर्वलोकमहेश्वरम् ।
+Anadinidhanam Vishnum Sarvalokamaheshvaram |
+लोकाध्यक्षं स्तुवन्नित्यं सर्वदुःखातिगो भवेत् ॥ १२ ॥
+Lokadhyaksham Stuvannityam Sarvaduhkhatigo Bhavet || 12 ||
+
+[13]
+ब्रह्मण्यं सर्वधर्मज्ञं लोकानां कीर्तिवर्धनम् ।
+Brahmanyam Sarvadharmadnyam Lokanam Kirtivardhanam |
+लोकनाथं महद्भूतं सर्वभूतभवोद्भवम् ॥ १३ ॥
+Lokanatham Mahadbhutam Sarvabhutabhavodbhavam || 13 ||
+
+[14]
+एष मे सर्वधर्माणां धर्मोऽधिकतमो मतः ।
+Esha Me Sarvadharmanam Dharmodhikatamo Matah |
+यद्भक्त्या पुण्डरीकाक्षं स्तवैरर्चेन्नरः सदा ॥ १४ ॥
+Yadbhaktya Pundarikaksham Stavairarchennarah Sada || 14 ||
+
+[15]
+परमं यो महत्तेजः परमं यो महत्तपः ।
+Paramam Yo Mahattejah Paramam Yo Mahattapah |
+परमं यो महद्ब्रह्म परमं यः परायणम् ॥ १५ ॥
+Paramam Yo Mahadbrahma Paramam Yah Parayanam || 15 ||
+
+[16]
+पवित्राणां पवित्रं यो मङ्गलानां च मङ्गलम् ।
+Pavitranam Pavitram Yo Mangalanam Cha Mangalam |
+दैवतं दैवतानां च भूतानां योऽव्ययः पिता ॥ १६ ॥
+Daivatam Daivatanam Cha Bhutanam Yovyayah Pita || 16 ||
+
+[17]
+यतः सर्वाणि भूतानि भवन्त्यादियुगागमे ।
+Yatah Sarvani Bhutani Bhavantyadiyugagame |
+यस्मिंश्च प्रलयं यान्ति पुनरेव युगक्षये ॥ १७ ॥
+Yasmimshcha Pralayam Yanti Punareva Yugakshaye || 17 ||
+
+[18]
+तस्य लोकप्रधानस्य जगन्नाथस्य भूपते ।
+Tasya Lokapradhanasya Jagannathasya Bhupate |
+विष्णोर्नामसहस्रं मे शृणु पापभयापहम् ॥ १८ ॥
+Vishnornamasahasram Me Shrunu Papabhayapaham || 18 ||
+
+[19]
+यानि नामानि गौणानि विख्यातानि महात्मनः ।
+Yani Namani Gaunani Vikhyatani Mahatmanah |
+ऋषिभिः परिगीतानि तानि वक्ष्यामि भूतये ॥ १९ ॥
+Rushibhih Parigitani Tani Vakshyami Bhutaye || 19 ||
+
+[20]
+ऋषिर्नाम्नां सहस्रस्य वेदव्यासो महामुनिः ।
+Rushirnamnam Sahasrasya Vedavyaso Mahamunih |
+छन्दोऽनुष्टुप् तथा देवो भगवान् देवकीसुतः ॥ २० ॥
+Chhandonushtup Tatha Devo Bhagavan Devakisutah || 20 ||
+
+[21]
+अमृतांशूद्भवो बीजं शक्तिर्देवकिनन्दनः ।
+Amrutamshudbhavo Bijam Shaktirdevakinandanah |
+त्रिसामा हृदयं तस्य शान्त्यर्थे विनियोज्यते ॥ २१ ॥
+Trisama Hrudayam Tasya Shantyarthe Viniyojyate || 21 ||
+
+[22]
+विष्णुं जिष्णुं महाविष्णुं प्रभविष्णुं महेश्वरम् ।
+Vishnum Jishnum Mahavishnum Prabhavishnum Maheshvaram |
+अनेकरूपदैत्यान्तं नमामि पुरुषोत्तमम् ॥ २२ ॥
+Anekarupadaityantam Namami Purushottamam || 22 ||
+
+[note: पूर्वन्यासः | Purva Nyasa]
+
+[once]
+ॐ अस्य श्रीविष्णोर्दिव्यसहस्रनामस्तोत्रमहामन्त्रस्य ॥
+Om Asya Shrivishnordivyasahasranamastotramahamantrasya ||
+श्रीवेदव्यासो भगवानृषिः ।
+Shrivedavyaso Bhagavanrushih |
+अनुष्टुप् छन्दः ।
+Anushtup Chhandah |
+श्रीमहाविष्णुः परमात्मा श्रीमन्नारायणो देवता ।
+Shrimahavishnuh Paramatma Shrimannarayano Devata |
+अमृतांशूद्भवो भानुरिति बीजम् ।
+Amrutamshudbhavo Bhanuriti Bijam |
+देवकीनन्दनः स्रष्टेति शक्तिः ।
+Devakinandanah Srashteti Shaktih |
+उद्भवः क्षोभणो देव इति परमो मन्त्रः ।
+Udbhavah Kshobhano Deva Iti Paramo Mantrah |
+शङ्खभृन्नन्दकी चक्रीति कीलकम् ।
+Shankhabhrunnandaki Chakriti Kilakam |
+शार्ङ्गधन्वा गदाधर इत्यस्त्रम् ।
+Sharngadhanva Gadadhara Ityastram |
+रथाङ्गपाणिरक्षोभ्य इति नेत्रम् ।
+Rathangapanirakshobhya Iti Netram |
+त्रिसामा सामगः सामेति कवचम् ।
+Trisama Samagah Sameti Kavacham |
+आनन्दं परब्रह्मेति योनिः ।
+Anandam Parabrahmeti Yonih |
+ऋतुः सुदर्शनः काल इति दिग्बन्धः ॥
+Rutuh Sudarshanah Kala Iti Digbandhah ||
+श्रीविश्वरूप इति ध्यानम् ।
+Shrivishvarupa Iti Dhyanam |
+श्रीमहाविष्णुप्रीत्यर्थे श्रीसहस्रनामपारायणे विनियोगः ॥
+Shrimahavishnuprityarthe Shrisahasranamaparayane Viniyogah ||
+
+[note: अथ ध्यानम् | Dhyanam]
+
+[para 23]
+क्षीरोदन्वत्प्रदेशे शुचिमणिविलसत्सैकते मौक्तिकानां
+Kshirodanvatpradeshe Shuchimanivilasatsaikate Mauktikanam
+मालाकॢप्तासनस्थः स्फटिकमणिनिभैर्मौक्तिकैर्मण्डिताङ्गः ।
+Malaklruptasanasthah Sphatikamaninibhairmauktikairmanditangah |
+शुभ्रैरभ्रैरदभ्रैरुपरि विरचितैर्मुक्तपीयूषवर्षैः
+Shubhrairabhrairadabhrairupari Virachitairmuktapiyushavarshaih
+आनन्दी नः पुनीयादरिनलिनगदाशङ्खपाणिर्मुकुन्दः ॥ १ ॥
+Anandi Nah Puniyadarinalinagadashankhapanirmukundah || 1 ||
+
+[24]
+भूः पादौ यस्य नाभिर्वियदसुरनिलश्चन्द्रसूर्यौ च नेत्रे
+Bhuh Padau Yasya Nabhirviyadasuranilashchandrasuryau Cha Netre
+कर्णावाशाः शिरो द्यौर्मुखमपि दहनो यस्य वास्तेयमब्धिः ।
+Karnavashah Shiro Dyaurmukhamapi Dahano Yasya Vasteyamabdhih |
+अन्तःस्थं यस्य विश्वं सुरनरखगगोभोगिगन्धर्वदैत्यैः
+Antahstham Yasya Vishvam Suranarakhagagobhogigandharvadaityaih
+चित्रं रंरम्यते तं त्रिभुवनवपुषं विष्णुमीशं नमामि ॥ २ ॥
+Chitram Ramramyate Tam Tribhuvanavapusham Vishnumisham Namami || 2 ||
+
+[once]
+ॐ नमो भगवते वासुदेवाय ।
+Om Namo Bhagavate Vasudevaya |
+
+[25]
+शान्ताकारं भुजगशयनं पद्मनाभं सुरेशं
+Shantakaram Bhujagashayanam Padmanabham Suresham
+विश्वाधारं गगनसदृशं मेघवर्णं शुभाङ्गम् ।
+Vishvadharam Gaganasadrusham Meghavarnam Shubhangam |
+लक्ष्मीकान्तं कमलनयनं योगिभिर्ध्यानगम्यं
+Lakshmikantam Kamalanayanam Yogibhirdhyanagamyam
+वन्दे विष्णुं भवभयहरं सर्वलोकैकनाथम् ॥ ३ ॥
+Vande Vishnum Bhavabhayaharam Sarvalokaikanatham || 3 ||
+
+[26]
+मेघश्यामं पीतकौशेयवासं
+Meghashyamam Pitakausheyavasam
+श्रीवत्साङ्कं कौस्तुभोद्भासिताङ्गम् ।
+Shrivatsankam Kaustubhodbhasitangam |
+पुण्योपेतं पुण्डरीकायताक्षं
+Punyopetam Pundarikayataksham
+विष्णुं वन्दे सर्वलोकैकनाथम् ॥ ४ ॥
+Vishnum Vande Sarvalokaikanatham || 4 ||
+
+[27]
+नमः समस्तभूतानामादिभूताय भूभृते ।
+Namah Samastabhutanamadibhutaya Bhubhrute |
+अनेकरूपरूपाय विष्णवे प्रभविष्णवे ॥ ५ ॥
+Anekaruparupaya Vishnave Prabhavishnave || 5 ||
+
+[28]
+सशङ्खचक्रं सकिरीटकुण्डलं
+Sashankhachakram Sakiritakundalam
+सपीतवस्त्रं सरसीरुहेक्षणम् ।
+Sapitavastram Sarasiruhekshanam |
+सहारवक्षःस्थलकौस्तुभश्रियं
+Saharavakshahsthalakaustubhashriyam
+नमामि विष्णुं शिरसा चतुर्भुजम् ॥ ६ ॥
+Namami Vishnum Shirasa Chaturbhujam || 6 ||
+
+[29]
+छायायां पारिजातस्य हेमसिंहासनोपरि
+Chhayayam Parijatasya Hemasimhasanopari
+आसीनमम्बुदश्याममायताक्षमलंकृतम् ।
+Asinamambudashyamamayatakshamalankrutam |
+चन्द्राननं चतुर्बाहुं श्रीवत्साङ्कितवक्षसं
+Chandrananam Chaturbahum Shrivatsankitavakshasam
+रुक्मिणीसत्यभामाभ्यां सहितं कृष्णमाश्रये ॥ ७ ॥
+Rukminisatyabhamabhyam Sahitam Krushnamashraye || 7 ||
+
+[note: स्तोत्रम् | Stotram]
+
+[para 30]
+ॐ विश्वं विष्णुर्वषट्कारो भूतभव्यभवत्प्रभुः ।
+Om Vishvam Vishnurvashatkaro Bhutabhavyabhavatprabhuh |
+भूतकृद्भूतभृद्भावो भूतात्मा भूतभावनः ॥ १ ॥
+Bhutakrudbhutabhrudbhavo Bhutatma Bhutabhavanah || 1 ||
+
+[31]
+पूतात्मा परमात्मा च मुक्तानां परमा गतिः ।
+Putatma Paramatma Cha Muktanam Parama Gatih |
+अव्ययः पुरुषः साक्षी क्षेत्रज्ञोऽक्षर एव च ॥ २ ॥
+Avyayah Purushah Sakshi Kshetradnyokshara Eva Cha || 2 ||
+
+[32]
+योगो योगविदां नेता प्रधानपुरुषेश्वरः ।
+Yogo Yogavidam Neta Pradhanapurusheshvarah |
+नारसिंहवपुः श्रीमान् केशवः पुरुषोत्तमः ॥ ३ ॥
+Narasimhavapuh Shriman Keshavah Purushottamah || 3 ||
+
+[33]
+सर्वः शर्वः शिवः स्थाणुर्भूतादिर्निधिरव्ययः ।
+Sarvah Sharvah Shivah Sthanurbhutadirnidhiravyayah |
+संभवो भावनो भर्ता प्रभवः प्रभुरीश्वरः ॥ ४ ॥
+Sambhavo Bhavano Bharta Prabhavah Prabhurishvarah || 4 ||
+
+[34]
+स्वयंभूः शम्भुरादित्यः पुष्कराक्षो महास्वनः ।
+Svayambhuh Shambhuradityah Pushkaraksho Mahasvanah |
+अनादिनिधनो धाता विधाता धातुरुत्तमः ॥ ५ ॥
+Anadinidhano Dhata Vidhata Dhaturuttamah || 5 ||
+
+[35]
+अप्रमेयो हृषीकेशः पद्मनाभोऽमरप्रभुः ।
+Aprameyo Hrushikeshah Padmanabhomaraprabhuh |
+विश्वकर्मा मनुस्त्वष्टा स्थविष्ठः स्थविरो ध्रुवः ॥ ६ ॥
+Vishvakarma Manustvashta Sthavishthah Sthaviro Dhruvah || 6 ||
+
+[36]
+अग्राह्यः शाश्वतः कृष्णो लोहिताक्षः प्रतर्दनः ।
+Agrahyah Shashvatah Krushno Lohitakshah Pratardanah |
+प्रभूतस्त्रिककुब्धाम पवित्रं मङ्गलं परम् ॥ ७ ॥
+Prabhutastrikakubdhama Pavitram Mangalam Param || 7 ||
+
+[37]
+ईशानः प्राणदः प्राणो ज्येष्ठः श्रेष्ठः प्रजापतिः ।
+Ishanah Pranadah Prano Jyeshthah Shreshthah Prajapatih |
+हिरण्यगर्भो भूगर्भो माधवो मधुसूदनः ॥ ८ ॥
+Hiranyagarbho Bhugarbho Madhavo Madhusudanah || 8 ||
+
+[38]
+ईश्वरो विक्रमी धन्वी मेधावी विक्रमः क्रमः ।
+Ishvaro Vikrami Dhanvi Medhavi Vikramah Kramah |
+अनुत्तमो दुराधर्षः कृतज्ञः कृतिरात्मवान् ॥ ९ ॥
+Anuttamo Duradharshah Krutadnyah Krutiratmavan || 9 ||
+
+[39]
+सुरेशः शरणं शर्म विश्वरेताः प्रजाभवः ।
+Sureshah Sharanam Sharma Vishvaretah Prajabhavah |
+अहः संवत्सरो व्यालः प्रत्ययः सर्वदर्शनः ॥ १० ॥
+Ahah Samvatsaro Vyalah Pratyayah Sarvadarshanah || 10 ||
+
+[40]
+अजः सर्वेश्वरः सिद्धः सिद्धिः सर्वादिरच्युतः ।
+Ajah Sarveshvarah Siddhah Siddhih Sarvadirachyutah |
+वृषाकपिरमेयात्मा सर्वयोगविनिःसृतः ॥ ११ ॥
+Vrushakapirameyatma Sarvayogavinihsrutah || 11 ||
+
+[41]
+वसुर्वसुमनाः सत्यः समात्माऽसम्मितः समः ।
+Vasurvasumanah Satyah Samatmasammitah Samah |
+अमोघः पुण्डरीकाक्षो वृषकर्मा वृषाकृतिः ॥ १२ ॥
+Amoghah Pundarikaksho Vrushakarma Vrushakrutih || 12 ||
+
+[42]
+रुद्रो बहुशिरा बभ्रुर्विश्वयोनिः शुचिश्रवाः ।
+Rudro Bahushira Babhrurvishvayonih Shuchishravah |
+अमृतः शाश्वतः स्थाणुर्वरारोहो महातपाः ॥ १३ ॥
+Amrutah Shashvatah Sthanurvararoho Mahatapah || 13 ||
+
+[43]
+सर्वगः सर्वविद्भानुर्विष्वक्सेनो जनार्दनः ।
+Sarvagah Sarvavidbhanurvishvakseno Janardanah |
+वेदो वेदविदव्यङ्गो वेदाङ्गो वेदवित् कविः ॥ १४ ॥
+Vedo Vedavidavyango Vedango Vedavit Kavih || 14 ||
+
+[44]
+लोकाध्यक्षः सुराध्यक्षो धर्माध्यक्षः कृताकृतः ।
+Lokadhyakshah Suradhyaksho Dharmadhyakshah Krutakrutah |
+चतुरात्मा चतुर्व्यूहश्चतुर्दंष्ट्रश्चतुर्भुजः ॥ १५ ॥
+Chaturatma Chaturvyuhashchaturdamshtrashchaturbhujah || 15 ||
+
+[45]
+भ्राजिष्णुर्भोजनं भोक्ता सहिष्णुर्जगदादिजः ।
+Bhrajishnurbhojanam Bhokta Sahishnurjagadadijah |
+अनघो विजयो जेता विश्वयोनिः पुनर्वसुः ॥ १६ ॥
+Anagho Vijayo Jeta Vishvayonih Punarvasuh || 16 ||
+
+[46]
+उपेन्द्रो वामनः प्रांशुरमोघः शुचिरूर्जितः ।
+Upendro Vamanah Pramshuramoghah Shuchirurjitah |
+अतीन्द्रः संग्रहः सर्गो धृतात्मा नियमो यमः ॥ १७ ॥
+Atindrah Sangrahah Sargo Dhrutatma Niyamo Yamah || 17 ||
+
+[47]
+वेद्यो वैद्यः सदायोगी वीरहा माधवो मधुः ।
+Vedyo Vaidyah Sadayogi Viraha Madhavo Madhuh |
+अतीन्द्रियो महामायो महोत्साहो महाबलः ॥ १८ ॥
+Atindriyo Mahamayo Mahotsaho Mahabalah || 18 ||
+
+[48]
+महाबुद्धिर्महावीर्यो महाशक्तिर्महाद्युतिः ।
+Mahabuddhirmahaviryo Mahashaktirmahadyutih |
+अनिर्देश्यवपुः श्रीमानमेयात्मा महाद्रिधृक् ॥ १९ ॥
+Anirdeshyavapuh Shrimanameyatma Mahadridhruk || 19 ||
+
+[49]
+महेष्वासो महीभर्ता श्रीनिवासः सतां गतिः ।
+Maheshvaso Mahibharta Shrinivasah Satam Gatih |
+अनिरुद्धः सुरानन्दो गोविन्दो गोविदां पतिः ॥ २० ॥
+Aniruddhah Suranando Govindo Govidam Patih || 20 ||
+
+[50]
+मरीचिर्दमनो हंसः सुपर्णो भुजगोत्तमः ।
+Marichirdamano Hamsah Suparno Bhujagottamah |
+हिरण्यनाभः सुतपाः पद्मनाभः प्रजापतिः ॥ २१ ॥
+Hiranyanabhah Sutapah Padmanabhah Prajapatih || 21 ||
+
+[51]
+अमृत्युः सर्वदृक् सिंहः सन्धाता सन्धिमान् स्थिरः ।
+Amrutyuh Sarvadruk Simhah Sandhata Sandhiman Sthirah |
+अजो दुर्मर्षणः शास्ता विश्रुतात्मा सुरारिहा ॥ २२ ॥
+Ajo Durmarshanah Shasta Vishrutatma Surariha || 22 ||
+
+[52]
+गुरुर्गुरुतमो धाम सत्यः सत्यपराक्रमः ।
+Gururgurutamo Dhama Satyah Satyaparakramah |
+निमिषोऽनिमिषः स्रग्वी वाचस्पतिरुदारधीः ॥ २३ ॥
+Nimishonimishah Sragvi Vachaspatirudaradhih || 23 ||
+
+[53]
+अग्रणीर्ग्रामणीः श्रीमान् न्यायो नेता समीरणः ।
+Agranirgramanih Shriman Nyayo Neta Samiranah |
+सहस्रमूर्धा विश्वात्मा सहस्राक्षः सहस्रपात् ॥ २४ ॥
+Sahasramurdha Vishvatma Sahasrakshah Sahasrapat || 24 ||
+
+[54]
+आवर्तनो निवृत्तात्मा संवृतः संप्रमर्दनः ।
+Avartano Nivruttatma Samvrutah Sampramardanah |
+अहः संवर्तको वह्निरनिलो धरणीधरः ॥ २५ ॥
+Ahah Samvartako Vahniranilo Dharanidharah || 25 ||
+
+[55]
+सुप्रसादः प्रसन्नात्मा विश्वधृग्विश्वभुग्विभुः ।
+Suprasadah Prasannatma Vishvadhrugvishvabhugvibhuh |
+सत्कर्ता सत्कृतः साधुर्जह्नुर्नारायणो नरः ॥ २६ ॥
+Satkarta Satkrutah Sadhurjahnurnarayano Narah || 26 ||
+
+[56]
+असंख्येयोऽप्रमेयात्मा विशिष्टः शिष्टकृच्छुचिः ।
+Asankhyeyoprameyatma Vishishtah Shishtakruchchhuchih |
+सिद्धार्थः सिद्धसंकल्पः सिद्धिदः सिद्धिसाधनः ॥ २७ ॥
+Siddharthah Siddhasankalpah Siddhidah Siddhisadhanah || 27 ||
+
+[57]
+वृषाही वृषभो विष्णुर्वृषपर्वा वृषोदरः ।
+Vrushahi Vrushabho Vishnurvrushaparva Vrushodarah |
+वर्धनो वर्धमानश्च विविक्तः श्रुतिसागरः ॥ २८ ॥
+Vardhano Vardhamanashcha Viviktah Shrutisagarah || 28 ||
+
+[58]
+सुभुजो दुर्धरो वाग्मी महेन्द्रो वसुदो वसुः ।
+Subhujo Durdharo Vagmi Mahendro Vasudo Vasuh |
+नैकरूपो बृहद्रूपः शिपिविष्टः प्रकाशनः ॥ २९ ॥
+Naikarupo Bruhadrupah Shipivishtah Prakashanah || 29 ||
+
+[59]
+ओजस्तेजोद्युतिधरः प्रकाशात्मा प्रतापनः ।
+Ojastejodyutidharah Prakashatma Pratapanah |
+ऋद्धः स्पष्टाक्षरो मन्त्रश्चन्द्रांशुर्भास्करद्युतिः ॥ ३० ॥
+Ruddhah Spashtaksharo Mantrashchandramshurbhaskaradyutih || 30 ||
+
+[60]
+अमृतांशूद्भवो भानुः शशबिन्दुः सुरेश्वरः ।
+Amrutamshudbhavo Bhanuh Shashabinduh Sureshvarah |
+औषधं जगतः सेतुः सत्यधर्मपराक्रमः ॥ ३१ ॥
+Aushadham Jagatah Setuh Satyadharmaparakramah || 31 ||
+
+[61]
+भूतभव्यभवन्नाथः पवनः पावनोऽनलः ।
+Bhutabhavyabhavannathah Pavanah Pavanonalah |
+कामहा कामकृत्कान्तः कामः कामप्रदः प्रभुः ॥ ३२ ॥
+Kamaha Kamakrutkantah Kamah Kamapradah Prabhuh || 32 ||
+
+[62]
+युगादिकृद्युगावर्तो नैकमायो महाशनः ।
+Yugadikrudyugavarto Naikamayo Mahashanah |
+अदृश्यो व्यक्तरूपश्च सहस्रजिदनन्तजित् ॥ ३३ ॥
+Adrushyo Vyaktarupashcha Sahasrajidanantajit || 33 ||
+
+[63]
+इष्टोऽविशिष्टः शिष्टेष्टः शिखण्डी नहुषो वृषः ।
+Ishtovishishtah Shishteshtah Shikhandi Nahusho Vrushah |
+क्रोधहा क्रोधकृत्कर्ता विश्वबाहुर्महीधरः ॥ ३४ ॥
+Krodhaha Krodhakrutkarta Vishvabahurmahidharah || 34 ||
+
+[64]
+अच्युतः प्रथितः प्राणः प्राणदो वासवानुजः ।
+Achyutah Prathitah Pranah Pranado Vasavanujah |
+अपांनिधिरधिष्ठानमप्रमत्तः प्रतिष्ठितः ॥ ३५ ॥
+Apannidhiradhishthanamapramattah Pratishthitah || 35 ||
+
+[65]
+स्कन्दः स्कन्दधरो धुर्यो वरदो वायुवाहनः ।
+Skandah Skandadharo Dhuryo Varado Vayuvahanah |
+वासुदेवो बृहद्भानुरादिदेवः पुरन्दरः ॥ ३६ ॥
+Vasudevo Bruhadbhanuradidevah Purandarah || 36 ||
+
+[66]
+अशोकस्तारणस्तारः शूरः शौरिर्जनेश्वरः ।
+Ashokastaranastarah Shurah Shaurirjaneshvarah |
+अनुकूलः शतावर्तः पद्मी पद्मनिभेक्षणः ॥ ३७ ॥
+Anukulah Shatavartah Padmi Padmanibhekshanah || 37 ||
+
+[67]
+पद्मनाभोऽरविन्दाक्षः पद्मगर्भः शरीरभृत् ।
+Padmanabhoravindakshah Padmagarbhah Sharirabhrut |
+महर्द्धिरृद्धो वृद्धात्मा महाक्षो गरुडध्वजः ॥ ३८ ॥
+Maharddhirruddho Vruddhatma Mahaksho Garudadhvajah || 38 ||
+
+[68]
+अतुलः शरभो भीमः समयज्ञो हविर्हरिः ।
+Atulah Sharabho Bhimah Samayadnyo Havirharih |
+सर्वलक्षणलक्षण्यो लक्ष्मीवान् समितिञ्जयः ॥ ३९ ॥
+Sarvalakshanalakshanyo Lakshmivan Samitinjayah || 39 ||
+
+[69]
+विक्षरो रोहितो मार्गो हेतुर्दामोदरः सहः ।
+Viksharo Rohito Margo Heturdamodarah Sahah |
+महीधरो महाभागो वेगवानमिताशनः ॥ ४० ॥
+Mahidharo Mahabhago Vegavanamitashanah || 40 ||
+
+[70]
+उद्भवः क्षोभणो देवः श्रीगर्भः परमेश्वरः ।
+Udbhavah Kshobhano Devah Shrigarbhah Parameshvarah |
+करणं कारणं कर्ता विकर्ता गहनो गुहः ॥ ४१ ॥
+Karanam Karanam Karta Vikarta Gahano Guhah || 41 ||
+
+[71]
+व्यवसायो व्यवस्थानः संस्थानः स्थानदो ध्रुवः ।
+Vyavasayo Vyavasthanah Samsthanah Sthanado Dhruvah |
+परर्द्धिः परमस्पष्टस्तुष्टः पुष्टः शुभेक्षणः ॥ ४२ ॥
+Pararddhih Paramaspashtastushtah Pushtah Shubhekshanah || 42 ||
+
+[72]
+रामो विरामो विरजो मार्गो नेयो नयोऽनयः ।
+Ramo Viramo Virajo Margo Neyo Nayonayah |
+वीरः शक्तिमतां श्रेष्ठो धर्मो धर्मविदुत्तमः ॥ ४३ ॥
+Virah Shaktimatam Shreshtho Dharmo Dharmaviduttamah || 43 ||
+
+[73]
+वैकुण्ठः पुरुषः प्राणः प्राणदः प्रणवः पृथुः ।
+Vaikunthah Purushah Pranah Pranadah Pranavah Pruthuh |
+हिरण्यगर्भः शत्रुघ्नो व्याप्तो वायुरधोक्षजः ॥ ४४ ॥
+Hiranyagarbhah Shatrughno Vyapto Vayuradhokshajah || 44 ||
+
+[74]
+ऋतुः सुदर्शनः कालः परमेष्ठी परिग्रहः ।
+Rutuh Sudarshanah Kalah Parameshthi Parigrahah |
+उग्रः संवत्सरो दक्षो विश्रामो विश्वदक्षिणः ॥ ४५ ॥
+Ugrah Samvatsaro Daksho Vishramo Vishvadakshinah || 45 ||
+
+[75]
+विस्तारः स्थावरस्थाणुः प्रमाणं बीजमव्ययम् ।
+Vistarah Sthavarasthanuh Pramanam Bijamavyayam |
+अर्थोऽनर्थो महाकोशो महाभोगो महाधनः ॥ ४६ ॥
+Arthonartho Mahakosho Mahabhogo Mahadhanah || 46 ||
+
+[76]
+अनिर्विण्णः स्थविष्ठोऽभूर्धर्मयूपो महामखः ।
+Anirvinnah Sthavishthobhurdharmayupo Mahamakhah |
+नक्षत्रनेमिर्नक्षत्री क्षमः क्षामः समीहनः ॥ ४७ ॥
+Nakshatranemirnakshatri Kshamah Kshamah Samihanah || 47 ||
+
+[77]
+यज्ञ इज्यो महेज्यश्च क्रतुः सत्रं सतां गतिः ।
+Yadnya Ijyo Mahejyashcha Kratuh Satram Satam Gatih |
+सर्वदर्शी विमुक्तात्मा सर्वज्ञो ज्ञानमुत्तमम् ॥ ४८ ॥
+Sarvadarshi Vimuktatma Sarvadnyo Dnyanamuttamam || 48 ||
+
+[78]
+सुव्रतः सुमुखः सूक्ष्मः सुघोषः सुखदः सुहृत् ।
+Suvratah Sumukhah Sukshmah Sughoshah Sukhadah Suhrut |
+मनोहरो जितक्रोधो वीरबाहुर्विदारणः ॥ ४९ ॥
+Manoharo Jitakrodho Virabahurvidaranah || 49 ||
+
+[79]
+स्वापनः स्ववशो व्यापी नैकात्मा नैककर्मकृत् ।
+Svapanah Svavasho Vyapi Naikatma Naikakarmakrut |
+वत्सरो वत्सलो वत्सी रत्नगर्भो धनेश्वरः ॥ ५० ॥
+Vatsaro Vatsalo Vatsi Ratnagarbho Dhaneshvarah || 50 ||
+
+[80]
+धर्मगुब्धर्मकृद्धर्मी सदसत्क्षरमक्षरम् ।
+Dharmagubdharmakruddharmi Sadasatksharamaksharam |
+अविज्ञाता सहस्रांशुर्विधाता कृतलक्षणः ॥ ५१ ॥
+Avidnyata Sahasramshurvidhata Krutalakshanah || 51 ||
+
+[81]
+गभस्तिनेमिः सत्त्वस्थः सिंहो भूतमहेश्वरः ।
+Gabhastinemih Sattvasthah Simho Bhutamaheshvarah |
+आदिदेवो महादेवो देवेशो देवभृद्गुरुः ॥ ५२ ॥
+Adidevo Mahadevo Devesho Devabhrudguruh || 52 ||
+
+[82]
+उत्तरो गोपतिर्गोप्ता ज्ञानगम्यः पुरातनः ।
+Uttaro Gopatirgopta Dnyanagamyah Puratanah |
+शरीरभूतभृद्भोक्ता कपीन्द्रो भूरिदक्षिणः ॥ ५३ ॥
+Sharirabhutabhrudbhokta Kapindro Bhuridakshinah || 53 ||
+
+[83]
+सोमपोऽमृतपः सोमः पुरुजित्पुरुसत्तमः ।
+Somapomrutapah Somah Purujitpurusattamah |
+विनयो जयः सत्यसंधो दाशार्हः सात्त्वतांपतिः ॥ ५४ ॥
+Vinayo Jayah Satyasandho Dasharhah Sattvatampatih || 54 ||
+
+[84]
+जीवो विनयिता साक्षी मुकुन्दोऽमितविक्रमः ।
+Jivo Vinayita Sakshi Mukundomitavikramah |
+अम्भोनिधिरनन्तात्मा महोदधिशयोऽन्तकः ॥ ५५ ॥
+Ambhonidhiranantatma Mahodadhishayontakah || 55 ||
+
+[85]
+अजो महार्हः स्वाभाव्यो जितामित्रः प्रमोदनः ।
+Ajo Maharhah Svabhavyo Jitamitrah Pramodanah |
+आनन्दो नन्दनो नन्दः सत्यधर्मा त्रिविक्रमः ॥ ५६ ॥
+Anando Nandano Nandah Satyadharma Trivikramah || 56 ||
+
+[86]
+महर्षिः कपिलाचार्यः कृतज्ञो मेदिनीपतिः ।
+Maharshih Kapilacharyah Krutadnyo Medinipatih |
+त्रिपदस्त्रिदशाध्यक्षो महाशृङ्गः कृतान्तकृत् ॥ ५७ ॥
+Tripadastridashadhyaksho Mahashrungah Krutantakrut || 57 ||
+
+[87]
+महावराहो गोविन्दः सुषेणः कनकाङ्गदी ।
+Mahavaraho Govindah Sushenah Kanakangadi |
+गुह्यो गभीरो गहनो गुप्तश्चक्रगदाधरः ॥ ५८ ॥
+Guhyo Gabhiro Gahano Guptashchakragadadharah || 58 ||
+
+[88]
+वेधाः स्वाङ्गोऽजितः कृष्णो दृढः संकर्षणोऽच्युतः ।
+Vedhah Svangojitah Krushno Drudhah Sankarshanochyutah |
+वरुणो वारुणो वृक्षः पुष्कराक्षो महामनाः ॥ ५९ ॥
+Varuno Varuno Vrukshah Pushkaraksho Mahamanah || 59 ||
+
+[89]
+भगवान् भगहाऽऽनन्दी वनमाली हलायुधः ।
+Bhagavan Bhagahanandi Vanamali Halayudhah |
+आदित्यो ज्योतिरादित्यः सहिष्णुर्गतिसत्तमः ॥ ६० ॥
+Adityo Jyotiradityah Sahishnurgatisattamah || 60 ||
+
+[90]
+सुधन्वा खण्डपरशुर्दारुणो द्रविणप्रदः ।
+Sudhanva Khandaparashurdaruno Dravinapradah |
+दिवःस्पृक् सर्वदृग्व्यासो वाचस्पतिरयोनिजः ॥ ६१ ॥
+Divahspruk Sarvadrugvyaso Vachaspatirayonijah || 61 ||
+
+[91]
+त्रिसामा सामगः साम निर्वाणं भेषजं भिषक् ।
+Trisama Samagah Sama Nirvanam Bheshajam Bhishak |
+संन्यासकृच्छमः शान्तो निष्ठा शान्तिः परायणम् ॥ ६२ ॥
+Sannyasakruchchhamah Shanto Nishtha Shantih Parayanam || 62 ||
+
+[92]
+शुभाङ्गः शान्तिदः स्रष्टा कुमुदः कुवलेशयः ।
+Shubhangah Shantidah Srashta Kumudah Kuvaleshayah |
+गोहितो गोपतिर्गोप्ता वृषभाक्षो वृषप्रियः ॥ ६३ ॥
+Gohito Gopatirgopta Vrushabhaksho Vrushapriyah || 63 ||
+
+[93]
+अनिवर्ती निवृत्तात्मा संक्षेप्ता क्षेमकृच्छिवः ।
+Anivarti Nivruttatma Sankshepta Kshemakruchchhivah |
+श्रीवत्सवक्षाः श्रीवासः श्रीपतिः श्रीमतांवरः ॥ ६४ ॥
+Shrivatsavakshah Shrivasah Shripatih Shrimatamvarah || 64 ||
+
+[94]
+श्रीदः श्रीशः श्रीनिवासः श्रीनिधिः श्रीविभावनः ।
+Shridah Shrishah Shrinivasah Shrinidhih Shrivibhavanah |
+श्रीधरः श्रीकरः श्रेयः श्रीमाँल्लोकत्रयाश्रयः ॥ ६५ ॥
+Shridharah Shrikarah Shreyah Shrimamllokatrayashrayah || 65 ||
+
+[95]
+स्वक्षः स्वङ्गः शतानन्दो नन्दिर्ज्योतिर्गणेश्वरः ।
+Svakshah Svangah Shatanando Nandirjyotirganeshvarah |
+विजितात्माऽविधेयात्मा सत्कीर्तिश्छिन्नसंशयः ॥ ६६ ॥
+Vijitatmavidheyatma Satkirtishchhinnasamshayah || 66 ||
+
+[96]
+उदीर्णः सर्वतश्चक्षुरनीशः शाश्वतस्थिरः ।
+Udirnah Sarvatashchakshuranishah Shashvatasthirah |
+भूशयो भूषणो भूतिर्विशोकः शोकनाशनः ॥ ६७ ॥
+Bhushayo Bhushano Bhutirvishokah Shokanashanah || 67 ||
+
+[97]
+अर्चिष्मानर्चितः कुम्भो विशुद्धात्मा विशोधनः ।
+Archishmanarchitah Kumbho Vishuddhatma Vishodhanah |
+अनिरुद्धोऽप्रतिरथः प्रद्युम्नोऽमितविक्रमः ॥ ६८ ॥
+Aniruddhopratirathah Pradyumnomitavikramah || 68 ||
+
+[98]
+कालनेमिनिहा वीरः शौरिः शूरजनेश्वरः ।
+Kalaneminiha Virah Shaurih Shurajaneshvarah |
+त्रिलोकात्मा त्रिलोकेशः केशवः केशिहा हरिः ॥ ६९ ॥
+Trilokatma Trilokeshah Keshavah Keshiha Harih || 69 ||
+
+[99]
+कामदेवः कामपालः कामी कान्तः कृतागमः ।
+Kamadevah Kamapalah Kami Kantah Krutagamah |
+अनिर्देश्यवपुर्विष्णुर्वीरोऽनन्तो धनंजयः ॥ ७० ॥
+Anirdeshyavapurvishnurvironanto Dhananjayah || 70 ||
+
+[100]
+ब्रह्मण्यो ब्रह्मकृद् ब्रह्मा ब्रह्म ब्रह्मविवर्धनः ।
+Brahmanyo Brahmakrud Brahma Brahma Brahmavivardhanah |
+ब्रह्मविद् ब्राह्मणो ब्रह्मी ब्रह्मज्ञो ब्राह्मणप्रियः ॥ ७१ ॥
+Brahmavid Brahmano Brahmi Brahmadnyo Brahmanapriyah || 71 ||
+
+[101]
+महाक्रमो महाकर्मा महातेजा महोरगः ।
+Mahakramo Mahakarma Mahateja Mahoragah |
+महाक्रतुर्महायज्वा महायज्ञो महाहविः ॥ ७२ ॥
+Mahakraturmahayajva Mahayadnyo Mahahavih || 72 ||
+
+[102]
+स्तव्यः स्तवप्रियः स्तोत्रं स्तुतिः स्तोता रणप्रियः ।
+Stavyah Stavapriyah Stotram Stutih Stota Ranapriyah |
+पूर्णः पूरयिता पुण्यः पुण्यकीर्तिरनामयः ॥ ७३ ॥
+Purnah Purayita Punyah Punyakirtiranamayah || 73 ||
+
+[103]
+मनोजवस्तीर्थकरो वसुरेता वसुप्रदः ।
+Manojavastirthakaro Vasureta Vasupradah |
+वसुप्रदो वासुदेवो वसुर्वसुमना हविः ॥ ७४ ॥
+Vasuprado Vasudevo Vasurvasumana Havih || 74 ||
+
+[104]
+सद्गतिः सत्कृतिः सत्ता सद्भूतिः सत्परायणः ।
+Sadgatih Satkrutih Satta Sadbhutih Satparayanah |
+शूरसेनो यदुश्रेष्ठः सन्निवासः सुयामुनः ॥ ७५ ॥
+Shuraseno Yadushreshthah Sannivasah Suyamunah || 75 ||
+
+[105]
+भूतावासो वासुदेवः सर्वासुनिलयोऽनलः ।
+Bhutavaso Vasudevah Sarvasunilayonalah |
+दर्पहा दर्पदो दृप्तो दुर्धरोऽथापराजितः ॥ ७६ ॥
+Darpaha Darpado Drupto Durdharothaparajitah || 76 ||
+
+[106]
+विश्वमूर्तिर्महामूर्तिर्दीप्तमूर्तिरमूर्तिमान् ।
+Vishvamurtirmahamurtirdiptamurtiramurtiman |
+अनेकमूर्तिरव्यक्तः शतमूर्तिः शताननः ॥ ७७ ॥
+Anekamurtiravyaktah Shatamurtih Shatananah || 77 ||
+
+[107]
+एको नैकः सवः कः किं यत् तत्पदमनुत्तमम् ।
+Eko Naikah Savah Kah Kim Yat Tatpadamanuttamam |
+लोकबन्धुर्लोकनाथो माधवो भक्तवत्सलः ॥ ७८ ॥
+Lokabandhurlokanatho Madhavo Bhaktavatsalah || 78 ||
+
+[108]
+सुवर्णवर्णो हेमाङ्गो वराङ्गश्चन्दनाङ्गदी ।
+Suvarnavarno Hemango Varangashchandanangadi |
+वीरहा विषमः शून्यो घृताशीरचलश्चलः ॥ ७९ ॥
+Viraha Vishamah Shunyo Ghrutashirachalashchalah || 79 ||
+
+[109]
+अमानी मानदो मान्यो लोकस्वामी त्रिलोकधृक् ।
+Amani Manado Manyo Lokasvami Trilokadhruk |
+सुमेधा मेधजो धन्यः सत्यमेधा धराधरः ॥ ८० ॥
+Sumedha Medhajo Dhanyah Satyamedha Dharadharah || 80 ||
+
+[110]
+तेजोवृषो द्युतिधरः सर्वशस्त्रभृतां वरः ।
+Tejovrusho Dyutidharah Sarvashastrabhrutam Varah |
+प्रग्रहो निग्रहो व्यग्रो नैकशृङ्गो गदाग्रजः ॥ ८१ ॥
+Pragraho Nigraho Vyagro Naikashrungo Gadagrajah || 81 ||
+
+[111]
+चतुर्मूर्तिश्चतुर्बाहुश्चतुर्व्यूहश्चतुर्गतिः ।
+Chaturmurtishchaturbahushchaturvyuhashchaturgatih |
+चतुरात्मा चतुर्भावश्चतुर्वेदविदेकपात् ॥ ८२ ॥
+Chaturatma Chaturbhavashchaturvedavidekapat || 82 ||
+
+[112]
+समावर्तोऽनिवृत्तात्मा दुर्जयो दुरतिक्रमः ।
+Samavartonivruttatma Durjayo Duratikramah |
+दुर्लभो दुर्गमो दुर्गो दुरावासो दुरारिहा ॥ ८३ ॥
+Durlabho Durgamo Durgo Duravaso Durariha || 83 ||
+
+[113]
+शुभाङ्गो लोकसारङ्गः सुतन्तुस्तन्तुवर्धनः ।
+Shubhango Lokasarangah Sutantustantuvardhanah |
+इन्द्रकर्मा महाकर्मा कृतकर्मा कृतागमः ॥ ८४ ॥
+Indrakarma Mahakarma Krutakarma Krutagamah || 84 ||
+
+[114]
+उद्भवः सुन्दरः सुन्दो रत्ननाभः सुलोचनः ।
+Udbhavah Sundarah Sundo Ratnanabhah Sulochanah |
+अर्को वाजसनः शृङ्गी जयन्तः सर्वविज्जयी ॥ ८५ ॥
+Arko Vajasanah Shrungi Jayantah Sarvavijjayi || 85 ||
+
+[115]
+सुवर्णबिन्दुरक्षोभ्यः सर्ववागीश्वरेश्वरः ।
+Suvarnabindurakshobhyah Sarvavagishvareshvarah |
+महाह्रदो महागर्तो महाभूतो महानिधिः ॥ ८६ ॥
+Mahahrado Mahagarto Mahabhuto Mahanidhih || 86 ||
+
+[116]
+कुमुदः कुन्दरः कुन्दः पर्जन्यः पावनोऽनिलः ।
+Kumudah Kundarah Kundah Parjanyah Pavanonilah |
+अमृताशोऽमृतवपुः सर्वज्ञः सर्वतोमुखः ॥ ८७ ॥
+Amrutashomrutavapuh Sarvadnyah Sarvatomukhah || 87 ||
+
+[117]
+सुलभः सुव्रतः सिद्धः शत्रुजिच्छत्रुतापनः ।
+Sulabhah Suvratah Siddhah Shatrujichchhatrutapanah |
+न्यग्रोधोदुम्बरोऽश्वत्थश्चाणूरान्ध्रनिषूदनः ॥ ८८ ॥
+Nyagrodhodumbaroshvatthashchanurandhranishudanah || 88 ||
+
+[118]
+सहस्रार्चिः सप्तजिह्वः सप्तैधाः सप्तवाहनः ।
+Sahasrarchih Saptajihvah Saptaidhah Saptavahanah |
+अमूर्तिरनघोऽचिन्त्यो भयकृद्भयनाशनः ॥ ८९ ॥
+Amurtiranaghochintyo Bhayakrudbhayanashanah || 89 ||
+
+[119]
+अणुर्बृहत्कृशः स्थूलो गुणभृन्निर्गुणो महान् ।
+Anurbruhatkrushah Sthulo Gunabhrunnirguno Mahan |
+अधृतः स्वधृतः स्वास्यः प्राग्वंशो वंशवर्धनः ॥ ९० ॥
+Adhrutah Svadhrutah Svasyah Pragvamsho Vamshavardhanah || 90 ||
+
+[120]
+भारभृत् कथितो योगी योगीशः सर्वकामदः ।
+Bharabhrut Kathito Yogi Yogishah Sarvakamadah |
+आश्रमः श्रमणः क्षामः सुपर्णो वायुवाहनः ॥ ९१ ॥
+Ashramah Shramanah Kshamah Suparno Vayuvahanah || 91 ||
+
+[121]
+धनुर्धरो धनुर्वेदो दण्डो दमयिता दमः ।
+Dhanurdharo Dhanurvedo Dando Damayita Damah |
+अपराजितः सर्वसहो नियन्ताऽनियमोऽयमः ॥ ९२ ॥
+Aparajitah Sarvasaho Niyantaniyamoyamah || 92 ||
+
+[122]
+सत्त्ववान् सात्त्विकः सत्यः सत्यधर्मपरायणः ।
+Sattvavan Sattvikah Satyah Satyadharmaparayanah |
+अभिप्रायः प्रियार्होऽर्हः प्रियकृत् प्रीतिवर्धनः ॥ ९३ ॥
+Abhiprayah Priyarhorhah Priyakrut Pritivardhanah || 93 ||
+
+[123]
+विहायसगतिर्ज्योतिः सुरुचिर्हुतभुग्विभुः ।
+Vihayasagatirjyotih Suruchirhutabhugvibhuh |
+रविर्विरोचनः सूर्यः सविता रविलोचनः ॥ ९४ ॥
+Ravirvirochanah Suryah Savita Ravilochanah || 94 ||
+
+[124]
+अनन्तो हुतभुग्भोक्ता सुखदो नैकजोऽग्रजः ।
+Ananto Hutabhugbhokta Sukhado Naikajograjah |
+अनिर्विण्णः सदामर्षी लोकाधिष्ठानमद्भुतः ॥ ९५ ॥
+Anirvinnah Sadamarshi Lokadhishthanamadbhutah || 95 ||
+
+[125]
+सनात्सनातनतमः कपिलः कपिरव्ययः ।
+Sanatsanatanatamah Kapilah Kapiravyayah |
+स्वस्तिदः स्वस्तिकृत्स्वस्ति स्वस्तिभुक्स्वस्तिदक्षिणः ॥ ९६ ॥
+Svastidah Svastikrutsvasti Svastibhuksvastidakshinah || 96 ||
+
+[126]
+अरौद्रः कुण्डली चक्री विक्रम्यूर्जितशासनः ।
+Araudrah Kundali Chakri Vikramyurjitashasanah |
+शब्दातिगः शब्दसहः शिशिरः शर्वरीकरः ॥ ९७ ॥
+Shabdatigah Shabdasahah Shishirah Sharvarikarah || 97 ||
+
+[127]
+अक्रूरः पेशलो दक्षो दक्षिणः क्षमिणांवरः ।
+Akrurah Peshalo Daksho Dakshinah Kshaminamvarah |
+विद्वत्तमो वीतभयः पुण्यश्रवणकीर्तनः ॥ ९८ ॥
+Vidvattamo Vitabhayah Punyashravanakirtanah || 98 ||
+
+[128]
+उत्तारणो दुष्कृतिहा पुण्यो दुःस्वप्ननाशनः ।
+Uttarano Dushkrutiha Punyo Duhsvapnanashanah |
+वीरहा रक्षणः सन्तो जीवनः पर्यवस्थितः ॥ ९९ ॥
+Viraha Rakshanah Santo Jivanah Paryavasthitah || 99 ||
+
+[129]
+अनन्तरूपोऽनन्तश्रीर्जितमन्युर्भयापहः ।
+Anantaruponantashrirjitamanyurbhayapahah |
+चतुरश्रो गभीरात्मा विदिशो व्यादिशो दिशः ॥ १०० ॥
+Chaturashro Gabhiratma Vidisho Vyadisho Dishah || 100 ||
+
+[130]
+अनादिर्भूर्भुवो लक्ष्मीः सुवीरो रुचिराङ्गदः ।
+Anadirbhurbhuvo Lakshmih Suviro Ruchirangadah |
+जननो जनजन्मादिर्भीमो भीमपराक्रमः ॥ १०१ ॥
+Janano Janajanmadirbhimo Bhimaparakramah || 101 ||
+
+[131]
+आधारनिलयोऽधाता पुष्पहासः प्रजागरः ।
+Adharanilayodhata Pushpahasah Prajagarah |
+ऊर्ध्वगः सत्पथाचारः प्राणदः प्रणवः पणः ॥ १०२ ॥
+Urdhvagah Satpathacharah Pranadah Pranavah Panah || 102 ||
+
+[132]
+प्रमाणं प्राणनिलयः प्राणभृत्प्राणजीवनः ।
+Pramanam Prananilayah Pranabhrutpranajivanah |
+तत्त्वं तत्त्वविदेकात्मा जन्ममृत्युजरातिगः ॥ १०३ ॥
+Tattvam Tattvavidekatma Janmamrutyujaratigah || 103 ||
+
+[133]
+भूर्भुवःस्वस्तरुस्तारः सविता प्रपितामहः ।
+Bhurbhuvahsvastarustarah Savita Prapitamahah |
+यज्ञो यज्ञपतिर्यज्वा यज्ञाङ्गो यज्ञवाहनः ॥ १०४ ॥
+Yadnyo Yadnyapatiryajva Yadnyango Yadnyavahanah || 104 ||
+
+[134]
+यज्ञभृद् यज्ञकृद् यज्ञी यज्ञभुक् यज्ञसाधनः ।
+Yadnyabhrud Yadnyakrud Yadnyi Yadnyabhuk Yadnyasadhanah |
+यज्ञान्तकृद् यज्ञगुह्यमन्नमन्नाद एव च ॥ १०५ ॥
+Yadnyantakrud Yadnyaguhyamannamannada Eva Cha || 105 ||
+
+[135]
+आत्मयोनिः स्वयंजातो वैखानः सामगायनः ।
+Atmayonih Svayanjato Vaikhanah Samagayanah |
+देवकीनन्दनः स्रष्टा क्षितीशः पापनाशनः ॥ १०६ ॥
+Devakinandanah Srashta Kshitishah Papanashanah || 106 ||
+
+[136]
+शङ्खभृन्नन्दकी चक्री शार्ङ्गधन्वा गदाधरः ।
+Shankhabhrunnandaki Chakri Sharngadhanva Gadadharah |
+रथाङ्गपाणिरक्षोभ्यः सर्वप्रहरणायुधः ॥ १०७ ॥
+Rathangapanirakshobhyah Sarvapraharanayudhah || 107 ||
+सर्वप्रहरणायुध ॐ नम इति ।
+Sarvapraharanayudha Om Nama Iti |
+
+[137]
+वनमाली गदी शार्ङ्गी शङ्खी चक्री च नन्दकी ।
+Vanamali Gadi Sharngi Shankhi Chakri Cha Nandaki |
+श्रीमान् नारायणो विष्णुर्वासुदेवोऽभिरक्षतु ॥ १०८ ॥
+Shriman Narayano Vishnurvasudevobhirakshatu || 108 ||
+श्रीवासुदेवोऽभिरक्षतु ॐ नम इति ।
+Shrivasudevobhirakshatu Om Nama Iti |
+
+[note: उत्तरभागः | Uttara Bhaga]
+
+[para 138]
+भीष्म उवाच
+Bhishma Uvacha
+इतीदं कीर्तनीयस्य केशवस्य महात्मनः ।
+Itidam Kirtaniyasya Keshavasya Mahatmanah |
+नाम्नां सहस्रं दिव्यानामशेषेण प्रकीर्तितम् ॥ १ ॥
+Namnam Sahasram Divyanamasheshena Prakirtitam || 1 ||
+
+[139]
+य इदं शृणुयान्नित्यं यश्चापि परिकीर्तयेत् ।
+Ya Idam Shrunuyannityam Yashchapi Parikirtayet |
+नाशुभं प्राप्नुयात्किंचित्सोऽमुत्रेह च मानवः ॥ २ ॥
+Nashubham Prapnuyatkinchitsomutreha Cha Manavah || 2 ||
+
+[140]
+वेदान्तगो ब्राह्मणः स्यात्क्षत्रियो विजयी भवेत् ।
+Vedantago Brahmanah Syatkshatriyo Vijayi Bhavet |
+वैश्यो धनसमृद्धः स्याच्छूद्रः सुखमवाप्नुयात् ॥ ३ ॥
+Vaishyo Dhanasamruddhah Syachchhudrah Sukhamavapnuyat || 3 ||
+
+[141]
+धर्मार्थी प्राप्नुयाद्धर्ममर्थार्थी चार्थमाप्नुयात् ।
+Dharmarthi Prapnuyaddharmamartharthi Charthamapnuyat |
+कामानवाप्नुयात्कामी प्रजार्थी चाप्नुयात्प्रजाम् ॥ ४ ॥
+Kamanavapnuyatkami Prajarthi Chapnuyatprajam || 4 ||
+
+[142]
+भक्तिमान् यः सदोत्थाय शुचिस्तद्गतमानसः ।
+Bhaktiman Yah Sadotthaya Shuchistadgatamanasah |
+सहस्रं वासुदेवस्य नाम्नामेतत्प्रकीर्तयेत् ॥ ५ ॥
+Sahasram Vasudevasya Namnametatprakirtayet || 5 ||
+
+[143]
+यशः प्राप्नोति विपुलं ज्ञातिप्राधान्यमेव च ।
+Yashah Prapnoti Vipulam Dnyatipradhanyameva Cha |
+अचलां श्रियमाप्नोति श्रेयः प्राप्नोत्यनुत्तमम् ॥ ६ ॥
+Achalam Shriyamapnoti Shreyah Prapnotyanuttamam || 6 ||
+
+[144]
+न भयं क्वचिदाप्नोति वीर्यं तेजश्च विन्दति ।
+Na Bhayam Kvachidapnoti Viryam Tejashcha Vindati |
+भवत्यरोगो द्युतिमान्बलरूपगुणान्वितः ॥ ७ ॥
+Bhavatyarogo Dyutimanbalarupagunanvitah || 7 ||
+
+[145]
+रोगार्तो मुच्यते रोगाद्बद्धो मुच्येत बन्धनात् ।
+Rogarto Muchyate Rogadbaddho Muchyeta Bandhanat |
+भयान्मुच्येत भीतस्तु मुच्येतापन्न आपदः ॥ ८ ॥
+Bhayanmuchyeta Bhitastu Muchyetapanna Apadah || 8 ||
+
+[146]
+दुर्गाण्यतितरत्याशु पुरुषः पुरुषोत्तमम् ।
+Durganyatitaratyashu Purushah Purushottamam |
+स्तुवन्नामसहस्रेण नित्यं भक्तिसमन्वितः ॥ ९ ॥
+Stuvannamasahasrena Nityam Bhaktisamanvitah || 9 ||
+
+[147]
+वासुदेवाश्रयो मर्त्यो वासुदेवपरायणः ।
+Vasudevashrayo Martyo Vasudevaparayanah |
+सर्वपापविशुद्धात्मा याति ब्रह्म सनातनम् ॥ १० ॥
+Sarvapapavishuddhatma Yati Brahma Sanatanam || 10 ||
+
+[148]
+न वासुदेवभक्तानामशुभं विद्यते क्वचित् ।
+Na Vasudevabhaktanamashubham Vidyate Kvachit |
+जन्ममृत्युजराव्याधिभयं नैवोपजायते ॥ ११ ॥
+Janmamrutyujaravyadhibhayam Naivopajayate || 11 ||
+
+[149]
+इमं स्तवमधीयानः श्रद्धाभक्तिसमन्वितः ।
+Imam Stavamadhiyanah Shraddhabhaktisamanvitah |
+युज्येतात्मसुखक्षान्तिश्रीधृतिस्मृतिकीर्तिभिः ॥ १२ ॥
+Yujyetatmasukhakshantishridhrutismrutikirtibhih || 12 ||
+
+[150]
+न क्रोधो न च मात्सर्यं न लोभो नाशुभा मतिः ।
+Na Krodho Na Cha Matsaryam Na Lobho Nashubha Matih |
+भवन्ति कृतपुण्यानां भक्तानां पुरुषोत्तमे ॥ १३ ॥
+Bhavanti Krutapunyanam Bhaktanam Purushottame || 13 ||
+
+[151]
+द्यौः सचन्द्रार्कनक्षत्रा खं दिशो भूर्महोदधिः ।
+Dyauh Sachandrarkanakshatra Kham Disho Bhurmahodadhih |
+वासुदेवस्य वीर्येण विधृतानि महात्मनः ॥ १४ ॥
+Vasudevasya Viryena Vidhrutani Mahatmanah || 14 ||
+
+[152]
+ससुरासुरगन्धर्वं सयक्षोरगराक्षसम् ।
+Sasurasuragandharvam Sayakshoragarakshasam |
+जगद्वशे वर्ततेदं कृष्णस्य सचराचरम् ॥ १५ ॥
+Jagadvashe Vartatedam Krushnasya Sacharacharam || 15 ||
+
+[153]
+इन्द्रियाणि मनो बुद्धिः सत्त्वं तेजो बलं धृतिः ।
+Indriyani Mano Buddhih Sattvam Tejo Balam Dhrutih |
+वासुदेवात्मकान्याहुः क्षेत्रं क्षेत्रज्ञ एव च ॥ १६ ॥
+Vasudevatmakanyahuh Kshetram Kshetradnya Eva Cha || 16 ||
+
+[154]
+सर्वागमानामाचारः प्रथमं परिकल्प्यते ।
+Sarvagamanamacharah Prathamam Parikalpyate |
+आचारप्रभवो धर्मो धर्मस्य प्रभुरच्युतः ॥ १७ ॥
+Acharaprabhavo Dharmo Dharmasya Prabhurachyutah || 17 ||
+
+[155]
+ऋषयः पितरो देवा महाभूतानि धातवः ।
+Rushayah Pitaro Deva Mahabhutani Dhatavah |
+जङ्गमाजङ्गमं चेदं जगन्नारायणोद्भवम् ॥ १८ ॥
+Jangamajangamam Chedam Jagannarayanodbhavam || 18 ||
+
+[156]
+योगो ज्ञानं तथा सांख्यं विद्याः शिल्पादिकर्म च ।
+Yogo Dnyanam Tatha Sankhyam Vidyah Shilpadikarma Cha |
+वेदाः शास्त्राणि विज्ञानमेतत्सर्वं जनार्दनात् ॥ १९ ॥
+Vedah Shastrani Vidnyanametatsarvam Janardanat || 19 ||
+
+[157]
+एको विष्णुर्महद्भूतं पृथग्भूतान्यनेकशः ।
+Eko Vishnurmahadbhutam Pruthagbhutanyanekashah |
+त्रींल्लोकान्व्याप्य भूतात्मा भुङ्क्ते विश्वभुगव्ययः ॥ २० ॥
+Trimllokanvyapya Bhutatma Bhunkte Vishvabhugavyayah || 20 ||
+
+[158]
+इमं स्तवं भगवतो विष्णोर्व्यासेन कीर्तितम् ।
+Imam Stavam Bhagavato Vishnorvyasena Kirtitam |
+पठेद्य इच्छेत्पुरुषः श्रेयः प्राप्तुं सुखानि च ॥ २१ ॥
+Pathedya Ichchhetpurushah Shreyah Praptum Sukhani Cha || 21 ||
+
+[159]
+विश्वेश्वरमजं देवं जगतः प्रभुमव्ययम् ।
+Vishveshvaramajam Devam Jagatah Prabhumavyayam |
+भजन्ति ये पुष्कराक्षं न ते यान्ति पराभवम् ॥ २२ ॥
+Bhajanti Ye Pushkaraksham Na Te Yanti Parabhavam || 22 ||
+न ते यान्ति पराभवम् ॐ नम इति ।
+Na Te Yanti Parabhavam Om Nama Iti |
+
+[160]
+अर्जुन उवाच
+Arjuna Uvacha
+पद्मपत्रविशालाक्ष पद्मनाभ सुरोत्तम ।
+Padmapatravishalaksha Padmanabha Surottama |
+भक्तानामनुरक्तानां त्राता भव जनार्दन ॥ २३ ॥
+Bhaktanamanuraktanam Trata Bhava Janardana || 23 ||
+
+[161]
+श्रीभगवानुवाच
+Shribhagavanuvacha
+यो मां नामसहस्रेण स्तोतुमिच्छति पाण्डव ।
+Yo Mam Namasahasrena Stotumichchhati Pandava |
+सोऽहमेकेन श्लोकेन स्तुत एव न संशयः ॥ २४ ॥
+Sohamekena Shlokena Stuta Eva Na Samshayah || 24 ||
+स्तुत एव न संशय ॐ नम इति ।
+Stuta Eva Na Samshaya Om Nama Iti |
+
+[162]
+व्यास उवाच
+Vyasa Uvacha
+वासनाद्वासुदेवस्य वासितं भुवनत्रयम् ।
+Vasanadvasudevasya Vasitam Bhuvanatrayam |
+सर्वभूतनिवासोऽसि वासुदेव नमोऽस्तु ते ॥ २५ ॥
+Sarvabhutanivasosi Vasudeva Namostu Te || 25 ||
+श्रीवासुदेव नमोऽस्तु त ॐ नम इति ।
+Shrivasudeva Namostu Ta Om Nama Iti |
+
+[163]
+पार्वत्युवाच
+Parvatyuvacha
+केनोपायेन लघुना विष्णोर्नामसहस्रकम् ।
+Kenopayena Laghuna Vishnornamasahasrakam |
+पठ्यते पण्डितैर्नित्यं श्रोतुमिच्छाम्यहं प्रभो ॥ २६ ॥
+Pathyate Panditairnityam Shrotumichchhamyaham Prabho || 26 ||
+
+[164]
+ईश्वर उवाच
+Ishvara Uvacha
+श्रीराम राम रामेति रमे रामे मनोरमे ।
+Shrirama Rama Rameti Rame Rame Manorame |
+सहस्रनाम तत्तुल्यं रामनाम वरानने ॥ २७ ॥
+Sahasranama Tattulyam Ramanama Varanane || 27 ||
+श्रीरामनाम वरानन ॐ नम इति ।
+Shriramanama Varanana Om Nama Iti |
+
+[165]
+ब्रह्मोवाच
+Brahmovacha
+नमोऽस्त्वनन्ताय सहस्रमूर्तये
+Namostvanantaya Sahasramurtaye
+सहस्रपादाक्षिशिरोरुबाहवे ।
+Sahasrapadakshishirorubahave |
+सहस्रनाम्ने पुरुषाय शाश्वते
+Sahasranamne Purushaya Shashvate
+सहस्रकोटियुगधारिणे नमः ॥ २८ ॥
+Sahasrakotiyugadharine Namah || 28 ||
+सहस्रकोटियुगधारिणे नम ॐ नम इति ।
+Sahasrakotiyugadharine Nama Om Nama Iti |
+
+[166]
+सञ्जय उवाच
+Sanjaya Uvacha
+यत्र योगेश्वरः कृष्णो यत्र पार्थो धनुर्धरः ।
+Yatra Yogeshvarah Krushno Yatra Partho Dhanurdharah |
+तत्र श्रीर्विजयो भूतिर्ध्रुवा नीतिर्मतिर्मम ॥ २९ ॥
+Tatra Shrirvijayo Bhutirdhruva Nitirmatirmama || 29 ||
+
+[167]
+श्रीभगवानुवाच
+Shribhagavanuvacha
+अनन्याश्चिन्तयन्तो मां ये जनाः पर्युपासते ।
+Ananyashchintayanto Mam Ye Janah Paryupasate |
+तेषां नित्याभियुक्तानां योगक्षेमं वहाम्यहम् ॥ ३० ॥
+Tesham Nityabhiyuktanam Yogakshemam Vahamyaham || 30 ||
+
+[168]
+परित्राणाय साधूनां विनाशाय च दुष्कृताम् ।
+Paritranaya Sadhunam Vinashaya Cha Dushkrutam |
+धर्मसंस्थापनार्थाय संभवामि युगे युगे ॥ ३१ ॥
+Dharmasamsthapanarthaya Sambhavami Yuge Yuge || 31 ||
+
+[169]
+आर्ता विषण्णाः शिथिलाश्च भीता घोरेषु च व्याधिषु वर्तमानाः ।
+Arta Vishannah Shithilashcha Bhita Ghoreshu Cha Vyadhishu Vartamanah |
+संकीर्त्य नारायणशब्दमात्रं विमुक्तदुःखाः सुखिनो भवन्तु ॥ ३२ ॥
+Sankirtya Narayanashabdamatram Vimuktaduhkhah Sukhino Bhavantu || 32 ||
+
+[170]
+कायेन वाचा मनसेन्द्रियैर्वा बुद्ध्यात्मना वा प्रकृतिस्वभावात् ।
+Kayena Vacha Manasendriyairva Buddhyatmana Va Prakrutisvabhavat |
+करोमि यद्यत्सकलं परस्मै नारायणायेति समर्पयामि ॥ ३३ ॥
+Karomi Yadyatsakalam Parasmai Narayanayeti Samarpayami || 33 ||
+
+[once]
+ॐ शान्तिः शान्तिः शान्तिः ॥
+Om Shantih Shantih Shantih ||
+विसर्गबिन्दुमात्राणि पदपादाक्षराणि च ।
+Visargabindumatrani Padapadaksharani Cha |
+न्यूनातिरिक्तं यत्किञ्चित् क्षमस्व पुरुषोत्तम ॥
+Nyunatiriktam Yatkinchit Kshamasva Purushottama ||
+हरिः ॐ ॥
+Harih Om ||
