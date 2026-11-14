@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.63.0">
+<meta name="version" content="aarti-v1.64.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -58,6 +58,7 @@
 <link rel="modulepreload" href="js/text/load.js">
 <link rel="modulepreload" href="js/text/content.js">
 <link rel="modulepreload" href="js/text/format.js">
+<link rel="modulepreload" href="js/text/outline.js">
 <link rel="modulepreload" href="js/store/db.js">
 <link rel="modulepreload" href="js/store/migrate.js">
 <link rel="modulepreload" href="js/store/profiles.js">
@@ -104,6 +105,7 @@
 <link rel="modulepreload" href="js/features/settings-panel.js">
 <link rel="modulepreload" href="js/features/dhrupad-button.js">
 <link rel="modulepreload" href="js/features/reading-sheet.js">
+<link rel="modulepreload" href="js/features/where.js">
 <link rel="modulepreload" href="js/features/wake-lock.js">
 <link rel="modulepreload" href="js/features/overlays.js">
 <link rel="modulepreload" href="js/features/history.js">
@@ -147,7 +149,7 @@
 <div class="bar" role="banner">
   <div id="prog" aria-hidden="true"></div>
   <!-- the app's picture, small: it opens the picture full screen (js/features/picture-viewer.js); the name goes Home -->
-  <span class="brand"><button type="button" id="bti" aria-label="Show the picture full screen"><img src="picture-sunrise-360.webp" alt="" width="28" height="28"></button><a class="t site" id="bt" href="./" aria-label="Home: नित्य उपासना"><span id="btt">संकटहर चतुर्थी</span></a></span>
+  <span class="brand"><button type="button" id="bti" aria-label="Show the picture full screen"><img src="picture-sunrise-360.webp" alt="" width="28" height="28"></button><a class="t site" id="bt" href="./" aria-label="Home: नित्य उपासना"><span id="btt">संकटहर चतुर्थी</span></a><button type="button" class="t" id="where" hidden aria-haspopup="dialog" aria-expanded="false" aria-controls="goto"><span class="wh"><span id="wh1"></span><span id="wh2"></span></span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></span>
   <!-- Who is reading (js/features/profiles.js): their round badge and name; a tap opens the profile sheet (#pfm).
        The words "Profile:" are for screen readers; on narrow phones the name is hidden visually only. -->
   <button type="button" id="who" aria-haspopup="dialog" aria-expanded="false" aria-controls="pfm"><span class="pfa" aria-hidden="true"></span><span class="sr" id="whol">Profile: </span><span class="pfn"></span></button>
@@ -654,7 +656,7 @@
         <li><b>Morning, Afternoon, Evening:</b> Home opens at the session for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. Tap another to see its texts for today; the next day starts again from the clock. A session with nothing set today is greyed out ("Nothing set"); tap it to add texts. To start with, everyone has the usual routine: Vedic chants and the Ganapati and Devi aartis in the morning, aartis and an ashtak in the evening, and a free afternoon. Each person can change theirs (see Your routine below).</li>
         <li><b>The list</b> has the session's texts in order.</li>
         <li><b>Another day:</b> <b>‹</b> and <b>›</b> beside the date show the day before or after, and under the date it says which day it is: Today, Tomorrow, Yesterday, "In 3 days" or "3 days ago". All of Home follows that day: its date, the Vedic calendar card and Coming up, the picture's star, and the texts of each session, so you can read them or print them. Tap <b>Today</b>, under the arrows, to come back. Nothing on Home moves as you go from day to day. The next day, or when you come back to the app after half an hour away, Home shows today again.</li>
-        <li><b>Reading the session:</b> tap a title to start there. The session's texts follow one another in one scroll, in the session's order and numbered as on Home, and nothing else is in between. <b>Next ›</b> and <b>‹ Prev</b> in the bottom bar jump to the next or previous text of the session; <b>Next ›</b> after the last one, or <b>‹ Prev</b> on the first, brings you back here, and so does <b>Home</b>, which ends the session (on another day, Home is still on that day). Open the app again the next day and it starts afresh from Home's list. <b>Print</b>, in the top bar's <b>Share</b> menu, prints the session.</li>
+        <li><b>Reading the session:</b> tap a title to start there. The session's texts follow one another in one scroll, in the session's order and numbered as on Home, and nothing else is in between. <b>Next ›</b> and <b>‹ Prev</b> in the bottom bar jump to the next or previous text of the session; <b>Next ›</b> after the last one, or <b>‹ Prev</b> on the first, brings you back here, and so does <b>Home</b> in the bottom bar, which ends the session (on another day, Home is still on that day). While you read, the title in the top bar says which text of the session you are in (२ / ६); tap it to go to another text of the session (see <b>Go to</b>). Open the app again the next day and it starts afresh from Home's list. <b>Print</b>, in the top bar's <b>Share</b> menu, prints the session.</li>
         <li><b>On a computer or an iPad held sideways</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
                 <li><b>The picture:</b> tap it to see it full screen. Pinch or double-tap to zoom, drag to look around; ✕, Back or a tap outside closes it.</li>
         <li><b>Vedic calendar (पंचांग):</b> the card under the date gives the day's month, paksha and tithi (आश्विन शुद्ध अष्टमी), the nakshatra, the Shaka year and samvatsara, and sunrise and sunset for your place. Tap it for the calendar: the day's tithi, nakshatra and yoga with the times they end, sunrise, sunset, moonrise, month, samvatsara, ritu and ayana, the next Sankashti, and the month with each day's tithi at sunrise (full and new moon, Ekadashi, Sankashti and the main Maharashtrian festivals marked, such as Gudi Padwa, Ganesh Chaturthi, Dasara and Diwali; on a festival day Home's calendar card takes its colour, with its drawing). Tap a day, or use the arrow keys, to see its details. The names are in your reading languages (Settings → Reading → Languages): the first language everywhere, the second as a small line in the day's details. It is worked out on the phone (Lahiri ayanamsha, amanta months, as Kalnirnay prints them); nothing is fetched. A printed calendar can differ by a minute or two, or by a day when a tithi begins right at sunrise. Festival days follow the usual rules (the tithi at sunrise, midday, afternoon, dusk or midnight, as each festival needs); in America they can fall a day earlier than in India.</li>
@@ -694,6 +696,7 @@
         <li><b>Pinch</b> (on a computer: a trackpad pinch, or Ctrl + / Ctrl − and Ctrl 0 to reset; ⌘ on a Mac) or use A− / A+ (under <b>Reading</b>, the sliders in the bottom bar, or in Settings) to change the text size. The page itself never zooms, and on Home, in the calendar and in the routine builder a pinch does nothing. The bubble shows the size (100% is the normal size for your screen: the same for every text, a little larger on an iPad, and larger again if you have set larger text on your phone or in your browser; a line too long for the screen goes onto a second row, set a little closer, rather than the text shrinking); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
         <li><b>Follow:</b> while an aarti or a chant is going on, tap <b>Follow</b> in the bottom bar. The phone hears the chanting, opens the text if another one is on screen (started on Home, it opens the session there, so the next texts follow below), marks the line being chanted and keeps it in view as the chanting goes on, until you tap the round stop button (■) in the small bar over the bottom bar, or Follow again. That bar shows the text's name and a wave that moves with what the phone hears. While it follows, the dhrupad is shown after every verse, so its mark goes there too when the dhrupad is sung; after Stop it is shown again as you had it. If you scroll yourself, it waits a few seconds before moving the page. The first time it downloads about 120 MB (best on Wi-Fi), kept on the phone so it works offline after that. Nothing it hears leaves the phone. Settings → More → About shows whether Follow runs on this phone's GPU (faster, marked Optimized) or its CPU.</li>
         <li><b>Bottom bar:</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring texts (in a session, the session's); the house with a lamp goes back to <b>Home</b>; the open book opens the <b>Library</b> and its search; the two sliders open the <b>Reading</b> choices; the microphone starts <b>Follow</b> (see below) and fills in while it follows. The bar shows the icons alone, so it stays low; a screen reader says each one's name, and on the smallest phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch.</li>
+        <li><b>Go to:</b> in a long text (Pavamana Suktam, Shree Rudra, the Lalita and Vishnu Sahasranamas) or a session, the title in the top bar says where you are as you read: the text's name, and under it its part (तृतीयोऽध्यायः · ९.४७, नमकम् · अनुवाकः ५, स्तोत्रम् · १०८). Tap it to go somewhere else: the text's headings, with the place you are in open (its suktas, anuvakas or verses in groups of 25, each one tap away; ▾ shows another heading's), and in a text of many verses a box to type a verse number. In a session it lists the session's texts first. Back takes you to where you were. While Follow listens, it carries on from the place you went to. In a short text the title takes you Home, as before.</li>
         <li><b>Reading</b> (the sliders in the bottom bar): slides up the reading choices within reach of your thumb: <b>Language</b> (main, second or both), <b>Text size</b> (A− and A+, with ↺ to go back to the normal size) and <b>Dhrupad</b> (once at the top, or after every verse; in “once” mode, tap <b>↻ ध्रुपद</b> under a stanza to see the refrain, and tap anywhere to close it), plus <b>All settings</b>. Your place stays put as you change them. Tap outside it, ✕ or your phone's Back to close it.</li>
         <li><b>Back:</b> your phone's Back button (or swipe) closes an open menu or box, then goes back to where you were before the last jump, for example from an aarti back to Home.</li>
         <li>The screen stays on while you read, until some minutes after your last touch (Settings → Screen → <b>Keep screen on</b>). If you switch away and come back within 12 hours, it reopens where you were reading.</li>
@@ -838,6 +841,24 @@
       </div>
     </div>
     <button type="button" class="rs-go" id="rsall"><span class="rs-l"><span data-w="page.allSettings">All settings</span><small><span data-w="page.fontThemeLayout">Font, theme, layout</span></small></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+<!-- ==== Go to (js/features/where.js): in a long text or a session the top bar's title says where the reading is and opens
+     this sheet: the places of the text (its headings, parts and groups of verses, from js/text/outline.js) or the session's
+     texts, and a verse by its number. A tap outside, ✕, Escape or the phone's Back closes it ==== -->
+<div id="goto" hidden>
+  <div class="rsc" role="dialog" aria-modal="true" aria-labelledby="gtt" tabindex="-1">
+    <div class="rs-hd">
+      <h2 id="gtt"><span data-w="page.goTo">Go to</span> <small id="gtsub"></small></h2>
+      <button type="button" id="gtx" aria-label="Close"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <form id="gtf" hidden>
+      <label for="gtn" class="sr"><span data-w="page.verseNumber">Verse number</span></label>
+      <input id="gtn" type="text" inputmode="numeric" autocomplete="off" enterkeyhint="go" placeholder="१०८">
+      <button type="submit"><span data-w="page.go">Go</span></button>
+      <p id="gtm" role="status"></p>
+    </form>
+    <div id="gtl"></div>
   </div>
 </div>
 <button type="button" id="szr" hidden><span data-w="page.defaultSize">↺ Default size</span></button>

@@ -664,6 +664,23 @@ export default {
   },
   // The page's own words (index.html: data-w="page.…", filled by fillWords(), js/core/strings.js); {icon} is the
   // icon written in the page, kept where each language puts it
+  // Go to (js/features/where.js): the top bar's title in a long text or a session, and its sheet (#goto)
+  goto: {
+    title: "Go to",
+    here: "You are here",
+    /** @param {string} where  the text and the places the reading is in */
+    open: function (where) {
+      return "Go to: " + where;
+    },
+    /** @param {string} name  a heading or a text of the session */
+    more: function (name) {
+      return "Show the places in " + name;
+    },
+    /** @param {string} n  the verse number typed */
+    none: function (n) {
+      return "No verse " + n + " here";
+    },
+  },
   page: {
     appAddToHomeScreen: 'App<span class="sr"> (add to Home Screen)</span>',
     share: "Share",
@@ -677,6 +694,9 @@ export default {
     nothingFound: "Nothing found",
     nothingHint: "Try fewer letters or another spelling. Marathi and English letters both work.",
     reading: "Reading",
+    goTo: "Go to",
+    verseNumber: "Verse number",
+    go: "Go",
     screen: "Screen",
     more: "More",
     preview: "Preview",

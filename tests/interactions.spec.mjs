@@ -828,3 +828,95 @@ test("scrolling through a text: every verse on screen is shown at once, with no 
   }
   expect(errors).toEqual([]);
 });
+
+// Go to (js/features/where.js, Satish 2026-11-14): in a long text or a session the top bar's title says where the reading
+// is and opens a sheet of the places to go to, made from the text's own headings, parts and verses
+/** The page scrolled so a line is where Go to puts one, a third of the way down, with the bars shown */
+async function toLine(page, l) {
+  await page.evaluate((l) => {
+    const el = document.querySelector('.wrap > .ash [data-l="' + l + '"]');
+    scrollTo(0, el.getBoundingClientRect().top + scrollY - innerHeight * 0.3);
+  }, l);
+  await page.waitForTimeout(400);
+  await untuck(page);
+  await page.waitForTimeout(150);
+}
+const wh = (page) => page.locator("#wh2");
+
+test("Go to in Pavamana: the title says the adhyaya and sukta, a sukta is one tap away, Back returns @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "vedic-chant-pavamana-suktam");
+  await toLine(page, "vedic-chant-pavamana-suktam.700");
+  // the title is the Go to button now, the Home link out of the way
+  await expect(page.locator("#where")).toBeVisible();
+  await expect(page.locator("#bt")).toBeHidden();
+  await expect(wh(page)).toHaveText(/^तृतीयोऽध्यायः · ९\.[०-९]{2}$/);
+  const was = await wh(page).textContent();
+  await expect(page.locator("#where")).toHaveAccessibleName(/^Go to: .*पवमानसूक्तम्, तृतीयोऽध्यायः, ९\./);
+  await page.locator("#where").click();
+  await expect(page.locator("#goto")).toBeVisible();
+  await expect(page.locator("#where")).toHaveAttribute("aria-expanded", "true");
+  // its adhyaya open, the sukta being read marked
+  await expect(page.locator('#gtl [aria-current="location"]')).toHaveText(was.split(" · ")[1]);
+  await page.locator("#gtl .gt-grid button", { hasText: "९.६०" }).click();
+  await expect(page.locator("#goto")).toBeHidden();
+  await expect(wh(page)).toHaveText("तृतीयोऽध्यायः · ९.६०");
+  // another adhyaya: its own suktas behind ▾
+  await page.locator("#where").click();
+  await page.locator("#gtl .gt-more").first().click();
+  await page.locator("#gtl .gt-grid:not([hidden]) button", { hasText: "९.३" }).first().click();
+  await expect(wh(page)).toHaveText("प्रथमोऽध्यायः · ९.३");
+  // Back: where the reading was before each jump
+  await page.goBack();
+  await expect(wh(page)).toHaveText("तृतीयोऽध्यायः · ९.६०");
+  await page.goBack();
+  await expect(wh(page)).toHaveText(was);
+});
+
+test("Go to in Lalita: a verse by its number, in either digits; one there is not is said; Escape closes @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "vedic-chant-lalita-sahasranama");
+  await toLine(page, "vedic-chant-lalita-sahasranama.120");
+  await expect(wh(page)).toHaveText(/^स्तोत्रम् · [०-९]+$/);
+  await page.locator("#where").click();
+  // the verses in groups of 25, the box above them
+  await expect(page.locator("#gtl .gt-grid:not([hidden]) button")).toHaveCount(8);
+  await page.locator("#gtn").fill("१४२");
+  await page.locator("#gtf button").click();
+  await expect(wh(page)).toHaveText("स्तोत्रम् · १४२");
+  await page.locator("#where").click();
+  await page.locator("#gtn").fill("42");
+  await page.locator("#gtn").press("Enter");
+  await expect(wh(page)).toHaveText("स्तोत्रम् · ४२");
+  await page.locator("#where").click();
+  await page.locator("#gtn").fill("500");
+  await page.locator("#gtf button").click();
+  await expect(page.locator("#gtm")).toHaveText("No verse 500 here");
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#goto")).toBeHidden();
+  await expect(page.locator("#where")).toBeFocused();
+});
+
+test("Go to in Shree Rudra: Namakam and Chamakam, eleven anuvakas each, the grid by number alone @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "vedic-chant-shree-rudra");
+  await toLine(page, "vedic-chant-shree-rudra.90");
+  await expect(wh(page)).toHaveText(/^नमकम् · अनुवाकः [०-९]+$/);
+  await page.locator("#where").click();
+  const open = page.locator("#gtl .gt-grid:not([hidden]) button");
+  await expect(open).toHaveCount(11);
+  await expect(open.first()).toHaveText("१");
+  await page.locator("#gtl .gt-more").last().click();
+  await page.locator("#gtl .gt-grid:not([hidden])").last().locator("button", { hasText: "५" }).click();
+  await expect(wh(page)).toHaveText("चमकम् · अनुवाकः ५");
+});
+
+test("a short text keeps the Home link as its title; Go to only where a text is long or a session runs @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "a1");
+  await page.evaluate(() => scrollBy(0, 500));
+  await page.waitForTimeout(300);
+  await untuck(page);
+  await expect(page.locator("#where")).toBeHidden();
+  await expect(page.locator("#bt")).toHaveAttribute("href", "./");
+});

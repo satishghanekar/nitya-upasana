@@ -97,8 +97,10 @@ test("the scripts, styles and page stay within their size budget", () => {
   // Library's Book order | A–Z in five languages, about 1.6 KB, 349.6 KB with it on a Mac; 351 KB since 2026-11-11: a
   // text's recordings on YouTube under its credit, 350.15 KB with them on a Mac; 352 KB since 2026-11-11: Follow
   // following the dhrupad and showing it after every stanza, and its Spotlight, 351.4 KB then; 353 KB since 2026-11-11:
-  // Follow's pill, its wave following the microphone, 352.1 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(353_000);
+  // Follow's pill, its wave following the microphone, 352.1 KB then; 365 KB since 2026-11-14: Go to, each long text's
+  // outline from its own headings, parts and verses (js/text/outline.js) and the title saying where the reading is
+  // (js/features/where.js), its words in five languages, 364.1 KB with them on a Mac)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(365_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -107,12 +109,13 @@ test("the scripts, styles and page stay within their size budget", () => {
   // symbols' face and the chosen script's at the head of every font list, 74.55 KB with them on a Mac; 76 KB since
   // 2026-11-12: the month on a phone, a drawing alone in a day and the names in the list under it, 75.67 KB then; 78 KB since
   // 2026-11-13: the bars as floating pills, css/16-floating-bars.css, 77.8 KB then; 79 KB since 2026-11-13: a
-  // routine's rows on a phone, the title on a line of its own, and the hint under Nothing found, 78.25 KB then)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(79_000);
+  // routine's rows on a phone, the title on a line of its own, and the hint under Nothing found, 78.25 KB then; 80 KB since
+  // 2026-11-14: Go to, the top bar's title saying where and its sheet, 79.6 KB with them on a Mac)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(80_000);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
-  // saying so: 31.06 KB then)
-  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(31_500);
+  // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then)
+  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(32_000);
 });
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):

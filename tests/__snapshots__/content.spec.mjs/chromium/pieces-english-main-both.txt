@@ -1412,6 +1412,8 @@ Om Namo Bhagavate Rudraya ||
 
 ॐ नमो भगवते॑ रुद्रा॒य ॥
 
+नमकम्Namakam
+
 Om Namaste Rudra Manyava Utota Ishave Namah |
 
 Namaste Astu Dhanvane Bahubhyamuta Te Namah |
@@ -2131,6 +2133,8 @@ Om Shantih Shantih Shantih ||
 ॥
 
 ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
+
+चमकम्Chamakam
 
 || Chamakaprashnah ||
 
@@ -7999,6 +8003,8 @@ Japakusuma Bhasuram Japavidhau Smare Dambikam ||
 
 जपाकुसुम भासुरां जपविधौ स्मरे दम्बिकाम् ॥
 
+स्तोत्रम्Stotram
+
 || Atha Shrilalitasahasranamastotram ||
 
 ॥ अथ श्रीललितासहस्रनामस्तोत्रम् ॥
@@ -13746,6 +13752,8 @@ Nanalankaradiptam Dadhatamurujatamandanam Ramachandram ||
 वामाङ्कारूढसीतामुखकमलमिलल्लोचनं नीरदाभं
 
 नानालङ्कारदीप्तं दधतमुरुजटामण्डनं रामचन्द्रम् ॥
+
+स्तोत्रम्Stotram
 
 Charitam Raghunathasya Shatakotipravistaram |
 

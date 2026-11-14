@@ -4,6 +4,7 @@ title-en: Shree Rudra
 category: vedic-chant
 language: sa
 layout: prose
+part-name: अनुवाकः | Anuvaka
 credit: [कृष्ण यजुर्वेद, तैत्तिरीय संहिता](https://mr.wikipedia.org/wiki/रुद्राध्याय)
 credit-en: [Krishna Yajurveda, Taittiriya Samhita](https://en.wikipedia.org/wiki/Shri_Rudram)
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=685)
@@ -11,6 +12,8 @@ recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=6
 [dhrupad]
 ॐ नमो भगवते॑ रुद्रा॒य ॥
 Om Namo Bhagavate Rudraya ||
+
+[note: नमकम् | Namakam]
 
 [para 1]
 ॐ नम॑स्ते रुद्र म॒न्यव॑ उ॒तोत॒ इष॑वे॒ नमः॑ ।
@@ -401,6 +404,8 @@ Tenannenapyayasva | Sadashivom ||
 ||
 ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
 Om Shantih Shantih Shantih ||
+
+[note: चमकम् | Chamakam]
 
 [dhrupad bold]
 ॥ चमकप्रश्नः ॥

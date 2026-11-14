@@ -27,7 +27,7 @@
 
 import { choices, normalize, readLetters, resample } from "../core/hearing.js";
 import { align, latest, logProbs, target } from "../core/align.js";
-import { LEAST, PACE, ahead, correct, letters, lineAt, locate, makeDoc, nextPace, pieceLines } from "../core/follow.js";
+import { LEAST, PACE, ahead, correct, letters, lineAt, locate, makeDoc, nextPace, pieceLines, startOf } from "../core/follow.js";
 import { pieceEl, root, topEdge } from "../core/page.js";
 import { unfold } from "../core/apply.js";
 import { fillWords, menuWords } from "../core/strings.js";
@@ -170,6 +170,21 @@ export function init() {
       if (h) root.style.setProperty("--lsnh", h + "px");
       else root.style.removeProperty("--lsnh");
     }).observe(bar);
+  // Go to (js/features/where.js): the reader went to another place while Listen follows; its mark is set there, waiting,
+  // so the page is not pulled back to where it last heard, and it follows on from there
+  document.addEventListener("nitya-jump", function (e) {
+    var d = /** @type {CustomEvent} */ (e).detail;
+    if (!mark || !d) return;
+    var all = texts(),
+      i = order.findIndex(function (p) {
+        return p.id === d.piece;
+      });
+    if (i < 0) return;
+    var pos = startOf(order[i], all[i], d.line);
+    if (pos < 0) return;
+    mark = { doc: i, pos: pos, t: performance.now(), paused: true };
+    pending = null;
+  });
   ["touchstart", "wheel", "keydown"].forEach(function (ev) {
     addEventListener(
       ev,

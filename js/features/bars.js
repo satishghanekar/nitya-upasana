@@ -16,6 +16,7 @@ import { cur, foldSet, unfold } from "../core/apply.js";
 import { asLabel, asShow, asc } from "./bottom-bar.js";
 import { szSet } from "./settings-panel.js";
 import { pageOpen, setJ, setP } from "./overlays.js";
+import { whereMark } from "./where.js";
 import { spSet } from "./languages.js";
 import { fillWords, menuWords } from "../core/strings.js";
 import { num, shown, ui } from "../core/words.js";
@@ -153,12 +154,15 @@ export function mark() {
     tt = en ? "Nitya Upasana" : /** @type {any} */ (window).SCR.to("नित्य उपासना"),
     bt0 = byId("bt"),
     hd = c && c.classList.contains("ash") && c.querySelector("header");
-  if (c && hd && hd.getBoundingClientRect().bottom < 64 && !pageOpen()) {
+  var onText = !!(c && hd && hd.getBoundingClientRect().bottom < 64 && !pageOpen());
+  if (c && onText) {
     var no = c.querySelector("h2 .no ." + (en ? "ne" : "nm")),
       nm = c.querySelector("h2 > ." + (en ? "en" : "mr"));
     if (nm) tt = (no ? no.textContent + " " : "") + nm.textContent;
     bt0.classList.add("pc");
   } else bt0.classList.remove("pc");
+  // in a long text or a session the title is the Go to button, saying where the reading is (js/features/where.js)
+  whereMark(c, onText, en ? "en" : "mr", tt);
   var btt = byId("btt");
   if (btt.textContent !== tt) btt.textContent = tt;
   btt.lang = en ? "en" : /** @type {any} */ (window).SCR.k || "mr";

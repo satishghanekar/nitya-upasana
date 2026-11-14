@@ -640,6 +640,23 @@ export default {
       return "प्रत्येक ओळीशेजारी तिची " + l2 + " ओळ, जुळलेली.";
     },
   },
+  // Go to (js/features/where.js): the top bar's title in a long text or a session, and its sheet (#goto)
+  goto: {
+    title: "येथे जा",
+    here: "आपण येथे आहात",
+    /** @param {string} where  the text and the places the reading is in */
+    open: function (where) {
+      return "येथे जा: " + where;
+    },
+    /** @param {string} name  a heading or a text of the session */
+    more: function (name) {
+      return name + " मधील ठिकाणे दाखवा";
+    },
+    /** @param {string} n  the verse number typed */
+    none: function (n) {
+      return "श्लोक " + n + " येथे नाही";
+    },
+  },
   page: {
     appAddToHomeScreen: 'ॲप<span class="sr"> (होम स्क्रीनवर ठेवा)</span>',
     share: "शेअर",
@@ -653,6 +670,9 @@ export default {
     nothingFound: "काही सापडले नाही",
     nothingHint: "कमी अक्षरे किंवा वेगळे स्पेलिंग वापरून पाहा. मराठी आणि इंग्रजी, दोन्ही अक्षरे चालतात.",
     reading: "वाचन",
+    goTo: "येथे जा",
+    verseNumber: "श्लोक क्रमांक",
+    go: "जा",
     screen: "स्क्रीन",
     more: "अधिक",
     preview: "नमुना",

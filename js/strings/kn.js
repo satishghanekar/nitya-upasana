@@ -659,6 +659,23 @@ export default {
     },
   },
   // The page's own words (index.html: data-w="page.…"); {icon} is the icon written in the page
+  // Go to (js/features/where.js): the top bar's title in a long text or a session, and its sheet (#goto)
+  goto: {
+    title: "ಇಲ್ಲಿಗೆ ಹೋಗಿ",
+    here: "ನೀವು ಇಲ್ಲಿದ್ದೀರಿ",
+    /** @param {string} where  the text and the places the reading is in */
+    open: function (where) {
+      return "ಇಲ್ಲಿಗೆ ಹೋಗಿ: " + where;
+    },
+    /** @param {string} name  a heading or a text of the session */
+    more: function (name) {
+      return name + " ಇಲ್ಲಿನ ಸ್ಥಳಗಳನ್ನು ತೋರಿಸಿ";
+    },
+    /** @param {string} n  the verse number typed */
+    none: function (n) {
+      return "ಶ್ಲೋಕ " + n + " ಇಲ್ಲಿ ಇಲ್ಲ";
+    },
+  },
   page: {
     appAddToHomeScreen: 'ಆ್ಯಪ್<span class="sr"> (ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಸೇರಿಸಿ)</span>',
     share: "ಹಂಚಿಕೊಳ್ಳಿ",
@@ -672,6 +689,9 @@ export default {
     nothingFound: "ಏನೂ ಸಿಗಲಿಲ್ಲ",
     nothingHint: "ಕಡಿಮೆ ಅಕ್ಷರಗಳು ಅಥವಾ ಬೇರೆ ಕಾಗುಣಿತ ಪ್ರಯತ್ನಿಸಿ. ಮರಾಠಿ ಮತ್ತು ಇಂಗ್ಲಿಷ್ ಅಕ್ಷರಗಳು ಎರಡೂ ನಡೆಯುತ್ತವೆ.",
     reading: "ಓದು",
+    goTo: "ಇಲ್ಲಿಗೆ ಹೋಗಿ",
+    verseNumber: "ಶ್ಲೋಕ ಸಂಖ್ಯೆ",
+    go: "ಹೋಗಿ",
     screen: "ಪರದೆ",
     more: "ಇನ್ನಷ್ಟು",
     preview: "ಮುನ್ನೋಟ",

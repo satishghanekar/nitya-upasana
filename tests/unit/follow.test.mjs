@@ -3,7 +3,7 @@
 import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
 import { buildContent } from "../../js/text/content.js";
-import { PACE, ahead, correct, letters, lineAt, locate, makeDoc, match, nextPace, pieceLines } from "../../js/core/follow.js";
+import { PACE, ahead, correct, letters, lineAt, locate, makeDoc, match, nextPace, pieceLines, startOf } from "../../js/core/follow.js";
 
 const read = (p) => readFileSync(new URL("../../" + p, import.meta.url), "utf8");
 const lib = JSON.parse(read("content/library.json"));
@@ -24,6 +24,19 @@ function heard(k, i, j, drop = 9, swap = 13) {
 }
 // the index of the line holding a verse's reference (Pavamana Suktam: ॥ ९.००१.०२ ॥)
 const lineWith = (k, s) => pieceLines(pieces[k]).findIndex((l) => l.text.includes(s));
+
+// Go to tells Follow where the reader went by the line's id (js/features/where.js): startOf() finds it in Follow's letters
+test("startOf: a line's first letter in a piece's letters, by its id", () => {
+  const k = at("vedic-chant-pavamana-suktam"),
+    p = pieces[k],
+    doc = docs[k];
+  const all = [...(p.lead || []), ...p.items].flatMap((i) => i.lines || []);
+  const id = all[40].l;
+  const pos = startOf(p, doc, id);
+  expect(lineAt(doc, pos)).toBe(pieceLines(p).findIndex((l) => l.text === all[40].mr));
+  expect(startOf(p, doc, all[0].l)).toBe(0);
+  expect(startOf(p, doc, "no-such-line")).toBe(-1);
+});
 
 describe("letters", () => {
   test("only the letters said: svara marks, verse numbers, dandas and spaces go", () => {

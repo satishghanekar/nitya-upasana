@@ -20,15 +20,17 @@ import { parseText, RECORDING, toHtml } from "./format.js";
  * @typedef {{ id: string, file: string, title: string, titleEn: string, category: string, language: string, lines: number }} LibraryText
  * @typedef {{ id: string, name: Pair, order: number }} Category   one entry of content/categories.json
  * @typedef {{ texts: LibraryText[], pageLanguage: string, languages: Record<string, Pair>,
- *   refrain: { label: Pair, note: Pair }, ui: { prev: Pair, next: Pair }, wiki: Record<string, Record<string, string>> }} Library
+ *   refrain: { label: Pair, note: Pair }, ui: { prev: Pair, next: Pair }, wiki: Record<string, Record<string, string>>,
+ *   outline?: { minLines: number, group: number } }} Library
  * @typedef {{ l: string, rf?: true, mr: string, en: string }} Line
  * @typedef {{ kind?: string, bold?: true, para?: true, lines?: Line[], rmk?: Pair, nt?: true }} Item
  *   rmk: a small line between blocks: the dhrupad's marker (↻ ध्रुपद), or, with nt, a [note] from the text file (Phalashruti,
  *   ↻ ३ वेळा), which is part of the text and always shown, whatever the dhrupad setting
  * @typedef {{ id: string, text: string, lang?: string, cls?: string, prose?: true, no: Pair, title: Pair, tag: Pair,
- *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string }} Piece
+ *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string, partName?: Pair }} Piece
  *   lead: what comes before the dhrupad at the top (refrain), [once] lines and [note]s, shown above it
- * @typedef {{ ui: Library["ui"], wiki: Library["wiki"], categories: { id: string, name: Pair, pieces: Piece[] }[] }} Content
+ * @typedef {{ ui: Library["ui"], wiki: Library["wiki"], outline?: Library["outline"], categories: { id: string, name: Pair,
+ *   pieces: Piece[] }[] }} Content
  */
 
 const DIGITS = "०१२३४५६७८९";
@@ -140,6 +142,11 @@ export function toPiece(t, n, lib) {
     en: n + ".",
   };
   p.title = { mr: t.title, en: t.titleEn };
+  // what its parts are called, for Go to (js/text/outline.js)
+  if (t.partName) {
+    var pn = t.partName.split(" | ");
+    p.partName = { mr: pn[0], en: pn[1] };
+  }
   p.tag = pair(lib.languages[t.language]);
   /** @type {Item[]} */
   var items = [];
@@ -256,6 +263,8 @@ export function buildContent(lib, files, cats) {
   return {
     ui: lib.ui,
     wiki: lib.wiki,
+    // when a text has Go to, and how many verses make a group (js/text/outline.js)
+    outline: lib.outline,
     categories: list.map(function (c) {
       return {
         id: c.id,

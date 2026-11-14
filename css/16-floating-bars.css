@@ -81,7 +81,8 @@
     border-radius: 999px;
   }
   /* the Reading sheet stood on the strip: over a pill it is a card of its own, rounded all round */
-  #rsh .rsc {
+  #rsh .rsc,
+  #goto .rsc {
     border-bottom: 1px solid var(--rule);
     border-radius: 18px;
   }

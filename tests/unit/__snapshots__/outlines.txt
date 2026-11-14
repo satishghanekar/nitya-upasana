@@ -1,0 +1,224 @@
+vedic-chant-atharvashirsha
+  part s0.p1: १ / 1 @ p1l10
+  part s0.p2: २ / 2 @ p1l30
+  part s0.p3: ३ / 3 @ p1l54
+  part s0.p4: ४ / 4 @ p1l68
+  part s0.p5: ५ / 5 @ p1l79
+  14 verses: 1 … 14
+vedic-chant-purusha-suktam
+  part s0.p1: १ / 1 @ vedic-chant-purusha-suktam.8
+  part s0.p2: २ / 2 @ vedic-chant-purusha-suktam.18
+  part s0.p3: ३ / 3 @ vedic-chant-purusha-suktam.28
+  part s0.p4: ४ / 4 @ vedic-chant-purusha-suktam.38
+  part s0.p5: ५ / 5 @ vedic-chant-purusha-suktam.48
+  part s0.p6: ६ / 6 @ vedic-chant-purusha-suktam.58
+  part s0.p7: ७ / 7 @ vedic-chant-purusha-suktam.68
+  part s0.p8: ८ / 8 @ vedic-chant-purusha-suktam.80
+  part s0.p9: ९ / 9 @ vedic-chant-purusha-suktam.90
+  part s0.p10: १० / 10 @ vedic-chant-purusha-suktam.100
+  10 verses: 1 … 10
+vedic-chant-shri-sukta: none
+vedic-chant-laghunyasa
+  part s0.p1: १ / 1 @ vedic-chant-laghunyasa.1
+  part s0.p2: २ / 2 @ vedic-chant-laghunyasa.2
+  part s0.p3: ३ / 3 @ vedic-chant-laghunyasa.14
+  part s0.p4: ४ / 4 @ vedic-chant-laghunyasa.26
+  part s0.p5: ५ / 5 @ vedic-chant-laghunyasa.54
+  part s0.p6: ६ / 6 @ vedic-chant-laghunyasa.58
+  section s2: ध्यानम् / Dhyanam @ vedic-chant-laghunyasa.65
+    part s2.p1: १ / 1 @ vedic-chant-laghunyasa.65
+    part s2.p2: २ / 2 @ vedic-chant-laghunyasa.73
+    part s2.p3: ३ / 3 @ vedic-chant-laghunyasa.76
+  10 verses: 1 … 10
+vedic-chant-shree-rudra
+  section s2: नमकम् / Namakam @ vedic-chant-shree-rudra.2
+    part s2.p1: अनुवाकः १ / Anuvaka 1 @ vedic-chant-shree-rudra.2
+    part s2.p2: अनुवाकः २ / Anuvaka 2 @ vedic-chant-shree-rudra.38
+    part s2.p3: अनुवाकः ३ / Anuvaka 3 @ vedic-chant-shree-rudra.51
+    part s2.p4: अनुवाकः ४ / Anuvaka 4 @ vedic-chant-shree-rudra.68
+    part s2.p5: अनुवाकः ५ / Anuvaka 5 @ vedic-chant-shree-rudra.84
+    part s2.p6: अनुवाकः ६ / Anuvaka 6 @ vedic-chant-shree-rudra.92
+    part s2.p7: अनुवाकः ७ / Anuvaka 7 @ vedic-chant-shree-rudra.100
+    part s2.p8: अनुवाकः ८ / Anuvaka 8 @ vedic-chant-shree-rudra.108
+    part s2.p9: अनुवाकः ९ / Anuvaka 9 @ vedic-chant-shree-rudra.116
+    part s2.p10: अनुवाकः १० / Anuvaka 10 @ vedic-chant-shree-rudra.125
+    part s2.p11: अनुवाकः ११ / Anuvaka 11 @ vedic-chant-shree-rudra.150
+  section s3: चमकम् / Chamakam @ vedic-chant-shree-rudra.182
+    part s3.p1: अनुवाकः १ / Anuvaka 1 @ vedic-chant-shree-rudra.183
+    part s3.p2: अनुवाकः २ / Anuvaka 2 @ vedic-chant-shree-rudra.193
+    part s3.p3: अनुवाकः ३ / Anuvaka 3 @ vedic-chant-shree-rudra.202
+    part s3.p4: अनुवाकः ४ / Anuvaka 4 @ vedic-chant-shree-rudra.210
+    part s3.p5: अनुवाकः ५ / Anuvaka 5 @ vedic-chant-shree-rudra.218
+    part s3.p6: अनुवाकः ६ / Anuvaka 6 @ vedic-chant-shree-rudra.225
+    part s3.p7: अनुवाकः ७ / Anuvaka 7 @ vedic-chant-shree-rudra.234
+    part s3.p8: अनुवाकः ८ / Anuvaka 8 @ vedic-chant-shree-rudra.241
+    part s3.p9: अनुवाकः ९ / Anuvaka 9 @ vedic-chant-shree-rudra.246
+    part s3.p10: अनुवाकः १० / Anuvaka 10 @ vedic-chant-shree-rudra.252
+    part s3.p11: अनुवाकः ११ / Anuvaka 11 @ vedic-chant-shree-rudra.262
+  22 verses: 1 … 11
+vedic-chant-durga-suktam: none
+vedic-chant-shivopasana-mantra: none
+vedic-chant-pavamana-suktam
+  section s2: प्रथमोऽध्यायः / Prathama Adhyaya @ vedic-chant-pavamana-suktam.17
+    part s2.p9.1: ९.१ / 9.1 @ vedic-chant-pavamana-suktam.17
+    part s2.p9.2: ९.२ / 9.2 @ vedic-chant-pavamana-suktam.37
+    part s2.p9.3: ९.३ / 9.3 @ vedic-chant-pavamana-suktam.57
+    part s2.p9.4: ९.४ / 9.4 @ vedic-chant-pavamana-suktam.77
+    part s2.p9.5: ९.५ / 9.5 @ vedic-chant-pavamana-suktam.97
+    part s2.p9.6: ९.६ / 9.6 @ vedic-chant-pavamana-suktam.119
+    part s2.p9.7: ९.७ / 9.7 @ vedic-chant-pavamana-suktam.137
+    part s2.p9.8: ९.८ / 9.8 @ vedic-chant-pavamana-suktam.155
+    part s2.p9.9: ९.९ / 9.9 @ vedic-chant-pavamana-suktam.173
+    part s2.p9.10: ९.१० / 9.10 @ vedic-chant-pavamana-suktam.191
+    part s2.p9.11: ९.११ / 9.11 @ vedic-chant-pavamana-suktam.209
+    part s2.p9.12: ९.१२ / 9.12 @ vedic-chant-pavamana-suktam.227
+  section s3: द्वितीयोऽध्यायः / Dvitiya Adhyaya @ vedic-chant-pavamana-suktam.245
+    part s3.p9.13: ९.१३ / 9.13 @ vedic-chant-pavamana-suktam.245
+    part s3.p9.14: ९.१४ / 9.14 @ vedic-chant-pavamana-suktam.263
+    part s3.p9.15: ९.१५ / 9.15 @ vedic-chant-pavamana-suktam.279
+    part s3.p9.16: ९.१६ / 9.16 @ vedic-chant-pavamana-suktam.295
+    part s3.p9.17: ९.१७ / 9.17 @ vedic-chant-pavamana-suktam.311
+    part s3.p9.18: ९.१८ / 9.18 @ vedic-chant-pavamana-suktam.327
+    part s3.p9.19: ९.१९ / 9.19 @ vedic-chant-pavamana-suktam.341
+    part s3.p9.20: ९.२० / 9.20 @ vedic-chant-pavamana-suktam.355
+    part s3.p9.21: ९.२१ / 9.21 @ vedic-chant-pavamana-suktam.369
+    part s3.p9.22: ९.२२ / 9.22 @ vedic-chant-pavamana-suktam.383
+    part s3.p9.23: ९.२३ / 9.23 @ vedic-chant-pavamana-suktam.397
+    part s3.p9.24: ९.२४ / 9.24 @ vedic-chant-pavamana-suktam.411
+    part s3.p9.25: ९.२५ / 9.25 @ vedic-chant-pavamana-suktam.425
+    part s3.p9.26: ९.२६ / 9.26 @ vedic-chant-pavamana-suktam.437
+    part s3.p9.27: ९.२७ / 9.27 @ vedic-chant-pavamana-suktam.449
+    part s3.p9.28: ९.२८ / 9.28 @ vedic-chant-pavamana-suktam.461
+    part s3.p9.29: ९.२९ / 9.29 @ vedic-chant-pavamana-suktam.473
+    part s3.p9.30: ९.३० / 9.30 @ vedic-chant-pavamana-suktam.485
+    part s3.p9.31: ९.३१ / 9.31 @ vedic-chant-pavamana-suktam.497
+    part s3.p9.32: ९.३२ / 9.32 @ vedic-chant-pavamana-suktam.509
+    part s3.p9.33: ९.३३ / 9.33 @ vedic-chant-pavamana-suktam.521
+    part s3.p9.34: ९.३४ / 9.34 @ vedic-chant-pavamana-suktam.533
+    part s3.p9.35: ९.३५ / 9.35 @ vedic-chant-pavamana-suktam.545
+    part s3.p9.36: ९.३६ / 9.36 @ vedic-chant-pavamana-suktam.557
+    part s3.p9.37: ९.३७ / 9.37 @ vedic-chant-pavamana-suktam.569
+    part s3.p9.38: ९.३८ / 9.38 @ vedic-chant-pavamana-suktam.581
+    part s3.p9.39: ९.३९ / 9.39 @ vedic-chant-pavamana-suktam.593
+    part s3.p9.40: ९.४० / 9.40 @ vedic-chant-pavamana-suktam.605
+    part s3.p9.41: ९.४१ / 9.41 @ vedic-chant-pavamana-suktam.617
+    part s3.p9.42: ९.४२ / 9.42 @ vedic-chant-pavamana-suktam.629
+    part s3.p9.43: ९.४३ / 9.43 @ vedic-chant-pavamana-suktam.641
+  section s4: तृतीयोऽध्यायः / Tritiya Adhyaya @ vedic-chant-pavamana-suktam.653
+    part s4.p9.44: ९.४४ / 9.44 @ vedic-chant-pavamana-suktam.653
+    part s4.p9.45: ९.४५ / 9.45 @ vedic-chant-pavamana-suktam.665
+    part s4.p9.46: ९.४६ / 9.46 @ vedic-chant-pavamana-suktam.677
+    part s4.p9.47: ९.४७ / 9.47 @ vedic-chant-pavamana-suktam.689
+    part s4.p9.48: ९.४८ / 9.48 @ vedic-chant-pavamana-suktam.699
+    part s4.p9.49: ९.४९ / 9.49 @ vedic-chant-pavamana-suktam.709
+    part s4.p9.50: ९.५० / 9.50 @ vedic-chant-pavamana-suktam.719
+    part s4.p9.51: ९.५१ / 9.51 @ vedic-chant-pavamana-suktam.729
+    part s4.p9.52: ९.५२ / 9.52 @ vedic-chant-pavamana-suktam.739
+    part s4.p9.53: ९.५३ / 9.53 @ vedic-chant-pavamana-suktam.749
+    part s4.p9.54: ९.५४ / 9.54 @ vedic-chant-pavamana-suktam.757
+    part s4.p9.55: ९.५५ / 9.55 @ vedic-chant-pavamana-suktam.765
+    part s4.p9.56: ९.५६ / 9.56 @ vedic-chant-pavamana-suktam.773
+    part s4.p9.57: ९.५७ / 9.57 @ vedic-chant-pavamana-suktam.781
+    part s4.p9.58: ९.५८ / 9.58 @ vedic-chant-pavamana-suktam.789
+    part s4.p9.59: ९.५९ / 9.59 @ vedic-chant-pavamana-suktam.797
+    part s4.p9.60: ९.६० / 9.60 @ vedic-chant-pavamana-suktam.805
+    part s4.p9.61: ९.६१ / 9.61 @ vedic-chant-pavamana-suktam.813
+    part s4.p9.62: ९.६२ / 9.62 @ vedic-chant-pavamana-suktam.873
+    part s4.p9.63: ९.६३ / 9.63 @ vedic-chant-pavamana-suktam.933
+    part s4.p9.64: ९.६४ / 9.64 @ vedic-chant-pavamana-suktam.993
+  section s5: चतुर्थोऽध्यायः / Chaturtha Adhyaya @ vedic-chant-pavamana-suktam.1053
+    part s5.p9.65: ९.६५ / 9.65 @ vedic-chant-pavamana-suktam.1053
+    part s5.p9.66: ९.६६ / 9.66 @ vedic-chant-pavamana-suktam.1113
+    part s5.p9.67: ९.६७ / 9.67 @ vedic-chant-pavamana-suktam.1173
+  610 verses: 9.001.01 … 9.067.32
+vedic-chant-lalita-sahasranama
+  section s1: न्यासः / Nyasa @ vedic-chant-lalita-sahasranama.1
+  section s2: ध्यानम् / Dhyanam @ vedic-chant-lalita-sahasranama.10
+  section s3: स्तोत्रम् / Stotram @ vedic-chant-lalita-sahasranama.26
+    group s3.g1: १–२५ / 1–25 @ vedic-chant-lalita-sahasranama.27
+    group s3.g26: २६–५० / 26–50 @ vedic-chant-lalita-sahasranama.77
+    group s3.g51: ५१–७५ / 51–75 @ vedic-chant-lalita-sahasranama.127
+    group s3.g76: ७६–१०० / 76–100 @ vedic-chant-lalita-sahasranama.177
+    group s3.g101: १०१–१२५ / 101–125 @ vedic-chant-lalita-sahasranama.227
+    group s3.g126: १२६–१५० / 126–150 @ vedic-chant-lalita-sahasranama.277
+    group s3.g151: १५१–१७५ / 151–175 @ vedic-chant-lalita-sahasranama.327
+    group s3.g176: १७६–१८३ / 176–183 @ vedic-chant-lalita-sahasranama.377
+  183 verses: 1 … 183
+vedic-chant-vishnu-sahasranama
+  section s1: पूर्वभागः / Purva Bhaga @ vedic-chant-vishnu-sahasranama.2
+  section s2: पूर्वन्यासः / Purva Nyasa @ vedic-chant-vishnu-sahasranama.50
+  section s3: अथ ध्यानम् / Dhyanam @ vedic-chant-vishnu-sahasranama.65
+  section s4: स्तोत्रम् / Stotram @ vedic-chant-vishnu-sahasranama.92
+    group s4.g1: १–२५ / 1–25 @ vedic-chant-vishnu-sahasranama.92
+    group s4.g26: २६–५० / 26–50 @ vedic-chant-vishnu-sahasranama.142
+    group s4.g51: ५१–७५ / 51–75 @ vedic-chant-vishnu-sahasranama.192
+    group s4.g76: ७६–१०० / 76–100 @ vedic-chant-vishnu-sahasranama.242
+    group s4.g101: १०१–१०८ / 101–108 @ vedic-chant-vishnu-sahasranama.292
+  section s5: उत्तरभागः / Uttara Bhaga @ vedic-chant-vishnu-sahasranama.310
+  170 verses: 1 … 33
+vedic-chant-mantra-pushpanjali: none
+vedic-chant-mantrapushpam
+  part s0.p1: १ / 1 @ vedic-chant-mantrapushpam.10
+  part s0.p2: २ / 2 @ vedic-chant-mantrapushpam.80
+  part s0.p3: ३ / 3 @ vedic-chant-mantrapushpam.86
+  9 verses: 1 … 9
+vedic-chant-chakshushopanishad: none
+vedic-chant-shri-sukta-phalashruti: none
+aarti-sukhkarta: none
+aarti-shendur-lal-chadhayo: none
+aarti-durge-durghat-bhari: none
+aarti-lavathavati-vikrala: none
+aarti-trigunatmak-traimurti: none
+aarti-dnyanaraja: none
+aarti-yei-o-vitthale: none
+aarti-ghalin-lotangan: none
+aarti-jai-ganesh-deva: none
+aarti-jai-jagdish-hare: none
+aarti-jaydeva-jaydeva-samartha: none
+aarti-jay-jay-aarti-shrigururaya: none
+aarti-ovaloon-aarti-chaitanyabrahma: none
+aarti-kariton-guruvar: none
+aarti-dhanya-jagin-guruvarya: none
+aarti-belaguve: none
+aarti-svastha-karin-shayan: none
+aarti-ovaloo-sapreme-aarti: none
+aarti-jai-shiv-omkara: none
+stotra-maruti-stotra: none
+stotra-hanuman-chalisa
+  group s0.g1: १–२५ / 1–25 @ stotra-hanuman-chalisa.5
+  group s0.g26: २६–४० / 26–40 @ stotra-hanuman-chalisa.55
+  40 verses: 1 … 40
+stotra-ram-raksha
+  section s1: ध्यानम् / Dhyanam @ stotra-ram-raksha.6
+  section s2: स्तोत्रम् / Stotram @ stotra-ram-raksha.10
+    group s2.g1: १–२५ / 1–25 @ stotra-ram-raksha.10
+    group s2.g26: २६–३८ / 26–38 @ stotra-ram-raksha.60
+  38 verses: 1 … 38
+stotra-shiva-panchakshara: none
+stotra-shiva-ashtottara-shatanamavali: none
+stotra-prarthana-shlokas: none
+stotra-shant-ho-shriguru: none
+stotra-shriguru-datta-jay: none
+stotra-jay-karunaghan-nij: none
+stotra-ghorakashtoddharan: none
+stotra-vandu-guruchya-charanarvinda: none
+stotra-martand-bavani: none
+stotra-sadguru-vandana: none
+ashtak-sadguru-padukashtak: none
+ashtak-ananyata-maj-ghado: none
+ashtak-anudin-anutapen: none
+ashtak-monday: none
+ashtak-tuesday: none
+ashtak-wednesday: none
+ashtak-thursday: none
+ashtak-friday: none
+ashtak-saturday: none
+ashtak-sunday: none
+ashtak-haachi-subodh: none
+ashtak-brahmachaitanya-sarikha: none
+ashtak-swami-majha-pahila: none
+ashtak-surya-ashtakam: none
+ashtak-lingashtakam: none
+ashtak-nandikeshvara-ashtakam: none
+ashtak-rudrashtakam: none
+ashtak-kalabhairava-ashtakam: none

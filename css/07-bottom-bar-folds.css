@@ -547,7 +547,8 @@ html[data-asb="1"] {
     display: none;
   }
 }
-#rsh {
+#rsh,
+#goto {
   position: fixed;
   inset: 0;
   z-index: 8;
@@ -555,10 +556,12 @@ html[data-asb="1"] {
   overscroll-behavior: contain;
   touch-action: none;
 }
-#rsh[hidden] {
+#rsh[hidden],
+#goto[hidden] {
   display: none;
 }
-#rsh .rsc {
+#rsh .rsc,
+#goto .rsc {
   position: absolute;
   left: 0;
   right: 0;
@@ -579,10 +582,12 @@ html[data-asb="1"] {
   color: var(--ink);
   text-align: left;
 }
-#rsh .rsc:focus {
+#rsh .rsc:focus,
+#goto .rsc:focus {
   outline: none;
 }
-#rsh .rsc::before {
+#rsh .rsc::before,
+#goto .rsc::before {
   content: "";
   display: block;
   width: 40px;
@@ -592,7 +597,8 @@ html[data-asb="1"] {
   background: var(--rule);
 }
 @media (prefers-reduced-motion: no-preference) {
-  #rsh .rsc {
+  #rsh .rsc,
+  #goto .rsc {
     animation: rsup 0.18s ease-out;
   }
   @keyframes rsup {
@@ -614,7 +620,8 @@ html[data-asb="1"] {
 #rsh .mr {
   font-family: var(--body);
 }
-#rsx {
+#rsx,
+#gtx {
   display: grid;
   place-items: center;
   margin-right: -10px;
@@ -867,4 +874,199 @@ html[data-asb="1"] {
 /* high contrast: every line kept at full contrast, the accent colour alone marking the line */
 [data-hc="1"] .lsn-text .verse p {
   opacity: 1;
+}
+
+/* ==== Go to (js/features/where.js, Satish 2026-11-14): in a long text or a session the top bar's title is a button saying
+   where the reading is (#where: the text on a small line, the place under it in the accent colour, ▾), in place of the
+   Home link (#bt); it opens the Go to sheet (#goto), which shares the reading sheet's card above ==== */
+.bar #where {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  margin-block: -9px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+.bar #where[hidden] {
+  display: none;
+}
+#where .wh {
+  display: grid;
+  min-width: 0;
+  line-height: 1.2;
+}
+#wh1,
+#wh2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#wh1 {
+  font: 400 var(--fz-xs) / 1.25 var(--body);
+  color: var(--muted);
+}
+#wh2 {
+  font: 700 var(--fz-m) / 1.25 var(--body);
+  color: var(--accent);
+}
+#wh1:lang(en),
+#wh2:lang(en) {
+  font-family: var(--lat);
+}
+#where svg {
+  flex: none;
+  color: var(--accent);
+}
+#gtt small {
+  display: block;
+  font-weight: 400;
+  font-size: var(--fz-s);
+  color: var(--muted);
+}
+/* the verse box: a number and Go, the message under them when there is no such verse */
+#gtf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+#gtf[hidden] {
+  display: none;
+}
+#gtn {
+  flex: 1 1 8em;
+  min-width: 0;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 0 12px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--fz-m) / 1.2 var(--lat);
+}
+#gtf button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--bg);
+  font: 600 var(--fz-m) / 1 var(--lat);
+}
+#gtm {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: var(--fz-s);
+  color: var(--accent);
+}
+#gtm:empty {
+  display: none;
+}
+/* the places: a row each (go to its start), its own places folded under it (▾), the reading's place open and marked */
+#gtl {
+  margin-top: 8px;
+}
+.gt-sec {
+  border-top: 1px solid var(--rule);
+  padding-block: 4px;
+}
+.gt-sec.on {
+  border-top-color: transparent;
+  border-radius: 12px;
+  background: var(--surface);
+  padding-inline: 8px;
+  margin-inline: -8px;
+}
+.gt-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.gt-go {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 4px 2px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  text-align: left;
+  font: 600 var(--fz-m) / 1.3 var(--body);
+  cursor: pointer;
+}
+.gt-go:lang(en),
+.gt-go [lang="en"] {
+  font-family: var(--lat);
+}
+.gt-sec.on > .gt-row .gt-go {
+  color: var(--accent);
+}
+.gt-no {
+  color: var(--muted);
+  font-weight: 400;
+}
+.gt-here {
+  font: 600 var(--fz-xs) / 1 var(--lat);
+  color: var(--accent);
+  white-space: nowrap;
+}
+.gt-more {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.gt-more[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+.gt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 6px;
+  padding-block: 4px 8px;
+}
+.gt-grid.gt-wide {
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+}
+.gt-grid[hidden],
+.gt-sub[hidden] {
+  display: none;
+}
+.gt-grid button {
+  min-height: 44px;
+  padding: 0 4px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 600 var(--fz-s) / 1.1 var(--body);
+  cursor: pointer;
+}
+.gt-grid button[lang="en"] {
+  font-family: var(--lat);
+}
+.gt-grid button[aria-current] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.gt-sub {
+  padding-left: 12px;
+}
+@media (hover: hover) {
+  .gt-go:hover,
+  .gt-grid button:hover:not([aria-current]) {
+    color: var(--accent);
+  }
 }

@@ -22,8 +22,8 @@ import { clearSearch, libTab } from "./contents-list.js";
  * Everything that opens over the page, dialogs first: the first one open in this order is the one on top.
  * page: one of the four pages (one open at a time; Tabbing out of it closes it; the bottom bar steps aside for it);
  * trap: Tab stays inside it while it is open; back: the phone's Back closes it in js/features/history.js (the others
- * listen for Back themselves).
- * @type {{ id: string, page?: boolean, trap?: boolean, back?: boolean }[]}
+ * listen for Back themselves); opener: the button that opens it, told when Back closes it (aria-expanded).
+ * @type {{ id: string, page?: boolean, trap?: boolean, back?: boolean, opener?: string }[]}
  */
 export const LAYERS = [
   { id: "bkm", trap: true, back: true },
@@ -35,7 +35,8 @@ export const LAYERS = [
   { id: "inm", trap: true, back: true },
   { id: "upm", trap: true },
   { id: "pzv", trap: true, back: true },
-  { id: "rsh", trap: true, back: true },
+  { id: "rsh", trap: true, back: true, opener: "rsb" },
+  { id: "goto", trap: true, back: true, opener: "where" },
   { id: "panel", page: true, trap: true },
   { id: "jump", page: true },
   { id: "cal", page: true },
@@ -81,7 +82,9 @@ export function closeForBack() {
     if (!l.back || !shown(l.id)) return;
     /** @type {HTMLElement} */ (document.getElementById(l.id)).hidden = true;
     shut = true;
-    if (l.id === "rsh") /** @type {HTMLElement} */ (document.getElementById("rsb")).setAttribute("aria-expanded", "false");
+    // the button that opened it says it is closed (opener in LAYERS)
+    var o = l.opener && document.getElementById(l.opener);
+    if (o) o.setAttribute("aria-expanded", "false");
   });
   return shut;
 }
