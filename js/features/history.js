@@ -4,7 +4,7 @@
 
 import { bt, byId, onPiece, pieceEl } from "../core/page.js";
 import { aa, aimAt, cur, jp, unfold, pn } from "../core/apply.js";
-import { TK, apply, goHome, mark, tuckHold } from "./bars.js";
+import { TK, apply, goHome, lineEl, mark, tuckHold } from "./bars.js";
 import { anyOpen, closeForBack, pageEls, setC, setJ, setP, setR, trapped } from "./overlays.js";
 
 /** @type {boolean} the browser keeps steps of its own (history.pushState) */
@@ -262,7 +262,13 @@ export function ovDrop() {
 
 // Go somewhere in the page: go() scrolls, url is "#a3" (a piece) or the bare address (home)
 /** @param {() => void} go @param {string} url */
-export function jumpTo(go, url) {
+/**
+ * @param {() => void} go  moves the page
+ * @param {string} url  the address gone to
+ * @param {string} [line]  the line gone to (Go to, a search result): focus goes to it rather than to the text's heading,
+ *   so a screen reader reads on from the place shown (Satish 2026-11-14: after Go to ९.६० VoiceOver began at the title)
+ */
+export function jumpTo(go, url, line) {
   var ov = NAV && hs().ov;
   if (typeof TK === "object" && TK) tuckHold();
   try {
@@ -282,9 +288,9 @@ export function jumpTo(go, url) {
   try {
     if (NAV) history[ov ? "replaceState" : "pushState"]({ y: scrollY }, "", url);
   } catch (e) {}
-  // Focus follows to the piece's heading, so the next Tab or screen reader line starts there
+  // Focus follows to the line gone to, or else the piece's heading, so the next Tab or screen reader line starts there
   var el = url && url.charAt(0) === "#" && pieceEl(url.slice(1)),
-    h = el && el.querySelector("h2");
+    h = (line && lineEl(line)) || (el && el.querySelector("h2"));
   if (h) {
     h.tabIndex = -1;
     try {

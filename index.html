@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.66.0">
+<meta name="version" content="aarti-v1.67.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -444,9 +444,10 @@
 </div>
 <!-- ==== Page: home, then every piece ==== -->
 <main class="wrap" id="main" tabindex="-1">
+  <!-- the page's one top heading, for screen readers: outside Home, so a text read on its own has it too -->
+  <h1 class="sr"><span data-w="page.nityaUpasana">Nitya Upasana</span></h1>
   <!-- ==== Home page ==== -->
   <section id="home" aria-label="Home">
-    <h1 class="sr"><span data-w="page.nityaUpasana">Nitya Upasana</span></h1>
     <!-- Today (js/features/today-card.js): the app's picture, which follows the time of day
          (sunrise, midday, sunset) with a ring on today's weekday star (#iconr, placed by js/features/day-picture.js; a
          tap opens it full screen, #pzv), beside the date in the reading languages (written in by the script). Out of

@@ -950,6 +950,38 @@ test("with the bars tucked away, the pill at the top says where the reading is a
   await expect(page.locator("#tkw")).toHaveText("तृतीयोऽध्यायः · ९.६०");
 });
 
+test("after Go to, focus is on the line gone to, and the tab names the text @mobile", async ({ page }) => {
+  // (Satish 2026-11-14: VoiceOver began again at the text's title after a jump to ९.६०; every tab read "Nitya Upasana")
+  await openSite(page, SETUPS.marathi);
+  await expect(page).toHaveTitle("Nitya Upasana");
+  await readText(page, "vedic-chant-pavamana-suktam");
+  await toLine(page, "vedic-chant-pavamana-suktam.700");
+  await expect(page).toHaveTitle("पवमानसूक्तम् · Nitya Upasana");
+  await page.locator("#where").click();
+  const to = page.locator("#gtl .gt-grid button", { hasText: "९.६०" });
+  const line = await to.getAttribute("data-line");
+  await to.click();
+  expect(await page.evaluate(() => document.activeElement.tagName + " " + document.activeElement.getAttribute("data-l"))).toBe("P " + line);
+});
+
+test("on the narrowest phone the title keeps the place itself in sight; the headings give way @mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "vedic-chant-pavamana-suktam");
+  await toLine(page, "vedic-chant-pavamana-suktam.700");
+  const at = page.locator("#wh2 .wh-at");
+  await expect(at).toHaveText(/^९\.[०-९]{2}$/);
+  const shown = await at.evaluate((e) => {
+    const r = e.getBoundingClientRect(),
+      box = e.closest("#where").getBoundingClientRect();
+    return r.width > 10 && r.right <= box.right + 1 && e.scrollWidth <= e.clientWidth + 1;
+  });
+  expect(shown).toBe(true);
+  // the pill too
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  await expect(page.locator("#tkw .wh-at")).toBeVisible();
+});
+
 test("on a tablet the top bar's Go to sits in the middle of the bar, where the tucked pill is @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 1180 });
   await openSite(page, SETUPS.marathi);

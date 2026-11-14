@@ -53,6 +53,36 @@ test("axe: Go to open, in every theme @mobile", async ({ page }) => {
   expect(await axeEveryTheme(page, ["#goto"])).toEqual(noViolations());
 });
 
+// A text read on its own keeps the page's one top heading (it was inside Home, hidden with it), and the links under a text
+// (its source, its recordings) are targets of 24px at least (WCAG 2.5.8), Satish 2026-11-14
+test("a text read has the page's top heading, and the links under it are 24px targets @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "vedic-chant-pavamana-suktam");
+  await page.evaluate(() => scrollTo(0, document.scrollingElement.scrollHeight));
+  await page.waitForTimeout(300);
+  expect(await axeScan(page, [], { rules: ["page-has-heading-one", "target-size"] })).toEqual([]);
+  const small = await page.evaluate(() =>
+    [...document.querySelectorAll("#vedic-chant-pavamana-suktam .cr a[href]")]
+      .filter((a) => a.getClientRects().length && a.getBoundingClientRect().height < 24)
+      .map((a) => a.textContent),
+  );
+  expect(small).toEqual([]);
+});
+
+// Settings' A− and A+ and Follow's answers on the narrowest phone: whole targets, the words on one line
+test("the narrowest phone: A− and A+ 44px wide, Follow's Not now on one line @mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openSite(page, SETUPS.english);
+  await page.locator("#lsb").click();
+  const nn = page.locator("#lsn").getByRole("button", { name: "Not now" });
+  // as tall as Download beside it: one line
+  const dl = await page.locator("#lsn").getByRole("button", { name: "Download" }).boundingBox();
+  expect(Math.abs((await nn.boundingBox()).height - dl.height)).toBeLessThan(2);
+  await nn.click();
+  await page.locator("#aa").click();
+  for (const id of ["#sm", "#lg"]) expect((await page.locator(id).boundingBox()).width).toBeGreaterThanOrEqual(44);
+});
+
 /** The page scrolled so a line is where Go to puts one, a third of the way down, with the bars shown */
 async function goToLine(p, l) {
   await p.evaluate((l) => {

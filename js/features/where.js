@@ -244,16 +244,37 @@ export function whereMark(c, onText, l, title) {
   said = key;
   byId("wh1").textContent = first;
   var w2 = byId("wh2");
-  w2.textContent = second;
+  placeIn(w2, path, second);
   w2.lang = path.length ? tl() : ui();
   byId("wh1").lang = tl();
   var tkw = byId("tkw");
-  tkw.textContent = path.join(" · ");
+  placeIn(tkw, path, "");
   tkw.lang = tl();
   // its spoken name starts with what it does (WCAG 2.5.3): "Go to: पवमानसूक्तम्, तृतीयोऽध्यायः, ९.४७"
   var name = menuWords("goto").open([title].concat(path).join(", "));
   btn.setAttribute("aria-label", name);
   pill.setAttribute("aria-label", name);
+}
+
+/**
+ * Where the reading is, written in: the headings, then the place itself (the verse, the part) on its own, so that where
+ * the room runs out (a small phone) the headings give way and "९.४८" stays in sight (Satish 2026-11-14: "तृतीयोऽ…")
+ * @param {HTMLElement} el @param {string[]} path @param {string} none  what it says with no place
+ */
+function placeIn(el, path, none) {
+  el.textContent = path.length ? "" : none;
+  if (!path.length) return;
+  var at = document.createElement("span");
+  at.className = "wh-at";
+  at.textContent = path[path.length - 1];
+  if (path.length > 1) {
+    var into = document.createElement("span");
+    into.className = "wh-in";
+    // (its last space kept by white-space: pre, css/07-bottom-bar-folds.css)
+    into.textContent = path.slice(0, -1).join(" · ") + " · ";
+    el.appendChild(into);
+  }
+  el.appendChild(at);
 }
 
 /** Open or close the sheet @param {boolean} o @param {HTMLElement} [by]  the button it is opened with */
@@ -417,9 +438,13 @@ function go(piece, line) {
   sheet.hidden = true;
   expanded(false);
   document.documentElement.style.overflow = "";
-  jumpTo(function () {
-    goLine(line, true);
-  }, "#" + piece);
+  jumpTo(
+    function () {
+      goLine(line, true);
+    },
+    "#" + piece,
+    line,
+  );
   // Follow, if it is listening, carries on from here rather than pulling the page back to where it last heard
   // (js/features/listen.js): told by an event, as a feature imports no other for this
   document.dispatchEvent(new CustomEvent("nitya-jump", { detail: { piece: piece, line: line } }));
