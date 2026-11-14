@@ -82,6 +82,15 @@
    "lines": 394
   },
   {
+   "id": "vedic-chant-vishnu-sahasranama",
+   "file": "texts/vedic-chant-vishnu-sahasranama.txt",
+   "title": "श्रीविष्णुसहस्रनामस्तोत्रम्",
+   "titleEn": "Shri Vishnu Sahasranama",
+   "category": "vedic-chant",
+   "language": "sa",
+   "lines": 417
+  },
+  {
    "id": "vedic-chant-mantra-pushpanjali",
    "file": "texts/vedic-chant-mantra-pushpanjali.txt",
    "title": "मन्त्रपुष्पाञ्जलिः",
