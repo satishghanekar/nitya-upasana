@@ -201,6 +201,13 @@ function ovOpen() {
   return anyOpen();
 }
 
+/** The Back step being taken only closes something open over the page (its own step: by Back, or by ✕, Escape, a tap
+ * outside), not a jump in the text. Read by the bars (js/features/bars.js), whose popstate listener runs before this
+ * part's, so the bars tucked away stay so when Go to, opened from their pill, is closed (Satish 2026-11-14). */
+export function ovStep() {
+  return popSkip > 0 || ovOpen();
+}
+
 export function ovPush() {
   if (!NAV || hs().ov || ovOpen()) return;
   ovFrom = document.activeElement;

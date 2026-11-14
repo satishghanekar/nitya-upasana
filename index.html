@@ -9,7 +9,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.65.0">
+<meta name="version" content="aarti-v1.66.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -792,7 +792,10 @@
 <!-- ==== Bottom bar (footer menu): ‹ Previous, Home, Library, Reading (the sliders: the reading sheet), Follow, Next ›, icons alone; on the home page Library, Reading and Follow only.
      The Library is here, within thumb reach; Print is in the top bar's Share menu ==== -->
 <!-- slim strip with the piece name, shown while the bars are tucked away on phones and tablets (data-tuck) -->
-<div id="tuck" aria-hidden="true"><span id="tkt"></span><i id="tkp"></i></div>
+<!-- While reading with the bars tucked away: the text's name in a small pill at the top (js/features/bars.js). In a long text
+     or a session it also says where the reading is and opens Go to, as the top bar's title does (js/features/where.js);
+     elsewhere a tap on it brings the bars back. -->
+<div id="tuck"><button type="button" id="tkb" aria-hidden="true" tabindex="-1" aria-controls="goto" aria-expanded="false"><span id="tkt"></span><span id="tkw"></span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><i id="tkp"></i></button></div>
 <div id="asc" hidden role="navigation" aria-label="Previous, home, library, reading, listen, next">
   <div id="asi">
     <button type="button" id="asv" class="asx"></button>

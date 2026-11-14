@@ -917,6 +917,69 @@ test("Go to in Shree Rudra: Namakam and Chamakam, eleven anuvakas each, the grid
   await expect(wh(page)).toHaveText("चमकम् · अनुवाकः ५");
 });
 
+test("with the bars tucked away, the pill at the top says where the reading is and opens Go to, from the top @mobile", async ({ page }) => {
+  // (Satish 2026-11-14: the name in view while reading is the one to tap; Go to opened at the foot of the screen, far from it)
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "vedic-chant-pavamana-suktam");
+  await toLine(page, "vedic-chant-pavamana-suktam.700");
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  const pill = page.locator("#tkb");
+  await expect(pill).toBeVisible();
+  await expect(page.locator("#tkw")).toHaveText(/^तृतीयोऽध्यायः · ९\.[०-९]{2}$/);
+  await expect(pill).toHaveAccessibleName(/^Go to: .*पवमानसूक्तम्, तृतीयोऽध्यायः, ९\./);
+  // below the top of the screen, where the system dims nothing, and a whole tap target
+  const pb = await pill.boundingBox();
+  expect(pb.y).toBeGreaterThanOrEqual(10);
+  expect(pb.height).toBeGreaterThanOrEqual(44);
+  await pill.click();
+  await expect(page.locator("#goto")).toBeVisible();
+  await expect(pill).toHaveAttribute("aria-expanded", "true");
+  // the card hangs from the top of the screen, under where it was opened
+  const cb = await page.locator("#goto .rsc").boundingBox();
+  expect(cb.y).toBeLessThan(20);
+  expect(cb.y + cb.height).toBeLessThan((await page.evaluate(() => innerHeight)) - 16);
+  // the bars stay tucked; Escape gives focus back to the pill
+  expect(await page.evaluate(() => document.documentElement.hasAttribute("data-tuck"))).toBe(true);
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#goto")).toBeHidden();
+  await expect(pill).toBeFocused();
+  await expect(pill).toHaveAttribute("aria-expanded", "false");
+  // a part chosen from the pill's card
+  await pill.click();
+  await page.locator("#gtl .gt-grid button", { hasText: "९.६०" }).click();
+  await expect(page.locator("#tkw")).toHaveText("तृतीयोऽध्यायः · ९.६०");
+});
+
+test("on a tablet the top bar's Go to sits in the middle of the bar, where the tucked pill is @mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 820, height: 1180 });
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "vedic-chant-pavamana-suktam");
+  await toLine(page, "vedic-chant-pavamana-suktam.700");
+  const mid = (b) => b.x + b.width / 2;
+  const w = await page.locator("#where").boundingBox();
+  expect(Math.abs(mid(w) - 410)).toBeLessThan(4);
+  // clear of the profile chip and the buttons on the right
+  const who = await page.locator("#who").boundingBox();
+  expect(w.x + w.width).toBeLessThan(who.x);
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  expect(Math.abs(mid(await page.locator("#tkb").boundingBox()) - 410)).toBeLessThan(4);
+});
+
+test("a short text's tucked pill is its name alone, and a tap on it brings the bars back @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "a1");
+  await page.evaluate(() => scrollBy(0, 500));
+  await page.waitForTimeout(300);
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  const pill = page.locator("#tkb");
+  await expect(page.locator("#tkw")).toBeEmpty();
+  await expect(pill).not.toHaveAttribute("aria-haspopup", /./);
+  await expect(pill.locator("svg")).toBeHidden();
+  await pill.click();
+  await expect.poll(() => page.evaluate(() => document.documentElement.hasAttribute("data-tuck"))).toBe(false);
+  await expect(page.locator("#goto")).toBeHidden();
+});
+
 test("a short text keeps the Home link as its title; Go to only where a text is long or a session runs @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await readText(page, "a1");

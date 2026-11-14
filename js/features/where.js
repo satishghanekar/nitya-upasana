@@ -2,7 +2,8 @@
 // Where am I, and Go to (Satish, 2026-11-14): in a long text or a session, the top bar's title says where the reading is
 // (पवमानसूक्तम् · तृतीयोऽध्यायः · ९.४७) and is a button that opens the Go to sheet (#goto), which lists the places to go
 // to. Both are drawn from the text's outline (js/text/outline.js), worked out from the text file, so nothing here names a
-// text. In a short text and on Home the title is the Home link, as before.
+// text. In a short text and on Home the title is the Home link, as before. With the bars tucked away the pill at the top
+// (#tkb) says the same and opens the same sheet (Satish 2026-11-14: the name in view while reading is the one to tap).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { outline, placeAt, sessionOutline, verseAt, verseByNumber } from "../text/outline.js";
@@ -21,6 +22,8 @@ import { esc, scr, ui } from "../core/words.js";
 
 /** @type {HTMLElement} */ var btn; // #where, in the top bar beside the Home link
 /** @type {HTMLElement} */ var homeLink; // #bt
+/** @type {HTMLElement} */ var pill; // #tkb, the tucked bars' pill
+/** @type {HTMLElement} */ var from; // the button the sheet was opened with, given focus back
 /** @type {HTMLElement} */ var sheet; // #goto
 /** @type {HTMLElement} */ var list; // #gtl
 /** @type {Record<string, Outline | null>} each built text's outline, by piece id */
@@ -40,6 +43,8 @@ var lang = /** @type {"mr" | "en"} */ ("mr");
 export function init() {
   btn = byId("where");
   homeLink = byId("bt");
+  pill = byId("tkb");
+  from = btn;
   sheet = byId("goto");
   list = byId("gtl");
   /** @type {any} */
@@ -62,8 +67,12 @@ export function init() {
   });
   addEventListener("resize", dirty, { passive: true });
   btn.onclick = function () {
-    open(sheet.hidden);
+    open(sheet.hidden, btn);
   };
+  // (the pill's own tap, outside a long text, brings the bars back: js/features/bars.js)
+  pill.addEventListener("click", function () {
+    if (pill.hasAttribute("aria-haspopup")) open(true, pill);
+  });
   byId("gtx").onclick = function () {
     open(false);
   };
@@ -206,6 +215,20 @@ export function whereMark(c, onText, l, title) {
     btn.hidden = !on;
     homeLink.hidden = on;
     if (!on && !sheet.hidden) open(false);
+    // the pill: a button that opens Go to, or, outside a long text, a name a tap on brings the bars back with (hidden
+    // from screen readers and Tab then: the bars come back as soon as focus moves into them)
+    if (on) {
+      pill.setAttribute("aria-haspopup", "dialog");
+      pill.removeAttribute("aria-hidden");
+      pill.removeAttribute("tabindex");
+    } else {
+      pill.removeAttribute("aria-haspopup");
+      pill.removeAttribute("aria-label");
+      pill.setAttribute("aria-hidden", "true");
+      pill.setAttribute("tabindex", "-1");
+      byId("tkw").textContent = "";
+      said = "";
+    }
   }
   if (!on || !c) return;
   var i = s
@@ -224,31 +247,45 @@ export function whereMark(c, onText, l, title) {
   w2.textContent = second;
   w2.lang = path.length ? tl() : ui();
   byId("wh1").lang = tl();
+  var tkw = byId("tkw");
+  tkw.textContent = path.join(" · ");
+  tkw.lang = tl();
   // its spoken name starts with what it does (WCAG 2.5.3): "Go to: पवमानसूक्तम्, तृतीयोऽध्यायः, ९.४७"
-  btn.setAttribute("aria-label", menuWords("goto").open([title].concat(path).join(", ")));
+  var name = menuWords("goto").open([title].concat(path).join(", "));
+  btn.setAttribute("aria-label", name);
+  pill.setAttribute("aria-label", name);
 }
 
-/** Open or close the sheet @param {boolean} o */
-export function open(o) {
+/** Open or close the sheet @param {boolean} o @param {HTMLElement} [by]  the button it is opened with */
+export function open(o, by) {
   if (o === !sheet.hidden) return;
   if (o) {
+    from = by || btn;
     ovPush();
     draw();
     byId("gtm").textContent = "";
   }
   sheet.hidden = !o;
-  btn.setAttribute("aria-expanded", String(o));
+  expanded(o);
   document.documentElement.style.overflow = o ? "hidden" : "";
   if (o) {
     var on = /** @type {HTMLElement | null} */ (list.querySelector("[aria-current]"));
     /** @type {HTMLElement} */ (sheet.querySelector(".rsc")).focus({ preventScroll: true });
     if (on) on.scrollIntoView({ block: "center" });
   } else {
+    // back to the button it was opened with; the top bar's when that has gone (the bars came back)
     try {
-      btn.focus({ preventScroll: true });
+      from.focus({ preventScroll: true });
+      if (document.activeElement !== from) btn.focus({ preventScroll: true });
     } catch (e) {}
     ovDone();
   }
+}
+
+/** Both buttons that open the sheet say whether it is open @param {boolean} o */
+function expanded(o) {
+  btn.setAttribute("aria-expanded", String(o));
+  pill.setAttribute("aria-expanded", String(o));
 }
 
 /** The places as rows and number grids: the current place's open, the others closed */
@@ -378,7 +415,7 @@ function firstLine(p) {
 function go(piece, line) {
   // closed without its own Back step: jumpTo() replaces it with the place gone to (as a search result does)
   sheet.hidden = true;
-  btn.setAttribute("aria-expanded", "false");
+  expanded(false);
   document.documentElement.style.overflow = "";
   jumpTo(function () {
     goLine(line, true);

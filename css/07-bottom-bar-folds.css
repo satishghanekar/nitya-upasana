@@ -108,46 +108,95 @@
   white-space: nowrap;
 }
 /* ==== Bars tuck away while reading (phones and tablets without the side menu) ====
-   Scrolling down slides the top and bottom bars out of view, leaving a slim strip with the piece name;
+   Scrolling down slides the top and bottom bars out of view, leaving a small pill at the top with the piece name;
    scrolling up or reaching the end of the page (once the page stops moving: js/features/bars.js showSoon()), or
    tapping a blank part of the page brings them back.
-   The script sets data-tuck on <html>. */
+   The script sets data-tuck on <html>.
+   The pill sits where the top bar's pill does, below the band iPadOS 26 and iOS 26 blur and dim at the very top of the
+   screen (a strip along the top edge read washed out there, Satish 2026-11-14). In a long text or a session it says where
+   the reading is and opens Go to (js/features/where.js): the name the reader looks at is the one to tap. Only the pill
+   takes a tap; the page beside it is tapped as usual. */
 #tuck {
   position: fixed;
-  top: 0;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
   left: 0;
   right: 0;
   z-index: 6;
   display: flex;
-  align-items: center;
   justify-content: center;
-  /* where the screen has a top inset (the Home Screen app), the name sits a little lower, below the band iPadOS 26 and
-     iOS 26 blur and dim at the very top of the screen (Satish 2026-11-14: the name read washed out there), on a solid
-     ground so nothing shows through it */
-  height: calc(30px + env(safe-area-inset-top, 0px) + min(env(safe-area-inset-top, 0px), 14px));
-  padding: calc(env(safe-area-inset-top, 0px) + min(env(safe-area-inset-top, 0px), 14px)) 16px 0;
-  background: var(--bg);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--rule);
-  font: 600 var(--fz-m)/1 var(--body);
-  color: var(--accent);
+  padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
+  pointer-events: none;
   visibility: hidden;
 }
-#tuck span:lang(en) {
-  font-family: var(--lat);
+#tkb {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+  overflow: hidden;
+  background: var(--pill);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  box-shadow:
+    0 6px 22px #00000026,
+    0 1px 3px #0000001a;
+  font: 600 var(--fz-s) / 1.2 var(--body);
+  color: var(--accent);
+  cursor: pointer;
+  pointer-events: auto;
 }
-#tuck span {
-  line-height: 1.6;
+#tkt,
+#tkw {
+  min-width: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  line-height: 1.6;
 }
-#tuck i {
+/* the name gives way first: where the reading is matters more, the name is on the page above */
+#tkt {
+  flex: 0 1000 auto;
+}
+#tkb[aria-haspopup] #tkt {
+  font-weight: 400;
+  color: var(--muted);
+}
+#tkw {
+  flex: 0 1 auto;
+}
+#tkw:empty {
+  display: none;
+}
+#tkw::before {
+  content: "· ";
+  color: var(--muted);
+  font-weight: 400;
+}
+#tkt:lang(en),
+#tkw:lang(en) {
+  font-family: var(--lat);
+}
+#tkb svg {
+  flex: none;
+}
+#tkb:not([aria-haspopup]) svg {
+  display: none;
+}
+/* a tablet has the room for the size of the top bar's words */
+@media (min-width: 600px) {
+  #tkb {
+    font-size: var(--fz-m);
+  }
+}
+#tkb i {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -1px;
+  bottom: 0;
   height: 2px;
   background: var(--accent);
   opacity: 0.75;
@@ -1071,5 +1120,53 @@ html[data-asb="1"] {
   .gt-go:hover,
   .gt-grid button:hover:not([aria-current]) {
     color: var(--accent);
+  }
+}
+/* Go to drops down from the top, where it is opened (the title, or the tucked pill), on every screen (Satish
+   2026-11-14: "since you got there from the top"); the reading sheet stays at the foot, under its button. The card
+   covers the top bar's place and stops short of the foot of the screen. */
+#goto .rsc {
+  top: calc(env(safe-area-inset-top, 0px) + 6px);
+  bottom: auto;
+  max-height: calc(100% - env(safe-area-inset-top, 0px) - 24px);
+  padding-top: 10px;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+}
+#goto .rsc::before {
+  display: none;
+}
+/* (not under a phone's side notch when it is held sideways) */
+@media (min-width: 600px) {
+  #goto .rsc {
+    width: calc(100% - 32px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  #goto .rsc {
+    animation: gtdown 0.18s ease-out;
+  }
+  @keyframes gtdown {
+    from {
+      transform: translateY(-16px);
+      opacity: 0.6;
+    }
+  }
+}
+/* On a tablet the top bar has the room to put where the reading is in its middle, over the text being read, as the
+   tucked pill does: the same place whether the bars are out or tucked away. (Not with Home beside the text on a
+   computer, where the bar is the text's own.) */
+@media (min-width: 820px) {
+  :root:not([data-rail="1"]) .bar #where {
+    position: absolute;
+    inset: 0;
+    width: max-content;
+    max-width: calc(100% - 520px);
+    height: 44px;
+    margin: auto;
+  }
+  :root:not([data-rail="1"]) #where .wh {
+    text-align: center;
   }
 }
