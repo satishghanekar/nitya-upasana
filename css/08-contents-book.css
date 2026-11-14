@@ -340,3 +340,12 @@ html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
 .cr .rec a {
   white-space: normal;
 }
+/* each link here a target of its own: 24px tall at least, the lines far enough apart that two never meet (WCAG 2.5.8;
+   the source and the recordings were 16 to 18px, a line apart) */
+.cr a {
+  padding-block: 6px;
+}
+.cr,
+.cr .rec {
+  line-height: 2;
+}

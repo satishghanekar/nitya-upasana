@@ -196,7 +196,7 @@
   var S = SCRIPTS[ind],
     /** @type {[any, string, string | null][]} [node, "", text] or [element, attribute, value]: what SCR.page() changed */
     OLD = [],
-    ROOTS = ".ash, #home h1, #btt",
+    ROOTS = ".ash, #main > h1, #btt",
     // built by the site script, already in the chosen script: the Library's list by category (js/features/library.js)
     LATER = "#jl";
   var SCR = {

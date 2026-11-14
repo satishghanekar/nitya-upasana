@@ -1170,3 +1170,30 @@ html[data-asb="1"] {
     text-align: center;
   }
 }
+/* Where the reading is, in the title and the pill: the headings give way before the place itself (js/features/where.js
+   placeIn()), so a small phone shows "तृतीयो… ९.४८" rather than "तृतीयोऽ…" */
+#wh2,
+#tkw {
+  display: flex;
+  min-width: 0;
+}
+.wh-in {
+  min-width: 0;
+  overflow: hidden;
+  /* (pre: the space before the place, at its end, is kept) */
+  white-space: pre;
+  text-overflow: ellipsis;
+}
+.wh-at {
+  flex: none;
+  white-space: nowrap;
+}
+#tkw::before {
+  content: "· ";
+  flex: none;
+  white-space: pre;
+}
+/* Follow's answers keep to one line ("Not now" broke in two beside Download on a phone) */
+.lsnb button {
+  white-space: nowrap;
+}
