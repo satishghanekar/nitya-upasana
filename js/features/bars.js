@@ -17,6 +17,7 @@ import { asLabel, asShow, asc } from "./bottom-bar.js";
 import { szSet } from "./settings-panel.js";
 import { pageOpen, setJ, setP } from "./overlays.js";
 import { whereMark } from "./where.js";
+import { ovStep } from "./history.js";
 import { spSet } from "./languages.js";
 import { fillWords, menuWords } from "../core/strings.js";
 import { num, shown, ui } from "../core/words.js";
@@ -24,8 +25,6 @@ import { num, shown, ui } from "../core/words.js";
 /** @type {{ y: number, acc: number, hold: number, h: number, show: any }} the tucking bars: the last scroll, the scroll
  * added up, no tucking until, the page height, the timer that brings them back */
 export var TK;
-/** @type {HTMLElement} */
-var tkStrip;
 /** @type {MediaQueryList} */
 var MQ900;
 /** @type {MediaQueryList} */
@@ -57,7 +56,6 @@ export function init() {
     new ResizeObserver(function () {
       TK.h = document.documentElement.scrollHeight;
     }).observe(document.body);
-  tkStrip = byId("tuck");
   addEventListener(
     "scroll",
     function () {
@@ -78,7 +76,10 @@ export function init() {
   // a jump by the browser (Back, Forward, a link to #piece) brings the bars back; jumps made by the site
   // (Contents, Prev / Next, search) do so in jumpTo(). A big leap between scroll events is not used as a
   // sign of a jump: a fast flick on an iPhone also scrolls in big leaps, and the bars popped up mid-page.
-  addEventListener("popstate", tuckHold);
+  // (not a Back step that only closes something open over the page: the bars stay as they were)
+  addEventListener("popstate", function () {
+    if (!ovStep()) tuckHold();
+  });
   addEventListener("hashchange", tuckHold);
   // a tap on a blank part of the page (not a line, a link, a button or a dhrupad marker) brings the bars back
   document.addEventListener("click", function (e) {
@@ -88,8 +89,9 @@ export function init() {
     if (t.closest(".verse p, a, button, input, select, label, .rmk, .rmkpop, #asc, .bar")) return;
     tuck(false);
   });
-  tkStrip.addEventListener("click", function () {
-    tuck(false);
+  // a tap on the tucked pill brings the bars back; in a long text or a session it opens Go to instead (js/features/where.js)
+  byId("tkb").addEventListener("click", function () {
+    if (!byId("tkb").hasAttribute("aria-haspopup")) tuck(false);
   });
   document.addEventListener("focusin", function (e) {
     /** @type {any} */
