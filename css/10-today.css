@@ -671,9 +671,17 @@
     padding-block: 4px;
   }
 }
-/* (and as wide as the text on a large tablet held upright, css/02-core.css) */
-@media screen and (min-width: 1024px) and (orientation: portrait) {
-  :root[data-hv="1"] #home {
+/* An iPad held sideways (no Home beside the text, js/features/bars.js): Home as on an iPad upright, one larger column,
+   not a phone's narrow one; a phone on its side (under 521px high) keeps its own two columns, below */
+@media screen and (min-width: 600px) and (min-height: 521px) and (orientation: landscape) {
+  :root[data-hv="1"]:not([data-rail="1"]) #home {
+    max-width: 46rem;
+    font-size: 1.08em;
+  }
+}
+/* (and as wide as the text on a large tablet, upright or sideways, css/02-core.css) */
+@media screen and (min-width: 1024px) {
+  :root[data-hv="1"]:not([data-rail="1"]) #home {
     max-width: 60rem;
   }
 }

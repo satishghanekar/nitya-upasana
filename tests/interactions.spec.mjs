@@ -377,6 +377,12 @@ for (const [when, picture, day, name, label] of [
     await expect(btn.locator("img")).toHaveAttribute("src", `picture-${picture}-360.webp`);
     await expect(btn).toHaveAttribute("aria-label", "Show the picture full screen: " + label);
     await expect(page.locator('link[rel="icon"][sizes="32x32"]')).toHaveAttribute("href", name);
+    // the large picture is Home's on a computer; on a touch screen (an iPad held sideways reads as upright, Satish
+    // 2026-11-14) Home has the small one in the top bar, checked above
+    if (await page.evaluate(() => matchMedia("(hover: none) and (pointer: coarse)").matches)) {
+      await expect(btn).toBeHidden();
+      return;
+    }
     // the picture has loaded
     expect(await btn.locator("img").evaluate((i) => i.complete && i.naturalWidth > 0)).toBe(true);
     // the ring sits on today's star: on the picture, in the upper half, left of centre on Sunday, right on Thursday

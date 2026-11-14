@@ -32,6 +32,8 @@ var MQ900;
 var MQ1600;
 /** @type {MediaQueryList} */
 var MQ1024;
+/** @type {MediaQueryList} */
+var MQTOUCH;
 /** @type {number} the frame apply() finishes in */
 var tailF;
 
@@ -105,6 +107,9 @@ export function init() {
   MQ1600 = matchMedia("(min-width: 1600px)");
   // (not on an upright 13-inch iPad, 1032px: css/README.md, data-rail)
   MQ1024 = matchMedia("(min-width: 1024px) and (orientation: landscape)");
+  // a touch tablet (an iPad) reads held sideways as it does upright, one column across the screen, and never has Home
+  // beside the text: that is for a computer (Satish 2026-11-14)
+  MQTOUCH = matchMedia("(hover: none) and (pointer: coarse)");
   // The parts of apply() that read where things are on screen (the current piece for the top bar title,
   // and the menus) wait for the next frame, when the browser lays the page out
   // anyway; reading them straight away cost one extra full-page layout per change.
@@ -310,7 +315,7 @@ export function apply() {
   var wide = MQ900.matches,
     two = wide && (P.cols === 2 || (P.cols !== 1 && MQ1600.matches));
   root.setAttribute("data-cols", two ? "2" : "1");
-  if (MQ1024.matches) root.setAttribute("data-rail", "1");
+  if (MQ1024.matches && !MQTOUCH.matches) root.setAttribute("data-rail", "1");
   else root.removeAttribute("data-rail");
   byId("colrow").hidden = !wide;
   /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#sc button")).forEach(function (b) {
