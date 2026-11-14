@@ -9,8 +9,10 @@ refrain-before-first: yes
 [dhrupad]
 ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा ।
 Ovalun Aarti Sadguru Chaitanyabrahma |
-निगमागम वर्णितां न कळे अगाध महिमा ॥ धृ. ॥
-Nigamagam Varnitan Na Kale Agadh Mahima || Dhr. ||
+निगमागम वर्णितां न कळे अगाध महिमा ।
+Nigamagam Varnitan Na Kale Agadh Mahima |
+ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा ॥ धृ. ॥
+Ovalun Aarti Sadguru Chaitanyabrahma || Dhr. ||
 
 [1]
 निर्गुण निराकार तेंचि साकार झालें ।

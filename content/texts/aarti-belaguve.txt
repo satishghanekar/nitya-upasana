@@ -13,8 +13,10 @@ refrain-before-first: yes
 [dhrupad]
 आरती बेळगुवे सद्‌गुरु श्रीब्रह्मचैतन्या ।
 Aarti Belaguve Sadguru Shribrahmachaitanya |
-परब्रह्मा परात्परा सनकादिकमान्या ॥ धृ. ॥
-Parabrahma Paratpara Sanakadikamanya || Dhr. ||
+परब्रह्मा परात्परा सनकादिकमान्या ।
+Parabrahma Paratpara Sanakadikamanya |
+आरती बेळगुवे सद्‌गुरु श्रीब्रह्मचैतन्या ॥ धृ. ॥
+Aarti Belaguve Sadguru Shribrahmachaitanya || Dhr. ||
 
 [1]
 नित्यशुद्धा निजानंदा निरुपमवैभवा ।

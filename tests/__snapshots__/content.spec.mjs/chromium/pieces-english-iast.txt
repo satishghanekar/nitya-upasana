@@ -6440,7 +6440,9 @@ Refrain (sung after every verse)
 
 ovāḷūṃ āratī sad‌guru caitanyabrahmā |
 
-nigamāgama varṇitāṃ na kaḷe agādha mahimā || dhṛ. ||
+nigamāgama varṇitāṃ na kaḷe agādha mahimā |
+
+ovāḷūṃ āratī sad‌guru caitanyabrahmā || dhṛ. ||
 
 ↻ Refrain
 
@@ -6559,7 +6561,9 @@ Refrain (sung after every verse)
 
 āratī beḷaguve sad‌guru śrībrahmacaitanyā |
 
-parabrahmā parātparā sanakādikamānyā || dhṛ. ||
+parabrahmā parātparā sanakādikamānyā |
+
+āratī beḷaguve sad‌guru śrībrahmacaitanyā || dhṛ. ||
 
 ↻ Refrain
 
