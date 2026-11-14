@@ -910,7 +910,7 @@
 }
 
 /* ==== Tablets held upright: one column a little narrower, taller days, the day card's rows in two columns ==== */
-@media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
+@media screen and (min-width: 600px) and (orientation: portrait) {
   #cal .calin {
     max-width: 44rem;
   }

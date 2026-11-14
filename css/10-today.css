@@ -418,7 +418,7 @@
    screen): today on the left (the Vedic calendar line, the festival line, Morning / Afternoon / Evening, the session's
    texts with their ticks, More, the Library line), with today's date at the top; the day's picture large on the right.
    The rows are auto-sized and the last one takes the rest, so the picture spanning them all leaves no gaps ==== */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   /* the body's 16px and Home's own 8px taken back, so today's column starts where it stays while reading */
   :root[data-hv="1"][data-rail="1"] .wrap {
     max-width: calc(var(--T) + 24px);
@@ -462,7 +462,7 @@
    calendar line, Morning / Afternoon / Evening, the session's texts with their ticks and the one being read marked
    (li.now, aria-current: markNow() in js/features/today-card.js), Print this session. The Library line steps aside
    (Library is in the bottom bar). Home's column is fixed, so it stays put while the text scrolls ==== */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   :root[data-rail="1"] {
     /* the bottom bar's height, which Home's column and the pages beside it stop above */
     --asbh: var(--pill-foot);
@@ -579,7 +579,7 @@
 /* ==== Desktop B: the Vedic calendar (#cal), Settings (#panel) and the Library (#jump) open in the
    right-hand area, under the top bar, beside Home's column on the left, not over the whole page, with the bottom bar
    under them. The button that opened each one stays marked while it is open ==== */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   :root[data-rail="1"] #cal,
   :root[data-rail="1"] #panel {
     top: var(--bb, 69px) !important;
@@ -660,14 +660,21 @@
   }
 }
 
-/* ==== Tablets held upright: Home is one larger column ==== */
-@media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
+/* ==== Tablets held upright: Home is one larger column, as wide as the text column (46rem, css/02-core.css; at 40rem
+   an 834px iPad left a tenth of the screen empty at each side, Satish 2026-11-13) ==== */
+@media screen and (min-width: 600px) and (orientation: portrait) {
   :root[data-hv="1"] #home {
-    max-width: 40rem;
+    max-width: 46rem;
     font-size: 1.08em;
   }
   :root[data-hv="1"] #tsl li {
     padding-block: 4px;
+  }
+}
+/* (and as wide as the text on a large tablet held upright, css/02-core.css) */
+@media screen and (min-width: 1024px) and (orientation: portrait) {
+  :root[data-hv="1"] #home {
+    max-width: 60rem;
   }
 }
 

@@ -393,6 +393,13 @@ ol.toc .m {
     max-width: 46rem;
   }
 }
+/* ==== Large tablets held upright (the 13-inch iPad, 1032px): 46rem left 300px empty, so 60rem, a long line's measure
+   at their large text (Satish 2026-11-13) ==== */
+@media (min-width: 1024px) and (orientation: portrait) {
+  .wrap {
+    max-width: 60rem;
+  }
+}
 
 /* ==== Wider screens (820px and up) ==== */
 @media (min-width: 820px) {
