@@ -602,6 +602,10 @@
    "en": "Refrain"
   }
  },
+ "outline": {
+  "minLines": 60,
+  "group": 25
+ },
  "ui": {
   "prev": {
    "mr": "मागील",

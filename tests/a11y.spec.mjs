@@ -42,6 +42,28 @@ const STATES = [
   ["picture open", SETUPS.marathi, (p) => p.locator("#bti").click()],
 ];
 
+// Go to over Pavamana Suktam, its third adhyaya open (js/features/where.js): the sheet, in every theme (the reading page
+// under it is scanned in the states above)
+test("axe: Go to open, in every theme @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "vedic-chant-pavamana-suktam");
+  await goToLine(page, "vedic-chant-pavamana-suktam.700");
+  await page.locator("#where").click();
+  await page.waitForTimeout(300);
+  expect(await axeEveryTheme(page, ["#goto"])).toEqual(noViolations());
+});
+
+/** The page scrolled so a line is where Go to puts one, a third of the way down, with the bars shown */
+async function goToLine(p, l) {
+  await p.evaluate((l) => {
+    const el = document.querySelector('.wrap > .ash [data-l="' + l + '"]');
+    scrollTo(0, el.getBoundingClientRect().top + scrollY - innerHeight * 0.3);
+  }, l);
+  await p.waitForTimeout(400);
+  await p.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
+  await p.waitForTimeout(150);
+}
+
 for (const [name, prefs, prep, themes] of STATES) {
   test(`axe: ${name}${themes ? ", in every theme" : ""} @mobile`, async ({ page }) => {
     await openSite(page, prefs);

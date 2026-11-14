@@ -26,7 +26,7 @@
  * @typedef {{
  *   id: string, title: string, titleEn: string, category: string, language: string,
  *   legacyId?: string, lineIds?: string, lineIdExceptions?: Record<string, string>,
- *   refrain: "every-verse" | "always" | "none", refrainFirst?: boolean, layout?: "prose" | "lines", stanzaNumbers?: "as-written",
+ *   refrain: "every-verse" | "always" | "none", refrainFirst?: boolean, layout?: "prose" | "lines", stanzaNumbers?: "as-written", partName?: string,
  *   credit?: string, creditEn?: string, creditNote?: string, creditNoteEn?: string, source?: string, recording?: string,
  *   blocks: Block[]
  * }} Text
@@ -47,6 +47,7 @@ const FIELDS = [
   ["refrain-before-first", "refrainFirst", false],
   ["layout", "layout", false],
   ["stanza-numbers", "stanzaNumbers", false],
+  ["part-name", "partName", false],
   ["credit", "credit", false],
   ["credit-en", "creditEn", false],
   ["credit-note", "creditNote", false],
@@ -118,6 +119,8 @@ export function parseText(raw, name) {
     if (key === "refrain" && REFRAINS.indexOf(val) < 0) fail(at, "refrain must be one of " + REFRAINS.join(", "));
     if (key === "layout" && val !== "prose" && val !== "lines") fail(at, 'layout can only be "prose" or "lines"');
     if (key === "stanza-numbers" && val !== "as-written") fail(at, 'stanza-numbers can only be "as-written"');
+    // what the text's parts are called, in both languages, for Go to (js/text/outline.js): "अनुवाकः | Anuvaka"
+    if (key === "part-name" && !/^[^|]*[^|\s] \| \S[^|]*$/.test(val)) fail(at, 'part-name is "name | English name", like "अनुवाकः | Anuvaka"');
     if (
       key === "recording" &&
       !val.split(", ").every(function (r) {

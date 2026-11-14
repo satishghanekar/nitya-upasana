@@ -653,6 +653,23 @@ export default {
     },
   },
   // The page's own words (index.html: data-w="page.…"); {icon} is the icon written in the page
+  // Go to (js/features/where.js): the top bar's title in a long text or a session, and its sheet (#goto)
+  goto: {
+    title: "ఇక్కడికి వెళ్ళండి",
+    here: "మీరు ఇక్కడ ఉన్నారు",
+    /** @param {string} where  the text and the places the reading is in */
+    open: function (where) {
+      return "ఇక్కడికి వెళ్ళండి: " + where;
+    },
+    /** @param {string} name  a heading or a text of the session */
+    more: function (name) {
+      return name + " లోని స్థలాలు చూపించండి";
+    },
+    /** @param {string} n  the verse number typed */
+    none: function (n) {
+      return "శ్లోకం " + n + " ఇక్కడ లేదు";
+    },
+  },
   page: {
     appAddToHomeScreen: 'యాప్<span class="sr"> (హోమ్ స్క్రీన్‌కు జోడించు)</span>',
     share: "పంచుకో",
@@ -666,6 +683,9 @@ export default {
     nothingFound: "ఏదీ దొరకలేదు",
     nothingHint: "తక్కువ అక్షరాలు లేదా వేరే స్పెల్లింగ్ ప్రయత్నించండి. మరాఠీ, ఇంగ్లీషు అక్షరాలు రెండూ పనిచేస్తాయి.",
     reading: "పఠనం",
+    goTo: "ఇక్కడికి వెళ్ళండి",
+    verseNumber: "శ్లోక సంఖ్య",
+    go: "వెళ్ళండి",
     screen: "తెర",
     more: "మరిన్ని",
     preview: "ముందుచూపు",

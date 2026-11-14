@@ -70,6 +70,27 @@ export function pieceLines(p) {
   return out;
 }
 
+/** Where a line starts in a piece's letters (makeDoc(pieceLines(p))): the first letter of the line with this id, or -1. Go
+ * to (js/features/where.js) tells Follow where the reader went, by the line's id @param {any} p @param {Doc} doc
+ * @param {string} id @returns {number} */
+export function startOf(p, doc, id) {
+  var i = 0,
+    at = -1;
+  /** @param {any[] | undefined} items */
+  function walk(items) {
+    (items || []).forEach(function (it) {
+      (it.lines || []).forEach(function (/** @type {any} */ l) {
+        if (at < 0 && l.l === id) at = i;
+        i++;
+      });
+    });
+  }
+  walk(p.lead);
+  if (p.refrain) i += p.refrain.lines.length;
+  walk(p.items);
+  return at < 0 ? -1 : at === 0 ? 0 : doc.ends[at - 1];
+}
+
 /** The line a letter is in @param {Doc} doc @param {number} at  the letter's place in doc.text @returns {number} */
 export function lineAt(doc, at) {
   var lo = 0,

@@ -647,6 +647,23 @@ export default {
     },
   },
   // The page's own words (index.html: data-w="page.…"); {icon} is the icon written in the page
+  // Go to (js/features/where.js): the top bar's title in a long text or a session, and its sheet (#goto)
+  goto: {
+    title: "અહીં જાઓ",
+    here: "તમે અહીં છો",
+    /** @param {string} where  the text and the places the reading is in */
+    open: function (where) {
+      return "અહીં જાઓ: " + where;
+    },
+    /** @param {string} name  a heading or a text of the session */
+    more: function (name) {
+      return name + " માંનાં સ્થાનો બતાવો";
+    },
+    /** @param {string} n  the verse number typed */
+    none: function (n) {
+      return "શ્લોક " + n + " અહીં નથી";
+    },
+  },
   page: {
     appAddToHomeScreen: 'ઍપ<span class="sr"> (હોમ સ્ક્રીન પર ઉમેરો)</span>',
     share: "શેર કરો",
@@ -660,6 +677,9 @@ export default {
     nothingFound: "કંઈ મળ્યું નહીં",
     nothingHint: "ઓછા અક્ષરો અથવા જુદી જોડણી અજમાવો. મરાઠી અને અંગ્રેજી, બંને અક્ષરો ચાલે છે.",
     reading: "વાંચન",
+    goTo: "અહીં જાઓ",
+    verseNumber: "શ્લોક ક્રમાંક",
+    go: "જાઓ",
     screen: "પડદો",
     more: "વધુ",
     preview: "ઝલક",
