@@ -4747,7 +4747,7 @@ Brahmanda Purana ↗
 ### vedic-chant-vishnu-sahasranama
 10. Śrīviṣṇusahasranāmastotram
 
-om̐ sakalasaubhāgyadāyakaṃ śrīviṣṇusahasranāmastotram ||
+śrīgurubhyo namaḥ hariḥ om̐ ||
 
 Purva Bhaga
 
@@ -4755,9 +4755,9 @@ Purva Bhaga
 
 prasannavadanaṃ dhyāyet sarvavighnopaśāntaye || 1 ||
 
-yasya dviradavaktrādyāḥ pāriṣadyāḥ paraḥ śatam |
+nārāyaṇaṃ namaskṛtya naraṃ caiva narottamam |
 
-vighnaṃ nighnanti satataṃ viṣvaksenaṃ tamāśraye || 2 ||
+devīṃ sarasvatīṃ vyāsaṃ tato jayamudīrayet || 2 ||
 
 vyāsaṃ vasiṣṭhanaptāraṃ śakteḥ pautramakalmaṣam |
 
@@ -4849,8 +4849,6 @@ anekarūpadaityāntaṃ namāmi puruṣottamam || 22 ||
 
 Purva Nyasa
 
-śrīvedavyāsa uvāca
-
 om̐ asya śrīviṣṇordivyasahasranāmastotramahāmantrasya ||
 
 śrīvedavyāso bhagavānṛṣiḥ |
@@ -4879,59 +4877,7 @@ trisāmā sāmagaḥ sāmeti kavacam |
 
 śrīviśvarūpa iti dhyānam |
 
-śrīmahāviṣṇuprītyarthaṃ sahasranāmajape viniyogaḥ ||
-
-Nyasa
-
-om̐ śirasi vedavyāsarṣaye namaḥ |
-
-mukhe anuṣṭupchandase namaḥ |
-
-hṛdi śrīkṛṣṇaparamātmadevatāyai namaḥ |
-
-guhye amṛtāṃśūdbhavo bhānuriti bījāya namaḥ |
-
-pādayordevakīnandanaḥ sraṣṭeti śaktaye namaḥ |
-
-sarvāṅge śaṅkhabhṛnnandakī cakrīti kīlakāya namaḥ |
-
-karasampuṭe mama śrīkṛṣṇaprītyarthe jape viniyogaḥ ||
-
-iti ṛṣyādinyāsaḥ ||
-
-Karanyasa
-
-om̐ viśvaṃ viṣṇurvaṣaṭkāra ityaṅguṣṭhābhyāṃ namaḥ |
-
-amṛtāṃśūdbhavo bhānuriti tarjanībhyāṃ namaḥ |
-
-brahmaṇyo brahmakṛdbrahmeti madhyamābhyāṃ namaḥ |
-
-suvarṇabindurakṣobhya ityanāmikābhyāṃ namaḥ |
-
-nimiṣo'nimiṣaḥ sragvīti kaniṣṭhikābhyāṃ namaḥ |
-
-rathāṅgapāṇirakṣobhya iti karatalakarapṛṣṭhābhyāṃ namaḥ |
-
-iti karanyāsaḥ ||
-
-Shadanganyasa
-
-om̐ viśvaṃ viṣṇurvaṣaṭkāra iti hṛdayāya namaḥ |
-
-amṛtāṃśūdbhavo bhānuriti śirase svāhā |
-
-brahmaṇyo brahmakṛdbrahmeti śikhāyai vaṣaṭ |
-
-suvarṇabindurakṣobhya iti kavacāya hum |
-
-nimiṣo'nimiṣaḥ sragvīti netratrayāya vauṣaṭ |
-
-rathāṅgapāṇirakṣobhya ityastrāya phaṭ |
-
-iti ṣaḍaṅganyāsaḥ ||
-
-śrīkṛṣṇaprītyarthe viṣṇordivyasahasranāmajapamahaṃ kariṣye iti saṅkalpaḥ |
+śrīmahāviṣṇuprītyarthe śrīsahasranāmapārāyaṇe viniyogaḥ ||
 
 Dhyanam
 
@@ -4951,7 +4897,9 @@ antaḥsthaṃ yasya viśvaṃ suranarakhagagobhogigandharvadaityaiḥ
 
 citraṃ raṃramyate taṃ tribhuvanavapuṣaṃ viṣṇumīśaṃ namāmi || 2 ||
 
-om̐ śāntākāraṃ bhujagaśayanaṃ padmanābhaṃ sureśaṃ
+om̐ namo bhagavate vāsudevāya |
+
+śāntākāraṃ bhujagaśayanaṃ padmanābhaṃ sureśaṃ
 
 viśvādhāraṃ gaganasadṛśaṃ meghavarṇaṃ śubhāṅgam |
 
@@ -4989,9 +4937,7 @@ rukmiṇīsatyabhāmābhyāṃ sahitaṃ kṛṣṇamāśraye || 7 ||
 
 Stotram
 
-|| hariḥ om̐ ||
-
-viśvaṃ viṣṇurvaṣaṭkāro bhūtabhavyabhavatprabhuḥ |
+om̐ viśvaṃ viṣṇurvaṣaṭkāro bhūtabhavyabhavatprabhuḥ |
 
 bhūtakṛdbhūtabhṛdbhāvo bhūtātmā bhūtabhāvanaḥ || 1 ||
 
@@ -5593,11 +5539,16 @@ kāyena vācā manasendriyairvā buddhyātmanā vā prakṛtisvabhāvāt |
 
 karomi yadyatsakalaṃ parasmai nārāyaṇāyeti samarpayāmi || 33 ||
 
-iti śrīviṣṇordivyasahasranāmastotraṃ sampūrṇam ||
+om̐ śāntiḥ śāntiḥ śāntiḥ ||
 
-|| om̐ tatsat ||
+visargabindumātrāṇi padapādākṣarāṇi ca |
+
+nyūnātiriktaṃ yatkiñcit kṣamasva puruṣottama ||
+
+hariḥ om̐ ||
 
 Mahabharata, Anushasana Parva ↗
+▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-mantra-pushpanjali
 11. Mantrapuṣpāñjaliḥ

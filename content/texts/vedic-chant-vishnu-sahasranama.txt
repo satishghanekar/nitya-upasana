@@ -7,10 +7,11 @@ layout: lines
 stanza-numbers: as-written
 credit: [महाभारत, अनुशासनपर्व](https://mr.wikipedia.org/wiki/विष्णुसहस्रनाम)
 credit-en: [Mahabharata, Anushasana Parva](https://en.wikipedia.org/wiki/Vishnu_Sahasranama)
+recording: [Challakere Brothers](https://www.youtube.com/watch?v=ayqZpzFo5xA&t=11)
 ---
 [once]
-ॐ सकलसौभाग्यदायकं श्रीविष्णुसहस्रनामस्तोत्रम् ॥
-Om Sakalasaubhagyadayakam Shrivishnusahasranamastotram ||
+श्रीगुरुभ्यो नमः हरिः ॐ ॥
+Shrigurubhyo Namah Harih Om ||
 
 [note: पूर्वभागः | Purva Bhaga]
 
@@ -21,10 +22,10 @@ Shuklambaradharam Vishnum Shashivarnam Chaturbhujam |
 Prasannavadanam Dhyayet Sarvavighnopashantaye || 1 ||
 
 [2]
-यस्य द्विरदवक्त्राद्याः पारिषद्याः परः शतम् ।
-Yasya Dviradavaktradyah Parishadyah Parah Shatam |
-विघ्नं निघ्नन्ति सततं विष्वक्सेनं तमाश्रये ॥ २ ॥
-Vighnam Nighnanti Satatam Vishvaksenam Tamashraye || 2 ||
+नारायणं नमस्कृत्य नरं चैव नरोत्तमम् ।
+Narayanam Namaskrutya Naram Chaiva Narottamam |
+देवीं सरस्वतीं व्यासं ततो जयमुदीरयेत् ॥ २ ॥
+Devim Sarasvatim Vyasam Tato Jayamudirayet || 2 ||
 
 [3]
 व्यासं वसिष्ठनप्तारं शक्तेः पौत्रमकल्मषम् ।
@@ -159,8 +160,6 @@ Anekarupadaityantam Namami Purushottamam || 22 ||
 [note: पूर्वन्यासः | Purva Nyasa]
 
 [once]
-श्रीवेदव्यास उवाच
-Shrivedavyasa Uvacha
 ॐ अस्य श्रीविष्णोर्दिव्यसहस्रनामस्तोत्रमहामन्त्रस्य ॥
 Om Asya Shrivishnordivyasahasranamastotramahamantrasya ||
 श्रीवेदव्यासो भगवानृषिः ।
@@ -189,66 +188,8 @@ Anandam Parabrahmeti Yonih |
 Rutuh Sudarshanah Kala Iti Digbandhah ||
 श्रीविश्वरूप इति ध्यानम् ।
 Shrivishvarupa Iti Dhyanam |
-श्रीमहाविष्णुप्रीत्यर्थं सहस्रनामजपे विनियोगः ॥
-Shrimahavishnuprityartham Sahasranamajape Viniyogah ||
-
-[note: अथ न्यासः | Nyasa]
-
-[once]
-ॐ शिरसि वेदव्यासर्षये नमः ।
-Om Shirasi Vedavyasarshaye Namah |
-मुखे अनुष्टुप्छन्दसे नमः ।
-Mukhe Anushtupchhandase Namah |
-हृदि श्रीकृष्णपरमात्मदेवतायै नमः ।
-Hrudi Shrikrushnaparamatmadevatayai Namah |
-गुह्ये अमृतांशूद्भवो भानुरिति बीजाय नमः ।
-Guhye Amrutamshudbhavo Bhanuriti Bijaya Namah |
-पादयोर्देवकीनन्दनः स्रष्टेति शक्तये नमः ।
-Padayordevakinandanah Srashteti Shaktaye Namah |
-सर्वाङ्गे शङ्खभृन्नन्दकी चक्रीति कीलकाय नमः ।
-Sarvange Shankhabhrunnandaki Chakriti Kilakaya Namah |
-करसम्पुटे मम श्रीकृष्णप्रीत्यर्थे जपे विनियोगः ॥
-Karasampute Mama Shrikrushnaprityarthe Jape Viniyogah ||
-इति ऋष्यादिन्यासः ॥
-Iti Rushyadinyasah ||
-
-[note: अथ करन्यासः | Karanyasa]
-
-[once]
-ॐ विश्वं विष्णुर्वषट्कार इत्यङ्गुष्ठाभ्यां नमः ।
-Om Vishvam Vishnurvashatkara Ityangushthabhyam Namah |
-अमृतांशूद्भवो भानुरिति तर्जनीभ्यां नमः ।
-Amrutamshudbhavo Bhanuriti Tarjanibhyam Namah |
-ब्रह्मण्यो ब्रह्मकृद्ब्रह्मेति मध्यमाभ्यां नमः ।
-Brahmanyo Brahmakrudbrahmeti Madhyamabhyam Namah |
-सुवर्णबिन्दुरक्षोभ्य इत्यनामिकाभ्यां नमः ।
-Suvarnabindurakshobhya Ityanamikabhyam Namah |
-निमिषोऽनिमिषः स्रग्वीति कनिष्ठिकाभ्यां नमः ।
-Nimishonimishah Sragviti Kanishthikabhyam Namah |
-रथाङ्गपाणिरक्षोभ्य इति करतलकरपृष्ठाभ्यां नमः ।
-Rathangapanirakshobhya Iti Karatalakaraprushthabhyam Namah |
-इति करन्यासः ॥
-Iti Karanyasah ||
-
-[note: अथ षडङ्गन्यासः | Shadanganyasa]
-
-[once]
-ॐ विश्वं विष्णुर्वषट्कार इति हृदयाय नमः ।
-Om Vishvam Vishnurvashatkara Iti Hrudayaya Namah |
-अमृतांशूद्भवो भानुरिति शिरसे स्वाहा ।
-Amrutamshudbhavo Bhanuriti Shirase Svaha |
-ब्रह्मण्यो ब्रह्मकृद्ब्रह्मेति शिखायै वषट् ।
-Brahmanyo Brahmakrudbrahmeti Shikhayai Vashat |
-सुवर्णबिन्दुरक्षोभ्य इति कवचाय हुम् ।
-Suvarnabindurakshobhya Iti Kavachaya Hum |
-निमिषोऽनिमिषः स्रग्वीति नेत्रत्रयाय वौषट् ।
-Nimishonimishah Sragviti Netratrayaya Vaushat |
-रथाङ्गपाणिरक्षोभ्य इत्यस्त्राय फट् ।
-Rathangapanirakshobhya Ityastraya Phat |
-इति षडङ्गन्यासः ॥
-Iti Shadanganyasah ||
-श्रीकृष्णप्रीत्यर्थे विष्णोर्दिव्यसहस्रनामजपमहं करिष्ये इति सङ्कल्पः ।
-Shrikrushnaprityarthe Vishnordivyasahasranamajapamaham Karishye Iti Sankalpah |
+श्रीमहाविष्णुप्रीत्यर्थे श्रीसहस्रनामपारायणे विनियोगः ॥
+Shrimahavishnuprityarthe Shrisahasranamaparayane Viniyogah ||
 
 [note: अथ ध्यानम् | Dhyanam]
 
@@ -272,9 +213,13 @@ Antahstham Yasya Vishvam Suranarakhagagobhogigandharvadaityaih
 चित्रं रंरम्यते तं त्रिभुवनवपुषं विष्णुमीशं नमामि ॥ २ ॥
 Chitram Ramramyate Tam Tribhuvanavapusham Vishnumisham Namami || 2 ||
 
+[once]
+ॐ नमो भगवते वासुदेवाय ।
+Om Namo Bhagavate Vasudevaya |
+
 [25]
-ॐ शान्ताकारं भुजगशयनं पद्मनाभं सुरेशं
-Om Shantakaram Bhujagashayanam Padmanabham Suresham
+शान्ताकारं भुजगशयनं पद्मनाभं सुरेशं
+Shantakaram Bhujagashayanam Padmanabham Suresham
 विश्वाधारं गगनसदृशं मेघवर्णं शुभाङ्गम् ।
 Vishvadharam Gaganasadrusham Meghavarnam Shubhangam |
 लक्ष्मीकान्तं कमलनयनं योगिभिर्ध्यानगम्यं
@@ -320,13 +265,9 @@ Rukminisatyabhamabhyam Sahitam Krushnamashraye || 7 ||
 
 [note: स्तोत्रम् | Stotram]
 
-[once]
-॥ हरिः ॐ ॥
-|| Harih Om ||
-
 [para 30]
-विश्वं विष्णुर्वषट्कारो भूतभव्यभवत्प्रभुः ।
-Vishvam Vishnurvashatkaro Bhutabhavyabhavatprabhuh |
+ॐ विश्वं विष्णुर्वषट्कारो भूतभव्यभवत्प्रभुः ।
+Om Vishvam Vishnurvashatkaro Bhutabhavyabhavatprabhuh |
 भूतकृद्भूतभृद्भावो भूतात्मा भूतभावनः ॥ १ ॥
 Bhutakrudbhutabhrudbhavo Bhutatma Bhutabhavanah || 1 ||
 
@@ -1209,7 +1150,11 @@ Kayena Vacha Manasendriyairva Buddhyatmana Va Prakrutisvabhavat |
 Karomi Yadyatsakalam Parasmai Narayanayeti Samarpayami || 33 ||
 
 [once]
-इति श्रीविष्णोर्दिव्यसहस्रनामस्तोत्रं सम्पूर्णम् ॥
-Iti Shrivishnordivyasahasranamastotram Sampurnam ||
-॥ ॐ तत्सत् ॥
-|| Om Tatsat ||
+ॐ शान्तिः शान्तिः शान्तिः ॥
+Om Shantih Shantih Shantih ||
+विसर्गबिन्दुमात्राणि पदपादाक्षराणि च ।
+Visargabindumatrani Padapadaksharani Cha |
+न्यूनातिरिक्तं यत्किञ्चित् क्षमस्व पुरुषोत्तम ॥
+Nyunatiriktam Yatkinchit Kshamasva Purushottama ||
+हरिः ॐ ॥
+Harih Om ||
