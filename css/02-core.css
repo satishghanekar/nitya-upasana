@@ -393,10 +393,11 @@ ol.toc .m {
     max-width: 46rem;
   }
 }
-/* ==== Large tablets held upright (the 13-inch iPad, 1032px): 46rem left 300px empty, so 60rem, a long line's measure
-   at their large text (Satish 2026-11-13) ==== */
-@media (min-width: 1024px) and (orientation: portrait) {
-  .wrap {
+/* ==== Large tablets, upright (the 13-inch iPad, 1032px) or held sideways, and any wide screen without Home beside the
+   text (data-rail): 46rem left a third of the screen empty and drew a Vedic chant small (its lines fitted to the column),
+   so 60rem, a long line's measure at a tablet's large text (Satish 2026-11-13, 2026-11-14) ==== */
+@media (min-width: 1024px) {
+  :root:not([data-rail="1"]):not([data-cols="2"]) .wrap {
     max-width: 60rem;
   }
 }

@@ -121,9 +121,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(30px + env(safe-area-inset-top, 0px));
-  padding: env(safe-area-inset-top, 0px) 16px 0;
-  background: var(--bar);
+  /* where the screen has a top inset (the Home Screen app), the name sits a little lower, below the band iPadOS 26 and
+     iOS 26 blur and dim at the very top of the screen (Satish 2026-11-14: the name read washed out there), on a solid
+     ground so nothing shows through it */
+  height: calc(30px + env(safe-area-inset-top, 0px) + min(env(safe-area-inset-top, 0px), 14px));
+  padding: calc(env(safe-area-inset-top, 0px) + min(env(safe-area-inset-top, 0px), 14px)) 16px 0;
+  background: var(--bg);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--rule);

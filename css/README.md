@@ -43,7 +43,7 @@ Each file starts with a comment that lists its sections. Every section begins wi
 - **Other switches on `<html>`:**
   - `data-ref`: the dhrupad, `1` = once, `0` = after every stanza.
   - `data-cols`: `1` or `2` columns.
-  - `data-rail`: the wide layout (1024px and wider, on a screen wider than it is tall): Home's column on the left, the page beside it.
+  - `data-rail`: the wide layout (1024px and wider, on a screen wider than it is tall, and not a touch tablet: an iPad held sideways reads as it does upright, `js/features/bars.js`): Home's column on the left, the page beside it.
   - `data-cols`: `2` when the stanzas are in two columns: by themselves from 1600px (`js/features/bars.js`), or the reader's choice from 900px.
   - `data-print`: `one` or `side`, only while printing; then `data-font` and `data-ref` take the printout's font and dhrupad (Modern, Traditional or Bold, as in Settings).
   - `data-land`: the printout is on sideways pages, only while printing (and in the pop-up's preview): set a little tighter.
@@ -72,9 +72,10 @@ These are the only screen sizes the styles switch at. A test (`tests/edge.spec.m
 | `(min-width: 760px) and (min-height: 521px)`, `(max-width: 759.98px)` | The print builder: below, What and How one step at a time (Next and back); from 760px (iPads upright too) side by side, the list scrolling on its own; Settings: below, the tabs, the Reading tab tightened to fit one iPhone screen; from 760px (iPads upright and sideways, desktops) no tabs: the title beside Back and every group at once, in two columns (`.sp-c1`: the preview and the reading choices; `.sp-c2`: screen, profiles, about). A phone held sideways (at most 520px high) keeps the tabs (the 521px height) |
 | `(max-width: 819px)` | Phones and small tablets: English names in the Vedic calendar's days a step smaller |
 | `(min-width: 820px)` | Tablets and up: wider spacing; the Vedic calendar shows the day card beside the month |
-| `(min-width: 1024px) and (orientation: portrait)` | Large tablets held upright (the 13-inch iPad) and monitors turned upright: the tablet layout, with the text and Home 60rem wide |
+| `(min-width: 1024px)` | Without the wide layout (`:not([data-rail])`): large tablets upright (the 13-inch iPad), any iPad held sideways, monitors turned upright: the text and Home 60rem wide |
+| `(min-width: 600px) and (min-height: 521px) and (orientation: landscape)` | An iPad held sideways (no wide layout): Home one larger column, as upright (a phone on its side, under 521px high, keeps its own two columns) |
 | `(min-width: 600px) and (orientation: portrait)` | Tablets held upright, of every size: Home with the picture large on top, the calendar's month above the day card, the Library in two columns |
-| `(min-width: 1024px) and (orientation: landscape)` | iPads held sideways and desktops (not a 13-inch iPad held upright, which is 1032px wide): Home's column on the left (on Home, and fixed beside the text being read) and the page beside it across the whole width; the calendar, Settings (across the width, a tab's groups in two columns) and Library open beside it; the routine builder's Add texts picker sits beside its list |
+| `(min-width: 1024px) and (orientation: landscape)` | Computers, with the wide layout on (`data-rail`; not an iPad, upright or sideways): Home's column on the left (on Home, and fixed beside the text being read) and the page beside it across the whole width; the calendar, Settings (across the width, a tab's groups in two columns) and Library open beside it; the routine builder's Add texts picker sits beside its list |
 | `(min-width: 1400px)` | Desktops: a wider left column and 32px edges; the layout stops growing at 2200px, centred |
 | `(min-width: 2200px)`, `(min-width: 3000px)` | Large monitors (2K at 100%, 4K at low scaling): the left column, the bars and the pages beside it drawn 1.25× / 1.6× larger (`zoom`) |
 | `(orientation: landscape) and (max-height: 520px)` | Phones held sideways: tighter line spacing and headers; Home in two columns (the day left, the session right); Settings keeps the phone's tabs, with Reading's preview on the left beside its choices |
