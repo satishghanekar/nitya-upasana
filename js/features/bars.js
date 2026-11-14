@@ -28,7 +28,7 @@ var tkStrip;
 /** @type {MediaQueryList} */
 var MQ900;
 /** @type {MediaQueryList} */
-var MQ1000;
+var MQ1600;
 /** @type {MediaQueryList} */
 var MQ1024;
 /** @type {number} the frame apply() finishes in */
@@ -100,8 +100,10 @@ export function init() {
   setLead("mr");
   // Apply every setting in P to the page
   MQ900 = matchMedia("(min-width: 900px)");
-  MQ1000 = matchMedia("(min-width: 1000px)");
-  MQ1024 = matchMedia("(min-width: 1024px)");
+  // two columns by themselves only where every line fits in its half (css/README.md, data-cols)
+  MQ1600 = matchMedia("(min-width: 1600px)");
+  // (not on an upright 13-inch iPad, 1032px: css/README.md, data-rail)
+  MQ1024 = matchMedia("(min-width: 1024px) and (orientation: landscape)");
   // The parts of apply() that read where things are on screen (the current piece for the top bar title,
   // and the menus) wait for the next frame, when the browser lays the page out
   // anyway; reading them straight away cost one extra full-page layout per change.
@@ -302,7 +304,7 @@ export function apply() {
   root.setAttribute("data-hc", String(P.hc));
   // (media queries answer without laying the page out; innerWidth would, right after the changes above)
   var wide = MQ900.matches,
-    two = wide && (P.cols === 2 || (P.cols !== 1 && MQ1000.matches));
+    two = wide && (P.cols === 2 || (P.cols !== 1 && MQ1600.matches));
   root.setAttribute("data-cols", two ? "2" : "1");
   if (MQ1024.matches) root.setAttribute("data-rail", "1");
   else root.removeAttribute("data-rail");

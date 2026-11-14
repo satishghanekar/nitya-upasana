@@ -59,25 +59,69 @@ for (const s of SCREENS)
     });
   }
 
-// Upright iPads are 744 (mini), 810 (gen 7 to 9) and 820 to 834px wide: the text column takes the tablet width on all of
-// them, not a phone's column with a third of the screen empty beside it (Satish 2026-11-13)
-for (const s of [
-  { name: "an iPad mini", width: 744, height: 1133 },
-  { name: "an iPad", width: 810, height: 1080 },
-  { name: "an iPad Air", width: 820, height: 1180 },
-])
-  test(`${s.name} upright: the text column takes the tablet width`, async ({ browser, browserName }) => {
+// The page uses the room it has, on today's screens (Satish 2026-11-13: an upright iPad kept a phone's column, an iPad held
+// sideways broke its lines in two columns, a 13-inch iPad read a narrow column beside Home). The tests above check that
+// nothing overflows; this one fails when a breakpoint misses a device and leaves the room unused. The text's column, on
+// Home and in an aarti: the screen less its edges, or its own cap (46rem; 60rem on a large tablet held upright); beside
+// Home or the list, at least 58% of the screen; and in two columns no stanza line broken in two.
+const ROOM = [
+  ["Galaxy S25", 360, 780],
+  ["iPhone 17", 402, 874],
+  ["iPhone 17 Pro Max", 440, 956],
+  ["iPhone 17 sideways", 874, 402],
+  ["iPad mini", 744, 1133],
+  ["iPad", 810, 1080],
+  ["iPad Air", 820, 1180],
+  ["iPad Pro 11", 834, 1210],
+  ["iPad 13", 1032, 1376],
+  ["Galaxy Fold, open", 884, 1104],
+  ["iPad mini sideways", 1133, 744],
+  ["iPad Air sideways", 1180, 820],
+  ["iPad 13 sideways", 1376, 1032],
+  ["half a Mac's screen", 960, 1000],
+  ["laptop", 1280, 720],
+  ["laptop 1366", 1366, 768],
+  ["MacBook Air", 1440, 900],
+  ["MacBook Pro 16", 1728, 1080],
+  ["1080p monitor", 1920, 1080],
+];
+for (const [name, width, height] of ROOM)
+  test(`${name} (${width} × ${height}): the text's column uses the room it has`, async ({ browser, browserName }) => {
     const context = await browser.newContext({
-      viewport: { width: s.width, height: s.height },
-      ...(browserName !== "firefox" ? { isMobile: true, hasTouch: true } : {}),
+      viewport: { width, height },
+      ...(browserName !== "firefox" ? { isMobile: width < 1440, hasTouch: width < 1440 } : {}),
       serviceWorkers: "block",
     });
     const page = await context.newPage();
     await openSite(page, SETUPS.marathi);
-    await readText(page, "a1");
-    const width = await page.locator("main.wrap").evaluate((e) => e.getBoundingClientRect().width);
-    // no more than the page's own edge (24px on a tablet) empty on each side, until the column reaches 46rem
-    expect((s.width - width) / 2, "empty on each side").toBeLessThanOrEqual(Math.max(24, (s.width - 46 * 16) / 2) + 1);
+    const room = (where) =>
+      page.evaluate((where) => {
+        const vw = innerWidth;
+        const root = document.documentElement;
+        const col = document.querySelector(where === "home" && !root.hasAttribute("data-rail") ? "#home" : "main.wrap");
+        const w = col.getBoundingClientRect().width;
+        const rem = parseFloat(getComputedStyle(root).fontSize) || 16;
+        const cap = (vw >= 1024 && innerHeight > vw ? 60 : vw >= 600 ? 46 : 34) * rem;
+        const lines = [...document.querySelectorAll(".ash:not([hidden]) .verse p")].filter((p) => {
+          const r = p.getBoundingClientRect();
+          return r.height && r.bottom > 0 && r.top < innerHeight;
+        });
+        const broken = lines.filter((p) => p.getBoundingClientRect().height > parseFloat(getComputedStyle(p).lineHeight) * 1.5).length;
+        return { vw, w, cap, rail: root.hasAttribute("data-rail"), cols: root.getAttribute("data-cols"), broken, lines: lines.length };
+      }, where);
+    const check = (m, where) => {
+      if (m.rail) expect(m.w, `${where}: the text beside Home or the list`).toBeGreaterThanOrEqual(m.vw * 0.58);
+      else expect(m.w, `${where}: the column`).toBeGreaterThanOrEqual(Math.min(m.cap, m.vw - 50) - 1);
+    };
+    check(await room("home"), "Home");
+    await page.locator("#hm, #asq").first().click();
+    await page.locator("#jl a[data-go]", { hasText: "देवीची आरती" }).first().click();
+    await page.waitForTimeout(400);
+    const text = await room("text");
+    check(text, "a text");
+    expect(text.lines, "stanza lines on screen").toBeGreaterThan(3);
+    // (the zoom on monitors from 2200px makes lines measure taller than they are; none is in this list)
+    if (text.cols === "2") expect(text.broken, "stanza lines broken in two columns").toBe(0);
     await context.close();
   });
 

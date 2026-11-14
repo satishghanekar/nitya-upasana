@@ -165,7 +165,7 @@
 /* With the left column (iPad landscape, desktop) the layout uses the whole width: 24px
    from the edges on iPads (the left column 340px), 32px on desktops (420px), and from 1920px it stops growing at 2200px,
    centred, so lines never get too long; Home's column on the left (css/10-today.css), the page beside it */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   [data-rail="1"] {
     --T: calc(var(--vw, 100vw) - 48px);
     --S: 380px;
@@ -179,7 +179,7 @@
     --S: 460px;
   }
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   [data-rail="1"] .wrap {
     max-width: var(--W);
     margin-left: calc(var(--L) + var(--S));

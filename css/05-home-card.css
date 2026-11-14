@@ -39,7 +39,7 @@
   --sheet-sh: none;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   [data-rail="1"] #home {
     margin-top: 16px;
     padding-bottom: 0;

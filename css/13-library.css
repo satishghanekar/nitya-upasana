@@ -372,7 +372,7 @@
   max-width: 34rem;
   margin: 0 auto;
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   :root[data-rail="1"] #jump .libhd {
     order: -2;
   }
@@ -480,7 +480,7 @@
 }
 
 /* ==== Tablets held upright: the categories in two columns ==== */
-@media screen and (min-width: 600px) and (max-width: 1023px) and (orientation: portrait) {
+@media screen and (min-width: 600px) and (orientation: portrait) {
   #jump {
     --lw: 46rem;
   }

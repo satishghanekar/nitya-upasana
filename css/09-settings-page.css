@@ -600,7 +600,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   #tmb {
     display: inline-flex;
     align-items: center;

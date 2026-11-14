@@ -40,7 +40,7 @@
 [data-menu] #asc {
   display: none;
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   :root[data-rail="1"][data-menu="jump"]:not([data-home="1"]) #asc,
   :root[data-rail="1"][data-menu="cal"]:not([data-home="1"]) #asc {
     display: block;
@@ -65,7 +65,7 @@
   max-width: 34rem;
   margin: 0 auto;
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   [data-rail="1"] #asc {
     padding-left: calc(var(--L) + var(--S));
     padding-right: max(16px, var(--L));
@@ -271,7 +271,7 @@
     padding-inline: 14px;
   }
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   [data-rail="1"] #home,
   [data-rail="1"] .ash header,
   [data-rail="1"] .rftop {
@@ -836,7 +836,7 @@ html[data-asb="1"] {
   --k: 0.35;
 }
 /* (with Home's column beside the text, over the text's side, centred on the bottom bar as it is: #asc above) */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1024px) and (orientation: landscape) {
   [data-rail="1"] #lsn {
     left: calc(var(--L) + var(--S));
     right: max(16px, var(--L));
