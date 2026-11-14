@@ -89,7 +89,7 @@
  "tests/print-view.spec.mjs": 0,
  "tests/print.spec.mjs": 1330,
  "tests/serve.mjs": 0,
- "tests/site-files.spec.mjs": 83,
+ "tests/site-files.spec.mjs": 85,
  "tests/smoke.spec.mjs": 0,
  "tests/stylelint.config.mjs": 0,
  "tests/text-size.spec.mjs": 0,
