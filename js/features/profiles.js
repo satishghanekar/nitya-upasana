@@ -20,6 +20,7 @@ import { profileChanged } from "./today-card.js";
 import { trSet } from "../text/iast.js";
 import { refit } from "../text/autofit.js";
 import { buildIX } from "./search.js";
+import { useVersions } from "./versions.js";
 import { active, add, list, onChange, remove, switchTo, update } from "../store/store.js";
 import { canAdd, canDelete, COLOURS, initialsOf } from "../store/profiles.js";
 import { esc, nameLang, ui } from "../core/words.js";
@@ -300,6 +301,8 @@ export function applyPrefs(next) {
     w.SCR.set(P.ind);
   }
   if (P.tr !== old.tr || P.ind !== old.ind) buildIX();
+  // (the other person may read another version of a text sung in more than one way)
+  useVersions();
   if (P.hl !== old.hl) {
     [].forEach.call(document.querySelectorAll(".hl, .hli"), function (/** @type {HTMLElement} */ x) {
       x.classList.remove("hl", "hli");

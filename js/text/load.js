@@ -118,6 +118,9 @@ export function load(words) {
     lib.categories.forEach(function (c) {
       ids = ids.concat(c.texts);
     });
+    // and the other versions of a text sung in more than one way (js/features/versions.js)
+    var vs = lib.versions || {};
+    for (var v in vs) ids = ids.concat(vs[v]);
     return Promise.all(
       ids.map(function (/** @type {string} */ id) {
         return get("content/texts/" + id + ".txt").then(function (r) {

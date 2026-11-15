@@ -30,7 +30,9 @@ var SCRIPTS = LANGUAGES.filter(function (l) {
  * @typedef {import("./format.js").Pair} Pair
  * @typedef {{ id: string, name: Pair, texts: string[] }} LibraryCategory   a category of content/library.json, its texts
  *   in reading order
- * @typedef {{ categories: LibraryCategory[] }} Library   content/library.json
+ * @typedef {{ categories: LibraryCategory[], versions?: Record<string, string[]> }} Library   content/library.json; versions:
+ *   a text sung in more than one way, by its id, and the other versions' files (Satish, 2026-11-15: the Hanuman Chalisa as
+ *   Tulsidas wrote it and as it is commonly sung)
  * @typedef {{ pages: import("../core/wiki.js").Pages }} Wiki   which page a link opens: content/wiki.json's pages
  * @typedef {{ name: Pair, time?: Pair, wiki?: string }} Credit   a person or a source in content/credits.json
  * @typedef {{ people: Record<string, Credit>, sources: Record<string, Credit> }} Credits   content/credits.json
@@ -44,11 +46,15 @@ var SCRIPTS = LANGUAGES.filter(function (l) {
  *   rmk: a small line between blocks: the dhrupad's marker (↻ ध्रुपद), or, with nt, a [note] from the text file (Phalashruti,
  *   ↻ ३ वेळा), which is part of the text and always shown, whatever the dhrupad setting
  * @typedef {{ id: string, text: string, lang?: string, cls?: string, prose?: true, no: Pair, title: Pair, tag: Pair,
- *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string, partName?: Pair }} Piece
- *   lead: what comes before the dhrupad at the top (refrain), [once] lines and [note]s, shown above it
- * @typedef {{ pageLanguage: string, ui: { prev: Pair, next: Pair }, text: Record<string, any>, wiki: Wiki | null,
+ *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string, partName?: Pair, ver?: string }} Piece
+ *   lead: what comes before the dhrupad at the top (refrain), [once] lines and [note]s, shown above it; ver: in a text
+ *   with versions, the file this one is from (its id is the text's, so the Library, sessions and Follow never see a
+ *   difference)
+ * @typedef {{ ver: string, name: Pair, piece: Piece }} Version   one way of singing a text: its file, what the switch
+ *   calls it, and its piece
+ * @typedef {{ pageLanguage: string, ui: { prev: Pair, next: Pair, version: Pair }, text: Record<string, any>, wiki: Wiki | null,
  *   timing: any, texts: Record<string, TextFacts>, categories: { id: string, name: Pair,
- *   pieces: Piece[] }[] }} Content
+ *   pieces: Piece[] }[], versions: Record<string, Version[]> }} Content
  */
 
 const DIGITS = "०१२३४५६७८९";
@@ -343,6 +349,27 @@ export function buildContent(lib, files, more) {
   var ctx = { wiki: m.wiki ? { pages: m.wiki.pages } : null, credits: m.credits || null, words: words };
   /** @type {Record<string, TextFacts>} */
   var facts = {};
+  /** @type {Record<string, Version[]>} */
+  var versions = {};
+  /** a version's entry; each needs a name for the switch @param {import("./format.js").Text} t @param {Piece} p @param {string} file */
+  function version(t, p, file) {
+    if (!t.versionName) throw new Error(file + ": a text with versions needs a version-name");
+    var n = t.versionName.split(" | ");
+    p.ver = t.id;
+    return { ver: t.id, name: { mr: n[0], en: n[1] }, piece: p };
+  }
+  /** another version of the text p: its piece stands in p's place (p's id, number and text id) @param {Piece} p */
+  function other(p) {
+    return function (/** @type {string} */ id) {
+      var file = "texts/" + id + ".txt";
+      if (typeof files[id] !== "string") throw new Error(file + ": not loaded");
+      var t = parseText(files[id], file);
+      if (t.id !== id) throw new Error(file + ': its id is "' + t.id + '", library.json says "' + id + '"');
+      var q = toPiece(t, 0, ctx);
+      Object.assign(q, { id: p.id, text: p.text, no: p.no });
+      return version(t, q, file);
+    };
+  }
   var categories = lib.categories.map(function (c) {
     return {
       id: c.id,
@@ -355,10 +382,13 @@ export function buildContent(lib, files, more) {
         if (t.id !== id) throw new Error(file + ': its id is "' + t.id + '", library.json says "' + id + '"');
         // what a text is, from its own file; where it stands, from the library
         facts[id] = { id: id, title: t.title, titleEn: t.titleEn, language: t.language, category: c.id, lines: t.lines || 0, letters: t.letters || 0 };
-        return toPiece(t, i + 1, ctx);
+        var p = toPiece(t, i + 1, ctx);
+        if (lib.versions && lib.versions[id]) versions[id] = [version(t, p, file)].concat(lib.versions[id].map(other(p)));
+        return p;
       }),
     };
   });
+  for (var v in lib.versions || {}) if (!versions[v]) throw new Error("library.json: versions of " + v + ", which no category lists");
   /** the site's words in a side's language @param {string} l */
   var W = function (l) {
     return words ? words("text", l) : {};
@@ -372,7 +402,12 @@ export function buildContent(lib, files, more) {
     // the language the page is in (index.html's <html lang>): a piece in another carries its own (Piece "lang")
     pageLanguage: PAGE_LANGUAGE,
     // Previous / Next under a text (js/render.js), in its languages
-    ui: { prev: { mr: W("mr").prev, en: W("en").prev }, next: { mr: W("mr").next, en: W("en").next } },
+    // and the label of the switch between a text's versions
+    ui: {
+      prev: { mr: W("mr").prev, en: W("en").prev },
+      next: { mr: W("mr").next, en: W("en").next },
+      version: { mr: W("mr").version, en: W("en").version },
+    },
     text: text,
     // which Wikipedia page a link opens (js/core/wiki.js): the credits' links are written with theirs, and
     // js/render.js and the Vedic calendar's festivals and holidays choose from these
@@ -383,5 +418,8 @@ export function buildContent(lib, files, more) {
     texts: facts,
     // every category, those with no texts yet too (the family can move texts into them, js/features/library.js)
     categories: categories,
+    // a text sung in more than one way: each version, the text's own first (js/features/versions.js puts the one a
+    // person chose in its place)
+    versions: versions,
   };
 }

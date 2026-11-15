@@ -45,6 +45,7 @@ export const PROFILE_KEYS = [
   "upf",
   "pace",
   "paceLog",
+  "ver",
 ];
 // what stays with the device, whoever is reading
 export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "plang", "ppr", "fold"];
@@ -90,6 +91,7 @@ export function defaults(env) {
     upf: 0, // Home's Coming up: 0 as the screen suits (open on a tablet held upright, folded everywhere else), 1 folded, 2 open
     pace: "", // chanting pace for how long a text takes: "" learned from Follow (a range until then) | quick | steady | slow
     paceLog: {}, // what Follow has heard this person chant: { s: seconds, n: letters } (js/core/timing.js)
+    ver: {}, // the version of a text sung in more than one way this person reads: text id → its file's id (js/features/versions.js)
   };
 }
 
@@ -187,6 +189,10 @@ export function tidy(P) {
   var pl = P.paceLog;
   P.paceLog =
     pl && typeof pl.s === "number" && typeof pl.n === "number" && pl.s > 0 && pl.n > 0 && isFinite(pl.s) && isFinite(pl.n) ? { s: pl.s, n: pl.n } : {};
+  // (each version chosen: a text's id and a file's, both as content/texts/ names them; a version no longer there shows the text's own)
+  var vs = P.ver;
+  P.ver = {};
+  for (var vt in vs) if (/^[a-z0-9-]{1,80}$/.test(vt) && typeof vs[vt] === "string" && /^[a-z0-9-]{1,80}$/.test(vs[vt])) P.ver[vt] = vs[vt];
   // Keep screen on was a switch (1 on) before it took minutes (Satish, 2026-10-30): on is 30 minutes
   if ([0, 15, 30, 45, 60].indexOf(P.wake) < 0) P.wake = P.wake ? 30 : 0;
   // a menu language's code (its file in js/strings/); one without words shows English (js/core/words.js ui())

@@ -343,6 +343,15 @@ describe("the holidays in Home's Coming up (P.hol)", () => {
     for (const bad of [{ s: -1, n: 10 }, { s: 10 }, { s: "10", n: 5 }, { s: Infinity, n: 5 }, []]) expect(p({ paceLog: bad }).paceLog).toEqual({});
     expect(PROFILE_KEYS).toEqual(expect.arrayContaining(["pace", "paceLog"]));
   });
+  test("the version of a text each person reads (2026-11-15): text id → file id, anything else dropped", () => {
+    const p = (o) => migratePrefs({ sv: 6, ...o }, PHONE).prefs;
+    expect(p({}).ver).toEqual({});
+    const mine = { "stotra-hanuman-chalisa": "stotra-hanuman-chalisa-popular" };
+    expect(p({ ver: mine }).ver).toEqual(mine);
+    expect(p({ ver: { ...mine, "Bad Id": "x", "stotra-x": 3, "stotra-y": "<b>" } }).ver).toEqual(mine);
+    for (const bad of ["popular", [], null]) expect(p({ ver: bad }).ver).toEqual({});
+    expect(PROFILE_KEYS).toContain("ver");
+  });
 });
 
 describe("a person's settings and the device's", () => {

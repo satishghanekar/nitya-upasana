@@ -14,8 +14,10 @@ export const LIBRARY = JSON.parse(read("library.json"));
 export const TIMING = existsSync(new URL("../content/timing.json", import.meta.url)) ? JSON.parse(read("timing.json")) : null;
 /** every text's id, in reading order */
 export const IDS = LIBRARY.categories.flatMap((c) => c.texts);
-/** each text's file, by id */
-export const FILES = Object.fromEntries(IDS.map((id) => [id, read("texts/" + id + ".txt")]));
+/** the other versions of a text sung in more than one way (library.json "versions"), each a file of its own */
+export const VERSION_IDS = Object.values(LIBRARY.versions || {}).flat();
+/** each text's file, by id, the other versions' too */
+export const FILES = Object.fromEntries(IDS.concat(VERSION_IDS).map((id) => [id, read("texts/" + id + ".txt")]));
 /** content/wiki.json: each page a link names, and its title on each Wikipedia */
 export const WIKI = JSON.parse(read("wiki.json"));
 /** content/credits.json: who and what the texts come from */

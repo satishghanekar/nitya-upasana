@@ -30,6 +30,7 @@ import { nameFirst, openStore } from "./store/store.js";
 import { menuWords } from "./core/strings.js";
 import { init as startPage } from "./core/page.js";
 import { init as startState } from "./core/state.js";
+import { init as startVersions } from "./features/versions.js";
 import { init as startFeatures } from "./core/features.js";
 import { init as startDayPicture } from "./features/day-picture.js";
 import { init as startLibrary } from "./features/library.js";
@@ -92,6 +93,7 @@ function start() {
       return menuWords("profiles", code).me;
     });
     run(startState); // Settings (P), loaded from this device
+    run(startVersions); // A text sung in more than one way: the version the reader chose, in its place (before any text is built)
     run(startRoutineTime); // How long a text or a session takes, at the reader's chanting pace (Settings → Chanting pace)
     run(startFeatures); // Features held back for a later release
     run(startDayPicture); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed

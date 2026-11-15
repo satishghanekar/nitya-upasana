@@ -143,6 +143,10 @@ var seenAt = 0,
 var touched = 0;
 
 export function init() {
+  // another version of a text (js/features/versions.js): its letters are the ones followed from now on
+  document.addEventListener("nitya-version", function () {
+    docs = null;
+  });
   btn = /** @type {HTMLButtonElement} */ (document.getElementById("lsb"));
   bar = /** @type {HTMLElement} */ (document.getElementById("lsn"));
   msg = /** @type {HTMLElement} */ (document.getElementById("lsnm"));

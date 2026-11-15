@@ -31,7 +31,7 @@
  *   id: string, title: string, titleEn: string, language: string, lines?: number, letters?: number,
  *   legacyId?: string, lineIds?: string, lineIdExceptions?: Record<string, string>,
  *   refrain: "every-verse" | "always" | "none", refrainFirst?: boolean, layout?: "prose" | "lines", stanzaNumbers?: "as-written", partName?: string,
- *   credit?: TextCredit, recording?: string,
+ *   credit?: TextCredit, versionName?: string, recording?: string,
  *   blocks: Block[]
  * }} Text
  */
@@ -53,6 +53,9 @@ const FIELDS = [
   ["part-name", "partName", false],
   // who or what it comes from (CREDIT below): "author samarth-ramdas", "source rigveda | मण्डल ९ | Mandala 9"
   ["credit", "credit", false],
+  // a text sung in more than one way (content/library.json "versions"): what this one is called on the switch between
+  // them, "name | English name", like "तुलसीदास | Tulsidas" and "प्रचलित | Popular"
+  ["version-name", "versionName", false],
   ["recording", "recording", false],
   // written by npm run texts (tests/tools/texts.mjs), never by hand: the line pairs in the file, and the letters said
   // as it is chanted (js/core/timing.js chantedLetters), which a text's time is counted from; the unit tests check both
@@ -134,6 +137,7 @@ export function parseText(raw, name) {
     if (key === "layout" && val !== "prose" && val !== "lines") fail(at, 'layout can only be "prose" or "lines"');
     if (key === "stanza-numbers" && val !== "as-written") fail(at, 'stanza-numbers can only be "as-written"');
     // what the text's parts are called, in both languages, for Go to (js/text/outline.js): "अनुवाकः | Anuvaka"
+    if (key === "version-name" && !/^[^|]*[^|\s] \| \S[^|]*$/.test(val)) fail(at, 'version-name is "name | English name", like "प्रचलित | Popular"');
     if (key === "part-name" && !/^[^|]*[^|\s] \| \S[^|]*$/.test(val)) fail(at, 'part-name is "name | English name", like "अनुवाकः | Anuvaka"');
     if (
       key === "recording" &&
