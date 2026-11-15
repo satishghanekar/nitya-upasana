@@ -767,6 +767,8 @@
 /* ==== How long each text takes (js/features/routine-time.js): under its language tag, small and muted, at the right
    of the row; the session's time is in #tsn beside the count, and under each tab's name (.tshn) ==== */
 .tside {
+  /* (relative: its words for screen readers, .sr, stay in the row) */
+  position: relative;
   flex: none;
   display: flex;
   flex-direction: column;
@@ -780,4 +782,7 @@
 }
 #tsc[lang="mr"] .ttm {
   font-family: var(--body);
+}
+#tss .tshn {
+  position: relative;
 }

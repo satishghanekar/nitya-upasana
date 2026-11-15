@@ -774,6 +774,7 @@
   display: none;
 }
 #rtl .rtm {
+  position: relative;
   display: block;
   color: var(--muted);
   font: 400 var(--fz-xs)/16px var(--lat);

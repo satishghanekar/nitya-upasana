@@ -360,6 +360,9 @@ html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
   content: none;
 }
 #jl .tocg ol.toc .ltm {
+  /* (relative: the words for screen readers, .sr, absolute, stay in the row; WebKit made the Library as tall as the
+     list from where they would otherwise be placed) */
+  position: relative;
   font: 400 var(--fz-s)/1 var(--lat);
 }
 #jl .tocg ol.toc .ltm [lang="mr"] {
