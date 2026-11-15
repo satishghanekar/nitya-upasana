@@ -78,6 +78,8 @@ describe("the items the site links to", () => {
   });
 });
 
+// (the texts Sankathara Chaturthi has too: the others' tests are skipped there)
+const has = (...ids) => ids.every((id) => IDS.includes(id));
 describe("the credits' links", () => {
   test("a name links to the person: Sukhkarta's to Samarth Ramdas, in Marathi; in Kannada and Telugu letters theirs", () => {
     const c = credit("aarti-sukhkarta");
@@ -91,21 +93,24 @@ describe("the credits' links", () => {
     expect(c.mr[0]["data-gu-label"]).toBe(" — અંગ્રેજી વિકિપીડિયા (નવા ટૅબમાં ખૂલશે)");
     expect(c.en[0]).toMatchObject({ "data-wiki": "Samarth_Ramdas", hreflang: "en", href: "https://en.wikipedia.org/wiki/Samarth_Ramdas" });
   });
-  test("a Hindi text's credit tries Hindi Wikipedia first: the Hanuman Chalisa's Tulsidas", () => {
+  test.skipIf(!has("stotra-hanuman-chalisa"))("a Hindi text's credit tries Hindi Wikipedia first: the Hanuman Chalisa's Tulsidas", () => {
     const c = credit("stotra-hanuman-chalisa");
     expect(c.mr[0]).toMatchObject({ "data-wiki": "Tulsidas", hreflang: "hi" });
     expect(c.mr[0]["aria-label"]).toBe("गोस्वामी तुलसीदास — हिंदी विकिपीडिया (नवीन टॅबमध्ये उघडेल)");
   });
-  test("with no page in the side's own language, the nearest, and what is heard says which", () => {
-    // Shardha Ram Phillauri: English, Hindi and Telugu pages only; his Marathi line tries Hindi first, being a Hindi text
-    expect(credit("aarti-jai-jagdish-hare").mr[0].hreflang).toBe("hi");
-    // the Lalita Sahasranama: no Marathi page, a Hindi one
-    const l = credit("vedic-chant-lalita-sahasranama").mr[0];
-    expect(l.hreflang).toBe("hi");
-    expect(l["aria-label"]).toMatch(/ — हिंदी विकिपीडिया \(नवीन टॅबमध्ये उघडेल\)$/);
-    // Narahari Sonar: no Kannada page, so Kannada letters open the English one
-    expect(credit("aarti-durge-durghat-bhari").mr[0]["data-kn"]).toMatch(/^en /);
-  });
+  test.skipIf(!has("aarti-jai-jagdish-hare", "vedic-chant-lalita-sahasranama", "aarti-durge-durghat-bhari"))(
+    "with no page in the side's own language, the nearest, and what is heard says which",
+    () => {
+      // Shardha Ram Phillauri: English, Hindi and Telugu pages only; his Marathi line tries Hindi first, being a Hindi text
+      expect(credit("aarti-jai-jagdish-hare").mr[0].hreflang).toBe("hi");
+      // the Lalita Sahasranama: no Marathi page, a Hindi one
+      const l = credit("vedic-chant-lalita-sahasranama").mr[0];
+      expect(l.hreflang).toBe("hi");
+      expect(l["aria-label"]).toMatch(/ — हिंदी विकिपीडिया \(नवीन टॅबमध्ये उघडेल\)$/);
+      // Narahari Sonar: no Kannada page, so Kannada letters open the English one
+      expect(credit("aarti-durge-durghat-bhari").mr[0]["data-kn"]).toMatch(/^en /);
+    },
+  );
   test("every link of every credit opens a page on one of the site's Wikipedias", () => {
     for (const id of IDS)
       for (const side of ["mr", "en"])
