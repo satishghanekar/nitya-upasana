@@ -40,6 +40,7 @@ import { followed, onReread } from "../store/store.js";
 import { dv, esc, lead, mrLang, nameLang, scr, scrKey, second, ui as menuLang } from "../core/words.js";
 import { iaTitle } from "../text/iast.js";
 import { menuWords } from "../core/strings.js";
+import { spanFor, spoken, timeHtml } from "./routine-time.js";
 
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
@@ -231,6 +232,7 @@ export function render() {
       return '<span lang="' + code(l) + '">' + esc(menuWords("today", code(l)).sessions[c.session]) + "</span>";
     })
     .join(' <span class="tsdot" aria-hidden="true">·</span> ');
+  // (how long the session takes is under its tab, just above: js/features/routine-time.js)
   /** @type {HTMLElement} */ (document.getElementById("tsn")).textContent = !ids.length ? w.none : w.texts(ids.length);
   var ed = document.getElementById("tsed");
   if (ed) {
@@ -258,8 +260,11 @@ export function render() {
           })
           .join("") +
         "</span>" +
-        '<span class="ttg">' +
+        // its language, and how long it takes (in words for screen readers, after the title)
+        '<span class="tside"><span class="ttg">' +
         esc(nameLang() === "mr" ? scr(langName(t.language, "mr")) : langName(t.language, "en")) +
+        "</span>" +
+        timeHtml(spanFor([id]), false, "ttm") +
         "</span>" +
         "</a></li>"
       );
@@ -283,7 +288,10 @@ export function render() {
     if (n) b.removeAttribute("aria-disabled");
     else b.setAttribute("aria-disabled", "true");
     /** @type {HTMLElement} */ (b.querySelector(".tsw")).textContent = w.sessions[s];
-    /** @type {HTMLElement} */ (b.querySelector(".tshn")).textContent = n ? "" : w.unset;
+    // under its name: how long it takes, or "Nothing set"
+    var hn = /** @type {HTMLElement} */ (b.querySelector(".tshn"));
+    if (n) hn.innerHTML = timeHtml(spanFor(idsFor(c.day, s)));
+    else hn.textContent = w.unset;
   });
   /** @type {HTMLElement} */ (document.getElementById("tsp")).setAttribute("aria-labelledby", "tss-" + c.session);
   setView(pick.session || other ? { session: c.session, day: d.getDay() } : null);
@@ -316,7 +324,7 @@ function announce() {
     ", " +
     w.days[d.getDay()] +
     ": " +
-    (ids.length ? w.texts(ids.length) : w.none);
+    (ids.length ? w.texts(ids.length) + ", " + spoken(spanFor(ids)) : w.none);
 }
 
 /**
@@ -673,6 +681,10 @@ export function init() {
   // the routine changed (the builder) or another person's was restored: draw the list again
   document.addEventListener("nitya-routine", function () {
     runRefresh();
+    render();
+  });
+  // the chanting pace changed (picked, learned or forgotten): the times again (js/features/routine-time.js)
+  document.addEventListener("nitya-pace", function () {
     render();
   });
   // a title opens its text, reading the session from there

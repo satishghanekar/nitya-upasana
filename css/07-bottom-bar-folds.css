@@ -1197,3 +1197,9 @@ html[data-asb="1"] {
 .lsnb button {
   white-space: nowrap;
 }
+/* In a session, how long is left of it (js/features/routine-time.js), after the place, in the menu language: it stays
+   whole, and the headings before the place give way first */
+.wh-left {
+  flex: none;
+  white-space: pre;
+}

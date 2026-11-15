@@ -716,6 +716,13 @@ export default {
     highContrast: "అధిక కాంట్రాస్ట్",
     keepScreenOn: "తెరను ఆన్‌లో ఉంచు",
     afterLastTouch: "చివరి స్పర్శ తర్వాత, నిమిషాలు",
+    chantingPace: "పఠన వేగం",
+    paceHint: "పాఠాలకు, సమయాలకు పట్టే కాలం",
+    paceAuto: "ఆటో",
+    paceQuick: "వేగం",
+    paceSteady: "మధ్యస్థం",
+    paceSlow: "నెమ్మది",
+    paceForget: "నేర్చుకున్న వేగాన్ని మరచిపో",
     off: "ఆఫ్",
     profilesAndBackup: "ప్రొఫైల్‌లు, బ్యాకప్",
     thisBrowserCanTSave: "ఈ బ్రౌజర్ ఇక్కడ సేవ్ చేయలేదు. మూసే ముందు బ్యాకప్ ఫైల్ సేవ్ చేయండి.",
@@ -845,5 +852,52 @@ export default {
     },
     noGeo: "ఈ బ్రౌజర్‌లో స్థానం అందుబాటులో లేదు",
     noPlace: "మీ స్థానం దొరకలేదు",
+  },
+  // How long a text or a session takes to chant (js/features/routine-time.js, js/core/timing.js)
+  time: {
+    /** @param {number} n */
+    min: function (n) {
+      return n + " నిమి.";
+    },
+    /** @param {number} n */
+    about: function (n) {
+      return "సుమారు " + n + " నిమి.";
+    },
+    /** @param {number} a @param {number} b */
+    range: function (a, b) {
+      return a + "–" + b + " నిమి.";
+    },
+    /** @param {number} n */
+    aboutL: function (n) {
+      return "సుమారు " + n + " నిమిషాలు";
+    },
+    /** @param {number} a @param {number} b */
+    rangeL: function (a, b) {
+      return a + " నుండి " + b + " నిమిషాలు";
+    },
+    /** @param {string} s */
+    left: function (s) {
+      return s + " మిగిలి ఉంది";
+    },
+    /** @param {string} s */
+    total: function (s) {
+      return "మొత్తం " + s;
+    },
+    /** @param {string} s */
+    learned: function (s) {
+      return "మీ సొంత వేగం, Follow విని నేర్చుకున్నది (" + s + " విన్నది).";
+    },
+    /** @param {string} s */
+    learning: function (s) {
+      return "Follow మీ పఠనాన్ని ఇంకొంచెం సేపు వినే వరకు సమయం అంచనాగా చూపబడుతుంది (ఇప్పటివరకు " + s + "), లేదా వేగాన్ని ఎంచుకోండి.";
+    },
+    range0: "Follow మీ పఠనాన్ని కొన్ని నిమిషాలు వినే వరకు సమయం అంచనాగా చూపబడుతుంది, లేదా వేగాన్ని ఎంచుకోండి.",
+    chosen: "సమయం ఇక్కడ ఎంచుకున్న వేగంతో లెక్కించబడుతుంది.",
+    forgot: "మరచిపోయింది. సమయం మళ్లీ అంచనాగా చూపబడుతుంది.",
+    week: "ప్రతి రోజు పట్టే సమయం, అన్ని పూటలు",
+    /** @param {string} s */
+    aDay: function (s) {
+      return "రోజుకు " + s;
+    },
   },
 };

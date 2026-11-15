@@ -727,6 +727,13 @@ export default {
     highContrast: "High contrast",
     keepScreenOn: "Keep screen on",
     afterLastTouch: "Minutes after the last touch",
+    chantingPace: "Chanting pace",
+    paceHint: "How long texts and sessions take",
+    paceAuto: "Auto",
+    paceQuick: "Quick",
+    paceSteady: "Steady",
+    paceSlow: "Slow",
+    paceForget: "Forget what was learned",
     off: "Off",
     profilesAndBackup: "Profiles and backup",
     thisBrowserCanTSave: "This browser can't save here. Use Save a backup file before closing.",
@@ -857,5 +864,52 @@ export default {
     },
     noGeo: "Location is not available in this browser",
     noPlace: "Could not get your location",
+  },
+  // How long a text or a session takes to chant (js/features/routine-time.js, js/core/timing.js)
+  time: {
+    /** @param {number} n */
+    min: function (n) {
+      return n + " min";
+    },
+    /** @param {number} n */
+    about: function (n) {
+      return "about " + n + " min";
+    },
+    /** @param {number} a @param {number} b */
+    range: function (a, b) {
+      return a + "–" + b + " min";
+    },
+    /** the same, in words for screen readers @param {number} n */
+    aboutL: function (n) {
+      return "about " + n + (n === 1 ? " minute" : " minutes");
+    },
+    /** @param {number} a @param {number} b */
+    rangeL: function (a, b) {
+      return a + " to " + b + " minutes";
+    },
+    /** @param {string} s  a time, as above */
+    left: function (s) {
+      return s + " left";
+    },
+    /** a day's time, all its sessions @param {string} s */
+    total: function (s) {
+      return "in all " + s;
+    },
+    /** @param {string} s  the minutes heard */
+    learned: function (s) {
+      return "Your own pace, learned from Follow (" + s + " heard).";
+    },
+    /** @param {string} s */
+    learning: function (s) {
+      return "Shown as a range until Follow has heard you chant a little longer (" + s + " so far), or pick a pace.";
+    },
+    range0: "Shown as a range until Follow has heard you chant for a few minutes, or pick a pace.",
+    chosen: "Times follow the pace picked here.",
+    forgot: "Forgotten. Times show as a range again.",
+    week: "Each day's time, all sessions",
+    /** a routine's time a day @param {string} s */
+    aDay: function (s) {
+      return s + " a day";
+    },
   },
 };

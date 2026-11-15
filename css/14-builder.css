@@ -737,3 +737,47 @@
     grid-area: 2 / 4;
   }
 }
+
+/* ==== How long it takes (js/features/routine-time.js): each day's minutes, all its sessions, and a bar as high as its
+   share of the longest day, under the date; what they are under the row (#rtwkh); each text's time under its title ==== */
+#rtwk button .rtdm {
+  min-height: 1.2em;
+  font-size: var(--fz-xs);
+  color: inherit;
+}
+#rtwk button .rtdb {
+  position: relative;
+  width: 10px;
+  height: 22px;
+  margin-top: 2px;
+  border-radius: 3px;
+  background: var(--rule);
+  overflow: hidden;
+}
+#rtwk button .rtdb::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: calc(var(--wk, 0) * 100%);
+  border-radius: 3px;
+  background: var(--accent);
+}
+#rtwk button[aria-checked="true"] .rtdb::after {
+  background: var(--bg);
+}
+#rtwkh {
+  margin: 6px 2px 0;
+  color: var(--muted);
+  font-size: var(--fz-xs);
+}
+#rtwkh[hidden] {
+  display: none;
+}
+#rtl .rtm {
+  display: block;
+  color: var(--muted);
+  font: 400 var(--fz-xs)/16px var(--lat);
+}
+#rtb[lang="mr"] #rtl .rtm {
+  font-family: var(--body);
+}

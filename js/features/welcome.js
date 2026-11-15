@@ -11,6 +11,7 @@
 // is a new one.
 
 import { BASES, baseRoutine, perDay } from "../core/routine.js";
+import { short, weekTime } from "./routine-time.js";
 import { note } from "../core/page.js";
 import { active, base, onChange, routine, setBase, update } from "../store/store.js";
 import { loaded } from "../text/load.js";
@@ -80,7 +81,13 @@ function draw() {
     );
   }).join("");
   var n = perDay(baseRoutine(loaded.routines, b));
-  el("wlci").textContent = /** @type {Record<string, string>} */ (rw.baseInfo)[b] + " · " + rw.perDay(n[0], n[1]);
+  // what it holds, its texts a day, and how long a day takes (js/features/routine-time.js)
+  el("wlci").textContent =
+    /** @type {Record<string, string>} */ (rw.baseInfo)[b] +
+    " · " +
+    rw.perDay(n[0], n[1]) +
+    " · " +
+    menuWords("time").aDay(short(weekTime(baseRoutine(loaded.routines, b))));
 }
 
 /** The menu language changed (apply(), js/features/bars.js): the card's words follow it */

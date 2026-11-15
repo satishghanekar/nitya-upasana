@@ -48,6 +48,7 @@ var SITE_PARTS = (function () {
     "core/hearing",
     "core/align",
     "core/follow",
+    "core/timing",
     "strings/en",
     "strings/mr",
     "strings/kn",
@@ -111,6 +112,7 @@ var SITE_PARTS = (function () {
     "features/backup",
     "features/text-picker",
     "features/routine-builder",
+    "features/routine-time",
     "features/welcome",
     "features/listen",
   ].map(function (f) {

@@ -153,6 +153,8 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 
 **Go to** (the top bar's title in a long text, `js/features/where.js`) is made from these blocks, with nothing more to write: a `[note]` that is not a ↻ is a heading it lists, the `[para]` blocks under a heading are its parts, and the numbered verses, in groups of 25 where there are many, with a box for a verse number. So give a long text its real headings (an adhyaya, नमकम्, स्तोत्रम्) as `[note]`s; a text under 60 lines has no Go to (`content/library.json`, `"outline"`). Every text's outline is kept in `tests/unit/__snapshots__/outlines.txt`, so a change shows in review.
 
+**How long a text takes** (Home, the routine builder, the Library, `js/core/timing.js`) is counted from the file too, with nothing to write: its lines as they are chanted, the dhrupad after every stanza (and before the first with `refrain-before-first`), whatever the reader shows on screen. Edit a text and its time follows. The paces (seconds a letter, a home chant and a slow one), the time between texts and how much Follow must hear before it uses a reader's own pace are `content/library.json`'s `"timing"`, measured from the family's recordings and published ones (shravan-model, 2026-11-15).
+
 **Inside a line:**
 
 - `¦` marks a place where a long line may break on a narrow phone (it shows as nothing). Put it after the space, and after a comma the text has there (the comma stays, as written): `निढळावरी कर, ¦निढळावरी कर`. Give the English line a `¦` at the same place (`Nidhalavari Kar, ¦Nidhalavari Kar`). The printout breaks at the same places.

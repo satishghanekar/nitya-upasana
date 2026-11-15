@@ -333,6 +333,16 @@ describe("the holidays in Home's Coming up (P.hol)", () => {
     expect(migratePrefs({ sv: 6, libSort: "za" }, PHONE).prefs.libSort).toBe("");
     expect(PROFILE_KEYS).toContain("libSort");
   });
+  test("the chanting pace (2026-11-15): Auto unless one is picked; what Follow learned kept only as two positive numbers", () => {
+    const p = (o) => migratePrefs({ sv: 6, ...o }, PHONE).prefs;
+    expect(p({}).pace).toBe("");
+    expect(p({}).paceLog).toEqual({});
+    for (const v of ["quick", "steady", "slow"]) expect(p({ pace: v }).pace).toBe(v);
+    expect(p({ pace: "fast" }).pace).toBe("");
+    expect(p({ paceLog: { s: 160, n: 1500 } }).paceLog).toEqual({ s: 160, n: 1500 });
+    for (const bad of [{ s: -1, n: 10 }, { s: 10 }, { s: "10", n: 5 }, { s: Infinity, n: 5 }, []]) expect(p({ paceLog: bad }).paceLog).toEqual({});
+    expect(PROFILE_KEYS).toEqual(expect.arrayContaining(["pace", "paceLog"]));
+  });
 });
 
 describe("a person's settings and the device's", () => {

@@ -68,6 +68,7 @@ import { init as startOffline } from "./features/offline.js";
 import { init as startProfiles } from "./features/profiles.js";
 import { init as startBackup } from "./features/backup.js";
 import { init as startRoutineBuilder } from "./features/routine-builder.js";
+import { init as startRoutineTime } from "./features/routine-time.js";
 import { init as startWelcome } from "./features/welcome.js";
 import { init as startListen } from "./features/listen.js";
 
@@ -91,6 +92,7 @@ function start() {
       return menuWords("profiles", code).me;
     });
     run(startState); // Settings (P), loaded from this device
+    run(startRoutineTime); // How long a text or a session takes, at the reader's chanting pace (Settings → Chanting pace)
     run(startFeatures); // Features held back for a later release
     run(startDayPicture); // The app's picture follows the time of day (sunrise, midday, sunset), today's weekday star ringed
     run(startLibrary); // The Library's list by category and the categories sheet (add, rename, delete, move a text)

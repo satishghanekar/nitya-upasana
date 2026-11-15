@@ -37,6 +37,7 @@ import { buildIX } from "./search.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { dv, esc, lead, mrLang, scr as to, second, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
+import { spanFor, timeHtml } from "./routine-time.js";
 
 /**
  * @typedef {import("../core/library.js").Category} Category
@@ -64,6 +65,8 @@ var ready = false;
 // the order the list is in ("book", or "az:" and the language it was put A to Z in), so a change of the language shown
 // or of the person reading puts it in theirs (libLang())
 var sortedAs = "";
+// the menu language the times were written in (js/features/routine-time.js), so a change of it writes them again
+var timesIn = "";
 
 /** @type {HTMLElement | null} */
 var sheet = null;
@@ -238,7 +241,12 @@ function listHtml() {
             '</span><span class="en" lang="en">' +
             esc(e.titleEn) +
             "</span></span>" +
-            (lt ? '<span class="lt"><span class="mr">' + esc(to(lt.mr)) + '</span><span class="en" lang="en">' + esc(lt.en) + "</span></span>" : "") +
+            // its language, and how long it takes in the menu language (js/features/routine-time.js)
+            '<span class="lt">' +
+            (lt ? '<span class="mr">' + esc(to(lt.mr)) + '</span><span class="en" lang="en">' + esc(lt.en) + "</span>" : "") +
+            '<span class="ltm">' +
+            timeHtml(spanFor([e.id])) +
+            "</span></span>" +
             "</a></li>"
           );
         })
@@ -296,6 +304,7 @@ function renderList() {
     g.remove();
   });
   at.insertAdjacentHTML("beforebegin", listHtml());
+  timesIn = ui();
   sortedAs = sortKey();
   orderButtons();
 }
@@ -328,6 +337,8 @@ function keep(l) {
 
 /** The menu language changed (apply(), js/features/bars.js): the button's words, and the sheet when open */
 export function libLang() {
+  // (the times are in the menu language: the list again when it changes)
+  if (ready && timesIn !== ui()) renderList();
   var w = words(),
     b = document.getElementById("lbbw");
   if (b && b.textContent !== w.open) {
@@ -579,6 +590,11 @@ export function init() {
   ready = true;
   renderList();
   libLang();
+  // the chanting pace changed (picked, learned or forgotten): the times again
+  document.addEventListener("nitya-pace", function () {
+    renderList();
+    titlesSet();
+  });
   // Book order | A–Z, kept for the person reading (Satish, 2026-11-11)
   var ord = document.getElementById("library-order");
   if (ord)

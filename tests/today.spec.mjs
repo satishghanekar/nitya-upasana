@@ -492,7 +492,8 @@ test("each text and session control has a name and a 44px target @mobile", async
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await expect(page.locator("#tss")).toHaveAttribute("role", "tablist");
   await expect(page.locator("#tss")).toHaveAccessibleName("Session");
-  await expect(tab(page, "morning")).toHaveAccessibleName("Morning");
+  // (its time heard in words, js/features/routine-time.js)
+  await expect(tab(page, "morning")).toHaveAccessibleName(/^Morning \d+ to \d+ minutes$/);
   await expect(tab(page, "afternoon")).toHaveAccessibleName("Afternoon Nothing set");
   await expect(page.locator("#tmb")).toHaveAccessibleName("Share");
   await expect(page.locator("#tdp")).toHaveAccessibleName("Previous day");
@@ -527,7 +528,8 @@ test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ 
   await expect(page.locator("#tdd .d1")).toHaveText("रविवार, १८ ऑक्टोबर");
   await expect(page.locator("#tdd .d2t")).toHaveText("Sunday, 18 October");
   await expect(page.locator("#tss")).toHaveAccessibleName("वेळ");
-  await expect(tab(page, "morning")).toHaveText("सकाळ");
+  await expect(tab(page, "morning").locator(".tsw")).toHaveText("सकाळ");
+  await expect(tab(page, "morning").locator(".tmv")).toHaveText(/^[०-९]+–[०-९]+ मि\.$/);
   await expect(tab(page, "afternoon")).toHaveText("दुपारकाहीच नाही");
   await page.locator("#tmb").click();
   for (const [id, w] of [
@@ -690,7 +692,7 @@ test("the bundled Extended: ‹ › show another day's date, Vedic calendar line
   expect(await page.locator("#pan").innerText()).not.toEqual(line);
   expect(await titles()).toEqual(want(5, "morning"));
   await expect(page.locator("#iconb")).toHaveAttribute("data-day", "5");
-  await expect(page.locator("#tlive")).toHaveText(`Tomorrow, Morning, Friday: ${want(5, "morning").length} texts`);
+  await expect(page.locator("#tlive")).toHaveText(new RegExp(`^Tomorrow, Morning, Friday: ${want(5, "morning").length} texts, \\d+ to \\d+ minutes$`));
   // back two days: yesterday; four more: Sunday, with Shree Rudra
   await page.locator("#tdp").click();
   await page.locator("#tdp").click();

@@ -703,6 +703,13 @@ export default {
     highContrast: "अधिक ठळक",
     keepScreenOn: "स्क्रीन चालू ठेवा",
     afterLastTouch: "शेवटच्या स्पर्शानंतर, मिनिटे",
+    chantingPace: "पठणाची गती",
+    paceHint: "रचना आणि सत्रांना लागणारा वेळ",
+    paceAuto: "आपोआप",
+    paceQuick: "जलद",
+    paceSteady: "मध्यम",
+    paceSlow: "संथ",
+    paceForget: "शिकलेली गती विसरा",
     off: "बंद",
     profilesAndBackup: "प्रोफाइल आणि बॅकअप",
     thisBrowserCanTSave: "हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.",
@@ -829,5 +836,52 @@ export default {
     },
     noGeo: "हे ब्राउझर ठिकाण देऊ शकत नाही",
     noPlace: "ठिकाण मिळाले नाही",
+  },
+  // How long a text or a session takes to chant (js/features/routine-time.js, js/core/timing.js)
+  time: {
+    /** @param {number} n */
+    min: function (n) {
+      return dv(n) + " मि.";
+    },
+    /** @param {number} n */
+    about: function (n) {
+      return "सुमारे " + dv(n) + " मि.";
+    },
+    /** @param {number} a @param {number} b */
+    range: function (a, b) {
+      return dv(a) + "–" + dv(b) + " मि.";
+    },
+    /** @param {number} n */
+    aboutL: function (n) {
+      return "सुमारे " + dv(n) + " मिनिटे";
+    },
+    /** @param {number} a @param {number} b */
+    rangeL: function (a, b) {
+      return dv(a) + " ते " + dv(b) + " मिनिटे";
+    },
+    /** @param {string} s */
+    left: function (s) {
+      return s + " बाकी";
+    },
+    /** @param {string} s */
+    total: function (s) {
+      return "एकूण " + s;
+    },
+    /** @param {string} s */
+    learned: function (s) {
+      return "तुमची स्वतःची गती, Follow ने ऐकून शिकलेली (" + s + " ऐकले).";
+    },
+    /** @param {string} s */
+    learning: function (s) {
+      return "Follow ने तुमचे पठण आणखी थोडा वेळ ऐकेपर्यंत वेळ अंदाजे दाखवला जातो (आतापर्यंत " + s + "), किंवा गती निवडा.";
+    },
+    range0: "Follow ने तुमचे पठण काही मिनिटे ऐकेपर्यंत वेळ अंदाजे दाखवला जातो, किंवा गती निवडा.",
+    chosen: "वेळ इथे निवडलेल्या गतीने मोजला जातो.",
+    forgot: "विसरले. वेळ पुन्हा अंदाजे दाखवला जातो.",
+    week: "प्रत्येक दिवसाचा वेळ, सर्व सत्रे",
+    /** @param {string} s */
+    aDay: function (s) {
+      return "दररोज " + s;
+    },
   },
 };

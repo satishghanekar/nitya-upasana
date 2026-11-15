@@ -8,7 +8,7 @@
 //
 // Per person: text size, languages, English style, font, dhrupad, theme, high contrast,
 // autoscroll, folds, the highlighted line, the Library's Recent and its order, the holidays in Coming up and Coming up
-// folded. Per device: keep the screen on, location, layout on wide screens, the
+// folded, the chanting pace and what Follow has learned of it. Per device: keep the screen on, location, layout on wide screens, the
 // Print pop-up's choices and the folded home card.
 
 /**
@@ -43,6 +43,8 @@ export const PROFILE_KEYS = [
   "libSort",
   "hol",
   "upf",
+  "pace",
+  "paceLog",
 ];
 // what stays with the device, whoever is reading
 export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "plang", "ppr", "fold"];
@@ -86,6 +88,8 @@ export function defaults(env) {
     asp: {}, // autoscroll speed per piece
     hol: ["us", "in"], // the public holidays Home's Coming up shows: the US's and India's (HOME_HOLIDAYS)
     upf: 0, // Home's Coming up: 0 as the screen suits (open on a tablet held upright, folded everywhere else), 1 folded, 2 open
+    pace: "", // chanting pace for how long a text takes: "" learned from Follow (a range until then) | quick | steady | slow
+    paceLog: {}, // what Follow has heard this person chant: { s: seconds, n: letters } (js/core/timing.js)
   };
 }
 
@@ -178,6 +182,11 @@ export function tidy(P) {
   if (["std", "classic", "bold"].indexOf(P.pfn) < 0) P.pfn = "";
   if (P.tr !== "iast") P.tr = "simple";
   if (P.libSort !== "az") P.libSort = "";
+  if (["quick", "steady", "slow"].indexOf(P.pace) < 0) P.pace = "";
+  // (the pace learned: two positive numbers, or nothing learned yet)
+  var pl = P.paceLog;
+  P.paceLog =
+    pl && typeof pl.s === "number" && typeof pl.n === "number" && pl.s > 0 && pl.n > 0 && isFinite(pl.s) && isFinite(pl.n) ? { s: pl.s, n: pl.n } : {};
   // Keep screen on was a switch (1 on) before it took minutes (Satish, 2026-10-30): on is 30 minutes
   if ([0, 15, 30, 45, 60].indexOf(P.wake) < 0) P.wake = P.wake ? 30 : 0;
   // a menu language's code (its file in js/strings/); one without words shows English (js/core/words.js ui())
