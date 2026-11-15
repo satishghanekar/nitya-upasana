@@ -538,7 +538,7 @@ test("Marathi menus: Home speaks Marathi, the titles stay as written", async ({ 
   ])
     await expect(page.locator(id)).toHaveText(w, { useInnerText: true });
   await expect(page.locator("#tsn")).toHaveText("१० रचना");
-  await expect(rows(page).nth(1).locator(".t1")).toHaveText(TITLE["aarti-shendur-lal-chadhayo"].title);
+  await expect(rows(page).nth(1).locator(".t1")).toHaveText(TITLE["aarti-shendur-laal-chadhayo"].title);
 });
 
 test("Kannada letters: the titles in the list are shown in Kannada", async ({ page }) => {
@@ -693,7 +693,7 @@ test("the bundled Extended: ‹ › show another day's date, Vedic calendar line
   expect(await titles()).toEqual(want(5, "morning"));
   await expect(page.locator("#iconb")).toHaveAttribute("data-day", "5");
   await expect(page.locator("#tlive")).toHaveText(new RegExp(`^Tomorrow, Morning, Friday: ${want(5, "morning").length} texts, \\d+ to \\d+ minutes$`));
-  // back two days: yesterday; four more: Sunday, with Shree Rudra
+  // back two days: yesterday; four more: Sunday, with Shri Rudra
   await page.locator("#tdp").click();
   await page.locator("#tdp").click();
   await expect(page.locator("#tdd .d2t")).toHaveText("Wednesday, 14 October");

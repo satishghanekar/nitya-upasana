@@ -1,4 +1,4 @@
-id: aarti-jaydeva-jaydeva-samartha
+id: aarti-jayadeva-jayadeva-samartha
 title: जयदेवा जयदेवा जय जय समर्था
 title-en: Jayadeva Jayadeva Jay Jay Samartha
 language: mr

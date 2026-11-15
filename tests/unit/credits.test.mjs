@@ -21,12 +21,12 @@ describe("the credit lines, from content/credits.json", () => {
     expect(plain(side("aarti-sukhkarta", "en"))).toBe("By Samarth Ramdas (1608–1682)");
     expect(side("aarti-sukhkarta", "mr")).toContain('data-wiki="Samarth_Ramdas"');
   });
-  test.skipIf(!has("aarti-shendur-lal-chadhayo"))("one with no Wikipedia page: the name, no link", () => {
-    expect(plain(side("aarti-shendur-lal-chadhayo", "mr"))).toBe("रचना : गोसावीनंदन");
-    expect(side("aarti-shendur-lal-chadhayo", "mr")).not.toContain("<a ");
+  test.skipIf(!has("aarti-shendur-laal-chadhayo"))("one with no Wikipedia page: the name, no link", () => {
+    expect(plain(side("aarti-shendur-laal-chadhayo", "mr"))).toBe("रचना : गोसावीनंदन");
+    expect(side("aarti-shendur-laal-chadhayo", "mr")).not.toContain("<a ");
   });
-  test.skipIf(!has("aarti-yei-o-vitthale"))("a person also credited: the second line, smaller", () => {
-    const c = PIECES["aarti-yei-o-vitthale"].credit;
+  test.skipIf(!has("aarti-vitthal"))("a person also credited: the second line, smaller", () => {
+    const c = PIECES["aarti-vitthal"].credit;
     expect(c).toMatch(/<small>.*<\/small>/);
     expect(plain(c.match(/<small>(.*)<\/small>/)[1])).toBe("(अशीही मान्यता : संत नामदेव)(also credited to Sant Namdev)");
   });
@@ -42,6 +42,17 @@ describe("the credit lines, from content/credits.json", () => {
       expect(plain(side("ashtak-rudrashtakam", "en"))).toBe("By Goswami Tulsidas (Ramcharitmanas, Uttarakanda)");
     },
   );
+  // (Satish, 2026-11-15: each name links to the page about it, never a broader one: the Mahanarayana Upanishad, not
+  // the Aranyakas in general; the Taittiriya texts to their branch of the Krishna Yajurveda)
+  test.skipIf(!has("vedic-chant-durga-suktam", "vedic-chant-purusha-suktam"))("a source linked to its own page, where it comes from in brackets", () => {
+    expect(plain(side("vedic-chant-durga-suktam", "en"))).toBe("Mahanarayana Upanishad (Krishna Yajurveda, Taittiriya Aranyaka)");
+    expect(side("vedic-chant-durga-suktam", "en")).toContain('data-wiki="Mahanarayana_Upanishad"');
+    expect(side("vedic-chant-purusha-suktam", "en")).toContain('data-wiki="Taittiriya_Shakha"');
+  });
+  test.skipIf(!has("aarti-vitthal"))("Vishnudas Nama: his century, and his page", () => {
+    expect(plain(side("aarti-vitthal", "en"))).toMatch(/^By Vishnudas Nama \(16th century\)/);
+    expect(side("aarti-vitthal", "mr")).toContain('data-wiki="Vishnudas_Nama"');
+  });
   test.skipIf(!has("aarti-jai-ganesh-deva", "aarti-ghalin-lotangan"))("traditional, and a compilation", () => {
     expect(plain(side("aarti-jai-ganesh-deva", "mr"))).toBe("पारंपरिक");
     // (what else it gathers goes on from the name, as the book writes it)

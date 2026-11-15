@@ -1,6 +1,6 @@
 id: stotra-ghorakashtoddharan
 title: घोरकष्टोद्धरणस्तोत्रम्
-title-en: Ghorakashtoddharan Stotra
+title-en: Ghorakashtoddharan Stotram
 language: sa
 credit: author vasudevanand-saraswati
 lines: 14

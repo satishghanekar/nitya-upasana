@@ -80,25 +80,25 @@ describe("ranking", () => {
     const r = search(ix, "jai dev");
     expect(r.texts[0].id).toBe("aarti-jai-ganesh-deva");
     expect(r.texts.map((t) => t.id)).not.toContain("aarti-sukhkarta");
-    expect(r.lines.map((l) => l.text)).toEqual(expect.arrayContaining(["aarti-sukhkarta", "aarti-lavathavati-vikrala", "aarti-trigunatmak-traimurti"]));
+    expect(r.lines.map((l) => l.text)).toEqual(expect.arrayContaining(["aarti-sukhkarta", "aarti-shankar", "aarti-dattatreya"]));
     expect(r.lines[0].score).toBe(SCORE.phrase);
     expect(r.lines.every((l, i) => i === 0 || r.lines[i - 1].score >= l.score)).toBe(true);
   });
   test("Texts are found by their title, not by what is inside them: those are under Lines", () => {
-    // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotra, but only Jai Ganesh Deva has Ganesh in its title
+    // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotram, but only Jai Ganesh Deva has Ganesh in its title
     const r = search(ix, "ganesh");
     expect(r.texts.map((t) => t.id)).toEqual(["aarti-jai-ganesh-deva"]);
     expect(r.lines.map((l) => l.text)).toContain("stotra-ram-raksha");
     expect(r.texts.every((t) => t.score >= SCORE.titleTypo)).toBe(true);
   });
   test("titles in either language, with the Marathi title matched in English letters too", () => {
-    expect(top("Devi Aarti").id).toBe("aarti-durge-durghat-bhari");
-    expect(top("देवीची आरती").id).toBe("aarti-durge-durghat-bhari");
-    expect(top("devichi").id).toBe("aarti-durge-durghat-bhari");
+    expect(top("Devi Aarti").id).toBe("aarti-devi");
+    expect(top("देवीची आरती").id).toBe("aarti-devi");
+    expect(top("devichi").id).toBe("aarti-devi");
     expect(top("ghalin lotangan").score).toBe(SCORE.title);
     expect(top("atharva").id).toBe("vedic-chant-atharvashirsha");
-    expect(top("dnyaneshwar").id).toBe("aarti-dnyanaraja");
-    expect(top("vithal").id).toBe("aarti-yei-o-vitthale");
+    expect(top("dnyaneshwar").id).toBe("aarti-dnyaneshwar");
+    expect(top("vithal").id).toBe("aarti-vitthal");
   });
   test("a category name finds its texts", () => {
     const vedic = TEXTS.filter((t) => t.category === "vedic-chant").map((t) => t.id);
@@ -115,7 +115,7 @@ describe("ranking", () => {
   });
   test("a typo is forgiven, but not in short words", () => {
     expect(top("lotangn").id).toBe("aarti-ghalin-lotangan");
-    expect(top("vitthla").id).toBe("aarti-yei-o-vitthale");
+    expect(top("vitthla").id).toBe("aarti-vitthal");
     expect(search(ix, "zzzzqqq")).toEqual({ texts: [], lines: [], more: false });
     expect(search(ix, "zzqxw").texts).toEqual([]);
   });

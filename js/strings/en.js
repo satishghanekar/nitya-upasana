@@ -293,7 +293,7 @@ export default {
       short: "The Atharvashirsha and the everyday aartis in the morning, the aartis in the evening",
       daily: "The Atharvashirsha, Purusha Suktam and Shri Sukta and the day’s aartis in the morning, the day’s aartis in the evening",
       full: "Daily, with each day’s ashtaks and stotras",
-      extended: "Full, with the Laghunyasa, Shree Rudra and Durga Suktam and the longer stotras",
+      extended: "Full, with the Laghunyasa, Shri Rudra and Durga Suktam and the longer stotras",
     },
     /** @param {number} a @param {number} b */
     perDay: function (a, b) {

@@ -5,8 +5,8 @@
    "texts": [
     "vedic-chant-atharvashirsha",
     "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
-    "aarti-jaydeva-jaydeva-samartha",
+    "aarti-devi",
+    "aarti-jayadeva-jayadeva-samartha",
     "aarti-ghalin-lotangan",
     "vedic-chant-mantra-pushpanjali"
    ]
@@ -19,7 +19,7 @@
    "mode": "fixed",
    "texts": [
     "aarti-sukhkarta",
-    "aarti-durge-durghat-bhari",
+    "aarti-devi",
     "aarti-jay-jay-aarti-shrigururaya",
     "aarti-ghalin-lotangan",
     "vedic-chant-mantra-pushpanjali"
@@ -35,8 +35,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
@@ -45,9 +45,9 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
-     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
+     "aarti-ovalun-aarti-chaitanyabrahma",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
@@ -56,8 +56,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-kariton-guruvar",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
@@ -67,8 +67,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-belaguve",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
@@ -78,8 +78,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-belaguve",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
@@ -89,8 +89,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
@@ -99,8 +99,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ]
@@ -115,55 +115,55 @@
    "days": {
     "sun": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
     "mon": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-lavathavati-vikrala",
+     "aarti-shankar",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
     "tue": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-shendur-lal-chadhayo",
+     "aarti-shendur-laal-chadhayo",
      "aarti-kariton-guruvar",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
     "wed": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-ovalun-aarti-chaitanyabrahma",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
     "thu": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-trigunatmak-traimurti",
-     "aarti-ovaloo-sapreme-aarti",
+     "aarti-dattatreya",
+     "aarti-nana-maharajanchi",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
     "fri": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
     "sat": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
      "aarti-dhanya-jagin-guruvarya",
      "aarti-ghalin-lotangan",
@@ -181,8 +181,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
@@ -192,9 +192,9 @@
      "vedic-chant-shri-sukta",
      "ashtak-surya-ashtakam",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
-     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
+     "aarti-ovalun-aarti-chaitanyabrahma",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
@@ -203,8 +203,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-kariton-guruvar",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
@@ -214,8 +214,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-belaguve",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
@@ -225,8 +225,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-belaguve",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
@@ -236,8 +236,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
@@ -246,8 +246,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ]
@@ -262,7 +262,7 @@
    "days": {
     "sun": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
@@ -271,9 +271,9 @@
     ],
     "mon": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-lavathavati-vikrala",
+     "aarti-shankar",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
      "ashtak-monday",
@@ -281,9 +281,9 @@
     ],
     "tue": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-shendur-lal-chadhayo",
+     "aarti-shendur-laal-chadhayo",
      "aarti-kariton-guruvar",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
@@ -292,9 +292,9 @@
     ],
     "wed": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-ovalun-aarti-chaitanyabrahma",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
      "ashtak-wednesday",
@@ -302,26 +302,26 @@
     ],
     "thu": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-trigunatmak-traimurti",
-     "aarti-ovaloo-sapreme-aarti",
+     "aarti-dattatreya",
+     "aarti-nana-maharajanchi",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
      "ashtak-thursday"
     ],
     "fri": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
      "ashtak-friday",
-     "ashtak-haachi-subodh"
+     "ashtak-hachi-subodh"
     ],
     "sat": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
      "aarti-dhanya-jagin-guruvarya",
      "aarti-ghalin-lotangan",
@@ -338,26 +338,26 @@
     "sun": [
      "vedic-chant-atharvashirsha",
      "vedic-chant-laghunyasa",
-     "vedic-chant-shree-rudra",
+     "vedic-chant-shri-rudra",
      "vedic-chant-purusha-suktam",
      "vedic-chant-durga-suktam",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
     "mon": [
      "vedic-chant-atharvashirsha",
      "vedic-chant-laghunyasa",
-     "vedic-chant-shree-rudra",
+     "vedic-chant-shri-rudra",
      "vedic-chant-purusha-suktam",
      "vedic-chant-durga-suktam",
      "ashtak-surya-ashtakam",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
-     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
+     "aarti-ovalun-aarti-chaitanyabrahma",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
@@ -366,8 +366,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-kariton-guruvar",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
@@ -377,8 +377,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-belaguve",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
@@ -388,8 +388,8 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-belaguve",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
@@ -399,20 +399,20 @@
      "vedic-chant-purusha-suktam",
      "vedic-chant-shri-sukta",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ],
     "sat": [
      "vedic-chant-atharvashirsha",
      "vedic-chant-laghunyasa",
-     "vedic-chant-shree-rudra",
+     "vedic-chant-shri-rudra",
      "vedic-chant-purusha-suktam",
      "vedic-chant-durga-suktam",
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
-     "aarti-jaydeva-jaydeva-samartha",
+     "aarti-devi",
+     "aarti-jayadeva-jayadeva-samartha",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali"
     ]
@@ -427,7 +427,7 @@
    "days": {
     "sun": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
@@ -437,9 +437,9 @@
     ],
     "mon": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-lavathavati-vikrala",
+     "aarti-shankar",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
      "ashtak-monday",
@@ -447,9 +447,9 @@
     ],
     "tue": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-shendur-lal-chadhayo",
+     "aarti-shendur-laal-chadhayo",
      "aarti-kariton-guruvar",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
@@ -460,9 +460,9 @@
     ],
     "wed": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-ovaloon-aarti-chaitanyabrahma",
+     "aarti-ovalun-aarti-chaitanyabrahma",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
      "ashtak-wednesday",
@@ -470,10 +470,10 @@
     ],
     "thu": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
-     "aarti-trigunatmak-traimurti",
-     "aarti-ovaloo-sapreme-aarti",
+     "aarti-dattatreya",
+     "aarti-nana-maharajanchi",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
      "ashtak-thursday",
@@ -481,22 +481,22 @@
      "stotra-shriguru-datta-jay",
      "stotra-jay-karunaghan-nij",
      "stotra-ghorakashtoddharan",
-     "stotra-vandu-guruchya-charanarvinda",
+     "stotra-vandu-guruchya-charanaravinda",
      "stotra-martand-bavani",
      "stotra-sadguru-vandana"
     ],
     "fri": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
      "aarti-ghalin-lotangan",
      "vedic-chant-mantra-pushpanjali",
      "ashtak-friday",
-     "ashtak-haachi-subodh"
+     "ashtak-hachi-subodh"
     ],
     "sat": [
      "aarti-sukhkarta",
-     "aarti-durge-durghat-bhari",
+     "aarti-devi",
      "aarti-jay-jay-aarti-shrigururaya",
      "aarti-dhanya-jagin-guruvarya",
      "aarti-ghalin-lotangan",

@@ -103,7 +103,12 @@
    "name": {
     "mr": "विष्णुदास नामा",
     "en": "Vishnudas Nama"
-   }
+   },
+   "time": {
+    "mr": "१६ वे शतक",
+    "en": "16th century"
+   },
+   "wiki": "Vishnudas_Nama"
   },
   "budha-kaushika": {
    "name": {
@@ -125,14 +130,21 @@
     "mr": "कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक",
     "en": "Krishna Yajurveda, Taittiriya Aranyaka"
    },
-   "wiki": "Taittiriya_Aranyaka"
+   "wiki": "Taittiriya_Shakha"
+  },
+  "mahanarayana-upanishad": {
+   "name": {
+    "mr": "महानारायणोपनिषत्",
+    "en": "Mahanarayana Upanishad"
+   },
+   "wiki": "Mahanarayana_Upanishad"
   },
   "taittiriya-samhita": {
    "name": {
     "mr": "कृष्ण यजुर्वेद, तैत्तिरीय संहिता",
     "en": "Krishna Yajurveda, Taittiriya Samhita"
    },
-   "wiki": "Taittiriya_Samhita"
+   "wiki": "Taittiriya_Shakha"
   },
   "mahabharata": {
    "name": {

@@ -288,12 +288,12 @@ test("each person has their own routine; Save a backup file → Restore brings i
   await openSite(page, SETUPS.marathi, { now: MON_EVENING, errors });
   await openBuilder(page);
   for (const id of [
-    "aarti-shendur-lal-chadhayo",
-    "aarti-durge-durghat-bhari",
-    "aarti-lavathavati-vikrala",
-    "aarti-trigunatmak-traimurti",
-    "aarti-dnyanaraja",
-    "aarti-yei-o-vitthale",
+    "aarti-shendur-laal-chadhayo",
+    "aarti-devi",
+    "aarti-shankar",
+    "aarti-dattatreya",
+    "aarti-dnyaneshwar",
+    "aarti-vitthal",
     "aarti-jai-ganesh-deva",
     "aarti-jai-jagdish-hare",
   ])
@@ -520,10 +520,10 @@ const FOUR = {
   full: {
     morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha", "vedic-chant-purusha-suktam", "vedic-chant-shri-sukta"] },
     afternoon: { mode: "fixed", texts: [] },
-    evening: { mode: "fixed", texts: ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"] },
+    evening: { mode: "fixed", texts: ["aarti-sukhkarta", "aarti-devi", "aarti-ghalin-lotangan"] },
   },
   extended: {
-    morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha", "vedic-chant-shree-rudra"] },
+    morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha", "vedic-chant-shri-rudra"] },
     afternoon: { mode: "fixed", texts: ["aarti-sukhkarta"] },
     evening: { mode: "fixed", texts: ["aarti-sukhkarta", "aarti-ghalin-lotangan", "stotra-ram-raksha"] },
   },
@@ -611,12 +611,12 @@ test("ready-made routines: over your own routine, another one or Go back asks fi
   await expect(page.locator("#rtrp")).toBeHidden();
   await expect(page.locator("#rtbst")).toHaveText("You follow Full. Texts added to it later come to you too.");
   await expect(page.locator("#rtbk")).toBeHidden();
-  expect(await ids(page)).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"]);
+  expect(await ids(page)).toEqual(["aarti-sukhkarta", "aarti-devi", "aarti-ghalin-lotangan"]);
   await expect.poll(() => savedBase(page)).toEqual([["full", false]]);
   // kept after a reload
   await page.reload();
   await settle(page);
-  expect(await homeIds(page)).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"]);
+  expect(await homeIds(page)).toEqual(["aarti-sukhkarta", "aarti-devi", "aarti-ghalin-lotangan"]);
 });
 
 test("ready-made routines: in Marathi menus, संक्षिप्त दैनिक पूर्ण विस्तृत @mobile", async ({ page }) => {

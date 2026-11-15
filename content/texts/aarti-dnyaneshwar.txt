@@ -1,4 +1,4 @@
-id: aarti-dnyanaraja
+id: aarti-dnyaneshwar
 title: ज्ञानेश्वरांची आरती
 title-en: Dnyaneshwar Aarti
 language: mr

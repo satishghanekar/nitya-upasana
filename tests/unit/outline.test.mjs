@@ -48,8 +48,8 @@ describe("what each kind of long text gets", () => {
     expect(third.at(-1).label.en).toBe("9.64");
     expect(o.places.flatMap((p) => p.kids).length).toBe(67);
   });
-  test("parts named by part-name and counted in each heading: Shree Rudra's anuvakas", () => {
-    const o = of("vedic-chant-shree-rudra");
+  test("parts named by part-name and counted in each heading: Shri Rudra's anuvakas", () => {
+    const o = of("vedic-chant-shri-rudra");
     expect(o.places.map((p) => p.label.en)).toEqual(["Namakam", "Chamakam"]);
     for (const s of o.places) {
       expect(s.kids.length).toBe(11);
@@ -130,5 +130,5 @@ test("part-name is checked like every header field", () => {
   const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: mr\n";
   expect(parseText(head + "part-name: अनुवाकः | Anuvaka\n---\n[1]\nक\nK\n").partName).toBe("अनुवाकः | Anuvaka");
   expect(() => parseText(head + "part-name: अनुवाकः\n---\n[1]\nक\nK\n")).toThrow(/part-name/);
-  expect(piece("vedic-chant-shree-rudra").partName).toEqual({ mr: "अनुवाकः", en: "Anuvaka" });
+  expect(piece("vedic-chant-shri-rudra").partName).toEqual({ mr: "अनुवाकः", en: "Anuvaka" });
 });

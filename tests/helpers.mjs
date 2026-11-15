@@ -300,12 +300,12 @@ export async function readText(page, sec) {
 // (unit/today.test.mjs and "the bundled default" in today.spec.mjs).
 export const TEST_AARTIS = [
   "aarti-sukhkarta",
-  "aarti-shendur-lal-chadhayo",
-  "aarti-durge-durghat-bhari",
-  "aarti-lavathavati-vikrala",
-  "aarti-trigunatmak-traimurti",
-  "aarti-dnyanaraja",
-  "aarti-yei-o-vitthale",
+  "aarti-shendur-laal-chadhayo",
+  "aarti-devi",
+  "aarti-shankar",
+  "aarti-dattatreya",
+  "aarti-dnyaneshwar",
+  "aarti-vitthal",
   "aarti-ghalin-lotangan",
   "aarti-jai-ganesh-deva",
   "aarti-jai-jagdish-hare",

@@ -1,4 +1,4 @@
-id: aarti-ovaloo-sapreme-aarti
+id: aarti-nana-maharajanchi
 title: आरती श्री नानामहाराजांची
 title-en: Aarti Shri Nana Maharajanchi
 language: mr

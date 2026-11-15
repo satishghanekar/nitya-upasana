@@ -218,6 +218,10 @@
    "te": "మహాభారతం",
    "gu": "મહાભારત"
   },
+  "Mahanarayana_Upanishad": {
+   "hi": "महानारायण उपनिषद",
+   "en": "Mahanarayana Upanishad"
+  },
   "Maharashtra_Day": {
    "mr": "महाराष्ट्र दिन",
    "hi": "महाराष्ट्र दिवस",
@@ -381,15 +385,7 @@
   "Swami_Swarupanand": {
    "en": "Swami Swarupanand"
   },
-  "Taittiriya_Aranyaka": {
-   "mr": "आरण्यक",
-   "hi": "आरण्यक",
-   "en": "Aranyaka",
-   "kn": "ಆರಣ್ಯಕ",
-   "te": "అరణ్యకాలు",
-   "gu": "આરણ્યક ગ્રંથો"
-  },
-  "Taittiriya_Samhita": {
+  "Taittiriya_Shakha": {
    "hi": "तैत्तिरीय शाखा",
    "en": "Taittiriya Shakha"
   },
@@ -432,6 +428,10 @@
    "kn": "ದಸರ",
    "te": "దసరా",
    "gu": "દશેરા"
+  },
+  "Vishnudas_Nama": {
+   "mr": "विष्णुदास नामा",
+   "en": "Vishnudas Nama"
   }
  }
 }

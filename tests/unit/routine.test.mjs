@@ -48,7 +48,7 @@ const MON = 1,
   SUN = 0;
 // The rules below are shown on a simple routine of the shape the builder starts from: one list each session, every day
 // (the bundled default, content/routines.json, now differs by weekday; its own tests are in today.test.mjs)
-const AARTIS = ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-lavathavati-vikrala", "aarti-ghalin-lotangan"];
+const AARTIS = ["aarti-sukhkarta", "aarti-devi", "aarti-shankar", "aarti-ghalin-lotangan"];
 const SIMPLE = {
   morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha"] },
   afternoon: { mode: "fixed", texts: [] },

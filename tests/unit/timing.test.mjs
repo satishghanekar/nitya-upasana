@@ -11,8 +11,8 @@ describe("a text's length, as it is chanted", () => {
   // must be the same, the dhrupad after every verse included, before the first only where the file says so
   test.each([
     ["aarti-sukhkarta", 472],
-    ["aarti-durge-durghat-bhari", 502],
-    ["aarti-jaydeva-jaydeva-samartha", 542],
+    ["aarti-devi", 502],
+    ["aarti-jayadeva-jayadeva-samartha", 542],
     ["aarti-ghalin-lotangan", 529],
     ["ashtak-thursday", 945],
     ["vedic-chant-atharvashirsha", 2783],
@@ -85,7 +85,7 @@ describe("a session's time", () => {
     expect(spanMinutes({ lo: 600, hi: 900 })).toEqual({ lo: 10, hi: 15 });
   });
   test("at the quick pace, SG's Thursday morning aartis come close to the 4.1 minutes they took", () => {
-    const ids = ["aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-jaydeva-jaydeva-samartha", "aarti-ghalin-lotangan"];
+    const ids = ["aarti-sukhkarta", "aarti-devi", "aarti-jayadeva-jayadeva-samartha", "aarti-ghalin-lotangan"];
     const s = spanOf(
       ids.map((id) => chantedLetters(piece[id])),
       paceFor("quick", null, T),

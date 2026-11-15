@@ -1,6 +1,6 @@
 id: stotra-ram-raksha
 title: श्रीरामरक्षास्तोत्रम्
-title-en: Shri Ram Raksha Stotra
+title-en: Shri Ram Raksha Stotram
 language: sa
 credit: author budha-kaushika
 lines: 100

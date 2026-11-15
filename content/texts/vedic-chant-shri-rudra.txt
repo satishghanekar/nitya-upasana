@@ -1,6 +1,6 @@
-id: vedic-chant-shree-rudra
+id: vedic-chant-shri-rudra
 title: श्री रुद्रप्रश्नः
-title-en: Shree Rudra
+title-en: Shri Rudra
 language: sa
 layout: prose
 part-name: अनुवाकः | Anuvaka

@@ -1403,7 +1403,7 @@ me'bha̍yaṃ ca me su̱gaṃ ca̍ me̱ śaya̍naṃ ca me sū̱ṣā ca̍ me su
 
 || om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 
-### vedic-chant-shree-rudra
+### vedic-chant-shri-rudra
 5.
 श्री रुद्रप्रश्नः
 Śrī Rudrapraśnaḥ
@@ -2600,7 +2600,7 @@ tanno̍ durgiḥ praco̱dayā̎t ||
 
 || om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 
-कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक ↗ (महानारायणोपनिषत्)
+महानारायणोपनिषत् ↗ (कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-shivopasana-mantra
@@ -2752,7 +2752,7 @@ sarvo̱ hye̍ṣa ru̱drastasmai̍ ru̱drāya̱ namo̍ astu ||
 
 om̐ śānti̱ḥ śānti̱ḥ śānti̍ḥ ||
 
-कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक ↗ (महानारायणोपनिषत्)
+महानारायणोपनिषत् ↗ (कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-pavamana-suktam
@@ -12344,7 +12344,7 @@ viṣṇudāsa nāmā, viṣṇudāsa nāmā jīvebhāve ovāḷī |
 ho jīvebhāve ovāḷī || 4 ||
 
 ↻ ध्रुपदRefrain
-रचना : विष्णुदास नामा
+रचना : विष्णुदास नामा ↗ (१६ वे शतक)
 (अशीही मान्यता : संत नामदेव ↗)
 
 ### a8
@@ -12599,7 +12599,7 @@ om̐ jaya jagadīśa hare || 9 ||
 
 रचना : पं. श्रद्धाराम फिल्लौरी ↗ (सु. १८७०)
 
-### aarti-jaydeva-jaydeva-samartha
+### aarti-jayadeva-jayadeva-samartha
 11.
 जयदेवा जयदेवा जय जय समर्था
 Jayadevā Jayadevā Jaya Jaya Samarthā
@@ -12715,7 +12715,7 @@ nāmarūpātīta tūṃ abhirāmā || 3 ||
 
 ↻ ध्रुपदRefrain
 
-### aarti-ovaloon-aarti-chaitanyabrahma
+### aarti-ovalun-aarti-chaitanyabrahma
 13.
 ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा
 Ovāḷūṃ Āratī Sad‌guru Caitanyabrahmā
@@ -13058,7 +13058,7 @@ mahābhāgavata prārthī kāṃhīṃ cākarī || 3 ||
 
 ↻ ध्रुपदRefrain
 
-### aarti-ovaloo-sapreme-aarti
+### aarti-nana-maharajanchi
 18.
 आरती श्री नानामहाराजांची
 Āratī Śrī Nānāmahārājāṃcī
@@ -15046,7 +15046,7 @@ prapaṭhenniyato bhaktyā sa śrīdattapriyo bhavet || 6 ||
 
 रचना : श्री वासुदेवानंद सरस्वती (टेंबे स्वामी) ↗ (१८५४–१९१४)
 
-### stotra-vandu-guruchya-charanarvinda
+### stotra-vandu-guruchya-charanaravinda
 11.
 वंदू गुरुच्या चरणारविंदा
 Vandū Gurucyā Caraṇāravindā
@@ -17255,7 +17255,7 @@ tujhā dāsa mī vyartha janmāsi āloṃ || 8 ||
 
 || jaya jaya raghuvīra samartha ||
 
-### ashtak-haachi-subodh
+### ashtak-hachi-subodh
 11.
 हाचि सुबोध गुरूंचा
 Hāci Subodha Gurūñcā
@@ -17474,7 +17474,7 @@ dāsadāsāceṃ māhera | aisā nāhīṃ pāhilā || 8 ||
 
 || jaya jaya raghuvīra samartha ||
 
-### ashtak-swami-majha-pahila
+### ashtak-svami-majha-pahila
 13.
 स्वामी माझा पाहिला
 Svāmī Mājhā Pāhilā

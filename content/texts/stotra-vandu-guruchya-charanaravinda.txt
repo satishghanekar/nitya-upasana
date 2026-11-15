@@ -1,4 +1,4 @@
-id: stotra-vandu-guruchya-charanarvinda
+id: stotra-vandu-guruchya-charanaravinda
 title: वंदू गुरुच्या चरणारविंदा
 title-en: Vandu Guruchya Charanaravinda
 language: mr

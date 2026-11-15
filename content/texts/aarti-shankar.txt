@@ -1,4 +1,4 @@
-id: aarti-lavathavati-vikrala
+id: aarti-shankar
 title: शंकराची आरती
 title-en: Shankar Aarti
 language: mr

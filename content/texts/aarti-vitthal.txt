@@ -1,4 +1,4 @@
-id: aarti-yei-o-vitthale
+id: aarti-vitthal
 title: विठ्ठलाची आरती
 title-en: Vitthal Aarti
 language: mr

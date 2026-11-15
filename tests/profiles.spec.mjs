@@ -102,7 +102,7 @@ test("first visit from an older version (settings version 4), with version 1.3's
     localStorage.setItem("aarti2-prefs", JSON.stringify({ sv: 4, fs: 28, fsu: 1, lang: "en", ref: 0, wake: 0, ui: "en" }));
     localStorage.setItem(
       "nitya-ticks",
-      JSON.stringify({ v: 1, profiles: { family: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta", "aarti-shendur-lal-chadhayo"] } } } }),
+      JSON.stringify({ v: 1, profiles: { family: { date: "2026-10-18", done: { evening: ["aarti-sukhkarta", "aarti-shendur-laal-chadhayo"] } } } }),
     );
   });
   await page.goto("./");

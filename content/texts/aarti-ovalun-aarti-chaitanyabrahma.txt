@@ -1,4 +1,4 @@
-id: aarti-ovaloon-aarti-chaitanyabrahma
+id: aarti-ovalun-aarti-chaitanyabrahma
 title: ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा
 title-en: Ovalun Aarti Sadguru Chaitanyabrahma
 language: mr

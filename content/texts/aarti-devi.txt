@@ -1,4 +1,4 @@
-id: aarti-durge-durghat-bhari
+id: aarti-devi
 title: देवीची आरती
 title-en: Devi Aarti
 language: mr

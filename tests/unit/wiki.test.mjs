@@ -93,7 +93,7 @@ describe("the credits' links", () => {
   });
   test("with no page in the side's own language, the nearest, and what is heard says which", () => {
     // Narahari Sonar: Marathi and English pages only, so Kannada letters open the English one
-    const c = credit("aarti-durge-durghat-bhari").mr[0];
+    const c = credit("aarti-devi").mr[0];
     expect(c["data-kn"]).toMatch(/^en /);
     expect(c["data-kn-label"]).toBe(" — ಇಂಗ್ಲಿಷ್ ವಿಕಿಪೀಡಿಯ (ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ)");
   });

@@ -24,7 +24,7 @@ const allLines = (C) => pieces(C).flatMap((p) => [...(p.refrain ? p.refrain.line
 
 describe("CONTENT from the text files", () => {
   const C = CONTENT;
-  // The texts added since (Shree Rudra, Shri Sukta, the Gondavalekar Maharaj aartis and ashtaks, …) are left out of the
+  // The texts added since (Shri Rudra, Shri Sukta, the Gondavalekar Maharaj aartis and ashtaks, …) are left out of the
   // comparison: every text the old file had must come out of the text files exactly as it was, in the same order.
   // Each piece now also names its text (text: its id in library.json), which the old file did not have.
   const OLD_IDS = new Set(pieces(OLD).map((p) => p.id));
@@ -217,7 +217,7 @@ describe("content checks", () => {
     ]);
     ["गणानां᳚ त्वा", "प्र णो᳚ दे॒वी", "वेद॒ वात॑स्य"].forEach((m) => expect(files["vedic-chant-pavamana-suktam"].split(m).length).toBe(2));
   });
-  // Purusha Suktam: each verse a paragraph of its own, a space after every ॥ १ ॥ as Shree Rudra has after each
+  // Purusha Suktam: each verse a paragraph of its own, a space after every ॥ १ ॥ as Shri Rudra has after each
   // anuvaka; Shri Sukta line by line, as Lalita and Pavamana (Satish, 2026-11-10)
   test("Purusha Suktam's every verse starts a paragraph; Shri Sukta is set line by line", () => {
     const pu = parseText(files["vedic-chant-purusha-suktam"], "vedic-chant-purusha-suktam");
@@ -228,7 +228,7 @@ describe("content checks", () => {
   });
   // The Shivanjali book (Bharatiya Hindu Temple, Columbus): its pieces the site did not have yet, made from the book's
   // English edition and checked against its Sanskrit one (Satish, 2026-11-11). Ganapati Atharvashirsha, Laghunyasa,
-  // Shree Rudra (with Chamakam), Purusha Suktam and Durga Suktam were here already.
+  // Shri Rudra (with Chamakam), Purusha Suktam and Durga Suktam were here already.
   const SHIVANJALI = {
     "vedic-chant-shivopasana-mantra": 36,
     "vedic-chant-mantrapushpam": 88,
@@ -275,7 +275,7 @@ describe("content checks", () => {
 test("the texts with a recording link to it, at the second each starts", () => {
   const at = (id) => parseText(files[id], id).recording;
   expect(at("vedic-chant-atharvashirsha")).toBe("[Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90)");
-  expect(at("vedic-chant-shree-rudra")).toMatch(/OQhyYdoKW1k&t=685\)$/);
+  expect(at("vedic-chant-shri-rudra")).toMatch(/OQhyYdoKW1k&t=685\)$/);
   expect(at("vedic-chant-shivopasana-mantra")).toMatch(/OQhyYdoKW1k&t=2534\)$/);
   expect(at("vedic-chant-durga-suktam")).toMatch(/OQhyYdoKW1k&t=2778\)$/);
   expect(at("vedic-chant-pavamana-suktam").split(", ")).toHaveLength(2);
