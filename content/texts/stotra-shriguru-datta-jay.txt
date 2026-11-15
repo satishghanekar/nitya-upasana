@@ -3,34 +3,53 @@ title: श्रीगुरु दत्ता जय
 title-en: Shriguru Datta Jay
 category: stotra
 language: mr
-refrain: every-verse
 credit: रचना : [श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)](https://mr.wikipedia.org/wiki/वासुदेवानंद_सरस्वती) (१८५४–१९१४)
 credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](https://en.wikipedia.org/wiki/Vasudevanand_Saraswati) (1854–1914)
 ---
-[dhrupad]
+[once]
 श्रीगुरु दत्ता जय भगवंता ।
 Shriguru Datta Jay Bhagavanta |
 तें मन निष्ठुर न करी आतां ।
 Ten Man Nishthur Na Kari Aatan |
-श्रीगुरु दत्ता ॥ धृ ॥
-Shriguru Datta || Dhr. ||
+श्रीगुरु दत्ता ॥
+Shriguru Datta ||
 
 [1]
-चोरे द्विजासी मारितां मन जे । ¦कळवळले ते कळवळो आतां ॥
-Chore Dvijasi Maritan Man Je | Kalavalale Te Kalavalo Aatan ||
+चोरे द्विजासी मारितां मन जे । ¦चोरे द्विजासी मारितां मन जे ।
+Chore Dvijasi Maritan Man Je | Chore Dvijasi Maritan Man Je |
+कळवळले ते कळवळो आतां । ¦कळवळले ते कळवळो आतां ॥
+Kalavalale Te Kalavalo Aatan | Kalavalale Te Kalavalo Aatan ||
+श्रीगुरु दत्ता ॥
+Shriguru Datta ||
 
 [2]
-पोटशूळाने द्विज तडफडता, ¦कळवळले ते कळवळो आतां ॥
-Potashulane Dvij Tadaphadata, Kalavalale Te Kalavalo Aatan ||
+पोटशूळाने द्विज तडफडता । ¦पोटशूळाने द्विज तडफडता ।
+Potashulane Dvij Tadaphadata | Potashulane Dvij Tadaphadata |
+कळवळले ते कळवळो आतां । ¦कळवळले ते कळवळो आतां ॥
+Kalavalale Te Kalavalo Aatan | Kalavalale Te Kalavalo Aatan ||
+श्रीगुरु दत्ता ॥
+Shriguru Datta ||
 
 [3]
-द्विजसुत मरतां वळले ते मन, ¦हो की उदासिन न वळे आतां ॥
-Dvijasut Maratan Valale Te Man, Ho Ki Udasin Na Vale Aatan ||
+द्विजसुत मरतां वळले ते मन । ¦द्विजसुत मरतां वळले ते मन ।
+Dvijasut Maratan Valale Te Man | Dvijasut Maratan Valale Te Man |
+हो की उदासिन न वळे आतां । ¦हो की उदासिन न वळे आतां ॥
+Ho Ki Udasin Na Vale Aatan | Ho Ki Udasin Na Vale Aatan ||
+श्रीगुरु दत्ता ॥
+Shriguru Datta ||
 
 [4]
-सतिपति मरतां काकुळति येतां, ¦वळले ते मन न वळे की आतां ॥
-Satipati Maratan Kakulati Yetan, Valale Te Man Na Vale Ki Aatan ||
+सतिपति मरतां काकुळति येतां । ¦सतिपति मरतां काकुळति येतां ।
+Satipati Maratan Kakulati Yetan | Satipati Maratan Kakulati Yetan |
+वळले ते मन न वळे की आतां । ¦वळले ते मन न वळे की आतां ॥
+Valale Te Man Na Vale Ki Aatan | Valale Te Man Na Vale Ki Aatan ||
+श्रीगुरु दत्ता ॥
+Shriguru Datta ||
 
 [5]
-श्रीगुरुदत्ता त्यजि निष्ठुरता, ¦कोमल चित्ता वळवी आतां ॥
-Shrigurudatta Tyaji Nishthurata, Komal Chitta Valavi Aatan ||
+श्रीगुरुदत्ता त्यजि निष्ठुरता । ¦श्रीगुरुदत्ता त्यजि निष्ठुरता ।
+Shrigurudatta Tyaji Nishthurata | Shrigurudatta Tyaji Nishthurata |
+कोमल चित्ता वळवी आतां । ¦कोमल चित्ता वळवी आतां ॥
+Komal Chitta Valavi Aatan | Komal Chitta Valavi Aatan ||
+श्रीगुरु दत्ता ॥
+Shriguru Datta ||
