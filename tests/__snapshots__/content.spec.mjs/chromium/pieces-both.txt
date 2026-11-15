@@ -14725,7 +14725,7 @@ Shant Ho Shriguru Datta Mama Chitta Shamavi Aata || Dhr. ||
 
 तूं केवळ माता जनिता, ​सर्वथा तूं हितकर्ता ।
 
-तूं आप्त स्वजन भ्राता, ​सर्वथा तूंची त्राता ॥ चाल ॥
+तूं आप्त स्वजन भ्राता, ​सर्वथा तूंची त्राता ॥
 
 भय कर्ता तूं भय हर्ता । ​दंडधर्ता तूं परिपाता ॥
 
@@ -14733,7 +14733,7 @@ Shant Ho Shriguru Datta Mama Chitta Shamavi Aata || Dhr. ||
 
 Tun Keval Mata Janita, Sarvatha Tun Hitakarta |
 
-Tun Aapta Svajan Bhrata, Sarvatha Tunchi Trata || Chaal ||
+Tun Aapta Svajan Bhrata, Sarvatha Tunchi Trata ||
 
 Bhay Karta Tun Bhay Harta | Dandadharta Tun Paripata ||
 
@@ -14743,7 +14743,7 @@ Tuj Vachunni Na Duji Varta | Tun Aarta Aashray Data || 1 ||
 
 अपराधास्तव गुरुनाथा, ​जरी दंडा धरिसी यथार्था ।
 
-तरी आम्ही गाऊनि गाथा, ​तव चरणी नमवू माथा ॥ चाल ॥
+तरी आम्ही गाऊनि गाथा, ​तव चरणी नमवू माथा ॥
 
 तूं तथापि दंडिसि देवा । ​कोणाचा मग करु धावा ॥
 
@@ -14751,7 +14751,7 @@ Tuj Vachunni Na Duji Varta | Tun Aarta Aashray Data || 1 ||
 
 Aparadhastav Gurunatha, Jari Danda Dharisi Yathartha |
 
-Tari Aamhi Gauni Gatha, Tav Charani Namavu Matha || Chaal ||
+Tari Aamhi Gauni Gatha, Tav Charani Namavu Matha ||
 
 Tun Tathapi Dandisi Deva | Konacha Mag Karu Dhava ||
 
@@ -14761,7 +14761,7 @@ Sodavina Dusara Tenvha | Kon Datta Aamhan Trata || 2 ||
 
 तूं नटसा होऊनि कोपी, ​दंडिताहि आम्ही पापी ।
 
-पुनरपिही चुकता तथापि, ​आम्हांवरी नच संतापी ॥ चाल ॥
+पुनरपिही चुकता तथापि, ​आम्हांवरी नच संतापी ॥
 
 गच्छतः स्खलनं क्वापि । ​असे मानुनि नच हो कोपी ॥
 
@@ -14769,7 +14769,7 @@ Sodavina Dusara Tenvha | Kon Datta Aamhan Trata || 2 ||
 
 Tun Natasa Houni Kopi, Danditahi Aamhi Papi |
 
-Punarapihi Chukata Tathapi, Aamhanvari Nach Santapi || Chaal ||
+Punarapihi Chukata Tathapi, Aamhanvari Nach Santapi ||
 
 Gachchhatah Skhalanam Kvapi | Ase Manuni Nach Ho Kopi ||
 
@@ -14779,7 +14779,7 @@ Nij Krupalesha Opi | Aamhavari Tun Bhagavanta || 3 ||
 
 तवपदरी असता ताता, ​आडमार्गी पाऊल पडता ।
 
-सांभाळुनि मार्गावरता, ​आणिता न दुजा त्राता ॥ चाल ॥
+सांभाळुनि मार्गावरता, ​आणिता न दुजा त्राता ॥
 
 निज बिरुदा आणुनि चित्ता । ​तूं पतित पावन दत्ता ॥
 
@@ -14787,7 +14787,7 @@ Nij Krupalesha Opi | Aamhavari Tun Bhagavanta || 3 ||
 
 Tavapadari Asata Tata, Aadamargi Paul Padata |
 
-Sambhaluni Margavarata, Aanita Na Duja Trata || Chaal ||
+Sambhaluni Margavarata, Aanita Na Duja Trata ||
 
 Nij Biruda Aanuni Chitta | Tun Patit Pavan Datta ||
 
@@ -14797,7 +14797,7 @@ Vale Aata Aamhavarata | Karunaghan Tun Gurunatha || 4 ||
 
 सहकुटूंब सहपरिवार, ​दास आम्ही हे घरदार ।
 
-तव पदीं अर्पू असार, ​संसाराहित हा भार ॥ चाल ॥
+तव पदीं अर्पू असार, ​संसाराहित हा भार ॥
 
 परिहरिसी करुणासिंधो । ​तूं दीनानाथ सुबंधो ॥
 
@@ -14805,7 +14805,7 @@ Vale Aata Aamhavarata | Karunaghan Tun Gurunatha || 4 ||
 
 Sahakutumb Sahaparivar, Das Aamhi He Gharadar |
 
-Tav Padin Arpu Asar, Sansarahit Ha Bhar || Chaal ||
+Tav Padin Arpu Asar, Sansarahit Ha Bhar ||
 
 Pariharisi Karunasindho | Tun Dinanath Subandho ||
 
