@@ -6557,9 +6557,7 @@ Refrain (sung after every verse)
 
 Aarti Belaguve Sadguru Shribrahmachaitanya |
 
-Parabrahma Paratpara Sanakadikamanya |
-
-Aarti Belaguve Sadguru Shribrahmachaitanya || Dhr. ||
+Parabrahma Paratpara Sanakadikamanya || Dhr. ||
 
 ↻ Refrain
 
@@ -7489,6 +7487,8 @@ Sarve Bhadrani Pashyantu | Ma Kashchid Duhkhabhag Bhavet || 11 ||
 Refrain (sung after every verse)
 
 Shant Ho Shriguru Datta Mama Chitta Shamavi Aata || Dhr. ||
+
+↻ Refrain
 
 Tun Keval Mata Janita, Sarvatha Tun Hitakarta |
 

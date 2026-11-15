@@ -6565,9 +6565,7 @@ Refrain (sung after every verse)
 
 āratī beḷaguve sad‌guru śrībrahmacaitanyā |
 
-parabrahmā parātparā sanakādikamānyā |
-
-āratī beḷaguve sad‌guru śrībrahmacaitanyā || dhṛ. ||
+parabrahmā parātparā sanakādikamānyā || dhṛ. ||
 
 ↻ Refrain
 
@@ -7497,6 +7495,8 @@ sarve bhadrāṇi paśyantu | mā kaścid duḥkhabhāg bhavet || 11 ||
 Refrain (sung after every verse)
 
 śānta ho śrīguru dattā ​mama cittā śamavī ātā || dhṛ ||
+
+↻ Refrain
 
 tūṃ kevaḷa mātā janitā, ​sarvathā tūṃ hitakartā |
 

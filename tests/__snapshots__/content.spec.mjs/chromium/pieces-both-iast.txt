@@ -12942,15 +12942,11 @@ rāmatanaya hā caraṇā vandī joḍuniyā kara || 3 ||
 
 आरती बेळगुवे सद्‌गुरु श्रीब्रह्मचैतन्या ।
 
-परब्रह्मा परात्परा सनकादिकमान्या ।
-
-आरती बेळगुवे सद्‌गुरु श्रीब्रह्मचैतन्या ॥ धृ. ॥
+परब्रह्मा परात्परा सनकादिकमान्या ॥ धृ. ॥
 
 āratī beḷaguve sad‌guru śrībrahmacaitanyā |
 
-parabrahmā parātparā sanakādikamānyā |
-
-āratī beḷaguve sad‌guru śrībrahmacaitanyā || dhṛ. ||
+parabrahmā parātparā sanakādikamānyā || dhṛ. ||
 
 ↻ ध्रुपदRefrain
 
@@ -14732,6 +14728,8 @@ sarve bhadrāṇi paśyantu | mā kaścid duḥkhabhāg bhavet || 11 ||
 शांत हो श्रीगुरु दत्ता ​मम चित्ता शमवी आता ॥ धृ ॥
 
 śānta ho śrīguru dattā ​mama cittā śamavī ātā || dhṛ ||
+
+↻ ध्रुपदRefrain
 
 तूं केवळ माता जनिता, ​सर्वथा तूं हितकर्ता ।
 
