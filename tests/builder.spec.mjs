@@ -39,7 +39,7 @@ test("Edit beside the session opens the builder for the reading person, at that 
   await expect(page.locator('#rtss [aria-checked="true"]')).toHaveText("Evening");
   await expect(page.locator('#rtmd [aria-checked="true"]')).toHaveText("Same every day");
   await expect(page.locator("#rtwk")).toBeHidden();
-  await expect(page.locator("#rtsum")).toHaveText("Evening, every day · 10 texts");
+  await expect(page.locator("#rtsum")).toHaveText(/^Evening, every day · 10 texts · /);
   await expect(items(page)).toHaveCount(10);
   // the bottom bar and Home step aside; Back returns focus to Edit
   await page.locator("#rbk").click();
@@ -85,8 +85,8 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await expect(page.locator('#rtss [data-v="morning"]')).toBeFocused();
   await page.locator('#rtmd [data-v="weekday"]').click();
   await expect(page.locator("#rtwk")).toBeVisible();
-  await expect(page.locator('#rtwk [aria-checked="true"]')).toHaveAccessibleName("Monday 19");
-  await expect(page.locator("#rtsum")).toHaveText("Monday morning · 1 text");
+  await expect(page.locator('#rtwk [aria-checked="true"]')).toHaveAccessibleName(/^Monday 19, in all \d+ to \d+ minutes$/);
+  await expect(page.locator("#rtsum")).toHaveText(/^Monday morning · 1 text · /);
   await expect(page.locator("#rtcpb")).toHaveText("Copy to other days…");
   expect(await ids(page)).toEqual(["vedic-chant-atharvashirsha"]);
 
@@ -147,7 +147,7 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await expect(page.locator("#rtcpb")).toBeFocused();
   await expect(page.locator("#rtlive")).toHaveText("Copied to Thursday");
   await page.locator('#rtwk [data-v="4"]').click();
-  await expect(page.locator("#rtsum")).toHaveText("Thursday morning · 2 texts");
+  await expect(page.locator("#rtsum")).toHaveText(/^Thursday morning · 2 texts · /);
   expect(await ids(page)).toEqual(["aarti-ghalin-lotangan", "aarti-sukhkarta"]);
   await page.locator('#rtwk [data-v="2"]').click();
   expect(await ids(page)).toEqual(["vedic-chant-atharvashirsha"]);
@@ -173,7 +173,7 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   // and the builder opens on Tuesday, different by weekday
   await openBuilder(page);
   await expect(page.locator('#rtmd [aria-checked="true"]')).toHaveText("Different by weekday");
-  await expect(page.locator('#rtwk [aria-checked="true"]')).toHaveAccessibleName("Tuesday 20");
+  await expect(page.locator('#rtwk [aria-checked="true"]')).toHaveAccessibleName(/^Tuesday 20, in all \d+ to \d+ minutes$/);
 });
 
 test("same every day again: asked first when the days differ (Cancel keeps them); the day's list for every day; Escape closes the builder", async ({
@@ -203,7 +203,7 @@ test("same every day again: asked first when the days differ (Cancel keeps them)
   await page.locator("#rtfxo").click();
   await expect(page.locator("#rtlive")).toHaveText("Monday’s list is now used every day");
   await expect(page.locator("#rtwk")).toBeHidden();
-  await expect(page.locator("#rtsum")).toHaveText("Evening, every day · 9 texts");
+  await expect(page.locator("#rtsum")).toHaveText(/^Evening, every day · 9 texts · /);
   // the radio group: arrows choose
   await page.locator('#rtmd [data-v="fixed"]').focus();
   await page.keyboard.press("ArrowRight");
@@ -372,7 +372,7 @@ test("Marathi menus: बदला, and the builder's words in Marathi @mobile", 
   await openBuilder(page);
   await expect(page.locator("#rtbt")).toContainText("माझा दिनक्रम");
   await expect(page.locator('#rtss [aria-checked="true"]')).toHaveText("सायंकाळ");
-  await expect(page.locator("#rtsum")).toHaveText("रोज सायंकाळ · १० रचना");
+  await expect(page.locator("#rtsum")).toHaveText(/^रोज सायंकाळ · १० रचना · /);
   await expect(page.locator("#rbk")).toHaveText("मागे", { useInnerText: true });
 });
 

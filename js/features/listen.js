@@ -37,6 +37,7 @@ import { P } from "../core/state.js";
 import { keepPlace } from "./dhrupad-button.js";
 import { jumpTo } from "./history.js";
 import { leaveFor, startFor } from "./today-card.js";
+import { heard, heardEnd } from "./routine-time.js";
 
 var ORT = "vendor/onnxruntime/",
   TAP = "js/worklets/listen-tap.js",
@@ -184,6 +185,8 @@ export function init() {
     if (pos < 0) return;
     mark = { doc: i, pos: pos, t: performance.now(), paused: true };
     pending = null;
+    // (the stretch heard so far ends at the jump: what comes after it is not part of it, js/features/routine-time.js)
+    heardEnd();
   });
   ["touchstart", "wheel", "keydown"].forEach(function (ev) {
     addEventListener(
@@ -286,6 +289,8 @@ function begin() {
 
 function stop() {
   phase = "off";
+  // the stretch heard so far adds to the reader's pace (js/features/routine-time.js)
+  heardEnd();
   if (stream)
     stream.getTracks().forEach(function (t) {
       t.stop();
@@ -716,6 +721,8 @@ function place(doc, pos, at) {
     /** @type {import("../core/follow.js").Mark} */ found = { doc: doc, pos: pos, t: at };
   pace = nextPace(pace, before, found);
   before = found;
+  // each place found also teaches the reader's own pace, pauses included (js/features/routine-time.js)
+  heard(order[doc].id, pos, at);
   var moved = !mark || mark.doc !== doc;
   mark = correct(mark, pace, found, all[doc].text.length);
   seenAt = aliveAt = performance.now();

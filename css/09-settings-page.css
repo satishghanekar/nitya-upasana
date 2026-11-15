@@ -963,3 +963,26 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
 .sp .sp-sz button {
   min-width: 44px;
 }
+/* Chanting pace (#spcrow, js/features/routine-time.js): under the four paces, what is known of the reader's own, then
+   Forget as a link-like button, its tap target 44px high */
+.sp-note {
+  flex-basis: 100%;
+  margin: 8px 0 0;
+  font-size: var(--fz-s);
+  line-height: 1.45;
+  color: var(--muted);
+}
+.sp .sp-link {
+  min-height: 44px;
+  margin: 0 0 -8px;
+  padding: 0 2px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--fz-s);
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}

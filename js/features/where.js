@@ -11,6 +11,7 @@ import { byId, onPiece, root } from "../core/page.js";
 import { goLine } from "./bars.js";
 import { jumpTo, ovDone, ovPush } from "./history.js";
 import { runIds } from "./today-card.js";
+import { about, spanFor, spoken } from "./routine-time.js";
 import { menuWords } from "../core/strings.js";
 import { esc, scr, ui } from "../core/words.js";
 
@@ -239,19 +240,37 @@ export function whereMark(c, onText, l, title) {
     first = (i >= 0 && s ? digits(i + 1) + " / " + digits(s.length) + " · " : "") + title,
     path = where(c),
     second = path.length ? path.join(" · ") : menuWords("goto").title,
-    key = first + "|" + second;
+    // in a session, how long is left of it, from this text on (js/features/routine-time.js): it counts down text by
+    // text, not as the page scrolls
+    rest =
+      i >= 0 && s
+        ? spanFor(
+            s.slice(i).map(function (p) {
+              return p.text;
+            }),
+          )
+        : null,
+    left = rest ? menuWords("time").left(about(rest)) : "",
+    key = first + "|" + second + "|" + left;
   if (key === said) return;
   said = key;
   byId("wh1").textContent = first;
   var w2 = byId("wh2");
   placeIn(w2, path, second);
   w2.lang = path.length ? tl() : ui();
+  if (rest) {
+    var lt = document.createElement("span");
+    lt.className = "wh-left";
+    lt.lang = ui();
+    lt.textContent = " · " + left;
+    w2.appendChild(lt);
+  }
   byId("wh1").lang = tl();
   var tkw = byId("tkw");
   placeIn(tkw, path, "");
   tkw.lang = tl();
   // its spoken name starts with what it does (WCAG 2.5.3): "Go to: पवमानसूक्तम्, तृतीयोऽध्यायः, ९.४७"
-  var name = menuWords("goto").open([title].concat(path).join(", "));
+  var name = menuWords("goto").open([title].concat(path).join(", ") + (rest ? ", " + menuWords("time").left(spoken(rest)) : ""));
   btn.setAttribute("aria-label", name);
   pill.setAttribute("aria-label", name);
 }

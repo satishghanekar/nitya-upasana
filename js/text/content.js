@@ -21,7 +21,7 @@ import { parseText, RECORDING, toHtml } from "./format.js";
  * @typedef {{ id: string, name: Pair, order: number }} Category   one entry of content/categories.json
  * @typedef {{ texts: LibraryText[], pageLanguage: string, languages: Record<string, Pair>,
  *   refrain: { label: Pair, note: Pair }, ui: { prev: Pair, next: Pair }, wiki: Record<string, Record<string, string>>,
- *   outline?: { minLines: number, group: number } }} Library
+ *   outline?: { minLines: number, group: number }, timing?: any }} Library
  * @typedef {{ l: string, rf?: true, mr: string, en: string }} Line
  * @typedef {{ kind?: string, bold?: true, para?: true, lines?: Line[], rmk?: Pair, nt?: true }} Item
  *   rmk: a small line between blocks: the dhrupad's marker (↻ ध्रुपद), or, with nt, a [note] from the text file (Phalashruti,
@@ -29,7 +29,7 @@ import { parseText, RECORDING, toHtml } from "./format.js";
  * @typedef {{ id: string, text: string, lang?: string, cls?: string, prose?: true, no: Pair, title: Pair, tag: Pair,
  *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string, partName?: Pair }} Piece
  *   lead: what comes before the dhrupad at the top (refrain), [once] lines and [note]s, shown above it
- * @typedef {{ ui: Library["ui"], wiki: Library["wiki"], outline?: Library["outline"], categories: { id: string, name: Pair,
+ * @typedef {{ ui: Library["ui"], wiki: Library["wiki"], outline?: Library["outline"], timing?: any, categories: { id: string, name: Pair,
  *   pieces: Piece[] }[] }} Content
  */
 
@@ -265,6 +265,9 @@ export function buildContent(lib, files, cats) {
     wiki: lib.wiki,
     // when a text has Go to, and how many verses make a group (js/text/outline.js)
     outline: lib.outline,
+    // the chanting paces and the time between texts, for how long a text or a session takes (js/core/timing.js, where
+    // the app has one: Nitya Upasana)
+    timing: lib.timing,
     categories: list.map(function (c) {
       return {
         id: c.id,

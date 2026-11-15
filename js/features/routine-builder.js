@@ -47,6 +47,8 @@ import { shownSession } from "./today-card.js";
 import { createPicker } from "./text-picker.js";
 import { dv, esc, lead, nameOf as menuName, num, scr, scrKey, second, ui } from "../core/words.js";
 import { LANGS, menuWords } from "../core/strings.js";
+import { dayTime, mid, short, spanFor, spoken, timeHtml, weekTime } from "./routine-time.js";
+import { spanMinutes } from "../core/timing.js";
 
 /**
  * @typedef {import("../core/time-of-day.js").Session} Session
@@ -225,7 +227,10 @@ function drawBase() {
     }),
   );
   var n = perDay(baseRoutine(loaded.routines, b));
-  el("rtbi").textContent = /** @type {Record<string, string>} */ (w.baseInfo)[b] + " · " + w.perDay(n[0], n[1]);
+  // what it holds, its texts a day, and how long a day takes (js/features/routine-time.js)
+  var r = baseRoutine(loaded.routines, b);
+  el("rtbi").textContent =
+    /** @type {Record<string, string>} */ (w.baseInfo)[b] + " · " + w.perDay(n[0], n[1]) + " · " + menuWords("time").aDay(short(weekTime(r)));
   el("rtbst").textContent = mine ? w.own(baseName(b)) : w.follow(baseName(b));
   var bk = el("rtbk");
   bk.hidden = !mine;
@@ -326,21 +331,41 @@ function render() {
   // Monday … Sunday, with this week's dates
   var wk = el("rtwk"),
     week = weekOf(new Date()),
-    today = new Date().getDay();
+    today = new Date().getDay(),
+    tw = menuWords("time"),
+    // each day's time, all its sessions (js/features/routine-time.js): its minutes once the pace is known, and a bar
+    // as high as its share of the longest day, so a heavy day stands out before it is kept
+    spans = WEEK_ORDER.map(function (d) {
+      return dayTime(view.r, d);
+    }),
+    most = Math.max.apply(null, spans.map(mid).concat([1]));
   wk.hidden = !weekly();
   radios(
     wk,
     w.dayG,
     WEEK_ORDER.map(function (d, i) {
+      var m = spanMinutes(spans[i]);
       return {
         v: String(d),
-        html: '<span class="rtwd">' + esc(w.short[d]) + "</span><b>" + num(week[i].getDate()) + "</b>",
-        label: w.days[d] + " " + num(week[i].getDate()),
+        html:
+          '<span class="rtwd">' +
+          esc(w.short[d]) +
+          "</span><b>" +
+          num(week[i].getDate()) +
+          '</b><span class="rtdm" aria-hidden="true">' +
+          (m.lo === m.hi ? num(m.lo) : "") +
+          '</span><span class="rtdb" aria-hidden="true" style="--wk:' +
+          (mid(spans[i]) / most).toFixed(3) +
+          '"></span>',
+        label: w.days[d] + " " + num(week[i].getDate()) + ", " + tw.total(spoken(spans[i])),
         on: d === view.day,
         cls: d === today ? "today" : "",
       };
     }),
   );
+  var wh = el("rtwkh");
+  wh.hidden = !weekly();
+  wh.textContent = tw.week;
   drawList();
   // Copy to other days…
   var cb = el("rtcpb");
@@ -386,7 +411,8 @@ function drawList() {
     ids = list(),
     ol = el("rtl"),
     n = ids.length;
-  el("rtsum").textContent = what() + " · " + w.texts(n);
+  // what is being edited, how many texts, and how long they take (js/features/routine-time.js)
+  el("rtsum").innerHTML = esc(what() + " · " + w.texts(n)) + (n ? ' <span aria-hidden="true">·</span> ' + timeHtml(spanFor(ids), true) : "");
   ol.innerHTML = ids
     .map(function (id, i) {
       var t = info[id],
@@ -403,6 +429,9 @@ function drawList() {
         ".</span>" +
         '<span class="tt">' +
         nameHtml(t) +
+        '<span class="rtm">' +
+        timeHtml(spanFor([id])) +
+        "</span>" +
         "</span>" +
         '<span class="rtbs">' +
         '<button type="button" class="mv" data-a="up" aria-label="' +
@@ -699,6 +728,10 @@ export function init() {
       var w = words();
       return { heading: w.addTo(what()), search: w.search, none: w.none, done: w.done, found: w.found, cats: catWords() };
     },
+  });
+  // the chanting pace changed (js/features/routine-time.js): the times again, while the builder is open
+  document.addEventListener("nitya-pace", function () {
+    if (isOpen()) render();
   });
   // Home: Edit and Add texts (js/features/today-card.js)
   document.addEventListener("nitya-routine-edit", function (e) {

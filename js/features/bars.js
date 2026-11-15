@@ -10,6 +10,7 @@ import { calLang } from "./vedic-calendar.js";
 import { libLang } from "./library.js";
 import { pdfLang } from "./pdfs.js";
 import { routineLang } from "./routine-builder.js";
+import { timeLang } from "./routine-time.js";
 import { welcomeLang } from "./welcome.js";
 import { autoFs, pullSoon } from "../text/autofit.js";
 import { cur, foldSet, unfold } from "../core/apply.js";
@@ -359,6 +360,10 @@ export function apply() {
   // Settings → Routine: the routine followed (menu language)
   try {
     routineLang();
+  } catch (e) {}
+  // Settings → Chanting pace: the pace picked and what is known of the reader's own (menu language)
+  try {
+    timeLang();
   } catch (e) {}
   // the welcome card on Home, while it shows (menu language)
   try {

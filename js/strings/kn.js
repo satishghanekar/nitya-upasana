@@ -722,6 +722,13 @@ export default {
     highContrast: "ಹೆಚ್ಚಿನ ಕಾಂಟ್ರಾಸ್ಟ್",
     keepScreenOn: "ಪರದೆ ಆನ್ ಇರಲಿ",
     afterLastTouch: "ಕೊನೆಯ ಸ್ಪರ್ಶದ ನಂತರ, ನಿಮಿಷಗಳು",
+    chantingPace: "ಪಠಣದ ವೇಗ",
+    paceHint: "ಪಠ್ಯಗಳು ಮತ್ತು ಸಮಯಗಳಿಗೆ ಬೇಕಾಗುವ ಕಾಲ",
+    paceAuto: "ಸ್ವಯಂ",
+    paceQuick: "ವೇಗ",
+    paceSteady: "ಮಧ್ಯಮ",
+    paceSlow: "ನಿಧಾನ",
+    paceForget: "ಕಲಿತ ವೇಗವನ್ನು ಮರೆಯಿರಿ",
     off: "ಆಫ್",
     profilesAndBackup: "ಪ್ರೊಫೈಲ್‌ಗಳು ಮತ್ತು ಬ್ಯಾಕಪ್",
     thisBrowserCanTSave: "ಈ ಬ್ರೌಸರ್ ಇಲ್ಲಿ ಉಳಿಸಲಾರದು. ಮುಚ್ಚುವ ಮೊದಲು ಬ್ಯಾಕಪ್ ಫೈಲ್ ಉಳಿಸಿ.",
@@ -851,5 +858,52 @@ export default {
     },
     noGeo: "ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಸ್ಥಳ ಲಭ್ಯವಿಲ್ಲ",
     noPlace: "ನಿಮ್ಮ ಸ್ಥಳ ಸಿಗಲಿಲ್ಲ",
+  },
+  // How long a text or a session takes to chant (js/features/routine-time.js, js/core/timing.js)
+  time: {
+    /** @param {number} n */
+    min: function (n) {
+      return n + " ನಿಮಿಷ";
+    },
+    /** @param {number} n */
+    about: function (n) {
+      return "ಸುಮಾರು " + n + " ನಿಮಿಷ";
+    },
+    /** @param {number} a @param {number} b */
+    range: function (a, b) {
+      return a + "–" + b + " ನಿಮಿಷ";
+    },
+    /** @param {number} n */
+    aboutL: function (n) {
+      return "ಸುಮಾರು " + n + " ನಿಮಿಷಗಳು";
+    },
+    /** @param {number} a @param {number} b */
+    rangeL: function (a, b) {
+      return a + " ರಿಂದ " + b + " ನಿಮಿಷಗಳು";
+    },
+    /** @param {string} s */
+    left: function (s) {
+      return s + " ಉಳಿದಿದೆ";
+    },
+    /** @param {string} s */
+    total: function (s) {
+      return "ಒಟ್ಟು " + s;
+    },
+    /** @param {string} s */
+    learned: function (s) {
+      return "ನಿಮ್ಮದೇ ವೇಗ, Follow ಕೇಳಿ ಕಲಿತದ್ದು (" + s + " ಕೇಳಿದೆ).";
+    },
+    /** @param {string} s */
+    learning: function (s) {
+      return "Follow ನಿಮ್ಮ ಪಠಣವನ್ನು ಇನ್ನೂ ಸ್ವಲ್ಪ ಕೇಳುವವರೆಗೆ ಸಮಯವನ್ನು ಅಂದಾಜಾಗಿ ತೋರಿಸಲಾಗುತ್ತದೆ (ಇಲ್ಲಿಯವರೆಗೆ " + s + "), ಅಥವಾ ವೇಗವನ್ನು ಆರಿಸಿ.";
+    },
+    range0: "Follow ನಿಮ್ಮ ಪಠಣವನ್ನು ಕೆಲವು ನಿಮಿಷ ಕೇಳುವವರೆಗೆ ಸಮಯವನ್ನು ಅಂದಾಜಾಗಿ ತೋರಿಸಲಾಗುತ್ತದೆ, ಅಥವಾ ವೇಗವನ್ನು ಆರಿಸಿ.",
+    chosen: "ಸಮಯವನ್ನು ಇಲ್ಲಿ ಆರಿಸಿದ ವೇಗದಲ್ಲಿ ಎಣಿಸಲಾಗುತ್ತದೆ.",
+    forgot: "ಮರೆತಿದೆ. ಸಮಯವನ್ನು ಮತ್ತೆ ಅಂದಾಜಾಗಿ ತೋರಿಸಲಾಗುತ್ತದೆ.",
+    week: "ಪ್ರತಿ ದಿನದ ಸಮಯ, ಎಲ್ಲ ಹೊತ್ತುಗಳು",
+    /** @param {string} s */
+    aDay: function (s) {
+      return "ದಿನಕ್ಕೆ " + s;
+    },
   },
 };

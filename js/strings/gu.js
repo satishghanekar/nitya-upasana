@@ -710,6 +710,13 @@ export default {
     highContrast: "વધુ કૉન્ટ્રાસ્ટ",
     keepScreenOn: "પડદો ચાલુ રાખો",
     afterLastTouch: "છેલ્લા સ્પર્શ પછી, મિનિટ",
+    chantingPace: "પાઠની ગતિ",
+    paceHint: "પાઠ અને સમય માટે લાગતો સમય",
+    paceAuto: "આપમેળે",
+    paceQuick: "ઝડપી",
+    paceSteady: "મધ્યમ",
+    paceSlow: "ધીમી",
+    paceForget: "શીખેલી ગતિ ભૂલી જાઓ",
     off: "બંધ",
     profilesAndBackup: "પ્રોફાઇલ અને બેકઅપ",
     thisBrowserCanTSave: "આ બ્રાઉઝર અહીં સાચવી શકતું નથી. બંધ કરતાં પહેલાં બેકઅપ ફાઇલ સાચવો.",
@@ -839,5 +846,52 @@ export default {
     },
     noGeo: "આ બ્રાઉઝરમાં સ્થાન મળતું નથી",
     noPlace: "તમારું સ્થાન મળ્યું નહીં",
+  },
+  // How long a text or a session takes to chant (js/features/routine-time.js, js/core/timing.js)
+  time: {
+    /** @param {number} n */
+    min: function (n) {
+      return n + " મિનિટ";
+    },
+    /** @param {number} n */
+    about: function (n) {
+      return "આશરે " + n + " મિનિટ";
+    },
+    /** @param {number} a @param {number} b */
+    range: function (a, b) {
+      return a + "–" + b + " મિનિટ";
+    },
+    /** @param {number} n */
+    aboutL: function (n) {
+      return "આશરે " + n + " મિનિટ";
+    },
+    /** @param {number} a @param {number} b */
+    rangeL: function (a, b) {
+      return a + " થી " + b + " મિનિટ";
+    },
+    /** @param {string} s */
+    left: function (s) {
+      return s + " બાકી";
+    },
+    /** @param {string} s */
+    total: function (s) {
+      return "કુલ " + s;
+    },
+    /** @param {string} s */
+    learned: function (s) {
+      return "તમારી પોતાની ગતિ, Follow એ સાંભળીને શીખેલી (" + s + " સાંભળ્યું).";
+    },
+    /** @param {string} s */
+    learning: function (s) {
+      return "Follow તમારો પાઠ થોડો વધુ સમય સાંભળે ત્યાં સુધી સમય અંદાજે બતાવાય છે (અત્યાર સુધી " + s + "), અથવા ગતિ પસંદ કરો.";
+    },
+    range0: "Follow તમારો પાઠ થોડી મિનિટ સાંભળે ત્યાં સુધી સમય અંદાજે બતાવાય છે, અથવા ગતિ પસંદ કરો.",
+    chosen: "સમય અહીં પસંદ કરેલી ગતિથી ગણાય છે.",
+    forgot: "ભૂલી ગયા. સમય ફરી અંદાજે બતાવાય છે.",
+    week: "દરેક દિવસનો સમય, બધા સમય",
+    /** @param {string} s */
+    aDay: function (s) {
+      return "રોજ " + s;
+    },
   },
 };

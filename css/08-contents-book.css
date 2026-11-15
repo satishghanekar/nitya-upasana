@@ -349,3 +349,22 @@ html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
 .cr .rec {
   line-height: 2;
 }
+
+/* ==== How long a text takes (js/features/routine-time.js): after its language, in the menu language, as small and
+   muted as the language; on its own when the language is hidden ==== */
+#jl .tocg ol.toc .ltm::before {
+  content: "·";
+  margin: 0 0.4em;
+}
+#jl .tocg ol.toc .lt > .ltm:first-child::before {
+  content: none;
+}
+#jl .tocg ol.toc .ltm {
+  /* (relative: the words for screen readers, .sr, absolute, stay in the row; WebKit made the Library as tall as the
+     list from where they would otherwise be placed) */
+  position: relative;
+  font: 400 var(--fz-s)/1 var(--lat);
+}
+#jl .tocg ol.toc .ltm [lang="mr"] {
+  font-family: var(--body);
+}
