@@ -31,6 +31,27 @@
   function two(t, tw) {
     return '<span class="mr"' + (tw ? ' data-tw="' + tw + '"' : "") + ">" + t.mr + '</span><span class="en" lang="en">' + t.en + "</span>";
   }
+  // The dhrupad's label: its word, and how it is sung (the brackets) in a part of its own, .lab-how, left out on
+  // screen where both languages show. The text's own language's parts are marked for SCR.el below (data-tw)
+  /** @param {Pair} t */
+  function refrainLabel(t) {
+    /** @param {string} s @param {boolean} tw */
+    function parts(s, tw) {
+      var m = /^(.*?) (\(.*\))$/.exec(s) || ["", s, ""];
+      return (
+        "<span" +
+        (tw ? ' data-tw="refrainWord"' : "") +
+        ">" +
+        m[1] +
+        '</span> <span class="lab-how"' +
+        (tw ? ' data-tw="refrainHow"' : "") +
+        ">" +
+        m[2] +
+        "</span>"
+      );
+    }
+    return two({ mr: parts(t.mr, true), en: parts(t.en, false) });
+  }
   /** @param {Line[]} list @param {"mr" | "en"} lang @param {string} pad */
   function lines(list, lang, pad) {
     return list
@@ -149,12 +170,7 @@
     // [once] lines and [note]s that come before the dhrupad at the top (js/text/content.js)
     if (p.lead) h += '    <div class="items lead">\n' + p.lead.map(item).join("") + "    </div>\n";
     if (p.refrain)
-      h +=
-        '    <div class="rftop">\n      <div class="lab">' +
-        two(p.refrain.label, "refrainLabel") +
-        "</div>\n" +
-        verse(p.refrain.lines, "      ") +
-        "    </div>\n";
+      h += '    <div class="rftop">\n      <div class="lab">' + refrainLabel(p.refrain.label) + "</div>\n" + verse(p.refrain.lines, "      ") + "    </div>\n";
     h += '    <div class="items">\n' + p.items.map(item).join("") + "    </div>\n";
     h += "    " + LOTUS + "\n";
     h += '    <div class="cr">' + p.credit + "</div>\n";

@@ -894,7 +894,8 @@ export default {
   },
   // The words the site adds to a text (js/strings/en.js)
   text: {
-    refrainLabel: "ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)",
+    refrainWord: "ध्रुपद",
+    refrainHow: "(प्रत्येक कडव्यानंतर म्हणावे)",
     version: "पाठभेद",
     refrainNote: "↻ ध्रुपद",
     prev: "मागील",

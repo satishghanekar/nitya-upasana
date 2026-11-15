@@ -76,7 +76,7 @@
   .bar .tools button[aria-expanded="true"] {
     border-radius: 999px;
   }
-  /* (round: the button is an icon alone) */
+  /* (rounded as the pill is) */
   #asi button:is([aria-expanded="true"], [aria-pressed="true"]) {
     border-radius: 999px;
   }

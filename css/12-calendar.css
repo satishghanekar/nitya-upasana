@@ -1030,6 +1030,16 @@
 #cald .dnav {
   padding: 0 0 12px;
 }
+/* The Day card's picture and tithi move up beside Today's row. Today stays centred under ‹ ›, its row kept on today
+   too, so nothing moves (Satish, 2026-10-30 and 2026-11-02); but the date beside it is two lines, shorter than the
+   arrows and that row, which left a blank band between the date and the tithi (the review of 2026-11-15). The tithi's
+   line starts under the date, clear of Today's word, which is at the right. */
+#cald .dnav {
+  padding-bottom: 4px;
+}
+#cald .cdh {
+  margin-top: -16px;
+}
 
 /* ==== The drawings of the festivals and the holidays' flags (js/core/fest-icons.js): in a tinted circle, the tint
    the kind of day, in every theme (the "Nitya Home cards" mockups, Satish, 2026-10-30) ==== */

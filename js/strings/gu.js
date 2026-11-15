@@ -904,7 +904,8 @@ export default {
   },
   // The words the site adds to a text (js/strings/en.js)
   text: {
-    refrainLabel: "ધ્રુપદ (દરેક કડી પછી ગાવું)",
+    refrainWord: "ધ્રુપદ",
+    refrainHow: "(દરેક કડી પછી ગાવું)",
     version: "પાઠભેદ",
     refrainNote: "↻ ધ્રુપદ",
     prev: "પાછલું",

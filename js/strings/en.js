@@ -927,7 +927,9 @@ export default {
   // marker, Previous / Next under it, its language, and its credit's words. A text shown in Kannada, Telugu or Gujarati
   // letters takes that language's own words here, never Marathi's written in its letters (js/render.js SCR.el)
   text: {
-    refrainLabel: "Refrain (sung after every verse)",
+    // the dhrupad's label: its word, and how it is sung (js/render.js refrainLabel())
+    refrainWord: "Refrain",
+    refrainHow: "(sung after every verse)",
     // the switch between a text's versions (the Hanuman Chalisa: Tulsidas | Popular)
     version: "Version",
     refrainNote: "Refrain",

@@ -910,7 +910,8 @@ export default {
   },
   // The words the site adds to a text (js/strings/en.js)
   text: {
-    refrainLabel: "ధ్రువపదం (ప్రతి చరణం తర్వాత పాడండి)",
+    refrainWord: "ధ్రువపదం",
+    refrainHow: "(ప్రతి చరణం తర్వాత పాడండి)",
     version: "పాఠభేదం",
     refrainNote: "↻ ధ్రువపదం",
     prev: "మునుపటి",

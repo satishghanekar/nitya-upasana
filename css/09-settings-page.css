@@ -929,10 +929,13 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   }
   /* Settings has the whole short screen: the top bar steps aside (it and the tabs took a third of the height, Satish,
      2026-11-15), unseen but in its place, so the text behind stays put. (Over the script's style.top) */
-  :root[data-menu="panel"] body > .bar {
+  :root:is([data-menu="panel"], [data-menu="jump"], [data-menu="cal"]) body > .bar {
     visibility: hidden;
   }
-  :root[data-menu="panel"] #panel {
+  /* (the Library and the Vedic calendar too, 13-library.css and 12-calendar.css: one rule for the three) */
+  :root[data-menu="panel"] #panel,
+  :root[data-menu="jump"] #jump,
+  :root[data-menu="cal"] #cal {
     top: 0 !important;
     padding-top: env(safe-area-inset-top, 0px);
   }

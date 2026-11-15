@@ -916,7 +916,8 @@ export default {
   },
   // The words the site adds to a text (js/strings/en.js)
   text: {
-    refrainLabel: "ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)",
+    refrainWord: "ಧ್ರುಪದ",
+    refrainHow: "(ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)",
     version: "ಪಾಠಭೇದ",
     refrainNote: "↻ ಧ್ರುಪದ",
     prev: "ಹಿಂದಿನ",

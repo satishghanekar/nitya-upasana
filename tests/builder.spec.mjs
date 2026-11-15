@@ -666,3 +666,39 @@ for (const [name, size] of [
     for (const sel of ["#rtrpo", "#rtrpx", "#rtbk"]) await expect(page.locator(sel)).toBeInViewport({ ratio: 1 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
+
+// A phone's rows: the first name on its own line, the second name on one line under it and the time under that, both
+// starting where the first name starts, the buttons beside them (the time fell under the number and pushed the names
+// to the right, and a long second name wrapped beside it; the review of 2026-11-15)
+test("a phone's builder rows: the names and the time in one column, the second name on one line", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.both);
+  await page.locator("#tss-evening").click();
+  await page.locator("#tsed").click();
+  const rows = await page.locator("#rtl li").evaluateAll((l) =>
+    l.map((li) => {
+      const r = (/** @type {string} */ s) => /** @type {Element} */ (li.querySelector(s)).getBoundingClientRect();
+      const t1 = r(".t1"),
+        t2 = r(".t2"),
+        m = r(".rtm"),
+        b = r(".rtbs"),
+        box = li.getBoundingClientRect();
+      return {
+        lined: Math.abs(t1.left - t2.left) + Math.abs(t2.left - m.left),
+        oneLine: t2.height < 30,
+        order: t1.bottom <= t2.top + 1 && t2.bottom <= m.top + 1,
+        clear: t2.right <= b.left && b.right <= box.right + 1,
+      };
+    }),
+  );
+  expect(rows.length).toBeGreaterThan(2);
+  for (const r of rows) expect(r).toEqual({ lined: 0, oneLine: true, order: true, clear: true });
+  // Which days: a small pill at the right, not a third box across the page
+  const md = await page.evaluate(() => {
+    const r = (/** @type {string} */ s) => /** @type {Element} */ (document.querySelector(s)).getBoundingClientRect();
+    return { narrower: r("#rtmd").width < r("#rtss").width, right: Math.abs(r("#rtmd").right - r("#rtss").right), tap: r("#rtmd button").height };
+  });
+  expect(md.narrower).toBe(true);
+  expect(md.right).toBeLessThanOrEqual(1);
+  expect(md.tap).toBeGreaterThanOrEqual(44);
+});

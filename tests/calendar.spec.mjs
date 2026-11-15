@@ -1138,3 +1138,21 @@ test.describe("a time zone with no known city", () => {
     await expect(page.locator("#pan .p1")).not.toBeEmpty();
   });
 });
+
+// The Day card on a phone: the date is two lines beside ‹ › and Today's row, which left a blank band above the tithi
+// (the review of 2026-11-15); the picture and the tithi start close under the date, clear of Today's word
+test("the Day card on a phone: no blank band between the date and the tithi, and Today clear of it", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, COLUMBUS, { now: NOW });
+  await page.locator("#panb").click(CORNER);
+  await page.locator('#cald [data-dd="1"]').click();
+  const at = await page.evaluate(() => {
+    const r = (/** @type {string} */ s) => /** @type {Element} */ (document.querySelector(s)).getBoundingClientRect();
+    const word = document.createRange();
+    word.selectNodeContents(/** @type {Element} */ (document.querySelector('#cald [data-dd="0"]')));
+    return { gap: r("#cald .cdh").top - r("#cald .dnh").bottom, word: word.getBoundingClientRect().bottom, tithi: r("#cald .cdh").top };
+  });
+  expect(at.gap).toBeGreaterThanOrEqual(8);
+  expect(at.gap).toBeLessThanOrEqual(32);
+  expect(at.word, "Today's word above the tithi's line").toBeLessThanOrEqual(at.tithi);
+});

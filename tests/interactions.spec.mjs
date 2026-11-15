@@ -18,14 +18,38 @@ test("while reading the top bar has Share and Settings; the bottom bar has Home,
   for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   expect(await page.locator(".bar .tools button:visible").evaluateAll((l) => l.map((b) => b.id))).toEqual(["tmb", "aa"]);
   await expect(page.locator("#tmb")).toHaveAccessibleName("Share");
-  // the bottom bar's middle buttons are icons alone (Satish 2026-11-13: the words under them crowded a phone), each
-  // still named by its word, in the menu language, for screen readers and voice control
+  // the bottom bar's middle buttons: the icon with its word under it, in the menu language (icons alone, from
+  // 2026-11-13, were hard to tell apart; the review of 2026-11-15, Satish: build it). The word is the button's name
   await expect(page.locator("#ash")).toHaveAccessibleName("Home");
   await expect(page.locator("#hm")).toHaveAccessibleName("Library");
   await expect(page.locator("#rsb")).toHaveAccessibleName("Reading");
-  for (const b of ["#ash", "#hm", "#rsb"]) expect(await page.locator(b + " .asil").evaluate((e) => getComputedStyle(e).height)).toBe("1px");
-  // and the bar is no taller than its round Prev and Next buttons need
+  for (const b of ["#ash", "#hm", "#rsb"]) {
+    await expect(page.locator(b + " .asil")).toBeVisible();
+    const fit = await page.locator(b).evaluate((e) => {
+      const r = e.getBoundingClientRect(),
+        w = e.querySelector(".asil").getBoundingClientRect(),
+        i = e.querySelector("svg").getBoundingClientRect();
+      return { wide: r.width, high: r.height, wordIn: w.left >= r.left && w.right <= r.right && w.bottom <= r.bottom, under: w.top >= i.bottom };
+    });
+    expect(fit.wide, b).toBeGreaterThanOrEqual(44);
+    expect(fit.high, b).toBeGreaterThanOrEqual(44);
+    expect(fit.wordIn, b + ": the word inside its button").toBe(true);
+    expect(fit.under, b + ": the word under the icon").toBe(true);
+  }
+  // and the bar is no taller than its round Prev and Next buttons need, as it was with icons alone
   expect(await page.locator("#asi").evaluate((e) => e.getBoundingClientRect().height)).toBeLessThanOrEqual(58);
+  // nothing in the bar spills out of it
+  expect(
+    await page
+      .locator("#asi")
+      .evaluate((e) =>
+        [...e.children].every(
+          (b) =>
+            b.hidden ||
+            (b.getBoundingClientRect().left >= e.getBoundingClientRect().left && b.getBoundingClientRect().right <= e.getBoundingClientRect().right),
+        ),
+      ),
+  ).toBe(true);
 });
 
 test("the bottom bar's words follow the menu language @mobile", async ({ page }) => {
@@ -1102,4 +1126,101 @@ test("a short text keeps the Home link as its title; Go to only where a text is 
   await untuck(page);
   await expect(page.locator("#where")).toBeHidden();
   await expect(page.locator("#bt")).toHaveAttribute("href", "./");
+});
+
+// ==== The phone and iPad review of 2026-11-15 (Satish: build it), the nine screens' mock-ups ====
+
+// The bottom bar where there is no room for icon and word: under 360px the icon alone, on a phone's side the word alone
+test("the bottom bar: icons alone on the smallest phones, words alone on a phone held sideways", async ({ page }) => {
+  await page.setViewportSize({ width: 340, height: 640 });
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  await untuck(page);
+  const inside = () =>
+    page.locator("#asi").evaluate((e) => {
+      const r = e.getBoundingClientRect();
+      return [...e.children].every((b) => b.hidden || (b.getBoundingClientRect().left >= r.left && b.getBoundingClientRect().right <= r.right));
+    });
+  expect(await page.locator("#hm .asil").evaluate((e) => getComputedStyle(e).height)).toBe("1px");
+  await expect(page.locator("#hm svg")).toBeVisible();
+  await expect(page.locator("#hm")).toHaveAccessibleName("Library");
+  expect(await inside()).toBe(true);
+  await page.setViewportSize({ width: 844, height: 390 });
+  await untuck(page);
+  await expect(page.locator("#hm .asil")).toBeVisible();
+  await expect(page.locator("#hm svg")).toBeHidden();
+  expect(await page.locator("#hm").evaluate((e) => e.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+  expect(await inside()).toBe(true);
+});
+
+// Both languages: the number and the Marathi name, then the English name, each centred in the title's card as a
+// one-language title is (they stood to the left of the text they head); the dhrupad's label is its two words, one line
+test("Marathi + English: the title centred in its card, and the dhrupad's label on one line @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.both, { hash: "#a1" });
+  const off = await page.locator("#a1 header").evaluate((h) => {
+    const mid = (/** @type {Element} */ e) => {
+      const r = document.createRange();
+      r.selectNodeContents(e);
+      const b = r.getBoundingClientRect();
+      return (b.left + b.right) / 2;
+    };
+    const c = h.getBoundingClientRect(),
+      centre = (c.left + c.right) / 2;
+    return [Math.abs(mid(/** @type {Element} */ (h.querySelector("h2 .en"))) - centre), Math.abs(mid(/** @type {Element} */ (h.querySelector("h2"))) - centre)];
+  });
+  expect(off[0], "the English name").toBeLessThanOrEqual(2);
+  expect(off[1], "the heading").toBeLessThanOrEqual(2);
+  const lab = page.locator("#a1 .rftop .lab");
+  await expect(lab.locator(".lab-how").first()).toBeHidden();
+  await expect(lab).toHaveText("ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)");
+  // one line: no taller than its line height allows
+  expect(await lab.evaluate((e) => e.getBoundingClientRect().height / parseFloat(getComputedStyle(e).lineHeight))).toBeLessThan(1.6);
+});
+
+test("one language: the dhrupad's label says how it is sung @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  await expect(page.locator("#a1 .rftop .lab .mr .lab-how")).toBeVisible();
+  await expect(page.locator("#a1 .rftop .lab .mr")).toHaveText("ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)");
+});
+
+// A phone held sideways: Home's two columns are narrower than an upright phone, and the lines that keep to one line
+// there ("रविवार, १८ ऑ…", "Afterno…", "Columbu") wrap or lose their drawing instead
+test("Home on a phone held sideways: no word is cut", async ({ page }) => {
+  await page.setViewportSize({ width: 667, height: 375 });
+  await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 } }, { now: new Date("2026-10-18T19:00:00-04:00") });
+  const cut = await page.evaluate(() =>
+    [...document.querySelectorAll("#tdd .d1, #pan .p2, #ploc, #tss .tsw")].filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => e.id || e.className),
+  );
+  expect(cut).toEqual([]);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+// A phone held sideways: the Library and the Vedic calendar have the whole short screen, as Settings has: the top bar
+// steps aside, and the Library's Back, tabs and search box share one row
+test("the Library and the calendar on a phone held sideways: the whole screen, one header row", async ({ page }) => {
+  await page.setViewportSize({ width: 844, height: 390 });
+  await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 } }, { now: new Date("2026-10-18T19:00:00-04:00") });
+  await page.locator("#hm").click();
+  await expect(page.locator("#jump")).toBeVisible();
+  expect(await page.locator(".bar").evaluate((e) => getComputedStyle(e).visibility)).toBe("hidden");
+  const row = await page.evaluate(() =>
+    ["#jump", "#jbk", "#jtb", "#q", "#library-top"].map((s) => Math.round(/** @type {Element} */ (document.querySelector(s)).getBoundingClientRect().top)),
+  );
+  expect(row[0], "the Library from the top of the screen").toBe(0);
+  expect(Math.abs(row[1] - row[2]), "Back and the tabs level").toBeLessThanOrEqual(4);
+  expect(Math.abs(row[1] - row[3]), "the search box beside them").toBeLessThanOrEqual(4);
+  expect(row[4], "the list starts within the first third").toBeLessThan(130);
+  // the list in two columns, and still found by typing
+  expect(await page.locator("#jl").evaluate((e) => getComputedStyle(e).columnCount)).toBe("2");
+  await page.locator("#q").fill("sukh");
+  await expect(page.locator("#res li").first()).toBeVisible();
+  await page.locator("#q").fill("");
+  await page.locator("#jbk").click();
+  await expect(page.locator("#jump")).toBeHidden();
+  expect(await page.locator(".bar").evaluate((e) => getComputedStyle(e).visibility)).toBe("visible");
+  await page.locator("#panb").click({ position: { x: 12, y: 12 } });
+  await expect(page.locator("#cal")).toBeVisible();
+  expect(await page.locator(".bar").evaluate((e) => getComputedStyle(e).visibility)).toBe("hidden");
+  expect(await page.locator("#cal").evaluate((e) => Math.round(e.getBoundingClientRect().top))).toBe(0);
+  await page.locator("#cbk").click();
+  await expect(page.locator("#cal")).toBeHidden();
 });

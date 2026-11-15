@@ -548,17 +548,88 @@
   touch-action: pan-y;
 }
 
-/* ==== Book order | A–Z (#library-order, js/features/library.js) at the top of the texts' list: the look of Chants |
-   Books (#jtb, at the top of this file), narrower and centred; Marathi and the other Indian menus in the text font ==== */
+/* ==== How many texts and Book order | A–Z (#library-top, js/features/library.js) in one row at the top of the texts'
+   list: the count on the left, where the list's numbers start, and the choice on the right, where its times end. (The
+   choice stood centred and 300px wide, lined up with nothing above or below it; the review of 2026-11-15.) A small
+   pill, so it does not read as a second row of tabs under Chants | Books; Marathi and the other Indian menus in the
+   text font ==== */
+#library-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 2px 0 12px;
+  column-span: all;
+}
+#library-count {
+  color: var(--muted);
+  font: 600 var(--fz-s) / 1.2 var(--lat);
+}
 #library-order {
-  max-width: 300px;
-  margin: 4px auto 12px;
+  flex: none;
+  grid-template-columns: auto auto;
+  border-radius: 999px;
 }
 #library-order button {
+  padding: 0 14px;
+  border-radius: 999px;
   font-size: var(--fz-s);
 }
+:is(#library-order, #library-count)[lang]:not([lang="en"]),
 #library-order [lang]:not([lang="en"]) {
   font-family: var(--body);
+}
+
+/* ==== A phone held sideways: the Library has the whole short screen. The top bar steps aside (09-settings-page.css,
+   as for Settings), and Back, Chants | Books and the search box share one row at the top, in place of three bands
+   (the bar, the tabs, the box at the foot) that left two of the list's rows in view (the review of 2026-11-15). The
+   whole Library scrolls, as on wide screens; the list is in two columns ==== */
+@media (orientation: landscape) and (max-height: 520px) {
+  :root:not([data-rail="1"]) #jump {
+    overflow-y: auto;
+  }
+  :root:not([data-rail="1"]) #jump .libin {
+    flex-flow: row wrap;
+    align-items: center;
+    align-content: flex-start;
+    column-gap: 8px;
+    height: auto;
+    min-height: 100%;
+    padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
+  }
+  :root:not([data-rail="1"]) #jump .libsc {
+    display: contents;
+  }
+  #jump .libhd {
+    order: -2;
+    flex: 0 1 320px;
+    padding: 8px 0;
+  }
+  #jump #qbar {
+    order: -1;
+    flex: 1 1 200px;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+  #jump #qbar #q {
+    max-width: none;
+    margin: 0;
+  }
+  #jump .libsc > :not(.libhd) {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+  #jl {
+    columns: 2;
+    column-gap: 36px;
+  }
+  #jl .tocg {
+    break-inside: avoid;
+  }
+  #jl #lbr {
+    column-span: all;
+  }
 }
 
 /* ==== Nothing found: what to try next, under it (search takes Marathi or English letters and forgives a slip or two,

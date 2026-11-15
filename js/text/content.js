@@ -213,7 +213,7 @@ export function toPiece(t, n, ctx) {
   var c = ctx || { wiki: null, credits: null, words: null };
   /** the site's words for a text, in a side's language @param {"mr" | "en"} side */
   var W = function (side) {
-    return c.words ? c.words("text", side) : { refrainLabel: "", refrainNote: "", lang: {} };
+    return c.words ? c.words("text", side) : { refrainWord: "", refrainHow: "", refrainNote: "", lang: {} };
   };
   var prefix = t.lineIds || t.id + ".",
     ex = t.lineIdExceptions || {},
@@ -269,7 +269,8 @@ export function toPiece(t, n, ctx) {
       rep = blocks[d + 1] && blocks[d + 1].kind === "dhrupad-repeated" ? blocks[d + 1] : dh;
     blocks = blocks.slice(rep === dh ? d + 1 : d + 2);
     p.refrain = {
-      label: { mr: W("mr").refrainLabel, en: W("en").refrainLabel },
+      // the word, then how it is sung, in brackets (js/render.js gives the brackets a part of their own)
+      label: { mr: W("mr").refrainWord + " " + W("mr").refrainHow, en: W("en").refrainWord + " " + W("en").refrainHow },
       lines: dh.lines.map(function (x) {
         return { mr: toHtml(x.orig), en: toHtml(x.en) };
       }),
