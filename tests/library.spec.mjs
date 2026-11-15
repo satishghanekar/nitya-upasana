@@ -261,7 +261,7 @@ test("the top bar is the same on Home and while reading: the name, profile, Shar
     const xc = await page.locator("#xc").boundingBox(),
       tabs = await page.locator("#spv").boundingBox();
     expect(Math.abs(xc.y - tabs.y)).toBeLessThan(4);
-    await expect(page.locator("#spv button")).toHaveText([/Reading$/, /Screen$/, /More$/]);
+    await expect(page.locator("#spv button")).toHaveText([/Reading$/, /Screen$/, /You$/]);
   }
 });
 
