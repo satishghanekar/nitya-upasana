@@ -45,8 +45,8 @@ Upekshun Nako Gunavanta Ananta |
 Raghunayaka Maganen Henchi Aatan
 
 [5]
-नको द्रव्यदारा, नको येरझारा ।
-Nako Dravyadara, Nako Yerajhara |
+नको द्रव्यदारा ¦नको येरझारा ।
+Nako Dravyadara ¦Nako Yerajhara |
 नको मानसीं ज्ञानगर्वें फुगारा ।
 Nako Manasin Dnyanagarven Phugara |
 सगूणीं मज लावीं रे भक्तिपंथा ।
@@ -55,8 +55,8 @@ Sagunin Maj Lavin Re Bhaktipantha |
 Raghunayaka Maganen Henchi Aatan
 
 [6]
-भयें व्यापलों, प्रीतिछाया करावी ।
-Bhayen Vyapalon, Pritichhaya Karavi |
+भयें व्यापलों ¦प्रीतिछाया करावी ।
+Bhayen Vyapalon ¦Pritichhaya Karavi |
 कृपासागरें सर्व चिंता हरावी ।
 Krupasagaren Sarva Chinta Haravi |
 मज संकटीं सोडवावें समर्था ।
@@ -69,8 +69,8 @@ Raghunayaka Maganen Henchi Aatan
 Marnin Kamana Kalpana Te Nasavi |
 कुबुद्धी कुडी वासना नीरसावी ।
 Kubuddhi Kudi Vasana Nirasavi |
-नको संशयो, तोडिं संसारव्यथा ।
-Nako Sanshayo, Todin Sansaravyatha |
+नको संशयो ¦तोडिं संसारव्यथा ।
+Nako Sanshayo ¦Todin Sansaravyatha |
 रघूनायका मागणें हेंचि आतां
 Raghunayaka Maganen Henchi Aatan
 
@@ -79,8 +79,8 @@ Raghunayaka Maganen Henchi Aatan
 Samarthapudhen Kay Magon Kalena |
 दुराशा मर्नीं बैसली हे ढळेना ।
 Durasha Marnin Baisali He Dhalena |
-पुरे संशयो, नीरसीं सर्व चिंता ।
-Pure Sanshayo, Nirasin Sarva Chinta |
+पुरे संशयो ¦नीरसीं सर्व चिंता ।
+Pure Sanshayo ¦Nirasin Sarva Chinta |
 रघूनायका मागणें हेंचि आतां
 Raghunayaka Maganen Henchi Aatan
 

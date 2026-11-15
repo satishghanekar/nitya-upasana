@@ -8,10 +8,10 @@ stanza-numbers: as-written
 [1]
 अनन्यता मज घडो स्वानंदरूपीं ।
 Ananyata Maj Ghado Svanandarupin |
-हें मागणें, करिं कृपा सदया स्वरूपी ।
-Hen Maganen, Karin Krupa Sadaya Svarupi |
-जीवत्वभाव न ढळे, बहु शीण झाला ।
-Jivatvabhav Na Dhale, Bahu Shin Jhala |
+हें मागणें ¦करिं कृपा सदया स्वरूपी ।
+Hen Maganen ¦Karin Krupa Sadaya Svarupi |
+जीवत्वभाव न ढळे ¦बहु शीण झाला ।
+Jivatvabhav Na Dhale ¦Bahu Shin Jhala |
 जोडोनि पाणि शरणागत सद्‌गुरूला ॥ १ ॥
 Jodoni Pani Sharanagat Sadgurula || 1 ||
 
@@ -20,8 +20,8 @@ Jodoni Pani Sharanagat Sadgurula || 1 ||
 Na Tvatsaman Dehabuddhisamulahanta |
 जाणोनिया शरण गा तुजला समर्था ।
 Janoniya Sharan Ga Tujala Samartha |
-तोडीं विकल्प, धरवीं मग निश्चयाला ।
-Todin Vikalpa, Dharavin Mag Nishchayala |
+तोडीं विकल्प ¦धरवीं मग निश्चयाला ।
+Todin Vikalpa ¦Dharavin Mag Nishchayala |
 जोडोनि पाणि शरणागत सद्‌गुरूला ॥ २ ॥
 Jodoni Pani Sharanagat Sadgurula || 2 ||
 

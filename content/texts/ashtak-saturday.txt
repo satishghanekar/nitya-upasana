@@ -15,10 +15,10 @@ Adnyan Daridrya Majhen Sarena |
 Tujavin Rama Maj Kanthavena
 
 [2]
-जडली उपाधी, अभिमान साधी ।
-Jadali Upadhi, Abhiman Sadhi |
-विवेक नाहीं, बहुसाल बाधी ॥
-Vivek Nahin, Bahusal Badhi ||
+जडली उपाधी ¦अभिमान साधी ।
+Jadali Upadhi ¦Abhiman Sadhi |
+विवेक नाहीं ¦बहुसाल बाधी ॥
+Vivek Nahin ¦Bahusal Badhi ||
 स्वामीवियोगें पळही गमेना ।
 Svamiviyogen Palahi Gamena |
 तुजवीण रामा मज कंठवेना
@@ -39,8 +39,8 @@ Tujavin Rama Maj Kanthavena
 Vishayi Jananen Maj Lajavilen |
 प्रपंचसंगें आयुष्य नेलें ॥
 Prapanchasangen Aayushya Nelen ||
-समयीं बहु क्रोध, शांती घडेना ।
-Samayin Bahu Krodh, Shanti Ghadena |
+समयीं बहु क्रोध ¦शांती घडेना ।
+Samayin Bahu Krodh ¦Shanti Ghadena |
 तुजवीण रामा मज कंठवेना
 Tujavin Rama Maj Kanthavena
 

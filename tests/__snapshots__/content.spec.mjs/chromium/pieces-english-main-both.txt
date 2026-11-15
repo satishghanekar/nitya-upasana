@@ -11805,19 +11805,19 @@ Sukhkarta Dukhharta
 सुखकर्ता दुःखहर्ता
 ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
-Jai Dev Jai Dev, Jai Mangal Murti |
+Jai Dev Jai Dev Jai Mangal Murti |
 
 Darshan Maatre Manakaamna Purti |
 
 Jai Dev Jai Dev || Dhr. ||
 
-जय देव जय देव, जय मंगल मूर्ती ।
+जय देव जय देव ​जय मंगल मूर्ती ।
 
 दर्शनमात्रे मनःकामना पूर्ती ।
 
 जय देव जय देव ॥ धृ. ॥
 
-Sukhkarta Dukhharta, Varta Vighnachi |
+Sukhkarta Dukhharta Varta Vighnachi |
 
 Nurvi Purvi Prem Krupa Jayachi |
 
@@ -11825,7 +11825,7 @@ Sarvangi Sundar Uti Shendurachi |
 
 Kanthi Jhalke Mal Muktaphalanchi || 1 ||
 
-सुखकर्ता दुःखहर्ता, वार्ता विघ्नाची ।
+सुखकर्ता दुःखहर्ता ​वार्ता विघ्नाची ।
 
 नुरवी पुरवी प्रेम कृपा जयाची ।
 
@@ -12210,51 +12210,51 @@ Aarti Dnyanaraja || Dhr. ||
 
 आरती ज्ञानराजा ॥ धृ. ॥
 
-Aarti Dnyanaraja | Ho Mahakaivalyateja, Kaivalyateja |
+Aarti Dnyanaraja | Ho Mahakaivalyateja Kaivalyateja |
 
-Seviti Sadhusant | Ho Manu Vedhala Majha, Vedhala Majha || 1 ||
+Seviti Sadhusant | Ho Manu Vedhala Majha Vedhala Majha || 1 ||
 
 आरती ज्ञानराजा ।​
-हो महाकैवल्यतेजा, कैवल्यतेजा ।
+हो महाकैवल्यतेजा ​कैवल्यतेजा ।
 
 सेविती साधुसंत ।​
-हो मनु वेधला माझा, वेधला माझा ॥ १ ॥
+हो मनु वेधला माझा ​वेधला माझा ॥ १ ॥
 
 ↻ ध्रुपदRefrain
 
-Lopale Dnyan Jagi | Hita Nenati Koni, Nenati Koni |
+Lopale Dnyan Jagi | Hita Nenati Koni Nenati Koni |
 
-Avatar Pandurang | Nam Thevile Dnyani, Thevile Dnyani || 2 ||
+Avatar Pandurang | Nam Thevile Dnyani Thevile Dnyani || 2 ||
 
 लोपलें ज्ञान जगीं ।​
-हित नेणती कोणी, नेणती कोणी ।
+हित नेणती कोणी ​नेणती कोणी ।
 
 अवतार पांडुरंग ।​
-नाम ठेविलें ज्ञानी, ठेविलें ज्ञानी ॥ २ ॥
+नाम ठेविलें ज्ञानी ​ठेविलें ज्ञानी ॥ २ ॥
 
 ↻ ध्रुपदRefrain
 
-Kanakache Taat Kari | Ubhya Gopika Nari, Gopika Nari |
+Kanakache Taat Kari | Ubhya Gopika Nari Gopika Nari |
 
-Narad Tumbaru Ho | Saama Gaayan Kari, Gaayan Kari || 3 ||
+Narad Tumbaru Ho | Saama Gaayan Kari Gaayan Kari || 3 ||
 
 कनकाचें ताट करीं ।​
-उभ्या गोपिका नारी, गोपिका नारी ।
+उभ्या गोपिका नारी ​गोपिका नारी ।
 
 नारद तुंबरु हो ।​
-साम गायन करी, गायन करी ॥ ३ ॥
+साम गायन करी ​गायन करी ॥ ३ ॥
 
 ↻ ध्रुपदRefrain
 
-Pragat Guhya Bole | Vishwa Brahmachi Kele, Brahmachi Kele |
+Pragat Guhya Bole | Vishwa Brahmachi Kele Brahmachi Kele |
 
-Rama Janardani | Paayi Mastak Thevile, Mastak Thevile || 4 ||
+Rama Janardani | Paayi Mastak Thevile Mastak Thevile || 4 ||
 
 प्रगट गुह्य बोले ।​
-विश्व ब्रह्मची केलें, ब्रह्मची केलें ।
+विश्व ब्रह्मची केलें ​ब्रह्मची केलें ।
 
 रामा जनार्दनी ।​
-पायीं मस्तक ठेविलें, मस्तक ठेविलें ॥ ४ ॥
+पायीं मस्तक ठेविलें ​मस्तक ठेविलें ॥ ४ ॥
 
 ↻ ध्रुपदRefrain
 By Rama Janardan
@@ -12417,49 +12417,49 @@ Aarti Jai Ganesh Deva
 आरती जय गणेश देवा
 ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
 
-Jai Ganesh Jai Ganesh, Jai Ganesh Deva |
+Jai Ganesh Jai Ganesh Jai Ganesh Deva |
 
-Mata Jaaki Parvati, Pita Mahadeva ||
+Mata Jaaki Parvati Pita Mahadeva ||
 
-जय गणेश जय गणेश, जय गणेश देवा ।
+जय गणेश जय गणेश ​जय गणेश देवा ।
 
-माता जाकी पार्वती, पिता महादेवा ॥
-
-↻ ध्रुपदRefrain
-
-Ekadant Dayavant, Chaar Bhuja Dhaari |
-
-Maathe Sindoor Sohe, Moose Ki Savaari ||
-
-Paan Chadhe Phool Chadhe, Aur Chadhe Meva |
-
-Ladduan Ka Bhog Lage, Sant Kare Seva || 1 ||
-
-एकदंत दयावंत, चार भुजा धारी ।
-
-माथे सिंदूर सोहे, मूसे की सवारी ॥
-
-पान चढ़े फूल चढ़े, और चढ़े मेवा ।
-
-लड्डुअन का भोग लगे, संत करें सेवा ॥ १ ॥
+माता जाकी पार्वती ​पिता महादेवा ॥
 
 ↻ ध्रुपदRefrain
 
-Andhe Ko Aankh Det, Kodhi Ko Kaaya |
+Ekadant Dayavant Chaar Bhuja Dhaari |
 
-Baanjhan Ko Putra Det, Nirdhan Ko Maaya ||
+Maathe Sindoor Sohe Moose Ki Savaari ||
 
-Sur Shyam Sharan Aaye, Safal Kije Seva |
+Paan Chadhe Phool Chadhe Aur Chadhe Meva |
 
-Mata Jaaki Parvati, Pita Mahadeva || 2 ||
+Ladduan Ka Bhog Lage Sant Kare Seva || 1 ||
 
-अंधे को आँख देत, कोढ़ी को काया ।
+एकदंत दयावंत ​चार भुजा धारी ।
 
-बाँझन को पुत्र देत, निर्धन को माया ॥
+माथे सिंदूर सोहे ​मूसे की सवारी ॥
 
-सूर श्याम शरण आए, सफल कीजे सेवा ।
+पान चढ़े फूल चढ़े ​और चढ़े मेवा ।
 
-माता जाकी पार्वती, पिता महादेवा ॥ २ ॥
+लड्डुअन का भोग लगे ​संत करें सेवा ॥ १ ॥
+
+↻ ध्रुपदRefrain
+
+Andhe Ko Aankh Det Kodhi Ko Kaaya |
+
+Baanjhan Ko Putra Det Nirdhan Ko Maaya ||
+
+Sur Shyam Sharan Aaye Safal Kije Seva |
+
+Mata Jaaki Parvati Pita Mahadeva || 2 ||
+
+अंधे को आँख देत ​कोढ़ी को काया ।
+
+बाँझन को पुत्र देत ​निर्धन को माया ॥
+
+सूर श्याम शरण आए ​सफल कीजे सेवा ।
+
+माता जाकी पार्वती ​पिता महादेवा ॥ २ ॥
 
 ↻ ध्रुपदRefrain
 Traditional
@@ -12471,109 +12471,109 @@ Aarti Jai Jagdish Hare
 
 Om Jai Jagdish Hare Swami Jai Jagdish Hare |
 
-Bhaktajanon Ke Sankat Daasjanon Ke Sankat, Kshan Mein Door Kare |
+Bhaktajanon Ke Sankat Daasjanon Ke Sankat Kshan Mein Door Kare |
 
 Om Jai Jagdish Hare ||
 
 ॐ जय जगदीश हरे ​स्वामी जय जगदीश हरे ।
 
-भक्तजनों के संकट ​दासजनों के संकट, क्षण में दूर करे ।
+भक्तजनों के संकट ​दासजनों के संकट ​क्षण में दूर करे ।
 
 ॐ जय जगदीश हरे ॥
 
-Jo Dhyave Phal Pave, Dukh Binse Man Ka Swami Dukh Binse Man Ka |
+Jo Dhyave Phal Pave Dukh Binse Man Ka Swami Dukh Binse Man Ka |
 
-Sukh Sampati Ghar Aave Sukh Sampati Ghar Aave, Kasht Mite Tan Ka |
+Sukh Sampati Ghar Aave Sukh Sampati Ghar Aave Kasht Mite Tan Ka |
 
 Om Jai Jagdish Hare || 1 ||
 
-जो ध्यावे फल पावे, दुःख बिनसे मन का ​स्वामी दुःख बिनसे मन का ।
+जो ध्यावे फल पावे ​दुःख बिनसे मन का ​स्वामी दुःख बिनसे मन का ।
 
-सुख सम्पति घर आवे ​सुख सम्पति घर आवे, कष्ट मिटे तन का ।
+सुख सम्पति घर आवे ​सुख सम्पति घर आवे ​कष्ट मिटे तन का ।
 
 ॐ जय जगदीश हरे ॥ १ ॥
 
-Matapita Tum Mere, Sharan Gahoon Kiski Swami Sharan Gahoon Kiski |
+Matapita Tum Mere Sharan Gahoon Kiski Swami Sharan Gahoon Kiski |
 
-Tum Bin Aur Na Dooja Prabhu Bin Aur Na Dooja, Aas Karoon Jiski |
+Tum Bin Aur Na Dooja Prabhu Bin Aur Na Dooja Aas Karoon Jiski |
 
 Om Jai Jagdish Hare || 2 ||
 
-मातपिता तुम मेरे, शरण गहूँ किसकी ​स्वामी शरण गहूँ किसकी ।
+मातपिता तुम मेरे ​शरण गहूँ किसकी ​स्वामी शरण गहूँ किसकी ।
 
-तुम बिन और न दूजा ​प्रभु बिन और न दूजा, आस करूँ जिसकी ।
+तुम बिन और न दूजा ​प्रभु बिन और न दूजा ​आस करूँ जिसकी ।
 
 ॐ जय जगदीश हरे ॥ २ ॥
 
-Tum Pooran Paramatma Tum Antaryami, Swami Tum Antaryami |
+Tum Pooran Paramatma Tum Antaryami Swami Tum Antaryami |
 
-Paar Brahma Parmeshwar Paar Brahma Parmeshwar, Tum Sabke Swami |
+Paar Brahma Parmeshwar Paar Brahma Parmeshwar Tum Sabke Swami |
 
 Om Jai Jagdish Hare || 3 ||
 
-तुम पूरण परमात्मा ​तुम अन्तर्यामी, स्वामी तुम अन्तर्यामी ।
+तुम पूरण परमात्मा ​तुम अन्तर्यामी ​स्वामी तुम अन्तर्यामी ।
 
-पार ब्रह्म परमेश्वर ​पार ब्रह्म परमेश्वर, तुम सबके स्वामी ।
+पार ब्रह्म परमेश्वर ​पार ब्रह्म परमेश्वर ​तुम सबके स्वामी ।
 
 ॐ जय जगदीश हरे ॥ ३ ॥
 
-Tum Karuna Ke Sagar, Tum Paalan Karta Swami Tum Paalan Karta |
+Tum Karuna Ke Sagar Tum Paalan Karta Swami Tum Paalan Karta |
 
-Main Moorakh Khal Kaami Main Sevak Tum Swami, Krupa Karo Bharta |
+Main Moorakh Khal Kaami Main Sevak Tum Swami Krupa Karo Bharta |
 
 Om Jai Jagdish Hare || 4 ||
 
-तुम करुणा के सागर, तुम पालन कर्ता ​स्वामी तुम पालन कर्ता ।
+तुम करुणा के सागर ​तुम पालन कर्ता ​स्वामी तुम पालन कर्ता ।
 
-मैं मूरख खल कामी ​मैं सेवक तुम स्वामी, कृपा करो भर्ता ।
+मैं मूरख खल कामी ​मैं सेवक तुम स्वामी ​कृपा करो भर्ता ।
 
 ॐ जय जगदीश हरे ॥ ४ ॥
 
-Tum Ho Ek Agochar, Sabke Pranpati Swami Sabke Pranpati |
+Tum Ho Ek Agochar Sabke Pranpati Swami Sabke Pranpati |
 
-Kis Vidhi Miloon Dayamay Kis Vidhi Miloon Dayamay, Tumko Main Kumati |
+Kis Vidhi Miloon Dayamay Kis Vidhi Miloon Dayamay Tumko Main Kumati |
 
 Om Jai Jagdish Hare || 5 ||
 
-तुम हो एक अगोचर, सबके प्राणपति ​स्वामी सबके प्राणपति ।
+तुम हो एक अगोचर ​सबके प्राणपति ​स्वामी सबके प्राणपति ।
 
-किस विधि मिलूँ दयामय ​किस विधि मिलूँ दयामय, तुमको मैं कुमति ।
+किस विधि मिलूँ दयामय ​किस विधि मिलूँ दयामय ​तुमको मैं कुमति ।
 
 ॐ जय जगदीश हरे ॥ ५ ॥
 
-Deenbandhu Dukh Harta, Tum Rakshak Mere Swami Tum Rakshak Mere |
+Deenbandhu Dukh Harta Tum Rakshak Mere Swami Tum Rakshak Mere |
 
-Apne Haath Uthao, Apne Sharan Lagao Dwar Pada Tere |
+Apne Haath Uthao Apne Sharan Lagao Dwar Pada Tere |
 
 Om Jai Jagdish Hare || 6 ||
 
-दीनबन्धु दुःख हर्ता, तुम रक्षक मेरे ​स्वामी तुम रक्षक मेरे ।
+दीनबन्धु दुःख हर्ता ​तुम रक्षक मेरे ​स्वामी तुम रक्षक मेरे ।
 
-अपने हाथ उठाओ, अपने शरण लगाओ ​द्वार पड़ा तेरे ।
+अपने हाथ उठाओ ​अपने शरण लगाओ ​द्वार पड़ा तेरे ।
 
 ॐ जय जगदीश हरे ॥ ६ ॥
 
-Vishay Vikar Mitao, Paap Haro Deva Swami Paap Haro Deva |
+Vishay Vikar Mitao Paap Haro Deva Swami Paap Haro Deva |
 
-Shraddha Bhakti Badhao Shraddha Prem Badhao, Santan Ki Seva |
+Shraddha Bhakti Badhao Shraddha Prem Badhao Santan Ki Seva |
 
 Om Jai Jagdish Hare || 7 ||
 
-विषय विकार मिटाओ, पाप हरो देवा ​स्वामी पाप हरो देवा ।
+विषय विकार मिटाओ ​पाप हरो देवा ​स्वामी पाप हरो देवा ।
 
-श्रद्धा भक्ति बढ़ाओ ​श्रद्धा प्रेम बढ़ाओ, सन्तन की सेवा ।
+श्रद्धा भक्ति बढ़ाओ ​श्रद्धा प्रेम बढ़ाओ ​सन्तन की सेवा ।
 
 ॐ जय जगदीश हरे ॥ ७ ॥
 
 Tan Man Dhan Sab Hai Tera Swami Sab Kuch Hai Tera |
 
-Tera Tujhko Arpan Tera Tujhko Arpan, Kya Laage Mera |
+Tera Tujhko Arpan Tera Tujhko Arpan Kya Laage Mera |
 
 Om Jai Jagdish Hare || 8 ||
 
 तन मन धन सब है तेरा ​स्वामी सब कुछ है तेरा ।
 
-तेरा तुझको अर्पण ​तेरा तुझको अर्पण, क्या लागे मेरा ।
+तेरा तुझको अर्पण ​तेरा तुझको अर्पण ​क्या लागे मेरा ।
 
 ॐ जय जगदीश हरे ॥ ८ ॥
 
@@ -13026,13 +13026,13 @@ Dehagunatitachi Tun Patitapavana |
 
 Mhanavuni Tanu Jhijavuniya Sukhavisi Janan |
 
-Pahavena, Vishranti Ghei Kshanabhari || 2 ||
+Pahavena Vishranti Ghei Kshanabhari || 2 ||
 
 देहगुणातीतचि तूं पतितपावना ।
 
 म्हणवुनि तनु झिजवुनिया सुखविसी जनां ।
 
-पहावेना, विश्रांती घेई क्षणभरी ॥ २ ॥
+पहावेना ​विश्रांती घेई क्षणभरी ॥ २ ॥
 
 ↻ ध्रुपदRefrain
 
@@ -13125,7 +13125,7 @@ Anek Aise Chamatkar Kiti Bhaktanna Disale || 3 ||
 
 ↻ ध्रुपदRefrain
 
-Daya Kshama Shanti Ya Vasati, Sadaiv Tav Sadani |
+Daya Kshama Shanti Ya Vasati Sadaiv Tav Sadani |
 
 Datta Datta Jay Datta Nam He Akhand Tav Vadani |
 
@@ -13133,7 +13133,7 @@ Mangalamay He Charan Soduni Kan Jave Rani |
 
 Krupa Katakshe Dasa Aapulya Nei Uddharuni || 4 ||
 
-दया क्षमा शांति या वसति, सदैव तव सदनी ।
+दया क्षमा शांति या वसति ​सदैव तव सदनी ।
 
 दत्त दत्त जय दत्त नाम हे अखंड तव वदनी ।
 
@@ -13237,141 +13237,141 @@ By Swami Shivananda
 Maruti Stotra
 मारुती स्तोत्र
 
-Bhimarupi Maharudra, Vajra Hanuman Maruti |
+Bhimarupi Maharudra Vajra Hanuman Maruti |
 
-Vanari Anjanisuta, Ramaduta Prabhanjana || 1 ||
+Vanari Anjanisuta Ramaduta Prabhanjana || 1 ||
 
-भीमरूपी महारुद्रा, वज्र हनुमान मारुती ।
+भीमरूपी महारुद्रा ​वज्र हनुमान मारुती ।
 
-वनारी अंजनीसूता, रामदूता प्रभंजना ॥ १ ॥
+वनारी अंजनीसूता ​रामदूता प्रभंजना ॥ १ ॥
 
-Mahabali Pranadata, Sakalan Uthavi Balen |
+Mahabali Pranadata Sakalan Uthavi Balen |
 
-Saukhyakari Shokaharta, Dhurta Vaishnav Gayaka || 2 ||
+Saukhyakari Shokaharta Dhurta Vaishnav Gayaka || 2 ||
 
-महाबळी प्राणदाता, सकळां उठवी बळें ।
+महाबळी प्राणदाता ​सकळां उठवी बळें ।
 
-सौख्यकारी शोकहर्ता, धूर्त वैष्णव गायका ॥ २ ॥
+सौख्यकारी शोकहर्ता ​धूर्त वैष्णव गायका ॥ २ ॥
 
-Dinanatha Harirupa, Sundara Jagadantara |
+Dinanatha Harirupa Sundara Jagadantara |
 
-Pataladevatahanta, Bhavyasindurlepana || 3 ||
+Pataladevatahanta Bhavyasindurlepana || 3 ||
 
-दिनानाथा हरीरूपा, सुंदरा जगदंतरा ।
+दिनानाथा हरीरूपा ​सुंदरा जगदंतरा ।
 
-पातालदेवताहंता, भव्यसिंदूरलेपना ॥ ३ ॥
+पातालदेवताहंता ​भव्यसिंदूरलेपना ॥ ३ ॥
 
-Lokanatha Jagannatha, Prananatha Puratana |
+Lokanatha Jagannatha Prananatha Puratana |
 
-Punyavanta Punyashila, Pavana Paritoshaka || 4 ||
+Punyavanta Punyashila Pavana Paritoshaka || 4 ||
 
-लोकनाथा जगन्नाथा, प्राणनाथा पुरातना ।
+लोकनाथा जगन्नाथा ​प्राणनाथा पुरातना ।
 
-पुण्यवंता पुण्यशीला, पावना परितोषका ॥ ४ ॥
+पुण्यवंता पुण्यशीला ​पावना परितोषका ॥ ४ ॥
 
-Dhvajangen Uchali Baho, Aaveshen Lotala Pudhen |
+Dhvajangen Uchali Baho Aaveshen Lotala Pudhen |
 
-Kalagni Kalarudragni, Dekhatan Kampati Bhayen || 5 ||
+Kalagni Kalarudragni Dekhatan Kampati Bhayen || 5 ||
 
-ध्वजांगें उचली बाहो, आवेशें लोटला पुढें ।
+ध्वजांगें उचली बाहो ​आवेशें लोटला पुढें ।
 
-काळाग्नि काळरुद्राग्नि, देखतां कांपती भयें ॥ ५ ॥
+काळाग्नि काळरुद्राग्नि ​देखतां कांपती भयें ॥ ५ ॥
 
-Brahmanden Mailin Nenon, Aanvale Dantapangati |
+Brahmanden Mailin Nenon Aanvale Dantapangati |
 
-Netragni Chalilya Jvala, Bhrukuti Tathilya Balen || 6 ||
+Netragni Chalilya Jvala Bhrukuti Tathilya Balen || 6 ||
 
-ब्रह्मांडें माइलीं नेणों, आंवाळे दंतपंगती ।
+ब्रह्मांडें माइलीं नेणों ​आंवाळे दंतपंगती ।
 
-नेत्राग्नी चालिल्या ज्वाळा, भृकुटी ताठिल्या बळें ॥ ६ ॥
+नेत्राग्नी चालिल्या ज्वाळा ​भृकुटी ताठिल्या बळें ॥ ६ ॥
 
-Puchchha Ten Muradilen Mathan, Kiriti Kundalen Barin |
+Puchchha Ten Muradilen Mathan Kiriti Kundalen Barin |
 
-Suvarnakatikasoti, Ghanta Kinkini Nagara || 7 ||
+Suvarnakatikasoti Ghanta Kinkini Nagara || 7 ||
 
-पुच्छ तें मुरडिलें माथां, किरीटी कुंडलें बरीं ।
+पुच्छ तें मुरडिलें माथां ​किरीटी कुंडलें बरीं ।
 
-सुवर्णकटिकासोटी, घंटा किंकिणि नागरा ॥ ७ ॥
+सुवर्णकटिकासोटी ​घंटा किंकिणि नागरा ॥ ७ ॥
 
-Thakare Parvataaisa, Netaka Sadapatalu |
+Thakare Parvataaisa Netaka Sadapatalu |
 
-Chapalang Pahatan Mothen, Mahavidyullatepari || 8 ||
+Chapalang Pahatan Mothen Mahavidyullatepari || 8 ||
 
-ठकारे पर्वताऐसा, नेटका सडपातळू ।
+ठकारे पर्वताऐसा ​नेटका सडपातळू ।
 
-चपळांग पाहतां मोठें, महाविद्युल्लतेपरी ॥ ८ ॥
+चपळांग पाहतां मोठें ​महाविद्युल्लतेपरी ॥ ८ ॥
 
-Kotichya Koti Uddanen, Jhempave Uttarekade |
+Kotichya Koti Uddanen Jhempave Uttarekade |
 
-Mandradrisarikha Dronu, Krodhen Utpatila Balen || 9 ||
+Mandradrisarikha Dronu Krodhen Utpatila Balen || 9 ||
 
-कोटिच्या कोटि उड्डाणें, झेंपावे उत्तरेकडे ।
+कोटिच्या कोटि उड्डाणें ​झेंपावे उत्तरेकडे ।
 
-मंद्राद्रीसारिखा द्रोणू, क्रोधें उत्पाटिला बळें ॥ ९ ॥
+मंद्राद्रीसारिखा द्रोणू ​क्रोधें उत्पाटिला बळें ॥ ९ ॥
 
-Aanila Magutin Nela, Aala Gela Manogati |
+Aanila Magutin Nela Aala Gela Manogati |
 
-Manasi Takilen Magen, Gatisi Tulana Nase || 10 ||
+Manasi Takilen Magen Gatisi Tulana Nase || 10 ||
 
-आणिला मागुतीं नेला, आला गेला मनोगती ।
+आणिला मागुतीं नेला ​आला गेला मनोगती ।
 
-मनासी टाकिलें मागें, गतीसी तूळणा नसे ॥ १० ॥
+मनासी टाकिलें मागें ​गतीसी तूळणा नसे ॥ १० ॥
 
 Anupasoni Brahmandaevadha Hot Jatase |
 
-Tayasi Tulana Kothen, Meru Mandar Dhakute || 11 ||
+Tayasi Tulana Kothen Meru Mandar Dhakute || 11 ||
 
 अणूपासोनि ब्रह्मांडाएवढा होत जातसे ।
 
-तयासी तुळणा कोठें, मेरु मांदार धाकुटे ॥ ११ ॥
+तयासी तुळणा कोठें ​मेरु मांदार धाकुटे ॥ ११ ॥
 
-Brahmandabhonvate Vedhe, Vajrapuchchhen Karun Shake |
+Brahmandabhonvate Vedhe Vajrapuchchhen Karun Shake |
 
-Tayasi Tulana Kainchi, Brahmandin Pahatan Nase || 12 ||
+Tayasi Tulana Kainchi Brahmandin Pahatan Nase || 12 ||
 
-ब्रह्मांडाभोंवते वेढे, वज्रपुच्छें करूं शके ।
+ब्रह्मांडाभोंवते वेढे ​वज्रपुच्छें करूं शके ।
 
-तयासी तुळणा कैंची, ब्रह्मांडीं पाहतां नसे ॥ १२ ॥
+तयासी तुळणा कैंची ​ब्रह्मांडीं पाहतां नसे ॥ १२ ॥
 
-Aarakta Dekhilen Dolan, Grasilen Suryamandala |
+Aarakta Dekhilen Dolan Grasilen Suryamandala |
 
-Vadhatan Vadhatan Vadhe, Bhedilen Shunyamandala || 13 ||
+Vadhatan Vadhatan Vadhe Bhedilen Shunyamandala || 13 ||
 
-आरक्त देखिलें डोळां, ग्रासिलें सूर्यमंडळा ।
+आरक्त देखिलें डोळां ​ग्रासिलें सूर्यमंडळा ।
 
-वाढतां वाढतां वाढे, भेदिलें शून्यमंडळा ॥ १३ ॥
+वाढतां वाढतां वाढे ​भेदिलें शून्यमंडळा ॥ १३ ॥
 
-Dhanadhanya Pashuvruddhi, Putrapautra Samagrahi |
+Dhanadhanya Pashuvruddhi Putrapautra Samagrahi |
 
-Pavati Rupavidyadi, Stotra Pathen Karuniyan || 14 ||
+Pavati Rupavidyadi Stotra Pathen Karuniyan || 14 ||
 
-धनधान्य पशुवृद्धि, पुत्रपौत्र समग्रही ।
+धनधान्य पशुवृद्धि ​पुत्रपौत्र समग्रही ।
 
-पावती रूपविद्यादि, स्तोत्र पाठें करूनियां ॥ १४ ॥
+पावती रूपविद्यादि ​स्तोत्र पाठें करूनियां ॥ १४ ॥
 
-Bhutapretasamandhadi, Rogavyadhi Samastahi |
+Bhutapretasamandhadi Rogavyadhi Samastahi |
 
-Nasati Tutati Chinta, Aananden Bhimadarshanen || 15 ||
+Nasati Tutati Chinta Aananden Bhimadarshanen || 15 ||
 
-भूतप्रेतसमंधादि, रोगव्याधि समस्तही ।
+भूतप्रेतसमंधादि ​रोगव्याधि समस्तही ।
 
-नासती तूटती चिंता, आनंदें भीमदर्शनें ॥ १५ ॥
+नासती तूटती चिंता ​आनंदें भीमदर्शनें ॥ १५ ॥
 
-He Dhara Pandhara Shloki, Labhali Shobhali Bari |
+He Dhara Pandhara Shloki Labhali Shobhali Bari |
 
-Drudhadeho Nihsandeho, Sankhya Chandrakalagunen || 16 ||
+Drudhadeho Nihsandeho Sankhya Chandrakalagunen || 16 ||
 
-हे धरा पंधरा श्लोकी, लाभली शोभली बरी ।
+हे धरा पंधरा श्लोकी ​लाभली शोभली बरी ।
 
-दृढदेहो निःसंदेहो, संख्या चंद्रकळागुणें ॥ १६ ॥
+दृढदेहो निःसंदेहो ​संख्या चंद्रकळागुणें ॥ १६ ॥
 
-Ramadasin Agraganyu, Kapikulasi Mandanu |
+Ramadasin Agraganyu Kapikulasi Mandanu |
 
-Ramarupi Antaratma, Darshanen Dosh Nasati || 17 ||
+Ramarupi Antaratma Darshanen Dosh Nasati || 17 ||
 
-रामदासीं अग्रगण्यू, कपिकुळासि मंडणू ।
+रामदासीं अग्रगण्यू ​कपिकुळासि मंडणू ।
 
-रामरूपी अंतरात्मा, दर्शनें दोष नासती ॥ १७ ॥
+रामरूपी अंतरात्मा ​दर्शनें दोष नासती ॥ १७ ॥
 
 || Iti Shriramadasakrutam Sankatanirasanam Marutistotram Sampurnam ||
 
@@ -15608,7 +15608,7 @@ Visarun Kasa Mi Gurupadukanla || 4 ||
 
 Anant Majhe Aparadh Koti |
 
-Nani Marnin, Ghaluni Sarva Potin |
+Nani Marnin Ghaluni Sarva Potin |
 
 Prabodh Karitan Shram Phar Jhala |
 
@@ -15616,7 +15616,7 @@ Visarun Kasa Mi Gurupadukanla || 5 ||
 
 अनंत माझे अपराध कोटी ।
 
-नाणी मर्नीं, घालुनि सर्व पोटीं ।
+नाणी मर्नीं ​घालुनि सर्व पोटीं ।
 
 प्रबोध करितां श्रम फार झाला ।
 
@@ -15672,7 +15672,7 @@ Visarun Kasa Mi Gurupadukanla || 8 ||
 
 Jaya Vanitan Vanitan Vedavani |
 
-Mhane ‘Neti Neti’ Ti, Laje Duruni |
+Mhane ‘Neti Neti’ Ti Laje Duruni |
 
 Navhe Ant Na Par Jyachya Rupala |
 
@@ -15680,7 +15680,7 @@ Visarun Kasa Mi Gurupadukanla || 9 ||
 
 जया वानितां वानितां वेदवाणी ।
 
-म्हणे ‘नेति नेती’ ति, लाजे दुरूनी ।
+म्हणे ‘नेति नेती’ ति ​लाजे दुरूनी ।
 
 नव्हे अंत ना पार ज्याच्या रुपाला ।
 
@@ -15713,17 +15713,17 @@ Ananyata Maj Ghado Svanandarupin
 
 Ananyata Maj Ghado Svanandarupin |
 
-Hen Maganen, Karin Krupa Sadaya Svarupi |
+Hen Maganen Karin Krupa Sadaya Svarupi |
 
-Jivatvabhav Na Dhale, Bahu Shin Jhala |
+Jivatvabhav Na Dhale Bahu Shin Jhala |
 
 Jodoni Pani Sharanagat Sadgurula || 1 ||
 
 अनन्यता मज घडो स्वानंदरूपीं ।
 
-हें मागणें, करिं कृपा सदया स्वरूपी ।
+हें मागणें ​करिं कृपा सदया स्वरूपी ।
 
-जीवत्वभाव न ढळे, बहु शीण झाला ।
+जीवत्वभाव न ढळे ​बहु शीण झाला ।
 
 जोडोनि पाणि शरणागत सद्‌गुरूला ॥ १ ॥
 
@@ -15731,7 +15731,7 @@ Na Tvatsaman Dehabuddhisamulahanta |
 
 Janoniya Sharan Ga Tujala Samartha |
 
-Todin Vikalpa, Dharavin Mag Nishchayala |
+Todin Vikalpa Dharavin Mag Nishchayala |
 
 Jodoni Pani Sharanagat Sadgurula || 2 ||
 
@@ -15739,7 +15739,7 @@ Jodoni Pani Sharanagat Sadgurula || 2 ||
 
 जाणोनिया शरण गा तुजला समर्था ।
 
-तोडीं विकल्प, धरवीं मग निश्चयाला ।
+तोडीं विकल्प ​धरवीं मग निश्चयाला ।
 
 जोडोनि पाणि शरणागत सद्‌गुरूला ॥ २ ॥
 
@@ -16138,7 +16138,7 @@ Paramadinadayala Nirasin Mohamaya |
 
 Achapal Man Majhen Navare Aavaritan |
 
-Tujavin Shin Hoto, Dhav Re Dhav Aatan || 1 ||
+Tujavin Shin Hoto Dhav Re Dhav Aatan || 1 ||
 
 अनुदिन अनुतापें तापलों रामराया ।
 
@@ -16146,7 +16146,7 @@ Tujavin Shin Hoto, Dhav Re Dhav Aatan || 1 ||
 
 अचपळ मन माझें नावरे आवरीतां ।
 
-तुजविण शिण होतो, धाव रे धाव आतां ॥ १ ॥
+तुजविण शिण होतो ​धाव रे धाव आतां ॥ १ ॥
 
 Bhajanarahit Rama Sarvahi Janma Gela |
 
@@ -16170,7 +16170,7 @@ Tujavin Raghunatha Vokhaten Sarva Kanhin |
 
 Ravikulatilaka Re Hit Majhen Karaven |
 
-Durit Duri Haraven, Svasvarupin Bharaven || 3 ||
+Durit Duri Haraven Svasvarupin Bharaven || 3 ||
 
 विषयजनितसूखें सौख्य होणार नाहीं ।
 
@@ -16178,7 +16178,7 @@ Durit Duri Haraven, Svasvarupin Bharaven || 3 ||
 
 रविकुळटिळका रे हीत माझें करावें ।
 
-दुरित दुरि हरावें, स्वस्वरूपीं भरावें ॥ ३ ॥
+दुरित दुरि हरावें ​स्वस्वरूपीं भरावें ॥ ३ ॥
 
 Tanu Man Dhan Majhen Raghava Rup Tujhen |
 
@@ -16232,7 +16232,7 @@ Tujavin Karuna He Kon Janel Majhi |
 
 Sinat Sinat Potin Pahili Vat Tujhi |
 
-Jhadakari Jhad Ghalin, Dhav Panchanana Re |
+Jhadakari Jhad Ghalin Dhav Panchanana Re |
 
 Tujavin Maj Nete Jambuki Vasana Re || 7 ||
 
@@ -16240,7 +16240,7 @@ Tujavin Maj Nete Jambuki Vasana Re || 7 ||
 
 सिणत सिणत पोटीं पाहिली वाट तूझी ।
 
-झडकरि झड घालीं, धाव पंचानना रे ।
+झडकरि झड घालीं ​धाव पंचानना रे ।
 
 तुजविण मज नेते जंबुकी वासना रे ॥ ७ ॥
 
@@ -16280,7 +16280,7 @@ Tujavin Maj Taisen Jahalen Ramaraya |
 
 Vilag Vishamakalin Tutali Sarva Maya |
 
-Sakalajanasakha Tun, Svami Aanik Nahin |
+Sakalajanasakha Tun Svami Aanik Nahin |
 
 Vamak Vaman Jaisen Tyagilen Sarva Kanhin || 10 ||
 
@@ -16288,7 +16288,7 @@ Vamak Vaman Jaisen Tyagilen Sarva Kanhin || 10 ||
 
 विलग विषमकाळीं तूटली सर्व माया ।
 
-सकळजनसखा तूं, स्वामि आणीक नाहीं ।
+सकळजनसखा तूं ​स्वामि आणीक नाहीं ।
 
 वमक वमन जैसें त्यागिलें सर्व कांहीं ॥ १० ॥
 
@@ -16296,21 +16296,21 @@ Svajanajanadhanacha Kon Santosh Aahe |
 
 Raghupativin Aatan Chitta Kothen Na Rahe |
 
-Jivalag Jiv Gheti, Pret Sandoni Jati |
+Jivalag Jiv Gheti Pret Sandoni Jati |
 
-Vishay Sakal Neti, Maguta Janma Deti || 11 ||
+Vishay Sakal Neti Maguta Janma Deti || 11 ||
 
 स्वजनजनधनाचा कोण संतोष आहे ।
 
 रघुपतिविण आतां चित्त कोठें न राहे ।
 
-जिवलग जिव घेती, प्रेत सांडोनि जाती ।
+जिवलग जिव घेती ​प्रेत सांडोनि जाती ।
 
-विषय सकळ नेती, मागुता जन्म देती ॥ ११ ॥
+विषय सकळ नेती ​मागुता जन्म देती ॥ ११ ॥
 
 Sakal Jan Bhavache Aakhile Vaibhavache |
 
-Jivalag Mag Kaiche, Chalate Hechi Sache |
+Jivalag Mag Kaiche Chalate Hechi Sache |
 
 Vilag Vishamakalin Sanditi Sarva Malin |
 
@@ -16318,7 +16318,7 @@ Raghuvir Sukhadata Sodavi Antakalin || 12 ||
 
 सकळ जन भवाचे आखिले वैभवाचे ।
 
-जिवलग मग कैचे, चालते हेचि साचे ।
+जिवलग मग कैचे ​चालते हेचि साचे ।
 
 विलग विषमकाळीं सांडिति सर्व माळीं ।
 
@@ -16326,17 +16326,17 @@ Raghuvir Sukhadata Sodavi Antakalin || 12 ||
 
 Sukh Sukh Mhanatan Hen Duhkh Thakuni Aalen |
 
-Bhajan Sakal Gelen, Chitta Dushchitta Jhalen |
+Bhajan Sakal Gelen Chitta Dushchitta Jhalen |
 
-Bhramit Man Kalena, Hit Ten Aakalena |
+Bhramit Man Kalena Hit Ten Aakalena |
 
 Param Kathin Dehin Dehabuddhi Galena || 13 ||
 
 सुख सुख म्हणतां हें दुःख ठाकूनि आलें ।
 
-भजन सकळ गेलें, चित्त दुश्चित्त झालें ।
+भजन सकळ गेलें ​चित्त दुश्चित्त झालें ।
 
-भ्रमित मन कळेना, हीत तें आकळेना ।
+भ्रमित मन कळेना ​हीत तें आकळेना ।
 
 परम कठिण देहीं देहबुद्धी गळेना ॥ १३ ॥
 
@@ -16550,7 +16550,7 @@ Raghunayaka Maganen Henchi Aatan || 4 ||
 
 रघूनायका मागणें हेंचि आतां ॥ ४ ॥
 
-Nako Dravyadara, Nako Yerajhara |
+Nako Dravyadara Nako Yerajhara |
 
 Nako Manasin Dnyanagarven Phugara |
 
@@ -16558,7 +16558,7 @@ Sagunin Maj Lavin Re Bhaktipantha |
 
 Raghunayaka Maganen Henchi Aatan || 5 ||
 
-नको द्रव्यदारा, नको येरझारा ।
+नको द्रव्यदारा ​नको येरझारा ।
 
 नको मानसीं ज्ञानगर्वें फुगारा ।
 
@@ -16566,7 +16566,7 @@ Raghunayaka Maganen Henchi Aatan || 5 ||
 
 रघूनायका मागणें हेंचि आतां ॥ ५ ॥
 
-Bhayen Vyapalon, Pritichhaya Karavi |
+Bhayen Vyapalon Pritichhaya Karavi |
 
 Krupasagaren Sarva Chinta Haravi |
 
@@ -16574,7 +16574,7 @@ Maj Sankatin Sodavaven Samartha |
 
 Raghunayaka Maganen Henchi Aatan || 6 ||
 
-भयें व्यापलों, प्रीतिछाया करावी ।
+भयें व्यापलों ​प्रीतिछाया करावी ।
 
 कृपासागरें सर्व चिंता हरावी ।
 
@@ -16586,7 +16586,7 @@ Marnin Kamana Kalpana Te Nasavi |
 
 Kubuddhi Kudi Vasana Nirasavi |
 
-Nako Sanshayo, Todin Sansaravyatha |
+Nako Sanshayo Todin Sansaravyatha |
 
 Raghunayaka Maganen Henchi Aatan || 7 ||
 
@@ -16594,7 +16594,7 @@ Raghunayaka Maganen Henchi Aatan || 7 ||
 
 कुबुद्धी कुडी वासना नीरसावी ।
 
-नको संशयो, तोडिं संसारव्यथा ।
+नको संशयो ​तोडिं संसारव्यथा ।
 
 रघूनायका मागणें हेंचि आतां ॥ ७ ॥
 
@@ -16602,7 +16602,7 @@ Samarthapudhen Kay Magon Kalena |
 
 Durasha Marnin Baisali He Dhalena |
 
-Pure Sanshayo, Nirasin Sarva Chinta |
+Pure Sanshayo Nirasin Sarva Chinta |
 
 Raghunayaka Maganen Henchi Aatan || 8 ||
 
@@ -16610,7 +16610,7 @@ Raghunayaka Maganen Henchi Aatan || 8 ||
 
 दुराशा मर्नीं बैसली हे ढळेना ।
 
-पुरे संशयो, नीरसीं सर्व चिंता ।
+पुरे संशयो ​नीरसीं सर्व चिंता ।
 
 रघूनायका मागणें हेंचि आतां ॥ ८ ॥
 
@@ -16639,149 +16639,149 @@ Raghunayaka Maganen Henchi Aatan || 9 ||
 Wednesday – Yukti Nahin Buddhi
 बुधवार – युक्ति नाहीं बुद्धि
 
-Yukti Nahin, Buddhi Nahin, Vidya Nahin Vivekita |
+Yukti Nahin Buddhi Nahin Vidya Nahin Vivekita |
 
-Nenata Bhakta Mi Tujha, Buddhi De Raghunayaka || 1 ||
+Nenata Bhakta Mi Tujha Buddhi De Raghunayaka || 1 ||
 
-युक्ति नाहीं, बुद्धि नाहीं, विद्या नाहीं विवेकिता ।
+युक्ति नाहीं ​बुद्धि नाहीं ​विद्या नाहीं विवेकिता ।
 
-नेणता भक्त मी तूझा, बुद्धि दे रघुनायका ॥ १ ॥
+नेणता भक्त मी तूझा ​बुद्धि दे रघुनायका ॥ १ ॥
 
-Man Hen Aavarena Kin, Vasana Vavare Sada |
+Man Hen Aavarena Kin Vasana Vavare Sada |
 
-Kalpana Dhavate Sairan, Buddhi De Raghunayaka || 2 ||
+Kalpana Dhavate Sairan Buddhi De Raghunayaka || 2 ||
 
-मन हें आवरेना कीं, वासना वावरे सदा ।
+मन हें आवरेना कीं ​वासना वावरे सदा ।
 
-कल्पना धावते सैरां, बुद्धि दे रघुनायका ॥ २ ॥
+कल्पना धावते सैरां ​बुद्धि दे रघुनायका ॥ २ ॥
 
-Anna Nahin, Vastra Nahin, Saukhya Nahin Janammadhen |
+Anna Nahin Vastra Nahin Saukhya Nahin Janammadhen |
 
-Aashrayo Pahatan Nahin, Buddhi De Raghunayaka || 3 ||
+Aashrayo Pahatan Nahin Buddhi De Raghunayaka || 3 ||
 
-अन्न नाहीं, वस्त्र नाहीं, सौख्य नाहीं जनांमधें ।
+अन्न नाहीं ​वस्त्र नाहीं ​सौख्य नाहीं जनांमधें ।
 
-आश्रयो पाहतां नाहीं, बुद्धि दे रघुनायका ॥ ३ ॥
+आश्रयो पाहतां नाहीं ​बुद्धि दे रघुनायका ॥ ३ ॥
 
-Bolatan Chalatan Ye Na, Karyabhag Kalechina |
+Bolatan Chalatan Ye Na Karyabhag Kalechina |
 
-Bahu Mi Pidilon Lokin, Buddhi De Raghunayaka || 4 ||
+Bahu Mi Pidilon Lokin Buddhi De Raghunayaka || 4 ||
 
-बोलतां चालतां ये ना, कार्यभाग कळेचिना ।
+बोलतां चालतां ये ना ​कार्यभाग कळेचिना ।
 
-बहु मी पिडिलों लोकीं, बुद्धि दे रघुनायका ॥ ४ ॥
+बहु मी पिडिलों लोकीं ​बुद्धि दे रघुनायका ॥ ४ ॥
 
-Tujha Mi Tonapa Jhalon, Kashtalon Bahutampari |
+Tujha Mi Tonapa Jhalon Kashtalon Bahutampari |
 
-Saukhya Ten Pahatan Nahin, Buddhi De Raghunayaka || 5 ||
+Saukhya Ten Pahatan Nahin Buddhi De Raghunayaka || 5 ||
 
-तुझा मी टोणपा झालों, कष्टलों बहुतांपरी ।
+तुझा मी टोणपा झालों ​कष्टलों बहुतांपरी ।
 
-सौख्य तें पाहतां नाहीं, बुद्धि दे रघुनायका ॥ ५ ॥
+सौख्य तें पाहतां नाहीं ​बुद्धि दे रघुनायका ॥ ५ ॥
 
-Netaken Lihitan Ye Na, Vachitan Chukaton Sada |
+Netaken Lihitan Ye Na Vachitan Chukaton Sada |
 
-Artha To Sangatan Ye Na, Buddhi De Raghunayaka || 6 ||
+Artha To Sangatan Ye Na Buddhi De Raghunayaka || 6 ||
 
-नेटकें लिहितां ये ना, वाचितां चुकतों सदा ।
+नेटकें लिहितां ये ना ​वाचितां चुकतों सदा ।
 
-अर्थ तो सांगतां ये ना, बुद्धि दे रघुनायका ॥ ६ ॥
+अर्थ तो सांगतां ये ना ​बुद्धि दे रघुनायका ॥ ६ ॥
 
-Prasang Vel Tarkena, Suchena Dirghasuchana |
+Prasang Vel Tarkena Suchena Dirghasuchana |
 
-Maitriki Rakhitan Ye Na, Buddhi De Raghunayaka || 7 ||
+Maitriki Rakhitan Ye Na Buddhi De Raghunayaka || 7 ||
 
-प्रसंग वेळ तर्केना, सुचेना दीर्घसूचना ।
+प्रसंग वेळ तर्केना ​सुचेना दीर्घसूचना ।
 
-मैत्रिकी राखितां ये ना, बुद्धि दे रघुनायका ॥ ७ ॥
+मैत्रिकी राखितां ये ना ​बुद्धि दे रघुनायका ॥ ७ ॥
 
-Kalena Sphurti Hoina, Aapada Lagali Bahu |
+Kalena Sphurti Hoina Aapada Lagali Bahu |
 
-Pratyahin Pot Sodina, Buddhi De Raghunayaka || 8 ||
+Pratyahin Pot Sodina Buddhi De Raghunayaka || 8 ||
 
-कळेना स्फूर्ति होईना, आपदा लागली बहू ।
+कळेना स्फूर्ति होईना ​आपदा लागली बहू ।
 
-प्रत्यहीं पोट सोडीना, बुद्धि दे रघुनायका ॥ ८ ॥
+प्रत्यहीं पोट सोडीना ​बुद्धि दे रघुनायका ॥ ८ ॥
 
-Sansar Netaka Nahin, Udvegu Vatato Jivin |
+Sansar Netaka Nahin Udvegu Vatato Jivin |
 
-Paramarthu Kalena Kin, Buddhi De Raghunayaka || 9 ||
+Paramarthu Kalena Kin Buddhi De Raghunayaka || 9 ||
 
-संसार नेटका नाहीं, उद्वेगू वाटतो जिवीं ।
+संसार नेटका नाहीं ​उद्वेगू वाटतो जिवीं ।
 
-परमार्थू कळेना कीं, बुद्धि दे रघुनायका ॥ ९ ॥
+परमार्थू कळेना कीं ​बुद्धि दे रघुनायका ॥ ९ ॥
 
-Deina Puravina Koni, Ugechi Jan Hansati |
+Deina Puravina Koni Ugechi Jan Hansati |
 
-Visaru Padato Potin, Buddhi De Raghunayaka || 10 ||
+Visaru Padato Potin Buddhi De Raghunayaka || 10 ||
 
-देईना पुरविना कोणी, उगेचि जन हांसती ।
+देईना पुरविना कोणी ​उगेचि जन हांसती ।
 
-विसरू पडतो पोटीं, बुद्धि दे रघुनायका ॥ १० ॥
+विसरू पडतो पोटीं ​बुद्धि दे रघुनायका ॥ १० ॥
 
-Pishunen Vatati Sarvain, Konihi Majala Nase |
+Pishunen Vatati Sarvain Konihi Majala Nase |
 
-Samartha Tun Dayasindhu, Buddhi De Raghunayaka || 11 ||
+Samartha Tun Dayasindhu Buddhi De Raghunayaka || 11 ||
 
-पिशुनें वाटती सर्वैं, कोणीही मजला नसे ।
+पिशुनें वाटती सर्वैं ​कोणीही मजला नसे ।
 
-समर्था तूं दयासिंधू, बुद्धि दे रघुनायका ॥ ११ ॥
+समर्था तूं दयासिंधू ​बुद्धि दे रघुनायका ॥ ११ ॥
 
-Udas Vataten Jivin, Aatan Javen Kunikade |
+Udas Vataten Jivin Aatan Javen Kunikade |
 
-Tun Bhaktavatsala Rama, Buddhi De Raghunayaka || 12 ||
+Tun Bhaktavatsala Rama Buddhi De Raghunayaka || 12 ||
 
-उदास वाटतें जीवीं, आतां जावें कुणीकडे ।
+उदास वाटतें जीवीं ​आतां जावें कुणीकडे ।
 
-तूं भक्तवत्सला रामा, बुद्धि दे रघुनायका ॥ १२ ॥
+तूं भक्तवत्सला रामा ​बुद्धि दे रघुनायका ॥ १२ ॥
 
 Kayavachamanobhaven Tujha Mi Mhanavitasen |
 
-He Laj Tujala Majhi, Buddhi De Raghunayaka || 13 ||
+He Laj Tujala Majhi Buddhi De Raghunayaka || 13 ||
 
 कायावाचामनोभावें तुझा मी म्हणवीतसें ।
 
-हे लाज तुजला माझी, बुद्धि दे रघुनायका ॥ १३ ॥
+हे लाज तुजला माझी ​बुद्धि दे रघुनायका ॥ १३ ॥
 
 Sodavilya Devakoti Bhubhar Phedila Balen |
 
-Bhaktansi Aashrayo Motha, Buddhi De Raghunayaka || 14 ||
+Bhaktansi Aashrayo Motha Buddhi De Raghunayaka || 14 ||
 
 सोडविल्या देवकोटी भूभार फेडिला बळें ।
 
-भक्तांसी आश्रयो मोठा, बुद्धि दे रघुनायका ॥ १४ ॥
+भक्तांसी आश्रयो मोठा ​बुद्धि दे रघुनायका ॥ १४ ॥
 
-Udand Bhakta Tumhanla, Aamhanla Kon Pusaten |
+Udand Bhakta Tumhanla Aamhanla Kon Pusaten |
 
-Brid Hen Rakhanen Aadhin, Buddhi De Raghunayaka || 15 ||
+Brid Hen Rakhanen Aadhin Buddhi De Raghunayaka || 15 ||
 
-उदंड भक्त तुम्हांला, आम्हांला कोण पूसतें ।
+उदंड भक्त तुम्हांला ​आम्हांला कोण पूसतें ।
 
-ब्रीद हें राखणें आधीं, बुद्धि दे रघुनायका ॥ १५ ॥
+ब्रीद हें राखणें आधीं ​बुद्धि दे रघुनायका ॥ १५ ॥
 
-Udand Aikili Kirti, Patitapavana Prabho |
+Udand Aikili Kirti Patitapavana Prabho |
 
-Mi Ek Rank Durbuddhi, Buddhi De Raghunayaka || 16 ||
+Mi Ek Rank Durbuddhi Buddhi De Raghunayaka || 16 ||
 
-उदंड ऐकिली कीर्ति, पतितपावना प्रभो ।
+उदंड ऐकिली कीर्ति ​पतितपावना प्रभो ।
 
-मी एक रंक दुर्बुद्धि, बुद्धि दे रघुनायका ॥ १६ ॥
+मी एक रंक दुर्बुद्धि ​बुद्धि दे रघुनायका ॥ १६ ॥
 
-Aasha He Lagali Mothi, Dayalu Ba Daya Karin |
+Aasha He Lagali Mothi Dayalu Ba Daya Karin |
 
-Aanik Nalage Kanhin, Buddhi De Raghunayaka || 17 ||
+Aanik Nalage Kanhin Buddhi De Raghunayaka || 17 ||
 
-आशा हे लागली मोठी, दयाळू बा दया करीं ।
+आशा हे लागली मोठी ​दयाळू बा दया करीं ।
 
-आणीक नलगे कांहीं, बुद्धि दे रघुनायका ॥ १७ ॥
+आणीक नलगे कांहीं ​बुद्धि दे रघुनायका ॥ १७ ॥
 
 Ramadas Mhane Majha Sansar Tuj Lagala |
 
-Sanshayo Vatato Potin, Buddhi De Raghunayaka || 18 ||
+Sanshayo Vatato Potin Buddhi De Raghunayaka || 18 ||
 
 रामदास म्हणे माझा संसार तुज लागला ।
 
-संशयो वाटतो पोटीं, बुद्धि दे रघुनायका ॥ १८ ॥
+संशयो वाटतो पोटीं ​बुद्धि दे रघुनायका ॥ १८ ॥
 
 || Jay Jay Raghuvir Samartha ||
 
@@ -16808,7 +16808,7 @@ Udasin Ha Kal Kothen Na Kanthe || 1 ||
 
 उदासीन हा काळ कोठें न कंठे ॥ १ ॥
 
-Gharen Sundaren, Saukhya Nanaparichen |
+Gharen Sundaren Saukhya Nanaparichen |
 
 Pari Kon Janel Ten Antarinchen |
 
@@ -16816,7 +16816,7 @@ Manin Aathavitanchi To Kanth Date |
 
 Udasin Ha Kal Kothen Na Kanthe || 2 ||
 
-घरें सुंदरें, सौख्य नानापरीचें ।
+घरें सुंदरें ​सौख्य नानापरीचें ।
 
 परी कोण जाणेल तें अंतरींचें ।
 
@@ -16828,7 +16828,7 @@ Balen Lavitan Chitta Kothen Jadena |
 
 Samadhan Ten Kanhin Kelyan Ghadena |
 
-Navhe Dhir, Nayanin Sada Nir Lote |
+Navhe Dhir Nayanin Sada Nir Lote |
 
 Udasin Ha Kal Kothen Na Kanthe || 3 ||
 
@@ -16836,21 +16836,21 @@ Udasin Ha Kal Kothen Na Kanthe || 3 ||
 
 समाधान तें कांहिं केल्यां घडेना ।
 
-नव्हे धीर, नयनीं सदा नीर लोटे ।
+नव्हे धीर ​नयनीं सदा नीर लोटे ।
 
 उदासीन हा काळ कोठें न कंठे ॥ ३ ॥
 
-Avastha Marnin Lagali, Kay Sangon |
+Avastha Marnin Lagali Kay Sangon |
 
-Gunin Guntala Het, Konas Magon |
+Gunin Guntala Het Konas Magon |
 
 Bahusal Bhetavaya Pran Phute |
 
 Udasin Ha Kal Kothen Na Kanthe || 4 ||
 
-अवस्था मर्नीं लागली, काय सांगों ।
+अवस्था मर्नीं लागली ​काय सांगों ।
 
-गुणीं गुंतला हेत, कोणास मागों ।
+गुणीं गुंतला हेत ​कोणास मागों ।
 
 बहूसाल भेटावया प्राण फूटे ।
 
@@ -16892,7 +16892,7 @@ Samartha Marnin Sandi Majhi Nasavi |
 
 Sada Sarvada Bhaktachinta Asavi |
 
-Ghadena Tujha Yog Ha, Prapta Khoten |
+Ghadena Tujha Yog Ha Prapta Khoten |
 
 Udasin Ha Kal Kothen Na Kanthe || 7 ||
 
@@ -16900,7 +16900,7 @@ Udasin Ha Kal Kothen Na Kanthe || 7 ||
 
 सदा सर्वदा भक्तचिंता असावी ।
 
-घडेना तुझा योग हा, प्राप्त खोटें ।
+घडेना तुझा योग हा ​प्राप्त खोटें ।
 
 उदासीन हा काळ कोठें न कंठे ॥ ७ ॥
 
@@ -17013,7 +17013,7 @@ Mhane Das Udas Jhalon Dayala |
 
 Janin Vertha Sansar Ha Vayachala ||
 
-Tujha Mi, Tula Pusaton Sarvabhaven |
+Tujha Mi Tula Pusaton Sarvabhaven |
 
 Raghunayaka Kay Kaisen Karaven ? || 4 ||
 
@@ -17021,7 +17021,7 @@ Raghunayaka Kay Kaisen Karaven ? || 4 ||
 
 जनीं वेर्थ संसार हा वायचाळा ॥
 
-तुझा मी, तुला पूसतों सर्वभावें ।
+तुझा मी ​तुला पूसतों सर्वभावें ।
 
 रघूनायका काय कैसें करावें ? ॥ ४ ॥
 
@@ -17050,17 +17050,17 @@ Tujavin Rama Maj Kanthavena || 1 ||
 
 तुजवीण रामा मज कंठवेना ॥ १ ॥
 
-Jadali Upadhi, Abhiman Sadhi |
+Jadali Upadhi Abhiman Sadhi |
 
-Vivek Nahin, Bahusal Badhi ||
+Vivek Nahin Bahusal Badhi ||
 
 Svamiviyogen Palahi Gamena |
 
 Tujavin Rama Maj Kanthavena || 2 ||
 
-जडली उपाधी, अभिमान साधी ।
+जडली उपाधी ​अभिमान साधी ।
 
-विवेक नाहीं, बहुसाल बाधी ॥
+विवेक नाहीं ​बहुसाल बाधी ॥
 
 स्वामीवियोगें पळही गमेना ।
 
@@ -17086,7 +17086,7 @@ Vishayi Jananen Maj Lajavilen |
 
 Prapanchasangen Aayushya Nelen ||
 
-Samayin Bahu Krodh, Shanti Ghadena |
+Samayin Bahu Krodh Shanti Ghadena |
 
 Tujavin Rama Maj Kanthavena || 4 ||
 
@@ -17094,7 +17094,7 @@ Tujavin Rama Maj Kanthavena || 4 ||
 
 प्रपंचसंगें आयुष्य नेलें ॥
 
-समयीं बहु क्रोध, शांती घडेना ।
+समयीं बहु क्रोध ​शांती घडेना ।
 
 तुजवीण रामा मज कंठवेना ॥ ४ ॥
 
@@ -17127,7 +17127,7 @@ Asankhyat Te Bhakta Huoni Gele |
 
 Tihin Sadhananche Bahu Kashta Kele |
 
-Navhe Karyakarta, Bhumibhar Jhalon |
+Navhe Karyakarta Bhumibhar Jhalon |
 
 Tujha Das Mi Vyartha Janmasi Aalon || 1 ||
 
@@ -17135,7 +17135,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 1 ||
 
 तिहीं साधनांचे बहू कष्ट केले ।
 
-नव्हे कार्यकर्ता, भुमीभार झालों ।
+नव्हे कार्यकर्ता ​भुमीभार झालों ।
 
 तुझा दास मी व्यर्थ जन्मासि आलों ॥ १ ॥
 
@@ -17159,7 +17159,7 @@ Sada Premarasi Taya Bhetalasi |
 
 Tujhya Darshanen Sparshanen Punyarasi |
 
-Ahanta Marnin, Shabdadnyanen Budalon |
+Ahanta Marnin Shabdadnyanen Budalon |
 
 Tujha Das Mi Vyartha Janmasi Aalon || 3 ||
 
@@ -17167,7 +17167,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 3 ||
 
 तुझ्या दर्शनें स्पर्शनें पुण्यरासी ।
 
-अहंता मर्नीं, शब्दज्ञानें बुडालों ।
+अहंता मर्नीं ​शब्दज्ञानें बुडालों ।
 
 तुझा दास मी व्यर्थ जन्मासि आलों ॥ ३ ॥
 
@@ -17189,7 +17189,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 4 ||
 
 Bahusal Devalayen Hatakachin |
 
-Rasala Kala, Laghaven Natakachin |
+Rasala Kala Laghaven Natakachin |
 
 Puja Dekhatan Jad Jivin Galalon |
 
@@ -17197,7 +17197,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 5 ||
 
 बहूसाल देवालयें हाटकाचीं ।
 
-रसाळा कळा, लाघवें नाटकाचीं ।
+रसाळा कळा ​लाघवें नाटकाचीं ।
 
 पूजा देखतां जाड जीवीं गळालों ।
 
@@ -17223,7 +17223,7 @@ Kiti Yogamurti Kiti Punyamurti |
 
 Kiti Dharmasansthapana Annashanti |
 
-Parastavalon, Kavalon, Tapta Jhalon |
+Parastavalon Kavalon Tapta Jhalon |
 
 Tujha Das Mi Vyartha Janmasi Aalon || 7 ||
 
@@ -17231,7 +17231,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 7 ||
 
 किती धर्मसंस्थापना अन्नशांति ।
 
-परस्तावलों, कावलों, तप्त झालों ।
+परस्तावलों ​कावलों ​तप्त झालों ।
 
 तुझा दास मी व्यर्थ जन्मासि आलों ॥ ७ ॥
 
@@ -17260,109 +17260,109 @@ Tujha Das Mi Vyartha Janmasi Aalon || 8 ||
 Hachi Subodh Guruncha
 हाचि सुबोध गुरूंचा
 
-Nam Sada Bolaven, Gaven Bhaven, Janansi Sangaven |
+Nam Sada Bolaven Gaven Bhaven Janansi Sangaven |
 
-Hachi Subodh Guruncha, Namaparaten Na Satya Manaven || 1 ||
+Hachi Subodh Guruncha Namaparaten Na Satya Manaven || 1 ||
 
-नाम सदा बोलावें, गावें भावें, जनांसि सांगावें ।
+नाम सदा बोलावें ​गावें भावें ​जनांसि सांगावें ।
 
-हाचि सुबोध गुरूंचा, नामापरतें न सत्य मानावें ॥ १ ॥
+हाचि सुबोध गुरूंचा ​नामापरतें न सत्य मानावें ॥ १ ॥
 
 Namant Ranguniya Vyavaharin Sarva Bhog Sevave |
 
-Hachi Subodh Guruncha, Bhogasangen Kuthen Na Guntaven || 2 ||
+Hachi Subodh Guruncha Bhogasangen Kuthen Na Guntaven || 2 ||
 
 नामांत रंगुनीया व्यवहारीं सर्व भोग सेवावे ।
 
-हाचि सुबोध गुरूंचा, भोगासंगें कुठें न गुंतावें ॥ २ ॥
+हाचि सुबोध गुरूंचा ​भोगासंगें कुठें न गुंतावें ॥ २ ॥
 
-Aanandant Asaven, Aalas Bhay Dvesh Dur Tyagave |
+Aanandant Asaven Aalas Bhay Dvesh Dur Tyagave |
 
-Hachi Subodh Guruncha, Anusandhana Kadhin Na Chukavaven || 3 ||
+Hachi Subodh Guruncha Anusandhana Kadhin Na Chukavaven || 3 ||
 
-आनंदांत असावें, आळस भय द्वेष दूर त्यागावे ।
+आनंदांत असावें ​आळस भय द्वेष दूर त्यागावे ।
 
-हाचि सुबोध गुरूंचा, अनुसंधाना कधीं न चुकवावें ॥ ३ ॥
+हाचि सुबोध गुरूंचा ​अनुसंधाना कधीं न चुकवावें ॥ ३ ॥
 
-God Sada Bolaven, Namrapanen Sarvalokapriy Vhaven |
+God Sada Bolaven Namrapanen Sarvalokapriy Vhaven |
 
-Hachi Subodh Guruncha, Bhaktinen Raghupatis Aalavaven || 4 ||
+Hachi Subodh Guruncha Bhaktinen Raghupatis Aalavaven || 4 ||
 
-गोड सदा बोलावें, नम्रपणें सर्वलोकप्रिय व्हावें ।
+गोड सदा बोलावें ​नम्रपणें सर्वलोकप्रिय व्हावें ।
 
-हाचि सुबोध गुरूंचा, भक्तीनें रघुपतीस आळवावें ॥ ४ ॥
+हाचि सुबोध गुरूंचा ​भक्तीनें रघुपतीस आळवावें ॥ ४ ॥
 
-Svantar Shuddha Asaven, Kapatacharana Svayen Na Vash Vhaven |
+Svantar Shuddha Asaven Kapatacharana Svayen Na Vash Vhaven |
 
-Hachi Subodh Guruncha, Man Konachen Kadhin Na Dukhavaven || 5 ||
+Hachi Subodh Guruncha Man Konachen Kadhin Na Dukhavaven || 5 ||
 
-स्वान्तर शुद्ध असावें, कपटाचरणा स्वयें न वश व्हावें ।
+स्वान्तर शुद्ध असावें ​कपटाचरणा स्वयें न वश व्हावें ।
 
-हाचि सुबोध गुरूंचा, मन कोणाचें कधीं न दुखवावें ॥ ५ ॥
+हाचि सुबोध गुरूंचा ​मन कोणाचें कधीं न दुखवावें ॥ ५ ॥
 
-Majha Ram Sakha, Mi Ramacha Das, Nitya Bolaven |
+Majha Ram Sakha Mi Ramacha Das Nitya Bolaven |
 
-Hachi Subodh Guruncha, Ramapashin Ananya Vagaven || 6 ||
+Hachi Subodh Guruncha Ramapashin Ananya Vagaven || 6 ||
 
-माझा राम सखा, मी रामाचा दास, नित्य बोलावें ।
+माझा राम सखा ​मी रामाचा दास ​नित्य बोलावें ।
 
-हाचि सुबोध गुरूंचा, रामापाशीं अनन्य वागावें ॥ ६ ॥
+हाचि सुबोध गुरूंचा ​रामापाशीं अनन्य वागावें ॥ ६ ॥
 
-Yatna Kasun Karin Mi, Yash De, Rama, Na De, Tujhi Satta |
+Yatna Kasun Karin Mi Yash De Rama Na De Tujhi Satta |
 
-Hachi Subodh Guruncha, Manava Ram Sarvada Karta || 7 ||
+Hachi Subodh Guruncha Manava Ram Sarvada Karta || 7 ||
 
-यत्न कसून करिन मी, यश दे, रामा, न दे, तुझी सत्ता ।
+यत्न कसून करिन मी ​यश दे ​रामा ​न दे ​तुझी सत्ता ।
 
-हाचि सुबोध गुरूंचा, मानावा राम सर्वदा कर्ता ॥ ७ ॥
+हाचि सुबोध गुरूंचा ​मानावा राम सर्वदा कर्ता ॥ ७ ॥
 
 Aacharasanyamanen Yukta Asa Nitidharma Palava |
 
-Hachi Subodh Guruncha, Khelaisa Prapanch Manava || 8 ||
+Hachi Subodh Guruncha Khelaisa Prapanch Manava || 8 ||
 
 आचारसंयमानें युक्त असा नीतिधर्म पाळावा ।
 
-हाचि सुबोध गुरूंचा, खेळाऐसा प्रपंच मानावा ॥ ८ ॥
+हाचि सुबोध गुरूंचा ​खेळाऐसा प्रपंच मानावा ॥ ८ ॥
 
-Data Ram Sukhacha, Sansara Man Tun Prabhuseva |
+Data Ram Sukhacha Sansara Man Tun Prabhuseva |
 
-Hachi Subodh Guruncha, Santosha Sarvada Marnin Theva || 9 ||
+Hachi Subodh Guruncha Santosha Sarvada Marnin Theva || 9 ||
 
-दाता राम सुखाचा, संसारा मान तूं प्रभूसेवा ।
+दाता राम सुखाचा ​संसारा मान तूं प्रभूसेवा ।
 
-हाचि सुबोध गुरूंचा, संतोषा सर्वदा मर्नीं ठेवा ॥ ९ ॥
+हाचि सुबोध गुरूंचा ​संतोषा सर्वदा मर्नीं ठेवा ॥ ९ ॥
 
-Svartha Khara Sadha Re, Nitya Tumhi Namagayanin Jaga |
+Svartha Khara Sadha Re Nitya Tumhi Namagayanin Jaga |
 
-Hachi Subodh Guruncha, Mipan Jaloniya Jagin Vaga || 10 ||
+Hachi Subodh Guruncha Mipan Jaloniya Jagin Vaga || 10 ||
 
-स्वार्थ खरा साधा रे, नित्य तुम्ही नामगायनीं जागा ।
+स्वार्थ खरा साधा रे ​नित्य तुम्ही नामगायनीं जागा ।
 
-हाचि सुबोध गुरूंचा, मीपण जाळोनिया जगीं वागा ॥ १० ॥
+हाचि सुबोध गुरूंचा ​मीपण जाळोनिया जगीं वागा ॥ १० ॥
 
-Abhiman Shatru Motha, Sarvanna Jachato Sukhashenen |
+Abhiman Shatru Motha Sarvanna Jachato Sukhashenen |
 
-Hachi Subodh Guruncha, Marava To Samul Namanen || 11 ||
+Hachi Subodh Guruncha Marava To Samul Namanen || 11 ||
 
-अभिमान शत्रु मोठा, सर्वांना जाचतो सुखाशेनें ।
+अभिमान शत्रु मोठा ​सर्वांना जाचतो सुखाशेनें ।
 
-हाचि सुबोध गुरूंचा, मारावा तो समूळ नामानें ॥ ११ ॥
+हाचि सुबोध गुरूंचा ​मारावा तो समूळ नामानें ॥ ११ ॥
 
-Rajyadhikar Yevo, Kinva Javo Samasta Dhan Man |
+Rajyadhikar Yevo Kinva Javo Samasta Dhan Man |
 
-Hachi Subodh Guruncha, Bhangaven Na Kada Samadhan || 12 ||
+Hachi Subodh Guruncha Bhangaven Na Kada Samadhan || 12 ||
 
-राज्याधिकार येवो, किंवा जावो समस्त धन मान ।
+राज्याधिकार येवो ​किंवा जावो समस्त धन मान ।
 
-हाचि सुबोध गुरूंचा, भंगावें ना कदा समाधान ॥ १२ ॥
+हाचि सुबोध गुरूंचा ​भंगावें ना कदा समाधान ॥ १२ ॥
 
-Premant Ram Ramato, Premala Mol Na Jagamajin |
+Premant Ram Ramato Premala Mol Na Jagamajin |
 
-Hachi Subodh Guruncha, Gururayala Tahan Premachi || 13 ||
+Hachi Subodh Guruncha Gururayala Tahan Premachi || 13 ||
 
-प्रेमांत राम रमतो, प्रेमाला मोल ना जगामाजीं ।
+प्रेमांत राम रमतो ​प्रेमाला मोल ना जगामाजीं ।
 
-हाचि सुबोध गुरूंचा, गुरुरायाला तहान प्रेमाची ॥ १३ ॥
+हाचि सुबोध गुरूंचा ​गुरुरायाला तहान प्रेमाची ॥ १३ ॥
 
 || Sadgurunath Maharaj Ki Jay ||
 

@@ -9,8 +9,8 @@ language: mr
 Asankhyat Te Bhakta Huoni Gele |
 तिहीं साधनांचे बहू कष्ट केले ।
 Tihin Sadhananche Bahu Kashta Kele |
-नव्हे कार्यकर्ता, भुमीभार झालों ।
-Navhe Karyakarta, Bhumibhar Jhalon |
+नव्हे कार्यकर्ता ¦भुमीभार झालों ।
+Navhe Karyakarta ¦Bhumibhar Jhalon |
 तुझा दास मी व्यर्थ जन्मासि आलों
 Tujha Das Mi Vyartha Janmasi Aalon
 
@@ -29,8 +29,8 @@ Tujha Das Mi Vyartha Janmasi Aalon
 Sada Premarasi Taya Bhetalasi |
 तुझ्या दर्शनें स्पर्शनें पुण्यरासी ।
 Tujhya Darshanen Sparshanen Punyarasi |
-अहंता मर्नीं, शब्दज्ञानें बुडालों ।
-Ahanta Marnin, Shabdadnyanen Budalon |
+अहंता मर्नीं ¦शब्दज्ञानें बुडालों ।
+Ahanta Marnin ¦Shabdadnyanen Budalon |
 तुझा दास मी व्यर्थ जन्मासि आलों
 Tujha Das Mi Vyartha Janmasi Aalon
 
@@ -47,8 +47,8 @@ Tujha Das Mi Vyartha Janmasi Aalon
 [5]
 बहूसाल देवालयें हाटकाचीं ।
 Bahusal Devalayen Hatakachin |
-रसाळा कळा, लाघवें नाटकाचीं ।
-Rasala Kala, Laghaven Natakachin |
+रसाळा कळा ¦लाघवें नाटकाचीं ।
+Rasala Kala ¦Laghaven Natakachin |
 पूजा देखतां जाड जीवीं गळालों ।
 Puja Dekhatan Jad Jivin Galalon |
 तुझा दास मी व्यर्थ जन्मासि आलों
@@ -69,8 +69,8 @@ Tujha Das Mi Vyartha Janmasi Aalon
 Kiti Yogamurti Kiti Punyamurti |
 किती धर्मसंस्थापना अन्नशांति ।
 Kiti Dharmasansthapana Annashanti |
-परस्तावलों, कावलों, तप्त झालों ।
-Parastavalon, Kavalon, Tapta Jhalon |
+परस्तावलों ¦कावलों ¦तप्त झालों ।
+Parastavalon ¦Kavalon ¦Tapta Jhalon |
 तुझा दास मी व्यर्थ जन्मासि आलों
 Tujha Das Mi Vyartha Janmasi Aalon
 

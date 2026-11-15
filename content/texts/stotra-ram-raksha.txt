@@ -14,9 +14,9 @@ credit-en: Budha Kaushika Rishi
 अस्य श्रीरामरक्षास्तोत्रमन्त्रस्य ।
 Asya Shriramarakshastotramantrasya |
 बुधकौशिक ऋषिः । ¦श्रीसीतारामचंद्रो देवता ।
-Budhakaushika Rushih | Shrisitaramachandro Devata |
+Budhakaushika Rushih | ¦Shrisitaramachandro Devata |
 अनुष्टुप् छंदः । ¦सीता शक्तिः । ¦श्रीमद्हनुमान् कीलकम् ।
-Anushtup Chhandah | Sita Shaktih | Shrimadhanuman Kilakam |
+Anushtup Chhandah | ¦Sita Shaktih | ¦Shrimadhanuman Kilakam |
 श्रीरामचंद्रप्रीत्यर्थे जपे विनियोगः ॥
 Shriramachandraprityarthe Jape Viniyogah ||
 
@@ -150,9 +150,9 @@ Rakshahkulanihantarau Trayetam No Raghuttamau ||
 
 [20]
 आत्तसज्जधनुषाविषुस्पृशा¦वक्षयाशुगनिषङ्गसङ्गिनौ ।
-Attasajjadhanushavishusprusha Vakshayashuganishangasanginau |
+Attasajjadhanushavishusprusha ¦Vakshayashuganishangasanginau |
 रक्षणाय मम रामलक्ष्मणा¦वग्रतः पथि सदैव गच्छताम् ॥
-Rakshanaya Mama Ramalakshmana Vagratah Pathi Sadaiva Gachchhatam ||
+Rakshanaya Mama Ramalakshmana ¦Vagratah Pathi Sadaiva Gachchhatam ||
 
 [21]
 संनद्धः कवची खड्गी चापबाणधरो युवा ।
@@ -226,7 +226,7 @@ Mata Ramo Matpita Ramachandrah
 स्वामी रामो मत्सखा रामचन्द्रः ।
 Svami Ramo Matsakha Ramachandrah |
 सर्वस्वं मे रामचन्द्रो दयालु¦र्नान्यं जाने नैव जाने न जाने ॥
-Sarvasvam Me Ramachandro Dayalurnanyam Jane Naiva Jane Na Jane ||
+Sarvasvam Me Ramachandro Dayalur¦nanyam Jane Naiva Jane Na Jane ||
 
 [31]
 दक्षिणे लक्ष्मणो यस्य वामे च जनकात्मजा ।
