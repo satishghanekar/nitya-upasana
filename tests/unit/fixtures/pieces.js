@@ -1953,8 +1953,8 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s7l2",
-         "mr": "निढळावरी कर, ​निढळावरी कर ठेवुनी वाट मी पाहे ।",
-         "en": "Nidhalavari Kar, Nidhalavari Kar Thevuni Vaat Mi Pahe |"
+         "mr": "निढळावरी कर ​निढळावरी कर ठेवुनी वाट मी पाहे ।",
+         "en": "Nidhalavari Kar Nidhalavari Kar Thevuni Vaat Mi Pahe |"
         },
         {
          "l": "s7l3",
@@ -1994,8 +1994,8 @@ window.CONTENT = {
         },
         {
          "l": "s7l7",
-         "mr": "पंढरपुरी आहे, ​पंढरपुरी आहे माझा मायबाप ।",
-         "en": "Pandharpuri Aahe, Pandharpuri Aahe Majha Maaybaap |"
+         "mr": "पंढरपुरी आहे ​पंढरपुरी आहे माझा मायबाप ।",
+         "en": "Pandharpuri Aahe Pandharpuri Aahe Majha Maaybaap |"
         },
         {
          "l": "s7l8",
@@ -2035,8 +2035,8 @@ window.CONTENT = {
         },
         {
          "l": "s7l12",
-         "mr": "गरुडावरी बैसोनी, ​गरुडावरी बैसोनी माझा कैवारी आला ।",
-         "en": "Garudavari Baisoni, Garudavari Baisoni Majha Kaivari Aala |"
+         "mr": "गरुडावरी बैसोनी ​गरुडावरी बैसोनी माझा कैवारी आला ।",
+         "en": "Garudavari Baisoni Garudavari Baisoni Majha Kaivari Aala |"
         },
         {
          "l": "s7l13",
@@ -2076,8 +2076,8 @@ window.CONTENT = {
         },
         {
          "l": "s7l17",
-         "mr": "विष्णुदास नामा, ​विष्णुदास नामा जीवेभावे ओवाळी ।",
-         "en": "Vishnudas Naama, Vishnudas Naama Jivebhave Owaali |"
+         "mr": "विष्णुदास नामा ​विष्णुदास नामा जीवेभावे ओवाळी ।",
+         "en": "Vishnudas Naama Vishnudas Naama Jivebhave Owaali |"
         },
         {
          "l": "s7l18",
@@ -2419,13 +2419,13 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s10l1",
-         "mr": "ॐ जय जगदीश हरे, ​स्वामी जय जगदीश हरे ।",
-         "en": "Om Jai Jagdish Hare, Swami Jai Jagdish Hare |"
+         "mr": "ॐ जय जगदीश हरे ​स्वामी जय जगदीश हरे ।",
+         "en": "Om Jai Jagdish Hare Swami Jai Jagdish Hare |"
         },
         {
          "l": "s10l2",
-         "mr": "भक्तजनों के संकट, ​दासजनों के संकट, क्षण में दूर करे ।",
-         "en": "Bhaktajanon Ke Sankat, Daasjanon Ke Sankat, Kshan Mein Door Kare |"
+         "mr": "भक्तजनों के संकट ​दासजनों के संकट, क्षण में दूर करे ।",
+         "en": "Bhaktajanon Ke Sankat Daasjanon Ke Sankat, Kshan Mein Door Kare |"
         },
         {
          "l": "s10l3",
@@ -2438,13 +2438,13 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s10l4",
-         "mr": "जो ध्यावे फल पावे, दुःख बिनसे मन का, ​स्वामी दुःख बिनसे मन का ।",
-         "en": "Jo Dhyave Phal Pave, Dukh Binse Man Ka, Swami Dukh Binse Man Ka |"
+         "mr": "जो ध्यावे फल पावे, दुःख बिनसे मन का ​स्वामी दुःख बिनसे मन का ।",
+         "en": "Jo Dhyave Phal Pave, Dukh Binse Man Ka Swami Dukh Binse Man Ka |"
         },
         {
          "l": "s10l5",
-         "mr": "सुख सम्पति घर आवे, ​सुख सम्पति घर आवे, कष्ट मिटे तन का ।",
-         "en": "Sukh Sampati Ghar Aave, Sukh Sampati Ghar Aave, Kasht Mite Tan Ka |"
+         "mr": "सुख सम्पति घर आवे ​सुख सम्पति घर आवे, कष्ट मिटे तन का ।",
+         "en": "Sukh Sampati Ghar Aave Sukh Sampati Ghar Aave, Kasht Mite Tan Ka |"
         },
         {
          "l": "s10l6",
@@ -2457,13 +2457,13 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s10l7",
-         "mr": "मातपिता तुम मेरे, शरण गहूँ किसकी, ​स्वामी शरण गहूँ किसकी ।",
-         "en": "Matapita Tum Mere, Sharan Gahoon Kiski, Swami Sharan Gahoon Kiski |"
+         "mr": "मातपिता तुम मेरे, शरण गहूँ किसकी ​स्वामी शरण गहूँ किसकी ।",
+         "en": "Matapita Tum Mere, Sharan Gahoon Kiski Swami Sharan Gahoon Kiski |"
         },
         {
          "l": "s10l8",
-         "mr": "तुम बिन और न दूजा, ​प्रभु बिन और न दूजा, आस करूँ जिसकी ।",
-         "en": "Tum Bin Aur Na Dooja, Prabhu Bin Aur Na Dooja, Aas Karoon Jiski |"
+         "mr": "तुम बिन और न दूजा ​प्रभु बिन और न दूजा, आस करूँ जिसकी ।",
+         "en": "Tum Bin Aur Na Dooja Prabhu Bin Aur Na Dooja, Aas Karoon Jiski |"
         },
         {
          "l": "s10l9",
@@ -2476,13 +2476,13 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s10l10",
-         "mr": "तुम पूरण परमात्मा, ​तुम अन्तर्यामी, स्वामी तुम अन्तर्यामी ।",
-         "en": "Tum Pooran Paramatma, Tum Antaryami, Swami Tum Antaryami |"
+         "mr": "तुम पूरण परमात्मा ​तुम अन्तर्यामी, स्वामी तुम अन्तर्यामी ।",
+         "en": "Tum Pooran Paramatma Tum Antaryami, Swami Tum Antaryami |"
         },
         {
          "l": "s10l11",
-         "mr": "पार ब्रह्म परमेश्वर, ​पार ब्रह्म परमेश्वर, तुम सबके स्वामी ।",
-         "en": "Paar Brahma Parmeshwar, Paar Brahma Parmeshwar, Tum Sabke Swami |"
+         "mr": "पार ब्रह्म परमेश्वर ​पार ब्रह्म परमेश्वर, तुम सबके स्वामी ।",
+         "en": "Paar Brahma Parmeshwar Paar Brahma Parmeshwar, Tum Sabke Swami |"
         },
         {
          "l": "s10l12",
@@ -2495,13 +2495,13 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s10l13",
-         "mr": "तुम करुणा के सागर, तुम पालन कर्ता, ​स्वामी तुम पालन कर्ता ।",
-         "en": "Tum Karuna Ke Sagar, Tum Paalan Karta, Swami Tum Paalan Karta |"
+         "mr": "तुम करुणा के सागर, तुम पालन कर्ता ​स्वामी तुम पालन कर्ता ।",
+         "en": "Tum Karuna Ke Sagar, Tum Paalan Karta Swami Tum Paalan Karta |"
         },
         {
          "l": "s10l14",
-         "mr": "मैं मूरख खल कामी, ​मैं सेवक तुम स्वामी, कृपा करो भर्ता ।",
-         "en": "Main Moorakh Khal Kaami, Main Sevak Tum Swami, Krupa Karo Bharta |"
+         "mr": "मैं मूरख खल कामी ​मैं सेवक तुम स्वामी, कृपा करो भर्ता ।",
+         "en": "Main Moorakh Khal Kaami Main Sevak Tum Swami, Krupa Karo Bharta |"
         },
         {
          "l": "s10l15",
@@ -2514,13 +2514,13 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s10l16",
-         "mr": "तुम हो एक अगोचर, सबके प्राणपति, ​स्वामी सबके प्राणपति ।",
-         "en": "Tum Ho Ek Agochar, Sabke Pranpati, Swami Sabke Pranpati |"
+         "mr": "तुम हो एक अगोचर, सबके प्राणपति ​स्वामी सबके प्राणपति ।",
+         "en": "Tum Ho Ek Agochar, Sabke Pranpati Swami Sabke Pranpati |"
         },
         {
          "l": "s10l17",
-         "mr": "किस विधि मिलूँ दयामय, ​किस विधि मिलूँ दयामय, तुमको मैं कुमति ।",
-         "en": "Kis Vidhi Miloon Dayamay, Kis Vidhi Miloon Dayamay, Tumko Main Kumati |"
+         "mr": "किस विधि मिलूँ दयामय ​किस विधि मिलूँ दयामय, तुमको मैं कुमति ।",
+         "en": "Kis Vidhi Miloon Dayamay Kis Vidhi Miloon Dayamay, Tumko Main Kumati |"
         },
         {
          "l": "s10l18",
@@ -2533,13 +2533,13 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s10l19",
-         "mr": "दीनबन्धु दुःख हर्ता, तुम रक्षक मेरे, ​स्वामी तुम रक्षक मेरे ।",
-         "en": "Deenbandhu Dukh Harta, Tum Rakshak Mere, Swami Tum Rakshak Mere |"
+         "mr": "दीनबन्धु दुःख हर्ता, तुम रक्षक मेरे ​स्वामी तुम रक्षक मेरे ।",
+         "en": "Deenbandhu Dukh Harta, Tum Rakshak Mere Swami Tum Rakshak Mere |"
         },
         {
          "l": "s10l20",
-         "mr": "अपने हाथ उठाओ, अपने शरण लगाओ, ​द्वार पड़ा तेरे ।",
-         "en": "Apne Haath Uthao, Apne Sharan Lagao, Dwar Pada Tere |"
+         "mr": "अपने हाथ उठाओ, अपने शरण लगाओ ​द्वार पड़ा तेरे ।",
+         "en": "Apne Haath Uthao, Apne Sharan Lagao Dwar Pada Tere |"
         },
         {
          "l": "s10l21",
@@ -2552,13 +2552,13 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s10l22",
-         "mr": "विषय विकार मिटाओ, पाप हरो देवा, ​स्वामी पाप हरो देवा ।",
-         "en": "Vishay Vikar Mitao, Paap Haro Deva, Swami Paap Haro Deva |"
+         "mr": "विषय विकार मिटाओ, पाप हरो देवा ​स्वामी पाप हरो देवा ।",
+         "en": "Vishay Vikar Mitao, Paap Haro Deva Swami Paap Haro Deva |"
         },
         {
          "l": "s10l23",
-         "mr": "श्रद्धा भक्ति बढ़ाओ, ​श्रद्धा प्रेम बढ़ाओ, सन्तन की सेवा ।",
-         "en": "Shraddha Bhakti Badhao, Shraddha Prem Badhao, Santan Ki Seva |"
+         "mr": "श्रद्धा भक्ति बढ़ाओ ​श्रद्धा प्रेम बढ़ाओ, सन्तन की सेवा ।",
+         "en": "Shraddha Bhakti Badhao Shraddha Prem Badhao, Santan Ki Seva |"
         },
         {
          "l": "s10l24",
@@ -2571,13 +2571,13 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s10l25",
-         "mr": "तन मन धन सब है तेरा, ​स्वामी सब कुछ है तेरा ।",
-         "en": "Tan Man Dhan Sab Hai Tera, Swami Sab Kuch Hai Tera |"
+         "mr": "तन मन धन सब है तेरा ​स्वामी सब कुछ है तेरा ।",
+         "en": "Tan Man Dhan Sab Hai Tera Swami Sab Kuch Hai Tera |"
         },
         {
          "l": "s10l26",
-         "mr": "तेरा तुझको अर्पण, ​तेरा तुझको अर्पण, क्या लागे मेरा ।",
-         "en": "Tera Tujhko Arpan, Tera Tujhko Arpan, Kya Laage Mera |"
+         "mr": "तेरा तुझको अर्पण ​तेरा तुझको अर्पण, क्या लागे मेरा ।",
+         "en": "Tera Tujhko Arpan Tera Tujhko Arpan, Kya Laage Mera |"
         },
         {
          "l": "s10l27",
@@ -2590,13 +2590,13 @@ window.CONTENT = {
        "lines": [
         {
          "l": "s10l28",
-         "mr": "श्री जगदीशजी की आरती जो कोई नर गावे, ​स्वामी जो कोई नर गावे ।",
-         "en": "Shri Jagdishji Ki Aarti Jo Koi Nar Gave, Swami Jo Koi Nar Gave |"
+         "mr": "श्री जगदीशजी की आरती जो कोई नर गावे ​स्वामी जो कोई नर गावे ।",
+         "en": "Shri Jagdishji Ki Aarti Jo Koi Nar Gave Swami Jo Koi Nar Gave |"
         },
         {
          "l": "s10l29",
-         "mr": "कहत शिवानन्द स्वामी, ​मन वांछित फल पावे ।",
-         "en": "Kahat Shivanand Swami, Man Vanchit Phal Pave |"
+         "mr": "कहत शिवानन्द स्वामी ​मन वांछित फल पावे ।",
+         "en": "Kahat Shivanand Swami Man Vanchit Phal Pave |"
         },
         {
          "l": "s10l30",

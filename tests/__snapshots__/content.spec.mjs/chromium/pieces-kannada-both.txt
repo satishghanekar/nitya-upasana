@@ -12273,11 +12273,11 @@ Yei O Vitthale Majhi Maauli Ye || Dhr. ||
 
 ↻ ಧ್ರುಪದRefrain
 
-ನಿಢಳಾವರೀ ಕರ, ​ನಿಢಳಾವರೀ ಕರ ಠೇವುನೀ ವಾಟ ಮೀ ಪಾಹೇ ।
+ನಿಢಳಾವರೀ ಕರ ​ನಿಢಳಾವರೀ ಕರ ಠೇವುನೀ ವಾಟ ಮೀ ಪಾಹೇ ।
 
 ಹೋ ದೇವಾ ವಾಟ ಮೀ ಪಾಹೇ ॥ ೧ ॥
 
-Nidhalavari Kar, Nidhalavari Kar Thevuni Vaat Mi Pahe |
+Nidhalavari Kar Nidhalavari Kar Thevuni Vaat Mi Pahe |
 
 Ho Deva Vaat Mi Pahe || 1 ||
 
@@ -12287,7 +12287,7 @@ Ho Deva Vaat Mi Pahe || 1 ||
 
 ಆಲಿಯಾ ಗೇಲೀಯಾ ಹಾತೀಂ ಧಾಡೀ ನಿರೋಪ ।
 
-ಪಂಢರಪುರೀ ಆಹೇ, ​ಪಂಢರಪುರೀ ಆಹೇ ಮಾಝಾ ಮಾಯಬಾಪ ।
+ಪಂಢರಪುರೀ ಆಹೇ ​ಪಂಢರಪುರೀ ಆಹೇ ಮಾಝಾ ಮಾಯಬಾಪ ।
 
 ಹೋ ಮಾಝಾ ಮಾಯಬಾಪ ॥ ೨ ॥
 
@@ -12295,7 +12295,7 @@ Aaliya Geliya Haati Dhadi Nirop |
 
 Aaliya Geliya Haati Dhadi Nirop |
 
-Pandharpuri Aahe, Pandharpuri Aahe Majha Maaybaap |
+Pandharpuri Aahe Pandharpuri Aahe Majha Maaybaap |
 
 Ho Majha Maaybaap || 2 ||
 
@@ -12305,7 +12305,7 @@ Ho Majha Maaybaap || 2 ||
 
 ಪಿವಳಾ ಪೀತಾಂಬರ ಕೈಸಾ ಗಗನೀ ಝಳಕಲಾ ।
 
-ಗರುಡಾವರೀ ಬೈಸೋನೀ, ​ಗರುಡಾವರೀ ಬೈಸೋನೀ ಮಾಝಾ ಕೈವಾರೀ ಆಲಾ ।
+ಗರುಡಾವರೀ ಬೈಸೋನೀ ​ಗರುಡಾವರೀ ಬೈಸೋನೀ ಮಾಝಾ ಕೈವಾರೀ ಆಲಾ ।
 
 ಹೋ ಮಾಝಾ ಕೈವಾರೀ ಆಲಾ ॥ ೩ ॥
 
@@ -12313,7 +12313,7 @@ Pivala Pitaambar Kaisa Gagani Jhalakala |
 
 Pivala Pitaambar Kaisa Gagani Jhalakala |
 
-Garudavari Baisoni, Garudavari Baisoni Majha Kaivari Aala |
+Garudavari Baisoni Garudavari Baisoni Majha Kaivari Aala |
 
 Ho Majha Kaivari Aala || 3 ||
 
@@ -12323,7 +12323,7 @@ Ho Majha Kaivari Aala || 3 ||
 
 ವಿಠೋಬಾಚೇ ರಾಜ ಆಮ್ಹಾಂ ನಿತ್ಯ ದಿಪವಾಳೀ ।
 
-ವಿಷ್ಣುದಾಸ ನಾಮಾ, ​ವಿಷ್ಣುದಾಸ ನಾಮಾ ಜೀವೇಭಾವೇ ಓವಾಳೀ ।
+ವಿಷ್ಣುದಾಸ ನಾಮಾ ​ವಿಷ್ಣುದಾಸ ನಾಮಾ ಜೀವೇಭಾವೇ ಓವಾಳೀ ।
 
 ಹೋ ಜೀವೇಭಾವೇ ಓವಾಳೀ ॥ ೪ ॥
 
@@ -12331,7 +12331,7 @@ Vithobache Raaj Aamha Nitya Dipavali |
 
 Vithobache Raaj Aamha Nitya Dipavali |
 
-Vishnudas Naama, Vishnudas Naama Jivebhave Owaali |
+Vishnudas Naama Vishnudas Naama Jivebhave Owaali |
 
 Ho Jivebhave Owaali || 4 ||
 
@@ -12469,123 +12469,123 @@ Mata Jaaki Parvati, Pita Mahadeva || 2 ||
 ಆರತೀ ಜಯ ಜಗದೀಶ ಹರೇ
 Aarti Jai Jagdish Hare
 
-ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ, ​ಸ್ವಾಮೀ ಜಯ ಜಗದೀಶ ಹರೇ ।
+ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ​ಸ್ವಾಮೀ ಜಯ ಜಗದೀಶ ಹರೇ ।
 
-ಭಕ್ತಜನೋಂ ಕೇ ಸಂಕಟ, ​ದಾಸಜನೋಂ ಕೇ ಸಂಕಟ, ಕ್ಷಣ ಮೇಂ ದೂರ ಕರೇ ।
+ಭಕ್ತಜನೋಂ ಕೇ ಸಂಕಟ ​ದಾಸಜನೋಂ ಕೇ ಸಂಕಟ, ಕ್ಷಣ ಮೇಂ ದೂರ ಕರೇ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥
 
-Om Jai Jagdish Hare, Swami Jai Jagdish Hare |
+Om Jai Jagdish Hare Swami Jai Jagdish Hare |
 
-Bhaktajanon Ke Sankat, Daasjanon Ke Sankat, Kshan Mein Door Kare |
+Bhaktajanon Ke Sankat Daasjanon Ke Sankat, Kshan Mein Door Kare |
 
 Om Jai Jagdish Hare ||
 
-ಜೋ ಧ್ಯಾವೇ ಫಲ ಪಾವೇ, ದುಃಖ ಬಿನಸೇ ಮನ ಕಾ, ​ಸ್ವಾಮೀ ದುಃಖ ಬಿನಸೇ ಮನ ಕಾ ।
+ಜೋ ಧ್ಯಾವೇ ಫಲ ಪಾವೇ, ದುಃಖ ಬಿನಸೇ ಮನ ಕಾ ​ಸ್ವಾಮೀ ದುಃಖ ಬಿನಸೇ ಮನ ಕಾ ।
 
-ಸುಖ ಸಮ್ಪತಿ ಘರ ಆವೇ, ​ಸುಖ ಸಮ್ಪತಿ ಘರ ಆವೇ, ಕಷ್ಟ ಮಿಟೇ ತನ ಕಾ ।
+ಸುಖ ಸಮ್ಪತಿ ಘರ ಆವೇ ​ಸುಖ ಸಮ್ಪತಿ ಘರ ಆವೇ, ಕಷ್ಟ ಮಿಟೇ ತನ ಕಾ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೧ ॥
 
-Jo Dhyave Phal Pave, Dukh Binse Man Ka, Swami Dukh Binse Man Ka |
+Jo Dhyave Phal Pave, Dukh Binse Man Ka Swami Dukh Binse Man Ka |
 
-Sukh Sampati Ghar Aave, Sukh Sampati Ghar Aave, Kasht Mite Tan Ka |
+Sukh Sampati Ghar Aave Sukh Sampati Ghar Aave, Kasht Mite Tan Ka |
 
 Om Jai Jagdish Hare || 1 ||
 
-ಮಾತಪಿತಾ ತುಮ ಮೇರೇ, ಶರಣ ಗಹೂಁ ಕಿಸಕೀ, ​ಸ್ವಾಮೀ ಶರಣ ಗಹೂಁ ಕಿಸಕೀ ।
+ಮಾತಪಿತಾ ತುಮ ಮೇರೇ, ಶರಣ ಗಹೂಁ ಕಿಸಕೀ ​ಸ್ವಾಮೀ ಶರಣ ಗಹೂಁ ಕಿಸಕೀ ।
 
-ತುಮ ಬಿನ ಔರ ನ ದೂಜಾ, ​ಪ್ರಭು ಬಿನ ಔರ ನ ದೂಜಾ, ಆಸ ಕರೂಁ ಜಿಸಕೀ ।
+ತುಮ ಬಿನ ಔರ ನ ದೂಜಾ ​ಪ್ರಭು ಬಿನ ಔರ ನ ದೂಜಾ, ಆಸ ಕರೂಁ ಜಿಸಕೀ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೨ ॥
 
-Matapita Tum Mere, Sharan Gahoon Kiski, Swami Sharan Gahoon Kiski |
+Matapita Tum Mere, Sharan Gahoon Kiski Swami Sharan Gahoon Kiski |
 
-Tum Bin Aur Na Dooja, Prabhu Bin Aur Na Dooja, Aas Karoon Jiski |
+Tum Bin Aur Na Dooja Prabhu Bin Aur Na Dooja, Aas Karoon Jiski |
 
 Om Jai Jagdish Hare || 2 ||
 
-ತುಮ ಪೂರಣ ಪರಮಾತ್ಮಾ, ​ತುಮ ಅನ್ತರ್ಯಾಮೀ, ಸ್ವಾಮೀ ತುಮ ಅನ್ತರ್ಯಾಮೀ ।
+ತುಮ ಪೂರಣ ಪರಮಾತ್ಮಾ ​ತುಮ ಅನ್ತರ್ಯಾಮೀ, ಸ್ವಾಮೀ ತುಮ ಅನ್ತರ್ಯಾಮೀ ।
 
-ಪಾರ ಬ್ರಹ್ಮ ಪರಮೇಶ್ವರ, ​ಪಾರ ಬ್ರಹ್ಮ ಪರಮೇಶ್ವರ, ತುಮ ಸಬಕೇ ಸ್ವಾಮೀ ।
+ಪಾರ ಬ್ರಹ್ಮ ಪರಮೇಶ್ವರ ​ಪಾರ ಬ್ರಹ್ಮ ಪರಮೇಶ್ವರ, ತುಮ ಸಬಕೇ ಸ್ವಾಮೀ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೩ ॥
 
-Tum Pooran Paramatma, Tum Antaryami, Swami Tum Antaryami |
+Tum Pooran Paramatma Tum Antaryami, Swami Tum Antaryami |
 
-Paar Brahma Parmeshwar, Paar Brahma Parmeshwar, Tum Sabke Swami |
+Paar Brahma Parmeshwar Paar Brahma Parmeshwar, Tum Sabke Swami |
 
 Om Jai Jagdish Hare || 3 ||
 
-ತುಮ ಕರುಣಾ ಕೇ ಸಾಗರ, ತುಮ ಪಾಲನ ಕರ್ತಾ, ​ಸ್ವಾಮೀ ತುಮ ಪಾಲನ ಕರ್ತಾ ।
+ತುಮ ಕರುಣಾ ಕೇ ಸಾಗರ, ತುಮ ಪಾಲನ ಕರ್ತಾ ​ಸ್ವಾಮೀ ತುಮ ಪಾಲನ ಕರ್ತಾ ।
 
-ಮೈಂ ಮೂರಖ ಖಲ ಕಾಮೀ, ​ಮೈಂ ಸೇವಕ ತುಮ ಸ್ವಾಮೀ, ಕೃಪಾ ಕರೋ ಭರ್ತಾ ।
+ಮೈಂ ಮೂರಖ ಖಲ ಕಾಮೀ ​ಮೈಂ ಸೇವಕ ತುಮ ಸ್ವಾಮೀ, ಕೃಪಾ ಕರೋ ಭರ್ತಾ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೪ ॥
 
-Tum Karuna Ke Sagar, Tum Paalan Karta, Swami Tum Paalan Karta |
+Tum Karuna Ke Sagar, Tum Paalan Karta Swami Tum Paalan Karta |
 
-Main Moorakh Khal Kaami, Main Sevak Tum Swami, Krupa Karo Bharta |
+Main Moorakh Khal Kaami Main Sevak Tum Swami, Krupa Karo Bharta |
 
 Om Jai Jagdish Hare || 4 ||
 
-ತುಮ ಹೋ ಏಕ ಅಗೋಚರ, ಸಬಕೇ ಪ್ರಾಣಪತಿ, ​ಸ್ವಾಮೀ ಸಬಕೇ ಪ್ರಾಣಪತಿ ।
+ತುಮ ಹೋ ಏಕ ಅಗೋಚರ, ಸಬಕೇ ಪ್ರಾಣಪತಿ ​ಸ್ವಾಮೀ ಸಬಕೇ ಪ್ರಾಣಪತಿ ।
 
-ಕಿಸ ವಿಧಿ ಮಿಲೂಁ ದಯಾಮಯ, ​ಕಿಸ ವಿಧಿ ಮಿಲೂಁ ದಯಾಮಯ, ತುಮಕೋ ಮೈಂ ಕುಮತಿ ।
+ಕಿಸ ವಿಧಿ ಮಿಲೂಁ ದಯಾಮಯ ​ಕಿಸ ವಿಧಿ ಮಿಲೂಁ ದಯಾಮಯ, ತುಮಕೋ ಮೈಂ ಕುಮತಿ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೫ ॥
 
-Tum Ho Ek Agochar, Sabke Pranpati, Swami Sabke Pranpati |
+Tum Ho Ek Agochar, Sabke Pranpati Swami Sabke Pranpati |
 
-Kis Vidhi Miloon Dayamay, Kis Vidhi Miloon Dayamay, Tumko Main Kumati |
+Kis Vidhi Miloon Dayamay Kis Vidhi Miloon Dayamay, Tumko Main Kumati |
 
 Om Jai Jagdish Hare || 5 ||
 
-ದೀನಬನ್ಧು ದುಃಖ ಹರ್ತಾ, ತುಮ ರಕ್ಷಕ ಮೇರೇ, ​ಸ್ವಾಮೀ ತುಮ ರಕ್ಷಕ ಮೇರೇ ।
+ದೀನಬನ್ಧು ದುಃಖ ಹರ್ತಾ, ತುಮ ರಕ್ಷಕ ಮೇರೇ ​ಸ್ವಾಮೀ ತುಮ ರಕ್ಷಕ ಮೇರೇ ।
 
-ಅಪನೇ ಹಾಥ ಉಠಾಓ, ಅಪನೇ ಶರಣ ಲಗಾಓ, ​ದ್ವಾರ ಪಡ಼ಾ ತೇರೇ ।
+ಅಪನೇ ಹಾಥ ಉಠಾಓ, ಅಪನೇ ಶರಣ ಲಗಾಓ ​ದ್ವಾರ ಪಡ಼ಾ ತೇರೇ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೬ ॥
 
-Deenbandhu Dukh Harta, Tum Rakshak Mere, Swami Tum Rakshak Mere |
+Deenbandhu Dukh Harta, Tum Rakshak Mere Swami Tum Rakshak Mere |
 
-Apne Haath Uthao, Apne Sharan Lagao, Dwar Pada Tere |
+Apne Haath Uthao, Apne Sharan Lagao Dwar Pada Tere |
 
 Om Jai Jagdish Hare || 6 ||
 
-ವಿಷಯ ವಿಕಾರ ಮಿಟಾಓ, ಪಾಪ ಹರೋ ದೇವಾ, ​ಸ್ವಾಮೀ ಪಾಪ ಹರೋ ದೇವಾ ।
+ವಿಷಯ ವಿಕಾರ ಮಿಟಾಓ, ಪಾಪ ಹರೋ ದೇವಾ ​ಸ್ವಾಮೀ ಪಾಪ ಹರೋ ದೇವಾ ।
 
-ಶ್ರದ್ಧಾ ಭಕ್ತಿ ಬಢ಼ಾಓ, ​ಶ್ರದ್ಧಾ ಪ್ರೇಮ ಬಢ಼ಾಓ, ಸನ್ತನ ಕೀ ಸೇವಾ ।
+ಶ್ರದ್ಧಾ ಭಕ್ತಿ ಬಢ಼ಾಓ ​ಶ್ರದ್ಧಾ ಪ್ರೇಮ ಬಢ಼ಾಓ, ಸನ್ತನ ಕೀ ಸೇವಾ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೭ ॥
 
-Vishay Vikar Mitao, Paap Haro Deva, Swami Paap Haro Deva |
+Vishay Vikar Mitao, Paap Haro Deva Swami Paap Haro Deva |
 
-Shraddha Bhakti Badhao, Shraddha Prem Badhao, Santan Ki Seva |
+Shraddha Bhakti Badhao Shraddha Prem Badhao, Santan Ki Seva |
 
 Om Jai Jagdish Hare || 7 ||
 
-ತನ ಮನ ಧನ ಸಬ ಹೈ ತೇರಾ, ​ಸ್ವಾಮೀ ಸಬ ಕುಛ ಹೈ ತೇರಾ ।
+ತನ ಮನ ಧನ ಸಬ ಹೈ ತೇರಾ ​ಸ್ವಾಮೀ ಸಬ ಕುಛ ಹೈ ತೇರಾ ।
 
-ತೇರಾ ತುಝಕೋ ಅರ್ಪಣ, ​ತೇರಾ ತುಝಕೋ ಅರ್ಪಣ, ಕ್ಯಾ ಲಾಗೇ ಮೇರಾ ।
+ತೇರಾ ತುಝಕೋ ಅರ್ಪಣ ​ತೇರಾ ತುಝಕೋ ಅರ್ಪಣ, ಕ್ಯಾ ಲಾಗೇ ಮೇರಾ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೮ ॥
 
-Tan Man Dhan Sab Hai Tera, Swami Sab Kuch Hai Tera |
+Tan Man Dhan Sab Hai Tera Swami Sab Kuch Hai Tera |
 
-Tera Tujhko Arpan, Tera Tujhko Arpan, Kya Laage Mera |
+Tera Tujhko Arpan Tera Tujhko Arpan, Kya Laage Mera |
 
 Om Jai Jagdish Hare || 8 ||
 
-ಶ್ರೀ ಜಗದೀಶಜೀ ಕೀ ಆರತೀ ಜೋ ಕೋಈ ನರ ಗಾವೇ, ​ಸ್ವಾಮೀ ಜೋ ಕೋಈ ನರ ಗಾವೇ ।
+ಶ್ರೀ ಜಗದೀಶಜೀ ಕೀ ಆರತೀ ಜೋ ಕೋಈ ನರ ಗಾವೇ ​ಸ್ವಾಮೀ ಜೋ ಕೋಈ ನರ ಗಾವೇ ।
 
-ಕಹತ ಶಿವಾನನ್ದ ಸ್ವಾಮೀ, ​ಮನ ವಾಂಛಿತ ಫಲ ಪಾವೇ ।
+ಕಹತ ಶಿವಾನನ್ದ ಸ್ವಾಮೀ ​ಮನ ವಾಂಛಿತ ಫಲ ಪಾವೇ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೯ ॥
 
-Shri Jagdishji Ki Aarti Jo Koi Nar Gave, Swami Jo Koi Nar Gave |
+Shri Jagdishji Ki Aarti Jo Koi Nar Gave Swami Jo Koi Nar Gave |
 
-Kahat Shivanand Swami, Man Vanchit Phal Pave |
+Kahat Shivanand Swami Man Vanchit Phal Pave |
 
 Om Jai Jagdish Hare || 9 ||
 
@@ -13153,13 +13153,13 @@ Krupa Katakshe Dasa Aapulya Nei Uddharuni || 4 ||
 Aarti Jai Shiv Omkara
 ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
-ಜಯ ಶಿವ ಓಂಕಾರಾ, ​ಹರ ಶಿವ ಓಂಕಾರಾ ।
+ಜಯ ಶಿವ ಓಂಕಾರಾ ​ಹರ ಶಿವ ಓಂಕಾರಾ ।
 
-ಬ್ರಹ್ಮಾ ವಿಷ್ಣು ಸದಾಶಿವ, ​ಅರ್ದ್ಧಾಂಗೀ ಧಾರಾ ॥
+ಬ್ರಹ್ಮಾ ವಿಷ್ಣು ಸದಾಶಿವ ​ಅರ್ದ್ಧಾಂಗೀ ಧಾರಾ ॥
 
-Jai Shiv Omkara, Har Shiv Omkara |
+Jai Shiv Omkara Har Shiv Omkara |
 
-Brahma Vishnu Sadashiv, Arddhangi Dhara ||
+Brahma Vishnu Sadashiv Arddhangi Dhara ||
 
 ಏಕಾನನ ಚತುರಾನನ ​ಪಂಚಾನನ ರಾಜೇ ।
 
@@ -13384,21 +13384,21 @@ Ramarupi Antaratma, Darshanen Dosh Nasati || 17 ||
 ಶ್ರೀ ಹನುಮಾನ ಚಾಲೀಸಾ
 Shri Hanuman Chalisa
 
-ಶ್ರೀಗುರು ಚರನ ಸರೋಜ ರಜ, ​ನಿಜ ಮನು ಮುಕುರು ಸುಧಾರಿ ।
+ಶ್ರೀಗುರು ಚರನ ಸರೋಜ ರಜ ​ನಿಜ ಮನು ಮುಕುರು ಸುಧಾರಿ ।
 
-ಬರನಉಁ ರಘುಬರ ಬಿಮಲ ಜಸು, ​ಜೋ ದಾಯಕು ಫಲ ಚಾರಿ ॥
+ಬರನಉಁ ರಘುಬರ ಬಿಮಲ ಜಸು ​ಜೋ ದಾಯಕು ಫಲ ಚಾರಿ ॥
 
-ಬುದ್ಧಿಹೀನ ತನು ಜಾನಿಕೇ, ​ಸುಮಿರೌಂ ಪವನ-ಕುಮಾರ ।
+ಬುದ್ಧಿಹೀನ ತನು ಜಾನಿಕೇ ​ಸುಮಿರೌಂ ಪವನ-ಕುಮಾರ ।
 
-ಬಲ ಬುಧಿ ಬಿದ್ಯಾ ದೇಹು ಮೋಹಿಂ, ​ಹರಹು ಕಲೇಸ ಬಿಕಾರ ॥
+ಬಲ ಬುಧಿ ಬಿದ್ಯಾ ದೇಹು ಮೋಹಿಂ ​ಹರಹು ಕಲೇಸ ಬಿಕಾರ ॥
 
-Shriguru Charan Saroj Raj, Nij Manu Mukuru Sudhari |
+Shriguru Charan Saroj Raj Nij Manu Mukuru Sudhari |
 
-Barnaun Raghubar Bimal Jasu, Jo Dayaku Phal Chari ||
+Barnaun Raghubar Bimal Jasu Jo Dayaku Phal Chari ||
 
-Buddhiheen Tanu Janike, Sumiraun Pavan-Kumar |
+Buddhiheen Tanu Janike Sumiraun Pavan-Kumar |
 
-Bal Budhi Bidya Dehu Mohin, Harahu Kalesh Bikar ||
+Bal Budhi Bidya Dehu Mohin Harahu Kalesh Bikar ||
 
 ಜಯ ಹನುಮಾನ ಜ್ಞಾನ ಗುನ ಸಾಗರ ।
 
@@ -13720,13 +13720,13 @@ Tulsidas Sada Hari Chera |
 
 Keejai Nath Hriday Mahan Dera || 40 ||
 
-ಪವನತನಯ ಸಂಕಟ ಹರನ, ​ಮಂಗಲ ಮೂರತಿ ರೂಪ ।
+ಪವನತನಯ ಸಂಕಟ ಹರನ ​ಮಂಗಲ ಮೂರತಿ ರೂಪ ।
 
-ರಾಮ ಲಖನ ಸೀತಾ ಸಹಿತ, ​ಹೃದಯ ಬಸಹು ಸುರ ಭೂಪ ॥
+ರಾಮ ಲಖನ ಸೀತಾ ಸಹಿತ ​ಹೃದಯ ಬಸಹು ಸುರ ಭೂಪ ॥
 
-Pavantanay Sankat Haran, Mangal Moorati Roop |
+Pavantanay Sankat Haran Mangal Moorati Roop |
 
-Ram Lakhan Sita Sahit, Hriday Basahu Sur Bhoop ||
+Ram Lakhan Sita Sahit Hriday Basahu Sur Bhoop ||
 
 ರಚನಾ : ಗೋಸ್ವಾಮೀ ತುಲಸೀದಾಸ ↗ (೧೫೩೨–೧೬೨೩)
 
@@ -14980,45 +14980,45 @@ Jay Karunaghan || 5 ||
 ಘೋರಕಷ್ಟೋದ್ಧರಣಸ್ತೋತ್ರಮ್
 Ghorakashtoddharan Stotra
 
-ಶ್ರೀಪಾದ ಶ್ರೀವಲ್ಲಭ ತ್ವಂ ಸದೈವ, ​ಶ್ರೀ ದತ್ತಾಸ್ಮಾನ್ಪಾಹಿ ದೇವಾಧಿದೇವ ।
+ಶ್ರೀಪಾದ ಶ್ರೀವಲ್ಲಭ ತ್ವಂ ಸದೈವ ​ಶ್ರೀ ದತ್ತಾಸ್ಮಾನ್ಪಾಹಿ ದೇವಾಧಿದೇವ ।
 
-ಭಾವಗ್ರಾಹ್ಯ ಕ್ಲೇಶಹಾರಿನ್ಸುಕೀರ್ತೇ, ​ಘೋರಾತ್ಕಷ್ಟಾದುದ್ಧರಾಸ್ಮಾನ್ನಮಸ್ತೇ ॥ ೧ ॥
+ಭಾವಗ್ರಾಹ್ಯ ಕ್ಲೇಶಹಾರಿನ್ಸುಕೀರ್ತೇ ​ಘೋರಾತ್ಕಷ್ಟಾದುದ್ಧರಾಸ್ಮಾನ್ನಮಸ್ತೇ ॥ ೧ ॥
 
-Shripad Shrivallabh Tvam Sadaiva, Shri Dattasmanpahi Devadhideva |
+Shripad Shrivallabh Tvam Sadaiva Shri Dattasmanpahi Devadhideva |
 
-Bhavagrahya Kleshaharinsukirte, Ghoratkashtaduddharasmannamaste || 1 ||
+Bhavagrahya Kleshaharinsukirte Ghoratkashtaduddharasmannamaste || 1 ||
 
-ತ್ವಂ ನೋ ಮಾತಾ ತ್ವಂ ಪಿತಾಽಽಪ್ತೋಽಧಿಪಸ್ತ್ವಂ, ​ತ್ರಾತಾ ಯೋಗಕ್ಷೇಮಕೃತ್ಸದ್ಗುರುಸ್ತ್ವಂ ।
+ತ್ವಂ ನೋ ಮಾತಾ ತ್ವಂ ಪಿತಾಽಽಪ್ತೋಽಧಿಪಸ್ತ್ವಂ ​ತ್ರಾತಾ ಯೋಗಕ್ಷೇಮಕೃತ್ಸದ್ಗುರುಸ್ತ್ವಂ ।
 
-ತ್ವಂ ಸರ್ವಸ್ವಂ ನೋ ಪ್ರಭೋ ವಿಶ್ವಮೂರ್ತೇ, ​ಘೋರಾತ್ಕಷ್ಟಾದುದ್ಧರಾಸ್ಮಾನ್ನಮಸ್ತೇ ॥ ೨ ॥
+ತ್ವಂ ಸರ್ವಸ್ವಂ ನೋ ಪ್ರಭೋ ವಿಶ್ವಮೂರ್ತೇ ​ಘೋರಾತ್ಕಷ್ಟಾದುದ್ಧರಾಸ್ಮಾನ್ನಮಸ್ತೇ ॥ ೨ ॥
 
-Tvam No Mata Tvam Pitaptodhipastvam, Trata Yogakshemakrutsadgurustvam |
+Tvam No Mata Tvam Pitaptodhipastvam Trata Yogakshemakrutsadgurustvam |
 
-Tvam Sarvasvam No Prabho Vishvamurte, Ghoratkashtaduddharasmannamaste || 2 ||
+Tvam Sarvasvam No Prabho Vishvamurte Ghoratkashtaduddharasmannamaste || 2 ||
 
-ಪಾಪಂ ತಾಪಂ ವ್ಯಾಧಿಮಾಧಿಂ ಚ ದೈನ್ಯಂ, ​ಭೀತಿಂ ಕ್ಲೇಶಂ ತ್ವಂ ಹರಾಽಽಶು ತ್ವದನ್ಯಮ್ ।
+ಪಾಪಂ ತಾಪಂ ವ್ಯಾಧಿಮಾಧಿಂ ಚ ದೈನ್ಯಂ ​ಭೀತಿಂ ಕ್ಲೇಶಂ ತ್ವಂ ಹರಾಽಽಶು ತ್ವದನ್ಯಮ್ ।
 
-ತ್ರಾತಾರಂ ನೋ ವೀಕ್ಷ ಈಶಾಸ್ತಜೂರ್ತೇ, ​ಘೋರಾತ್ಕಷ್ಟಾದುದ್ಧರಾಸ್ಮಾನ್ನಮಸ್ತೇ ॥ ೩ ॥
+ತ್ರಾತಾರಂ ನೋ ವೀಕ್ಷ ಈಶಾಸ್ತಜೂರ್ತೇ ​ಘೋರಾತ್ಕಷ್ಟಾದುದ್ಧರಾಸ್ಮಾನ್ನಮಸ್ತೇ ॥ ೩ ॥
 
-Papam Tapam Vyadhimadhim Cha Dainyam, Bhitim Klesham Tvam Harashu Tvadanyam |
+Papam Tapam Vyadhimadhim Cha Dainyam Bhitim Klesham Tvam Harashu Tvadanyam |
 
-Trataram No Viksha Ishastajurte, Ghoratkashtaduddharasmannamaste || 3 ||
+Trataram No Viksha Ishastajurte Ghoratkashtaduddharasmannamaste || 3 ||
 
-ನಾನ್ಯಸ್ತ್ರಾತಾ ನಾಪಿ ದಾತಾ ನ ಭರ್ತಾ, ​ತ್ವತ್ತೋ ದೇವ ತ್ವಂ ಶರಣ್ಯೋಽಕಹರ್ತಾ ।
+ನಾನ್ಯಸ್ತ್ರಾತಾ ನಾಪಿ ದಾತಾ ನ ಭರ್ತಾ ​ತ್ವತ್ತೋ ದೇವ ತ್ವಂ ಶರಣ್ಯೋಽಕಹರ್ತಾ ।
 
-ಕುರ್ವಾತ್ರೇಯಾನುಗ್ರಹಂ ಪೂರ್ಣರಾತೇ, ​ಘೋರಾತ್ಕಷ್ಟಾದುದ್ಧರಾಸ್ಮಾನ್ನಮಸ್ತೇ ॥ ೪ ॥
+ಕುರ್ವಾತ್ರೇಯಾನುಗ್ರಹಂ ಪೂರ್ಣರಾತೇ ​ಘೋರಾತ್ಕಷ್ಟಾದುದ್ಧರಾಸ್ಮಾನ್ನಮಸ್ತೇ ॥ ೪ ॥
 
-Nanyastrata Napi Data Na Bharta, Tvatto Deva Tvam Sharanyokaharta |
+Nanyastrata Napi Data Na Bharta Tvatto Deva Tvam Sharanyokaharta |
 
-Kurvatreyanugraham Purnarate, Ghoratkashtaduddharasmannamaste || 4 ||
+Kurvatreyanugraham Purnarate Ghoratkashtaduddharasmannamaste || 4 ||
 
-ಧರ್ಮೇ ಪ್ರೀತಿಂ ಸನ್ಮತಿಂ ದೇವಭಕ್ತಿಂ, ​ಸತ್ಸಂಗಾಪ್ತಿಂ ದೇಹಿ ಭುಕ್ತಿಂ ಚ ಮುಕ್ತಿಮ್ ।
+ಧರ್ಮೇ ಪ್ರೀತಿಂ ಸನ್ಮತಿಂ ದೇವಭಕ್ತಿಂ ​ಸತ್ಸಂಗಾಪ್ತಿಂ ದೇಹಿ ಭುಕ್ತಿಂ ಚ ಮುಕ್ತಿಮ್ ।
 
-ಭಾವಾಸಕ್ತಿಂ ಚಾಖಿಲಾನನ್ದಮೂರ್ತೇ, ​ಘೋರಾತ್ಕಷ್ಟಾದುದ್ಧರಾಸ್ಮಾನ್ನಮಸ್ತೇ ॥ ೫ ॥
+ಭಾವಾಸಕ್ತಿಂ ಚಾಖಿಲಾನನ್ದಮೂರ್ತೇ ​ಘೋರಾತ್ಕಷ್ಟಾದುದ್ಧರಾಸ್ಮಾನ್ನಮಸ್ತೇ ॥ ೫ ॥
 
-Dharme Pritim Sanmatim Devabhaktim, Satsangaptim Dehi Bhuktim Cha Muktim |
+Dharme Pritim Sanmatim Devabhaktim Satsangaptim Dehi Bhuktim Cha Muktim |
 
-Bhavasaktim Chakhilanandamurte, Ghoratkashtaduddharasmannamaste || 5 ||
+Bhavasaktim Chakhilanandamurte Ghoratkashtaduddharasmannamaste || 5 ||
 
 ಶ್ಲೋಕಪಂಚಕಮೇತದ್ಯೋ ಲೋಕಮಂಗಲವರ್ಧನಮ್ ।
 
@@ -15116,219 +15116,219 @@ Shri Martand Bavani
 
 || Shri Gurusharanam ||
 
-ಜಯ ಗುರು ನಾನಾ ದೀನ ದಯಾಲ, ​ತುಮ ಭಕ್ತೋ ಕೇ ನಾಥ ಕೃಪಾಲ ।
+ಜಯ ಗುರು ನಾನಾ ದೀನ ದಯಾಲ ​ತುಮ ಭಕ್ತೋ ಕೇ ನಾಥ ಕೃಪಾಲ ।
 
-ಸ್ಮರ್ತೃಗಾಮೀ ತುಮ ಜಗದಾಧಾರ, ​ಅಂತರ್ಯಾಮೀ ಸುಖ ಸಾಕಾರ ॥
+ಸ್ಮರ್ತೃಗಾಮೀ ತುಮ ಜಗದಾಧಾರ ​ಅಂತರ್ಯಾಮೀ ಸುಖ ಸಾಕಾರ ॥
 
-Jay Guru Nana Din Dayal, Tum Bhakto Ke Nath Krupal |
+Jay Guru Nana Din Dayal Tum Bhakto Ke Nath Krupal |
 
-Smartrugami Tum Jagadadhar, Antaryami Sukh Sakar ||
+Smartrugami Tum Jagadadhar Antaryami Sukh Sakar ||
 
-ರುಪ ತುಮ್ಹಾರಾ ನಿತ್ಯ ಸನಾತನ, ​ದತ್ತಗುರು ಕೇ ತುಮ ಪ್ರಿಯ ಭೂಷಣ ।
+ರುಪ ತುಮ್ಹಾರಾ ನಿತ್ಯ ಸನಾತನ ​ದತ್ತಗುರು ಕೇ ತುಮ ಪ್ರಿಯ ಭೂಷಣ ।
 
-ತುಮ ಶಾಂತೀ ಕೇ ಅಥಾಂಗ ಸಾಗರ, ​ಮಹಿಮಾ ತೇರೀ ಶ್ರುತೀ ಅಗೋಚರ ॥
+ತುಮ ಶಾಂತೀ ಕೇ ಅಥಾಂಗ ಸಾಗರ ​ಮಹಿಮಾ ತೇರೀ ಶ್ರುತೀ ಅಗೋಚರ ॥
 
-Rup Tumhara Nitya Sanatan, Dattaguru Ke Tum Priya Bhushan |
+Rup Tumhara Nitya Sanatan Dattaguru Ke Tum Priya Bhushan |
 
-Tum Shanti Ke Athang Sagar, Mahima Teri Shruti Agochar ||
+Tum Shanti Ke Athang Sagar Mahima Teri Shruti Agochar ||
 
-ಮಂಗಲಮಯ ಪ್ರಭು ನಾಮ ತುಮ್ಹಾರಾ, ​ಜೀವನ ಕಾ ಹೈ ಯಹ ಉಜಿಯಾರಾ ।
+ಮಂಗಲಮಯ ಪ್ರಭು ನಾಮ ತುಮ್ಹಾರಾ ​ಜೀವನ ಕಾ ಹೈ ಯಹ ಉಜಿಯಾರಾ ।
 
-ಮಹಿಮಾ ತೇರೀ ಪ್ರಭೋ ಅಪಾರ, ​ಜೋ ಕೋಈ ಗಾವೇ ಮಿಲೇ ಆಧಾರ ॥
+ಮಹಿಮಾ ತೇರೀ ಪ್ರಭೋ ಅಪಾರ ​ಜೋ ಕೋಈ ಗಾವೇ ಮಿಲೇ ಆಧಾರ ॥
 
-Mangalamay Prabhu Nam Tumhara, Jivan Ka Hai Yah Ujiyara |
+Mangalamay Prabhu Nam Tumhara Jivan Ka Hai Yah Ujiyara |
 
-Mahima Teri Prabho Apar, Jo Koi Gave Mile Aadhar ||
+Mahima Teri Prabho Apar Jo Koi Gave Mile Aadhar ||
 
-ಚರಣ ತುಮ್ಹಾರೇ ಪ್ರಾಣ ಹಮಾರಾ, ​ಜುಗ ಜುಗ ಚಾಹತ ಯಹೀ ಸಹಾರಾ ।
+ಚರಣ ತುಮ್ಹಾರೇ ಪ್ರಾಣ ಹಮಾರಾ ​ಜುಗ ಜುಗ ಚಾಹತ ಯಹೀ ಸಹಾರಾ ।
 
-ಜೋ ಕೋಈ ಆವೇ ಶರಣ ಮೇ ನಾನಾ, ​ಮಿಟತೇ ಹೈ ಉನಕೇ ಭಯ ನಾನಾ ॥
+ಜೋ ಕೋಈ ಆವೇ ಶರಣ ಮೇ ನಾನಾ ​ಮಿಟತೇ ಹೈ ಉನಕೇ ಭಯ ನಾನಾ ॥
 
-Charan Tumhare Pran Hamara, Jug Jug Chahat Yahi Sahara |
+Charan Tumhare Pran Hamara Jug Jug Chahat Yahi Sahara |
 
-Jo Koi Aave Sharan Me Nana, Mitate Hai Unake Bhay Nana ||
+Jo Koi Aave Sharan Me Nana Mitate Hai Unake Bhay Nana ||
 
-ಪರಮಪಾವನ ಧ್ಯಾನ ತುಮ್ಹಾರಾ, ​ಹರ ಲೇತಾ ಹೈ ತಮ-ಅಂಧೇರಾ ।
+ಪರಮಪಾವನ ಧ್ಯಾನ ತುಮ್ಹಾರಾ ​ಹರ ಲೇತಾ ಹೈ ತಮ-ಅಂಧೇರಾ ।
 
-ಹಾಸ್ಯ ತುಮ್ಹಾರಾ ಮನ ಹರ ಲೇತಾ, ​ಪಗ ಪಗ ಪರ ಜೀವ ಸುಖ ಪಾತಾ ॥
+ಹಾಸ್ಯ ತುಮ್ಹಾರಾ ಮನ ಹರ ಲೇತಾ ​ಪಗ ಪಗ ಪರ ಜೀವ ಸುಖ ಪಾತಾ ॥
 
-Paramapavan Dhyan Tumhara, Har Leta Hai Tam-Andhera |
+Paramapavan Dhyan Tumhara Har Leta Hai Tam-Andhera |
 
-Hasya Tumhara Man Har Leta, Pag Pag Par Jiv Sukh Pata ||
+Hasya Tumhara Man Har Leta Pag Pag Par Jiv Sukh Pata ||
 
-ಜಲಬಿನ ಮಛಲೀ ಹೋ ನಿಷ್ಪ್ರಾಣ, ​ತುಮಬಿನ ವೈಸಾ ತನ ಧನ ಮಾನ ।
+ಜಲಬಿನ ಮಛಲೀ ಹೋ ನಿಷ್ಪ್ರಾಣ ​ತುಮಬಿನ ವೈಸಾ ತನ ಧನ ಮಾನ ।
 
-ಸೂಕ್ಷ್ಮ ರುಪ ಸೇ ಲೀಲಾ ಅದ್ಭೂತ, ​ಆಪಕೀ ಕರನೀ ಆಪ ಹೀ ಜಾನತ ॥
+ಸೂಕ್ಷ್ಮ ರುಪ ಸೇ ಲೀಲಾ ಅದ್ಭೂತ ​ಆಪಕೀ ಕರನೀ ಆಪ ಹೀ ಜಾನತ ॥
 
-Jalabin Machhali Ho Nishpran, Tumabin Vaisa Tan Dhan Man |
+Jalabin Machhali Ho Nishpran Tumabin Vaisa Tan Dhan Man |
 
-Sukshma Rup Se Lila Adbhut, Aapaki Karani Aap Hi Janat ||
+Sukshma Rup Se Lila Adbhut Aapaki Karani Aap Hi Janat ||
 
-ಭಕ್ತವತ್ಸಲ ತುಮ ದೀನ ದಯಾಲ, ​ಹತಪ್ರಭ ಹೋವೇ ಕಾಲ ಕರಾಲ ।
+ಭಕ್ತವತ್ಸಲ ತುಮ ದೀನ ದಯಾಲ ​ಹತಪ್ರಭ ಹೋವೇ ಕಾಲ ಕರಾಲ ।
 
-ಜಿಸಕೇ ಮನ ಮೇ ಶ್ರದ್ಧಾ ಜೈಸೀ, ​ಆಪಕೀ ಮೂರ್ತೀ ದಿಖತೀ ವೈಸೀ ॥
+ಜಿಸಕೇ ಮನ ಮೇ ಶ್ರದ್ಧಾ ಜೈಸೀ ​ಆಪಕೀ ಮೂರ್ತೀ ದಿಖತೀ ವೈಸೀ ॥
 
-Bhaktavatsal Tum Din Dayal, Hataprabh Hove Kal Karal |
+Bhaktavatsal Tum Din Dayal Hataprabh Hove Kal Karal |
 
-Jisake Man Me Shraddha Jaisi, Aapaki Murti Dikhati Vaisi ||
+Jisake Man Me Shraddha Jaisi Aapaki Murti Dikhati Vaisi ||
 
-ಯೋಗ ಪ್ರೇಮೀ ಕೋ ಯೋಗೀ ದಿಖತೇ, ​ಜ್ಞಾನಪ್ರೇಮೀ ಕೋ ಜ್ಞಾನೀ ದಿಖತೇ ।
+ಯೋಗ ಪ್ರೇಮೀ ಕೋ ಯೋಗೀ ದಿಖತೇ ​ಜ್ಞಾನಪ್ರೇಮೀ ಕೋ ಜ್ಞಾನೀ ದಿಖತೇ ।
 
-ಭಕ್ತಿಪ್ರೇಮೀ ಕೋ ದಿಖತೇ ಭಕ್ತ, ​ಲೀಲಾ ಆಪಕೀ ಯಹ ಅದ್ಭೂತ ॥
+ಭಕ್ತಿಪ್ರೇಮೀ ಕೋ ದಿಖತೇ ಭಕ್ತ ​ಲೀಲಾ ಆಪಕೀ ಯಹ ಅದ್ಭೂತ ॥
 
-Yog Premi Ko Yogi Dikhate, Dnyanapremi Ko Dnyani Dikhate |
+Yog Premi Ko Yogi Dikhate Dnyanapremi Ko Dnyani Dikhate |
 
-Bhaktipremi Ko Dikhate Bhakta, Lila Aapaki Yah Adbhut ||
+Bhaktipremi Ko Dikhate Bhakta Lila Aapaki Yah Adbhut ||
 
-ಸಂತೋ ಕೇ ತುಮ ಸಾದರ ಪ್ರೇಮೀ, ​ನಾನಾ ರುಪೇ ತುಮ್ಹೀ ಅನಾಮೀ ।
+ಸಂತೋ ಕೇ ತುಮ ಸಾದರ ಪ್ರೇಮೀ ​ನಾನಾ ರುಪೇ ತುಮ್ಹೀ ಅನಾಮೀ ।
 
-ಜೋ ಕೋಈ ಆವೇ ಶರಣ ತುಮ್ಹಾರೇ, ​ಪೂರಣ ಹೋತೇ ಕಾಮ ಅಧೂರೇ ॥
+ಜೋ ಕೋಈ ಆವೇ ಶರಣ ತುಮ್ಹಾರೇ ​ಪೂರಣ ಹೋತೇ ಕಾಮ ಅಧೂರೇ ॥
 
-Santo Ke Tum Sadar Premi, Nana Rupe Tumhi Anami |
+Santo Ke Tum Sadar Premi Nana Rupe Tumhi Anami |
 
-Jo Koi Aave Sharan Tumhare, Puran Hote Kam Adhure ||
+Jo Koi Aave Sharan Tumhare Puran Hote Kam Adhure ||
 
-ದಾಸೀ ಸಿದ್ಧಿ ಉನಕೀ ಹೋತೀ, ​ಜಿನಕೀ ನಾನಾ ಪರ ದೃಢ ಪ್ರೀತಿ ।
+ದಾಸೀ ಸಿದ್ಧಿ ಉನಕೀ ಹೋತೀ ​ಜಿನಕೀ ನಾನಾ ಪರ ದೃಢ ಪ್ರೀತಿ ।
 
-ರಂಗ ಭಜನ ಕಾ ತುಮ್ಹೀ ದಿಖಾತೇ, ​ಪ್ರೇಮ ಸರೋವರ ಸಬ ಹೋ ಜಾತೇ ॥
+ರಂಗ ಭಜನ ಕಾ ತುಮ್ಹೀ ದಿಖಾತೇ ​ಪ್ರೇಮ ಸರೋವರ ಸಬ ಹೋ ಜಾತೇ ॥
 
-Dasi Siddhi Unaki Hoti, Jinaki Nana Par Drudh Priti |
+Dasi Siddhi Unaki Hoti Jinaki Nana Par Drudh Priti |
 
-Rang Bhajan Ka Tumhi Dikhate, Prem Sarovar Sab Ho Jate ||
+Rang Bhajan Ka Tumhi Dikhate Prem Sarovar Sab Ho Jate ||
 
-ದೇ ದೋ ಹಮಕೋ ಯಹೀ ಪ್ರಸಾದ, ​ರಹೇ ತುಮ್ಹಾರೀ ಕ್ಷಣ ಕ್ಷಣ ಯಾದ ।
+ದೇ ದೋ ಹಮಕೋ ಯಹೀ ಪ್ರಸಾದ ​ರಹೇ ತುಮ್ಹಾರೀ ಕ್ಷಣ ಕ್ಷಣ ಯಾದ ।
 
-ಸ್ಮರಣ ಕರೇ ಜೋ ಕಥಾ ತುಮ್ಹಾರೀ, ​ಮಿಲತೇ ಉನಕೋ ಫಲ ಸುಖಕಾರೀ ॥
+ಸ್ಮರಣ ಕರೇ ಜೋ ಕಥಾ ತುಮ್ಹಾರೀ ​ಮಿಲತೇ ಉನಕೋ ಫಲ ಸುಖಕಾರೀ ॥
 
-De Do Hamako Yahi Prasad, Rahe Tumhari Kshan Kshan Yad |
+De Do Hamako Yahi Prasad Rahe Tumhari Kshan Kshan Yad |
 
-Smaran Kare Jo Katha Tumhari, Milate Unako Phal Sukhakari ||
+Smaran Kare Jo Katha Tumhari Milate Unako Phal Sukhakari ||
 
-ಪ್ರಸಾದ ಪಾಯಾ ರೇವಾಮಾಈ ಸೇ, ​ಖಿಲ ಜಾತಾ ಹೈ ಚಿತ್ತ ಶಾಂತೀ ಸೇ ।
+ಪ್ರಸಾದ ಪಾಯಾ ರೇವಾಮಾಈ ಸೇ ​ಖಿಲ ಜಾತಾ ಹೈ ಚಿತ್ತ ಶಾಂತೀ ಸೇ ।
 
-ದೇಖೇ ತುಮನೇ ದಶರಥನಂದನ, ​ಛುಟತೇ ಹೈ ಪಾಪೋಂ ಕೇ ಬಂಧನ ॥
+ದೇಖೇ ತುಮನೇ ದಶರಥನಂದನ ​ಛುಟತೇ ಹೈ ಪಾಪೋಂ ಕೇ ಬಂಧನ ॥
 
-Prasad Paya Revamai Se, Khil Jata Hai Chitta Shanti Se |
+Prasad Paya Revamai Se Khil Jata Hai Chitta Shanti Se |
 
-Dekhe Tumane Dasharathanandan, Chhutate Hai Papon Ke Bandhan ||
+Dekhe Tumane Dasharathanandan Chhutate Hai Papon Ke Bandhan ||
 
-ದೇಖೇ ತುಮನೇ ದೇವಕೀನಂದನ, ​ಮಿಲತೇ ಹೈ ಭಕ್ತಿ ಕೇ ಸ್ಪಂದನ ।
+ದೇಖೇ ತುಮನೇ ದೇವಕೀನಂದನ ​ಮಿಲತೇ ಹೈ ಭಕ್ತಿ ಕೇ ಸ್ಪಂದನ ।
 
-ಕಿಯಾ ಮುಕ್ತ ವಹ ಬ್ರಹ್ಮಸಮಂಧ, ​ಸಬ ಬಾಧೋಂ ಕಾ ಟೂಟೇ ಬಂಧ ॥
+ಕಿಯಾ ಮುಕ್ತ ವಹ ಬ್ರಹ್ಮಸಮಂಧ ​ಸಬ ಬಾಧೋಂ ಕಾ ಟೂಟೇ ಬಂಧ ॥
 
-Dekhe Tumane Devakinandan, Milate Hai Bhakti Ke Spandan |
+Dekhe Tumane Devakinandan Milate Hai Bhakti Ke Spandan |
 
-Kiya Mukta Vah Brahmasamandh, Sab Badhon Ka Tute Bandh ||
+Kiya Mukta Vah Brahmasamandh Sab Badhon Ka Tute Bandh ||
 
-ಅನಸೂಯಾ ನೇ ದಿಯಾ ಪ್ರಸಾದ, ​ಮಿಲತಾ ಹೈ ಪ್ರೀತಿ ಕಾ ಸ್ವಾದ ।
+ಅನಸೂಯಾ ನೇ ದಿಯಾ ಪ್ರಸಾದ ​ಮಿಲತಾ ಹೈ ಪ್ರೀತಿ ಕಾ ಸ್ವಾದ ।
 
-ಶಂಕರಜೀ ಕಾ ಮಹಾನ ದರ್ಶನ, ​ಫಲ ಯಾತ್ರಾ ಕಾ ಮಿಲತಾ ಪಾವನ ॥
+ಶಂಕರಜೀ ಕಾ ಮಹಾನ ದರ್ಶನ ​ಫಲ ಯಾತ್ರಾ ಕಾ ಮಿಲತಾ ಪಾವನ ॥
 
-Anasuya Ne Diya Prasad, Milata Hai Priti Ka Svad |
+Anasuya Ne Diya Prasad Milata Hai Priti Ka Svad |
 
-Shankaraji Ka Mahan Darshan, Phal Yatra Ka Milata Pavan ||
+Shankaraji Ka Mahan Darshan Phal Yatra Ka Milata Pavan ||
 
-ಆಠ ರುಪ ಜಬ ಹುಆ ವಿಹಾರ, ​ಆಧಿವ್ಯಾಧಿಕಾ ಹೋ ಸಂಹಾರ ।
+ಆಠ ರುಪ ಜಬ ಹುಆ ವಿಹಾರ ​ಆಧಿವ್ಯಾಧಿಕಾ ಹೋ ಸಂಹಾರ ।
 
-ಅವಧೂತಜೀ ನೇ ಕಿಯಾ ಪ್ರಹಾರ, ​ತೀನ ತಾಪ ಕಾ ಹೋ ಸಂಹಾರ ॥
+ಅವಧೂತಜೀ ನೇ ಕಿಯಾ ಪ್ರಹಾರ ​ತೀನ ತಾಪ ಕಾ ಹೋ ಸಂಹಾರ ॥
 
-Aath Rup Jab Hua Vihar, Aadhivyadhika Ho Sanhar |
+Aath Rup Jab Hua Vihar Aadhivyadhika Ho Sanhar |
 
-Avadhutaji Ne Kiya Prahar, Tin Tap Ka Ho Sanhar ||
+Avadhutaji Ne Kiya Prahar Tin Tap Ka Ho Sanhar ||
 
-ಗಂಗೋತ್ರೀ ಔರ ಜಮನೋತ್ರೀ, ​ಲೀಲಾ ಹೈ ಯಹ ಸುಖ ದಾತ್ರೀ ।
+ಗಂಗೋತ್ರೀ ಔರ ಜಮನೋತ್ರೀ ​ಲೀಲಾ ಹೈ ಯಹ ಸುಖ ದಾತ್ರೀ ।
 
-ಲೀಲಾ ತುಮನೇ ನ್ಯಾರೀ ದಿಖಾಈ, ​ಬಿನಾ ತೇಲ ಸೇ ಗಾಡೀ ಚಲಾಈ ॥
+ಲೀಲಾ ತುಮನೇ ನ್ಯಾರೀ ದಿಖಾಈ ​ಬಿನಾ ತೇಲ ಸೇ ಗಾಡೀ ಚಲಾಈ ॥
 
-Gangotri Aur Jamanotri, Lila Hai Yah Sukh Datri |
+Gangotri Aur Jamanotri Lila Hai Yah Sukh Datri |
 
-Lila Tumane Nyari Dikhai, Bina Tel Se Gadi Chalai ||
+Lila Tumane Nyari Dikhai Bina Tel Se Gadi Chalai ||
 
-ತೇಜ ದೃಷ್ಟಿ ಕಾ ಪ್ರಭೋ ಶುಭಂಕರ, ​ಕುಂಡ ಮೇಂ ಆಯಾ ಶ್ರೀ ವೈಶ್ವಾನರ ।
+ತೇಜ ದೃಷ್ಟಿ ಕಾ ಪ್ರಭೋ ಶುಭಂಕರ ​ಕುಂಡ ಮೇಂ ಆಯಾ ಶ್ರೀ ವೈಶ್ವಾನರ ।
 
-ಶಬ್ದ ತುಮ್ಹಾರಾ ಹೋ ಸಂಜೀವನ, ​ಭಕ್ತ ಹುಆ ಏಕ ಯಜು ಭೂಷಣ ॥
+ಶಬ್ದ ತುಮ್ಹಾರಾ ಹೋ ಸಂಜೀವನ ​ಭಕ್ತ ಹುಆ ಏಕ ಯಜು ಭೂಷಣ ॥
 
-Tej Drushti Ka Prabho Shubhankar, Kund Men Aaya Shri Vaishvanar |
+Tej Drushti Ka Prabho Shubhankar Kund Men Aaya Shri Vaishvanar |
 
-Shabda Tumhara Ho Sanjivan, Bhakta Hua Ek Yaju Bhushan ||
+Shabda Tumhara Ho Sanjivan Bhakta Hua Ek Yaju Bhushan ||
 
-ಡರಕರ ಭಾಗೇ ದೂತ ಮೌತ ಕೇ, ​ದೂರ ಹುಏ ಸಬ ತಾಪ ಸಾಧ್ವೀ ಕೇ ।
+ಡರಕರ ಭಾಗೇ ದೂತ ಮೌತ ಕೇ ​ದೂರ ಹುಏ ಸಬ ತಾಪ ಸಾಧ್ವೀ ಕೇ ।
 
-ಸಪನೋಂ ಮೇಂ ಜಬ ಪಾಯಾ ದರ್ಶನ, ​ಗುಂಗಾ ಬೋಲೇ ಮಧುರ ವಚನ ॥
+ಸಪನೋಂ ಮೇಂ ಜಬ ಪಾಯಾ ದರ್ಶನ ​ಗುಂಗಾ ಬೋಲೇ ಮಧುರ ವಚನ ॥
 
-Darakar Bhage Dut Maut Ke, Dur Hue Sab Tap Sadhvi Ke |
+Darakar Bhage Dut Maut Ke Dur Hue Sab Tap Sadhvi Ke |
 
-Sapanon Men Jab Paya Darshan, Gunga Bole Madhur Vachan ||
+Sapanon Men Jab Paya Darshan Gunga Bole Madhur Vachan ||
 
-ಶ್ವಾನರುಪ ಮೇ ಭೈರವ ಆಏ, ​ರೋಟೀ ಖಾಕರ ತೃಪ್ತ ಹೋ ಗಏ ।
+ಶ್ವಾನರುಪ ಮೇ ಭೈರವ ಆಏ ​ರೋಟೀ ಖಾಕರ ತೃಪ್ತ ಹೋ ಗಏ ।
 
-ಪೂರ್ಣ ಕಾಮನಾ ರಾಮಬಾಈ ಕೀ, ​ದೇಖೀ ಝಾಂಕೀ ಸೀತಾರಾಮ ಕೀ ॥
+ಪೂರ್ಣ ಕಾಮನಾ ರಾಮಬಾಈ ಕೀ ​ದೇಖೀ ಝಾಂಕೀ ಸೀತಾರಾಮ ಕೀ ॥
 
-Shvanarup Me Bhairav Aae, Roti Khakar Trupta Ho Gae |
+Shvanarup Me Bhairav Aae Roti Khakar Trupta Ho Gae |
 
-Purna Kamana Ramabai Ki, Dekhi Jhanki Sitaram Ki ||
+Purna Kamana Ramabai Ki Dekhi Jhanki Sitaram Ki ||
 
-ವೈದ್ಯರಾಜ ಕಭೀ ತುಮ ಬನ ಜಾತೇ, ​ಕರ್ಮಚಾರೀ ಭೀ ಕಭೀ ಹೋ ಜಾತೇ ।
+ವೈದ್ಯರಾಜ ಕಭೀ ತುಮ ಬನ ಜಾತೇ ​ಕರ್ಮಚಾರೀ ಭೀ ಕಭೀ ಹೋ ಜಾತೇ ।
 
-ಧನಹಿನ ಕೋ ಮಿಲತಾ ಧನಮಾನ, ​ವಿದ್ಯಾಹಿನ ಕೋ ವಿದ್ಯಾದಾನ ॥
+ಧನಹಿನ ಕೋ ಮಿಲತಾ ಧನಮಾನ ​ವಿದ್ಯಾಹಿನ ಕೋ ವಿದ್ಯಾದಾನ ॥
 
-Vaidyaraj Kabhi Tum Ban Jate, Karmachari Bhi Kabhi Ho Jate |
+Vaidyaraj Kabhi Tum Ban Jate Karmachari Bhi Kabhi Ho Jate |
 
-Dhanahin Ko Milata Dhanaman, Vidyahin Ko Vidyadan ||
+Dhanahin Ko Milata Dhanaman Vidyahin Ko Vidyadan ||
 
-ಉದರ ಪೀಡಾ ಜಬ ಹುಈ ಭಕ್ತ ಕೋ, ​ಮುಕ್ತ ಕಿಯಾ ಔರ ದಿಯಾ ಸೌಖ್ಯ ಕೋ ।
+ಉದರ ಪೀಡಾ ಜಬ ಹುಈ ಭಕ್ತ ಕೋ ​ಮುಕ್ತ ಕಿಯಾ ಔರ ದಿಯಾ ಸೌಖ್ಯ ಕೋ ।
 
-ಲಾಖೋ ಆತೇ ತೇರೇ ದರಬಾರ, ​ಪೂರಣ ಹೋತೇ ಸಬ ವ್ಯವಹಾರ ॥
+ಲಾಖೋ ಆತೇ ತೇರೇ ದರಬಾರ ​ಪೂರಣ ಹೋತೇ ಸಬ ವ್ಯವಹಾರ ॥
 
-Udar Pida Jab Hui Bhakta Ko, Mukta Kiya Aur Diya Saukhya Ko |
+Udar Pida Jab Hui Bhakta Ko Mukta Kiya Aur Diya Saukhya Ko |
 
-Lakho Aate Tere Darabar, Puran Hote Sab Vyavahar ||
+Lakho Aate Tere Darabar Puran Hote Sab Vyavahar ||
 
-ಭಕ್ತೋಂ ಕಾ ಭುಗತಾನ ಭೋಗ ಕರ, ​ದೇತೇ ಶಾಂತೀ ನಾ ಭೀ ಕಹಕರ ।
+ಭಕ್ತೋಂ ಕಾ ಭುಗತಾನ ಭೋಗ ಕರ ​ದೇತೇ ಶಾಂತೀ ನಾ ಭೀ ಕಹಕರ ।
 
-ವಿಭೂತಿ ಪಾಕರ ಹರ ಗುರುವಾರ, ​ಚಿತ್ತ ತೃಪ್ತಿ ಕಾ ಕರೇ ವಿಹಾರ ॥
+ವಿಭೂತಿ ಪಾಕರ ಹರ ಗುರುವಾರ ​ಚಿತ್ತ ತೃಪ್ತಿ ಕಾ ಕರೇ ವಿಹಾರ ॥
 
-Bhakton Ka Bhugatan Bhog Kar, Dete Shanti Na Bhi Kahakar |
+Bhakton Ka Bhugatan Bhog Kar Dete Shanti Na Bhi Kahakar |
 
-Vibhuti Pakar Har Guruvar, Chitta Trupti Ka Kare Vihar ||
+Vibhuti Pakar Har Guruvar Chitta Trupti Ka Kare Vihar ||
 
-ಪುತ್ರಹೀನ ಜೋ ಪಾತಾ ಸಂತಾನ, ​ಕೃಪಾ ಆಪಕೀ ಯಹೀ ಮಹಾನ ।
+ಪುತ್ರಹೀನ ಜೋ ಪಾತಾ ಸಂತಾನ ​ಕೃಪಾ ಆಪಕೀ ಯಹೀ ಮಹಾನ ।
 
-ಪತಿ ಪ್ರಾಪ್ತಿ ಕೀ ಜಿನಕೀ ಇಚ್ಛಾ, ​ಪೂರಣ ಹೋತೀ ಉನಕೀ ವಾಂಚ್ಛಾ ॥
+ಪತಿ ಪ್ರಾಪ್ತಿ ಕೀ ಜಿನಕೀ ಇಚ್ಛಾ ​ಪೂರಣ ಹೋತೀ ಉನಕೀ ವಾಂಚ್ಛಾ ॥
 
-Putrahin Jo Pata Santan, Krupa Aapaki Yahi Mahan |
+Putrahin Jo Pata Santan Krupa Aapaki Yahi Mahan |
 
-Pati Prapti Ki Jinaki Ichchha, Puran Hoti Unaki Vanchchha ||
+Pati Prapti Ki Jinaki Ichchha Puran Hoti Unaki Vanchchha ||
 
-ತುಮ ತೋ ನಾನಾ ತುರ್ಯಾತೀತ, ​ಕೈಸೀ ಪೂಜಾ ಸಮಝ ನ ಆವತ ।
+ತುಮ ತೋ ನಾನಾ ತುರ್ಯಾತೀತ ​ಕೈಸೀ ಪೂಜಾ ಸಮಝ ನ ಆವತ ।
 
-Tum To Nana Turyatit, Kaisi Puja Samajh Na Aavat |
+Tum To Nana Turyatit Kaisi Puja Samajh Na Aavat |
 
 ↻ ೩ ವೇಳಾ3 times
 
-ಮೈಂ ನೌಕರ ತುಮ ಸ್ವಾಮೀ ಶುಭಂಕರ, ​ಭಾವ ರಹೇ ಯಹ ಮನ ಮೇ ನಿರಂತರ ॥
+ಮೈಂ ನೌಕರ ತುಮ ಸ್ವಾಮೀ ಶುಭಂಕರ ​ಭಾವ ರಹೇ ಯಹ ಮನ ಮೇ ನಿರಂತರ ॥
 
-Main Naukar Tum Svami Shubhankar, Bhav Rahe Yah Man Me Nirantar ||
-
-↻ ೩ ವೇಳಾ3 times
-
-ರೋಮರೋಮ ಮೇಂ ವಾಸ ತುಮ್ಹಾರಾ, ​ಭಿಕ್ಷಾ ಮಾಂಗೇ ದಾಸ ತುಮ್ಹಾರಾ ।
-
-Romarom Men Vas Tumhara, Bhiksha Mange Das Tumhara |
+Main Naukar Tum Svami Shubhankar Bhav Rahe Yah Man Me Nirantar ||
 
 ↻ ೩ ವೇಳಾ3 times
 
-ತಿಥಿ ಪಂಚಮೀ ಪರ ಬಾವನೀ ಗಾವೇ, ​ಪಾಂಚ ಪಾಠ ಮೇಂ ಸುಖ ಪಾವೇ ॥
+ರೋಮರೋಮ ಮೇಂ ವಾಸ ತುಮ್ಹಾರಾ ​ಭಿಕ್ಷಾ ಮಾಂಗೇ ದಾಸ ತುಮ್ಹಾರಾ ।
 
-ಪಾಂಚ ಪಾಠ ಬಾವನ ಗುರುವಾರ, ​ಸಮಝಮೇಂ ಆವೇ ಸಾರ ಅಸಾರ ।
+Romarom Men Vas Tumhara Bhiksha Mange Das Tumhara |
 
-ಜೋ ಚಾಹೇ ವಹ ಮಿಲೇ ಪಾಠ ಸೇ, ​ದೇ ದೋ ಆಶೀಷ ಪ್ರಸನ್ನತಾ ಸೇ ॥
+↻ ೩ ವೇಳಾ3 times
 
-Tithi Panchami Par Bavani Gave, Panch Path Men Sukh Pave ||
+ತಿಥಿ ಪಂಚಮೀ ಪರ ಬಾವನೀ ಗಾವೇ ​ಪಾಂಚ ಪಾಠ ಮೇಂ ಸುಖ ಪಾವೇ ॥
 
-Panch Path Bavan Guruvar, Samajhamen Aave Sar Asar |
+ಪಾಂಚ ಪಾಠ ಬಾವನ ಗುರುವಾರ ​ಸಮಝಮೇಂ ಆವೇ ಸಾರ ಅಸಾರ ।
 
-Jo Chahe Vah Mile Path Se, De Do Aashish Prasannata Se ||
+ಜೋ ಚಾಹೇ ವಹ ಮಿಲೇ ಪಾಠ ಸೇ ​ದೇ ದೋ ಆಶೀಷ ಪ್ರಸನ್ನತಾ ಸೇ ॥
+
+Tithi Panchami Par Bavani Gave Panch Path Men Sukh Pave ||
+
+Panch Path Bavan Guruvar Samajhamen Aave Sar Asar |
+
+Jo Chahe Vah Mile Path Se De Do Aashish Prasannata Se ||
 
 ॥ ಅವಧೂತ ಚಿಂತನ ಶ್ರೀ ಗುರುದೇವ ದತ್ತ ॥
 
@@ -15339,199 +15339,199 @@ Jo Chahe Vah Mile Path Se, De Do Aashish Prasannata Se ||
 ಶ್ರೀ ಸದಗುರು ವಂದನಾ
 Shri Sadguru Vandana
 
-ಗುರುದೇವ ನಾನಾ ಪಾಯೀ ಲಾಗುನೀ, ​ದಾಸ ವಿನವೀ ಹಾ ತುಮ್ಹಾ ।
+ಗುರುದೇವ ನಾನಾ ಪಾಯೀ ಲಾಗುನೀ ​ದಾಸ ವಿನವೀ ಹಾ ತುಮ್ಹಾ ।
 
-ದ್ಯಾ ಭಕ್ತಿ ಶ್ರದ್ಧಾ ಅಂತರೀ ಅನ್, ​ಠಾವ ಚರಣೀ ದ್ಯಾ ಆಮ್ಹಾ ॥ ೧ ॥
+ದ್ಯಾ ಭಕ್ತಿ ಶ್ರದ್ಧಾ ಅಂತರೀ ಅನ್ ​ಠಾವ ಚರಣೀ ದ್ಯಾ ಆಮ್ಹಾ ॥ ೧ ॥
 
-Gurudev Nana Payi Laguni, Das Vinavi Ha Tumha |
+Gurudev Nana Payi Laguni Das Vinavi Ha Tumha |
 
-Dya Bhakti Shraddha Antari An, Thav Charani Dya Aamha || 1 ||
+Dya Bhakti Shraddha Antari An Thav Charani Dya Aamha || 1 ||
 
-ಪಾಹತಾಂ ತವ ಚರಣ ಕಮಲೇ, ​ಚಿತ್ತ ಪಾಯೀ ಗುಂತಲೇ ।
+ಪಾಹತಾಂ ತವ ಚರಣ ಕಮಲೇ ​ಚಿತ್ತ ಪಾಯೀ ಗುಂತಲೇ ।
 
-ಭಕ್ತಿ ಸುಮನೇ ಅರ್ಪೂನೀ, ​ತುಜ ನಮ್ರ ಭಾವೇ ವಂದಿಲೇ ॥ ೨ ॥
+ಭಕ್ತಿ ಸುಮನೇ ಅರ್ಪೂನೀ ​ತುಜ ನಮ್ರ ಭಾವೇ ವಂದಿಲೇ ॥ ೨ ॥
 
-Pahatan Tav Charan Kamale, Chitta Payi Guntale |
+Pahatan Tav Charan Kamale Chitta Payi Guntale |
 
-Bhakti Sumane Arpuni, Tuj Namra Bhave Vandile || 2 ||
+Bhakti Sumane Arpuni Tuj Namra Bhave Vandile || 2 ||
 
-ಕಿರ್ತೀ ತುಝೀ ಐಕೋನೀ ಆಲೋ, ​ತಾರಿಸೀ ದಿನ-ವತ್ಸಲಾ ।
+ಕಿರ್ತೀ ತುಝೀ ಐಕೋನೀ ಆಲೋ ​ತಾರಿಸೀ ದಿನ-ವತ್ಸಲಾ ।
 
-ತಾರೀ ತಾರೀ ದೀನ ದಾಸಾ, ​ಜಾಗ ಆಪುಲ್ಯಾ ಕಿರ್ತೀಲಾ ॥ ೩ ॥
+ತಾರೀ ತಾರೀ ದೀನ ದಾಸಾ ​ಜಾಗ ಆಪುಲ್ಯಾ ಕಿರ್ತೀಲಾ ॥ ೩ ॥
 
-Kirti Tujhi Aikoni Aalo, Tarisi Din-Vatsala |
+Kirti Tujhi Aikoni Aalo Tarisi Din-Vatsala |
 
-Tari Tari Din Dasa, Jag Aapulya Kirtila || 3 ||
+Tari Tari Din Dasa Jag Aapulya Kirtila || 3 ||
 
-ಮಹಿಮಾ ತುಝಾ ವರ್ಣು ಕಸಾ, ​ಅಜ್ಞಾನ ಮೀ ತವ ಲೇಕರುಂ ।
+ಮಹಿಮಾ ತುಝಾ ವರ್ಣು ಕಸಾ ​ಅಜ್ಞಾನ ಮೀ ತವ ಲೇಕರುಂ ।
 
-ಸ್ಫೂರ್ತೀ ದೇಈ ಕಿರ್ತೀ ಗಾಯಾ, ​ಠೇವೂನಿ ಶಿರೀ ತವ ಕರುಂ ॥ ೪ ॥
+ಸ್ಫೂರ್ತೀ ದೇಈ ಕಿರ್ತೀ ಗಾಯಾ ​ಠೇವೂನಿ ಶಿರೀ ತವ ಕರುಂ ॥ ೪ ॥
 
-Mahima Tujha Varnu Kasa, Adnyan Mi Tav Lekarun |
+Mahima Tujha Varnu Kasa Adnyan Mi Tav Lekarun |
 
-Sphurti Dei Kirti Gaya, Thevuni Shiri Tav Karun || 4 ||
+Sphurti Dei Kirti Gaya Thevuni Shiri Tav Karun || 4 ||
 
-ಸ್ಮರಣ ಮಾತ್ರೇ ಧಾವಸೀ ಅನ್, ​ಪಾವಸೀ ಶರಣಾಂಗತಾ ।
+ಸ್ಮರಣ ಮಾತ್ರೇ ಧಾವಸೀ ಅನ್ ​ಪಾವಸೀ ಶರಣಾಂಗತಾ ।
 
-ಕಾ ಉಶೀರ ಕೇಲಾ ಆಜ ಯೇಣ್ಯಾ, ​ಕವಣ ಕಾರ್ಯೀ ಗುಂತಲಾ ॥ ೫ ॥
+ಕಾ ಉಶೀರ ಕೇಲಾ ಆಜ ಯೇಣ್ಯಾ ​ಕವಣ ಕಾರ್ಯೀ ಗುಂತಲಾ ॥ ೫ ॥
 
-Smaran Matre Dhavasi An, Pavasi Sharanangata |
+Smaran Matre Dhavasi An Pavasi Sharanangata |
 
-Ka Ushir Kela Aaj Yenya, Kavan Karyi Guntala || 5 ||
+Ka Ushir Kela Aaj Yenya Kavan Karyi Guntala || 5 ||
 
-ಹೇ ನಾ ಖರೇ ಸಂಕಲ್ಪಮಾತ್ರೇ, ​ಧರಿಲೀ ತ್ವಾಂ ರುಪೇ ಕಿತೀ ।
+ಹೇ ನಾ ಖರೇ ಸಂಕಲ್ಪಮಾತ್ರೇ ​ಧರಿಲೀ ತ್ವಾಂ ರುಪೇ ಕಿತೀ ।
 
-ಕಾಯ ತವ ವರ್ಣೂ ಲೀಲಾ, ​ಕುಂಠೀತ ಹೋತೇ ಮಮ ಮತೀ ॥ ೬ ॥
+ಕಾಯ ತವ ವರ್ಣೂ ಲೀಲಾ ​ಕುಂಠೀತ ಹೋತೇ ಮಮ ಮತೀ ॥ ೬ ॥
 
-He Na Khare Sankalpamatre, Dharili Tvan Rupe Kiti |
+He Na Khare Sankalpamatre Dharili Tvan Rupe Kiti |
 
-Kay Tav Varnu Lila, Kunthit Hote Mam Mati || 6 ||
+Kay Tav Varnu Lila Kunthit Hote Mam Mati || 6 ||
 
-ಕಾ ಅಲ್ಪ-ಸೇವಾ ಮ್ಹಣುನೀ ಮಜಸಿ, ​ದೂರ ಕಾ ಹೋ ಠೇವಿಲೇ ।
+ಕಾ ಅಲ್ಪ-ಸೇವಾ ಮ್ಹಣುನೀ ಮಜಸಿ ​ದೂರ ಕಾ ಹೋ ಠೇವಿಲೇ ।
 
-ಹೇ ಸತ್ಯ ಕೈಸೇ ಮಾನೂ ಕೀ, ​ತವ ರುಪ ಅಂತರೀ ದಾಟಲೇ ॥ ೭ ॥
+ಹೇ ಸತ್ಯ ಕೈಸೇ ಮಾನೂ ಕೀ ​ತವ ರುಪ ಅಂತರೀ ದಾಟಲೇ ॥ ೭ ॥
 
-Ka Alpa-Seva Mhanuni Majasi, Dur Ka Ho Thevile |
+Ka Alpa-Seva Mhanuni Majasi Dur Ka Ho Thevile |
 
-He Satya Kaise Manu Ki, Tav Rup Antari Datale || 7 ||
+He Satya Kaise Manu Ki Tav Rup Antari Datale || 7 ||
 
-ಆತ್ಮರುಪೀ ನಿತ್ಯ ಸ್ಥಿತ ತೂ, ​ದೇಹೀ ಅಸೂನ ಮುಕ್ತ ತೂ ।
+ಆತ್ಮರುಪೀ ನಿತ್ಯ ಸ್ಥಿತ ತೂ ​ದೇಹೀ ಅಸೂನ ಮುಕ್ತ ತೂ ।
 
-ಸಂಗೀ-ಅಸಂಗೀ ಅಸೂನಿ ನಟಸೀ, ​ಬ್ರಹ್ಮ ಮಾಯಾ ತೂಚ ತೂ ॥ ೮ ॥
+ಸಂಗೀ-ಅಸಂಗೀ ಅಸೂನಿ ನಟಸೀ ​ಬ್ರಹ್ಮ ಮಾಯಾ ತೂಚ ತೂ ॥ ೮ ॥
 
-Aatmarupi Nitya Sthit Tu, Dehi Asun Mukta Tu |
+Aatmarupi Nitya Sthit Tu Dehi Asun Mukta Tu |
 
-Sangi-Asangi Asuni Natasi, Brahma Maya Tuch Tu || 8 ||
+Sangi-Asangi Asuni Natasi Brahma Maya Tuch Tu || 8 ||
 
-ಜೀವನಾಚಾ ಅರ್ಥ ಉಮಗೇ, ​ಗುರುಕೃಪಾ ತುಜ ಲಾಭತಾಂ ।
+ಜೀವನಾಚಾ ಅರ್ಥ ಉಮಗೇ ​ಗುರುಕೃಪಾ ತುಜ ಲಾಭತಾಂ ।
 
-ನಿರ್ಮುಕ್ತ ಮಾಯಾತೀತ ಜೀವನ, ​ತತ್ವ ಬೋಧೀ ಸರ್ವಥಾ ॥ ೯ ॥
+ನಿರ್ಮುಕ್ತ ಮಾಯಾತೀತ ಜೀವನ ​ತತ್ವ ಬೋಧೀ ಸರ್ವಥಾ ॥ ೯ ॥
 
-Jivanacha Artha Umage, Gurukrupa Tuj Labhatan |
+Jivanacha Artha Umage Gurukrupa Tuj Labhatan |
 
-Nirmukta Mayatit Jivan, Tatva Bodhi Sarvatha || 9 ||
+Nirmukta Mayatit Jivan Tatva Bodhi Sarvatha || 9 ||
 
-ಯಾತ್ರಾಮಿಷೇ ಭಕ್ತಾಸಿ ಬೋಧುನಿ, ​ಮಾರ್ಗ ದಾವೀ ಸತ್ವರ ।
+ಯಾತ್ರಾಮಿಷೇ ಭಕ್ತಾಸಿ ಬೋಧುನಿ ​ಮಾರ್ಗ ದಾವೀ ಸತ್ವರ ।
 
-ದುರ್ಜನಾಹೀ ಉದ್ಧರಿಲೇ, ​ರೋಷ ನಾ ಮನೀ ತೀಳಭರ ॥ ೧೦ ॥
+ದುರ್ಜನಾಹೀ ಉದ್ಧರಿಲೇ ​ರೋಷ ನಾ ಮನೀ ತೀಳಭರ ॥ ೧೦ ॥
 
-Yatramishe Bhaktasi Bodhuni, Marg Davi Satvar |
+Yatramishe Bhaktasi Bodhuni Marg Davi Satvar |
 
-Durjanahi Uddharile, Rosh Na Mani Tilabhar || 10 ||
+Durjanahi Uddharile Rosh Na Mani Tilabhar || 10 ||
 
-ಗುರುಚರಣ ಚಿತ್ತೀ ನಿತ್ಯ ಸ್ಮರತಾಂ, ​ಸಿದ್ಧತಾ ಲಾಭೇ ತುವಾಂ ।
+ಗುರುಚರಣ ಚಿತ್ತೀ ನಿತ್ಯ ಸ್ಮರತಾಂ ​ಸಿದ್ಧತಾ ಲಾಭೇ ತುವಾಂ ।
 
-ಮೋಹ ಸಿದ್ಧಿಚಾ ತ್ಯಜೋನಿ, ​ಚಾಲವೀ ದೃಢ ಭಕ್ತಿಲಾ ॥ ೧೧ ॥
+ಮೋಹ ಸಿದ್ಧಿಚಾ ತ್ಯಜೋನಿ ​ಚಾಲವೀ ದೃಢ ಭಕ್ತಿಲಾ ॥ ೧೧ ॥
 
-Gurucharan Chitti Nitya Smaratan, Siddhata Labhe Tuvan |
+Gurucharan Chitti Nitya Smaratan Siddhata Labhe Tuvan |
 
-Moh Siddhicha Tyajoni, Chalavi Drudh Bhaktila || 11 ||
+Moh Siddhicha Tyajoni Chalavi Drudh Bhaktila || 11 ||
 
-ಯಾತ್ರಾ ಜಲೇರೀ ಕರುನಿ ಲಾಭೇ, ​ನರ್ಮದೇಚೇ ದರ್ಶನ ।
+ಯಾತ್ರಾ ಜಲೇರೀ ಕರುನಿ ಲಾಭೇ ​ನರ್ಮದೇಚೇ ದರ್ಶನ ।
 
-ದಿವ್ಯ ಅನುಭವ ಘೇಊನಿ ತ್ವಾಂ, ​ಪಾಹಿಲೇ ರಘುನಂದನ ॥ ೧೨ ॥
+ದಿವ್ಯ ಅನುಭವ ಘೇಊನಿ ತ್ವಾಂ ​ಪಾಹಿಲೇ ರಘುನಂದನ ॥ ೧೨ ॥
 
-Yatra Jaleri Karuni Labhe, Narmadeche Darshan |
+Yatra Jaleri Karuni Labhe Narmadeche Darshan |
 
-Divya Anubhav Gheuni Tvan, Pahile Raghunandan || 12 ||
+Divya Anubhav Gheuni Tvan Pahile Raghunandan || 12 ||
 
-ವೃಂದಾವನೀ ಶ್ರೀಕೃಷ್ಣ ಭೇಟೇ, ​ಶಿವಪುರೀ ಶ್ರೀಶಂಕರ ।
+ವೃಂದಾವನೀ ಶ್ರೀಕೃಷ್ಣ ಭೇಟೇ ​ಶಿವಪುರೀ ಶ್ರೀಶಂಕರ ।
 
-ಗಂಗೋತ್ರೀ ಯಾತ್ರೇಮಧುನಿ ಭೇಟತೀ, ​ಕೋಣೀ ಯೋಗೀ ಯತಿವರ ॥ ೧೩ ॥
+ಗಂಗೋತ್ರೀ ಯಾತ್ರೇಮಧುನಿ ಭೇಟತೀ ​ಕೋಣೀ ಯೋಗೀ ಯತಿವರ ॥ ೧೩ ॥
 
-Vrundavani Shrikrushna Bhete, Shivapuri Shrishankar |
+Vrundavani Shrikrushna Bhete Shivapuri Shrishankar |
 
-Gangotri Yatremadhuni Bhetati, Koni Yogi Yativar || 13 ||
+Gangotri Yatremadhuni Bhetati Koni Yogi Yativar || 13 ||
 
-ಕಿತೀ ಯಜ್ಞ ಕೇಲೇ ಠಾಯೀಠಾಯೀ, ​ಜನಹಿತೀ ತೂ ತತ್ಪರ ।
+ಕಿತೀ ಯಜ್ಞ ಕೇಲೇ ಠಾಯೀಠಾಯೀ ​ಜನಹಿತೀ ತೂ ತತ್ಪರ ।
 
-ಭೂಲೋಕೀ ತುಜಲಾ ಸಾಹ್ಯ ದೇತೀ, ​ದೇವ ಯೋಗೀ ಮುನೀವರ ॥ ೧೪ ॥
+ಭೂಲೋಕೀ ತುಜಲಾ ಸಾಹ್ಯ ದೇತೀ ​ದೇವ ಯೋಗೀ ಮುನೀವರ ॥ ೧೪ ॥
 
-Kiti Yadnya Kele Thayithayi, Janahiti Tu Tatpar |
+Kiti Yadnya Kele Thayithayi Janahiti Tu Tatpar |
 
-Bhuloki Tujala Sahya Deti, Dev Yogi Munivar || 14 ||
+Bhuloki Tujala Sahya Deti Dev Yogi Munivar || 14 ||
 
-ಭಾಂಬಾವತೋ ಐಕೂನೀ ಗಾಥಾ, ​ಕಷ್ಟ ತ್ವಾಂ ಜೇ ಭೋಗಿಲೇ ।
+ಭಾಂಬಾವತೋ ಐಕೂನೀ ಗಾಥಾ ​ಕಷ್ಟ ತ್ವಾಂ ಜೇ ಭೋಗಿಲೇ ।
 
-ಅಗಣೀತ ಭಕ್ತಾಂ ಆಜ ತುಮಚೇ, ​ಛತ್ರ ಮ್ಹಣೂನಿ ಲಾಭಲೇ ॥ ೧೫ ॥
+ಅಗಣೀತ ಭಕ್ತಾಂ ಆಜ ತುಮಚೇ ​ಛತ್ರ ಮ್ಹಣೂನಿ ಲಾಭಲೇ ॥ ೧೫ ॥
 
-Bhambavato Aikuni Gatha, Kashta Tvan Je Bhogile |
+Bhambavato Aikuni Gatha Kashta Tvan Je Bhogile |
 
-Aganit Bhaktan Aaj Tumache, Chhatra Mhanuni Labhale || 15 ||
+Aganit Bhaktan Aaj Tumache Chhatra Mhanuni Labhale || 15 ||
 
-ಸಾಕಾರ ಝಾಲೀ ಶಾನ್ತಿ ಯೇಥೇ, ​ಮಾನವೀ ತನು ಪಾವಲೀ ।
+ಸಾಕಾರ ಝಾಲೀ ಶಾನ್ತಿ ಯೇಥೇ ​ಮಾನವೀ ತನು ಪಾವಲೀ ।
 
-ಭಕ್ತ ಉದ್ಧಾರಾರ್ಥ ಮಹಿವರೀ, ​ರುಪ ಘೇಊನಿ ಪಾವಲೀ ॥ ೧೬ ॥
+ಭಕ್ತ ಉದ್ಧಾರಾರ್ಥ ಮಹಿವರೀ ​ರುಪ ಘೇಊನಿ ಪಾವಲೀ ॥ ೧೬ ॥
 
-Sakar Jhali Shanti Yethe, Manavi Tanu Pavali |
+Sakar Jhali Shanti Yethe Manavi Tanu Pavali |
 
-Bhakta Uddhararth Mahivari, Rup Gheuni Pavali || 16 ||
+Bhakta Uddhararth Mahivari Rup Gheuni Pavali || 16 ||
 
 ನಾಹೀ ಜಯಾಸೀ ರುಪ-ಗುಣ ​ಆಕಾರ ನಾಹೀ ನಾಮಹೀ ।
 
-ನಾನಾ-ರುಪೇ ಸಾಕಾರ ಝಾಲೇ, ​ತೇಚ ನಿರ್ಗುಣ ಬ್ರಹ್ಮಹೀ ॥ ೧೭ ॥
+ನಾನಾ-ರುಪೇ ಸಾಕಾರ ಝಾಲೇ ​ತೇಚ ನಿರ್ಗುಣ ಬ್ರಹ್ಮಹೀ ॥ ೧೭ ॥
 
 Nahi Jayasi Rup-Gun Aakar Nahi Namahi |
 
-Nana-Rupe Sakar Jhale, Tech Nirgun Brahmahi || 17 ||
+Nana-Rupe Sakar Jhale Tech Nirgun Brahmahi || 17 ||
 
-ಸಂಚಿತ ವಿಲಯಾ ಆಜ ಗೇಲೇ, ​ಚರಣೀ ಹೃದಯೀ ಪೂಜಿತಾಂ ।
+ಸಂಚಿತ ವಿಲಯಾ ಆಜ ಗೇಲೇ ​ಚರಣೀ ಹೃದಯೀ ಪೂಜಿತಾಂ ।
 
-ನಾಹೀಚ ಉರಲೇ ಭೀತೀ ಭಯ ಮನೀ, ​ಚಿಂತನೀ ತವ ರಂಗತಾ ॥ ೧೮ ॥
+ನಾಹೀಚ ಉರಲೇ ಭೀತೀ ಭಯ ಮನೀ ​ಚಿಂತನೀ ತವ ರಂಗತಾ ॥ ೧೮ ॥
 
-Sanchit Vilaya Aaj Gele, Charani Hrudayi Pujitan |
+Sanchit Vilaya Aaj Gele Charani Hrudayi Pujitan |
 
-Nahich Urale Bhiti Bhay Mani, Chintani Tav Rangata || 18 ||
+Nahich Urale Bhiti Bhay Mani Chintani Tav Rangata || 18 ||
 
-ಸರ್ವಾ ತ್ಯಜುನಿ ನಮ್ರ ಭಾವೇ, ​ಶರಣ ಜೇ ಯೇತೀ ತುಲಾ ।
+ಸರ್ವಾ ತ್ಯಜುನಿ ನಮ್ರ ಭಾವೇ ​ಶರಣ ಜೇ ಯೇತೀ ತುಲಾ ।
 
-ತ್ಯಾ ಶಾಂತಿ ಆನಂದಾಸೀ ದೇಸೀ, ​ಕಾಳ ಮುಳೀ ನಚ ಲಾಗತಾ ॥ ೧೯ ॥
+ತ್ಯಾ ಶಾಂತಿ ಆನಂದಾಸೀ ದೇಸೀ ​ಕಾಳ ಮುಳೀ ನಚ ಲಾಗತಾ ॥ ೧೯ ॥
 
-Sarva Tyajuni Namra Bhave, Sharan Je Yeti Tula |
+Sarva Tyajuni Namra Bhave Sharan Je Yeti Tula |
 
-Tya Shanti Aanandasi Desi, Kal Muli Nach Lagata || 19 ||
+Tya Shanti Aanandasi Desi Kal Muli Nach Lagata || 19 ||
 
-ಛತ್ರ ಲಾಭೋ ತವ ಕೃಪೇಚೇ, ​ಆತ್ಮರಂಗೀ ರಂಗೂ ದೇ ।
+ಛತ್ರ ಲಾಭೋ ತವ ಕೃಪೇಚೇ ​ಆತ್ಮರಂಗೀ ರಂಗೂ ದೇ ।
 
-ಕರುಣಾ ಕರೀ ಬಾ ಮಾಯಬಾಪಾ, ​ಭಾಗ್ಯ ಇತುಕೇ ಲಾಭೂ ದೇ ॥ ೨೦ ॥
+ಕರುಣಾ ಕರೀ ಬಾ ಮಾಯಬಾಪಾ ​ಭಾಗ್ಯ ಇತುಕೇ ಲಾಭೂ ದೇ ॥ ೨೦ ॥
 
-Chhatra Labho Tav Krupeche, Aatmarangi Rangu De |
+Chhatra Labho Tav Krupeche Aatmarangi Rangu De |
 
-Karuna Kari Ba Mayabapa, Bhagya Ituke Labhu De || 20 ||
+Karuna Kari Ba Mayabapa Bhagya Ituke Labhu De || 20 ||
 
 ↻ ೩ ವೇಳಾ3 times
 
-ಆನಂದಕಂದಾ ಗುರುಸ್ವರುಪಾ, ​ಪಾದಪದ್ಮೀ ಪ್ರಾರ್ಥನಾ ।
+ಆನಂದಕಂದಾ ಗುರುಸ್ವರುಪಾ ​ಪಾದಪದ್ಮೀ ಪ್ರಾರ್ಥನಾ ।
 
-ರುಜು ಕರುನಿ ಘ್ಯಾವೀ ಕಾವ್ಯ ಸೇವಾ, ​ಗಾತಸೇ ತವ ವಂದನಾ ॥ ೨೧ ॥
+ರುಜು ಕರುನಿ ಘ್ಯಾವೀ ಕಾವ್ಯ ಸೇವಾ ​ಗಾತಸೇ ತವ ವಂದನಾ ॥ ೨೧ ॥
 
-Aanandakanda Gurusvarupa, Padapadmi Prarthana |
+Aanandakanda Gurusvarupa Padapadmi Prarthana |
 
-Ruju Karuni Ghyavi Kavya Seva, Gatase Tav Vandana || 21 ||
+Ruju Karuni Ghyavi Kavya Seva Gatase Tav Vandana || 21 ||
 
-ಆನಂದಕಂದಾ ದತ್ತಸ್ವರುಪಾ, ​ಪಾದಪದ್ಮೀ ಪ್ರಾರ್ಥನಾ ।
+ಆನಂದಕಂದಾ ದತ್ತಸ್ವರುಪಾ ​ಪಾದಪದ್ಮೀ ಪ್ರಾರ್ಥನಾ ।
 
-ರುಜು ಕರುನಿ ಘ್ಯಾವೀ ಕಾವ್ಯ ಸೇವಾ, ​ಗಾತಸೇ ತವ ವಂದನಾ ॥ ೨೨ ॥
+ರುಜು ಕರುನಿ ಘ್ಯಾವೀ ಕಾವ್ಯ ಸೇವಾ ​ಗಾತಸೇ ತವ ವಂದನಾ ॥ ೨೨ ॥
 
-Aanandakanda Dattasvarupa, Padapadmi Prarthana |
+Aanandakanda Dattasvarupa Padapadmi Prarthana |
 
-Ruju Karuni Ghyavi Kavya Seva, Gatase Tav Vandana || 22 ||
+Ruju Karuni Ghyavi Kavya Seva Gatase Tav Vandana || 22 ||
 
-ಆನಂದಕಂದಾ ದತ್ತಸ್ವರುಪಾ, ​ಪಾದಪದ್ಮೀ ಪ್ರಾರ್ಥನಾ ।
+ಆನಂದಕಂದಾ ದತ್ತಸ್ವರುಪಾ ​ಪಾದಪದ್ಮೀ ಪ್ರಾರ್ಥನಾ ।
 
-ರುಜು ಕರುನಿ ಘ್ಯಾವೀ ಕಾವ್ಯ ಸೇವಾ, ​ಗಾತಸೇ ತವ ವಂದನಾ ॥ ೨೩ ॥
+ರುಜು ಕರುನಿ ಘ್ಯಾವೀ ಕಾವ್ಯ ಸೇವಾ ​ಗಾತಸೇ ತವ ವಂದನಾ ॥ ೨೩ ॥
 
-Aanandakanda Dattasvarupa, Padapadmi Prarthana |
+Aanandakanda Dattasvarupa Padapadmi Prarthana |
 
-Ruju Karuni Ghyavi Kavya Seva, Gatase Tav Vandana || 23 ||
+Ruju Karuni Ghyavi Kavya Seva Gatase Tav Vandana || 23 ||
 
-ಗುರುದೇವ ನಾನಾ ಪಾಯೀ ಲಾಗುನೀ, ​ದಾಸ ವಿನವೀ ಹಾ ತುಮ್ಹಾಂ ।
+ಗುರುದೇವ ನಾನಾ ಪಾಯೀ ಲಾಗುನೀ ​ದಾಸ ವಿನವೀ ಹಾ ತುಮ್ಹಾಂ ।
 
-ದ್ಯಾ ಭಕ್ತಿಶ್ರದ್ಧಾ ಅಂತರೀ ಅನ್, ​ಠಾವ ಚರಣೀ ದ್ಯಾ ಆಮ್ಹಾಂ ॥ ಧೃ ॥
+ದ್ಯಾ ಭಕ್ತಿಶ್ರದ್ಧಾ ಅಂತರೀ ಅನ್ ​ಠಾವ ಚರಣೀ ದ್ಯಾ ಆಮ್ಹಾಂ ॥ ಧೃ ॥
 
-Gurudev Nana Payi Laguni, Das Vinavi Ha Tumhan |
+Gurudev Nana Payi Laguni Das Vinavi Ha Tumhan |
 
-Dya Bhaktishraddha Antari An, Thav Charani Dya Aamhan || Dhr. ||
+Dya Bhaktishraddha Antari An Thav Charani Dya Aamhan || Dhr. ||
 
 ॥ ಅವಧೂತ ಚಿಂತನ ಶ್ರೀ ಗುರುದೇವ ದತ್ತ ॥
 
