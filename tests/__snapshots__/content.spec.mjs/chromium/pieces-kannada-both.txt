@@ -14720,12 +14720,6 @@ Shant Ho Shriguru
 
 Shant Ho Shriguru Datta Mama Chitta Shamavi Aata ||
 
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
-
-ಮಮ ಚಿತ್ತಾ, ಶಾಂತ ಹೋ ॥ ಧೃ ॥
-
-Mama Chitta, Shant Ho || Dhr. ||
-
 ತೂಂ ಕೇವಳ ಮಾತಾ ಜನಿತಾ, ​ಸರ್ವಥಾ ತೂಂ ಹಿತಕರ್ತಾ ।
 
 ತೂಂ ಆಪ್ತ ಸ್ವಜನ ಭ್ರಾತಾ, ​ಸರ್ವಥಾ ತೂಂಚೀ ತ್ರಾತಾ ॥
@@ -14733,6 +14727,8 @@ Mama Chitta, Shant Ho || Dhr. ||
 ಭಯ ಕರ್ತಾ ತೂಂ ಭಯ ಹರ್ತಾ । ​ದಂಡಧರ್ತಾ ತೂಂ ಪರಿಪಾತಾ ॥
 
 ತುಜ ವಾಚುಂನಿ ನ ದುಜೀ ವಾರ್ತಾ । ​ತೂಂ ಆರ್ತಾ ಆಶ್ರಯ ದಾತಾ ॥ ೧ ॥
+
+ಮಮ ಚಿತ್ತಾ, ಶಾಂತ ಹೋ ॥ ಧೃ ॥
 
 Tun Keval Mata Janita, Sarvatha Tun Hitakarta |
 
@@ -14742,7 +14738,7 @@ Bhay Karta Tun Bhay Harta | Dandadharta Tun Paripata ||
 
 Tuj Vachunni Na Duji Varta | Tun Aarta Aashray Data || 1 ||
 
-↻ ಧ್ರುಪದRefrain
+Mama Chitta, Shant Ho || Dhr. ||
 
 ಅಪರಾಧಾಸ್ತವ ಗುರುನಾಥಾ, ​ಜರೀ ದಂಡಾ ಧರಿಸೀ ಯಥಾರ್ಥಾ ।
 
@@ -14752,6 +14748,8 @@ Tuj Vachunni Na Duji Varta | Tun Aarta Aashray Data || 1 ||
 
 ಸೋಡವಿನಾ ದುಸರಾ ತೇಂವ್ಹಾ । ​ಕೋಣ ದತ್ತಾ ಆಮ್ಹಾಂ ತ್ರಾತಾ ॥ ೨ ॥
 
+ಮಮ ಚಿತ್ತಾ, ಶಾಂತ ಹೋ ॥ ಧೃ ॥
+
 Aparadhastav Gurunatha, Jari Danda Dharisi Yathartha |
 
 Tari Aamhi Gauni Gatha, Tav Charani Namavu Matha ||
@@ -14760,7 +14758,7 @@ Tun Tathapi Dandisi Deva | Konacha Mag Karu Dhava ||
 
 Sodavina Dusara Tenvha | Kon Datta Aamhan Trata || 2 ||
 
-↻ ಧ್ರುಪದRefrain
+Mama Chitta, Shant Ho || Dhr. ||
 
 ತೂಂ ನಟಸಾ ಹೋಊನಿ ಕೋಪೀ, ​ದಂಡಿತಾಹಿ ಆಮ್ಹೀ ಪಾಪೀ ।
 
@@ -14770,6 +14768,8 @@ Sodavina Dusara Tenvha | Kon Datta Aamhan Trata || 2 ||
 
 ನಿಜ ಕೃಪಾಲೇಶಾ ಓಪೀ । ​ಆಮ್ಹಾವರಿ ತೂಂ ಭಗವಂತಾ ॥ ೩ ॥
 
+ಮಮ ಚಿತ್ತಾ, ಶಾಂತ ಹೋ ॥ ಧೃ ॥
+
 Tun Natasa Houni Kopi, Danditahi Aamhi Papi |
 
 Punarapihi Chukata Tathapi, Aamhanvari Nach Santapi ||
@@ -14778,7 +14778,7 @@ Gachchhatah Skhalanam Kvapi | Ase Manuni Nach Ho Kopi ||
 
 Nij Krupalesha Opi | Aamhavari Tun Bhagavanta || 3 ||
 
-↻ ಧ್ರುಪದRefrain
+Mama Chitta, Shant Ho || Dhr. ||
 
 ತವಪದರೀ ಅಸತಾ ತಾತಾ, ​ಆಡಮಾರ್ಗೀ ಪಾಊಲ ಪಡತಾ ।
 
@@ -14788,6 +14788,8 @@ Nij Krupalesha Opi | Aamhavari Tun Bhagavanta || 3 ||
 
 ವಳೇ ಆತಾ ಆಮ್ಹಾವರತಾ । ​ಕರುಣಾಘನ ತೂಂ ಗುರುನಾಥಾ ॥ ೪ ॥
 
+ಮಮ ಚಿತ್ತಾ, ಶಾಂತ ಹೋ ॥ ಧೃ ॥
+
 Tavapadari Asata Tata, Aadamargi Paul Padata |
 
 Sambhaluni Margavarata, Aanita Na Duja Trata ||
@@ -14796,7 +14798,7 @@ Nij Biruda Aanuni Chitta | Tun Patit Pavan Datta ||
 
 Vale Aata Aamhavarata | Karunaghan Tun Gurunatha || 4 ||
 
-↻ ಧ್ರುಪದRefrain
+Mama Chitta, Shant Ho || Dhr. ||
 
 ಸಹಕುಟೂಂಬ ಸಹಪರಿವಾರ, ​ದಾಸ ಆಮ್ಹೀ ಹೇ ಘರದಾರ ।
 
@@ -14806,6 +14808,8 @@ Vale Aata Aamhavarata | Karunaghan Tun Gurunatha || 4 ||
 
 ಆಮ್ಹಾಂ ಅಘಲೇಶ ನ ಬಾಧೋ । ​ವಾಸುದೇವ ಪ್ರಾರ್ಥಿತ ದತ್ತಾ ॥ ೫ ॥
 
+ಮಮ ಚಿತ್ತಾ, ಶಾಂತ ಹೋ ॥ ಧೃ ॥
+
 Sahakutumb Sahaparivar, Das Aamhi He Gharadar |
 
 Tav Padin Arpu Asar, Sansarahit Ha Bhar ||
@@ -14814,7 +14818,8 @@ Pariharisi Karunasindho | Tun Dinanath Subandho ||
 
 Aamhan Aghalesh Na Badho | Vasudev Prarthit Datta || 5 ||
 
-↻ ಧ್ರುಪದRefrain
+Mama Chitta, Shant Ho || Dhr. ||
+
 ರಚನಾ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
 
 ### stotra-shriguru-datta-jay
