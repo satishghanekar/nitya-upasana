@@ -62,10 +62,43 @@ export function init() {
     asShow();
   }
   document.addEventListener("nitya-session", again);
+  keys();
   document.addEventListener("nitya-solo", function () {
     again();
     // once the page has gone to the text (the jump may come after)
     requestAnimationFrame(again);
+  });
+}
+
+// With a keyboard (a computer, an iPad's): / opens the Library at its search box, and while a text is read ← and →
+// are Prev and Next (the review of 2026-11-15). Never while typing, with Ctrl, Alt or ⌘ held, in a group of tabs or
+// choices, which the arrows move within, or under a page or a box, which keeps its own keys
+function keys() {
+  // a box on screen (some are hidden by the layer they are in, so the attribute alone does not say)
+  function boxOpen() {
+    return [].some.call(document.querySelectorAll('[aria-modal="true"]'), function (/** @type {Element} */ d) {
+      return d.getClientRects().length > 0;
+    });
+  }
+  document.addEventListener("keydown", function (e) {
+    var k = e.key,
+      t = /** @type {HTMLElement} */ (e.target);
+    if ((k !== "/" && k !== "ArrowLeft" && k !== "ArrowRight") || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (!t.closest || t.closest('input, textarea, select, [contenteditable], [role="tablist"], [role="radiogroup"], [aria-modal="true"]')) return;
+    var menu = root.getAttribute("data-menu"),
+      q = /** @type {HTMLElement | null} */ (document.getElementById("q"));
+    if (k === "/") {
+      var lib = /** @type {HTMLElement | null} */ (document.getElementById("hm") || document.getElementById("asq"));
+      if (!q || !lib || (menu && menu !== "jump")) return;
+      e.preventDefault();
+      if (!menu) lib.click();
+      q.focus();
+    } else if (!menu && cur() && !boxOpen()) {
+      var b = /** @type {HTMLButtonElement} */ (document.getElementById(k === "ArrowLeft" ? "asv" : "asn"));
+      if (b.disabled) return;
+      e.preventDefault();
+      b.click();
+    }
   });
 }
 

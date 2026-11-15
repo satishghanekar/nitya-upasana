@@ -385,7 +385,9 @@
     border: 0;
     background: none;
   }
+  /* (as wide as the tabs above it and the list under it: at 34rem it stopped halfway; the desktop review, 2026-11-15) */
   :root[data-rail="1"] #jump #qbar #q {
+    max-width: none;
     margin: 0;
   }
 }

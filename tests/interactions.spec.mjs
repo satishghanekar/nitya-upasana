@@ -1224,3 +1224,94 @@ test("the Library and the calendar on a phone held sideways: the whole screen, o
   await page.locator("#cbk").click();
   await expect(page.locator("#cal")).toBeHidden();
 });
+
+// ==== The desktop review of 2026-11-15 (Satish: start with 1, 2, 4 and 5) ====
+
+// With a keyboard: / opens the Library at its search box; while a text is read ← → are Prev and Next; never while
+// typing or inside a group of choices, and nothing under an open page
+test("a keyboard: / opens the Library's search, and ← → go to the previous and next text", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  const at = () => page.evaluate(() => location.hash);
+  await page.waitForTimeout(300);
+  await page.keyboard.press("ArrowRight");
+  await expect.poll(at).toBe("#a2");
+  await page.keyboard.press("ArrowLeft");
+  await expect.poll(at).toBe("#a1");
+  // with Alt held (the browser's own Back), nothing
+  await page.keyboard.press("Alt+ArrowRight");
+  expect(await at()).toBe("#a1");
+  await page.keyboard.press("/");
+  await expect(page.locator("#jump")).toBeVisible();
+  await expect(page.locator("#q")).toBeFocused();
+  // typing in the box: a / and the arrows are the box's own
+  await page.keyboard.type("a/b");
+  await page.keyboard.press("ArrowLeft");
+  await expect(page.locator("#q")).toHaveValue("a/b");
+  expect(await at()).toBe("#a1");
+  await page.locator("#q").fill("");
+  // from elsewhere in the open Library, / goes back to the box
+  await page.locator("#jbk").focus();
+  await page.keyboard.press("/");
+  await expect(page.locator("#q")).toBeFocused();
+  await page.keyboard.press("Escape");
+  // under Settings the keys do nothing
+  await page.locator("#aa").click();
+  await expect(page.locator("#panel")).toBeVisible();
+  await page.locator("#xc").focus();
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("/");
+  await expect(page.locator("#jump")).toBeHidden();
+  expect(await at()).toBe("#a1");
+});
+
+test("a keyboard on Home: ← → leave the page alone, and the session's tabs keep their arrows", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSite(page, SETUPS.marathi);
+  await page.keyboard.press("ArrowRight");
+  expect(await page.evaluate(() => location.hash)).toBe("");
+  await page.locator("#tss-morning").click();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator("#tss-afternoon")).toBeFocused();
+  expect(await page.evaluate(() => location.hash)).toBe("");
+});
+
+// A computer, one column: the dhrupad's rule beside its lines, not at the page's left edge; the Library's search box
+// as wide as the tabs above it
+test("a computer: the dhrupad's rule stands beside its lines, and the Library's search box is as wide as its tabs", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  const gap = await page.locator("#a1 .rftop .verse").evaluate((v) => {
+    const r = document.createRange();
+    r.selectNodeContents(/** @type {Element} */ (v.querySelector("p")));
+    return r.getBoundingClientRect().left - v.getBoundingClientRect().left;
+  });
+  expect(gap).toBeGreaterThanOrEqual(0);
+  expect(gap).toBeLessThan(80);
+  await page.keyboard.press("/");
+  const wide = await page.evaluate(() => {
+    const r = (/** @type {string} */ s) => /** @type {Element} */ (document.querySelector(s)).getBoundingClientRect();
+    return [Math.round(r("#q").left - r(".libhd").left), Math.round(r(".libhd").right - r("#q").right)];
+  });
+  expect(wide).toEqual([0, 0]);
+});
+
+// Two columns of stanzas: a stanza with none beside it (the last of three) is centred across both, not alone on the left
+test("two columns: a last stanza with none beside it is centred across both", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  await expect(page.locator("html")).toHaveAttribute("data-cols", "2");
+  const at = await page.locator("#a1 .items").evaluate((b) => {
+    const main = [...b.children].filter((e) => e.classList.contains("item") && !e.classList.contains("rf") && !e.classList.contains("dh"));
+    const last = main[main.length - 1].getBoundingClientRect(),
+      box = b.getBoundingClientRect();
+    return {
+      odd: main.length % 2,
+      off: Math.abs((last.left + last.right) / 2 - (box.left + box.right) / 2),
+      first: main[0].classList.contains("c1") && main[1].classList.contains("c2"),
+    };
+  });
+  expect(at.odd, "Sukhkarta has three stanzas").toBe(1);
+  expect(at.first, "the first two side by side").toBe(true);
+  expect(at.off, "the last one centred").toBeLessThanOrEqual(2);
+});

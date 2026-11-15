@@ -20,6 +20,8 @@ export function gridItems(/** @type {ParentNode} */ r) {
     var cur = null;
     function flush() {
       if (!pair.length) return;
+      // a stanza with none beside it (the last of three): across both columns, centred, not alone on the left
+      if (pair.length === 1) lone = true;
       var h = 0;
       pair.forEach(function (g, i) {
         g.forEach(function (e, k) {
