@@ -7487,6 +7487,10 @@ Sarve Bhadrani Pashyantu | Ma Kashchid Duhkhabhag Bhavet || 11 ||
 
 Shant Ho Shriguru Datta Mama Chitta Shamavi Aata ||
 
+Refrain (sung after every verse)
+
+Mama Chitta, Shant Ho || Dhr. ||
+
 Tun Keval Mata Janita, Sarvatha Tun Hitakarta |
 
 Tun Aapta Svajan Bhrata, Sarvatha Tunchi Trata ||
@@ -7495,7 +7499,7 @@ Bhay Karta Tun Bhay Harta | Dandadharta Tun Paripata ||
 
 Tuj Vachunni Na Duji Varta | Tun Aarta Aashray Data || 1 ||
 
-Mama Chitta, Shant Ho || Dhr. ||
+↻ Refrain
 
 Aparadhastav Gurunatha, Jari Danda Dharisi Yathartha |
 
@@ -7505,7 +7509,7 @@ Tun Tathapi Dandisi Deva | Konacha Mag Karu Dhava ||
 
 Sodavina Dusara Tenvha | Kon Datta Aamhan Trata || 2 ||
 
-Mama Chitta, Shant Ho || Dhr. ||
+↻ Refrain
 
 Tun Natasa Houni Kopi, Danditahi Aamhi Papi |
 
@@ -7515,7 +7519,7 @@ Gachchhatah Skhalanam Kvapi | Ase Manuni Nach Ho Kopi ||
 
 Nij Krupalesha Opi | Aamhavari Tun Bhagavanta || 3 ||
 
-Mama Chitta, Shant Ho || Dhr. ||
+↻ Refrain
 
 Tavapadari Asata Tata, Aadamargi Paul Padata |
 
@@ -7525,7 +7529,7 @@ Nij Biruda Aanuni Chitta | Tun Patit Pavan Datta ||
 
 Vale Aata Aamhavarata | Karunaghan Tun Gurunatha || 4 ||
 
-Mama Chitta, Shant Ho || Dhr. ||
+↻ Refrain
 
 Sahakutumb Sahaparivar, Das Aamhi He Gharadar |
 
@@ -7535,8 +7539,7 @@ Pariharisi Karunasindho | Tun Dinanath Subandho ||
 
 Aamhan Aghalesh Na Badho | Vasudev Prarthit Datta || 5 ||
 
-Mama Chitta, Shant Ho || Dhr. ||
-
+↻ Refrain
 By Shri Vasudevanand Saraswati (Tembe Swami) ↗ (1854–1914)
 
 ### stotra-shriguru-datta-jay

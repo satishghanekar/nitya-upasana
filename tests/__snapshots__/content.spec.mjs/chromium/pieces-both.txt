@@ -14720,6 +14720,12 @@ Shant Ho Shriguru
 
 Shant Ho Shriguru Datta Mama Chitta Shamavi Aata ||
 
+ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
+
+मम चित्ता, शांत हो ॥ धृ ॥
+
+Mama Chitta, Shant Ho || Dhr. ||
+
 तूं केवळ माता जनिता, ​सर्वथा तूं हितकर्ता ।
 
 तूं आप्त स्वजन भ्राता, ​सर्वथा तूंची त्राता ॥
@@ -14727,8 +14733,6 @@ Shant Ho Shriguru Datta Mama Chitta Shamavi Aata ||
 भय कर्ता तूं भय हर्ता । ​दंडधर्ता तूं परिपाता ॥
 
 तुज वाचुंनि न दुजी वार्ता । ​तूं आर्ता आश्रय दाता ॥ १ ॥
-
-मम चित्ता, शांत हो ॥ धृ ॥
 
 Tun Keval Mata Janita, Sarvatha Tun Hitakarta |
 
@@ -14738,7 +14742,7 @@ Bhay Karta Tun Bhay Harta | Dandadharta Tun Paripata ||
 
 Tuj Vachunni Na Duji Varta | Tun Aarta Aashray Data || 1 ||
 
-Mama Chitta, Shant Ho || Dhr. ||
+↻ ध्रुपदRefrain
 
 अपराधास्तव गुरुनाथा, ​जरी दंडा धरिसी यथार्था ।
 
@@ -14748,8 +14752,6 @@ Mama Chitta, Shant Ho || Dhr. ||
 
 सोडविना दुसरा तेंव्हा । ​कोण दत्ता आम्हां त्राता ॥ २ ॥
 
-मम चित्ता, शांत हो ॥ धृ ॥
-
 Aparadhastav Gurunatha, Jari Danda Dharisi Yathartha |
 
 Tari Aamhi Gauni Gatha, Tav Charani Namavu Matha ||
@@ -14758,7 +14760,7 @@ Tun Tathapi Dandisi Deva | Konacha Mag Karu Dhava ||
 
 Sodavina Dusara Tenvha | Kon Datta Aamhan Trata || 2 ||
 
-Mama Chitta, Shant Ho || Dhr. ||
+↻ ध्रुपदRefrain
 
 तूं नटसा होऊनि कोपी, ​दंडिताहि आम्ही पापी ।
 
@@ -14768,8 +14770,6 @@ Mama Chitta, Shant Ho || Dhr. ||
 
 निज कृपालेशा ओपी । ​आम्हावरि तूं भगवंता ॥ ३ ॥
 
-मम चित्ता, शांत हो ॥ धृ ॥
-
 Tun Natasa Houni Kopi, Danditahi Aamhi Papi |
 
 Punarapihi Chukata Tathapi, Aamhanvari Nach Santapi ||
@@ -14778,7 +14778,7 @@ Gachchhatah Skhalanam Kvapi | Ase Manuni Nach Ho Kopi ||
 
 Nij Krupalesha Opi | Aamhavari Tun Bhagavanta || 3 ||
 
-Mama Chitta, Shant Ho || Dhr. ||
+↻ ध्रुपदRefrain
 
 तवपदरी असता ताता, ​आडमार्गी पाऊल पडता ।
 
@@ -14788,8 +14788,6 @@ Mama Chitta, Shant Ho || Dhr. ||
 
 वळे आता आम्हावरता । ​करुणाघन तूं गुरुनाथा ॥ ४ ॥
 
-मम चित्ता, शांत हो ॥ धृ ॥
-
 Tavapadari Asata Tata, Aadamargi Paul Padata |
 
 Sambhaluni Margavarata, Aanita Na Duja Trata ||
@@ -14798,7 +14796,7 @@ Nij Biruda Aanuni Chitta | Tun Patit Pavan Datta ||
 
 Vale Aata Aamhavarata | Karunaghan Tun Gurunatha || 4 ||
 
-Mama Chitta, Shant Ho || Dhr. ||
+↻ ध्रुपदRefrain
 
 सहकुटूंब सहपरिवार, ​दास आम्ही हे घरदार ।
 
@@ -14808,8 +14806,6 @@ Mama Chitta, Shant Ho || Dhr. ||
 
 आम्हां अघलेश न बाधो । ​वासुदेव प्रार्थित दत्ता ॥ ५ ॥
 
-मम चित्ता, शांत हो ॥ धृ ॥
-
 Sahakutumb Sahaparivar, Das Aamhi He Gharadar |
 
 Tav Padin Arpu Asar, Sansarahit Ha Bhar ||
@@ -14818,8 +14814,7 @@ Pariharisi Karunasindho | Tun Dinanath Subandho ||
 
 Aamhan Aghalesh Na Badho | Vasudev Prarthit Datta || 5 ||
 
-Mama Chitta, Shant Ho || Dhr. ||
-
+↻ ध्रुपदRefrain
 रचना : श्री वासुदेवानंद सरस्वती (टेंबे स्वामी) ↗ (१८५४–१९१४)
 
 ### stotra-shriguru-datta-jay

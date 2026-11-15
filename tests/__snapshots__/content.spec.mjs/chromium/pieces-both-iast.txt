@@ -14728,6 +14728,12 @@ sarve bhadrāṇi paśyantu | mā kaścid duḥkhabhāg bhavet || 11 ||
 
 śānta ho śrīguru dattā ​mama cittā śamavī ātā ||
 
+ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)
+
+मम चित्ता, शांत हो ॥ धृ ॥
+
+mama cittā, śānta ho || dhṛ ||
+
 तूं केवळ माता जनिता, ​सर्वथा तूं हितकर्ता ।
 
 तूं आप्त स्वजन भ्राता, ​सर्वथा तूंची त्राता ॥
@@ -14735,8 +14741,6 @@ sarve bhadrāṇi paśyantu | mā kaścid duḥkhabhāg bhavet || 11 ||
 भय कर्ता तूं भय हर्ता । ​दंडधर्ता तूं परिपाता ॥
 
 तुज वाचुंनि न दुजी वार्ता । ​तूं आर्ता आश्रय दाता ॥ १ ॥
-
-मम चित्ता, शांत हो ॥ धृ ॥
 
 tūṃ kevaḷa mātā janitā, ​sarvathā tūṃ hitakartā |
 
@@ -14746,7 +14750,7 @@ bhaya kartā tūṃ bhaya hartā | ​daṇḍadhartā tūṃ paripātā ||
 
 tuja vācunni na dujī vārtā | ​tūṃ ārtā āśraya dātā || 1 ||
 
-mama cittā, śānta ho || dhṛ ||
+↻ ध्रुपदRefrain
 
 अपराधास्तव गुरुनाथा, ​जरी दंडा धरिसी यथार्था ।
 
@@ -14756,8 +14760,6 @@ mama cittā, śānta ho || dhṛ ||
 
 सोडविना दुसरा तेंव्हा । ​कोण दत्ता आम्हां त्राता ॥ २ ॥
 
-मम चित्ता, शांत हो ॥ धृ ॥
-
 aparādhāstava gurunāthā, ​jarī daṇḍā dharisī yathārthā |
 
 tarī āmhī gāūni gāthā, ​tava caraṇī namavū māthā ||
@@ -14766,7 +14768,7 @@ tūṃ tathāpi daṇḍisi devā | ​koṇācā maga karu dhāvā ||
 
 soḍavinā dusarā teṃvhā | ​koṇa dattā āmhāṃ trātā || 2 ||
 
-mama cittā, śānta ho || dhṛ ||
+↻ ध्रुपदRefrain
 
 तूं नटसा होऊनि कोपी, ​दंडिताहि आम्ही पापी ।
 
@@ -14776,8 +14778,6 @@ mama cittā, śānta ho || dhṛ ||
 
 निज कृपालेशा ओपी । ​आम्हावरि तूं भगवंता ॥ ३ ॥
 
-मम चित्ता, शांत हो ॥ धृ ॥
-
 tūṃ naṭasā hoūni kopī, ​daṇḍitāhi āmhī pāpī |
 
 punarapihī cukatā tathāpi, ​āmhāṃvarī naca santāpī ||
@@ -14786,7 +14786,7 @@ gacchataḥ skhalanaṃ kvāpi | ​ase mānuni naca ho kopī ||
 
 nija kṛpāleśā opī | ​āmhāvari tūṃ bhagavantā || 3 ||
 
-mama cittā, śānta ho || dhṛ ||
+↻ ध्रुपदRefrain
 
 तवपदरी असता ताता, ​आडमार्गी पाऊल पडता ।
 
@@ -14796,8 +14796,6 @@ mama cittā, śānta ho || dhṛ ||
 
 वळे आता आम्हावरता । ​करुणाघन तूं गुरुनाथा ॥ ४ ॥
 
-मम चित्ता, शांत हो ॥ धृ ॥
-
 tavapadarī asatā tātā, ​āḍamārgī pāūla paḍatā |
 
 sāmbhāḷuni mārgāvaratā, ​āṇitā na dujā trātā ||
@@ -14806,7 +14804,7 @@ nija birudā āṇuni cittā | ​tūṃ patita pāvana dattā ||
 
 vaḷe ātā āmhāvaratā | ​karuṇāghana tūṃ gurunāthā || 4 ||
 
-mama cittā, śānta ho || dhṛ ||
+↻ ध्रुपदRefrain
 
 सहकुटूंब सहपरिवार, ​दास आम्ही हे घरदार ।
 
@@ -14816,8 +14814,6 @@ mama cittā, śānta ho || dhṛ ||
 
 आम्हां अघलेश न बाधो । ​वासुदेव प्रार्थित दत्ता ॥ ५ ॥
 
-मम चित्ता, शांत हो ॥ धृ ॥
-
 sahakuṭūmba sahaparivāra, ​dāsa āmhī he gharadāra |
 
 tava padīṃ arpū asāra, ​saṃsārāhita hā bhāra ||
@@ -14826,8 +14822,7 @@ pariharisī karuṇāsindho | ​tūṃ dīnānātha subandho ||
 
 āmhāṃ aghaleśa na bādho | ​vāsudeva prārthita dattā || 5 ||
 
-mama cittā, śānta ho || dhṛ ||
-
+↻ ध्रुपदRefrain
 रचना : श्री वासुदेवानंद सरस्वती (टेंबे स्वामी) ↗ (१८५४–१९१४)
 
 ### stotra-shriguru-datta-jay
