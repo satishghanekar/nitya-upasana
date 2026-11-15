@@ -639,7 +639,22 @@ test("Settings on a desktop or an iPad: every group at once, in two columns, no 
   const x = async (sel) => (await page.locator(sel).boundingBox()).x;
   expect(await x(".sp-c1")).toBeLessThan(await x(".sp-c2"));
   for (const id of ["#sprev", "#sl1", "#srf"]) expect(await page.locator(".sp-c1 " + id).count(), id).toBe(1);
-  for (const id of ["#st", "#su", "#bks", "#upd"]) expect(await page.locator(".sp-c2 " + id).count(), id).toBe(1);
+  for (const id of ["#st", "#su", "#bks"]) expect(await page.locator(".sp-c2 " + id).count(), id).toBe(1);
+  // About under the two columns, across both, so they end nearly level (Satish, 2026-11-15: with About in the right
+  // column it ran a screen further than the left)
+  const [c1, c2, about] = await Promise.all([".sp-c1", ".sp-c2", ".sp-abt"].map((sel) => page.locator(sel).boundingBox()));
+  expect(await page.locator(".sp-abt #upd").count()).toBe(1);
+  expect(about.y).toBeGreaterThanOrEqual(Math.max(c1.y + c1.height, c2.y + c2.height) - 1);
+  expect(Math.abs(about.x - c1.x)).toBeLessThan(2);
+  expect(Math.abs(about.x + about.width - (c2.x + c2.width))).toBeLessThan(2);
+  expect(Math.abs(c1.height - c2.height), "the two columns end nearly level").toBeLessThan(260);
+  // the preview's lines in the middle of their window, not at its top with the room left over under them
+  const gaps = await page.locator("#sprev .sp-pw").evaluate((w) => {
+    const r = w.getBoundingClientRect(),
+      ps = [...w.querySelectorAll("p")].map((p) => p.getBoundingClientRect());
+    return [Math.min(...ps.map((b) => b.top)) - r.top, r.bottom - Math.max(...ps.map((b) => b.bottom))];
+  });
+  expect(Math.abs(gaps[0] - gaps[1])).toBeLessThan(30);
   await page.setViewportSize({ width: 820, height: 1180 });
   await expect(page.locator("#spv")).toBeHidden();
   for (const id of ["#sl1", "#st", "#bks"]) await expect(page.locator(id)).toBeVisible();
@@ -648,6 +663,32 @@ test("Settings on a desktop or an iPad: every group at once, in two columns, no 
   await expect(page.locator("#st")).toBeHidden();
   // (the title for screen readers only: a 1px box)
   expect((await page.locator("#spt").boundingBox()).width).toBeLessThanOrEqual(1);
+});
+
+// While a page is open over a text (Settings, the Library, the calendar), the text behind the top pill is covered
+// whole: it showed around the pill, above it on a phone held sideways and under the clock upright (Satish, 2026-11-15)
+test("with Settings open, nothing of the text shows around the top bar @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { hash: "#aarti-sukhkarta" });
+  const band = () =>
+    page.evaluate(() => {
+      const s = getComputedStyle(document.body, "::before");
+      return {
+        shown: s.display !== "none",
+        fade: s.backgroundImage !== "none",
+        colour: s.backgroundColor,
+        bottom: parseFloat(s.height),
+        bg: getComputedStyle(document.body).backgroundColor,
+      };
+    });
+  // while reading: a fade, so no half-covered line shows beside the pill
+  expect(await band()).toMatchObject({ shown: true, fade: true });
+  await page.locator("#aa").click();
+  const open = await band();
+  expect(open).toMatchObject({ shown: true, colour: open.bg });
+  // down to where the page starts, under the pill
+  expect(open.bottom).toBeGreaterThanOrEqual((await page.locator("#panel").boundingBox()).y);
+  await page.locator("#xc").click();
+  expect(await band()).toMatchObject({ shown: true, fade: true });
 });
 
 // A phone held sideways is as wide as an iPad but too short for its layout: the tabs, and on Reading the preview on
@@ -669,6 +710,22 @@ test("Settings on a phone held sideways: the tabs, the preview beside the readin
   await page.locator('#spv [data-v="screen"]').click();
   await expect(page.locator("#st")).toBeVisible();
   await expect(page.locator("#sl1")).toBeHidden();
+  // across the whole screen a row's label and its choices share a line, the choices no wider than they need
+  // (Satish, 2026-11-15: Theme's four ran edge to edge under the label)
+  const [label, seg, row] = await Promise.all(
+    ["span.sp-l", "#st", ""].map((sel) =>
+      page
+        .locator(".sp-row:has(#st) " + sel)
+        .first()
+        .boundingBox(),
+    ),
+  );
+  expect(seg.y).toBeLessThan(label.y + label.height);
+  expect(seg.x).toBeGreaterThan(label.x + label.width - 1);
+  expect(seg.width).toBeLessThan(row.width * 0.65);
+  // More: Profiles and backup, then About, as before
+  await page.locator('#spv [data-v="more"]').click();
+  expect((await box("#bks")).y).toBeLessThan((await box("#hlp2")).y);
   // turned upright, and an iPad held sideways, as before
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator("#spv")).toBeVisible();

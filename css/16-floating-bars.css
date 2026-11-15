@@ -133,8 +133,18 @@
     z-index: 6;
     background: linear-gradient(transparent, var(--bg) 70%);
   }
-  /* not while a page is open over the text, nor while the bars are tucked away (never on Home, where they stay) */
-  [data-menu] body::before,
+  /* while a page is open over the text (Settings, the Library, the calendar: each starts under the top pill), the text
+     behind the pill is covered whole: it showed around the pill, above it on a phone held sideways and under the clock
+     held upright (Satish, 2026-11-15). On wide screens the page is beside Home's column, and so is this */
+  [data-menu] body::before {
+    background: var(--bg);
+  }
+  @media (min-width: 1024px) and (orientation: landscape) {
+    [data-rail="1"][data-menu] body::before {
+      left: calc(var(--L) + var(--S));
+    }
+  }
+  /* no fade at the foot while a page is open, nor either while the bars are tucked away (never on Home, where they stay) */
   [data-menu] body::after,
   [data-tuck="1"]:not([data-home="1"]) body::before,
   [data-tuck="1"]:not([data-home="1"]) body::after,

@@ -297,6 +297,14 @@ html[data-sp] {
   flex-direction: column;
   align-items: center;
 }
+/* the lines together in the middle of the window while they are shorter than it (the room under them looked left
+   over, Satish, 2026-11-15); taller, these margins come to nothing and the lines start at the top as before */
+.sp-pw > :first-child {
+  margin-top: auto;
+}
+.sp-pw > :last-child {
+  margin-bottom: auto;
+}
 /* the preview's lines follow the pieces: the same text size (--fs) and share of it, line spacing and font */
 .sp-p1 {
   font: 400 var(--fs) / 1.7 var(--body);
@@ -587,6 +595,11 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   }
   #sp-home .sp-pvg {
     position: static;
+  }
+  /* About under the two columns, across both: with it in the right column that one ran a screen further than the
+     left, which ended at the dhrupad (Satish, 2026-11-15) */
+  #sp-home .sp-abt {
+    grid-column: 1 / -1;
   }
 }
 
@@ -919,6 +932,26 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   .sp-pvg ~ .sp-grp {
     grid-column: 2;
   }
+  /* Screen and More lie across the whole screen: a row's choices ran from edge to edge under its label (Theme's four
+     over 800px, Satish, 2026-11-15). The label on the left and the choices beside it, as Menus and buttons is; what
+     else the row holds (Chanting pace's note) still goes under them */
+  .sp-c2 .sp-stk .sp-l {
+    flex: 1 1 36%;
+  }
+  .sp-c2 .sp-stk .sp-seg {
+    flex: 0 1 58%;
+  }
+}
+
+/* ==== Under Back and the tabs, which stay while the page scrolls: the cards dissolve as they go under, where a
+   card's top was cut straight across (Satish, 2026-11-15) ==== */
+.sp-hd::after {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto;
+  height: 12px;
+  background: linear-gradient(var(--bg), transparent);
+  pointer-events: none;
 }
 
 /* ==== About's Listen line (#lswr): where Listen runs its model here (js/features/listen.js showWay). A chip icon in a

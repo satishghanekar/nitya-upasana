@@ -123,8 +123,10 @@ test("the scripts, styles and page stay within their size budget", () => {
   // the tucked bars' pill, Go to's card from the top and its title in the middle of a tablet's bar, 80.5 KB then; 82 KB
   // since 2026-11-15: how long texts take, on Home, in the Library, the builder's weekday bars, the time left in the
   // title and Settings → Chanting pace, 81.7 KB with them on a Mac; 82.5 KB since 2026-11-15: the switch between a
-  // text's versions under its heading, 82.15 KB with it on a Mac)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(82_500);
+  // text's versions under its heading, 82.15 KB with it on a Mac; 83 KB since 2026-11-15: Settings: the text behind
+  // the top pill covered while a page is open, About under both columns, the preview centred, a sideways phone's rows on
+  // one line and the fade under Back, 82.77 KB with them on a Mac)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(83_000);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
   // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then; 33 KB since
