@@ -1,12 +1,13 @@
 id: vedic-chant-shivopasana-mantra
 title: शिवोपासनमन्त्राः
 title-en: Shivopasana Mantras
-category: vedic-chant
 language: sa
 layout: prose
 credit: [कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक (महानारायणोपनिषत्)](https://mr.wikipedia.org/wiki/यजुर्वेद)
 credit-en: [Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)](https://en.wikipedia.org/wiki/Taittiriya_Aranyaka)
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=2534)
+lines: 36
+letters: 1143
 ---
 [para 1]
 ॐ निध॑नपतये॒ नमः । निध॑नपतान्तिकाय॒ नमः ।

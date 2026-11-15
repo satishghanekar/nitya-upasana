@@ -1,8 +1,9 @@
 id: ashtak-monday
 title: सोमवार – नसे भक्ति ना
 title-en: Monday – Nase Bhakti Na
-category: ashtak
 language: mr
+lines: 25
+letters: 576
 ---
 [1]
 नसे भक्ति ना ज्ञान ना ध्यान कांहीं ।

@@ -1,9 +1,10 @@
 id: ashtak-ananyata-maj-ghado
 title: अनन्यता मज घडो स्वानंदरूपीं
 title-en: Ananyata Maj Ghado Svanandarupin
-category: ashtak
 language: mr
 stanza-numbers: as-written
+lines: 104
+letters: 2329
 ---
 [1]
 अनन्यता मज घडो स्वानंदरूपीं ।

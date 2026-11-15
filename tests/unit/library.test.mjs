@@ -1,10 +1,11 @@
-// The library's categories (slice 3, js/core/library.js): the bundled ones from content/categories.json with the
+// The library's categories (slice 3, js/core/library.js): the bundled ones from content/library.json with the
 // family's additions, renames and moves on top; built-in categories can be renamed here but never deleted.
 import { describe, expect, test } from "vitest";
-import { readFileSync } from "node:fs";
+import { CATEGORIES, CONTENT, IDS, TEXTS as FACTS } from "../content-files.mjs";
 import {
   addCategory,
   aToZ,
+  bundledOf,
   categoriesOf,
   categoryOf,
   cleanLocal,
@@ -22,12 +23,10 @@ import {
   shelves,
 } from "../../js/core/library.js";
 
-const read = (p) => readFileSync(new URL("../../" + p, import.meta.url), "utf8");
-const BUNDLED = JSON.parse(read("content/categories.json"));
-const lib = JSON.parse(read("content/library.json"));
-// the texts in library.json's order, with their own category
-const ORDER = lib.texts.map((t) => t.id);
-const TEXTS = ORDER.map((id) => ({ id, category: lib.texts.find((t) => t.id === id).category }));
+const BUNDLED = CATEGORIES;
+// the texts in library.json's order, with the category it lists each in
+const ORDER = IDS;
+const TEXTS = FACTS.map((t) => ({ id: t.id, category: t.category }));
 const ids = (cats) => cats.map((c) => c.id);
 const shelf = (local, id) => shelves(TEXTS, categoriesOf(BUNDLED, local), local).find((s) => s.category.id === id).texts;
 
@@ -46,10 +45,14 @@ describe("the bundled library (decisions Q2)", () => {
     );
     expect(shelf(emptyLocal(), "vedic-chant")[0]).toBe("vedic-chant-atharvashirsha");
     expect(shelf(emptyLocal(), "aarti")).toContain("aarti-ghalin-lotangan");
-    expect(Object.values(counts(sh)).reduce((a, b) => a + b, 0)).toBe(lib.texts.length);
+    expect(Object.values(counts(sh)).reduce((a, b) => a + b, 0)).toBe(IDS.length);
   });
   test("every text in library.json names a bundled category", () => {
-    for (const t of lib.texts) expect(ids(cats)).toContain(t.category);
+    for (const t of FACTS) expect(ids(cats)).toContain(t.category);
+  });
+  test("the bundled categories are the library's, numbered in its order (bundledOf)", () => {
+    expect(bundledOf(CONTENT)).toEqual(CATEGORIES);
+    expect(bundledOf(CONTENT).map((c) => c.order)).toEqual(CATEGORIES.map((c, i) => i + 1));
   });
 });
 
@@ -214,7 +217,7 @@ describe("aToZ", () => {
       ),
       emptyLocal(),
     )) {
-      const t = (id) => lib.texts.find((x) => x.id === id).title;
+      const t = (id) => CONTENT.texts[id].title;
       expect([...aToZ(s.texts, t, "mr")].sort()).toEqual([...s.texts].sort());
     }
   });

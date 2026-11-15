@@ -1,7 +1,6 @@
 id: aarti-yei-o-vitthale
 title: विठ्ठलाची आरती
 title-en: Vitthal Aarti
-category: aarti
 language: mr
 legacy-id: a7
 line-ids: s7l
@@ -12,6 +11,8 @@ credit: रचना : विष्णुदास नामा
 credit-en: By Vishnudas Nama
 credit-note: ([संत नामदेवांची](https://mr.wikipedia.org/wiki/नामदेव), अशीही मान्यता)
 credit-note-en: (also credited to [Sant Namdev](https://en.wikipedia.org/wiki/Namdev))
+lines: 16
+letters: 592
 ---
 [dhrupad]
 येई ओ विठ्ठले माझी माऊली ये ।¦ // येई ओ विठ्ठले माझी माऊली ये ॥ धृ. ॥

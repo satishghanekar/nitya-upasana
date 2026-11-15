@@ -1,9 +1,10 @@
 id: ashtak-lingashtakam
 title: लिङ्गाष्टकम्
 title-en: Lingashtakam
-category: ashtak
 language: sa
 stanza-numbers: as-written
+lines: 18
+letters: 801
 ---
 [1]
 ब्रह्ममुरारिसुरार्चितलिङ्गं निर्मलभासितशोभितलिङ्गम् ।

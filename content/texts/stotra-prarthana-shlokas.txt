@@ -1,8 +1,9 @@
 id: stotra-prarthana-shlokas
 title: प्रार्थना श्लोकाः
 title-en: Prarthana Shlokas
-category: stotra
 language: sa
+lines: 16
+letters: 574
 ---
 [note: प्रदक्षिणमन्त्रः | Pradakshina Mantra]
 

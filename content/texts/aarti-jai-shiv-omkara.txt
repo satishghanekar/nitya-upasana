@@ -1,11 +1,12 @@
 id: aarti-jai-shiv-omkara
 title: आरती जय शिव ओंकारा
 title-en: Aarti Jai Shiv Omkara
-category: aarti
 language: hi
 refrain: every-verse
 credit: रचना : स्वामी शिवानंद
 credit-en: By Swami Shivananda
+lines: 16
+letters: 765
 ---
 [dhrupad]
 जय शिव ओंकारा, ¦हर शिव ओंकारा ।

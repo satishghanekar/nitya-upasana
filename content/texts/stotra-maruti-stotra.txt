@@ -1,10 +1,11 @@
 id: stotra-maruti-stotra
 title: मारुती स्तोत्र
 title-en: Maruti Stotra
-category: stotra
 language: mr
 credit: रचना : [समर्थ रामदास](https://mr.wikipedia.org/wiki/समर्थ_रामदास) (१६०८–१६८२)
 credit-en: By [Samarth Ramdas](https://en.wikipedia.org/wiki/Samarth_Ramdas) (1608–1682)
+lines: 35
+letters: 1166
 ---
 [1]
 भीमरूपी महारुद्रा, ¦वज्र हनुमान मारुती ।

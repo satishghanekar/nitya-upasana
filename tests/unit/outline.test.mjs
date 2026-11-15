@@ -1,14 +1,10 @@
 // Go to's outline (js/text/outline.js): every text's places, kept as a snapshot so a change in a text's structure shows
 // in review; and where a position is, the verse a reader types, a session's places.
 import { describe, expect, test } from "vitest";
-import { readFileSync } from "node:fs";
-import { buildContent } from "../../js/text/content.js";
+import { CONTENT as C } from "../content-files.mjs";
 import { parseText } from "../../js/text/format.js";
 import { arabic, outline, placeAt, sessionOutline, verseAt, verseByNumber } from "../../js/text/outline.js";
 
-const read = (p) => readFileSync(new URL("../../" + p, import.meta.url), "utf8");
-const lib = JSON.parse(read("content/library.json"));
-const C = buildContent(lib, Object.fromEntries(lib.texts.map((t) => [t.id, read("content/" + t.file)])), JSON.parse(read("content/categories.json")));
 const pieces = C.categories.flatMap((c) => c.pieces);
 const piece = (id) => pieces.find((p) => p.text === id);
 const of = (id) => outline(piece(id), C.outline);
@@ -37,7 +33,7 @@ test("every text's outline, or none for a short text", async () => {
   await expect(all + "\n").toMatchFileSnapshot("__snapshots__/outlines.txt");
 });
 
-test("the thresholds come from content/library.json", () => {
+test("the thresholds come from content/site.json", () => {
   expect(C.outline).toEqual({ minLines: 60, group: 25 });
   // a short aarti has none; with a lower threshold it would
   expect(outline(piece("aarti-sukhkarta"), C.outline)).toBeNull();
@@ -131,7 +127,7 @@ test("a session's places: its texts, each with its own places under it", () => {
 });
 
 test("part-name is checked like every header field", () => {
-  const head = "id: x\ntitle: क\ntitle-en: K\ncategory: aarti\nlanguage: mr\n";
+  const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: mr\n";
   expect(parseText(head + "part-name: अनुवाकः | Anuvaka\n---\n[1]\nक\nK\n").partName).toBe("अनुवाकः | Anuvaka");
   expect(() => parseText(head + "part-name: अनुवाकः\n---\n[1]\nक\nK\n")).toThrow(/part-name/);
   expect(piece("vedic-chant-shree-rudra").partName).toEqual({ mr: "अनुवाकः", en: "Anuvaka" });

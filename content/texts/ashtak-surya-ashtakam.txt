@@ -1,9 +1,10 @@
 id: ashtak-surya-ashtakam
 title: श्री सूर्याष्टकम्
 title-en: Shri Surya Ashtakam
-category: ashtak
 language: sa
 stanza-numbers: as-written
+lines: 24
+letters: 809
 ---
 [once]
 ॥ श्री गणेशाय नमः ॥

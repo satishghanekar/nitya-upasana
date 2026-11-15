@@ -1,9 +1,10 @@
 id: stotra-shiva-ashtottara-shatanamavali
 title: श्री शिवाष्टोत्तरशतनामावलिः
 title-en: Shri Shiva Ashtottara Shatanamavali
-category: stotra
 language: sa
 layout: lines
+lines: 108
+letters: 1417
 ---
 [para 1]
 ॐ शिवाय नमः ।

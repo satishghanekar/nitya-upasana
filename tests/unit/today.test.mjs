@@ -6,10 +6,10 @@ import { describe, expect, test } from "vitest";
 import { pictureAt, pictureFor, sessionAt } from "../../js/core/time-of-day.js";
 import { dateKey, SESSIONS, stepInSession, textsFor, weekOf } from "../../js/core/routine.js";
 import { PROFILE, TICKS_KEY } from "../../js/core/ticks.js";
+import { IDS } from "../content-files.mjs";
 
 const ALL = JSON.parse(readFileSync(new URL("../../content/routines.json", import.meta.url), "utf8"));
 const ROUTINE = ALL.extended;
-const LIBRARY = JSON.parse(readFileSync(new URL("../../content/library.json", import.meta.url), "utf8"));
 // 18 October 2026 is a Sunday
 const at = (day, h = 9, m = 0) => new Date(2026, 9, day, h, m);
 
@@ -217,7 +217,7 @@ describe("the ready-made routines (content/routines.json)", () => {
     for (let d = 0; d < 7; d++) expect(textsFor(ROUTINE, d, s), s + " " + DAYS[d]).toEqual(EXPECT[s][DAYS[d]]);
   });
   test("every text the routines name is in content/library.json", () => {
-    const ids = new Set(LIBRARY.texts.map((t) => t.id));
+    const ids = new Set(IDS);
     for (const r of Object.values(ALL))
       for (const s of SESSIONS) for (let d = 0; d < 7; d++) for (const id of textsFor(r, d, s)) expect(ids.has(id), id).toBe(true);
   });

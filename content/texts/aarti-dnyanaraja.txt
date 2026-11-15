@@ -1,13 +1,14 @@
 id: aarti-dnyanaraja
 title: ज्ञानेश्वरांची आरती
 title-en: Dnyaneshwar Aarti
-category: aarti
 language: mr
 legacy-id: a6
 line-ids: s6l
 refrain: every-verse
 credit: रचना : रामा जनार्दन
 credit-en: By Rama Janardan
+lines: 9
+letters: 366
 ---
 [dhrupad]
 आरती ज्ञानराजा ॥ धृ. ॥

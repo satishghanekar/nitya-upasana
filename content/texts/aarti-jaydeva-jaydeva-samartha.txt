@@ -1,10 +1,11 @@
 id: aarti-jaydeva-jaydeva-samartha
 title: जयदेवा जयदेवा जय जय समर्था
 title-en: Jayadeva Jayadeva Jay Jay Samartha
-category: aarti
 language: mr
 refrain: every-verse
 refrain-before-first: yes
+lines: 14
+letters: 542
 ---
 [dhrupad]
 जयदेवा जयदेवा जय जय समर्था ॥

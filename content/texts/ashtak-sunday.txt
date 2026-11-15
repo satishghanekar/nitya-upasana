@@ -1,8 +1,9 @@
 id: ashtak-sunday
 title: रविवार – असंख्यात ते भक्त
 title-en: Sunday – Asankhyat Te Bhakta
-category: ashtak
 language: mr
+lines: 33
+letters: 827
 ---
 [1]
 असंख्यात ते भक्त होऊनि गेले ।

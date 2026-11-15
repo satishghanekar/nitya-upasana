@@ -1,9 +1,10 @@
 id: ashtak-anudin-anutapen
 title: अनुदिन अनुतापें तापलों
 title-en: Anudin Anutapen Tapalon
-category: ashtak
 language: mr
 stanza-numbers: as-written
+lines: 61
+letters: 1589
 ---
 [1]
 अनुदिन अनुतापें तापलों रामराया ।

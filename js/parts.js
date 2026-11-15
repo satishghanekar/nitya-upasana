@@ -118,12 +118,12 @@ var SITE_PARTS = (function () {
   ].map(function (f) {
     return "js/" + f + ".js";
   });
-  // The texts: the list of texts and categories, then one file per text, as listed in content/library.json
-  // (js/text/load.js reads them; tests/site-files.spec.mjs checks this list against library.json). The list of PDFs
+  // The texts: the library (its categories and their texts) and the site's settings, then one file per text, as listed
+  // in content/library.json (js/text/load.js reads them; tests/site-files.spec.mjs checks this list against it). The list of PDFs
   // (pdfs.json) is kept too, not the PDFs themselves: sw.js keeps each one once it has been opened on the phone.
   var content = [
     "library.json",
-    "categories.json",
+    "site.json",
     "routines.json",
     "festivals.json",
     "holidays.json",

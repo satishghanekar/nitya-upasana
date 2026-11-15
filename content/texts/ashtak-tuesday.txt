@@ -1,8 +1,9 @@
 id: ashtak-tuesday
 title: मंगळवार – उदासीन हे वृत्ति
 title-en: Tuesday – Udasin He Vrutti
-category: ashtak
 language: mr
+lines: 37
+letters: 877
 ---
 [1]
 उदासीन हे वृत्ति जीवीं धरावी ।

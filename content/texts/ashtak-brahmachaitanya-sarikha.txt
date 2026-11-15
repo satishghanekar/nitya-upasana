@@ -1,9 +1,10 @@
 id: ashtak-brahmachaitanya-sarikha
 title: श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला
 title-en: Shribrahmachaitanyasarikha Nahin Pahila
-category: ashtak
 language: mr
 refrain: every-verse
+lines: 20
+letters: 1264
 ---
 [dhrupad]
 श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला ।

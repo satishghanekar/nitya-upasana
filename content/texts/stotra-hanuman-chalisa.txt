@@ -1,10 +1,11 @@
 id: stotra-hanuman-chalisa
 title: श्री हनुमान चालीसा
 title-en: Shri Hanuman Chalisa
-category: stotra
 language: hi
 credit: रचना : [गोस्वामी तुलसीदास](https://hi.wikipedia.org/wiki/हनुमान_चालीसा) (१५३२–१६२३)
 credit-en: By [Goswami Tulsidas](https://en.wikipedia.org/wiki/Hanuman_Chalisa) (1532–1623)
+lines: 86
+letters: 1703
 ---
 [once]
 श्रीगुरु चरन सरोज रज, ¦निज मनु मुकुरु सुधारि ।

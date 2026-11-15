@@ -5,8 +5,8 @@
 //
 // A file is a header, a line "---", then blocks separated by blank lines:
 //
-//   id: aarti-sukhkarta                 header: "name: value", one per line
-//   title: सुखकर्ता दुःखहर्ता
+//   id: aarti-sukhkarta                 header: "name: value", one per line: everything about the text (where it
+//   title: सुखकर्ता दुःखहर्ता              stands in the Library is content/library.json's)
 //   …
 //   ---
 //   [dhrupad]                           a block starts with its name in brackets
@@ -24,7 +24,7 @@
  * @typedef {{ kind: "dhrupad" | "dhrupad-repeated" | "stanza" | "note" | "once", n?: number, para?: boolean, bold?: boolean,
  *   note?: Pair, lines: TextLine[] }} Block
  * @typedef {{
- *   id: string, title: string, titleEn: string, category: string, language: string,
+ *   id: string, title: string, titleEn: string, language: string, lines?: number, letters?: number,
  *   legacyId?: string, lineIds?: string, lineIdExceptions?: Record<string, string>,
  *   refrain: "every-verse" | "always" | "none", refrainFirst?: boolean, layout?: "prose" | "lines", stanzaNumbers?: "as-written", partName?: string,
  *   credit?: string, creditEn?: string, creditNote?: string, creditNoteEn?: string, source?: string, recording?: string,
@@ -38,7 +38,6 @@ const FIELDS = [
   ["id", "id", true],
   ["title", "title", true],
   ["title-en", "titleEn", true],
-  ["category", "category", true],
   ["language", "language", true],
   ["legacy-id", "legacyId", false],
   ["line-ids", "lineIds", false],
@@ -54,6 +53,10 @@ const FIELDS = [
   ["credit-note-en", "creditNoteEn", false],
   ["source", "source", false],
   ["recording", "recording", false],
+  // written by npm run texts (tests/tools/texts.mjs), never by hand: the line pairs in the file, and the letters said
+  // as it is chanted (js/core/timing.js chantedLetters), which a text's time is counted from; the unit tests check both
+  ["lines", "lines", false],
+  ["letters", "letters", false],
 ];
 // A recording of the text to hear (Satish, 2026-11-11): YouTube only, a watch link with, when the text starts later
 // in the video, its second (t=…), checked against the recording; two or more separated by ", "
@@ -128,7 +131,10 @@ export function parseText(raw, name) {
       })
     )
       fail(at, 'recording is "[who](https://www.youtube.com/watch?v=…)", with "&t=" and the second it starts at if not at once');
-    if (key === "refrain-before-first") {
+    if (key === "lines" || key === "letters") {
+      if (!/^[1-9][0-9]*$/.test(val)) fail(at, key + " is a whole number (npm run texts writes it)");
+      t[prop] = Number(val);
+    } else if (key === "refrain-before-first") {
       if (val !== "yes") fail(at, 'refrain-before-first can only be "yes"');
       t[prop] = true;
     } else if (key === "line-id-exceptions") {

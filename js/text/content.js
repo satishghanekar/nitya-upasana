@@ -1,14 +1,15 @@
 // @ts-check
-// Builds CONTENT, the data js/render.js turns into the reading page, from content/library.json and the text
+// Builds CONTENT, the data js/render.js turns into the reading page, from content/library.json, content/site.json and the text
 // files in content/texts/ (read by js/text/format.js). Pure: the files come in as strings, so the unit test
 // (tests/unit/content.test.mjs) can prove the result is exactly what the site showed before the texts became files.
 //
 // What the files leave to the app:
-// - the reading order and the piece numbers (१. 1.): the texts by category, in the order of content/categories.json,
-//   each category numbered from 1 as the Library lists them, the texts in their order in library.json;
-// - the language tag (मराठी Marathi) from library.json's "languages";
+// - the reading order and the piece numbers (१. 1.): content/library.json's categories in order, each with its texts in
+//   order, numbered from 1 in each category as the Library lists them;
+// - each text's facts (CONTENT.texts): what it is from its own file's header, its category from the library;
+// - the language tag (मराठी Marathi) from site.json's "languages";
 // - with "refrain: every-verse", the dhrupad label at the top and, after every stanza, the "↻ ध्रुपद" note and
-//   the dhrupad again (library.json's "refrain"); [once] lines and [note]s before the dhrupad go above it (lead);
+//   the dhrupad again (site.json's "refrain"); [once] lines and [note]s before the dhrupad go above it (lead);
 // - line ids: the text's "line-ids" prefix and a count of the lines as shown (repeats included);
 // - the credit links: [name](address) becomes a link that opens in a new tab, with its label and ↗.
 
@@ -17,11 +18,14 @@ import { parseText, RECORDING, toHtml } from "./format.js";
 /**
  * @typedef {import("./format.js").Text} Text
  * @typedef {import("./format.js").Pair} Pair
- * @typedef {{ id: string, file: string, title: string, titleEn: string, category: string, language: string, lines: number }} LibraryText
- * @typedef {{ id: string, name: Pair, order: number }} Category   one entry of content/categories.json
- * @typedef {{ texts: LibraryText[], pageLanguage: string, languages: Record<string, Pair>,
- *   refrain: { label: Pair, note: Pair }, ui: { prev: Pair, next: Pair }, wiki: Record<string, Record<string, string>>,
- *   outline?: { minLines: number, group: number }, timing?: any }} Library
+ * @typedef {{ id: string, name: Pair, texts: string[] }} LibraryCategory   a category of content/library.json, its texts
+ *   in reading order
+ * @typedef {{ categories: LibraryCategory[] }} Library   content/library.json
+ * @typedef {{ pageLanguage: string, languages: Record<string, Pair>, refrain: { label: Pair, note: Pair },
+ *   ui: { prev: Pair, next: Pair }, wiki: Record<string, Record<string, string>>, outline?: { minLines: number, group: number },
+ *   timing?: any }} Site   content/site.json
+ * @typedef {{ id: string, title: string, titleEn: string, language: string, category: string, lines: number,
+ *   letters: number }} TextFacts   what a text is (its file's header) and where it stands (the library's category)
  * @typedef {{ l: string, rf?: true, mr: string, en: string }} Line
  * @typedef {{ kind?: string, bold?: true, para?: true, lines?: Line[], rmk?: Pair, nt?: true }} Item
  *   rmk: a small line between blocks: the dhrupad's marker (↻ ध्रुपद), or, with nt, a [note] from the text file (Phalashruti,
@@ -29,7 +33,8 @@ import { parseText, RECORDING, toHtml } from "./format.js";
  * @typedef {{ id: string, text: string, lang?: string, cls?: string, prose?: true, no: Pair, title: Pair, tag: Pair,
  *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string, partName?: Pair }} Piece
  *   lead: what comes before the dhrupad at the top (refrain), [once] lines and [note]s, shown above it
- * @typedef {{ ui: Library["ui"], wiki: Library["wiki"], outline?: Library["outline"], timing?: any, categories: { id: string, name: Pair,
+ * @typedef {{ ui: Site["ui"], wiki: Site["wiki"], outline?: Site["outline"], timing?: any, languages: Site["languages"],
+ *   texts: Record<string, TextFacts>, categories: { id: string, name: Pair,
  *   pieces: Piece[] }[] }} Content
  */
 
@@ -103,7 +108,7 @@ function credits(mr, en) {
  * One text as a piece of CONTENT.
  * @param {Text} t
  * @param {number} n  its number in its category, from 1
- * @param {Library} lib
+ * @param {Site} lib  content/site.json
  * @returns {Piece}
  */
 export function toPiece(t, n, lib) {
@@ -226,60 +231,43 @@ export function toPiece(t, n, lib) {
 }
 
 /**
- * CONTENT from the library and the text files.
- * @param {Library} lib  content/library.json
+ * CONTENT from the library, the site's settings and the text files.
+ * @param {Library} lib  content/library.json: the categories in reading order, each with its texts' ids in order
+ * @param {Site} site  content/site.json: the words and settings every text shares
  * @param {Record<string, string>} files  each text's file, by text id
- * @param {Category[] | null} [cats]  content/categories.json (without it, the categories in the order the texts name
- *   them, each called by its id)
  * @returns {Content}
  */
-export function buildContent(lib, files, cats) {
-  /** @type {Record<string, Text>} */
-  var texts = {};
-  lib.texts.forEach(function (x) {
-    if (typeof files[x.id] !== "string") throw new Error(x.file + ": not loaded");
-    var t = parseText(files[x.id], x.file);
-    if (t.id !== x.id) throw new Error(x.file + ': its id is "' + t.id + '", library.json says "' + x.id + '"');
-    texts[x.id] = t;
+export function buildContent(lib, site, files) {
+  /** @type {Record<string, TextFacts>} */
+  var facts = {};
+  var categories = lib.categories.map(function (c) {
+    return {
+      id: c.id,
+      name: pair(c.name),
+      pieces: c.texts.map(function (id, i) {
+        var file = "texts/" + id + ".txt";
+        if (facts[id]) throw new Error("library.json: " + id + " is listed twice");
+        if (typeof files[id] !== "string") throw new Error(file + ": not loaded");
+        var t = parseText(files[id], file);
+        if (t.id !== id) throw new Error(file + ': its id is "' + t.id + '", library.json says "' + id + '"');
+        // what a text is, from its own file; where it stands, from the library
+        facts[id] = { id: id, title: t.title, titleEn: t.titleEn, language: t.language, category: c.id, lines: t.lines || 0, letters: t.letters || 0 };
+        return toPiece(t, i + 1, site);
+      }),
+    };
   });
-  var list = (cats || [])
-    .slice()
-    .sort(function (a, b) {
-      return a.order - b.order;
-    })
-    .map(function (c) {
-      return { id: c.id, name: pair(c.name) };
-    });
-  lib.texts.forEach(function (x) {
-    // a category not in categories.json (tests/unit/content.test.mjs checks there is none) goes last, named by its id
-    if (
-      !list.some(function (c) {
-        return c.id === x.category;
-      })
-    )
-      list.push({ id: x.category, name: { mr: x.category, en: x.category } });
-  });
-  // every category, those with no texts yet too (the family can move texts into them, js/features/library.js)
   return {
-    ui: lib.ui,
-    wiki: lib.wiki,
+    ui: site.ui,
+    wiki: site.wiki,
     // when a text has Go to, and how many verses make a group (js/text/outline.js)
-    outline: lib.outline,
+    outline: site.outline,
     // the chanting paces and the time between texts, for how long a text or a session takes (js/core/timing.js, where
     // the app has one: Nitya Upasana)
-    timing: lib.timing,
-    categories: list.map(function (c) {
-      return {
-        id: c.id,
-        name: c.name,
-        pieces: lib.texts
-          .filter(function (x) {
-            return x.category === c.id;
-          })
-          .map(function (x, i) {
-            return toPiece(texts[x.id], i + 1, lib);
-          }),
-      };
-    }),
+    timing: site.timing,
+    // the language names (मराठी, Marathi), by code
+    languages: site.languages,
+    texts: facts,
+    // every category, those with no texts yet too (the family can move texts into them, js/features/library.js)
+    categories: categories,
   };
 }

@@ -1,8 +1,9 @@
 id: stotra-sadguru-vandana
 title: श्री सदगुरु वंदना
 title-en: Shri Sadguru Vandana
-category: stotra
 language: mr
+lines: 49
+letters: 1664
 ---
 [1]
 गुरुदेव नाना पायी लागुनी, ¦दास विनवी हा तुम्हा ।

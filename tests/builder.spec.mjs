@@ -8,9 +8,9 @@
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { openSite, settle, SETUPS, useTestRoutine, axeEveryTheme, noViolations, settingsTab } from "./helpers.mjs";
+import { TEXTS } from "./content-files.mjs";
 
-const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
-const T = Object.fromEntries(LIB.texts.map((t) => [t.id, t]));
+const T = Object.fromEntries(TEXTS.map((t) => [t.id, t]));
 const MON_EVENING = new Date("2026-10-19T19:00:00-04:00");
 const PHONE = { width: 390, height: 844 };
 
@@ -97,7 +97,7 @@ test("build Monday's morning: different by weekday, add with the picker, reorder
   await expect(page.locator("#tpkt")).toBeFocused();
   await expect(page.locator("#tpkt")).toHaveText("Add texts to Monday morning");
   await expect(pick(page, "vedic-chant-atharvashirsha")).toBeChecked();
-  await expect(page.locator("#tpk li")).toHaveCount(LIB.texts.length);
+  await expect(page.locator("#tpk li")).toHaveCount(TEXTS.length);
   // search narrows the list
   await page.locator("#tpk .tpkq").fill("ghalin");
   await expect(page.locator("#tpk li:visible")).toHaveCount(1);

@@ -1,8 +1,9 @@
 id: ashtak-saturday
 title: शनिवार – तुझिया वियोगें जीवित्व
 title-en: Saturday – Tujhiya Viyogen Jivitva
-category: ashtak
 language: mr
+lines: 21
+letters: 449
 ---
 [1]
 तुझिया वियोगें जीवित्व आलें ।

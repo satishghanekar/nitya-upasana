@@ -1,10 +1,11 @@
 id: aarti-ovaloon-aarti-chaitanyabrahma
 title: ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा
 title-en: Ovalun Aarti Sadguru Chaitanyabrahma
-category: aarti
 language: mr
 refrain: every-verse
 refrain-before-first: yes
+lines: 12
+letters: 660
 ---
 [dhrupad]
 ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा ।

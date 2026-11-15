@@ -3,10 +3,9 @@
 // the end of a text: the bottom bar already does what it did. These tests run on the fixed routine (TEST_ROUTINE in
 // helpers.mjs: Evening = the ten aartis).
 import { test, expect } from "@playwright/test";
-import { readFileSync } from "node:fs";
 import { openSite, readText, SETUPS, useTestRoutine } from "./helpers.mjs";
+import { TEXTS } from "./content-files.mjs";
 
-const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 const EVENING = new Date("2026-10-18T19:00:00-04:00"); // Sunday
 const rows = (page) => page.locator("#tsl li");
 // the page's pieces that are on screen
@@ -33,7 +32,7 @@ test("from the Library only the text opened is on the page, and Prev / Next in t
 
 test("the first text in the Library has no Prev; the last has no Next", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
-  const order = LIB.texts.map((t) => t.id);
+  const order = TEXTS.map((t) => t.id);
   // (from a3: the page may not scroll at all, and the bar must still follow the text opened)
   await readText(page, "a3");
   await readText(page, "p1");

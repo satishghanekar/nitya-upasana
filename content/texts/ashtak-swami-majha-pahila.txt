@@ -1,9 +1,10 @@
 id: ashtak-swami-majha-pahila
 title: स्वामी माझा पाहिला
 title-en: Svami Majha Pahila
-category: ashtak
 language: mr
 refrain: every-verse
+lines: 23
+letters: 1320
 ---
 [dhrupad]
 माणगंगातीरीं प्रभु हा गोंदावलें पुरीं ।

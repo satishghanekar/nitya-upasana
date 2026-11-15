@@ -4,7 +4,7 @@ import { describe, expect, test } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { formatText, parseText, toHtml, toMarks } from "../../js/text/format.js";
 
-const HEAD = "id: x\ntitle: क\ntitle-en: K\ncategory: aarti\nlanguage: mr\n";
+const HEAD = "id: x\ntitle: क\ntitle-en: K\nlanguage: mr\n";
 const parse = (body, head = "") => parseText(HEAD + head + "---\n" + body);
 
 describe("header", () => {
@@ -17,7 +17,6 @@ describe("header", () => {
       id: "x",
       title: "क",
       titleEn: "K",
-      category: "aarti",
       language: "mr",
       legacyId: "a1",
       lineIds: "s1l",
@@ -28,7 +27,7 @@ describe("header", () => {
     });
   });
   test.each([
-    ["a missing field", "id: x\ntitle: क\ncategory: aarti\nlanguage: mr\n---\n", /"title-en" is missing/],
+    ["a missing field", "id: x\ntitle: क\nlanguage: mr\n---\n", /"title-en" is missing/],
     ["an unknown field", HEAD + "colour: red\n---\n", /unknown header field "colour"/],
     ["a field twice", HEAD + "title: ख\n---\n", /"title" given twice/],
     ["an unknown language", HEAD.replace("language: mr", "language: en") + "---\n", /language must be one of/],
@@ -36,6 +35,11 @@ describe("header", () => {
     ["no end of header", HEAD, /no "---" line/],
     ["a line that is not a field", HEAD + "just words\n---\n", /expected "name: value"/],
     ["an unknown layout", HEAD + "layout: poem\n---\n", /layout can only be "prose" or "lines"/],
+    // where a text stands is the library's (content/library.json), not the file's
+    ["a category", HEAD + "category: aarti\n---\n", /unknown header field "category"/],
+    // lines and letters are written by npm run texts: whole numbers
+    ["lines that are not a number", HEAD + "lines: twelve\n---\n", /lines is a whole number/],
+    ["letters of 0", HEAD + "letters: 0\n---\n", /letters is a whole number/],
     // a recording: YouTube only, a watch link, its start a whole second
     ["a recording that is not YouTube", HEAD + "recording: [X](https://music.apple.com/album/1)\n---\n", /recording is/],
     ["a short youtu.be link", HEAD + "recording: [X](https://youtu.be/OQhyYdoKW1k)\n---\n", /recording is/],
@@ -120,7 +124,7 @@ describe("blocks", () => {
     expect(() => parse(body, head)).toThrow(err);
   });
   test("an error names the file and line", () => {
-    expect(() => parseText(HEAD + "---\n[1]\nक\nख\n", "x.txt")).toThrow("x.txt line 9: expected the everyday English line here");
+    expect(() => parseText(HEAD + "---\n[1]\nक\nख\n", "x.txt")).toThrow("x.txt line 8: expected the everyday English line here");
   });
 });
 

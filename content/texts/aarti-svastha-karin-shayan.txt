@@ -1,10 +1,11 @@
 id: aarti-svastha-karin-shayan
 title: स्वस्थ करीं शयन प्रभो मंचकावरी
 title-en: Svastha Karin Shayan Prabho Manchakavari
-category: aarti
 language: mr
 refrain: every-verse
 refrain-before-first: yes
+lines: 13
+letters: 692
 ---
 [dhrupad]
 स्वस्थ करीं शयन प्रभो मंचकावरी ।

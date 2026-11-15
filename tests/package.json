@@ -15,6 +15,7 @@
     "format": "cd .. && prettier --config tests/prettier.config.mjs --ignore-path tests/.prettierignore --write \"js/**/*.js\" sw.js \"css/*.css\" \"tests/**/*.mjs\"",
     "unit": "vitest run",
     "pdfs": "node tools/pdf-info.mjs",
+    "texts": "node tools/texts.mjs",
     "types": "tsc -p tsconfig.json",
     "sister": "node tools/sister-check.mjs",
     "recordings": "node tools/recordings.mjs"

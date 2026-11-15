@@ -1,5 +1,5 @@
 // @ts-check
-// The library's categories: the bundled ones from content/categories.json
+// The library's categories: the bundled ones from content/library.json
 // (Vedic Chant, Aarti, Stotra, Ashtak), plus what the family changed on this phone: categories they added, new names
 // for any category (a bundled one can be renamed here but never deleted) and texts moved to another category.
 // Pure: no page, no storage. js/store/store.js keeps the family's part (LibraryLocal) in IndexedDB (meta.library,
@@ -10,12 +10,12 @@
 
 /**
  * @typedef {{ mr: string, en: string }} Name
- * @typedef {{ id: string, name: Name, order: number }} BundledCategory   one entry of content/categories.json
+ * @typedef {{ id: string, name: Name, order: number }} BundledCategory   a category of content/library.json, numbered in order
  * @typedef {{ id: string, name: Name, order: number }} AddedCategory      a category the family added
  * @typedef {{ added: AddedCategory[], renames: Record<string, Name>, moves: Record<string, string> }} LibraryLocal
  *   added: the family's categories; renames: category id → its name on this phone; moves: text id → category id
  * @typedef {{ id: string, name: Name, order: number, origin: "bundled" | "family", original: Name | null }} Category
- *   original: a bundled category's name from categories.json when it was renamed here, else null
+ *   original: a bundled category's name from library.json when it was renamed here, else null
  * @typedef {{ id: string, category: string }} TextRef   a text and the category library.json gives it
  * @typedef {{ category: Category, texts: string[] }} Shelf   a category and its texts, in reading order
  * @typedef {"empty" | "taken" | "full" | "missing" | "bundled"} Problem
@@ -28,6 +28,17 @@ export const NAME_MAX = 40;
 /** @returns {LibraryLocal} */
 export function emptyLocal() {
   return { added: [], renames: {}, moves: {} };
+}
+
+/**
+ * The bundled categories, in the library's order (content/library.json, as CONTENT has them)
+ * @param {{ categories: { id: string, name: Name }[] }} content
+ * @returns {BundledCategory[]}
+ */
+export function bundledOf(content) {
+  return content.categories.map(function (c, i) {
+    return { id: c.id, name: { mr: c.name.mr, en: c.name.en }, order: i + 1 };
+  });
 }
 
 /** @param {LibraryLocal} l @returns {LibraryLocal} */
@@ -291,7 +302,7 @@ export function renameCategory(local, bundled, id, name) {
 }
 
 /**
- * A bundled category gets its name from categories.json back
+ * A bundled category gets its name from library.json back
  * @param {LibraryLocal} local
  * @param {string} id
  * @returns {LibraryLocal}

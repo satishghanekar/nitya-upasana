@@ -40,7 +40,7 @@ import {
   weekOf,
 } from "../core/routine.js";
 import { active, base, followed, getLibrary, onChange, routine, setBase, setRoutine } from "../store/store.js";
-import { categoriesOf, categoryOf } from "../core/library.js";
+import { bundledOf, categoriesOf, categoryOf } from "../core/library.js";
 import { setR } from "./overlays.js";
 import { ovSub, ovSubDone } from "./history.js";
 import { shownSession } from "./today-card.js";
@@ -143,21 +143,18 @@ function nameHtml(t) {
 function buildInfo() {
   info = {};
   all = [];
-  var lib = loaded.library,
-    /** @type {any} */ w = window;
-  if (!lib || !w.CONTENT) return;
-  /** @type {Record<string, any>} */
-  var byId = {};
-  lib.texts.forEach(function (x) {
-    byId[x.id] = x;
-  });
+  /** @type {any} */
+  var w = window;
+  if (!w.CONTENT) return;
+  /** @type {Record<string, import("../text/content.js").TextFacts>} */
+  var facts = w.CONTENT.texts;
   // in reading order (js/text/content.js)
   w.CONTENT.categories.forEach(function (/** @type {import("../text/content.js").Content["categories"][0]} */ c) {
     c.pieces.forEach(function (p) {
       var id = p.text,
-        x = byId[id];
+        x = facts[id];
       if (!x || info[id]) return;
-      baseCat[id] = /** @type {any} */ (x).category || "";
+      baseCat[id] = x.category;
       info[id] = { id: id, title: x.title, titleEn: x.titleEn, language: x.language, category: baseCat[id] };
       all.push(info[id]);
     });
@@ -169,9 +166,11 @@ function buildInfo() {
 function catWords() {
   /** @type {Record<string, string>} */
   var o = {};
-  if (!loaded.categories) return o;
+  /** @type {any} */
+  var w = window;
+  if (!w.CONTENT) return o;
   var local = getLibrary(),
-    cats = categoriesOf(loaded.categories, local);
+    cats = categoriesOf(bundledOf(w.CONTENT), local);
   all.forEach(function (t) {
     t.category = categoryOf({ id: t.id, category: baseCat[t.id] || "" }, cats, local);
   });
