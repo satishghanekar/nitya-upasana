@@ -7,12 +7,14 @@
 // security policy allows no other site): js/core/wiki.js picks the page from that file, the reader's language first.
 // Run after adding or changing a link: npm run wiki (from tests/; it needs the internet). tests/unit/wiki.test.mjs
 // fails when a link names a page content/wiki.json lacks.
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { LANGUAGES } from "../../js/core/wiki.js";
 
 const content = new URL("../../content/", import.meta.url);
 const json = (f) => JSON.parse(readFileSync(new URL(f, content), "utf8"));
+/** a file an app may not have (Sankathara Chaturthi has no festivals or holidays): its list, or none */
+const listIn = (f, key) => (existsSync(new URL(f, content)) ? json(f)[key] : []);
 
 /** A Wikidata item */
 export const ITEM = /^Q[1-9][0-9]*$/;
@@ -32,8 +34,8 @@ export function itemsUsed() {
     const head = readFileSync(new URL("texts/" + id + ".txt", content), "utf8").split("\n---\n")[0];
     for (const m of head.matchAll(CREDIT_LINK)) add(m[1], "texts/" + id + ".txt");
   }
-  for (const f of json("festivals.json").festivals) if (f.wiki) add(f.wiki, "festivals.json " + f.id);
-  for (const h of json("holidays.json").holidays) if (h.wiki) add(h.wiki, "holidays.json " + h.id);
+  for (const f of listIn("festivals.json", "festivals")) if (f.wiki) add(f.wiki, "festivals.json " + f.id);
+  for (const h of listIn("holidays.json", "holidays")) if (h.wiki) add(h.wiki, "holidays.json " + h.id);
   return used;
 }
 

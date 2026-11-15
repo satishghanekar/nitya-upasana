@@ -2,7 +2,7 @@
 // title (wiki:Samarth_Ramdas), content/wiki.json (npm run wiki) has its Wikidata item and its page on each Wikipedia, content/site.json "wikipedia" the order each language tries them in.
 // A credit names the person it credits (or the source), the same item on its Marathi line and its English one.
 import { describe, expect, test } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { LANGUAGES, ORDER, pageFor, wikiLabel } from "../../js/core/wiki.js";
 import { menuWords } from "../../js/core/strings.js";
 import { parseText } from "../../js/text/format.js";
@@ -10,7 +10,11 @@ import { FILES, IDS, PIECES, WIKI } from "../content-files.mjs";
 import { ITEM, NAME, itemsUsed } from "../tools/wiki.mjs";
 
 const P = WIKI.pages;
-const read = (p) => JSON.parse(readFileSync(new URL("../../content/" + p, import.meta.url), "utf8"));
+// (a file an app may not have, Sankathara Chaturthi's festivals and holidays: none)
+const read = (p, key) => {
+  const u = new URL("../../content/" + p, import.meta.url);
+  return existsSync(u) ? JSON.parse(readFileSync(u, "utf8"))[key] : [];
+};
 const links = (html) => [...html.matchAll(/<a [^>]*>/g)].map((m) => Object.fromEntries([...m[0].matchAll(/([\w-]+)="([^"]*)"/g)].map((x) => [x[1], x[2]])));
 const credit = (id) => {
   const div = PIECES[id].credit;
@@ -62,8 +66,8 @@ describe("the items the site links to", () => {
     }
   });
   test("festivals and holidays name their English page as in its address, never a whole address", () => {
-    for (const f of read("festivals.json").festivals) if (f.wiki) expect(f.wiki, f.id).toMatch(NAME);
-    for (const h of read("holidays.json").holidays) if (h.wiki) expect(h.wiki, h.id).toMatch(NAME);
+    for (const f of read("festivals.json", "festivals")) if (f.wiki) expect(f.wiki, f.id).toMatch(NAME);
+    for (const h of read("holidays.json", "holidays")) if (h.wiki) expect(h.wiki, h.id).toMatch(NAME);
   });
   // a credit's two lines credit the same people: the Marathi line and the English one name the same pages, in order
   test.each(IDS.map((id) => [id]))("%s: its credit's Marathi and English lines name the same pages", (id) => {
