@@ -5,7 +5,8 @@
 // no sound leaves it.
 // - The model (a CTC model, wav2vec2, trained in the shravan-model repository) and the library that runs it
 //   (vendor/onnxruntime/) are downloaded once, the first time, after the reader agrees: on the GPU where the browser
-//   has WebGPU (models/chant-v4-q4/, 4-bit, and the library's WebGPU build, about 117 MB), else on the CPU
+//   has WebGPU (models/chant-v4-q4/, 4-bit, in ONNX Runtime's own format, and the library's WebGPU build, about 117
+//   MB), else on the CPU
 //   (models/chant-v4/, 8-bit, and its CPU build, about 122 MB; WAYS, way()), and kept in their own cache,
 //   "nitya-listen", which a new version of the site leaves alone (sw.js). Each piece is checked against its SHA-256
 //   before it is kept. (chant-v4, 2026-11-09: trained on four times as much
@@ -494,8 +495,12 @@ async function load() {
   if (!ort) {
     ort = await import(/* @vite-ignore */ abs(ORT + h.lib));
     ort.env.wasm.wasmBinary = binary.buffer;
-    // every core (up to 4): the page is cross-origin isolated (_headers)
-    ort.env.wasm.numThreads = window.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 1) : 1;
+    // on the CPU every core (up to 4): the page is cross-origin isolated (_headers). On the GPU one: the work is the
+    // GPU's, and each thread costs memory. Safari closed the page and opened it again as Follow started, on an iPhone
+    // 16 Pro too (2026-11-15); with one thread and the 4-bit model in ONNX Runtime's own format (models/README.md) the
+    // start took about 100 MB less in the page and 150 MB less in the GPU's process, and half the time (Chromium's
+    // software GPU)
+    ort.env.wasm.numThreads = h.ep === "webgpu" ? 1 : window.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 1) : 1;
     // on the CPU, the model run in a worker of its own, not on the page's thread: there, each hearing held the page for
     // up to half a second, 42 s of every minute listening (Chromium on the M4, 2026-11-09), so scrolling and taps
     // stuck. (On the GPU the work is the GPU's, and the library has no worker for it)
