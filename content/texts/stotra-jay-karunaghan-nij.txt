@@ -3,13 +3,12 @@ title: जय करुणाघन निज
 title-en: Jay Karunaghan Nij
 category: stotra
 language: mr
-refrain: every-verse
 credit: रचना : [श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)](https://mr.wikipedia.org/wiki/वासुदेवानंद_सरस्वती) (१८५४–१९१४)
 credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](https://en.wikipedia.org/wiki/Vasudevanand_Saraswati) (1854–1914)
 ---
-[dhrupad]
-जय करुणाघन निज जन जीवन, ¦अनसुया नंदन पाहि जनार्दन ॥ धृ ॥
-Jay Karunaghan Nij Jan Jivan, Anasuya Nandan Pahi Janardan || Dhr. ||
+[once]
+जय करुणाघन निज जन जीवन, ¦अनसुया नंदन पाहि जनार्दन ॥
+Jay Karunaghan Nij Jan Jivan, Anasuya Nandan Pahi Janardan ||
 
 [1]
 निज अपराधें उफराटी दृष्टी, ¦होउनि पोटी भय धरुं पावन ॥
