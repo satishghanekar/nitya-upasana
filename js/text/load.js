@@ -1,7 +1,7 @@
 // @ts-check
 // Loading the texts: fetches content/library.json (the categories, each with its texts in reading order),
 // content/site.json (the settings every text shares), content/credits.json (who and what the texts come from, each once),
-// content/wiki.json (each page a link names, with its Wikidata item and its title on each Wikipedia: js/core/wiki.js)
+// content/wiki.json (each page a link names, with its title on each Wikipedia: js/core/wiki.js)
 // and every text file the library lists
 // (content/texts/), builds CONTENT from them (js/text/content.js), and puts the rest of the page in Kannada letters when
 // that is the chosen language. js/main.js waits for this before it starts the other parts. The pieces themselves are

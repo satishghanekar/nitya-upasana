@@ -16,7 +16,7 @@ export const SITE = JSON.parse(read("site.json"));
 export const IDS = LIBRARY.categories.flatMap((c) => c.texts);
 /** each text's file, by id */
 export const FILES = Object.fromEntries(IDS.map((id) => [id, read("texts/" + id + ".txt")]));
-/** content/wiki.json: each Wikidata item a link names, and its page on each Wikipedia */
+/** content/wiki.json: each page a link names, and its title on each Wikipedia */
 export const WIKI = JSON.parse(read("wiki.json"));
 /** content/credits.json: who and what the texts come from */
 export const CREDITS = JSON.parse(read("credits.json"));

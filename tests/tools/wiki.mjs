@@ -1,7 +1,7 @@
 // The Wikipedia pages the site links to, in every language it is read in. A link names a page by its English Wikipedia
 // title, as in its address: a person's or a source's in content/credits.json ("wiki": "Samarth_Ramdas"), a festival's
 // or a holiday's ("wiki": "Vijayadashami"); a page with no English one, by its Wikidata item ("Q…").
-// For each, this finds its Wikidata item and its page title on each Wikipedia the site can open (js/core/wiki.js
+// For each, this finds its Wikidata item (only to reach its other pages; not kept) and its page title on each Wikipedia the site can open (js/core/wiki.js
 // LANGUAGES: Marathi, Hindi, English, Kannada, Telugu, Gujarati), and writes them into content/wiki.json, by
 // the name the links use. The site never asks Wikipedia or Wikidata anything itself (it works offline, and its
 // security policy allows no other site): js/core/wiki.js picks the page from that file, the reader's language first.
@@ -86,8 +86,8 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const pages = {};
   for (const n of names) {
     const sl = links[item[n]];
-    pages[n] = { wikidata: item[n], ...Object.fromEntries(langs.filter((l) => sl[l + "wiki"]).map((l) => [l, sl[l + "wiki"].title])) };
-    if (Object.keys(pages[n]).length < 2) throw new Error(n + " has no page on any of " + langs.join(", ") + " Wikipedia");
+    pages[n] = Object.fromEntries(langs.filter((l) => sl[l + "wiki"]).map((l) => [l, sl[l + "wiki"].title]));
+    if (Object.keys(pages[n]).length < 1) throw new Error(n + " has no page on any of " + langs.join(", ") + " Wikipedia");
   }
   writeFileSync(new URL("wiki.json", content), JSON.stringify({ pages }, null, 1) + "\n");
   console.log("content/wiki.json: " + names.length + " pages, in " + langs.join(", ") + " where Wikipedia has them");

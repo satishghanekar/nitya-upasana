@@ -1,12 +1,13 @@
 // Wikipedia links in every language (js/core/wiki.js; Satish, 2026-11-15): a link names a page by its English Wikipedia
-// title (wiki:Samarth_Ramdas), content/wiki.json (npm run wiki) has its Wikidata item and its page on each Wikipedia, content/site.json "wikipedia" the order each language tries them in.
+// title (wiki:Samarth_Ramdas), content/wiki.json (npm run wiki) has its page on each
+// Wikipedia, js/core/wiki.js ORDER the order each language tries them in.
 // A credit names the person it credits (or the source): content/credits.json "wiki".
 import { describe, expect, test } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { LANGUAGES, ORDER, pageFor, wikiLabel } from "../../js/core/wiki.js";
 import { menuWords } from "../../js/core/strings.js";
 import { IDS, PIECES, WIKI } from "../content-files.mjs";
-import { ITEM, NAME, itemsUsed } from "../tools/wiki.mjs";
+import { NAME, itemsUsed } from "../tools/wiki.mjs";
 
 const P = WIKI.pages;
 // (a file an app may not have, Sankathara Chaturthi's festivals and holidays: none)
@@ -21,7 +22,7 @@ const credit = (id) => {
 };
 
 describe("which page a link opens", () => {
-  const pages = { One: { wikidata: "Q1", en: "One", mr: "एक", hi: "एक_हि" }, Two: { wikidata: "Q2", en: "Two" }, Q3: { wikidata: "Q3", gu: "ત્રણ" } };
+  const pages = { One: { en: "One", mr: "एक", hi: "एक_हि" }, Two: { en: "Two" }, Q3: { gu: "ત્રણ" } };
   test("the first Wikipedia in the language's order that has the page", () => {
     expect(pageFor("One", "mr", pages)).toEqual({ lang: "mr", url: "https://mr.wikipedia.org/wiki/" + encodeURIComponent("एक") });
     expect(pageFor("One", "hi", pages).lang).toBe("hi");
@@ -57,11 +58,11 @@ describe("the items the site links to", () => {
   test("every page content/credits.json, a festival or a holiday names is in content/wiki.json (else: npm run wiki)", () => {
     for (const [q, where] of used) expect(P[q], q + " in " + where.join(", ")).toBeTruthy();
   });
-  test("content/wiki.json has nothing nothing names; each its Wikidata item and a page", () => {
+  test("content/wiki.json has nothing nothing names, and only page titles, each on a Wikipedia the site opens", () => {
     expect(Object.keys(P).sort()).toEqual([...used.keys()].sort());
     for (const n of Object.keys(P)) {
-      expect(P[n].wikidata, n).toMatch(ITEM);
-      expect(Object.keys(P[n]).length, n).toBeGreaterThan(1);
+      expect(Object.keys(P[n]).length, n).toBeGreaterThan(0);
+      for (const l of Object.keys(P[n])) expect(LANGUAGES, n + " " + l).toContain(l);
     }
   });
   test("festivals and holidays name their English page as in its address, never a whole address", () => {

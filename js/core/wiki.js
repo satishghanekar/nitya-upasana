@@ -2,14 +2,13 @@
 // Which Wikipedia page a link opens (Satish, 2026-11-15: the Kannada-only map gave way to every language). A link names
 // a page by its English Wikipedia title, as in its address (a text's credit [name](wiki:Samarth_Ramdas), a festival's or
 // holiday's "wiki": "Vijayadashami"; or its Wikidata item, wiki:Q…); content/wiki.json, written by npm run wiki, holds
-// its Wikidata item and its page title on each Wikipedia the site can open. ORDER says, for each language a reader
-// reads or has menus in, which Wikipedias to try (Marathi: Marathi, Hindi, English), and the menu words (js/strings/,
-// "wiki", given by the caller: this file is loaded with the texts, before the menu words can be) name each Wikipedia to
-// screen readers. Pure, unit-tested in tests/unit/wiki.test.mjs; no init().
+// its page title on each Wikipedia the site can open. ORDER says, for each language a reader reads or has menus in,
+// which Wikipedias to try (Marathi: Marathi, Hindi, English), and the menu words (js/strings/, "wiki", given by the
+// caller: this file is loaded with the texts, before the menu words can be) name each Wikipedia to screen readers.
+// Pure, unit-tested in tests/unit/wiki.test.mjs; no init().
 
 /**
- * @typedef {Record<string, Record<string, string>>} Pages  by the name a link uses: its Wikidata item ("wikidata") and
- *   its page title on each Wikipedia, by language
+ * @typedef {Record<string, Record<string, string>>} Pages  by the name a link uses: its page title on each Wikipedia, by language
  * @typedef {{ lang: string, url: string }} Page
  */
 
@@ -36,7 +35,11 @@ export function pageFor(q, lang, pages) {
   if (!have) return null;
   var order = (ORDER[lang] || []).concat(LANGUAGES);
   for (var i = 0; i < order.length; i++)
-    if (have[order[i]]) return { lang: order[i], url: "https://" + order[i] + ".wikipedia.org/wiki/" + encodeURIComponent(have[order[i]].replace(/ /g, "_")) };
+    if (have[order[i]])
+      return {
+        lang: order[i],
+        url: "https://" + order[i] + ".wikipedia.org/wiki/" + encodeURIComponent(have[order[i]].replace(/ /g, "_")),
+      };
   return null;
 }
 
