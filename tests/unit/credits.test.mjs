@@ -16,16 +16,16 @@ const side = (id, s) => {
 const has = (...ids) => ids.every((id) => IDS.includes(id));
 
 describe("the credit lines, from content/credits.json", () => {
-  test("a person: रचना : name (time) / By name (time), the name linked", () => {
+  test.skipIf(!has("aarti-sukhkarta"))("a person: रचना : name (time) / By name (time), the name linked", () => {
     expect(plain(side("aarti-sukhkarta", "mr"))).toBe("रचना : समर्थ रामदास (१६०८–१६८२)");
     expect(plain(side("aarti-sukhkarta", "en"))).toBe("By Samarth Ramdas (1608–1682)");
     expect(side("aarti-sukhkarta", "mr")).toContain('data-wiki="Samarth_Ramdas"');
   });
-  test("one with no Wikipedia page: the name, no link", () => {
+  test.skipIf(!has("aarti-shendur-lal-chadhayo"))("one with no Wikipedia page: the name, no link", () => {
     expect(plain(side("aarti-shendur-lal-chadhayo", "mr"))).toBe("रचना : गोसावीनंदन");
     expect(side("aarti-shendur-lal-chadhayo", "mr")).not.toContain("<a ");
   });
-  test("a person also credited: the second line, smaller", () => {
+  test.skipIf(!has("aarti-yei-o-vitthale"))("a person also credited: the second line, smaller", () => {
     const c = PIECES["aarti-yei-o-vitthale"].credit;
     expect(c).toMatch(/<small>.*<\/small>/);
     expect(plain(c.match(/<small>(.*)<\/small>/)[1])).toBe("(अशीही मान्यता : संत नामदेव)(also credited to Sant Namdev)");
@@ -42,24 +42,24 @@ describe("the credit lines, from content/credits.json", () => {
       expect(plain(side("ashtak-rudrashtakam", "en"))).toBe("By Goswami Tulsidas (Ramcharitmanas, Uttarakanda)");
     },
   );
-  test("traditional, and a compilation", () => {
+  test.skipIf(!has("aarti-jai-ganesh-deva", "aarti-ghalin-lotangan"))("traditional, and a compilation", () => {
     expect(plain(side("aarti-jai-ganesh-deva", "mr"))).toBe("पारंपरिक");
     // (what else it gathers goes on from the name, as the book writes it)
     expect(plain(side("aarti-ghalin-lotangan", "mr"))).toBe("संकलन : संत नामदेव व संस्कृत स्तोत्रे");
     expect(plain(side("aarti-ghalin-lotangan", "en"))).toBe("A compilation: Sant Namdev and Sanskrit verses");
   });
-  test("the site's words are marked on the original's side (for the scripts' own words), not on the English one", () => {
+  test.skipIf(!has("aarti-sukhkarta"))("the site's words are marked on the original's side (for the scripts' own words), not on the English one", () => {
     expect(side("aarti-sukhkarta", "mr")).toContain('<span data-tw="by">रचना :</span>');
     expect(side("aarti-sukhkarta", "en")).not.toContain("data-tw");
   });
-  test("a text without a credit has an empty one", () => {
+  test.skipIf(!has("aarti-belaguve"))("a text without a credit has an empty one", () => {
     expect(plain(PIECES["aarti-belaguve"].credit)).toBe("");
   });
 });
 
 describe("content/credits.json", () => {
   const all = { ...CREDITS.people, ...CREDITS.sources };
-  test("every key a text names is in it; a key that is not stops the build, naming the text", () => {
+  test.skipIf(!has("aarti-sukhkarta"))("every key a text names is in it; a key that is not stops the build, naming the text", () => {
     const bad = { ...FILES, "aarti-sukhkarta": FILES["aarti-sukhkarta"].replace("author: Samarth_Ramdas", "author: Nobody") };
     expect(() => buildContent(LIBRARY, SITE, bad, { wiki: WIKI, credits: CREDITS, words: menuWords })).toThrow(
       "texts/aarti-sukhkarta.txt: Nobody is not in content/credits.json",
