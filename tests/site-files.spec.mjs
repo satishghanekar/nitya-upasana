@@ -108,8 +108,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // in every language, js/core/wiki.js and Wikipedia's names in five languages, 379.85 KB then; 384 KB since 2026-11-15:
   // the credits written from content/credits.json, and the site's words around a text in each language's own words, in
   // five languages, 383.4 KB then; 388 KB since 2026-11-15: a text sung in more than one way, js/features/versions.js
-  // and the switch under its heading, 387.2 KB with it on a Mac)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(388_000);
+  // and the switch under its heading, 387.2 KB with it on a Mac; 389 KB since 2026-11-15: the dhrupad's label in two parts
+  // in five languages (one line where both languages show) and the Library's count of texts, 388.15 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(389_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -123,8 +124,12 @@ test("the scripts, styles and page stay within their size budget", () => {
   // the tucked bars' pill, Go to's card from the top and its title in the middle of a tablet's bar, 80.5 KB then; 82 KB
   // since 2026-11-15: how long texts take, on Home, in the Library, the builder's weekday bars, the time left in the
   // title and Settings → Chanting pace, 81.7 KB with them on a Mac; 82.5 KB since 2026-11-15: the switch between a
-  // text's versions under its heading, 82.15 KB with it on a Mac)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(82_500);
+  // text's versions under its heading, 82.15 KB with it on a Mac; 83 KB since 2026-11-15: Settings: the text behind
+  // the top pill covered while a page is open, About under both columns, the preview centred, a sideways phone's rows on
+  // one line and the fade under Back, 82.77 KB with them on a Mac; 85.5 KB since 2026-11-15: the phone and iPad review's
+  // nine screens: the bottom bar's words, a sideways phone's Library, calendar and Home, the builder's rows, the
+  // Library's count and order in one row, the centred two-language title, 85 KB with them on a Mac)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(85_500);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
   // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then; 33 KB since

@@ -45,7 +45,7 @@ export default {
     problems: {
       "not-json": "ही नित्य उपासनेची बॅकअप फाइल (.nitya) नाही.",
       "not-nitya": "ही नित्य उपासनेची बॅकअप फाइल (.nitya) नाही.",
-      newer: "ही फाइल ॲपच्या नव्या आवृत्तीने जतन केली आहे. अपडेट तपासा (सेटिंग्ज → अधिक → माहिती, आवृत्तीची ओळ दाबा) आणि पुन्हा प्रयत्न करा.",
+      newer: "ही फाइल ॲपच्या नव्या आवृत्तीने जतन केली आहे. अपडेट तपासा (सेटिंग्ज → तुम्ही → माहिती, आवृत्तीची ओळ दाबा) आणि पुन्हा प्रयत्न करा.",
       kind: "ही .nitya फाइल पूर्ण बॅकअप नाही.",
       checksum: "जतन केल्यानंतर ही फाइल बदलली किंवा खराब झाली आहे (चेकसम जुळत नाही), त्यामुळे काहीही परत आणले नाही.",
       empty: "या बॅकअपमध्ये एकही व्यक्ती नाही.",
@@ -464,10 +464,10 @@ export default {
     idle: function (n) {
       return "‘सोबत’ थांबले: " + n + " मिनिटे जप ऐकू आला नाही. पुन्हा सुरू करण्यासाठी ‘सोबत’ दाबा.";
     },
-    gpu: "‘सोबत’: GPU",
+    gpu: "‘सोबत’: वेगवान पद्धत",
     gpuNote: "सुमारे ३ पट वेगवान, बॅटरी कमी वापरते",
-    gpuBadge: "उत्तम",
-    cpu: "‘सोबत’: CPU",
+    gpuBadge: "वेगवान",
+    cpu: "‘सोबत’: साधारण पद्धत",
     cpuNote: "प्रत्येक फोनवर चालते, बॅटरी जास्त वापरते",
     cpuBadge: "साधारण",
   },
@@ -483,6 +483,8 @@ export default {
     both: "दोन्ही",
     second: "+ दुसरी भाषा",
     none: "काहीही नाही",
+    simple: "सोपे",
+    scholarly: "शास्त्रीय",
     refrain: "↻ ध्रुपद",
     close: "बंद करा",
     reset: "मूळ आकार",
@@ -510,7 +512,7 @@ export default {
   },
   offline: {
     state: { idle: "ऑफलाइन तयार", save: "ऑफलाइनसाठी जतन…", off: "जतन केलेली प्रत" },
-    // the version line in Settings → More → About: what Check for updates found (under the version), and the round
+    // the version line in Settings → You → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
       check: "अपडेट तपासा",
@@ -670,7 +672,7 @@ export default {
     verseNumber: "श्लोक क्रमांक",
     go: "जा",
     screen: "स्क्रीन",
-    more: "अधिक",
+    more: "तुम्ही",
     preview: "नमुना",
     languageAndText: "भाषा आणि अक्षरे",
     mainLanguage: "मुख्य भाषा",
@@ -683,7 +685,6 @@ export default {
     traditional: "पारंपरिक",
     modern: "आधुनिक",
     bold: "ठळक",
-    verses: "कडवी",
     dhrupad: "ध्रुपद",
     once: "एकदा",
     everyVerse: "प्रत्येक कडव्यानंतर",
@@ -707,7 +708,8 @@ export default {
     paceSlow: "संथ",
     paceForget: "शिकलेली गती विसरा",
     off: "बंद",
-    profilesAndBackup: "प्रोफाइल आणि बॅकअप",
+    profile: "प्रोफाइल",
+    backup: "बॅकअप",
     thisBrowserCanTSave: "हा ब्राउझर इथे काहीही जतन करू शकत नाही. पान बंद करण्यापूर्वी बॅकअप फाइल जतन करा.",
     whoIsReading: "कोण वाचत आहे",
     routine: "दिनक्रम",
@@ -892,7 +894,8 @@ export default {
   },
   // The words the site adds to a text (js/strings/en.js)
   text: {
-    refrainLabel: "ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)",
+    refrainWord: "ध्रुपद",
+    refrainHow: "(प्रत्येक कडव्यानंतर म्हणावे)",
     version: "पाठभेद",
     refrainNote: "↻ ध्रुपद",
     prev: "मागील",

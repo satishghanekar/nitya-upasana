@@ -88,24 +88,53 @@
   display: grid;
   place-items: center;
 }
-/* Home, Library, Reading and Follow: an icon alone, so the bar stays as low as the top bar (six buttons with four words
-   under them crowded a phone, Satish 2026-11-13; a phone on its side had already left the words out). Each word stays
-   in its button for screen readers and voice control, in the menu language: it is the button's name, and Help lists
-   what each icon is. */
+/* Home, Library, Reading and Follow: the icon with its word under it, in the menu language (the word is the button's
+   name). Icons alone were hard to tell apart (the review of 2026-11-15, Satish: build it); the words that crowded a
+   phone on 2026-11-13 were a size larger and made the bar taller. These are the smallest label size, and icon and
+   word fit the 46px of Prev and Next, so the bar is no taller than with icons alone. */
 #ash,
 #hm,
 #rsb,
 #lsb {
-  min-width: 44px;
-  padding: 0 6px;
+  align-content: center;
+  row-gap: 3px;
+  min-width: 56px;
+  height: 46px;
+  padding: 0 4px;
 }
 .asil {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
+  font: 600 var(--fz-xs)/1 var(--lat);
   white-space: nowrap;
+}
+.asil :is(:lang(mr), :lang(kn), :lang(te), :lang(gu)) {
+  font-family: var(--ks, "Noto Sans Kannada"), var(--body);
+}
+/* The smallest phones have no room for four words between Prev and Next, and a phone on its side has no height to
+   spare: there one of the two is left out. Under 360px the icon alone (the word stays for screen readers and voice
+   control); on its side the word alone, which says more than the icon in the same height. */
+@media (max-width: 359px) {
+  .asil {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  :is(#ash, #hm, #rsb, #lsb) > svg {
+    display: none;
+  }
+  .asil {
+    font-size: var(--fz-s);
+  }
+  #ash,
+  #hm,
+  #rsb,
+  #lsb {
+    height: 44px;
+    padding: 0 12px;
+  }
 }
 /* ==== Bars tuck away while reading (phones and tablets without the side menu) ====
    Scrolling down slides the top and bottom bars out of view, leaving a small pill at the top with the piece name;
@@ -584,8 +613,8 @@ html[data-asb="1"] {
   #hm,
   #rsb,
   #lsb {
-    min-width: 44px;
-    padding: 0 4px;
+    min-width: 52px;
+    padding: 0 2px;
   }
   #asc .asx {
     padding: 0 8px;
@@ -597,6 +626,15 @@ html[data-asb="1"] {
   }
   #asc .asx .asw2 {
     display: none;
+  }
+}
+/* (the smallest phones: icons alone, as narrow as a tap allows) */
+@media (max-width: 359px) {
+  #ash,
+  #hm,
+  #rsb,
+  #lsb {
+    min-width: 44px;
   }
 }
 #rsh,
@@ -774,7 +812,7 @@ html[data-asb="1"] {
   color: var(--muted);
 }
 
-/* ==== Listen (js/features/listen.js, Satish 2026-11-06): the microphone in the bottom bar (#lsb, an icon alone as
+/* ==== Listen (js/features/listen.js, Satish 2026-11-06): the microphone in the bottom bar (#lsb, an icon and its word as
    Home's, the Library's and Reading's; pressed while Listen is on, button[aria-pressed] in css/02-core.css), its panel
    over the bar (#lsn: what Listen is doing and its buttons) and the line being chanted (.lsn) ==== */
 #lsb[hidden],

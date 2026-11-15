@@ -261,7 +261,7 @@ test("the top bar is the same on Home and while reading: the name, profile, Shar
     const xc = await page.locator("#xc").boundingBox(),
       tabs = await page.locator("#spv").boundingBox();
     expect(Math.abs(xc.y - tabs.y)).toBeLessThan(4);
-    await expect(page.locator("#spv button")).toHaveText([/Reading$/, /Screen$/, /More$/]);
+    await expect(page.locator("#spv button")).toHaveText([/Reading$/, /Screen$/, /You$/]);
   }
 });
 
@@ -830,4 +830,30 @@ test("Book order | A–Z speaks Marathi with Marathi menus @mobile", async ({ pa
   await page.locator("#hm").click();
   await expect(page.locator("#library-order")).toHaveAccessibleName("रचनांचा क्रम");
   await expect(page.locator("#library-order button")).toHaveText(["मूळ क्रम", "अकारविल्हे"]);
+});
+
+// How many texts and Book order | A–Z in one row at the top of the list: the count at the left, where the numbers
+// start, the choice at the right, where the times end (it stood centred, lined up with nothing; the review of 2026-11-15)
+test("the Library's count of texts and Book order | A–Z share a row, at the list's two edges", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSite(page, SETUPS.english);
+  await page.locator("#hm").click();
+  await expect(page.locator("#library-count")).toHaveText(TEXTS.length + " texts");
+  const at = await page.evaluate(() => {
+    const r = (/** @type {string} */ s) => /** @type {Element} */ (document.querySelector(s)).getBoundingClientRect();
+    const c = r("#library-count"),
+      o = r("#library-order"),
+      l = r("#jl");
+    return {
+      level: Math.abs((c.top + c.bottom) / 2 - (o.top + o.bottom) / 2),
+      left: c.left - l.left,
+      right: l.right - o.right,
+      tap: r("#library-order button").height,
+    };
+  });
+  expect(at.level).toBeLessThanOrEqual(2);
+  expect(at.left).toBeLessThanOrEqual(1);
+  expect(at.right).toBeLessThanOrEqual(1);
+  expect(at.tap).toBeGreaterThanOrEqual(44);
+  await expect(page.locator("#library-count")).toHaveAttribute("lang", "en");
 });

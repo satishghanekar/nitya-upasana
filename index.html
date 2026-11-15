@@ -208,10 +208,10 @@
   <!-- Every text by category (js/features/library.js): Vedic Chant, Aarti and any the family added, each with its texts
        in reading order and their numbers on the reading page, built from content/library.json
        with this phone's changes; categories with no texts are left out. Last, the button that opens the categories sheet (#lbm).
-       First, Book order | A–Z: the texts in each category as the book has them, or A to Z, each keeping its number (its
+       First, how many texts there are and Book order | A–Z in one row (#library-top): the texts in each category as the book has them, or A to Z, each keeping its number (its
        words, like the button's, written by js/features/library.js: a data-w word's class would be hidden in #jl). -->
   <div id="jl">
-  <div id="library-order" role="group" aria-labelledby="library-order-name"><span id="library-order-name" class="sr" lang="en">Order of the texts</span><button type="button" data-sort="" aria-pressed="true"><span data-word="bookOrder" lang="en">Book order</span></button><button type="button" data-sort="az" aria-pressed="false"><span data-word="aToZ" lang="en">A–Z</span></button></div>
+  <div id="library-top"><span id="library-count"></span><div id="library-order" role="group" aria-labelledby="library-order-name"><span id="library-order-name" class="sr" lang="en">Order of the texts</span><button type="button" data-sort="" aria-pressed="true"><span data-word="bookOrder" lang="en">Book order</span></button><button type="button" data-sort="az" aria-pressed="false"><span data-word="aToZ" lang="en">A–Z</span></button></div></div>
   <div id="lbr"><button type="button" id="lbb" aria-haspopup="dialog" aria-expanded="false" aria-controls="lbm"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h4v16H4zM10 4h4v16h-4z"/><path d="M15 5.2l3.9-1 3.6 14.6-3.9 1z"/></svg><span id="lbbw" lang="en">Edit categories</span></button></div>
   </div>
   </div>
@@ -223,10 +223,10 @@
   </div>
 </div>
 <!-- ==== Settings page: opened by the ⚙ button, it covers the whole page until Back (or the phone's Back) closes it.
-     Back and three tabs, Reading | Screen | More, each with its groups of rows in rounded cards, like phone settings ==== -->
+     Back and three tabs, Reading | Screen | You, each with its groups of rows in rounded cards, like phone settings ==== -->
 <div class="sp" id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="spt" tabindex="-1">
   <div class="sp-pg" id="sp-home">
-    <!-- Back (‹), the page's title and the tabs, Reading | Screen | More, in one row as on the Library and the calendar
+    <!-- Back (‹), the page's title and the tabs, Reading | Screen | You, in one row as on the Library and the calendar
          pages (Satish, 2026-10-25; js/features/settings-panel.js spTab). Phones and tablets: the tabs, the title for
          screen readers only. iPads and desktops: the title, every group at once, no tabs (Satish, 2026-10-30). Each group
          below says which tab it is on (data-tab) -->
@@ -282,11 +282,7 @@
               <button type="button" data-v="bold"><span data-w="page.bold">Bold</span></button>
             </div>
           </div>
-        </div>
-      </section>
-      <section class="sp-grp" data-tab="read">
-        <h3 class="sp-h"><span data-w="page.verses">Verses</span></h3>
-        <div class="sp-card">
+          <!-- how a text is laid out, in the same card (Satish, 2026-11-15: Verses was a heading over one row) -->
           <div class="sp-row">
             <span class="sp-l"><span data-w="page.dhrupad">Dhrupad</span></span>
             <div class="sp-seg" id="srf" role="group" aria-label="Dhrupad">
@@ -353,9 +349,10 @@
         </div>
       </section>
       <section class="sp-grp" data-tab="more">
-        <!-- Profiles and backup (js/features/profiles.js, js/features/backup.js): who is reading (opens the profile sheet),
-             Save a backup file, Restore from a file, and a warning when this browser can't save here -->
-        <h3 class="sp-h"><span data-w="page.profilesAndBackup">Profiles and backup</span></h3>
+        <!-- Profile (js/features/profiles.js): who is reading (opens the profile sheet), their routine and chanting pace,
+             and a warning when this browser can't save here; then Backup (js/features/backup.js): Save a backup file,
+             Restore from a file -->
+        <h3 class="sp-h"><span data-w="page.profile">Profile</span></h3>
         <div class="sp-card">
           <p class="sp-row sp-warn" id="stw2" hidden><span class="sp-l"><span data-w="page.thisBrowserCanTSave">This browser can't save here. Use Save a backup file before closing.</span></span></p>
           <button type="button" class="sp-row sp-go" id="spf"><span class="sp-l"><span data-w="page.whoIsReading">Who is reading</span></span><span class="sp-v" id="spfv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -375,11 +372,19 @@
             <button type="button" class="sp-link" id="spcf" hidden><span data-w="page.paceForget">Forget what was learned</span></button>
             <span class="sr" id="spcl" role="status"></span>
           </div>
+        </div>
+      </section>
+      <!-- Backup, a group of its own (Satish, 2026-11-15: the person, their routine and pace above; the files here) -->
+      <section class="sp-grp" data-tab="more">
+        <h3 class="sp-h"><span data-w="page.backup">Backup</span></h3>
+        <div class="sp-card">
           <button type="button" class="sp-row sp-go" id="bks"><span class="sp-l"><span data-w="page.saveABackupFile">Save a backup file</span><small id="bksv"></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
           <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span data-w="page.restoreFromAFile">Restore from a file</span><small><span data-w="page.aNityaFileSavedBefore">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
         </div>
       </section>
-      <section class="sp-grp" data-tab="more">
+      </div>
+      <!-- About: after the two columns, across both on wide screens, so they end nearly level (Satish, 2026-11-15) -->
+      <section class="sp-grp sp-abt" data-tab="more">
         <h3 class="sp-h"><span data-w="page.about">About</span></h3>
         <div class="sp-card">
           <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span data-w="page.helpAndHowToUse">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -396,9 +401,8 @@
           </div>
         </div>
       </section>
-      </div>
     </div>
-    <!-- who made the site, always in English, under every tab -->
+    <!-- who made the site, always in English: under About (on a phone, the You tab only; js/features/settings-panel.js spTab) -->
     <p class="sp-by" lang="en">A volunteer offering by Satish Ghanekar<br><a href="mailto:satishghanekar1@gmail.com">satishghanekar1@gmail.com</a></p>
   </div>
 </div>
@@ -632,7 +636,7 @@
     <div class="pfbs"><button type="button" id="bkok" class="pri"></button><button type="button" id="bkno"></button></div>
   </div>
 </div>
-<!-- ==== Help (English only), opened from the top bar's Share menu and Settings → More → About. Keep it up to date with every change a reader can see ==== -->
+<!-- ==== Help (English only), opened from the top bar's Share menu and Settings → You → About. Keep it up to date with every change a reader can see ==== -->
 <div id="help" hidden role="dialog" aria-modal="true" aria-labelledby="hlpt" lang="en">
   <div class="hlpbar"><h2 id="hlpt">Help</h2><button type="button" id="hlpx" aria-label="Close help"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <!-- Help's text is laid out only when Help is first opened (js/features/help.js) -->
@@ -676,7 +680,7 @@
       <ul>
         <li><b>Morning, Afternoon, Evening:</b> Home opens at the session for the time now: Morning until 12 noon, Afternoon until 5 pm, Evening after that. Tap another to see its texts for today; the next day starts again from the clock. A session with nothing set today is greyed out ("Nothing set"); tap it to add texts. To start with, everyone has the usual routine: Vedic chants and the Ganapati and Devi aartis in the morning, aartis and an ashtak in the evening, and a free afternoon. Each person can change theirs (see Your routine below).</li>
         <li><b>The list</b> has the session's texts in order.</li>
-        <li><b>How long it takes:</b> under each session's name, about how long it takes, and beside each text its own minutes. The time is counted from the text as it is chanted, with the dhrupad after every verse, whatever you show on screen. Until the site knows your pace it shows a range (10–16 min), from a quick home chant to a slow one; it learns your pace while <b>Follow</b> hears you, or you can pick one (Settings → More → <b>Chanting pace</b>).</li>
+        <li><b>How long it takes:</b> under each session's name, about how long it takes, and beside each text its own minutes. The time is counted from the text as it is chanted, with the dhrupad after every verse, whatever you show on screen. Until the site knows your pace it shows a range (10–16 min), from a quick home chant to a slow one; it learns your pace while <b>Follow</b> hears you, or you can pick one (Settings → You → <b>Chanting pace</b>).</li>
         <li><b>Another day:</b> <b>‹</b> and <b>›</b> beside the date show the day before or after, and under the date it says which day it is: Today, Tomorrow, Yesterday, "In 3 days" or "3 days ago". All of Home follows that day: its date, the Vedic calendar card and Coming up, the picture's star, and the texts of each session, so you can read them or print them. Tap <b>Today</b>, under the arrows, to come back. Nothing on Home moves as you go from day to day. The next day, or when you come back to the app after half an hour away, Home shows today again.</li>
         <li><b>Reading the session:</b> tap a title to start there. The session's texts follow one another in one scroll, in the session's order and numbered as on Home, and nothing else is in between. <b>Next ›</b> and <b>‹ Prev</b> in the bottom bar jump to the next or previous text of the session; <b>Next ›</b> after the last one, or <b>‹ Prev</b> on the first, brings you back here, and so does <b>Home</b> in the bottom bar, which ends the session (on another day, Home is still on that day). While you read, the title in the top bar says which text of the session you are in (२ / ६); tap it to go to another text of the session (see <b>Go to</b>). Open the app again the next day and it starts afresh from Home's list. <b>Print</b>, in the top bar's <b>Share</b> menu, prints the session.</li>
         <li><b>On an iPad held sideways</b> the text reads as it does upright, across the screen at the same size. <b>On a computer</b>, Home stays on the left while you read, with the text you are reading marked, and the text opens on the right. Tap another title to change the text, or another session to see its list. <b>Home</b> in the top or bottom bar brings the picture back.</li>
@@ -687,9 +691,9 @@
       </ul>
 
       <h3>Your routine</h3>
-      <p>Each person chooses their own texts for each session, and their order. Tap <b>Edit</b> beside the session on Home (or Settings → More → Profiles and backup → <b>Routine</b>; <b>Add texts</b> when a session is empty).</p>
+      <p>Each person chooses their own texts for each session, and their order. Tap <b>Edit</b> beside the session on Home (or Settings → You → Profiles and backup → <b>Routine</b>; <b>Add texts</b> when a session is empty).</p>
       <ul>
-        <li>There are four ready-made routines: <b>Short</b> (the Ganapati Atharvashirsha and the everyday aartis in the morning, the aartis in the evening), <b>Daily</b> (the Atharvashirsha, Purusha Suktam and Shri Sukta and the day's aartis), <b>Full</b> (Daily with the ashtaks and stotras) and <b>Extended</b> (with the longer Vedic chants and stotras as well). A new person starts on Short, and gets any texts added to it later. Choose another at the top of the routine page (Edit beside a session on Home, or Settings → More → <b>Routine</b>); each says what it holds, how many texts a day and how long a day takes. Your first change makes the routine your own: it stays as you made it, and <b>Go back</b> (or choosing another) asks first, as your changes would be removed.</li>
+        <li>There are four ready-made routines: <b>Short</b> (the Ganapati Atharvashirsha and the everyday aartis in the morning, the aartis in the evening), <b>Daily</b> (the Atharvashirsha, Purusha Suktam and Shri Sukta and the day's aartis), <b>Full</b> (Daily with the ashtaks and stotras) and <b>Extended</b> (with the longer Vedic chants and stotras as well). A new person starts on Short, and gets any texts added to it later. Choose another at the top of the routine page (Edit beside a session on Home, or Settings → You → <b>Routine</b>); each says what it holds, how many texts a day and how long a day takes. Your first change makes the routine your own: it stays as you made it, and <b>Go back</b> (or choosing another) asks first, as your changes would be removed.</li>
         <li>Pick <b>Morning</b>, <b>Afternoon</b> or <b>Evening</b> at the top. <b>Same every day</b> keeps one list; <b>Different by weekday</b> gives each day its own, with a row of days (this week's dates) to choose which day you are changing; under each date a bar shows how long that day takes, all its sessions, so a heavy day stands out (with its minutes once the site knows your pace). The line above the list says how long the session you are changing takes, and each text shows its own minutes. <b>Copy to other days…</b> gives the day's list to the days you tick.</li>
         <li><b>↑</b> and <b>↓</b> move a text, <b>✕</b> removes it. With a keyboard, Alt+↑ and Alt+↓ move the text whose button has focus, and Delete removes it. You can also drag a text by its dotted handle. Each change is read out by screen readers ("घालीन लोटांगण moved to 3 of 5").</li>
         <li><b>Add texts</b> lists every text, with a search box: tick one to add it at the end, untick it to remove it. On a computer the list is beside yours; on a phone or tablet it slides up, and <b>Done</b> (or Back) closes it.</li>
@@ -716,10 +720,11 @@
         <li><b>Fold a text:</b> a tap anywhere on its heading (or its round ⌃) folds it down to its heading; tap it again to open it. Your phone remembers this, and going to a folded text from the Library or search opens it.</li>
         <li><b>More room to read:</b> on phones and tablets, while you read a text the top and bottom bars slide away as you scroll down (on Home they stay), leaving a thin strip with the name of the text. Scroll up a little, tap a blank part of the page or the strip, or reach the end of the page to bring them back.</li>
         <li><b>Pinch</b> (on a computer: a trackpad pinch, or Ctrl + / Ctrl − and Ctrl 0 to reset; ⌘ on a Mac) or use A− / A+ (under <b>Reading</b>, the sliders in the bottom bar, or in Settings) to change the text size. The page itself never zooms, and on Home, in the calendar and in the routine builder a pinch does nothing. The bubble shows the size (100% is the normal size for your screen: the same for every text, a little larger on an iPad, and larger again if you have set larger text on your phone or in your browser; a line too long for the screen goes onto a second row, set a little closer, rather than the text shrinking); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
-        <li><b>Follow:</b> while an aarti or a chant is going on, tap <b>Follow</b> in the bottom bar. The phone hears the chanting, opens the text if another one is on screen (started on Home, it opens the session there, so the next texts follow below), marks the line being chanted and keeps it in view as the chanting goes on, until you tap the round stop button (■) in the small bar over the bottom bar, or Follow again. That bar shows the text's name and a wave that moves with what the phone hears. While it follows, the dhrupad is shown after every verse, so its mark goes there too when the dhrupad is sung; after Stop it is shown again as you had it. If you scroll yourself, it waits a few seconds before moving the page. The first time it downloads about 120 MB (best on Wi-Fi), kept on the phone so it works offline after that. Nothing it hears leaves the phone. Settings → More → About shows whether Follow runs on this phone's GPU (faster, marked Optimized) or its CPU.</li>
-        <li><b>Bottom bar:</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring texts (in a session, the session's); the house with a lamp goes back to <b>Home</b>; the open book opens the <b>Library</b> and its search; the two sliders open the <b>Reading</b> choices; the microphone starts <b>Follow</b> (see below) and fills in while it follows. The bar shows the icons alone, so it stays low; a screen reader says each one's name, and on the smallest phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch.</li>
+        <li><b>Follow:</b> while an aarti or a chant is going on, tap <b>Follow</b> in the bottom bar. The phone hears the chanting, opens the text if another one is on screen (started on Home, it opens the session there, so the next texts follow below), marks the line being chanted and keeps it in view as the chanting goes on, until you tap the round stop button (■) in the small bar over the bottom bar, or Follow again. That bar shows the text's name and a wave that moves with what the phone hears. While it follows, the dhrupad is shown after every verse, so its mark goes there too when the dhrupad is sung; after Stop it is shown again as you had it. If you scroll yourself, it waits a few seconds before moving the page. The first time it downloads about 120 MB (best on Wi-Fi), kept on the phone so it works offline after that. Nothing it hears leaves the phone. Settings → You → About shows whether Follow runs on this phone's GPU (faster, marked Optimized) or its CPU.</li>
+        <li><b>Bottom bar:</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring texts (in a session, the session's); the house with a lamp goes back to <b>Home</b>; the open book opens the <b>Library</b> and its search; the two sliders open the <b>Reading</b> choices; the microphone starts <b>Follow</b> (see below) and fills in while it follows. Each has its word under it (the smallest phones show the icon alone, and a phone held sideways the word alone); on narrow phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch.</li>
         <li><b>Go to:</b> in a long text (Pavamana Suktam, Shri Rudra, the Lalita and Vishnu Sahasranamas) or a session, the title in the top bar says where you are as you read: the text's name, and under it its part (तृतीयोऽध्यायः · ९.४७, नमकम् · अनुवाकः ५, स्तोत्रम् · १०८). Tap it to go somewhere else: the text's headings, with the place you are in open (its suktas, anuvakas or verses in groups of 25, each one tap away; ▾ shows another heading's), and in a text of many verses a box to type a verse number. In a session it lists the session's texts first, and the title also says about how long is left of the session, from the text you are on. Back takes you to where you were. While Follow listens, it carries on from the place you went to. In a short text the title takes you Home, as before.</li>
         <li><b>Reading</b> (the sliders in the bottom bar): slides up the reading choices within reach of your thumb: <b>Language</b> (main, second or both), <b>Text size</b> (A− and A+, with ↺ to go back to the normal size) and <b>Dhrupad</b> (once at the top, or after every verse; in “once” mode, tap <b>↻ ध्रुपद</b> under a stanza to see the refrain, and tap anywhere to close it), plus <b>All settings</b>. Your place stays put as you change them. Tap outside it, ✕ or your phone's Back to close it.</li>
+        <li><b>With a keyboard</b> (a computer, or an iPad's): <b>/</b> opens the Library with the search box ready to type in; while you read a text, <b>←</b> and <b>→</b> go to the previous and the next text, and <b>Space</b> moves down a screen. <b>Esc</b> closes an open page or box.</li>
         <li><b>Back:</b> your phone's Back button (or swipe) closes an open menu or box, then goes back to where you were before the last jump, for example from an aarti back to Home.</li>
         <li>The screen stays on while you read, until some minutes after your last touch (Settings → Screen → <b>Keep screen on</b>). If you switch away and come back within 12 hours, it reopens where you were reading.</li>
       </ul>
@@ -740,31 +745,31 @@
         <li><b>Switch:</b> tap a name. The page changes to that person's settings straight away.</li>
         <li><b>Add a person:</b> give a name; the badge letters come from the name (or type up to four), and pick a colour. There is room for eight.</li>
         <li><b>Edit</b> beside a name: rename, change the letters or the colour, or <b>Delete this person</b> (it asks first). The last person can't be deleted.</li>
-        <li>The same list opens from Settings → More → <b>Who is reading</b>.</li>
+        <li>The same list opens from Settings → You → <b>Who is reading</b>.</li>
         <li>A new phone starts with one person, <b>Me</b> (in the language of the menus). A welcome card at the top of Home asks your name and which routine to follow (Short, Daily, Full or Extended; the texts below change as you pick); <b>Start</b> keeps them, <b>Later</b> asks again next time. You can also give your name with <b>Edit</b> here.</li>
       </ul>
 
       <h3>Backup</h3>
       <p>Everything is kept on this phone only. A backup file keeps a copy you can bring back after a new phone, a reset or cleared browser data.</p>
       <ul>
-        <li><b>Save a backup file</b> (Settings → More → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and routines, and this phone's Library categories, nothing else.</li>
+        <li><b>Save a backup file</b> (Settings → You → Backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and routines, and this phone's Library categories, nothing else.</li>
         <li><b>Restore from a file:</b> pick a <i>.nitya</i> file. The site checks it, then shows who will be added, replaced or removed before anything changes; tap <b>Restore</b> to go ahead. Restoring replaces the people on this phone with the ones in the file.</li>
         <li>A short reminder to save a backup shows on Home now and then (two weeks after you start, then a month after each backup). If you change your routine before you have ever saved a backup, it shows straight away: your own routine is kept only on this phone, and deleting the app would lose it. <b>Not now</b> hides it for two weeks.</li>
         <li>If the browser can't save anything (some private windows), a note says so: everything works, but is forgotten when the page closes, so save a backup file first.</li>
       </ul>
 
       <h3>Settings</h3>
-      <p>On a phone, Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages and which to show, text size, font and the dhrupad; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on, and <b>Show holidays from</b> US and India for Coming up) and <b>More</b> (Profiles and backup, and About). It opens on Reading each time; on a phone held sideways the preview stays on the left while the choices scroll beside it. On an iPad or a computer there are no tabs: every group shows at once in two columns, the preview and the reading choices on the left, Screen, Profiles and backup and About on the right. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
+      <p>On a phone, Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages and which to show, text size, font and the dhrupad; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on, and <b>Show holidays from</b> US and India for Coming up) and <b>You</b> (Profile, Backup and About). It opens on Reading each time; on a phone held sideways the preview stays on the left while the choices scroll beside it. On an iPad or a computer there are no tabs: every group shows at once in two columns, the preview and the reading choices on the left, Screen, Profile and Backup on the right, and About under both. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
       <ul>
         <li><b>Main language:</b> the language you read in, in large text: <span lang="mr">मराठी</span> (the text as written), English (in English letters) or the same words in Kannada, Telugu or Gujarati letters (<span lang="kn">ಕನ್ನಡ</span>, <span lang="te">తెలుగు</span>, <span lang="gu">ગુજરાતી</span>). Tap it to pick from a list; English is there twice, once for each spelling (see English spelling below). With Kannada, Telugu or Gujarati letters the second language can be English or None.</li>
         <li><b>Second language:</b> shown smaller, under each line, when Show (below it, or Language under <b>Reading</b> in the bottom bar) is set to both. Pick the other language, or <b>None</b> to read in one language only. Picking your second language as the main one swaps the two.</li>
         <li><b>Show:</b> the main language, the second, or both (one under the other), the same choice as Language under <b>Reading</b>. It shows when you have a second language.</li>
         <li><b>Menus and buttons:</b> English, or the language your texts are shown in (<span lang="mr">मराठी</span>, <span lang="kn">ಕನ್ನಡ</span>, <span lang="te">తెలుగు</span> or <span lang="gu">ગુજરાતી</span>), for Home, buttons and settings. With English as the main language they are in English.</li>
         <li><b>Preview:</b> the start of the Ganapati aarti, as your choices will show them: in the languages Show picks, at your text size and font, and with the dhrupad (in colour) where Dhrupad puts it: at the top with “once” (and <b>↻ ध्रुपद</b> after the verse), or after the verse with “every verse”.</li>
-        <li><b>English spelling:</b> picked with English in the language list, as <i>English · Sukhkarta</i> or <i>English · sukhakartā</i>: how the English lines and the titles of the texts are spelled.
+        <li><b>English spelling:</b> picked with English in the language list, as <i>English · Simple (Sukhkarta)</i> or <i>English · Scholarly (sukhakartā)</i>: how the English lines and the titles of the texts are spelled.
           <ul>
-            <li><b>Sukhkarta</b>: the everyday spelling most of us read easily.</li>
-            <li><b>sukhakartā</b>: the scholarly spelling (IAST), with exact sounds: ā ī ū for long vowels, ṭ ḍ ṇ for the hard sounds, ś ṣ for the two kinds of “sh”. In the Vedic chants it also shows the swara marks: a line under a syllable is the low note (anudātta) and a tick above is the svarita (<i>bha̱draṃ karṇe̍bhiḥ</i>).</li>
+            <li><b>Simple</b> (Sukhkarta): the everyday spelling most of us read easily.</li>
+            <li><b>Scholarly</b> (sukhakartā): the scholarly spelling (IAST), with exact sounds: ā ī ū for long vowels, ṭ ḍ ṇ for the hard sounds, ś ṣ for the two kinds of “sh”. In the Vedic chants it also shows the swara marks: a line under a syllable is the low note (anudātta) and a tick above is the svarita (<i>bha̱draṃ karṇe̍bhiḥ</i>).</li>
           </ul>
           It changes straight away and keeps your place.</li>
         <li><b>Text size</b> (A− / A+ / ↺ to reset).</li>
@@ -775,9 +780,9 @@
         <li><b>High contrast</b>: a switch; tap to turn it on or off.</li>
         <li><b>Show holidays from</b> (USA, India): the public holidays in Coming up on Home, both on at first. Maharashtra's and Karnataka's are in the calendar.</li>
         <li><b>Keep screen on</b>: Off, 15, 30, 45 or 60 minutes after your last touch, key or scroll; after that the phone dims and locks as usual, so a phone left on its stand does not run its battery down. It starts at 30 on phones and tablets and Off on computers.</li>
-        <li><b>Chanting pace</b> (Settings → More, under Routine), for how long texts and sessions take: <b>Auto</b> learns your own pace while Follow hears you chant (on this phone only, for the person reading) and shows a range until it has heard a few minutes; or pick <b>Quick</b>, <b>Steady</b> or <b>Slow</b>. Under it, what it has learned so far; <b>Forget what was learned</b> starts again.</li>
-        <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Routine</b> (the ready-made routine you follow, or your own; see Your routine above), <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
-        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and the version, with whether the site is saved for offline use under it (a green dot: Offline ready); the round button beside it checks for updates (see Good to know below). On a device that can listen, a line above the version says where Follow runs: <b>GPU</b> (the graphics chip: about 3× faster and lighter on the battery, marked Optimized) or <b>CPU</b> (works on every phone, marked Standard).</li>
+        <li><b>Chanting pace</b> (Settings → You, under Routine), for how long texts and sessions take: <b>Auto</b> learns your own pace while Follow hears you chant (on this phone only, for the person reading) and shows a range until it has heard a few minutes; or pick <b>Quick</b>, <b>Steady</b> or <b>Slow</b>. Under it, what it has learned so far; <b>Forget what was learned</b> starts again.</li>
+        <li><b>Profile</b> and <b>Backup:</b> <b>Who is reading</b>, <b>Routine</b> (the ready-made routine you follow, or your own; see Your routine above) and <b>Chanting pace</b>; <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
+        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and the version, with whether the site is saved for offline use under it (a green dot: Offline ready); the round button beside it checks for updates (see Good to know below). On a device that can listen, a line above the version says how Follow runs: <b>fast mode</b> (on the phone's graphics chip: about 3× faster and lighter on the battery, marked Fast) or <b>standard mode</b> (works on every phone, marked Standard).</li>
       </ul>
 
       <h3>Print</h3>
@@ -800,8 +805,8 @@
 
       <h3>Good to know</h3>
       <ul>
-        <li><b>Works without internet:</b> the first time you open the site it is saved on your phone, and Settings → More → About shows “Offline ready” beside the version once it is. With no internet, a small cloud with a line through it shows in the top bar: the saved copy is in use, and everything still works.</li>
-        <li><b>Getting updates:</b> the site opens straight from the copy saved on your phone, so it starts quickly even with a weak connection. When a new version is published it is saved in the background while you are online, and the next time you open the site you get it. To look straight away, open Settings → More and tap the round button beside the version under About: it turns while it looks, then shows a green ✓ and “You have the latest version” (or “No internet · tap to try again”), or reloads with the new version. On an iPhone or iPad, and in Safari on a Mac, the new version is saved but starts only once the app is closed and opened again: the line says “Saved. Close the app and open it again”, and <b>How?</b> beside it (or the round button) shows the steps for an iPhone, an iPad or a Mac.</li>
+        <li><b>Works without internet:</b> the first time you open the site it is saved on your phone, and Settings → You → About shows “Offline ready” beside the version once it is. With no internet, a small cloud with a line through it shows in the top bar: the saved copy is in use, and everything still works.</li>
+        <li><b>Getting updates:</b> the site opens straight from the copy saved on your phone, so it starts quickly even with a weak connection. When a new version is published it is saved in the background while you are online, and the next time you open the site you get it. To look straight away, open Settings → You and tap the round button beside the version under About: it turns while it looks, then shows a green ✓ and “You have the latest version” (or “No internet · tap to try again”), or reloads with the new version. On an iPhone or iPad, and in Safari on a Mac, the new version is saved but starts only once the app is closed and opened again: the line says “Saved. Close the app and open it again”, and <b>How?</b> beside it (or the round button) shows the steps for an iPhone, an iPad or a Mac.</li>
         <li><b>Privacy:</b> your people, settings and location stay on your phone. Nothing is sent anywhere; a backup file goes only where you save or send it.</li>
         <li>Moonrise times are calculated on your phone and may differ by a few minutes from printed calendars.</li>
       </ul>
@@ -812,7 +817,7 @@
 <div id="szt" aria-hidden="true"></div>
 <div id="sza" class="sr" role="status"></div>
 <div id="fl" role="status" aria-live="polite"></div>
-<!-- ==== Bottom bar (footer menu): ‹ Previous, Home, Library, Reading (the sliders: the reading sheet), Follow, Next ›, icons alone; on the home page Library, Reading and Follow only.
+<!-- ==== Bottom bar (footer menu): ‹ Previous, Home, Library, Reading (the sliders: the reading sheet), Follow, Next ›, each icon with its word under it; on the home page Library, Reading and Follow only.
      The Library is here, within thumb reach; Print is in the top bar's Share menu ==== -->
 <!-- slim strip with the piece name, shown while the bars are tucked away on phones and tablets (data-tuck) -->
 <!-- While reading with the bars tucked away: the text's name in a small pill at the top (js/features/bars.js). In a long text

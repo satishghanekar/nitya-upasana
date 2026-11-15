@@ -46,7 +46,7 @@ export default {
     problems: {
       "not-json": "This is not a Nitya Upasana backup file (.nitya).",
       "not-nitya": "This is not a Nitya Upasana backup file (.nitya).",
-      newer: "This file was saved by a newer version of the app. Check for updates (Settings → More → About, tap the version line) and try again.",
+      newer: "This file was saved by a newer version of the app. Check for updates (Settings → You → About, tap the version line) and try again.",
       kind: "This .nitya file is not a full backup.",
       checksum: "This file has been changed or damaged since it was saved (its checksum does not match), so nothing was restored.",
       empty: "This backup has no people in it.",
@@ -471,11 +471,12 @@ export default {
     idle: function (n) {
       return "Follow stopped: no chanting heard for " + n + " minutes. Tap Follow to start again.";
     },
-    // Settings → More → About: where Follow runs its model on this device (title, a line under it, a badge)
-    gpu: "Follow: GPU",
+    // Settings → You → About: where Follow runs its model on this device (title, a line under it, a badge)
+    // (in the reader's words since 2026-11-15, not GPU and CPU: fast where the phone's graphics chip runs it)
+    gpu: "Follow: fast mode",
     gpuNote: "About 3× faster, lighter on battery",
-    gpuBadge: "Optimized",
-    cpu: "Follow: CPU",
+    gpuBadge: "Fast",
+    cpu: "Follow: standard mode",
     cpuNote: "Works on every phone, uses more battery",
     cpuBadge: "Standard",
   },
@@ -494,6 +495,9 @@ export default {
     both: "Both",
     second: "+ Second language",
     none: "None",
+    // English's two spellings in the language list: English · Simple (Sukhkarta), English · Scholarly (sukhakartā)
+    simple: "Simple",
+    scholarly: "Scholarly",
     refrain: "↻ Refrain",
     close: "Close",
     reset: "Reset text size",
@@ -523,10 +527,10 @@ export default {
     saved: "saved on this phone",
     online: "online only",
   },
-  // Offline use and Check for updates (js/features/offline.js): Settings → More → About
+  // Offline use and Check for updates (js/features/offline.js): Settings → You → About
   offline: {
     state: { idle: "Offline ready", save: "Saving for offline…", off: "Saved copy in use" },
-    // the version line in Settings → More → About: what Check for updates found (under the version), and the round
+    // the version line in Settings → You → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
       check: "Check for updates",
@@ -694,7 +698,7 @@ export default {
     verseNumber: "Verse number",
     go: "Go",
     screen: "Screen",
-    more: "More",
+    more: "You",
     preview: "Preview",
     languageAndText: "Language and text",
     mainLanguage: "Main language",
@@ -707,7 +711,6 @@ export default {
     traditional: "Traditional",
     modern: "Modern",
     bold: "Bold",
-    verses: "Verses",
     dhrupad: "Dhrupad",
     once: "Once",
     everyVerse: "Every verse",
@@ -731,7 +734,8 @@ export default {
     paceSlow: "Slow",
     paceForget: "Forget what was learned",
     off: "Off",
-    profilesAndBackup: "Profiles and backup",
+    profile: "Profile",
+    backup: "Backup",
     thisBrowserCanTSave: "This browser can't save here. Use Save a backup file before closing.",
     whoIsReading: "Who is reading",
     routine: "Routine",
@@ -923,7 +927,9 @@ export default {
   // marker, Previous / Next under it, its language, and its credit's words. A text shown in Kannada, Telugu or Gujarati
   // letters takes that language's own words here, never Marathi's written in its letters (js/render.js SCR.el)
   text: {
-    refrainLabel: "Refrain (sung after every verse)",
+    // the dhrupad's label: its word, and how it is sung (js/render.js refrainLabel())
+    refrainWord: "Refrain",
+    refrainHow: "(sung after every verse)",
     // the switch between a text's versions (the Hanuman Chalisa: Tulsidas | Popular)
     version: "Version",
     refrainNote: "Refrain",

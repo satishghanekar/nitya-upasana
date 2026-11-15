@@ -144,18 +144,23 @@ function spKey(slot) {
   return LK(slot) === "en" ? "en:" + P.tr : LK(slot);
 }
 
-/** @param {string} k */
-function spName(k) {
+/** A language as its row names it, and (eg) as the list does, with the spelling's example word
+ * @param {string} k @param {boolean} [eg] */
+function spName(k, eg) {
   if (!k) return menuWords("languages").none;
   var l = k.split(":");
-  return LANGS[l[0]].n + (l[1] ? " · " + (l[1] === "iast" ? "sukhakartā" : "Sukhkarta") : "");
+  // English's two spellings, each named, and in the list shown: "English · Simple (Sukhkarta)", "English · Scholarly
+  // (sukhakartā)" (Satish, 2026-11-15: the example word alone did not say what was being chosen); the row has the
+  // name alone, so its label keeps to one line
+  var W = menuWords("languages");
+  return LANGS[l[0]].n + (l[1] ? " · " + (l[1] === "iast" ? W.scholarly + (eg ? " (sukhakartā)" : "") : W.simple + (eg ? " (Sukhkarta)" : "")) : "");
 }
 
 /** @param {HTMLSelectElement} sel @param {string[]} ks @param {string} cur @param {(k: string) => boolean} off */
 function spOpts(sel, ks, cur, off) {
   sel.innerHTML = ks
     .map(function (k) {
-      return '<option value="' + k + '"' + (k === cur ? " selected" : "") + (off(k) ? " disabled" : "") + ">" + spName(k) + "</option>";
+      return '<option value="' + k + '"' + (k === cur ? " selected" : "") + (off(k) ? " disabled" : "") + ">" + spName(k, true) + "</option>";
     })
     .join("");
   sel.value = cur;

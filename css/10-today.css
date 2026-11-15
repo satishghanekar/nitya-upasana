@@ -786,3 +786,21 @@
 #tss .tshn {
   position: relative;
 }
+
+/* ==== A phone held sideways: nothing on Home is cut with … (the review of 2026-11-15). Each of its two columns is
+   narrower than an upright phone, so the lines that keep to one line there, for a header of one height, ran out of
+   room: "रविवार, १८ ऑ…", "पराभव संव…", "Columbu", "Afterno…". Here the date and the calendar's second line wrap, the
+   place goes to a line of its own when it must, and the sessions' names lose their small drawings ==== */
+@media screen and (orientation: landscape) and (max-height: 520px) {
+  :root[data-hv="1"] #tdd .d1,
+  :root[data-hv="1"] #pan .p2 {
+    white-space: normal;
+  }
+  :root[data-hv="1"] #pan .p3 {
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+  :root[data-hv="1"] #tss .tsnm svg {
+    display: none;
+  }
+}

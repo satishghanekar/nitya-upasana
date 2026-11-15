@@ -103,13 +103,17 @@ describe("the site's words around a text, in every menu language", () => {
   test("each has them all, and the sentences with a name have one place for it", () => {
     for (const l of ["en", "mr", "kn", "te", "gu"]) {
       const w = menuWords("text", l);
-      for (const k of ["refrainLabel", "refrainNote", "prev", "next", "by", "compiledBy", "traditional"]) expect(w[k], l + " " + k).toBeTruthy();
+      for (const k of ["refrainWord", "refrainHow", "refrainNote", "prev", "next", "by", "compiledBy", "traditional"]) expect(w[k], l + " " + k).toBeTruthy();
       for (const k of ["attributed", "also"]) expect(w[k].split("{name}"), l + " " + k).toHaveLength(2);
       for (const c of ["sa", "mr", "hi"]) expect(w.lang[c], l + " " + c).toBeTruthy();
     }
   });
   test("Marathi's and English's are what the texts showed before (the dhrupad's label and marker, Previous / Next)", () => {
-    expect([menuWords("text", "mr").refrainLabel, menuWords("text", "mr").refrainNote]).toEqual(["ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)", "↻ ध्रुपद"]);
+    expect([menuWords("text", "mr").refrainWord, menuWords("text", "mr").refrainHow, menuWords("text", "mr").refrainNote]).toEqual([
+      "ध्रुपद",
+      "(प्रत्येक कडव्यानंतर म्हणावे)",
+      "↻ ध्रुपद",
+    ]);
     expect([menuWords("text", "en").prev, menuWords("text", "en").next]).toEqual(["Previous", "Next"]);
   });
 });

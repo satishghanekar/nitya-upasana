@@ -7,7 +7,7 @@
 */
 
 /* ==== Settings page (option A, 2026-10-15): under the top bar while open (Satish, 2026-10-24); Back and the tabs
-   Reading | Screen | More in one row, as on the Library and the calendar pages (Satish, 2026-10-25), with
+   Reading | Screen | You in one row, as on the Library and the calendar pages (Satish, 2026-10-25), with
    one tab's rounded cards of rows at a time, like phone settings. The main and second language are dropdowns.
    Centred, at most 640px wide, on wide screens. ==== */
 html[data-sp] {
@@ -297,6 +297,13 @@ html[data-sp] {
   flex-direction: column;
   align-items: center;
 }
+/* the lines in the middle of the window while shorter than it (Satish, 2026-11-15); taller, they start at the top */
+.sp-pw > :first-child {
+  margin-top: auto;
+}
+.sp-pw > :last-child {
+  margin-bottom: auto;
+}
 /* the preview's lines follow the pieces: the same text size (--fs) and share of it, line spacing and font */
 .sp-p1 {
   font: 400 var(--fs) / 1.7 var(--body);
@@ -371,8 +378,7 @@ html[data-sp] {
    hints (the preview shows large and small); Show and Text font beside their labels; Verses' heading for screen
    readers only (Dhrupad says what it is); rows and headings closer */
 @media screen and (max-width: 759.98px), screen and (orientation: landscape) and (max-height: 520px) {
-  .sp-pvg > .sp-h,
-  .sp-grp:has(#srf) > .sp-h {
+  .sp-pvg > .sp-h {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -396,9 +402,6 @@ html[data-sp] {
       linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent), linear-gradient(to bottom, #000 calc(100% - 6px), transparent);
     mask-image:
       linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent), linear-gradient(to bottom, #000 calc(100% - 6px), transparent);
-  }
-  .sp-grp:has(#srf) {
-    padding-top: 10px;
   }
   .sp-hd {
     padding-block: 8px 6px;
@@ -435,7 +438,7 @@ html[data-sp] {
 }
 
 /* ==== Wider screens (iPads and desktops): a tab's groups in two columns. Reading: its choices on the left and the
-   preview beside them on the right, staying in view while the choices scroll; More: Profiles and backup beside
+   preview beside them on the right, staying in view while the choices scroll; You: Profiles and backup beside
    About; a tab with one group (Screen) across both ==== */
 @media screen and (min-width: 760px) and (min-height: 521px) {
   .sp-pg {
@@ -587,6 +590,11 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   }
   #sp-home .sp-pvg {
     position: static;
+  }
+  /* About under the two columns, across both: with it in the right column that one ran a screen further than the
+     left, which ended at the dhrupad (Satish, 2026-11-15) */
+  #sp-home .sp-abt {
+    grid-column: 1 / -1;
   }
 }
 
@@ -919,6 +927,37 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   .sp-pvg ~ .sp-grp {
     grid-column: 2;
   }
+  /* Settings has the whole short screen: the top bar steps aside (it and the tabs took a third of the height, Satish,
+     2026-11-15), unseen but in its place, so the text behind stays put. (Over the script's style.top) */
+  :root:is([data-menu="panel"], [data-menu="jump"], [data-menu="cal"]) body > .bar {
+    visibility: hidden;
+  }
+  /* (the Library and the Vedic calendar too, 13-library.css and 12-calendar.css: one rule for the three) */
+  :root[data-menu="panel"] #panel,
+  :root[data-menu="jump"] #jump,
+  :root[data-menu="cal"] #cal {
+    top: 0 !important;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  /* Screen and You lie across the whole screen: a row's label on the left and its choices beside it (Theme's four ran
+     edge to edge, Satish, 2026-11-15); what else the row holds (Chanting pace's note) still goes under them */
+  .sp-c2 .sp-stk .sp-l {
+    flex: 1 1 36%;
+  }
+  .sp-c2 .sp-stk .sp-seg {
+    flex: 0 1 58%;
+  }
+}
+
+/* ==== Under Back and the tabs, which stay while the page scrolls: the cards dissolve as they go under, where a
+   card's top was cut straight across (Satish, 2026-11-15) ==== */
+.sp-hd::after {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto;
+  height: 12px;
+  background: linear-gradient(var(--bg), transparent);
+  pointer-events: none;
 }
 
 /* ==== About's Listen line (#lswr): where Listen runs its model here (js/features/listen.js showWay). A chip icon in a
@@ -964,7 +1003,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   min-width: 44px;
 }
 /* Chanting pace (#spcrow, js/features/routine-time.js): under the four paces, what is known of the reader's own, then
-   Forget as a link-like button, its tap target 44px high */
+   Forget as a small quiet button, 44px high */
 .sp-note {
   flex-basis: 100%;
   margin: 8px 0 0;
@@ -973,16 +1012,29 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   color: var(--muted);
 }
 .sp .sp-link {
+  /* a small quiet button, 44px to tap (was Settings' only underlined link; Satish, 2026-11-15) */
   min-height: 44px;
-  margin: 0 0 -8px;
-  padding: 0 2px;
-  border: 0;
+  margin: 8px 0 0;
+  padding: 0 16px;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
   background: none;
   font: inherit;
   font-size: var(--fz-s);
   font-weight: 600;
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  color: var(--ink);
   cursor: pointer;
+}
+
+/* ==== Show holidays from (#shol): each country chosen on its own carries a tick, drawn, so it needs no font
+   (Satish, 2026-11-15: two filled buttons read as one choice gone wrong) ==== */
+#shol button[aria-pressed="true"]::before {
+  content: "";
+  display: inline-block;
+  width: 0.34em;
+  height: 0.62em;
+  margin: 0 0.55em 0.12em 0;
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }

@@ -157,7 +157,7 @@ export function init() {
   if (!btn || !bar) return;
   // (a phone with no microphone access or no AudioWorklet can't listen: no button)
   btn.hidden = !(navigator.mediaDevices && window.AudioWorkletNode && window.WebAssembly);
-  // (Settings → More → About says where the model runs here: the same choice Listen makes when started; asked only
+  // (Settings → You → About says where the model runs here: the same choice Listen makes when started; asked only
   // when Settings opens, as asking for the GPU wakes it, and logs a warning where there is none)
   document.addEventListener("nitya-settings", function () {
     if (!btn.hidden) way().then(showWay);
@@ -252,7 +252,7 @@ export async function way() {
   return how === WAYS.gpu ? "gpu" : "cpu";
 }
 
-/** Settings → More → About: where Listen runs its model on this device (#lswr): a chip icon (with a bolt on the GPU),
+/** Settings → You → About: where Listen runs its model on this device (#lswr): a chip icon (with a bolt on the GPU),
  * "Listen: GPU" or "Listen: CPU", a line under it and a badge, in the menu language @param {"gpu" | "cpu"} w */
 function showWay(w) {
   var row = document.getElementById("lswr");

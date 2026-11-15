@@ -58,7 +58,7 @@ export default {
       "not-json": "ఇది నిత్య ఉపాసన బ్యాకప్ ఫైల్ (.nitya) కాదు.",
       "not-nitya": "ఇది నిత్య ఉపాసన బ్యాకప్ ఫైల్ (.nitya) కాదు.",
       newer:
-        "ఈ ఫైల్‌ను యాప్ యొక్క కొత్త వెర్షన్ సేవ్ చేసింది. అప్‌డేట్‌ల కోసం చూడండి (సెట్టింగ్‌లు → మరిన్ని → గురించి, వెర్షన్ పంక్తిని నొక్కండి), మళ్లీ ప్రయత్నించండి.",
+        "ఈ ఫైల్‌ను యాప్ యొక్క కొత్త వెర్షన్ సేవ్ చేసింది. అప్‌డేట్‌ల కోసం చూడండి (సెట్టింగ్‌లు → మీరు → గురించి, వెర్షన్ పంక్తిని నొక్కండి), మళ్లీ ప్రయత్నించండి.",
       kind: "ఈ .nitya ఫైల్ పూర్తి బ్యాకప్ కాదు.",
       checksum: "సేవ్ చేసిన తర్వాత ఈ ఫైల్ మారింది లేదా పాడైంది (దాని చెక్‌సమ్ సరిపోలడం లేదు), కాబట్టి ఏదీ పునరుద్ధరించబడలేదు.",
       empty: "ఈ బ్యాకప్‌లో ఎవరూ లేరు.",
@@ -466,10 +466,10 @@ export default {
     idle: function (n) {
       return "‘వెంట’ ఆగింది: " + n + " నిమిషాలు జపం వినబడలేదు. మళ్ళీ ప్రారంభించడానికి ‘వెంట’ నొక్కండి.";
     },
-    gpu: "‘వెంట’: GPU",
+    gpu: "‘వెంట’: వేగవంతమైన విధానం",
     gpuNote: "సుమారు 3 రెట్లు వేగం, తక్కువ బ్యాటరీ",
-    gpuBadge: "ఉత్తమం",
-    cpu: "‘వెంట’: CPU",
+    gpuBadge: "వేగం",
+    cpu: "‘వెంట’: సాధారణ విధానం",
     cpuNote: "ప్రతి ఫోన్‌లో పని చేస్తుంది, ఎక్కువ బ్యాటరీ వాడుతుంది",
     cpuBadge: "సాధారణ",
   },
@@ -487,6 +487,8 @@ export default {
     both: "రెండూ",
     second: "+ రెండవ భాష",
     none: "ఏదీ వద్దు",
+    simple: "సరళం",
+    scholarly: "శాస్త్రీయం",
     refrain: "↻ పల్లవి",
     close: "మూసివేయి",
     reset: "అక్షర పరిమాణాన్ని మొదటికి తెచ్చు",
@@ -516,10 +518,10 @@ export default {
     saved: "ఈ ఫోన్‌లో సేవ్ అయింది",
     online: "ఆన్‌లైన్‌లో మాత్రమే",
   },
-  // Offline use and Check for updates (js/features/offline.js): Settings → More → About
+  // Offline use and Check for updates (js/features/offline.js): Settings → You → About
   offline: {
     state: { idle: "ఆఫ్‌లైన్‌కు సిద్ధం", save: "ఆఫ్‌లైన్ కోసం సేవ్ అవుతోంది…", off: "సేవ్ చేసిన ప్రతి వాడుకలో ఉంది" },
-    // the version line in Settings → More → About: what Check for updates found (under the version), and the round
+    // the version line in Settings → You → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
       check: "అప్‌డేట్‌ల కోసం చూడు",
@@ -683,7 +685,7 @@ export default {
     verseNumber: "శ్లోక సంఖ్య",
     go: "వెళ్ళండి",
     screen: "తెర",
-    more: "మరిన్ని",
+    more: "మీరు",
     preview: "ముందుచూపు",
     languageAndText: "భాష, పాఠం",
     mainLanguage: "ప్రధాన భాష",
@@ -696,7 +698,6 @@ export default {
     traditional: "సాంప్రదాయ",
     modern: "ఆధునిక",
     bold: "బోల్డ్",
-    verses: "పద్యాలు",
     dhrupad: "ధ్రుపదం",
     once: "ఒకసారి",
     everyVerse: "ప్రతి పద్యం",
@@ -720,7 +721,8 @@ export default {
     paceSlow: "నెమ్మది",
     paceForget: "నేర్చుకున్న వేగాన్ని మరచిపో",
     off: "ఆఫ్",
-    profilesAndBackup: "ప్రొఫైల్‌లు, బ్యాకప్",
+    profile: "ప్రొఫైల్",
+    backup: "బ్యాకప్",
     thisBrowserCanTSave: "ఈ బ్రౌజర్ ఇక్కడ సేవ్ చేయలేదు. మూసే ముందు బ్యాకప్ ఫైల్ సేవ్ చేయండి.",
     whoIsReading: "ఎవరు చదువుతున్నారు",
     routine: "దినచర్య",
@@ -908,7 +910,8 @@ export default {
   },
   // The words the site adds to a text (js/strings/en.js)
   text: {
-    refrainLabel: "ధ్రువపదం (ప్రతి చరణం తర్వాత పాడండి)",
+    refrainWord: "ధ్రువపదం",
+    refrainHow: "(ప్రతి చరణం తర్వాత పాడండి)",
     version: "పాఠభేదం",
     refrainNote: "↻ ధ్రువపదం",
     prev: "మునుపటి",

@@ -57,7 +57,7 @@ export default {
     problems: {
       "not-json": "આ નિત્ય ઉપાસના બેકઅપ ફાઇલ (.nitya) નથી.",
       "not-nitya": "આ નિત્ય ઉપાસના બેકઅપ ફાઇલ (.nitya) નથી.",
-      newer: "આ ફાઇલ ઍપની નવી આવૃત્તિએ સાચવી છે. અપડેટ માટે તપાસો (સેટિંગ્સ → વધુ → વિશે, આવૃત્તિની લીટી દબાવો) અને ફરી પ્રયત્ન કરો.",
+      newer: "આ ફાઇલ ઍપની નવી આવૃત્તિએ સાચવી છે. અપડેટ માટે તપાસો (સેટિંગ્સ → તમે → વિશે, આવૃત્તિની લીટી દબાવો) અને ફરી પ્રયત્ન કરો.",
       kind: "આ .nitya ફાઇલ પૂરો બેકઅપ નથી.",
       checksum: "સાચવ્યા પછી આ ફાઇલ બદલાઈ છે અથવા બગડી છે (તેનો ચેકસમ મળતો નથી), તેથી કંઈ પાછું લાવ્યા નથી.",
       empty: "આ બેકઅપમાં કોઈ નથી.",
@@ -465,10 +465,10 @@ export default {
     idle: function (n) {
       return "‘સાથે’ બંધ થયું: " + n + " મિનિટ સુધી જાપ સંભળાયો નહીં. ફરી શરૂ કરવા ‘સાથે’ દબાવો.";
     },
-    gpu: "‘સાથે’: GPU",
+    gpu: "‘સાથે’: ઝડપી રીત",
     gpuNote: "લગભગ ૩ ગણું ઝડપી, બેટરી ઓછી વાપરે",
-    gpuBadge: "શ્રેષ્ઠ",
-    cpu: "‘સાથે’: CPU",
+    gpuBadge: "ઝડપી",
+    cpu: "‘સાથે’: સામાન્ય રીત",
     cpuNote: "દરેક ફોન પર ચાલે, બેટરી વધુ વાપરે",
     cpuBadge: "સામાન્ય",
   },
@@ -486,6 +486,8 @@ export default {
     both: "બંને",
     second: "+ બીજી ભાષા",
     none: "કોઈ નહીં",
+    simple: "સરળ",
+    scholarly: "શાસ્ત્રીય",
     refrain: "↻ ધ્રુવપદ",
     close: "બંધ કરો",
     reset: "અક્ષરનું કદ મૂળ કરો",
@@ -515,10 +517,10 @@ export default {
     saved: "આ ફોનમાં સાચવ્યું",
     online: "ફક્ત ઑનલાઇન",
   },
-  // Offline use and Check for updates (js/features/offline.js): Settings → More → About
+  // Offline use and Check for updates (js/features/offline.js): Settings → You → About
   offline: {
     state: { idle: "ઑફલાઇન માટે તૈયાર", save: "ઑફલાઇન માટે સાચવે છે…", off: "સાચવેલી નકલ વપરાય છે" },
-    // the version line in Settings → More → About: what Check for updates found (under the version), and the round
+    // the version line in Settings → You → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
       check: "અપડેટ માટે તપાસો",
@@ -677,7 +679,7 @@ export default {
     verseNumber: "શ્લોક ક્રમાંક",
     go: "જાઓ",
     screen: "પડદો",
-    more: "વધુ",
+    more: "તમે",
     preview: "ઝલક",
     languageAndText: "ભાષા અને પાઠ",
     mainLanguage: "મુખ્ય ભાષા",
@@ -690,7 +692,6 @@ export default {
     traditional: "પરંપરાગત",
     modern: "આધુનિક",
     bold: "ઘાટા",
-    verses: "કડીઓ",
     dhrupad: "ધ્રુપદ",
     once: "એક વાર",
     everyVerse: "દરેક કડી",
@@ -714,7 +715,8 @@ export default {
     paceSlow: "ધીમી",
     paceForget: "શીખેલી ગતિ ભૂલી જાઓ",
     off: "બંધ",
-    profilesAndBackup: "પ્રોફાઇલ અને બેકઅપ",
+    profile: "પ્રોફાઇલ",
+    backup: "બેકઅપ",
     thisBrowserCanTSave: "આ બ્રાઉઝર અહીં સાચવી શકતું નથી. બંધ કરતાં પહેલાં બેકઅપ ફાઇલ સાચવો.",
     whoIsReading: "કોણ વાંચે છે",
     routine: "દિનચર્યા",
@@ -902,7 +904,8 @@ export default {
   },
   // The words the site adds to a text (js/strings/en.js)
   text: {
-    refrainLabel: "ધ્રુપદ (દરેક કડી પછી ગાવું)",
+    refrainWord: "ધ્રુપદ",
+    refrainHow: "(દરેક કડી પછી ગાવું)",
     version: "પાઠભેદ",
     refrainNote: "↻ ધ્રુપદ",
     prev: "પાછલું",

@@ -346,7 +346,7 @@ test("Settings → About says where Listen runs its model: the CPU here, the GPU
   await expect(page.locator("#lswr")).not.toHaveAttribute("hidden", "");
   expect(await page.evaluate(() => window.__gpuAsked)).toBe(1);
   await expect(page.locator("#lswr")).toHaveAttribute("data-way", "cpu");
-  await expect(page.locator("#lsw")).toHaveText("Follow: CPU");
+  await expect(page.locator("#lsw")).toHaveText("Follow: standard mode");
   await expect(page.locator("#lswn")).toHaveText("Works on every phone, uses more battery");
   await expect(page.locator("#lswb")).toHaveText("Standard");
   // the Listen line comes before the version, which is last in About
@@ -365,9 +365,9 @@ test("Settings → About says the GPU when the browser has WebGPU and an adapter
   await openSite(page, SETUPS.english, { errors });
   await page.locator("#aa").click();
   await expect(page.locator("#lswr")).toHaveAttribute("data-way", "gpu");
-  await expect(page.locator("#lsw")).toHaveText("Follow: GPU");
+  await expect(page.locator("#lsw")).toHaveText("Follow: fast mode");
   await expect(page.locator("#lswn")).toHaveText("About 3× faster, lighter on battery");
-  await expect(page.locator("#lswb")).toHaveText("Optimized");
+  await expect(page.locator("#lswb")).toHaveText("Fast");
   // only the GPU's icon (the chip with a bolt) shows
   await expect(page.locator("#lswr .lsw-gpu")).not.toHaveCSS("display", "none");
   await expect(page.locator("#lswr .lsw-cpu")).toHaveCSS("display", "none");

@@ -710,18 +710,24 @@
   padding-block: 6px;
 }
 @media (max-width: 439px) {
+  /* The grip, then the number and the first name on a line of their own; under the name the second name on one line
+     (cut with … if it is long) and the time under that, with the three buttons beside the two. (The time had no place
+     of its own: it fell under the number, widened that column and pushed the names to the right, and a second name
+     wrapped beside it; the review of 2026-11-15.) */
   #rtl li {
     display: grid;
-    grid-template-columns: 28px auto 1fr auto;
+    grid-template-columns: 28px auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto auto;
     column-gap: 4px;
+    padding-block: 8px;
   }
   #rtl .rtg {
-    grid-row: 1 / span 2;
+    grid-row: 1 / -1;
   }
   #rtl .tno {
-    grid-row: 1;
+    grid-area: 1 / 2;
   }
-  /* (the two names lay themselves out as the row's own items) */
+  /* (the two names and the time lay themselves out as the row's own items) */
   #rtl .tt {
     display: contents;
   }
@@ -730,11 +736,19 @@
   }
   #rtl .tt .t2 {
     grid-area: 2 / 3;
+    align-self: end;
     min-width: 0;
-    overflow-wrap: anywhere;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  #rtl .tt .rtm {
+    grid-area: 3 / 3;
+    align-self: start;
   }
   #rtl .rtbs {
-    grid-area: 2 / 4;
+    grid-area: 2 / 4 / span 2;
+    align-self: center;
   }
 }
 
@@ -781,4 +795,27 @@
 }
 #rtb[lang="mr"] #rtl .rtm {
   font-family: var(--body);
+}
+
+/* ==== Three choices stood stacked as three boxes of one look (the routine, the session, which days), with two
+   paragraphs between them, so the list began two thirds of the way down a phone (the review of 2026-11-15). Which days
+   is the one changed least: a small pill at the right, under the session it belongs to, as the Library's Book order |
+   A–Z; and the notes under the routines a size smaller ==== */
+#rtmd {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline-start: auto;
+  padding: 3px;
+  border: 0;
+  border-radius: 999px;
+}
+#rtmd button {
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: var(--fz-s);
+}
+#rtbi,
+#rtbo {
+  font-size: var(--fz-s);
+  line-height: 1.45;
 }

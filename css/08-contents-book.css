@@ -153,20 +153,15 @@
     display: flex;
   }
 
-  /* Marathi + English piece headings: the English line starts under the Marathi title, past the number */
-  .ash[data-lang="both"] header h2 {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    column-gap: 0.3em;
-    align-items: baseline;
-    justify-items: start;
+  /* Marathi + English piece headings: the number and the Marathi name on one line, the English name under it, each
+     centred in the card as the Marathi-only title is (the English line used to start under the Marathi name, past
+     the number, which pushed both to the left of the text they head; the review of 2026-11-15) */
+  .ash[data-lang="both"] header h2 > .no,
+  .ash[data-lang="both"] header h2 > .mr {
+    display: inline;
   }
-  .ash[data-lang="both"] header h2 > .no {
-    grid-row: 1;
-  }
-  .ash[data-lang="both"] header h2 > .mr,
   .ash[data-lang="both"] header h2 > .en {
-    grid-column: 2;
+    display: block;
   }
 }
 /* ==== Author line under the lotus at the end of each piece (who wrote it, with a Wikipedia link) ==== */

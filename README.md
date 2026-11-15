@@ -8,7 +8,7 @@ Everything runs on the phone or computer. Nothing is sent anywhere, there is no 
 
 ## What the site does
 
-What a reader sees and can do is described in the site's own **Help** (Share in the top bar → Help, or Settings → More → About). Its text is in `index.html`, in the `<template id="hlpc">`; keep it up to date with every change a reader can see. In short:
+What a reader sees and can do is described in the site's own **Help** (Share in the top bar → Help, or Settings → You → About). Its text is in `index.html`, in the `<template id="hlpc">`; keep it up to date with every change a reader can see. In short:
 
 - **Home** is what to chant now: the picture for the time of day (sunrise, midday, sunset) with the weekday's star ringed, the date in the reading languages, the Vedic calendar card with Coming up at its bottom (the next festivals, Pradosh, Sankashti and the US's and India's public holidays, each with its own drawing; a holiday on a festival's day shares its row), and a Morning / Afternoon / Evening switch that opens at the session for the time now (Morning before 12:00, Afternoon 12:00 to 17:00, Evening from 17:00). The session's texts come from the reading person's routine for today's weekday. A title starts the session there: its texts follow one another in one scroll, in session order, and ‹ Prev and Next › jump between them and never leave the session. On a festival, Pradosh, Sankashti or chosen holiday the calendar card takes that day's colour and drawing. ‹ › beside the date show the day before or after: all of Home follows that day (date, calendar card, Coming up, the lists), so its texts can be read or printed, and Today under the arrows comes back. Nothing on Home moves from day to day. On wide screens (from 1024px) Home's column stays on the left while a text is read on the right.
 - **Library** (the open-book button in the bottom bar): every text by category (Vedic Chant, Aarti, Stotra, Ashtak, and any the family adds), numbered from 1 in each, in the book's order or A to Z (each person's choice; a text keeps its number either way), with search across every title and line (the box at the foot of the page on phones) and **Recent**, the last places each person went to from it. Categories can be added, renamed and texts moved on each phone. When the site has PDFs, a **Books** (पोथी) tab beside **Chants** (पाठ) lists them under the same categories; each shows its pages and size, opens in the phone's own PDF viewer and is kept on the phone once opened (a cloud before each title shows which are: ↓ online only, ✓ saved).
@@ -61,14 +61,14 @@ Because every merge goes live, changes are made on a branch, checked (see *Check
 
 ### The version
 
-The version is what Settings → More → About shows. It is written in **two** places, which must always be the same (here as an example):
+The version is what Settings → You → About shows. It is written in **two** places, which must always be the same (here as an example):
 
 1. `sw.js`, near the top: `const V = "aarti-v1.22";`
 2. `index.html`, near the top: `<meta name="version" content="aarti-v1.22">`
 
 Change both together for every release, digits and dots only: the last number for fixes (`1.22` → `1.22.1`), the middle one for new features (`1.23`). `tests/offline.spec.mjs` fails if the two differ.
 
-Phones keep a saved copy of the site and always open from it, without asking the network, so the site starts quickly even on a weak connection. Phones download files again only when the version changes: opening the site online notices the new `sw.js`, which saves a whole new copy in the background (the fonts are carried over), and the next launch opens the new version. So a change reaches phones only with a new version. The round button beside the version in Settings → More → About checks for updates straight away.
+Phones keep a saved copy of the site and always open from it, without asking the network, so the site starts quickly even on a weak connection. Phones download files again only when the version changes: opening the site online notices the new `sw.js`, which saves a whole new copy in the background (the fonts are carried over), and the next launch opens the new version. So a change reaches phones only with a new version. The round button beside the version in Settings → You → About checks for updates straight away.
 
 ### After publishing
 

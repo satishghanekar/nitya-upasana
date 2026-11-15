@@ -301,6 +301,12 @@ function renderList() {
   timesIn = ui() + "|" + scrKey();
   sortedAs = sortKey();
   orderButtons();
+  // how many texts, beside Book order | A–Z
+  var count = document.getElementById("library-count");
+  if (count) {
+    count.textContent = menuWords("routine").texts(jl.querySelectorAll(".tocg:not(.pdfg) ol.toc > li").length);
+    count.lang = ui() === "mr" ? mrLang() : ui();
+  }
 }
 
 /** After a change: the list (and the PDFs' categories), the English style of the titles, the switches and search */

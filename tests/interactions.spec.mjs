@@ -18,14 +18,38 @@ test("while reading the top bar has Share and Settings; the bottom bar has Home,
   for (const b of ["#who", "#hm", "#tmb", "#aa"]) await expect(page.locator(b)).toBeVisible();
   expect(await page.locator(".bar .tools button:visible").evaluateAll((l) => l.map((b) => b.id))).toEqual(["tmb", "aa"]);
   await expect(page.locator("#tmb")).toHaveAccessibleName("Share");
-  // the bottom bar's middle buttons are icons alone (Satish 2026-11-13: the words under them crowded a phone), each
-  // still named by its word, in the menu language, for screen readers and voice control
+  // the bottom bar's middle buttons: the icon with its word under it, in the menu language (icons alone, from
+  // 2026-11-13, were hard to tell apart; the review of 2026-11-15, Satish: build it). The word is the button's name
   await expect(page.locator("#ash")).toHaveAccessibleName("Home");
   await expect(page.locator("#hm")).toHaveAccessibleName("Library");
   await expect(page.locator("#rsb")).toHaveAccessibleName("Reading");
-  for (const b of ["#ash", "#hm", "#rsb"]) expect(await page.locator(b + " .asil").evaluate((e) => getComputedStyle(e).height)).toBe("1px");
-  // and the bar is no taller than its round Prev and Next buttons need
+  for (const b of ["#ash", "#hm", "#rsb"]) {
+    await expect(page.locator(b + " .asil")).toBeVisible();
+    const fit = await page.locator(b).evaluate((e) => {
+      const r = e.getBoundingClientRect(),
+        w = e.querySelector(".asil").getBoundingClientRect(),
+        i = e.querySelector("svg").getBoundingClientRect();
+      return { wide: r.width, high: r.height, wordIn: w.left >= r.left && w.right <= r.right && w.bottom <= r.bottom, under: w.top >= i.bottom };
+    });
+    expect(fit.wide, b).toBeGreaterThanOrEqual(44);
+    expect(fit.high, b).toBeGreaterThanOrEqual(44);
+    expect(fit.wordIn, b + ": the word inside its button").toBe(true);
+    expect(fit.under, b + ": the word under the icon").toBe(true);
+  }
+  // and the bar is no taller than its round Prev and Next buttons need, as it was with icons alone
   expect(await page.locator("#asi").evaluate((e) => e.getBoundingClientRect().height)).toBeLessThanOrEqual(58);
+  // nothing in the bar spills out of it
+  expect(
+    await page
+      .locator("#asi")
+      .evaluate((e) =>
+        [...e.children].every(
+          (b) =>
+            b.hidden ||
+            (b.getBoundingClientRect().left >= e.getBoundingClientRect().left && b.getBoundingClientRect().right <= e.getBoundingClientRect().right),
+        ),
+      ),
+  ).toBe(true);
 });
 
 test("the bottom bar's words follow the menu language @mobile", async ({ page }) => {
@@ -438,7 +462,7 @@ test("IAST spelling switches in place without a reload", async ({ page }) => {
   const first = () => page.locator("#a1 .items .verse .en p").first().textContent();
   expect(await first()).toContain("Sukhkarta");
   await page.evaluate((k) => {
-    // what Settings does when "English · sukhakartā" is picked
+    // what Settings does when "English · Scholarly (sukhakartā)" is picked
     const s = document.getElementById("sl2s");
     const o = [...s.options].find((x) => /ā/.test(x.textContent));
     s.value = o.value;
@@ -596,9 +620,9 @@ test.describe("pinch @chromium-only", () => {
   });
 });
 
-// Settings' tabs on phones and tablets, Reading | Screen | More, beside Back: one tab's groups at a time, the credit
+// Settings' tabs on phones and tablets, Reading | Screen | You, beside Back: one tab's groups at a time, the credit
 // under every tab, and Settings opens on Reading again each time
-test("Settings: Reading | Screen | More, one at a time; opens on Reading each time", async ({ page }) => {
+test("Settings: Reading | Screen | You, one at a time; opens on Reading each time", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi);
   await page.locator("#aa").click();
@@ -607,12 +631,25 @@ test("Settings: Reading | Screen | More, one at a time; opens on Reading each ti
   await expect(page.locator("#sl1")).toBeVisible();
   await expect(page.locator("#sfn")).toBeVisible();
   await expect(page.locator("#st")).toBeHidden();
-  await expect(page.locator(".sp-by")).toBeVisible();
+  // the tab once named More, for what it holds: the person, their routine, pace and backup (Satish, 2026-11-15)
+  await expect(tab("more")).toHaveText("You");
+  // English's spelling named as well as shown
+  await expect(page.locator("#sl2v")).toHaveText("English · Simple");
+  await expect(page.locator("#sl2s option", { hasText: "Sukhkarta" })).toHaveText("English · Simple (Sukhkarta)");
+  await expect(page.locator("#sl2s option", { hasText: "sukhakartā" })).toHaveText("English · Scholarly (sukhakartā)");
+  // the maker's line under About only, not under every tab
+  await expect(page.locator(".sp-by")).toBeHidden();
   await tab("screen").click();
   await expect(tab("screen")).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#st")).toBeVisible();
   await expect(page.locator("#sl1")).toBeHidden();
-  await expect(page.locator(".sp-by")).toBeVisible();
+  await expect(page.locator(".sp-by")).toBeHidden();
+  // each holiday country chosen carries a tick; one turned off loses it
+  const tick = (v) => page.locator(`#shol button[data-v="${v}"]`).evaluate((b) => getComputedStyle(b, "::before").content !== "none");
+  expect([await tick("us"), await tick("in")]).toEqual([true, true]);
+  await page.locator('#shol button[data-v="in"]').click();
+  expect([await tick("us"), await tick("in")]).toEqual([true, false]);
+  await page.locator('#shol button[data-v="in"]').click();
   await tab("more").click();
   await expect(page.locator("#bks")).toBeVisible();
   await expect(page.locator("#hlp2")).toBeVisible();
@@ -639,7 +676,22 @@ test("Settings on a desktop or an iPad: every group at once, in two columns, no 
   const x = async (sel) => (await page.locator(sel).boundingBox()).x;
   expect(await x(".sp-c1")).toBeLessThan(await x(".sp-c2"));
   for (const id of ["#sprev", "#sl1", "#srf"]) expect(await page.locator(".sp-c1 " + id).count(), id).toBe(1);
-  for (const id of ["#st", "#su", "#bks", "#upd"]) expect(await page.locator(".sp-c2 " + id).count(), id).toBe(1);
+  for (const id of ["#st", "#su", "#bks"]) expect(await page.locator(".sp-c2 " + id).count(), id).toBe(1);
+  // About under the two columns, across both, so they end nearly level (Satish, 2026-11-15: with About in the right
+  // column it ran a screen further than the left)
+  const [c1, c2, about] = await Promise.all([".sp-c1", ".sp-c2", ".sp-abt"].map((sel) => page.locator(sel).boundingBox()));
+  expect(await page.locator(".sp-abt #upd").count()).toBe(1);
+  expect(about.y).toBeGreaterThanOrEqual(Math.max(c1.y + c1.height, c2.y + c2.height) - 1);
+  expect(Math.abs(about.x - c1.x)).toBeLessThan(2);
+  expect(Math.abs(about.x + about.width - (c2.x + c2.width))).toBeLessThan(2);
+  expect(Math.abs(c1.height - c2.height), "the two columns end nearly level").toBeLessThan(260);
+  // the preview's lines in the middle of their window, not at its top with the room left over under them
+  const gaps = await page.locator("#sprev .sp-pw").evaluate((w) => {
+    const r = w.getBoundingClientRect(),
+      ps = [...w.querySelectorAll("p")].map((p) => p.getBoundingClientRect());
+    return [Math.min(...ps.map((b) => b.top)) - r.top, r.bottom - Math.max(...ps.map((b) => b.bottom))];
+  });
+  expect(Math.abs(gaps[0] - gaps[1])).toBeLessThan(30);
   await page.setViewportSize({ width: 820, height: 1180 });
   await expect(page.locator("#spv")).toBeHidden();
   for (const id of ["#sl1", "#st", "#bks"]) await expect(page.locator(id)).toBeVisible();
@@ -648,6 +700,32 @@ test("Settings on a desktop or an iPad: every group at once, in two columns, no 
   await expect(page.locator("#st")).toBeHidden();
   // (the title for screen readers only: a 1px box)
   expect((await page.locator("#spt").boundingBox()).width).toBeLessThanOrEqual(1);
+});
+
+// While a page is open over a text (Settings, the Library, the calendar), the text behind the top pill is covered
+// whole: it showed around the pill, above it on a phone held sideways and under the clock upright (Satish, 2026-11-15)
+test("with Settings open, nothing of the text shows around the top bar @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { hash: "#aarti-sukhkarta" });
+  const band = () =>
+    page.evaluate(() => {
+      const s = getComputedStyle(document.body, "::before");
+      return {
+        shown: s.display !== "none",
+        fade: s.backgroundImage !== "none",
+        colour: s.backgroundColor,
+        bottom: parseFloat(s.height),
+        bg: getComputedStyle(document.body).backgroundColor,
+      };
+    });
+  // while reading: a fade, so no half-covered line shows beside the pill
+  expect(await band()).toMatchObject({ shown: true, fade: true });
+  await page.locator("#aa").click();
+  const open = await band();
+  expect(open).toMatchObject({ shown: true, colour: open.bg });
+  // down to where the page starts, under the pill
+  expect(open.bottom).toBeGreaterThanOrEqual((await page.locator("#panel").boundingBox()).y);
+  await page.locator("#xc").click();
+  expect(await band()).toMatchObject({ shown: true, fade: true });
 });
 
 // A phone held sideways is as wide as an iPad but too short for its layout: the tabs, and on Reading the preview on
@@ -669,6 +747,34 @@ test("Settings on a phone held sideways: the tabs, the preview beside the readin
   await page.locator('#spv [data-v="screen"]').click();
   await expect(page.locator("#st")).toBeVisible();
   await expect(page.locator("#sl1")).toBeHidden();
+  // across the whole screen a row's label and its choices share a line, the choices no wider than they need
+  // (Satish, 2026-11-15: Theme's four ran edge to edge under the label)
+  const [label, seg, row] = await Promise.all(
+    ["span.sp-l", "#st", ""].map((sel) =>
+      page
+        .locator(".sp-row:has(#st) " + sel)
+        .first()
+        .boundingBox(),
+    ),
+  );
+  expect(seg.y).toBeLessThan(label.y + label.height);
+  expect(seg.x).toBeGreaterThan(label.x + label.width - 1);
+  expect(seg.width).toBeLessThan(row.width * 0.65);
+  // You: Profile (who is reading, the routine, the chanting pace), Backup, then About, each under its heading
+  await page.locator('#spv [data-v="more"]').click();
+  await expect(page.locator("#panel .sp-grp:not([hidden]) > .sp-h")).toHaveText(["Profile", "Backup", "About"]);
+  expect((await box("#spc")).y).toBeLessThan((await box("#bks")).y);
+  expect((await box("#bks")).y).toBeLessThan((await box("#hlp2")).y);
+  for (const id of ["#spf", "#sprt", "#spc"]) expect(await page.locator(".sp-grp:has(#spf) " + id).count(), id).toBe(1);
+  // Settings has the whole of the short screen: the top bar steps aside while it is open, and comes back after
+  await expect(page.locator("body > .bar")).toBeHidden();
+  expect((await page.locator("#panel").boundingBox()).y).toBe(0);
+  await page.locator("#xc").click();
+  await expect(page.locator("body > .bar")).toBeVisible();
+  await page.locator("#aa").click();
+  // the dhrupad in the reading choices' own card, the last of them in view beside the preview with nothing scrolled
+  expect(await page.locator(".sp-card:has(#sl1) #srf").count()).toBe(1);
+  expect((await box("#sfn")).y + (await box("#sfn")).height).toBeLessThanOrEqual(390);
   // turned upright, and an iPad held sideways, as before
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator("#spv")).toBeVisible();
@@ -1020,4 +1126,192 @@ test("a short text keeps the Home link as its title; Go to only where a text is 
   await untuck(page);
   await expect(page.locator("#where")).toBeHidden();
   await expect(page.locator("#bt")).toHaveAttribute("href", "./");
+});
+
+// ==== The phone and iPad review of 2026-11-15 (Satish: build it), the nine screens' mock-ups ====
+
+// The bottom bar where there is no room for icon and word: under 360px the icon alone, on a phone's side the word alone
+test("the bottom bar: icons alone on the smallest phones, words alone on a phone held sideways", async ({ page }) => {
+  await page.setViewportSize({ width: 340, height: 640 });
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  await untuck(page);
+  const inside = () =>
+    page.locator("#asi").evaluate((e) => {
+      const r = e.getBoundingClientRect();
+      return [...e.children].every((b) => b.hidden || (b.getBoundingClientRect().left >= r.left && b.getBoundingClientRect().right <= r.right));
+    });
+  expect(await page.locator("#hm .asil").evaluate((e) => getComputedStyle(e).height)).toBe("1px");
+  await expect(page.locator("#hm svg")).toBeVisible();
+  await expect(page.locator("#hm")).toHaveAccessibleName("Library");
+  expect(await inside()).toBe(true);
+  await page.setViewportSize({ width: 844, height: 390 });
+  await untuck(page);
+  await expect(page.locator("#hm .asil")).toBeVisible();
+  await expect(page.locator("#hm svg")).toBeHidden();
+  expect(await page.locator("#hm").evaluate((e) => e.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+  expect(await inside()).toBe(true);
+});
+
+// Both languages: the number and the Marathi name, then the English name, each centred in the title's card as a
+// one-language title is (they stood to the left of the text they head); the dhrupad's label is its two words, one line
+test("Marathi + English: the title centred in its card, and the dhrupad's label on one line @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.both, { hash: "#a1" });
+  const off = await page.locator("#a1 header").evaluate((h) => {
+    const mid = (/** @type {Element} */ e) => {
+      const r = document.createRange();
+      r.selectNodeContents(e);
+      const b = r.getBoundingClientRect();
+      return (b.left + b.right) / 2;
+    };
+    const c = h.getBoundingClientRect(),
+      centre = (c.left + c.right) / 2;
+    return [Math.abs(mid(/** @type {Element} */ (h.querySelector("h2 .en"))) - centre), Math.abs(mid(/** @type {Element} */ (h.querySelector("h2"))) - centre)];
+  });
+  expect(off[0], "the English name").toBeLessThanOrEqual(2);
+  expect(off[1], "the heading").toBeLessThanOrEqual(2);
+  const lab = page.locator("#a1 .rftop .lab");
+  await expect(lab.locator(".lab-how").first()).toBeHidden();
+  await expect(lab).toHaveText("ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)Refrain (sung after every verse)");
+  // one line: no taller than its line height allows
+  expect(await lab.evaluate((e) => e.getBoundingClientRect().height / parseFloat(getComputedStyle(e).lineHeight))).toBeLessThan(1.6);
+});
+
+test("one language: the dhrupad's label says how it is sung @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  await expect(page.locator("#a1 .rftop .lab .mr .lab-how")).toBeVisible();
+  await expect(page.locator("#a1 .rftop .lab .mr")).toHaveText("ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)");
+});
+
+// A phone held sideways: Home's two columns are narrower than an upright phone, and the lines that keep to one line
+// there ("रविवार, १८ ऑ…", "Afterno…", "Columbu") wrap or lose their drawing instead
+test("Home on a phone held sideways: no word is cut", async ({ page }) => {
+  await page.setViewportSize({ width: 667, height: 375 });
+  await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 } }, { now: new Date("2026-10-18T19:00:00-04:00") });
+  const cut = await page.evaluate(() =>
+    [...document.querySelectorAll("#tdd .d1, #pan .p2, #ploc, #tss .tsw")].filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => e.id || e.className),
+  );
+  expect(cut).toEqual([]);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+// A phone held sideways: the Library and the Vedic calendar have the whole short screen, as Settings has: the top bar
+// steps aside, and the Library's Back, tabs and search box share one row
+test("the Library and the calendar on a phone held sideways: the whole screen, one header row", async ({ page }) => {
+  await page.setViewportSize({ width: 844, height: 390 });
+  await openSite(page, { ...SETUPS.marathi, loc: { lat: 39.96, lon: -83.0 } }, { now: new Date("2026-10-18T19:00:00-04:00") });
+  await page.locator("#hm").click();
+  await expect(page.locator("#jump")).toBeVisible();
+  expect(await page.locator(".bar").evaluate((e) => getComputedStyle(e).visibility)).toBe("hidden");
+  const row = await page.evaluate(() =>
+    ["#jump", "#jbk", "#jtb", "#q", "#library-top"].map((s) => Math.round(/** @type {Element} */ (document.querySelector(s)).getBoundingClientRect().top)),
+  );
+  expect(row[0], "the Library from the top of the screen").toBe(0);
+  expect(Math.abs(row[1] - row[2]), "Back and the tabs level").toBeLessThanOrEqual(4);
+  expect(Math.abs(row[1] - row[3]), "the search box beside them").toBeLessThanOrEqual(4);
+  expect(row[4], "the list starts within the first third").toBeLessThan(130);
+  // the list in two columns, and still found by typing
+  expect(await page.locator("#jl").evaluate((e) => getComputedStyle(e).columnCount)).toBe("2");
+  await page.locator("#q").fill("sukh");
+  await expect(page.locator("#res li").first()).toBeVisible();
+  await page.locator("#q").fill("");
+  await page.locator("#jbk").click();
+  await expect(page.locator("#jump")).toBeHidden();
+  expect(await page.locator(".bar").evaluate((e) => getComputedStyle(e).visibility)).toBe("visible");
+  await page.locator("#panb").click({ position: { x: 12, y: 12 } });
+  await expect(page.locator("#cal")).toBeVisible();
+  expect(await page.locator(".bar").evaluate((e) => getComputedStyle(e).visibility)).toBe("hidden");
+  expect(await page.locator("#cal").evaluate((e) => Math.round(e.getBoundingClientRect().top))).toBe(0);
+  await page.locator("#cbk").click();
+  await expect(page.locator("#cal")).toBeHidden();
+});
+
+// ==== The desktop review of 2026-11-15 (Satish: start with 1, 2, 4 and 5) ====
+
+// With a keyboard: / opens the Library at its search box; while a text is read ← → are Prev and Next; never while
+// typing or inside a group of choices, and nothing under an open page
+test("a keyboard: / opens the Library's search, and ← → go to the previous and next text", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  const at = () => page.evaluate(() => location.hash);
+  await page.waitForTimeout(300);
+  await page.keyboard.press("ArrowRight");
+  await expect.poll(at).toBe("#a2");
+  await page.keyboard.press("ArrowLeft");
+  await expect.poll(at).toBe("#a1");
+  // with Alt held (the browser's own Back), nothing
+  await page.keyboard.press("Alt+ArrowRight");
+  expect(await at()).toBe("#a1");
+  await page.keyboard.press("/");
+  await expect(page.locator("#jump")).toBeVisible();
+  await expect(page.locator("#q")).toBeFocused();
+  // typing in the box: a / and the arrows are the box's own
+  await page.keyboard.type("a/b");
+  await page.keyboard.press("ArrowLeft");
+  await expect(page.locator("#q")).toHaveValue("a/b");
+  expect(await at()).toBe("#a1");
+  await page.locator("#q").fill("");
+  // from elsewhere in the open Library, / goes back to the box
+  await page.locator("#jbk").focus();
+  await page.keyboard.press("/");
+  await expect(page.locator("#q")).toBeFocused();
+  await page.keyboard.press("Escape");
+  // under Settings the keys do nothing
+  await page.locator("#aa").click();
+  await expect(page.locator("#panel")).toBeVisible();
+  await page.locator("#xc").focus();
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("/");
+  await expect(page.locator("#jump")).toBeHidden();
+  expect(await at()).toBe("#a1");
+});
+
+test("a keyboard on Home: ← → leave the page alone, and the session's tabs keep their arrows", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSite(page, SETUPS.marathi);
+  await page.keyboard.press("ArrowRight");
+  expect(await page.evaluate(() => location.hash)).toBe("");
+  await page.locator("#tss-morning").click();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator("#tss-afternoon")).toBeFocused();
+  expect(await page.evaluate(() => location.hash)).toBe("");
+});
+
+// A computer, one column: the dhrupad's rule beside its lines, not at the page's left edge; the Library's search box
+// as wide as the tabs above it
+test("a computer: the dhrupad's rule stands beside its lines, and the Library's search box is as wide as its tabs", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  const gap = await page.locator("#a1 .rftop .verse").evaluate((v) => {
+    const r = document.createRange();
+    r.selectNodeContents(/** @type {Element} */ (v.querySelector("p")));
+    return r.getBoundingClientRect().left - v.getBoundingClientRect().left;
+  });
+  expect(gap).toBeGreaterThanOrEqual(0);
+  expect(gap).toBeLessThan(80);
+  await page.keyboard.press("/");
+  const wide = await page.evaluate(() => {
+    const r = (/** @type {string} */ s) => /** @type {Element} */ (document.querySelector(s)).getBoundingClientRect();
+    return [Math.round(r("#q").left - r(".libhd").left), Math.round(r(".libhd").right - r("#q").right)];
+  });
+  expect(wide).toEqual([0, 0]);
+});
+
+// Two columns of stanzas: a stanza with none beside it (the last of three) is centred across both, not alone on the left
+test("two columns: a last stanza with none beside it is centred across both", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  await expect(page.locator("html")).toHaveAttribute("data-cols", "2");
+  const at = await page.locator("#a1 .items").evaluate((b) => {
+    const main = [...b.children].filter((e) => e.classList.contains("item") && !e.classList.contains("rf") && !e.classList.contains("dh"));
+    const last = main[main.length - 1].getBoundingClientRect(),
+      box = b.getBoundingClientRect();
+    return {
+      odd: main.length % 2,
+      off: Math.abs((last.left + last.right) / 2 - (box.left + box.right) / 2),
+      first: main[0].classList.contains("c1") && main[1].classList.contains("c2"),
+    };
+  });
+  expect(at.odd, "Sukhkarta has three stanzas").toBe(1);
+  expect(at.first, "the first two side by side").toBe(true);
+  expect(at.off, "the last one centred").toBeLessThanOrEqual(2);
 });
