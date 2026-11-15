@@ -5,8 +5,7 @@ language: sa
 legacy-id: p1
 line-ids: p1l
 layout: prose
-source: Atharvaveda
-credit-detail: उपनिषद | Upanishad
+credit: source atharvaveda | उपनिषद | Upanishad
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90)
 lines: 103
 letters: 2783

@@ -116,55 +116,61 @@ function wikiLink(name, q, side, ctx, lang) {
 }
 
 /**
- * A text's credit in both its languages, from its header's keys into content/credits.json (Satish, 2026-11-15: each
- * person and source written once): "रचना : संत नरहरी सोनार (१३ वे शतक)" / "By Sant Narahari Sonar (13th century)",
- * "आदि शंकराचार्य यांचे मानले जाते", a source's name, Traditional; credit-detail in brackets after the name (in place of a
- * person's time); and under it, smaller, the one it is also credited to. The words around the names are the site's
- * (js/strings/, "text"); on the original's side each carries its key (data-tw), so js/render.js puts the language's own
- * words in when Kannada, Telugu or Gujarati letters are chosen.
+ * A text's credit in both its languages, from its header's credit line and content/credits.json (Satish, 2026-11-15:
+ * each person and source written once, a text's credit in one line): "रचना : संत नरहरी सोनार (१३ वे शतक)" / "By Sant
+ * Narahari Sonar (13th century)", "आदि शंकराचार्य यांचे मानले जाते", a source's name, Traditional; what only the text
+ * says in brackets after the name (in place of a person's time); and under it, smaller, the one it is also credited to.
+ * The words around the names are the site's (js/strings/, "text"); on the original's side each carries its key
+ * (data-tw), so js/render.js puts the language's own words in when Kannada, Telugu or Gujarati letters are chosen.
  * @param {Text} t @param {Ctx} ctx @returns {string}
  */
 function creditOf(t, ctx) {
-  var lang = t.language === "hi" ? "hi" : "mr";
+  var lang = t.language === "hi" ? "hi" : "mr",
+    c = t.credit;
+  /** a person (or, with source, a source) by their key: a key not there stops the build, naming the text
+   * @param {string} key @param {"people" | "sources"} group @returns {Credit} */
+  var entry = function (key, group) {
+    var e = ctx.credits && ctx.credits[group][key];
+    if (!e) throw new Error("texts/" + t.id + ".txt: " + key + " is not one of content/credits.json's " + group);
+    return e;
+  };
   /** @param {"mr" | "en"} side @param {boolean} [note]  the line under it: also credited to */
   function line(side, note) {
-    if (!ctx.words || !ctx.credits) return "";
+    if (!ctx.words || !ctx.credits || !c) return "";
     var W = ctx.words("text", side),
-      C = /** @type {Credits} */ (ctx.credits),
-      detail = t.creditDetail ? t.creditDetail.split(" | ")[side === "mr" ? 0 : 1] : "";
+      detail = c.detail ? c.detail[side] : "";
     /** a word of the site's, marked with its key on the original's side @param {string} key @param {string} txt */
     var tw = function (key, txt) {
       return side === "mr" ? '<span data-tw="' + key + '">' + esc(txt) + "</span>" : esc(txt);
     };
-    /** someone or something by their key, linked, with the detail or (a person) their time in brackets; or, in a
-     * compilation, the detail going on from the name ("संत नामदेव व संस्कृत स्तोत्रे") @param {string} key
-     * @param {boolean} time @param {boolean} [goesOn] */
-    var who = function (key, time, goesOn) {
-      var e = C.people[key] || C.sources[key];
-      if (!e) throw new Error("texts/" + t.id + ".txt: " + key + " is not in content/credits.json");
-      var name = wikiLink(e.name[side], e.wiki, side, ctx, lang);
-      if (goesOn) return name + (detail ? " " + esc(detail) : "");
-      var after = detail ? detail : time && e.time ? e.time[side] : "";
-      return name + (after ? " (" + esc(after) + ")" : "");
+    /** a person or a source, linked @param {Credit} e */
+    var named = function (e) {
+      return wikiLink(e.name[side], e.wiki, side, ctx, lang);
     };
     /** a sentence with a name in it, at {name} @param {string} key @param {string} name */
     var sentence = function (key, name) {
       var at = /** @type {string} */ (W[key]).split("{name}");
       return tw(key + ":0", at[0]) + name + tw(key + ":1", at[1] || "");
     };
-    if (note) return t.also ? sentence("also", wikiLink(C.people[t.also].name[side], C.people[t.also].wiki, side, ctx, lang)) : "";
-    if (t.author) return tw("by", W.by) + " " + who(t.author, true);
-    if (t.attributed) return sentence("attributed", who(t.attributed, false));
-    if (t.compiled) return tw("compiledBy", W.compiledBy) + " " + who(t.compiled, false, true);
-    if (t.source) return who(t.source, false);
-    if (t.traditional) return tw("traditional", W.traditional);
-    return "";
+    /** the name, then the detail or (a person's own text) their time in brackets @param {Credit} e @param {boolean} time */
+    var withDetail = function (e, time) {
+      var after = detail ? detail : time && e.time ? e.time[side] : "";
+      return named(e) + (after ? " (" + esc(after) + ")" : "");
+    };
+    if (note) return c.also ? sentence("also", named(entry(c.also, "people"))) : "";
+    if (c.role === "traditional") return tw("traditional", W.traditional);
+    if (c.role === "source") return withDetail(entry(/** @type {string} */ (c.who), "sources"), false);
+    var e = entry(/** @type {string} */ (c.who), "people");
+    if (c.role === "author") return tw("by", W.by) + " " + withDetail(e, true);
+    if (c.role === "attributed") return sentence("attributed", withDetail(e, false));
+    // a compilation: what else it gathers goes on from the name ("संत नामदेव व संस्कृत स्तोत्रे")
+    return tw("compiledBy", W.compiledBy) + " " + named(e) + (detail ? " " + esc(detail) : "");
   }
   /** @param {boolean} [note] */
   var both = function (note) {
     return '<span class="mr">' + line("mr", note) + '</span><span class="en" lang="en">' + line("en", note) + "</span>";
   };
-  return both() + (t.also ? "<small>" + both(true) + "</small>" : "");
+  return both() + (c && c.also ? "<small>" + both(true) + "</small>" : "");
 }
 /**
  * The recordings to hear, under the credit: "▶ YouTube: Challakere Brothers ↗", each opening in a new tab at the second

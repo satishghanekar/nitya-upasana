@@ -3,7 +3,7 @@ title: शिवपञ्चाक्षरस्तोत्रम्
 title-en: Shiva Panchakshara Stotram
 language: sa
 stanza-numbers: as-written
-attributed: Adi_Shankara
+credit: attributed adi-shankara
 lines: 12
 letters: 504
 ---

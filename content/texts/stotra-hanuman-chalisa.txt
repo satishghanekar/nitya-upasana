@@ -2,7 +2,7 @@ id: stotra-hanuman-chalisa
 title: श्री हनुमान चालीसा
 title-en: Shri Hanuman Chalisa
 language: hi
-author: Tulsidas
+credit: author tulsidas
 lines: 86
 letters: 1703
 ---

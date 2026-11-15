@@ -1,7 +1,7 @@
 {
- "about": "Who and what the texts come from, each written once (Satish, 2026-11-15). A text's header names them: author, attributed, also or compiled (people), source (sources), traditional, and credit-detail for what only that text says; js/text/content.js writes its credit lines from here in each language, with the words the site adds (js/strings/, \"text\"): a person as \"रचना : name (time)\", a source as its name. wiki: its English Wikipedia page, as in its address, which the name links to in the reader's own Wikipedia (content/wiki.json, npm run wiki); none, no link.",
+ "about": "Who and what the texts come from, each written once (Satish, 2026-11-15), by a key in lower case and hyphens. A text names one in its header's credit line, with its role and what only that text says (\"credit: author samarth-ramdas\", \"credit: source rigveda | मण्डल ९ | Mandala 9\"; README.md, \"How to add a text\"): a person (author, attributed, compiled, also) from people, a source from sources. js/text/content.js writes its credit lines from here in each language, with the words the site adds (js/strings/, \"text\"): a person as \"रचना : name (time)\", a source as its name. wiki: its English Wikipedia page, as in its address, which the name links to in the reader's own Wikipedia (content/wiki.json, npm run wiki); none, no link.",
  "people": {
-  "Samarth_Ramdas": {
+  "samarth-ramdas": {
    "name": {
     "mr": "समर्थ रामदास",
     "en": "Samarth Ramdas"
@@ -12,7 +12,7 @@
    },
    "wiki": "Samarth_Ramdas"
   },
-  "Narahari_Sonar": {
+  "narahari-sonar": {
    "name": {
     "mr": "संत नरहरी सोनार",
     "en": "Sant Narahari Sonar"
@@ -23,7 +23,7 @@
    },
    "wiki": "Narahari_Sonar"
   },
-  "Eknath": {
+  "eknath": {
    "name": {
     "mr": "संत एकनाथ",
     "en": "Sant Eknath"
@@ -34,21 +34,21 @@
    },
    "wiki": "Eknath"
   },
-  "Namdev": {
+  "namdev": {
    "name": {
     "mr": "संत नामदेव",
     "en": "Sant Namdev"
    },
    "wiki": "Namdev"
   },
-  "Adi_Shankara": {
+  "adi-shankara": {
    "name": {
     "mr": "आदि शंकराचार्य",
     "en": "Adi Shankaracharya"
    },
    "wiki": "Adi_Shankara"
   },
-  "Tulsidas": {
+  "tulsidas": {
    "name": {
     "mr": "गोस्वामी तुलसीदास",
     "en": "Goswami Tulsidas"
@@ -59,7 +59,7 @@
    },
    "wiki": "Tulsidas"
   },
-  "Vasudevanand_Saraswati": {
+  "vasudevanand-saraswati": {
    "name": {
     "mr": "श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)",
     "en": "Shri Vasudevanand Saraswati (Tembe Swami)"
@@ -70,7 +70,7 @@
    },
    "wiki": "Vasudevanand_Saraswati"
   },
-  "Shardha_Ram_Phillauri": {
+  "shardha-ram-phillauri": {
    "name": {
     "mr": "पं. श्रद्धाराम फिल्लौरी",
     "en": "Pt. Shardha Ram Phillauri"
@@ -113,42 +113,42 @@
   }
  },
  "sources": {
-  "Rigveda": {
+  "rigveda": {
    "name": {
     "mr": "ऋग्वेद",
     "en": "Rigveda"
    },
    "wiki": "Rigveda"
   },
-  "Taittiriya_Aranyaka": {
+  "taittiriya-aranyaka": {
    "name": {
     "mr": "कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक",
     "en": "Krishna Yajurveda, Taittiriya Aranyaka"
    },
    "wiki": "Taittiriya_Aranyaka"
   },
-  "Taittiriya_Samhita": {
+  "taittiriya-samhita": {
    "name": {
     "mr": "कृष्ण यजुर्वेद, तैत्तिरीय संहिता",
     "en": "Krishna Yajurveda, Taittiriya Samhita"
    },
    "wiki": "Taittiriya_Samhita"
   },
-  "Mahabharata": {
+  "mahabharata": {
    "name": {
     "mr": "महाभारत",
     "en": "Mahabharata"
    },
    "wiki": "Mahabharata"
   },
-  "Brahmanda_Purana": {
+  "brahmanda-purana": {
    "name": {
     "mr": "ब्रह्माण्डपुराण",
     "en": "Brahmanda Purana"
    },
    "wiki": "Brahmanda_Purana"
   },
-  "Atharvaveda": {
+  "atharvaveda": {
    "name": {
     "mr": "अथर्ववेद",
     "en": "Atharvaveda"

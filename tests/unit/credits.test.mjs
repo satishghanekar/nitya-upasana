@@ -1,7 +1,7 @@
 // The credits (js/text/content.js creditOf; Satish, 2026-11-15): each person and source written once, in
-// content/credits.json; a text's header names them (author, attributed, also, compiled, source, traditional,
-// credit-detail) and the site writes its credit lines in both languages, with its own words around the names
-// (js/strings/, "text"), each marked (data-tw) for the scripts' own words.
+// content/credits.json; a text's header names one in its credit line ("credit: author samarth-ramdas", "credit:
+// source rigveda | मण्डल ९ | Mandala 9") and the site writes its credit lines in both languages, with its own words
+// around the names (js/strings/, "text"), each marked (data-tw) for the scripts' own words.
 import { describe, expect, test } from "vitest";
 import { buildContent } from "../../js/text/content.js";
 import { menuWords } from "../../js/core/strings.js";
@@ -60,10 +60,19 @@ describe("the credit lines, from content/credits.json", () => {
 describe("content/credits.json", () => {
   const all = { ...CREDITS.people, ...CREDITS.sources };
   test.skipIf(!has("aarti-sukhkarta"))("every key a text names is in it; a key that is not stops the build, naming the text", () => {
-    const bad = { ...FILES, "aarti-sukhkarta": FILES["aarti-sukhkarta"].replace("author: Samarth_Ramdas", "author: Nobody") };
+    const bad = { ...FILES, "aarti-sukhkarta": FILES["aarti-sukhkarta"].replace("credit: author samarth-ramdas", "credit: author nobody") };
     expect(() => buildContent(LIBRARY, SITE, bad, { wiki: WIKI, credits: CREDITS, words: menuWords })).toThrow(
-      "texts/aarti-sukhkarta.txt: Nobody is not in content/credits.json",
+      "texts/aarti-sukhkarta.txt: nobody is not one of content/credits.json's people",
     );
+  });
+  test.skipIf(!has("vedic-chant-pavamana-suktam"))("a source is one of its sources, a person one of its people", () => {
+    const bad = { ...FILES, "vedic-chant-pavamana-suktam": FILES["vedic-chant-pavamana-suktam"].replace("credit: source rigveda", "credit: author rigveda") };
+    expect(() => buildContent(LIBRARY, SITE, bad, { wiki: WIKI, credits: CREDITS, words: menuWords })).toThrow(
+      "texts/vedic-chant-pavamana-suktam.txt: rigveda is not one of content/credits.json's people",
+    );
+  });
+  test("every key in lower case and hyphens, as a text's credit line writes it (its Wikipedia page is its wiki)", () => {
+    for (const k of Object.keys(all)) expect(k).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
   });
   test("each has its name in both languages, and a person's time in both or neither", () => {
     for (const [k, e] of Object.entries(all)) {

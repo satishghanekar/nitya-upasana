@@ -3,7 +3,7 @@ title: पुरुषसूक्तम्
 title-en: Purusha Suktam
 language: sa
 layout: prose
-source: Taittiriya_Aranyaka
+credit: source taittiriya-aranyaka
 lines: 112
 letters: 2198
 ---

@@ -21,14 +21,17 @@
  * @typedef {{ orig: string, en: string, rf: boolean }} TextLine
  *   one line pair as written in the file; rf: after [refrain] in its block (shown as a refrain line)
  * @typedef {{ mr: string, en: string }} Pair
+ * @typedef {{ role: "author" | "attributed" | "compiled" | "source" | "traditional", who?: string, also?: string,
+ *   detail?: Pair }} TextCredit
+ *   who or what a text comes from (its header's "credit"): the role, the key of a person or a source in
+ *   content/credits.json, another person it is also credited to, and what only this text says
  * @typedef {{ kind: "dhrupad" | "dhrupad-repeated" | "stanza" | "note" | "once", n?: number, para?: boolean, bold?: boolean,
  *   note?: Pair, lines: TextLine[] }} Block
  * @typedef {{
  *   id: string, title: string, titleEn: string, language: string, lines?: number, letters?: number,
  *   legacyId?: string, lineIds?: string, lineIdExceptions?: Record<string, string>,
  *   refrain: "every-verse" | "always" | "none", refrainFirst?: boolean, layout?: "prose" | "lines", stanzaNumbers?: "as-written", partName?: string,
- *   author?: string, attributed?: string, also?: string, compiled?: string, source?: string, traditional?: boolean,
- *   creditDetail?: string, recording?: string,
+ *   credit?: TextCredit, recording?: string,
  *   blocks: Block[]
  * }} Text
  */
@@ -48,15 +51,8 @@ const FIELDS = [
   ["layout", "layout", false],
   ["stanza-numbers", "stanzaNumbers", false],
   ["part-name", "partName", false],
-  // who or what it comes from, by their key in content/credits.json (people: author, attributed, also, compiled; a
-  // source: source), or traditional; credit-detail is what only this text says, "Marathi | English" (मण्डल ९ | Mandala 9)
-  ["traditional", "traditional", false],
-  ["author", "author", false],
-  ["attributed", "attributed", false],
-  ["compiled", "compiled", false],
-  ["source", "source", false],
-  ["also", "also", false],
-  ["credit-detail", "creditDetail", false],
+  // who or what it comes from (CREDIT below): "author samarth-ramdas", "source rigveda | मण्डल ९ | Mandala 9"
+  ["credit", "credit", false],
   ["recording", "recording", false],
   // written by npm run texts (tests/tools/texts.mjs), never by hand: the line pairs in the file, and the letters said
   // as it is chanted (js/core/timing.js chantedLetters), which a text's time is counted from; the unit tests check both
@@ -66,6 +62,16 @@ const FIELDS = [
 // A recording of the text to hear (Satish, 2026-11-11): YouTube only, a watch link with, when the text starts later
 // in the video, its second (t=…), checked against the recording; two or more separated by ", "
 export const RECORDING = /^\[([^\]]+)\]\((https:\/\/www\.youtube\.com\/watch\?v=[\w-]{11}(?:&t=\d+)?)\)$/;
+// A text's credit (Satish, 2026-11-15: one line for all of it): its role; unless traditional, the key of a person
+// (a source's, with source) in content/credits.json; with author, ", also" another person it is also credited to; and
+// what only this text says, " | Marathi | English", in brackets after the name (in place of a person's time), or, in a
+// compilation, going on from it. "author samarth-ramdas", "author vishnudas-nama, also namdev", "attributed
+// adi-shankara", "source rigveda | मण्डल ९ | Mandala 9", "compiled namdev | व संस्कृत स्तोत्रे | and Sanskrit verses",
+// "traditional". A key is lower case and hyphens, as in credits.json.
+const KEY = "([a-z0-9]+(?:-[a-z0-9]+)*)";
+export const CREDIT = new RegExp(
+  "^(?:traditional|(author|attributed|compiled|source) " + KEY + "(?:, also " + KEY + ")?(?: \\| ([^|]*[^|\\s]) \\| (\\S[^|]*))?)$",
+);
 export const LANGUAGES = ["mr", "hi", "sa", "te", "kn", "ta"];
 const REFRAINS = ["every-verse", "always", "none"];
 // Letters of the Indian scripts (Devanagari to Malayalam, Vedic extensions): an original line has at least one,
@@ -129,9 +135,6 @@ export function parseText(raw, name) {
     if (key === "stanza-numbers" && val !== "as-written") fail(at, 'stanza-numbers can only be "as-written"');
     // what the text's parts are called, in both languages, for Go to (js/text/outline.js): "अनुवाकः | Anuvaka"
     if (key === "part-name" && !/^[^|]*[^|\s] \| \S[^|]*$/.test(val)) fail(at, 'part-name is "name | English name", like "अनुवाकः | Anuvaka"');
-    if (["author", "attributed", "compiled", "source", "also"].indexOf(key) >= 0 && !/^[A-Za-z0-9_.'%-]+$/.test(val))
-      fail(at, key + " is a key of content/credits.json, like Samarth_Ramdas or gosavinandan");
-    if (key === "credit-detail" && !/^[^|]*[^|\s] \| \S[^|]*$/.test(val)) fail(at, 'credit-detail is "Marathi | English", like "मण्डल ९ | Mandala 9"');
     if (
       key === "recording" &&
       !val.split(", ").every(function (r) {
@@ -139,9 +142,16 @@ export function parseText(raw, name) {
       })
     )
       fail(at, 'recording is "[who](https://www.youtube.com/watch?v=…)", with "&t=" and the second it starts at if not at once');
-    if (key === "traditional") {
-      if (val !== "yes") fail(at, 'traditional can only be "yes"');
-      t[prop] = true;
+    if (key === "credit") {
+      var c = CREDIT.exec(val);
+      if (!c) fail(at, 'credit is "author samarth-ramdas", "source rigveda | मण्डल ९ | Mandala 9" or "traditional" (README.md, "How to add a text")');
+      else if (c[3] && c[1] !== "author") fail(at, '", also" another person goes with author');
+      /** @type {TextCredit} */
+      var cr = { role: c && c[1] ? /** @type {TextCredit["role"]} */ (c[1]) : "traditional" };
+      if (c && c[2]) cr.who = c[2];
+      if (c && c[3]) cr.also = c[3];
+      if (c && c[4]) cr.detail = { mr: c[4], en: c[5] };
+      t[prop] = cr;
     } else if (key === "lines" || key === "letters") {
       if (!/^[1-9][0-9]*$/.test(val)) fail(at, key + " is a whole number (npm run texts writes it)");
       t[prop] = Number(val);
@@ -222,15 +232,6 @@ export function parseText(raw, name) {
   }
   close(rows.length);
 
-  // one credit: by one person, attributed to one, compiled by one, from one source, or traditional
-  if (
-    ["author", "attributed", "compiled", "source", "traditional"].filter(function (k) {
-      return t[k];
-    }).length > 1
-  )
-    fail(file, "one of author, attributed, compiled, source or traditional, not two");
-  if (t.also && !t.author) fail(file, "also (another it is credited to) goes with author");
-
   // How the blocks fit the refrain pattern
   /** @type {Block[]} */
   var bl = t.blocks;
@@ -274,7 +275,9 @@ export function formatText(t) {
   FIELDS.forEach(function (f) {
     var v = o[f[1]];
     if (v === undefined || (f[0] === "refrain" && v === "none")) return;
-    if (f[0] === "refrain-before-first" || f[0] === "traditional") v = "yes";
+    if (f[0] === "refrain-before-first") v = "yes";
+    if (f[0] === "credit")
+      v = v.who ? v.role + " " + v.who + (v.also ? ", also " + v.also : "") + (v.detail ? " | " + v.detail.mr + " | " + v.detail.en : "") : v.role;
     if (f[0] === "line-id-exceptions")
       v = Object.keys(v)
         .map(function (k) {

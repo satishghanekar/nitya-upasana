@@ -2,7 +2,7 @@ id: stotra-jay-karunaghan-nij
 title: जय करुणाघन निज
 title-en: Jay Karunaghan Nij
 language: mr
-author: Vasudevanand_Saraswati
+credit: author vasudevanand-saraswati
 lines: 17
 letters: 503
 ---

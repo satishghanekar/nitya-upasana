@@ -7,8 +7,7 @@ line-ids: s7l
 line-id-exceptions: s7l4=s7l4r
 refrain: every-verse
 refrain-before-first: yes
-author: vishnudas-nama
-also: Namdev
+credit: author vishnudas-nama, also namdev
 lines: 16
 letters: 592
 ---

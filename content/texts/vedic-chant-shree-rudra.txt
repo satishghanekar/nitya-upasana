@@ -4,7 +4,7 @@ title-en: Shree Rudra
 language: sa
 layout: prose
 part-name: अनुवाकः | Anuvaka
-source: Taittiriya_Samhita
+credit: source taittiriya-samhita
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=685)
 lines: 278
 letters: 10527

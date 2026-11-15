@@ -5,7 +5,7 @@ language: mr
 legacy-id: a1
 line-ids: s1l
 refrain: every-verse
-author: Samarth_Ramdas
+credit: author samarth-ramdas
 lines: 15
 letters: 472
 ---

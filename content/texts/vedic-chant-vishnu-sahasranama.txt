@@ -4,8 +4,7 @@ title-en: Shri Vishnu Sahasranama
 language: sa
 layout: lines
 stanza-numbers: as-written
-source: Mahabharata
-credit-detail: अनुशासनपर्व | Anushasana Parva
+credit: source mahabharata | अनुशासनपर्व | Anushasana Parva
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=ayqZpzFo5xA&t=11)
 lines: 395
 letters: 13622

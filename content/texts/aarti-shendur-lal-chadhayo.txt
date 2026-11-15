@@ -5,7 +5,7 @@ language: hi
 legacy-id: a2
 line-ids: s2l
 refrain: every-verse
-author: gosavinandan
+credit: author gosavinandan
 lines: 15
 letters: 488
 ---

@@ -5,7 +5,7 @@ language: mr
 legacy-id: a3
 line-ids: s3l
 refrain: every-verse
-author: Narahari_Sonar
+credit: author narahari-sonar
 lines: 15
 letters: 502
 ---

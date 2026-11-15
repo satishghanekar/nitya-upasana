@@ -2,7 +2,7 @@ id: stotra-shriguru-datta-jay
 title: श्रीगुरु दत्ता जय
 title-en: Shriguru Datta Jay
 language: mr
-author: Vasudevanand_Saraswati
+credit: author vasudevanand-saraswati
 lines: 18
 letters: 523
 ---

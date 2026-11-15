@@ -4,8 +4,7 @@ title-en: Ghalin Lotangan
 language: mr
 legacy-id: a8
 line-ids: s8l
-compiled: Namdev
-credit-detail: व संस्कृत स्तोत्रे | and Sanskrit verses
+credit: compiled namdev | व संस्कृत स्तोत्रे | and Sanskrit verses
 lines: 18
 letters: 529
 ---

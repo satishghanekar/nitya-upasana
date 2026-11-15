@@ -3,8 +3,7 @@ title: पवमानसूक्तम्
 title-en: Pavamana Suktam
 language: sa
 layout: lines
-source: Rigveda
-credit-detail: मण्डल ९ | Mandala 9
+credit: source rigveda | मण्डल ९ | Mandala 9
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=UjwjdI1hRCI), [Anantha Padmanabha Bhat and Govind Prakash Bhat](https://www.youtube.com/watch?v=mozgkHM8h2U)
 lines: 1281
 letters: 32176

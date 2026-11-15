@@ -5,7 +5,7 @@ language: mr
 legacy-id: a5
 line-ids: s5l
 refrain: every-verse
-author: Eknath
+credit: author eknath
 lines: 19
 letters: 604
 ---

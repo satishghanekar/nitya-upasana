@@ -3,8 +3,7 @@ title: शिवोपासनमन्त्राः
 title-en: Shivopasana Mantras
 language: sa
 layout: prose
-source: Taittiriya_Aranyaka
-credit-detail: महानारायणोपनिषत् | Mahanarayana Upanishad
+credit: source taittiriya-aranyaka | महानारायणोपनिषत् | Mahanarayana Upanishad
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=2534)
 lines: 36
 letters: 1143

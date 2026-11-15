@@ -3,7 +3,7 @@ title: मन्त्रपुष्पम्
 title-en: Mantrapushpam
 language: sa
 layout: prose
-source: Taittiriya_Aranyaka
+credit: source taittiriya-aranyaka
 lines: 88
 letters: 1464
 ---
