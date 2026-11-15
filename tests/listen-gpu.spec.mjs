@@ -9,7 +9,9 @@ test.use({
   permissions: ["microphone"],
 });
 
-test("the GPU's way: the 4-bit model and the library's WebGPU build, kept, and hearing as the Mac does @chromium-only", async ({ page }) => {
+test("the GPU's way: the 4-bit model (in ONNX Runtime's own format) and the library's WebGPU build, kept, and hearing as the Mac does @chromium-only", async ({
+  page,
+}) => {
   // (Satish, 2026-11-09: on an iPhone a hearing took 233 ms on the GPU against 712 on the CPU)
   test.setTimeout(300_000);
   const errors = [];
@@ -25,8 +27,8 @@ test("the GPU's way: the 4-bit model and the library's WebGPU build, kept, and h
   const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
   expect(kept).toEqual(
     expect.arrayContaining([
-      "/models/chant-v4-q4/model.onnx",
-      "/models/chant-v4-q4/model.onnx.5",
+      "/models/chant-v4-q4/model.ort",
+      "/models/chant-v4-q4/model.ort.5",
       "/vendor/onnxruntime/ort.webgpu.bundle.min.mjs",
       "/vendor/onnxruntime/ort-wasm-simd-threaded.asyncify.wasm",
       "/vendor/onnxruntime/ort-wasm-simd-threaded.asyncify.wasm.2",

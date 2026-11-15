@@ -6,7 +6,7 @@ Each `chant-vN/` is a model that hears chanting and writes it as plain Devanagar
 
 | File | What |
 |---|---|
-| `model.onnx` (and `.2` … `.6`) | the model (a CTC model, wav2vec2 base, int8), cut into pieces of at most 20,000,000 bytes: Cloudflare Pages serves no file over 25 MiB; `model.json` lists them with each piece's SHA-256 |
+| `model.onnx` (and `.2` … `.6`), or `model.ort` | the model (a CTC model, wav2vec2 base, int8 or 4-bit; `.ort` in ONNX Runtime's own format, `"format": "ort"` in `model.json`), cut into pieces of at most 20,000,000 bytes: Cloudflare Pages serves no file over 25 MiB; `model.json` lists them with each piece's SHA-256 |
 | `letters.json` | each of the model's outputs as its letter: `"|"` the word break, `""` the tokens that are not letters |
 | `model.json` | the pieces, the sample rate (16 kHz), the ms of sound each output covers (20), the blank and the word break |
 | `check.json` | what the model gives for a check sound (its choice at each step, its scores at three steps, and each output's mean over every step): the unit tests and Follow's test compare against it |
@@ -15,6 +15,17 @@ A model is downloaded only when Follow is first used, never with the page (about
 
 The starting model's Hugging Face page names no licence (checked 2026-11-10); the Vakyansh project's repositories on
 GitHub are MIT. These weights are fine-tuned partly on published recordings as well as the family's.
+
+## chant-v4-q4 in ONNX Runtime's own format (2026-11-15)
+
+The same 4-bit model, written as `model.ort` (`scripts/to_site.py --ort` in shravan-model: basic optimizations done
+once, the rest left to the phone), which ONNX Runtime Web loads like an `.onnx`. Safari closed the page and opened it
+again as Follow started, on an iPhone 16 Pro too. On the GPU's way (Chromium's software GPU) this form, with one thread
+for the library there (`js/features/listen.js`), started Follow with about 100 MB less in the page (810 MB at the
+peak, from 915) and 150 MB less in the GPU's process (210 MB, from 357), in half the time (0.57 s, from 1.15), and gave
+the same letters for the check sound. On the CPU's way it saved nothing, so `chant-v4` stays an `.onnx`. (Its options
+to use the weights where they lie, `use_ort_model_bytes_for_initializers`, can't be used: ONNX Runtime Web frees the
+model's bytes once the session is made.)
 
 ## chant-v4 and chant-v4-q4 (2026-11-09)
 

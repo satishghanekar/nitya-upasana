@@ -1,31 +1,32 @@
 {
  "name": "chant-v4-q4",
  "kind": "ctc",
+ "format": "ort",
  "model": [
   {
-   "file": "model.onnx",
+   "file": "model.ort",
    "bytes": 20000000,
-   "sha256": "162f3bfb59cf659eb06a20bd44faf99602f9f1a0d92f2e40b215e2aeddd5da6f"
+   "sha256": "953184c6deadb25d174e441fd993269fbf0602b09b7ed2cdd5aff2287b14a6e7"
   },
   {
-   "file": "model.onnx.2",
+   "file": "model.ort.2",
    "bytes": 20000000,
-   "sha256": "a79da5a8a7ced6c38bd8620fee37f3269813f4b859903d5d32c2de4f5edb5529"
+   "sha256": "2a83dd5fd1c3428c61f1150028a4c5fc6e9ecbeef173c808b02f875eacd3e27a"
   },
   {
-   "file": "model.onnx.3",
+   "file": "model.ort.3",
    "bytes": 20000000,
-   "sha256": "58a38c1f2cfde2aafe122300eebf8828fdaa2ea98b626b8cbfd821e73b003900"
+   "sha256": "e3ccb3f0c87f750fa42aad5c7a9a8b0d9543432361ccf650c90eb4ef6d219a54"
   },
   {
-   "file": "model.onnx.4",
+   "file": "model.ort.4",
    "bytes": 20000000,
-   "sha256": "81a15d6ab8a63778cfe3e3b5d14419be5ed8f149c20020932e9df56859db4413"
+   "sha256": "17724df83a1a4c11f13991511a0b30feda284f04304de11fc8fb2372331b070b"
   },
   {
-   "file": "model.onnx.5",
-   "bytes": 9699661,
-   "sha256": "0fe9ddfed32c53cf7fa8fd19d91c977e8e463b02de30ca094f9908ce15c8948e"
+   "file": "model.ort.5",
+   "bytes": 9867416,
+   "sha256": "77cd26753b89ad3bf22dca36176dfd444db9496fc48170bcb98c5f1733942e05"
   }
  ],
  "rate": 16000,

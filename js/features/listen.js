@@ -5,7 +5,8 @@
 // no sound leaves it.
 // - The model (a CTC model, wav2vec2, trained in the shravan-model repository) and the library that runs it
 //   (vendor/onnxruntime/) are downloaded once, the first time, after the reader agrees: on the GPU where the browser
-//   has WebGPU (models/chant-v4-q4/, 4-bit, and the library's WebGPU build, about 117 MB), else on the CPU
+//   has WebGPU (models/chant-v4-q4/, 4-bit, in ONNX Runtime's own format, and the library's WebGPU build, about 117
+//   MB), else on the CPU
 //   (models/chant-v4/, 8-bit, and its CPU build, about 122 MB; WAYS, way()), and kept in their own cache,
 //   "nitya-listen", which a new version of the site leaves alone (sw.js). Each piece is checked against its SHA-256
 //   before it is kept. (chant-v4, 2026-11-09: trained on four times as much
@@ -369,7 +370,7 @@ async function sha256(buf) {
     .join("");
 }
 
-/** One file: from the cache, else downloaded (counted in `done` as it comes), checked and kept
+/** One small file (the model's list of pieces, its letters, the library): from the cache, else downloaded and kept
  * @param {Cache | null} c @param {string} path @param {string} [sum] @param {(n: number) => void} [tick] */
 async function file(c, path, sum, tick) {
   var url = abs(path),
@@ -393,25 +394,58 @@ async function file(c, path, sum, tick) {
     if (tick) tick(x.value.length);
     if (phase === "off") throw new Error("stopped");
   }
-  var all = join(parts, size);
+  var all = new Uint8Array(size);
+  parts.reduce(function (at, x) {
+    all.set(x, at);
+    return at + x.length;
+  }, 0);
   if (sum && (await sha256(all)) !== sum) throw new Error(path + " is damaged (its SHA-256 differs)");
   if (c) await c.put(url, new Response(all, { headers: { "Content-Type": r.headers.get("Content-Type") || "application/octet-stream" } }));
   return all;
 }
 
-/** @param {Uint8Array[]} parts @param {number} [size] */
-function join(parts, size) {
+/**
+ * Files read one after another into one buffer of their whole size, each straight into its place: from the cache, or
+ * downloaded (checked against its SHA-256 where it has one) and kept. A file is never held twice: reading the files
+ * into pieces and joining them once held the model three and four times over, 430 MB for its 122 MB (Chromium on the
+ * M4, 2026-11-15), and Safari closed the page and opened it again, on an iPhone 16 Pro too.
+ * @param {Cache | null} c @param {{ path: string, bytes: number, sha256?: string }[]} list @param {(n: number) => void} tick
+ * @returns {Promise<Uint8Array>}
+ */
+async function filesInto(c, list, tick) {
   var all = new Uint8Array(
-      size ||
-        parts.reduce(function (n, x) {
-          return n + x.length;
-        }, 0),
+      list.reduce(function (n, x) {
+        return n + x.bytes;
+      }, 0),
     ),
     at = 0;
-  parts.forEach(function (x) {
-    all.set(x, at);
-    at += x.length;
-  });
+  for (var f of list) {
+    var url = abs(f.path),
+      m = c && (await c.match(url)),
+      r = m || (await fetch(url, { cache: "no-store" }));
+    if (!r.ok || !r.body) throw new Error(f.path + ": " + r.status);
+    var reader = r.body.getReader(),
+      n = 0;
+    for (;;) {
+      var x = await reader.read();
+      if (x.done) break;
+      if (n + x.value.length > f.bytes) break;
+      all.set(x.value, at + n);
+      n += x.value.length;
+      tick(x.value.length);
+      if (phase === "off") throw new Error("stopped");
+    }
+    var view = all.subarray(at, at + f.bytes);
+    if (n !== f.bytes || (!m && f.sha256 && (await sha256(view)) !== f.sha256)) {
+      // (a copy kept damaged is let go, so the next start downloads it again)
+      if (m && c) await c.delete(url);
+      reader.cancel().catch(function () {});
+      throw new Error(f.path + " is damaged (its size or SHA-256 differs)");
+    }
+    // (the cache takes its own copy of the bytes, for the moment it writes them)
+    if (!m && c) await c.put(url, new Response(view, { headers: { "Content-Type": r.headers.get("Content-Type") || "application/octet-stream" } }));
+    at += f.bytes;
+  }
   return all;
 }
 
@@ -437,17 +471,21 @@ async function load() {
     done += n;
     prog.value = Math.min(100, Math.round((100 * done) / total));
   }
-  var wasm = [];
-  for (var x of h.wasm) wasm.push(await file(c, ORT + x.file, undefined, tick));
-  var binary = join(wasm);
+  var binary = await filesInto(
+    c,
+    h.wasm.map(function (x) {
+      return { path: ORT + x.file, bytes: x.bytes };
+    }),
+    tick,
+  );
   if ((await sha256(binary)) !== h.sha256) throw new Error("the library's WebAssembly is damaged");
-  /** @param {any[]} list */
-  async function joined(list) {
-    var out = [];
-    for (var p of list) out.push(await file(c, dir + p.file, p.sha256, tick));
-    return join(out);
-  }
-  var weights = await joined(info.model),
+  var weights = await filesInto(
+      c,
+      pieces.map(function (/** @type {any} */ p) {
+        return { path: dir + p.file, bytes: p.bytes, sha256: p.sha256 };
+      }),
+      tick,
+    ),
     names = JSON.parse(new TextDecoder().decode(await file(c, dir + "letters.json")));
   // kept here too, so the service worker can give them offline (sw.js)
   await file(c, ORT + h.lib);
@@ -457,8 +495,12 @@ async function load() {
   if (!ort) {
     ort = await import(/* @vite-ignore */ abs(ORT + h.lib));
     ort.env.wasm.wasmBinary = binary.buffer;
-    // every core (up to 4): the page is cross-origin isolated (_headers)
-    ort.env.wasm.numThreads = window.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 1) : 1;
+    // on the CPU every core (up to 4): the page is cross-origin isolated (_headers). On the GPU one: the work is the
+    // GPU's, and each thread costs memory. Safari closed the page and opened it again as Follow started, on an iPhone
+    // 16 Pro too (2026-11-15); with one thread and the 4-bit model in ONNX Runtime's own format (models/README.md) the
+    // start took about 100 MB less in the page and 150 MB less in the GPU's process, and half the time (Chromium's
+    // software GPU)
+    ort.env.wasm.numThreads = h.ep === "webgpu" ? 1 : window.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 1) : 1;
     // on the CPU, the model run in a worker of its own, not on the page's thread: there, each hearing held the page for
     // up to half a second, 42 s of every minute listening (Chromium on the M4, 2026-11-09), so scrolling and taps
     // stuck. (On the GPU the work is the GPU's, and the library has no worker for it)
@@ -482,6 +524,8 @@ async function load() {
     how = WAYS.cpu;
     showWay("cpu");
     ort = null;
+    // (the GPU's model let go before the CPU's is read, so the two are never held at once)
+    weights = new Uint8Array(0);
     return load();
   }
   model = { info: info, names: names, ids: ids, session: session };
