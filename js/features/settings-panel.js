@@ -1,5 +1,5 @@
 // @ts-check
-// Settings panel. Its tabs, Reading | Screen | More (#spv, Satish, 2026-10-25; Reading has the languages too), beside Back as on the
+// Settings panel. Its tabs, Reading | Screen | You (#spv, Satish, 2026-10-25; Reading has the languages too), beside Back as on the
 // Library and the calendar pages: one tab's groups at a time (each .sp-grp says its tab, data-tab); Settings opens
 // on Reading each time, or on the tab its opener asks for (js/features/reading-sheet.js). On desktops (WIDE) there
 // are no tabs: every group at once, in two columns (css/09-settings-page.css; Satish, 2026-10-30).
@@ -45,6 +45,9 @@ export function spTab(v) {
   [].forEach.call(pn.querySelectorAll(".sp-grp"), function (/** @type {HTMLElement} */ g) {
     g.classList.toggle("sp-one", on === 1);
   });
+  // the maker's line under About only, where the tabs are (it stood under every tab; Satish, 2026-11-15)
+  var by = /** @type {HTMLElement | null} */ (pn.querySelector(".sp-by"));
+  if (by) by.hidden = !WIDE.matches && v !== "more";
   pn.scrollTop = 0;
 }
 

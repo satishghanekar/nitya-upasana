@@ -7,7 +7,7 @@
 */
 
 /* ==== Settings page (option A, 2026-10-15): under the top bar while open (Satish, 2026-10-24); Back and the tabs
-   Reading | Screen | More in one row, as on the Library and the calendar pages (Satish, 2026-10-25), with
+   Reading | Screen | You in one row, as on the Library and the calendar pages (Satish, 2026-10-25), with
    one tab's rounded cards of rows at a time, like phone settings. The main and second language are dropdowns.
    Centred, at most 640px wide, on wide screens. ==== */
 html[data-sp] {
@@ -443,7 +443,7 @@ html[data-sp] {
 }
 
 /* ==== Wider screens (iPads and desktops): a tab's groups in two columns. Reading: its choices on the left and the
-   preview beside them on the right, staying in view while the choices scroll; More: Profiles and backup beside
+   preview beside them on the right, staying in view while the choices scroll; You: Profiles and backup beside
    About; a tab with one group (Screen) across both ==== */
 @media screen and (min-width: 760px) and (min-height: 521px) {
   .sp-pg {
@@ -932,7 +932,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   .sp-pvg ~ .sp-grp {
     grid-column: 2;
   }
-  /* Screen and More lie across the whole screen: a row's choices ran from edge to edge under its label (Theme's four
+  /* Screen and You lie across the whole screen: a row's choices ran from edge to edge under its label (Theme's four
      over 800px, Satish, 2026-11-15). The label on the left and the choices beside it, as Menus and buttons is; what
      else the row holds (Chanting pace's note) still goes under them */
   .sp-c2 .sp-stk .sp-l {
@@ -997,7 +997,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   min-width: 44px;
 }
 /* Chanting pace (#spcrow, js/features/routine-time.js): under the four paces, what is known of the reader's own, then
-   Forget as a link-like button, its tap target 44px high */
+   Forget as a small quiet button, 44px high */
 .sp-note {
   flex-basis: 100%;
   margin: 8px 0 0;
@@ -1006,16 +1006,30 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   color: var(--muted);
 }
 .sp .sp-link {
+  /* a small quiet button (Satish, 2026-11-15: an underlined link was the only one in Settings, a tall gap over it):
+     44px to tap, on a line of its own under the note */
   min-height: 44px;
-  margin: 0 0 -8px;
-  padding: 0 2px;
-  border: 0;
+  margin: 8px 0 0;
+  padding: 0 16px;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
   background: none;
   font: inherit;
   font-size: var(--fz-s);
   font-weight: 600;
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  color: var(--ink);
   cursor: pointer;
+}
+
+/* ==== Show holidays from (#shol): each country is chosen on its own, so a chosen one carries a tick; two filled
+   buttons side by side read as one choice gone wrong (Satish, 2026-11-15). The tick is drawn, so it needs no font ==== */
+#shol button[aria-pressed="true"]::before {
+  content: "";
+  display: inline-block;
+  width: 0.34em;
+  height: 0.62em;
+  margin: 0 0.55em 0.12em 0;
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }

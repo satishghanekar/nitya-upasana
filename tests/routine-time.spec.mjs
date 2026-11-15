@@ -9,7 +9,7 @@ const RANGE = /^\d+–\d+ min$/;
 const ONE = /^\d+ min$/;
 const tabTime = (page, s) => page.locator(`#tss-${s} .tshn .tmv`);
 
-/** Settings → More → Chanting pace */
+/** Settings → You → Chanting pace */
 async function openPace(page) {
   await page.locator("#aa").click();
   await settingsTab(page, "more");

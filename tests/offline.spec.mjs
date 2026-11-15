@@ -95,7 +95,7 @@ test("a weak connection: the saved copy opens the page without asking the networ
   expect(net.filter((u) => !u.endsWith("/sw.js") && !u.endsWith("/js/parts.js"))).toEqual([]);
 });
 
-// Check for updates (Settings → More → About) still finds a file changed under the same version: it saves the new
+// Check for updates (Settings → You → About) still finds a file changed under the same version: it saves the new
 // copy over the old one before reloading, since the page opens from the saved copy
 test("Check for updates saves a changed file and reloads with it @chromium-only", async ({ page, context }) => {
   await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [PREFS_KEY, JSON.stringify(BASE_PREFS)]);

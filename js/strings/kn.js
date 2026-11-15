@@ -58,7 +58,7 @@ export default {
       "not-json": "ಇದು ನಿತ್ಯ ಉಪಾಸನಾ ಬ್ಯಾಕಪ್ ಫೈಲ್ (.nitya) ಅಲ್ಲ.",
       "not-nitya": "ಇದು ನಿತ್ಯ ಉಪಾಸನಾ ಬ್ಯಾಕಪ್ ಫೈಲ್ (.nitya) ಅಲ್ಲ.",
       newer:
-        "ಈ ಫೈಲ್ ಅನ್ನು ಆ್ಯಪ್‌ನ ಹೊಸ ಆವೃತ್ತಿ ಉಳಿಸಿದೆ. ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ (ಸೆಟ್ಟಿಂಗ್‌ಗಳು → ಇನ್ನಷ್ಟು → ಕುರಿತು, ಆವೃತ್ತಿಯ ಸಾಲನ್ನು ಒತ್ತಿ) ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+        "ಈ ಫೈಲ್ ಅನ್ನು ಆ್ಯಪ್‌ನ ಹೊಸ ಆವೃತ್ತಿ ಉಳಿಸಿದೆ. ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ (ಸೆಟ್ಟಿಂಗ್‌ಗಳು → ನೀವು → ಕುರಿತು, ಆವೃತ್ತಿಯ ಸಾಲನ್ನು ಒತ್ತಿ) ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
       kind: "ಈ .nitya ಫೈಲ್ ಪೂರ್ಣ ಬ್ಯಾಕಪ್ ಅಲ್ಲ.",
       checksum: "ಉಳಿಸಿದ ನಂತರ ಈ ಫೈಲ್ ಬದಲಾಗಿದೆ ಅಥವಾ ಹಾಳಾಗಿದೆ (ಅದರ ಚೆಕ್‌ಸಮ್ ಹೊಂದುವುದಿಲ್ಲ), ಆದ್ದರಿಂದ ಏನನ್ನೂ ಮರುಸ್ಥಾಪಿಸಿಲ್ಲ.",
       empty: "ಈ ಬ್ಯಾಕಪ್‌ನಲ್ಲಿ ಯಾರೂ ಇಲ್ಲ.",
@@ -466,10 +466,10 @@ export default {
     idle: function (n) {
       return "‘ಜೊತೆ’ ನಿಂತಿದೆ: " + n + " ನಿಮಿಷ ಯಾವುದೇ ಜಪ ಕೇಳಿಸಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಾರಂಭಿಸಲು ‘ಜೊತೆ’ ಒತ್ತಿ.";
     },
-    gpu: "‘ಜೊತೆ’: GPU",
+    gpu: "‘ಜೊತೆ’: ವೇಗದ ವಿಧಾನ",
     gpuNote: "ಸುಮಾರು ೩ ಪಟ್ಟು ವೇಗ, ಕಡಿಮೆ ಬ್ಯಾಟರಿ ಬಳಕೆ",
-    gpuBadge: "ಉತ್ತಮ",
-    cpu: "‘ಜೊತೆ’: CPU",
+    gpuBadge: "ವೇಗ",
+    cpu: "‘ಜೊತೆ’: ಸಾಮಾನ್ಯ ವಿಧಾನ",
     cpuNote: "ಪ್ರತಿ ಫೋನ್‌ನಲ್ಲೂ ಕೆಲಸ ಮಾಡುತ್ತದೆ, ಹೆಚ್ಚು ಬ್ಯಾಟರಿ ಬಳಸುತ್ತದೆ",
     cpuBadge: "ಸಾಮಾನ್ಯ",
   },
@@ -487,6 +487,8 @@ export default {
     both: "ಎರಡೂ",
     second: "+ ಎರಡನೇ ಭಾಷೆ",
     none: "ಯಾವುದೂ ಇಲ್ಲ",
+    simple: "ಸರಳ",
+    scholarly: "ಶಾಸ್ತ್ರೀಯ",
     refrain: "↻ ಪಲ್ಲವಿ",
     close: "ಮುಚ್ಚಿ",
     reset: "ಅಕ್ಷರದ ಗಾತ್ರ ಮರುಹೊಂದಿಸಿ",
@@ -516,10 +518,10 @@ export default {
     saved: "ಈ ಫೋನಿನಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆ",
     online: "ಆನ್‌ಲೈನ್ ಮಾತ್ರ",
   },
-  // Offline use and Check for updates (js/features/offline.js): Settings → More → About
+  // Offline use and Check for updates (js/features/offline.js): Settings → You → About
   offline: {
     state: { idle: "ಆಫ್‌ಲೈನ್‌ಗೆ ಸಿದ್ಧ", save: "ಆಫ್‌ಲೈನ್‌ಗಾಗಿ ಉಳಿಸಲಾಗುತ್ತಿದೆ…", off: "ಉಳಿಸಿದ ಪ್ರತಿ ಬಳಕೆಯಲ್ಲಿದೆ" },
-    // the version line in Settings → More → About: what Check for updates found (under the version), and the round
+    // the version line in Settings → You → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
       check: "ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ",
@@ -689,7 +691,7 @@ export default {
     verseNumber: "ಶ್ಲೋಕ ಸಂಖ್ಯೆ",
     go: "ಹೋಗಿ",
     screen: "ಪರದೆ",
-    more: "ಇನ್ನಷ್ಟು",
+    more: "ನೀವು",
     preview: "ಮುನ್ನೋಟ",
     languageAndText: "ಭಾಷೆ ಮತ್ತು ಪಠ್ಯ",
     mainLanguage: "ಮುಖ್ಯ ಭಾಷೆ",

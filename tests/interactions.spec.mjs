@@ -438,7 +438,7 @@ test("IAST spelling switches in place without a reload", async ({ page }) => {
   const first = () => page.locator("#a1 .items .verse .en p").first().textContent();
   expect(await first()).toContain("Sukhkarta");
   await page.evaluate((k) => {
-    // what Settings does when "English · sukhakartā" is picked
+    // what Settings does when "English · Scholarly (sukhakartā)" is picked
     const s = document.getElementById("sl2s");
     const o = [...s.options].find((x) => /ā/.test(x.textContent));
     s.value = o.value;
@@ -596,9 +596,9 @@ test.describe("pinch @chromium-only", () => {
   });
 });
 
-// Settings' tabs on phones and tablets, Reading | Screen | More, beside Back: one tab's groups at a time, the credit
+// Settings' tabs on phones and tablets, Reading | Screen | You, beside Back: one tab's groups at a time, the credit
 // under every tab, and Settings opens on Reading again each time
-test("Settings: Reading | Screen | More, one at a time; opens on Reading each time", async ({ page }) => {
+test("Settings: Reading | Screen | You, one at a time; opens on Reading each time", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openSite(page, SETUPS.marathi);
   await page.locator("#aa").click();
@@ -607,12 +607,24 @@ test("Settings: Reading | Screen | More, one at a time; opens on Reading each ti
   await expect(page.locator("#sl1")).toBeVisible();
   await expect(page.locator("#sfn")).toBeVisible();
   await expect(page.locator("#st")).toBeHidden();
-  await expect(page.locator(".sp-by")).toBeVisible();
+  // the tab once named More, for what it holds: the person, their routine, pace and backup (Satish, 2026-11-15)
+  await expect(tab("more")).toHaveText("You");
+  // English's spelling named as well as shown
+  await expect(page.locator("#sl2v")).toHaveText("English · Simple (Sukhkarta)");
+  await expect(page.locator("#sl2s option", { hasText: "sukhakartā" })).toHaveText("English · Scholarly (sukhakartā)");
+  // the maker's line under About only, not under every tab
+  await expect(page.locator(".sp-by")).toBeHidden();
   await tab("screen").click();
   await expect(tab("screen")).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#st")).toBeVisible();
   await expect(page.locator("#sl1")).toBeHidden();
-  await expect(page.locator(".sp-by")).toBeVisible();
+  await expect(page.locator(".sp-by")).toBeHidden();
+  // each holiday country chosen carries a tick; one turned off loses it
+  const tick = (v) => page.locator(`#shol button[data-v="${v}"]`).evaluate((b) => getComputedStyle(b, "::before").content !== "none");
+  expect([await tick("us"), await tick("in")]).toEqual([true, true]);
+  await page.locator('#shol button[data-v="in"]').click();
+  expect([await tick("us"), await tick("in")]).toEqual([true, false]);
+  await page.locator('#shol button[data-v="in"]').click();
   await tab("more").click();
   await expect(page.locator("#bks")).toBeVisible();
   await expect(page.locator("#hlp2")).toBeVisible();
@@ -723,7 +735,7 @@ test("Settings on a phone held sideways: the tabs, the preview beside the readin
   expect(seg.y).toBeLessThan(label.y + label.height);
   expect(seg.x).toBeGreaterThan(label.x + label.width - 1);
   expect(seg.width).toBeLessThan(row.width * 0.65);
-  // More: Profiles and backup, then About, as before
+  // You: Profiles and backup, then About, as before
   await page.locator('#spv [data-v="more"]').click();
   expect((await box("#bks")).y).toBeLessThan((await box("#hlp2")).y);
   // turned upright, and an iPad held sideways, as before

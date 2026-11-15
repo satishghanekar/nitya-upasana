@@ -148,7 +148,10 @@ function spKey(slot) {
 function spName(k) {
   if (!k) return menuWords("languages").none;
   var l = k.split(":");
-  return LANGS[l[0]].n + (l[1] ? " · " + (l[1] === "iast" ? "sukhakartā" : "Sukhkarta") : "");
+  // English's two spellings, each named and shown: "English · Simple (Sukhkarta)", "English · Scholarly (sukhakartā)"
+  // (Satish, 2026-11-15: the example word alone did not say what was being chosen)
+  var W = menuWords("languages");
+  return LANGS[l[0]].n + (l[1] ? " · " + (l[1] === "iast" ? W.scholarly + " (sukhakartā)" : W.simple + " (Sukhkarta)") : "");
 }
 
 /** @param {HTMLSelectElement} sel @param {string[]} ks @param {string} cur @param {(k: string) => boolean} off */
