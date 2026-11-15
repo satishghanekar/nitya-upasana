@@ -9,8 +9,12 @@ refrain-before-first: yes
 [dhrupad]
 आरती करितों गुरुवर भगवन् ब्रह्मचैतन्या ।
 Aarti Kariton Guruvar Bhagavan Brahmachaitanya |
-करुणेनें स्वीकार करावा अनन्यसामान्या ॥ धृ. ॥
-Karunenen Svikar Karava Ananyasamanya || Dhr. ||
+करुणेनें स्वीकार करावा अनन्यसामान्या ।
+Karunenen Svikar Karava Ananyasamanya |
+करुणेनें स्वीकार करावा अनन्यसामान्या ।
+Karunenen Svikar Karava Ananyasamanya |
+आरती करितों गुरुवर भगवन् ब्रह्मचैतन्या ॥ धृ. ॥
+Aarti Kariton Guruvar Bhagavan Brahmachaitanya || Dhr. ||
 
 [1]
 स्वप्रकाश तूं तव तेजानें जग भासे सकळ ।

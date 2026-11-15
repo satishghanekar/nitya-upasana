@@ -11805,7 +11805,7 @@ Sandhattam Sandhiyate Prajaya Pashubhih | Ya Evam Veda |
 Sukhkarta Dukhharta
 ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
-ಜಯ ದೇವ ಜಯ ದೇವ, ಜಯ ಮಂಗಲ ಮೂರ್ತೀ ।
+ಜಯ ದೇವ ಜಯ ದೇವ, ​ಜಯ ಮಂಗಲ ಮೂರ್ತೀ ।
 
 ದರ್ಶನಮಾತ್ರೇ ಮನಃಕಾಮನಾ ಪೂರ್ತೀ ।
 
@@ -11817,7 +11817,7 @@ Darshan Maatre Manakaamna Purti |
 
 Jai Dev Jai Dev || Dhr. ||
 
-ಸುಖಕರ್ತಾ ದುಃಖಹರ್ತಾ, ವಾರ್ತಾ ವಿಘ್ನಾಚೀ ।
+ಸುಖಕರ್ತಾ ದುಃಖಹರ್ತಾ, ​ವಾರ್ತಾ ವಿಘ್ನಾಚೀ ।
 
 ನುರವೀ ಪುರವೀ ಪ್ರೇಮ ಕೃಪಾ ಜಯಾಚೀ ।
 
@@ -12211,10 +12211,10 @@ Dnyaneshwar Aarti
 Aarti Dnyanaraja || Dhr. ||
 
 ಆರತೀ ಜ್ಞಾನರಾಜಾ ।​
-ಹೋ ಮಹಾಕೈವಲ್ಯತೇಜಾ, ಕೈವಲ್ಯತೇಜಾ ।
+ಹೋ ಮಹಾಕೈವಲ್ಯತೇಜಾ, ​ಕೈವಲ್ಯತೇಜಾ ।
 
 ಸೇವಿತೀ ಸಾಧುಸಂತ ।​
-ಹೋ ಮನು ವೇಧಲಾ ಮಾಝಾ, ವೇಧಲಾ ಮಾಝಾ ॥ ೧ ॥
+ಹೋ ಮನು ವೇಧಲಾ ಮಾಝಾ, ​ವೇಧಲಾ ಮಾಝಾ ॥ ೧ ॥
 
 Aarti Dnyanaraja | Ho Mahakaivalyateja, Kaivalyateja |
 
@@ -12223,10 +12223,10 @@ Seviti Sadhusant | Ho Manu Vedhala Majha, Vedhala Majha || 1 ||
 ↻ ಧ್ರುಪದRefrain
 
 ಲೋಪಲೇಂ ಜ್ಞಾನ ಜಗೀಂ ।​
-ಹಿತ ನೇಣತೀ ಕೋಣೀ, ನೇಣತೀ ಕೋಣೀ ।
+ಹಿತ ನೇಣತೀ ಕೋಣೀ, ​ನೇಣತೀ ಕೋಣೀ ।
 
 ಅವತಾರ ಪಾಂಡುರಂಗ ।​
-ನಾಮ ಠೇವಿಲೇಂ ಜ್ಞಾನೀ, ಠೇವಿಲೇಂ ಜ್ಞಾನೀ ॥ ೨ ॥
+ನಾಮ ಠೇವಿಲೇಂ ಜ್ಞಾನೀ, ​ಠೇವಿಲೇಂ ಜ್ಞಾನೀ ॥ ೨ ॥
 
 Lopale Dnyan Jagi | Hita Nenati Koni, Nenati Koni |
 
@@ -12235,10 +12235,10 @@ Avatar Pandurang | Nam Thevile Dnyani, Thevile Dnyani || 2 ||
 ↻ ಧ್ರುಪದRefrain
 
 ಕನಕಾಚೇಂ ತಾಟ ಕರೀಂ ।​
-ಉಭ್ಯಾ ಗೋಪಿಕಾ ನಾರೀ, ಗೋಪಿಕಾ ನಾರೀ ।
+ಉಭ್ಯಾ ಗೋಪಿಕಾ ನಾರೀ, ​ಗೋಪಿಕಾ ನಾರೀ ।
 
 ನಾರದ ತುಂಬರು ಹೋ ।​
-ಸಾಮ ಗಾಯನ ಕರೀ, ಗಾಯನ ಕರೀ ॥ ೩ ॥
+ಸಾಮ ಗಾಯನ ಕರೀ, ​ಗಾಯನ ಕರೀ ॥ ೩ ॥
 
 Kanakache Taat Kari | Ubhya Gopika Nari, Gopika Nari |
 
@@ -12247,10 +12247,10 @@ Narad Tumbaru Ho | Saama Gaayan Kari, Gaayan Kari || 3 ||
 ↻ ಧ್ರುಪದRefrain
 
 ಪ್ರಗಟ ಗುಹ್ಯ ಬೋಲೇ ।​
-ವಿಶ್ವ ಬ್ರಹ್ಮಚೀ ಕೇಲೇಂ, ಬ್ರಹ್ಮಚೀ ಕೇಲೇಂ ।
+ವಿಶ್ವ ಬ್ರಹ್ಮಚೀ ಕೇಲೇಂ, ​ಬ್ರಹ್ಮಚೀ ಕೇಲೇಂ ।
 
 ರಾಮಾ ಜನಾರ್ದನೀ ।​
-ಪಾಯೀಂ ಮಸ್ತಕ ಠೇವಿಲೇಂ, ಮಸ್ತಕ ಠೇವಿಲೇಂ ॥ ೪ ॥
+ಪಾಯೀಂ ಮಸ್ತಕ ಠೇವಿಲೇಂ, ​ಮಸ್ತಕ ಠೇವಿಲೇಂ ॥ ೪ ॥
 
 Pragat Guhya Bole | Vishwa Brahmachi Kele, Brahmachi Kele |
 
@@ -12417,9 +12417,9 @@ Hare Krishna Hare Krishna Krishna Krishna Hare Hare ||
 Aarti Jai Ganesh Deva
 ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
-ಜಯ ಗಣೇಶ ಜಯ ಗಣೇಶ, ಜಯ ಗಣೇಶ ದೇವಾ ।
+ಜಯ ಗಣೇಶ ಜಯ ಗಣೇಶ, ​ಜಯ ಗಣೇಶ ದೇವಾ ।
 
-ಮಾತಾ ಜಾಕೀ ಪಾರ್ವತೀ, ಪಿತಾ ಮಹಾದೇವಾ ॥
+ಮಾತಾ ಜಾಕೀ ಪಾರ್ವತೀ, ​ಪಿತಾ ಮಹಾದೇವಾ ॥
 
 Jai Ganesh Jai Ganesh, Jai Ganesh Deva |
 
@@ -12427,13 +12427,13 @@ Mata Jaaki Parvati, Pita Mahadeva ||
 
 ↻ ಧ್ರುಪದRefrain
 
-ಏಕದಂತ ದಯಾವಂತ, ಚಾರ ಭುಜಾ ಧಾರೀ ।
+ಏಕದಂತ ದಯಾವಂತ, ​ಚಾರ ಭುಜಾ ಧಾರೀ ।
 
-ಮಾಥೇ ಸಿಂದೂರ ಸೋಹೇ, ಮೂಸೇ ಕೀ ಸವಾರೀ ॥
+ಮಾಥೇ ಸಿಂದೂರ ಸೋಹೇ, ​ಮೂಸೇ ಕೀ ಸವಾರೀ ॥
 
-ಪಾನ ಚಢ಼ೇ ಫೂಲ ಚಢ಼ೇ, ಔರ ಚಢ಼ೇ ಮೇವಾ ।
+ಪಾನ ಚಢ಼ೇ ಫೂಲ ಚಢ಼ೇ, ​ಔರ ಚಢ಼ೇ ಮೇವಾ ।
 
-ಲಡ್ಡುಅನ ಕಾ ಭೋಗ ಲಗೇ, ಸಂತ ಕರೇಂ ಸೇವಾ ॥ ೧ ॥
+ಲಡ್ಡುಅನ ಕಾ ಭೋಗ ಲಗೇ, ​ಸಂತ ಕರೇಂ ಸೇವಾ ॥ ೧ ॥
 
 Ekadant Dayavant, Chaar Bhuja Dhaari |
 
@@ -12445,13 +12445,13 @@ Ladduan Ka Bhog Lage, Sant Kare Seva || 1 ||
 
 ↻ ಧ್ರುಪದRefrain
 
-ಅಂಧೇ ಕೋ ಆಁಖ ದೇತ, ಕೋಢ಼ೀ ಕೋ ಕಾಯಾ ।
+ಅಂಧೇ ಕೋ ಆಁಖ ದೇತ, ​ಕೋಢ಼ೀ ಕೋ ಕಾಯಾ ।
 
-ಬಾಁಝನ ಕೋ ಪುತ್ರ ದೇತ, ನಿರ್ಧನ ಕೋ ಮಾಯಾ ॥
+ಬಾಁಝನ ಕೋ ಪುತ್ರ ದೇತ, ​ನಿರ್ಧನ ಕೋ ಮಾಯಾ ॥
 
-ಸೂರ ಶ್ಯಾಮ ಶರಣ ಆಏ, ಸಫಲ ಕೀಜೇ ಸೇವಾ ।
+ಸೂರ ಶ್ಯಾಮ ಶರಣ ಆಏ, ​ಸಫಲ ಕೀಜೇ ಸೇವಾ ।
 
-ಮಾತಾ ಜಾಕೀ ಪಾರ್ವತೀ, ಪಿತಾ ಮಹಾದೇವಾ ॥ ೨ ॥
+ಮಾತಾ ಜಾಕೀ ಪಾರ್ವತೀ, ​ಪಿತಾ ಮಹಾದೇವಾ ॥ ೨ ॥
 
 Andhe Ko Aankh Det, Kodhi Ko Kaaya |
 
@@ -12471,7 +12471,7 @@ Aarti Jai Jagdish Hare
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ, ​ಸ್ವಾಮೀ ಜಯ ಜಗದೀಶ ಹರೇ ।
 
-ಭಕ್ತಜನೋಂ ಕೇ ಸಂಕಟ, ​ದಾಸಜನೋಂ ಕೇ ಸಂಕಟ, ಕ್ಷಣ ಮೇಂ ದೂರ ಕರೇ ।
+ಭಕ್ತಜನೋಂ ಕೇ ಸಂಕಟ, ​ದಾಸಜನೋಂ ಕೇ ಸಂಕಟ, ​ಕ್ಷಣ ಮೇಂ ದೂರ ಕರೇ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥
 
@@ -12481,9 +12481,9 @@ Bhaktajanon Ke Sankat, Daasjanon Ke Sankat, Kshan Mein Door Kare |
 
 Om Jai Jagdish Hare ||
 
-ಜೋ ಧ್ಯಾವೇ ಫಲ ಪಾವೇ, ದುಃಖ ಬಿನಸೇ ಮನ ಕಾ, ​ಸ್ವಾಮೀ ದುಃಖ ಬಿನಸೇ ಮನ ಕಾ ।
+ಜೋ ಧ್ಯಾವೇ ಫಲ ಪಾವೇ, ​ದುಃಖ ಬಿನಸೇ ಮನ ಕಾ, ​ಸ್ವಾಮೀ ದುಃಖ ಬಿನಸೇ ಮನ ಕಾ ।
 
-ಸುಖ ಸಮ್ಪತಿ ಘರ ಆವೇ, ​ಸುಖ ಸಮ್ಪತಿ ಘರ ಆವೇ, ಕಷ್ಟ ಮಿಟೇ ತನ ಕಾ ।
+ಸುಖ ಸಮ್ಪತಿ ಘರ ಆವೇ, ​ಸುಖ ಸಮ್ಪತಿ ಘರ ಆವೇ, ​ಕಷ್ಟ ಮಿಟೇ ತನ ಕಾ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೧ ॥
 
@@ -12493,9 +12493,9 @@ Sukh Sampati Ghar Aave, Sukh Sampati Ghar Aave, Kasht Mite Tan Ka |
 
 Om Jai Jagdish Hare || 1 ||
 
-ಮಾತಪಿತಾ ತುಮ ಮೇರೇ, ಶರಣ ಗಹೂಁ ಕಿಸಕೀ, ​ಸ್ವಾಮೀ ಶರಣ ಗಹೂಁ ಕಿಸಕೀ ।
+ಮಾತಪಿತಾ ತುಮ ಮೇರೇ, ​ಶರಣ ಗಹೂಁ ಕಿಸಕೀ, ​ಸ್ವಾಮೀ ಶರಣ ಗಹೂಁ ಕಿಸಕೀ ।
 
-ತುಮ ಬಿನ ಔರ ನ ದೂಜಾ, ​ಪ್ರಭು ಬಿನ ಔರ ನ ದೂಜಾ, ಆಸ ಕರೂಁ ಜಿಸಕೀ ।
+ತುಮ ಬಿನ ಔರ ನ ದೂಜಾ, ​ಪ್ರಭು ಬಿನ ಔರ ನ ದೂಜಾ, ​ಆಸ ಕರೂಁ ಜಿಸಕೀ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೨ ॥
 
@@ -12505,9 +12505,9 @@ Tum Bin Aur Na Dooja, Prabhu Bin Aur Na Dooja, Aas Karoon Jiski |
 
 Om Jai Jagdish Hare || 2 ||
 
-ತುಮ ಪೂರಣ ಪರಮಾತ್ಮಾ, ​ತುಮ ಅನ್ತರ್ಯಾಮೀ, ಸ್ವಾಮೀ ತುಮ ಅನ್ತರ್ಯಾಮೀ ।
+ತುಮ ಪೂರಣ ಪರಮಾತ್ಮಾ, ​ತುಮ ಅನ್ತರ್ಯಾಮೀ, ​ಸ್ವಾಮೀ ತುಮ ಅನ್ತರ್ಯಾಮೀ ।
 
-ಪಾರ ಬ್ರಹ್ಮ ಪರಮೇಶ್ವರ, ​ಪಾರ ಬ್ರಹ್ಮ ಪರಮೇಶ್ವರ, ತುಮ ಸಬಕೇ ಸ್ವಾಮೀ ।
+ಪಾರ ಬ್ರಹ್ಮ ಪರಮೇಶ್ವರ, ​ಪಾರ ಬ್ರಹ್ಮ ಪರಮೇಶ್ವರ, ​ತುಮ ಸಬಕೇ ಸ್ವಾಮೀ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೩ ॥
 
@@ -12517,9 +12517,9 @@ Paar Brahma Parmeshwar, Paar Brahma Parmeshwar, Tum Sabke Swami |
 
 Om Jai Jagdish Hare || 3 ||
 
-ತುಮ ಕರುಣಾ ಕೇ ಸಾಗರ, ತುಮ ಪಾಲನ ಕರ್ತಾ, ​ಸ್ವಾಮೀ ತುಮ ಪಾಲನ ಕರ್ತಾ ।
+ತುಮ ಕರುಣಾ ಕೇ ಸಾಗರ, ​ತುಮ ಪಾಲನ ಕರ್ತಾ, ​ಸ್ವಾಮೀ ತುಮ ಪಾಲನ ಕರ್ತಾ ।
 
-ಮೈಂ ಮೂರಖ ಖಲ ಕಾಮೀ, ​ಮೈಂ ಸೇವಕ ತುಮ ಸ್ವಾಮೀ, ಕೃಪಾ ಕರೋ ಭರ್ತಾ ।
+ಮೈಂ ಮೂರಖ ಖಲ ಕಾಮೀ, ​ಮೈಂ ಸೇವಕ ತುಮ ಸ್ವಾಮೀ, ​ಕೃಪಾ ಕರೋ ಭರ್ತಾ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೪ ॥
 
@@ -12529,9 +12529,9 @@ Main Moorakh Khal Kaami, Main Sevak Tum Swami, Krupa Karo Bharta |
 
 Om Jai Jagdish Hare || 4 ||
 
-ತುಮ ಹೋ ಏಕ ಅಗೋಚರ, ಸಬಕೇ ಪ್ರಾಣಪತಿ, ​ಸ್ವಾಮೀ ಸಬಕೇ ಪ್ರಾಣಪತಿ ।
+ತುಮ ಹೋ ಏಕ ಅಗೋಚರ, ​ಸಬಕೇ ಪ್ರಾಣಪತಿ, ​ಸ್ವಾಮೀ ಸಬಕೇ ಪ್ರಾಣಪತಿ ।
 
-ಕಿಸ ವಿಧಿ ಮಿಲೂಁ ದಯಾಮಯ, ​ಕಿಸ ವಿಧಿ ಮಿಲೂಁ ದಯಾಮಯ, ತುಮಕೋ ಮೈಂ ಕುಮತಿ ।
+ಕಿಸ ವಿಧಿ ಮಿಲೂಁ ದಯಾಮಯ, ​ಕಿಸ ವಿಧಿ ಮಿಲೂಁ ದಯಾಮಯ, ​ತುಮಕೋ ಮೈಂ ಕುಮತಿ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೫ ॥
 
@@ -12541,9 +12541,9 @@ Kis Vidhi Miloon Dayamay, Kis Vidhi Miloon Dayamay, Tumko Main Kumati |
 
 Om Jai Jagdish Hare || 5 ||
 
-ದೀನಬನ್ಧು ದುಃಖ ಹರ್ತಾ, ತುಮ ರಕ್ಷಕ ಮೇರೇ, ​ಸ್ವಾಮೀ ತುಮ ರಕ್ಷಕ ಮೇರೇ ।
+ದೀನಬನ್ಧು ದುಃಖ ಹರ್ತಾ, ​ತುಮ ರಕ್ಷಕ ಮೇರೇ, ​ಸ್ವಾಮೀ ತುಮ ರಕ್ಷಕ ಮೇರೇ ।
 
-ಅಪನೇ ಹಾಥ ಉಠಾಓ, ಅಪನೇ ಶರಣ ಲಗಾಓ, ​ದ್ವಾರ ಪಡ಼ಾ ತೇರೇ ।
+ಅಪನೇ ಹಾಥ ಉಠಾಓ, ​ಅಪನೇ ಶರಣ ಲಗಾಓ, ​ದ್ವಾರ ಪಡ಼ಾ ತೇರೇ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೬ ॥
 
@@ -12553,9 +12553,9 @@ Apne Haath Uthao, Apne Sharan Lagao, Dwar Pada Tere |
 
 Om Jai Jagdish Hare || 6 ||
 
-ವಿಷಯ ವಿಕಾರ ಮಿಟಾಓ, ಪಾಪ ಹರೋ ದೇವಾ, ​ಸ್ವಾಮೀ ಪಾಪ ಹರೋ ದೇವಾ ।
+ವಿಷಯ ವಿಕಾರ ಮಿಟಾಓ, ​ಪಾಪ ಹರೋ ದೇವಾ, ​ಸ್ವಾಮೀ ಪಾಪ ಹರೋ ದೇವಾ ।
 
-ಶ್ರದ್ಧಾ ಭಕ್ತಿ ಬಢ಼ಾಓ, ​ಶ್ರದ್ಧಾ ಪ್ರೇಮ ಬಢ಼ಾಓ, ಸನ್ತನ ಕೀ ಸೇವಾ ।
+ಶ್ರದ್ಧಾ ಭಕ್ತಿ ಬಢ಼ಾಓ, ​ಶ್ರದ್ಧಾ ಪ್ರೇಮ ಬಢ಼ಾಓ, ​ಸನ್ತನ ಕೀ ಸೇವಾ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೭ ॥
 
@@ -12567,7 +12567,7 @@ Om Jai Jagdish Hare || 7 ||
 
 ತನ ಮನ ಧನ ಸಬ ಹೈ ತೇರಾ, ​ಸ್ವಾಮೀ ಸಬ ಕುಛ ಹೈ ತೇರಾ ।
 
-ತೇರಾ ತುಝಕೋ ಅರ್ಪಣ, ​ತೇರಾ ತುಝಕೋ ಅರ್ಪಣ, ಕ್ಯಾ ಲಾಗೇ ಮೇರಾ ।
+ತೇರಾ ತುಝಕೋ ಅರ್ಪಣ, ​ತೇರಾ ತುಝಕೋ ಅರ್ಪಣ, ​ಕ್ಯಾ ಲಾಗೇ ಮೇರಾ ।
 
 ಓಂ ಜಯ ಜಗದೀಶ ಹರೇ ॥ ೮ ॥
 
@@ -12777,11 +12777,19 @@ Aarti Kariton Guruvar
 
 ಆರತೀ ಕರಿತೋಂ ಗುರುವರ ಭಗವನ್ ಬ್ರಹ್ಮಚೈತನ್ಯಾ ।
 
-ಕರುಣೇನೇಂ ಸ್ವೀಕಾರ ಕರಾವಾ ಅನನ್ಯಸಾಮಾನ್ಯಾ ॥ ಧೃ. ॥
+ಕರುಣೇನೇಂ ಸ್ವೀಕಾರ ಕರಾವಾ ಅನನ್ಯಸಾಮಾನ್ಯಾ ।
+
+ಕರುಣೇನೇಂ ಸ್ವೀಕಾರ ಕರಾವಾ ಅನನ್ಯಸಾಮಾನ್ಯಾ ।
+
+ಆರತೀ ಕರಿತೋಂ ಗುರುವರ ಭಗವನ್ ಬ್ರಹ್ಮಚೈತನ್ಯಾ ॥ ಧೃ. ॥
 
 Aarti Kariton Guruvar Bhagavan Brahmachaitanya |
 
-Karunenen Svikar Karava Ananyasamanya || Dhr. ||
+Karunenen Svikar Karava Ananyasamanya |
+
+Karunenen Svikar Karava Ananyasamanya |
+
+Aarti Kariton Guruvar Bhagavan Brahmachaitanya || Dhr. ||
 
 ↻ ಧ್ರುಪದRefrain
 
@@ -12926,15 +12934,11 @@ Aarti Belaguve
 
 ಆರತೀ ಬೇಳಗುವೇ ಸದ್‌ಗುರು ಶ್ರೀಬ್ರಹ್ಮಚೈತನ್ಯಾ ।
 
-ಪರಬ್ರಹ್ಮಾ ಪರಾತ್ಪರಾ ಸನಕಾದಿಕಮಾನ್ಯಾ ।
-
-ಆರತೀ ಬೇಳಗುವೇ ಸದ್‌ಗುರು ಶ್ರೀಬ್ರಹ್ಮಚೈತನ್ಯಾ ॥ ಧೃ. ॥
+ಪರಬ್ರಹ್ಮಾ ಪರಾತ್ಪರಾ ಸನಕಾದಿಕಮಾನ್ಯಾ ॥ ಧೃ. ॥
 
 Aarti Belaguve Sadguru Shribrahmachaitanya |
 
-Parabrahma Paratpara Sanakadikamanya |
-
-Aarti Belaguve Sadguru Shribrahmachaitanya || Dhr. ||
+Parabrahma Paratpara Sanakadikamanya || Dhr. ||
 
 ↻ ಧ್ರುಪದRefrain
 
@@ -13022,7 +13026,7 @@ Ughaden Parabrahmachi He Murti Gojiri || 1 ||
 
 ಮ್ಹಣವುನಿ ತನು ಝಿಜವುನಿಯಾ ಸುಖವಿಸೀ ಜನಾಂ ।
 
-ಪಹಾವೇನಾ, ವಿಶ್ರಾಂತೀ ಘೇಈ ಕ್ಷಣಭರೀ ॥ ೨ ॥
+ಪಹಾವೇನಾ, ​ವಿಶ್ರಾಂತೀ ಘೇಈ ಕ್ಷಣಭರೀ ॥ ೨ ॥
 
 Dehagunatitachi Tun Patitapavana |
 
@@ -13121,7 +13125,7 @@ Anek Aise Chamatkar Kiti Bhaktanna Disale || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
 
-ದಯಾ ಕ್ಷಮಾ ಶಾಂತಿ ಯಾ ವಸತಿ, ಸದೈವ ತವ ಸದನೀ ।
+ದಯಾ ಕ್ಷಮಾ ಶಾಂತಿ ಯಾ ವಸತಿ, ​ಸದೈವ ತವ ಸದನೀ ।
 
 ದತ್ತ ದತ್ತ ಜಯ ದತ್ತ ನಾಮ ಹೇ ಅಖಂಡ ತವ ವದನೀ ।
 
@@ -13233,81 +13237,81 @@ Kahat Shivanand Swami Manvanchhit Phal Pave || 7 ||
 ಮಾರುತೀ ಸ್ತೋತ್ರ
 Maruti Stotra
 
-ಭೀಮರೂಪೀ ಮಹಾರುದ್ರಾ, ವಜ್ರ ಹನುಮಾನ ಮಾರುತೀ ।
+ಭೀಮರೂಪೀ ಮಹಾರುದ್ರಾ, ​ವಜ್ರ ಹನುಮಾನ ಮಾರುತೀ ।
 
-ವನಾರೀ ಅಂಜನೀಸೂತಾ, ರಾಮದೂತಾ ಪ್ರಭಂಜನಾ ॥ ೧ ॥
+ವನಾರೀ ಅಂಜನೀಸೂತಾ, ​ರಾಮದೂತಾ ಪ್ರಭಂಜನಾ ॥ ೧ ॥
 
 Bhimarupi Maharudra, Vajra Hanuman Maruti |
 
 Vanari Anjanisuta, Ramaduta Prabhanjana || 1 ||
 
-ಮಹಾಬಳೀ ಪ್ರಾಣದಾತಾ, ಸಕಳಾಂ ಉಠವೀ ಬಳೇಂ ।
+ಮಹಾಬಳೀ ಪ್ರಾಣದಾತಾ, ​ಸಕಳಾಂ ಉಠವೀ ಬಳೇಂ ।
 
-ಸೌಖ್ಯಕಾರೀ ಶೋಕಹರ್ತಾ, ಧೂರ್ತ ವೈಷ್ಣವ ಗಾಯಕಾ ॥ ೨ ॥
+ಸೌಖ್ಯಕಾರೀ ಶೋಕಹರ್ತಾ, ​ಧೂರ್ತ ವೈಷ್ಣವ ಗಾಯಕಾ ॥ ೨ ॥
 
 Mahabali Pranadata, Sakalan Uthavi Balen |
 
 Saukhyakari Shokaharta, Dhurta Vaishnav Gayaka || 2 ||
 
-ದಿನಾನಾಥಾ ಹರೀರೂಪಾ, ಸುಂದರಾ ಜಗದಂತರಾ ।
+ದಿನಾನಾಥಾ ಹರೀರೂಪಾ, ​ಸುಂದರಾ ಜಗದಂತರಾ ।
 
-ಪಾತಾಲದೇವತಾಹಂತಾ, ಭವ್ಯಸಿಂದೂರಲೇಪನಾ ॥ ೩ ॥
+ಪಾತಾಲದೇವತಾಹಂತಾ, ​ಭವ್ಯಸಿಂದೂರಲೇಪನಾ ॥ ೩ ॥
 
 Dinanatha Harirupa, Sundara Jagadantara |
 
 Pataladevatahanta, Bhavyasindurlepana || 3 ||
 
-ಲೋಕನಾಥಾ ಜಗನ್ನಾಥಾ, ಪ್ರಾಣನಾಥಾ ಪುರಾತನಾ ।
+ಲೋಕನಾಥಾ ಜಗನ್ನಾಥಾ, ​ಪ್ರಾಣನಾಥಾ ಪುರಾತನಾ ।
 
-ಪುಣ್ಯವಂತಾ ಪುಣ್ಯಶೀಲಾ, ಪಾವನಾ ಪರಿತೋಷಕಾ ॥ ೪ ॥
+ಪುಣ್ಯವಂತಾ ಪುಣ್ಯಶೀಲಾ, ​ಪಾವನಾ ಪರಿತೋಷಕಾ ॥ ೪ ॥
 
 Lokanatha Jagannatha, Prananatha Puratana |
 
 Punyavanta Punyashila, Pavana Paritoshaka || 4 ||
 
-ಧ್ವಜಾಂಗೇಂ ಉಚಲೀ ಬಾಹೋ, ಆವೇಶೇಂ ಲೋಟಲಾ ಪುಢೇಂ ।
+ಧ್ವಜಾಂಗೇಂ ಉಚಲೀ ಬಾಹೋ, ​ಆವೇಶೇಂ ಲೋಟಲಾ ಪುಢೇಂ ।
 
-ಕಾಳಾಗ್ನಿ ಕಾಳರುದ್ರಾಗ್ನಿ, ದೇಖತಾಂ ಕಾಂಪತೀ ಭಯೇಂ ॥ ೫ ॥
+ಕಾಳಾಗ್ನಿ ಕಾಳರುದ್ರಾಗ್ನಿ, ​ದೇಖತಾಂ ಕಾಂಪತೀ ಭಯೇಂ ॥ ೫ ॥
 
 Dhvajangen Uchali Baho, Aaveshen Lotala Pudhen |
 
 Kalagni Kalarudragni, Dekhatan Kampati Bhayen || 5 ||
 
-ಬ್ರಹ್ಮಾಂಡೇಂ ಮಾಇಲೀಂ ನೇಣೋಂ, ಆಂವಾಳೇ ದಂತಪಂಗತೀ ।
+ಬ್ರಹ್ಮಾಂಡೇಂ ಮಾಇಲೀಂ ನೇಣೋಂ, ​ಆಂವಾಳೇ ದಂತಪಂಗತೀ ।
 
-ನೇತ್ರಾಗ್ನೀ ಚಾಲಿಲ್ಯಾ ಜ್ವಾಳಾ, ಭೃಕುಟೀ ತಾಠಿಲ್ಯಾ ಬಳೇಂ ॥ ೬ ॥
+ನೇತ್ರಾಗ್ನೀ ಚಾಲಿಲ್ಯಾ ಜ್ವಾಳಾ, ​ಭೃಕುಟೀ ತಾಠಿಲ್ಯಾ ಬಳೇಂ ॥ ೬ ॥
 
 Brahmanden Mailin Nenon, Aanvale Dantapangati |
 
 Netragni Chalilya Jvala, Bhrukuti Tathilya Balen || 6 ||
 
-ಪುಚ್ಛ ತೇಂ ಮುರಡಿಲೇಂ ಮಾಥಾಂ, ಕಿರೀಟೀ ಕುಂಡಲೇಂ ಬರೀಂ ।
+ಪುಚ್ಛ ತೇಂ ಮುರಡಿಲೇಂ ಮಾಥಾಂ, ​ಕಿರೀಟೀ ಕುಂಡಲೇಂ ಬರೀಂ ।
 
-ಸುವರ್ಣಕಟಿಕಾಸೋಟೀ, ಘಂಟಾ ಕಿಂಕಿಣಿ ನಾಗರಾ ॥ ೭ ॥
+ಸುವರ್ಣಕಟಿಕಾಸೋಟೀ, ​ಘಂಟಾ ಕಿಂಕಿಣಿ ನಾಗರಾ ॥ ೭ ॥
 
 Puchchha Ten Muradilen Mathan, Kiriti Kundalen Barin |
 
 Suvarnakatikasoti, Ghanta Kinkini Nagara || 7 ||
 
-ಠಕಾರೇ ಪರ್ವತಾಐಸಾ, ನೇಟಕಾ ಸಡಪಾತಳೂ ।
+ಠಕಾರೇ ಪರ್ವತಾಐಸಾ, ​ನೇಟಕಾ ಸಡಪಾತಳೂ ।
 
-ಚಪಳಾಂಗ ಪಾಹತಾಂ ಮೋಠೇಂ, ಮಹಾವಿದ್ಯುಲ್ಲತೇಪರೀ ॥ ೮ ॥
+ಚಪಳಾಂಗ ಪಾಹತಾಂ ಮೋಠೇಂ, ​ಮಹಾವಿದ್ಯುಲ್ಲತೇಪರೀ ॥ ೮ ॥
 
 Thakare Parvataaisa, Netaka Sadapatalu |
 
 Chapalang Pahatan Mothen, Mahavidyullatepari || 8 ||
 
-ಕೋಟಿಚ್ಯಾ ಕೋಟಿ ಉಡ್ಡಾಣೇಂ, ಝೇಂಪಾವೇ ಉತ್ತರೇಕಡೇ ।
+ಕೋಟಿಚ್ಯಾ ಕೋಟಿ ಉಡ್ಡಾಣೇಂ, ​ಝೇಂಪಾವೇ ಉತ್ತರೇಕಡೇ ।
 
-ಮಂದ್ರಾದ್ರೀಸಾರಿಖಾ ದ್ರೋಣೂ, ಕ್ರೋಧೇಂ ಉತ್ಪಾಟಿಲಾ ಬಳೇಂ ॥ ೯ ॥
+ಮಂದ್ರಾದ್ರೀಸಾರಿಖಾ ದ್ರೋಣೂ, ​ಕ್ರೋಧೇಂ ಉತ್ಪಾಟಿಲಾ ಬಳೇಂ ॥ ೯ ॥
 
 Kotichya Koti Uddanen, Jhempave Uttarekade |
 
 Mandradrisarikha Dronu, Krodhen Utpatila Balen || 9 ||
 
-ಆಣಿಲಾ ಮಾಗುತೀಂ ನೇಲಾ, ಆಲಾ ಗೇಲಾ ಮನೋಗತೀ ।
+ಆಣಿಲಾ ಮಾಗುತೀಂ ನೇಲಾ, ​ಆಲಾ ಗೇಲಾ ಮನೋಗತೀ ।
 
-ಮನಾಸೀ ಟಾಕಿಲೇಂ ಮಾಗೇಂ, ಗತೀಸೀ ತೂಳಣಾ ನಸೇ ॥ ೧೦ ॥
+ಮನಾಸೀ ಟಾಕಿಲೇಂ ಮಾಗೇಂ, ​ಗತೀಸೀ ತೂಳಣಾ ನಸೇ ॥ ೧೦ ॥
 
 Aanila Magutin Nela, Aala Gela Manogati |
 
@@ -13315,55 +13319,55 @@ Manasi Takilen Magen, Gatisi Tulana Nase || 10 ||
 
 ಅಣೂಪಾಸೋನಿ ಬ್ರಹ್ಮಾಂಡಾಏವಢಾ ಹೋತ ಜಾತಸೇ ।
 
-ತಯಾಸೀ ತುಳಣಾ ಕೋಠೇಂ, ಮೇರು ಮಾಂದಾರ ಧಾಕುಟೇ ॥ ೧೧ ॥
+ತಯಾಸೀ ತುಳಣಾ ಕೋಠೇಂ, ​ಮೇರು ಮಾಂದಾರ ಧಾಕುಟೇ ॥ ೧೧ ॥
 
 Anupasoni Brahmandaevadha Hot Jatase |
 
 Tayasi Tulana Kothen, Meru Mandar Dhakute || 11 ||
 
-ಬ್ರಹ್ಮಾಂಡಾಭೋಂವತೇ ವೇಢೇ, ವಜ್ರಪುಚ್ಛೇಂ ಕರೂಂ ಶಕೇ ।
+ಬ್ರಹ್ಮಾಂಡಾಭೋಂವತೇ ವೇಢೇ, ​ವಜ್ರಪುಚ್ಛೇಂ ಕರೂಂ ಶಕೇ ।
 
-ತಯಾಸೀ ತುಳಣಾ ಕೈಂಚೀ, ಬ್ರಹ್ಮಾಂಡೀಂ ಪಾಹತಾಂ ನಸೇ ॥ ೧೨ ॥
+ತಯಾಸೀ ತುಳಣಾ ಕೈಂಚೀ, ​ಬ್ರಹ್ಮಾಂಡೀಂ ಪಾಹತಾಂ ನಸೇ ॥ ೧೨ ॥
 
 Brahmandabhonvate Vedhe, Vajrapuchchhen Karun Shake |
 
 Tayasi Tulana Kainchi, Brahmandin Pahatan Nase || 12 ||
 
-ಆರಕ್ತ ದೇಖಿಲೇಂ ಡೋಳಾಂ, ಗ್ರಾಸಿಲೇಂ ಸೂರ್ಯಮಂಡಳಾ ।
+ಆರಕ್ತ ದೇಖಿಲೇಂ ಡೋಳಾಂ, ​ಗ್ರಾಸಿಲೇಂ ಸೂರ್ಯಮಂಡಳಾ ।
 
-ವಾಢತಾಂ ವಾಢತಾಂ ವಾಢೇ, ಭೇದಿಲೇಂ ಶೂನ್ಯಮಂಡಳಾ ॥ ೧೩ ॥
+ವಾಢತಾಂ ವಾಢತಾಂ ವಾಢೇ, ​ಭೇದಿಲೇಂ ಶೂನ್ಯಮಂಡಳಾ ॥ ೧೩ ॥
 
 Aarakta Dekhilen Dolan, Grasilen Suryamandala |
 
 Vadhatan Vadhatan Vadhe, Bhedilen Shunyamandala || 13 ||
 
-ಧನಧಾನ್ಯ ಪಶುವೃದ್ಧಿ, ಪುತ್ರಪೌತ್ರ ಸಮಗ್ರಹೀ ।
+ಧನಧಾನ್ಯ ಪಶುವೃದ್ಧಿ, ​ಪುತ್ರಪೌತ್ರ ಸಮಗ್ರಹೀ ।
 
-ಪಾವತೀ ರೂಪವಿದ್ಯಾದಿ, ಸ್ತೋತ್ರ ಪಾಠೇಂ ಕರೂನಿಯಾಂ ॥ ೧೪ ॥
+ಪಾವತೀ ರೂಪವಿದ್ಯಾದಿ, ​ಸ್ತೋತ್ರ ಪಾಠೇಂ ಕರೂನಿಯಾಂ ॥ ೧೪ ॥
 
 Dhanadhanya Pashuvruddhi, Putrapautra Samagrahi |
 
 Pavati Rupavidyadi, Stotra Pathen Karuniyan || 14 ||
 
-ಭೂತಪ್ರೇತಸಮಂಧಾದಿ, ರೋಗವ್ಯಾಧಿ ಸಮಸ್ತಹೀ ।
+ಭೂತಪ್ರೇತಸಮಂಧಾದಿ, ​ರೋಗವ್ಯಾಧಿ ಸಮಸ್ತಹೀ ।
 
-ನಾಸತೀ ತೂಟತೀ ಚಿಂತಾ, ಆನಂದೇಂ ಭೀಮದರ್ಶನೇಂ ॥ ೧೫ ॥
+ನಾಸತೀ ತೂಟತೀ ಚಿಂತಾ, ​ಆನಂದೇಂ ಭೀಮದರ್ಶನೇಂ ॥ ೧೫ ॥
 
 Bhutapretasamandhadi, Rogavyadhi Samastahi |
 
 Nasati Tutati Chinta, Aananden Bhimadarshanen || 15 ||
 
-ಹೇ ಧರಾ ಪಂಧರಾ ಶ್ಲೋಕೀ, ಲಾಭಲೀ ಶೋಭಲೀ ಬರೀ ।
+ಹೇ ಧರಾ ಪಂಧರಾ ಶ್ಲೋಕೀ, ​ಲಾಭಲೀ ಶೋಭಲೀ ಬರೀ ।
 
-ದೃಢದೇಹೋ ನಿಃಸಂದೇಹೋ, ಸಂಖ್ಯಾ ಚಂದ್ರಕಳಾಗುಣೇಂ ॥ ೧೬ ॥
+ದೃಢದೇಹೋ ನಿಃಸಂದೇಹೋ, ​ಸಂಖ್ಯಾ ಚಂದ್ರಕಳಾಗುಣೇಂ ॥ ೧೬ ॥
 
 He Dhara Pandhara Shloki, Labhali Shobhali Bari |
 
 Drudhadeho Nihsandeho, Sankhya Chandrakalagunen || 16 ||
 
-ರಾಮದಾಸೀಂ ಅಗ್ರಗಣ್ಯೂ, ಕಪಿಕುಳಾಸಿ ಮಂಡಣೂ ।
+ರಾಮದಾಸೀಂ ಅಗ್ರಗಣ್ಯೂ, ​ಕಪಿಕುಳಾಸಿ ಮಂಡಣೂ ।
 
-ರಾಮರೂಪೀ ಅಂತರಾತ್ಮಾ, ದರ್ಶನೇಂ ದೋಷ ನಾಸತೀ ॥ ೧೭ ॥
+ರಾಮರೂಪೀ ಅಂತರಾತ್ಮಾ, ​ದರ್ಶನೇಂ ದೋಷ ನಾಸತೀ ॥ ೧೭ ॥
 
 Ramadasin Agraganyu, Kapikulasi Mandanu |
 
@@ -14711,15 +14715,24 @@ Sarve Bhadrani Pashyantu | Ma Kashchid Duhkhabhag Bhavet || 11 ||
 7.
 ಶಾಂತ ಹೋ ಶ್ರೀಗುರು
 Shant Ho Shriguru
+
+ಶಾಂತ ಹೋ ಶ್ರೀಗುರು ದತ್ತಾ ​ಮಮ ಚಿತ್ತಾ ಶಮವೀ ಆತಾ ॥
+
+Shant Ho Shriguru Datta Mama Chitta Shamavi Aata ||
+
 ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
-ಶಾಂತ ಹೋ ಶ್ರೀಗುರು ದತ್ತಾ ​ಮಮ ಚಿತ್ತಾ ಶಮವೀ ಆತಾ ॥ ಧೃ ॥
+ಶಾಂತ ಹೋ ಶ್ರೀಗುರು ದತ್ತಾ ​ಮಮ ಚಿತ್ತಾ ಶಮವೀ ಆತಾ ।
 
-Shant Ho Shriguru Datta Mama Chitta Shamavi Aata || Dhr. ||
+ಶಾಂತ ಹೋ ॥ ಧೃ ॥
+
+Shant Ho Shriguru Datta Mama Chitta Shamavi Aata |
+
+Shant Ho || Dhr. ||
 
 ತೂಂ ಕೇವಳ ಮಾತಾ ಜನಿತಾ, ​ಸರ್ವಥಾ ತೂಂ ಹಿತಕರ್ತಾ ।
 
-ತೂಂ ಆಪ್ತ ಸ್ವಜನ ಭ್ರಾತಾ, ​ಸರ್ವಥಾ ತೂಂಚೀ ತ್ರಾತಾ ॥ ಚಾಲ ॥
+ತೂಂ ಆಪ್ತ ಸ್ವಜನ ಭ್ರಾತಾ, ​ಸರ್ವಥಾ ತೂಂಚೀ ತ್ರಾತಾ ॥
 
 ಭಯ ಕರ್ತಾ ತೂಂ ಭಯ ಹರ್ತಾ । ​ದಂಡಧರ್ತಾ ತೂಂ ಪರಿಪಾತಾ ॥
 
@@ -14727,7 +14740,7 @@ Shant Ho Shriguru Datta Mama Chitta Shamavi Aata || Dhr. ||
 
 Tun Keval Mata Janita, Sarvatha Tun Hitakarta |
 
-Tun Aapta Svajan Bhrata, Sarvatha Tunchi Trata || Chaal ||
+Tun Aapta Svajan Bhrata, Sarvatha Tunchi Trata ||
 
 Bhay Karta Tun Bhay Harta | Dandadharta Tun Paripata ||
 
@@ -14737,7 +14750,7 @@ Tuj Vachunni Na Duji Varta | Tun Aarta Aashray Data || 1 ||
 
 ಅಪರಾಧಾಸ್ತವ ಗುರುನಾಥಾ, ​ಜರೀ ದಂಡಾ ಧರಿಸೀ ಯಥಾರ್ಥಾ ।
 
-ತರೀ ಆಮ್ಹೀ ಗಾಊನಿ ಗಾಥಾ, ​ತವ ಚರಣೀ ನಮವೂ ಮಾಥಾ ॥ ಚಾಲ ॥
+ತರೀ ಆಮ್ಹೀ ಗಾಊನಿ ಗಾಥಾ, ​ತವ ಚರಣೀ ನಮವೂ ಮಾಥಾ ॥
 
 ತೂಂ ತಥಾಪಿ ದಂಡಿಸಿ ದೇವಾ । ​ಕೋಣಾಚಾ ಮಗ ಕರು ಧಾವಾ ॥
 
@@ -14745,7 +14758,7 @@ Tuj Vachunni Na Duji Varta | Tun Aarta Aashray Data || 1 ||
 
 Aparadhastav Gurunatha, Jari Danda Dharisi Yathartha |
 
-Tari Aamhi Gauni Gatha, Tav Charani Namavu Matha || Chaal ||
+Tari Aamhi Gauni Gatha, Tav Charani Namavu Matha ||
 
 Tun Tathapi Dandisi Deva | Konacha Mag Karu Dhava ||
 
@@ -14755,7 +14768,7 @@ Sodavina Dusara Tenvha | Kon Datta Aamhan Trata || 2 ||
 
 ತೂಂ ನಟಸಾ ಹೋಊನಿ ಕೋಪೀ, ​ದಂಡಿತಾಹಿ ಆಮ್ಹೀ ಪಾಪೀ ।
 
-ಪುನರಪಿಹೀ ಚುಕತಾ ತಥಾಪಿ, ​ಆಮ್ಹಾಂವರೀ ನಚ ಸಂತಾಪೀ ॥ ಚಾಲ ॥
+ಪುನರಪಿಹೀ ಚುಕತಾ ತಥಾಪಿ, ​ಆಮ್ಹಾಂವರೀ ನಚ ಸಂತಾಪೀ ॥
 
 ಗಚ್ಛತಃ ಸ್ಖಲನಂ ಕ್ವಾಪಿ । ​ಅಸೇ ಮಾನುನಿ ನಚ ಹೋ ಕೋಪೀ ॥
 
@@ -14763,7 +14776,7 @@ Sodavina Dusara Tenvha | Kon Datta Aamhan Trata || 2 ||
 
 Tun Natasa Houni Kopi, Danditahi Aamhi Papi |
 
-Punarapihi Chukata Tathapi, Aamhanvari Nach Santapi || Chaal ||
+Punarapihi Chukata Tathapi, Aamhanvari Nach Santapi ||
 
 Gachchhatah Skhalanam Kvapi | Ase Manuni Nach Ho Kopi ||
 
@@ -14773,7 +14786,7 @@ Nij Krupalesha Opi | Aamhavari Tun Bhagavanta || 3 ||
 
 ತವಪದರೀ ಅಸತಾ ತಾತಾ, ​ಆಡಮಾರ್ಗೀ ಪಾಊಲ ಪಡತಾ ।
 
-ಸಾಂಭಾಳುನಿ ಮಾರ್ಗಾವರತಾ, ​ಆಣಿತಾ ನ ದುಜಾ ತ್ರಾತಾ ॥ ಚಾಲ ॥
+ಸಾಂಭಾಳುನಿ ಮಾರ್ಗಾವರತಾ, ​ಆಣಿತಾ ನ ದುಜಾ ತ್ರಾತಾ ॥
 
 ನಿಜ ಬಿರುದಾ ಆಣುನಿ ಚಿತ್ತಾ । ​ತೂಂ ಪತಿತ ಪಾವನ ದತ್ತಾ ॥
 
@@ -14781,7 +14794,7 @@ Nij Krupalesha Opi | Aamhavari Tun Bhagavanta || 3 ||
 
 Tavapadari Asata Tata, Aadamargi Paul Padata |
 
-Sambhaluni Margavarata, Aanita Na Duja Trata || Chaal ||
+Sambhaluni Margavarata, Aanita Na Duja Trata ||
 
 Nij Biruda Aanuni Chitta | Tun Patit Pavan Datta ||
 
@@ -14791,7 +14804,7 @@ Vale Aata Aamhavarata | Karunaghan Tun Gurunatha || 4 ||
 
 ಸಹಕುಟೂಂಬ ಸಹಪರಿವಾರ, ​ದಾಸ ಆಮ್ಹೀ ಹೇ ಘರದಾರ ।
 
-ತವ ಪದೀಂ ಅರ್ಪೂ ಅಸಾರ, ​ಸಂಸಾರಾಹಿತ ಹಾ ಭಾರ ॥ ಚಾಲ ॥
+ತವ ಪದೀಂ ಅರ್ಪೂ ಅಸಾರ, ​ಸಂಸಾರಾಹಿತ ಹಾ ಭಾರ ॥
 
 ಪರಿಹರಿಸೀ ಕರುಣಾಸಿಂಧೋ । ​ತೂಂ ದೀನಾನಾಥ ಸುಬಂಧೋ ॥
 
@@ -14799,7 +14812,7 @@ Vale Aata Aamhavarata | Karunaghan Tun Gurunatha || 4 ||
 
 Sahakutumb Sahaparivar, Das Aamhi He Gharadar |
 
-Tav Padin Arpu Asar, Sansarahit Ha Bhar || Chaal ||
+Tav Padin Arpu Asar, Sansarahit Ha Bhar ||
 
 Pariharisi Karunasindho | Tun Dinanath Subandho ||
 
@@ -14812,82 +14825,154 @@ Aamhan Aghalesh Na Badho | Vasudev Prarthit Datta || 5 ||
 8.
 ಶ್ರೀಗುರು ದತ್ತಾ ಜಯ
 Shriguru Datta Jay
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
-ಶ್ರೀಗುರು ದತ್ತಾ ಜಯ ಭಗವಂತಾ । ​ತೇಂ ಮನ ನಿಷ್ಠುರ ನ ಕರೀ ಆತಾಂ ॥ ಧೃ ॥
+ಶ್ರೀಗುರು ದತ್ತಾ ಜಯ ಭಗವಂತಾ ।
 
-Shriguru Datta Jay Bhagavanta | Ten Man Nishthur Na Kari Aatan || Dhr. ||
+ತೇಂ ಮನ ನಿಷ್ಠುರ ನ ಕರೀ ಆತಾಂ ।
 
-ಚೋರೇ ದ್ವಿಜಾಸೀ ಮಾರಿತಾಂ ಮನ ಜೇ । ​ಕಳವಳಲೇ ತೇ ಕಳವಳೋ ಆತಾಂ ॥ ೧ ॥
+ಶ್ರೀಗುರು ದತ್ತಾ ॥
 
-Chore Dvijasi Maritan Man Je | Kalavalale Te Kalavalo Aatan || 1 ||
+Shriguru Datta Jay Bhagavanta |
 
-↻ ಧ್ರುಪದRefrain
+Ten Man Nishthur Na Kari Aatan |
 
-ಪೋಟಶೂಳಾನೇ ದ್ವಿಜ ತಡಫಡತಾ, ​ಕಳವಳಲೇ ತೇ ಕಳವಳೋ ಆತಾಂ ॥ ೨ ॥
+Shriguru Datta ||
 
-Potashulane Dvij Tadaphadata, Kalavalale Te Kalavalo Aatan || 2 ||
+ಚೋರೇ ದ್ವಿಜಾಸೀ ಮಾರಿತಾಂ ಮನ ಜೇ । ​ಚೋರೇ ದ್ವಿಜಾಸೀ ಮಾರಿತಾಂ ಮನ ಜೇ ।
 
-↻ ಧ್ರುಪದRefrain
+ಕಳವಳಲೇ ತೇ ಕಳವಳೋ ಆತಾಂ । ​ಕಳವಳಲೇ ತೇ ಕಳವಳೋ ಆತಾಂ ॥
 
-ದ್ವಿಜಸುತ ಮರತಾಂ ವಳಲೇ ತೇ ಮನ, ​ಹೋ ಕೀ ಉದಾಸಿನ ನ ವಳೇ ಆತಾಂ ॥ ೩ ॥
+ಶ್ರೀಗುರು ದತ್ತಾ ॥ ೧ ॥
 
-Dvijasut Maratan Valale Te Man, Ho Ki Udasin Na Vale Aatan || 3 ||
+Chore Dvijasi Maritan Man Je | Chore Dvijasi Maritan Man Je |
 
-↻ ಧ್ರುಪದRefrain
+Kalavalale Te Kalavalo Aatan | Kalavalale Te Kalavalo Aatan ||
 
-ಸತಿಪತಿ ಮರತಾಂ ಕಾಕುಳತಿ ಯೇತಾಂ, ​ವಳಲೇ ತೇ ಮನ ನ ವಳೇ ಕೀ ಆತಾಂ ॥ ೪ ॥
+Shriguru Datta || 1 ||
 
-Satipati Maratan Kakulati Yetan, Valale Te Man Na Vale Ki Aatan || 4 ||
+ಪೋಟಶೂಳಾನೇ ದ್ವಿಜ ತಡಫಡತಾ । ​ಪೋಟಶೂಳಾನೇ ದ್ವಿಜ ತಡಫಡತಾ ।
 
-↻ ಧ್ರುಪದRefrain
+ಕಳವಳಲೇ ತೇ ಕಳವಳೋ ಆತಾಂ । ​ಕಳವಳಲೇ ತೇ ಕಳವಳೋ ಆತಾಂ ॥
 
-ಶ್ರೀಗುರುದತ್ತಾ ತ್ಯಜಿ ನಿಷ್ಠುರತಾ, ​ಕೋಮಲ ಚಿತ್ತಾ ವಳವೀ ಆತಾಂ ॥ ೫ ॥
+ಶ್ರೀಗುರು ದತ್ತಾ ॥ ೨ ॥
 
-Shrigurudatta Tyaji Nishthurata, Komal Chitta Valavi Aatan || 5 ||
+Potashulane Dvij Tadaphadata | Potashulane Dvij Tadaphadata |
 
-↻ ಧ್ರುಪದRefrain
+Kalavalale Te Kalavalo Aatan | Kalavalale Te Kalavalo Aatan ||
+
+Shriguru Datta || 2 ||
+
+ದ್ವಿಜಸುತ ಮರತಾಂ ವಳಲೇ ತೇ ಮನ । ​ದ್ವಿಜಸುತ ಮರತಾಂ ವಳಲೇ ತೇ ಮನ ।
+
+ಹೋ ಕೀ ಉದಾಸಿನ ನ ವಳೇ ಆತಾಂ । ​ಹೋ ಕೀ ಉದಾಸಿನ ನ ವಳೇ ಆತಾಂ ॥
+
+ಶ್ರೀಗುರು ದತ್ತಾ ॥ ೩ ॥
+
+Dvijasut Maratan Valale Te Man | Dvijasut Maratan Valale Te Man |
+
+Ho Ki Udasin Na Vale Aatan | Ho Ki Udasin Na Vale Aatan ||
+
+Shriguru Datta || 3 ||
+
+ಸತಿಪತಿ ಮರತಾಂ ಕಾಕುಳತಿ ಯೇತಾಂ । ​ಸತಿಪತಿ ಮರತಾಂ ಕಾಕುಳತಿ ಯೇತಾಂ ।
+
+ವಳಲೇ ತೇ ಮನ ನ ವಳೇ ಕೀ ಆತಾಂ । ​ವಳಲೇ ತೇ ಮನ ನ ವಳೇ ಕೀ ಆತಾಂ ॥
+
+ಶ್ರೀಗುರು ದತ್ತಾ ॥ ೪ ॥
+
+Satipati Maratan Kakulati Yetan | Satipati Maratan Kakulati Yetan |
+
+Valale Te Man Na Vale Ki Aatan | Valale Te Man Na Vale Ki Aatan ||
+
+Shriguru Datta || 4 ||
+
+ಶ್ರೀಗುರುದತ್ತಾ ತ್ಯಜಿ ನಿಷ್ಠುರತಾ । ​ಶ್ರೀಗುರುದತ್ತಾ ತ್ಯಜಿ ನಿಷ್ಠುರತಾ ।
+
+ಕೋಮಲ ಚಿತ್ತಾ ವಳವೀ ಆತಾಂ । ​ಕೋಮಲ ಚಿತ್ತಾ ವಳವೀ ಆತಾಂ ॥
+
+ಶ್ರೀಗುರು ದತ್ತಾ ॥ ೫ ॥
+
+Shrigurudatta Tyaji Nishthurata | Shrigurudatta Tyaji Nishthurata |
+
+Komal Chitta Valavi Aatan | Komal Chitta Valavi Aatan ||
+
+Shriguru Datta || 5 ||
+
 ರಚನಾ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
 
 ### stotra-jay-karunaghan-nij
 9.
 ಜಯ ಕರುಣಾಘನ ನಿಜ
 Jay Karunaghan Nij
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
 
-ಜಯ ಕರುಣಾಘನ ನಿಜ ಜನ ಜೀವನ, ​ಅನಸುಯಾ ನಂದನ ಪಾಹಿ ಜನಾರ್ದನ ॥ ಧೃ ॥
+ಜಯ ಕರುಣಾಘನ ನಿಜ ಜನ ಜೀವನ, ​ಅನಸುಯಾ ನಂದನ ಪಾಹಿ ಜನಾರ್ದನ ।
 
-Jay Karunaghan Nij Jan Jivan, Anasuya Nandan Pahi Janardan || Dhr. ||
+ಜಯ ಕರುಣಾಘನ ॥
 
-ನಿಜ ಅಪರಾಧೇಂ ಉಫರಾಟೀ ದೃಷ್ಟೀ, ​ಹೋಉನಿ ಪೋಟೀ ಭಯ ಧರುಂ ಪಾವನ ॥ ೧ ॥
+Jay Karunaghan Nij Jan Jivan, Anasuya Nandan Pahi Janardan |
 
-Nij Aparadhen Upharati Drushti, Houni Poti Bhay Dharun Pavan || 1 ||
+Jay Karunaghan ||
 
-↻ ಧ್ರುಪದRefrain
+ನಿಜ ಅಪರಾಧೇಂ ಉಫರಾಟೀ ದೃಷ್ಟೀ । ​ನಿಜ ಅಪರಾಧೇಂ ಉಫರಾಟೀ ದೃಷ್ಟೀ ।
 
-ತೂಂ ಕರುಣಾಕರ ಕಧೀ ಆಮ್ಹಾವರ, ​ರುಸಸೀ ನ ಕಿಂಕರವರದ ಕೃಪಾಘನ ॥ ೨ ॥
+ಹೋಉನಿ ಪೋಟೀ ಭಯ ಧರುಂ ಪಾವನ । ​ಹೋಉನಿ ಪೋಟೀ ಭಯ ಧರುಂ ಪಾವನ ॥
 
-Tun Karunakar Kadhi Aamhavar, Rusasi Na Kinkaravarad Krupaghan || 2 ||
+ಜಯ ಕರುಣಾಘನ ॥ ೧ ॥
 
-↻ ಧ್ರುಪದRefrain
+Nij Aparadhen Upharati Drushti | Nij Aparadhen Upharati Drushti |
 
-ವಾರೀ ಅಪರಾಧ ತೂಂ ಮಾಯಬಾಪ, ​ತವ ಮನೀ ಕೋಪಲೇಶ ನ ವಾಮನ ॥ ೩ ॥
+Houni Poti Bhay Dharun Pavan | Houni Poti Bhay Dharun Pavan ||
 
-Vari Aparadh Tun Mayabap, Tav Mani Kopalesh Na Vaman || 3 ||
+Jay Karunaghan || 1 ||
 
-↻ ಧ್ರುಪದRefrain
+ತೂಂ ಕರುಣಾಕರ ಕಧೀ ಆಮ್ಹಾವರ । ​ತೂಂ ಕರುಣಾಕರ ಕಧೀ ಆಮ್ಹಾವರ ।
 
-ಬಾಲಕಾಪರಾಧಾಂ ಗಣೇ ಜರೀ ಮಾತಾ, ​ತರೀ ಕೋಣ ತ್ರಾತಾ ದೇಈಲ ಜೀವನ ॥ ೪ ॥
+ರುಸಸೀ ನ ಕಿಂಕರವರದ ಕೃಪಾಘನ । ​ರುಸಸೀ ನ ಕಿಂಕರವರದ ಕೃಪಾಘನ ॥
 
-Balakaparadhan Gane Jari Mata, Tari Kon Trata Deil Jivan || 4 ||
+ಜಯ ಕರುಣಾಘನ ॥ ೨ ॥
 
-↻ ಧ್ರುಪದRefrain
+Tun Karunakar Kadhi Aamhavar | Tun Karunakar Kadhi Aamhavar |
 
-ಪ್ರಾರ್ಥೀ ವಾಸುದೇವ ಪದೀಂ ಠೇವೀ ಭಾವ, ​ಪದೀಂ ದೇವೋ ಠಾವ ದೇವ ಅತ್ರಿನಂದನ ॥ ೫ ॥
+Rusasi Na Kinkaravarad Krupaghan | Rusasi Na Kinkaravarad Krupaghan ||
 
-Prarthi Vasudev Padin Thevi Bhav, Padin Devo Thav Dev Atrinandan || 5 ||
+Jay Karunaghan || 2 ||
 
-↻ ಧ್ರುಪದRefrain
+ವಾರೀ ಅಪರಾಧ ತೂಂ ಮಾಯಬಾಪ । ​ವಾರೀ ಅಪರಾಧ ತೂಂ ಮಾಯಬಾಪ ।
+
+ತವ ಮನೀ ಕೋಪಲೇಶ ನ ವಾಮನ । ​ತವ ಮನೀ ಕೋಪಲೇಶ ನ ವಾಮನ ॥
+
+ಜಯ ಕರುಣಾಘನ ॥ ೩ ॥
+
+Vari Aparadh Tun Mayabap | Vari Aparadh Tun Mayabap |
+
+Tav Mani Kopalesh Na Vaman | Tav Mani Kopalesh Na Vaman ||
+
+Jay Karunaghan || 3 ||
+
+ಬಾಲಕಾಪರಾಧಾಂ ಗಣೇ ಜರೀ ಮಾತಾ । ​ಬಾಲಕಾಪರಾಧಾಂ ಗಣೇ ಜರೀ ಮಾತಾ ।
+
+ತರೀ ಕೋಣ ತ್ರಾತಾ ದೇಈಲ ಜೀವನ । ​ತರೀ ಕೋಣ ತ್ರಾತಾ ದೇಈಲ ಜೀವನ ॥
+
+ಜಯ ಕರುಣಾಘನ ॥ ೪ ॥
+
+Balakaparadhan Gane Jari Mata | Balakaparadhan Gane Jari Mata |
+
+Tari Kon Trata Deil Jivan | Tari Kon Trata Deil Jivan ||
+
+Jay Karunaghan || 4 ||
+
+ಪ್ರಾರ್ಥೀ ವಾಸುದೇವ ಪದೀಂ ಠೇವೀ ಭಾವ । ​ಪ್ರಾರ್ಥೀ ವಾಸುದೇವ ಪದೀಂ ಠೇವೀ ಭಾವ ।
+
+ಪದೀಂ ದೇವೋ ಠಾವ ದೇವ ಅತ್ರಿನಂದನ । ​ಪದೀಂ ದೇವೋ ಠಾವ ದೇವ ಅತ್ರಿನಂದನ ॥
+
+ಜಯ ಕರುಣಾಘನ ॥ ೫ ॥
+
+Prarthi Vasudev Padin Thevi Bhav | Prarthi Vasudev Padin Thevi Bhav |
+
+Padin Devo Thav Dev Atrinandan | Padin Devo Thav Dev Atrinandan ||
+
+Jay Karunaghan || 5 ||
+
 ರಚನಾ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
 
 ### stotra-ghorakashtoddharan
@@ -15523,7 +15608,7 @@ Visarun Kasa Mi Gurupadukanla || 4 ||
 
 ಅನಂತ ಮಾಝೇ ಅಪರಾಧ ಕೋಟೀ ।
 
-ನಾಣೀ ಮರ್ನೀಂ, ಘಾಲುನಿ ಸರ್ವ ಪೋಟೀಂ ।
+ನಾಣೀ ಮರ್ನೀಂ, ​ಘಾಲುನಿ ಸರ್ವ ಪೋಟೀಂ ।
 
 ಪ್ರಬೋಧ ಕರಿತಾಂ ಶ್ರಮ ಫಾರ ಝಾಲಾ ।
 
@@ -15587,7 +15672,7 @@ Visarun Kasa Mi Gurupadukanla || 8 ||
 
 ಜಯಾ ವಾನಿತಾಂ ವಾನಿತಾಂ ವೇದವಾಣೀ ।
 
-ಮ್ಹಣೇ ‘ನೇತಿ ನೇತೀ’ ತಿ, ಲಾಜೇ ದುರೂನೀ ।
+ಮ್ಹಣೇ ‘ನೇತಿ ನೇತೀ’ ತಿ, ​ಲಾಜೇ ದುರೂನೀ ।
 
 ನವ್ಹೇ ಅಂತ ನಾ ಪಾರ ಜ್ಯಾಚ್ಯಾ ರುಪಾಲಾ ।
 
@@ -15628,9 +15713,9 @@ Ananyata Maj Ghado Svanandarupin
 
 ಅನನ್ಯತಾ ಮಜ ಘಡೋ ಸ್ವಾನಂದರೂಪೀಂ ।
 
-ಹೇಂ ಮಾಗಣೇಂ, ಕರಿಂ ಕೃಪಾ ಸದಯಾ ಸ್ವರೂಪೀ ।
+ಹೇಂ ಮಾಗಣೇಂ, ​ಕರಿಂ ಕೃಪಾ ಸದಯಾ ಸ್ವರೂಪೀ ।
 
-ಜೀವತ್ವಭಾವ ನ ಢಳೇ, ಬಹು ಶೀಣ ಝಾಲಾ ।
+ಜೀವತ್ವಭಾವ ನ ಢಳೇ, ​ಬಹು ಶೀಣ ಝಾಲಾ ।
 
 ಜೋಡೋನಿ ಪಾಣಿ ಶರಣಾಗತ ಸದ್‌ಗುರೂಲಾ ॥ ೧ ॥
 
@@ -15646,7 +15731,7 @@ Jodoni Pani Sharanagat Sadgurula || 1 ||
 
 ಜಾಣೋನಿಯಾ ಶರಣ ಗಾ ತುಜಲಾ ಸಮರ್ಥಾ ।
 
-ತೋಡೀಂ ವಿಕಲ್ಪ, ಧರವೀಂ ಮಗ ನಿಶ್ಚಯಾಲಾ ।
+ತೋಡೀಂ ವಿಕಲ್ಪ, ​ಧರವೀಂ ಮಗ ನಿಶ್ಚಯಾಲಾ ।
 
 ಜೋಡೋನಿ ಪಾಣಿ ಶರಣಾಗತ ಸದ್‌ಗುರೂಲಾ ॥ ೨ ॥
 
@@ -16053,7 +16138,7 @@ Anudin Anutapen Tapalon
 
 ಅಚಪಳ ಮನ ಮಾಝೇಂ ನಾವರೇ ಆವರೀತಾಂ ।
 
-ತುಜವಿಣ ಶಿಣ ಹೋತೋ, ಧಾವ ರೇ ಧಾವ ಆತಾಂ ॥ ೧ ॥
+ತುಜವಿಣ ಶಿಣ ಹೋತೋ, ​ಧಾವ ರೇ ಧಾವ ಆತಾಂ ॥ ೧ ॥
 
 Anudin Anutapen Tapalon Ramaraya |
 
@@ -16085,7 +16170,7 @@ Sakal Tyajuni Bhaven Kas Tujhi Dharavi || 2 ||
 
 ರವಿಕುಳಟಿಳಕಾ ರೇ ಹೀತ ಮಾಝೇಂ ಕರಾವೇಂ ।
 
-ದುರಿತ ದುರಿ ಹರಾವೇಂ, ಸ್ವಸ್ವರೂಪೀಂ ಭರಾವೇಂ ॥ ೩ ॥
+ದುರಿತ ದುರಿ ಹರಾವೇಂ, ​ಸ್ವಸ್ವರೂಪೀಂ ಭರಾವೇಂ ॥ ೩ ॥
 
 Vishayajanitasukhen Saukhya Honar Nahin |
 
@@ -16147,7 +16232,7 @@ Shadaripukul Majhen Todi Yacha Samandhu || 6 ||
 
 ಸಿಣತ ಸಿಣತ ಪೋಟೀಂ ಪಾಹಿಲೀ ವಾಟ ತೂಝೀ ।
 
-ಝಡಕರಿ ಝಡ ಘಾಲೀಂ, ಧಾವ ಪಂಚಾನನಾ ರೇ ।
+ಝಡಕರಿ ಝಡ ಘಾಲೀಂ, ​ಧಾವ ಪಂಚಾನನಾ ರೇ ।
 
 ತುಜವಿಣ ಮಜ ನೇತೇ ಜಂಬುಕೀ ವಾಸನಾ ರೇ ॥ ೭ ॥
 
@@ -16195,7 +16280,7 @@ Himakar Avaloki Pakshiya Bhumivasi || 9 ||
 
 ವಿಲಗ ವಿಷಮಕಾಳೀಂ ತೂಟಲೀ ಸರ್ವ ಮಾಯಾ ।
 
-ಸಕಳಜನಸಖಾ ತೂಂ, ಸ್ವಾಮಿ ಆಣೀಕ ನಾಹೀಂ ।
+ಸಕಳಜನಸಖಾ ತೂಂ, ​ಸ್ವಾಮಿ ಆಣೀಕ ನಾಹೀಂ ।
 
 ವಮಕ ವಮನ ಜೈಸೇಂ ತ್ಯಾಗಿಲೇಂ ಸರ್ವ ಕಾಂಹೀಂ ॥ ೧೦ ॥
 
@@ -16211,9 +16296,9 @@ Vamak Vaman Jaisen Tyagilen Sarva Kanhin || 10 ||
 
 ರಘುಪತಿವಿಣ ಆತಾಂ ಚಿತ್ತ ಕೋಠೇಂ ನ ರಾಹೇ ।
 
-ಜಿವಲಗ ಜಿವ ಘೇತೀ, ಪ್ರೇತ ಸಾಂಡೋನಿ ಜಾತೀ ।
+ಜಿವಲಗ ಜಿವ ಘೇತೀ, ​ಪ್ರೇತ ಸಾಂಡೋನಿ ಜಾತೀ ।
 
-ವಿಷಯ ಸಕಳ ನೇತೀ, ಮಾಗುತಾ ಜನ್ಮ ದೇತೀ ॥ ೧೧ ॥
+ವಿಷಯ ಸಕಳ ನೇತೀ, ​ಮಾಗುತಾ ಜನ್ಮ ದೇತೀ ॥ ೧೧ ॥
 
 Svajanajanadhanacha Kon Santosh Aahe |
 
@@ -16225,7 +16310,7 @@ Vishay Sakal Neti, Maguta Janma Deti || 11 ||
 
 ಸಕಳ ಜನ ಭವಾಚೇ ಆಖಿಲೇ ವೈಭವಾಚೇ ।
 
-ಜಿವಲಗ ಮಗ ಕೈಚೇ, ಚಾಲತೇ ಹೇಚಿ ಸಾಚೇ ।
+ಜಿವಲಗ ಮಗ ಕೈಚೇ, ​ಚಾಲತೇ ಹೇಚಿ ಸಾಚೇ ।
 
 ವಿಲಗ ವಿಷಮಕಾಳೀಂ ಸಾಂಡಿತಿ ಸರ್ವ ಮಾಳೀಂ ।
 
@@ -16241,9 +16326,9 @@ Raghuvir Sukhadata Sodavi Antakalin || 12 ||
 
 ಸುಖ ಸುಖ ಮ್ಹಣತಾಂ ಹೇಂ ದುಃಖ ಠಾಕೂನಿ ಆಲೇಂ ।
 
-ಭಜನ ಸಕಳ ಗೇಲೇಂ, ಚಿತ್ತ ದುಶ್ಚಿತ್ತ ಝಾಲೇಂ ।
+ಭಜನ ಸಕಳ ಗೇಲೇಂ, ​ಚಿತ್ತ ದುಶ್ಚಿತ್ತ ಝಾಲೇಂ ।
 
-ಭ್ರಮಿತ ಮನ ಕಳೇನಾ, ಹೀತ ತೇಂ ಆಕಳೇನಾ ।
+ಭ್ರಮಿತ ಮನ ಕಳೇನಾ, ​ಹೀತ ತೇಂ ಆಕಳೇನಾ ।
 
 ಪರಮ ಕಠಿಣ ದೇಹೀಂ ದೇಹಬುದ್ಧೀ ಗಳೇನಾ ॥ ೧೩ ॥
 
@@ -16465,7 +16550,7 @@ Upekshun Nako Gunavanta Ananta |
 
 Raghunayaka Maganen Henchi Aatan || 4 ||
 
-ನಕೋ ದ್ರವ್ಯದಾರಾ, ನಕೋ ಯೇರಝಾರಾ ।
+ನಕೋ ದ್ರವ್ಯದಾರಾ, ​ನಕೋ ಯೇರಝಾರಾ ।
 
 ನಕೋ ಮಾನಸೀಂ ಜ್ಞಾನಗರ್ವೇಂ ಫುಗಾರಾ ।
 
@@ -16481,7 +16566,7 @@ Sagunin Maj Lavin Re Bhaktipantha |
 
 Raghunayaka Maganen Henchi Aatan || 5 ||
 
-ಭಯೇಂ ವ್ಯಾಪಲೋಂ, ಪ್ರೀತಿಛಾಯಾ ಕರಾವೀ ।
+ಭಯೇಂ ವ್ಯಾಪಲೋಂ, ​ಪ್ರೀತಿಛಾಯಾ ಕರಾವೀ ।
 
 ಕೃಪಾಸಾಗರೇಂ ಸರ್ವ ಚಿಂತಾ ಹರಾವೀ ।
 
@@ -16501,7 +16586,7 @@ Raghunayaka Maganen Henchi Aatan || 6 ||
 
 ಕುಬುದ್ಧೀ ಕುಡೀ ವಾಸನಾ ನೀರಸಾವೀ ।
 
-ನಕೋ ಸಂಶಯೋ, ತೋಡಿಂ ಸಂಸಾರವ್ಯಥಾ ।
+ನಕೋ ಸಂಶಯೋ, ​ತೋಡಿಂ ಸಂಸಾರವ್ಯಥಾ ।
 
 ರಘೂನಾಯಕಾ ಮಾಗಣೇಂ ಹೇಂಚಿ ಆತಾಂ ॥ ೭ ॥
 
@@ -16517,7 +16602,7 @@ Raghunayaka Maganen Henchi Aatan || 7 ||
 
 ದುರಾಶಾ ಮರ್ನೀಂ ಬೈಸಲೀ ಹೇ ಢಳೇನಾ ।
 
-ಪುರೇ ಸಂಶಯೋ, ನೀರಸೀಂ ಸರ್ವ ಚಿಂತಾ ।
+ಪುರೇ ಸಂಶಯೋ, ​ನೀರಸೀಂ ಸರ್ವ ಚಿಂತಾ ।
 
 ರಘೂನಾಯಕಾ ಮಾಗಣೇಂ ಹೇಂಚಿ ಆತಾಂ ॥ ೮ ॥
 
@@ -16554,97 +16639,97 @@ Raghunayaka Maganen Henchi Aatan || 9 ||
 ಬುಧವಾರ – ಯುಕ್ತಿ ನಾಹೀಂ ಬುದ್ಧಿ
 Wednesday – Yukti Nahin Buddhi
 
-ಯುಕ್ತಿ ನಾಹೀಂ, ಬುದ್ಧಿ ನಾಹೀಂ, ವಿದ್ಯಾ ನಾಹೀಂ ವಿವೇಕಿತಾ ।
+ಯುಕ್ತಿ ನಾಹೀಂ, ​ಬುದ್ಧಿ ನಾಹೀಂ, ​ವಿದ್ಯಾ ನಾಹೀಂ ವಿವೇಕಿತಾ ।
 
-ನೇಣತಾ ಭಕ್ತ ಮೀ ತೂಝಾ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧ ॥
+ನೇಣತಾ ಭಕ್ತ ಮೀ ತೂಝಾ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧ ॥
 
 Yukti Nahin, Buddhi Nahin, Vidya Nahin Vivekita |
 
 Nenata Bhakta Mi Tujha, Buddhi De Raghunayaka || 1 ||
 
-ಮನ ಹೇಂ ಆವರೇನಾ ಕೀಂ, ವಾಸನಾ ವಾವರೇ ಸದಾ ।
+ಮನ ಹೇಂ ಆವರೇನಾ ಕೀಂ, ​ವಾಸನಾ ವಾವರೇ ಸದಾ ।
 
-ಕಲ್ಪನಾ ಧಾವತೇ ಸೈರಾಂ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೨ ॥
+ಕಲ್ಪನಾ ಧಾವತೇ ಸೈರಾಂ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೨ ॥
 
 Man Hen Aavarena Kin, Vasana Vavare Sada |
 
 Kalpana Dhavate Sairan, Buddhi De Raghunayaka || 2 ||
 
-ಅನ್ನ ನಾಹೀಂ, ವಸ್ತ್ರ ನಾಹೀಂ, ಸೌಖ್ಯ ನಾಹೀಂ ಜನಾಂಮಧೇಂ ।
+ಅನ್ನ ನಾಹೀಂ, ​ವಸ್ತ್ರ ನಾಹೀಂ, ​ಸೌಖ್ಯ ನಾಹೀಂ ಜನಾಂಮಧೇಂ ।
 
-ಆಶ್ರಯೋ ಪಾಹತಾಂ ನಾಹೀಂ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೩ ॥
+ಆಶ್ರಯೋ ಪಾಹತಾಂ ನಾಹೀಂ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೩ ॥
 
 Anna Nahin, Vastra Nahin, Saukhya Nahin Janammadhen |
 
 Aashrayo Pahatan Nahin, Buddhi De Raghunayaka || 3 ||
 
-ಬೋಲತಾಂ ಚಾಲತಾಂ ಯೇ ನಾ, ಕಾರ್ಯಭಾಗ ಕಳೇಚಿನಾ ।
+ಬೋಲತಾಂ ಚಾಲತಾಂ ಯೇ ನಾ, ​ಕಾರ್ಯಭಾಗ ಕಳೇಚಿನಾ ।
 
-ಬಹು ಮೀ ಪಿಡಿಲೋಂ ಲೋಕೀಂ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೪ ॥
+ಬಹು ಮೀ ಪಿಡಿಲೋಂ ಲೋಕೀಂ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೪ ॥
 
 Bolatan Chalatan Ye Na, Karyabhag Kalechina |
 
 Bahu Mi Pidilon Lokin, Buddhi De Raghunayaka || 4 ||
 
-ತುಝಾ ಮೀ ಟೋಣಪಾ ಝಾಲೋಂ, ಕಷ್ಟಲೋಂ ಬಹುತಾಂಪರೀ ।
+ತುಝಾ ಮೀ ಟೋಣಪಾ ಝಾಲೋಂ, ​ಕಷ್ಟಲೋಂ ಬಹುತಾಂಪರೀ ।
 
-ಸೌಖ್ಯ ತೇಂ ಪಾಹತಾಂ ನಾಹೀಂ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೫ ॥
+ಸೌಖ್ಯ ತೇಂ ಪಾಹತಾಂ ನಾಹೀಂ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೫ ॥
 
 Tujha Mi Tonapa Jhalon, Kashtalon Bahutampari |
 
 Saukhya Ten Pahatan Nahin, Buddhi De Raghunayaka || 5 ||
 
-ನೇಟಕೇಂ ಲಿಹಿತಾಂ ಯೇ ನಾ, ವಾಚಿತಾಂ ಚುಕತೋಂ ಸದಾ ।
+ನೇಟಕೇಂ ಲಿಹಿತಾಂ ಯೇ ನಾ, ​ವಾಚಿತಾಂ ಚುಕತೋಂ ಸದಾ ।
 
-ಅರ್ಥ ತೋ ಸಾಂಗತಾಂ ಯೇ ನಾ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೬ ॥
+ಅರ್ಥ ತೋ ಸಾಂಗತಾಂ ಯೇ ನಾ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೬ ॥
 
 Netaken Lihitan Ye Na, Vachitan Chukaton Sada |
 
 Artha To Sangatan Ye Na, Buddhi De Raghunayaka || 6 ||
 
-ಪ್ರಸಂಗ ವೇಳ ತರ್ಕೇನಾ, ಸುಚೇನಾ ದೀರ್ಘಸೂಚನಾ ।
+ಪ್ರಸಂಗ ವೇಳ ತರ್ಕೇನಾ, ​ಸುಚೇನಾ ದೀರ್ಘಸೂಚನಾ ।
 
-ಮೈತ್ರಿಕೀ ರಾಖಿತಾಂ ಯೇ ನಾ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೭ ॥
+ಮೈತ್ರಿಕೀ ರಾಖಿತಾಂ ಯೇ ನಾ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೭ ॥
 
 Prasang Vel Tarkena, Suchena Dirghasuchana |
 
 Maitriki Rakhitan Ye Na, Buddhi De Raghunayaka || 7 ||
 
-ಕಳೇನಾ ಸ್ಫೂರ್ತಿ ಹೋಈನಾ, ಆಪದಾ ಲಾಗಲೀ ಬಹೂ ।
+ಕಳೇನಾ ಸ್ಫೂರ್ತಿ ಹೋಈನಾ, ​ಆಪದಾ ಲಾಗಲೀ ಬಹೂ ।
 
-ಪ್ರತ್ಯಹೀಂ ಪೋಟ ಸೋಡೀನಾ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೮ ॥
+ಪ್ರತ್ಯಹೀಂ ಪೋಟ ಸೋಡೀನಾ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೮ ॥
 
 Kalena Sphurti Hoina, Aapada Lagali Bahu |
 
 Pratyahin Pot Sodina, Buddhi De Raghunayaka || 8 ||
 
-ಸಂಸಾರ ನೇಟಕಾ ನಾಹೀಂ, ಉದ್ವೇಗೂ ವಾಟತೋ ಜಿವೀಂ ।
+ಸಂಸಾರ ನೇಟಕಾ ನಾಹೀಂ, ​ಉದ್ವೇಗೂ ವಾಟತೋ ಜಿವೀಂ ।
 
-ಪರಮಾರ್ಥೂ ಕಳೇನಾ ಕೀಂ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೯ ॥
+ಪರಮಾರ್ಥೂ ಕಳೇನಾ ಕೀಂ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೯ ॥
 
 Sansar Netaka Nahin, Udvegu Vatato Jivin |
 
 Paramarthu Kalena Kin, Buddhi De Raghunayaka || 9 ||
 
-ದೇಈನಾ ಪುರವಿನಾ ಕೋಣೀ, ಉಗೇಚಿ ಜನ ಹಾಂಸತೀ ।
+ದೇಈನಾ ಪುರವಿನಾ ಕೋಣೀ, ​ಉಗೇಚಿ ಜನ ಹಾಂಸತೀ ।
 
-ವಿಸರೂ ಪಡತೋ ಪೋಟೀಂ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೦ ॥
+ವಿಸರೂ ಪಡತೋ ಪೋಟೀಂ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೦ ॥
 
 Deina Puravina Koni, Ugechi Jan Hansati |
 
 Visaru Padato Potin, Buddhi De Raghunayaka || 10 ||
 
-ಪಿಶುನೇಂ ವಾಟತೀ ಸರ್ವೈಂ, ಕೋಣೀಹೀ ಮಜಲಾ ನಸೇ ।
+ಪಿಶುನೇಂ ವಾಟತೀ ಸರ್ವೈಂ, ​ಕೋಣೀಹೀ ಮಜಲಾ ನಸೇ ।
 
-ಸಮರ್ಥಾ ತೂಂ ದಯಾಸಿಂಧೂ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೧ ॥
+ಸಮರ್ಥಾ ತೂಂ ದಯಾಸಿಂಧೂ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೧ ॥
 
 Pishunen Vatati Sarvain, Konihi Majala Nase |
 
 Samartha Tun Dayasindhu, Buddhi De Raghunayaka || 11 ||
 
-ಉದಾಸ ವಾಟತೇಂ ಜೀವೀಂ, ಆತಾಂ ಜಾವೇಂ ಕುಣೀಕಡೇ ।
+ಉದಾಸ ವಾಟತೇಂ ಜೀವೀಂ, ​ಆತಾಂ ಜಾವೇಂ ಕುಣೀಕಡೇ ।
 
-ತೂಂ ಭಕ್ತವತ್ಸಲಾ ರಾಮಾ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೨ ॥
+ತೂಂ ಭಕ್ತವತ್ಸಲಾ ರಾಮಾ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೨ ॥
 
 Udas Vataten Jivin, Aatan Javen Kunikade |
 
@@ -16652,7 +16737,7 @@ Tun Bhaktavatsala Rama, Buddhi De Raghunayaka || 12 ||
 
 ಕಾಯಾವಾಚಾಮನೋಭಾವೇಂ ತುಝಾ ಮೀ ಮ್ಹಣವೀತಸೇಂ ।
 
-ಹೇ ಲಾಜ ತುಜಲಾ ಮಾಝೀ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೩ ॥
+ಹೇ ಲಾಜ ತುಜಲಾ ಮಾಝೀ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೩ ॥
 
 Kayavachamanobhaven Tujha Mi Mhanavitasen |
 
@@ -16660,31 +16745,31 @@ He Laj Tujala Majhi, Buddhi De Raghunayaka || 13 ||
 
 ಸೋಡವಿಲ್ಯಾ ದೇವಕೋಟೀ ಭೂಭಾರ ಫೇಡಿಲಾ ಬಳೇಂ ।
 
-ಭಕ್ತಾಂಸೀ ಆಶ್ರಯೋ ಮೋಠಾ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೪ ॥
+ಭಕ್ತಾಂಸೀ ಆಶ್ರಯೋ ಮೋಠಾ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೪ ॥
 
 Sodavilya Devakoti Bhubhar Phedila Balen |
 
 Bhaktansi Aashrayo Motha, Buddhi De Raghunayaka || 14 ||
 
-ಉದಂಡ ಭಕ್ತ ತುಮ್ಹಾಂಲಾ, ಆಮ್ಹಾಂಲಾ ಕೋಣ ಪೂಸತೇಂ ।
+ಉದಂಡ ಭಕ್ತ ತುಮ್ಹಾಂಲಾ, ​ಆಮ್ಹಾಂಲಾ ಕೋಣ ಪೂಸತೇಂ ।
 
-ಬ್ರೀದ ಹೇಂ ರಾಖಣೇಂ ಆಧೀಂ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೫ ॥
+ಬ್ರೀದ ಹೇಂ ರಾಖಣೇಂ ಆಧೀಂ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೫ ॥
 
 Udand Bhakta Tumhanla, Aamhanla Kon Pusaten |
 
 Brid Hen Rakhanen Aadhin, Buddhi De Raghunayaka || 15 ||
 
-ಉದಂಡ ಐಕಿಲೀ ಕೀರ್ತಿ, ಪತಿತಪಾವನಾ ಪ್ರಭೋ ।
+ಉದಂಡ ಐಕಿಲೀ ಕೀರ್ತಿ, ​ಪತಿತಪಾವನಾ ಪ್ರಭೋ ।
 
-ಮೀ ಏಕ ರಂಕ ದುರ್ಬುದ್ಧಿ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೬ ॥
+ಮೀ ಏಕ ರಂಕ ದುರ್ಬುದ್ಧಿ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೬ ॥
 
 Udand Aikili Kirti, Patitapavana Prabho |
 
 Mi Ek Rank Durbuddhi, Buddhi De Raghunayaka || 16 ||
 
-ಆಶಾ ಹೇ ಲಾಗಲೀ ಮೋಠೀ, ದಯಾಳೂ ಬಾ ದಯಾ ಕರೀಂ ।
+ಆಶಾ ಹೇ ಲಾಗಲೀ ಮೋಠೀ, ​ದಯಾಳೂ ಬಾ ದಯಾ ಕರೀಂ ।
 
-ಆಣೀಕ ನಲಗೇ ಕಾಂಹೀಂ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೭ ॥
+ಆಣೀಕ ನಲಗೇ ಕಾಂಹೀಂ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೭ ॥
 
 Aasha He Lagali Mothi, Dayalu Ba Daya Karin |
 
@@ -16692,7 +16777,7 @@ Aanik Nalage Kanhin, Buddhi De Raghunayaka || 17 ||
 
 ರಾಮದಾಸ ಮ್ಹಣೇ ಮಾಝಾ ಸಂಸಾರ ತುಜ ಲಾಗಲಾ ।
 
-ಸಂಶಯೋ ವಾಟತೋ ಪೋಟೀಂ, ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೮ ॥
+ಸಂಶಯೋ ವಾಟತೋ ಪೋಟೀಂ, ​ಬುದ್ಧಿ ದೇ ರಘುನಾಯಕಾ ॥ ೧೮ ॥
 
 Ramadas Mhane Majha Sansar Tuj Lagala |
 
@@ -16723,7 +16808,7 @@ Ghadinen Ghadi Shin Atyant Vate |
 
 Udasin Ha Kal Kothen Na Kanthe || 1 ||
 
-ಘರೇಂ ಸುಂದರೇಂ, ಸೌಖ್ಯ ನಾನಾಪರೀಚೇಂ ।
+ಘರೇಂ ಸುಂದರೇಂ, ​ಸೌಖ್ಯ ನಾನಾಪರೀಚೇಂ ।
 
 ಪರೀ ಕೋಣ ಜಾಣೇಲ ತೇಂ ಅಂತರೀಂಚೇಂ ।
 
@@ -16743,7 +16828,7 @@ Udasin Ha Kal Kothen Na Kanthe || 2 ||
 
 ಸಮಾಧಾನ ತೇಂ ಕಾಂಹಿಂ ಕೇಲ್ಯಾಂ ಘಡೇನಾ ।
 
-ನವ್ಹೇ ಧೀರ, ನಯನೀಂ ಸದಾ ನೀರ ಲೋಟೇ ।
+ನವ್ಹೇ ಧೀರ, ​ನಯನೀಂ ಸದಾ ನೀರ ಲೋಟೇ ।
 
 ಉದಾಸೀನ ಹಾ ಕಾಳ ಕೋಠೇಂ ನ ಕಂಠೇ ॥ ೩ ॥
 
@@ -16755,9 +16840,9 @@ Navhe Dhir, Nayanin Sada Nir Lote |
 
 Udasin Ha Kal Kothen Na Kanthe || 3 ||
 
-ಅವಸ್ಥಾ ಮರ್ನೀಂ ಲಾಗಲೀ, ಕಾಯ ಸಾಂಗೋಂ ।
+ಅವಸ್ಥಾ ಮರ್ನೀಂ ಲಾಗಲೀ, ​ಕಾಯ ಸಾಂಗೋಂ ।
 
-ಗುಣೀಂ ಗುಂತಲಾ ಹೇತ, ಕೋಣಾಸ ಮಾಗೋಂ ।
+ಗುಣೀಂ ಗುಂತಲಾ ಹೇತ, ​ಕೋಣಾಸ ಮಾಗೋಂ ।
 
 ಬಹೂಸಾಲ ಭೇಟಾವಯಾ ಪ್ರಾಣ ಫೂಟೇ ।
 
@@ -16807,7 +16892,7 @@ Udasin Ha Kal Kothen Na Kanthe || 6 ||
 
 ಸದಾ ಸರ್ವದಾ ಭಕ್ತಚಿಂತಾ ಅಸಾವೀ ।
 
-ಘಡೇನಾ ತುಝಾ ಯೋಗ ಹಾ, ಪ್ರಾಪ್ತ ಖೋಟೇಂ ।
+ಘಡೇನಾ ತುಝಾ ಯೋಗ ಹಾ, ​ಪ್ರಾಪ್ತ ಖೋಟೇಂ ।
 
 ಉದಾಸೀನ ಹಾ ಕಾಳ ಕೋಠೇಂ ನ ಕಂಠೇ ॥ ೭ ॥
 
@@ -16928,7 +17013,7 @@ Raghunayaka Kay Kaisen Karaven ? || 3 ||
 
 ಜನೀಂ ವೇರ್ಥ ಸಂಸಾರ ಹಾ ವಾಯಚಾಳಾ ॥
 
-ತುಝಾ ಮೀ, ತುಲಾ ಪೂಸತೋಂ ಸರ್ವಭಾವೇಂ ।
+ತುಝಾ ಮೀ, ​ತುಲಾ ಪೂಸತೋಂ ಸರ್ವಭಾವೇಂ ।
 
 ರಘೂನಾಯಕಾ ಕಾಯ ಕೈಸೇಂ ಕರಾವೇಂ ? ॥ ೪ ॥
 
@@ -16965,9 +17050,9 @@ Adnyan Daridrya Majhen Sarena |
 
 Tujavin Rama Maj Kanthavena || 1 ||
 
-ಜಡಲೀ ಉಪಾಧೀ, ಅಭಿಮಾನ ಸಾಧೀ ।
+ಜಡಲೀ ಉಪಾಧೀ, ​ಅಭಿಮಾನ ಸಾಧೀ ।
 
-ವಿವೇಕ ನಾಹೀಂ, ಬಹುಸಾಲ ಬಾಧೀ ॥
+ವಿವೇಕ ನಾಹೀಂ, ​ಬಹುಸಾಲ ಬಾಧೀ ॥
 
 ಸ್ವಾಮೀವಿಯೋಗೇಂ ಪಳಹೀ ಗಮೇನಾ ।
 
@@ -17001,7 +17086,7 @@ Tujavin Rama Maj Kanthavena || 3 ||
 
 ಪ್ರಪಂಚಸಂಗೇಂ ಆಯುಷ್ಯ ನೇಲೇಂ ॥
 
-ಸಮಯೀಂ ಬಹು ಕ್ರೋಧ, ಶಾಂತೀ ಘಡೇನಾ ।
+ಸಮಯೀಂ ಬಹು ಕ್ರೋಧ, ​ಶಾಂತೀ ಘಡೇನಾ ।
 
 ತುಜವೀಣ ರಾಮಾ ಮಜ ಕಂಠವೇನಾ ॥ ೪ ॥
 
@@ -17042,7 +17127,7 @@ Sunday – Asankhyat Te Bhakta
 
 ತಿಹೀಂ ಸಾಧನಾಂಚೇ ಬಹೂ ಕಷ್ಟ ಕೇಲೇ ।
 
-ನವ್ಹೇ ಕಾರ್ಯಕರ್ತಾ, ಭುಮೀಭಾರ ಝಾಲೋಂ ।
+ನವ್ಹೇ ಕಾರ್ಯಕರ್ತಾ, ​ಭುಮೀಭಾರ ಝಾಲೋಂ ।
 
 ತುಝಾ ದಾಸ ಮೀ ವ್ಯರ್ಥ ಜನ್ಮಾಸಿ ಆಲೋಂ ॥ ೧ ॥
 
@@ -17074,7 +17159,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 2 ||
 
 ತುಝ್ಯಾ ದರ್ಶನೇಂ ಸ್ಪರ್ಶನೇಂ ಪುಣ್ಯರಾಸೀ ।
 
-ಅಹಂತಾ ಮರ್ನೀಂ, ಶಬ್ದಜ್ಞಾನೇಂ ಬುಡಾಲೋಂ ।
+ಅಹಂತಾ ಮರ್ನೀಂ, ​ಶಬ್ದಜ್ಞಾನೇಂ ಬುಡಾಲೋಂ ।
 
 ತುಝಾ ದಾಸ ಮೀ ವ್ಯರ್ಥ ಜನ್ಮಾಸಿ ಆಲೋಂ ॥ ೩ ॥
 
@@ -17104,7 +17189,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 4 ||
 
 ಬಹೂಸಾಲ ದೇವಾಲಯೇಂ ಹಾಟಕಾಚೀಂ ।
 
-ರಸಾಳಾ ಕಳಾ, ಲಾಘವೇಂ ನಾಟಕಾಚೀಂ ।
+ರಸಾಳಾ ಕಳಾ, ​ಲಾಘವೇಂ ನಾಟಕಾಚೀಂ ।
 
 ಪೂಜಾ ದೇಖತಾಂ ಜಾಡ ಜೀವೀಂ ಗಳಾಲೋಂ ।
 
@@ -17138,7 +17223,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 6 ||
 
 ಕಿತೀ ಧರ್ಮಸಂಸ್ಥಾಪನಾ ಅನ್ನಶಾಂತಿ ।
 
-ಪರಸ್ತಾವಲೋಂ, ಕಾವಲೋಂ, ತಪ್ತ ಝಾಲೋಂ ।
+ಪರಸ್ತಾವಲೋಂ, ​ಕಾವಲೋಂ, ​ತಪ್ತ ಝಾಲೋಂ ।
 
 ತುಝಾ ದಾಸ ಮೀ ವ್ಯರ್ಥ ಜನ್ಮಾಸಿ ಆಲೋಂ ॥ ೭ ॥
 
@@ -17175,9 +17260,9 @@ Tujha Das Mi Vyartha Janmasi Aalon || 8 ||
 ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ
 Hachi Subodh Guruncha
 
-ನಾಮ ಸದಾ ಬೋಲಾವೇಂ, ಗಾವೇಂ ಭಾವೇಂ, ಜನಾಂಸಿ ಸಾಂಗಾವೇಂ ।
+ನಾಮ ಸದಾ ಬೋಲಾವೇಂ, ​ಗಾವೇಂ ಭಾವೇಂ, ​ಜನಾಂಸಿ ಸಾಂಗಾವೇಂ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ನಾಮಾಪರತೇಂ ನ ಸತ್ಯ ಮಾನಾವೇಂ ॥ ೧ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ನಾಮಾಪರತೇಂ ನ ಸತ್ಯ ಮಾನಾವೇಂ ॥ ೧ ॥
 
 Nam Sada Bolaven, Gaven Bhaven, Janansi Sangaven |
 
@@ -17185,47 +17270,47 @@ Hachi Subodh Guruncha, Namaparaten Na Satya Manaven || 1 ||
 
 ನಾಮಾಂತ ರಂಗುನೀಯಾ ವ್ಯವಹಾರೀಂ ಸರ್ವ ಭೋಗ ಸೇವಾವೇ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಭೋಗಾಸಂಗೇಂ ಕುಠೇಂ ನ ಗುಂತಾವೇಂ ॥ ೨ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಭೋಗಾಸಂಗೇಂ ಕುಠೇಂ ನ ಗುಂತಾವೇಂ ॥ ೨ ॥
 
 Namant Ranguniya Vyavaharin Sarva Bhog Sevave |
 
 Hachi Subodh Guruncha, Bhogasangen Kuthen Na Guntaven || 2 ||
 
-ಆನಂದಾಂತ ಅಸಾವೇಂ, ಆಳಸ ಭಯ ದ್ವೇಷ ದೂರ ತ್ಯಾಗಾವೇ ।
+ಆನಂದಾಂತ ಅಸಾವೇಂ, ​ಆಳಸ ಭಯ ದ್ವೇಷ ದೂರ ತ್ಯಾಗಾವೇ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಅನುಸಂಧಾನಾ ಕಧೀಂ ನ ಚುಕವಾವೇಂ ॥ ೩ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಅನುಸಂಧಾನಾ ಕಧೀಂ ನ ಚುಕವಾವೇಂ ॥ ೩ ॥
 
 Aanandant Asaven, Aalas Bhay Dvesh Dur Tyagave |
 
 Hachi Subodh Guruncha, Anusandhana Kadhin Na Chukavaven || 3 ||
 
-ಗೋಡ ಸದಾ ಬೋಲಾವೇಂ, ನಮ್ರಪಣೇಂ ಸರ್ವಲೋಕಪ್ರಿಯ ವ್ಹಾವೇಂ ।
+ಗೋಡ ಸದಾ ಬೋಲಾವೇಂ, ​ನಮ್ರಪಣೇಂ ಸರ್ವಲೋಕಪ್ರಿಯ ವ್ಹಾವೇಂ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಭಕ್ತೀನೇಂ ರಘುಪತೀಸ ಆಳವಾವೇಂ ॥ ೪ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಭಕ್ತೀನೇಂ ರಘುಪತೀಸ ಆಳವಾವೇಂ ॥ ೪ ॥
 
 God Sada Bolaven, Namrapanen Sarvalokapriy Vhaven |
 
 Hachi Subodh Guruncha, Bhaktinen Raghupatis Aalavaven || 4 ||
 
-ಸ್ವಾನ್ತರ ಶುದ್ಧ ಅಸಾವೇಂ, ಕಪಟಾಚರಣಾ ಸ್ವಯೇಂ ನ ವಶ ವ್ಹಾವೇಂ ।
+ಸ್ವಾನ್ತರ ಶುದ್ಧ ಅಸಾವೇಂ, ​ಕಪಟಾಚರಣಾ ಸ್ವಯೇಂ ನ ವಶ ವ್ಹಾವೇಂ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಮನ ಕೋಣಾಚೇಂ ಕಧೀಂ ನ ದುಖವಾವೇಂ ॥ ೫ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಮನ ಕೋಣಾಚೇಂ ಕಧೀಂ ನ ದುಖವಾವೇಂ ॥ ೫ ॥
 
 Svantar Shuddha Asaven, Kapatacharana Svayen Na Vash Vhaven |
 
 Hachi Subodh Guruncha, Man Konachen Kadhin Na Dukhavaven || 5 ||
 
-ಮಾಝಾ ರಾಮ ಸಖಾ, ಮೀ ರಾಮಾಚಾ ದಾಸ, ನಿತ್ಯ ಬೋಲಾವೇಂ ।
+ಮಾಝಾ ರಾಮ ಸಖಾ, ​ಮೀ ರಾಮಾಚಾ ದಾಸ, ​ನಿತ್ಯ ಬೋಲಾವೇಂ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ರಾಮಾಪಾಶೀಂ ಅನನ್ಯ ವಾಗಾವೇಂ ॥ ೬ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ರಾಮಾಪಾಶೀಂ ಅನನ್ಯ ವಾಗಾವೇಂ ॥ ೬ ॥
 
 Majha Ram Sakha, Mi Ramacha Das, Nitya Bolaven |
 
 Hachi Subodh Guruncha, Ramapashin Ananya Vagaven || 6 ||
 
-ಯತ್ನ ಕಸೂನ ಕರಿನ ಮೀ, ಯಶ ದೇ, ರಾಮಾ, ನ ದೇ, ತುಝೀ ಸತ್ತಾ ।
+ಯತ್ನ ಕಸೂನ ಕರಿನ ಮೀ, ​ಯಶ ದೇ, ​ರಾಮಾ, ​ನ ದೇ, ​ತುಝೀ ಸತ್ತಾ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಮಾನಾವಾ ರಾಮ ಸರ್ವದಾ ಕರ್ತಾ ॥ ೭ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಮಾನಾವಾ ರಾಮ ಸರ್ವದಾ ಕರ್ತಾ ॥ ೭ ॥
 
 Yatna Kasun Karin Mi, Yash De, Rama, Na De, Tujhi Satta |
 
@@ -17233,47 +17318,47 @@ Hachi Subodh Guruncha, Manava Ram Sarvada Karta || 7 ||
 
 ಆಚಾರಸಂಯಮಾನೇಂ ಯುಕ್ತ ಅಸಾ ನೀತಿಧರ್ಮ ಪಾಳಾವಾ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಖೇಳಾಐಸಾ ಪ್ರಪಂಚ ಮಾನಾವಾ ॥ ೮ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಖೇಳಾಐಸಾ ಪ್ರಪಂಚ ಮಾನಾವಾ ॥ ೮ ॥
 
 Aacharasanyamanen Yukta Asa Nitidharma Palava |
 
 Hachi Subodh Guruncha, Khelaisa Prapanch Manava || 8 ||
 
-ದಾತಾ ರಾಮ ಸುಖಾಚಾ, ಸಂಸಾರಾ ಮಾನ ತೂಂ ಪ್ರಭೂಸೇವಾ ।
+ದಾತಾ ರಾಮ ಸುಖಾಚಾ, ​ಸಂಸಾರಾ ಮಾನ ತೂಂ ಪ್ರಭೂಸೇವಾ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಸಂತೋಷಾ ಸರ್ವದಾ ಮರ್ನೀಂ ಠೇವಾ ॥ ೯ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಸಂತೋಷಾ ಸರ್ವದಾ ಮರ್ನೀಂ ಠೇವಾ ॥ ೯ ॥
 
 Data Ram Sukhacha, Sansara Man Tun Prabhuseva |
 
 Hachi Subodh Guruncha, Santosha Sarvada Marnin Theva || 9 ||
 
-ಸ್ವಾರ್ಥ ಖರಾ ಸಾಧಾ ರೇ, ನಿತ್ಯ ತುಮ್ಹೀ ನಾಮಗಾಯನೀಂ ಜಾಗಾ ।
+ಸ್ವಾರ್ಥ ಖರಾ ಸಾಧಾ ರೇ, ​ನಿತ್ಯ ತುಮ್ಹೀ ನಾಮಗಾಯನೀಂ ಜಾಗಾ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಮೀಪಣ ಜಾಳೋನಿಯಾ ಜಗೀಂ ವಾಗಾ ॥ ೧೦ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಮೀಪಣ ಜಾಳೋನಿಯಾ ಜಗೀಂ ವಾಗಾ ॥ ೧೦ ॥
 
 Svartha Khara Sadha Re, Nitya Tumhi Namagayanin Jaga |
 
 Hachi Subodh Guruncha, Mipan Jaloniya Jagin Vaga || 10 ||
 
-ಅಭಿಮಾನ ಶತ್ರು ಮೋಠಾ, ಸರ್ವಾಂನಾ ಜಾಚತೋ ಸುಖಾಶೇನೇಂ ।
+ಅಭಿಮಾನ ಶತ್ರು ಮೋಠಾ, ​ಸರ್ವಾಂನಾ ಜಾಚತೋ ಸುಖಾಶೇನೇಂ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಮಾರಾವಾ ತೋ ಸಮೂಳ ನಾಮಾನೇಂ ॥ ೧೧ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಮಾರಾವಾ ತೋ ಸಮೂಳ ನಾಮಾನೇಂ ॥ ೧೧ ॥
 
 Abhiman Shatru Motha, Sarvanna Jachato Sukhashenen |
 
 Hachi Subodh Guruncha, Marava To Samul Namanen || 11 ||
 
-ರಾಜ್ಯಾಧಿಕಾರ ಯೇವೋ, ಕಿಂವಾ ಜಾವೋ ಸಮಸ್ತ ಧನ ಮಾನ ।
+ರಾಜ್ಯಾಧಿಕಾರ ಯೇವೋ, ​ಕಿಂವಾ ಜಾವೋ ಸಮಸ್ತ ಧನ ಮಾನ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಭಂಗಾವೇಂ ನಾ ಕದಾ ಸಮಾಧಾನ ॥ ೧೨ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಭಂಗಾವೇಂ ನಾ ಕದಾ ಸಮಾಧಾನ ॥ ೧೨ ॥
 
 Rajyadhikar Yevo, Kinva Javo Samasta Dhan Man |
 
 Hachi Subodh Guruncha, Bhangaven Na Kada Samadhan || 12 ||
 
-ಪ್ರೇಮಾಂತ ರಾಮ ರಮತೋ, ಪ್ರೇಮಾಲಾ ಮೋಲ ನಾ ಜಗಾಮಾಜೀಂ ।
+ಪ್ರೇಮಾಂತ ರಾಮ ರಮತೋ, ​ಪ್ರೇಮಾಲಾ ಮೋಲ ನಾ ಜಗಾಮಾಜೀಂ ।
 
-ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ಗುರುರಾಯಾಲಾ ತಹಾನ ಪ್ರೇಮಾಚೀ ॥ ೧೩ ॥
+ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ, ​ಗುರುರಾಯಾಲಾ ತಹಾನ ಪ್ರೇಮಾಚೀ ॥ ೧೩ ॥
 
 Premant Ram Ramato, Premala Mol Na Jagamajin |
 

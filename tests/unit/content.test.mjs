@@ -43,10 +43,10 @@ describe("CONTENT from the text files", () => {
     expect([C.ui, C.wiki]).toStrictEqual([OLD.ui, OLD.wiki]);
   });
   // (60 <br>: the Vitthal Aarti's dhrupad breaks after its first half in English and at the top too, Satish 2026-10-23)
-  test("the marks that matter are all there: 60 <br>, 42 zero-width spaces, svara marks", () => {
+  test("the marks that matter are all there: 60 <br>, 156 zero-width spaces, svara marks", () => {
     const s = JSON.stringify(allLines(OLD_C));
     expect(count(s, /<br>/g)).toBe(60);
-    expect(count(s, /​/g)).toBe(42);
+    expect(count(s, /​/g)).toBe(156);
     for (const m of [/॑/g, /॒/g, /᳚/g]) expect(count(s, m)).toBe(count(JSON.stringify(allLines(OLD)), m));
     expect(count(s, /॑/g)).toBeGreaterThan(0);
   });

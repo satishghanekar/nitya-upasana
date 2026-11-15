@@ -3,30 +3,51 @@ title: जय करुणाघन निज
 title-en: Jay Karunaghan Nij
 category: stotra
 language: mr
-refrain: every-verse
 credit: रचना : [श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)](https://mr.wikipedia.org/wiki/वासुदेवानंद_सरस्वती) (१८५४–१९१४)
 credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](https://en.wikipedia.org/wiki/Vasudevanand_Saraswati) (1854–1914)
 ---
-[dhrupad]
-जय करुणाघन निज जन जीवन, ¦अनसुया नंदन पाहि जनार्दन ॥ धृ ॥
-Jay Karunaghan Nij Jan Jivan, Anasuya Nandan Pahi Janardan || Dhr. ||
+[once]
+जय करुणाघन निज जन जीवन, ¦अनसुया नंदन पाहि जनार्दन ।
+Jay Karunaghan Nij Jan Jivan, ¦Anasuya Nandan Pahi Janardan |
+जय करुणाघन ॥
+Jay Karunaghan ||
 
 [1]
-निज अपराधें उफराटी दृष्टी, ¦होउनि पोटी भय धरुं पावन ॥
-Nij Aparadhen Upharati Drushti, Houni Poti Bhay Dharun Pavan ||
+निज अपराधें उफराटी दृष्टी । ¦निज अपराधें उफराटी दृष्टी ।
+Nij Aparadhen Upharati Drushti | ¦Nij Aparadhen Upharati Drushti |
+होउनि पोटी भय धरुं पावन । ¦होउनि पोटी भय धरुं पावन ॥
+Houni Poti Bhay Dharun Pavan | ¦Houni Poti Bhay Dharun Pavan ||
+जय करुणाघन ॥
+Jay Karunaghan ||
 
 [2]
-तूं करुणाकर कधी आम्हावर, ¦रुससी न किंकरवरद कृपाघन ॥
-Tun Karunakar Kadhi Aamhavar, Rusasi Na Kinkaravarad Krupaghan ||
+तूं करुणाकर कधी आम्हावर । ¦तूं करुणाकर कधी आम्हावर ।
+Tun Karunakar Kadhi Aamhavar | ¦Tun Karunakar Kadhi Aamhavar |
+रुससी न किंकरवरद कृपाघन । ¦रुससी न किंकरवरद कृपाघन ॥
+Rusasi Na Kinkaravarad Krupaghan | ¦Rusasi Na Kinkaravarad Krupaghan ||
+जय करुणाघन ॥
+Jay Karunaghan ||
 
 [3]
-वारी अपराध तूं मायबाप, ¦तव मनी कोपलेश न वामन ॥
-Vari Aparadh Tun Mayabap, Tav Mani Kopalesh Na Vaman ||
+वारी अपराध तूं मायबाप । ¦वारी अपराध तूं मायबाप ।
+Vari Aparadh Tun Mayabap | ¦Vari Aparadh Tun Mayabap |
+तव मनी कोपलेश न वामन । ¦तव मनी कोपलेश न वामन ॥
+Tav Mani Kopalesh Na Vaman | ¦Tav Mani Kopalesh Na Vaman ||
+जय करुणाघन ॥
+Jay Karunaghan ||
 
 [4]
-बालकापराधां गणे जरी माता, ¦तरी कोण त्राता देईल जीवन ॥
-Balakaparadhan Gane Jari Mata, Tari Kon Trata Deil Jivan ||
+बालकापराधां गणे जरी माता । ¦बालकापराधां गणे जरी माता ।
+Balakaparadhan Gane Jari Mata | ¦Balakaparadhan Gane Jari Mata |
+तरी कोण त्राता देईल जीवन । ¦तरी कोण त्राता देईल जीवन ॥
+Tari Kon Trata Deil Jivan | ¦Tari Kon Trata Deil Jivan ||
+जय करुणाघन ॥
+Jay Karunaghan ||
 
 [5]
-प्रार्थी वासुदेव पदीं ठेवी भाव, ¦पदीं देवो ठाव देव अत्रिनंदन ॥
-Prarthi Vasudev Padin Thevi Bhav, Padin Devo Thav Dev Atrinandan ||
+प्रार्थी वासुदेव पदीं ठेवी भाव । ¦प्रार्थी वासुदेव पदीं ठेवी भाव ।
+Prarthi Vasudev Padin Thevi Bhav | ¦Prarthi Vasudev Padin Thevi Bhav |
+पदीं देवो ठाव देव अत्रिनंदन । ¦पदीं देवो ठाव देव अत्रिनंदन ॥
+Padin Devo Thav Dev Atrinandan | ¦Padin Devo Thav Dev Atrinandan ||
+जय करुणाघन ॥
+Jay Karunaghan ||

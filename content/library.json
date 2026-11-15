@@ -250,7 +250,7 @@
    "titleEn": "Aarti Kariton Guruvar",
    "category": "aarti",
    "language": "mr",
-   "lines": 11
+   "lines": 13
   },
   {
    "id": "aarti-dhanya-jagin-guruvarya",
@@ -268,7 +268,7 @@
    "titleEn": "Aarti Belaguve",
    "category": "aarti",
    "language": "mr",
-   "lines": 13
+   "lines": 12
   },
   {
    "id": "aarti-svastha-karin-shayan",
@@ -358,7 +358,7 @@
    "titleEn": "Shant Ho Shriguru",
    "category": "stotra",
    "language": "mr",
-   "lines": 21
+   "lines": 23
   },
   {
    "id": "stotra-shriguru-datta-jay",
@@ -367,7 +367,7 @@
    "titleEn": "Shriguru Datta Jay",
    "category": "stotra",
    "language": "mr",
-   "lines": 6
+   "lines": 18
   },
   {
    "id": "stotra-jay-karunaghan-nij",
@@ -376,7 +376,7 @@
    "titleEn": "Jay Karunaghan Nij",
    "category": "stotra",
    "language": "mr",
-   "lines": 6
+   "lines": 17
   },
   {
    "id": "stotra-ghorakashtoddharan",

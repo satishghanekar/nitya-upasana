@@ -11,7 +11,7 @@ export var ZW;
 export function init() {
   // Where a line may break when it is too long for the screen:
   //   Marathi: at a zero-width space (U+200B) typed in the line;
-  //   English: after a single "|" or a comma.
+  //   English: after a single "|" or a comma, and at a zero-width space typed in it.
   // Browsers fill a row greedily and may break at any later space instead, so each part is wrapped in an
   // inline-block span (.zs): the row then breaks between parts. The text itself is not changed.
   ZW = "\u200b";
@@ -73,9 +73,14 @@ export function shortRef(/** @type {HTMLElement} */ p) {
   s.appendChild(document.createElement("span")).appendChild(tail);
 }
 
+// An English line breaks after a single "|" or a comma, and at a "¦" typed in it (a zero-width space by then, dropped
+// here) where the original's halves have no comma between them.
 /** @param {string} t */
 export function enCut(t) {
-  return t.replace(/([^|]\||,)( +)(?=\S)/g, "$1$2\u0000").split("\u0000");
+  return t
+    .replace(/([^|]\||,)( +)(?=\S)/g, "$1$2\u0000")
+    .replace(/​/g, "\u0000")
+    .split("\u0000");
 }
 
 /** @param {Element} p @param {(t: string) => string[]} cut @param {string} sep */

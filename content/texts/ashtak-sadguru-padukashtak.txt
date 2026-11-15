@@ -48,8 +48,8 @@ Visarun Kasa Mi Gurupadukanla || 4 ||
 [5]
 अनंत माझे अपराध कोटी ।
 Anant Majhe Aparadh Koti |
-नाणी मर्नीं, घालुनि सर्व पोटीं ।
-Nani Marnin, Ghaluni Sarva Potin |
+नाणी मर्नीं, ¦घालुनि सर्व पोटीं ।
+Nani Marnin, ¦Ghaluni Sarva Potin |
 प्रबोध करितां श्रम फार झाला ।
 Prabodh Karitan Shram Phar Jhala |
 विसरूं कसा मी गुरुपादुकांला ॥ ५ ॥
@@ -88,8 +88,8 @@ Visarun Kasa Mi Gurupadukanla || 8 ||
 [9]
 जया वानितां वानितां वेदवाणी ।
 Jaya Vanitan Vanitan Vedavani |
-म्हणे ‘नेति नेती’ ति, लाजे दुरूनी ।
-Mhane ‘Neti Neti’ Ti, Laje Duruni |
+म्हणे ‘नेति नेती’ ति, ¦लाजे दुरूनी ।
+Mhane ‘Neti Neti’ Ti, ¦Laje Duruni |
 नव्हे अंत ना पार ज्याच्या रुपाला ।
 Navhe Ant Na Par Jyachya Rupala |
 विसरूं कसा मी गुरुपादुकांला ॥ ९ ॥

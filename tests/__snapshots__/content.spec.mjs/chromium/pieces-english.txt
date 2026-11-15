@@ -6468,7 +6468,11 @@ Refrain (sung after every verse)
 
 Aarti Kariton Guruvar Bhagavan Brahmachaitanya |
 
-Karunenen Svikar Karava Ananyasamanya || Dhr. ||
+Karunenen Svikar Karava Ananyasamanya |
+
+Karunenen Svikar Karava Ananyasamanya |
+
+Aarti Kariton Guruvar Bhagavan Brahmachaitanya || Dhr. ||
 
 ↻ Refrain
 
@@ -6553,9 +6557,7 @@ Refrain (sung after every verse)
 
 Aarti Belaguve Sadguru Shribrahmachaitanya |
 
-Parabrahma Paratpara Sanakadikamanya |
-
-Aarti Belaguve Sadguru Shribrahmachaitanya || Dhr. ||
+Parabrahma Paratpara Sanakadikamanya || Dhr. ||
 
 ↻ Refrain
 
@@ -7482,13 +7484,18 @@ Sarve Bhadrani Pashyantu | Ma Kashchid Duhkhabhag Bhavet || 11 ||
 
 ### stotra-shant-ho-shriguru
 7. Shant Ho Shriguru
+
+Shant Ho Shriguru Datta Mama Chitta Shamavi Aata ||
+
 Refrain (sung after every verse)
 
-Shant Ho Shriguru Datta Mama Chitta Shamavi Aata || Dhr. ||
+Shant Ho Shriguru Datta Mama Chitta Shamavi Aata |
+
+Shant Ho || Dhr. ||
 
 Tun Keval Mata Janita, Sarvatha Tun Hitakarta |
 
-Tun Aapta Svajan Bhrata, Sarvatha Tunchi Trata || Chaal ||
+Tun Aapta Svajan Bhrata, Sarvatha Tunchi Trata ||
 
 Bhay Karta Tun Bhay Harta | Dandadharta Tun Paripata ||
 
@@ -7498,7 +7505,7 @@ Tuj Vachunni Na Duji Varta | Tun Aarta Aashray Data || 1 ||
 
 Aparadhastav Gurunatha, Jari Danda Dharisi Yathartha |
 
-Tari Aamhi Gauni Gatha, Tav Charani Namavu Matha || Chaal ||
+Tari Aamhi Gauni Gatha, Tav Charani Namavu Matha ||
 
 Tun Tathapi Dandisi Deva | Konacha Mag Karu Dhava ||
 
@@ -7508,7 +7515,7 @@ Sodavina Dusara Tenvha | Kon Datta Aamhan Trata || 2 ||
 
 Tun Natasa Houni Kopi, Danditahi Aamhi Papi |
 
-Punarapihi Chukata Tathapi, Aamhanvari Nach Santapi || Chaal ||
+Punarapihi Chukata Tathapi, Aamhanvari Nach Santapi ||
 
 Gachchhatah Skhalanam Kvapi | Ase Manuni Nach Ho Kopi ||
 
@@ -7518,7 +7525,7 @@ Nij Krupalesha Opi | Aamhavari Tun Bhagavanta || 3 ||
 
 Tavapadari Asata Tata, Aadamargi Paul Padata |
 
-Sambhaluni Margavarata, Aanita Na Duja Trata || Chaal ||
+Sambhaluni Margavarata, Aanita Na Duja Trata ||
 
 Nij Biruda Aanuni Chitta | Tun Patit Pavan Datta ||
 
@@ -7528,7 +7535,7 @@ Vale Aata Aamhavarata | Karunaghan Tun Gurunatha || 4 ||
 
 Sahakutumb Sahaparivar, Das Aamhi He Gharadar |
 
-Tav Padin Arpu Asar, Sansarahit Ha Bhar || Chaal ||
+Tav Padin Arpu Asar, Sansarahit Ha Bhar ||
 
 Pariharisi Karunasindho | Tun Dinanath Subandho ||
 
@@ -7539,56 +7546,82 @@ By Shri Vasudevanand Saraswati (Tembe Swami) ↗ (1854–1914)
 
 ### stotra-shriguru-datta-jay
 8. Shriguru Datta Jay
-Refrain (sung after every verse)
 
-Shriguru Datta Jay Bhagavanta | Ten Man Nishthur Na Kari Aatan || Dhr. ||
+Shriguru Datta Jay Bhagavanta |
 
-Chore Dvijasi Maritan Man Je | Kalavalale Te Kalavalo Aatan || 1 ||
+Ten Man Nishthur Na Kari Aatan |
 
-↻ Refrain
+Shriguru Datta ||
 
-Potashulane Dvij Tadaphadata, Kalavalale Te Kalavalo Aatan || 2 ||
+Chore Dvijasi Maritan Man Je | Chore Dvijasi Maritan Man Je |
 
-↻ Refrain
+Kalavalale Te Kalavalo Aatan | Kalavalale Te Kalavalo Aatan ||
 
-Dvijasut Maratan Valale Te Man, Ho Ki Udasin Na Vale Aatan || 3 ||
+Shriguru Datta || 1 ||
 
-↻ Refrain
+Potashulane Dvij Tadaphadata | Potashulane Dvij Tadaphadata |
 
-Satipati Maratan Kakulati Yetan, Valale Te Man Na Vale Ki Aatan || 4 ||
+Kalavalale Te Kalavalo Aatan | Kalavalale Te Kalavalo Aatan ||
 
-↻ Refrain
+Shriguru Datta || 2 ||
 
-Shrigurudatta Tyaji Nishthurata, Komal Chitta Valavi Aatan || 5 ||
+Dvijasut Maratan Valale Te Man | Dvijasut Maratan Valale Te Man |
 
-↻ Refrain
+Ho Ki Udasin Na Vale Aatan | Ho Ki Udasin Na Vale Aatan ||
+
+Shriguru Datta || 3 ||
+
+Satipati Maratan Kakulati Yetan | Satipati Maratan Kakulati Yetan |
+
+Valale Te Man Na Vale Ki Aatan | Valale Te Man Na Vale Ki Aatan ||
+
+Shriguru Datta || 4 ||
+
+Shrigurudatta Tyaji Nishthurata | Shrigurudatta Tyaji Nishthurata |
+
+Komal Chitta Valavi Aatan | Komal Chitta Valavi Aatan ||
+
+Shriguru Datta || 5 ||
+
 By Shri Vasudevanand Saraswati (Tembe Swami) ↗ (1854–1914)
 
 ### stotra-jay-karunaghan-nij
 9. Jay Karunaghan Nij
-Refrain (sung after every verse)
 
-Jay Karunaghan Nij Jan Jivan, Anasuya Nandan Pahi Janardan || Dhr. ||
+Jay Karunaghan Nij Jan Jivan, Anasuya Nandan Pahi Janardan |
 
-Nij Aparadhen Upharati Drushti, Houni Poti Bhay Dharun Pavan || 1 ||
+Jay Karunaghan ||
 
-↻ Refrain
+Nij Aparadhen Upharati Drushti | Nij Aparadhen Upharati Drushti |
 
-Tun Karunakar Kadhi Aamhavar, Rusasi Na Kinkaravarad Krupaghan || 2 ||
+Houni Poti Bhay Dharun Pavan | Houni Poti Bhay Dharun Pavan ||
 
-↻ Refrain
+Jay Karunaghan || 1 ||
 
-Vari Aparadh Tun Mayabap, Tav Mani Kopalesh Na Vaman || 3 ||
+Tun Karunakar Kadhi Aamhavar | Tun Karunakar Kadhi Aamhavar |
 
-↻ Refrain
+Rusasi Na Kinkaravarad Krupaghan | Rusasi Na Kinkaravarad Krupaghan ||
 
-Balakaparadhan Gane Jari Mata, Tari Kon Trata Deil Jivan || 4 ||
+Jay Karunaghan || 2 ||
 
-↻ Refrain
+Vari Aparadh Tun Mayabap | Vari Aparadh Tun Mayabap |
 
-Prarthi Vasudev Padin Thevi Bhav, Padin Devo Thav Dev Atrinandan || 5 ||
+Tav Mani Kopalesh Na Vaman | Tav Mani Kopalesh Na Vaman ||
 
-↻ Refrain
+Jay Karunaghan || 3 ||
+
+Balakaparadhan Gane Jari Mata | Balakaparadhan Gane Jari Mata |
+
+Tari Kon Trata Deil Jivan | Tari Kon Trata Deil Jivan ||
+
+Jay Karunaghan || 4 ||
+
+Prarthi Vasudev Padin Thevi Bhav | Prarthi Vasudev Padin Thevi Bhav |
+
+Padin Devo Thav Dev Atrinandan | Padin Devo Thav Dev Atrinandan ||
+
+Jay Karunaghan || 5 ||
+
 By Shri Vasudevanand Saraswati (Tembe Swami) ↗ (1854–1914)
 
 ### stotra-ghorakashtoddharan
