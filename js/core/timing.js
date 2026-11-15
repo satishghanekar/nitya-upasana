@@ -8,7 +8,7 @@
 //   repeat whatever it is set to, so it never changes the time. The length is in letters said, the unit Follow
 //   measures the chanting in (letters() in core/follow.js), so a pace Follow measures applies as it is.
 // - A pace is seconds per letter, the pauses within a text included; the time between one text and the next is apart
-//   ("between"). Both, and the three ready-made paces, are in content/library.json ("timing"), measured from the
+//   ("between"). Both, and the three ready-made paces, are in content/timing.json, their one place, measured from the
 //   family's recordings and published ones (shravan-model, 2026-11-15: a home chant 0.09–0.15 s a letter, 0.107 its
 //   middle; published recordings 0.12–0.24, 0.173).
 // - A person's own pace is learned while Follow hears them: each stretch followed steadily through one text (no jump,
@@ -33,31 +33,20 @@ import { letters } from "./follow.js";
 
 export const PACE_CHOICES = /** @type {PaceChoice[]} */ (["", "quick", "steady", "slow"]);
 
-/** @type {Timing} the paces measured on 2026-11-15, should content/library.json lack them */
-export const TIMING = {
-  paces: { quick: 0.1, steady: 0.135, slow: 0.17 },
-  between: 8,
-  learn: { least: 30, pause: 20, enough: 1500, keep: 20000 },
-};
-
-/** content/library.json's "timing", each number checked; anything missing or odd is the measured default
- * @param {any} o @returns {Timing} */
-export function cleanTiming(o) {
-  var d = TIMING,
-    ok = function (/** @type {any} */ v, /** @type {number} */ def) {
-      return typeof v === "number" && isFinite(v) && v > 0 ? v : def;
-    },
-    p = (o && o.paces) || {},
+/** content/timing.json, each number checked: one missing or not a number above 0 (between may be 0) stops it, named,
+ * so a mistake in the file is found by the unit tests, never shown as a wrong time @param {any} o @returns {Timing} */
+export function readTiming(o) {
+  /** @param {any} v @param {string} at @param {boolean} [zero] @returns {number} */
+  var num = function (v, at, zero) {
+    if (typeof v !== "number" || !isFinite(v) || v < 0 || (v === 0 && !zero)) throw new Error("content/timing.json: " + at + " is not a number above 0");
+    return v;
+  };
+  var p = (o && o.paces) || {},
     l = (o && o.learn) || {};
   return {
-    paces: { quick: ok(p.quick, d.paces.quick), steady: ok(p.steady, d.paces.steady), slow: ok(p.slow, d.paces.slow) },
-    between: o && o.between === 0 ? 0 : ok(o && o.between, d.between),
-    learn: {
-      least: ok(l.least, d.learn.least),
-      pause: ok(l.pause, d.learn.pause),
-      enough: ok(l.enough, d.learn.enough),
-      keep: ok(l.keep, d.learn.keep),
-    },
+    paces: { quick: num(p.quick, "paces.quick"), steady: num(p.steady, "paces.steady"), slow: num(p.slow, "paces.slow") },
+    between: num(o && o.between, "between", true),
+    learn: { least: num(l.least, "learn.least"), pause: num(l.pause, "learn.pause"), enough: num(l.enough, "learn.enough"), keep: num(l.keep, "learn.keep") },
   };
 }
 

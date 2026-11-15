@@ -51,7 +51,7 @@ test("js/parts.js lists the texts in content/library.json, so every text is kept
   // list of the Library's PDFs (content/pdfs.json), not the PDFs themselves (each is kept once opened)
   expect(parts.content).toEqual([
     "content/library.json",
-    "content/site.json",
+    "content/timing.json",
     "content/wiki.json",
     "content/credits.json",
     "content/routines.json",

@@ -1,23 +1,10 @@
 // How long a text or a session takes (js/core/timing.js): the texts' lengths as chanted, the paces, the sums, the
 // rounding, and learning a person's pace from what Follow hears.
 import { describe, expect, test } from "vitest";
-import { CONTENT as C, IDS, PIECES as piece, SITE } from "../content-files.mjs";
-import {
-  PACE_CHOICES,
-  TIMING,
-  addToLog,
-  chantedLetters,
-  cleanTiming,
-  ended,
-  learned,
-  measure,
-  minutes,
-  paceFor,
-  spanMinutes,
-  spanOf,
-} from "../../js/core/timing.js";
+import { CONTENT as C, IDS, PIECES as piece, TIMING } from "../content-files.mjs";
+import { PACE_CHOICES, addToLog, chantedLetters, ended, learned, measure, minutes, paceFor, readTiming, spanMinutes, spanOf } from "../../js/core/timing.js";
 
-const T = cleanTiming(C.timing);
+const T = readTiming(C.timing);
 
 describe("a text's length, as it is chanted", () => {
   // the letters chanted in SG's recordings of whole texts (shravan-model's alignments, 2026-11-15): the site's count
@@ -50,15 +37,24 @@ describe("a text's length, as it is chanted", () => {
 });
 
 describe("the paces", () => {
-  test("content/site.json's timing is complete and as measured", () => {
-    expect(cleanTiming(SITE.timing)).toEqual(SITE.timing);
+  test("content/timing.json is complete, its one place, and as measured", () => {
+    expect(readTiming(TIMING)).toEqual(TIMING);
+    expect(C.timing).toBe(TIMING);
     expect(T.paces.quick).toBeLessThan(T.paces.steady);
     expect(T.paces.steady).toBeLessThan(T.paces.slow);
   });
-  test("anything missing or odd is the measured default", () => {
-    expect(cleanTiming(undefined)).toEqual(TIMING);
-    expect(cleanTiming({ paces: { quick: -1, steady: "x" }, between: NaN, learn: null })).toEqual(TIMING);
-    expect(cleanTiming({ between: 0 }).between).toBe(0);
+  test("a number missing or not above 0 stops it, named (no default in the code: the file is the one place)", () => {
+    const bad = (f) => {
+      const o = structuredClone(TIMING);
+      f(o);
+      return () => readTiming(o);
+    };
+    expect(() => readTiming(undefined)).toThrow("content/timing.json: paces.quick is not a number above 0");
+    expect(bad((o) => (o.paces.steady = "x"))).toThrow("paces.steady is not a number above 0");
+    expect(bad((o) => (o.learn.keep = -1))).toThrow("learn.keep is not a number above 0");
+    expect(bad((o) => delete o.between)).toThrow("between is not a number above 0");
+    // (no pause between texts is a choice)
+    expect(readTiming({ ...TIMING, between: 0 }).between).toBe(0);
   });
   test("a pace picked is used as it is", () => {
     for (const c of ["quick", "steady", "slow"]) expect(paceFor(c, null, T)).toEqual({ lo: T.paces[c], hi: T.paces[c], how: "chosen" });

@@ -23,7 +23,7 @@
  * @typedef {{ piece: string, places: Place[], verses: Verse[] }} Outline
  */
 
-// When a text has an outline, and how big a group of verses is (content/site.json "outline" can set both)
+// When a text has an outline (its lines, the dhrupad's repeats not counted), and how many verses make a group
 export const OUTLINE = { minLines: 60, group: 25 };
 
 const DIGITS = "०१२३४५६७८९";
@@ -76,12 +76,11 @@ function isHeading(it) {
 /**
  * The outline of one text, or null when it is too short to need one.
  * @param {Piece & { partName?: Pair }} p
- * @param {{ minLines?: number, group?: number }} [opt]
  * @returns {Outline | null}
  */
-export function outline(p, opt) {
-  var min = (opt && opt.minLines) || OUTLINE.minLines,
-    size = (opt && opt.group) || OUTLINE.group,
+export function outline(p) {
+  var min = OUTLINE.minLines,
+    size = OUTLINE.group,
     items = p.items || [],
     lines = 0;
   items.forEach(function (it) {

@@ -124,7 +124,7 @@ var SITE_PARTS = (function () {
   // (pdfs.json) is kept too, not the PDFs themselves: sw.js keeps each one once it has been opened on the phone.
   var content = [
     "library.json",
-    "site.json",
+    "timing.json",
     "wiki.json",
     "credits.json",
     "routines.json",

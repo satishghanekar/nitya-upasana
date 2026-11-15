@@ -1,20 +1,24 @@
 // @ts-check
-// Builds CONTENT, the data js/render.js turns into the reading page, from content/library.json, content/site.json and the text
-// files in content/texts/ (read by js/text/format.js). Pure: the files come in as strings, so the unit test
+// Builds CONTENT, the data js/render.js turns into the reading page, from content/library.json and the text files in
+// content/texts/ (read by js/text/format.js). Pure: the files come in as strings, so the unit test
 // (tests/unit/content.test.mjs) can prove the result is exactly what the site showed before the texts became files.
 //
 // What the files leave to the app:
 // - the reading order and the piece numbers (१. 1.): content/library.json's categories in order, each with its texts in
 //   order, numbered from 1 in each category as the Library lists them;
 // - each text's facts (CONTENT.texts): what it is from its own file's header, its category from the library;
-// - the language tag (मराठी Marathi) from site.json's "languages";
+// - the language tag (मराठी Marathi), in the menu words (js/strings/, "text");
 // - with "refrain: every-verse", the dhrupad label at the top and, after every stanza, the "↻ ध्रुपद" note and
-//   the dhrupad again (site.json's "refrain"); [once] lines and [note]s before the dhrupad go above it (lead);
+//   the dhrupad again; [once] lines and [note]s before the dhrupad go above it (lead);
 // - line ids: the text's "line-ids" prefix and a count of the lines as shown (repeats included);
 // - the credit links: [name](address) becomes a link that opens in a new tab, with its label and ↗.
 
 import { parseText, RECORDING, toHtml } from "./format.js";
 import { LANGUAGES, pageFor, wikiLabel } from "../core/wiki.js";
+
+// The language the page is in: index.html's <html lang="mr"> (tests/unit/content.test.mjs checks they agree). A text
+// in it needs no lang of its own; a Sanskrit or Hindi text carries its own, for screen readers and the fonts.
+export const PAGE_LANGUAGE = "mr";
 
 // the scripts the original can be shown in besides its own (js/render.js SCRIPTS): Kannada, Telugu, Gujarati
 var SCRIPTS = LANGUAGES.filter(function (l) {
@@ -27,8 +31,6 @@ var SCRIPTS = LANGUAGES.filter(function (l) {
  * @typedef {{ id: string, name: Pair, texts: string[] }} LibraryCategory   a category of content/library.json, its texts
  *   in reading order
  * @typedef {{ categories: LibraryCategory[] }} Library   content/library.json
- * @typedef {{ pageLanguage: string, outline?: { minLines: number, group: number }, timing?: any }} Site   content/site.json:
- *   the settings every text shares (the words around a text are the menu words', js/strings/ "text")
  * @typedef {{ pages: import("../core/wiki.js").Pages }} Wiki   which page a link opens: content/wiki.json's pages
  * @typedef {{ name: Pair, time?: Pair, wiki?: string }} Credit   a person or a source in content/credits.json
  * @typedef {{ people: Record<string, Credit>, sources: Record<string, Credit> }} Credits   content/credits.json
@@ -44,8 +46,8 @@ var SCRIPTS = LANGUAGES.filter(function (l) {
  * @typedef {{ id: string, text: string, lang?: string, cls?: string, prose?: true, no: Pair, title: Pair, tag: Pair,
  *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string, partName?: Pair }} Piece
  *   lead: what comes before the dhrupad at the top (refrain), [once] lines and [note]s, shown above it
- * @typedef {{ ui: { prev: Pair, next: Pair }, text: Record<string, any>, wiki: Wiki | null, outline?: Site["outline"],
- *   timing?: any, texts: Record<string, TextFacts>, categories: { id: string, name: Pair,
+ * @typedef {{ pageLanguage: string, ui: { prev: Pair, next: Pair }, text: Record<string, any>, wiki: Wiki | null,
+ *   timing: any, texts: Record<string, TextFacts>, categories: { id: string, name: Pair,
  *   pieces: Piece[] }[] }} Content
  */
 
@@ -197,12 +199,11 @@ function recordings(s) {
  * One text as a piece of CONTENT.
  * @param {Text} t
  * @param {number} n  its number in its category, from 1
- * @param {Site} lib  content/site.json
  * @param {Ctx} [ctx]  the Wikipedia pages, the credits and the site's words (without them, as npm run texts builds a
  *   piece to count its letters: no credit, and no words around the text)
  * @returns {Piece}
  */
-export function toPiece(t, n, lib, ctx) {
+export function toPiece(t, n, ctx) {
   var c = ctx || { wiki: null, credits: null, words: null };
   /** the site's words for a text, in a side's language @param {"mr" | "en"} side */
   var W = function (side) {
@@ -227,7 +228,7 @@ export function toPiece(t, n, lib, ctx) {
   /** @type {Piece} */
   // id: the piece's section on the page (an older text keeps its first one, a1 or p1); text: its id in library.json
   var p = /** @type {any} */ ({ id: t.legacyId || t.id, text: t.id });
-  if (t.language !== lib.pageLanguage) p.lang = t.language;
+  if (t.language !== PAGE_LANGUAGE) p.lang = t.language;
   if (t.refrain === "always") p.cls = "norf";
   // stanza-numbers: as-written: the numbers are part of the text, so js/text/stanza-numbers.js adds none
   if (t.stanzaNumbers === "as-written") p.cls = (p.cls ? p.cls + " " : "") + "ownsn";
@@ -325,17 +326,17 @@ export function toPiece(t, n, lib, ctx) {
 }
 
 /**
- * CONTENT from the library, the site's settings and the text files.
+ * CONTENT from the library and the text files.
  * @param {Library} lib  content/library.json: the categories in reading order, each with its texts' ids in order
- * @param {Site} site  content/site.json: the settings every text shares
  * @param {Record<string, string>} files  each text's file, by text id
  * @param {{ wiki?: { pages: import("../core/wiki.js").Pages } | null, credits?: Credits | null,
- *   words?: ((part: string, lang: string) => any) | null }} [more]  content/wiki.json (each page a link names, its title on
- *   each Wikipedia), content/credits.json (who and what the texts come from) and the menu words (menuWords(part, lang):
- *   the site's words around a text, "text", and Wikipedia's names, "wiki"), given by js/text/load.js
+ *   words?: ((part: string, lang: string) => any) | null, timing?: any }} [more]  content/wiki.json (each page a link
+ *   names, its title on each Wikipedia), content/credits.json (who and what the texts come from), the menu words
+ *   (menuWords(part, lang): the site's words around a text, "text", and Wikipedia's names, "wiki"), and, where the app
+ *   has one, content/timing.json (the chanting paces, read by js/core/timing.js), given by js/text/load.js
  * @returns {Content}
  */
-export function buildContent(lib, site, files, more) {
+export function buildContent(lib, files, more) {
   var m = more || {},
     words = m.words || null;
   /** @type {Ctx} */
@@ -354,7 +355,7 @@ export function buildContent(lib, site, files, more) {
         if (t.id !== id) throw new Error(file + ': its id is "' + t.id + '", library.json says "' + id + '"');
         // what a text is, from its own file; where it stands, from the library
         facts[id] = { id: id, title: t.title, titleEn: t.titleEn, language: t.language, category: c.id, lines: t.lines || 0, letters: t.letters || 0 };
-        return toPiece(t, i + 1, site, ctx);
+        return toPiece(t, i + 1, ctx);
       }),
     };
   });
@@ -368,17 +369,17 @@ export function buildContent(lib, site, files, more) {
     text[code] = W(code);
   });
   return {
+    // the language the page is in (index.html's <html lang>): a piece in another carries its own (Piece "lang")
+    pageLanguage: PAGE_LANGUAGE,
     // Previous / Next under a text (js/render.js), in its languages
     ui: { prev: { mr: W("mr").prev, en: W("en").prev }, next: { mr: W("mr").next, en: W("en").next } },
     text: text,
     // which Wikipedia page a link opens (js/core/wiki.js): the credits' links are written with theirs, and
     // js/render.js and the Vedic calendar's festivals and holidays choose from these
     wiki: ctx.wiki,
-    // when a text has Go to, and how many verses make a group (js/text/outline.js)
-    outline: site.outline,
     // the chanting paces and the time between texts, for how long a text or a session takes (js/core/timing.js, where
     // the app has one: Nitya Upasana)
-    timing: site.timing,
+    timing: m.timing || null,
     texts: facts,
     // every category, those with no texts yet too (the family can move texts into them, js/features/library.js)
     categories: categories,

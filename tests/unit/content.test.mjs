@@ -1,5 +1,5 @@
 // The texts became files (slice 1). The proof that not a character changed: the site's own code
-// (js/text/content.js) rebuilds, from content/library.json, content/site.json and content/texts/*.txt, an object
+// (js/text/content.js) rebuilds, from content/library.json and content/texts/*.txt, an object
 // identical to the old window.CONTENT, frozen as it was in tests/unit/fixtures/pieces.js (the old content/pieces.js,
 // unchanged). Then the checks every text file must pass (listed once, its header's facts up to date, no Unicode
 // normalisation).
@@ -7,10 +7,10 @@ import { describe, expect, test } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import vm from "node:vm";
 import { parseText } from "../../js/text/format.js";
-import { buildContent, toPiece } from "../../js/text/content.js";
+import { buildContent, PAGE_LANGUAGE, toPiece } from "../../js/text/content.js";
 import { factsOf } from "../tools/texts.mjs";
 import { menuWords } from "../../js/core/strings.js";
-import { CONTENT, FILES as files, IDS, LIBRARY, SITE as lib, TEXTS } from "../content-files.mjs";
+import { CONTENT, FILES as files, IDS, LIBRARY, TEXTS } from "../content-files.mjs";
 
 // The old CONTENT, copied out of the vm context so it compares as plain objects
 const win = {};
@@ -63,7 +63,7 @@ describe("CONTENT from the text files", () => {
   test("every-verse: [once] lines before the dhrupad lead, later ones stand where they are", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: mr\nrefrain: every-verse\n---\n";
     const t = parseText(head + "[once]\nक\nK\n\n[note: अ | a]\n\n[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[once]\nघ\nGh\n");
-    const p = toPiece(t, 1, lib);
+    const p = toPiece(t, 1);
     expect(p.lead).toEqual([
       { kind: "dh", lines: [{ l: "x.1", mr: "क", en: "K" }] },
       { rmk: { mr: "अ", en: "a" }, nt: true },
@@ -75,7 +75,7 @@ describe("CONTENT from the text files", () => {
   // a closing [dhrupad bold] in a text with a dhrupad: said once, bold, with no dhrupad after it
   test("every-verse: a closing [dhrupad bold] is said once, in bold", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: mr\nrefrain: every-verse\n---\n";
-    const p = toPiece(parseText(head + "[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[dhrupad bold]\nघ\nGh\n"), 1, lib);
+    const p = toPiece(parseText(head + "[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[dhrupad bold]\nघ\nGh\n"), 1);
     expect(p.items.map((i) => i.kind || (i.rmk ? "rmk" : "stanza"))).toEqual(["stanza", "rmk", "rf", "dh"]);
     expect(p.items[3]).toEqual({ kind: "dh", bold: true, lines: [{ l: "x.3", mr: "घ", en: "Gh" }] });
   });
@@ -83,7 +83,7 @@ describe("CONTENT from the text files", () => {
   test("no dhrupad: [once] lines at the top lead, later ones stand where they are", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: sa\n---\n";
     const t = parseText(head + "[once]\nक\nK\n\n[1]\nग\nG\n\n[once]\nघ\nGh\n");
-    const p = toPiece(t, 1, lib);
+    const p = toPiece(t, 1);
     expect(p.lead).toEqual([{ kind: "dh", lines: [{ l: "x.1", mr: "क", en: "K" }] }]);
     expect(p.items.map((i) => i.kind || "stanza")).toEqual(["stanza", "dh"]);
     expect(p.items.flatMap((i) => i.lines.map((l) => l.l))).toEqual(["x.2", "x.3"]);
@@ -91,15 +91,25 @@ describe("CONTENT from the text files", () => {
   // layout: lines is a Vedic chant (prose: its font, its glued references, its printout) set line by line (lines)
   test("layout: lines is a Vedic chant set line by line", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: sa\nlayout: lines\n---\n";
-    const p = toPiece(parseText(head + "[1]\nक\nK\n"), 1, lib);
+    const p = toPiece(parseText(head + "[1]\nक\nK\n"), 1);
     expect(p.prose).toBe(true);
     expect(p.cls).toBe("lines");
-    expect(toPiece(parseText(head.replace("lines", "prose") + "[1]\nक\nK\n"), 1, lib).cls).toBeUndefined();
+    expect(toPiece(parseText(head.replace("lines", "prose") + "[1]\nक\nK\n"), 1).cls).toBeUndefined();
   });
   test("a text missing from the files, or listed twice, stops the build", () => {
-    expect(() => buildContent(LIBRARY, lib, { ...files, "aarti-sukhkarta": undefined })).toThrow("texts/aarti-sukhkarta.txt: not loaded");
+    expect(() => buildContent(LIBRARY, { ...files, "aarti-sukhkarta": undefined })).toThrow("texts/aarti-sukhkarta.txt: not loaded");
     const twice = { categories: [...LIBRARY.categories, { id: "more", name: { mr: "अ", en: "A" }, texts: ["aarti-sukhkarta"] }] };
-    expect(() => buildContent(twice, lib, files)).toThrow("library.json: aarti-sukhkarta is listed twice");
+    expect(() => buildContent(twice, files)).toThrow("library.json: aarti-sukhkarta is listed twice");
+  });
+  // the page's language is written once in the code and once in index.html (<html lang>), and they agree: a text in it
+  // carries no lang of its own, one in another language does (for screen readers and the fonts)
+  test("the page's language is index.html's, and only a text in another language says its own", () => {
+    const html = readFileSync(new URL("../../index.html", import.meta.url), "utf8");
+    expect(/<html lang="([^"]+)"/.exec(html)[1]).toBe(PAGE_LANGUAGE);
+    expect(CONTENT.pageLanguage).toBe(PAGE_LANGUAGE);
+    const head = (l) => "id: x\ntitle: क\ntitle-en: K\nlanguage: " + l + "\n---\n[1]\nक\nK\n";
+    expect(toPiece(parseText(head(PAGE_LANGUAGE)), 1).lang).toBeUndefined();
+    expect(toPiece(parseText(head("sa")), 1).lang).toBe("sa");
   });
 });
 

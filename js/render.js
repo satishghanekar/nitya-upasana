@@ -115,7 +115,7 @@
       two(p.title) +
       "</h2>\n" +
       '      <div class="tag">' +
-      two(p.tag, "lang." + (p.lang || "mr")) +
+      two(p.tag, "lang." + (p.lang || W.CONTENT.pageLanguage)) +
       "</div>\n" +
       "    </header>\n";
     // [once] lines and [note]s that come before the dhrupad at the top (js/text/content.js)

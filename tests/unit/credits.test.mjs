@@ -5,7 +5,7 @@
 import { describe, expect, test } from "vitest";
 import { buildContent } from "../../js/text/content.js";
 import { menuWords } from "../../js/core/strings.js";
-import { CREDITS, FILES, IDS, LIBRARY, PIECES, SITE, WIKI } from "../content-files.mjs";
+import { CREDITS, FILES, IDS, LIBRARY, PIECES, WIKI } from "../content-files.mjs";
 
 const plain = (html) => html.replace(/<[^>]+>/g, "").replace(/ ↗/g, "");
 const side = (id, s) => {
@@ -61,13 +61,13 @@ describe("content/credits.json", () => {
   const all = { ...CREDITS.people, ...CREDITS.sources };
   test.skipIf(!has("aarti-sukhkarta"))("every key a text names is in it; a key that is not stops the build, naming the text", () => {
     const bad = { ...FILES, "aarti-sukhkarta": FILES["aarti-sukhkarta"].replace("credit: author samarth-ramdas", "credit: author nobody") };
-    expect(() => buildContent(LIBRARY, SITE, bad, { wiki: WIKI, credits: CREDITS, words: menuWords })).toThrow(
+    expect(() => buildContent(LIBRARY, bad, { wiki: WIKI, credits: CREDITS, words: menuWords })).toThrow(
       "texts/aarti-sukhkarta.txt: nobody is not one of content/credits.json's people",
     );
   });
   test.skipIf(!has("vedic-chant-pavamana-suktam"))("a source is one of its sources, a person one of its people", () => {
     const bad = { ...FILES, "vedic-chant-pavamana-suktam": FILES["vedic-chant-pavamana-suktam"].replace("credit: source rigveda", "credit: author rigveda") };
-    expect(() => buildContent(LIBRARY, SITE, bad, { wiki: WIKI, credits: CREDITS, words: menuWords })).toThrow(
+    expect(() => buildContent(LIBRARY, bad, { wiki: WIKI, credits: CREDITS, words: menuWords })).toThrow(
       "texts/vedic-chant-pavamana-suktam.txt: rigveda is not one of content/credits.json's people",
     );
   });

@@ -3,11 +3,11 @@
 import { describe, expect, test } from "vitest";
 import { CONTENT as C } from "../content-files.mjs";
 import { parseText } from "../../js/text/format.js";
-import { arabic, outline, placeAt, sessionOutline, verseAt, verseByNumber } from "../../js/text/outline.js";
+import { OUTLINE, arabic, outline, placeAt, sessionOutline, verseAt, verseByNumber } from "../../js/text/outline.js";
 
 const pieces = C.categories.flatMap((c) => c.pieces);
 const piece = (id) => pieces.find((p) => p.text === id);
-const of = (id) => outline(piece(id), C.outline);
+const of = (id) => outline(piece(id));
 
 /** An outline as lines of text: each place, indented under the one it is in, and the text's verses in short */
 function written(o) {
@@ -26,17 +26,17 @@ function written(o) {
 test("every text's outline, or none for a short text", async () => {
   const all = pieces
     .map((p) => {
-      const o = outline(p, C.outline);
+      const o = outline(p);
       return o ? `${p.text}\n${written(o)}` : `${p.text}: none`;
     })
     .join("\n");
   await expect(all + "\n").toMatchFileSnapshot("__snapshots__/outlines.txt");
 });
 
-test("the thresholds come from content/site.json", () => {
-  expect(C.outline).toEqual({ minLines: 60, group: 25 });
-  // a short aarti has none; with a lower threshold it would
-  expect(outline(piece("aarti-sukhkarta"), C.outline)).toBeNull();
+test("the thresholds are the code's, one place (js/text/outline.js OUTLINE)", () => {
+  expect(OUTLINE).toEqual({ minLines: 60, group: 25 });
+  // a short aarti has none
+  expect(outline(piece("aarti-sukhkarta"))).toBeNull();
 });
 
 describe("what each kind of long text gets", () => {
@@ -119,7 +119,7 @@ test("a session's places: its texts, each with its own places under it", () => {
     const p = piece(id);
     return { id: p.id, title: p.title, line: p.items.find((i) => i.lines).lines[0].l };
   });
-  const s = sessionOutline(texts, Object.fromEntries(ids.map((id) => [piece(id).id, outline(piece(id), C.outline)])));
+  const s = sessionOutline(texts, Object.fromEntries(ids.map((id) => [piece(id).id, outline(piece(id))])));
   expect(s.map((x) => [x.kind, x.label.en, (x.kids || []).length])).toEqual([
     ["text", "Sukhkarta Dukhharta", 0],
     ["text", "Pavamana Suktam", 4],

@@ -14,7 +14,6 @@ const TIMING = new URL("../../js/core/timing.js", import.meta.url);
 const chantedLetters = existsSync(TIMING) ? (await import(TIMING.href)).chantedLetters : null;
 
 const content = new URL("../../content/", import.meta.url);
-const site = JSON.parse(readFileSync(new URL("site.json", content), "utf8"));
 const library = JSON.parse(readFileSync(new URL("library.json", content), "utf8"));
 
 /** Every text the library lists, by id */
@@ -24,7 +23,7 @@ export const IDS = library.categories.flatMap((c) => c.texts);
 export function factsOf(raw, file) {
   const t = parseText(raw, file),
     lines = t.blocks.reduce((a, b) => a + b.lines.length, 0);
-  return chantedLetters ? { lines, letters: chantedLetters(toPiece(t, 1, site)) } : { lines };
+  return chantedLetters ? { lines, letters: chantedLetters(toPiece(t, 1)) } : { lines };
 }
 
 /** The file with its header's lines and letters as they should be (last in the header, as js/text/format.js orders

@@ -62,7 +62,7 @@ export function init() {
   var ro = typeof ResizeObserver === "function" ? new ResizeObserver(dirty) : null;
   onPiece(function (sec) {
     var p = pieces[sec.id];
-    if (p && !(sec.id in outlines)) outlines[sec.id] = outline(p, C && C.outline);
+    if (p && !(sec.id in outlines)) outlines[sec.id] = outline(p);
     if (ro) ro.observe(sec);
     dirty();
   });
