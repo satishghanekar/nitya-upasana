@@ -3,8 +3,8 @@ title: शिवपञ्चाक्षरस्तोत्रम्
 title-en: Shiva Panchakshara Stotram
 language: sa
 stanza-numbers: as-written
-credit: [आदि शंकराचार्य](https://mr.wikipedia.org/wiki/आदि_शंकराचार्य) यांचे मानले जाते
-credit-en: Attributed to [Adi Shankaracharya](https://en.wikipedia.org/wiki/Adi_Shankara)
+credit: [आदि शंकराचार्य](wiki:Adi_Shankara) यांचे मानले जाते
+credit-en: Attributed to [Adi Shankaracharya](wiki:Adi_Shankara)
 lines: 12
 letters: 504
 ---

@@ -17,6 +17,8 @@ vm.runInNewContext(readFileSync(new URL("fixtures/pieces.js", import.meta.url), 
 const OLD = JSON.parse(JSON.stringify(win.CONTENT));
 
 const count = (s, re) => (s.match(re) || []).length;
+// a credit's words, without where its links go
+const words = (html) => html.replace(/<a [^>]*>/g, "<a>");
 // the old file had the reading page's groups (पूजा, आरती); CONTENT now has the Library's categories (2026-10-21)
 const pieces = (C) => (C.categories || C.groups).flatMap((g) => g.pieces);
 const allLines = (C) => pieces(C).flatMap((p) => [...(p.refrain ? p.refrain.lines : []), ...p.items.flatMap((i) => i.lines || [])]);
@@ -30,15 +32,18 @@ describe("CONTENT from the text files", () => {
   const same = pieces(C)
     .filter((p) => OLD_IDS.has(p.id))
     // (and each [note] is now marked as one, nt, which the old file did not have either: Ghalin Lotangan's ↻ ३ वेळा;
-    // nor a recording to hear under the credit, since 2026-11-11: the Atharvashirsha's)
-    .map(({ text, ...p }) => ({ ...p, credit: p.credit.replace(/<span class="rec".*$/, ""), items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
+    // nor a recording to hear under the credit, since 2026-11-11: the Atharvashirsha's; and a credit's link opens the
+    // person's Wikipedia page in the reader's language since 2026-11-15, so its words are compared, not where it goes:
+    // tests/unit/wiki.test.mjs checks the links)
+    .map(({ text, ...p }) => ({ ...p, credit: words(p.credit.replace(/<span class="rec".*$/, "")), items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
+  const OLD_PIECES = pieces(OLD).map((p) => ({ ...p, credit: words(p.credit) }));
   const OLD_C = { categories: [{ pieces: same }] };
   const byId = (Cx, id) => pieces(Cx).find((p) => p.id === id);
   test("is identical to the old content/pieces.js", () => {
-    expect(same).toStrictEqual(pieces(OLD));
+    expect(same).toStrictEqual(OLD_PIECES);
     // and in the same key order, so even the order the page meets things in is unchanged
-    expect(JSON.stringify(same)).toBe(JSON.stringify(pieces(OLD)));
-    expect([C.ui, C.wiki]).toStrictEqual([OLD.ui, OLD.wiki]);
+    expect(JSON.stringify(same)).toBe(JSON.stringify(OLD_PIECES));
+    expect(C.ui).toStrictEqual(OLD.ui);
   });
   // (60 <br>: the Vitthal Aarti's dhrupad breaks after its first half in English and at the top too, Satish 2026-10-23)
   test("the marks that matter are all there: 60 <br>, 156 zero-width spaces, svara marks", () => {

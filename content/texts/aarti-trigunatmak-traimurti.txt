@@ -5,8 +5,8 @@ language: mr
 legacy-id: a5
 line-ids: s5l
 refrain: every-verse
-credit: रचना : [संत एकनाथ](https://mr.wikipedia.org/wiki/एकनाथ) (१५३३–१५९९)
-credit-en: By [Sant Eknath](https://en.wikipedia.org/wiki/Eknath) (1533–1599)
+credit: रचना : [संत एकनाथ](wiki:Eknath) (१५३३–१५९९)
+credit-en: By [Sant Eknath](wiki:Eknath) (1533–1599)
 lines: 19
 letters: 604
 ---

@@ -29,7 +29,8 @@ There is no build step. The files in this repository are exactly what the site s
 | `index.html` | The page: the top bar, Settings, Home, the Library, the dialogs and Help. |
 | `content/texts/` | The texts, one plain-text file each (`aarti-sukhkarta.txt`, …). **Edit the texts here** (see *How to add a text*). |
 | `content/library.json` | The library, and nothing else: the categories in order (Vedic Chant, Aarti, Stotra, Ashtak), each with its names and its texts' ids in reading order, as `routines.json` lists a session's. A category with no texts is not shown. Everything about a text is in its own file. |
-| `content/site.json` | What every text shares: the language names, the dhrupad's label and marker, Previous / Next, the Kannada Wikipedia links, when a text has Go to (`"outline"`) and the chanting paces (`"timing"`). |
+| `content/site.json` | What every text shares: the language names, the dhrupad's label and marker, Previous / Next, when a text has Go to (`"outline"`) and the chanting paces (`"timing"`). |
+| `content/wiki.json` | Written by `npm run wiki` (in `tests/`), never by hand: each page a credit, a festival or a holiday links to, by the name the links use (its English page, `Samarth_Ramdas`), with its Wikidata item and its page's title on each Wikipedia the site opens (Marathi, Hindi, English, Kannada, Telugu, Gujarati). The site never asks Wikipedia anything itself. |
 | `content/pdfs.json`, `content/pdfs/` | The Library's PDFs: the files in `content/pdfs/`, listed in `content/pdfs.json`, each with its id, file, titles, category, language, pages and size (`npm run pdfs` in `tests/` fills those in; see `content/pdfs/README.md` for how to add one). |
 | `content/routines.json` | The four ready-made routines, by id (`short`, `daily`, `full`, `extended`): for each, the texts for each session (`morning`, `afternoon`, `evening`), the same every day (`"mode": "fixed"`) or per weekday (`"mode": "weekday"`). Ids are those in `library.json`. |
 | `content/festivals.json` | The festivals the Vedic calendar marks, each with its names and the rule that finds its day. |
@@ -103,8 +104,8 @@ language: mr
 legacy-id: a1
 line-ids: s1l
 refrain: every-verse
-credit: रचना : [समर्थ रामदास](https://mr.wikipedia.org/wiki/सुखकर्ता_दुःखहर्ता) (१६०८–१६८२)
-credit-en: By [Samarth Ramdas](https://en.wikipedia.org/wiki/Sukhakarta_Dukhaharta) (1608–1682)
+credit: रचना : [समर्थ रामदास](wiki:Samarth_Ramdas) (१६०८–१६८२)
+credit-en: By [Samarth Ramdas](wiki:Samarth_Ramdas) (1608–1682)
 lines: 15
 letters: 472
 ---
@@ -134,8 +135,8 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 | `stanza-numbers` | `as-written`: the stanza numbers (॥ १ ॥) are typed in the text and the app adds none (ashtaks whose numbers restart, or are written differently in English). |
 | `layout` | `prose`: a Vedic chant (Shree Rudra, the Atharvashirsha, the Purusha Suktam). In one language it runs on as paragraphs, on screen and in print, and Traditional (the default text font) sets it in Tiro Devanagari Sanskrit. `lines`: a Vedic chant set line by line, as its booklet is (Pavamana Suktam, Lalita Sahasranama, Vishnu Sahasranama, Shri Sukta): each line its own row from the left (a long one wrapping, the rest from the left too), a verse never split between pages, a hymn (`[para]`) further apart; a long verse reference (॥ ९.००१.०६ ॥) shows on a phone as just the verse (॥ ६ ॥), a hymn's first verse whole. |
 | `part-name` | What the text's parts (its `[para]` blocks) are called, in both languages: `अनुवाकः | Anuvaka` (Shree Rudra). Go to and the top bar's title then name them "अनुवाकः ५", counted from 1 under each heading. Without it a part is named by the reference its first verse ends with (Pavamana's ९.४७), or by its number. |
-| `credit`, `credit-en` | The author or source line in each language. `[name](address)` becomes a link that opens in a new tab. |
-| `credit-note`, `credit-note-en` | A second, smaller author line (Vitthal Aarti: "also credited to Sant Namdev"). |
+| `credit`, `credit-en` | The author or source line in each language. `[name](wiki:Samarth_Ramdas)` links the name to the Wikipedia page of the person it names (or, for a source, the source's or the text's own page), named by its English Wikipedia page as in its address (`en.wikipedia.org/wiki/Samarth_Ramdas`); a page with brackets in its name, or with no English page, by its Wikidata item (`wiki:Q55780`). Both lines name the same pages. The site opens the page in the reader's own Wikipedia where there is one (Marathi, then Hindi, then English; in Kannada, Telugu or Gujarati letters, that language's first), else the nearest; run `npm run wiki` (in `tests/`) after adding or changing a link, which writes each item's pages into `content/wiki.json`. |
+| `credit-note`, `credit-note-en` | A second, smaller author line (Vitthal Aarti: "also credited to Sant Namdev"), its links written the same way. |
 | `recording` | A recording to hear, YouTube only, shown under the credit: `[Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90)`, with `&t=` and the second the text starts at when that is not at once; two or more separated by `, `. Link only a recording checked against the text, the same words in the same order, and its start found by ear or by Shravan's alignment. `cd tests && npm run recordings` checks every video is still there. |
 | `lines`, `letters` | Written by `npm run texts`, never by hand: the line pairs in the file, and the letters said as the text is chanted (the dhrupad after every stanza, and before the first with `refrain-before-first`), which its time is counted from at the reader's pace (`content/site.json`'s `"timing"`). The checks name a file whose numbers are out of date. |
 

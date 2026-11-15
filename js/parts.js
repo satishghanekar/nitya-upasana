@@ -49,6 +49,7 @@ var SITE_PARTS = (function () {
     "core/align",
     "core/follow",
     "core/timing",
+    "core/wiki",
     "strings/en",
     "strings/mr",
     "strings/kn",
@@ -124,6 +125,7 @@ var SITE_PARTS = (function () {
   var content = [
     "library.json",
     "site.json",
+    "wiki.json",
     "routines.json",
     "festivals.json",
     "holidays.json",

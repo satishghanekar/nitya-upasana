@@ -3,8 +3,8 @@ title: शिवोपासनमन्त्राः
 title-en: Shivopasana Mantras
 language: sa
 layout: prose
-credit: [कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक (महानारायणोपनिषत्)](https://mr.wikipedia.org/wiki/यजुर्वेद)
-credit-en: [Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)](https://en.wikipedia.org/wiki/Taittiriya_Aranyaka)
+credit: [कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक (महानारायणोपनिषत्)](wiki:Taittiriya_Aranyaka)
+credit-en: [Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)](wiki:Taittiriya_Aranyaka)
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=2534)
 lines: 36
 letters: 1143

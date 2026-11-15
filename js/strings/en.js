@@ -360,10 +360,6 @@ export default {
   },
   // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
   calendar: {
-    /** A festival's Wikipedia link, spoken @param {string} name */
-    wiki: function (name) {
-      return name + ": Wikipedia (opens in a new tab)";
-    },
     /** A clock time: "7:45 am" @param {number} h 0–23 @param {string} mi the minutes, two digits */
     clock: function (h, mi) {
       return ((h + 11) % 12) + 1 + ":" + mi + (h >= 12 ? " pm" : " am");
@@ -911,5 +907,16 @@ export default {
     aDay: function (s) {
       return s + " a day";
     },
+  },
+  // Wikipedia, named for screen readers in this language, by the Wikipedia's language: a link's spoken name says which
+  // one it opens (js/core/wiki.js wikiLabel)
+  wiki: {
+    mr: "Marathi Wikipedia",
+    hi: "Hindi Wikipedia",
+    en: "Wikipedia",
+    kn: "Kannada Wikipedia",
+    te: "Telugu Wikipedia",
+    gu: "Gujarati Wikipedia",
+    tab: "opens in a new tab",
   },
 };

@@ -356,10 +356,6 @@ export default {
   },
   // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
   calendar: {
-    /** @param {string} name */
-    wiki: function (name) {
-      return name + " — विकिपीडिया (नवीन टॅबमध्ये उघडेल)";
-    },
     /** "सकाळी ७:४५": the part of the day, then the time @param {number} h @param {string} mi */
     clock: function (h, mi) {
       var part = h < 4 ? "रात्री" : h < 6 ? "पहाटे" : h < 12 ? "सकाळी" : h < 16 ? "दुपारी" : h < 20 ? "सायं." : "रात्री";
@@ -883,5 +879,15 @@ export default {
     aDay: function (s) {
       return "दररोज " + s;
     },
+  },
+  // Wikipedia, named for screen readers (js/core/wiki.js wikiLabel)
+  wiki: {
+    mr: "विकिपीडिया",
+    hi: "हिंदी विकिपीडिया",
+    en: "इंग्रजी विकिपीडिया",
+    kn: "कन्नड विकिपीडिया",
+    te: "तेलुगू विकिपीडिया",
+    gu: "गुजराती विकिपीडिया",
+    tab: "नवीन टॅबमध्ये उघडेल",
   },
 };

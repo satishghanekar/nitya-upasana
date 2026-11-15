@@ -9,8 +9,8 @@ refrain: every-verse
 refrain-before-first: yes
 credit: रचना : विष्णुदास नामा
 credit-en: By Vishnudas Nama
-credit-note: ([संत नामदेवांची](https://mr.wikipedia.org/wiki/नामदेव), अशीही मान्यता)
-credit-note-en: (also credited to [Sant Namdev](https://en.wikipedia.org/wiki/Namdev))
+credit-note: ([संत नामदेवांची](wiki:Namdev), अशीही मान्यता)
+credit-note-en: (also credited to [Sant Namdev](wiki:Namdev))
 lines: 16
 letters: 592
 ---

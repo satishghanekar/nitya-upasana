@@ -360,10 +360,6 @@ export default {
   },
   // The Vedic calendar: the line on Home, the calendar page, This week and 15 days (js/features/vedic-calendar.js)
   calendar: {
-    /** @param {string} name */
-    wiki: function (name) {
-      return name + ": ವಿಕಿಪೀಡಿಯ (ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ)";
-    },
     clock: clock,
     /** "ಮಂಗಳವಾರ 28 ಜುಲೈ" @param {number} wd @param {number} d @param {number} m */
     dayLabel: function (wd, d, m) {
@@ -905,5 +901,15 @@ export default {
     aDay: function (s) {
       return "ದಿನಕ್ಕೆ " + s;
     },
+  },
+  // Wikipedia, named for screen readers (js/core/wiki.js wikiLabel)
+  wiki: {
+    mr: "ಮರಾಠಿ ವಿಕಿಪೀಡಿಯ",
+    hi: "ಹಿಂದಿ ವಿಕಿಪೀಡಿಯ",
+    en: "ಇಂಗ್ಲಿಷ್ ವಿಕಿಪೀಡಿಯ",
+    kn: "ವಿಕಿಪೀಡಿಯ",
+    te: "ತೆಲುಗು ವಿಕಿಪೀಡಿಯ",
+    gu: "ಗುಜರಾತಿ ವಿಕಿಪೀಡಿಯ",
+    tab: "ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ",
   },
 };

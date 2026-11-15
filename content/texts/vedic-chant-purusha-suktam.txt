@@ -3,8 +3,8 @@ title: पुरुषसूक्तम्
 title-en: Purusha Suktam
 language: sa
 layout: prose
-credit: [कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक](https://mr.wikipedia.org/wiki/पुरुषसूक्त)
-credit-en: [Krishna Yajurveda, Taittiriya Aranyaka](https://en.wikipedia.org/wiki/Purusha_Sukta)
+credit: [कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक](wiki:Purusha_Sukta)
+credit-en: [Krishna Yajurveda, Taittiriya Aranyaka](wiki:Purusha_Sukta)
 lines: 112
 letters: 2198
 ---

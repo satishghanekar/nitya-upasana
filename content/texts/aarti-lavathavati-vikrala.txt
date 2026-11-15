@@ -5,8 +5,8 @@ language: mr
 legacy-id: a4
 line-ids: s4l
 refrain: every-verse
-credit: रचना : [समर्थ रामदास](https://mr.wikipedia.org/wiki/समर्थ_रामदास_स्वामी) (१६०८–१६८२)
-credit-en: By [Samarth Ramdas](https://en.wikipedia.org/wiki/Samarth_Ramdas) (1608–1682)
+credit: रचना : [समर्थ रामदास](wiki:Samarth_Ramdas) (१६०८–१६८२)
+credit-en: By [Samarth Ramdas](wiki:Samarth_Ramdas) (1608–1682)
 lines: 19
 letters: 611
 ---
