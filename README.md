@@ -155,7 +155,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 
 **Inside a line:**
 
-- `¦` marks a place where a long line may break on a narrow phone (it shows as nothing). Put it after the space: `निढळावरी कर ¦निढळावरी कर`. Give the English line a `¦` at the same place (`Shripad Shrivallabh Tvam Sadaiva ¦Shri Dattasmanpahi Devadhideva |`). A pause in the middle of a line is a `¦`, not a comma. The printout breaks at the same places.
+- `¦` marks a place where a long line may break on a narrow phone (it shows as nothing). Put it after the space, and after a comma the text has there (the comma stays, as written): `निढळावरी कर, ¦निढळावरी कर`. Give the English line a `¦` at the same place (`Nidhalavari Kar, ¦Nidhalavari Kar`). The printout breaks at the same places.
 - ` // ` (a space, two slashes, a space) always breaks the line there. The spaces belong to the mark: `|  // ` (two spaces) keeps one real space before the break.
 - **Verse numbers typed in a line** (`॥ १० ॥` in the original, `|| 10 ||` in English) must be the same number in both; the checks name any line where they differ. A reference in parts, as Pavamana Suktam's Rigveda hymn and verse (`॥ ९.००१.०१ ॥`, `|| 9.001.01 ||`), is checked the same way and kept whole on its row.
 - **Vedic svara marks** (॑ ॒ ᳚) must be kept exactly. A mark that belongs with a visarga goes **after** the ः, otherwise it shows as a dotted circle. After a Rigveda kampa numeral with marks (१॒॑), no anusvara or visarga: it goes before the numeral (`दू॒त्यं१॒॑`, not `दू॒त्य१॒॑ं`), and the Vedic anusvara is written ग्ं, not the one sign ꣳ, which the Kannada, Telugu and Gujarati fonts lack. The unit tests name any line that breaks this.

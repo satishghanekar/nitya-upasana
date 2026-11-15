@@ -7,14 +7,14 @@ credit: रचना : [गोस्वामी तुलसीदास](https
 credit-en: By [Goswami Tulsidas](https://en.wikipedia.org/wiki/Hanuman_Chalisa) (1532–1623)
 ---
 [once]
-श्रीगुरु चरन सरोज रज ¦निज मनु मुकुरु सुधारि ।
-Shriguru Charan Saroj Raj ¦Nij Manu Mukuru Sudhari |
-बरनउँ रघुबर बिमल जसु ¦जो दायकु फल चारि ॥
-Barnaun Raghubar Bimal Jasu ¦Jo Dayaku Phal Chari ||
-बुद्धिहीन तनु जानिके ¦सुमिरौं पवन-कुमार ।
-Buddhiheen Tanu Janike ¦Sumiraun Pavan-Kumar |
-बल बुधि बिद्या देहु मोहिं ¦हरहु कलेस बिकार ॥
-Bal Budhi Bidya Dehu Mohin ¦Harahu Kalesh Bikar ||
+श्रीगुरु चरन सरोज रज, ¦निज मनु मुकुरु सुधारि ।
+Shriguru Charan Saroj Raj, ¦Nij Manu Mukuru Sudhari |
+बरनउँ रघुबर बिमल जसु, ¦जो दायकु फल चारि ॥
+Barnaun Raghubar Bimal Jasu, ¦Jo Dayaku Phal Chari ||
+बुद्धिहीन तनु जानिके, ¦सुमिरौं पवन-कुमार ।
+Buddhiheen Tanu Janike, ¦Sumiraun Pavan-Kumar |
+बल बुधि बिद्या देहु मोहिं, ¦हरहु कलेस बिकार ॥
+Bal Budhi Bidya Dehu Mohin, ¦Harahu Kalesh Bikar ||
 
 [1]
 जय हनुमान ज्ञान गुन सागर ।
@@ -257,7 +257,7 @@ Tulsidas Sada Hari Chera |
 Keejai Nath Hriday Mahan Dera ||
 
 [once]
-पवनतनय संकट हरन ¦मंगल मूरति रूप ।
-Pavantanay Sankat Haran ¦Mangal Moorati Roop |
-राम लखन सीता सहित ¦हृदय बसहु सुर भूप ॥
-Ram Lakhan Sita Sahit ¦Hriday Basahu Sur Bhoop ||
+पवनतनय संकट हरन, ¦मंगल मूरति रूप ।
+Pavantanay Sankat Haran, ¦Mangal Moorati Roop |
+राम लखन सीता सहित, ¦हृदय बसहु सुर भूप ॥
+Ram Lakhan Sita Sahit, ¦Hriday Basahu Sur Bhoop ||
