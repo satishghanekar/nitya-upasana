@@ -36,7 +36,11 @@ var MQTOUCH;
 /** @type {number} the frame apply() finishes in */
 var tailF;
 
+/** The site's name, as index.html's <title> gives it */
+var SITE = "";
+
 export function init() {
+  SITE = document.title;
   // a piece folded or opened (js/core/apply.js): the title and progress line follow
   document.addEventListener("nitya-fold", mark);
   // Phones and tablets without the side menu. Scrolling down past the top of the page tucks the top and
@@ -170,6 +174,11 @@ export function mark() {
   } else bt0.classList.remove("pc");
   // in a long text or a session the title is the Go to button, saying where the reading is (js/features/where.js)
   whereMark(c, onText, en ? "en" : "mr", tt);
+  // the browser's tab, history and bookmarks name the text being read, then the site (WCAG 2.4.2; Satish 2026-11-14:
+  // every page was called the site's name alone)
+  var dn = c && c.classList.contains("ash") && c.querySelector("h2 > ." + (en ? "en" : "mr")),
+    dt = dn ? dn.textContent + " · " + SITE : SITE;
+  if (document.title !== dt) document.title = dt;
   var btt = byId("btt");
   if (btt.textContent !== tt) btt.textContent = tt;
   btt.lang = en ? "en" : /** @type {any} */ (window).SCR.k || "mr";
@@ -201,7 +210,7 @@ export function goHome() {
 
 // A line's Marathi and English <p> share a data-l id; return the one currently visible.
 /** @param {string} id @returns {HTMLElement | null} */
-function lineEl(id) {
+export function lineEl(id) {
   /** @type {HTMLElement[]} */
   var l = Array.prototype.slice.call(document.querySelectorAll('[data-l="' + id + '"]'));
   for (var i = 0; i < l.length; i++) {

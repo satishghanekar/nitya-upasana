@@ -9,8 +9,12 @@ refrain-before-first: yes
 [dhrupad]
 स्वस्थ करीं शयन प्रभो मंचकावरी ।
 Svastha Karin Shayan Prabho Manchakavari |
-श्रीसद्‌गुरुमहाराज पाहूं डोळेभरी ॥ धृ. ॥
-Shrisadgurumaharaj Pahun Dolebhari || Dhr. ||
+श्रीसद्‌गुरुमहाराज पाहूं डोळेभरी ।
+Shrisadgurumaharaj Pahun Dolebhari |
+श्रीसद्‌गुरुमहाराज पाहूं डोळेभरी ।
+Shrisadgurumaharaj Pahun Dolebhari |
+स्वस्थ करीं शयन प्रभो मंचकावरी ॥ धृ. ॥
+Svastha Karin Shayan Prabho Manchakavari || Dhr. ||
 
 [1]
 चिन्मय तूं परमात्मा अससि तत्त्वतां ।

@@ -112,9 +112,13 @@ function openText(sec) {
 
 /** Open a text at one of its lines @param {string} sec @param {string} id */
 function openLine(sec, id) {
-  jumpTo(function () {
-    goLine(id, true);
-  }, "#" + sec);
+  jumpTo(
+    function () {
+      goLine(id, true);
+    },
+    "#" + sec,
+    id,
+  );
 }
 
 // ---- Recent ----
