@@ -282,11 +282,7 @@
               <button type="button" data-v="bold"><span data-w="page.bold">Bold</span></button>
             </div>
           </div>
-        </div>
-      </section>
-      <section class="sp-grp" data-tab="read">
-        <h3 class="sp-h"><span data-w="page.verses">Verses</span></h3>
-        <div class="sp-card">
+          <!-- how a text is laid out, in the same card (Satish, 2026-11-15: Verses was a heading over one row) -->
           <div class="sp-row">
             <span class="sp-l"><span data-w="page.dhrupad">Dhrupad</span></span>
             <div class="sp-seg" id="srf" role="group" aria-label="Dhrupad">
@@ -353,9 +349,10 @@
         </div>
       </section>
       <section class="sp-grp" data-tab="more">
-        <!-- Profiles and backup (js/features/profiles.js, js/features/backup.js): who is reading (opens the profile sheet),
-             Save a backup file, Restore from a file, and a warning when this browser can't save here -->
-        <h3 class="sp-h"><span data-w="page.profilesAndBackup">Profiles and backup</span></h3>
+        <!-- Profile (js/features/profiles.js): who is reading (opens the profile sheet), their routine and chanting pace,
+             and a warning when this browser can't save here; then Backup (js/features/backup.js): Save a backup file,
+             Restore from a file -->
+        <h3 class="sp-h"><span data-w="page.profile">Profile</span></h3>
         <div class="sp-card">
           <p class="sp-row sp-warn" id="stw2" hidden><span class="sp-l"><span data-w="page.thisBrowserCanTSave">This browser can't save here. Use Save a backup file before closing.</span></span></p>
           <button type="button" class="sp-row sp-go" id="spf"><span class="sp-l"><span data-w="page.whoIsReading">Who is reading</span></span><span class="sp-v" id="spfv"></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -375,6 +372,12 @@
             <button type="button" class="sp-link" id="spcf" hidden><span data-w="page.paceForget">Forget what was learned</span></button>
             <span class="sr" id="spcl" role="status"></span>
           </div>
+        </div>
+      </section>
+      <!-- Backup, a group of its own (Satish, 2026-11-15: the person, their routine and pace above; the files here) -->
+      <section class="sp-grp" data-tab="more">
+        <h3 class="sp-h"><span data-w="page.backup">Backup</span></h3>
+        <div class="sp-card">
           <button type="button" class="sp-row sp-go" id="bks"><span class="sp-l"><span data-w="page.saveABackupFile">Save a backup file</span><small id="bksv"></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
           <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span data-w="page.restoreFromAFile">Restore from a file</span><small><span data-w="page.aNityaFileSavedBefore">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
         </div>
@@ -748,14 +751,14 @@
       <h3>Backup</h3>
       <p>Everything is kept on this phone only. A backup file keeps a copy you can bring back after a new phone, a reset or cleared browser data.</p>
       <ul>
-        <li><b>Save a backup file</b> (Settings → You → Profiles and backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and routines, and this phone's Library categories, nothing else.</li>
+        <li><b>Save a backup file</b> (Settings → You → Backup): on an iPhone it opens the share sheet; choose <b>Save to Files</b>, or send it to yourself. On a computer it downloads a file named <i>nitya-upasana-</i>date<i>.nitya</i>. It holds everyone's settings and routines, and this phone's Library categories, nothing else.</li>
         <li><b>Restore from a file:</b> pick a <i>.nitya</i> file. The site checks it, then shows who will be added, replaced or removed before anything changes; tap <b>Restore</b> to go ahead. Restoring replaces the people on this phone with the ones in the file.</li>
         <li>A short reminder to save a backup shows on Home now and then (two weeks after you start, then a month after each backup). If you change your routine before you have ever saved a backup, it shows straight away: your own routine is kept only on this phone, and deleting the app would lose it. <b>Not now</b> hides it for two weeks.</li>
         <li>If the browser can't save anything (some private windows), a note says so: everything works, but is forgotten when the page closes, so save a backup file first.</li>
       </ul>
 
       <h3>Settings</h3>
-      <p>On a phone, Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages and which to show, text size, font and the dhrupad; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on, and <b>Show holidays from</b> US and India for Coming up) and <b>You</b> (Profiles and backup, and About). It opens on Reading each time; on a phone held sideways the preview stays on the left while the choices scroll beside it. On an iPad or a computer there are no tabs: every group shows at once in two columns, the preview and the reading choices on the left, Screen and Profiles and backup on the right, and About under both. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
+      <p>On a phone, Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages and which to show, text size, font and the dhrupad; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on, and <b>Show holidays from</b> US and India for Coming up) and <b>You</b> (Profile, Backup and About). It opens on Reading each time; on a phone held sideways the preview stays on the left while the choices scroll beside it. On an iPad or a computer there are no tabs: every group shows at once in two columns, the preview and the reading choices on the left, Screen, Profile and Backup on the right, and About under both. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
       <ul>
         <li><b>Main language:</b> the language you read in, in large text: <span lang="mr">मराठी</span> (the text as written), English (in English letters) or the same words in Kannada, Telugu or Gujarati letters (<span lang="kn">ಕನ್ನಡ</span>, <span lang="te">తెలుగు</span>, <span lang="gu">ગુજરાતી</span>). Tap it to pick from a list; English is there twice, once for each spelling (see English spelling below). With Kannada, Telugu or Gujarati letters the second language can be English or None.</li>
         <li><b>Second language:</b> shown smaller, under each line, when Show (below it, or Language under <b>Reading</b> in the bottom bar) is set to both. Pick the other language, or <b>None</b> to read in one language only. Picking your second language as the main one swaps the two.</li>
@@ -777,7 +780,7 @@
         <li><b>Show holidays from</b> (USA, India): the public holidays in Coming up on Home, both on at first. Maharashtra's and Karnataka's are in the calendar.</li>
         <li><b>Keep screen on</b>: Off, 15, 30, 45 or 60 minutes after your last touch, key or scroll; after that the phone dims and locks as usual, so a phone left on its stand does not run its battery down. It starts at 30 on phones and tablets and Off on computers.</li>
         <li><b>Chanting pace</b> (Settings → You, under Routine), for how long texts and sessions take: <b>Auto</b> learns your own pace while Follow hears you chant (on this phone only, for the person reading) and shows a range until it has heard a few minutes; or pick <b>Quick</b>, <b>Steady</b> or <b>Slow</b>. Under it, what it has learned so far; <b>Forget what was learned</b> starts again.</li>
-        <li><b>Profiles and backup:</b> <b>Who is reading</b>, <b>Routine</b> (the ready-made routine you follow, or your own; see Your routine above), <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
+        <li><b>Profile</b> and <b>Backup:</b> <b>Who is reading</b>, <b>Routine</b> (the ready-made routine you follow, or your own; see Your routine above) and <b>Chanting pace</b>; <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
         <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and the version, with whether the site is saved for offline use under it (a green dot: Offline ready); the round button beside it checks for updates (see Good to know below). On a device that can listen, a line above the version says how Follow runs: <b>fast mode</b> (on the phone's graphics chip: about 3× faster and lighter on the battery, marked Fast) or <b>standard mode</b> (works on every phone, marked Standard).</li>
       </ul>
 

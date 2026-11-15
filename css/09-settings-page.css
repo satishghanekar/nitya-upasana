@@ -297,8 +297,7 @@ html[data-sp] {
   flex-direction: column;
   align-items: center;
 }
-/* the lines together in the middle of the window while they are shorter than it (the room under them looked left
-   over, Satish, 2026-11-15); taller, these margins come to nothing and the lines start at the top as before */
+/* the lines in the middle of the window while shorter than it (Satish, 2026-11-15); taller, they start at the top */
 .sp-pw > :first-child {
   margin-top: auto;
 }
@@ -379,8 +378,7 @@ html[data-sp] {
    hints (the preview shows large and small); Show and Text font beside their labels; Verses' heading for screen
    readers only (Dhrupad says what it is); rows and headings closer */
 @media screen and (max-width: 759.98px), screen and (orientation: landscape) and (max-height: 520px) {
-  .sp-pvg > .sp-h,
-  .sp-grp:has(#srf) > .sp-h {
+  .sp-pvg > .sp-h {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -404,9 +402,6 @@ html[data-sp] {
       linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent), linear-gradient(to bottom, #000 calc(100% - 6px), transparent);
     mask-image:
       linear-gradient(to right, transparent, #000 6px, #000 calc(100% - 6px), transparent), linear-gradient(to bottom, #000 calc(100% - 6px), transparent);
-  }
-  .sp-grp:has(#srf) {
-    padding-top: 10px;
   }
   .sp-hd {
     padding-block: 8px 6px;
@@ -932,9 +927,17 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   .sp-pvg ~ .sp-grp {
     grid-column: 2;
   }
-  /* Screen and You lie across the whole screen: a row's choices ran from edge to edge under its label (Theme's four
-     over 800px, Satish, 2026-11-15). The label on the left and the choices beside it, as Menus and buttons is; what
-     else the row holds (Chanting pace's note) still goes under them */
+  /* Settings has the whole short screen: the top bar steps aside (it and the tabs took a third of the height, Satish,
+     2026-11-15), unseen but in its place, so the text behind stays put. (Over the script's style.top) */
+  :root[data-menu="panel"] body > .bar {
+    visibility: hidden;
+  }
+  :root[data-menu="panel"] #panel {
+    top: 0 !important;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  /* Screen and You lie across the whole screen: a row's label on the left and its choices beside it (Theme's four ran
+     edge to edge, Satish, 2026-11-15); what else the row holds (Chanting pace's note) still goes under them */
   .sp-c2 .sp-stk .sp-l {
     flex: 1 1 36%;
   }
@@ -1006,8 +1009,7 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   color: var(--muted);
 }
 .sp .sp-link {
-  /* a small quiet button (Satish, 2026-11-15: an underlined link was the only one in Settings, a tall gap over it):
-     44px to tap, on a line of its own under the note */
+  /* a small quiet button, 44px to tap (was Settings' only underlined link; Satish, 2026-11-15) */
   min-height: 44px;
   margin: 8px 0 0;
   padding: 0 16px;
@@ -1021,8 +1023,8 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   cursor: pointer;
 }
 
-/* ==== Show holidays from (#shol): each country is chosen on its own, so a chosen one carries a tick; two filled
-   buttons side by side read as one choice gone wrong (Satish, 2026-11-15). The tick is drawn, so it needs no font ==== */
+/* ==== Show holidays from (#shol): each country chosen on its own carries a tick, drawn, so it needs no font
+   (Satish, 2026-11-15: two filled buttons read as one choice gone wrong) ==== */
 #shol button[aria-pressed="true"]::before {
   content: "";
   display: inline-block;

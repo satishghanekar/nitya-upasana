@@ -610,7 +610,8 @@ test("Settings: Reading | Screen | You, one at a time; opens on Reading each tim
   // the tab once named More, for what it holds: the person, their routine, pace and backup (Satish, 2026-11-15)
   await expect(tab("more")).toHaveText("You");
   // English's spelling named as well as shown
-  await expect(page.locator("#sl2v")).toHaveText("English · Simple (Sukhkarta)");
+  await expect(page.locator("#sl2v")).toHaveText("English · Simple");
+  await expect(page.locator("#sl2s option", { hasText: "Sukhkarta" })).toHaveText("English · Simple (Sukhkarta)");
   await expect(page.locator("#sl2s option", { hasText: "sukhakartā" })).toHaveText("English · Scholarly (sukhakartā)");
   // the maker's line under About only, not under every tab
   await expect(page.locator(".sp-by")).toBeHidden();
@@ -735,9 +736,21 @@ test("Settings on a phone held sideways: the tabs, the preview beside the readin
   expect(seg.y).toBeLessThan(label.y + label.height);
   expect(seg.x).toBeGreaterThan(label.x + label.width - 1);
   expect(seg.width).toBeLessThan(row.width * 0.65);
-  // You: Profiles and backup, then About, as before
+  // You: Profile (who is reading, the routine, the chanting pace), Backup, then About, each under its heading
   await page.locator('#spv [data-v="more"]').click();
+  await expect(page.locator("#panel .sp-grp:not([hidden]) > .sp-h")).toHaveText(["Profile", "Backup", "About"]);
+  expect((await box("#spc")).y).toBeLessThan((await box("#bks")).y);
   expect((await box("#bks")).y).toBeLessThan((await box("#hlp2")).y);
+  for (const id of ["#spf", "#sprt", "#spc"]) expect(await page.locator(".sp-grp:has(#spf) " + id).count(), id).toBe(1);
+  // Settings has the whole of the short screen: the top bar steps aside while it is open, and comes back after
+  await expect(page.locator("body > .bar")).toBeHidden();
+  expect((await page.locator("#panel").boundingBox()).y).toBe(0);
+  await page.locator("#xc").click();
+  await expect(page.locator("body > .bar")).toBeVisible();
+  await page.locator("#aa").click();
+  // the dhrupad in the reading choices' own card, the last of them in view beside the preview with nothing scrolled
+  expect(await page.locator(".sp-card:has(#sl1) #srf").count()).toBe(1);
+  expect((await box("#sfn")).y + (await box("#sfn")).height).toBeLessThanOrEqual(390);
   // turned upright, and an iPad held sideways, as before
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator("#spv")).toBeVisible();
