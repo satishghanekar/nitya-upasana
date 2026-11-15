@@ -1,15 +1,9 @@
 // Following the chanting (js/core/follow.js): what the model heard found in the texts, on the site's own texts, with
 // the kinds of mistakes the model makes (letters dropped or changed) and the dhrupad said again and again.
 import { describe, expect, test } from "vitest";
-import { readFileSync } from "node:fs";
-import { buildContent } from "../../js/text/content.js";
+import { CONTENT as C } from "../content-files.mjs";
 import { PACE, ahead, correct, letters, lineAt, locate, makeDoc, match, nextPace, pieceLines, startOf } from "../../js/core/follow.js";
 
-const read = (p) => readFileSync(new URL("../../" + p, import.meta.url), "utf8");
-const lib = JSON.parse(read("content/library.json"));
-const categories = JSON.parse(read("content/categories.json"));
-const files = Object.fromEntries(lib.texts.map((t) => [t.id, read("content/" + t.file)]));
-const C = buildContent(lib, files, categories);
 const pieces = C.categories.flatMap((c) => c.pieces);
 const docs = pieces.map((p) => makeDoc(pieceLines(p)));
 const at = (text) => pieces.findIndex((p) => p.text === text);

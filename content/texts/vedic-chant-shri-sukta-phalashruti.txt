@@ -1,12 +1,13 @@
 id: vedic-chant-shri-sukta-phalashruti
 title: श्रीसूक्त फलश्रुति
 title-en: Shri Sukta Phalashruti
-category: vedic-chant
 language: sa
 layout: lines
 stanza-numbers: as-written
 credit: ऋग्वेद (खिलसूक्त), नंतरच्या श्लोकांसह
 credit-en: Rig Veda (Khila Sukta), with later verses
+lines: 49
+letters: 1957
 ---
 [note: फलश्रुति | Phalashruti]
 

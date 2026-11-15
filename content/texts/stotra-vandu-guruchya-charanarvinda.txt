@@ -1,8 +1,9 @@
 id: stotra-vandu-guruchya-charanarvinda
 title: वंदू गुरुच्या चरणारविंदा
 title-en: Vandu Guruchya Charanaravinda
-category: stotra
 language: mr
+lines: 16
+letters: 673
 ---
 [1]
 वंदू गुरुच्या चरणारविंदा । ¦अगाध ज्याचा महिमा प्रबुद्धा ।

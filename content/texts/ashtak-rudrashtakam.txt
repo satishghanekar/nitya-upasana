@@ -1,11 +1,12 @@
 id: ashtak-rudrashtakam
 title: श्री रुद्राष्टकम्
 title-en: Shri Rudrashtakam
-category: ashtak
 language: sa
 stanza-numbers: as-written
 credit: रचना : [गोस्वामी तुलसीदास](https://mr.wikipedia.org/wiki/तुलसीदास) (रामचरितमानस, उत्तरकाण्ड)
 credit-en: By [Goswami Tulsidas](https://en.wikipedia.org/wiki/Tulsidas) (Ramcharitmanas, Uttarakanda)
+lines: 16
+letters: 792
 ---
 [1]
 नमामीशमीशान निर्वाणरूपं विभुं व्यापकं ब्रह्मवेदस्वरूपम् ।

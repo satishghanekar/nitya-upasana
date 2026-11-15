@@ -25,9 +25,9 @@ import {
   tapPrint,
 } from "./helpers.mjs";
 import { textsFor } from "../js/core/routine.js";
+import { TEXTS } from "./content-files.mjs";
 
-const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
-const TITLE = Object.fromEntries(LIB.texts.map((t) => [t.id, t]));
+const TITLE = Object.fromEntries(TEXTS.map((t) => [t.id, t]));
 const AARTIS = TEST_AARTIS;
 const MORNING = new Date("2026-10-15T10:00:00-04:00"); // Thursday
 const EVENING = new Date("2026-10-18T19:00:00-04:00"); // Sunday
@@ -318,7 +318,7 @@ test("in the morning, Next after the Atharvashirsha ends the session and returns
   // reading outside a session (a Library link): Next follows the library again
   await page.locator("#hm").click();
   await page.locator('#jl a[data-go="p1"]').click();
-  const order = LIB.texts.map((t) => t.id);
+  const order = TEXTS.map((t) => t.id);
   await expect(page.locator("#asn")).toHaveAttribute("aria-label", "Next: " + TITLE[order[order.indexOf("vedic-chant-atharvashirsha") + 1]].titleEn);
 });
 
@@ -600,7 +600,7 @@ test("Home has no date card, week row or contents list: the Library has every te
   // Home ends after the session's texts and the Library line (App, Share, QR and Help are under ⋯ More in the top bar); the reading page's pieces are not shown under it
   await expect(page.locator("html")).toHaveAttribute("data-hv", "1");
   await expect(page.locator("section.ash:visible")).toHaveCount(0);
-  await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(LIB.texts.length);
+  await expect(page.locator("#jl .tocg a[data-go]")).toHaveCount(TEXTS.length);
 });
 
 // Sankashti on Home (Satish, 2026-10-30): on its day, the calendar card in Ganesh's tint with the modak, and Coming up

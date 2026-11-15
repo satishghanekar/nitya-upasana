@@ -2,13 +2,10 @@
 // loose English spellings, typos) and how results rank: texts by title, id and category first, then
 // lines. Built here from the text files themselves, as the page builds it from the lines it shows.
 import { beforeAll, describe, expect, test } from "vitest";
-import { readFileSync } from "node:fs";
+import { CONTENT, FILES, IDS, LIBRARY, TEXTS } from "../content-files.mjs";
 import { parseText } from "../../js/text/format.js";
 import { buildIndex, distance, fold, loose, marks, near, search, SCORE, typos } from "../../js/text/search-core.js";
 
-const read = (p) => readFileSync(new URL("../../" + p, import.meta.url), "utf8");
-const lib = JSON.parse(read("content/library.json"));
-const CATS = JSON.parse(read("content/categories.json"));
 const plain = (s) => s.replace(/¦/g, "").replace(/ \/\/ /g, " ");
 
 let IA, ix;
@@ -17,11 +14,12 @@ beforeAll(async () => {
   ({ IA } = await import("../../js/text/iast.js"));
   const texts = [],
     lines = [];
-  for (const id of lib.texts.map((t) => t.id)) {
-    const t = parseText(read("content/texts/" + id + ".txt"), id);
-    const cat = CATS.find((c) => c.id === t.category);
+  for (const id of IDS) {
+    const t = parseText(FILES[id], id),
+      category = CONTENT.texts[id].category;
+    const cat = LIBRARY.categories.find((c) => c.id === category);
     const all = t.blocks.flatMap((b) => b.lines);
-    const name = id.startsWith(t.category + "-") ? id.slice(t.category.length + 1) : "";
+    const name = id.startsWith(category + "-") ? id.slice(category.length + 1) : "";
     texts.push({ id, name, sec: t.legacyId, title: t.title, titleEn: t.titleEn, categories: [cat.name.mr, cat.name.en] });
     all.forEach((l, i) => lines.push({ id: id + "." + (i + 1), sec: t.legacyId, text: id, m: plain(l.orig), e: plain(l.en) }));
   }
@@ -103,11 +101,11 @@ describe("ranking", () => {
     expect(top("vithal").id).toBe("aarti-yei-o-vitthale");
   });
   test("a category name finds its texts", () => {
-    const vedic = lib.texts.filter((t) => t.category === "vedic-chant").map((t) => t.id);
+    const vedic = TEXTS.filter((t) => t.category === "vedic-chant").map((t) => t.id);
     expect(textIds("vedic chant")).toEqual(vedic);
     expect(textIds("वैदिक")).toEqual(vedic);
     // every Aarti, and a text with aarti in its title too
-    expect(textIds("aarti")).toEqual(expect.arrayContaining(lib.texts.filter((t) => t.category === "aarti").map((t) => t.id)));
+    expect(textIds("aarti")).toEqual(expect.arrayContaining(TEXTS.filter((t) => t.category === "aarti").map((t) => t.id)));
   });
   test("an exact title outranks one it merely starts", () => {
     expect(search(ix, "aarti jai ganesh deva").texts[0]).toMatchObject({ id: "aarti-jai-ganesh-deva", score: SCORE.title });

@@ -1,11 +1,12 @@
 id: stotra-shant-ho-shriguru
 title: शांत हो श्रीगुरु
 title-en: Shant Ho Shriguru
-category: stotra
 language: mr
 refrain: every-verse
 credit: रचना : [श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)](https://mr.wikipedia.org/wiki/वासुदेवानंद_सरस्वती) (१८५४–१९१४)
 credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](https://en.wikipedia.org/wiki/Vasudevanand_Saraswati) (1854–1914)
+lines: 23
+letters: 924
 ---
 [once]
 शांत हो श्रीगुरु दत्ता ¦मम चित्ता शमवी आता ॥

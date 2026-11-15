@@ -1,7 +1,6 @@
 id: aarti-jai-ganesh-deva
 title: आरती जय गणेश देवा
 title-en: Aarti Jai Ganesh Deva
-category: aarti
 language: hi
 legacy-id: a9
 line-ids: s9l
@@ -9,6 +8,8 @@ refrain: every-verse
 refrain-before-first: yes
 credit: पारंपरिक
 credit-en: Traditional
+lines: 10
+letters: 341
 ---
 [dhrupad]
 जय गणेश जय गणेश, ¦जय गणेश देवा ।

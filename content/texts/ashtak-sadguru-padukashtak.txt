@@ -1,9 +1,10 @@
 id: ashtak-sadguru-padukashtak
 title: श्रीसद्गुरुपादुकाष्टक
 title-en: Shrisadgurupadukashtak
-category: ashtak
 language: mr
 stanza-numbers: as-written
+lines: 41
+letters: 911
 ---
 [1]
 ज्या संगतीनेंच विराग झाला ।

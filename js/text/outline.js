@@ -23,7 +23,7 @@
  * @typedef {{ piece: string, places: Place[], verses: Verse[] }} Outline
  */
 
-// When a text has an outline, and how big a group of verses is (content/library.json "outline" can set both)
+// When a text has an outline, and how big a group of verses is (content/site.json "outline" can set both)
 export const OUTLINE = { minLines: 60, group: 25 };
 
 const DIGITS = "०१२३४५६७८९";

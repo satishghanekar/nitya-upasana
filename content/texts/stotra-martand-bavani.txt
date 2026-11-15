@@ -1,9 +1,10 @@
 id: stotra-martand-bavani
 title: श्री मार्तण्ड बावनी
 title-en: Shri Martand Bavani
-category: stotra
 language: hi
 stanza-numbers: as-written
+lines: 54
+letters: 1977
 ---
 [once]
 ॥ श्री गुरुशरणम् ॥

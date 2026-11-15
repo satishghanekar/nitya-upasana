@@ -1,8 +1,7 @@
 // How long a text or a session takes (js/core/timing.js): the texts' lengths as chanted, the paces, the sums, the
 // rounding, and learning a person's pace from what Follow hears.
 import { describe, expect, test } from "vitest";
-import { readFileSync } from "node:fs";
-import { buildContent } from "../../js/text/content.js";
+import { CONTENT as C, IDS, PIECES as piece, SITE } from "../content-files.mjs";
 import {
   PACE_CHOICES,
   TIMING,
@@ -18,12 +17,6 @@ import {
   spanOf,
 } from "../../js/core/timing.js";
 
-const read = (p) => readFileSync(new URL("../../" + p, import.meta.url), "utf8");
-const lib = JSON.parse(read("content/library.json"));
-const categories = JSON.parse(read("content/categories.json"));
-const files = Object.fromEntries(lib.texts.map((t) => [t.id, read("content/" + t.file)]));
-const C = buildContent(lib, files, categories);
-const piece = Object.fromEntries(C.categories.flatMap((c) => c.pieces).map((p) => [p.text, p]));
 const T = cleanTiming(C.timing);
 
 describe("a text's length, as it is chanted", () => {
@@ -52,13 +45,13 @@ describe("a text's length, as it is chanted", () => {
     expect(p.items.filter((i) => i.kind === "rf").length).toBe(stanzas + 1);
   });
   test("every text has a length", () => {
-    lib.texts.forEach((t) => expect(chantedLetters(piece[t.id]), t.id).toBeGreaterThan(0));
+    IDS.forEach((id) => expect(chantedLetters(piece[id]), id).toBeGreaterThan(0));
   });
 });
 
 describe("the paces", () => {
-  test("content/library.json's timing is complete and as measured", () => {
-    expect(cleanTiming(lib.timing)).toEqual(lib.timing);
+  test("content/site.json's timing is complete and as measured", () => {
+    expect(cleanTiming(SITE.timing)).toEqual(SITE.timing);
     expect(T.paces.quick).toBeLessThan(T.paces.steady);
     expect(T.paces.steady).toBeLessThan(T.paces.slow);
   });

@@ -1,6 +1,6 @@
 // @ts-check
-// The Library's PDFs (content/pdfs.json, written like content/library.json: id, file, title, titleEn, category,
-// language, and its pages and size in bytes, filled in by tests/tools/pdf-info.mjs): each PDF with its titles and its category, one of the texts' categories (content/categories.json), with
+// The Library's PDFs (content/pdfs.json: id, file, title, titleEn, category,
+// language, and its pages and size in bytes, filled in by tests/tools/pdf-info.mjs): each PDF with its titles and its category, one of the texts' categories (content/library.json), with
 // whatever is missing or mistyped in the file left out, so one bad entry never hides the rest. A title given in one
 // language only is used for both. Pure, unit-tested in tests/unit/pdfs.test.mjs; no
 // init() (used by js/features/pdfs.js).

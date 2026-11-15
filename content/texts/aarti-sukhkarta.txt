@@ -1,13 +1,14 @@
 id: aarti-sukhkarta
 title: सुखकर्ता दुःखहर्ता
 title-en: Sukhkarta Dukhharta
-category: aarti
 language: mr
 legacy-id: a1
 line-ids: s1l
 refrain: every-verse
 credit: रचना : [समर्थ रामदास](https://mr.wikipedia.org/wiki/सुखकर्ता_दुःखहर्ता) (१६०८–१६८२)
 credit-en: By [Samarth Ramdas](https://en.wikipedia.org/wiki/Sukhakarta_Dukhaharta) (1608–1682)
+lines: 15
+letters: 472
 ---
 [dhrupad]
 जय देव जय देव, ¦जय मंगल मूर्ती ।

@@ -6,7 +6,8 @@
 //   cd tests && node tools/migrate.mjs [path/to/pieces.js]
 //
 // Kept for the record. The text files are now the source: edit them, not pieces.js, and don't run this again
-// (it would overwrite the files with the old texts).
+// (it would overwrite the files with the old texts). It writes the layout of the time (each text in library.json,
+// categories.json); since 2026-11-15 library.json holds only the categories and their texts, site.json the rest.
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { isDeepStrictEqual } from "node:util";
 import vm from "node:vm";

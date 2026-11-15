@@ -1,10 +1,11 @@
 id: aarti-belaguve
 title: आरती बेळगुवे
 title-en: Aarti Belaguve
-category: aarti
 language: mr
 refrain: every-verse
 refrain-before-first: yes
+lines: 12
+letters: 562
 ---
 [once]
 ॥ श्रीराम समर्थ ॥

@@ -36,7 +36,8 @@ function timing() {
   return rules;
 }
 
-/** A text's letters as chanted, by its id (0 for one not in the library) @param {string} id */
+/** A text's letters as chanted, by its id (0 for one not in the library): from its file's header ("letters", written
+ * by npm run texts and checked by the unit tests), else counted from the piece @param {string} id */
 export function lettersOf(id) {
   if (!lengths) {
     lengths = {};
@@ -45,7 +46,8 @@ export function lettersOf(id) {
     if (C)
       C.categories.forEach(function (/** @type {any} */ c) {
         c.pieces.forEach(function (/** @type {any} */ p) {
-          /** @type {Record<string, number>} */ (lengths)[p.text] = chantedLetters(p);
+          var f = C.texts[p.text];
+          /** @type {Record<string, number>} */ (lengths)[p.text] = (f && f.letters) || chantedLetters(p);
         });
       });
   }

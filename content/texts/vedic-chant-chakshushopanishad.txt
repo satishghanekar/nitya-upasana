@@ -1,9 +1,10 @@
 id: vedic-chant-chakshushopanishad
 title: चाक्षुषोपनिषद्
 title-en: Chakshushopanishad
-category: vedic-chant
 language: sa
 layout: prose
+lines: 21
+letters: 682
 ---
 [para 1]
 ॐ अस्याश्चाक्षुषीविद्यायाः अहिर्बुध्न्य ऋषिः ।

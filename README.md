@@ -28,9 +28,9 @@ There is no build step. The files in this repository are exactly what the site s
 |---|---|
 | `index.html` | The page: the top bar, Settings, Home, the Library, the dialogs and Help. |
 | `content/texts/` | The texts, one plain-text file each (`aarti-sukhkarta.txt`, …). **Edit the texts here** (see *How to add a text*). |
-| `content/library.json` | The list of texts in reading order within each category, with the few words the app adds (language names, the dhrupad label, Kannada Wikipedia links). |
-| `content/categories.json` | The built-in categories and their order: Vedic Chant, Aarti, Stotra, Ashtak. A category with no texts is not shown. |
-| `content/pdfs.json`, `content/pdfs/` | The Library's PDFs: the files in `content/pdfs/`, listed in `content/pdfs.json`, written like `content/library.json` with each one's pages and size (`npm run pdfs` in `tests/` fills those in; see `content/pdfs/README.md` for how to add one). |
+| `content/library.json` | The library, and nothing else: the categories in order (Vedic Chant, Aarti, Stotra, Ashtak), each with its names and its texts' ids in reading order, as `routines.json` lists a session's. A category with no texts is not shown. Everything about a text is in its own file. |
+| `content/site.json` | What every text shares: the language names, the dhrupad's label and marker, Previous / Next, the Kannada Wikipedia links, when a text has Go to (`"outline"`) and the chanting paces (`"timing"`). |
+| `content/pdfs.json`, `content/pdfs/` | The Library's PDFs: the files in `content/pdfs/`, listed in `content/pdfs.json`, each with its id, file, titles, category, language, pages and size (`npm run pdfs` in `tests/` fills those in; see `content/pdfs/README.md` for how to add one). |
 | `content/routines.json` | The four ready-made routines, by id (`short`, `daily`, `full`, `extended`): for each, the texts for each session (`morning`, `afternoon`, `evening`), the same every day (`"mode": "fixed"`) or per weekday (`"mode": "weekday"`). Ids are those in `library.json`. |
 | `content/festivals.json` | The festivals the Vedic calendar marks, each with its names and the rule that finds its day. |
 | `content/holidays.json` | The public holidays it marks (US, India, Maharashtra, Karnataka; Home's Coming up offers the US's and India's, both on at first, Settings → Screen → Show holidays from): a date, the nth weekday of a month, days from Easter, or a tithi. |
@@ -99,13 +99,14 @@ A text is one plain-text file in `content/texts/`, named after its id, which sta
 id: aarti-sukhkarta
 title: सुखकर्ता दुःखहर्ता
 title-en: Sukhkarta Dukhharta
-category: aarti
 language: mr
 legacy-id: a1
 line-ids: s1l
 refrain: every-verse
 credit: रचना : [समर्थ रामदास](https://mr.wikipedia.org/wiki/सुखकर्ता_दुःखहर्ता) (१६०८–१६८२)
 credit-en: By [Samarth Ramdas](https://en.wikipedia.org/wiki/Sukhakarta_Dukhaharta) (1608–1682)
+lines: 15
+letters: 472
 ---
 [dhrupad]
 जय देव जय देव, जय मंगल मूर्ती ।
@@ -118,14 +119,13 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 …
 ```
 
-**The header** (one `name: value` per line, then a line `---`):
+**The header** (one `name: value` per line, then a line `---`): everything about the text. Where it stands in the Library (its category, its place) is `content/library.json`'s.
 
 | Field | |
 |---|---|
-| `id` | Required. Lower case and hyphens, starting with its category (`aarti-`, `ashtak-`, `vedic-chant-`), the same as the file name. A link to the text is `#<id>`. |
+| `id` | Required. Lower case and hyphens, starting with the category the library lists it in (`aarti-`, `ashtak-`, `vedic-chant-`), the same as the file name. A link to the text is `#<id>`. |
 | `title`, `title-en` | Required. The title in the original language and in English. |
-| `category` | Required. One of the ids in `content/categories.json`: `vedic-chant`, `aarti`, `stotra`, `ashtak`. |
-| `language` | Required. `mr` (Marathi), `hi` (Hindi) or `sa` (Sanskrit). The page shows the language name from `content/library.json`. |
+| `language` | Required. `mr` (Marathi), `hi` (Hindi) or `sa` (Sanskrit). The page shows the language name from `content/site.json`. |
 | `legacy-id` | Only the first eleven texts have one (`a1`, `p1`, …): their id on the page and in old links. New texts leave it out. |
 | `line-ids` | What each line's id starts with, for the same eleven texts (`s1l`: the lines are `s1l1`, `s1l2`, …). Without it, the `id` and a dot (`ashtak-monday.1`). |
 | `line-id-exceptions` | Only the Vitthal Aarti, whose 4th line has always been `s7l4r`: `s7l4=s7l4r`. |
@@ -137,6 +137,7 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 | `credit`, `credit-en` | The author or source line in each language. `[name](address)` becomes a link that opens in a new tab. |
 | `credit-note`, `credit-note-en` | A second, smaller author line (Vitthal Aarti: "also credited to Sant Namdev"). |
 | `recording` | A recording to hear, YouTube only, shown under the credit: `[Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90)`, with `&t=` and the second the text starts at when that is not at once; two or more separated by `, `. Link only a recording checked against the text, the same words in the same order, and its start found by ear or by Shravan's alignment. `cd tests && npm run recordings` checks every video is still there. |
+| `lines`, `letters` | Written by `npm run texts`, never by hand: the line pairs in the file, and the letters said as the text is chanted (the dhrupad after every stanza, and before the first with `refrain-before-first`), which its time is counted from at the reader's pace (`content/site.json`'s `"timing"`). The checks name a file whose numbers are out of date. |
 
 **The blocks**, after `---`, separated by one blank line. Each starts with its name in brackets, then its lines, **always in pairs: the original line, then its everyday English line**. An English line where the original belongs (or the other way round) stops the text from loading, and the checks name the file and line.
 
@@ -151,9 +152,9 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 | `[refrain]` | Inside a block: the lines after it are refrain lines (shown as the refrain, or hidden with the dhrupad set to once). |
 | `[note: ↻ ३ वेळा \| 3 times]` | A small note between blocks, in both languages, always shown (whatever the dhrupad setting). One that starts with ↻ is about the lines before it ("repeat 3 times") and prints with them; any other note (`[note: फलश्रुति \| Phalashruti]`) is a heading for what follows and prints with it. Only a note that starts with ↻ shows the ↻ in English too. |
 
-**Go to** (the top bar's title in a long text, `js/features/where.js`) is made from these blocks, with nothing more to write: a `[note]` that is not a ↻ is a heading it lists, the `[para]` blocks under a heading are its parts, and the numbered verses, in groups of 25 where there are many, with a box for a verse number. So give a long text its real headings (an adhyaya, नमकम्, स्तोत्रम्) as `[note]`s; a text under 60 lines has no Go to (`content/library.json`, `"outline"`). Every text's outline is kept in `tests/unit/__snapshots__/outlines.txt`, so a change shows in review.
+**Go to** (the top bar's title in a long text, `js/features/where.js`) is made from these blocks, with nothing more to write: a `[note]` that is not a ↻ is a heading it lists, the `[para]` blocks under a heading are its parts, and the numbered verses, in groups of 25 where there are many, with a box for a verse number. So give a long text its real headings (an adhyaya, नमकम्, स्तोत्रम्) as `[note]`s; a text under 60 lines has no Go to (`content/site.json`, `"outline"`). Every text's outline is kept in `tests/unit/__snapshots__/outlines.txt`, so a change shows in review.
 
-**How long a text takes** (Home, the routine builder, the Library, `js/core/timing.js`) is counted from the file too, with nothing to write: its lines as they are chanted, the dhrupad after every stanza (and before the first with `refrain-before-first`), whatever the reader shows on screen. Edit a text and its time follows. The paces (seconds a letter, a home chant and a slow one), the time between texts and how much Follow must hear before it uses a reader's own pace are `content/library.json`'s `"timing"`, measured from the family's recordings and published ones (shravan-model, 2026-11-15).
+**How long a text takes** (Home, the routine builder, the Library, `js/core/timing.js`) is counted from the file too, with nothing to write: its lines as they are chanted, the dhrupad after every stanza (and before the first with `refrain-before-first`), whatever the reader shows on screen. Edit a text and its time follows. The paces (seconds a letter, a home chant and a slow one), the time between texts and how much Follow must hear before it uses a reader's own pace are `content/site.json`'s `"timing"`, measured from the family's recordings and published ones (shravan-model, 2026-11-15).
 
 **Inside a line:**
 
@@ -166,14 +167,15 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 ### Adding it to the site
 
 1. Write the file in `content/texts/`.
-2. In `content/library.json`, add it to `"texts"` (its `id`, `file`, `title`, `titleEn`, `category`, `language` and `lines`, the number of line pairs in the file) at the place in its category where it should appear. Its number in the Library and Previous / Next come from that order.
-3. In `js/parts.js`, add `texts/<id>.txt` to the `content` list, so the text is kept for offline use.
-4. To put it in a ready-made routine, add its id to that routine in `content/routines.json` (everyone following it gets it; a routine someone changed stays as theirs). The unit tests (`tests/unit/today.test.mjs`) say how Short, Daily and Full are made from Extended: change them there too.
-5. Run the checks (`cd tests && npm run unit`): they read every text, check `library.json` and `js/parts.js` against the files and name any mistake with its line number.
+2. Run `npm run texts` (in `tests/`): it writes the text's `lines` and `letters` into its header.
+3. In `content/library.json`, add its id to its category's `"texts"`, at the place where it should appear. Its number in the Library and Previous / Next come from that order.
+4. In `js/parts.js`, add `texts/<id>.txt` to the `content` list, so the text is kept for offline use.
+5. To put it in a ready-made routine, add its id to that routine in `content/routines.json` (everyone following it gets it; a routine someone changed stays as theirs). The unit tests (`tests/unit/today.test.mjs`) say how Short, Daily and Full are made from Extended: change them there too.
+6. Run the checks (`cd tests && npm run unit`): they read every text, check that `library.json` lists every file once, that each header's `lines` and `letters` are up to date and that `js/parts.js` has every file, and name any mistake with its line number.
 
 Nothing in the print code names a text: a new text prints by the rules in `ARCHITECTURE.md` ("The rules every printout follows") as soon as its file exists: stanzas are never split between pages, the dhrupad follows the printout's choice, an aarti or ashtak is centred, a Vedic chant (`layout: prose`) runs on as paragraphs, and with both languages each line sits beside its English.
 
-When **editing** a text, only the file changes, unless a title or the number of lines changes (then update `content/library.json` too; the checks say so). Line ids follow the order of the lines, so a fix within a line keeps them; adding or removing a line renumbers the lines after it (a highlighted line saved on a phone may then point at its neighbour).
+When **editing** a text, only the file changes; run `npm run texts` afterwards, which brings its `lines` and `letters` up to date (the checks name a file whose numbers are out of date). To move a text to another category or place, move its id in `content/library.json`. Line ids follow the order of the lines, so a fix within a line keeps them; adding or removing a line renumbers the lines after it (a highlighted line saved on a phone may then point at its neighbour).
 
 ## How the scholarly English is made
 

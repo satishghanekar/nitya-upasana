@@ -1,34 +1,34 @@
 // @ts-check
-// Loading the texts: fetches content/library.json and every text file it lists (content/texts/), builds CONTENT
-// from them (js/text/content.js), and puts the rest of the page in Kannada letters when that is the chosen language.
-// js/main.js waits for this before it starts the other parts. The pieces themselves are built one at a time, the
-// first time each is opened (js/core/page.js, with js/render.js).
+// Loading the texts: fetches content/library.json (the categories, each with its texts in reading order),
+// content/site.json (the words and settings every text shares) and every text file the library lists
+// (content/texts/), builds CONTENT from them (js/text/content.js), and puts the rest of the page in Kannada letters when
+// that is the chosen language. js/main.js waits for this before it starts the other parts. The pieces themselves are
+// built one at a time, the first time each is opened (js/core/page.js, with js/render.js).
 // The files are on the offline list (js/parts.js), so this works without internet too.
 // It also fetches content/routines.json, the ready-made routines (js/core/routine.js BASES) the Today card shows for a
 // person who follows one (js/features/today-card.js), at the same time; without it the texts still load and the card
-// shows empty sessions. And content/festivals.json, the
-// festival rules the Vedic calendar marks (js/core/festivals.js); without it no festivals are marked. And
-// content/holidays.json, the public holidays it marks (js/core/holidays.js); without it no holidays are marked. And
-// content/categories.json, the library's categories, which also set the reading order and the numbers
-// (js/text/content.js, js/core/library.js, js/features/library.js); without it each category is named by its id. And
-// content/pdfs.json, the PDFs the Library's PDFs tab lists (js/features/pdfs.js); without it the tab is not shown.
+// shows empty sessions. And content/festivals.json, the festival rules the Vedic calendar marks (js/core/festivals.js);
+// without it no festivals are marked. And content/holidays.json, the public holidays it marks (js/core/holidays.js);
+// without it no holidays are marked. And content/pdfs.json, the PDFs the Library's PDFs tab lists
+// (js/features/pdfs.js); without it the tab is not shown.
 
 import { buildContent } from "./content.js";
 
 /**
- * What was loaded, for the parts that need it after start-up: the library (content/library.json) and the
- * ready-made routines by id (content/routines.json; null when it could not be loaded) and the festival rules (content/festivals.json;
- * null when it could not be loaded) and the holidays (content/holidays.json; null when it could not be loaded) and the categories (content/categories.json; null when it could not be loaded) and the PDFs (content/pdfs.json, as read; null when it could not be loaded).
+ * What was loaded, for the parts that need it after start-up: the library (content/library.json), the site's
+ * settings (content/site.json), the ready-made routines by id (content/routines.json), the festival rules
+ * (content/festivals.json), the holidays (content/holidays.json) and the PDFs (content/pdfs.json, as read); each null
+ * when it could not be loaded.
  * @type {{
  *   library: import("./content.js").Library | null,
+ *   site: import("./content.js").Site | null,
  *   routines: Record<string, import("../core/routine.js").Routine> | null,
  *   festivals: import("../core/festivals.js").FestivalList | null,
  *   holidays: import("../core/holidays.js").HolidayList | null,
- *   categories: import("../core/library.js").BundledCategory[] | null,
  *   pdfs: unknown
  * }}
  */
-export const loaded = { library: null, routines: null, festivals: null, holidays: null, categories: null, pdfs: null };
+export const loaded = { library: null, site: null, routines: null, festivals: null, holidays: null, pdfs: null };
 
 /**
  * @param {string} url
@@ -79,18 +79,6 @@ export function load() {
         console.warn(e);
       },
     );
-  var categories = get("content/categories.json")
-    .then(function (r) {
-      return r.json();
-    })
-    .then(
-      function (/** @type {any} */ o) {
-        loaded.categories = Array.isArray(o) ? o : null;
-      },
-      function (/** @type {unknown} */ e) {
-        console.warn(e);
-      },
-    );
   var pdfs = get("content/pdfs.json")
     .then(function (r) {
       return r.json();
@@ -103,36 +91,42 @@ export function load() {
         console.warn(e);
       },
     );
-  var texts = get("content/library.json")
-    .then(function (r) {
+  /** @param {string} url */
+  var json = function (url) {
+    return get(url).then(function (r) {
       return r.json();
-    })
-    .then(function (/** @type {import("./content.js").Library} */ lib) {
-      loaded.library = lib;
-      // the categories set the reading order and the numbers (js/text/content.js), so they are waited for
-      return Promise.all(
-        lib.texts.map(function (t) {
-          return get("content/" + t.file).then(function (r) {
-            return r.text();
-          });
-        }),
-      )
-        .then(function (raw) {
-          return categories.then(function () {
-            return raw;
-          });
-        })
-        .then(function (raw) {
-          /** @type {Record<string, string>} */
-          var files = {};
-          lib.texts.forEach(function (t, i) {
-            files[t.id] = raw[i];
-          });
-          /** @type {any} */
-          var w = window;
-          w.CONTENT = buildContent(lib, files, loaded.categories);
-          w.SCR.page();
-        });
     });
-  return Promise.all([texts, routine, festivals, holidays, categories, pdfs]).then(function () {});
+  };
+  var texts = Promise.all([json("content/library.json"), json("content/site.json")]).then(function (both) {
+    /** @type {import("./content.js").Library} */
+    var lib = both[0];
+    /** @type {import("./content.js").Site} */
+    var site = both[1];
+    loaded.library = lib;
+    loaded.site = site;
+    // every text the library lists, each from its own file
+    /** @type {string[]} */
+    var ids = [];
+    lib.categories.forEach(function (c) {
+      ids = ids.concat(c.texts);
+    });
+    return Promise.all(
+      ids.map(function (/** @type {string} */ id) {
+        return get("content/texts/" + id + ".txt").then(function (r) {
+          return r.text();
+        });
+      }),
+    ).then(function (raw) {
+      /** @type {Record<string, string>} */
+      var files = {};
+      ids.forEach(function (/** @type {string} */ id, i) {
+        files[id] = raw[i];
+      });
+      /** @type {any} */
+      var w = window;
+      w.CONTENT = buildContent(lib, site, files);
+      w.SCR.page();
+    });
+  });
+  return Promise.all([texts, routine, festivals, holidays, pdfs]).then(function () {});
 }

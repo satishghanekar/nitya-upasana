@@ -1,8 +1,9 @@
 id: ashtak-friday
 title: शुक्रवार – उदासीन हा काळ
 title-en: Friday – Udasin Ha Kal
-category: ashtak
 language: mr
+lines: 17
+letters: 383
 ---
 [1]
 उदासीन हा काळ जातो कळेना ।

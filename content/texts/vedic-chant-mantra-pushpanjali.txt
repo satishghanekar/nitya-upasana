@@ -1,9 +1,10 @@
 id: vedic-chant-mantra-pushpanjali
 title: मन्त्रपुष्पाञ्जलिः
 title-en: Mantra Pushpanjali
-category: vedic-chant
 language: sa
 layout: prose
+lines: 14
+letters: 567
 ---
 [para 1]
 ॐ य॒ज्ञेन॑ य॒ज्ञम॑यजन्त दे॒वास्तानि॒ धर्मा॑णि प्रथ॒मान्या॑सन् ।

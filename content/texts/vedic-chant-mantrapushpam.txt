@@ -1,11 +1,12 @@
 id: vedic-chant-mantrapushpam
 title: मन्त्रपुष्पम्
 title-en: Mantrapushpam
-category: vedic-chant
 language: sa
 layout: prose
 credit: [कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक](https://mr.wikipedia.org/wiki/यजुर्वेद)
 credit-en: [Krishna Yajurveda, Taittiriya Aranyaka](https://en.wikipedia.org/wiki/Taittiriya_Aranyaka)
+lines: 88
+letters: 1464
 ---
 [dhrupad]
 ॐ भ॒द्रं कर्णे॑भिः शृणु॒याम॑ देवाः ।

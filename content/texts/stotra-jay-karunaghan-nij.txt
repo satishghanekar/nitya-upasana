@@ -1,10 +1,11 @@
 id: stotra-jay-karunaghan-nij
 title: जय करुणाघन निज
 title-en: Jay Karunaghan Nij
-category: stotra
 language: mr
 credit: रचना : [श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)](https://mr.wikipedia.org/wiki/वासुदेवानंद_सरस्वती) (१८५४–१९१४)
 credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](https://en.wikipedia.org/wiki/Vasudevanand_Saraswati) (1854–1914)
+lines: 17
+letters: 503
 ---
 [once]
 जय करुणाघन निज जन जीवन, ¦अनसुया नंदन पाहि जनार्दन ।

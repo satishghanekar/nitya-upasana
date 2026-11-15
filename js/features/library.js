@@ -1,7 +1,7 @@
 // @ts-check
 // The Library by category: the Library page's list of texts (#jl, opened by
 // the book button in the top bar) grouped by category: Vedic Chant, Aarti and any the family added, in the order of
-// content/categories.json; a category with no texts is left out of the list. Each category is numbered from 1
+// content/library.json; a category with no texts is left out of the list. Each category is numbered from 1
 // (2026-10-21). "Edit categories" ("विभाग बदला") at
 // the end of the list opens the categories sheet (#lbm) over the Library: add a category, rename one (a built-in one
 // only on this phone; it can't be deleted), delete one the family added, and move a text to another category. What
@@ -15,11 +15,11 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { change, P } from "../core/state.js";
-import { loaded } from "../text/load.js";
 import { getLibrary, onReread, setLibrary } from "../store/store.js";
 import {
   addCategory,
   aToZ,
+  bundledOf,
   categoriesOf,
   categoryOf,
   counts,
@@ -123,25 +123,16 @@ function catById(id) {
 
 // ---- the data: the texts in reading order with their sections, the categories, the family's changes ----
 function readData() {
-  var lib = loaded.library;
   /** @type {any} */
   var w = window;
   var C = w.CONTENT;
   entries = [];
-  if (!lib || !C) return;
-  /** @type {Record<string, any>} */
-  var byId = {};
-  lib.texts.forEach(function (/** @type {any} */ t) {
-    byId[t.id] = t;
-  });
-  // The bundled categories as CONTENT has them (content/categories.json, or each named by its id without it), and
-  // the texts in reading order
-  bundled = C.categories.map(function (/** @type {any} */ c, /** @type {number} */ i) {
-    return { id: c.id, name: { mr: c.name.mr, en: c.name.en }, order: i + 1 };
-  });
+  if (!C) return;
+  // The bundled categories (content/library.json) and the texts in reading order, each with what its file says
+  bundled = bundledOf(C);
   C.categories.forEach(function (/** @type {any} */ c) {
     c.pieces.forEach(function (/** @type {any} */ p) {
-      var t = byId[p.text];
+      var t = C.texts[p.text];
       if (t) entries.push({ id: t.id, sec: p.id, category: t.category, title: t.title, titleEn: t.titleEn, language: t.language, no: p.no });
     });
   });
@@ -205,8 +196,9 @@ export function categoryOfSection(sec) {
 
 // ---- the Library's list (#jl): one .tocg per category with texts; the markup the styles read ----
 function listHtml() {
-  var lib = loaded.library,
-    langs = (lib && lib.languages) || {};
+  /** @type {any} */
+  var C = /** @type {any} */ (window).CONTENT,
+    langs = (C && C.languages) || {};
   return shelves(entries, cats, local)
     .filter(function (s) {
       return s.texts.length;

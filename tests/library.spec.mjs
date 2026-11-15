@@ -5,13 +5,13 @@
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { openSite, settle, SETUPS, axeScan, axeEveryTheme, noViolations, useTestRoutine, settingsTab } from "./helpers.mjs";
+import { LIBRARY, TEXTS } from "./content-files.mjs";
 
-const LIB = JSON.parse(readFileSync(new URL("../content/library.json", import.meta.url), "utf8"));
 // the bundled categories that have texts, in order (an empty one is left out of the list)
-const CATS = JSON.parse(readFileSync(new URL("../content/categories.json", import.meta.url), "utf8")).filter((c) => LIB.texts.some((t) => t.category === c.id));
+const CATS = LIBRARY.categories.filter((c) => c.texts.length);
 const GROUPS = CATS.map((c) => c.name.mr);
 const GROUPS_EN = CATS.map((c) => c.name.en);
-const VEDIC = LIB.texts.filter((t) => t.category === "vedic-chant");
+const VEDIC = TEXTS.filter((t) => t.category === "vedic-chant");
 const EVENING = new Date("2026-10-18T19:00:00-04:00");
 const onPiece = (page) =>
   page.evaluate(() => {
@@ -32,9 +32,9 @@ test("the Library button opens every text, grouped, with search @mobile", async 
   await expect(btn).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator("#jump")).toHaveAccessibleName("Library");
   await expect(page.locator("#q")).toBeVisible();
-  // by category (content/categories.json): वैदिक मंत्र, आरती, …, every text of the library in order
+  // by category (content/library.json): वैदिक मंत्र, आरती, …, every text of the library in order
   await expect(page.locator("#jl .tocg:not(.pdfg) .gh .mr")).toHaveText(GROUPS);
-  const ids = LIB.texts.map((t) => t.id);
+  const ids = TEXTS.map((t) => t.id);
   await expect(page.locator("#jl a[data-go]")).toHaveCount(ids.length);
   // the bottom bar steps aside
   await expect(page.locator("#asc")).toBeHidden();

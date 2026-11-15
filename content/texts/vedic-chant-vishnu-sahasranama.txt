@@ -1,13 +1,14 @@
 id: vedic-chant-vishnu-sahasranama
 title: श्रीविष्णुसहस्रनामस्तोत्रम्
 title-en: Shri Vishnu Sahasranama
-category: vedic-chant
 language: sa
 layout: lines
 stanza-numbers: as-written
 credit: [महाभारत, अनुशासनपर्व](https://mr.wikipedia.org/wiki/विष्णुसहस्रनाम)
 credit-en: [Mahabharata, Anushasana Parva](https://en.wikipedia.org/wiki/Vishnu_Sahasranama)
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=ayqZpzFo5xA&t=11)
+lines: 395
+letters: 13622
 ---
 [once]
 श्रीगुरुभ्यो नमः हरिः ॐ ॥

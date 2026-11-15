@@ -1,12 +1,13 @@
 id: aarti-ghalin-lotangan
 title: घालीन लोटांगण
 title-en: Ghalin Lotangan
-category: aarti
 language: mr
 legacy-id: a8
 line-ids: s8l
 credit: संकलन : संत नामदेव व संस्कृत स्तोत्रे
 credit-en: A compilation: Sant Namdev and Sanskrit verses
+lines: 18
+letters: 529
 ---
 [1]
 घालीन लोटांगण वंदीन चरण ।

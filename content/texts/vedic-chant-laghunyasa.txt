@@ -1,9 +1,10 @@
 id: vedic-chant-laghunyasa
 title: लघुन्यासः
 title-en: Laghunyasa
-category: vedic-chant
 language: sa
 layout: prose
+lines: 83
+letters: 3231
 ---
 [para 1]
 ॐ अथात्मानग्ं शिवात्मानग् श्रीरुद्ररूपं ध्यायेत् ॥

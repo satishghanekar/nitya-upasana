@@ -1,10 +1,11 @@
 id: aarti-ovaloo-sapreme-aarti
 title: आरती श्री नानामहाराजांची
 title-en: Aarti Shri Nana Maharajanchi
-category: aarti
 language: mr
 refrain: every-verse
 refrain-before-first: yes
+lines: 20
+letters: 863
 ---
 [once]
 ॥ अवधूत चिंतन श्री गुरूदेव दत्त ॥

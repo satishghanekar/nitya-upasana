@@ -1,5 +1,6 @@
 // The Library's PDFs (js/core/pdfs.js): content/pdfs.json as the PDFs tab lists it, with mistakes left out.
 import { describe, expect, test } from "vitest";
+import { CATEGORIES } from "../content-files.mjs";
 import { readFileSync } from "node:fs";
 import { cleanPdfs, fileOk, pdfFacts, pdfHref, pdfShelves } from "../../js/core/pdfs.js";
 import { pdfInfo } from "../tools/pdf-info.mjs";
@@ -42,7 +43,7 @@ describe("cleanPdfs", () => {
   });
   test("content/pdfs.json is read without losing a PDF, each in a known category", () => {
     const o = JSON.parse(readFileSync(new URL("../../content/pdfs.json", import.meta.url), "utf8"));
-    const ids = JSON.parse(readFileSync(new URL("../../content/categories.json", import.meta.url), "utf8")).map((c) => c.id);
+    const ids = CATEGORIES.map((c) => c.id);
     const got = cleanPdfs(o);
     expect(got.length).toBe(o.pdfs.length);
     for (const p of got) expect(ids).toContain(p.category);

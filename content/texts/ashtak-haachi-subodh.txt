@@ -1,9 +1,10 @@
 id: ashtak-haachi-subodh
 title: हाचि सुबोध गुरूंचा
 title-en: Hachi Subodh Guruncha
-category: ashtak
 language: mr
 stanza-numbers: as-written
+lines: 28
+letters: 986
 ---
 [1]
 नाम सदा बोलावें, ¦गावें भावें, ¦जनांसि सांगावें ।

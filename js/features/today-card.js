@@ -33,7 +33,6 @@ import { cur, unfold } from "../core/apply.js";
 import { homeAlone, jumpTo } from "./history.js";
 import { setView } from "./day-picture.js";
 import { homeDay } from "./vedic-calendar.js";
-import { loaded } from "../text/load.js";
 import { nextChange, sessionAt } from "../core/time-of-day.js";
 import { dateKey, stepInSession, textsFor } from "../core/routine.js";
 import { followed, onReread } from "../store/store.js";
@@ -118,19 +117,15 @@ function idsFor(day, session) {
   });
 }
 
-// The texts' titles and their place on the page, from content/library.json and the pieces built from it
+// The texts' titles and their place on the page, from each text's facts (its file) and the pieces built from it
 function buildInfo() {
   info = {};
   bySec = {};
-  var lib = loaded.library;
   /** @type {any} */
   var w = window;
-  if (!lib || !w.CONTENT) return;
-  /** @type {Record<string, import("../text/content.js").LibraryText>} */
-  var t = {};
-  lib.texts.forEach(function (x) {
-    t[x.id] = x;
-  });
+  if (!w.CONTENT) return;
+  /** @type {Record<string, import("../text/content.js").TextFacts>} */
+  var t = w.CONTENT.texts;
   w.CONTENT.categories.forEach(function (/** @type {import("../text/content.js").Content["categories"][0]} */ c) {
     c.pieces.forEach(function (p) {
       var id = p.text;
@@ -143,7 +138,9 @@ function buildInfo() {
 
 /** @param {string} lang @param {"mr" | "en"} ui */
 function langName(lang, ui) {
-  var l = loaded.library && loaded.library.languages[lang];
+  /** @type {any} */
+  var C = /** @type {any} */ (window).CONTENT,
+    l = C && C.languages[lang];
   return l ? l[ui] : "";
 }
 

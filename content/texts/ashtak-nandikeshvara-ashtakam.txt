@@ -1,9 +1,10 @@
 id: ashtak-nandikeshvara-ashtakam
 title: नन्दिकेश्वराष्टकम्
 title-en: Nandikeshvara Ashtakam
-category: ashtak
 language: sa
 stanza-numbers: as-written
+lines: 16
+letters: 519
 ---
 [1]
 नन्दिकेश्वर नन्दिकेश्वर नन्दिकेश्वर पाहिमां ।
