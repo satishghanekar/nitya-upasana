@@ -1,0 +1,513 @@
+{
+ "pages": {
+  "Adi_Shankara": {
+   "wikidata": "Q180967",
+   "mr": "आद्य शंकराचार्य",
+   "hi": "आदि शंकराचार्य",
+   "en": "Adi Shankara",
+   "kn": "ಆದಿ ಶಂಕರ",
+   "te": "ఆది శంకరాచార్యులు",
+   "gu": "આદિ શંકરાચાર્ય"
+  },
+  "Akshaya_Tritiya": {
+   "wikidata": "Q3351132",
+   "mr": "अक्षय्य तृतीया",
+   "hi": "अक्षय तृतीया",
+   "en": "Akshaya Tritiya",
+   "kn": "ಅಕ್ಷಯ ತೃತೀಯ",
+   "te": "అక్షయ తృతీయ"
+  },
+  "Ambedkar_Jayanti": {
+   "wikidata": "Q4279451",
+   "mr": "आंबेडकर जयंती",
+   "hi": "आंबेडकर जयंती",
+   "en": "Ambedkar Jayanti",
+   "te": "అంబేద్కర్ జయంతి",
+   "gu": "આંબેડકર જયંતિ"
+  },
+  "Ananta_Chaturdashi": {
+   "wikidata": "Q3630768",
+   "mr": "अनंत चतुर्दशी",
+   "hi": "अनंत चतुर्दशी",
+   "en": "Ananta Chaturdashi",
+   "kn": "ಅನಂತ ಚತುರ್ದಶಿ",
+   "te": "అనంత చతుర్దశి",
+   "gu": "અનંત ચતુર્થી"
+  },
+  "Balipratipada": {
+   "wikidata": "Q4851001",
+   "mr": "बलिप्रतिपदा",
+   "en": "Balipratipada",
+   "kn": "ಬಲಿಪಾಡ್ಯ",
+   "te": "బలి పాడ్యమి"
+  },
+  "Basava_Jayanti": {
+   "wikidata": "Q3630049",
+   "hi": "बसव जयंती",
+   "en": "Basava Jayanti",
+   "kn": "ಬಸವ ಜಯಂತಿ",
+   "te": "బసవ జయంతి"
+  },
+  "Bhai_Dooj": {
+   "wikidata": "Q31023",
+   "mr": "भाऊबीज",
+   "hi": "यम द्वितीया",
+   "en": "Bhai Dooj",
+   "kn": "ಯಮ ದ್ವಿತೀಯ",
+   "te": "భాయ్ దూజ్",
+   "gu": "ભાઈબીજ"
+  },
+  "Buddha's_Birthday": {
+   "wikidata": "Q5348941",
+   "mr": "बुद्ध पौर्णिमा",
+   "hi": "बुद्ध पूर्णिमा",
+   "en": "Buddha's Birthday"
+  },
+  "Christmas": {
+   "wikidata": "Q19809",
+   "mr": "नाताळ",
+   "hi": "क्रिसमस",
+   "en": "Christmas",
+   "kn": "ಕ್ರಿಸ್ಮಸ್",
+   "te": "క్రిస్టమస్",
+   "gu": "નાતાલ"
+  },
+  "Columbus_Day": {
+   "wikidata": "Q367523",
+   "en": "Columbus Day"
+  },
+  "Datta_Jayanti": {
+   "wikidata": "Q5227740",
+   "mr": "दत्तजयंती",
+   "en": "Datta Jayanti",
+   "te": "దత్త జయంతి"
+  },
+  "Eknath": {
+   "wikidata": "Q2587826",
+   "mr": "एकनाथ",
+   "hi": "सन्त एकनाथ",
+   "en": "Eknath",
+   "kn": "ಸಂತ ಏಕನಾಥ್",
+   "te": "ఏకనాథుడు",
+   "gu": "એકનાથ"
+  },
+  "Ganapati_Atharvaśīrṣa": {
+   "wikidata": "Q4133165",
+   "mr": "गणपती अथर्वशीर्ष",
+   "hi": "गणेश अथर्वशीर्ष",
+   "en": "Ganapati Atharvaśīrṣa",
+   "te": "గణపత్యోపనిషత్తు"
+  },
+  "Gandhi_Jayanti": {
+   "wikidata": "Q658185",
+   "mr": "गांधी जयंती",
+   "hi": "गांधी जयंती",
+   "en": "Gandhi Jayanti",
+   "kn": "ಗಾಂಧಿ ಜಯಂತಿ",
+   "te": "గాంధీ జయంతి",
+   "gu": "ગાંધી જયંતી"
+  },
+  "Ganesh_Chaturthi": {
+   "wikidata": "Q929250",
+   "mr": "गणेश चतुर्थी",
+   "hi": "गणेश चतुर्थी",
+   "en": "Ganesh Chaturthi",
+   "kn": "ಗಣೇಶ ಚತುರ್ಥಿ",
+   "te": "వినాయక చవితి",
+   "gu": "ગણેશ ચતુર્થી"
+  },
+  "Gondavalekar_Maharaj": {
+   "wikidata": "Q10970980",
+   "mr": "गोंदवलेकर महाराज",
+   "en": "Gondavalekar Maharaj",
+   "kn": "ಬ್ರಹ್ಮಚೈತನ್ಯ ಮಹರಾಜ್"
+  },
+  "Good_Friday": {
+   "wikidata": "Q40317",
+   "mr": "गुड फ्रायडे",
+   "hi": "गुड फ़्राइडे",
+   "en": "Good Friday",
+   "kn": "ಶುಭ ಶುಕ್ರವಾರ",
+   "te": "గుడ్ ఫ్రైడే",
+   "gu": "ગુડફ્રાઈડે"
+  },
+  "Gudi_Padwa": {
+   "wikidata": "Q615384",
+   "mr": "गुढीपाडवा",
+   "hi": "गुड़ी पड़वा",
+   "en": "Gudi Padwa",
+   "kn": "ಗುಡಿ ಪಾಡ್ವ",
+   "te": "గుడి పడ్వా"
+  },
+  "Guru_Nanak_Gurpurab": {
+   "wikidata": "Q12174361",
+   "mr": "गुरू नानक जयंती",
+   "en": "Guru Nanak Gurpurab",
+   "te": "గురునానక్ జయంతి"
+  },
+  "Guru_Purnima": {
+   "wikidata": "Q2044380",
+   "mr": "गुरुपौर्णिमा",
+   "hi": "गुरु पूर्णिमा",
+   "en": "Guru Purnima",
+   "kn": "ಗುರು ಪೂರ್ಣಿಮಾ",
+   "te": "గురుపౌర్ణమి",
+   "gu": "ગુરુ પૂર્ણિમા"
+  },
+  "Hanuman_Jayanti": {
+   "wikidata": "Q2979868",
+   "mr": "हनुमान जयंती",
+   "hi": "हनुमान जयंती",
+   "en": "Hanuman Jayanti",
+   "kn": "ಹನುಮ ಜಯಂತಿ",
+   "te": "హనుమజ్జయంతి",
+   "gu": "હનુમાન જયંતી"
+  },
+  "Holika_Dahana": {
+   "wikidata": "Q16191443",
+   "mr": "होलिका दहन",
+   "hi": "होलिका दहन",
+   "en": "Holika Dahana",
+   "te": "హోళికా దహనం"
+  },
+  "Independence_Day_(India)": {
+   "wikidata": "Q56106",
+   "mr": "भारतीय स्वातंत्र्य दिवस",
+   "hi": "स्वतंत्रता दिवस (भारत)",
+   "en": "Independence Day (India)",
+   "kn": "ಭಾರತದ ಸ್ವಾತಂತ್ರ್ಯ ದಿನಾಚರಣೆ",
+   "te": "భారత స్వాతంత్ర్య దినోత్సవం",
+   "gu": "સ્વતંત્રતા દિવસ (ભારત)"
+  },
+  "Independence_Day_(United_States)": {
+   "wikidata": "Q86591",
+   "hi": "अमेरिका का स्वतंत्रता दिवस",
+   "en": "Independence Day (United States)",
+   "kn": "ಸ್ವಾತಂತ್ರ್ಯ ದಿನ (ಯುನೈಟೆಡ್ ಸ್ಟೇಟ್ಸ್)"
+  },
+  "Juneteenth": {
+   "wikidata": "Q6312521",
+   "en": "Juneteenth"
+  },
+  "Karnataka_Rajyotsava": {
+   "wikidata": "Q3536961",
+   "en": "Karnataka Rajyotsava",
+   "kn": "ಕನ್ನಡ ರಾಜ್ಯೋತ್ಸವ"
+  },
+  "Kartika_Purnima": {
+   "wikidata": "Q25032",
+   "mr": "कार्तिक पौर्णिमा",
+   "hi": "कार्तिक पूर्णिमा",
+   "en": "Kartika Purnima",
+   "kn": "ಕಾರ್ತಿಕ ಪೂರ್ಣಿಮಾ",
+   "te": "కార్తీక పౌర్ణమి",
+   "gu": "દેવદિવાળી"
+  },
+  "Krishna_Janmashtami": {
+   "wikidata": "Q430574",
+   "mr": "कृष्ण जन्माष्टमी",
+   "hi": "जन्माष्टमी",
+   "en": "Krishna Janmashtami",
+   "kn": "ಕೃಷ್ಣ ಜನ್ಮಾಷ್ಟಮಿ",
+   "te": "కృష్ణాష్టమి",
+   "gu": "જન્માષ્ટમી"
+  },
+  "Labor_Day_(United_States)": {
+   "wikidata": "Q848352",
+   "en": "Labor Day (United States)"
+  },
+  "Lakshmi_Puja": {
+   "wikidata": "Q6479912",
+   "mr": "लक्ष्मीपूजन",
+   "hi": "लक्ष्मी पूजा",
+   "en": "Lakshmi Puja",
+   "kn": "ಲಕ್ಷ್ಮೀ ಪೂಜೆ"
+  },
+  "Lalita_Sahasranama": {
+   "wikidata": "Q2080574",
+   "hi": "ललितासहस्रनाम",
+   "en": "Lalita Sahasranama",
+   "kn": "ಲಲಿತಾ ಸಹಸ್ರನಾಮ",
+   "te": "లలితా సహస్రనామ స్తోత్రం"
+  },
+  "Maha_Shivaratri": {
+   "wikidata": "Q848070",
+   "mr": "महाशिवरात्री",
+   "hi": "महाशिवरात्रि",
+   "en": "Maha Shivaratri",
+   "kn": "ಮಹಾ ಶಿವರಾತ್ರಿ",
+   "te": "మహాశివరాత్రి",
+   "gu": "શિવરાત્રિ"
+  },
+  "Maharashtra_Day": {
+   "wikidata": "Q6733336",
+   "mr": "महाराष्ट्र दिन",
+   "hi": "महाराष्ट्र दिवस",
+   "en": "Maharashtra Day",
+   "gu": "મહારાષ્ટ્ર દિવસ"
+  },
+  "Mahavira_Janma_Kalyanaka": {
+   "wikidata": "Q2612687",
+   "mr": "महावीर जयंती",
+   "hi": "महावीर जन्म कल्याणक",
+   "en": "Mahavira Janma Kalyanaka",
+   "kn": "ಮಹಾವೀರ ಜಯಂತಿ",
+   "te": "మహావీర్ జయంతి",
+   "gu": "મહાવીર જન્મ કલ્યાણક"
+  },
+  "Makar_Sankranti": {
+   "wikidata": "Q10253",
+   "mr": "मकरसंक्रांत",
+   "hi": "मकर संक्रान्ति",
+   "en": "Makar Sankranti",
+   "kn": "ಮಕರ ಸಂಕ್ರಾಂತಿ",
+   "te": "మకర సంక్రాంతి",
+   "gu": "મકર સંક્રાંતિ"
+  },
+  "Martin_Luther_King_Jr._Day": {
+   "wikidata": "Q751738",
+   "hi": "मार्टिन लूथर किंग दिवस",
+   "en": "Martin Luther King Jr. Day"
+  },
+  "Memorial_Day": {
+   "wikidata": "Q371781",
+   "en": "Memorial Day"
+  },
+  "Naga_Panchami": {
+   "wikidata": "Q2427232",
+   "mr": "नागपंचमी",
+   "hi": "नाग पंचमी",
+   "en": "Naga Panchami",
+   "kn": "ನಾಗ ಪಂಚಮಿ",
+   "te": "నాగపంచమి పండుగ"
+  },
+  "Namdev": {
+   "wikidata": "Q2602417",
+   "mr": "नामदेव",
+   "hi": "नामदेव",
+   "en": "Namdev",
+   "kn": "ನಾಮ್‍ದೇವ್",
+   "te": "నామదేవుడు",
+   "gu": "નામદેવ"
+  },
+  "Nana_Maharaj_Taranekar": {
+   "wikidata": "Q51719520",
+   "mr": "नाना महाराज तराणेकर",
+   "en": "Nana Maharaj Taranekar"
+  },
+  "Narahari_Sonar": {
+   "wikidata": "Q16909375",
+   "mr": "नरहरी सोनार",
+   "en": "Narahari Sonar"
+  },
+  "Naraka_Chaturdashi": {
+   "wikidata": "Q2722469",
+   "hi": "नर्क चतुर्दशी",
+   "en": "Naraka Chaturdashi",
+   "kn": "ನರಕ ಚತುರ್ದಶಿ",
+   "te": "నరక చతుర్దశి",
+   "gu": "કાળીચૌદશ"
+  },
+  "Navaratri": {
+   "wikidata": "Q10269",
+   "mr": "शारदीय नवरात्र",
+   "hi": "नवरात्र",
+   "en": "Navaratri",
+   "kn": "ನವರಾತ್ರಿ",
+   "te": "నవరాత్రి",
+   "gu": "નવરાત્રિ"
+  },
+  "New_Year's_Day": {
+   "wikidata": "Q196627",
+   "hi": "नव वर्ष का दिन",
+   "en": "New Year's Day",
+   "te": "నూతన సంవత్సర రోజు"
+  },
+  "Pargat_Diwas": {
+   "wikidata": "Q7136956",
+   "en": "Pargat Diwas"
+  },
+  "Prabodhini_Ekadashi": {
+   "wikidata": "Q3635950",
+   "mr": "कार्तिकी एकादशी",
+   "hi": "देव प्रबोधिनी एकादशी",
+   "en": "Prabodhini Ekadashi",
+   "te": "ప్రబోధిని ఏకాదశి"
+  },
+  "Pradosha": {
+   "wikidata": "Q7237496",
+   "mr": "प्रदोष",
+   "hi": "प्रदोष व्रत",
+   "en": "Pradosha",
+   "kn": "ಪ್ರದೋಷ",
+   "te": "ప్రదోష"
+  },
+  "Presidents'_Day": {
+   "wikidata": "Q744159",
+   "en": "Presidents' Day"
+  },
+  "Purusha_Sukta": {
+   "wikidata": "Q2600184",
+   "mr": "पुरुष सूक्त",
+   "hi": "पुरुष सूक्त",
+   "en": "Purusha Sukta",
+   "kn": "ಸೃಷ್ಟಿ ಮತ್ತು ವೇದ",
+   "te": "పురుష సూక్తము"
+  },
+  "Raksha_Bandhan": {
+   "wikidata": "Q10266",
+   "mr": "रक्षाबंधन",
+   "hi": "रक्षाबन्धन",
+   "en": "Raksha Bandhan",
+   "kn": "ರಕ್ಷಾ ಬಂಧನ",
+   "te": "రాఖీ పౌర్ణమి"
+  },
+  "Rama_Navami": {
+   "wikidata": "Q1771621",
+   "mr": "रामनवमी",
+   "hi": "राम नवमी",
+   "en": "Rama Navami",
+   "kn": "ಶ್ರೀ ರಾಮ ನವಮಿ",
+   "te": "శ్రీరామనవమి",
+   "gu": "રામનવમી"
+  },
+  "Republic_Day_(India)": {
+   "wikidata": "Q1139536",
+   "mr": "भारतीय प्रजासत्ताक दिन",
+   "hi": "गणतन्त्र दिवस (भारत)",
+   "en": "Republic Day (India)",
+   "kn": "ಗಣರಾಜ್ಯೋತ್ಸವ (ಭಾರತ)",
+   "te": "భారత గణతంత్ర దినోత్సవం",
+   "gu": "પ્રજાસત્તાક દિન (ભારત)"
+  },
+  "Rigveda": {
+   "wikidata": "Q727413",
+   "mr": "ऋग्वेद",
+   "hi": "ऋग्वेद",
+   "en": "Rigveda",
+   "kn": "ಋಗ್ವೇದ",
+   "te": "ఋగ్వేదం",
+   "gu": "ઋગ્વેદ"
+  },
+  "Samarth_Ramdas": {
+   "wikidata": "Q55780",
+   "mr": "समर्थ रामदास स्वामी",
+   "hi": "समर्थ रामदास",
+   "en": "Samarth Ramdas",
+   "kn": "ಸಮರ್ಥ ರಾಮದಾಸರು",
+   "te": "సమర్థ రామదాసు"
+  },
+  "Sharada_Purnima": {
+   "wikidata": "Q3325016",
+   "mr": "कोजागरी पौर्णिमा",
+   "hi": "शरद पूर्णिमा",
+   "en": "Sharada Purnima",
+   "te": "శరత్ పూర్ణిమ",
+   "gu": "શરદ પૂર્ણિમા"
+  },
+  "Shardha_Ram_Phillauri": {
+   "wikidata": "Q1190887",
+   "hi": "श्रद्धाराम शर्मा",
+   "en": "Shardha Ram Phillauri",
+   "te": "శార్దా రాం పిల్లౌరీ"
+  },
+  "Shayani_Ekadashi": {
+   "wikidata": "Q3635830",
+   "mr": "आषाढी एकादशी",
+   "hi": "देवशयनी एकादशी",
+   "en": "Shayani Ekadashi",
+   "kn": "ಆಷಾಢ ಏಕಾದಶಿ",
+   "te": "తొలిఏకాదశి"
+  },
+  "Shiv_Jayanti": {
+   "wikidata": "Q13121483",
+   "mr": "शिव जयंती",
+   "hi": "शिवाजी जयंती",
+   "en": "Shiv Jayanti",
+   "te": "శివాజీ జయంతి",
+   "gu": "શિવાજી જયંતિ"
+  },
+  "Shri_Rudram": {
+   "wikidata": "Q3533333",
+   "mr": "रुद्राध्याय",
+   "hi": "श्री रुद्रम् चमकम्",
+   "en": "Shri Rudram",
+   "gu": "શ્રીરુદ્રમ્"
+  },
+  "Swami_Samarth": {
+   "wikidata": "Q7230699",
+   "mr": "स्वामी समर्थ",
+   "hi": "स्वामी समर्थ",
+   "en": "Swami Samarth"
+  },
+  "Swami_Swarupanand": {
+   "wikidata": "Q7653964",
+   "en": "Swami Swarupanand"
+  },
+  "Taittiriya_Aranyaka": {
+   "wikidata": "Q265461",
+   "mr": "आरण्यक",
+   "hi": "आरण्यक",
+   "en": "Aranyaka",
+   "kn": "ಆರಣ್ಯಕ",
+   "te": "అరణ్యకాలు",
+   "gu": "આરણ્યક ગ્રંથો"
+  },
+  "Thanksgiving_(United_States)": {
+   "wikidata": "Q2913791",
+   "en": "Thanksgiving (United States)"
+  },
+  "Tulsidas": {
+   "wikidata": "Q312976",
+   "mr": "तुलसीदास",
+   "hi": "तुलसीदास",
+   "en": "Tulsidas",
+   "kn": "ತುಳಸಿದಾಸ",
+   "te": "తులసీదాసు",
+   "gu": "તુલસીદાસ"
+  },
+  "Ugadi": {
+   "wikidata": "Q3351126",
+   "mr": "उगादी",
+   "hi": "उगादि",
+   "en": "Ugadi",
+   "kn": "ಯುಗಾದಿ",
+   "te": "ఉగాది"
+  },
+  "Vasudevanand_Saraswati": {
+   "wikidata": "Q7917022",
+   "mr": "वासुदेवानंद सरस्वती",
+   "hi": "वासुदेवानन्द सरस्वती",
+   "en": "Vasudevanand Saraswati",
+   "gu": "વાસુદેવાનંદ સરસ્વતી"
+  },
+  "Vata_Purnima": {
+   "wikidata": "Q3635091",
+   "mr": "वटपौर्णिमा",
+   "en": "Vata Purnima",
+   "kn": "ವಟ ಪೂರ್ಣಿಮಾ"
+  },
+  "Veterans_Day": {
+   "wikidata": "Q755999",
+   "en": "Veterans Day"
+  },
+  "Vijayadashami": {
+   "wikidata": "Q10274",
+   "mr": "विजयादशमी",
+   "hi": "दशहरा",
+   "en": "Vijayadashami",
+   "kn": "ದಸರ",
+   "te": "దసరా",
+   "gu": "દશેરા"
+  },
+  "Vishnu_Sahasranama": {
+   "wikidata": "Q947063",
+   "mr": "विष्णुसहस्रनाम",
+   "hi": "विष्णु सहस्रनाम",
+   "en": "Vishnu Sahasranama",
+   "kn": "ವಿಷ್ಣು ಸಹಸ್ರನಾಮ",
+   "te": "విష్ణు సహస్రనామ స్తోత్రము",
+   "gu": "વિષ્ણુ સહસ્રનામ"
+  }
+ }
+}

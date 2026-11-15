@@ -52,7 +52,8 @@ import { dayTimes, masaOf, panchangDay, sunSidereal, tithiAt } from "./panchang.
  * @typedef {{ rashi: number }} SolarRule  rashi 1 Mesha … 10 Makara … 12 Meena: the sidereal sign the sun enters
  * @typedef {{ before: string, days: number }} BeforeRule  the `days` days before the festival with id `before`
  * @typedef {import("./panchang-names.js").Name} Name
- * @typedef {{ en: string, mr?: string }} Wiki  the Wikipedia page's title (as in its address), English and Marathi
+ * @typedef {string} Wiki  the festival's English Wikipedia page, as in its address ("Makar_Sankranti"): js/core/wiki.js
+ *   picks its page in the reader's language from content/wiki.json
  * @typedef {{ id: string, mr: string, en: string, short: Name, wiki?: Wiki, rule: LunarRule | SolarRule | BeforeRule, vara?: Record<string, Name> }} Festival
  *   vara: a word put before the names on a weekday (0 Sunday … 6 Saturday): Som Pradosh on a Monday
  *   mr / en the full names (the festival is itself a Name); short the label for a day in the month grid

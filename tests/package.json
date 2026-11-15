@@ -16,6 +16,7 @@
     "unit": "vitest run",
     "pdfs": "node tools/pdf-info.mjs",
     "texts": "node tools/texts.mjs",
+    "wiki": "node tools/wiki.mjs",
     "types": "tsc -p tsconfig.json",
     "sister": "node tools/sister-check.mjs",
     "recordings": "node tools/recordings.mjs"

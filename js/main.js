@@ -143,7 +143,10 @@ function start() {
 // parts. If the texts can't be loaded, the parts still start, so the home page, Settings and Help work; the store
 // never fails (it falls back to memory).
 Promise.all([
-  loadTexts().catch(function (e) {
+  // (the credits' links are named for screen readers in the menu words, which only this part can give the texts)
+  loadTexts(function (/** @type {string} */ l) {
+    return /** @type {Record<string, string>} */ (menuWords("wiki", l));
+  }).catch(function (e) {
     console.error(e);
   }),
   openStore(),

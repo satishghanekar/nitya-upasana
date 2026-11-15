@@ -14,6 +14,7 @@
 // - the credit links: [name](address) becomes a link that opens in a new tab, with its label and ↗.
 
 import { parseText, RECORDING, toHtml } from "./format.js";
+import { LANGUAGES, pageFor, wikiLabel } from "../core/wiki.js";
 
 /**
  * @typedef {import("./format.js").Text} Text
@@ -22,8 +23,11 @@ import { parseText, RECORDING, toHtml } from "./format.js";
  *   in reading order
  * @typedef {{ categories: LibraryCategory[] }} Library   content/library.json
  * @typedef {{ pageLanguage: string, languages: Record<string, Pair>, refrain: { label: Pair, note: Pair },
- *   ui: { prev: Pair, next: Pair }, wiki: Record<string, Record<string, string>>, outline?: { minLines: number, group: number },
+ *   ui: { prev: Pair, next: Pair }, outline?: { minLines: number, group: number },
  *   timing?: any }} Site   content/site.json
+ * @typedef {{ pages: import("../core/wiki.js").Pages, words: (lang: string) => Record<string, string> }} Wiki   which
+ *   page a link opens: content/wiki.json's pages; and each language's "wiki" menu words (js/strings/), given by
+ *   js/main.js (this file is loaded with the store, before the menu words can be)
  * @typedef {{ id: string, title: string, titleEn: string, language: string, category: string, lines: number,
  *   letters: number }} TextFacts   what a text is (its file's header) and where it stands (the library's category)
  * @typedef {{ l: string, rf?: true, mr: string, en: string }} Line
@@ -33,7 +37,7 @@ import { parseText, RECORDING, toHtml } from "./format.js";
  * @typedef {{ id: string, text: string, lang?: string, cls?: string, prose?: true, no: Pair, title: Pair, tag: Pair,
  *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string, partName?: Pair }} Piece
  *   lead: what comes before the dhrupad at the top (refrain), [once] lines and [note]s, shown above it
- * @typedef {{ ui: Site["ui"], wiki: Site["wiki"], outline?: Site["outline"], timing?: any, languages: Site["languages"],
+ * @typedef {{ ui: Site["ui"], wiki: Wiki | null, outline?: Site["outline"], timing?: any, languages: Site["languages"],
  *   texts: Record<string, TextFacts>, categories: { id: string, name: Pair,
  *   pieces: Piece[] }[] }} Content
  */
@@ -50,26 +54,62 @@ function esc(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-// A credit line: [name](address) becomes a link that opens in a new tab
+// A credit line: [name](wiki:Samarth_Ramdas) becomes a link to the Wikipedia page of the person (or source) it names, opening in a new
+// tab: in the side's own language where Wikipedia has one (the original's side: Marathi, then Hindi, then English; a
+// Hindi text's: Hindi first; the English side: English), else the nearest there is (js/core/wiki.js). On the original's
+// side it also carries the page for each script the original can be shown in (data-kn, data-te, data-gu: "kn https://…",
+// and what is heard, data-kn-label), which js/render.js puts in place when Kannada, Telugu or Gujarati letters are chosen.
 /**
  * @param {string} s
  * @param {"mr" | "en"} side
+ * @param {Wiki | null} wiki  content/wiki.json's pages (null: each link goes to the English page it names, as when a test
+ *   builds a piece without them)
+ * @param {string} lang  the original's language, which Wikipedia its side tries first ("mr", or "hi" for a Hindi text)
  */
-function credit(s, side) {
+function credit(s, side, wiki, lang) {
   var out = "",
-    re = /\[([^\]]+)\]\(([^)\s]+)\)/g,
+    re = /\[([^\]]+)\]\(wiki:([^()\s]+)\)/g,
     last = 0,
     m;
   while ((m = re.exec(s))) {
-    var label = side === "mr" ? m[1] + " — विकिपीडिया (नवीन टॅबमध्ये उघडेल)" : m[1] + ": Wikipedia (opens in a new tab)";
+    var name = m[1],
+      q = m[2],
+      as = side === "en" ? "en" : lang,
+      words = side === "en" ? "en" : "mr",
+      page = wiki && pageFor(q, as, wiki.pages),
+      attrs = "";
+    if (page && wiki) {
+      attrs = ' hreflang="' + page.lang + '" aria-label="' + esc(wikiLabel(name, page, words, wiki.words(words))) + '"';
+      // (the other scripts the original can be shown in: each its own Wikipedia first)
+      if (side === "mr")
+        LANGUAGES.forEach(function (code) {
+          if (code === "mr" || code === "hi" || code === "en") return;
+          var p2 = pageFor(q, code, /** @type {Wiki} */ (wiki).pages);
+          if (p2)
+            attrs +=
+              " data-" +
+              code +
+              '="' +
+              p2.lang +
+              " " +
+              esc(p2.url) +
+              '" data-' +
+              code +
+              '-label="' +
+              esc(wikiLabel("", p2, code, /** @type {Wiki} */ (wiki).words(code))) +
+              '"';
+        });
+    }
     out +=
       esc(s.slice(last, m.index)) +
       '<a href="' +
-      esc(m[2]) +
-      '" target="_blank" rel="noopener" aria-label="' +
-      esc(label) +
-      '">' +
-      esc(m[1]) +
+      esc(page ? page.url : /^Q[0-9]+$/.test(q) ? "https://www.wikidata.org/wiki/" + q : "https://en.wikipedia.org/wiki/" + encodeURIComponent(q)) +
+      '" target="_blank" rel="noopener" data-wiki="' +
+      q +
+      '"' +
+      attrs +
+      ">" +
+      esc(name) +
       '<span class="crx" aria-hidden="true"> ↗</span></a>';
     last = re.lastIndex;
   }
@@ -97,11 +137,13 @@ function recordings(s) {
   return '<span class="rec" lang="en"><span aria-hidden="true">▶ </span>YouTube: ' + links.join(" · ") + "</span>";
 }
 /**
- * @param {string} [mr]
- * @param {string} [en]
+ * @param {string | undefined} mr
+ * @param {string | undefined} en
+ * @param {Wiki | null} wiki
+ * @param {string} lang
  */
-function credits(mr, en) {
-  return '<span class="mr">' + credit(mr || "", "mr") + '</span><span class="en" lang="en">' + credit(en || "", "en") + "</span>";
+function credits(mr, en, wiki, lang) {
+  return '<span class="mr">' + credit(mr || "", "mr", wiki, lang) + '</span><span class="en" lang="en">' + credit(en || "", "en", wiki, lang) + "</span>";
 }
 
 /**
@@ -109,9 +151,13 @@ function credits(mr, en) {
  * @param {Text} t
  * @param {number} n  its number in its category, from 1
  * @param {Site} lib  content/site.json
+ * @param {Wiki | null} [wiki]  content/wiki.json's pages with content/site.json's "wikipedia", for the credits' links
  * @returns {Piece}
  */
-export function toPiece(t, n, lib) {
+export function toPiece(t, n, lib, wiki) {
+  if (!wiki) wiki = null;
+  // (a Hindi text's credit tries Hindi Wikipedia first)
+  var wl = t.language === "hi" ? "hi" : "mr";
   var prefix = t.lineIds || t.id + ".",
     ex = t.lineIdExceptions || {},
     count = 0;
@@ -224,8 +270,8 @@ export function toPiece(t, n, lib) {
   }
   p.items = items;
   p.credit =
-    credits(t.credit, t.creditEn) +
-    (t.creditNote || t.creditNoteEn ? "<small>" + credits(t.creditNote, t.creditNoteEn) + "</small>" : "") +
+    credits(t.credit, t.creditEn, wiki, wl) +
+    (t.creditNote || t.creditNoteEn ? "<small>" + credits(t.creditNote, t.creditNoteEn, wiki, wl) + "</small>" : "") +
     recordings(t.recording);
   return p;
 }
@@ -235,9 +281,15 @@ export function toPiece(t, n, lib) {
  * @param {Library} lib  content/library.json: the categories in reading order, each with its texts' ids in order
  * @param {Site} site  content/site.json: the words and settings every text shares
  * @param {Record<string, string>} files  each text's file, by text id
+ * @param {{ pages: import("../core/wiki.js").Pages } | null} [wikiPages]  content/wiki.json: each page a link names, its
+ *   title on each Wikipedia (without it, a credit's link goes to the English page it names)
+ * @param {(lang: string) => Record<string, string>} [wikiWords]  each language's "wiki" menu words, what a link's
+ *   screen reader name says (menuWords("wiki", lang))
  * @returns {Content}
  */
-export function buildContent(lib, site, files) {
+export function buildContent(lib, site, files, wikiPages, wikiWords) {
+  /** @type {Wiki | null} */
+  var wiki = wikiPages && wikiWords ? { pages: wikiPages.pages, words: wikiWords } : null;
   /** @type {Record<string, TextFacts>} */
   var facts = {};
   var categories = lib.categories.map(function (c) {
@@ -252,13 +304,15 @@ export function buildContent(lib, site, files) {
         if (t.id !== id) throw new Error(file + ': its id is "' + t.id + '", library.json says "' + id + '"');
         // what a text is, from its own file; where it stands, from the library
         facts[id] = { id: id, title: t.title, titleEn: t.titleEn, language: t.language, category: c.id, lines: t.lines || 0, letters: t.letters || 0 };
-        return toPiece(t, i + 1, site);
+        return toPiece(t, i + 1, site, wiki);
       }),
     };
   });
   return {
     ui: site.ui,
-    wiki: site.wiki,
+    // which Wikipedia page a link opens (js/core/wiki.js): the credits' links are written with theirs, and
+    // js/render.js and the Vedic calendar's festivals and holidays choose from these
+    wiki: wiki,
     // when a text has Go to, and how many verses make a group (js/text/outline.js)
     outline: site.outline,
     // the chanting paces and the time between texts, for how long a text or a session takes (js/core/timing.js, where

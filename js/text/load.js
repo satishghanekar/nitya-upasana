@@ -1,6 +1,7 @@
 // @ts-check
 // Loading the texts: fetches content/library.json (the categories, each with its texts in reading order),
-// content/site.json (the words and settings every text shares) and every text file the library lists
+// content/site.json (the words and settings every text shares), content/wiki.json (each page a link names, with its
+// Wikidata item and its title on each Wikipedia: js/core/wiki.js) and every text file the library lists
 // (content/texts/), builds CONTENT from them (js/text/content.js), and puts the rest of the page in Kannada letters when
 // that is the chosen language. js/main.js waits for this before it starts the other parts. The pieces themselves are
 // built one at a time, the first time each is opened (js/core/page.js, with js/render.js).
@@ -41,8 +42,9 @@ function get(url) {
   });
 }
 
-/** @returns {Promise<void>} */
-export function load() {
+/** @param {(lang: string) => Record<string, string>} [wikiWords]  each language's "wiki" menu words, for the credits'
+ *   links (given by js/main.js: the menu words can't be loaded from here, which the store loads early) @returns {Promise<void>} */
+export function load(wikiWords) {
   var routine = get("content/routines.json")
     .then(function (r) {
       return r.json();
@@ -97,7 +99,12 @@ export function load() {
       return r.json();
     });
   };
-  var texts = Promise.all([json("content/library.json"), json("content/site.json")]).then(function (both) {
+  // (without the Wikipedia pages, a credit's link goes to the English page it names)
+  var wiki = json("content/wiki.json").catch(function (/** @type {unknown} */ e) {
+    console.warn(e);
+    return null;
+  });
+  var texts = Promise.all([json("content/library.json"), json("content/site.json"), wiki]).then(function (both) {
     /** @type {import("./content.js").Library} */
     var lib = both[0];
     /** @type {import("./content.js").Site} */
@@ -124,7 +131,7 @@ export function load() {
       });
       /** @type {any} */
       var w = window;
-      w.CONTENT = buildContent(lib, site, files);
+      w.CONTENT = buildContent(lib, site, files, both[2], wikiWords);
       w.SCR.page();
     });
   });

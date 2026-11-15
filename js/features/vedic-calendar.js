@@ -36,6 +36,7 @@ import { IA } from "../text/iast.js";
 import { PAKSHA } from "../core/panchang-names.js";
 import { DAYS, dv, esc, lead, mrLang, nameLang, nameOf, num, scr, second, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
+import { pageFor, wikiLabel } from "../core/wiki.js";
 
 /**
  * @typedef {import("../core/panchang.js").DayPanchang} DayPanchang
@@ -388,19 +389,24 @@ function homeRender() {
 function fname(n, cls) {
   return nameH(n, cls);
 }
-/** A festival's or holiday's name as a link to its Wikipedia page (Marathi with Marathi menus, where there is one),
- * opening in a new tab with ↗, as the texts' credits do; just the name when it has none
- * @param {Name & { wiki?: import("../core/festivals.js").Wiki }} f */
+/** A festival's or holiday's name as a link to its Wikipedia page, opening in a new tab with ↗, as the texts' credits
+ * do: on the menu language's Wikipedia where it has one, else the nearest (js/core/wiki.js: Marathi menus try Marathi,
+ * Hindi, then English; Kannada, Telugu and Gujarati menus their own, then English); just the name when it has none
+ * @param {Name & { wiki?: string }} f */
 function fwiki(f) {
-  if (!f.wiki) return fname(f);
-  var M = ui() === "mr" && !!f.wiki.mr,
-    url = M ? "https://mr.wikipedia.org/wiki/" + f.wiki.mr : "https://en.wikipedia.org/wiki/" + f.wiki.en,
-    // (the name as shown first, so what is heard starts with what is seen)
-    shown = txt(f, lead() === "en" ? "en" : "mr"),
-    label = words().wiki(shown);
+  /** @type {any} */
+  var w = /** @type {any} */ (window).CONTENT && /** @type {any} */ (window).CONTENT.wiki,
+    page = f.wiki && w ? pageFor(f.wiki, ui(), w.pages) : null;
+  if (!page) return fname(f);
+  // (the name as shown first, so what is heard starts with what is seen)
+  var shown = txt(f, lead() === "en" ? "en" : "mr"),
+    // (which Wikipedia it opens, and that it opens in a new tab, in the menu language)
+    label = wikiLabel(shown, page, ui(), /** @type {Record<string, string>} */ (menuWords("wiki")));
   return (
     '<a href="' +
-    esc(encodeURI(url)) +
+    esc(page.url) +
+    '" hreflang="' +
+    page.lang +
     '" target="_blank" rel="noopener" aria-label="' +
     esc(label) +
     '">' +

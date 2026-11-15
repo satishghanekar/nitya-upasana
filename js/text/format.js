@@ -124,6 +124,11 @@ export function parseText(raw, name) {
     if (key === "stanza-numbers" && val !== "as-written") fail(at, 'stanza-numbers can only be "as-written"');
     // what the text's parts are called, in both languages, for Go to (js/text/outline.js): "अनुवाकः | Anuvaka"
     if (key === "part-name" && !/^[^|]*[^|\s] \| \S[^|]*$/.test(val)) fail(at, 'part-name is "name | English name", like "अनुवाकः | Anuvaka"');
+    // a credit's link names the person (or the source) by their English Wikipedia page, as in its address:
+    // [समर्थ रामदास](wiki:Samarth_Ramdas); the page it opens is chosen in the reader's language from content/wiki.json
+    // (js/core/wiki.js). A page with brackets in its name, or none in English, is named by its Wikidata item (wiki:Q…)
+    if (key.indexOf("credit") === 0 && /\]\((?!wiki:[^()\s]+\))/.test(val))
+      fail(at, "a credit's link is [name](wiki:English_Wikipedia_page) (or wiki:Q… for its Wikidata item)");
     if (
       key === "recording" &&
       !val.split(", ").every(function (r) {

@@ -2,8 +2,8 @@ id: stotra-ghorakashtoddharan
 title: घोरकष्टोद्धरणस्तोत्रम्
 title-en: Ghorakashtoddharan Stotra
 language: sa
-credit: रचना : [श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)](https://mr.wikipedia.org/wiki/वासुदेवानंद_सरस्वती) (१८५४–१९१४)
-credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](https://en.wikipedia.org/wiki/Vasudevanand_Saraswati) (1854–1914)
+credit: रचना : [श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)](wiki:Vasudevanand_Saraswati) (१८५४–१९१४)
+credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](wiki:Vasudevanand_Saraswati) (1854–1914)
 lines: 14
 letters: 734
 ---

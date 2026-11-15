@@ -267,23 +267,18 @@
         OLD.push([e, "lang", e.getAttribute("lang")]);
         e.lang = ind;
       });
-      // Poet links: the Kannada Wikipedia page when there is one, else the English page beside it
-      r.querySelectorAll(".cr").forEach(function (c) {
-        var en = c.querySelectorAll(".en a[href]"),
-          /** @type {Record<string, string>} */
-          wk = (W.CONTENT && W.CONTENT.wiki && W.CONTENT.wiki[ind]) || {};
-        /** @type {NodeListOf<HTMLAnchorElement>} */ (c.querySelectorAll(".mr a[href]")).forEach(function (a, i) {
-          var h = decodeURI(a.getAttribute("href") || ""),
-            to = wk[h] || (en[i] && en[i].getAttribute("href"));
-          if (!to) return;
-          ["href", "hreflang", "aria-label"].forEach(function (x) {
-            OLD.push([a, x, a.getAttribute(x)]);
-          });
-          a.href = to;
-          a.hreflang = wk[h] ? ind : "en";
-          var l = a.getAttribute("aria-label") || "";
-          a.setAttribute("aria-label", l.replace(/ — .*$/, "") + (wk[h] ? " — ವಿಕಿಪೀಡಿಯ" : " — Wikipedia (English)") + " ↗");
+      // The credits' links: the page on this script's Wikipedia where it has one, else the nearest (js/text/content.js
+      // wrote each one's, data-kn, data-te, data-gu: "kn https://…", and what a screen reader hears, data-kn-label)
+      /** @type {NodeListOf<HTMLAnchorElement>} */ (r.querySelectorAll(".cr .mr a[data-wiki]")).forEach(function (a) {
+        var to = a.getAttribute("data-" + ind);
+        if (!to) return;
+        ["href", "hreflang", "aria-label"].forEach(function (x) {
+          OLD.push([a, x, a.getAttribute(x)]);
         });
+        var sp = to.indexOf(" ");
+        a.hreflang = to.slice(0, sp);
+        a.href = to.slice(sp + 1);
+        a.setAttribute("aria-label", (a.getAttribute("aria-label") || "").replace(/ — .*$/, "") + (a.getAttribute("data-" + ind + "-label") || ""));
       });
     },
     // Switch scripts in place (Settings → Main language): put the Devanagari back, then rewrite it in the new script.
