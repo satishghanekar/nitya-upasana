@@ -34,6 +34,15 @@
    "te": "అనంత చతుర్దశి",
    "gu": "અનંત ચતુર્થી"
   },
+  "Atharvaveda": {
+   "wikidata": "Q236092",
+   "mr": "अथर्ववेद",
+   "hi": "अथर्ववेद संहिता",
+   "en": "Atharvaveda",
+   "kn": "ಅಥರ್ವವೇದ",
+   "te": "అథర్వణ వేదం",
+   "gu": "અથર્વવેદ"
+  },
   "Balipratipada": {
    "wikidata": "Q4851001",
    "mr": "बलिप्रतिपदा",
@@ -56,6 +65,14 @@
    "kn": "ಯಮ ದ್ವಿತೀಯ",
    "te": "భాయ్ దూజ్",
    "gu": "ભાઈબીજ"
+  },
+  "Brahmanda_Purana": {
+   "wikidata": "Q975973",
+   "mr": "ब्रह्मांड पुराण",
+   "hi": "ब्रह्माण्ड पुराण",
+   "en": "Brahmanda Purana",
+   "kn": "ಬ್ರಹ್ಮಾಂಡ ಪುರಾಣ",
+   "te": "బ్రహ్మాండ పురాణం"
   },
   "Buddha's_Birthday": {
    "wikidata": "Q5348941",
@@ -90,13 +107,6 @@
    "kn": "ಸಂತ ಏಕನಾಥ್",
    "te": "ఏకనాథుడు",
    "gu": "એકનાથ"
-  },
-  "Ganapati_Atharvaśīrṣa": {
-   "wikidata": "Q4133165",
-   "mr": "गणपती अथर्वशीर्ष",
-   "hi": "गणेश अथर्वशीर्ष",
-   "en": "Ganapati Atharvaśīrṣa",
-   "te": "గణపత్యోపనిషత్తు"
   },
   "Gandhi_Jayanti": {
    "wikidata": "Q658185",
@@ -223,13 +233,6 @@
    "en": "Lakshmi Puja",
    "kn": "ಲಕ್ಷ್ಮೀ ಪೂಜೆ"
   },
-  "Lalita_Sahasranama": {
-   "wikidata": "Q2080574",
-   "hi": "ललितासहस्रनाम",
-   "en": "Lalita Sahasranama",
-   "kn": "ಲಲಿತಾ ಸಹಸ್ರನಾಮ",
-   "te": "లలితా సహస్రనామ స్తోత్రం"
-  },
   "Maha_Shivaratri": {
    "wikidata": "Q848070",
    "mr": "महाशिवरात्री",
@@ -238,6 +241,15 @@
    "kn": "ಮಹಾ ಶಿವರಾತ್ರಿ",
    "te": "మహాశివరాత్రి",
    "gu": "શિવરાત્રિ"
+  },
+  "Mahabharata": {
+   "wikidata": "Q8276",
+   "mr": "महाभारत",
+   "hi": "महाभारत",
+   "en": "Mahabharata",
+   "kn": "ಮಹಾಭಾರತ",
+   "te": "మహాభారతం",
+   "gu": "મહાભારત"
   },
   "Maharashtra_Day": {
    "wikidata": "Q6733336",
@@ -346,14 +358,6 @@
    "wikidata": "Q744159",
    "en": "Presidents' Day"
   },
-  "Purusha_Sukta": {
-   "wikidata": "Q2600184",
-   "mr": "पुरुष सूक्त",
-   "hi": "पुरुष सूक्त",
-   "en": "Purusha Sukta",
-   "kn": "ಸೃಷ್ಟಿ ಮತ್ತು ವೇದ",
-   "te": "పురుష సూక్తము"
-  },
   "Raksha_Bandhan": {
    "wikidata": "Q10266",
    "mr": "रक्षाबंधन",
@@ -427,13 +431,6 @@
    "te": "శివాజీ జయంతి",
    "gu": "શિવાજી જયંતિ"
   },
-  "Shri_Rudram": {
-   "wikidata": "Q3533333",
-   "mr": "रुद्राध्याय",
-   "hi": "श्री रुद्रम् चमकम्",
-   "en": "Shri Rudram",
-   "gu": "શ્રીરુદ્રમ્"
-  },
   "Swami_Samarth": {
    "wikidata": "Q7230699",
    "mr": "स्वामी समर्थ",
@@ -452,6 +449,11 @@
    "kn": "ಆರಣ್ಯಕ",
    "te": "అరణ్యకాలు",
    "gu": "આરણ્યક ગ્રંથો"
+  },
+  "Taittiriya_Samhita": {
+   "wikidata": "Q1276875",
+   "hi": "तैत्तिरीय शाखा",
+   "en": "Taittiriya Shakha"
   },
   "Thanksgiving_(United_States)": {
    "wikidata": "Q2913791",
@@ -499,15 +501,6 @@
    "kn": "ದಸರ",
    "te": "దసరా",
    "gu": "દશેરા"
-  },
-  "Vishnu_Sahasranama": {
-   "wikidata": "Q947063",
-   "mr": "विष्णुसहस्रनाम",
-   "hi": "विष्णु सहस्रनाम",
-   "en": "Vishnu Sahasranama",
-   "kn": "ವಿಷ್ಣು ಸಹಸ್ರನಾಮ",
-   "te": "విష్ణు సహస్రనామ స్తోత్రము",
-   "gu": "વિષ્ણુ સહસ્રનામ"
   }
  }
 }

@@ -3,8 +3,8 @@ title: श्री रुद्राष्टकम्
 title-en: Shri Rudrashtakam
 language: sa
 stanza-numbers: as-written
-credit: रचना : [गोस्वामी तुलसीदास](wiki:Tulsidas) (रामचरितमानस, उत्तरकाण्ड)
-credit-en: By [Goswami Tulsidas](wiki:Tulsidas) (Ramcharitmanas, Uttarakanda)
+author: Tulsidas
+credit-detail: रामचरितमानस, उत्तरकाण्ड | Ramcharitmanas, Uttarakanda
 lines: 16
 letters: 792
 ---

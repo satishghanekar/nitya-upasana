@@ -919,4 +919,20 @@ export default {
     gu: "Gujarati Wikipedia",
     tab: "opens in a new tab",
   },
+  // The words the site adds to a text, in its languages (js/text/content.js, js/render.js): the dhrupad's label and
+  // marker, Previous / Next under it, its language, and its credit's words. A text shown in Kannada, Telugu or Gujarati
+  // letters takes that language's own words here, never Marathi's written in its letters (js/render.js SCR.el)
+  text: {
+    refrainLabel: "Refrain (sung after every verse)",
+    refrainNote: "Refrain",
+    prev: "Previous",
+    next: "Next",
+    by: "By",
+    // a name in a sentence, at {name}, so each language puts it where it goes
+    attributed: "Attributed to {name}",
+    also: "(also credited to {name})",
+    compiledBy: "A compilation:",
+    traditional: "Traditional",
+    lang: { sa: "Sanskrit", mr: "Marathi", hi: "Hindi" },
+  },
 };

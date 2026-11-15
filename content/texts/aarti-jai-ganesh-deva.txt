@@ -6,8 +6,7 @@ legacy-id: a9
 line-ids: s9l
 refrain: every-verse
 refrain-before-first: yes
-credit: पारंपरिक
-credit-en: Traditional
+traditional: yes
 lines: 10
 letters: 341
 ---

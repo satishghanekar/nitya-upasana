@@ -3,8 +3,7 @@ title: आरती जय शिव ओंकारा
 title-en: Aarti Jai Shiv Omkara
 language: hi
 refrain: every-verse
-credit: रचना : स्वामी शिवानंद
-credit-en: By Swami Shivananda
+author: swami-shivananda
 lines: 16
 letters: 765
 ---

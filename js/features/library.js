@@ -35,7 +35,7 @@ import { apply } from "./bars.js";
 import { iaTitle, titlesSet } from "../text/iast.js";
 import { buildIX } from "./search.js";
 import { ovSub, ovSubDone } from "./history.js";
-import { dv, esc, lead, mrLang, scr as to, second, ui } from "../core/words.js";
+import { dv, esc, lead, mrLang, scr as to, scrKey, second, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
 import { spanFor, timeHtml } from "./routine-time.js";
 
@@ -65,7 +65,8 @@ var ready = false;
 // the order the list is in ("book", or "az:" and the language it was put A to Z in), so a change of the language shown
 // or of the person reading puts it in theirs (libLang())
 var sortedAs = "";
-// the menu language the times were written in (js/features/routine-time.js), so a change of it writes them again
+// the menu language the times were written in (js/features/routine-time.js) and the letters the languages' names were
+// (Kannada's own ಸಂಸ್ಕೃತ, …), so a change of either writes the list again
 var timesIn = "";
 
 /** @type {HTMLElement | null} */
@@ -196,9 +197,10 @@ export function categoryOfSection(sec) {
 
 // ---- the Library's list (#jl): one .tocg per category with texts; the markup the styles read ----
 function listHtml() {
-  /** @type {any} */
-  var C = /** @type {any} */ (window).CONTENT,
-    langs = (C && C.languages) || {};
+  // each text's language in the reading languages, each in its own words (js/strings/, "text": in Kannada letters
+  // Kannada's ಸಂಸ್ಕೃತ, never Marathi's संस्कृत in them)
+  var lmr = /** @type {Record<string, string>} */ (menuWords("text", scrKey() || "mr").lang),
+    len = /** @type {Record<string, string>} */ (menuWords("text", "en").lang);
   return shelves(entries, cats, local)
     .filter(function (s) {
       return s.texts.length;
@@ -216,7 +218,7 @@ function listHtml() {
                 return x.id === id;
               })[0]
             ),
-            lt = langs[e.language];
+            lt = lmr[e.language] ? { mr: lmr[e.language], en: len[e.language] } : null;
           return (
             // ("./#a3": the piece is built when opened, js/core/page.js, so a bare "#a3" may point at nothing yet)
             '<li><a href="./#' +
@@ -235,7 +237,7 @@ function listHtml() {
             "</span></span>" +
             // its language, and how long it takes in the menu language (js/features/routine-time.js)
             '<span class="lt">' +
-            (lt ? '<span class="mr">' + esc(to(lt.mr)) + '</span><span class="en" lang="en">' + esc(lt.en) + "</span>" : "") +
+            (lt ? '<span class="mr">' + esc(lt.mr) + '</span><span class="en" lang="en">' + esc(lt.en) + "</span>" : "") +
             '<span class="ltm">' +
             timeHtml(spanFor([e.id])) +
             "</span></span>" +
@@ -296,7 +298,7 @@ function renderList() {
     g.remove();
   });
   at.insertAdjacentHTML("beforebegin", listHtml());
-  timesIn = ui();
+  timesIn = ui() + "|" + scrKey();
   sortedAs = sortKey();
   orderButtons();
 }
@@ -329,8 +331,8 @@ function keep(l) {
 
 /** The menu language changed (apply(), js/features/bars.js): the button's words, and the sheet when open */
 export function libLang() {
-  // (the times are in the menu language: the list again when it changes)
-  if (ready && timesIn !== ui()) renderList();
+  // (the times are in the menu language, the languages' names in the letters chosen: the list again when either changes)
+  if (ready && timesIn !== ui() + "|" + scrKey()) renderList();
   var w = words(),
     b = document.getElementById("lbbw");
   if (b && b.textContent !== w.open) {

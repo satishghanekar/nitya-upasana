@@ -9,7 +9,8 @@ import vm from "node:vm";
 import { parseText } from "../../js/text/format.js";
 import { buildContent, toPiece } from "../../js/text/content.js";
 import { factsOf } from "../tools/texts.mjs";
-import { FILES as files, IDS, LIBRARY, SITE as lib, TEXTS } from "../content-files.mjs";
+import { menuWords } from "../../js/core/strings.js";
+import { CONTENT, FILES as files, IDS, LIBRARY, SITE as lib, TEXTS } from "../content-files.mjs";
 
 // The old CONTENT, copied out of the vm context so it compares as plain objects
 const win = {};
@@ -17,14 +18,12 @@ vm.runInNewContext(readFileSync(new URL("fixtures/pieces.js", import.meta.url), 
 const OLD = JSON.parse(JSON.stringify(win.CONTENT));
 
 const count = (s, re) => (s.match(re) || []).length;
-// a credit's words, without where its links go
-const words = (html) => html.replace(/<a [^>]*>/g, "<a>");
 // the old file had the reading page's groups (पूजा, आरती); CONTENT now has the Library's categories (2026-10-21)
 const pieces = (C) => (C.categories || C.groups).flatMap((g) => g.pieces);
 const allLines = (C) => pieces(C).flatMap((p) => [...(p.refrain ? p.refrain.lines : []), ...p.items.flatMap((i) => i.lines || [])]);
 
 describe("CONTENT from the text files", () => {
-  const C = buildContent(LIBRARY, lib, files);
+  const C = CONTENT;
   // The texts added since (Shree Rudra, Shri Sukta, the Gondavalekar Maharaj aartis and ashtaks, …) are left out of the
   // comparison: every text the old file had must come out of the text files exactly as it was, in the same order.
   // Each piece now also names its text (text: its id in library.json), which the old file did not have.
@@ -32,11 +31,11 @@ describe("CONTENT from the text files", () => {
   const same = pieces(C)
     .filter((p) => OLD_IDS.has(p.id))
     // (and each [note] is now marked as one, nt, which the old file did not have either: Ghalin Lotangan's ↻ ३ वेळा;
-    // nor a recording to hear under the credit, since 2026-11-11: the Atharvashirsha's; and a credit's link opens the
-    // person's Wikipedia page in the reader's language since 2026-11-15, so its words are compared, not where it goes:
-    // tests/unit/wiki.test.mjs checks the links)
-    .map(({ text, ...p }) => ({ ...p, credit: words(p.credit.replace(/<span class="rec".*$/, "")), items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
-  const OLD_PIECES = pieces(OLD).map((p) => ({ ...p, credit: words(p.credit) }));
+    // nor a recording to hear under the credit, since 2026-11-11: the Atharvashirsha's; and since 2026-11-15 a credit is
+    // written by the site from content/credits.json, each person and source once: tests/unit/credits.test.mjs checks
+    // the credits)
+    .map(({ text, credit, ...p }) => ({ ...p, items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
+  const OLD_PIECES = pieces(OLD).map(({ credit, ...p }) => p); // eslint-disable-line no-unused-vars
   const OLD_C = { categories: [{ pieces: same }] };
   const byId = (Cx, id) => pieces(Cx).find((p) => p.id === id);
   test("is identical to the old content/pieces.js", () => {
@@ -114,7 +113,7 @@ describe("content checks", () => {
     expect(new Set(IDS).size).toBe(IDS.length);
   });
   test("the reading order is the Library's: its categories in order, each numbered from 1, every text once", () => {
-    const C = buildContent(LIBRARY, lib, files);
+    const C = CONTENT;
     expect(C.categories.map((c) => c.id)).toEqual(LIBRARY.categories.map((c) => c.id));
     expect(C.categories.map((c) => c.name)).toEqual(LIBRARY.categories.map((c) => c.name));
     expect(pieces(C).map((p) => p.text)).toEqual(IDS);
@@ -131,7 +130,8 @@ describe("content checks", () => {
     expect(t.lines).toBe(f.lines);
     // (an app without times, Sankathara Chaturthi, does not count letters)
     if (f.letters !== undefined) expect(t.letters).toBe(f.letters);
-    expect(lib.languages[t.language]).toBeTruthy();
+    // its language named in the site's words, in every menu language (js/strings/, "text")
+    for (const l of ["mr", "en", "kn", "te", "gu"]) expect(menuWords("text", l).lang[t.language], l).toBeTruthy();
   });
   test.each(IDS.map((id) => [id]))("%s is not changed by Unicode normalisation", (id) => {
     const raw = files[id];

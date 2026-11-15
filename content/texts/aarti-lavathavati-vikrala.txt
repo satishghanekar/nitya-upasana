@@ -5,8 +5,7 @@ language: mr
 legacy-id: a4
 line-ids: s4l
 refrain: every-verse
-credit: रचना : [समर्थ रामदास](wiki:Samarth_Ramdas) (१६०८–१६८२)
-credit-en: By [Samarth Ramdas](wiki:Samarth_Ramdas) (1608–1682)
+author: Samarth_Ramdas
 lines: 19
 letters: 611
 ---

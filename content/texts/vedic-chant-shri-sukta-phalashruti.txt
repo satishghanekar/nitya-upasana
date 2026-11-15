@@ -4,8 +4,8 @@ title-en: Shri Sukta Phalashruti
 language: sa
 layout: lines
 stanza-numbers: as-written
-credit: ऋग्वेद (खिलसूक्त), नंतरच्या श्लोकांसह
-credit-en: Rig Veda (Khila Sukta), with later verses
+source: Rigveda
+credit-detail: खिलसूक्त, नंतरच्या श्लोकांसह | Khila Sukta, with later verses
 lines: 49
 letters: 1957
 ---

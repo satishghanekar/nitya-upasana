@@ -1,6 +1,6 @@
 // The Wikipedia pages the site links to, in every language it is read in. A link names a page by its English Wikipedia
-// title, as in its address: a text's credit [name](wiki:Samarth_Ramdas), a festival's or a holiday's "wiki":
-// "Vijayadashami" (a page with brackets in its name in a credit, or with no English page, by its Wikidata item: wiki:Q…).
+// title, as in its address: a person's or a source's in content/credits.json ("wiki": "Samarth_Ramdas"), a festival's
+// or a holiday's ("wiki": "Vijayadashami"); a page with no English one, by its Wikidata item ("Q…").
 // For each, this finds its Wikidata item and its page title on each Wikipedia the site can open (js/core/wiki.js
 // LANGUAGES: Marathi, Hindi, English, Kannada, Telugu, Gujarati), and writes them into content/wiki.json, by
 // the name the links use. The site never asks Wikipedia or Wikidata anything itself (it works offline, and its
@@ -20,20 +20,15 @@ const listIn = (f, key) => (existsSync(new URL(f, content)) ? json(f)[key] : [])
 export const ITEM = /^Q[1-9][0-9]*$/;
 /** The name a link uses: an English Wikipedia title as in its address (no spaces), or a Wikidata item */
 export const NAME = /^[^\s/#?]+$/;
-/** A credit's link: [name](wiki:Samarth_Ramdas) */
-export const CREDIT_LINK = /\]\(wiki:([^()\s]+)\)/g;
 
-/** Every page the site links to, by the name the links use, with where each is used: the texts' credits, the
- * festivals and the holidays @returns {Map<string, string[]>} */
+/** Every page the site links to, by the name the links use, with where each is used: the people and sources the texts
+ * credit, the festivals and the holidays @returns {Map<string, string[]>} */
 export function itemsUsed() {
   /** @type {Map<string, string[]>} */
   const used = new Map();
   const add = (q, where) => used.set(q, [...(used.get(q) || []), where]);
-  const ids = json("library.json").categories.flatMap((c) => c.texts);
-  for (const id of ids) {
-    const head = readFileSync(new URL("texts/" + id + ".txt", content), "utf8").split("\n---\n")[0];
-    for (const m of head.matchAll(CREDIT_LINK)) add(m[1], "texts/" + id + ".txt");
-  }
+  const credits = existsSync(new URL("credits.json", content)) ? json("credits.json") : { people: {}, sources: {} };
+  for (const g of ["people", "sources"]) for (const [k, e] of Object.entries(credits[g])) if (e.wiki) add(e.wiki, "credits.json " + k);
   for (const f of listIn("festivals.json", "festivals")) if (f.wiki) add(f.wiki, "festivals.json " + f.id);
   for (const h of listIn("holidays.json", "holidays")) if (h.wiki) add(h.wiki, "holidays.json " + h.id);
   return used;

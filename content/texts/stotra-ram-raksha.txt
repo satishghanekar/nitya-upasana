@@ -2,8 +2,7 @@ id: stotra-ram-raksha
 title: श्रीरामरक्षास्तोत्रम्
 title-en: Shri Ram Raksha Stotra
 language: sa
-credit: बुधकौशिक ऋषि
-credit-en: Budha Kaushika Rishi
+author: budha-kaushika
 lines: 100
 letters: 3340
 ---

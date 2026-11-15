@@ -136,12 +136,10 @@ function buildInfo() {
   });
 }
 
-/** @param {string} lang @param {"mr" | "en"} ui */
-function langName(lang, ui) {
-  /** @type {any} */
-  var C = /** @type {any} */ (window).CONTENT,
-    l = C && C.languages[lang];
-  return l ? l[ui] : "";
+/** A text's language named in the menu language, in its own words (js/strings/, "text": ಸಂಸ್ಕೃತ with Kannada menus, never
+ * Marathi's संस्कृत in Kannada letters) @param {string} lang */
+function langName(lang) {
+  return /** @type {Record<string, string>} */ (menuWords("text").lang)[lang] || "";
 }
 
 /** A text's title in the menu language, for the bottom bar's spoken labels: the original (in its letters) in
@@ -259,7 +257,7 @@ export function render() {
         "</span>" +
         // its language, and how long it takes (in words for screen readers, after the title)
         '<span class="tside"><span class="ttg">' +
-        esc(nameLang() === "mr" ? scr(langName(t.language, "mr")) : langName(t.language, "en")) +
+        esc(langName(t.language)) +
         "</span>" +
         timeHtml(spanFor([id]), false, "ttm") +
         "</span>" +

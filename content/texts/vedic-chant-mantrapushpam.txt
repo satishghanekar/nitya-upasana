@@ -3,8 +3,7 @@ title: मन्त्रपुष्पम्
 title-en: Mantrapushpam
 language: sa
 layout: prose
-credit: [कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक](wiki:Taittiriya_Aranyaka)
-credit-en: [Krishna Yajurveda, Taittiriya Aranyaka](wiki:Taittiriya_Aranyaka)
+source: Taittiriya_Aranyaka
 lines: 88
 letters: 1464
 ---

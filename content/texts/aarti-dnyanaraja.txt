@@ -5,8 +5,7 @@ language: mr
 legacy-id: a6
 line-ids: s6l
 refrain: every-verse
-credit: रचना : रामा जनार्दन
-credit-en: By Rama Janardan
+author: rama-janardan
 lines: 9
 letters: 366
 ---

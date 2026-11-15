@@ -2,8 +2,7 @@ id: stotra-hanuman-chalisa
 title: श्री हनुमान चालीसा
 title-en: Shri Hanuman Chalisa
 language: hi
-credit: रचना : [गोस्वामी तुलसीदास](wiki:Tulsidas) (१५३२–१६२३)
-credit-en: By [Goswami Tulsidas](wiki:Tulsidas) (1532–1623)
+author: Tulsidas
 lines: 86
 letters: 1703
 ---

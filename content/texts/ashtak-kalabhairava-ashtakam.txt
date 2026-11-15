@@ -3,8 +3,7 @@ title: श्रीकालभैरवाष्टकम्
 title-en: Shri Kalabhairava Ashtakam
 language: sa
 stanza-numbers: as-written
-credit: [आदि शंकराचार्य](wiki:Adi_Shankara) यांचे मानले जाते
-credit-en: Attributed to [Adi Shankaracharya](wiki:Adi_Shankara)
+attributed: Adi_Shankara
 recording: [Vocal Melodies](https://www.youtube.com/watch?v=RQ85ltEoPAE)
 lines: 18
 letters: 1077

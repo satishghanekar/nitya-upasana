@@ -2,8 +2,7 @@ id: stotra-maruti-stotra
 title: मारुती स्तोत्र
 title-en: Maruti Stotra
 language: mr
-credit: रचना : [समर्थ रामदास](wiki:Samarth_Ramdas) (१६०८–१६८२)
-credit-en: By [Samarth Ramdas](wiki:Samarth_Ramdas) (1608–1682)
+author: Samarth_Ramdas
 lines: 35
 letters: 1166
 ---

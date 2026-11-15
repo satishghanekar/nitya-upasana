@@ -4,8 +4,7 @@ title-en: Shree Rudra
 language: sa
 layout: prose
 part-name: अनुवाकः | Anuvaka
-credit: [कृष्ण यजुर्वेद, तैत्तिरीय संहिता](wiki:Shri_Rudram)
-credit-en: [Krishna Yajurveda, Taittiriya Samhita](wiki:Shri_Rudram)
+source: Taittiriya_Samhita
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=685)
 lines: 278
 letters: 10527

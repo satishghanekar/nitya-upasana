@@ -1,0 +1,159 @@
+{
+ "about": "Who and what the texts come from, each written once (Satish, 2026-11-15). A text's header names them: author, attributed, also or compiled (people), source (sources), traditional, and credit-detail for what only that text says; js/text/content.js writes its credit lines from here in each language, with the words the site adds (js/strings/, \"text\"): a person as \"रचना : name (time)\", a source as its name. wiki: its English Wikipedia page, as in its address, which the name links to in the reader's own Wikipedia (content/wiki.json, npm run wiki); none, no link.",
+ "people": {
+  "Samarth_Ramdas": {
+   "name": {
+    "mr": "समर्थ रामदास",
+    "en": "Samarth Ramdas"
+   },
+   "time": {
+    "mr": "१६०८–१६८२",
+    "en": "1608–1682"
+   },
+   "wiki": "Samarth_Ramdas"
+  },
+  "Narahari_Sonar": {
+   "name": {
+    "mr": "संत नरहरी सोनार",
+    "en": "Sant Narahari Sonar"
+   },
+   "time": {
+    "mr": "१३ वे शतक",
+    "en": "13th century"
+   },
+   "wiki": "Narahari_Sonar"
+  },
+  "Eknath": {
+   "name": {
+    "mr": "संत एकनाथ",
+    "en": "Sant Eknath"
+   },
+   "time": {
+    "mr": "१५३३–१५९९",
+    "en": "1533–1599"
+   },
+   "wiki": "Eknath"
+  },
+  "Namdev": {
+   "name": {
+    "mr": "संत नामदेव",
+    "en": "Sant Namdev"
+   },
+   "wiki": "Namdev"
+  },
+  "Adi_Shankara": {
+   "name": {
+    "mr": "आदि शंकराचार्य",
+    "en": "Adi Shankaracharya"
+   },
+   "wiki": "Adi_Shankara"
+  },
+  "Tulsidas": {
+   "name": {
+    "mr": "गोस्वामी तुलसीदास",
+    "en": "Goswami Tulsidas"
+   },
+   "time": {
+    "mr": "१५३२–१६२३",
+    "en": "1532–1623"
+   },
+   "wiki": "Tulsidas"
+  },
+  "Vasudevanand_Saraswati": {
+   "name": {
+    "mr": "श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)",
+    "en": "Shri Vasudevanand Saraswati (Tembe Swami)"
+   },
+   "time": {
+    "mr": "१८५४–१९१४",
+    "en": "1854–1914"
+   },
+   "wiki": "Vasudevanand_Saraswati"
+  },
+  "Shardha_Ram_Phillauri": {
+   "name": {
+    "mr": "पं. श्रद्धाराम फिल्लौरी",
+    "en": "Pt. Shardha Ram Phillauri"
+   },
+   "time": {
+    "mr": "सु. १८७०",
+    "en": "c. 1870"
+   },
+   "wiki": "Shardha_Ram_Phillauri"
+  },
+  "rama-janardan": {
+   "name": {
+    "mr": "रामा जनार्दन",
+    "en": "Rama Janardan"
+   }
+  },
+  "swami-shivananda": {
+   "name": {
+    "mr": "स्वामी शिवानंद",
+    "en": "Swami Shivananda"
+   }
+  },
+  "gosavinandan": {
+   "name": {
+    "mr": "गोसावीनंदन",
+    "en": "Gosavinandan"
+   }
+  },
+  "vishnudas-nama": {
+   "name": {
+    "mr": "विष्णुदास नामा",
+    "en": "Vishnudas Nama"
+   }
+  },
+  "budha-kaushika": {
+   "name": {
+    "mr": "बुधकौशिक ऋषि",
+    "en": "Budha Kaushika Rishi"
+   }
+  }
+ },
+ "sources": {
+  "Rigveda": {
+   "name": {
+    "mr": "ऋग्वेद",
+    "en": "Rigveda"
+   },
+   "wiki": "Rigveda"
+  },
+  "Taittiriya_Aranyaka": {
+   "name": {
+    "mr": "कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक",
+    "en": "Krishna Yajurveda, Taittiriya Aranyaka"
+   },
+   "wiki": "Taittiriya_Aranyaka"
+  },
+  "Taittiriya_Samhita": {
+   "name": {
+    "mr": "कृष्ण यजुर्वेद, तैत्तिरीय संहिता",
+    "en": "Krishna Yajurveda, Taittiriya Samhita"
+   },
+   "wiki": "Taittiriya_Samhita"
+  },
+  "Mahabharata": {
+   "name": {
+    "mr": "महाभारत",
+    "en": "Mahabharata"
+   },
+   "wiki": "Mahabharata"
+  },
+  "Brahmanda_Purana": {
+   "name": {
+    "mr": "ब्रह्माण्डपुराण",
+    "en": "Brahmanda Purana"
+   },
+   "wiki": "Brahmanda_Purana"
+  },
+  "Atharvaveda": {
+   "name": {
+    "mr": "अथर्ववेद",
+    "en": "Atharvaveda"
+   },
+   "wiki": "Atharvaveda"
+  }
+ }
+}

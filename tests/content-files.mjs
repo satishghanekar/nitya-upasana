@@ -18,8 +18,10 @@ export const IDS = LIBRARY.categories.flatMap((c) => c.texts);
 export const FILES = Object.fromEntries(IDS.map((id) => [id, read("texts/" + id + ".txt")]));
 /** content/wiki.json: each Wikidata item a link names, and its page on each Wikipedia */
 export const WIKI = JSON.parse(read("wiki.json"));
+/** content/credits.json: who and what the texts come from */
+export const CREDITS = JSON.parse(read("credits.json"));
 /** CONTENT, as the page builds it */
-export const CONTENT = buildContent(LIBRARY, SITE, FILES, WIKI, (l) => menuWords("wiki", l));
+export const CONTENT = buildContent(LIBRARY, SITE, FILES, { wiki: WIKI, credits: CREDITS, words: menuWords });
 /** each text's facts (its header, its category from the library), in reading order */
 export const TEXTS = IDS.map((id) => CONTENT.texts[id]);
 /** the bundled categories, numbered in order, as js/core/library.js takes them */

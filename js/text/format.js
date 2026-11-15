@@ -27,7 +27,8 @@
  *   id: string, title: string, titleEn: string, language: string, lines?: number, letters?: number,
  *   legacyId?: string, lineIds?: string, lineIdExceptions?: Record<string, string>,
  *   refrain: "every-verse" | "always" | "none", refrainFirst?: boolean, layout?: "prose" | "lines", stanzaNumbers?: "as-written", partName?: string,
- *   credit?: string, creditEn?: string, creditNote?: string, creditNoteEn?: string, source?: string, recording?: string,
+ *   author?: string, attributed?: string, also?: string, compiled?: string, source?: string, traditional?: boolean,
+ *   creditDetail?: string, recording?: string,
  *   blocks: Block[]
  * }} Text
  */
@@ -47,11 +48,15 @@ const FIELDS = [
   ["layout", "layout", false],
   ["stanza-numbers", "stanzaNumbers", false],
   ["part-name", "partName", false],
-  ["credit", "credit", false],
-  ["credit-en", "creditEn", false],
-  ["credit-note", "creditNote", false],
-  ["credit-note-en", "creditNoteEn", false],
+  // who or what it comes from, by their key in content/credits.json (people: author, attributed, also, compiled; a
+  // source: source), or traditional; credit-detail is what only this text says, "Marathi | English" (मण्डल ९ | Mandala 9)
+  ["traditional", "traditional", false],
+  ["author", "author", false],
+  ["attributed", "attributed", false],
+  ["compiled", "compiled", false],
   ["source", "source", false],
+  ["also", "also", false],
+  ["credit-detail", "creditDetail", false],
   ["recording", "recording", false],
   // written by npm run texts (tests/tools/texts.mjs), never by hand: the line pairs in the file, and the letters said
   // as it is chanted (js/core/timing.js chantedLetters), which a text's time is counted from; the unit tests check both
@@ -124,11 +129,9 @@ export function parseText(raw, name) {
     if (key === "stanza-numbers" && val !== "as-written") fail(at, 'stanza-numbers can only be "as-written"');
     // what the text's parts are called, in both languages, for Go to (js/text/outline.js): "अनुवाकः | Anuvaka"
     if (key === "part-name" && !/^[^|]*[^|\s] \| \S[^|]*$/.test(val)) fail(at, 'part-name is "name | English name", like "अनुवाकः | Anuvaka"');
-    // a credit's link names the person (or the source) by their English Wikipedia page, as in its address:
-    // [समर्थ रामदास](wiki:Samarth_Ramdas); the page it opens is chosen in the reader's language from content/wiki.json
-    // (js/core/wiki.js). A page with brackets in its name, or none in English, is named by its Wikidata item (wiki:Q…)
-    if (key.indexOf("credit") === 0 && /\]\((?!wiki:[^()\s]+\))/.test(val))
-      fail(at, "a credit's link is [name](wiki:English_Wikipedia_page) (or wiki:Q… for its Wikidata item)");
+    if (["author", "attributed", "compiled", "source", "also"].indexOf(key) >= 0 && !/^[A-Za-z0-9_.'%-]+$/.test(val))
+      fail(at, key + " is a key of content/credits.json, like Samarth_Ramdas or gosavinandan");
+    if (key === "credit-detail" && !/^[^|]*[^|\s] \| \S[^|]*$/.test(val)) fail(at, 'credit-detail is "Marathi | English", like "मण्डल ९ | Mandala 9"');
     if (
       key === "recording" &&
       !val.split(", ").every(function (r) {
@@ -136,7 +139,10 @@ export function parseText(raw, name) {
       })
     )
       fail(at, 'recording is "[who](https://www.youtube.com/watch?v=…)", with "&t=" and the second it starts at if not at once');
-    if (key === "lines" || key === "letters") {
+    if (key === "traditional") {
+      if (val !== "yes") fail(at, 'traditional can only be "yes"');
+      t[prop] = true;
+    } else if (key === "lines" || key === "letters") {
       if (!/^[1-9][0-9]*$/.test(val)) fail(at, key + " is a whole number (npm run texts writes it)");
       t[prop] = Number(val);
     } else if (key === "refrain-before-first") {
@@ -216,6 +222,15 @@ export function parseText(raw, name) {
   }
   close(rows.length);
 
+  // one credit: by one person, attributed to one, compiled by one, from one source, or traditional
+  if (
+    ["author", "attributed", "compiled", "source", "traditional"].filter(function (k) {
+      return t[k];
+    }).length > 1
+  )
+    fail(file, "one of author, attributed, compiled, source or traditional, not two");
+  if (t.also && !t.author) fail(file, "also (another it is credited to) goes with author");
+
   // How the blocks fit the refrain pattern
   /** @type {Block[]} */
   var bl = t.blocks;
@@ -259,7 +274,7 @@ export function formatText(t) {
   FIELDS.forEach(function (f) {
     var v = o[f[1]];
     if (v === undefined || (f[0] === "refrain" && v === "none")) return;
-    if (f[0] === "refrain-before-first") v = "yes";
+    if (f[0] === "refrain-before-first" || f[0] === "traditional") v = "yes";
     if (f[0] === "line-id-exceptions")
       v = Object.keys(v)
         .map(function (k) {

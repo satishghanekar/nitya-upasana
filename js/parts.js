@@ -126,6 +126,7 @@ var SITE_PARTS = (function () {
     "library.json",
     "site.json",
     "wiki.json",
+    "credits.json",
     "routines.json",
     "festivals.json",
     "holidays.json",

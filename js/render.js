@@ -26,8 +26,10 @@
 
   // A pair of spans: the original text, then English
   /** @param {Pair} t */
-  function two(t) {
-    return '<span class="mr">' + t.mr + '</span><span class="en" lang="en">' + t.en + "</span>";
+  /** A pair in its two languages; tw: the key of one of the site's words (js/strings/, "text"), so SCR.el puts a script's
+   * own word in, never Marathi's in its letters @param {Pair} t @param {string} [tw] */
+  function two(t, tw) {
+    return '<span class="mr"' + (tw ? ' data-tw="' + tw + '"' : "") + ">" + t.mr + '</span><span class="en" lang="en">' + t.en + "</span>";
   }
   /** @param {Line[]} list @param {"mr" | "en"} lang @param {string} pad */
   function lines(list, lang, pad) {
@@ -67,7 +69,9 @@
       return (
         '      <div class="rmk' +
         (x.nt ? " nt" : "") +
-        '"><span class="mr">' +
+        '"><span class="mr"' +
+        (x.nt ? "" : ' data-tw="refrainNote"') +
+        ">" +
         x.rmk.mr +
         '</span><span class="en" lang="en">' +
         ra +
@@ -87,7 +91,7 @@
   /** @param {string} cls @param {Piece | null} p @param {Pair} label @param {boolean} iconFirst */
   function navLink(cls, p, label, iconFirst) {
     if (!p) return "      <span></span>\n";
-    var small = iconFirst ? ICON_PREV + two(label) : two(label) + ICON_NEXT;
+    var small = iconFirst ? ICON_PREV + two(label, cls) : two(label, cls) + ICON_NEXT;
     // ("./#a3", not "#a3": the piece may not be built yet, js/core/page.js, and a bare "#a3" would point at nothing)
     return '      <a class="' + cls + '" href="./#' + p.id + '" data-go="' + p.id + '"><small>' + small + "</small>" + two(p.title) + "</a>\n";
   }
@@ -111,13 +115,18 @@
       two(p.title) +
       "</h2>\n" +
       '      <div class="tag">' +
-      two(p.tag) +
+      two(p.tag, "lang." + (p.lang || "mr")) +
       "</div>\n" +
       "    </header>\n";
     // [once] lines and [note]s that come before the dhrupad at the top (js/text/content.js)
     if (p.lead) h += '    <div class="items lead">\n' + p.lead.map(item).join("") + "    </div>\n";
     if (p.refrain)
-      h += '    <div class="rftop">\n      <div class="lab">' + two(p.refrain.label) + "</div>\n" + verse(p.refrain.lines, "      ") + "    </div>\n";
+      h +=
+        '    <div class="rftop">\n      <div class="lab">' +
+        two(p.refrain.label, "refrainLabel") +
+        "</div>\n" +
+        verse(p.refrain.lines, "      ") +
+        "    </div>\n";
     h += '    <div class="items">\n' + p.items.map(item).join("") + "    </div>\n";
     h += "    " + LOTUS + "\n";
     h += '    <div class="cr">' + p.credit + "</div>\n";
@@ -251,6 +260,24 @@
           OLD.push([n, "", n.data]);
           n.data = SCR.to(n.data);
         }
+      // The site's words around a text (data-tw: the dhrupad's label and marker, its language, Previous / Next, its
+      // credit's words): this language's own (js/strings/, CONTENT.text), never Marathi's written in its letters; "a.b" a
+      // word in a group, "a:0" / "a:1" the words before and after the name in a sentence ("{name} यांचे मानले जाते")
+      var tw = (W.CONTENT && W.CONTENT.text && W.CONTENT.text[ind]) || null;
+      if (tw)
+        r.querySelectorAll("[data-tw]").forEach(function (e) {
+          var k = e.getAttribute("data-tw") || "",
+            half = k.split(":"),
+            v = half[0].split(".").reduce(function (/** @type {any} */ o, /** @type {string} */ x) {
+              return o && o[x];
+            }, tw);
+          if (typeof v !== "string") return;
+          if (half.length > 1) v = v.split("{name}")[+half[1]] || "";
+          var n = e.firstChild;
+          if (!n || n.nodeType !== 3) e.insertBefore((n = document.createTextNode("")), e.firstChild);
+          OLD.push([n, "", /** @type {Text} */ (n).data]);
+          /** @type {Text} */ (n).data = v;
+        });
       r.querySelectorAll("[title], [aria-label]").forEach(function (e) {
         ["title", "aria-label"].forEach(function (a) {
           var v = e.getAttribute(a);

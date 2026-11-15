@@ -53,6 +53,7 @@ test("js/parts.js lists the texts in content/library.json, so every text is kept
     "content/library.json",
     "content/site.json",
     "content/wiki.json",
+    "content/credits.json",
     "content/routines.json",
     "content/festivals.json",
     "content/holidays.json",
@@ -104,8 +105,10 @@ test("the scripts, styles and page stay within their size budget", () => {
   // tucked bars' pill saying where the reading is and opening Go to, 365.05 KB with it on a Mac; 377 KB since
   // 2026-11-15: how long a text or a session takes, js/core/timing.js and js/features/routine-time.js (6 KB with their
   // notes), the Settings row and the times in five languages, 376 KB with them on a Mac; 380 KB since 2026-11-15: Wikipedia links
-  // in every language, js/core/wiki.js and Wikipedia's names in five languages, 379.85 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(380_000);
+  // in every language, js/core/wiki.js and Wikipedia's names in five languages, 379.85 KB then; 384 KB since 2026-11-15:
+  // the credits written from content/credits.json, and the site's words around a text in each language's own words, in
+  // five languages, 383.4 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(384_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a

@@ -1,7 +1,8 @@
 // @ts-check
 // Loading the texts: fetches content/library.json (the categories, each with its texts in reading order),
-// content/site.json (the words and settings every text shares), content/wiki.json (each page a link names, with its
-// Wikidata item and its title on each Wikipedia: js/core/wiki.js) and every text file the library lists
+// content/site.json (the settings every text shares), content/credits.json (who and what the texts come from, each once),
+// content/wiki.json (each page a link names, with its Wikidata item and its title on each Wikipedia: js/core/wiki.js)
+// and every text file the library lists
 // (content/texts/), builds CONTENT from them (js/text/content.js), and puts the rest of the page in Kannada letters when
 // that is the chosen language. js/main.js waits for this before it starts the other parts. The pieces themselves are
 // built one at a time, the first time each is opened (js/core/page.js, with js/render.js).
@@ -42,9 +43,10 @@ function get(url) {
   });
 }
 
-/** @param {(lang: string) => Record<string, string>} [wikiWords]  each language's "wiki" menu words, for the credits'
- *   links (given by js/main.js: the menu words can't be loaded from here, which the store loads early) @returns {Promise<void>} */
-export function load(wikiWords) {
+/** @param {(part: string, lang: string) => any} [words]  the menu words (menuWords): the site's words around a text and
+ *   Wikipedia's names, in each language (given by js/main.js: the menu words can't be loaded from here, which the store
+ *   loads early) @returns {Promise<void>} */
+export function load(words) {
   var routine = get("content/routines.json")
     .then(function (r) {
       return r.json();
@@ -104,7 +106,12 @@ export function load(wikiWords) {
     console.warn(e);
     return null;
   });
-  var texts = Promise.all([json("content/library.json"), json("content/site.json"), wiki]).then(function (both) {
+  // (without the credits, the texts show none)
+  var credits = json("content/credits.json").catch(function (/** @type {unknown} */ e) {
+    console.warn(e);
+    return null;
+  });
+  var texts = Promise.all([json("content/library.json"), json("content/site.json"), wiki, credits]).then(function (both) {
     /** @type {import("./content.js").Library} */
     var lib = both[0];
     /** @type {import("./content.js").Site} */
@@ -131,7 +138,7 @@ export function load(wikiWords) {
       });
       /** @type {any} */
       var w = window;
-      w.CONTENT = buildContent(lib, site, files, both[2], wikiWords);
+      w.CONTENT = buildContent(lib, site, files, { wiki: both[2], credits: both[3], words: words || null });
       w.SCR.page();
     });
   });

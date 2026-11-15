@@ -3,8 +3,8 @@ title: दुर्गा सूक्तम्
 title-en: Durga Suktam
 language: sa
 layout: prose
-credit: कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक (महानारायणोपनिषत्)
-credit-en: Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)
+source: Taittiriya_Aranyaka
+credit-detail: महानारायणोपनिषत् | Mahanarayana Upanishad
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=2778)
 lines: 17
 letters: 728

@@ -11,7 +11,7 @@ describe("header", () => {
   test("required and optional fields", () => {
     const t = parse(
       "[1]\nक\nK\n",
-      "legacy-id: a1\nline-ids: s1l\nline-id-exceptions: s1l4=s1l4r, s1l5=s1l5b\nlayout: prose\ncredit: रचना : [नाव](wiki:Samarth_Ramdas)\n",
+      "legacy-id: a1\nline-ids: s1l\nline-id-exceptions: s1l4=s1l4r, s1l5=s1l5b\nlayout: prose\nauthor: Samarth_Ramdas\ncredit-detail: मण्डल ९ | Mandala 9\n",
     );
     expect(t).toMatchObject({
       id: "x",
@@ -23,7 +23,8 @@ describe("header", () => {
       lineIdExceptions: { s1l4: "s1l4r", s1l5: "s1l5b" },
       refrain: "none",
       layout: "prose",
-      credit: "रचना : [नाव](wiki:Samarth_Ramdas)",
+      author: "Samarth_Ramdas",
+      creditDetail: "मण्डल ९ | Mandala 9",
     });
   });
   test.each([
@@ -37,9 +38,13 @@ describe("header", () => {
     ["an unknown layout", HEAD + "layout: poem\n---\n", /layout can only be "prose" or "lines"/],
     // where a text stands is the library's (content/library.json), not the file's
     ["a category", HEAD + "category: aarti\n---\n", /unknown header field "category"/],
-    // a credit's link names a page by its English title, never an address: the page is chosen in the reader's language
-    ["a credit linking an address", HEAD + "credit: [X](https://mr.wikipedia.org/wiki/X)\n---\n", /a credit's link is \[name\]\(wiki:English_Wikipedia_page\)/],
-    ["a credit's name with a space", HEAD + "credit-en: By [X](wiki:Samarth Ramdas)\n---\n", /a credit's link is/],
+    // a credit names its people and sources by their key in content/credits.json; the credit lines themselves are the site's
+    ["a credit written out", HEAD + "credit: रचना : X\n---\n", /unknown header field "credit"/],
+    ["an author that is not a key", HEAD + "author: Samarth Ramdas\n---\n", /author is a key of content\/credits.json/],
+    ["a detail in one language", HEAD + "credit-detail: मण्डल ९\n---\n", /credit-detail is "Marathi \| English"/],
+    ["two credits", HEAD + "author: Eknath\nsource: Rigveda\n---\n", /one of author, attributed, compiled, source or traditional, not two/],
+    ["also with no author", HEAD + "attributed: Adi_Shankara\nalso: Namdev\n---\n", /also \(another it is credited to\) goes with author/],
+    ["traditional, not yes", HEAD + "traditional: no\n---\n", /traditional can only be "yes"/],
     // lines and letters are written by npm run texts: whole numbers
     ["lines that are not a number", HEAD + "lines: twelve\n---\n", /lines is a whole number/],
     ["letters of 0", HEAD + "letters: 0\n---\n", /letters is a whole number/],

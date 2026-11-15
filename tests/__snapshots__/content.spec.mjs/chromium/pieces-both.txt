@@ -447,7 +447,7 @@ Svasti No Bruhaspatirdadhatu ||
 
 || Om Shantih Shantih Shantih ||
 
-अथर्ववेदीय उपनिषद ↗
+अथर्ववेद ↗ (उपनिषद)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-purusha-suktam
@@ -1062,7 +1062,7 @@ Tanno Dhara Prachodayat ||
 
 || Om Shantih Shantih Shantih ||
 
-ऋग्वेद (खिलसूक्त)
+ऋग्वेद ↗ (खिलसूक्त)
 
 ### vedic-chant-laghunyasa
 4.
@@ -2600,7 +2600,7 @@ Tanno Durgih Prachodayat ||
 
 || Om Shantih Shantih Shantih ||
 
-कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक (महानारायणोपनिषत्)
+कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक ↗ (महानारायणोपनिषत्)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-shivopasana-mantra
@@ -2752,7 +2752,7 @@ Sarvo Hyesha Rudrastasmai Rudraya Namo Astu ||
 
 Om Shantih Shantih Shantih ||
 
-कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक (महानारायणोपनिषत्) ↗
+कृष्ण यजुर्वेद, तैत्तिरीय आरण्यक ↗ (महानारायणोपनिषत्)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-pavamana-suktam
@@ -7892,7 +7892,7 @@ Shiva Dishah Pradisha Uddisho Na Apo Vishvatah Paripantu Sarvashah Shanti Shanti
 
 || Shrikrushnarpanamastu ||
 
-ऋग्वेद, मण्डल ९ ↗
+ऋग्वेद ↗ (मण्डल ९)
 ▶ YouTube: Challakere Brothers ↗ · Anantha Padmanabha Bhat and Govind Prakash Bhat ↗
 
 ### vedic-chant-lalita-sahasranama
@@ -11079,7 +11079,7 @@ Nyunatiriktam Yatkinchit Kshamasva Purushottama ||
 
 Harih Om ||
 
-महाभारत, अनुशासनपर्व ↗
+महाभारत ↗ (अनुशासनपर्व)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-mantra-pushpanjali
@@ -11797,7 +11797,7 @@ Shriya Evainam Tachchhriyamadadhati | Santatamrucha Vashatkrutyam
 
 Sandhattam Sandhiyate Prajaya Pashubhih | Ya Evam Veda |
 
-ऋग्वेद (खिलसूक्त), नंतरच्या श्लोकांसह
+ऋग्वेद ↗ (खिलसूक्त, नंतरच्या श्लोकांसह)
 
 ### a1
 1.
@@ -12337,7 +12337,7 @@ Ho Jivebhave Owaali || 4 ||
 
 ↻ ध्रुपदRefrain
 रचना : विष्णुदास नामा
-(संत नामदेवांची ↗, अशीही मान्यता)
+(अशीही मान्यता : संत नामदेव ↗)
 
 ### a8
 8.
@@ -12409,7 +12409,7 @@ Hare Ram Hare Ram Ram Ram Hare Hare |
 Hare Krishna Hare Krishna Krishna Krishna Hare Hare ||
 
 ↻ ३ वेळा3 times
-संकलन : संत नामदेव व संस्कृत स्तोत्रे
+संकलन : संत नामदेव ↗ व संस्कृत स्तोत्रे
 
 ### a9
 9.
@@ -14139,7 +14139,7 @@ Sahasranama Tattulyam Ramanama Varanane || 38 ||
 
 || Shriramachandrarpanamastu ||
 
-बुधकौशिक ऋषि
+रचना : बुधकौशिक ऋषि
 
 ### stotra-shiva-panchakshara
 4.

@@ -890,4 +890,18 @@ export default {
     gu: "गुजराती विकिपीडिया",
     tab: "नवीन टॅबमध्ये उघडेल",
   },
+  // The words the site adds to a text (js/strings/en.js)
+  text: {
+    refrainLabel: "ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)",
+    refrainNote: "↻ ध्रुपद",
+    prev: "मागील",
+    next: "पुढील",
+    by: "रचना :",
+    // a name in a sentence, at {name}, so each language puts it where it goes
+    attributed: "{name} यांचे मानले जाते",
+    also: "(अशीही मान्यता : {name})",
+    compiledBy: "संकलन :",
+    traditional: "पारंपरिक",
+    lang: { sa: "संस्कृत", mr: "मराठी", hi: "हिंदी" },
+  },
 };
