@@ -8,8 +8,12 @@ credit: रचना : [श्री वासुदेवानंद सरस
 credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](https://en.wikipedia.org/wiki/Vasudevanand_Saraswati) (1854–1914)
 ---
 [dhrupad]
-श्रीगुरु दत्ता जय भगवंता । ¦तें मन निष्ठुर न करी आतां ॥ धृ ॥
-Shriguru Datta Jay Bhagavanta | Ten Man Nishthur Na Kari Aatan || Dhr. ||
+श्रीगुरु दत्ता जय भगवंता ।
+Shriguru Datta Jay Bhagavanta |
+तें मन निष्ठुर न करी आतां ।
+Ten Man Nishthur Na Kari Aatan |
+श्रीगुरु दत्ता ॥ धृ ॥
+Shriguru Datta || Dhr. ||
 
 [1]
 चोरे द्विजासी मारितां मन जे । ¦कळवळले ते कळवळो आतां ॥

@@ -12,8 +12,10 @@ credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](https://en.wikipedia.o
 Shant Ho Shriguru Datta Mama Chitta Shamavi Aata ||
 
 [dhrupad]
-मम चित्ता, शांत हो ॥ धृ ॥
-Mama Chitta, Shant Ho || Dhr. ||
+शांत हो श्रीगुरु दत्ता ¦मम चित्ता शमवी आता ।
+Shant Ho Shriguru Datta Mama Chitta Shamavi Aata |
+शांत हो ॥ धृ ॥
+Shant Ho || Dhr. ||
 
 [1]
 तूं केवळ माता जनिता, ¦सर्वथा तूं हितकर्ता ।
