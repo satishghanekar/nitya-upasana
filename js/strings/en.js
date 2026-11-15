@@ -924,6 +924,8 @@ export default {
   // letters takes that language's own words here, never Marathi's written in its letters (js/render.js SCR.el)
   text: {
     refrainLabel: "Refrain (sung after every verse)",
+    // the switch between a text's versions (the Hanuman Chalisa: Tulsidas | Popular)
+    version: "Version",
     refrainNote: "Refrain",
     prev: "Previous",
     next: "Next",

@@ -67,6 +67,12 @@ export function init() {
     dirty();
   });
   addEventListener("resize", dirty, { passive: true });
+  // another version of a text (js/features/versions.js, before it is built again): its places, worked out when it is
+  document.addEventListener("nitya-version", function (e) {
+    var p = /** @type {CustomEvent} */ (e).detail.piece;
+    pieces[p.id] = byText[p.text] = p;
+    delete outlines[p.id];
+  });
   btn.onclick = function () {
     open(sheet.hidden, btn);
   };

@@ -95,8 +95,35 @@
     // ("./#a3", not "#a3": the piece may not be built yet, js/core/page.js, and a bare "#a3" would point at nothing)
     return '      <a class="' + cls + '" href="./#' + p.id + '" data-go="' + p.id + '"><small>' + small + "</small>" + two(p.title) + "</a>\n";
   }
-  /** @param {Piece} p @param {Piece | null} prev @param {Piece | null} next @param {{ prev: Pair, next: Pair }} ui */
-  function piece(p, prev, next, ui) {
+  /**
+   * A text sung in more than one way: the switch between them, just under its heading (js/features/versions.js; not in
+   * it: a tap on the heading folds the text); the one shown is pressed. The label's id is the piece's, so each switch is
+   * named by its own.
+   * @param {Piece} p @param {Content} C
+   */
+  function versions(p, C) {
+    var all = C.versions && C.versions[p.text];
+    if (!all) return "";
+    var id = "ver-" + p.id;
+    return (
+      '    <div class="ver" role="group" aria-labelledby="' +
+      id +
+      '">\n      <span class="vlab" id="' +
+      id +
+      '">' +
+      two(C.ui.version, "version") +
+      "</span>\n" +
+      all
+        .map(function (/** @type {any} */ v) {
+          return '      <button type="button" data-ver="' + v.ver + '" aria-pressed="' + (v.ver === p.ver) + '">' + two(v.name) + "</button>\n";
+        })
+        .join("") +
+      "    </div>\n"
+    );
+  }
+  /** @param {Piece} p @param {Piece | null} prev @param {Piece | null} next @param {Content} C */
+  function piece(p, prev, next, C) {
+    var ui = C.ui;
     var h =
       '  <section id="' +
       p.id +
@@ -117,7 +144,8 @@
       '      <div class="tag">' +
       two(p.tag, "lang." + (p.lang || W.CONTENT.pageLanguage)) +
       "</div>\n" +
-      "    </header>\n";
+      "    </header>\n" +
+      versions(p, C);
     // [once] lines and [note]s that come before the dhrupad at the top (js/text/content.js)
     if (p.lead) h += '    <div class="items lead">\n' + p.lead.map(item).join("") + "    </div>\n";
     if (p.refrain)
@@ -346,6 +374,6 @@
   // reading order for its Previous / Next; for the printout (js/print/compose.js) without them
   /** @param {Piece} p @param {Content} C @param {Piece} [prev] @param {Piece} [next] */
   W.renderPiece = function (p, C, prev, next) {
-    return piece(p, prev || null, next || null, C.ui);
+    return piece(p, prev || null, next || null, C);
   };
 })();

@@ -88,3 +88,42 @@ test("a text with a recording shows it under the credit: YouTube, the chanters, 
   const box = await pv.boundingBox();
   expect(box.x + box.width).toBeLessThanOrEqual(await page.evaluate(() => document.documentElement.clientWidth));
 });
+
+// A text sung in more than one way (js/features/versions.js; Satish, 2026-11-15): the Library lists it once; the
+// switch under its title shows the other version in place, remembered for the person, and print and search read it
+test("the Hanuman Chalisa: listed once, Tulsidas | Popular under its title, the choice remembered @mobile", async ({ page }) => {
+  const errors = [];
+  await openSite(page, SETUPS.marathi, { hash: "#stotra-hanuman-chalisa", errors });
+  await expect(page.locator('#jl a[data-go="stotra-hanuman-chalisa"]')).toHaveCount(1);
+  await expect(page.locator('#jl a[data-go="stotra-hanuman-chalisa-popular"]')).toHaveCount(0);
+  const sec = page.locator("#stotra-hanuman-chalisa");
+  const sw = sec.locator(".ver");
+  await expect(sw).toHaveAttribute("role", "group");
+  await expect(sw.locator(".vlab .mr")).toHaveText("पाठभेद");
+  const [own, popular] = [sw.locator('button[data-ver="stotra-hanuman-chalisa"]'), sw.locator('button[data-ver="stotra-hanuman-chalisa-popular"]')];
+  await expect(own).toHaveAttribute("aria-pressed", "true");
+  await expect(sec).toContainText("महाबीर बिक्रम बजरंगी");
+  // big enough to tap
+  const box = await popular.boundingBox();
+  expect(box.height).toBeGreaterThanOrEqual(44);
+  await popular.click();
+  await expect(sec).toContainText("महावीर विक्रम बजरंगी");
+  await expect(sec).not.toContainText("महाबीर बिक्रम बजरंगी");
+  // the switch is built again with the text: the button pressed keeps the focus
+  await expect(sec.locator('.ver button[data-ver="stotra-hanuman-chalisa-popular"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(sec.locator('.ver button[data-ver="stotra-hanuman-chalisa-popular"]')).toBeFocused();
+  // the popular one is the piece in the text's place, which search, print, Go to and Follow read
+  const found = await page.evaluate(() => {
+    const C = window.CONTENT;
+    return C.categories.flatMap((c) => c.pieces).find((p) => p.text === "stotra-hanuman-chalisa").ver;
+  });
+  expect(found).toBe("stotra-hanuman-chalisa-popular");
+  // remembered after a reload
+  await page.reload();
+  await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+  await expect(page.locator("#stotra-hanuman-chalisa")).toContainText("महावीर विक्रम बजरंगी");
+  // and back
+  await page.locator('#stotra-hanuman-chalisa .ver button[data-ver="stotra-hanuman-chalisa"]').click();
+  await expect(page.locator("#stotra-hanuman-chalisa")).toContainText("महाबीर बिक्रम बजरंगी");
+  expect(errors).toEqual([]);
+});

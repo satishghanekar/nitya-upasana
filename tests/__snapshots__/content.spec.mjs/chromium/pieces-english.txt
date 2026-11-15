@@ -6806,6 +6806,9 @@ By Samarth Ramdas ↗ (1608–1682)
 
 ### stotra-hanuman-chalisa
 2. Shri Hanuman Chalisa
+Version
+Tulsidas
+Popular
 
 Shriguru Charan Saroj Raj, Nij Manu Mukuru Sudhari |
 
@@ -6813,7 +6816,7 @@ Barnaun Raghubar Bimal Jasu, Jo Dayaku Phal Chari ||
 
 Buddhiheen Tanu Janike, Sumiraun Pavan-Kumar |
 
-Bal Budhi Bidya Dehu Mohin, Harahu Kalesh Bikar ||
+Bal Budhi Bidya Dehu Mohin, Harahu Kales Bikar ||
 
 Jai Hanuman Gyan Gun Sagar |
 
@@ -6881,7 +6884,7 @@ Ram Milay Raj Pad Dinha || 16 ||
 
 Tumharo Mantra Bibhishan Mana |
 
-Lankeshvar Bhaye Sab Jag Jana || 17 ||
+Lankesvar Bhaye Sab Jag Jana || 17 ||
 
 Jug Sahasra Jojan Par Bhanu |
 

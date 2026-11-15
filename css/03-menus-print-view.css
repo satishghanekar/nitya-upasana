@@ -1262,3 +1262,51 @@ h2[tabindex="-1"]:focus,
     font-size: var(--fz-xs);
   }
 }
+
+/* ==== A text sung in more than one way: the switch under its heading (js/features/versions.js) ====
+   A row of its own under the heading row (folded away with the text): the label, then a pill for each version, the
+   one shown filled. With both languages shown, each word in the lead language only, as the language tag is. */
+.ash > .ver {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 8px;
+  margin: -4px 0 14px;
+  font: 500 var(--fz-s)/1.2 var(--body);
+}
+.ash > .ver .vlab {
+  color: var(--muted);
+}
+.ash > .ver button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px 16px;
+  border: 1px solid var(--hdrl);
+  border-radius: 99px;
+  background: var(--hdrt);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.ash > .ver button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+}
+[data-lang="both"] .ver .en {
+  display: none;
+}
+html[data-lead="en"] [data-lang="both"] .ver .en {
+  display: inline;
+}
+html[data-lead="en"] [data-lang="both"] .ver .mr {
+  display: none;
+}
+@media (hover: hover) {
+  .ash > .ver button:not([aria-pressed="true"]):hover {
+    border-color: var(--accent);
+  }
+}

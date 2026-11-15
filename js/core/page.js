@@ -86,6 +86,32 @@ export function pieceEl(id) {
 }
 
 /**
+ * Another version of a text in its place (js/features/versions.js): the piece with p's id becomes p, and, if it was
+ * built, it is built again where it stands, keeping its classes (shown, in a session), with each part's step run on it.
+ * @param {any} p
+ * @returns {HTMLElement | null}  the new element, if the old one was built
+ */
+export function replacePiece(p) {
+  if (!(p.id in at)) return null;
+  var i = at[p.id],
+    old = document.getElementById(p.id);
+  order[i] = p;
+  if (!old) return null;
+  /** @type {any} */
+  var w = window;
+  old.insertAdjacentHTML("afterend", w.renderPiece(p, w.CONTENT, order[i - 1], order[i + 1]));
+  var el = /** @type {HTMLElement} */ (old.nextElementSibling);
+  el.className = old.className;
+  old.remove();
+  w.SCR.add(el);
+  secs[secs.indexOf(old)] = el;
+  steps.forEach(function (f) {
+    f(el);
+  });
+  return el;
+}
+
+/**
  * Put the pieces built so far in this order in the page: the ones named first (a session being read, in its order),
  * then the rest in reading order; with none named, all of them in reading order. Screen readers and the Tab key follow
  * the page's order, so a session must be in it, not only shown in it (WCAG 1.3.2, 2.4.3). A piece already in its

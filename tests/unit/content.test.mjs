@@ -10,7 +10,7 @@ import { parseText } from "../../js/text/format.js";
 import { buildContent, PAGE_LANGUAGE, toPiece } from "../../js/text/content.js";
 import { factsOf } from "../tools/texts.mjs";
 import { menuWords } from "../../js/core/strings.js";
-import { CONTENT, FILES as files, IDS, LIBRARY, TEXTS } from "../content-files.mjs";
+import { CONTENT, FILES as files, IDS, LIBRARY, TEXTS, VERSION_IDS } from "../content-files.mjs";
 
 // The old CONTENT, copied out of the vm context so it compares as plain objects
 const win = {};
@@ -42,7 +42,9 @@ describe("CONTENT from the text files", () => {
     expect(same).toStrictEqual(OLD_PIECES);
     // and in the same key order, so even the order the page meets things in is unchanged
     expect(JSON.stringify(same)).toBe(JSON.stringify(OLD_PIECES));
-    expect(C.ui).toStrictEqual(OLD.ui);
+    // (with the version switch's label since 2026-11-15)
+    const { version, ...ui } = C.ui; // eslint-disable-line no-unused-vars
+    expect(ui).toStrictEqual(OLD.ui);
   });
   // (60 <br>: the Vitthal Aarti's dhrupad breaks after its first half in English and at the top too, Satish 2026-10-23)
   test("the marks that matter are all there: 60 <br>, 156 zero-width spaces, svara marks", () => {
@@ -113,14 +115,52 @@ describe("CONTENT from the text files", () => {
   });
 });
 
+// A text sung in more than one way (Satish, 2026-11-15: the Hanuman Chalisa as Tulsidas wrote it and as it is
+// commonly sung): each version a file of its own, built into a piece that stands in the text's place
+describe("a text's versions", () => {
+  const vs = CONTENT.versions["stotra-hanuman-chalisa"];
+  test("the Hanuman Chalisa: Tulsidas's own first, then the popular one, each named for the switch", () => {
+    expect(vs.map((v) => [v.ver, v.name.mr, v.name.en])).toEqual([
+      ["stotra-hanuman-chalisa", "तुलसीदास", "Tulsidas"],
+      ["stotra-hanuman-chalisa-popular", "प्रचलित", "Popular"],
+    ]);
+    expect(Object.keys(CONTENT.versions)).toEqual(["stotra-hanuman-chalisa"]);
+  });
+  test("the text's own is the piece in the Library; the other has its id, number and text id, and its own lines", () => {
+    const [own, popular] = vs.map((v) => v.piece);
+    expect(CONTENT.categories.flatMap((c) => c.pieces)).toContain(own);
+    expect([popular.id, popular.text, popular.no]).toEqual([own.id, own.text, own.no]);
+    expect([own.ver, popular.ver]).toEqual(["stotra-hanuman-chalisa", "stotra-hanuman-chalisa-popular"]);
+    const line = (p, n) => p.items.filter((i) => i.lines)[n].lines[0];
+    expect(line(own, 2).mr).toBe("महाबीर बिक्रम बजरंगी ।");
+    expect(line(popular, 2).mr).toBe("महावीर विक्रम बजरंगी ।");
+    // a version is never listed as a text of its own
+    expect(CONTENT.texts["stotra-hanuman-chalisa-popular"]).toBeUndefined();
+  });
+  test("a version needs a name, and versions of a text no category lists stop the build", () => {
+    const lib = { categories: [{ id: "stotra", name: { mr: "स्तोत्र", en: "Stotra" }, texts: ["stotra-a"] }], versions: { "stotra-a": ["stotra-b"] } };
+    const file = (id, name) => `id: ${id}\ntitle: क\ntitle-en: K\nlanguage: hi\n${name ? "version-name: " + name + "\n" : ""}---\n[1]\nक\nK\n`;
+    const ok = buildContent(lib, { "stotra-a": file("stotra-a", "क | A"), "stotra-b": file("stotra-b", "ख | B") });
+    expect(ok.versions["stotra-a"].map((v) => v.name.en)).toEqual(["A", "B"]);
+    expect(() => buildContent(lib, { "stotra-a": file("stotra-a", "क | A"), "stotra-b": file("stotra-b") })).toThrow(
+      /stotra-b.txt: a text with versions needs a version-name/,
+    );
+    expect(() => buildContent({ ...lib, versions: { "stotra-z": ["stotra-b"] } }, { "stotra-a": file("stotra-a") })).toThrow(
+      /versions of stotra-z, which no category lists/,
+    );
+    expect(() => parseText(file("stotra-a", "क"))).toThrow(/version-name/);
+  });
+});
+
 describe("content checks", () => {
   const names = readdirSync(new URL("../../content/texts/", import.meta.url)).filter((f) => !f.startsWith("."));
   test("every text's id, and so its file name, starts with the category the library lists it in", () => {
     for (const t of TEXTS) expect(t.id.startsWith(t.category + "-"), t.id).toBe(true);
   });
-  test("library.json lists every file in content/texts/, once", () => {
-    expect([...IDS].sort()).toEqual(names.map((f) => f.replace(/\.txt$/, "")).sort());
-    expect(new Set(IDS).size).toBe(IDS.length);
+  test("library.json lists every file in content/texts/, once: in a category, or as another version of a text", () => {
+    const all = IDS.concat(VERSION_IDS);
+    expect([...all].sort()).toEqual(names.map((f) => f.replace(/\.txt$/, "")).sort());
+    expect(new Set(all).size).toBe(all.length);
   });
   test("the reading order is the Library's: its categories in order, each numbered from 1, every text once", () => {
     const C = CONTENT;
@@ -134,7 +174,7 @@ describe("content checks", () => {
   });
   // Everything about a text is in its own file (Satish, 2026-11-15): its header's lines and letters (as chanted) are
   // written by npm run texts from the text itself; edit a text and forget it, and this names the file
-  test.each(IDS.map((id) => [id]))("%s: its header's lines and letters are up to date (npm run texts)", (id) => {
+  test.each(IDS.concat(VERSION_IDS).map((id) => [id]))("%s: its header's lines and letters are up to date (npm run texts)", (id) => {
     const t = parseText(files[id], id + ".txt");
     const f = factsOf(files[id], id + ".txt");
     expect(t.lines).toBe(f.lines);
@@ -143,7 +183,7 @@ describe("content checks", () => {
     // its language named in the site's words, in every menu language (js/strings/, "text")
     for (const l of ["mr", "en", "kn", "te", "gu"]) expect(menuWords("text", l).lang[t.language], l).toBeTruthy();
   });
-  test.each(IDS.map((id) => [id]))("%s is not changed by Unicode normalisation", (id) => {
+  test.each(IDS.concat(VERSION_IDS).map((id) => [id]))("%s is not changed by Unicode normalisation", (id) => {
     const raw = files[id];
     expect(raw === raw.normalize("NFC")).toBe(true);
   });

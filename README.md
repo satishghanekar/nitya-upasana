@@ -28,7 +28,7 @@ There is no build step. The files in this repository are exactly what the site s
 |---|---|
 | `index.html` | The page: the top bar, Settings, Home, the Library, the dialogs and Help. |
 | `content/texts/` | The texts, one plain-text file each (`aarti-sukhkarta.txt`, …). **Edit the texts here** (see *How to add a text*). |
-| `content/library.json` | The library, and nothing else: the categories in order (Vedic Chant, Aarti, Stotra, Ashtak), each with its names and its texts' ids in reading order, as `routines.json` lists a session's. A category with no texts is not shown. Everything about a text is in its own file. |
+| `content/library.json` | The library, and nothing else: the categories in order (Vedic Chant, Aarti, Stotra, Ashtak), each with its names and its texts' ids in reading order, as `routines.json` lists a session's. A category with no texts is not shown. `"versions"`: a text sung in more than one way, and its other versions' files (see *A text sung in more than one way*). Everything about a text is in its own file. |
 | `content/timing.json` | The chanting paces (seconds a letter: quick, steady, slow), the seconds between one text and the next, and how much Follow must hear before it uses a reader's own pace (`learn`): their one place, read by `js/core/timing.js`, which refuses a number missing or not above 0. (The page's language is `index.html`'s `<html lang>`, and the code's `PAGE_LANGUAGE`, `js/text/content.js`; when a text has Go to is `js/text/outline.js`'s `OUTLINE`.) The words the site adds to a text (the dhrupad's label and marker, Previous / Next, its language, its credit's words) are the menu words', `text` in `js/strings/`, in each language's own words. |
 | `content/credits.json` | Who and what the texts come from, each written once: the people (their name in Marathi and English, their time, their English Wikipedia page as in its address) and the sources (Rigveda, Taittiriya Aranyaka, …). A text's header names them by their key. |
 | `content/wiki.json` | Written by `npm run wiki` (in `tests/`), never by hand: each page a person or source (`content/credits.json`), a festival or a holiday links to, by the name the links use (its English page, `Samarth_Ramdas`), with its page's title on each Wikipedia the site opens (Marathi, Hindi, English, Kannada, Telugu, Gujarati). The site never asks Wikipedia anything itself. |
@@ -172,6 +172,22 @@ Sukhkarta Dukhharta, Varta Vighnachi |
 4. In `js/parts.js`, add `texts/<id>.txt` to the `content` list, so the text is kept for offline use.
 5. To put it in a ready-made routine, add its id to that routine in `content/routines.json` (everyone following it gets it; a routine someone changed stays as theirs). The unit tests (`tests/unit/today.test.mjs`) say how Short, Daily and Full are made from Extended: change them there too.
 6. Run the checks (`cd tests && npm run unit`): they read every text, check that `library.json` lists every file once, that each header's `lines` and `letters` are up to date and that `js/parts.js` has every file, and name any mistake with its line number.
+
+### A text sung in more than one way
+
+Some texts are sung differently from how they were written: the Hanuman Chalisa as Tulsidas wrote it, and as it is
+commonly sung. Each way is a file of its own, and the Library still lists the text once. Under its heading the
+reader picks one (पाठभेद: तुलसीदास | प्रचलित); the site remembers the choice for each person, and printing, search, Go to
+and Follow all read the one chosen. To add a version to any text:
+
+1. Copy the text's file to a new one (`stotra-hanuman-chalisa-popular.txt`), change its `id`, and change the lines that
+   differ.
+2. Give both files a `version-name:` line, what the switch calls each: `version-name: तुलसीदास | Tulsidas` in the
+   text's own, `version-name: प्रचलित | Popular` in the new one.
+3. In `content/library.json`, list the new file under `"versions"`, by the text's id (not in a category):
+   `"versions": { "stotra-hanuman-chalisa": ["stotra-hanuman-chalisa-popular"] }`. A text can have more than one other
+   version; the text's own comes first on the switch and is what a reader sees until they choose.
+4. Add it to `js/parts.js` and run `npm run texts`, as for any text.
 
 Nothing in the print code names a text: a new text prints by the rules in `ARCHITECTURE.md` ("The rules every printout follows") as soon as its file exists: stanzas are never split between pages, the dhrupad follows the printout's choice, an aarti or ashtak is centred, a Vedic chant (`layout: prose`) runs on as paragraphs, and with both languages each line sits beside its English.
 

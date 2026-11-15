@@ -48,6 +48,8 @@ export function init() {
   res = /** @type {HTMLElement} */ (document.getElementById("res"));
   none = /** @type {HTMLElement} */ (document.getElementById("none"));
   srs = /** @type {HTMLElement} */ (document.getElementById("srs"));
+  // another version of a text (js/features/versions.js): its lines are searched next time
+  document.addEventListener("nitya-version", buildIX);
   // Keyboard: ↓ / ↑ move through the results, Enter in the box opens the first one
   jp.addEventListener("keydown", function (/** @type {KeyboardEvent} */ e) {
     // results still waiting for the pause in typing are built now, so the key acts on them

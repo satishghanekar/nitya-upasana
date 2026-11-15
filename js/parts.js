@@ -87,6 +87,7 @@ var SITE_PARTS = (function () {
     "features/dhrupad-button",
     "features/reading-sheet",
     "features/where",
+    "features/versions",
     "features/wake-lock",
     "features/overlays",
     "features/history",
@@ -195,6 +196,8 @@ var SITE_PARTS = (function () {
     "texts/ashtak-nandikeshvara-ashtakam.txt",
     "texts/ashtak-rudrashtakam.txt",
     "texts/ashtak-kalabhairava-ashtakam.txt",
+    // the other versions of a text sung in more than one way (content/library.json "versions")
+    "texts/stotra-hanuman-chalisa-popular.txt",
   ].map(function (f) {
     return "content/" + f;
   });

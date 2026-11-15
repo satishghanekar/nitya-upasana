@@ -6,7 +6,7 @@ import { test, expect } from "@playwright/test";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import { siteParts } from "./helpers.mjs";
-import { IDS } from "./content-files.mjs";
+import { IDS, VERSION_IDS } from "./content-files.mjs";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const parts = siteParts();
@@ -58,7 +58,7 @@ test("js/parts.js lists the texts in content/library.json, so every text is kept
     "content/festivals.json",
     "content/holidays.json",
     "content/pdfs.json",
-    ...IDS.map((id) => "content/texts/" + id + ".txt"),
+    ...IDS.concat(VERSION_IDS).map((id) => "content/texts/" + id + ".txt"),
   ]);
   for (const f of parts.content) expect(parts.all).toContain(f);
 });
@@ -107,8 +107,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // notes), the Settings row and the times in five languages, 376 KB with them on a Mac; 380 KB since 2026-11-15: Wikipedia links
   // in every language, js/core/wiki.js and Wikipedia's names in five languages, 379.85 KB then; 384 KB since 2026-11-15:
   // the credits written from content/credits.json, and the site's words around a text in each language's own words, in
-  // five languages, 383.4 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(384_000);
+  // five languages, 383.4 KB then; 388 KB since 2026-11-15: a text sung in more than one way, js/features/versions.js
+  // and the switch under its heading, 387.2 KB with it on a Mac)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(388_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -121,8 +122,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // 2026-11-14: Go to, the top bar's title saying where and its sheet, 79.6 KB with them on a Mac; 81 KB since 2026-11-14:
   // the tucked bars' pill, Go to's card from the top and its title in the middle of a tablet's bar, 80.5 KB then; 82 KB
   // since 2026-11-15: how long texts take, on Home, in the Library, the builder's weekday bars, the time left in the
-  // title and Settings → Chanting pace, 81.7 KB with them on a Mac)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(82_000);
+  // title and Settings → Chanting pace, 81.7 KB with them on a Mac; 82.5 KB since 2026-11-15: the switch between a
+  // text's versions under its heading, 82.15 KB with it on a Mac)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(82_500);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
   // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then; 33 KB since

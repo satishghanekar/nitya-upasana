@@ -16,8 +16,8 @@ const chantedLetters = existsSync(TIMING) ? (await import(TIMING.href)).chantedL
 const content = new URL("../../content/", import.meta.url);
 const library = JSON.parse(readFileSync(new URL("library.json", content), "utf8"));
 
-/** Every text the library lists, by id */
-export const IDS = library.categories.flatMap((c) => c.texts);
+/** Every text the library lists, by id, and the other versions of a text sung in more than one way */
+export const IDS = library.categories.flatMap((c) => c.texts).concat(Object.values(library.versions || {}).flat());
 
 /** What the header should say, from the text itself @param {string} raw  the file @param {string} file */
 export function factsOf(raw, file) {

@@ -3,6 +3,7 @@ title: श्री हनुमान चालीसा
 title-en: Shri Hanuman Chalisa
 language: hi
 credit: author tulsidas
+version-name: तुलसीदास | Tulsidas
 lines: 86
 letters: 1703
 ---
@@ -14,7 +15,7 @@ Barnaun Raghubar Bimal Jasu, ¦Jo Dayaku Phal Chari ||
 बुद्धिहीन तनु जानिके, ¦सुमिरौं पवन-कुमार ।
 Buddhiheen Tanu Janike, ¦Sumiraun Pavan-Kumar |
 बल बुधि बिद्या देहु मोहिं, ¦हरहु कलेस बिकार ॥
-Bal Budhi Bidya Dehu Mohin, ¦Harahu Kalesh Bikar ||
+Bal Budhi Bidya Dehu Mohin, ¦Harahu Kales Bikar ||
 
 [1]
 जय हनुमान ज्ञान गुन सागर ।
@@ -116,7 +117,7 @@ Ram Milay Raj Pad Dinha ||
 तुम्हरो मंत्र बिभीषन माना ।
 Tumharo Mantra Bibhishan Mana |
 लंकेस्वर भए सब जग जाना ॥
-Lankeshvar Bhaye Sab Jag Jana ||
+Lankesvar Bhaye Sab Jag Jana ||
 
 [18]
 जुग सहस्र जोजन पर भानू ।
