@@ -3,8 +3,7 @@ title: शांत हो श्रीगुरु
 title-en: Shant Ho Shriguru
 language: mr
 refrain: every-verse
-credit: रचना : [श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)](wiki:Vasudevanand_Saraswati) (१८५४–१९१४)
-credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](wiki:Vasudevanand_Saraswati) (1854–1914)
+credit: author vasudevanand-saraswati
 lines: 23
 letters: 924
 ---

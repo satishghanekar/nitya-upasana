@@ -22,7 +22,7 @@ const FOUR = {
     evening: { mode: "fixed", texts: ["aarti-sukhkarta"] },
   },
   extended: {
-    morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha", "vedic-chant-shree-rudra"] },
+    morning: { mode: "fixed", texts: ["vedic-chant-atharvashirsha", "vedic-chant-shri-rudra"] },
     afternoon: { mode: "fixed", texts: [] },
     evening: { mode: "fixed", texts: ["aarti-sukhkarta"] },
   },

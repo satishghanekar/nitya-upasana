@@ -2,8 +2,7 @@ id: stotra-shriguru-datta-jay
 title: श्रीगुरु दत्ता जय
 title-en: Shriguru Datta Jay
 language: mr
-credit: रचना : [श्री वासुदेवानंद सरस्वती (टेंबे स्वामी)](wiki:Vasudevanand_Saraswati) (१८५४–१९१४)
-credit-en: By [Shri Vasudevanand Saraswati (Tembe Swami)](wiki:Vasudevanand_Saraswati) (1854–1914)
+credit: author vasudevanand-saraswati
 lines: 18
 letters: 523
 ---

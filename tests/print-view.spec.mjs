@@ -63,7 +63,7 @@ for (const W of [
         vitthalFirst: ks("a7")[0],
       };
     });
-    expect(got.credit).toContain("Nama (also credited");
+    expect(got.credit).toContain("Nama (16th century) (also credited");
     if (W.pref === 0) expect(got.ghalinEnd).not.toContain("3 times");
     else expect(got.ghalinEnd).toContain("3 times");
     // the first block: the dhrupad at the top, the first stanza and, with the dhrupad once, the one ↻ after it

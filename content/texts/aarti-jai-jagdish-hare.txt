@@ -4,8 +4,7 @@ title-en: Aarti Jai Jagdish Hare
 language: hi
 legacy-id: a10
 line-ids: s10l
-credit: रचना : [पं. श्रद्धाराम फिल्लौरी](wiki:Shardha_Ram_Phillauri) (सु. १८७०)
-credit-en: By [Pt. Shardha Ram Phillauri](wiki:Shardha_Ram_Phillauri) (c. 1870)
+credit: author shardha-ram-phillauri
 lines: 30
 letters: 928
 ---

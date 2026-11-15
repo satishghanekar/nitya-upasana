@@ -3,7 +3,7 @@
 // from what the text file already has, so a new text gets them by its own structure and nothing here names a text
 // (Satish 2026-11-14: "anything long running", one design and not a patch):
 //   - its headings, the [note]s that are not a ↻ repeat (Pavamana's adhyayas, the Vishnu Sahasranama's bhagas);
-//   - its parts, the [para] blocks (Pavamana's suktas by their Rigveda reference, ९.४७; Shree Rudra's anuvakas, named by
+//   - its parts, the [para] blocks (Pavamana's suktas by their Rigveda reference, ९.४७; Shri Rudra's anuvakas, named by
 //     the file's part-name and counted from 1 in each heading);
 //   - its verses, by the number written in the text (stanza-numbers: as-written, a reference) or else counted, and, where
 //     a heading has more of them than a few screens hold, in groups (Lalita's १०१–१२५).
@@ -23,7 +23,7 @@
  * @typedef {{ piece: string, places: Place[], verses: Verse[] }} Outline
  */
 
-// When a text has an outline, and how big a group of verses is (content/site.json "outline" can set both)
+// When a text has an outline (its lines, the dhrupad's repeats not counted), and how many verses make a group
 export const OUTLINE = { minLines: 60, group: 25 };
 
 const DIGITS = "०१२३४५६७८९";
@@ -76,12 +76,11 @@ function isHeading(it) {
 /**
  * The outline of one text, or null when it is too short to need one.
  * @param {Piece & { partName?: Pair }} p
- * @param {{ minLines?: number, group?: number }} [opt]
  * @returns {Outline | null}
  */
-export function outline(p, opt) {
-  var min = (opt && opt.minLines) || OUTLINE.minLines,
-    size = (opt && opt.group) || OUTLINE.group,
+export function outline(p) {
+  var min = OUTLINE.minLines,
+    size = OUTLINE.group,
     items = p.items || [],
     lines = 0;
   items.forEach(function (it) {

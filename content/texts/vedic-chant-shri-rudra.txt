@@ -1,11 +1,10 @@
-id: vedic-chant-shree-rudra
+id: vedic-chant-shri-rudra
 title: श्री रुद्रप्रश्नः
-title-en: Shree Rudra
+title-en: Shri Rudra
 language: sa
 layout: prose
 part-name: अनुवाकः | Anuvaka
-credit: [कृष्ण यजुर्वेद, तैत्तिरीय संहिता](wiki:Shri_Rudram)
-credit-en: [Krishna Yajurveda, Taittiriya Samhita](wiki:Shri_Rudram)
+credit: source taittiriya-samhita
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=685)
 lines: 278
 letters: 10527

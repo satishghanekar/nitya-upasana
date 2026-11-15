@@ -293,7 +293,7 @@ export default {
       short: "The Atharvashirsha and the everyday aartis in the morning, the aartis in the evening",
       daily: "The Atharvashirsha, Purusha Suktam and Shri Sukta and the day’s aartis in the morning, the day’s aartis in the evening",
       full: "Daily, with each day’s ashtaks and stotras",
-      extended: "Full, with the Laghunyasa, Shree Rudra and Durga Suktam and the longer stotras",
+      extended: "Full, with the Laghunyasa, Shri Rudra and Durga Suktam and the longer stotras",
     },
     /** @param {number} a @param {number} b */
     perDay: function (a, b) {
@@ -918,5 +918,21 @@ export default {
     te: "Telugu Wikipedia",
     gu: "Gujarati Wikipedia",
     tab: "opens in a new tab",
+  },
+  // The words the site adds to a text, in its languages (js/text/content.js, js/render.js): the dhrupad's label and
+  // marker, Previous / Next under it, its language, and its credit's words. A text shown in Kannada, Telugu or Gujarati
+  // letters takes that language's own words here, never Marathi's written in its letters (js/render.js SCR.el)
+  text: {
+    refrainLabel: "Refrain (sung after every verse)",
+    refrainNote: "Refrain",
+    prev: "Previous",
+    next: "Next",
+    by: "By",
+    // a name in a sentence, at {name}, so each language puts it where it goes
+    attributed: "Attributed to {name}",
+    also: "(also credited to {name})",
+    compiledBy: "A compilation:",
+    traditional: "Traditional",
+    lang: { sa: "Sanskrit", mr: "Marathi", hi: "Hindi" },
   },
 };

@@ -54,3 +54,37 @@ test("a festival opens its page in the menu language's Wikipedia: Kannada menus,
   expect(page_(await a.getAttribute("href"))).toBe("https://kn.wikipedia.org/wiki/ದಸರ");
   expect(await a.getAttribute("aria-label")).toMatch(/ — ವಿಕಿಪೀಡಿಯ \(ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ\)$/);
 });
+
+// The site's words around a text (js/strings/, "text"; Satish, 2026-11-15): in Kannada letters Kannada's own, never
+// Marathi's written in them; Marathi's again when Marathi is picked back
+test("in Kannada letters the dhrupad's label, the credit's words and the language are Kannada's own, and Marathi's again after @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { hash: "#a1" });
+  const lab = page.locator("#a1 .rftop .lab .mr"),
+    by = page.locator('#a1 .cr .mr [data-tw="by"]'),
+    tag = page.locator("#a1 header .tag .mr");
+  await expect(lab).toHaveText("ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)");
+  await expect(by).toHaveText("रचना :");
+  await expect(tag).toHaveText("मराठी");
+  await page.locator("#aa").click();
+  await page.locator("#sl1s").selectOption("kn");
+  await page.locator("#xc").click();
+  await expect(lab).toHaveText("ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)");
+  await expect(by).toHaveText("ರಚನೆ :");
+  await expect(tag).toHaveText("ಮರಾಠಿ");
+  // the name, Marathi's in Kannada letters, still links to the Kannada page
+  await expect(page.locator("#a1 .cr .mr a[data-wiki]")).toHaveAttribute("hreflang", "kn");
+  await page.locator("#aa").click();
+  await page.locator("#sl1s").selectOption("mr");
+  await page.locator("#xc").click();
+  await expect(lab).toHaveText("ध्रुपद (प्रत्येक कडव्यानंतर म्हणावे)");
+  await expect(by).toHaveText("रचना :");
+  await expect(tag).toHaveText("मराठी");
+  await expect(page.locator("#a1 .cr .mr a[data-wiki]")).toHaveAttribute("hreflang", "mr");
+});
+
+test("Home names a text's language in the menu language's own words: Kannada menus, ಮರಾಠಿ and ಸಂಸ್ಕೃತ @mobile", async ({ page }) => {
+  await openSite(page, SETUPS["kannada-menus"]);
+  const tags = await page.locator("#tsl .ttg").allTextContents();
+  expect(tags.length).toBeGreaterThan(0);
+  for (const t of tags) expect(["ಮರಾಠಿ", "ಸಂಸ್ಕೃತ", "ಹಿಂದಿ"]).toContain(t);
+});

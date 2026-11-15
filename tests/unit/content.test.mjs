@@ -1,5 +1,5 @@
 // The texts became files (slice 1). The proof that not a character changed: the site's own code
-// (js/text/content.js) rebuilds, from content/library.json, content/site.json and content/texts/*.txt, an object
+// (js/text/content.js) rebuilds, from content/library.json and content/texts/*.txt, an object
 // identical to the old window.CONTENT, frozen as it was in tests/unit/fixtures/pieces.js (the old content/pieces.js,
 // unchanged). Then the checks every text file must pass (listed once, its header's facts up to date, no Unicode
 // normalisation).
@@ -7,9 +7,10 @@ import { describe, expect, test } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import vm from "node:vm";
 import { parseText } from "../../js/text/format.js";
-import { buildContent, toPiece } from "../../js/text/content.js";
+import { buildContent, PAGE_LANGUAGE, toPiece } from "../../js/text/content.js";
 import { factsOf } from "../tools/texts.mjs";
-import { FILES as files, IDS, LIBRARY, SITE as lib, TEXTS } from "../content-files.mjs";
+import { menuWords } from "../../js/core/strings.js";
+import { CONTENT, FILES as files, IDS, LIBRARY, TEXTS } from "../content-files.mjs";
 
 // The old CONTENT, copied out of the vm context so it compares as plain objects
 const win = {};
@@ -17,26 +18,24 @@ vm.runInNewContext(readFileSync(new URL("fixtures/pieces.js", import.meta.url), 
 const OLD = JSON.parse(JSON.stringify(win.CONTENT));
 
 const count = (s, re) => (s.match(re) || []).length;
-// a credit's words, without where its links go
-const words = (html) => html.replace(/<a [^>]*>/g, "<a>");
 // the old file had the reading page's groups (पूजा, आरती); CONTENT now has the Library's categories (2026-10-21)
 const pieces = (C) => (C.categories || C.groups).flatMap((g) => g.pieces);
 const allLines = (C) => pieces(C).flatMap((p) => [...(p.refrain ? p.refrain.lines : []), ...p.items.flatMap((i) => i.lines || [])]);
 
 describe("CONTENT from the text files", () => {
-  const C = buildContent(LIBRARY, lib, files);
-  // The texts added since (Shree Rudra, Shri Sukta, the Gondavalekar Maharaj aartis and ashtaks, …) are left out of the
+  const C = CONTENT;
+  // The texts added since (Shri Rudra, Shri Sukta, the Gondavalekar Maharaj aartis and ashtaks, …) are left out of the
   // comparison: every text the old file had must come out of the text files exactly as it was, in the same order.
   // Each piece now also names its text (text: its id in library.json), which the old file did not have.
   const OLD_IDS = new Set(pieces(OLD).map((p) => p.id));
   const same = pieces(C)
     .filter((p) => OLD_IDS.has(p.id))
     // (and each [note] is now marked as one, nt, which the old file did not have either: Ghalin Lotangan's ↻ ३ वेळा;
-    // nor a recording to hear under the credit, since 2026-11-11: the Atharvashirsha's; and a credit's link opens the
-    // person's Wikipedia page in the reader's language since 2026-11-15, so its words are compared, not where it goes:
-    // tests/unit/wiki.test.mjs checks the links)
-    .map(({ text, ...p }) => ({ ...p, credit: words(p.credit.replace(/<span class="rec".*$/, "")), items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
-  const OLD_PIECES = pieces(OLD).map((p) => ({ ...p, credit: words(p.credit) }));
+    // nor a recording to hear under the credit, since 2026-11-11: the Atharvashirsha's; and since 2026-11-15 a credit is
+    // written by the site from content/credits.json, each person and source once: tests/unit/credits.test.mjs checks
+    // the credits)
+    .map(({ text, credit, ...p }) => ({ ...p, items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
+  const OLD_PIECES = pieces(OLD).map(({ credit, ...p }) => p); // eslint-disable-line no-unused-vars
   const OLD_C = { categories: [{ pieces: same }] };
   const byId = (Cx, id) => pieces(Cx).find((p) => p.id === id);
   test("is identical to the old content/pieces.js", () => {
@@ -64,7 +63,7 @@ describe("CONTENT from the text files", () => {
   test("every-verse: [once] lines before the dhrupad lead, later ones stand where they are", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: mr\nrefrain: every-verse\n---\n";
     const t = parseText(head + "[once]\nक\nK\n\n[note: अ | a]\n\n[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[once]\nघ\nGh\n");
-    const p = toPiece(t, 1, lib);
+    const p = toPiece(t, 1);
     expect(p.lead).toEqual([
       { kind: "dh", lines: [{ l: "x.1", mr: "क", en: "K" }] },
       { rmk: { mr: "अ", en: "a" }, nt: true },
@@ -76,7 +75,7 @@ describe("CONTENT from the text files", () => {
   // a closing [dhrupad bold] in a text with a dhrupad: said once, bold, with no dhrupad after it
   test("every-verse: a closing [dhrupad bold] is said once, in bold", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: mr\nrefrain: every-verse\n---\n";
-    const p = toPiece(parseText(head + "[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[dhrupad bold]\nघ\nGh\n"), 1, lib);
+    const p = toPiece(parseText(head + "[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[dhrupad bold]\nघ\nGh\n"), 1);
     expect(p.items.map((i) => i.kind || (i.rmk ? "rmk" : "stanza"))).toEqual(["stanza", "rmk", "rf", "dh"]);
     expect(p.items[3]).toEqual({ kind: "dh", bold: true, lines: [{ l: "x.3", mr: "घ", en: "Gh" }] });
   });
@@ -84,7 +83,7 @@ describe("CONTENT from the text files", () => {
   test("no dhrupad: [once] lines at the top lead, later ones stand where they are", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: sa\n---\n";
     const t = parseText(head + "[once]\nक\nK\n\n[1]\nग\nG\n\n[once]\nघ\nGh\n");
-    const p = toPiece(t, 1, lib);
+    const p = toPiece(t, 1);
     expect(p.lead).toEqual([{ kind: "dh", lines: [{ l: "x.1", mr: "क", en: "K" }] }]);
     expect(p.items.map((i) => i.kind || "stanza")).toEqual(["stanza", "dh"]);
     expect(p.items.flatMap((i) => i.lines.map((l) => l.l))).toEqual(["x.2", "x.3"]);
@@ -92,15 +91,25 @@ describe("CONTENT from the text files", () => {
   // layout: lines is a Vedic chant (prose: its font, its glued references, its printout) set line by line (lines)
   test("layout: lines is a Vedic chant set line by line", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: sa\nlayout: lines\n---\n";
-    const p = toPiece(parseText(head + "[1]\nक\nK\n"), 1, lib);
+    const p = toPiece(parseText(head + "[1]\nक\nK\n"), 1);
     expect(p.prose).toBe(true);
     expect(p.cls).toBe("lines");
-    expect(toPiece(parseText(head.replace("lines", "prose") + "[1]\nक\nK\n"), 1, lib).cls).toBeUndefined();
+    expect(toPiece(parseText(head.replace("lines", "prose") + "[1]\nक\nK\n"), 1).cls).toBeUndefined();
   });
   test("a text missing from the files, or listed twice, stops the build", () => {
-    expect(() => buildContent(LIBRARY, lib, { ...files, "aarti-sukhkarta": undefined })).toThrow("texts/aarti-sukhkarta.txt: not loaded");
+    expect(() => buildContent(LIBRARY, { ...files, "aarti-sukhkarta": undefined })).toThrow("texts/aarti-sukhkarta.txt: not loaded");
     const twice = { categories: [...LIBRARY.categories, { id: "more", name: { mr: "अ", en: "A" }, texts: ["aarti-sukhkarta"] }] };
-    expect(() => buildContent(twice, lib, files)).toThrow("library.json: aarti-sukhkarta is listed twice");
+    expect(() => buildContent(twice, files)).toThrow("library.json: aarti-sukhkarta is listed twice");
+  });
+  // the page's language is written once in the code and once in index.html (<html lang>), and they agree: a text in it
+  // carries no lang of its own, one in another language does (for screen readers and the fonts)
+  test("the page's language is index.html's, and only a text in another language says its own", () => {
+    const html = readFileSync(new URL("../../index.html", import.meta.url), "utf8");
+    expect(/<html lang="([^"]+)"/.exec(html)[1]).toBe(PAGE_LANGUAGE);
+    expect(CONTENT.pageLanguage).toBe(PAGE_LANGUAGE);
+    const head = (l) => "id: x\ntitle: क\ntitle-en: K\nlanguage: " + l + "\n---\n[1]\nक\nK\n";
+    expect(toPiece(parseText(head(PAGE_LANGUAGE)), 1).lang).toBeUndefined();
+    expect(toPiece(parseText(head("sa")), 1).lang).toBe("sa");
   });
 });
 
@@ -114,7 +123,7 @@ describe("content checks", () => {
     expect(new Set(IDS).size).toBe(IDS.length);
   });
   test("the reading order is the Library's: its categories in order, each numbered from 1, every text once", () => {
-    const C = buildContent(LIBRARY, lib, files);
+    const C = CONTENT;
     expect(C.categories.map((c) => c.id)).toEqual(LIBRARY.categories.map((c) => c.id));
     expect(C.categories.map((c) => c.name)).toEqual(LIBRARY.categories.map((c) => c.name));
     expect(pieces(C).map((p) => p.text)).toEqual(IDS);
@@ -131,7 +140,8 @@ describe("content checks", () => {
     expect(t.lines).toBe(f.lines);
     // (an app without times, Sankathara Chaturthi, does not count letters)
     if (f.letters !== undefined) expect(t.letters).toBe(f.letters);
-    expect(lib.languages[t.language]).toBeTruthy();
+    // its language named in the site's words, in every menu language (js/strings/, "text")
+    for (const l of ["mr", "en", "kn", "te", "gu"]) expect(menuWords("text", l).lang[t.language], l).toBeTruthy();
   });
   test.each(IDS.map((id) => [id]))("%s is not changed by Unicode normalisation", (id) => {
     const raw = files[id];
@@ -207,7 +217,7 @@ describe("content checks", () => {
     ]);
     ["गणानां᳚ त्वा", "प्र णो᳚ दे॒वी", "वेद॒ वात॑स्य"].forEach((m) => expect(files["vedic-chant-pavamana-suktam"].split(m).length).toBe(2));
   });
-  // Purusha Suktam: each verse a paragraph of its own, a space after every ॥ १ ॥ as Shree Rudra has after each
+  // Purusha Suktam: each verse a paragraph of its own, a space after every ॥ १ ॥ as Shri Rudra has after each
   // anuvaka; Shri Sukta line by line, as Lalita and Pavamana (Satish, 2026-11-10)
   test("Purusha Suktam's every verse starts a paragraph; Shri Sukta is set line by line", () => {
     const pu = parseText(files["vedic-chant-purusha-suktam"], "vedic-chant-purusha-suktam");
@@ -218,7 +228,7 @@ describe("content checks", () => {
   });
   // The Shivanjali book (Bharatiya Hindu Temple, Columbus): its pieces the site did not have yet, made from the book's
   // English edition and checked against its Sanskrit one (Satish, 2026-11-11). Ganapati Atharvashirsha, Laghunyasa,
-  // Shree Rudra (with Chamakam), Purusha Suktam and Durga Suktam were here already.
+  // Shri Rudra (with Chamakam), Purusha Suktam and Durga Suktam were here already.
   const SHIVANJALI = {
     "vedic-chant-shivopasana-mantra": 36,
     "vedic-chant-mantrapushpam": 88,
@@ -265,7 +275,7 @@ describe("content checks", () => {
 test("the texts with a recording link to it, at the second each starts", () => {
   const at = (id) => parseText(files[id], id).recording;
   expect(at("vedic-chant-atharvashirsha")).toBe("[Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90)");
-  expect(at("vedic-chant-shree-rudra")).toMatch(/OQhyYdoKW1k&t=685\)$/);
+  expect(at("vedic-chant-shri-rudra")).toMatch(/OQhyYdoKW1k&t=685\)$/);
   expect(at("vedic-chant-shivopasana-mantra")).toMatch(/OQhyYdoKW1k&t=2534\)$/);
   expect(at("vedic-chant-durga-suktam")).toMatch(/OQhyYdoKW1k&t=2778\)$/);
   expect(at("vedic-chant-pavamana-suktam").split(", ")).toHaveLength(2);

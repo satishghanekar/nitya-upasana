@@ -912,4 +912,18 @@ export default {
     gu: "ಗುಜರಾತಿ ವಿಕಿಪೀಡಿಯ",
     tab: "ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ",
   },
+  // The words the site adds to a text (js/strings/en.js)
+  text: {
+    refrainLabel: "ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)",
+    refrainNote: "↻ ಧ್ರುಪದ",
+    prev: "ಹಿಂದಿನ",
+    next: "ಮುಂದಿನ",
+    by: "ರಚನೆ :",
+    // a name in a sentence, at {name}, so each language puts it where it goes
+    attributed: "{name} ಅವರದೆಂದು ಹೇಳಲಾಗುತ್ತದೆ",
+    also: "(ಇವರದೆಂದೂ ಹೇಳಲಾಗುತ್ತದೆ : {name})",
+    compiledBy: "ಸಂಕಲನ :",
+    traditional: "ಸಾಂಪ್ರದಾಯಿಕ",
+    lang: { sa: "ಸಂಸ್ಕೃತ", mr: "ಮರಾಠಿ", hi: "ಹಿಂದಿ" },
+  },
 };

@@ -11,7 +11,7 @@ describe("header", () => {
   test("required and optional fields", () => {
     const t = parse(
       "[1]\nक\nK\n",
-      "legacy-id: a1\nline-ids: s1l\nline-id-exceptions: s1l4=s1l4r, s1l5=s1l5b\nlayout: prose\ncredit: रचना : [नाव](wiki:Samarth_Ramdas)\n",
+      "legacy-id: a1\nline-ids: s1l\nline-id-exceptions: s1l4=s1l4r, s1l5=s1l5b\nlayout: prose\ncredit: source rigveda | मण्डल ९ | Mandala 9\n",
     );
     expect(t).toMatchObject({
       id: "x",
@@ -23,8 +23,24 @@ describe("header", () => {
       lineIdExceptions: { s1l4: "s1l4r", s1l5: "s1l5b" },
       refrain: "none",
       layout: "prose",
-      credit: "रचना : [नाव](wiki:Samarth_Ramdas)",
+      credit: { role: "source", who: "rigveda", detail: { mr: "मण्डल ९", en: "Mandala 9" } },
     });
+  });
+  // a text's credit in one line (Satish, 2026-11-15): its role, the key of a person or a source in content/credits.json,
+  // another it is also credited to, and what only the text says; written back as it was
+  test.each([
+    ["author samarth-ramdas", { role: "author", who: "samarth-ramdas" }],
+    ["author vishnudas-nama, also namdev", { role: "author", who: "vishnudas-nama", also: "namdev" }],
+    ["attributed adi-shankara", { role: "attributed", who: "adi-shankara" }],
+    [
+      "compiled namdev | व संस्कृत स्तोत्रे | and Sanskrit verses",
+      { role: "compiled", who: "namdev", detail: { mr: "व संस्कृत स्तोत्रे", en: "and Sanskrit verses" } },
+    ],
+    ["traditional", { role: "traditional" }],
+  ])("a credit: %s", (line, want) => {
+    const t = parse("[1]\nक\nK\n", "credit: " + line + "\n");
+    expect(t.credit).toEqual(want);
+    expect(formatText(t)).toContain("\ncredit: " + line + "\n");
   });
   test.each([
     ["a missing field", "id: x\ntitle: क\nlanguage: mr\n---\n", /"title-en" is missing/],
@@ -37,9 +53,15 @@ describe("header", () => {
     ["an unknown layout", HEAD + "layout: poem\n---\n", /layout can only be "prose" or "lines"/],
     // where a text stands is the library's (content/library.json), not the file's
     ["a category", HEAD + "category: aarti\n---\n", /unknown header field "category"/],
-    // a credit's link names a page by its English title, never an address: the page is chosen in the reader's language
-    ["a credit linking an address", HEAD + "credit: [X](https://mr.wikipedia.org/wiki/X)\n---\n", /a credit's link is \[name\]\(wiki:English_Wikipedia_page\)/],
-    ["a credit's name with a space", HEAD + "credit-en: By [X](wiki:Samarth Ramdas)\n---\n", /a credit's link is/],
+    // a credit names its person or source by their key in content/credits.json; the credit lines themselves are the site's
+    ["a credit written out", HEAD + "credit: रचना : X\n---\n", /credit is "author samarth-ramdas"/],
+    ["an unknown role", HEAD + "credit: composer eknath\n---\n", /credit is "author/],
+    ["a key not in lower case and hyphens", HEAD + "credit: author Samarth_Ramdas\n---\n", /credit is "author/],
+    ["a detail in one language", HEAD + "credit: source rigveda | मण्डल ९\n---\n", /credit is "author/],
+    ["traditional with a name", HEAD + "credit: traditional eknath\n---\n", /credit is "author/],
+    ["also with no author", HEAD + "credit: attributed adi-shankara, also namdev\n---\n", /", also" another person goes with author/],
+    // (the fields a credit was written in before 2026-11-15)
+    ["the old fields", HEAD + "author: eknath\n---\n", /unknown header field "author"/],
     // lines and letters are written by npm run texts: whole numbers
     ["lines that are not a number", HEAD + "lines: twelve\n---\n", /lines is a whole number/],
     ["letters of 0", HEAD + "letters: 0\n---\n", /letters is a whole number/],

@@ -4,8 +4,7 @@ title-en: Shri Sukta
 language: sa
 layout: lines
 stanza-numbers: as-written
-credit: ऋग्वेद (खिलसूक्त)
-credit-en: Rig Veda (Khila Sukta)
+credit: source rigveda | खिलसूक्त | Khila Sukta
 lines: 38
 letters: 1432
 ---

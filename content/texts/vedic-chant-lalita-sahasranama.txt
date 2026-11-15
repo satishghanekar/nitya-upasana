@@ -4,8 +4,7 @@ title-en: Shri Lalita Sahasranama
 language: sa
 layout: lines
 stanza-numbers: as-written
-credit: [ब्रह्माण्डपुराण](wiki:Lalita_Sahasranama)
-credit-en: [Brahmanda Purana](wiki:Lalita_Sahasranama)
+credit: source brahmanda-purana
 recording: [Rajshri Soul](https://www.youtube.com/watch?v=DtSBLpQStT4&t=87)
 lines: 394
 letters: 13769

@@ -1,8 +1,8 @@
 // The site's content as the tests read it, in one place: content/library.json (the categories, each with its texts in
-// reading order), content/site.json (what every text shares), content/wiki.json, each text's file, and CONTENT built from them by the
-// site's own code (js/text/content.js), as js/text/load.js builds it in the page. The unit tests and the browser tests
+// reading order), content/timing.json (the chanting paces, where the app has them), content/credits.json,
+// content/wiki.json, each text's file, and CONTENT built from them by the site's own code (js/text/content.js), as js/text/load.js builds it in the page. The unit tests and the browser tests
 // import these, so none reads the files its own way.
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { buildContent } from "../js/text/content.js";
 import { menuWords } from "../js/core/strings.js";
 
@@ -10,16 +10,18 @@ const read = (p) => readFileSync(new URL("../content/" + p, import.meta.url), "u
 
 /** content/library.json */
 export const LIBRARY = JSON.parse(read("library.json"));
-/** content/site.json */
-export const SITE = JSON.parse(read("site.json"));
+/** content/timing.json: the chanting paces (null in an app without them, Sankathara Chaturthi) */
+export const TIMING = existsSync(new URL("../content/timing.json", import.meta.url)) ? JSON.parse(read("timing.json")) : null;
 /** every text's id, in reading order */
 export const IDS = LIBRARY.categories.flatMap((c) => c.texts);
 /** each text's file, by id */
 export const FILES = Object.fromEntries(IDS.map((id) => [id, read("texts/" + id + ".txt")]));
-/** content/wiki.json: each Wikidata item a link names, and its page on each Wikipedia */
+/** content/wiki.json: each page a link names, and its title on each Wikipedia */
 export const WIKI = JSON.parse(read("wiki.json"));
+/** content/credits.json: who and what the texts come from */
+export const CREDITS = JSON.parse(read("credits.json"));
 /** CONTENT, as the page builds it */
-export const CONTENT = buildContent(LIBRARY, SITE, FILES, WIKI, (l) => menuWords("wiki", l));
+export const CONTENT = buildContent(LIBRARY, FILES, { wiki: WIKI, credits: CREDITS, words: menuWords, timing: TIMING });
 /** each text's facts (its header, its category from the library), in reading order */
 export const TEXTS = IDS.map((id) => CONTENT.texts[id]);
 /** the bundled categories, numbered in order, as js/core/library.js takes them */

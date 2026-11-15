@@ -84,7 +84,7 @@ test("search in the Library finds a line and goes to it", async ({ page }) => {
 test("search lists texts by their title first; a text found only inside it is under Lines", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#hm").click();
-  // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotra, but only Jai Ganesh Deva has Ganesh in its title
+  // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotram, but only Jai Ganesh Deva has Ganesh in its title
   await page.locator("#q").fill("ganesh");
   await expect(page.locator("#res li.rt")).toHaveCount(1);
   await expect(page.locator("#res li.rt .rl")).toHaveText("आरती जय गणेश देवा");
@@ -318,14 +318,14 @@ test("the Library lists the texts by category; empty categories are left out; ea
     "a8",
     "a9",
     "a10",
-    "aarti-jaydeva-jaydeva-samartha",
+    "aarti-jayadeva-jayadeva-samartha",
     "aarti-jay-jay-aarti-shrigururaya",
-    "aarti-ovaloon-aarti-chaitanyabrahma",
+    "aarti-ovalun-aarti-chaitanyabrahma",
     "aarti-kariton-guruvar",
     "aarti-dhanya-jagin-guruvarya",
     "aarti-belaguve",
     "aarti-svastha-karin-shayan",
-    "aarti-ovaloo-sapreme-aarti",
+    "aarti-nana-maharajanchi",
     "aarti-jai-shiv-omkara",
   ]);
   // numbered from 1 in each category (Satish, 2026-10-21), in Marathi and English digits

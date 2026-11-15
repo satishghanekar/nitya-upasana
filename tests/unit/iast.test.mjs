@@ -31,7 +31,7 @@ describe("IAST", () => {
   });
 });
 
-// found by the print tests on the newer texts (Shree Rudra, Lalita)
+// found by the print tests on the newer texts (Shri Rudra, Lalita)
 describe("IAST edge letters", () => {
   test("the Vedic anusvara as one sign, ꣳ, is gṃ, as ग्ं is: ईश्वरीꣳ (the Shri Sukta)", () => {
     expect(IA("ईश्वरीꣳ")).toBe("īśvarīgṃ");

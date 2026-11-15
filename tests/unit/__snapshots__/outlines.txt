@@ -30,31 +30,31 @@ vedic-chant-laghunyasa
     part s2.p2: २ / 2 @ vedic-chant-laghunyasa.73
     part s2.p3: ३ / 3 @ vedic-chant-laghunyasa.76
   10 verses: 1 … 10
-vedic-chant-shree-rudra
-  section s2: नमकम् / Namakam @ vedic-chant-shree-rudra.2
-    part s2.p1: अनुवाकः १ / Anuvaka 1 @ vedic-chant-shree-rudra.2
-    part s2.p2: अनुवाकः २ / Anuvaka 2 @ vedic-chant-shree-rudra.38
-    part s2.p3: अनुवाकः ३ / Anuvaka 3 @ vedic-chant-shree-rudra.51
-    part s2.p4: अनुवाकः ४ / Anuvaka 4 @ vedic-chant-shree-rudra.68
-    part s2.p5: अनुवाकः ५ / Anuvaka 5 @ vedic-chant-shree-rudra.84
-    part s2.p6: अनुवाकः ६ / Anuvaka 6 @ vedic-chant-shree-rudra.92
-    part s2.p7: अनुवाकः ७ / Anuvaka 7 @ vedic-chant-shree-rudra.100
-    part s2.p8: अनुवाकः ८ / Anuvaka 8 @ vedic-chant-shree-rudra.108
-    part s2.p9: अनुवाकः ९ / Anuvaka 9 @ vedic-chant-shree-rudra.116
-    part s2.p10: अनुवाकः १० / Anuvaka 10 @ vedic-chant-shree-rudra.125
-    part s2.p11: अनुवाकः ११ / Anuvaka 11 @ vedic-chant-shree-rudra.150
-  section s3: चमकम् / Chamakam @ vedic-chant-shree-rudra.182
-    part s3.p1: अनुवाकः १ / Anuvaka 1 @ vedic-chant-shree-rudra.183
-    part s3.p2: अनुवाकः २ / Anuvaka 2 @ vedic-chant-shree-rudra.193
-    part s3.p3: अनुवाकः ३ / Anuvaka 3 @ vedic-chant-shree-rudra.202
-    part s3.p4: अनुवाकः ४ / Anuvaka 4 @ vedic-chant-shree-rudra.210
-    part s3.p5: अनुवाकः ५ / Anuvaka 5 @ vedic-chant-shree-rudra.218
-    part s3.p6: अनुवाकः ६ / Anuvaka 6 @ vedic-chant-shree-rudra.225
-    part s3.p7: अनुवाकः ७ / Anuvaka 7 @ vedic-chant-shree-rudra.234
-    part s3.p8: अनुवाकः ८ / Anuvaka 8 @ vedic-chant-shree-rudra.241
-    part s3.p9: अनुवाकः ९ / Anuvaka 9 @ vedic-chant-shree-rudra.246
-    part s3.p10: अनुवाकः १० / Anuvaka 10 @ vedic-chant-shree-rudra.252
-    part s3.p11: अनुवाकः ११ / Anuvaka 11 @ vedic-chant-shree-rudra.262
+vedic-chant-shri-rudra
+  section s2: नमकम् / Namakam @ vedic-chant-shri-rudra.2
+    part s2.p1: अनुवाकः १ / Anuvaka 1 @ vedic-chant-shri-rudra.2
+    part s2.p2: अनुवाकः २ / Anuvaka 2 @ vedic-chant-shri-rudra.38
+    part s2.p3: अनुवाकः ३ / Anuvaka 3 @ vedic-chant-shri-rudra.51
+    part s2.p4: अनुवाकः ४ / Anuvaka 4 @ vedic-chant-shri-rudra.68
+    part s2.p5: अनुवाकः ५ / Anuvaka 5 @ vedic-chant-shri-rudra.84
+    part s2.p6: अनुवाकः ६ / Anuvaka 6 @ vedic-chant-shri-rudra.92
+    part s2.p7: अनुवाकः ७ / Anuvaka 7 @ vedic-chant-shri-rudra.100
+    part s2.p8: अनुवाकः ८ / Anuvaka 8 @ vedic-chant-shri-rudra.108
+    part s2.p9: अनुवाकः ९ / Anuvaka 9 @ vedic-chant-shri-rudra.116
+    part s2.p10: अनुवाकः १० / Anuvaka 10 @ vedic-chant-shri-rudra.125
+    part s2.p11: अनुवाकः ११ / Anuvaka 11 @ vedic-chant-shri-rudra.150
+  section s3: चमकम् / Chamakam @ vedic-chant-shri-rudra.182
+    part s3.p1: अनुवाकः १ / Anuvaka 1 @ vedic-chant-shri-rudra.183
+    part s3.p2: अनुवाकः २ / Anuvaka 2 @ vedic-chant-shri-rudra.193
+    part s3.p3: अनुवाकः ३ / Anuvaka 3 @ vedic-chant-shri-rudra.202
+    part s3.p4: अनुवाकः ४ / Anuvaka 4 @ vedic-chant-shri-rudra.210
+    part s3.p5: अनुवाकः ५ / Anuvaka 5 @ vedic-chant-shri-rudra.218
+    part s3.p6: अनुवाकः ६ / Anuvaka 6 @ vedic-chant-shri-rudra.225
+    part s3.p7: अनुवाकः ७ / Anuvaka 7 @ vedic-chant-shri-rudra.234
+    part s3.p8: अनुवाकः ८ / Anuvaka 8 @ vedic-chant-shri-rudra.241
+    part s3.p9: अनुवाकः ९ / Anuvaka 9 @ vedic-chant-shri-rudra.246
+    part s3.p10: अनुवाकः १० / Anuvaka 10 @ vedic-chant-shri-rudra.252
+    part s3.p11: अनुवाकः ११ / Anuvaka 11 @ vedic-chant-shri-rudra.262
   22 verses: 1 … 11
 vedic-chant-durga-suktam: none
 vedic-chant-shivopasana-mantra: none
@@ -165,23 +165,23 @@ vedic-chant-mantrapushpam
 vedic-chant-chakshushopanishad: none
 vedic-chant-shri-sukta-phalashruti: none
 aarti-sukhkarta: none
-aarti-shendur-lal-chadhayo: none
-aarti-durge-durghat-bhari: none
-aarti-lavathavati-vikrala: none
-aarti-trigunatmak-traimurti: none
-aarti-dnyanaraja: none
-aarti-yei-o-vitthale: none
+aarti-shendur-laal-chadhayo: none
+aarti-devi: none
+aarti-shankar: none
+aarti-dattatreya: none
+aarti-dnyaneshwar: none
+aarti-vitthal: none
 aarti-ghalin-lotangan: none
 aarti-jai-ganesh-deva: none
 aarti-jai-jagdish-hare: none
-aarti-jaydeva-jaydeva-samartha: none
+aarti-jayadeva-jayadeva-samartha: none
 aarti-jay-jay-aarti-shrigururaya: none
-aarti-ovaloon-aarti-chaitanyabrahma: none
+aarti-ovalun-aarti-chaitanyabrahma: none
 aarti-kariton-guruvar: none
 aarti-dhanya-jagin-guruvarya: none
 aarti-belaguve: none
 aarti-svastha-karin-shayan: none
-aarti-ovaloo-sapreme-aarti: none
+aarti-nana-maharajanchi: none
 aarti-jai-shiv-omkara: none
 stotra-maruti-stotra: none
 stotra-hanuman-chalisa
@@ -201,7 +201,7 @@ stotra-shant-ho-shriguru: none
 stotra-shriguru-datta-jay: none
 stotra-jay-karunaghan-nij: none
 stotra-ghorakashtoddharan: none
-stotra-vandu-guruchya-charanarvinda: none
+stotra-vandu-guruchya-charanaravinda: none
 stotra-martand-bavani: none
 stotra-sadguru-vandana: none
 ashtak-sadguru-padukashtak: none
@@ -214,9 +214,9 @@ ashtak-thursday: none
 ashtak-friday: none
 ashtak-saturday: none
 ashtak-sunday: none
-ashtak-haachi-subodh: none
+ashtak-hachi-subodh: none
 ashtak-brahmachaitanya-sarikha: none
-ashtak-swami-majha-pahila: none
+ashtak-svami-majha-pahila: none
 ashtak-surya-ashtakam: none
 ashtak-lingashtakam: none
 ashtak-nandikeshvara-ashtakam: none

@@ -1,12 +1,11 @@
-id: aarti-shendur-lal-chadhayo
+id: aarti-shendur-laal-chadhayo
 title: शेंदुर लाल चढ़ायो
 title-en: Shendur Laal Chadhayo
 language: hi
 legacy-id: a2
 line-ids: s2l
 refrain: every-verse
-credit: रचना : गोसावीनंदन
-credit-en: By Gosavinandan
+credit: author gosavinandan
 lines: 15
 letters: 488
 ---

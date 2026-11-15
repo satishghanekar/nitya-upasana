@@ -1,4 +1,4 @@
-id: ashtak-haachi-subodh
+id: ashtak-hachi-subodh
 title: हाचि सुबोध गुरूंचा
 title-en: Hachi Subodh Guruncha
 language: mr

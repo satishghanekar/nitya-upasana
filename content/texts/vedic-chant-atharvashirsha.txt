@@ -5,8 +5,7 @@ language: sa
 legacy-id: p1
 line-ids: p1l
 layout: prose
-credit: [अथर्ववेदीय उपनिषद](wiki:Ganapati_Atharvaśīrṣa)
-credit-en: [An Atharva Veda Upanishad](wiki:Ganapati_Atharvaśīrṣa)
+credit: source atharvaveda | उपनिषद | Upanishad
 recording: [Challakere Brothers](https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90)
 lines: 103
 letters: 2783

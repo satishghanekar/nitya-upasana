@@ -1,12 +1,11 @@
-id: aarti-durge-durghat-bhari
+id: aarti-devi
 title: देवीची आरती
 title-en: Devi Aarti
 language: mr
 legacy-id: a3
 line-ids: s3l
 refrain: every-verse
-credit: रचना : [संत नरहरी सोनार](wiki:Narahari_Sonar) (१३ वे शतक)
-credit-en: By [Sant Narahari Sonar](wiki:Narahari_Sonar) (13th century)
+credit: author narahari-sonar
 lines: 15
 letters: 502
 ---

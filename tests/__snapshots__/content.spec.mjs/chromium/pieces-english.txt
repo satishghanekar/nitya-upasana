@@ -207,7 +207,7 @@ Svasti No Bruhaspatirdadhatu ||
 
 || Om Shantih Shantih Shantih ||
 
-An Atharva Veda Upanishad ↗
+Atharvaveda ↗ (Upanishad)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-purusha-suktam
@@ -518,7 +518,7 @@ Tanno Dhara Prachodayat ||
 
 || Om Shantih Shantih Shantih ||
 
-Rig Veda (Khila Sukta)
+Rigveda ↗ (Khila Sukta)
 
 ### vedic-chant-laghunyasa
 4. Laghunyasa
@@ -691,8 +691,8 @@ Mebhayam Cha Me Sugam Cha Me Shayanam Cha Me Susha Cha Me Sudinam Cha Me ||
 
 || Om Shantih Shantih Shantih ||
 
-### vedic-chant-shree-rudra
-5. Shree Rudra
+### vedic-chant-shri-rudra
+5. Shri Rudra
 
 Om Namo Bhagavate Rudraya ||
 
@@ -1294,7 +1294,7 @@ Tanno Durgih Prachodayat ||
 
 || Om Shantih Shantih Shantih ||
 
-Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)
+Mahanarayana Upanishad ↗ (Krishna Yajurveda, Taittiriya Aranyaka)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-shivopasana-mantra
@@ -1372,7 +1372,7 @@ Sarvo Hyesha Rudrastasmai Rudraya Namo Astu ||
 
 Om Shantih Shantih Shantih ||
 
-Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad) ↗
+Mahanarayana Upanishad ↗ (Krishna Yajurveda, Taittiriya Aranyaka)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-pavamana-suktam
@@ -3948,7 +3948,7 @@ Shiva Dishah Pradisha Uddisho Na Apo Vishvatah Paripantu Sarvashah Shanti Shanti
 
 || Shrikrushnarpanamastu ||
 
-Rigveda, Mandala 9 ↗
+Rigveda ↗ (Mandala 9)
 ▶ YouTube: Challakere Brothers ↗ · Anantha Padmanabha Bhat and Govind Prakash Bhat ↗
 
 ### vedic-chant-lalita-sahasranama
@@ -5553,7 +5553,7 @@ Nyunatiriktam Yatkinchit Kshamasva Purushottama ||
 
 Harih Om ||
 
-Mahabharata, Anushasana Parva ↗
+Mahabharata ↗ (Anushasana Parva)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-mantra-pushpanjali
@@ -5919,7 +5919,7 @@ Shriya Evainam Tachchhriyamadadhati | Santatamrucha Vashatkrutyam
 
 Sandhattam Sandhiyate Prajaya Pashubhih | Ya Evam Veda |
 
-Rig Veda (Khila Sukta), with later verses
+Rigveda ↗ (Khila Sukta, with later verses)
 
 ### a1
 1. Sukhkarta Dukhharta
@@ -6221,7 +6221,7 @@ Vishnudas Naama, Vishnudas Naama Jivebhave Owaali |
 Ho Jivebhave Owaali || 4 ||
 
 ↻ Refrain
-By Vishnudas Nama
+By Vishnudas Nama ↗ (16th century)
 (also credited to Sant Namdev ↗)
 
 ### a8
@@ -6260,7 +6260,7 @@ Hare Ram Hare Ram Ram Ram Hare Hare |
 Hare Krishna Hare Krishna Krishna Krishna Hare Hare ||
 
 ↻ 3 times
-A compilation: Sant Namdev and Sanskrit verses
+A compilation: Sant Namdev ↗ and Sanskrit verses
 
 ### a9
 9. Aarti Jai Ganesh Deva
@@ -6358,7 +6358,7 @@ Om Jai Jagdish Hare || 9 ||
 
 By Pt. Shardha Ram Phillauri ↗ (c. 1870)
 
-### aarti-jaydeva-jaydeva-samartha
+### aarti-jayadeva-jayadeva-samartha
 11. Jayadeva Jayadeva Jay Jay Samartha
 Refrain (sung after every verse)
 
@@ -6426,7 +6426,7 @@ Namarupatit Tun Abhirama || 3 ||
 
 ↻ Refrain
 
-### aarti-ovaloon-aarti-chaitanyabrahma
+### aarti-ovalun-aarti-chaitanyabrahma
 13. Ovalun Aarti Sadguru Chaitanyabrahma
 Refrain (sung after every verse)
 
@@ -6623,7 +6623,7 @@ Mahabhagavat Prarthi Kanhin Chakari || 3 ||
 
 ↻ Refrain
 
-### aarti-ovaloo-sapreme-aarti
+### aarti-nana-maharajanchi
 18. Aarti Shri Nana Maharajanchi
 
 || Avadhut Chintan Shri Gurudev Datta ||
@@ -6982,7 +6982,7 @@ Ram Lakhan Sita Sahit, Hriday Basahu Sur Bhoop ||
 By Goswami Tulsidas ↗ (1532–1623)
 
 ### stotra-ram-raksha
-3. Shri Ram Raksha Stotra
+3. Shri Ram Raksha Stotram
 
 || Shriganeshaya Namah ||
 
@@ -7188,7 +7188,7 @@ Sahasranama Tattulyam Ramanama Varanane || 38 ||
 
 || Shriramachandrarpanamastu ||
 
-Budha Kaushika Rishi
+By Budha Kaushika Rishi
 
 ### stotra-shiva-panchakshara
 4. Shiva Panchakshara Stotram
@@ -7625,7 +7625,7 @@ Jay Karunaghan || 5 ||
 By Shri Vasudevanand Saraswati (Tembe Swami) ↗ (1854–1914)
 
 ### stotra-ghorakashtoddharan
-10. Ghorakashtoddharan Stotra
+10. Ghorakashtoddharan Stotram
 
 Shripad Shrivallabh Tvam Sadaiva, Shri Dattasmanpahi Devadhideva |
 
@@ -7657,7 +7657,7 @@ Prapathenniyato Bhaktya Sa Shridattapriyo Bhavet || 6 ||
 
 By Shri Vasudevanand Saraswati (Tembe Swami) ↗ (1854–1914)
 
-### stotra-vandu-guruchya-charanarvinda
+### stotra-vandu-guruchya-charanaravinda
 11. Vandu Guruchya Charanaravinda
 
 Vandu Guruchya Charanaravinda | Agadh Jyacha Mahima Prabuddha |
@@ -7905,7 +7905,7 @@ Dya Bhaktishraddha Antari An, Thav Charani Dya Aamhan || Dhr. ||
 || Avadhut Chintan Shri Gurudev Datta ||
 
 ### ashtak-sadguru-padukashtak
-1. Shrisadgurupadukashtak
+1. Shri Sadguru Padukashtak
 
 Jya Sangatinench Virag Jhala |
 
@@ -8768,7 +8768,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 8 ||
 
 || Jay Jay Raghuvir Samartha ||
 
-### ashtak-haachi-subodh
+### ashtak-hachi-subodh
 11. Hachi Subodh Guruncha
 
 Nam Sada Bolaven, Gaven Bhaven, Janansi Sangaven |
@@ -8887,7 +8887,7 @@ Dasadasachen Maher | Aisa Nahin Pahila || 8 ||
 
 || Jay Jay Raghuvir Samartha ||
 
-### ashtak-swami-majha-pahila
+### ashtak-svami-majha-pahila
 13. Svami Majha Pahila
 Refrain (sung after every verse)
 

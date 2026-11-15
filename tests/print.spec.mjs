@@ -76,7 +76,7 @@ test("a few texts: their own contents @chromium-only", async ({ browser }) => {
   const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
   const page = await context.newPage();
   await stubPrint(page);
-  await openSite(page, SETUPS.marathi, { hash: "?print=as&t=vedic-chant-atharvashirsha,aarti-durge-durghat-bhari,aarti-ghalin-lotangan" });
+  await openSite(page, SETUPS.marathi, { hash: "?print=as&t=vedic-chant-atharvashirsha,aarti-devi,aarti-ghalin-lotangan" });
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
   await page.emulateMedia({ media: "print" });
   const pv = await readPrintView(page);
@@ -104,7 +104,7 @@ test("the contents follow the Library as this phone lists it: a renamed category
   await page.locator("#lbs-aarti-ghalin-lotangan").selectOption("vedic-chant");
   await page.locator("#lbx").click();
   // (the categories are kept on this phone, so a print link opened now prints with them)
-  await page.goto("./?print=as&t=vedic-chant-atharvashirsha,aarti-durge-durghat-bhari,aarti-ghalin-lotangan");
+  await page.goto("./?print=as&t=vedic-chant-atharvashirsha,aarti-devi,aarti-ghalin-lotangan");
   await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
   await page.emulateMedia({ media: "print" });
   const pv = await readPrintView(page);
@@ -1194,9 +1194,9 @@ const P5_ROUTINE = {
     },
   },
   afternoon: { mode: "fixed", texts: [] },
-  evening: { mode: "fixed", texts: ["aarti-durge-durghat-bhari", "aarti-sukhkarta"] },
+  evening: { mode: "fixed", texts: ["aarti-devi", "aarti-sukhkarta"] },
 };
-const P5_ORDER = ["vedic-chant-atharvashirsha", "aarti-sukhkarta", "aarti-durge-durghat-bhari", "aarti-ghalin-lotangan"];
+const P5_ORDER = ["vedic-chant-atharvashirsha", "aarti-sukhkarta", "aarti-devi", "aarti-ghalin-lotangan"];
 const P5_TAGS = ["Mon · Morning", "Daily · Morning, Evening", "Daily · Evening", "Sat · Morning"];
 // a ready-made Daily of its own, the same every day, to print in place of the person reading's
 const P5_DAILY = {
@@ -1247,18 +1247,18 @@ test("print builder: the Routine tab: which routine, when and which session @chr
   await expect(page.locator('[data-rses="all"]')).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator('[data-rses="afternoon"]')).toBeDisabled();
   await expect(heading).toHaveText("Thursday");
-  expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-durge-durghat-bhari"]);
+  expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-devi"]);
   await expect(page.locator(".prrl .prtag")).toHaveCount(0);
   // one session, in Home's order
   await page.locator('[data-rses="evening"]').click();
   await expect(heading).toHaveText("Thursday · Evening");
-  expect(await ids()).toEqual(["aarti-durge-durghat-bhari", "aarti-sukhkarta"]);
+  expect(await ids()).toEqual(["aarti-devi", "aarti-sukhkarta"]);
   await expect(page.locator("#prsum span").first()).toHaveText("2 texts");
   // another day keeps the session; All gives the whole day
   await page.locator(".prwhen").selectOption("6");
   await expect(heading).toHaveText("Saturday · Evening");
   await page.locator('[data-rses="all"]').click();
-  expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan", "aarti-durge-durghat-bhari"]);
+  expect(await ids()).toEqual(["aarti-sukhkarta", "aarti-ghalin-lotangan", "aarti-devi"]);
   // the whole week: each text once, in routine order, with its tag; then mornings only
   await page.locator(".prwhen").selectOption("week");
   await expect(heading).toHaveText("Printed once each, in routine order");

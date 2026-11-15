@@ -1,12 +1,11 @@
-id: aarti-dnyanaraja
+id: aarti-dnyaneshwar
 title: ज्ञानेश्वरांची आरती
 title-en: Dnyaneshwar Aarti
 language: mr
 legacy-id: a6
 line-ids: s6l
 refrain: every-verse
-credit: रचना : रामा जनार्दन
-credit-en: By Rama Janardan
+credit: author rama-janardan
 lines: 9
 letters: 366
 ---

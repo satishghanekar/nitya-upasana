@@ -447,7 +447,7 @@ Svasti No Bruhaspatirdadhatu ||
 
 ॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
 
-An Atharva Veda Upanishad ↗
+Atharvaveda ↗ (Upanishad)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-purusha-suktam
@@ -1062,7 +1062,7 @@ Tanno Dhara Prachodayat ||
 
 ॥ ॐ शान्तिः शान्तिः शान्तिः ॥
 
-Rig Veda (Khila Sukta)
+Rigveda ↗ (Khila Sukta)
 
 ### vedic-chant-laghunyasa
 4.
@@ -1403,9 +1403,9 @@ Mebhayam Cha Me Sugam Cha Me Shayanam Cha Me Susha Cha Me Sudinam Cha Me ||
 
 ॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
 
-### vedic-chant-shree-rudra
+### vedic-chant-shri-rudra
 5.
-Shree Rudra
+Shri Rudra
 श्री रुद्रप्रश्नः
 
 Om Namo Bhagavate Rudraya ||
@@ -2600,7 +2600,7 @@ Tanno Durgih Prachodayat ||
 
 ॥ ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
 
-Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad)
+Mahanarayana Upanishad ↗ (Krishna Yajurveda, Taittiriya Aranyaka)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-shivopasana-mantra
@@ -2752,7 +2752,7 @@ Om Shantih Shantih Shantih ||
 
 ॐ शान्तिः॒ शान्तिः॒ शान्तिः॑ ॥
 
-Krishna Yajurveda, Taittiriya Aranyaka (Mahanarayana Upanishad) ↗
+Mahanarayana Upanishad ↗ (Krishna Yajurveda, Taittiriya Aranyaka)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-pavamana-suktam
@@ -7892,7 +7892,7 @@ Shiva Dishah Pradisha Uddisho Na Apo Vishvatah Paripantu Sarvashah Shanti Shanti
 
 ॥ श्रीकृष्णार्पणमस्तु ॥
 
-Rigveda, Mandala 9 ↗
+Rigveda ↗ (Mandala 9)
 ▶ YouTube: Challakere Brothers ↗ · Anantha Padmanabha Bhat and Govind Prakash Bhat ↗
 
 ### vedic-chant-lalita-sahasranama
@@ -11079,7 +11079,7 @@ Harih Om ||
 
 हरिः ॐ ॥
 
-Mahabharata, Anushasana Parva ↗
+Mahabharata ↗ (Anushasana Parva)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-mantra-pushpanjali
@@ -11797,7 +11797,7 @@ Sandhattam Sandhiyate Prajaya Pashubhih | Ya Evam Veda |
 
 सन्धत्तं सन्धीयते प्रजया पशुभिः । य एवं वेद ।
 
-Rig Veda (Khila Sukta), with later verses
+Rigveda ↗ (Khila Sukta, with later verses)
 
 ### a1
 1.
@@ -12336,7 +12336,7 @@ Ho Jivebhave Owaali || 4 ||
 हो जीवेभावे ओवाळी ॥ ४ ॥
 
 ↻ ध्रुपदRefrain
-By Vishnudas Nama
+By Vishnudas Nama ↗ (16th century)
 (also credited to Sant Namdev ↗)
 
 ### a8
@@ -12409,7 +12409,7 @@ Hare Krishna Hare Krishna Krishna Krishna Hare Hare ||
 हरे कृष्ण हरे कृष्णकृष्ण कृष्ण हरे हरे ॥
 
 ↻ ३ वेळा3 times
-A compilation: Sant Namdev and Sanskrit verses
+A compilation: Sant Namdev ↗ and Sanskrit verses
 
 ### a9
 9.
@@ -12591,7 +12591,7 @@ Om Jai Jagdish Hare || 9 ||
 
 By Pt. Shardha Ram Phillauri ↗ (c. 1870)
 
-### aarti-jaydeva-jaydeva-samartha
+### aarti-jayadeva-jayadeva-samartha
 11.
 Jayadeva Jayadeva Jay Jay Samartha
 जयदेवा जयदेवा जय जय समर्था
@@ -12707,7 +12707,7 @@ Namarupatit Tun Abhirama || 3 ||
 
 ↻ ध्रुपदRefrain
 
-### aarti-ovaloon-aarti-chaitanyabrahma
+### aarti-ovalun-aarti-chaitanyabrahma
 13.
 Ovalun Aarti Sadguru Chaitanyabrahma
 ओवाळूं आरती सद्‌गुरु चैतन्यब्रह्मा
@@ -13050,7 +13050,7 @@ Mahabhagavat Prarthi Kanhin Chakari || 3 ||
 
 ↻ ध्रुपदRefrain
 
-### aarti-ovaloo-sapreme-aarti
+### aarti-nana-maharajanchi
 18.
 Aarti Shri Nana Maharajanchi
 आरती श्री नानामहाराजांची
@@ -13732,7 +13732,7 @@ By Goswami Tulsidas ↗ (1532–1623)
 
 ### stotra-ram-raksha
 3.
-Shri Ram Raksha Stotra
+Shri Ram Raksha Stotram
 श्रीरामरक्षास्तोत्रम्
 
 || Shriganeshaya Namah ||
@@ -14139,7 +14139,7 @@ Sahasranama Tattulyam Ramanama Varanane || 38 ||
 
 ॥ श्रीरामचन्द्रार्पणमस्तु ॥
 
-Budha Kaushika Rishi
+By Budha Kaushika Rishi
 
 ### stotra-shiva-panchakshara
 4.
@@ -14977,7 +14977,7 @@ By Shri Vasudevanand Saraswati (Tembe Swami) ↗ (1854–1914)
 
 ### stotra-ghorakashtoddharan
 10.
-Ghorakashtoddharan Stotra
+Ghorakashtoddharan Stotram
 घोरकष्टोद्धरणस्तोत्रम्
 
 Shripad Shrivallabh Tvam Sadaiva, Shri Dattasmanpahi Devadhideva |
@@ -15038,7 +15038,7 @@ Prapathenniyato Bhaktya Sa Shridattapriyo Bhavet || 6 ||
 
 By Shri Vasudevanand Saraswati (Tembe Swami) ↗ (1854–1914)
 
-### stotra-vandu-guruchya-charanarvinda
+### stotra-vandu-guruchya-charanaravinda
 11.
 Vandu Guruchya Charanaravinda
 वंदू गुरुच्या चरणारविंदा
@@ -15531,7 +15531,7 @@ Dya Bhaktishraddha Antari An, Thav Charani Dya Aamhan || Dhr. ||
 
 ### ashtak-sadguru-padukashtak
 1.
-Shrisadgurupadukashtak
+Shri Sadguru Padukashtak
 श्रीसद्गुरुपादुकाष्टक
 
 Jya Sangatinench Virag Jhala |
@@ -17247,7 +17247,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 8 ||
 
 ॥ जय जय रघुवीर समर्थ ॥
 
-### ashtak-haachi-subodh
+### ashtak-hachi-subodh
 11.
 Hachi Subodh Guruncha
 हाचि सुबोध गुरूंचा
@@ -17466,7 +17466,7 @@ Dasadasachen Maher | Aisa Nahin Pahila || 8 ||
 
 ॥ जय जय रघुवीर समर्थ ॥
 
-### ashtak-swami-majha-pahila
+### ashtak-svami-majha-pahila
 13.
 Svami Majha Pahila
 स्वामी माझा पाहिला

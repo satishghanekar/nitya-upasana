@@ -4,7 +4,7 @@
 // (js/features/where.js), the routine builder's lists and days (js/features/routine-builder.js) and the Library
 // (js/features/library.js) call spanFor() and the words below; Settings → Chanting pace (#spc) is here, and so is
 // learning the reader's pace while Follow hears them (heard(), heardEnd(), called by js/features/listen.js). The rules
-// are pure functions in js/core/timing.js; the numbers are content/library.json's "timing".
+// are pure functions in js/core/timing.js; the numbers are content/timing.json's.
 // A change of pace (picked, learned or forgotten) is told with the event "nitya-pace": the parts showing times draw
 // them again.
 
@@ -12,7 +12,7 @@ import { P, change } from "../core/state.js";
 import { byId } from "../core/page.js";
 import { menuWords } from "../core/strings.js";
 import { esc, ui } from "../core/words.js";
-import { addToLog, chantedLetters, cleanTiming, ended, learned, measure, minutes, paceFor, spanMinutes, spanOf } from "../core/timing.js";
+import { addToLog, chantedLetters, readTiming, ended, learned, measure, minutes, paceFor, spanMinutes, spanOf } from "../core/timing.js";
 import { SESSIONS, textsFor } from "../core/routine.js";
 import { apply } from "./bars.js";
 
@@ -26,12 +26,13 @@ var rules = null;
 /** the stretch Follow is hearing now @type {import("../core/timing.js").Stretch | null} */
 var stretch = null;
 
-/** The timing rules, from content/library.json through CONTENT */
+/** The timing rules, from content/timing.json through CONTENT (loaded with the library: without it there are no
+ * texts, so no times either) @returns {import("../core/timing.js").Timing | null} */
 function timing() {
   if (!rules) {
     /** @type {any} */
     var C = /** @type {any} */ (window).CONTENT;
-    rules = cleanTiming(C && C.timing);
+    if (C && C.timing) rules = readTiming(C.timing);
   }
   return rules;
 }
@@ -58,6 +59,7 @@ export function lettersOf(id) {
  * @param {string[]} ids  texts' ids in library.json @returns {Span} */
 export function spanFor(ids) {
   var t = timing();
+  if (!t) return { lo: 0, hi: 0 };
   return spanOf(
     ids.map(lettersOf).filter(function (n) {
       return n > 0;
@@ -144,25 +146,30 @@ export function mid(s) {
 /** A place Follow found: the letter `pos` of the piece `id`, chanted at `t` (performance.now()). A stretch followed
  * steadily that has just ended adds to the reading person's log @param {string} id @param {number} pos @param {number} t */
 export function heard(id, pos, t) {
-  var r = measure(stretch, { id: id, pos: pos, t: t }, timing());
+  var rl = timing();
+  if (!rl) return;
+  var r = measure(stretch, { id: id, pos: pos, t: t }, rl);
   stretch = r.st;
   if (r.done) keep(r.done);
 }
 
 /** Follow stopped, or the reader went elsewhere: the stretch heard so far ends here */
 export function heardEnd() {
-  var done = ended(stretch, timing());
+  var rl = timing();
+  if (!rl) return;
+  var done = ended(stretch, rl);
   stretch = null;
   if (done) keep(done);
 }
 
 /** @param {import("../core/timing.js").PaceLog} done */
 function keep(done) {
-  var was = learned(P.paceLog, timing());
-  change({ paceLog: addToLog(P.paceLog, done, timing()) }, function () {
+  var rl = /** @type {import("../core/timing.js").Timing} */ (timing()),
+    was = learned(P.paceLog, rl);
+  change({ paceLog: addToLog(P.paceLog, done, rl) }, function () {
     draw();
     // (the times change only when they use the log: a pace learned, newly or anew)
-    if (!P.pace && (was || learned(P.paceLog, timing()))) told();
+    if (!P.pace && (was || learned(P.paceLog, rl))) told();
   });
 }
 
@@ -191,7 +198,7 @@ function draw() {
     heardMin = log && log.n > 0 ? w.min(minutes(log.s)) : "",
     s = byId("spcs");
   s.lang = ui();
-  s.textContent = P.pace ? w.chosen : learned(log, t) ? w.learned(heardMin) : heardMin ? w.learning(heardMin) : w.range0;
+  s.textContent = P.pace ? w.chosen : t && learned(log, t) ? w.learned(heardMin) : heardMin ? w.learning(heardMin) : w.range0;
   byId("spcf").hidden = !(log && log.n > 0);
 }
 

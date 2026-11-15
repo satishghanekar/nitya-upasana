@@ -766,7 +766,7 @@ test("Settings preview: one height for every Show choice, whole lines at 100%, A
 // up brings the bars back only once the page stops moving; scrolling down hides them at once
 test("scrolling up brings the bars back once the page stops, not mid-scroll @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await openSite(page, SETUPS.marathi, { hash: "#vedic-chant-shree-rudra" }); // a long text, so the page goes on scrolling
+  await openSite(page, SETUPS.marathi, { hash: "#vedic-chant-shri-rudra" }); // a long text, so the page goes on scrolling
   await page.waitForTimeout(800);
   const tucked = () => page.evaluate(() => document.documentElement.hasAttribute("data-tuck"));
   // six steps a frame apart; whether the bars are tucked is read just after the last, in the page (on a busy machine a
@@ -903,10 +903,10 @@ test("Go to in Lalita: a verse by its number, in either digits; one there is not
   await expect(page.locator("#where")).toBeFocused();
 });
 
-test("Go to in Shree Rudra: Namakam and Chamakam, eleven anuvakas each, the grid by number alone @mobile", async ({ page }) => {
+test("Go to in Shri Rudra: Namakam and Chamakam, eleven anuvakas each, the grid by number alone @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
-  await readText(page, "vedic-chant-shree-rudra");
-  await toLine(page, "vedic-chant-shree-rudra.90");
+  await readText(page, "vedic-chant-shri-rudra");
+  await toLine(page, "vedic-chant-shri-rudra.90");
   await expect(wh(page)).toHaveText(/^नमकम् · अनुवाकः [०-९]+$/);
   await page.locator("#where").click();
   const open = page.locator("#gtl .gt-grid:not([hidden]) button");

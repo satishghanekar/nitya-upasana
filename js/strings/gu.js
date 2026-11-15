@@ -900,4 +900,18 @@ export default {
     gu: "વિકિપીડિયા",
     tab: "નવા ટૅબમાં ખૂલશે",
   },
+  // The words the site adds to a text (js/strings/en.js)
+  text: {
+    refrainLabel: "ધ્રુપદ (દરેક કડી પછી ગાવું)",
+    refrainNote: "↻ ધ્રુપદ",
+    prev: "પાછલું",
+    next: "આગલું",
+    by: "રચના :",
+    // a name in a sentence, at {name}, so each language puts it where it goes
+    attributed: "{name} ની રચના મનાય છે",
+    also: "(આમની રચના પણ મનાય છે : {name})",
+    compiledBy: "સંકલન :",
+    traditional: "પરંપરાગત",
+    lang: { sa: "સંસ્કૃત", mr: "મરાઠી", hi: "હિન્દી" },
+  },
 };

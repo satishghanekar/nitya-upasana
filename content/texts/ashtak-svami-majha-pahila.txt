@@ -1,4 +1,4 @@
-id: ashtak-swami-majha-pahila
+id: ashtak-svami-majha-pahila
 title: स्वामी माझा पाहिला
 title-en: Svami Majha Pahila
 language: mr

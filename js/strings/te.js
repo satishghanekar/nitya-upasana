@@ -906,4 +906,18 @@ export default {
     gu: "గుజరాతీ వికీపీడియా",
     tab: "కొత్త ట్యాబ్‌లో తెరుచుకుంటుంది",
   },
+  // The words the site adds to a text (js/strings/en.js)
+  text: {
+    refrainLabel: "ధ్రువపదం (ప్రతి చరణం తర్వాత పాడండి)",
+    refrainNote: "↻ ధ్రువపదం",
+    prev: "మునుపటి",
+    next: "తరువాతి",
+    by: "రచన :",
+    // a name in a sentence, at {name}, so each language puts it where it goes
+    attributed: "{name} రచించినట్లు ప్రతీతి",
+    also: "(వీరిదని కూడా అంటారు : {name})",
+    compiledBy: "సంకలనం :",
+    traditional: "సాంప్రదాయికం",
+    lang: { sa: "సంస్కృతం", mr: "మరాఠీ", hi: "హిందీ" },
+  },
 };

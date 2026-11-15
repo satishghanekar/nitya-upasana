@@ -1,4 +1,4 @@
-id: aarti-yei-o-vitthale
+id: aarti-vitthal
 title: विठ्ठलाची आरती
 title-en: Vitthal Aarti
 language: mr
@@ -7,10 +7,7 @@ line-ids: s7l
 line-id-exceptions: s7l4=s7l4r
 refrain: every-verse
 refrain-before-first: yes
-credit: रचना : विष्णुदास नामा
-credit-en: By Vishnudas Nama
-credit-note: ([संत नामदेवांची](wiki:Namdev), अशीही मान्यता)
-credit-note-en: (also credited to [Sant Namdev](wiki:Namdev))
+credit: author vishnudas-nama, also namdev
 lines: 16
 letters: 592
 ---

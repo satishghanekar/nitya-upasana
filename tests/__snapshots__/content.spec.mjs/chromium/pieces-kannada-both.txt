@@ -447,7 +447,7 @@ Svasti No Bruhaspatirdadhatu ||
 
 || Om Shantih Shantih Shantih ||
 
-ಅಥರ್ವವೇದೀಯ ಉಪನಿಷದ ↗
+ಅಥರ್ವವೇದ ↗ (ಉಪನಿಷದ)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-purusha-suktam
@@ -1062,7 +1062,7 @@ Tanno Dhara Prachodayat ||
 
 || Om Shantih Shantih Shantih ||
 
-ಋಗ್ವೇದ (ಖಿಲಸೂಕ್ತ)
+ಋಗ್ವೇದ ↗ (ಖಿಲಸೂಕ್ತ)
 
 ### vedic-chant-laghunyasa
 4.
@@ -1403,10 +1403,10 @@ Mebhayam Cha Me Sugam Cha Me Shayanam Cha Me Susha Cha Me Sudinam Cha Me ||
 
 || Om Shantih Shantih Shantih ||
 
-### vedic-chant-shree-rudra
+### vedic-chant-shri-rudra
 5.
 ಶ್ರೀ ರುದ್ರಪ್ರಶ್ನಃ
-Shree Rudra
+Shri Rudra
 
 ಓಂ ನಮೋ ಭಗವತೇ॑ ರುದ್ರಾ॒ಯ ॥
 
@@ -2600,7 +2600,7 @@ Tanno Durgih Prachodayat ||
 
 || Om Shantih Shantih Shantih ||
 
-ಕೃಷ್ಣ ಯಜುರ್ವೇದ, ತೈತ್ತಿರೀಯ ಆರಣ್ಯಕ (ಮಹಾನಾರಾಯಣೋಪನಿಷತ್)
+ಮಹಾನಾರಾಯಣೋಪನಿಷತ್ ↗ (ಕೃಷ್ಣ ಯಜುರ್ವೇದ, ತೈತ್ತಿರೀಯ ಆರಣ್ಯಕ)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-shivopasana-mantra
@@ -2752,7 +2752,7 @@ Sarvo Hyesha Rudrastasmai Rudraya Namo Astu ||
 
 Om Shantih Shantih Shantih ||
 
-ಕೃಷ್ಣ ಯಜುರ್ವೇದ, ತೈತ್ತಿರೀಯ ಆರಣ್ಯಕ (ಮಹಾನಾರಾಯಣೋಪನಿಷತ್) ↗
+ಮಹಾನಾರಾಯಣೋಪನಿಷತ್ ↗ (ಕೃಷ್ಣ ಯಜುರ್ವೇದ, ತೈತ್ತಿರೀಯ ಆರಣ್ಯಕ)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-pavamana-suktam
@@ -7892,7 +7892,7 @@ Shiva Dishah Pradisha Uddisho Na Apo Vishvatah Paripantu Sarvashah Shanti Shanti
 
 || Shrikrushnarpanamastu ||
 
-ಋಗ್ವೇದ, ಮಣ್ಡಲ ೯ ↗
+ಋಗ್ವೇದ ↗ (ಮಣ್ಡಲ ೯)
 ▶ YouTube: Challakere Brothers ↗ · Anantha Padmanabha Bhat and Govind Prakash Bhat ↗
 
 ### vedic-chant-lalita-sahasranama
@@ -11079,7 +11079,7 @@ Nyunatiriktam Yatkinchit Kshamasva Purushottama ||
 
 Harih Om ||
 
-ಮಹಾಭಾರತ, ಅನುಶಾಸನಪರ್ವ ↗
+ಮಹಾಭಾರತ ↗ (ಅನುಶಾಸನಪರ್ವ)
 ▶ YouTube: Challakere Brothers ↗
 
 ### vedic-chant-mantra-pushpanjali
@@ -11797,13 +11797,13 @@ Shriya Evainam Tachchhriyamadadhati | Santatamrucha Vashatkrutyam
 
 Sandhattam Sandhiyate Prajaya Pashubhih | Ya Evam Veda |
 
-ಋಗ್ವೇದ (ಖಿಲಸೂಕ್ತ), ನಂತರಚ್ಯಾ ಶ್ಲೋಕಾಂಸಹ
+ಋಗ್ವೇದ ↗ (ಖಿಲಸೂಕ್ತ, ನಂತರಚ್ಯಾ ಶ್ಲೋಕಾಂಸಹ)
 
 ### a1
 1.
 ಸುಖಕರ್ತಾ ದುಃಖಹರ್ತಾ
 Sukhkarta Dukhharta
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಜಯ ದೇವ ಜಯ ದೇವ, ​ಜಯ ಮಂಗಲ ಮೂರ್ತೀ ।
 
@@ -11870,13 +11870,13 @@ Das Ramacha Vaat Pahe Sadana |
 Sankati Pavave Nirvani Rakshave Survarvandana || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
-ರಚನಾ : ಸಮರ್ಥ ರಾಮದಾಸ ↗ (೧೬೦೮–೧೬೮೨)
+ರಚನೆ : ಸಮರ್ಥ ರಾಮದಾಸ ↗ (೧೬೦೮–೧೬೮೨)
 
 ### a2
 2.
 ಶೇಂದುರ ಲಾಲ ಚಢ಼ಾಯೋ
 Shendur Laal Chadhayo
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಜಯ ಜಯ ಶ್ರೀ ಗಣರಾಜ ವಿದ್ಯಾ ಸುಖದಾತಾ ।
 
@@ -11943,13 +11943,13 @@ Aise Tum Maharaj Moko Ati Bhave |
 Gosavinandan Nishidin Gun Gave || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
-ರಚನಾ : ಗೋಸಾವೀನಂದನ
+ರಚನೆ : ಗೋಸಾವೀನಂದನ
 
 ### a3
 3.
 ದೇವೀಚೀ ಆರತೀ
 Devi Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಜಯ ದೇವೀ ಜಯ ದೇವೀ ಮಹಿಷಾಸುರಮರ್ದಿನೀ ।
 
@@ -12016,13 +12016,13 @@ Ambe Tujvachun Kon Purvi Asha |
 Narahar Tallina Jhala Pada Pankaja Lesha || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
-ರಚನಾ : ಸಂತ ನರಹರೀ ಸೋನಾರ ↗ (೧೩ ವೇ ಶತಕ)
+ರಚನೆ : ಸಂತ ನರಹರೀ ಸೋನಾರ ↗ (೧೩ ವೇ ಶತಕ)
 
 ### a4
 4.
 ಶಂಕರಾಚೀ ಆರತೀ
 Shankar Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಜಯ ದೇವ ಜಯ ದೇವ ಜಯ ಶ್ರೀಶಂಕರಾ ।
 
@@ -12107,13 +12107,13 @@ Shatakotiche Beej Vache Uchchari |
 Raghukulatilak Ramdasa Antari || 4 ||
 
 ↻ ಧ್ರುಪದRefrain
-ರಚನಾ : ಸಮರ್ಥ ರಾಮದಾಸ ↗ (೧೬೦೮–೧೬೮೨)
+ರಚನೆ : ಸಮರ್ಥ ರಾಮದಾಸ ↗ (೧೬೦೮–೧೬೮೨)
 
 ### a5
 5.
 ದತ್ತಾಚೀ ಆರತೀ
 Dattatreya Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಜಯ ದೇವ ಜಯ ದೇವ ಜಯ ಶ್ರೀ ಗುರುದತ್ತಾ ।
 
@@ -12198,13 +12198,13 @@ Mi-Tu Panachi Jhali Bolvan |
 Eka Janardani Shri Dattadhyan || 4 ||
 
 ↻ ಧ್ರುಪದRefrain
-ರಚನಾ : ಸಂತ ಏಕನಾಥ ↗ (೧೫೩೩–೧೫೯೯)
+ರಚನೆ : ಸಂತ ಏಕನಾಥ ↗ (೧೫೩೩–೧೫೯೯)
 
 ### a6
 6.
 ಜ್ಞಾನೇಶ್ವರಾಂಚೀ ಆರತೀ
 Dnyaneshwar Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಆರತೀ ಜ್ಞಾನರಾಜಾ ॥ ಧೃ. ॥
 
@@ -12257,13 +12257,13 @@ Pragat Guhya Bole | Vishwa Brahmachi Kele, Brahmachi Kele |
 Rama Janardani | Paayi Mastak Thevile, Mastak Thevile || 4 ||
 
 ↻ ಧ್ರುಪದRefrain
-ರಚನಾ : ರಾಮಾ ಜನಾರ್ದನ
+ರಚನೆ : ರಾಮಾ ಜನಾರ್ದನ
 
 ### a7
 7.
 ವಿಠ್ಠಲಾಚೀ ಆರತೀ
 Vitthal Aarti
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಯೇಈ ಓ ವಿಠ್ಠಲೇ ಮಾಝೀ ಮಾಊಲೀ ಯೇ ।​
 ಯೇಈ ಓ ವಿಠ್ಠಲೇ ಮಾಝೀ ಮಾಊಲೀ ಯೇ ॥ ಧೃ. ॥
@@ -12336,8 +12336,8 @@ Vishnudas Naama, Vishnudas Naama Jivebhave Owaali |
 Ho Jivebhave Owaali || 4 ||
 
 ↻ ಧ್ರುಪದRefrain
-ರಚನಾ : ವಿಷ್ಣುದಾಸ ನಾಮಾ
-(ಸಂತ ನಾಮದೇವಾಂಚೀ ↗, ಅಶೀಹೀ ಮಾನ್ಯತಾ)
+ರಚನೆ : ವಿಷ್ಣುದಾಸ ನಾಮಾ ↗ (೧೬ ವೇ ಶತಕ)
+(ಇವರದೆಂದೂ ಹೇಳಲಾಗುತ್ತದೆ : ಸಂತ ನಾಮದೇವ ↗)
 
 ### a8
 8.
@@ -12409,13 +12409,13 @@ Hare Ram Hare Ram Ram Ram Hare Hare |
 Hare Krishna Hare Krishna Krishna Krishna Hare Hare ||
 
 ↻ ೩ ವೇಳಾ3 times
-ಸಂಕಲನ : ಸಂತ ನಾಮದೇವ ವ ಸಂಸ್ಕೃತ ಸ್ತೋತ್ರೇ
+ಸಂಕಲನ : ಸಂತ ನಾಮದೇವ ↗ ವ ಸಂಸ್ಕೃತ ಸ್ತೋತ್ರೇ
 
 ### a9
 9.
 ಆರತೀ ಜಯ ಗಣೇಶ ದೇವಾ
 Aarti Jai Ganesh Deva
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಜಯ ಗಣೇಶ ಜಯ ಗಣೇಶ, ​ಜಯ ಗಣೇಶ ದೇವಾ ।
 
@@ -12462,7 +12462,7 @@ Sur Shyam Sharan Aaye, Safal Kije Seva |
 Mata Jaaki Parvati, Pita Mahadeva || 2 ||
 
 ↻ ಧ್ರುಪದRefrain
-ಪಾರಂಪರಿಕ
+ಸಾಂಪ್ರದಾಯಿಕ
 
 ### a10
 10.
@@ -12589,13 +12589,13 @@ Kahat Shivanand Swami, Man Vanchit Phal Pave |
 
 Om Jai Jagdish Hare || 9 ||
 
-ರಚನಾ : ಪಂ. ಶ್ರದ್ಧಾರಾಮ ಫಿಲ್ಲೌರೀ ↗ (ಸು. ೧೮೭೦)
+ರಚನೆ : ಪಂ. ಶ್ರದ್ಧಾರಾಮ ಫಿಲ್ಲೌರೀ ↗ (ಸು. ೧೮೭೦)
 
-### aarti-jaydeva-jaydeva-samartha
+### aarti-jayadeva-jayadeva-samartha
 11.
 ಜಯದೇವಾ ಜಯದೇವಾ ಜಯ ಜಯ ಸಮರ್ಥಾ
 Jayadeva Jayadeva Jay Jay Samartha
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಜಯದೇವಾ ಜಯದೇವಾ ಜಯ ಜಯ ಸಮರ್ಥಾ ॥
 
@@ -12665,7 +12665,7 @@ Ghyavi Seva Sada Hich Vinanti || 3 ||
 12.
 ಜಯ ಜಯ ಆರತೀ ಶ್ರೀಗುರುರಾಯಾ
 Jay Jay Aarti Shrigururaya
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಜಯ ಜಯ ಆರತೀ ಶ್ರೀಗುರುರಾಯಾ । ಸದ್‌ಗುರುರಾಯಾ ।
 
@@ -12707,11 +12707,11 @@ Namarupatit Tun Abhirama || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
 
-### aarti-ovaloon-aarti-chaitanyabrahma
+### aarti-ovalun-aarti-chaitanyabrahma
 13.
 ಓವಾಳೂಂ ಆರತೀ ಸದ್‌ಗುರು ಚೈತನ್ಯಬ್ರಹ್ಮಾ
 Ovalun Aarti Sadguru Chaitanyabrahma
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಓವಾಳೂಂ ಆರತೀ ಸದ್‌ಗುರು ಚೈತನ್ಯಬ್ರಹ್ಮಾ ।
 
@@ -12773,7 +12773,7 @@ Sachchidanandamurti Dolabhari Myan Pahili || 3 ||
 14.
 ಆರತೀ ಕರಿತೋಂ ಗುರುವರ
 Aarti Kariton Guruvar
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಆರತೀ ಕರಿತೋಂ ಗುರುವರ ಭಗವನ್ ಬ್ರಹ್ಮಚೈತನ್ಯಾ ।
 
@@ -12839,7 +12839,7 @@ Nathadinatha Jay Jay Hovo Bhagavatapran || 3 ||
 15.
 ಧನ್ಯ ಜಗೀಂ ಯಾ ಗುರುವರ್ಯ ಹೇ ಮಾರುತಿಅವತಾರ
 Dhanya Jagin Ya Guruvarya He Marutiavatar
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಧನ್ಯ ಜಗೀಂ ಯಾ ಗುರುವರ್ಯ ಹೇ ಮಾರುತಿಅವತಾರ । ಮಾರುತಿಅವತಾರ ।
 
@@ -12930,7 +12930,7 @@ Aarti Belaguve
 
 || Shriram Samartha ||
 
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಆರತೀ ಬೇಳಗುವೇ ಸದ್‌ಗುರು ಶ್ರೀಬ್ರಹ್ಮಚೈತನ್ಯಾ ।
 
@@ -12988,7 +12988,7 @@ Gandhavahapriy Pahi Pahi Brahmanandana || 3 ||
 17.
 ಸ್ವಸ್ಥ ಕರೀಂ ಶಯನ ಪ್ರಭೋ ಮಂಚಕಾವರೀ
 Svastha Karin Shayan Prabho Manchakavari
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಸ್ವಸ್ಥ ಕರೀಂ ಶಯನ ಪ್ರಭೋ ಮಂಚಕಾವರೀ ।
 
@@ -13050,7 +13050,7 @@ Mahabhagavat Prarthi Kanhin Chakari || 3 ||
 
 ↻ ಧ್ರುಪದRefrain
 
-### aarti-ovaloo-sapreme-aarti
+### aarti-nana-maharajanchi
 18.
 ಆರತೀ ಶ್ರೀ ನಾನಾಮಹಾರಾಜಾಂಚೀ
 Aarti Shri Nana Maharajanchi
@@ -13059,7 +13059,7 @@ Aarti Shri Nana Maharajanchi
 
 || Avadhut Chintan Shri Gurudev Datta ||
 
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಓವಾಳೂ ಸಪ್ರೇಮೇ ಆರತೀ ಮಾರ್ತಂಡಾ ತುಜಲಾ ।
 
@@ -13151,7 +13151,7 @@ Krupa Katakshe Dasa Aapulya Nei Uddharuni || 4 ||
 19.
 ಆರತೀ ಜಯ ಶಿವ ಓಂಕಾರಾ
 Aarti Jai Shiv Omkara
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಜಯ ಶಿವ ಓಂಕಾರಾ, ​ಹರ ಶಿವ ಓಂಕಾರಾ ।
 
@@ -13230,7 +13230,7 @@ Trigun Shiv Ki Aarti Jo Koi Nar Gave |
 Kahat Shivanand Swami Manvanchhit Phal Pave || 7 ||
 
 ↻ ಧ್ರುಪದRefrain
-ರಚನಾ : ಸ್ವಾಮೀ ಶಿವಾನಂದ
+ರಚನೆ : ಸ್ವಾಮೀ ಶಿವಾನಂದ
 
 ### stotra-maruti-stotra
 1.
@@ -13377,7 +13377,7 @@ Ramarupi Antaratma, Darshanen Dosh Nasati || 17 ||
 
 || Iti Shriramadasakrutam Sankatanirasanam Marutistotram Sampurnam ||
 
-ರಚನಾ : ಸಮರ್ಥ ರಾಮದಾಸ ↗ (೧೬೦೮–೧೬೮೨)
+ರಚನೆ : ಸಮರ್ಥ ರಾಮದಾಸ ↗ (೧೬೦೮–೧೬೮೨)
 
 ### stotra-hanuman-chalisa
 2.
@@ -13728,12 +13728,12 @@ Pavantanay Sankat Haran, Mangal Moorati Roop |
 
 Ram Lakhan Sita Sahit, Hriday Basahu Sur Bhoop ||
 
-ರಚನಾ : ಗೋಸ್ವಾಮೀ ತುಲಸೀದಾಸ ↗ (೧೫೩೨–೧೬೨೩)
+ರಚನೆ : ಗೋಸ್ವಾಮೀ ತುಲಸೀದಾಸ ↗ (೧೫೩೨–೧೬೨೩)
 
 ### stotra-ram-raksha
 3.
 ಶ್ರೀರಾಮರಕ್ಷಾಸ್ತೋತ್ರಮ್
-Shri Ram Raksha Stotra
+Shri Ram Raksha Stotram
 
 ॥ ಶ್ರೀಗಣೇಶಾಯ ನಮಃ ॥
 
@@ -14139,7 +14139,7 @@ Sahasranama Tattulyam Ramanama Varanane || 38 ||
 
 || Shriramachandrarpanamastu ||
 
-ಬುಧಕೌಶಿಕ ಋಷಿ
+ರಚನೆ : ಬುಧಕೌಶಿಕ ಋಷಿ
 
 ### stotra-shiva-panchakshara
 4.
@@ -14194,7 +14194,7 @@ Panchaksharamidam Punyam Yah Pathechchhivasannidhau |
 
 Shivalokamavapnoti Shivena Saha Modate ||
 
-ಆದಿ ಶಂಕರಾಚಾರ್ಯ ↗ ಯಾಂಚೇ ಮಾನಲೇ ಜಾತೇ
+ಆದಿ ಶಂಕರಾಚಾರ್ಯ ↗ ಅವರದೆಂದು ಹೇಳಲಾಗುತ್ತದೆ
 
 ### stotra-shiva-ashtottara-shatanamavali
 5.
@@ -14720,7 +14720,7 @@ Shant Ho Shriguru
 
 Shant Ho Shriguru Datta Mama Chitta Shamavi Aata ||
 
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಶಾಂತ ಹೋ ಶ್ರೀಗುರು ದತ್ತಾ ​ಮಮ ಚಿತ್ತಾ ಶಮವೀ ಆತಾ ।
 
@@ -14819,7 +14819,7 @@ Pariharisi Karunasindho | Tun Dinanath Subandho ||
 Aamhan Aghalesh Na Badho | Vasudev Prarthit Datta || 5 ||
 
 ↻ ಧ್ರುಪದRefrain
-ರಚನಾ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
+ರಚನೆ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
 
 ### stotra-shriguru-datta-jay
 8.
@@ -14898,7 +14898,7 @@ Komal Chitta Valavi Aatan | Komal Chitta Valavi Aatan ||
 
 Shriguru Datta || 5 ||
 
-ರಚನಾ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
+ರಚನೆ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
 
 ### stotra-jay-karunaghan-nij
 9.
@@ -14973,12 +14973,12 @@ Padin Devo Thav Dev Atrinandan | Padin Devo Thav Dev Atrinandan ||
 
 Jay Karunaghan || 5 ||
 
-ರಚನಾ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
+ರಚನೆ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
 
 ### stotra-ghorakashtoddharan
 10.
 ಘೋರಕಷ್ಟೋದ್ಧರಣಸ್ತೋತ್ರಮ್
-Ghorakashtoddharan Stotra
+Ghorakashtoddharan Stotram
 
 ಶ್ರೀಪಾದ ಶ್ರೀವಲ್ಲಭ ತ್ವಂ ಸದೈವ, ​ಶ್ರೀ ದತ್ತಾಸ್ಮಾನ್ಪಾಹಿ ದೇವಾಧಿದೇವ ।
 
@@ -15036,9 +15036,9 @@ Prapathenniyato Bhaktya Sa Shridattapriyo Bhavet || 6 ||
 
 || Shripad Shrivallabh Shrigurudev Datta ||
 
-ರಚನಾ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
+ರಚನೆ : ಶ್ರೀ ವಾಸುದೇವಾನಂದ ಸರಸ್ವತೀ (ಟೇಂಬೇ ಸ್ವಾಮೀ) ↗ (೧೮೫೪–೧೯೧೪)
 
-### stotra-vandu-guruchya-charanarvinda
+### stotra-vandu-guruchya-charanaravinda
 11.
 ವಂದೂ ಗುರುಚ್ಯಾ ಚರಣಾರವಿಂದಾ
 Vandu Guruchya Charanaravinda
@@ -15532,7 +15532,7 @@ Dya Bhaktishraddha Antari An, Thav Charani Dya Aamhan || Dhr. ||
 ### ashtak-sadguru-padukashtak
 1.
 ಶ್ರೀಸದ್ಗುರುಪಾದುಕಾಷ್ಟಕ
-Shrisadgurupadukashtak
+Shri Sadguru Padukashtak
 
 ಜ್ಯಾ ಸಂಗತೀನೇಂಚ ವಿರಾಗ ಝಾಲಾ ।
 
@@ -17247,7 +17247,7 @@ Tujha Das Mi Vyartha Janmasi Aalon || 8 ||
 
 || Jay Jay Raghuvir Samartha ||
 
-### ashtak-haachi-subodh
+### ashtak-hachi-subodh
 11.
 ಹಾಚಿ ಸುಬೋಧ ಗುರೂಂಚಾ
 Hachi Subodh Guruncha
@@ -17368,7 +17368,7 @@ Hachi Subodh Guruncha, Gururayala Tahan Premachi || 13 ||
 12.
 ಶ್ರೀಬ್ರಹ್ಮಚೈತನ್ಯಾಸಾರಿಖಾ ನಾಹೀಂ ಪಾಹಿಲಾ
 Shribrahmachaitanyasarikha Nahin Pahila
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಶ್ರೀಬ್ರಹ್ಮಚೈತನ್ಯಾಸಾರಿಖಾ ನಾಹೀಂ ಪಾಹಿಲಾ ।
 
@@ -17466,11 +17466,11 @@ Dasadasachen Maher | Aisa Nahin Pahila || 8 ||
 
 || Jay Jay Raghuvir Samartha ||
 
-### ashtak-swami-majha-pahila
+### ashtak-svami-majha-pahila
 13.
 ಸ್ವಾಮೀ ಮಾಝಾ ಪಾಹಿಲಾ
 Svami Majha Pahila
-ಧ್ರುಪದ (ಪ್ರತ್ಯೇಕ ಕಡವ್ಯಾನಂತರ ಮ್ಹಣಾವೇ)Refrain (sung after every verse)
+ಧ್ರುಪದ (ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)Refrain (sung after every verse)
 
 ಮಾಣಗಂಗಾತೀರೀಂ ಪ್ರಭು ಹಾ ಗೋಂದಾವಲೇಂ ಪುರೀಂ ।
 
@@ -17892,7 +17892,7 @@ Na Janami Yogam Japam Naiva Pujam Natoham Sada Sarvada Shambhu Tubhyam |
 
 Jara Janma Duhkhaugha Tatapyamanam Prabho Pahi Apannamamisha Shambho || 8 ||
 
-ರಚನಾ : ಗೋಸ್ವಾಮೀ ತುಲಸೀದಾಸ ↗ (ರಾಮಚರಿತಮಾನಸ, ಉತ್ತರಕಾಣ್ಡ)
+ರಚನೆ : ಗೋಸ್ವಾಮೀ ತುಲಸೀದಾಸ ↗ (ರಾಮಚರಿತಮಾನಸ, ಉತ್ತರಕಾಣ್ಡ)
 
 ### ashtak-kalabhairava-ashtakam
 18.
@@ -17971,5 +17971,5 @@ Kalabhairavashtakam Pathanti Ye Manoharam Dnyanamuktisadhanam Vichitrapunyavardh
 
 Shokamohadainyalobhakopatapanashanam Prayanti Kalabhairavanghrisannidhim Nara Dhruvam ||
 
-ಆದಿ ಶಂಕರಾಚಾರ್ಯ ↗ ಯಾಂಚೇ ಮಾನಲೇ ಜಾತೇ
+ಆದಿ ಶಂಕರಾಚಾರ್ಯ ↗ ಅವರದೆಂದು ಹೇಳಲಾಗುತ್ತದೆ
 ▶ YouTube: Vocal Melodies ↗
