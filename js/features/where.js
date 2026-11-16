@@ -269,20 +269,30 @@ export function whereMark(c, onText, l, title) {
   w1.lang = tl();
   /** @type {[string, string, string][]} its parts: words, language, class */
   var small = [];
-  if (count) small.push([count, tl(), ""]);
+  // (in a session the small line's "५ / ८" numbers it already: the title without its own number, so more of it fits)
+  var named = count ? title.replace(/^\s*[0-9०-९]+\.\s*/, "") : title;
+  // The title first when the large line is a place, the only part that gives way (…): last, after the count and the
+  // time, it was the part cut off, down to its own "८." (Satish, 2026-11-15, Ram Raksha in a session: "८ / ८ · 6–9 min
+  // left · ८. …")
+  if (path.length) small.push([named, tl(), "wh-in"]);
+  if (count) small.push([count, tl(), "wh-n"]);
   if (rest) small.push([left, ui(), "wh-left"]);
-  if (path.length) small.push([title, tl(), ""]);
-  if (!small.length) small.push([menuWords("goto").title, ui(), ""]);
+  if (!small.length) small.push([menuWords("goto").title, ui(), "wh-in"]);
   small.forEach(function (x, k) {
     var sp = document.createElement("span");
     sp.textContent = x[0];
     sp.lang = x[1];
-    if (x[2]) sp.className = x[2];
-    if (k) w1.appendChild(document.createTextNode(" · "));
+    sp.className = x[2];
+    if (k) {
+      // (its own part, kept whole: a space alone at the edge of a part of a flex line is dropped)
+      var dot = document.createElement("span");
+      dot.className = "wh-dot";
+      dot.textContent = " · ";
+      w1.appendChild(dot);
+    }
     w1.appendChild(sp);
   });
-  // (in a session the small line's "५ / ८" numbers it already: the title without its own number, so more of it fits)
-  placeIn(w2, path, count ? title.replace(/^\s*[0-9०-९]+\.\s*/, "") : title);
+  placeIn(w2, path, named);
   w2.lang = tl();
   var tkw = byId("tkw");
   placeIn(tkw, path, "");
@@ -335,7 +345,9 @@ export function open(o, by) {
   document.documentElement.style.overflow = o ? "hidden" : "";
   if (o) {
     var on = /** @type {HTMLElement | null} */ (list.querySelector("[aria-current]"));
-    /** @type {HTMLElement} */ (sheet.querySelector(".rsc")).focus({ preventScroll: true });
+    /** @type {HTMLElement} */ (sheet.querySelector(".rsc")).focus({
+      preventScroll: true,
+    });
     if (on) on.scrollIntoView({ block: "center" });
   } else {
     // back to the button it was opened with; the top bar's when that has gone (the bars came back)

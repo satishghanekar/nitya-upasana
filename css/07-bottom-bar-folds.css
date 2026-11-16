@@ -1210,6 +1210,7 @@ html[data-asb="1"] {
 }
 /* Where the reading is, in the title and the pill: the headings give way before the place itself (js/features/where.js
    placeIn()), so a small phone shows "तृतीयो… ९.४८" rather than "तृतीयोऽ…" */
+#wh1,
 #wh2,
 #tkw {
   display: flex;
@@ -1237,7 +1238,9 @@ html[data-asb="1"] {
 }
 /* In a session, how long is left of it (js/features/routine-time.js), in the small line over the title, in the menu
    language */
-.wh-left {
+.wh-left,
+.wh-n,
+.wh-dot {
   flex: none;
   white-space: pre;
 }
