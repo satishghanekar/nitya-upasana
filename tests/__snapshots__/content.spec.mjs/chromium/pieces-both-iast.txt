@@ -17321,15 +17321,20 @@ hāci subodha gurūñcā, gururāyālā tahāna premācī || 13 ||
 ### ashtak-brahmachaitanya-sarikha
 12. श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला
 Śrībrahmacaitanyāsārikhā Nāhīṃ Pāhilā
-ध्रुपद Refrain
 
 श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला ।
+
+śrībrahmacaitanyāsārikhā nāhīṃ pāhilā |
+
+ध्रुपद Refrain
+
+मी नाहीं पाहिला । मी नाहीं देखिला ॥
 
 मी नाहीं पाहिला । मी नाहीं देखिला ॥
 
 श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला ॥ धृ. ॥
 
-śrībrahmacaitanyāsārikhā nāhīṃ pāhilā |
+mī nāhīṃ pāhilā | mī nāhīṃ dekhilā ||
 
 mī nāhīṃ pāhilā | mī nāhīṃ dekhilā ||
 
@@ -17337,7 +17342,11 @@ mī nāhīṃ pāhilā | mī nāhīṃ dekhilā ||
 
 मी बहुत वाचियेलें । मी बहुत ऐकियेलें ।
 
+मी बहुत वाचियेलें । मी बहुत ऐकियेलें ।
+
 मी बहुत धुंडियेलें । ऐसा नाहीं पाहिला ॥ १ ॥
+
+mī bahuta vāciyeleṃ | mī bahuta aikiyeleṃ |
 
 mī bahuta vāciyeleṃ | mī bahuta aikiyeleṃ |
 
@@ -17347,7 +17356,11 @@ mī bahuta dhuṇḍiyeleṃ | aisā nāhīṃ pāhilā || 1 ||
 
 तो मुलांमध्यें असे । तो स्त्रियांमध्यें बैसे ।
 
+तो मुलांमध्यें असे । तो स्त्रियांमध्यें बैसे ।
+
 पण ऐसा निर्विकारी । जगीं मी नाहीं पाहिला ॥ २ ॥
+
+to mulāmmadhyeṃ ase | to striyāmmadhyeṃ baise |
 
 to mulāmmadhyeṃ ase | to striyāmmadhyeṃ baise |
 
@@ -17357,7 +17370,11 @@ paṇa aisā nirvikārī | jagīṃ mī nāhīṃ pāhilā || 2 ||
 
 तो माया मोह पाळी । काय करतील लेकुरवाळीं ।
 
+तो माया मोह पाळी । काय करतील लेकुरवाळीं ।
+
 पण कामक्रोधा जाळी । ऐसा नाहीं पाहिला ॥ ३ ॥
+
+to māyā moha pāḷī | kāya karatīla lekuravāḷīṃ |
 
 to māyā moha pāḷī | kāya karatīla lekuravāḷīṃ |
 
@@ -17367,7 +17384,11 @@ paṇa kāmakrodhā jāḷī | aisā nāhīṃ pāhilā || 3 ||
 
 कांहीं नसे त्याचे घरीं । पण कुबेर लोळे दारीं ।
 
+कांहीं नसे त्याचे घरीं । पण कुबेर लोळे दारीं ।
+
 तो वाटेल तेंचि करी । ऐसा नाहीं पाहिला ॥ ४ ॥
+
+kāṃhīṃ nase tyāce gharīṃ | paṇa kubera loḷe dārīṃ |
 
 kāṃhīṃ nase tyāce gharīṃ | paṇa kubera loḷe dārīṃ |
 
@@ -17377,7 +17398,11 @@ to vāṭela teñci karī | aisā nāhīṃ pāhilā || 4 ||
 
 तो म्हणवी अज्ञानी । पण ज्ञानियांचा ज्ञानी ।
 
+तो म्हणवी अज्ञानी । पण ज्ञानियांचा ज्ञानी ।
+
 तो वेदगूढ जाणी । ऐसा नाहीं पाहिला ॥ ५ ॥
+
+to mhaṇavī ajñānī | paṇa jñāniyāṃcā jñānī |
 
 to mhaṇavī ajñānī | paṇa jñāniyāṃcā jñānī |
 
@@ -17387,7 +17412,11 @@ to vedagūḍha jāṇī | aisā nāhīṃ pāhilā || 5 ||
 
 तो ज्यासी म्हणे घर । तेथें मोकळा दरबार ।
 
+तो ज्यासी म्हणे घर । तेथें मोकळा दरबार ।
+
 पण नांदे रघुवीर । ऐसा नाहीं पाहिला ॥ ६ ॥
+
+to jyāsī mhaṇe ghara | tetheṃ mokaḷā darabāra |
 
 to jyāsī mhaṇe ghara | tetheṃ mokaḷā darabāra |
 
@@ -17397,7 +17426,11 @@ paṇa nānde raghuvīra | aisā nāhīṃ pāhilā || 6 ||
 
 जो जाई एकवार । तो विसरे घरदार ।
 
+जो जाई एकवार । तो विसरे घरदार ।
+
 त्यासि देई नामसार । ऐसा नाहीं पाहिला ॥ ७ ॥
+
+jo jāī ekavāra | to visare gharadāra |
 
 jo jāī ekavāra | to visare gharadāra |
 
@@ -17407,7 +17440,11 @@ tyāsi deī nāmasāra | aisā nāhīṃ pāhilā || 7 ||
 
 तो गोंदावलेकर । त्याचे पायीं मुक्ति चार ।
 
+तो गोंदावलेकर । त्याचे पायीं मुक्ति चार ।
+
 दासदासाचें माहेर । ऐसा नाहीं पाहिला ॥ ८ ॥
+
+to gondāvalekara | tyāce pāyīṃ mukti cāra |
 
 to gondāvalekara | tyāce pāyīṃ mukti cāra |
 

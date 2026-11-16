@@ -1068,3 +1068,10 @@ ol.toc li.soon .m {
   line-height: 1.4;
   text-wrap: balance;
 }
+
+/* ==== "↻ ३ वेळा" after lines already written out again (.rmk.nt.rep, js/render.js): with the dhrupad after every verse
+   the repeats show in full, so the note would make three into nine (Satish, 2026-11-15); it shows with the dhrupad once,
+   where the repeats are hidden, as on paper ==== */
+[data-ref="0"] .rmk.nt.rep {
+  display: none;
+}

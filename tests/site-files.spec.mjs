@@ -109,8 +109,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // the credits written from content/credits.json, and the site's words around a text in each language's own words, in
   // five languages, 383.4 KB then; 388 KB since 2026-11-15: a text sung in more than one way, js/features/versions.js
   // and the switch under its heading, 387.2 KB with it on a Mac; 389 KB since 2026-11-15: the dhrupad's label in two parts
-  // in five languages (one line where both languages show) and the Library's count of texts, 388.15 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(389_000);
+  // in five languages (one line where both languages show) and the Library's count of texts, 388.15 KB then; 391 KB since 2026-11-15: a
+  // keyboard's / and ← →, and on computers Home, Library, Reading and Follow moved into the top bar, 390.1 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(391_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -128,13 +129,16 @@ test("the scripts, styles and page stay within their size budget", () => {
   // the top pill covered while a page is open, About under both columns, the preview centred, a sideways phone's rows on
   // one line and the fade under Back, 82.77 KB with them on a Mac; 85.5 KB since 2026-11-15: the phone and iPad review's
   // nine screens: the bottom bar's words, a sideways phone's Library, calendar and Home, the builder's rows, the
-  // Library's count and order in one row, the centred two-language title, 85 KB with them on a Mac)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(85_500);
+  // Library's count and order in one row, the centred two-language title, 85 KB with them on a Mac; 86.5 KB since 2026-11-15: a computer's top
+  // bar holding Home, Library, Reading and Follow and the search box's stand-in, Prev and Next at the text's sides, 86.1 KB then)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(86_500);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
   // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then; 33 KB since
-  // 2026-11-15: Settings → Chanting pace, the builder's weekday line, and Help on how long things take: 32.47 KB then)
-  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(33_000);
+  // 2026-11-15: Settings → Chanting pace, the builder's weekday line, and Help on how long things take: 32.47 KB then; 33.5 KB
+  // since 2026-11-15: the computer's top bar (#bar-nav, #bar-find) and Help on it and on the keys, 32.92 KB then on a Mac,
+  // about 33 KB on GitHub's runners, whose gzip gives a little more)
+  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(33_500);
 });
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):

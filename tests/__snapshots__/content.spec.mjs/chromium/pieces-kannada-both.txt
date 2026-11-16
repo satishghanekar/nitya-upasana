@@ -17313,15 +17313,20 @@ Hachi Subodh Guruncha, Gururayala Tahan Premachi || 13 ||
 ### ashtak-brahmachaitanya-sarikha
 12. ಶ್ರೀಬ್ರಹ್ಮಚೈತನ್ಯಾಸಾರಿಖಾ ನಾಹೀಂ ಪಾಹಿಲಾ
 Shribrahmachaitanyasarikha Nahin Pahila
-ಧ್ರುಪದ Refrain
 
 ಶ್ರೀಬ್ರಹ್ಮಚೈತನ್ಯಾಸಾರಿಖಾ ನಾಹೀಂ ಪಾಹಿಲಾ ।
+
+Shribrahmachaitanyasarikha Nahin Pahila |
+
+ಧ್ರುಪದ Refrain
+
+ಮೀ ನಾಹೀಂ ಪಾಹಿಲಾ । ಮೀ ನಾಹೀಂ ದೇಖಿಲಾ ॥
 
 ಮೀ ನಾಹೀಂ ಪಾಹಿಲಾ । ಮೀ ನಾಹೀಂ ದೇಖಿಲಾ ॥
 
 ಶ್ರೀಬ್ರಹ್ಮಚೈತನ್ಯಾಸಾರಿಖಾ ನಾಹೀಂ ಪಾಹಿಲಾ ॥ ಧೃ. ॥
 
-Shribrahmachaitanyasarikha Nahin Pahila |
+Mi Nahin Pahila | Mi Nahin Dekhila ||
 
 Mi Nahin Pahila | Mi Nahin Dekhila ||
 
@@ -17329,7 +17334,11 @@ Shribrahmachaitanyasarikha Nahin Pahila || Dhr. ||
 
 ಮೀ ಬಹುತ ವಾಚಿಯೇಲೇಂ । ಮೀ ಬಹುತ ಐಕಿಯೇಲೇಂ ।
 
+ಮೀ ಬಹುತ ವಾಚಿಯೇಲೇಂ । ಮೀ ಬಹುತ ಐಕಿಯೇಲೇಂ ।
+
 ಮೀ ಬಹುತ ಧುಂಡಿಯೇಲೇಂ । ಐಸಾ ನಾಹೀಂ ಪಾಹಿಲಾ ॥ ೧ ॥
+
+Mi Bahut Vachiyelen | Mi Bahut Aikiyelen |
 
 Mi Bahut Vachiyelen | Mi Bahut Aikiyelen |
 
@@ -17339,7 +17348,11 @@ Mi Bahut Dhundiyelen | Aisa Nahin Pahila || 1 ||
 
 ತೋ ಮುಲಾಂಮಧ್ಯೇಂ ಅಸೇ । ತೋ ಸ್ತ್ರಿಯಾಂಮಧ್ಯೇಂ ಬೈಸೇ ।
 
+ತೋ ಮುಲಾಂಮಧ್ಯೇಂ ಅಸೇ । ತೋ ಸ್ತ್ರಿಯಾಂಮಧ್ಯೇಂ ಬೈಸೇ ।
+
 ಪಣ ಐಸಾ ನಿರ್ವಿಕಾರೀ । ಜಗೀಂ ಮೀ ನಾಹೀಂ ಪಾಹಿಲಾ ॥ ೨ ॥
+
+To Mulammadhyen Ase | To Striyammadhyen Baise |
 
 To Mulammadhyen Ase | To Striyammadhyen Baise |
 
@@ -17349,7 +17362,11 @@ Pan Aisa Nirvikari | Jagin Mi Nahin Pahila || 2 ||
 
 ತೋ ಮಾಯಾ ಮೋಹ ಪಾಳೀ । ಕಾಯ ಕರತೀಲ ಲೇಕುರವಾಳೀಂ ।
 
+ತೋ ಮಾಯಾ ಮೋಹ ಪಾಳೀ । ಕಾಯ ಕರತೀಲ ಲೇಕುರವಾಳೀಂ ।
+
 ಪಣ ಕಾಮಕ್ರೋಧಾ ಜಾಳೀ । ಐಸಾ ನಾಹೀಂ ಪಾಹಿಲಾ ॥ ೩ ॥
+
+To Maya Moh Pali | Kay Karatil Lekuravalin |
 
 To Maya Moh Pali | Kay Karatil Lekuravalin |
 
@@ -17359,7 +17376,11 @@ Pan Kamakrodha Jali | Aisa Nahin Pahila || 3 ||
 
 ಕಾಂಹೀಂ ನಸೇ ತ್ಯಾಚೇ ಘರೀಂ । ಪಣ ಕುಬೇರ ಲೋಳೇ ದಾರೀಂ ।
 
+ಕಾಂಹೀಂ ನಸೇ ತ್ಯಾಚೇ ಘರೀಂ । ಪಣ ಕುಬೇರ ಲೋಳೇ ದಾರೀಂ ।
+
 ತೋ ವಾಟೇಲ ತೇಂಚಿ ಕರೀ । ಐಸಾ ನಾಹೀಂ ಪಾಹಿಲಾ ॥ ೪ ॥
+
+Kanhin Nase Tyache Gharin | Pan Kuber Lole Darin |
 
 Kanhin Nase Tyache Gharin | Pan Kuber Lole Darin |
 
@@ -17369,7 +17390,11 @@ To Vatel Tenchi Kari | Aisa Nahin Pahila || 4 ||
 
 ತೋ ಮ್ಹಣವೀ ಅಜ್ಞಾನೀ । ಪಣ ಜ್ಞಾನಿಯಾಂಚಾ ಜ್ಞಾನೀ ।
 
+ತೋ ಮ್ಹಣವೀ ಅಜ್ಞಾನೀ । ಪಣ ಜ್ಞಾನಿಯಾಂಚಾ ಜ್ಞಾನೀ ।
+
 ತೋ ವೇದಗೂಢ ಜಾಣೀ । ಐಸಾ ನಾಹೀಂ ಪಾಹಿಲಾ ॥ ೫ ॥
+
+To Mhanavi Adnyani | Pan Dnyaniyancha Dnyani |
 
 To Mhanavi Adnyani | Pan Dnyaniyancha Dnyani |
 
@@ -17379,7 +17404,11 @@ To Vedagudh Jani | Aisa Nahin Pahila || 5 ||
 
 ತೋ ಜ್ಯಾಸೀ ಮ್ಹಣೇ ಘರ । ತೇಥೇಂ ಮೋಕಳಾ ದರಬಾರ ।
 
+ತೋ ಜ್ಯಾಸೀ ಮ್ಹಣೇ ಘರ । ತೇಥೇಂ ಮೋಕಳಾ ದರಬಾರ ।
+
 ಪಣ ನಾಂದೇ ರಘುವೀರ । ಐಸಾ ನಾಹೀಂ ಪಾಹಿಲಾ ॥ ೬ ॥
+
+To Jyasi Mhane Ghar | Tethen Mokala Darabar |
 
 To Jyasi Mhane Ghar | Tethen Mokala Darabar |
 
@@ -17389,7 +17418,11 @@ Pan Nande Raghuvir | Aisa Nahin Pahila || 6 ||
 
 ಜೋ ಜಾಈ ಏಕವಾರ । ತೋ ವಿಸರೇ ಘರದಾರ ।
 
+ಜೋ ಜಾಈ ಏಕವಾರ । ತೋ ವಿಸರೇ ಘರದಾರ ।
+
 ತ್ಯಾಸಿ ದೇಈ ನಾಮಸಾರ । ಐಸಾ ನಾಹೀಂ ಪಾಹಿಲಾ ॥ ೭ ॥
+
+Jo Jai Ekavar | To Visare Gharadar |
 
 Jo Jai Ekavar | To Visare Gharadar |
 
@@ -17399,7 +17432,11 @@ Tyasi Dei Namasar | Aisa Nahin Pahila || 7 ||
 
 ತೋ ಗೋಂದಾವಲೇಕರ । ತ್ಯಾಚೇ ಪಾಯೀಂ ಮುಕ್ತಿ ಚಾರ ।
 
+ತೋ ಗೋಂದಾವಲೇಕರ । ತ್ಯಾಚೇ ಪಾಯೀಂ ಮುಕ್ತಿ ಚಾರ ।
+
 ದಾಸದಾಸಾಚೇಂ ಮಾಹೇರ । ಐಸಾ ನಾಹೀಂ ಪಾಹಿಲಾ ॥ ೮ ॥
+
+To Gondavalekar | Tyache Payin Mukti Char |
 
 To Gondavalekar | Tyache Payin Mukti Char |
 

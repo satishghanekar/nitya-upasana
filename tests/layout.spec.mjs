@@ -175,7 +175,9 @@ for (const s of [
           h: r.height,
         };
       });
-    for (const sel of ["body > .bar", "#asi"]) {
+    // (a computer: Home, Library, Reading and Follow are in the top bar, and Prev and Next are each a pill of their own)
+    const wide = s.width >= 1024;
+    for (const sel of wide ? ["body > .bar", "#asv", "#asn"] : ["body > .bar", "#asi"]) {
       const p = await look(sel);
       // rounded ends, a shadow, a solid colour (no see-through: the words on it keep their contrast over any text)
       expect(p.radius, sel).toBeGreaterThanOrEqual(p.h / 2 - 1);
@@ -199,6 +201,9 @@ for (const s of [
       expect(b.radius, id).toBeGreaterThanOrEqual(b.h / 2 - 1);
       expect(b.bg, id).not.toBe("rgba(0, 0, 0, 0)");
     }
+    expect(await page.locator("#asi button:visible").count()).toBe(wide ? 2 : 6);
+    expect(await page.locator("body > .bar #bar-nav button:visible").count()).toBe(wide ? 4 : 0);
+    if (wide) expect(pill.shadow).toBe("none");
     for (const b of await page.locator("#asi button:visible").all()) {
       const r = await b.boundingBox();
       expect(r.x).toBeGreaterThanOrEqual(pill.left);

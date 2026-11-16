@@ -243,9 +243,8 @@ export function whereMark(c, onText, l, title) {
           return p.id === c.id;
         })
       : -1,
-    first = (i >= 0 && s ? digits(i + 1) + " / " + digits(s.length) + " · " : "") + title,
+    count = i >= 0 && s ? digits(i + 1) + " / " + digits(s.length) : "",
     path = where(c),
-    second = path.length ? path.join(" · ") : menuWords("goto").title,
     // in a session, how long is left of it, from this text on (js/features/routine-time.js): it counts down text by
     // text, not as the page scrolls
     rest =
@@ -257,21 +256,34 @@ export function whereMark(c, onText, l, title) {
           )
         : null,
     left = rest ? menuWords("time").left(about(rest)) : "",
-    key = first + "|" + second + "|" + left;
+    key = count + "|" + title + "|" + path.join("|") + "|" + left;
   if (key === said) return;
   said = key;
-  byId("wh1").textContent = first;
-  var w2 = byId("wh2");
-  placeIn(w2, path, second);
-  w2.lang = path.length ? tl() : ui();
-  if (rest) {
-    var lt = document.createElement("span");
-    lt.className = "wh-left";
-    lt.lang = ui();
-    lt.textContent = " · " + left;
-    w2.appendChild(lt);
-  }
-  byId("wh1").lang = tl();
+  // The large line is what is being read: the place in a long text, or else the text's own title. The small line over
+  // it: in a session which text of how many and how long is left, then (when the large line is a place) the title;
+  // with none of those, "Go to", what a tap does. (The large line said "Go to · 10–17 min left" in a session's short
+  // texts, its title small and grey above it, and the time was cut off; Satish, 2026-11-15.)
+  var w1 = byId("wh1"),
+    w2 = byId("wh2");
+  w1.textContent = "";
+  w1.lang = tl();
+  /** @type {[string, string, string][]} its parts: words, language, class */
+  var small = [];
+  if (count) small.push([count, tl(), ""]);
+  if (rest) small.push([left, ui(), "wh-left"]);
+  if (path.length) small.push([title, tl(), ""]);
+  if (!small.length) small.push([menuWords("goto").title, ui(), ""]);
+  small.forEach(function (x, k) {
+    var sp = document.createElement("span");
+    sp.textContent = x[0];
+    sp.lang = x[1];
+    if (x[2]) sp.className = x[2];
+    if (k) w1.appendChild(document.createTextNode(" · "));
+    w1.appendChild(sp);
+  });
+  // (in a session the small line's "५ / ८" numbers it already: the title without its own number, so more of it fits)
+  placeIn(w2, path, count ? title.replace(/^\s*[0-9०-९]+\.\s*/, "") : title);
+  w2.lang = tl();
   var tkw = byId("tkw");
   placeIn(tkw, path, "");
   tkw.lang = tl();
@@ -287,8 +299,15 @@ export function whereMark(c, onText, l, title) {
  * @param {HTMLElement} el @param {string[]} path @param {string} none  what it says with no place
  */
 function placeIn(el, path, none) {
-  el.textContent = path.length ? "" : none;
-  if (!path.length) return;
+  el.textContent = "";
+  if (!path.length) {
+    // (cut with … where a phone has no room for the whole name)
+    var nm = document.createElement("span");
+    nm.className = "wh-in";
+    nm.textContent = none;
+    el.appendChild(nm);
+    return;
+  }
   var at = document.createElement("span");
   at.className = "wh-at";
   at.textContent = path[path.length - 1];

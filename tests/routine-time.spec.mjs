@@ -154,12 +154,33 @@ test("reading a session: the title says how long is left of it, counting down te
   await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
   const where = page.locator("#where");
   await expect(where).toBeVisible();
-  await expect(page.locator("#wh2 .wh-left")).toHaveText(/^ · about \d+ min left$/);
+  // (in the small line over the title, so it is never cut off by a long title)
+  await expect(page.locator("#wh1 .wh-left")).toHaveText(/^about \d+ min left$/);
   await expect(where).toHaveAccessibleName(/, about \d+ minutes left$/);
-  const first = parseInt((await page.locator("#wh2 .wh-left").textContent()).replace(/\D+/g, " ").trim());
+  const first = parseInt((await page.locator("#wh1 .wh-left").textContent()).replace(/\D+/g, " ").trim());
   // the next text: less left
   await page.locator("#asn").click();
   await page.evaluate(() => scrollBy(0, 300));
   await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
-  await expect.poll(async () => parseInt(((await page.locator("#wh2 .wh-left").textContent()) || "").replace(/\D+/g, " ").trim())).toBeLessThan(first);
+  await expect.poll(async () => parseInt(((await page.locator("#wh1 .wh-left").textContent()) || "").replace(/\D+/g, " ").trim())).toBeLessThan(first);
+});
+
+// A session's short text, once its heading is under the top bar: the title is the large line, and the small line over
+// it says which text of how many and how long is left (the large line said "Go to · … min left", its title small and
+// grey above it, and the time was cut off; Satish, 2026-11-15)
+test("in a session the top bar's large line is the text's title, the count and time left above it @mobile", async ({ page }) => {
+  await openSite(page, { ...SETUPS.english, pace: "quick" }, { now: new Date("2026-10-19T19:00:00-04:00") });
+  await page.locator("#tsl li a.tgo").first().click();
+  await page.evaluate(() => scrollBy(0, 400));
+  await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
+  await expect(page.locator("#where")).toBeVisible();
+  // (without its number, which the small line gives)
+  await expect(page.locator("#wh2")).toHaveText("Sukhkarta Dukhharta");
+  await expect(page.locator("#wh1")).toHaveText(/^1 \/ \d+ · about \d+ min left$/);
+  await expect(page.locator("#wh2")).not.toContainText("Go to");
+  // the small line whole; a long title cut with … where a phone has no room for it, and whole in the spoken name
+  expect(await page.locator("#wh1").evaluate((e) => e.scrollWidth <= e.clientWidth + 1)).toBe(true);
+  expect(await page.locator("#wh2 .wh-in").evaluate((e) => getComputedStyle(e).textOverflow)).toBe("ellipsis");
+  await expect(page.locator("#where")).toHaveAccessibleName(/Sukhkarta Dukhharta/);
+  await expect(page.locator("#where")).toHaveAccessibleName(/^Go to: /);
 });
