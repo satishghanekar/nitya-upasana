@@ -184,3 +184,47 @@ test("in a session the top bar's large line is the text's title, the count and t
   await expect(page.locator("#where")).toHaveAccessibleName(/Sukhkarta Dukhharta/);
   await expect(page.locator("#where")).toHaveAccessibleName(/^Go to: /);
 });
+
+// A long text in a session, at a place in it: the large line is the place, and the small line over it starts with the
+// title, without its number, the part that gives way; the count and the time stay whole after it (it said "८ / ८ · 6–9
+// min left · ८. …", the title cut off down to its own number; Satish, 2026-11-15)
+test("in a session at a place in a long text, the small line starts with the title and keeps the count and time @mobile", async ({ page }) => {
+  await page.route("**/content/routines.json", (r) =>
+    r.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        short: {
+          morning: { mode: "fixed", texts: [] },
+          afternoon: { mode: "fixed", texts: [] },
+          evening: { mode: "fixed", texts: ["aarti-sukhkarta", "stotra-ram-raksha"] },
+        },
+      }),
+    }),
+  );
+  await openSite(page, { ...SETUPS.marathi, pace: "quick" }, { now: new Date("2026-10-19T19:00:00-04:00") });
+  await page.locator("#tsl li a.tgo").nth(1).click();
+  // (to a verse well into the Stotram, a third of the way down, where Go to puts a line)
+  await page.evaluate(() => {
+    const shown = [...document.querySelectorAll('[data-l^="stotra-ram-raksha."]')].filter((e) => e.getClientRects().length);
+    const el = shown[shown.length - 12];
+    scrollTo(0, el.getBoundingClientRect().top + scrollY - innerHeight * 0.3);
+  });
+  await page.waitForTimeout(400);
+  await page.evaluate(() => scrollBy(0, 40));
+  await page.waitForTimeout(400);
+  await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
+  await expect(page.locator("#wh2 .wh-at")).toBeVisible();
+  const parts = page.locator("#wh1 > span:not(.wh-dot)");
+  await expect(parts).toHaveCount(3);
+  await expect(parts.nth(0)).toHaveClass("wh-in");
+  await expect(parts.nth(0)).not.toHaveText(/^\s*[0-9०-९]+\./);
+  await expect(parts.nth(1)).toHaveText("२ / २");
+  await expect(parts.nth(2)).toHaveText(/^about \d+ min left$/);
+  // the count and the time whole, inside the line, whatever the title's length
+  const whole = await page.locator("#wh1").evaluate((e) => {
+    const box = e.getBoundingClientRect();
+    return [...e.querySelectorAll(".wh-n, .wh-left")].every((s) => s.getBoundingClientRect().right <= box.right + 1 && s.scrollWidth <= s.clientWidth + 1);
+  });
+  expect(whole).toBe(true);
+  expect(await parts.nth(0).evaluate((e) => getComputedStyle(e).textOverflow)).toBe("ellipsis");
+});

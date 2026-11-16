@@ -3,8 +3,9 @@ title: श्रीब्रह्मचैतन्यासारिखा न
 title-en: Shribrahmachaitanyasarikha Nahin Pahila
 language: mr
 refrain: every-verse
+refrain-before-first: yes
 lines: 29
-letters: 1484
+letters: 1572
 ---
 [once]
 श्रीब्रह्मचैतन्यासारिखा नाहीं पाहिला ।
