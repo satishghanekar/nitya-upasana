@@ -52,9 +52,9 @@ test("Download, then listening to the microphone until Stop; the second time it 
   const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
   expect(kept).toEqual(
     expect.arrayContaining([
-      "/models/chant-v4/model.onnx",
-      "/models/chant-v4/model.onnx.6",
-      "/models/chant-v4/letters.json",
+      "/models/chant-v6/model.onnx",
+      "/models/chant-v6/model.onnx.6",
+      "/models/chant-v6/letters.json",
       "/vendor/onnxruntime/ort.wasm.bundle.min.mjs",
       "/vendor/onnxruntime/ort-wasm-simd-threaded.wasm",
     ]),
@@ -64,7 +64,7 @@ test("Download, then listening to the microphone until Stop; the second time it 
   // rounds a little differently in WebAssembly: chant-v3 up to 0.18 apart, chant-v4 0.31, 2026-11-09; at every step
   // of the check sound the first choice is at least 7 above the second, so this never changes what is heard)
   const got = await page.evaluate(async () => {
-    const check = await (await fetch("models/chant-v4/check.json")).json();
+    const check = await (await fetch("models/chant-v6/check.json")).json();
     const a = new Float32Array(48000);
     for (let i = 0; i < a.length; i++) {
       const t = i / 16000;

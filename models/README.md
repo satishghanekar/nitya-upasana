@@ -16,6 +16,18 @@ A model is downloaded only when Follow is first used, never with the page (about
 The starting model's Hugging Face page names no licence (checked 2026-11-10); the Vakyansh project's repositories on
 GitHub are MIT. These weights are fine-tuned partly on published recordings as well as the family's.
 
+## chant-v6 and chant-v6-q4 (2026-11-16)
+
+chant-v4's settings, trained on every recording not held out, now with the family's Saturday and Sunday aartis,
+ashtaks and stotras, the Vishnu Sahasranama and a published Ram Raksha. The same two forms, sizes and speed as chant-v4:
+`chant-v6` (8-bit, `.onnx`) for a phone's CPU and `chant-v6-q4` (4-bit, `model.ort`) for its GPU. Against chant-v4
+(4-bit) on recordings neither trained on: AG's Hanuman Chalisa, a voice no model had heard, followed in 41 units of 42
+(39) and found after a jump 36 times in 100 (19); SG's Saturday ashtak and stotra followed in every unit (98.5%); SG's
+Sunday Purusha Suktam found after a jump 96 times in 100 (80); the published Pavamana recordings found after a jump 92
+times in 100 (94-95), a point more letters wrong. The full table: shravan-model `results/README.md`, chant-v6.
+chant-v4 is in git history (a phone that has it downloads chant-v6 the next time Follow starts, and the old pieces are
+taken out of its cache).
+
 ## chant-v4-q4 in ONNX Runtime's own format (2026-11-15)
 
 The same 4-bit model, written as `model.ort` (`scripts/to_site.py --ort` in shravan-model: basic optimizations done

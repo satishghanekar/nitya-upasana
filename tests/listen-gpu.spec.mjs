@@ -27,18 +27,18 @@ test("the GPU's way: the 4-bit model (in ONNX Runtime's own format) and the libr
   const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
   expect(kept).toEqual(
     expect.arrayContaining([
-      "/models/chant-v4-q4/model.ort",
-      "/models/chant-v4-q4/model.ort.5",
+      "/models/chant-v6-q4/model.ort",
+      "/models/chant-v6-q4/model.ort.5",
       "/vendor/onnxruntime/ort.webgpu.bundle.min.mjs",
       "/vendor/onnxruntime/ort-wasm-simd-threaded.asyncify.wasm",
       "/vendor/onnxruntime/ort-wasm-simd-threaded.asyncify.wasm.2",
     ]),
   );
-  expect(kept).not.toContain("/models/chant-v4/model.onnx");
+  expect(kept).not.toContain("/models/chant-v6/model.onnx");
   // (stopped first: on the software GPU each hearing is slow, and the model hears one window at a time)
   await panel.getByRole("button", { name: "Stop" }).click();
   const got = await page.evaluate(async () => {
-    const check = await (await fetch("models/chant-v4-q4/check.json")).json();
+    const check = await (await fetch("models/chant-v6-q4/check.json")).json();
     const a = new Float32Array(48000);
     for (let i = 0; i < a.length; i++) {
       const t = i / 16000;
