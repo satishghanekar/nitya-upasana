@@ -5,12 +5,15 @@
 // no sound leaves it.
 // - The model (a CTC model, wav2vec2, trained in the shravan-model repository) and the library that runs it
 //   (vendor/onnxruntime/) are downloaded once, the first time, after the reader agrees: on the GPU where the browser
-//   has WebGPU (models/chant-v4-q4/, 4-bit, in ONNX Runtime's own format, and the library's WebGPU build, about 117
+//   has WebGPU (models/chant-v6-q4/, 4-bit, in ONNX Runtime's own format, and the library's WebGPU build, about 117
 //   MB), else on the CPU
-//   (models/chant-v4/, 8-bit, and its CPU build, about 122 MB; WAYS, way()), and kept in their own cache,
+//   (models/chant-v6/, 8-bit, and its CPU build, about 122 MB; WAYS, way()), and kept in their own cache,
 //   "nitya-listen", which a new version of the site leaves alone (sw.js). Each piece is checked against its SHA-256
 //   before it is kept. (chant-v4, 2026-11-09: trained on four times as much
-//   chanting as v3, it hears the family's voices and the Lalita Sahasranama a little better, at the same size and speed.)
+//   chanting as v3, it hears the family's voices and the Lalita Sahasranama a little better, at the same size and speed.
+//   chant-v6, 2026-11-16: trained on the family's aartis, ashtaks and stotras too, it follows and finds the family's
+//   voices better, a new voice most, and the published Vedic recordings a little less well; the same size and speed.
+//   A new model's pieces replace the old one's in the cache, tidy().)
 // - The microphone feeds an AudioWorklet (js/worklets/listen-tap.js), so no sound is lost while the model works.
 //   Every EVERY seconds of new sound (or as soon as the model is free after that), it hears the last WINDOW seconds.
 //   Near the mark, its scores are lined up with the text there (js/core/align.js); when they don't fit, or the place
@@ -51,7 +54,7 @@ var ORT = "vendor/onnxruntime/",
    * @type {Record<"gpu" | "cpu", { model: string, lib: string, wasm: { file: string, bytes: number }[], sha256: string, mb: number, ep: string }>} */
   WAYS = {
     gpu: {
-      model: "models/chant-v4-q4/",
+      model: "models/chant-v6-q4/",
       lib: "ort.webgpu.bundle.min.mjs",
       wasm: [
         { file: "ort-wasm-simd-threaded.asyncify.wasm", bytes: 20000000 },
@@ -62,7 +65,7 @@ var ORT = "vendor/onnxruntime/",
       ep: "webgpu",
     },
     cpu: {
-      model: "models/chant-v4/",
+      model: "models/chant-v6/",
       lib: "ort.wasm.bundle.min.mjs",
       wasm: [{ file: "ort-wasm-simd-threaded.wasm", bytes: 14239897 }],
       sha256: "3398c10d07d229bd91b364548e130e0e51a8e5704b88c7c083ebbeb78842dee2",
