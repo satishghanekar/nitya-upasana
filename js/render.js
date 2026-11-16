@@ -81,8 +81,18 @@
       "</div>\n"
     );
   }
-  /** @param {Item} x */
-  function item(x) {
+  /** A stanza with lines written out again (a [refrain] block: p.rf) @param {Item | undefined} x */
+  function repeated(x) {
+    return !!(
+      x &&
+      x.lines &&
+      x.lines.some(function (/** @type {Line} */ l) {
+        return l.rf;
+      })
+    );
+  }
+  /** @param {Item} x @param {number} i @param {Item[]} all */
+  function item(x, i, all) {
     // the dhrupad's marker (↻ ध्रुपद) or a note of the text's own (nt: Phalashruti, ↻ ३ वेळा); the English gets the ↻ when
     // the original has one, so a note that is a heading (फलश्रुति) does not look like a repeat
     if (x.rmk) {
@@ -90,6 +100,9 @@
       return (
         '      <div class="rmk' +
         (x.nt ? " nt" : "") +
+        // "↻ ३ वेळा" after lines written out again (refrain lines): those repeats show with the dhrupad after every
+        // verse, so the note shows only with it once, or it reads as nine (as on paper, js/print/write.js parts())
+        (x.nt && ra && i > 0 && repeated(all[i - 1]) ? " rep" : "") +
         '"><span class="mr"' +
         (x.nt ? "" : ' data-tw="refrainNote"') +
         ">" +

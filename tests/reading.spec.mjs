@@ -127,3 +127,23 @@ test("the Hanuman Chalisa: listed once, Tulsidas | Popular under its title, the 
   await expect(page.locator("#stotra-hanuman-chalisa")).toContainText("महाबीर बिक्रम बजरंगी");
   expect(errors).toEqual([]);
 });
+
+// "↻ ३ वेळा" after the Hare Rama lines, which the text writes out three times (घालीन लोटांगण): with the dhrupad after
+// every verse all three show, so the note would make it nine; with it once the repeats are hidden and the note says
+// how many times (Satish, 2026-11-15, as on paper)
+for (const [ref, shown] of [
+  [0, false],
+  [1, true],
+])
+  test(`a '3 times' note after written-out repeats: ${shown ? "shown" : "hidden"} with the dhrupad ${ref ? "once" : "after every verse"} @mobile`, async ({
+    page,
+  }) => {
+    await openSite(page, { ...SETUPS.marathi, ref }, { hash: "#a8" });
+    const note = page.locator("#a8 .rmk.nt", { hasText: "३ वेळा" });
+    await expect(note).toHaveCount(1);
+    if (shown) await expect(note).toBeVisible();
+    else await expect(note).toBeHidden();
+    // the repeats: all three Hare Rama lines with it after every verse, one with it once
+    const lines = page.locator("#a8 .verse .mr p", { hasText: "हरे राम हरे रामराम" });
+    expect(await lines.evaluateAll((l) => l.filter((p) => p.getClientRects().length).length)).toBe(shown ? 1 : 3);
+  });
