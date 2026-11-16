@@ -169,6 +169,14 @@
   [data-rail="1"] .bar #who {
     margin-left: auto;
   }
+  /* (Sankathara Chaturthi's bar: no brand group and no profile, so its name keeps its width and Share and Settings
+     go to the right after the search box) */
+  [data-rail="1"] .bar > .t.site {
+    flex: 0 1 auto;
+  }
+  [data-rail="1"] #bar-find + .tools {
+    margin-left: auto;
+  }
   #bar-nav {
     display: flex;
     flex: none;
