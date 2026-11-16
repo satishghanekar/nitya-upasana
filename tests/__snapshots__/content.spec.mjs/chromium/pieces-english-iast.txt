@@ -8840,6 +8840,9 @@ hāci subodha gurūñcā, gururāyālā tahāna premācī || 13 ||
 
 ### ashtak-brahmachaitanya-sarikha
 12. Śrībrahmacaitanyāsārikhā Nāhīṃ Pāhilā
+
+śrībrahmacaitanyāsārikhā nāhīṃ pāhilā |
+
 Refrain (sung after every verse)
 
 mī nāhīṃ pāhilā | mī nāhīṃ dekhilā ||
@@ -8848,15 +8851,11 @@ mī nāhīṃ pāhilā | mī nāhīṃ dekhilā ||
 
 śrībrahmacaitanyāsārikhā nāhīṃ pāhilā || dhṛ. ||
 
-śrībrahmacaitanyāsārikhā nāhīṃ pāhilā | || 1 ||
-
-↻ Refrain
-
 mī bahuta vāciyeleṃ | mī bahuta aikiyeleṃ |
 
 mī bahuta vāciyeleṃ | mī bahuta aikiyeleṃ |
 
-mī bahuta dhuṇḍiyeleṃ | aisā nāhīṃ pāhilā || 2 ||
+mī bahuta dhuṇḍiyeleṃ | aisā nāhīṃ pāhilā || 1 ||
 
 ↻ Refrain
 
@@ -8864,7 +8863,7 @@ to mulāmmadhyeṃ ase | to striyāmmadhyeṃ baise |
 
 to mulāmmadhyeṃ ase | to striyāmmadhyeṃ baise |
 
-paṇa aisā nirvikārī | jagīṃ mī nāhīṃ pāhilā || 3 ||
+paṇa aisā nirvikārī | jagīṃ mī nāhīṃ pāhilā || 2 ||
 
 ↻ Refrain
 
@@ -8872,7 +8871,7 @@ to māyā moha pāḷī | kāya karatīla lekuravāḷīṃ |
 
 to māyā moha pāḷī | kāya karatīla lekuravāḷīṃ |
 
-paṇa kāmakrodhā jāḷī | aisā nāhīṃ pāhilā || 4 ||
+paṇa kāmakrodhā jāḷī | aisā nāhīṃ pāhilā || 3 ||
 
 ↻ Refrain
 
@@ -8880,7 +8879,7 @@ kāṃhīṃ nase tyāce gharīṃ | paṇa kubera loḷe dārīṃ |
 
 kāṃhīṃ nase tyāce gharīṃ | paṇa kubera loḷe dārīṃ |
 
-to vāṭela teñci karī | aisā nāhīṃ pāhilā || 5 ||
+to vāṭela teñci karī | aisā nāhīṃ pāhilā || 4 ||
 
 ↻ Refrain
 
@@ -8888,7 +8887,7 @@ to mhaṇavī ajñānī | paṇa jñāniyāṃcā jñānī |
 
 to mhaṇavī ajñānī | paṇa jñāniyāṃcā jñānī |
 
-to vedagūḍha jāṇī | aisā nāhīṃ pāhilā || 6 ||
+to vedagūḍha jāṇī | aisā nāhīṃ pāhilā || 5 ||
 
 ↻ Refrain
 
@@ -8896,7 +8895,7 @@ to jyāsī mhaṇe ghara | tetheṃ mokaḷā darabāra |
 
 to jyāsī mhaṇe ghara | tetheṃ mokaḷā darabāra |
 
-paṇa nānde raghuvīra | aisā nāhīṃ pāhilā || 7 ||
+paṇa nānde raghuvīra | aisā nāhīṃ pāhilā || 6 ||
 
 ↻ Refrain
 
@@ -8904,7 +8903,7 @@ jo jāī ekavāra | to visare gharadāra |
 
 jo jāī ekavāra | to visare gharadāra |
 
-tyāsi deī nāmasāra | aisā nāhīṃ pāhilā || 8 ||
+tyāsi deī nāmasāra | aisā nāhīṃ pāhilā || 7 ||
 
 ↻ Refrain
 
@@ -8912,7 +8911,7 @@ to gondāvalekara | tyāce pāyīṃ mukti cāra |
 
 to gondāvalekara | tyāce pāyīṃ mukti cāra |
 
-dāsadāsāceṃ māhera | aisā nāhīṃ pāhilā || 9 ||
+dāsadāsāceṃ māhera | aisā nāhīṃ pāhilā || 8 ||
 
 ↻ Refrain
 

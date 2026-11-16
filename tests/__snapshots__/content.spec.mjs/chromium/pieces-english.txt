@@ -8832,6 +8832,9 @@ Hachi Subodh Guruncha, Gururayala Tahan Premachi || 13 ||
 
 ### ashtak-brahmachaitanya-sarikha
 12. Shribrahmachaitanyasarikha Nahin Pahila
+
+Shribrahmachaitanyasarikha Nahin Pahila |
+
 Refrain (sung after every verse)
 
 Mi Nahin Pahila | Mi Nahin Dekhila ||
@@ -8840,15 +8843,11 @@ Mi Nahin Pahila | Mi Nahin Dekhila ||
 
 Shribrahmachaitanyasarikha Nahin Pahila || Dhr. ||
 
-Shribrahmachaitanyasarikha Nahin Pahila | || 1 ||
-
-↻ Refrain
-
 Mi Bahut Vachiyelen | Mi Bahut Aikiyelen |
 
 Mi Bahut Vachiyelen | Mi Bahut Aikiyelen |
 
-Mi Bahut Dhundiyelen | Aisa Nahin Pahila || 2 ||
+Mi Bahut Dhundiyelen | Aisa Nahin Pahila || 1 ||
 
 ↻ Refrain
 
@@ -8856,7 +8855,7 @@ To Mulammadhyen Ase | To Striyammadhyen Baise |
 
 To Mulammadhyen Ase | To Striyammadhyen Baise |
 
-Pan Aisa Nirvikari | Jagin Mi Nahin Pahila || 3 ||
+Pan Aisa Nirvikari | Jagin Mi Nahin Pahila || 2 ||
 
 ↻ Refrain
 
@@ -8864,7 +8863,7 @@ To Maya Moh Pali | Kay Karatil Lekuravalin |
 
 To Maya Moh Pali | Kay Karatil Lekuravalin |
 
-Pan Kamakrodha Jali | Aisa Nahin Pahila || 4 ||
+Pan Kamakrodha Jali | Aisa Nahin Pahila || 3 ||
 
 ↻ Refrain
 
@@ -8872,7 +8871,7 @@ Kanhin Nase Tyache Gharin | Pan Kuber Lole Darin |
 
 Kanhin Nase Tyache Gharin | Pan Kuber Lole Darin |
 
-To Vatel Tenchi Kari | Aisa Nahin Pahila || 5 ||
+To Vatel Tenchi Kari | Aisa Nahin Pahila || 4 ||
 
 ↻ Refrain
 
@@ -8880,7 +8879,7 @@ To Mhanavi Adnyani | Pan Dnyaniyancha Dnyani |
 
 To Mhanavi Adnyani | Pan Dnyaniyancha Dnyani |
 
-To Vedagudh Jani | Aisa Nahin Pahila || 6 ||
+To Vedagudh Jani | Aisa Nahin Pahila || 5 ||
 
 ↻ Refrain
 
@@ -8888,7 +8887,7 @@ To Jyasi Mhane Ghar | Tethen Mokala Darabar |
 
 To Jyasi Mhane Ghar | Tethen Mokala Darabar |
 
-Pan Nande Raghuvir | Aisa Nahin Pahila || 7 ||
+Pan Nande Raghuvir | Aisa Nahin Pahila || 6 ||
 
 ↻ Refrain
 
@@ -8896,7 +8895,7 @@ Jo Jai Ekavar | To Visare Gharadar |
 
 Jo Jai Ekavar | To Visare Gharadar |
 
-Tyasi Dei Namasar | Aisa Nahin Pahila || 8 ||
+Tyasi Dei Namasar | Aisa Nahin Pahila || 7 ||
 
 ↻ Refrain
 
@@ -8904,7 +8903,7 @@ To Gondavalekar | Tyache Payin Mukti Char |
 
 To Gondavalekar | Tyache Payin Mukti Char |
 
-Dasadasachen Maher | Aisa Nahin Pahila || 9 ||
+Dasadasachen Maher | Aisa Nahin Pahila || 8 ||
 
 ↻ Refrain
 
