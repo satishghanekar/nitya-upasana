@@ -152,3 +152,122 @@
     display: none;
   }
 }
+
+/* ==== Computers (the wide layout, data-rail): Home, Library, Reading and Follow stand in the top bar with their
+   words (#bar-nav, moved there by js/features/bottom-bar.js place()), a stand-in for the Library's search box beside
+   them (#bar-find: it opens the Library at its box, as the / key does), and the bottom bar is only Prev and Next, one
+   at each side of the text. The top bar was mostly empty there, while the pill of six floated over the text's last
+   lines (the desktop review of 2026-11-15, Satish: board 3) ==== */
+#bar-nav[hidden],
+#bar-find[hidden] {
+  display: none;
+}
+@media screen and (min-width: 1024px) and (orientation: landscape) {
+  [data-rail="1"] .bar .brand {
+    flex: 0 1 auto;
+  }
+  [data-rail="1"] .bar #who {
+    margin-left: auto;
+  }
+  #bar-nav {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 2px;
+    margin-left: 8px;
+  }
+  #bar-nav button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 12px;
+    border-radius: 999px;
+  }
+  #bar-nav button:not([aria-expanded="true"], [aria-pressed="true"]) {
+    background: none;
+    border-color: transparent;
+  }
+  #bar-nav .asil {
+    font-size: var(--fz-m);
+  }
+  /* Home stays in the bar on Home too, so the others never move as a text opens and closes */
+  [data-home="1"] #bar-nav #ash {
+    display: flex;
+  }
+  #bar-find {
+    display: flex;
+    flex: 1 1 140px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 44px;
+    max-width: 26rem;
+    height: 44px;
+    padding: 0 8px 0 14px;
+    border: 1px solid var(--muted);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    font: 400 var(--fz-m) / 1 var(--lat);
+    cursor: text;
+  }
+  #bar-find-words {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  #bar-find-words:is(:lang(mr), :lang(kn), :lang(te), :lang(gu)) {
+    font-family: var(--ks, "Noto Sans Kannada"), var(--body);
+  }
+  #bar-find kbd {
+    flex: none;
+    padding: 2px 7px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--bg);
+    font: 600 var(--fz-xs) / 1.2 var(--lat);
+  }
+  /* the bottom bar: no pill, Prev and Next each a pill of its own at the two sides of the text; nothing on Home */
+  [data-rail="1"] #asi {
+    max-width: none;
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    pointer-events: none;
+  }
+  [data-rail="1"] #asc #asi .asx {
+    padding: 0 16px;
+    border: 1px solid var(--rule);
+    background: var(--pill);
+    box-shadow: var(--pill-shadow);
+    pointer-events: auto;
+  }
+  /* (no pill in the middle for the text to dissolve under) */
+  [data-rail="1"] body::after {
+    content: none;
+  }
+  /* the reading sheet drops from the top bar, under its button (--rsx), a card rounded all round */
+  [data-rail="1"] #rsh .rsc {
+    top: 66px;
+    right: auto;
+    bottom: auto;
+    left: min(var(--rsx, 0px), calc(100% - 34rem - 16px));
+    width: 34rem;
+    max-height: calc(100% - 82px);
+    margin: 0;
+    border-bottom: 1px solid var(--rule);
+    border-radius: 18px;
+    box-shadow: 0 8px 28px rgb(0 0 0 / 0.22);
+  }
+  [data-rail="1"] #rsh .rsc::before {
+    display: none;
+  }
+  /* Follow's panel stood over the bar: at the foot of the screen now */
+  [data-rail="1"] #lsn {
+    bottom: 16px;
+  }
+}
