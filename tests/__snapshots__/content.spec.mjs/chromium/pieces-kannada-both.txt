@@ -7692,9 +7692,7 @@ Pavamaniryo Adhyetyrushibhi Sambhrutam Rasam |
 
 Tasmai Sarasvati Duhe Kshiram Sarpirmadhudakam || 9.067.32 ||
 
-॥ ಖಿಲಮನ್ತ್ರಃ ॥
-
-|| Khilamantrah ||
+ಖಿಲಮನ್ತ್ರಃKhilamantrah
 
 ಪಾ॒ವ॒ಮಾ॒ನೀಃ ಸ್ವ॒ಸ್ತ್ಯಯ॑ನೀಃ ಸು॒ದುಘಾ॒ ಹಿ ಘೃ॑ತ॒ಶ್ಚುತಃ॑ ।
 
@@ -7863,6 +7861,22 @@ Etajjuhvam Japen Mantram Ghora Mrutyu Bhayam Haret ||
 Etat Punyam Papaharam Roga Mrutyu Bhayavaham |
 
 Pathatam Shrunvatam Shchaiva Dadati Paramam Gatim ||
+
+ಶ॒ತಧಾ᳚ರ॒ಮುತ್ಸ॒ಮಕ್ಷೀ᳚ಯಮಾಣಂ ವಿಪ॒ಶ್ಚಿತಂ᳚ ಪಿ॒ತರಂ॒ ವಕ್ತ್ವಾ᳚ನಾಮ್ ।
+
+ಮೇ॒ಳಿಂ ಮದ᳚ನ್ತಂ ಪಿ॒ತ್ರೋರು॒ಪಸ್ಥೇ॒ ತಂ ರೋ᳚ದಸೀ ಪಿಪೃತಂ ಸತ್ಯ॒ವಾಚ᳚ಮ್ ॥
+
+Shatadharamutsamakshiyamanam Vipashchitam Pitaram Vaktvanam |
+
+Melim Madantam Pitrorupasthe Tam Rodasi Piprutam Satyavacham ||
+
+ಋ॒ಚೋ ಅ॒ಕ್ಷರೇ᳚ ಪರ॒ಮೇ ವ್ಯೋ᳚ಮ॒ನ್ ಯಸ್ಮಿ᳚ನ್ ದೇ॒ವಾ ಅಧಿ॒ ವಿಶ್ವೇ᳚ ನಿಷೇ॒ದುಃ ।
+
+ಯಸ್ತನ್ನ ವೇದ॒ ಕಿಮೃ॒ಚಾ ಕ॑ರಿಷ್ಯತಿ॒ ಯ ಇತ್ತದ್ವಿ॒ದುಸ್ತ ಇ॒ಮೇ ಸಮಾ᳚ಸತೇ ॥
+
+Rucho Akshare Parame Vyoman Yasmin Deva Adhi Vishve Nisheduh |
+
+Yastanna Veda Kimrucha Karishyati Ya Ittadvidusta Ime Samasate ||
 
 ಭ॒ದ್ರಂ ನೋ॒ ಅಪಿ॑ ವಾತಯ॒ ಮನಃ॑ ॥
 

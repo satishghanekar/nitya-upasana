@@ -159,22 +159,25 @@ export function mark() {
   // keeps only Print and Reading (css/10-today.css)
   if (c) root.removeAttribute("data-home");
   else if (!root.hasAttribute("data-home")) root.setAttribute("data-home", "1");
-  // Top bar title: the site's name, or once a piece's heading has scrolled under the bar, that piece ("३. देवीची आरती")
-  // (not while a page covers it: the Library, Settings, the calendar, the builder),
-  // in the first reading language shown: English when it is the main one, with both shown too (Satish, 2026-10-30)
+  // Top bar title: the site's name, always, in the first reading language shown (English when it is the main one, with
+  // both shown too; Satish, 2026-10-30). It said the piece being read once its heading had gone under the bar, and then
+  // where in it the reading was, and the top bar kept changing under the reader (Satish 2026-11-17: "stop changing
+  // stuff in app title"); the pill shown while scrolling says that instead (js/features/where.js).
   var en = shown()[0] === "en",
     tt = en ? "Nitya Upasana" : /** @type {any} */ (window).SCR.to("नित्य उपासना"),
+    pt = tt,
     bt0 = byId("bt"),
     hd = c && c.classList.contains("ash") && c.querySelector("header");
+  // the piece, once its heading has gone under the top bar (not while a page covers it: the Library, Settings, the
+  // calendar, the builder): its number and name ("३. देवीची आरती"), for the pill
   var onText = !!(c && hd && hd.getBoundingClientRect().bottom < 64 && !pageOpen());
   if (c && onText) {
     var no = c.querySelector("h2 .no ." + (en ? "ne" : "nm")),
       nm = c.querySelector("h2 > ." + (en ? "en" : "mr"));
-    if (nm) tt = (no ? no.textContent + " " : "") + nm.textContent;
-    bt0.classList.add("pc");
-  } else bt0.classList.remove("pc");
-  // in a long text or a session the title is the Go to button, saying where the reading is (js/features/where.js)
-  whereMark(c, onText, en ? "en" : "mr", tt);
+    if (nm) pt = (no ? no.textContent + " " : "") + nm.textContent;
+  }
+  // the pill: the piece, and in a long text or a session where the reading is, opening Go to (js/features/where.js)
+  whereMark(c, onText, en ? "en" : "mr", pt);
   // the browser's tab, history and bookmarks name the text being read, then the site (WCAG 2.4.2; Satish 2026-11-14:
   // every page was called the site's name alone)
   var dn = c && c.classList.contains("ash") && c.querySelector("h2 > ." + (en ? "en" : "mr")),
@@ -187,10 +190,6 @@ export function mark() {
   var bl = menuWords("bar").home(tt);
   if (bt0.getAttribute("aria-label") !== bl) bt0.setAttribute("aria-label", bl);
   bt0.lang = ui(); // its spoken name is in the menu language, the title in it in its own (btt)
-  // the slim strip shown while the bars are tucked away carries the same name and progress line
-  var tkt = byId("tkt");
-  if (tkt.textContent !== tt) tkt.textContent = tt;
-  tkt.lang = en ? "en" : /** @type {any} */ (window).SCR.k || "mr";
   bt0.setAttribute("data-tl", en ? "en" : "mr");
   /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll("#jump a")).forEach(function (a) {
     a.classList.toggle("on", !!c && a.getAttribute("data-go") === c.id);

@@ -130,6 +130,7 @@ vedic-chant-pavamana-suktam
     part s5.p9.65: ९.६५ / 9.65 @ vedic-chant-pavamana-suktam.1053
     part s5.p9.66: ९.६६ / 9.66 @ vedic-chant-pavamana-suktam.1113
     part s5.p9.67: ९.६७ / 9.67 @ vedic-chant-pavamana-suktam.1173
+  section s6: खिलमन्त्रः / Khilamantrah @ vedic-chant-pavamana-suktam.1234
   610 verses: 9.001.01 … 9.067.32
 vedic-chant-lalita-sahasranama
   section s1: न्यासः / Nyasa @ vedic-chant-lalita-sahasranama.1

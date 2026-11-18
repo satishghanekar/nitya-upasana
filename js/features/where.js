@@ -1,9 +1,10 @@
 // @ts-check
-// Where am I, and Go to (Satish, 2026-11-14): in a long text or a session, the top bar's title says where the reading is
-// (पवमानसूक्तम् · तृतीयोऽध्यायः · ९.४७) and is a button that opens the Go to sheet (#goto), which lists the places to go
-// to. Both are drawn from the text's outline (js/text/outline.js), worked out from the text file, so nothing here names a
-// text. In a short text and on Home the title is the Home link, as before. With the bars tucked away the pill at the top
-// (#tkb) says the same and opens the same sheet (Satish 2026-11-14: the name in view while reading is the one to tap).
+// Where am I, and Go to (Satish, 2026-11-14): in a long text or a session, the pill at the top shown while the bars are
+// tucked away on a phone or a tablet (#tkb, data-tuck, js/features/bars.js; a computer's bars never tuck, and its search
+// box finds a line, Satish 2026-11-17) says where the reading is (पवमानसूक्तम् over तृतीयोऽध्यायः · ९.४७) and opens the Go to sheet (#goto), which lists the
+// places to go to. Both are drawn from the text's outline (js/text/outline.js), worked out from the text file, so nothing
+// here names a text. The top bar's title stays the Home link: it said where the reading was too, and changed under the
+// reader as the bars came back (Satish 2026-11-17: "stop changing stuff in app title"); Go to is in the pill alone.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { outline, placeAt, sessionOutline, verseAt, verseByNumber } from "../text/outline.js";
@@ -21,10 +22,7 @@ import { esc, scr, ui } from "../core/words.js";
  * @typedef {import("../text/content.js").Piece} Piece
  */
 
-/** @type {HTMLElement} */ var btn; // #where, in the top bar beside the Home link
-/** @type {HTMLElement} */ var homeLink; // #bt
-/** @type {HTMLElement} */ var pill; // #tkb, the tucked bars' pill
-/** @type {HTMLElement} */ var from; // the button the sheet was opened with, given focus back
+/** @type {HTMLElement} */ var pill; // #tkb, the pill shown while the page scrolls
 /** @type {HTMLElement} */ var sheet; // #goto
 /** @type {HTMLElement} */ var list; // #gtl
 /** @type {Record<string, Outline | null>} each built text's outline, by piece id */
@@ -38,14 +36,11 @@ var tops = {};
 var stale = true;
 // what the button shows now, so a scroll that changes nothing writes nothing
 var said = "";
-// the reading language of the labels: the first one shown, as the top bar's title
+// the reading language of the labels: the first one shown, as the pill's title
 var lang = /** @type {"mr" | "en"} */ ("mr");
 
 export function init() {
-  btn = byId("where");
-  homeLink = byId("bt");
   pill = byId("tkb");
-  from = btn;
   sheet = byId("goto");
   list = byId("gtl");
   /** @type {any} */
@@ -73,12 +68,9 @@ export function init() {
     pieces[p.id] = byText[p.text] = p;
     delete outlines[p.id];
   });
-  btn.onclick = function () {
-    open(sheet.hidden, btn);
-  };
   // (the pill's own tap, outside a long text, brings the bars back: js/features/bars.js)
   pill.addEventListener("click", function () {
-    if (pill.hasAttribute("aria-haspopup")) open(true, pill);
+    if (pill.hasAttribute("aria-haspopup")) open(true);
   });
   byId("gtx").onclick = function () {
     open(false);
@@ -137,7 +129,7 @@ function top(l) {
 }
 
 /** The reading line: where a place gone to is put (goLine(), js/features/bars.js), a third of the way down the screen,
- * so the title names the place just gone to */
+ * so the pill names the place just gone to */
 function readLine() {
   return scrollY + innerHeight * 0.3 + 2;
 }
@@ -204,26 +196,26 @@ function where(c) {
 }
 
 /**
- * Called by mark() (js/features/bars.js) as the page scrolls or changes: the title is the Home link, or, in a long text
- * or a session, the Go to button saying where the reading is.
+ * Called by mark() (js/features/bars.js) as the page scrolls or changes: the pill says the text being read, or, in a long
+ * text or a session, where the reading is, and is then the Go to button.
  * @param {HTMLElement | null} c  the text being read, or null on Home
- * @param {boolean} onText  the title shows that text (its heading has gone under the top bar, and no page covers it)
+ * @param {boolean} onText  the text's heading has gone under the top bar, and no page covers it
  * @param {"mr" | "en"} l  the reading language of the title
- * @param {string} title  the title as mark() writes it ("३. पवमानसूक्तम्")
+ * @param {string} title  the text's title as mark() writes it ("३. पवमानसूक्तम्"), or the site's name
  */
 export function whereMark(c, onText, l, title) {
-  if (!btn) return; // (before this part has started)
+  if (!pill) return; // (before this part has started)
   lang = l;
   current = c;
   var s = c ? session() : null,
     long = !!(c && outlines[c.id]),
-    on = !!(c && onText && (long || s));
-  if (btn.hidden === on) {
-    btn.hidden = !on;
-    homeLink.hidden = on;
+    on = !!(c && onText && (long || s)),
+    tkt = byId("tkt"),
+    tkw = byId("tkw");
+  if (pill.hasAttribute("aria-haspopup") !== on) {
     if (!on && !sheet.hidden) open(false);
-    // the pill: a button that opens Go to, or, outside a long text, a name a tap on brings the bars back with (hidden
-    // from screen readers and Tab then: the bars come back as soon as focus moves into them)
+    // a button that opens Go to, or, outside a long text, a name a tap on brings the bars back with (hidden from screen
+    // readers and Tab then: the bars come back as soon as focus moves into them)
     if (on) {
       pill.setAttribute("aria-haspopup", "dialog");
       pill.removeAttribute("aria-hidden");
@@ -233,11 +225,19 @@ export function whereMark(c, onText, l, title) {
       pill.removeAttribute("aria-label");
       pill.setAttribute("aria-hidden", "true");
       pill.setAttribute("tabindex", "-1");
-      byId("tkw").textContent = "";
-      said = "";
     }
+    said = "";
   }
-  if (!on || !c) return;
+  if (!on || !c) {
+    // the text's name alone
+    var plain = "|" + title;
+    if (said === plain) return;
+    said = plain;
+    tkt.textContent = title;
+    tkt.lang = tl();
+    tkw.textContent = "";
+    return;
+  }
   var i = s
       ? s.findIndex(function (p) {
           return p.id === c.id;
@@ -263,10 +263,8 @@ export function whereMark(c, onText, l, title) {
   // it: in a session which text of how many and how long is left, then (when the large line is a place) the title;
   // with none of those, "Go to", what a tap does. (The large line said "Go to · 10–17 min left" in a session's short
   // texts, its title small and grey above it, and the time was cut off; Satish, 2026-11-15.)
-  var w1 = byId("wh1"),
-    w2 = byId("wh2");
-  w1.textContent = "";
-  w1.lang = tl();
+  tkt.textContent = "";
+  tkt.lang = tl();
   /** @type {[string, string, string][]} its parts: words, language, class */
   var small = [];
   // (in a session the small line's "५ / ८" numbers it already: the title without its own number, so more of it fits)
@@ -288,19 +286,14 @@ export function whereMark(c, onText, l, title) {
       var dot = document.createElement("span");
       dot.className = "wh-dot";
       dot.textContent = " · ";
-      w1.appendChild(dot);
+      tkt.appendChild(dot);
     }
-    w1.appendChild(sp);
+    tkt.appendChild(sp);
   });
-  placeIn(w2, path, named);
-  w2.lang = tl();
-  var tkw = byId("tkw");
-  placeIn(tkw, path, "");
+  placeIn(tkw, path, named);
   tkw.lang = tl();
   // its spoken name starts with what it does (WCAG 2.5.3): "Go to: पवमानसूक्तम्, तृतीयोऽध्यायः, ९.४७"
-  var name = menuWords("goto").open([title].concat(path).join(", ") + (rest ? ", " + menuWords("time").left(spoken(rest)) : ""));
-  btn.setAttribute("aria-label", name);
-  pill.setAttribute("aria-label", name);
+  pill.setAttribute("aria-label", menuWords("goto").open([title].concat(path).join(", ") + (rest ? ", " + menuWords("time").left(spoken(rest)) : "")));
 }
 
 /**
@@ -331,11 +324,10 @@ function placeIn(el, path, none) {
   el.appendChild(at);
 }
 
-/** Open or close the sheet @param {boolean} o @param {HTMLElement} [by]  the button it is opened with */
-export function open(o, by) {
+/** Open or close the sheet @param {boolean} o */
+export function open(o) {
   if (o === !sheet.hidden) return;
   if (o) {
-    from = by || btn;
     ovPush();
     draw();
     byId("gtm").textContent = "";
@@ -350,18 +342,16 @@ export function open(o, by) {
     });
     if (on) on.scrollIntoView({ block: "center" });
   } else {
-    // back to the button it was opened with; the top bar's when that has gone (the bars came back)
+    // back to the pill it was opened with (while it is still shown)
     try {
-      from.focus({ preventScroll: true });
-      if (document.activeElement !== from) btn.focus({ preventScroll: true });
+      pill.focus({ preventScroll: true });
     } catch (e) {}
     ovDone();
   }
 }
 
-/** Both buttons that open the sheet say whether it is open @param {boolean} o */
+/** The pill says whether the sheet is open @param {boolean} o */
 function expanded(o) {
-  btn.setAttribute("aria-expanded", String(o));
   pill.setAttribute("aria-expanded", String(o));
 }
 

@@ -225,20 +225,23 @@ describe("content checks", () => {
     expect(paras).toEqual(Array.from({ length: 67 }, (_, i) => i + 1));
   });
   // Its four adhyayas, as both published recordings divide it (the Challakere Brothers' and the Bhats'): a heading
-  // before each one's first verse, 9.1.1, 9.13.1, 9.44.1 and 9.65.1 (Satish, 2026-11-11)
-  test("Pavamana Suktam: a heading before the first verse of each of its four adhyayas", () => {
+  // before each one's first verse, 9.1.1, 9.13.1, 9.44.1 and 9.65.1 (Satish, 2026-11-11); then the khila mantras, a
+  // heading of their own after the last verse, 9.67.32, so Go to reaches them (Satish, 2026-11-17)
+  test("Pavamana Suktam: a heading before the first verse of each of its four adhyayas, and before the khila mantras", () => {
     const t = parseText(files["vedic-chant-pavamana-suktam"], "vedic-chant-pavamana-suktam");
     const heads = [];
     t.blocks.forEach((b, i) => {
       if (b.kind !== "note") return;
-      const next = t.blocks[i + 1].lines.map((l) => l.en).join(" ");
-      heads.push([b.note.en, /\|\| (9\.\d{3}\.\d{2})/.exec(next)[1]]);
+      const next = t.blocks[i + 1].lines.map((l) => l.en).join(" "),
+        ref = /\|\| (9\.\d{3}\.\d{2})/.exec(next);
+      heads.push([b.note.en, ref ? ref[1] : next.split(" |")[0]]);
     });
     expect(heads).toEqual([
       ["Prathama Adhyaya", "9.001.01"],
       ["Dvitiya Adhyaya", "9.013.01"],
       ["Tritiya Adhyaya", "9.044.01"],
       ["Chaturtha Adhyaya", "9.065.01"],
+      ["Khilamantrah", "Pavamanih Svastyayanih Sudugha Hi Ghrutashchutah"],
     ]);
   });
   // Pavamana Suktam opens with the prayer to Ganapati, Sarasvati and the Veda as the Bhats chant it: Shri Gurubhyo

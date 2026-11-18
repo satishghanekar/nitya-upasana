@@ -48,7 +48,8 @@ test("axe: Go to open, in every theme @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await readText(page, "vedic-chant-pavamana-suktam");
   await goToLine(page, "vedic-chant-pavamana-suktam.700");
-  await page.locator("#where").click();
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  await page.locator("#tkb").click();
   await page.waitForTimeout(300);
   expect(await axeEveryTheme(page, ["#goto"])).toEqual(noViolations());
 });
