@@ -198,10 +198,18 @@ export async function pdfPages(page, paper, save) {
   }
   const doc = await pdfjs.getDocument({ data: new Uint8Array(buf), useSystemFonts: false, verbosity: 0 }).promise;
   const out = [],
-    low = [];
+    low = [],
+    left = [],
+    top = [];
   for (let i = 1; i <= doc.numPages; i++) {
     const tc = await (await doc.getPage(i)).getTextContent();
     out.push(tc.items.map((x) => x.str).join(""));
+    // where the page's leftmost text starts, in points from the paper's left edge (the markers, 0.25px, aside)
+    left.push(Math.min(Infinity, ...tc.items.filter((x) => x.str.trim() && Math.abs(x.transform[0]) > 2).map((x) => x.transform[4])));
+    // and how far below the paper's top edge its first line's baseline is, in points (the markers aside)
+    const pg = await doc.getPage(i),
+      ph = pg.view[3];
+    top.push(ph - Math.max(-Infinity, ...tc.items.filter((x) => x.str.trim() && Math.abs(x.transform[0]) > 2).map((x) => x.transform[5])));
     // anything set on a line below the text area (19mm from the foot, css/15-print.css) but the "N / total" footer:
     // the marks over the first line of the next page, which Chrome painted there (the markers, 0.25px, aside)
     low.push(
@@ -212,7 +220,7 @@ export async function pdfPages(page, paper, save) {
     );
   }
   const v = (await doc.getPage(1)).view;
-  return { pages: out, low, bytes: buf.length, buf, landscape: v[2] > v[3] };
+  return { pages: out, low, left, top, bytes: buf.length, buf, landscape: v[2] > v[3] };
 }
 
 const SCREEN_ONLY = ["Open all", "Fold all", "Check for updates", "Settings", "Add to Home Screen", "Choose File", "No file chosen"];
@@ -289,6 +297,13 @@ export function checkPages(r) {
   // the page number on every page, between two dashes ("– 3 –", css/15-print.css)
   const n = pdf.pages.length;
   pdf.pages.forEach((t, i) => expect(t.replace(/\s/g, ""), `footer on page ${i + 1}`).toContain(`–${i + 1}–`));
+  // the left margin, on every page, wide enough to punch holes in (25mm, about an inch: css/15-print.css @page; Satish
+  // 2026-11-18): no text closer to the paper's left edge
+  const near = pdf.left.map((x, i) => (x < (25 / 25.4) * 72 - 1 ? `page ${i + 1}: ${(x / 72) * 25.4}mm` : "")).filter(Boolean);
+  expect(near, "text inside the 25mm left margin").toEqual([]);
+  // the top margin (17mm): no page's first line starts in it (its baseline at least 17mm and a line's height down)
+  const high = pdf.top.map((y, i) => (y < (17 / 25.4) * 72 ? `page ${i + 1}: ${(y / 72) * 25.4}mm` : "")).filter(Boolean);
+  expect(high, "text inside the 17mm top margin").toEqual([]);
   // nothing in the bottom margin but the footer
   const low = pdf.low.map((t, i) => (t ? `page ${i + 1}: ${t}` : "")).filter(Boolean);
   expect(low, "printed in the bottom margin").toEqual([]);

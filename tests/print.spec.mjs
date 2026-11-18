@@ -1537,3 +1537,16 @@ test("the printout draws nothing with a background colour @chromium-only", async
   // the page's white, and the week grid's tinted heading row (a tint only: the grid's borders draw its lines)
   expect(bgs).toEqual([":root[data-print] body → #fff !important", "#pv .pvgrid th → #f2efea"]);
 });
+
+// The page's margins (Satish 2026-11-18): 17mm at the top, 19mm at the bottom (the page number in it), 25mm on the left
+// on every page for punching holes, 13mm on the right; the preview in the pop-up draws the same
+test("the printed page's margins: 17mm top, 19mm bottom, 25mm left for punching holes, 13mm right @chromium-only", async () => {
+  const { readFileSync } = await import("node:fs");
+  const css = readFileSync(new URL("../css/15-print.css", import.meta.url), "utf8");
+  const page = /@page\s*\{([^{}]|\{[^{}]*\})*\}/.exec(css)[0];
+  expect(page).toMatch(/\bmargin:\s*17mm 13mm 19mm 25mm;/);
+  // no other @page rule changes them (a :left / :right pair alternated them, and even pages came out 16mm from the edge)
+  expect(css.match(/@page\s*:/g)).toBeNull();
+  const js = readFileSync(new URL("../js/features/print.js", import.meta.url), "utf8");
+  expect(js).toContain("padding:17mm 13mm 0 25mm");
+});

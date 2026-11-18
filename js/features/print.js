@@ -290,7 +290,8 @@ export function init() {
             // <base> there (the Content-Security-Policy's base-uri), with an error in the console
             "><head><style>" +
             pcss() +
-            "\nhtml,body{margin:0;overflow:hidden;background:#fff}body{box-sizing:content-box;padding:17mm 19mm 0;height:" +
+            // (the page's margins, css/15-print.css @page: the wide one on the left, for punching holes)
+            "\nhtml,body{margin:0;overflow:hidden;background:#fff}body{box-sizing:content-box;padding:17mm 13mm 0 25mm;height:" +
             (sh[1] - 36) +
             "mm}</style></head><body>" +
             box.outerHTML +

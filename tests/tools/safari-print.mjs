@@ -46,7 +46,12 @@ async function until(sid, cond, secs = 30) {
   throw new Error("timed out waiting for " + cond);
 }
 /** @param {string} sid @param {number} ms */
-const fontsIn = (sid, ms) => jsAsync(sid, `var done = arguments[arguments.length - 1]; document.fonts.ready.then(function () { setTimeout(done, ${ms}); });`);
+// (never longer than 10 s: Safari's fonts.ready sometimes never settled, and the run stopped there)
+const fontsIn = (sid, ms) =>
+  jsAsync(
+    sid,
+    `var done = arguments[arguments.length - 1], t = setTimeout(done, 10000); document.fonts.ready.then(function () { clearTimeout(t); setTimeout(done, ${ms}); });`,
+  );
 
 // every rule inside @media print, as the printer sees them, applied to the screen, the print view as wide as a page's text
 const APPLY_PRINT = `
@@ -55,7 +60,9 @@ var out = [];
   try { [].forEach.call(sh.cssRules, function (r) { if (r.type === 4 && /print/.test(r.media.mediaText)) [].forEach.call(r.cssRules, function (x) { out.push(x.cssText); }); }); } catch (e) {}
 });
 var st = document.createElement("style");
-st.textContent = out.join("\\n") + "\\nhtml, body { background: #fff !important; } #pv { width: " + arguments[0] + "mm !important; margin: 0 auto !important; padding: 10mm 0 !important; }";
+// each part as on its sheet: its text as wide as the page's, the page's side margins (25mm left for punching holes, 13mm
+// right: css/15-print.css @page) around it, a grey line for the paper's edge and a blue one each side of the text
+st.textContent = out.join("\\n") + "\\nhtml, body { background: #eee !important; } #pv { width: auto !important; margin: 0 !important; padding: 8mm 0 !important; } #pv > section { box-sizing: content-box; width: " + arguments[0] + "mm; margin: 0 auto 8mm !important; padding: 10mm 13mm 10mm 25mm !important; border: 1px solid #999; background: linear-gradient(to right, #fff 25mm, #c9d7f0 25mm, #c9d7f0 calc(25mm + 1px), #fff calc(25mm + 1px), #fff calc(100% - 13mm), #c9d7f0 calc(100% - 13mm), #c9d7f0 calc(100% - 13mm + 1px), #fff calc(100% - 13mm + 1px)); }";
 document.head.appendChild(st);
 scrollTo(0, 0);`;
 
@@ -86,12 +93,14 @@ async function main() {
     }
     sid = (await call("POST", "/session", { capabilities: { alwaysMatch: { browserName: "safari" } } })).sessionId;
     await call("POST", `/session/${sid}/window/rect`, { width: 1400, height: 1000, x: 0, y: 0 });
+    // (a script waiting for fonts or a cache to clear may take a while in Safari: a minute before it counts as failed)
+    await call("POST", `/session/${sid}/timeouts`, { script: 60_000, pageLoad: 60_000 });
     for (const [name, prefs, ids, width] of RUNS) {
       // a clean start: no saved copy of the site (service worker, caches), the settings as given
       await call("POST", `/session/${sid}/url`, { url: SITE });
       await jsAsync(
         sid,
-        "var done = arguments[arguments.length - 1]; Promise.all([navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(function (rs) { return Promise.all(rs.map(function (r) { return r.unregister(); })); }) : 0, caches.keys().then(function (ks) { return Promise.all(ks.map(function (k) { return caches.delete(k); })); })]).then(function () { done(); }, function () { done(); });",
+        "var done = arguments[arguments.length - 1]; setTimeout(done, 10000); Promise.all([navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(function (rs) { return Promise.all(rs.map(function (r) { return r.unregister(); })); }) : 0, caches.keys().then(function (ks) { return Promise.all(ks.map(function (k) { return caches.delete(k); })); })]).then(function () { done(); }, function () { done(); });",
       );
       await js(sid, "localStorage.clear(); localStorage.setItem('aarti2-prefs', arguments[0]); localStorage.setItem('nitya-welcome', '2');", [
         JSON.stringify({ sv: 6, wake: 0, upf: 2, ...prefs }),

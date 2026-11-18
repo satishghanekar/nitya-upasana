@@ -18,8 +18,10 @@
 @media print {
   @page {
     size: portrait;
-    /* the side margins give the same measure as the screen's Vedic text (33.6 × 15pt on Letter, css/02-core.css) */
-    margin: 17mm 19mm 19mm;
+    /* the side margins give the same measure as the screen's Vedic text (33.6 × 15pt on Letter, css/02-core.css): 38mm
+       together, most of it on the left, for punching holes there (25mm, about an inch, as a binder needs; Satish
+       2026-11-18), on every page */
+    margin: 17mm 13mm 19mm 25mm;
     /* the page number alone, small, between two short dashes, as a book's (Chrome; Safari prints none: Satish
        2026-11-17, #10) */
     @bottom-center {
@@ -31,16 +33,6 @@
       vertical-align: top;
       padding-top: 3mm;
     }
-  }
-  /* printed on both sides, the margin toward the binding a little wider: right-hand pages wider on the left, left-hand
-     ones on the right, the measure the same (Chrome; Safari keeps them even, #9) */
-  @page :right {
-    margin-left: 22mm;
-    margin-right: 16mm;
-  }
-  @page :left {
-    margin-left: 16mm;
-    margin-right: 22mm;
   }
 
   /* only the printout prints: the page, its bars and every pop-up stay off the paper */
@@ -607,9 +599,17 @@
   #pv .pvtitle {
     margin-bottom: 0;
   }
+  #pv .pvtitle {
+    line-height: 1.2;
+  }
   #pv .pvtitle .pvorn-rule {
-    margin: -2pt 0 0;
-    padding-bottom: 1pt;
+    margin: 2.5pt 0 0;
+  }
+  /* (a little smaller under a text's title: clear of the marks under its letters, which Safari drew it through when it
+     was tucked into the title's line, and no taller than the title's room below it: no text a page longer) */
+  #pv .pvtitle .pvorn-rule svg {
+    width: 26mm;
+    height: 1.5mm;
   }
   #pv .pvorn-rule svg {
     width: 44mm;
