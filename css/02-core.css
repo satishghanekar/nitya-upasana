@@ -999,21 +999,14 @@ ol.toc li.soon .m {
     display: inline;
   }
 }
-/* On a computer, an iPad or a phone held sideways, at the automatic text size, the text is set just small enough for
-   the printed page's measure to fit the column: so the lines break exactly where they do on paper (the reading column
-   beside Home is narrower than a printed page). A size the reader chose (data-fsu) is kept, and the lines wrap. On a
-   phone held upright the lines simply wrap. (Browsers without container units, before Safari 16, wrap too.) */
-@media screen and (min-width: 600px) {
-  :root:not([data-fsu]) .ash.prose:is([data-lang="mr"], [data-lang="en"]) {
-    container-type: inline-size;
-  }
-  :root:not([data-fsu]) .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items {
-    font-size: min(1em, 100cqw / 33.6);
-  }
-}
+/* On a computer, an iPad or a phone held sideways, at the automatic text size, the text is the size every other text
+   is on that screen (an aarti's), and a line that does not fit the column wraps. It was set just small enough for the
+   printed page's measure to fit the column, so the lines broke where they do on paper, but that made it a quarter
+   smaller than the other texts on an upright iPad (22px against 29; Satish 2026-11-17: "too drastic"): one size for
+   every text on a screen, and the printout keeps the paper's lines. A size the reader chose (data-fsu) is kept. */
 @media screen and (min-width: 820px) {
   :root:not([data-fsu]) .ash.prose:is([data-lang="mr"], [data-lang="en"]) .items {
-    font-size: min(1.05em, 100cqw / 33.6);
+    font-size: 1.05em;
   }
 }
 /* ==== Vedic chants line by line, as their booklet sets them ====
@@ -1074,4 +1067,20 @@ ol.toc li.soon .m {
    where the repeats are hidden, as on paper ==== */
 [data-ref="0"] .rmk.nt.rep {
   display: none;
+}
+
+/* ==== A text set line by line (layout: lines: Pavamana Suktam, Lalita and Vishnu Sahasranama, Shri Sukta) on a tablet or
+   a computer: each verse centred, its lines starting together at its left as in the booklet, in a block of at most 26em,
+   at the size of every other text (above). It had the run-on chants' measure (33.6em, a printed page), but its lines are
+   shorter (about 20em; 26em holds nineteen in twenty), so they hugged the left half of an iPad (Satish 2026-11-17:
+   "looks better centered ... with maybe a slightly larger font"). A longer line wraps. ==== */
+@media screen and (min-width: 600px) {
+  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .items {
+    max-width: min(26em, 100%);
+  }
+  .ash.prose.lines:is([data-lang="mr"], [data-lang="en"]) .items > .item:not(.dh) {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+  }
 }

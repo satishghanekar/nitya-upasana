@@ -1,10 +1,8 @@
 // @ts-check
-// Where am I, and Go to (Satish, 2026-11-14): in a long text or a session, the pill at the top shown while the bars are
-// tucked away on a phone or a tablet (#tkb, data-tuck, js/features/bars.js; a computer's bars never tuck, and its search
-// box finds a line, Satish 2026-11-17) says where the reading is (पवमानसूक्तम् over तृतीयोऽध्यायः · ९.४७) and opens the Go to sheet (#goto), which lists the
-// places to go to. Both are drawn from the text's outline (js/text/outline.js), worked out from the text file, so nothing
-// here names a text. The top bar's title stays the Home link: it said where the reading was too, and changed under the
-// reader as the bars came back (Satish 2026-11-17: "stop changing stuff in app title"); Go to is in the pill alone.
+// Where am I, and Go to (Satish, 2026-11-14): in a long text or a session the pill shown while the bars are tucked away
+// (#tkb, js/features/bars.js) says where the reading is (तृतीयोऽध्यायः · ९.४७) and opens the Go to sheet (#goto), both
+// drawn from the text's outline (js/text/outline.js), so nothing here names a text. The top bar's title stays the Home
+// link (Satish 2026-11-17: "stop changing stuff in app title"); a computer, whose bars never tuck, has its search box.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { outline, placeAt, sessionOutline, verseAt, verseByNumber } from "../text/outline.js";
