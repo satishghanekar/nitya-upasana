@@ -643,6 +643,16 @@ export default {
     sideHint: function (l2) {
       return "દરેક પંક્તિની બાજુમાં તેની " + l2 + " પંક્તિ, મેળમાં.";
     },
+    // the cover and the closing page of a printout of more than one text (js/print/write.js)
+    /** How many texts @param {number} n */
+    texts: function (n) {
+      return n + " પાઠ";
+    },
+    sources: "સ્ત્રોત",
+    /** The day it was printed @param {string} d */
+    printed: function (d) {
+      return "મુદ્રણ: " + d;
+    },
   },
   // The page's own words (index.html: data-w="page.…"); {icon} is the icon written in the page
   // Go to (js/features/where.js): the top bar's title in a long text or a session, and its sheet (#goto)
@@ -740,7 +750,8 @@ export default {
     once2: "એક વાર",
     page: "પાનું",
     printFont: "છાપવાની અક્ષર શૈલી",
-    everyTextStartsOnA: 'દરેક પાઠ નવા પાને શરૂ થાય છે. કાગળ: <b class="prpaper">Letter</b>',
+    everyTextStartsOnA: 'લાંબા પાઠ નવા પાને શરૂ થાય છે; ટૂંકા પાઠ એ જ પાને આગળ ચાલે છે. કાગળ: <b class="prpaper">Letter</b>',
+    coverAndClosingPage: "મુખપૃષ્ઠ અને છેલ્લું પાનું",
     forLandscapePickItIn: "આડા માટે, Safari ના સંવાદમાં પણ તે જ પસંદ કરો.",
     pickA4PaperInSafari: 'Safari ના સંવાદમાં પણ <span class="przp">A4</span> કાગળ પસંદ કરો.',
     chromePrintsItBest: "Chrome તેને પાન નંબર સાથે સૌથી સારું છાપે છે.",

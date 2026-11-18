@@ -28,8 +28,13 @@ for (const W of [
         shown: css(pv).display !== "none" && pv.getBoundingClientRect().height > 0,
         // nothing but the print view reaches the paper
         others: [...document.body.children].filter((e) => e !== pv && css(e).display !== "none").map((e) => e.id || e.tagName),
-        // every text after the contents starts a new page
-        newPage: [...pv.querySelectorAll(":scope > section + section")].filter((s) => !/page|always/.test(css(s).breakBefore || css(s).pageBreakBefore)).length,
+        // every text after the contents starts a new page, but a short one (an aarti), which may follow on the same page:
+        // then it is one inline box, which Safari never splits (js/print/write.js SHORT)
+        newPage: [...pv.querySelectorAll(":scope > section + section:not(.pvshort)")].filter(
+          (s) => !/page|always/.test(css(s).breakBefore || css(s).pageBreakBefore),
+        ).length,
+        wholes: [...pv.querySelectorAll(".pvs.pvshort > .pvwhole")].filter((k) => css(k).display === "inline-block").length,
+        shorts: pv.querySelectorAll(".pvs.pvshort").length,
         // and no block is split (a Vedic paragraph, pvflow, may run on)
         split: [...pv.querySelectorAll(".pvk:not(.pvflow), .pvt tr")].filter((k) => !/avoid/.test(css(k).breakInside || css(k).pageBreakInside)).length,
         // in one language each stanza is one inline box, which Safari never splits (a table row it does)
@@ -39,6 +44,7 @@ for (const W of [
     expect(got.shown, "the print view shows").toBe(true);
     expect(got.others, "screen-only parts printed").toEqual([]);
     expect(got.newPage, "texts not starting a new page").toBe(0);
+    expect(got.wholes, "short texts kept as one inline box").toBe(got.shorts);
     expect(got.split, "blocks that may be split").toBe(0);
     expect(got.boxes, "stanzas Safari may split").toBe(0);
   });
@@ -56,7 +62,8 @@ for (const W of [
     await printFromButton(page, "pr1");
     const got = await page.evaluate(() => {
       const sec = (id) => document.querySelector('#pv .pvs[data-sid="' + id + '"]');
-      const ks = (id) => [...sec(id).querySelectorAll(".pvk")].map((k) => k.textContent.replace(/\s+/g, " ").trim());
+      // (the blocks of its stanzas: a short text is also one block around them all, .pvwhole)
+      const ks = (id) => [...sec(id).querySelectorAll(".pvk:not(.pvwhole)")].map((k) => k.textContent.replace(/\s+/g, " ").trim());
       return {
         credit: sec("a7").querySelector(".pvcr").textContent,
         ghalinEnd: ks("a8").slice(-1)[0],

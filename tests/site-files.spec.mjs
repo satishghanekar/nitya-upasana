@@ -110,8 +110,10 @@ test("the scripts, styles and page stay within their size budget", () => {
   // five languages, 383.4 KB then; 388 KB since 2026-11-15: a text sung in more than one way, js/features/versions.js
   // and the switch under its heading, 387.2 KB with it on a Mac; 389 KB since 2026-11-15: the dhrupad's label in two parts
   // in five languages (one line where both languages show) and the Library's count of texts, 388.15 KB then; 391 KB since 2026-11-15: a
-  // keyboard's / and ← →, and on computers Home, Library, Reading and Follow moved into the top bar, 390.1 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(391_000);
+  // keyboard's / and ← →, and on computers Home, Library, Reading and Follow moved into the top bar, 390.1 KB then; 397 KB
+  // since 2026-11-18: the printout as a book, its cover, contents with each text's time and closing page, the ornaments,
+  // and their words in five languages, js/print/write.js, 395.65 KB with them on a Mac)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(397_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -130,8 +132,10 @@ test("the scripts, styles and page stay within their size budget", () => {
   // one line and the fade under Back, 82.77 KB with them on a Mac; 85.5 KB since 2026-11-15: the phone and iPad review's
   // nine screens: the bottom bar's words, a sideways phone's Library, calendar and Home, the builder's rows, the
   // Library's count and order in one row, the centred two-language title, 85 KB with them on a Mac; 86.5 KB since 2026-11-15: a computer's top
-  // bar holding Home, Library, Reading and Follow and the search box's stand-in, Prev and Next at the text's sides, 86.1 KB then)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(86_500);
+  // bar holding Home, Library, Reading and Follow and the search box's stand-in, Prev and Next at the text's sides, 86.1 KB
+  // then; 89.5 KB since 2026-11-18: the printout as a book, css/15-print.css: its ornaments, headings, cover and closing
+  // page, the English in EB Garamond, and the print pop-up's Cover switch, 88.71 KB with them on a Mac)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(89_500);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
   // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then; 33 KB since

@@ -6,18 +6,40 @@
 
 import { LEAD, P } from "../core/state.js";
 import { compose } from "./compose.js";
-import { DAYS, dv } from "../core/words.js";
+import { DAYS, MONTHS, dv } from "../core/words.js";
 import { TAG_WORDS, tagFor } from "./select.js";
 import { menuWords } from "../core/strings.js";
 
 /**
- * @param {{ pv: HTMLElement, plang: () => string, pref: () => number }} o  the print view, and the printout's language
- *   ("mr", "en" or "both") and dhrupad (1 once, 0 after every verse) as chosen in the pop-up
+ * What the print pop-up adds around the texts (a printout of more than one text): whether to print the cover and the
+ * closing page, and the words for them in a language (js/features/print.js works them out: they need features)
+ * @typedef {{ cover: boolean, time: (ids: string[], L: string) => string, panchang: () => string, qr: () => Element | null }} Extras
+ */
+/**
+ * @param {{ pv: HTMLElement, plang: () => string, pref: () => number, extras?: () => Extras, land?: () => boolean }} o
+ *   the print view, the printout's language ("mr", "en" or "both") and dhrupad (1 once, 0 after every verse) as chosen
+ *   in the pop-up, what it adds around the texts, and whether one language prints on sideways pages
  */
 export function createWriter(o) {
   var pv = o.pv,
     plang = o.plang,
-    pref = o.pref;
+    pref = o.pref,
+    extras = o.extras,
+    land = o.land;
+  // A text of at most SHORT rows is short: kept whole, it may follow the text before it on a page (write()). Its rows:
+  // each line as many as it may wrap to (ROW letters a row, fewer than an upright page's line holds at its size) and
+  // each note or label one. Enough room left for its title, credit and spacing on the smallest page printed (Letter,
+  // upright); tests/print.spec.mjs checks every short text prints on one page
+  var SHORT = 22,
+    ROW = 40;
+  /** @param {HTMLElement} box */
+  function rows(box) {
+    var n = box.querySelectorAll(".pvnote, .pvlab").length;
+    [].forEach.call(box.querySelectorAll(".pvl"), function (/** @type {Element} */ l) {
+      n += Math.max(1, Math.ceil((l.textContent || "").trim().length / ROW));
+    });
+    return n;
+  }
   // the faces of the other scripts the original can be shown in (js/render.js SCRIPTS): Modern's, Bold's and
   // Traditional's (css/00-fonts.css: Tiro's Kannada and Telugu; Gujarati keeps Noto Serif's, as Tiro has none)
   /** @type {Record<string, string[]>} */
@@ -41,6 +63,26 @@ export function createWriter(o) {
     if (cls) e.className = cls;
     if (html !== undefined) e.innerHTML = html;
     return e;
+  }
+  // The printout's ornaments, one set used everywhere (Satish 2026-11-17, "a book-like feel"): a rule with a diamond
+  // under a title, three diamonds where a text ends, a lotus on the cover. Drawn (SVG, in the accent colour through
+  // currentColor), never a background: Safari leaves backgrounds off the paper unless the reader asks for them
+  /** @type {Record<string, string>} */
+  var ORN = {
+    rule: '<svg viewBox="0 0 200 12" aria-hidden="true"><path d="M0 6H91M109 6H200" fill="none" stroke="currentColor" stroke-width="1"/><path d="M100 1.5 104.5 6 100 10.5 95.5 6z" fill="currentColor"/></svg>',
+    end: '<svg viewBox="0 0 44 12" aria-hidden="true"><path d="M8 2 12 6 8 10 4 6zM22 1 27 6 22 11 17 6zM36 2 40 6 36 10 32 6z" fill="currentColor"/></svg>',
+    lotus:
+      '<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor"><circle cx="32" cy="32" r="30" stroke-width="1.2"/><circle cx="32" cy="32" r="22" stroke-width=".8"/><path d="M32 12c6 10 6 14 0 20-6-6-6-10 0-20zM52 32c-10 6-14 6-20 0 6-6 10-6 20 0zM32 52c-6-10-6-14 0-20 6 6 6 10 0 20zM12 32c10-6 14-6 20 0-6 6-10 6-20 0z"/></g></svg>',
+  };
+  /** @param {string} kind  "rule", "end" or "lotus" */
+  function orn(kind) {
+    return mk("span", "pvorn pvorn-" + kind, ORN[kind]);
+  }
+  // A note of the text's own that heads what follows (प्रथमोऽध्यायः, खिलमन्त्रः, फलश्रुति), not a "↻ ३ वेळा" about the
+  // lines before it: printed as a heading, kept with what follows it
+  /** @param {Element} u */
+  function isHeading(u) {
+    return !/^\s*↻/.test((u.querySelector(".mr") || u).textContent || "");
   }
   // the original's language as the page marks it (Marathi, or the language of the letters it is shown in: Kannada,
   // Telugu, Gujarati)
@@ -184,7 +226,7 @@ export function createWriter(o) {
       b = mk("div", "pvsc");
     row.appendChild(b);
     us.forEach(function (u) {
-      if (u.classList.contains("rmk")) return b.appendChild(inLang("p", "pvnote", k, note(u, k)));
+      if (u.classList.contains("rmk")) return b.appendChild(inLang("p", "pvnote" + (u.classList.contains("nt") && isHeading(u) ? " pvhd" : ""), k, note(u, k)));
       var lab = u.querySelector(".lab");
       if (lab) b.appendChild(inLang("p", "pvlab", k, part(lab, k)));
       var st = mk("div", "pvsz" + look(u) + (u.classList.contains("rftop") ? " pvref" : "") + (u.classList.contains("dh") ? " pvdh" : "")),
@@ -210,29 +252,41 @@ export function createWriter(o) {
     /** @type {HTMLElement[][]} */
     var gs = [],
       /** @type {HTMLElement[] | null} */
-      cur = null;
+      cur = null,
+      /** @type {HTMLElement | null} a heading waiting for what follows it */
+      head = null;
     units.forEach(function (u) {
       if (u.classList.contains("rmk")) {
-        gs.push([u]);
+        // a heading starts the next paragraph, in its block (so it never ends a page alone); a "↻ ३ वेळा" stands alone
+        if (isHeading(u)) head = u;
+        else gs.push([u]);
         cur = null;
         return;
       }
       if (!u.querySelector(".verse")) return;
       var dh = u.classList.contains("dh");
       if (dh || !cur || u.classList.contains("para")) {
-        cur = [];
+        cur = head ? [head] : [];
+        head = null;
         gs.push(cur);
       }
       /** @type {HTMLElement[]} */ (cur).push(u);
       if (dh) cur = null;
     });
+    if (head) gs.push([head]);
     return gs;
   }
   // One language, a Vedic text: running paragraphs, as in a printed booklet (a line of verse runs on after the last)
   /** @param {HTMLElement[]} g @param {string} k */
   function proseBlock(g, k) {
-    if (g[0].classList.contains("rmk"))
-      return /** @type {HTMLElement} */ (mk("div", "pvk", "").appendChild(inLang("p", "pvnote", k, note(g[0], k))).parentNode);
+    if (g[0].classList.contains("rmk") && g.length === 1)
+      return /** @type {HTMLElement} */ (
+        mk("div", "pvk", "").appendChild(inLang("p", "pvnote" + (isHeading(g[0]) ? " pvhd" : ""), k, note(g[0], k))).parentNode
+      );
+    // a heading, then the paragraph it heads, in one block
+    /** @type {HTMLElement | null} */
+    var hd = g[0].classList.contains("rmk") ? inLang("p", "pvnote pvhd", k, note(g[0], k)) : null;
+    if (hd) g = g.slice(1);
     // the lines run on as one text, not a span each: Safari printed the space between two such spans so narrow that
     // the words ran together. (pvLines: the lines, for the tests)
     /** @type {string[]} */
@@ -251,6 +305,7 @@ export function createWriter(o) {
     // a paragraph of a single line said once (the closing peace chant) is centred, and never splits
     var one = g.length === 1 && g[0].classList.contains("dh") && linesOf(g[0], k).length === 1,
       b = mk("div", one ? "pvk pvcen" : "pvk pvflow");
+    if (hd) b.appendChild(hd);
     b.appendChild(p);
     return b;
   }
@@ -258,12 +313,17 @@ export function createWriter(o) {
   // at the left, each verse a block never split between pages, a hymn (a paragraph) further apart
   /** @param {HTMLElement[]} g @param {string} k */
   function linesBlock(g, k) {
-    if (g[0].classList.contains("rmk")) return proseBlock(g, k);
+    if (g[0].classList.contains("rmk") && g.length === 1) return proseBlock(g, k);
+    // a heading goes into the first verse's block, never split from it
+    /** @type {HTMLElement | null} */
+    var hd = g[0].classList.contains("rmk") ? inLang("p", "pvnote pvhd", k, note(g[0], k)) : null;
+    if (hd) g = g.slice(1);
     var box = mk("div", "pvlines");
     g.forEach(function (u, i) {
       var ls = linesOf(u, k),
         one = u.classList.contains("dh") && ls.length === 1,
         v = mk("div", "pvk pvlv" + (one ? " pvcen" : "") + (i === 0 ? " pvpara" : ""));
+      if (hd && i === 0) v.appendChild(hd);
       ls.forEach(function (l) {
         var p = inLang("p", "pvl pvll", k, l.html.replace(/<br[^>]*>/gi, " "));
         p.normalize();
@@ -293,7 +353,7 @@ export function createWriter(o) {
         td = mk("td");
       /** @type {HTMLTableCellElement} */ (td).colSpan = 2;
       order.forEach(function (k, i) {
-        var h = cls === "pvnoterow" ? note(x, k) : part(x, k);
+        var h = /pvnoterow/.test(cls) ? note(x, k) : part(x, k);
         if (!h) return;
         if (i && td.firstChild) td.appendChild(document.createTextNode(" · "));
         td.appendChild(inLang("span", "", k, h));
@@ -302,7 +362,7 @@ export function createWriter(o) {
       body.appendChild(tr);
     }
     us.forEach(function (u) {
-      if (u.classList.contains("rmk")) return across(u, "pvnoterow");
+      if (u.classList.contains("rmk")) return across(u, u.classList.contains("nt") && isHeading(u) ? "pvnoterow pvhdrow" : "pvnoterow");
       var lab = u.querySelector(".lab");
       if (lab) across(lab, "pvlabrow");
       var a = linesOf(u, "mr"),
@@ -333,7 +393,7 @@ export function createWriter(o) {
   function build(mode, ids, rp, into, sp) {
     var src = compose(ids, plang(), rp ? true : sp ? sessionName(sp.session, sp.day) : false);
     try {
-      write(into || pv, mode, src, rp || null);
+      write(into || pv, mode, src, rp || null, sp || null);
     } finally {
       src.el.remove();
     }
@@ -396,8 +456,11 @@ export function createWriter(o) {
   // The contents: the printout's title, then each category and its texts, as a plain list (no page numbers)
   /** @param {HTMLElement} into @param {any} src */
   function contents(into, src) {
-    var cov = mk("section", "pvcov");
+    var cov = mk("section", "pvcov"),
+      ex = extras ? extras() : null,
+      L = rw();
     cov.appendChild(title("h1", "pvh", /** @type {any} */ (window).SCR.to("नित्य उपासना"), "Nitya Upasana"));
+    cov.lastChild && /** @type {HTMLElement} */ (cov.lastChild).appendChild(orn("rule"));
     src.groups.forEach(function (/** @type {any} */ g) {
       if (!g.secs.length) return;
       var nm = mk("div");
@@ -415,12 +478,114 @@ export function createWriter(o) {
       g.secs.forEach(function (/** @type {HTMLElement} */ sec, /** @type {number} */ i) {
         var li = titleOf(sec, "li", "");
         li.setAttribute("data-sid", sec.id);
+        // how long it takes to chant (the contents has no page numbers: no browser says where its pages break)
+        var t = ex ? ex.time([textOf(sec.id)], L) : "";
+        if (t) li.appendChild(inLang("span", "pvtime", L === "en" ? "en" : "mr", t));
         if (i % 2 === 0) ol = (i ? rows : head).appendChild(mk("ol", "pvtoc pvtr"));
         /** @type {HTMLElement} */ (ol).appendChild(li);
       });
       cov.appendChild(rows);
     });
     into.appendChild(cov);
+  }
+  // Today's date in a language: "मंगळवार, १७ नोव्हेंबर २०२६", "Tuesday, 17 November 2026"
+  /** @param {string} L "en", or the original's letters (rw()) */
+  function dateText(L) {
+    var n = new Date(),
+      k = L === "en" ? "en" : L;
+    if (k === "en") return DAYS.en[n.getDay()] + ", " + n.getDate() + " " + MONTHS.en[n.getMonth()] + " " + n.getFullYear();
+    return (
+      /** @type {any} */ (DAYS)[k][n.getDay()] + ", " + rnum(n.getDate()) + " " + /** @type {any} */ (MONTHS)[k][n.getMonth()] + " " + rnum(n.getFullYear())
+    );
+  }
+  // A line of the printout's own words in its language (the main one's, with both)
+  /** @param {string} tag @param {string} cls @param {string} text */
+  function own(tag, cls, text) {
+    var e = inLang(tag, cls, rw() === "en" ? "en" : "mr", "");
+    e.textContent = text;
+    return e;
+  }
+  // The cover of a printout of more than one text (Satish 2026-11-17, "a book-like feel"): the lotus, the site's name,
+  // what is printed (the session, or how many texts) and how long it takes, and the day. A frame as tall as what is in
+  // it, never the page's height: Safari prints a little smaller and its pages are not known (a page-tall frame ran on
+  // to a second page), and its lines are borders, which Safari always prints
+  /** @param {HTMLElement} into @param {any} src @param {{ session: string, day?: number } | null} sp @param {Extras} ex */
+  function cover(into, src, sp, ex) {
+    var L = rw(),
+      pw = menuWords("print", L),
+      // (not .pvcov: the contents is the one page that lists the texts)
+      sec = mk("section", "pvcover"),
+      fr = sec.appendChild(mk("div", "pvframe")).appendChild(mk("div", "pvframein"));
+    fr.appendChild(orn("lotus"));
+    fr.appendChild(title("h1", "pvh pvbig", /** @type {any} */ (window).SCR.to("नित्य उपासना"), "Nitya Upasana"));
+    fr.appendChild(orn("rule"));
+    if (sp) {
+      var nm = sessionName(sp.session, sp.day);
+      fr.appendChild(title("p", "pvwhat", nm.mr, nm.en));
+    }
+    var t = ex.time(
+      src.secs.map(function (/** @type {HTMLElement} */ x) {
+        return textOf(x.id);
+      }),
+      L,
+    );
+    fr.appendChild(own("p", "pvmeta", pw.texts(src.secs.length) + (t ? " · " + t : "")));
+    fr.appendChild(own("p", "pvdate", dateText(L)));
+    var pn = ex.panchang();
+    if (pn) fr.appendChild(inLang("p", "pvpan", L === "en" ? "en" : "mr", "")).textContent = pn;
+    into.appendChild(sec);
+  }
+  // A text's credit (its author or source) as plain text in a language: the Wikipedia link is for the screen
+  /** @param {HTMLElement} sec @param {string} cl "mr" or "en" */
+  function creditText(sec, cl) {
+    var cr = /** @type {HTMLElement | null} */ (sec.querySelector(".cr"));
+    if (!cr) return "";
+    var c = /** @type {HTMLElement} */ (cr.cloneNode(true)),
+      other = c.querySelectorAll(cl === "en" ? ".mr" : ".en");
+    [].forEach.call(c.querySelectorAll(".crx, .rec"), function (/** @type {Element} */ x) {
+      x.remove();
+    });
+    if (c.querySelector(cl === "en" ? ".en" : ".mr"))
+      [].forEach.call(other, function (/** @type {Element} */ x) {
+        x.remove();
+      });
+    // the second, smaller author line (<small>) is a sentence of its own: a space before it
+    [].forEach.call(c.querySelectorAll("small"), function (/** @type {Element} */ x) {
+      x.before(" ");
+    });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  }
+  // The closing page: the texts printed and where each comes from, the site to open with its QR code, and the day it
+  // was printed. Its own page (rule 1), its blocks never split
+  /** @param {HTMLElement} into @param {any} src @param {Extras} ex */
+  function closing(into, src, ex) {
+    var L = rw(),
+      k = L === "en" ? "en" : "mr",
+      cl = plang() === "both" ? (LEAD === "en" ? "en" : "mr") : plang() === "en" ? "en" : "mr",
+      sec = mk("section", "pvclose");
+    sec.appendChild(orn("end"));
+    var box = sec.appendChild(mk("div", "pvk pvsrc"));
+    box.appendChild(title("h3", "pvsrch", menuWords("print", /** @type {any} */ (window).SCR.k || "mr").sources, menuWords("print", "en").sources));
+    // (not a .pvtoc: the contents is the one list of the texts printed)
+    var ol = box.appendChild(mk("ol", "pvsl"));
+    src.secs.forEach(function (/** @type {HTMLElement} */ s2) {
+      var li = titleOf(s2, "li", ""),
+        t = creditText(s2, cl);
+      li.setAttribute("data-sid", s2.id);
+      if (t) li.appendChild(inLang("span", "pvwho", cl, "")).textContent = t;
+      ol.appendChild(li);
+    });
+    var site = sec.appendChild(mk("div", "pvk pvsite")),
+      q = ex.qr(),
+      url = q ? (/https?:\/\/[^\s"]+/.exec(q.getAttribute("aria-label") || "") || [""])[0] : "";
+    if (q) site.appendChild(mk("div", "pvqr")).appendChild(q);
+    var at = site.appendChild(mk("div", "pvat"));
+    at.appendChild(title("p", "pvsn", /** @type {any} */ (window).SCR.to("नित्य उपासना"), "Nitya Upasana"));
+    if (url) at.appendChild(mk("p", "pvurl pve", "")).textContent = url.replace(/^https?:\/\/|\/$/g, "");
+    at.appendChild(own("p", "pvdate", menuWords("print", L).printed(dateText(L))));
+    var pn = ex.panchang();
+    if (pn && k !== "en") at.appendChild(inLang("p", "pvpan", "mr", "")).textContent = pn;
+    into.appendChild(sec);
   }
   // Page 1 of a routine printout: whose routine and the month, the week at a glance (days × sessions, each cell the
   // numbers of its texts), then the contents in printing order, each text with its tag
@@ -483,14 +648,21 @@ export function createWriter(o) {
     cov.appendChild(ol);
     into.appendChild(cov);
   }
-  /** @param {HTMLElement} into @param {string} mode @param {any} src @param {import("../print/what.js").RoutinePlan | null} rp */
-  function write(into, mode, src, rp) {
+  /**
+   * @param {HTMLElement} into @param {string} mode @param {any} src @param {import("../print/what.js").RoutinePlan | null} rp
+   * @param {{ session: string, day?: number } | null} sp
+   */
+  function write(into, mode, src, rp, sp) {
     var side = mode === "side",
       k = plang() === "en" ? "en" : "mr";
     into.innerHTML = "";
     into.setAttribute("data-lang", plang());
     into.setAttribute("data-mode", side ? "side" : "one");
-    // one text on its own prints as just that text: no contents (a routine's page 1 always prints)
+    // one text on its own prints as just that text: no contents (a routine's page 1 always prints); more than one, a
+    // cover before the contents and a closing page after the texts, unless turned off in the pop-up
+    var ex = extras ? extras() : null,
+      book = !rp && src.secs.length > 1 && !!ex && ex.cover;
+    if (book) cover(into, src, sp || null, /** @type {Extras} */ (ex));
     if (rp && !(/** @type {any} */ (rp).only)) routinePage(into, src, rp);
     else if (src.secs.length > 1) contents(into, src);
     src.secs.forEach(function (/** @type {HTMLElement} */ sec) {
@@ -499,6 +671,7 @@ export function createWriter(o) {
         box = mk("section", "pvs" + (vedic ? " pvved" : ""));
       box.setAttribute("data-sid", sec.id);
       var hd = titleOf(sec, "h2", "pvtitle");
+      hd.appendChild(orn("rule"));
       // a routine printout: the text's tag under its title
       if (rp) {
         var tg = mk("span", "pvtag");
@@ -515,7 +688,7 @@ export function createWriter(o) {
             return x.el;
           }),
         ).forEach(function (g) {
-          box.appendChild(side ? sideBlock(g, !g[0].classList.contains("rmk")) : byLine ? linesBlock(g, k) : proseBlock(g, k));
+          box.appendChild(side ? sideBlock(g, !(g.length === 1 && g[0].classList.contains("rmk"))) : byLine ? linesBlock(g, k) : proseBlock(g, k));
         });
       else if (side)
         group(ps).forEach(function (g) {
@@ -530,39 +703,37 @@ export function createWriter(o) {
         });
         box.appendChild(col);
       }
-      var cr = /** @type {HTMLElement | null} */ (sec.querySelector(".cr"));
-      if (cr) {
-        // the author line in the language printed (with both, the main one's), as plain text: its Wikipedia link is
-        // for the screen. Inside the last block, so it never lands alone at the top of a page (in one language,
-        // after the column, kept with it: inside a stanza it would widen it)
-        var c = /** @type {HTMLElement} */ (cr.cloneNode(true)),
-          cl = plang() === "both" ? (LEAD === "en" ? "en" : "mr") : k,
-          other = c.querySelectorAll(cl === "en" ? ".mr" : ".en");
-        [].forEach.call(c.querySelectorAll(".crx"), function (/** @type {Element} */ x) {
-          x.remove();
-        });
-        if (c.querySelector(cl === "en" ? ".en" : ".mr"))
-          [].forEach.call(other, function (/** @type {Element} */ x) {
-            x.remove();
-          });
-        // the second, smaller author line (<small>) is a sentence of its own: a space before it
-        [].forEach.call(c.querySelectorAll("small"), function (/** @type {Element} */ x) {
-          x.before(" ");
-        });
-        var t = c.textContent.replace(/\s+/g, " ").trim();
-        if (t) {
-          var pc = mk("p", "pvcr");
-          pc.textContent = t;
-          // inside the last block, so it never goes to a page of its own (Safari doesn't keep a line with the one
-          // before it); in a text's column, in its last cell, centred under the column
-          var ks = box.querySelectorAll(".pvk"),
-            last = ks[ks.length - 1];
-          if (!last) box.appendChild(pc);
-          else (last.querySelector(".pvsc") || last).appendChild(pc);
-        }
+      // the author line in the language printed (with both, the main one's), then the end mark. Inside the last block,
+      // so neither lands alone at the top of a page (Safari doesn't keep a line with the one before it); in a text's
+      // column, in its last cell, centred under the column
+      var t = creditText(sec, plang() === "both" ? (LEAD === "en" ? "en" : "mr") : k),
+        ks = box.querySelectorAll(".pvk"),
+        last = /** @type {HTMLElement | null} */ (ks[ks.length - 1] || null),
+        at = last ? /** @type {HTMLElement} */ (last.querySelector(".pvsc") || last) : box;
+      // (the end mark on the credit's line, after it, so it takes no room of its own: an aarti side by side still
+      // fits one sideways page; on a line of its own when there is no credit)
+      if (t) {
+        var pc = at.appendChild(mk("p", "pvcr"));
+        pc.textContent = t;
+        pc.appendChild(orn("end"));
+      } else {
+        // no credit: at the end of the text's last line (its last row, side by side), never a line of its own
+        var ends = last ? last.querySelectorAll(".pvl, .pvpr, tr:last-child > td:last-child") : [];
+        /** @type {HTMLElement} */ (ends[ends.length - 1] || at).appendChild(orn("end"));
+      }
+      // A short text (an aarti, an ashtak: SHORT rows at most) is one block that never splits, so it may follow the
+      // text before it on the same page instead of starting a page of its own (Satish 2026-11-17: a session wasted a
+      // page an aarti); a long one starts a page (css/15-print.css, rule 1). Not side by side, not a Vedic text, and
+      // not on sideways pages (shorter: a whole aarti could be taller than one)
+      if (!side && !vedic && !(land && land()) && rows(box) <= SHORT) {
+        var whole = mk("div", "pvk pvwhole");
+        while (box.firstChild) whole.appendChild(box.firstChild);
+        box.appendChild(whole);
+        box.classList.add("pvshort");
       }
       into.appendChild(box);
     });
+    if (book) closing(into, src, /** @type {Extras} */ (ex));
   }
   return { IND: IND, indAt: indAt, olang: olang, build: build };
 }

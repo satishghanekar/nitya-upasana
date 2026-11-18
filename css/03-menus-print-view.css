@@ -1317,3 +1317,26 @@ html[data-lead="en"] [data-lang="both"] .ver .mr {
 [data-lang="both"] .rftop .lab .lab-how {
   display: none;
 }
+
+/* ==== The print pop-up's "Cover and closing page" (js/features/print.js, #prcv): a checkbox named by its words, the
+   whole row its tap target; shown when more than one text prints, as only then is there a cover ==== */
+.prrow .prchk {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  margin: -8px 0;
+  color: var(--ink);
+  cursor: pointer;
+}
+.prchk input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+.prrow[hidden] {
+  display: none;
+}

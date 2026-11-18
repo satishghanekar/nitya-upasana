@@ -1431,3 +1431,109 @@ test("iPhone Home Screen app: Open in Safari carries a routine printout @chromiu
   await sf.close();
   await context.close();
 });
+
+// ---- The printout as a book (Satish 2026-11-17: "a nice book-like feel"): a cover, the contents with each text's time
+// and a closing page around a printout of more than one text; ornaments and headings; EB Garamond for the English ----
+
+test("more than one text: a cover, the contents with each text's time, the texts, a closing page @chromium-only", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
+  const page = await context.newPage();
+  await stubPrint(page);
+  await openSite(page, SETUPS.marathi, { hash: "?print=as&t=vedic-chant-pavamana-suktam,aarti-sukhkarta,aarti-devi" });
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
+  await page.emulateMedia({ media: "print" });
+  const got = await page.evaluate(() => {
+    const pv = document.getElementById("pv");
+    return {
+      order: [...pv.children].map((s) => (s.classList.contains("pvs") ? "text" : s.className)),
+      cover: pv.querySelector(".pvcover").textContent,
+      frameTall: pv.querySelector(".pvframe").getBoundingClientRect().height,
+      times: [...pv.querySelectorAll(".pvcov .pvtoc li .pvtime")].map((e) => e.textContent),
+      sources: [...pv.querySelectorAll(".pvclose .pvsl li")].map((e) => e.getAttribute("data-sid")),
+      who: pv.querySelector('.pvclose .pvsl li[data-sid="a1"] .pvwho').textContent,
+      qr: !!pv.querySelector(".pvclose .pvqr svg"),
+      url: pv.querySelector(".pvclose .pvurl").textContent,
+      // every text's title has its ornament, and every text its end mark
+      rules: pv.querySelectorAll(".pvs .pvtitle .pvorn-rule").length,
+      ends: pv.querySelectorAll(".pvs .pvorn-end").length,
+      // Pavamana's khila heading is in one block with the verse after it
+      khila: [...pv.querySelectorAll(".pvhd")]
+        .find((h) => /खिल/.test(h.textContent))
+        .closest(".pvk")
+        .querySelectorAll(".pvll").length,
+      // the English in EB Garamond, loaded by the time it prints
+      ebg: document.fonts.check('16px "EB Garamond"'),
+    };
+  });
+  expect(got.order).toEqual(["pvcover", "pvcov", "text", "text", "text", "pvclose"]);
+  expect(got.cover).toContain("नित्य उपासना");
+  expect(got.cover).toContain("३ पाठ");
+  // as tall as what is in it, never the page (Safari scales the printout, and a page-tall frame ran on to a second page)
+  expect(got.frameTall).toBeLessThan(700);
+  expect(got.times).toHaveLength(3);
+  for (const t of got.times) expect(t).toMatch(/^[०-९]+(–[०-९]+)? मि\.$/);
+  expect(got.sources).toEqual(["vedic-chant-pavamana-suktam", "a1", "a3"]);
+  expect(got.who).toContain("समर्थ रामदास");
+  expect(got.qr).toBe(true);
+  expect(got.url).toBe("nitya-upasana.pages.dev");
+  expect(got.rules).toBe(3);
+  expect(got.ends).toBe(3);
+  expect(got.khila).toBeGreaterThan(0);
+  expect(got.ebg).toBe(true);
+  // on paper: the cover first, the closing page last (Devanagari can't be read back reliably from a PDF: the English
+  // address on the closing page is)
+  const pdf = await pdfPages(page, "Letter");
+  expect(pdf.pages[pdf.pages.length - 1]).toContain("nitya-upasana.pages.dev");
+  expect(pdf.pages.slice(0, -1).join("")).not.toContain("nitya-upasana.pages.dev");
+  await context.close();
+});
+
+test("the cover and closing page can be turned off, and a single text never has them @chromium-only", async ({ page }) => {
+  await stubPrint(page);
+  await openSite(page, { ...SETUPS.marathi, pcov: 0 }, { hash: "?print=as&t=aarti-sukhkarta,aarti-devi" });
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
+  expect(await page.evaluate(() => [...document.getElementById("pv").children].map((s) => (s.classList.contains("pvs") ? "text" : s.className)))).toEqual([
+    "pvcov",
+    "text",
+    "text",
+  ]);
+  await page.goto("./?print=as&t=aarti-sukhkarta");
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 20_000 });
+  expect(await page.evaluate(() => document.querySelectorAll("#pv .pvcover, #pv .pvclose, #pv .pvcov").length)).toBe(0);
+});
+
+test("the pop-up's Cover and closing page: shown for more than one text, remembered, and the page count follows @chromium-only", async ({ page }) => {
+  await stubPrint(page);
+  await openSite(page, SETUPS.english);
+  await openPrintBuilder(page, { ids: ["aarti-sukhkarta"] });
+  await howStep(page);
+  await expect(page.locator("#prcvr")).toBeHidden();
+  await openPrintBuilder(page, { ids: ["aarti-sukhkarta", "aarti-devi"] });
+  await howStep(page);
+  const box = page.locator("#prcv");
+  await expect(box).toBeVisible();
+  await expect(box).toBeChecked();
+  await expect(box).toHaveAccessibleName("Cover and closing page");
+  // a whole tap target
+  expect((await page.locator("#prcvr .prchk").boundingBox()).height).toBeGreaterThanOrEqual(44);
+  await expect(page.locator("#prsum")).toContainText(/pages?/);
+  const before = await page.locator("#prsum").textContent();
+  await page.locator("#prcvr .prchk").click();
+  await expect(box).not.toBeChecked();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("aarti2-prefs")).pcov)).toBe(0);
+  // two pages fewer without them
+  await expect(page.locator("#prsum")).not.toHaveText(before);
+  await page.locator("#prgp").click();
+  await page.waitForFunction(() => window.__printed > 0, null, { timeout: 15_000 });
+  expect(await page.evaluate(() => document.querySelectorAll("#pv .pvcover, #pv .pvclose").length)).toBe(0);
+});
+
+// Safari leaves backgrounds off the paper unless the reader asks for them: every line and ornament on paper is a border
+// or a drawing, never a background (Satish 2026-11-17)
+test("the printout draws nothing with a background colour @chromium-only", async () => {
+  const { readFileSync } = await import("node:fs");
+  const css = readFileSync(new URL("../css/15-print.css", import.meta.url), "utf8");
+  const bgs = [...css.matchAll(/([^{}]+)\{[^}]*\bbackground(?:-color)?:\s*([^;]+);/g)].map((m) => m[1].trim().split("\n").pop().trim() + " → " + m[2]);
+  // the page's white, and the week grid's tinted heading row (a tint only: the grid's borders draw its lines)
+  expect(bgs).toEqual([":root[data-print] body → #fff !important", "#pv .pvgrid th → #f2efea"]);
+});

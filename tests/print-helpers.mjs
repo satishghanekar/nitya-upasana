@@ -87,6 +87,8 @@ export async function readPrintView(page) {
       mode: document.documentElement.getAttribute("data-print"),
       toc: [...pv.querySelectorAll(".pvtoc li[data-sid]")].map((li) => ({ id: li.dataset.sid })),
       pieces: [...pv.querySelectorAll(".pvs")].map((s) => s.dataset.sid),
+      // the short texts, which may follow the text before them on its page (js/print/write.js SHORT)
+      short: [...pv.querySelectorAll(".pvs.pvshort")].map((s) => s.dataset.sid),
       blocks: pv.querySelectorAll(".pvs .pvk").length,
       // the blocks that may run on from one page to the next (a Vedic paragraph: "p1:11", as the markers name them)
       flow: [...pv.querySelectorAll(".pvs")].flatMap((s) =>
@@ -204,7 +206,7 @@ export async function pdfPages(page, paper, save) {
     // the marks over the first line of the next page, which Chrome painted there (the markers, 0.25px, aside)
     low.push(
       tc.items
-        .filter((x) => x.transform[5] < 50 && Math.abs(x.transform[0]) > 2 && x.str.trim() && !/^[\p{Nd}\s/]+$/u.test(x.str))
+        .filter((x) => x.transform[5] < 50 && Math.abs(x.transform[0]) > 2 && x.str.trim() && !/^[\p{Nd}\s/–]+$/u.test(x.str))
         .map((x) => x.str)
         .join(""),
     );
@@ -248,14 +250,19 @@ export function checkPrintout(r) {
   // every piece is in the print view, in reading order, and the contents lists each one
   expect(pv.pieces).toEqual(onScreen);
   expect(pv.toc.map((t) => t.id)).toEqual(onScreen);
-  // every piece starts on a page of its own: its first block below the last page of the one before
-  const last = (id) =>
-    Math.max(
-      ...Object.entries(at)
-        .filter(([k]) => k.startsWith(id + ":"))
-        .map(([, p]) => p),
-    );
-  for (let i = 1; i < onScreen.length; i++) expect(at[onScreen[i] + ":0:s"], `${onScreen[i]} starts on a new page`).toBeGreaterThan(last(onScreen[i - 1]));
+  // every long piece starts on a page of its own: its first block below the last page of the one before; a short one
+  // (an aarti, an ashtak) may follow on the same page, but then it is all on that one page, never split by a page break
+  const pagesOf = (id) =>
+    Object.entries(at)
+      .filter(([k]) => k.startsWith(id + ":"))
+      .map(([, p]) => p);
+  const last = (id) => Math.max(...pagesOf(id));
+  for (let i = 1; i < onScreen.length; i++) {
+    const id = onScreen[i],
+      fresh = at[id + ":0:s"] > last(onScreen[i - 1]);
+    if (!pv.short.includes(id)) expect(fresh, `${id} starts on a new page`).toBe(true);
+    else expect(fresh || Math.min(...pagesOf(id)) === last(id), `${id}, a short text, on one page or a new one`).toBe(true);
+  }
   checkPages(r);
   return { pages: pdf.pages.length };
 }
@@ -279,9 +286,9 @@ export function checkPages(r) {
   const half = Object.keys(at).filter((k) => !(k.slice(0, -1) + (k.endsWith("s") ? "e" : "s") in at));
   expect(half, "blocks with only their start or end printed").toEqual([]);
   expect(Object.keys(at).length, "every block start and end printed").toBe(pv.blocks * 2);
-  // page footer "N / total" on every page
+  // the page number on every page, between two dashes ("– 3 –", css/15-print.css)
   const n = pdf.pages.length;
-  pdf.pages.forEach((t, i) => expect(t.replace(/\s/g, ""), `footer on page ${i + 1}`).toContain(`${i + 1}/${n}`));
+  pdf.pages.forEach((t, i) => expect(t.replace(/\s/g, ""), `footer on page ${i + 1}`).toContain(`–${i + 1}–`));
   // nothing in the bottom margin but the footer
   const low = pdf.low.map((t, i) => (t ? `page ${i + 1}: ${t}` : "")).filter(Boolean);
   expect(low, "printed in the bottom margin").toEqual([]);
@@ -292,7 +299,7 @@ export function checkPages(r) {
   // completeness is covered by the block markers above)
   if (pv.english.length) {
     // without the page footers, so a line of prose that runs on to the next page reads whole
-    const flat = pdf.pages.map((t, i) => squash(t.replace(/\[\[[^\]]+\]\]|\{\{[^}]+\}\}/g, "")).replace(`${i + 1}/${n}`, "")).join("");
+    const flat = pdf.pages.map((t, i) => squash(t.replace(/\[\[[^\]]+\]\]|\{\{[^}]+\}\}/g, "")).replace(`–${i + 1}–`, "")).join("");
     // A Vedic paragraph side by side is read back row by row, with its original's words (and, at a page's end, the
     // next piece's heading) between the English ones: there, a line is all there when its words come in order with
     // only other scripts between them (Devanagari or Kannada, and the odd number or mark: never an English word)
