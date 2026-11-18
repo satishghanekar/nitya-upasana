@@ -520,8 +520,16 @@ export default {
       ok: "तुमच्याकडे नवीनतम आवृत्ती आहे",
       off: "इंटरनेट नाही · पुन्हा प्रयत्नासाठी दाबा",
       restart: "जतन झाली. ॲप बंद करून पुन्हा उघडा",
+      failed: "नवीन आवृत्ती जतन झाली नाही · पुन्हा प्रयत्नासाठी दाबा",
     },
-    button: { check: "अपडेट तपासा", busy: "तपासत आहे…", ok: "पुन्हा तपासा", off: "पुन्हा प्रयत्न करा", restart: "अपडेट पूर्ण कसे करायचे" },
+    button: {
+      check: "अपडेट तपासा",
+      busy: "तपासत आहे…",
+      ok: "पुन्हा तपासा",
+      off: "पुन्हा प्रयत्न करा",
+      restart: "अपडेट पूर्ण कसे करायचे",
+      failed: "पुन्हा प्रयत्न करा",
+    },
     version: "आवृत्ती",
     how: "कसे?",
     // How? after an update saved on Safari, iPhone or iPad: how to close the app and open it again, for each device
@@ -560,6 +568,8 @@ export default {
     },
     usingSaved: "इंटरनेट नाही. जतन केलेली प्रत वापरत आहे.",
     loading: "नवीन आवृत्ती, उघडत आहे…",
+    notSaved: "नवीन आवृत्ती जतन होऊ शकली नाही. हीच आवृत्ती वापरात राहील.",
+    notSavedWhy: "अपडेट जतन झाले नाही",
     /** @param {string} v the new version ("v1.37.17") */
     reopen: function (v) {
       return "आवृत्ती " + v + " जतन झाली. पूर्ण करण्यासाठी ॲप बंद करून पुन्हा उघडा.";

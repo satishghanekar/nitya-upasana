@@ -528,8 +528,16 @@ export default {
       ok: "તમારી પાસે સૌથી નવી આવૃત્તિ છે",
       off: "ઇન્ટરનેટ નથી · ફરી પ્રયત્ન માટે દબાવો",
       restart: "સચવાઈ ગઈ. ઍપ બંધ કરીને ફરી ખોલો",
+      failed: "નવી આવૃત્તિ સચવાઈ નહીં · ફરી પ્રયત્ન માટે દબાવો",
     },
-    button: { check: "અપડેટ માટે તપાસો", busy: "તપાસે છે…", ok: "ફરી તપાસો", off: "ફરી પ્રયત્ન કરો", restart: "અપડેટ કેવી રીતે પૂરું કરવું" },
+    button: {
+      check: "અપડેટ માટે તપાસો",
+      busy: "તપાસે છે…",
+      ok: "ફરી તપાસો",
+      off: "ફરી પ્રયત્ન કરો",
+      restart: "અપડેટ કેવી રીતે પૂરું કરવું",
+      failed: "ફરી પ્રયત્ન કરો",
+    },
     version: "આવૃત્તિ",
     how: "કેવી રીતે?",
     // How? after an update saved on Safari, iPhone or iPad: how to close the app and open it again, for each device
@@ -563,6 +571,8 @@ export default {
     },
     usingSaved: "ઇન્ટરનેટ નથી. સાચવેલી નકલ વાપરીએ છીએ.",
     loading: "નવી આવૃત્તિ, ખૂલે છે…",
+    notSaved: "નવી આવૃત્તિ સચવાઈ શકી નહીં. આ જ આવૃત્તિ વપરાશમાં રહેશે.",
+    notSavedWhy: "અપડેટ સચવાયું નહીં",
     /** @param {string} v the new version ("v1.37.17") */
     reopen: function (v) {
       return "આવૃત્તિ " + v + " સચવાઈ ગઈ. પૂરું કરવા ઍપ બંધ કરીને ફરી ખોલો.";

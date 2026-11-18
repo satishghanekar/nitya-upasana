@@ -112,8 +112,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // in five languages (one line where both languages show) and the Library's count of texts, 388.15 KB then; 391 KB since 2026-11-15: a
   // keyboard's / and ← →, and on computers Home, Library, Reading and Follow moved into the top bar, 390.1 KB then; 397 KB
   // since 2026-11-18: the printout as a book, its cover, contents with each text's time and closing page, the ornaments,
-  // and their words in five languages, js/print/write.js, 395.65 KB with them on a Mac)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(397_000);
+  // and their words in five languages, js/print/write.js, 395.65 KB with them on a Mac; 399 KB since 2026-11-18: Check for
+  // updates waiting for the new version and saying why one could not be saved, in five languages, 397.2 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(399_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a

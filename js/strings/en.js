@@ -538,8 +538,9 @@ export default {
       ok: "You have the latest version",
       off: "No internet · tap to try again",
       restart: "Saved. Close the app and open it again",
+      failed: "Couldn't save the new version · tap to try again",
     },
-    button: { check: "Check for updates", busy: "Checking…", ok: "Check again", off: "Try again", restart: "How to finish the update" },
+    button: { check: "Check for updates", busy: "Checking…", ok: "Check again", off: "Try again", restart: "How to finish the update", failed: "Try again" },
     version: "Version",
     how: "How?",
     // How? after an update saved on Safari, iPhone or iPad: how to close the app and open it again, for each device
@@ -578,6 +579,8 @@ export default {
     },
     usingSaved: "No internet. Using the saved copy.",
     loading: "New version, loading…",
+    notSaved: "The new version couldn't be saved. This one stays in use.",
+    notSavedWhy: "Update not saved",
     /** @param {string} v the new version ("v1.37.17") */
     reopen: function (v) {
       return "Updated to " + v + ". Close the app and open it again to finish.";

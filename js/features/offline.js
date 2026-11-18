@@ -90,6 +90,44 @@ export function init() {
       uph.hidden = st !== "restart";
     }
     upmInit(uph);
+    // Why the last new version could not be saved on this device (sw.js keeps it, NOTE), under the version: a screenshot
+    // of About is then enough to find out. Shown while this device is still on an older version than the one that
+    // failed; the next version that installs removes it.
+    var why = /** @type {HTMLElement} */ (document.getElementById("update-why"));
+    /** @returns {Promise<{v: string, why: string} | null>} */
+    function readNote() {
+      if (!("caches" in window)) return Promise.resolve(null);
+      return caches
+        .match("note", { cacheName: "update-failed" })
+        .then(function (m) {
+          return m ? m.json() : null;
+        })
+        .catch(function () {
+          return null;
+        });
+    }
+    /** @param {{v: string, why: string} | null} n */
+    function showNote(n) {
+      var on = !!(n && typeof n.v === "string" && typeof n.why === "string" && n.v !== CACHE);
+      why.hidden = !on;
+      if (!on || !n) return;
+      why.innerHTML =
+        '<span data-w="offline.notSavedWhy"></span> (<span lang="en">' +
+        esc(n.v.replace(/^aarti-v/, "")) +
+        '</span>): <code lang="en">' +
+        esc(n.why.slice(0, 300)) +
+        "</code>";
+      fillWords(why);
+    }
+    readNote().then(showNote);
+    if ("serviceWorker" in navigator)
+      try {
+        navigator.serviceWorker.addEventListener("message", function (e) {
+          var d = e.data;
+          if (d && typeof d.updateFailed === "string") showNote({ v: d.updateFailed, why: String(d.why) });
+        });
+        navigator.serviceWorker.startMessages();
+      } catch (e) {}
     // Author lines: the Wikipedia link on a poet's name works only online; offline the name is plain text
     function crNet() {
       var on = navigator.onLine !== false;
@@ -179,12 +217,16 @@ export function init() {
     }
     // The page opens from the saved copy (sw.js), so before reloading, the new files must be in it: a new version
     // installs its own copy (sw.js changed), and files changed under the same version are saved over the old ones.
-    // Resolves once that is done, or after 20 s at most. Every file is fetched before any is saved, so a file that fails
-    // leaves the saved copy as it was (as addAll did).
+    // Resolves to "" once that is done, or to why it could not be: the install failed (sw.js keeps why), or the new
+    // version's copy is not there when it should be. It used to say "Saved" after 20 s whatever had happened, and an
+    // iPhone stayed on 1.73.0 while it said 1.74.0 (Satish, 2026-11-18). Every file is fetched before any is saved, so a
+    // file that fails leaves the saved copy as it was.
     function newCopy() {
       /** @type {Promise<any>} */
       var saved = Promise.resolve();
-      if ("caches" in window) {
+      // (only for files changed under this version: a new version comes whole, through its own install, never as new
+      // files over this version's copy, which an install that failed left running half new)
+      if ("caches" in window && (!newer || newer === CACHE)) {
         var files = ["./"].concat(PARTS);
         saved = Promise.all(
           files.map(function (u) {
@@ -207,32 +249,58 @@ export function init() {
           })
           .catch(function () {});
       }
-      /** @type {Promise<any>} */
-      var next = Promise.resolve();
+      /** @type {Promise<string>} */
+      var next = Promise.resolve("");
       if ("serviceWorker" in navigator)
-        next = navigator.serviceWorker
-          .getRegistration()
-          .then(function (g) {
-            return (
-              g &&
-              g.update().then(function () {
-                // a new version is installing: wait until it is in charge
-                if (!g.installing && !g.waiting) return;
+        next = navigator.serviceWorker.getRegistration().then(
+          function (g) {
+            if (!g) return "";
+            return g.update().then(
+              function () {
+                // a new version is installing: wait until it is in charge, or has failed
+                var w = g.installing || g.waiting;
+                if (!w) return "";
                 return new Promise(function (res) {
-                  navigator.serviceWorker.addEventListener("controllerchange", function () {
-                    res(undefined);
+                  var w2 = /** @type {ServiceWorker} */ (w);
+                  /** @param {string} why */
+                  function done(why) {
+                    clearTimeout(t);
+                    res(why);
+                  }
+                  // (sw.js gives up after 3 minutes and says why; this is in case it never says anything)
+                  var t = setTimeout(function () {
+                    done("no answer from the new version after 4 minutes");
+                  }, 240000);
+                  w2.addEventListener("statechange", function () {
+                    if (w2.state === "activated") done("");
+                    // (its message with the reason may come a moment after)
+                    if (w2.state === "redundant")
+                      setTimeout(function () {
+                        readNote().then(function (n) {
+                          done((n && n.why) || "the new version stopped installing");
+                        });
+                      }, 500);
                   });
                 });
-              })
+              },
+              /** @param {any} x */ function (x) {
+                return "sw.js: " + ((x && x.message) || "could not be checked");
+              },
             );
-          })
-          .catch(function () {});
-      return Promise.race([
-        Promise.all([saved, next]),
-        new Promise(function (res) {
-          setTimeout(res, 20000);
-        }),
-      ]);
+          },
+          function () {
+            return "";
+          },
+        );
+      return Promise.all([saved, next]).then(function (a) {
+        var why = a[1];
+        if (why || !newer || newer === CACHE || !("caches" in window)) return why;
+        // a new version named by the site, and none installing: its copy must be there already (installed as the app
+        // opened), or this phone never took it up
+        return caches.has(newer).then(function (h) {
+          return h ? "" : "no saved copy of " + newer.replace(/^aarti-v/, "") + " was made";
+        });
+      });
     }
     upd.onclick = function () {
       if (upd.getAttribute("data-s") === "busy") return;
@@ -258,7 +326,13 @@ export function init() {
                 // saved and the reader asked to close the app and open it again; elsewhere the page reloads with it
                 var wk = root.classList.contains("wk");
                 note(menuWords("offline").loading);
-                newCopy().then(function () {
+                newCopy().then(function (why) {
+                  if (why) {
+                    showNote({ v: newer || CACHE, why: why });
+                    updSet("failed");
+                    note(menuWords("offline").notSaved, 8000);
+                    return;
+                  }
                   if (!wk) return location.reload();
                   var v = (newer || CACHE).replace(/^aarti-v/, "");
                   byId("ver").textContent = v;
