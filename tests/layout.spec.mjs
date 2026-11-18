@@ -320,6 +320,36 @@ for (const s of SCREENS.filter((x) => ["iphone-15", "ipad-air", "ipad-landscape"
       await context.close();
     });
 
+// A text set line by line (layout: lines) on an iPad: each verse in the middle of the screen, its lines starting
+// together, and the text as large as an aarti's at least (it hugged the left half at 22px; Satish 2026-11-17)
+test("Pavamana, Lalita, Vishnu and Shri Sukta on an iPad: each verse centred, the text larger", async ({ page }) => {
+  for (const [w, h] of [
+    [834, 1194],
+    [1194, 834],
+  ]) {
+    await page.setViewportSize({ width: w, height: h });
+    for (const id of ["vedic-chant-pavamana-suktam", "vedic-chant-lalita-sahasranama", "vedic-chant-vishnu-sahasranama", "vedic-chant-shri-sukta"]) {
+      await openSite(page, SETUPS.marathi, { hash: "#" + id });
+      const st = await page.evaluate((id) => {
+        const sec = /** @type {HTMLElement} */ (document.getElementById(id)),
+          items = /** @type {HTMLElement} */ (sec.querySelector(".items")).getBoundingClientRect(),
+          verses = [...sec.querySelectorAll(".items > .item:not(.dh)")].slice(2, 8).map((v) => v.getBoundingClientRect()),
+          p = /** @type {HTMLElement} */ (sec.querySelector(".item:not(.dh) .verse .mr p")),
+          lines = [...sec.querySelectorAll(".items > .item:not(.dh)")][3].querySelectorAll(".verse .mr p");
+        return {
+          size: parseFloat(getComputedStyle(p).fontSize),
+          off: Math.max(...verses.map((v) => Math.abs(v.left + v.width / 2 - (items.left + items.width / 2)))),
+          starts: new Set([...lines].map((l) => Math.round(l.getBoundingClientRect().left))).size,
+        };
+      }, id);
+      expect(st.size, id + " " + w + " text size").toBeGreaterThanOrEqual(25);
+      expect(st.off, id + " " + w + " verses centred").toBeLessThanOrEqual(2);
+      expect(st.starts, id + " " + w + " a verse's lines start together").toBe(1);
+    }
+  }
+  expect(await hasSidewaysScroll(page)).toBe(false);
+});
+
 test("Vedic chants keep their lines in pairs with both languages", async ({ page }) => {
   await openSite(page, SETUPS.both, { hash: "#vedic-chant-shri-rudra" });
   await buildAll(page);
@@ -374,15 +404,18 @@ for (const [setup, width] of [
       const refs = [...sec.querySelectorAll(".ref")].filter((e) => e.getClientRects().length);
       const shown = (e) =>
         getComputedStyle(e.firstElementChild).display === "none" ? getComputedStyle(e, "::after").content.replace(/"/g, "") : e.textContent;
-      // the rows of the verses: each line's first row starts where the verse's other lines do
-      const starts = [...sec.querySelectorAll(".item:not(.dh) .verse > :not([hidden]) > p")]
-        .filter((p) => p.getClientRects().length)
-        .map((p) => Math.round(p.getClientRects()[0].left));
+      // the rows of the verses: each line's first row starts where the verse's other lines do; on a phone every verse at
+      // the same left edge, on a wider screen each verse centred on its own (css/02-core.css)
+      const verses = [...sec.querySelectorAll(".item:not(.dh) .verse > :not([hidden])")].map((v) =>
+        [...v.querySelectorAll(":scope > p")].filter((p) => p.getClientRects().length).map((p) => Math.round(p.getClientRects()[0].left)),
+      );
+      const starts = verses.flat();
       return {
         refs: refs.length,
         texts: refs.map((e) => e.textContent),
         shown: refs.map(shown),
         starts: [...new Set(starts)].length,
+        ragged: verses.filter((v) => new Set(v).size > 1).length,
         lines: starts.length,
       };
     });
@@ -397,8 +430,10 @@ for (const [setup, width] of [
       expect(r.shown[setup === "both" ? 2 : 1]).toBe(setup === "english" ? "2" : "२");
       expect(r.shown.filter((s) => /^[0०]/.test(s))).toEqual([]);
     } else expect(short).toBe(0);
-    // one language: every line starts at the same left edge (both languages keep their own layout)
-    if (setup !== "both") expect(r.starts).toBe(1);
+    // one language: a verse's lines start together, and on a phone every verse at the same left edge (both languages
+    // keep their own layout)
+    if (setup !== "both") expect(r.ragged).toBe(0);
+    if (setup !== "both" && width < 600) expect(r.starts).toBe(1);
     expect(r.lines).toBeGreaterThan(1200);
   });
 
