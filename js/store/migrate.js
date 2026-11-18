@@ -48,7 +48,7 @@ export const PROFILE_KEYS = [
   "ver",
 ];
 // what stays with the device, whoever is reading
-export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "plang", "ppr", "fold"];
+export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "plang", "ppr", "pcov", "fold"];
 
 /**
  * Every setting with its default (the same list and meanings as js/core/state.js has always had)
@@ -78,6 +78,7 @@ export function defaults(env) {
     fnt: "classic", // text font: std (Modern) | classic (Traditional) | bold (Bold)
     pref: "", // dhrupad in the printout: "" as on the page | 0 | 1
     pfn: "", // font of the printout: "" as the text font (fnt) | std | classic | bold
+    pcov: 1, // a printout of more than one text: 1 with its cover and closing page (js/print/write.js) | 0 without
     plang: "", // language of the printout: "" as the page shows it | mr (the original) | en | both
     ppr: "", // paper of the printout: "" as the device's region suggests (Letter in the US and Canada) | letter | a4
     tr: "simple", // English style: simple | iast
@@ -182,6 +183,7 @@ export function tidy(P) {
   // three text fonts since v1.24: Handwritten and the printout's Best are gone (Traditional now does what Best did)
   if (["std", "classic", "bold"].indexOf(P.fnt) < 0) P.fnt = "classic";
   if (["std", "classic", "bold"].indexOf(P.pfn) < 0) P.pfn = "";
+  if (P.pcov !== 0) P.pcov = 1;
   if (P.tr !== "iast") P.tr = "simple";
   if (P.libSort !== "az") P.libSort = "";
   if (["quick", "steady", "slow"].indexOf(P.pace) < 0) P.pace = "";

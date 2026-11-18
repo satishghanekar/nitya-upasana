@@ -18,13 +18,17 @@
 @media print {
   @page {
     size: portrait;
-    /* the side margins give the same measure as the screen's Vedic text (33.6 × 15pt on Letter, css/02-core.css) */
-    margin: 17mm 19mm 19mm;
+    /* the side margins give the same measure as the screen's Vedic text (33.6 × 15pt on Letter, css/02-core.css): 38mm
+       together, most of it on the left, for punching holes there (25mm, about an inch, as a binder needs; Satish
+       2026-11-18), on every page */
+    margin: 17mm 13mm 19mm 25mm;
+    /* the page number alone, small, between two short dashes, as a book's (Chrome; Safari prints none: Satish
+       2026-11-17, #10) */
     @bottom-center {
-      content: counter(page) " / " counter(pages);
+      content: "–  " counter(page) "  –";
       font:
-        9pt Inter,
-        sans-serif;
+        10pt "EB Garamond",
+        serif;
       color: #555;
       vertical-align: top;
       padding-top: 3mm;
@@ -55,19 +59,21 @@
     --pw: 400;
     --pwb: 700;
   }
+  /* (English in Traditional and Bold: EB Garamond, a book face with true italics, small capitals and old-style
+     figures; Satish 2026-11-17, #3. Modern keeps its sans) */
   :root[data-print][data-font="classic"] #pv {
     --po: "SC Classic", var(--body);
     --pved: "Tiro Devanagari Sanskrit", "SC Classic", var(--body);
     --pk: var(--kf, "SC Kn Classic"), var(--ks, "Noto Sans Kannada"), var(--body);
-    --pe: "SC Classic", var(--lat);
+    --pe: "EB Garamond", "SC Classic", var(--lat);
     --pob: "SC Bold", var(--body);
-    --peb: "SC Bold", var(--lat);
+    --peb: "EB Garamond", "SC Bold", var(--lat);
   }
   :root[data-print][data-font="bold"] #pv {
     --po: "SC Bold", var(--body);
     --pved: "SC Bold", var(--body);
     --pk: var(--kf, "SC Kn Classic"), var(--ks, "Noto Sans Kannada"), var(--body);
-    --pe: "SC Bold", var(--lat);
+    --pe: "EB Garamond", "SC Bold", var(--lat);
     --pw: 600;
     --pwb: 800;
   }
@@ -113,11 +119,26 @@
 
   /* ---- Pages: the four rules (the Print pop-up's "about 12 pages" reads them from each block, so it follows any
      change here: js/features/print.js blocks()) ---- */
-  /* 1. every text (and the contents) starts on a new page */
+  /* 1. every text (and the cover, the contents and the closing page) starts on a new page; a short text (an aarti, an
+     ashtak: js/print/write.js SHORT), one block that never splits, follows the text before it on the same page where
+     it fits (Satish 2026-11-17, #6). Never on a sideways page, which holds less: there js/print/write.js marks none */
   #pv > section + section {
     break-before: page;
     page-break-before: always;
   }
+  #pv > .pvs + .pvs.pvshort {
+    margin-top: 24pt;
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  /* (one box that never splits: an inline-block, as the stanzas below, since Safari splits other boxes) */
+  #pv .pvwhole {
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+  }
+
   /* 2. a block (a stanza with its dhrupad, marker or note; a side-by-side stanza; a title) is never split */
   #pv .pvk,
   #pv .pvtitle,
@@ -203,6 +224,8 @@
     display: table;
     margin: 0 auto;
     font-size: 15pt;
+    /* a stanza's lines a little closer than prose, so it reads as one (#2) */
+    line-height: 1.45;
     text-align: center;
   }
   #pv .pvcol > .pvst {
@@ -220,7 +243,7 @@
      widening it (width 0, then the column's width: only the stanzas set where the column's left edge is), a line longer
      than the stanzas reaching out on both sides */
   #pv .pvsc > :is(.pvref, .pvrf, .pvbold, .pvdh),
-  #pv .pvsc > :is(.pvcr, .pvlab) {
+  #pv .pvsc > :is(.pvcr, .pvlab, .pvorn) {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -428,6 +451,9 @@
   /* ---- The contents: the texts listed by category (no page numbers) ---- */
   #pv .pvcov .pvh {
     margin-bottom: 10pt;
+    /* room above for the marks over its letters (the ी of चतुर्थी), as a text's title has: after the cover the contents
+       starts a page, and Chrome painted what rose above its first line at the foot of the cover */
+    padding-top: 6pt;
   }
   #pv .pvcat {
     margin: 10pt 0 3pt;
@@ -548,5 +574,245 @@
   /* a text's recording (▶ YouTube, js/text/content.js): a link, of no use on paper */
   #pv .rec {
     display: none;
+  }
+
+  /* ==== The book look (Satish 2026-11-17: "a nice book-like feel"; the mockups' style A, and E with both languages).
+     Only what the browser lays out: no running header, no page frame (Safari can repeat neither), every rule a border
+     or a drawn line (Safari leaves backgrounds off the paper), nothing sized to the page ==== */
+
+  /* the ornaments (js/print/write.js orn()): a rule with a diamond under a title, three diamonds where a text ends, a
+     lotus on the cover, in the accent colour */
+  #pv .pvorn {
+    display: block;
+    color: var(--accent);
+    line-height: 0;
+  }
+  #pv .pvorn svg {
+    display: block;
+    margin: 0 auto;
+  }
+  #pv .pvorn-rule {
+    margin-top: 5pt;
+  }
+  /* under a text's title, in the room the title already had below it: a title is no taller than before (a text that
+     filled its page still does) */
+  #pv .pvtitle {
+    margin-bottom: 0;
+  }
+  #pv .pvtitle {
+    line-height: 1.2;
+  }
+  #pv .pvtitle .pvorn-rule {
+    margin: 2.5pt 0 0;
+  }
+  /* (a little smaller under a text's title: clear of the marks under its letters, which Safari drew it through when it
+     was tucked into the title's line, and no taller than the title's room below it: no text a page longer) */
+  #pv .pvtitle .pvorn-rule svg {
+    width: 26mm;
+    height: 1.5mm;
+  }
+  #pv .pvorn-rule svg {
+    width: 44mm;
+    height: 2.7mm;
+  }
+  #pv .pvorn-end {
+    margin-top: 7pt;
+  }
+  #pv .pvorn-end svg {
+    width: 10mm;
+    height: 2.7mm;
+  }
+  /* after the credit, on its line (or, with no credit, after the text's last line) */
+  #pv :is(.pvcr, .pvl, .pvpr, td) > .pvorn-end {
+    display: inline-block;
+    margin: 0 0 0 5pt;
+    vertical-align: 0.1em;
+  }
+  #pv :is(.pvcr, .pvl, .pvpr, td) > .pvorn-end svg {
+    width: 7mm;
+    height: 1.9mm;
+  }
+
+  #pv .pvorn-lotus svg {
+    width: 20mm;
+    height: 20mm;
+  }
+
+  /* a heading of the text's own (प्रथमोऽध्यायः, खिलमन्त्रः, फलश्रुति): in the accent colour over a short double rule,
+     kept in one block with what follows it (js/print/write.js), #5 */
+  #pv .pvnote.pvhd {
+    display: table;
+    margin: 5pt auto 4pt;
+    padding: 1pt 6pt;
+    border-bottom: 2.25pt double var(--accent);
+    color: var(--accent);
+    font-size: 14pt;
+    line-height: 1.3;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  #pv .pvt tr.pvhdrow td {
+    padding-top: 3pt;
+    color: var(--accent);
+    font-size: 11pt;
+  }
+  #pv .pvt tr.pvhdrow {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* English, as a book sets it (#3), in Traditional and Bold (EB Garamond): old-style figures; the small labels (the
+     dhrupad's, a ↻ note, a category's English name, how long a text takes) in small capitals; the English column beside
+     the original in italics */
+  :root[data-print]:is([data-font="classic"], [data-font="bold"]) #pv .pve {
+    font-variant-numeric: oldstyle-nums;
+  }
+  :root[data-print]:is([data-font="classic"], [data-font="bold"]) #pv :is(.pvlab.pve, .pvnote.pve:not(.pvhd), .pvcat .pvsec.pve, .pvtime.pve) {
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.06em;
+  }
+  :root[data-print]:is([data-font="classic"], [data-font="bold"]) #pv .pvt td.pve {
+    font-style: italic;
+  }
+  /* (Garamond's letters are smaller than Noto Serif's at a size: the English column a little larger, still no taller
+     than the original's line beside it) */
+  :root[data-print]:is([data-font="classic"], [data-font="bold"]) #pv .pvs:not(.pvved) .pvt td.pve,
+  :root[data-print][data-land]:is([data-font="classic"], [data-font="bold"]) #pv .pvs:not(.pvved) .pvt td.pve {
+    font-size: 10.5pt;
+  }
+
+  /* how long a text takes, after its name in the contents (#7: the contents has no page numbers) */
+  #pv .pvtoc li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.3em;
+  }
+  #pv .pvtoc .pvtime {
+    margin-left: auto;
+    color: #555;
+    font-size: 0.82em;
+    white-space: nowrap;
+  }
+
+  /* ---- The cover (a printout of more than one text): a frame as tall as what is in it, two borders, centred near
+     the top of the page; never as tall as the page, whose height Safari changes as it scales the printout ---- */
+  #pv .pvcover {
+    padding-top: 14mm;
+    text-align: center;
+  }
+  #pv .pvframe {
+    padding: 1.6mm;
+    border: 0.8pt solid var(--accent);
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  #pv .pvframein {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14mm 10mm 13mm;
+    border: 0.6pt solid var(--accent);
+  }
+  #pv .pvcover .pvorn-lotus {
+    margin-bottom: 7mm;
+  }
+  #pv .pvcover .pvbig {
+    margin: 0;
+    font-size: 30pt;
+  }
+  #pv .pvcover .pvorn-rule {
+    margin: 7mm 0 2mm;
+  }
+  #pv .pvwhat {
+    margin: 6mm 0 0;
+    font: 400 21pt/1.3 var(--head);
+  }
+  #pv .pvwhat .pvsec {
+    font-style: italic;
+  }
+  #pv :is(.pvmeta, .pvdate, .pvpan) {
+    margin: 3mm 0 0;
+    color: #333;
+    font-size: 12.5pt;
+    line-height: 1.4;
+  }
+  #pv .pvdate {
+    margin-top: 9mm;
+  }
+  #pv .pvpan {
+    margin-top: 1mm;
+    color: var(--accent);
+  }
+
+  /* ---- The closing page: the texts printed and where each comes from, then the site with its QR code and the day
+     printed ---- */
+  #pv .pvclose {
+    padding-top: 12mm;
+  }
+  #pv .pvclose > .pvorn-end {
+    margin: 0 0 9mm;
+  }
+  #pv .pvsrch {
+    margin: 10pt 0 3pt;
+    padding: 0 0 3pt;
+    border-bottom: 1pt solid var(--accent);
+    color: var(--accent);
+    font: 600 13pt/1.3 var(--head);
+  }
+  #pv .pvsrch .pvsec {
+    display: inline;
+    margin-left: 0.5em;
+  }
+  #pv .pvsl {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  #pv .pvsl li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.3em;
+    padding: 3pt 2pt;
+    border-bottom: 0.5pt solid #ddd;
+    font: 400 12pt/1.3 var(--head);
+  }
+  #pv .pvsl .pvsec {
+    margin-left: 0.4em;
+    font-size: 0.78em;
+  }
+  #pv .pvwho {
+    margin-left: auto;
+    color: #444;
+    font-size: 0.85em;
+    text-align: end;
+  }
+  #pv .pvsite {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8mm;
+    margin-top: 14mm;
+  }
+  #pv .pvqr svg {
+    display: block;
+    width: 30mm;
+    height: 30mm;
+  }
+  #pv .pvat > p {
+    margin: 0;
+  }
+  #pv .pvsn {
+    color: var(--accent);
+    font: 400 17pt/1.3 var(--head);
+  }
+  #pv .pvat > .pvurl {
+    margin: 2pt 0 6pt;
+    font-size: 12.5pt;
+  }
+  #pv .pvat :is(.pvdate, .pvpan) {
+    margin-top: 1mm;
+    font-size: 11pt;
   }
 }

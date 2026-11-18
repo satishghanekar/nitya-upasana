@@ -58,3 +58,15 @@ All of them are under the SIL Open Font License 1.1 (https://openfontlicense.org
 redistributing them with a website, cut down or not. Inter © The Inter Project Authors; Noto Sans and Noto Serif
 (Devanagari, Latin, Kannada, Telugu, Gujarati) © Google LLC; Tiro Devanagari Marathi and Sanskrit, Tiro Kannada and
 Tiro Telugu © Tiro Typeworks Ltd.
+
+**The printout's English: EB Garamond** (`eb-garamond-latin`, `eb-garamond-italic-latin`, 2026-11-17). The printed
+English (titles, credits, labels, the English column and English printouts) is set in EB Garamond for its true italics,
+small capitals (`smcp`) and old-style figures (`onum`), which none of the fonts above has. Only `css/15-print.css` names
+it, so it downloads when someone prints; it is in the offline list (`js/parts.js`) so printing works offline too. Cut
+here from the full variable fonts of the google/fonts repository (`ofl/ebgaramond`), Latin with every combining mark
+(the IAST svara marks ̍ ̎ ̱ ̐ are in it), all its OpenType features kept, weights 400–600:
+
+```sh
+pyftsubset "EBGaramond[wght].ttf" --unicodes="U+0000-024F,U+0259,U+02B0-02FF,U+0300-036F,U+1E00-1EFF,U+2000-206F,U+20AC,U+20B9,U+2122,U+2190-2193,U+2212,U+2215,U+25CC,U+FEFF,U+FFFD" --layout-features='*'
+fonttools varLib.instancer <subset> wght=400:600      # then pyftsubset --flavor=woff2 (the italic the same)
+```

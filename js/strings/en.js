@@ -661,6 +661,16 @@ export default {
     sideHint: function (l2) {
       return "Each line beside its " + l2 + ", rows in step.";
     },
+    // the cover and the closing page of a printout of more than one text (js/print/write.js)
+    /** How many texts @param {number} n */
+    texts: function (n) {
+      return n + (+n === 1 ? " text" : " texts");
+    },
+    sources: "Sources",
+    /** The day it was printed @param {string} d */
+    printed: function (d) {
+      return "Printed " + d;
+    },
   },
   // The page's own words (index.html: data-w="page.…", filled by fillWords(), js/core/strings.js); {icon} is the
   // icon written in the page, kept where each language puts it
@@ -759,7 +769,8 @@ export default {
     once2: "Once",
     page: "Page",
     printFont: "Print font",
-    everyTextStartsOnA: 'Every text starts on a new page. Paper: <b class="prpaper">Letter</b>',
+    everyTextStartsOnA: 'Long texts start on a new page; short ones follow on. Paper: <b class="prpaper">Letter</b>',
+    coverAndClosingPage: "Cover and closing page",
     forLandscapePickItIn: "For Landscape, pick it in Safari's dialog too.",
     pickA4PaperInSafari: 'Pick <span class="przp">A4</span> paper in Safari\'s dialog too.',
     chromePrintsItBest: "Chrome prints it best, with page numbers.",

@@ -637,6 +637,16 @@ export default {
     sideHint: function (l2) {
       return "प्रत्येक ओळीशेजारी तिची " + l2 + " ओळ, जुळलेली.";
     },
+    // the cover and the closing page of a printout of more than one text (js/print/write.js)
+    /** How many texts @param {number} n */
+    texts: function (n) {
+      return dv(n) + " पाठ";
+    },
+    sources: "स्रोत",
+    /** The day it was printed @param {string} d */
+    printed: function (d) {
+      return "मुद्रण : " + d;
+    },
   },
   // Go to (js/features/where.js): the top bar's title in a long text or a session, and its sheet (#goto)
   goto: {
@@ -733,7 +743,8 @@ export default {
     once2: "एकदाच",
     page: "पान",
     printFont: "प्रिंटची अक्षरशैली",
-    everyTextStartsOnA: 'प्रत्येक रचना नव्या पानावर सुरू होते. कागद: <b class="prpaper">Letter</b>',
+    everyTextStartsOnA: 'मोठी रचना नव्या पानावर सुरू होते; लहान रचना लगेच पुढे. कागद: <b class="prpaper">Letter</b>',
+    coverAndClosingPage: "मुखपृष्ठ आणि शेवटचे पान",
     forLandscapePickItIn: 'आडव्या पानासाठी Safari च्या प्रिंट विंडोतही <span lang="en">Landscape</span> निवडा.',
     pickA4PaperInSafari: 'Safari च्या प्रिंट विंडोतही <span class="przp" lang="en">A4</span> कागद निवडा.',
     chromePrintsItBest: "Chrome मधून प्रिंट अधिक चांगली येते, पान क्रमांकांसह.",

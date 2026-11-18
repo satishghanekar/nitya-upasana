@@ -655,6 +655,16 @@ export default {
     sideHint: function (l2) {
       return "ಪ್ರತಿ ಸಾಲಿನ ಪಕ್ಕ ಅದರ " + l2 + " ಸಾಲು, ಜೊತೆಯಾಗಿ.";
     },
+    // the cover and the closing page of a printout of more than one text (js/print/write.js)
+    /** How many texts @param {number} n */
+    texts: function (n) {
+      return n + " ಪಠ್ಯಗಳು";
+    },
+    sources: "ಮೂಲಗಳು",
+    /** The day it was printed @param {string} d */
+    printed: function (d) {
+      return "ಮುದ್ರಣ: " + d;
+    },
   },
   // The page's own words (index.html: data-w="page.…"); {icon} is the icon written in the page
   // Go to (js/features/where.js): the top bar's title in a long text or a session, and its sheet (#goto)
@@ -752,7 +762,8 @@ export default {
     once2: "ಒಮ್ಮೆ",
     page: "ಪುಟ",
     printFont: "ಮುದ್ರಣದ ಅಕ್ಷರಶೈಲಿ",
-    everyTextStartsOnA: 'ಪ್ರತಿ ಪಠ್ಯ ಹೊಸ ಪುಟದಲ್ಲಿ ಆರಂಭವಾಗುತ್ತದೆ. ಕಾಗದ: <b class="prpaper">Letter</b>',
+    everyTextStartsOnA: 'ದೀರ್ಘ ಪಠ್ಯಗಳು ಹೊಸ ಪುಟದಲ್ಲಿ ಆರಂಭವಾಗುತ್ತವೆ; ಚಿಕ್ಕವು ಅದೇ ಪುಟದಲ್ಲಿ ಮುಂದುವರಿಯುತ್ತವೆ. ಕಾಗದ: <b class="prpaper">Letter</b>',
+    coverAndClosingPage: "ಮುಖಪುಟ ಮತ್ತು ಕೊನೆಯ ಪುಟ",
     forLandscapePickItIn: "ಅಡ್ಡ ಮುದ್ರಣಕ್ಕೆ, Safari ಯ ಸಂವಾದದಲ್ಲೂ ಅದನ್ನೇ ಆರಿಸಿ.",
     pickA4PaperInSafari: 'Safari ಯ ಸಂವಾದದಲ್ಲೂ <span class="przp">A4</span> ಕಾಗದವನ್ನು ಆರಿಸಿ.',
     chromePrintsItBest: "Chrome ಇದನ್ನು ಪುಟ ಸಂಖ್ಯೆಗಳೊಂದಿಗೆ ಅತ್ಯುತ್ತಮವಾಗಿ ಮುದ್ರಿಸುತ್ತದೆ.",

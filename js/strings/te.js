@@ -649,6 +649,16 @@ export default {
     sideHint: function (l2) {
       return "ప్రతి పంక్తి పక్కనే దాని " + l2 + " పంక్తి, జతగా.";
     },
+    // the cover and the closing page of a printout of more than one text (js/print/write.js)
+    /** How many texts @param {number} n */
+    texts: function (n) {
+      return n + " పాఠాలు";
+    },
+    sources: "మూలాలు",
+    /** The day it was printed @param {string} d */
+    printed: function (d) {
+      return "ముద్రణ: " + d;
+    },
   },
   // The page's own words (index.html: data-w="page.…"); {icon} is the icon written in the page
   // Go to (js/features/where.js): the top bar's title in a long text or a session, and its sheet (#goto)
@@ -746,7 +756,8 @@ export default {
     once2: "ఒకసారి",
     page: "పేజీ",
     printFont: "ముద్రణ అక్షర శైలి",
-    everyTextStartsOnA: 'ప్రతి పాఠం కొత్త పేజీలో మొదలవుతుంది. కాగితం: <b class="prpaper">Letter</b>',
+    everyTextStartsOnA: 'పెద్ద పాఠాలు కొత్త పేజీలో మొదలవుతాయి; చిన్నవి అదే పేజీలో కొనసాగుతాయి. కాగితం: <b class="prpaper">Letter</b>',
+    coverAndClosingPage: "ముఖపత్రం మరియు చివరి పేజీ",
     forLandscapePickItIn: "అడ్డం కోసం, Safari డైలాగ్‌లోనూ దాన్నే ఎంచుకోండి.",
     pickA4PaperInSafari: 'Safari డైలాగ్‌లోనూ <span class="przp">A4</span> కాగితం ఎంచుకోండి.',
     chromePrintsItBest: "Chrome దీన్ని పేజీ సంఖ్యలతో బాగా ముద్రిస్తుంది.",

@@ -202,8 +202,8 @@ var SITE_PARTS = (function () {
     return "content/" + f;
   });
   // Font files kept for offline use: Modern and Traditional, the default, with their English (the Latin files with the
-  // IAST marks), Traditional's bold (Noto Serif Devanagari, Bold's too) and Kannada (Telugu and Gujarati letters
-  // download when first used)
+  // IAST marks), Traditional's bold (Noto Serif Devanagari, Bold's too), Kannada (Telugu and Gujarati letters
+  // download when first used) and the printout's English (EB Garamond)
   var fonts = [
     "inter-latin",
     "inter-latin-ext",
@@ -224,6 +224,9 @@ var SITE_PARTS = (function () {
     "sc-symbols-2",
     "sc-symbols",
     "tiro-kannada-kannada",
+    // the printout's English (css/15-print.css), so printing works offline from the first time
+    "eb-garamond-latin",
+    "eb-garamond-italic-latin",
   ].map(function (f) {
     return "fonts/" + f + ".woff2";
   });
