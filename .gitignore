@@ -4,3 +4,4 @@ tests/pdfs/
 tests/playwright-report/
 tests/.lighthouseci/
 test-results/
+tests/safari-prints/

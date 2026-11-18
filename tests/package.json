@@ -19,6 +19,8 @@
     "wiki": "node tools/wiki.mjs",
     "types": "tsc -p tsconfig.json",
     "sister": "node tools/sister-check.mjs",
+    "print-pages": "node tools/print-pages.mjs",
+    "safari-print": "node tools/safari-print.mjs",
     "recordings": "node tools/recordings.mjs"
   },
   "devDependencies": {
