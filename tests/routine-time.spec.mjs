@@ -146,43 +146,44 @@ test("the routine builder: the session's time, each text's, and every weekday's,
   for (const v of wk) expect(v).toBeGreaterThan(0);
 });
 
-test("reading a session: the title says how long is left of it, counting down text by text @mobile", async ({ page }) => {
+test("reading a session: the pill says how long is left of it, counting down text by text @mobile", async ({ page }) => {
   await openSite(page, { ...SETUPS.english, pace: "quick" }, { now: new Date("2026-10-19T19:00:00-04:00") });
   await page.locator("#tsl li a.tgo").first().click();
   await expect(page.locator("html")).toHaveAttribute("data-run", "1");
   await page.evaluate(() => scrollBy(0, 400));
-  await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
-  const where = page.locator("#where");
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  const where = page.locator("#tkb");
   await expect(where).toBeVisible();
-  // (in the small line over the title, so it is never cut off by a long title)
-  await expect(page.locator("#wh1 .wh-left")).toHaveText(/^about \d+ min left$/);
+  // (in the small line over the place, so it is never cut off by a long title)
+  await expect(page.locator("#tkt .wh-left")).toHaveText(/^about \d+ min left$/);
   await expect(where).toHaveAccessibleName(/, about \d+ minutes left$/);
-  const first = parseInt((await page.locator("#wh1 .wh-left").textContent()).replace(/\D+/g, " ").trim());
-  // the next text: less left
+  const first = parseInt((await page.locator("#tkt .wh-left").textContent()).replace(/\D+/g, " ").trim());
+  // the next text (from the bottom bar, brought back): less left
+  await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
   await page.locator("#asn").click();
   await page.evaluate(() => scrollBy(0, 300));
-  await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
-  await expect.poll(async () => parseInt(((await page.locator("#wh1 .wh-left").textContent()) || "").replace(/\D+/g, " ").trim())).toBeLessThan(first);
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  await expect.poll(async () => parseInt(((await page.locator("#tkt .wh-left").textContent()) || "").replace(/\D+/g, " ").trim())).toBeLessThan(first);
 });
 
-// A session's short text, once its heading is under the top bar: the title is the large line, and the small line over
-// it says which text of how many and how long is left (the large line said "Go to · … min left", its title small and
+// A session's short text, once its heading is under the top bar: the pill's large line is the title, and the small line
+// over it says which text of how many and how long is left (the large line said "Go to · … min left", its title small and
 // grey above it, and the time was cut off; Satish, 2026-11-15)
-test("in a session the top bar's large line is the text's title, the count and time left above it @mobile", async ({ page }) => {
+test("in a session the pill's large line is the text's title, the count and time left above it @mobile", async ({ page }) => {
   await openSite(page, { ...SETUPS.english, pace: "quick" }, { now: new Date("2026-10-19T19:00:00-04:00") });
   await page.locator("#tsl li a.tgo").first().click();
   await page.evaluate(() => scrollBy(0, 400));
-  await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
-  await expect(page.locator("#where")).toBeVisible();
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  await expect(page.locator("#tkb")).toBeVisible();
   // (without its number, which the small line gives)
-  await expect(page.locator("#wh2")).toHaveText("Sukhkarta Dukhharta");
-  await expect(page.locator("#wh1")).toHaveText(/^1 \/ \d+ · about \d+ min left$/);
-  await expect(page.locator("#wh2")).not.toContainText("Go to");
+  await expect(page.locator("#tkw")).toHaveText("Sukhkarta Dukhharta");
+  await expect(page.locator("#tkt")).toHaveText(/^1 \/ \d+ · about \d+ min left$/);
+  await expect(page.locator("#tkw")).not.toContainText("Go to");
   // the small line whole; a long title cut with … where a phone has no room for it, and whole in the spoken name
-  expect(await page.locator("#wh1").evaluate((e) => e.scrollWidth <= e.clientWidth + 1)).toBe(true);
-  expect(await page.locator("#wh2 .wh-in").evaluate((e) => getComputedStyle(e).textOverflow)).toBe("ellipsis");
-  await expect(page.locator("#where")).toHaveAccessibleName(/Sukhkarta Dukhharta/);
-  await expect(page.locator("#where")).toHaveAccessibleName(/^Go to: /);
+  expect(await page.locator("#tkt").evaluate((e) => e.scrollWidth <= e.clientWidth + 1)).toBe(true);
+  expect(await page.locator("#tkw .wh-in").evaluate((e) => getComputedStyle(e).textOverflow)).toBe("ellipsis");
+  await expect(page.locator("#tkb")).toHaveAccessibleName(/Sukhkarta Dukhharta/);
+  await expect(page.locator("#tkb")).toHaveAccessibleName(/^Go to: /);
 });
 
 // A long text in a session, at a place in it: the large line is the place, and the small line over it starts with the
@@ -212,16 +213,16 @@ test("in a session at a place in a long text, the small line starts with the tit
   await page.waitForTimeout(400);
   await page.evaluate(() => scrollBy(0, 40));
   await page.waitForTimeout(400);
-  await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
-  await expect(page.locator("#wh2 .wh-at")).toBeVisible();
-  const parts = page.locator("#wh1 > span:not(.wh-dot)");
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  await expect(page.locator("#tkw .wh-at")).toBeVisible();
+  const parts = page.locator("#tkt > span:not(.wh-dot)");
   await expect(parts).toHaveCount(3);
   await expect(parts.nth(0)).toHaveClass("wh-in");
   await expect(parts.nth(0)).not.toHaveText(/^\s*[0-9०-९]+\./);
   await expect(parts.nth(1)).toHaveText("२ / २");
   await expect(parts.nth(2)).toHaveText(/^about \d+ min left$/);
   // the count and the time whole, inside the line, whatever the title's length
-  const whole = await page.locator("#wh1").evaluate((e) => {
+  const whole = await page.locator("#tkt").evaluate((e) => {
     const box = e.getBoundingClientRect();
     return [...e.querySelectorAll(".wh-n, .wh-left")].every((s) => s.getBoundingClientRect().right <= box.right + 1 && s.scrollWidth <= s.clientWidth + 1);
   });

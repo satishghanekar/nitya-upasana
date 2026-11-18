@@ -7692,9 +7692,7 @@ Tasmai Sarasvati Duhe Kshiram Sarpirmadhudakam || 9.067.32 ||
 
 तस्मै॒ सर॑स्वती दुहे क्षी॒रं स॒र्पिर्मधू᳚द॒कम् ॥ ९.०६७.३२ ॥
 
-|| Khilamantrah ||
-
-॥ खिलमन्त्रः ॥
+खिलमन्त्रःKhilamantrah
 
 Pavamanih Svastyayanih Sudugha Hi Ghrutashchutah |
 
@@ -7863,6 +7861,22 @@ Pathatam Shrunvatam Shchaiva Dadati Paramam Gatim ||
 एतत् पुण्यं पा᳚पहरं रोग मृत्यु भयाव॑हम् ।
 
 पठतां शृण्वतां श्चैव ददाति॑ परमां गतिम् ॥
+
+Shatadharamutsamakshiyamanam Vipashchitam Pitaram Vaktvanam |
+
+Melim Madantam Pitrorupasthe Tam Rodasi Piprutam Satyavacham ||
+
+श॒तधा᳚र॒मुत्स॒मक्षी᳚यमाणं विप॒श्चितं᳚ पि॒तरं॒ वक्त्वा᳚नाम् ।
+
+मे॒ळिं मद᳚न्तं पि॒त्रोरु॒पस्थे॒ तं रो᳚दसी पिपृतं सत्य॒वाच᳚म् ॥
+
+Rucho Akshare Parame Vyoman Yasmin Deva Adhi Vishve Nisheduh |
+
+Yastanna Veda Kimrucha Karishyati Ya Ittadvidusta Ime Samasate ||
+
+ऋ॒चो अ॒क्षरे᳚ पर॒मे व्यो᳚म॒न् यस्मि᳚न् दे॒वा अधि॒ विश्वे᳚ निषे॒दुः ।
+
+यस्तन्न वेद॒ किमृ॒चा क॑रिष्यति॒ य इत्तद्वि॒दुस्त इ॒मे समा᳚सते ॥
 
 Bhadram No Api Vataya Manah ||
 

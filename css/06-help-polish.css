@@ -230,14 +230,6 @@
     margin-bottom: 10px;
   }
 }
-/* Top bar showing the piece being read: a little smaller, so most names fit */
-.bar .t.site.pc {
-  font-size: var(--fz-l);
-  gap: 4px;
-}
-.bar .t.site.pc[data-tl="en"] {
-  font-size: var(--fz-m);
-}
 /* ==== Round 2 review (final rules) ==== */
 /* A+ is for the verses: the home page keeps its normal size, and very long names may wrap */
 #home {

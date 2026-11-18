@@ -7692,9 +7692,7 @@ pā̱va̱mā̱nīryo a̱dhyetyṛṣi̍bhi̱ sambhṛ̍ta̱ṃ rasam̎ |
 
 tasmai̱ sara̍svatī duhe kṣī̱raṃ sa̱rpirmadhū̎da̱kam || 9.067.32 ||
 
-॥ खिलमन्त्रः ॥
-
-|| khilamantraḥ ||
+खिलमन्त्रःKhilamantrah
 
 पा॒व॒मा॒नीः स्व॒स्त्यय॑नीः सु॒दुघा॒ हि घृ॑त॒श्चुतः॑ ।
 
@@ -7863,6 +7861,22 @@ e̱ta̱jjuhva̱ṃ ja̱pe̱n mantra̎ṃ ghora mṛ̍tyu bha̱yaṃ ha̍ret ||
 etat puṇyaṃ pā̎paharaṃ roga mṛtyu bhayāva̍ham |
 
 paṭhatāṃ śṛṇvatāṃ ścaiva dadāti̍ paramāṃ gatim ||
+
+श॒तधा᳚र॒मुत्स॒मक्षी᳚यमाणं विप॒श्चितं᳚ पि॒तरं॒ वक्त्वा᳚नाम् ।
+
+मे॒ळिं मद᳚न्तं पि॒त्रोरु॒पस्थे॒ तं रो᳚दसी पिपृतं सत्य॒वाच᳚म् ॥
+
+śa̱tadhā̎ra̱mutsa̱makṣī̎yamāṇaṃ vipa̱ścita̎ṃ pi̱tara̱ṃ vaktvā̎nām |
+
+me̱ḷiṃ mada̎ntaṃ pi̱troru̱pasthe̱ taṃ ro̎dasī pipṛtaṃ satya̱vāca̎m ||
+
+ऋ॒चो अ॒क्षरे᳚ पर॒मे व्यो᳚म॒न् यस्मि᳚न् दे॒वा अधि॒ विश्वे᳚ निषे॒दुः ।
+
+यस्तन्न वेद॒ किमृ॒चा क॑रिष्यति॒ य इत्तद्वि॒दुस्त इ॒मे समा᳚सते ॥
+
+ṛ̱co a̱kṣare̎ para̱me vyo̎ma̱n yasmi̎n de̱vā adhi̱ viśve̎ niṣe̱duḥ |
+
+yastanna veda̱ kimṛ̱cā ka̍riṣyati̱ ya ittadvi̱dusta i̱me samā̎sate ||
 
 भ॒द्रं नो॒ अपि॑ वातय॒ मनः॑ ॥
 

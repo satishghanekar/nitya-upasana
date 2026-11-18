@@ -42,11 +42,14 @@ test("the thresholds are the code's, one place (js/text/outline.js OUTLINE)", ()
 describe("what each kind of long text gets", () => {
   test("headings, with parts named by the reference they start with: Pavamana's adhyayas and suktas", () => {
     const o = of("vedic-chant-pavamana-suktam");
-    expect(o.places.map((p) => p.label.en)).toEqual(["Prathama Adhyaya", "Dvitiya Adhyaya", "Tritiya Adhyaya", "Chaturtha Adhyaya"]);
+    expect(o.places.map((p) => p.label.en)).toEqual(["Prathama Adhyaya", "Dvitiya Adhyaya", "Tritiya Adhyaya", "Chaturtha Adhyaya", "Khilamantrah"]);
     const third = o.places[2].kids;
     expect(third[0].label).toEqual({ mr: "९.४४", en: "9.44" });
     expect(third.at(-1).label.en).toBe("9.64");
-    expect(o.places.flatMap((p) => p.kids).length).toBe(67);
+    expect(o.places.flatMap((p) => p.kids || []).length).toBe(67);
+    // the khila mantras after the last sukta: a heading of their own, with no suktas under it (Satish 2026-11-17: Go to
+    // had no way to them)
+    expect(o.places[4].kids).toBeUndefined();
   });
   test("parts named by part-name and counted in each heading: Shri Rudra's anuvakas", () => {
     const o = of("vedic-chant-shri-rudra");
@@ -122,7 +125,7 @@ test("a session's places: its texts, each with its own places under it", () => {
   const s = sessionOutline(texts, Object.fromEntries(ids.map((id) => [piece(id).id, outline(piece(id))])));
   expect(s.map((x) => [x.kind, x.label.en, (x.kids || []).length])).toEqual([
     ["text", "Sukhkarta Dukhharta", 0],
-    ["text", "Pavamana Suktam", 4],
+    ["text", "Pavamana Suktam", 5],
   ]);
 });
 

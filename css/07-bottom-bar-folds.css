@@ -966,51 +966,8 @@ html[data-asb="1"] {
   opacity: 1;
 }
 
-/* ==== Go to (js/features/where.js, Satish 2026-11-14): in a long text or a session the top bar's title is a button saying
-   where the reading is (#where: the text on a small line, the place under it in the accent colour, ▾), in place of the
-   Home link (#bt); it opens the Go to sheet (#goto), which shares the reading sheet's card above ==== */
-.bar #where {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 44px;
-  margin-block: -9px;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  text-align: left;
-}
-.bar #where[hidden] {
-  display: none;
-}
-#where .wh {
-  display: grid;
-  min-width: 0;
-  line-height: 1.2;
-}
-#wh1,
-#wh2 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-#wh1 {
-  font: 400 var(--fz-xs) / 1.25 var(--body);
-  color: var(--muted);
-}
-#wh2 {
-  font: 700 var(--fz-m) / 1.25 var(--body);
-  color: var(--accent);
-}
-#wh1:lang(en),
-#wh2:lang(en) {
-  font-family: var(--lat);
-}
-#where svg {
-  flex: none;
-  color: var(--accent);
-}
+/* ==== Go to (js/features/where.js, Satish 2026-11-14): the pill shown while the page scrolls (#tkb) says where the reading
+   is and opens the Go to sheet (#goto), which shares the reading sheet's card above ==== */
 #gtt small {
   display: block;
   font-weight: 400;
@@ -1192,26 +1149,8 @@ html[data-asb="1"] {
     }
   }
 }
-/* On a tablet the top bar has the room to put where the reading is in its middle, over the text being read, as the
-   tucked pill does: the same place whether the bars are out or tucked away. (Not with Home beside the text on a
-   computer, where the bar is the text's own.) */
-@media (min-width: 820px) {
-  :root:not([data-rail="1"]) .bar #where {
-    position: absolute;
-    inset: 0;
-    width: max-content;
-    max-width: calc(100% - 520px);
-    height: 44px;
-    margin: auto;
-  }
-  :root:not([data-rail="1"]) #where .wh {
-    text-align: center;
-  }
-}
-/* Where the reading is, in the title and the pill: the headings give way before the place itself (js/features/where.js
-   placeIn()), so a small phone shows "तृतीयो… ९.४८" rather than "तृतीयोऽ…" */
-#wh1,
-#wh2,
+/* Where the reading is, in the pill: the headings give way before the place itself (js/features/where.js placeIn()), so a
+   small phone shows "तृतीयो… ९.४८" rather than "तृतीयोऽ…" */
 #tkw {
   display: flex;
   min-width: 0;
@@ -1236,11 +1175,54 @@ html[data-asb="1"] {
 .lsnb button {
   white-space: nowrap;
 }
-/* In a session, how long is left of it (js/features/routine-time.js), in the small line over the title, in the menu
-   language */
+/* In a session, how long is left of it (js/features/routine-time.js), in the pill's small line, in the menu language */
 .wh-left,
 .wh-n,
 .wh-dot {
   flex: none;
   white-space: pre;
+}
+
+/* ==== The pill, larger and bold on every screen (Satish 2026-11-17: "too small"), and the one place that says where the
+   reading is: the top bar's title stays the site's name (js/features/bars.js). In a long text or a session it has two
+   lines, as the title had: the text (and in a session its number and the time left) small, the place under it. ==== */
+#tkb {
+  min-height: 52px;
+  padding: 4px 20px;
+  font-size: var(--fz-l);
+  font-weight: 700;
+}
+#tkb[aria-haspopup] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 8px;
+  align-content: center;
+  justify-items: center;
+}
+#tkb[aria-haspopup] #tkt,
+#tkb[aria-haspopup] #tkw {
+  display: flex;
+  grid-column: 1;
+  max-width: 100%;
+  line-height: 1.3;
+}
+#tkb[aria-haspopup] #tkt {
+  font-size: var(--fz-s);
+  font-weight: 600;
+}
+#tkb[aria-haspopup] #tkw::before {
+  content: none;
+}
+#tkb[aria-haspopup] svg {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+@media (min-width: 600px) {
+  #tkb {
+    min-height: 56px;
+    font-size: var(--fz-xl);
+  }
+  #tkb[aria-haspopup] #tkt {
+    font-size: var(--fz-m);
+  }
 }

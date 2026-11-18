@@ -1169,23 +1169,24 @@ for (const fnt of ["classic", "std", "bold"])
     expect(top).toBeLessThan(120);
   });
 
-// The top bar names the piece once its heading has scrolled under the bar, but a page over it (the Library) is not
-// that piece: the app's name then (review B6, 2026-11-10)
-test("the top bar names the app while the Library is open, and the piece again after @mobile", async ({ page }) => {
+// The top bar names the app, always: while a piece is read, while the Library is open over it, and after (it named the
+// piece once its heading had scrolled under the bar, review B6, 2026-11-10; Satish 2026-11-17: "stop changing stuff in
+// app title", the pill says what is read)
+test("the top bar names the app while a piece is read, while the Library is open, and after @mobile", async ({ page }) => {
   await openSite(page, SETUPS.english, { now: EVENING, hash: "#p1" });
   await page.evaluate(() => scrollBy(0, 600));
-  await expect(page.locator("#bt")).toHaveClass(/\bpc\b/);
-  const piece = await page.locator("#btt").textContent();
+  await page.waitForTimeout(200);
+  await expect(page.locator("#btt")).toHaveText("Nitya Upasana");
   await page.evaluate(() => /** @type {HTMLElement} */ (document.getElementById("hm")).click());
   await expect(page.locator("#jump")).toBeVisible();
   await expect(page.locator("#btt")).toHaveText("Nitya Upasana");
   await page.keyboard.press("Escape");
   await expect(page.locator("#jump")).toBeHidden();
-  await expect(page.locator("#btt")).toHaveText(piece);
+  await expect(page.locator("#btt")).toHaveText("Nitya Upasana");
 });
 
-// The smallest phones: the app's name would show as "नि…", so the picture alone stands for it there; a piece's
-// title still shows (review B6, 2026-11-10)
+// The smallest phones: the app's name would show as "नि…", so the picture alone stands for it there (review B6,
+// 2026-11-10)
 test("at 320px the top bar shows the picture, not a cut name", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 640 });
   await openSite(page, SETUPS.english, { now: EVENING });

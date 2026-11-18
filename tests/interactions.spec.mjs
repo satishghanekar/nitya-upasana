@@ -289,6 +289,8 @@ test("main and second language from the Settings dropdowns", async ({ page }) =>
 test("piece fold is remembered across a reload @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await readText(page, "a2");
+  // (in the middle of the screen, as a reader taps it: at the very top the pill shown while scrolling covers it)
+  await page.locator("#a2 header").evaluate((e) => e.scrollIntoView({ block: "center" }));
   await page.locator("#a2 header").click();
   await page.waitForTimeout(200);
   expect((await prefs(page)).af).toContain("a2");
@@ -948,40 +950,51 @@ test("scrolling through a text: every verse on screen is shown at once, with no 
   expect(errors).toEqual([]);
 });
 
-// Go to (js/features/where.js, Satish 2026-11-14): in a long text or a session the top bar's title says where the reading
-// is and opens a sheet of the places to go to, made from the text's own headings, parts and verses
-/** The page scrolled so a line is where Go to puts one, a third of the way down, with the bars shown */
+// Go to (js/features/where.js, Satish 2026-11-14): in a long text or a session the pill shown while the page scrolls says
+// where the reading is and opens a sheet of the places to go to, made from the text's own headings, parts and verses.
+// The top bar's title stays the site's name (Satish 2026-11-17: "stop changing stuff in app title").
+/** The bars tucked away, as while scrolling down: the pill at the top in their place */
+const tuckIn = (page) => page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+/** The page scrolled so a line is where Go to puts one, a third of the way down, the bars tucked away */
 async function toLine(page, l) {
   await page.evaluate((l) => {
     const el = document.querySelector('.wrap > .ash [data-l="' + l + '"]');
     scrollTo(0, el.getBoundingClientRect().top + scrollY - innerHeight * 0.3);
   }, l);
   await page.waitForTimeout(400);
-  await untuck(page);
+  await tuckIn(page);
   await page.waitForTimeout(150);
 }
-const wh = (page) => page.locator("#wh2");
+const wh = (page) => page.locator("#tkw");
+/** Go to opened from the pill (a jump brings the bars back, so it is tucked away again first) */
+async function goTo(page) {
+  await tuckIn(page);
+  await page.locator("#tkb").click();
+}
 
-test("Go to in Pavamana: the title says the adhyaya and sukta, a sukta is one tap away, Back returns @mobile", async ({ page }) => {
+test("Go to in Pavamana: the pill says the adhyaya and sukta, a sukta is one tap away, Back returns @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await readText(page, "vedic-chant-pavamana-suktam");
   await toLine(page, "vedic-chant-pavamana-suktam.700");
-  // the title is the Go to button now, the Home link out of the way
-  await expect(page.locator("#where")).toBeVisible();
-  await expect(page.locator("#bt")).toBeHidden();
+  // the pill opens Go to; the title is the site's name, as it is on Home
+  await expect(page.locator("#tkb")).toBeVisible();
+  await expect(page.locator("#btt")).toHaveText("नित्य उपासना");
   await expect(wh(page)).toHaveText(/^तृतीयोऽध्यायः · ९\.[०-९]{2}$/);
+  await expect(page.locator("#tkt")).toHaveText(/^[०-९]+\. पवमानसूक्तम्$/);
   const was = await wh(page).textContent();
-  await expect(page.locator("#where")).toHaveAccessibleName(/^Go to: .*पवमानसूक्तम्, तृतीयोऽध्यायः, ९\./);
-  await page.locator("#where").click();
+  await expect(page.locator("#tkb")).toHaveAccessibleName(/^Go to: .*पवमानसूक्तम्, तृतीयोऽध्यायः, ९\./);
+  await goTo(page);
   await expect(page.locator("#goto")).toBeVisible();
-  await expect(page.locator("#where")).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#tkb")).toHaveAttribute("aria-expanded", "true");
   // its adhyaya open, the sukta being read marked
   await expect(page.locator('#gtl [aria-current="location"]')).toHaveText(was.split(" · ")[1]);
   await page.locator("#gtl .gt-grid button", { hasText: "९.६०" }).click();
   await expect(page.locator("#goto")).toBeHidden();
   await expect(wh(page)).toHaveText("तृतीयोऽध्यायः · ९.६०");
+  // the bars back after the jump, and the title still the site's name
+  await expect(page.locator("#btt")).toHaveText("नित्य उपासना");
   // another adhyaya: its own suktas behind ▾
-  await page.locator("#where").click();
+  await goTo(page);
   await page.locator("#gtl .gt-more").first().click();
   await page.locator("#gtl .gt-grid:not([hidden]) button", { hasText: "९.३" }).first().click();
   await expect(wh(page)).toHaveText("प्रथमोऽध्यायः · ९.३");
@@ -992,28 +1005,41 @@ test("Go to in Pavamana: the title says the adhyaya and sukta, a sukta is one ta
   await expect(wh(page)).toHaveText(was);
 });
 
+test("Go to in Pavamana reaches the khila mantras after the fourth adhyaya @mobile", async ({ page }) => {
+  // (Satish 2026-11-17: Go to had no way to them; they were not a heading of their own)
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "vedic-chant-pavamana-suktam");
+  await toLine(page, "vedic-chant-pavamana-suktam.1200");
+  await expect(wh(page)).toHaveText(/^चतुर्थोऽध्यायः · ९\.६७$/);
+  await goTo(page);
+  await expect(page.locator("#gtl .gt-go")).toHaveText([/प्रथमोऽध्यायः/, /द्वितीयोऽध्यायः/, /तृतीयोऽध्यायः/, /चतुर्थोऽध्यायः/, /खिलमन्त्रः/]);
+  await expect(page.locator("#gtl .gt-grid:not([hidden]) button")).toHaveText(["९.६५", "९.६६", "९.६७"]);
+  await page.locator("#gtl .gt-go", { hasText: "खिलमन्त्रः" }).click();
+  await expect(wh(page)).toHaveText("खिलमन्त्रः");
+});
+
 test("Go to in Lalita: a verse by its number, in either digits; one there is not is said; Escape closes @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await readText(page, "vedic-chant-lalita-sahasranama");
   await toLine(page, "vedic-chant-lalita-sahasranama.120");
   await expect(wh(page)).toHaveText(/^स्तोत्रम् · [०-९]+$/);
-  await page.locator("#where").click();
+  await goTo(page);
   // the verses in groups of 25, the box above them
   await expect(page.locator("#gtl .gt-grid:not([hidden]) button")).toHaveCount(8);
   await page.locator("#gtn").fill("१४२");
   await page.locator("#gtf button").click();
   await expect(wh(page)).toHaveText("स्तोत्रम् · १४२");
-  await page.locator("#where").click();
+  await goTo(page);
   await page.locator("#gtn").fill("42");
   await page.locator("#gtn").press("Enter");
   await expect(wh(page)).toHaveText("स्तोत्रम् · ४२");
-  await page.locator("#where").click();
+  await goTo(page);
   await page.locator("#gtn").fill("500");
   await page.locator("#gtf button").click();
   await expect(page.locator("#gtm")).toHaveText("No verse 500 here");
   await page.keyboard.press("Escape");
   await expect(page.locator("#goto")).toBeHidden();
-  await expect(page.locator("#where")).toBeFocused();
+  await expect(page.locator("#tkb")).toBeFocused();
 });
 
 test("Go to in Shri Rudra: Namakam and Chamakam, eleven anuvakas each, the grid by number alone @mobile", async ({ page }) => {
@@ -1021,7 +1047,7 @@ test("Go to in Shri Rudra: Namakam and Chamakam, eleven anuvakas each, the grid 
   await readText(page, "vedic-chant-shri-rudra");
   await toLine(page, "vedic-chant-shri-rudra.90");
   await expect(wh(page)).toHaveText(/^नमकम् · अनुवाकः [०-९]+$/);
-  await page.locator("#where").click();
+  await goTo(page);
   const open = page.locator("#gtl .gt-grid:not([hidden]) button");
   await expect(open).toHaveCount(11);
   await expect(open.first()).toHaveText("१");
@@ -1030,20 +1056,26 @@ test("Go to in Shri Rudra: Namakam and Chamakam, eleven anuvakas each, the grid 
   await expect(wh(page)).toHaveText("चमकम् · अनुवाकः ५");
 });
 
-test("with the bars tucked away, the pill at the top says where the reading is and opens Go to, from the top @mobile", async ({ page }) => {
-  // (Satish 2026-11-14: the name in view while reading is the one to tap; Go to opened at the foot of the screen, far from it)
+test("with the bars tucked away, the pill at the top says where the reading is, large and bold, and opens Go to @mobile", async ({ page }) => {
+  // (Satish 2026-11-14: the name in view while reading is the one to tap; Go to opened at the foot of the screen, far from
+  // it. 2026-11-17: "make the pill larger and bold on all devices")
   await openSite(page, SETUPS.marathi);
   await readText(page, "vedic-chant-pavamana-suktam");
   await toLine(page, "vedic-chant-pavamana-suktam.700");
-  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
   const pill = page.locator("#tkb");
   await expect(pill).toBeVisible();
   await expect(page.locator("#tkw")).toHaveText(/^तृतीयोऽध्यायः · ९\.[०-९]{2}$/);
   await expect(pill).toHaveAccessibleName(/^Go to: .*पवमानसूक्तम्, तृतीयोऽध्यायः, ९\./);
-  // below the top of the screen, where the system dims nothing, and a whole tap target
+  // below the top of the screen, where the system dims nothing, a whole tap target, two lines, the place large and bold
   const pb = await pill.boundingBox();
   expect(pb.y).toBeGreaterThanOrEqual(10);
-  expect(pb.height).toBeGreaterThanOrEqual(44);
+  expect(pb.height).toBeGreaterThanOrEqual(52);
+  const place = await page.locator("#tkw").evaluate((e) => [parseFloat(getComputedStyle(e).fontSize), getComputedStyle(e).fontWeight]);
+  const title = await page.locator("#tkt").evaluate((e) => parseFloat(getComputedStyle(e).fontSize));
+  expect(place[0]).toBeGreaterThanOrEqual(17);
+  expect(place[1]).toBe("700");
+  expect(place[0]).toBeGreaterThan(title);
+  expect((await page.locator("#tkw").boundingBox()).y).toBeGreaterThan((await page.locator("#tkt").boundingBox()).y);
   await pill.click();
   await expect(page.locator("#goto")).toBeVisible();
   await expect(pill).toHaveAttribute("aria-expanded", "true");
@@ -1070,68 +1102,66 @@ test("after Go to, focus is on the line gone to, and the tab names the text @mob
   await readText(page, "vedic-chant-pavamana-suktam");
   await toLine(page, "vedic-chant-pavamana-suktam.700");
   await expect(page).toHaveTitle("पवमानसूक्तम् · Nitya Upasana");
-  await page.locator("#where").click();
+  await goTo(page);
   const to = page.locator("#gtl .gt-grid button", { hasText: "९.६०" });
   const line = await to.getAttribute("data-line");
   await to.click();
   expect(await page.evaluate(() => document.activeElement.tagName + " " + document.activeElement.getAttribute("data-l"))).toBe("P " + line);
 });
 
-test("on the narrowest phone the title keeps the place itself in sight; the headings give way @mobile", async ({ page }) => {
+test("on the narrowest phone the pill keeps the place itself in sight; the headings give way @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 640 });
   await openSite(page, SETUPS.marathi);
   await readText(page, "vedic-chant-pavamana-suktam");
   await toLine(page, "vedic-chant-pavamana-suktam.700");
-  const at = page.locator("#wh2 .wh-at");
+  const at = page.locator("#tkw .wh-at");
   await expect(at).toHaveText(/^९\.[०-९]{2}$/);
   const shown = await at.evaluate((e) => {
     const r = e.getBoundingClientRect(),
-      box = e.closest("#where").getBoundingClientRect();
+      box = e.closest("#tkb").getBoundingClientRect();
     return r.width > 10 && r.right <= box.right + 1 && e.scrollWidth <= e.clientWidth + 1;
   });
   expect(shown).toBe(true);
-  // the pill too
-  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
-  await expect(page.locator("#tkw .wh-at")).toBeVisible();
 });
 
-test("on a tablet the top bar's Go to sits in the middle of the bar, where the tucked pill is @mobile", async ({ page }) => {
+test("on a tablet the pill sits in the middle, over the text @mobile", async ({ page }) => {
   await page.setViewportSize({ width: 820, height: 1180 });
   await openSite(page, SETUPS.marathi);
   await readText(page, "vedic-chant-pavamana-suktam");
   await toLine(page, "vedic-chant-pavamana-suktam.700");
   const mid = (b) => b.x + b.width / 2;
-  const w = await page.locator("#where").boundingBox();
-  expect(Math.abs(mid(w) - 410)).toBeLessThan(4);
-  // clear of the profile chip and the buttons on the right
-  const who = await page.locator("#who").boundingBox();
-  expect(w.x + w.width).toBeLessThan(who.x);
-  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
   expect(Math.abs(mid(await page.locator("#tkb").boundingBox()) - 410)).toBeLessThan(4);
 });
 
-test("a short text's tucked pill is its name alone, and a tap on it brings the bars back @mobile", async ({ page }) => {
+test("on a computer the title stays the site's name while a long text is read, and no pill covers the text", async ({ page }) => {
+  // (Satish 2026-11-17: the title said "८. पवमानसूक्तम् / चतुर्थोऽध्यायः · ९.६७"; Go to is for a phone or a tablet while
+  // chanting, and a computer's search box finds a line)
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSite(page, SETUPS.marathi);
+  await readText(page, "vedic-chant-pavamana-suktam");
+  await expect(page.locator("html")).toHaveAttribute("data-rail", "1");
+  await page.mouse.wheel(0, 3000);
+  await page.waitForTimeout(400);
+  await expect(page.locator("#btt")).toHaveText("नित्य उपासना");
+  await expect(page.locator("#tkb")).toBeHidden();
+});
+
+test("a short text's pill is its name alone, and a tap on it brings the bars back @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await readText(page, "a1");
   await page.evaluate(() => scrollBy(0, 500));
   await page.waitForTimeout(300);
-  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  await tuckIn(page);
   const pill = page.locator("#tkb");
   await expect(page.locator("#tkw")).toBeEmpty();
+  await expect(page.locator("#tkt")).toHaveText(/सुखकर्ता/);
   await expect(pill).not.toHaveAttribute("aria-haspopup", /./);
   await expect(pill.locator("svg")).toBeHidden();
   await pill.click();
   await expect.poll(() => page.evaluate(() => document.documentElement.hasAttribute("data-tuck"))).toBe(false);
   await expect(page.locator("#goto")).toBeHidden();
-});
-
-test("a short text keeps the Home link as its title; Go to only where a text is long or a session runs @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
-  await readText(page, "a1");
-  await page.evaluate(() => scrollBy(0, 500));
-  await page.waitForTimeout(300);
-  await untuck(page);
-  await expect(page.locator("#where")).toBeHidden();
+  // the title the site's name throughout, the Home link
+  await expect(page.locator("#btt")).toHaveText("नित्य उपासना");
   await expect(page.locator("#bt")).toHaveAttribute("href", "./");
 });
 
