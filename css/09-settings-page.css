@@ -1038,3 +1038,30 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
+/* ==== About's version line when a new version could not be saved (data-s="failed", js/features/offline.js): amber as
+   without internet, the round button to try again; and under it, why (#update-why), kept until a newer version
+   installs, for a screenshot to show (Satish, 2026-11-18: an iPhone stayed on 1.73.0 and nothing said why) ==== */
+.sp #upr[data-s="failed"] #updv,
+.sp #upd[data-s="failed"] {
+  color: var(--warn);
+}
+.sp #upd[data-s="failed"] .vli-check {
+  display: block;
+}
+.sp #update-why {
+  flex-basis: 100%;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.sp #update-why[hidden] {
+  display: none;
+}
+.sp #update-why code {
+  font: inherit;
+}
+@media (hover: hover) {
+  .sp #upd[data-s="failed"]:hover::before {
+    opacity: 0.15;
+  }
+}

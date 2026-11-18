@@ -1,6 +1,10 @@
 // Offline: once opened, the site works with no internet (service worker sw.js).
 import { test, expect, devices } from "@playwright/test";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdtempSync, readdirSync, symlinkSync, mkdirSync, copyFileSync, unlinkSync, renameSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { spawn } from "node:child_process";
 import { FIXED_NOW, PREFS_KEY, BASE_PREFS, TEXT_COUNT, buildAll, settingsTab } from "./helpers.mjs";
 
 test.use({ serviceWorkers: "allow" });
@@ -191,12 +195,110 @@ test("Check for updates finds a new version installed while the old one is on sc
     const res = await r.fetch();
     await r.fulfill({ response: res, body: (await res.text()).replace(/content="aarti-v[\d.]+"/, 'content="aarti-v99.0"') });
   });
-  await page.evaluate(async () => caches.delete(document.querySelector('meta[name="version"]').content));
+  // (the new version's copy is there: Safari made it as the app opened)
+  await page.evaluate(async () => {
+    const name = document.querySelector('meta[name="version"]').content;
+    const from = await caches.open(name),
+      to = await caches.open("aarti-v99.0");
+    for (const q of await from.keys()) await to.put(q, await from.match(q));
+    await caches.delete(name);
+  });
   await page.locator("#aa").click();
   await settingsTab(page, "more");
   const loaded = page.waitForEvent("load", { timeout: 25_000 });
   await page.locator("#upd").click();
   await loaded;
+});
+
+// A new version that can't be saved on this device: Check for updates says so instead of "Saved", and About says why
+// until a newer version installs. An iPhone stayed on 1.73.0 after every update, which said 1.74.0 (Satish, 2026-11-18).
+/** @param {import("@playwright/test").Page} page @param {string} [url] */
+async function openWithWorker(page, url = "./") {
+  await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [PREFS_KEY, JSON.stringify(BASE_PREFS)]);
+  await page.goto(url);
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller) await new Promise((r) => navigator.serviceWorker.addEventListener("controllerchange", r, { once: true }));
+  });
+  await page.reload();
+  await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+  await page.locator("#aa").click();
+  await settingsTab(page, "more");
+}
+
+test("a new version this device never takes up says so @chromium-only", async ({ page, context }) => {
+  await openWithWorker(page);
+  await expect(page.locator("#update-why")).toBeHidden();
+  // the site's page names version 99.0, but no new version installs here
+  await context.route(/\/(\?fresh=\d+)?$/, async (r) => {
+    const res = await r.fetch();
+    await r.fulfill({ response: res, body: (await res.text()).replace(/content="aarti-v[\d.]+"/, 'content="aarti-v99.0"') });
+  });
+  await page.locator("#upd").click();
+  await expect(page.locator("#upd")).toHaveAttribute("data-s", "failed", { timeout: 30_000 });
+  await expect(page.locator("#updv")).toHaveText("Couldn't save the new version · tap to try again");
+  await expect(page.locator("#update-why")).toContainText("Update not saved (99.0)");
+  await expect(page.locator("#update-why code")).toHaveText("no saved copy of 99.0 was made");
+});
+
+test("a new version whose install fails: why, kept until the next one @chromium-only", async ({ page }) => {
+  test.setTimeout(90_000);
+  // a server of its own, the site as links but its own sw.js, so the test can publish a new version (a browser asks for
+  // sw.js past Playwright's routing)
+  const dir = mkdtempSync(join(tmpdir(), "site-copy-"));
+  const repo = fileURLToPath(new URL("..", import.meta.url));
+  for (const f of readdirSync(repo)) if (!["tests", "sw.js", ".git"].includes(f)) symlinkSync(join(repo, f), join(dir, f));
+  mkdirSync(join(dir, "tests"));
+  copyFileSync(join(repo, "tests/serve.mjs"), join(dir, "tests/serve.mjs"));
+  const sw = readFileSync(join(repo, "sw.js"), "utf8");
+  writeFileSync(join(dir, "sw.js"), sw);
+  const port = 4391;
+  const server = spawn("node", [join(dir, "tests/serve.mjs")], { env: { ...process.env, PORT: String(port) }, stdio: "ignore" });
+  try {
+    for (
+      let i = 0;
+      i < 40 &&
+      !(await fetch(`http://localhost:${port}/`).then(
+        (r) => r.ok,
+        () => false,
+      ));
+      i++
+    )
+      await new Promise((r) => setTimeout(r, 100));
+    await openWithWorker(page, `http://localhost:${port}/`);
+    const was = await page.evaluate(() => document.querySelector('meta[name="version"]').content);
+    // version 99.0 published, with a file of it missing
+    writeFileSync(join(dir, "sw.js"), sw.replace(/aarti-v[\d.]+/, "aarti-v99.0"));
+    writeFileSync(join(dir, "index.html.new"), readFileSync(join(repo, "index.html"), "utf8").replace(/content="aarti-v[\d.]+"/, 'content="aarti-v99.0"'));
+    unlinkSync(join(dir, "index.html"));
+    renameSync(join(dir, "index.html.new"), join(dir, "index.html"));
+    unlinkSync(join(dir, "manifest.json"));
+    await page.locator("#upd").click();
+    await expect(page.locator("#upd")).toHaveAttribute("data-s", "failed", { timeout: 30_000 });
+    await expect(page.locator("#update-why")).toContainText("Update not saved (99.0)");
+    await expect(page.locator("#update-why code")).toHaveText("manifest.json: 404");
+    // the version in use stays, with its saved copy; why is still there when the app opens again
+    expect(await page.evaluate(() => caches.keys())).toContain(was);
+    expect(await page.evaluate(() => caches.keys())).not.toContain("aarti-v99.0");
+    await page.reload();
+    await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+    await page.locator("#aa").click();
+    await settingsTab(page, "more");
+    await expect(page.locator("#update-why code")).toHaveText("manifest.json: 404");
+    // the file back: the next try installs it, and why is gone
+    symlinkSync(join(repo, "manifest.json"), join(dir, "manifest.json"));
+    const loaded = page.waitForEvent("load", { timeout: 30_000 });
+    await page.locator("#upd").click();
+    await loaded;
+    await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+    expect(await page.evaluate(() => caches.keys())).not.toContain("update-failed");
+    await page.locator("#aa").click();
+    await settingsTab(page, "more");
+    await expect(page.locator("#update-why")).toBeHidden();
+  } finally {
+    server.kill();
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 // The version is written twice on purpose: browsers install a new service worker when sw.js itself changes
