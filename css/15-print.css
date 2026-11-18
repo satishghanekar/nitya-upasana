@@ -459,6 +459,9 @@
   /* ---- The contents: the texts listed by category (no page numbers) ---- */
   #pv .pvcov .pvh {
     margin-bottom: 10pt;
+    /* room above for the marks over its letters (the ी of चतुर्थी), as a text's title has: after the cover the contents
+       starts a page, and Chrome painted what rose above its first line at the foot of the cover */
+    padding-top: 6pt;
   }
   #pv .pvcat {
     margin: 10pt 0 3pt;

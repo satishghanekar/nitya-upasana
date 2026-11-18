@@ -155,14 +155,16 @@ export function init() {
     function fontsAhead() {
       if (!document.fonts || !document.fonts.load) return;
       var f = pfn(),
-        // (the printout's English is EB Garamond in Traditional and Bold: css/15-print.css)
+        // (the printout's English is EB Garamond in Traditional and Bold, and the page number is in it in every font:
+        // css/15-print.css; Chrome drew the number's dashes as nothing without it)
         ebg = ['400 16px "EB Garamond"', 'italic 400 16px "EB Garamond"', '600 16px "EB Garamond"'],
-        want =
+        want = (
           f === "classic"
-            ? ['400 16px "SC Classic"', '700 16px "SC Bold"', '400 16px "Tiro Devanagari Sanskrit"'].concat(ebg)
+            ? ['400 16px "SC Classic"', '700 16px "SC Bold"', '400 16px "Tiro Devanagari Sanskrit"']
             : f === "bold"
-              ? ['600 16px "SC Bold"', '800 16px "SC Bold"'].concat(ebg)
-              : ['400 16px "SC Sans"', '700 16px "SC Sans"'];
+              ? ['600 16px "SC Bold"', '800 16px "SC Bold"']
+              : ['400 16px "SC Sans"', '700 16px "SC Sans"']
+        ).concat(ebg);
       if (IND[olang()]) want.push('400 16px "' + IND[olang()][indAt(f)] + '"');
       want.forEach(function (x) {
         try {
