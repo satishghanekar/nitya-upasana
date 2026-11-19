@@ -32,6 +32,7 @@ test.describe("iPhone, Safari on iOS 26", () => {
     await expect(steps(page).nth(3)).toContainText("Open as Web App");
     await expect(page.locator("#install-arrow")).toBeVisible();
     await expect(page.locator("#install-arrow")).toHaveAttribute("data-at", "bottom");
+    await expect(page.locator("#install-tip")).toContainText("Tap whichever you see");
     // the mark is gone, so the icon added from here opens the site itself
     expect(new URL(page.url()).search).toBe("");
     // the welcome card waits for the Home Screen app
@@ -100,6 +101,9 @@ test.describe("iPhone, Chrome", () => {
     await openSite(page, SETUPS.english, { hash: "?add" });
     await expect(steps(page).first()).toContainText("beside the address");
     await expect(page.locator("#install-arrow")).toHaveAttribute("data-at", "top-address");
+    // the button itself beside the arrow, in case the address bar is at the bottom
+    await expect(page.locator("#install-tip")).toBeVisible();
+    await expect(page.locator("#install-tip")).toHaveText(/Tap this in the address bar/);
   });
 });
 
@@ -122,6 +126,7 @@ test.describe("Android, Chrome", () => {
     await expect(page.locator("#install-go")).toHaveText("Install the app");
     await expect(page.locator("#install-menu")).toBeVisible();
     await expect(page.locator("#install-arrow")).toHaveAttribute("data-at", "top-right");
+    await expect(page.locator("#install-tip")).toContainText("⋮");
     // before the prompt, Install points to the steps
     await page.locator("#install-go").click();
     await expect(page.locator("#install-menu h3")).toBeFocused();
@@ -134,6 +139,7 @@ test.describe("Android, Chrome", () => {
     });
     await expect(page.locator("#install-menu")).toBeHidden();
     await expect(page.locator("#install-arrow")).toBeHidden();
+    await expect(page.locator("#install-tip")).toBeHidden();
     await page.locator("#install-go").click();
     expect(await page.evaluate(() => window.__prompted)).toBe(true);
     await expect(page.locator("#install-how h3")).toHaveText("It's on your home screen");
@@ -177,6 +183,21 @@ test("opened from the home screen icon: no install page, and no App button", asy
   await expect(page$(page)).toBeHidden();
   await openMore(page);
   await expect(page.locator("#inb")).toBeHidden();
+});
+
+test("Share is in English with Marathi menus too", async ({ page }) => {
+  await page.addInitScript(() => {
+    navigator.share = (d) => {
+      window.__shared = d;
+      return Promise.resolve();
+    };
+  });
+  await openSite(page, SETUPS["marathi-menus"]);
+  await openMore(page);
+  await page.locator("#shb").click();
+  const d = await page.evaluate(() => window.__shared);
+  expect(d.text).toContain("Tap the link");
+  expect(d.text).not.toMatch(/[\u0900-\u097F]/);
 });
 
 test("Share sends the link with ?add, and the message says what the link does", async ({ page }) => {

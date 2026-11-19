@@ -287,11 +287,12 @@ export function skMid(t) {
 
 /**
  * Date (with the year when it is not this year) and moonrise text for one Sankashti, in the menu language
- * (js/strings/: sankashti)
+ * (js/strings/: sankashti), or in English for Share
  * @param {Sankashti} o
+ * @param {string} [lang]
  */
-export function skFmt(o) {
-  var w = menuWords("sankashti"),
+export function skFmt(o, lang) {
+  var w = menuWords("sankashti", lang),
     d = new Date(o.day),
     yr = d.getFullYear() !== new Date().getFullYear(),
     r = o.rise ? new Date(o.rise) : null,
