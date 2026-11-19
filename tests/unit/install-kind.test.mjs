@@ -84,7 +84,13 @@ test("the ?add mark: added to the shared link, found, and taken out leaving the 
   expect(hasAdd("?add=1")).toBe(true);
   expect(hasAdd("?address=1")).toBe(false);
   expect(hasAdd("")).toBe(false);
+  // a space, a full stop or an invisible character picked up when the link was pasted from a message
+  expect(hasAdd("?add%20")).toBe(true);
+  expect(hasAdd("?add.")).toBe(true);
+  expect(hasAdd("?add%E2%80%8B")).toBe(true);
+  expect(hasAdd("?adder")).toBe(false);
   expect(withoutAdd("?add")).toBe("");
   expect(withoutAdd("?print=1&add")).toBe("?print=1");
   expect(withoutAdd("?address=2")).toBe("?address=2");
+  expect(withoutAdd("?add%20")).toBe("");
 });

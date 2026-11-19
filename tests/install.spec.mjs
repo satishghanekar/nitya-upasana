@@ -75,6 +75,15 @@ test.describe("iPhone, Safari on iOS 26", () => {
   });
 });
 
+test.describe("iPhone, a link pasted with a space at the end", () => {
+  test.use({ ...PHONE, userAgent: UA.ios26 });
+  test("?add%20 still opens the install page, and the address is left clean", async ({ page }) => {
+    await openSite(page, SETUPS.english, { hash: "?add%20" });
+    await expect(page$(page)).toBeVisible();
+    expect(new URL(page.url()).search).toBe("");
+  });
+});
+
 test.describe("iPhone, Safari on iOS 18", () => {
   test.use({ ...PHONE, userAgent: UA.ios18 });
   test("Share in the toolbar: three steps, the arrow at the bottom", async ({ page }) => {
@@ -141,6 +150,12 @@ test.describe("A computer, Chrome", () => {
     await expect(page.locator("#install-phone svg")).toHaveCount(1);
     await expect(page.locator("#qrm .qri svg")).toHaveAttribute("aria-label", /\?add$/);
   });
+});
+
+test("the browser offers no translation: the page says so for Chrome and every browser", async ({ page }) => {
+  await openSite(page, SETUPS.english);
+  await expect(page.locator("html")).toHaveAttribute("translate", "no");
+  await expect(page.locator('meta[name="google"]')).toHaveAttribute("content", "notranslate");
 });
 
 test("opened from the home screen icon: no install page, and no App button", async ({ page }) => {
