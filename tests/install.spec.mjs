@@ -32,7 +32,16 @@ test.describe("iPhone, Safari on iOS 26", () => {
     await expect(steps(page).nth(3)).toContainText("Open as Web App");
     await expect(page.locator("#install-arrow")).toBeVisible();
     await expect(page.locator("#install-arrow")).toHaveAttribute("data-at", "bottom");
-    await expect(page.locator("#install-tip")).toContainText("Tap whichever you see");
+    // the arrow is inside the first step, at its end, so it covers none of the steps
+    await expect(steps(page).first().locator("#install-arrow")).toBeVisible();
+    await expect(steps(page).first()).toHaveClass(/install-now/);
+    const box = await steps(page).first().boundingBox();
+    const arrow = await page.locator("#install-arrow").boundingBox();
+    expect(arrow.x + arrow.width).toBeLessThanOrEqual(box.x + box.width + 1);
+    expect(arrow.y).toBeGreaterThanOrEqual(box.y - 1);
+    expect(arrow.y + arrow.height).toBeLessThanOrEqual(box.y + box.height + 9);
+    // pointing down, to the foot of the screen
+    expect(await page.locator("#install-arrow").evaluate((e) => getComputedStyle(e).transform)).toBe("none");
     // the mark is gone, so the icon added from here opens the site itself
     expect(new URL(page.url()).search).toBe("");
     // the welcome card waits for the Home Screen app
@@ -101,9 +110,9 @@ test.describe("iPhone, Chrome", () => {
     await openSite(page, SETUPS.english, { hash: "?add" });
     await expect(steps(page).first()).toContainText("beside the address");
     await expect(page.locator("#install-arrow")).toHaveAttribute("data-at", "top-address");
-    // the button itself beside the arrow, in case the address bar is at the bottom
-    await expect(page.locator("#install-tip")).toBeVisible();
-    await expect(page.locator("#install-tip")).toHaveText(/Tap this in the address bar/);
+    // pointing up, in the first step
+    await expect(steps(page).first().locator("#install-arrow")).toBeVisible();
+    expect(await page.locator("#install-arrow").evaluate((e) => getComputedStyle(e).transform)).not.toBe("none");
   });
 });
 
@@ -126,7 +135,7 @@ test.describe("Android, Chrome", () => {
     await expect(page.locator("#install-go")).toHaveText("Install the app");
     await expect(page.locator("#install-menu")).toBeVisible();
     await expect(page.locator("#install-arrow")).toHaveAttribute("data-at", "top-right");
-    await expect(page.locator("#install-tip")).toContainText("⋮");
+    await expect(page.locator("#install-menu .install-steps li").first().locator("#install-arrow")).toBeVisible();
     // before the prompt, Install points to the steps
     await page.locator("#install-go").click();
     await expect(page.locator("#install-menu h3")).toBeFocused();
@@ -139,7 +148,6 @@ test.describe("Android, Chrome", () => {
     });
     await expect(page.locator("#install-menu")).toBeHidden();
     await expect(page.locator("#install-arrow")).toBeHidden();
-    await expect(page.locator("#install-tip")).toBeHidden();
     await page.locator("#install-go").click();
     expect(await page.evaluate(() => window.__prompted)).toBe(true);
     await expect(page.locator("#install-how h3")).toHaveText("It's on your home screen");

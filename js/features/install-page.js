@@ -6,11 +6,11 @@
 // One way for each device and browser (js/core/install-kind.js):
 // - Chrome, Edge, Samsung Internet: the browser's own install prompt, one tap. Chrome holds the prompt back until the
 //   page has been tapped and looked at for a while (about 30 s), so until then the browser menu's steps show under the
-//   button, with an arrow at the menu, and the button points to them.
+//   button, with an arrow in the first one, and the button points to them.
 // - Safari on an iPhone or an iPad, Chrome on an iPhone, Firefox on Android, Safari on a Mac: no website can install
-//   itself there, so the steps, with an arrow at the edge nearest the browser's button. On an iPhone, "I've added it"
-//   says to open it from the icon: Safari and the home screen app keep their data apart, so the welcome card (name and
-//   routine, js/features/welcome.js) waits for the app.
+//   itself there, so the steps, with an arrow in the first one pointing to where the browser's button is. On an
+//   iPhone, "I've added it" says to open it from the icon: Safari and the home screen app keep their data apart, so
+//   the welcome card (name and routine, js/features/welcome.js) waits for the app.
 // - An app's own browser (WhatsApp, Instagram, Facebook, Gmail): it can install nothing, so Open in Safari (iOS 17 and
 //   later) or Open in Chrome (Android), and Copy link.
 // - On a computer, the QR code too, to set up a phone.
@@ -40,20 +40,11 @@ var SHARE =
   '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
 var PHONE =
   '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="M9 11l3 3 3-3"/><path d="M10.5 18.5h3"/></svg>';
+// the arrow in the step to do first, pointing to where the browser's button is (down or up), nudging gently
+var ARROW =
+  '<svg viewBox="0 0 60 70" width="22" height="26" aria-hidden="true"><path d="M30 4v50" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M12 40l18 22 18-22" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 var TICK =
   '<svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
-
-/** The browser's button the arrow points at, drawn beside it (none on a computer: the icon there changes) */
-var TIP_KEY = /** @type {Record<string, string>} */ ({
-  // (Safari 26: ⋯ in the address bar, or Share in the toolbar, as the layout chosen in Settings shows them)
-  ios26: "{more} {share}",
-  ios: "{share}",
-  ipad: "{share}",
-  iosBrowser: "{share}",
-  android: "{menu}",
-  androidFirefox: "{menu}",
-  samsung: "{lines}",
-});
 
 /** A step's words with the browser's buttons drawn in (the words are the catalog's own HTML) @param {string} s */
 function keys(s) {
@@ -154,24 +145,12 @@ function draw() {
     if (kind !== "mac" && kind !== "androidFirefox") how += '<button type="button" class="install-copy" id="install-added">' + esc(w.added) + "</button>";
   }
   byId("install-how").innerHTML = how;
-  var at = arrow ? arrowAt(kind) : "";
-  byId("install-arrow").hidden = !at;
-  byId("install-arrow").setAttribute("data-at", at);
-  // beside the arrow, the button itself and where it is: the arrow can be a little off (another screen width, the
-  // address bar moved to the bottom in the browser's settings), the button's picture isn't
-  var tip = byId("install-tip"),
-    key = at ? TIP_KEY[kind] : "";
-  tip.hidden = !key;
-  tip.setAttribute("data-at", at);
-  // (room under the steps for a label at the bottom, so it covers none of them)
-  page.setAttribute("data-tip", key ? at.split("-")[0] : "");
-  tip.innerHTML = key
-    ? '<span class="install-tip-pill">' +
-      keys(key) +
-      '<span lang="en">' +
-      esc(kind === "ios26" ? w.tipEither : kind === "iosBrowser" ? w.tipAddress : w.tip) +
-      "</span></span>"
-    : "";
+  // the arrow sits at the end of the first step, so it covers nothing; it points up when the browser's button is at
+  // the top of the screen (data-at: js/core/install-kind.js, arrowAt)
+  var at = arrow ? arrowAt(kind) : "",
+    first = at ? byId("install-how").querySelector(".install-steps li") : null;
+  if (first) first.classList.add("install-now");
+  if (first) first.insertAdjacentHTML("beforeend", '<span id="install-arrow" aria-hidden="true" data-at="' + at + '">' + ARROW + "</span>");
   // a computer: the QR code, to set up a phone too
   var ph = byId("install-phone");
   ph.hidden = !(kind === "desktop" || kind === "mac" || kind === "firefox") || state !== "how";

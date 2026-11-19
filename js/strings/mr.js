@@ -648,10 +648,6 @@ export default {
     doneHow: "तिथून उघडा: ते इंटरनेटशिवायही चालते.",
     added: "मी जोडले",
     addedHow: "आता होम स्क्रीनवरील त्याच्या चिन्हावरून उघडा. तुमचे नाव आणि उपासनाक्रम तिथे ठरवा.",
-    // the label beside the arrow, with the browser's button drawn in: in English in every language (Satish, 2026-11-19)
-    tip: "Tap this",
-    tipAddress: "Tap this in the address bar",
-    tipEither: "Tap whichever you see, at the bottom",
     later: "आत्ता नको, ब्राउझरमध्येच वाचा",
     close: "बंद करा",
   },
