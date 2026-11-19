@@ -152,6 +152,12 @@ test.describe("A computer, Chrome", () => {
   });
 });
 
+test("the browser offers no translation: the page says so for Chrome and every browser", async ({ page }) => {
+  await openSite(page, SETUPS.english);
+  await expect(page.locator("html")).toHaveAttribute("translate", "no");
+  await expect(page.locator('meta[name="google"]')).toHaveAttribute("content", "notranslate");
+});
+
 test("opened from the home screen icon: no install page, and no App button", async ({ page }) => {
   await page.addInitScript(() => {
     const mm = window.matchMedia.bind(window);
