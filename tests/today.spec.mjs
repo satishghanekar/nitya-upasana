@@ -325,6 +325,9 @@ test("Home v3: Monday 7:00 and 19:00, Tuesday 14:00 (the clock's session stays p
     await page.clock.setFixedTime(new Date(now));
     if (s === "morning") await openSite(page, SETUPS.marathi, { now: new Date(now) });
     else {
+      // (the reload on Tuesday is that day's first opening: seen already, so no launch animation over the tabs)
+      const [y, m, d] = now.slice(0, 10).split("-").map(Number);
+      await page.evaluate((k) => localStorage.setItem("nitya-launch", k), y + "-" + m + "-" + d);
       await page.reload();
       await settle(page);
     }
