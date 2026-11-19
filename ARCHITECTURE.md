@@ -136,6 +136,15 @@ step), so each place found is where the chanting was at that moment, and between
 by line at the chanting's own pace (measured from the places found). (The first model, Whisper base, took about 1.7 s
 on an iPhone for every 5 s window, too slow to follow along: replaced 2026-11-07.)
 
+## Putting it on the home screen (the install page)
+
+Share and the QR code send `https://nitya-upasana.pages.dev/?add`. `?add` opens the install page (`#install-page`, `js/features/install-page.js`) at start-up, and the mark is taken out of the address at once (`history.replaceState`), so a reload, a bookmark or the home screen icon opens the site itself. App in the Share menu (`#inb`) and Add to Home Screen in Settings (`#inb2`) open the same page, until the site is opened from its icon (`display-mode: standalone`, or `navigator.standalone` on iOS), when the buttons are hidden.
+
+- **One way per device** (`installKind()` in `js/core/install-kind.js`, pure, unit-tested): Chrome, Edge and Samsung Internet get one Install button that calls the browser's own prompt (`beforeinstallprompt`, kept until then). Chrome fires it only after the page has been tapped and looked at for about 30 seconds, so until it comes the page also shows the steps from the browser's menu with an arrow at it, and Install points to them. Safari on an iPhone (iOS 26: ⋯, then Share; older: Share in the toolbar) or an iPad, Chrome on iOS, Firefox on Android and Safari on a Mac get the steps, with an arrow (`#install-arrow`, `data-at`) at the edge of the page nearest the browser's button. An app's own browser (WhatsApp, Instagram, Facebook, Gmail: named in the user agent, or a WebView with no `Safari/`) can't install anything: Open in Safari (`x-safari-https://`, iOS 17 and later) or Open in Chrome (an `intent://` address, Android), and Copy link. Firefox on a computer can't install apps at all. A computer also shows the QR code (copied from `#qrm`), to set up a phone.
+- **The welcome card waits.** Safari and an iPhone's Home Screen app keep their data apart, so a name and routine set in Safari would be asked again in the app: while the install page is open from the link, the welcome card is not shown (`fromLink`), and the app shows it the first time it opens. On iOS, I've added it says to open it from the icon.
+- **After installing**, the browser's `appinstalled` (or the prompt's answer) hides App and Add to Home Screen, and the page says it is on the home screen. Once installed on Android, a link to the site opens the installed app itself, which has no install page.
+- **`manifest.json`** has a description and screenshots (`screenshots/`), which Chrome shows in its install box as a store would, and an `id`.
+
 ## Offline use and updates
 
 - `sw.js` keeps the page and every file in `js/parts.js` (styles, scripts, texts, the main fonts, the pictures and icons) in a cache named after the version.

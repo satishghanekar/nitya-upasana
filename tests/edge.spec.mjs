@@ -402,12 +402,12 @@ for (const size of [
   { width: 667, height: 375 },
   { width: 320, height: 256 },
 ]) {
-  test(`QR and Add to Home Screen pop-ups scroll so Close is reachable at ${size.width}×${size.height} (WCAG 1.4.10) @chromium-only`, async ({ page }) => {
+  test(`QR and the install page scroll so Close is reachable at ${size.width}×${size.height} (WCAG 1.4.10) @chromium-only`, async ({ page }) => {
     await page.setViewportSize(size);
     await openSite(page, SETUPS.marathi);
     for (const [open, close] of [
       ["#qrb", "#qrx"],
-      ["#inb", "#inx"],
+      ["#inb", "#install-close"],
     ]) {
       await openMore(page);
       if (!(await page.locator(open).isVisible())) continue;

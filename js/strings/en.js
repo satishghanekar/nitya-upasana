@@ -154,7 +154,11 @@ export default {
   today: {
     days: DAYS.en,
     months: MONTHS.en,
-    sessions: { morning: "Morning", afternoon: "Afternoon", evening: "Evening" },
+    sessions: {
+      morning: "Morning",
+      afternoon: "Afternoon",
+      evening: "Evening",
+    },
     tabs: "Session",
     unset: "Nothing set",
     /** @param {number} n */
@@ -209,7 +213,11 @@ export default {
     },
     /** The first person's, while they are still named "Me" */
     mine: "Your routine",
-    sessions: { morning: "Morning", afternoon: "Afternoon", evening: "Evening" },
+    sessions: {
+      morning: "Morning",
+      afternoon: "Afternoon",
+      evening: "Evening",
+    },
     sessionG: "Session",
     modes: { fixed: "Same every day", weekday: "Different by weekday" },
     modeG: "Which days",
@@ -287,7 +295,12 @@ export default {
     },
     fixGo: "Use every day",
     // The ready-made routines (content/routines.json), at the top of the builder
-    bases: { short: "Short", daily: "Daily", full: "Full", extended: "Extended" },
+    bases: {
+      short: "Short",
+      daily: "Daily",
+      full: "Full",
+      extended: "Extended",
+    },
     baseG: "Ready-made routine",
     baseInfo: {
       short: "The Atharvashirsha and the everyday aartis in the morning, the aartis in the evening",
@@ -434,7 +447,12 @@ export default {
       return "until " + d;
     },
     uNone: "Nothing is marked on these days.",
-    kinds: { fest: "Festivals", sk: "Sankashti", pradosh: "Pradosh", hol: "Holidays" },
+    kinds: {
+      fest: "Festivals",
+      sk: "Sankashti",
+      pradosh: "Pradosh",
+      hol: "Holidays",
+    },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
     holHome: "Show holidays from",
     groups: { us: "USA", in: "India", mh: "Maharashtra", ka: "Karnataka" },
@@ -529,7 +547,11 @@ export default {
   },
   // Offline use and Check for updates (js/features/offline.js): Settings → You → About
   offline: {
-    state: { idle: "Offline ready", save: "Saving for offline…", off: "Saved copy in use" },
+    state: {
+      idle: "Offline ready",
+      save: "Saving for offline…",
+      off: "Saved copy in use",
+    },
     // the version line in Settings → You → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
@@ -540,7 +562,14 @@ export default {
       restart: "Saved. Close the app and open it again",
       failed: "Couldn't save the new version · tap to try again",
     },
-    button: { check: "Check for updates", busy: "Checking…", ok: "Check again", off: "Try again", restart: "How to finish the update", failed: "Try again" },
+    button: {
+      check: "Check for updates",
+      busy: "Checking…",
+      ok: "Check again",
+      off: "Try again",
+      restart: "How to finish the update",
+      failed: "Try again",
+    },
     version: "Version",
     how: "How?",
     // How? after an update saved on Safari, iPhone or iPad: how to close the app and open it again, for each device
@@ -604,9 +633,58 @@ export default {
     texts: "Texts",
     linesHead: "Lines",
   },
+  // The install page (js/features/install-page.js): {more} {share} {menu} {lines} are the browser's buttons, drawn
+  // by the script
+  install: {
+    what: "Daily prayers: Vedic chants, aartis and ashtaks, with the Vedic calendar. Works without internet.",
+    install: "Install the app",
+    installDesk: "Install on this computer",
+    oneTap: "One tap puts it on your home screen like any other app. Free: no app store, no sign-in.",
+    orMenu: "Or from the browser's menu",
+    add: "Add it to your Home Screen",
+    addMac: "Add it to your Dock",
+    steps: {
+      ios26: [
+        'Tap {more} in the address bar at the bottom (or {share} <b lang="en">Share</b>, if you see it)',
+        'Tap {share} <b lang="en">Share</b>',
+        'Scroll down and tap <b lang="en">Add to Home Screen</b> (or <b lang="en">View More</b> first)',
+        'Leave <b lang="en">Open as Web App</b> on, then tap <b lang="en">Add</b>',
+      ],
+      ios: ["Tap {share} at the bottom of the screen", 'Scroll down and tap <b lang="en">Add to Home Screen</b>', 'Tap <b lang="en">Add</b> at the top right'],
+      ipad: ["Tap {share} at the top right", 'Tap <b lang="en">Add to Home Screen</b>', 'Tap <b lang="en">Add</b>'],
+      iosBrowser: [
+        "Tap {share} at the top right, beside the address",
+        'Tap <b lang="en">Add to Home Screen</b> (scroll down if it isn\'t there)',
+        'Tap <b lang="en">Add</b>',
+      ],
+      android: ["Tap {menu} at the top right", 'Tap <b lang="en">Install app</b> or <b lang="en">Add to Home screen</b>', 'Tap <b lang="en">Install</b>'],
+      samsung: ["Tap {lines} at the bottom right", 'Tap <b lang="en">Add page to</b>, then <b lang="en">Home screen</b>', 'Tap <b lang="en">Add</b>'],
+      androidFirefox: ["Tap {menu} at the top right", 'Tap <b lang="en">Add app to Home screen</b>', 'Tap <b lang="en">Add</b>'],
+      desktop: ["Click the install icon at the right of the address bar, or open the browser's menu", 'Click <b lang="en">Install</b>'],
+      mac: ['Click <b lang="en">File</b> in the menu bar, or {share} in Safari\'s toolbar', 'Click <b lang="en">Add to Dock…</b>, then <b lang="en">Add</b>'],
+    },
+    safariFirst: "First, open this page in Safari",
+    safariWhy: "This app's own browser can't add apps to your Home Screen. Safari can, in a few taps.",
+    safariOld: 'Tap ⋯ or the compass and choose <b lang="en">Open in Safari</b>. Or copy the link and paste it into Safari.',
+    openSafari: "Open in Safari",
+    chromeFirst: "First, open this page in Chrome",
+    chromeWhy: "This app's own browser can't install apps. Chrome can, in one tap.",
+    openChrome: "Open in Chrome",
+    copy: "Copy link",
+    copied: "Link copied: paste it into the browser's address bar",
+    firefox: "Firefox can't install apps. Open this page in Chrome, Edge or Safari, or put it on your phone with the code below.",
+    phone: "On your phone?",
+    phoneHow: "Point its camera at this code: the same page opens with the steps for that phone.",
+    done: "It's on your home screen",
+    doneHow: "Open it from there: it works without internet.",
+    added: "I've added it",
+    addedHow: "Now open it from its icon on your Home Screen. You set your name and routine there.",
+    later: "Not now, read in the browser",
+    close: "Close",
+  },
   // Share (js/features/share.js): the message for the group chat
   share: {
-    tip: "\nTip: open the link and tap Add to Home Screen to keep it on your phone like an app.",
+    tip: "\nTap the link: it shows how to put the app on your phone in a few taps.",
     /** @param {string} title */
     plain: function (title) {
       return title;
@@ -621,7 +699,13 @@ export default {
   },
   // Print (js/features/print.js): the Print pop-up in the menu language, the printout's own words in its language
   print: {
-    langs: { mr: "Marathi", kn: "Kannada", te: "Telugu", gu: "Gujarati", en: "English" },
+    langs: {
+      mr: "Marathi",
+      kn: "Kannada",
+      te: "Telugu",
+      gu: "Gujarati",
+      en: "English",
+    },
     portrait: "Portrait",
     landscape: "Landscape",
     both: "Both",
@@ -788,21 +872,6 @@ export default {
       "This browser did not open the print dialog. Tap the browser's <b>Share</b> button and choose <b>Print</b>. If this page opened inside another app, tap <b>Open in Safari</b>: your choices go with it.",
     nextHowToPrint: "Next: how to print ›",
     print: "Print",
-    addToHomeScreen2: "Add to Home Screen",
-    tapTheShareButtonAt: 'Tap the <b lang="en">Share</b> button {icon} (at the bottom in Safari, top right in Chrome).',
-    scrollDownAndTapAdd: 'Scroll down and tap <b lang="en">Add to Home Screen</b>.',
-    tapAdd: 'Tap <b lang="en">Add</b>.',
-    openThisPageInSafari: 'Open this page in <b lang="en">Safari</b> or <b lang="en">Chrome</b> (⋯ or Share → Open in Safari/Chrome).',
-    thenShareAddToHome: 'Then Share {icon} → <b lang="en">Add to Home Screen</b> → <b lang="en">Add</b>.',
-    openChromeSMenuTop: "Open Chrome's <b>⋮</b> menu (top right).",
-    tapAddToHomeScreen: 'Tap <b lang="en">Add to Home screen</b> or <b lang="en">Install app</b>.',
-    tapInstallOrAdd: 'Tap <b lang="en">Install</b> or <b lang="en">Add</b>.',
-    clickTheInstallIconAt: 'Click the install icon at the right end of the address bar, or choose <b lang="en">Install</b> from the browser menu.',
-    clickTheShareButtonIn: 'Click the <b lang="en">Share</b> button {icon} in Safari\'s toolbar, or open the <b lang="en">File</b> menu.',
-    chooseAddToDockThen: 'Choose <b lang="en">Add to Dock</b>, then click <b lang="en">Add</b>.',
-    firefoxCanTAddThis: "Firefox can't add this site as an app. Open this page in Chrome, Edge or Safari and tap this button again.",
-    itWillThenOpenLike: "It will then open like an app, even without internet.",
-    ok: "OK",
     home: "Home",
     listen: "Follow",
     library: "Library",

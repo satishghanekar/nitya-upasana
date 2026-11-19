@@ -92,7 +92,7 @@ export function init() {
     else scrollTo(0, 0);
   });
   // Keyboard: Tab stays inside an open dialog (those marked trap in LAYERS, js/features/overlays.js: Restore, the
-  // profile sheet, the categories sheet, Help, QR, Print, Add to Home Screen, the picture, the reading sheet, Settings)
+  // profile sheet, the categories sheet, Help, QR, Print, the install page, the picture, the reading sheet, Settings)
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Tab") return;
     var d = trapped();

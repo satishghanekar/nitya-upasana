@@ -298,7 +298,7 @@ export function apply() {
     e.setAttribute("data-lang", P.lang);
   });
   /** @type {NodeListOf<HTMLElement>} */ (
-    document.querySelectorAll(".bar,#shr,#asc,#none,.libhd,.rch,#jtb,#spv,#panel,#home > *,#qrm,#prm,#inm,#upm,#rsh,#szt,#szr,#fl")
+    document.querySelectorAll(".bar,#shr,#asc,#none,.libhd,.rch,#jtb,#spv,#panel,#home > *,#qrm,#prm,#install-page,#upm,#rsh,#szt,#szr,#fl")
   ).forEach(function (e) {
     e.setAttribute("data-lang", P.ui);
   });

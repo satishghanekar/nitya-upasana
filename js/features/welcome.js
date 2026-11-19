@@ -17,6 +17,7 @@ import { active, base, onChange, routine, setBase, update } from "../store/store
 import { loaded } from "../text/load.js";
 import { esc, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
+import { fromLink } from "./install-page.js";
 
 var KEY = "nitya-welcome",
   // put off this often, the card is not shown again
@@ -120,8 +121,9 @@ function pick(id) {
 export function init() {
   card = /** @type {HTMLFormElement | null} */ (document.getElementById("wlc"));
   if (!card || seen() >= ENOUGH) return;
-  // opened at a text (a shared link) or to print: not now
-  if (location.hash.length > 1 || /[?&]print=/.test(location.search)) return;
+  // opened at a text (a shared link) or to print: not now; nor under the install page opened by the shared link: in
+  // Safari it would be asked again in the home screen app, which keeps its data apart (js/features/install-page.js)
+  if (location.hash.length > 1 || /[?&]print=/.test(location.search) || fromLink) return;
   card.hidden = false;
   draw();
   onChange(draw);

@@ -106,6 +106,8 @@ var SITE_PARTS = (function () {
     "print/select",
     "print/write",
     "features/print",
+    "core/install-kind",
+    "features/install-page",
     "features/share",
     "features/more-menu",
     "features/offline",

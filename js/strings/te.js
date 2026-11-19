@@ -290,7 +290,12 @@ export default {
       return d + ": ఈ జాబితాను ప్రతిరోజూ వాడాలా? ఇతర రోజుల సొంత జాబితాలు తీసివేయబడతాయి.";
     },
     fixGo: "ప్రతిరోజూ వాడు",
-    bases: { short: "సంక్షిప్త", daily: "దైనిక", full: "పూర్ణ", extended: "విస్తృత" },
+    bases: {
+      short: "సంక్షిప్త",
+      daily: "దైనిక",
+      full: "పూర్ణ",
+      extended: "విస్తృత",
+    },
     baseG: "సిద్ధమైన దినచర్య",
     baseInfo: {
       short: "ఉదయం అథర్వశీర్షం మరియు రోజువారీ హారతులు, సాయంత్రం హారతులు",
@@ -429,7 +434,12 @@ export default {
       return d + " వరకు";
     },
     uNone: "ఈ రోజుల్లో ఏదీ గుర్తించలేదు.",
-    kinds: { fest: "పండుగలు", sk: "సంకష్టి", pradosh: "ప్రదోషం", hol: "సెలవులు" },
+    kinds: {
+      fest: "పండుగలు",
+      sk: "సంకష్టి",
+      pradosh: "ప్రదోషం",
+      hol: "సెలవులు",
+    },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
     holHome: "సెలవులు చూపించు",
     groups: { us: "అమెరికా", in: "భారత్", mh: "మహారాష్ట్ర", ka: "కర్ణాటక" },
@@ -520,7 +530,11 @@ export default {
   },
   // Offline use and Check for updates (js/features/offline.js): Settings → You → About
   offline: {
-    state: { idle: "ఆఫ్‌లైన్‌కు సిద్ధం", save: "ఆఫ్‌లైన్ కోసం సేవ్ అవుతోంది…", off: "సేవ్ చేసిన ప్రతి వాడుకలో ఉంది" },
+    state: {
+      idle: "ఆఫ్‌లైన్‌కు సిద్ధం",
+      save: "ఆఫ్‌లైన్ కోసం సేవ్ అవుతోంది…",
+      off: "సేవ్ చేసిన ప్రతి వాడుకలో ఉంది",
+    },
     // the version line in Settings → You → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
@@ -602,9 +616,67 @@ export default {
     texts: "పాఠాలు",
     linesHead: "పంక్తులు",
   },
+  install: {
+    what: "రోజువారీ ఉపాసన: వేదమంత్రాలు, ఆరతులు, అష్టకాలు మరియు పంచాంగం. ఇంటర్నెట్ లేకపోయినా పనిచేస్తుంది.",
+    install: "యాప్ ఇన్‌స్టాల్ చేయండి",
+    installDesk: "ఈ కంప్యూటర్‌లో ఇన్‌స్టాల్ చేయండి",
+    oneTap: "ఒక్క నొక్కుతో ఇతర యాప్‌ల లాగే హోమ్ స్క్రీన్‌కు వస్తుంది. ఉచితం: యాప్ స్టోర్ లేదు, సైన్-ఇన్ లేదు.",
+    orMenu: "లేదా బ్రౌజర్ మెనూ నుండి",
+    add: "హోమ్ స్క్రీన్‌కు జోడించండి",
+    addMac: "Dock కు జోడించండి",
+    steps: {
+      ios26: [
+        'కింద చిరునామా పట్టీలో {more} నొక్కండి (లేదా {share} <b lang="en">Share</b> కనిపిస్తే అది)',
+        '{share} <b lang="en">Share</b> నొక్కండి',
+        'కిందికి జరిపి <b lang="en">Add to Home Screen</b> నొక్కండి (లేదా ముందుగా <b lang="en">View More</b>)',
+        '<b lang="en">Open as Web App</b> ఆన్‌లో ఉంచి, <b lang="en">Add</b> నొక్కండి',
+      ],
+      ios: ["స్క్రీన్ కింద {share} నొక్కండి", 'కిందికి జరిపి <b lang="en">Add to Home Screen</b> నొక్కండి', 'పైన కుడివైపు <b lang="en">Add</b> నొక్కండి'],
+      ipad: ["పైన కుడివైపు {share} నొక్కండి", '<b lang="en">Add to Home Screen</b> నొక్కండి', '<b lang="en">Add</b> నొక్కండి'],
+      iosBrowser: [
+        "పైన కుడివైపు, చిరునామా పక్కన {share} నొక్కండి",
+        '<b lang="en">Add to Home Screen</b> నొక్కండి (కనిపించకపోతే కిందికి జరపండి)',
+        '<b lang="en">Add</b> నొక్కండి',
+      ],
+      android: [
+        "పైన కుడివైపు {menu} నొక్కండి",
+        '<b lang="en">Install app</b> లేదా <b lang="en">Add to Home screen</b> నొక్కండి',
+        '<b lang="en">Install</b> నొక్కండి',
+      ],
+      samsung: [
+        "కింద కుడివైపు {lines} నొక్కండి",
+        '<b lang="en">Add page to</b>, తర్వాత <b lang="en">Home screen</b> నొక్కండి',
+        '<b lang="en">Add</b> నొక్కండి',
+      ],
+      androidFirefox: ["పైన కుడివైపు {menu} నొక్కండి", '<b lang="en">Add app to Home screen</b> నొక్కండి', '<b lang="en">Add</b> నొక్కండి'],
+      desktop: ["చిరునామా పట్టీ కుడి చివర ఇన్‌స్టాల్ గుర్తును క్లిక్ చేయండి, లేదా బ్రౌజర్ మెనూ తెరవండి", '<b lang="en">Install</b> క్లిక్ చేయండి'],
+      mac: [
+        'మెనూ బార్‌లోని <b lang="en">File</b> లేదా Safari టూల్‌బార్‌లోని {share} క్లిక్ చేయండి',
+        '<b lang="en">Add to Dock…</b>, తర్వాత <b lang="en">Add</b> క్లిక్ చేయండి',
+      ],
+    },
+    safariFirst: "ముందుగా ఈ పేజీని Safari లో తెరవండి",
+    safariWhy: "ఈ యాప్ సొంత బ్రౌజర్ హోమ్ స్క్రీన్‌కు యాప్‌లను జోడించలేదు. Safari కొన్ని నొక్కులలో జోడిస్తుంది.",
+    safariOld: '⋯ లేదా దిక్సూచి గుర్తు నొక్కి <b lang="en">Open in Safari</b> ఎంచుకోండి. లేదా లింక్ కాపీ చేసి Safari లో అతికించండి.',
+    openSafari: "Safari లో తెరవండి",
+    chromeFirst: "ముందుగా ఈ పేజీని Chrome లో తెరవండి",
+    chromeWhy: "ఈ యాప్ సొంత బ్రౌజర్ యాప్‌లను ఇన్‌స్టాల్ చేయలేదు. Chrome ఒక్క నొక్కుతో చేస్తుంది.",
+    openChrome: "Chrome లో తెరవండి",
+    copy: "లింక్ కాపీ చేయండి",
+    copied: "లింక్ కాపీ అయింది: బ్రౌజర్ చిరునామా పట్టీలో అతికించండి",
+    firefox: "Firefox యాప్‌లను ఇన్‌స్టాల్ చేయలేదు. ఈ పేజీని Chrome, Edge లేదా Safari లో తెరవండి, లేదా కింది కోడ్‌తో ఫోన్‌లోకి తీసుకోండి.",
+    phone: "ఫోన్‌లో కావాలా?",
+    phoneHow: "ఫోన్ కెమెరాను ఈ కోడ్ వైపు చూపండి: ఆ ఫోన్ కోసం దశలతో ఇదే పేజీ తెరుచుకుంటుంది.",
+    done: "హోమ్ స్క్రీన్‌కు వచ్చింది",
+    doneHow: "అక్కడి నుండి తెరవండి: ఇంటర్నెట్ లేకపోయినా పనిచేస్తుంది.",
+    added: "జోడించాను",
+    addedHow: "ఇప్పుడు హోమ్ స్క్రీన్‌లోని దాని గుర్తు నుండి తెరవండి. మీ పేరు, ఉపాసనా క్రమం అక్కడ ఎంచుకోండి.",
+    later: "ఇప్పుడు వద్దు, బ్రౌజర్‌లోనే చదవండి",
+    close: "మూసివేయండి",
+  },
   // Share (js/features/share.js): the message for the group chat
   share: {
-    tip: "\nసూచన: ఫోన్‌లో యాప్ లాగా ఉంచుకోవడానికి లింక్ తెరిచి Add to Home Screen నొక్కండి.",
+    tip: "\nలింక్ తెరవండి: యాప్‌ను ఫోన్‌లో ఎలా పెట్టుకోవాలో అక్కడే చూపిస్తుంది.",
     /** @param {string} title */
     plain: function (title) {
       return title;
@@ -618,7 +690,13 @@ export default {
   },
   // Print (js/features/print.js): the Print pop-up in the menu language, the printout's own words in its language
   print: {
-    langs: { mr: "మరాఠీ", kn: "కన్నడ", te: "తెలుగు", gu: "గుజరాతీ", en: "ఇంగ్లీషు" },
+    langs: {
+      mr: "మరాఠీ",
+      kn: "కన్నడ",
+      te: "తెలుగు",
+      gu: "గుజరాతీ",
+      en: "ఇంగ్లీషు",
+    },
     portrait: "నిలువు",
     landscape: "అడ్డం",
     both: "రెండూ",
@@ -782,21 +860,6 @@ export default {
       'ఈ బ్రౌజర్ ముద్రణ డైలాగ్‌ను తెరవలేదు. బ్రౌజర్ <b lang="en">Share</b> బటన్ నొక్కి <b lang="en">Print</b> ఎంచుకోండి. ఈ పేజీ వేరే యాప్ లోపల తెరుచుకుంటే, <b>Safari లో తెరువు</b> నొక్కండి: మీ ఎంపికలు దానితో వెళ్తాయి.',
     nextHowToPrint: "తర్వాత: ఎలా ముద్రించాలి ›",
     print: "ముద్రించు",
-    addToHomeScreen2: "హోమ్ స్క్రీన్‌కు జోడించు",
-    tapTheShareButtonAt: '<b lang="en">Share</b> బటన్ {icon} నొక్కండి (Safari లో కింద, Chrome లో పైన కుడివైపు).',
-    scrollDownAndTapAdd: 'కిందికి జరిపి <b lang="en">Add to Home Screen</b> నొక్కండి.',
-    tapAdd: '<b lang="en">Add</b> నొక్కండి.',
-    openThisPageInSafari: 'ఈ పేజీని <b lang="en">Safari</b> లేదా <b lang="en">Chrome</b> లో తెరవండి (⋯ లేదా Share → Open in Safari/Chrome).',
-    thenShareAddToHome: 'తర్వాత Share {icon} → <b lang="en">Add to Home Screen</b> → <b lang="en">Add</b>.',
-    openChromeSMenuTop: "Chrome <b>⋮</b> మెనూ తెరవండి (పైన కుడివైపు).",
-    tapAddToHomeScreen: '<b lang="en">Add to Home screen</b> లేదా <b lang="en">Install app</b> నొక్కండి.',
-    tapInstallOrAdd: '<b lang="en">Install</b> లేదా <b lang="en">Add</b> నొక్కండి.',
-    clickTheInstallIconAt: 'అడ్రస్ బార్ కుడి చివర ఉన్న ఇన్‌స్టాల్ ఐకాన్‌ను క్లిక్ చేయండి, లేదా బ్రౌజర్ మెనూ నుండి <b lang="en">Install</b> ఎంచుకోండి.',
-    clickTheShareButtonIn: 'Safari టూల్‌బార్‌లో <b lang="en">Share</b> బటన్ {icon} క్లిక్ చేయండి, లేదా <b lang="en">File</b> మెనూ తెరవండి.',
-    chooseAddToDockThen: '<b lang="en">Add to Dock</b> ఎంచుకోండి, తర్వాత <b lang="en">Add</b> క్లిక్ చేయండి.',
-    firefoxCanTAddThis: "Firefox ఈ సైట్‌ను యాప్‌గా జోడించలేదు. ఈ పేజీని Chrome, Edge లేదా Safari లో తెరిచి ఈ బటన్‌ను మళ్లీ నొక్కండి.",
-    itWillThenOpenLike: "తర్వాత ఇది ఇంటర్నెట్ లేకపోయినా యాప్ లాగా తెరుచుకుంటుంది.",
-    ok: "సరే",
     home: "ముఖపుట",
     listen: "వెంట",
     library: "సంగ్రహం",
