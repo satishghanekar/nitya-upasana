@@ -575,6 +575,24 @@ export function profileChanged() {
   if (document.getElementById("tdy")) render();
 }
 
+/**
+ * The session now, for the launch animation (js/features/launch.js): its name in the first reading language, how many
+ * texts it has today and how long they take; null when it has none
+ * @returns {{ name: string, texts: string, time: string } | null}
+ */
+export function launchSession() {
+  var c = current(),
+    ids = idsFor(c.today, c.session),
+    l = langs()[0],
+    code = l === "en" ? "en" : mrLang();
+  if (!ids.length) return null;
+  return {
+    name: '<span lang="' + code + '">' + esc(menuWords("today", code).sessions[c.session]) + "</span>",
+    texts: esc(words().texts(ids.length)),
+    time: timeHtml(spanFor(ids)),
+  };
+}
+
 export function init() {
   // another tab changed the routine (js/store/store.js)
   onReread(profileChanged);

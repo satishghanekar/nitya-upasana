@@ -5,6 +5,7 @@
    Sections:
    - Page, top bar and buttons
    - Splash
+   - The launch animation
    - Home page contents list
    - Pieces: header, verses, previous / next links
    - Language switching: .mr and .en parts shown according to data-lang
@@ -58,12 +59,19 @@ html:not([data-ready]) body {
 html:not([data-ready]) #spl {
   animation: spl-out 0s 10s both !important;
 }
+/* its picture and name only once js/splash.js has set it up (data-set): on a slow first load the page can paint before
+   that script arrives, and the plain splash moving into the launch animation's layout counted as a layout shift */
+#spl:not([data-set]) > * {
+  visibility: hidden;
+}
 @keyframes spl-out {
   to {
     visibility: hidden;
   }
 }
-html[data-ready] #spl {
+html[data-ready] #spl:not(.launch),
+html[data-ready] #spl.skip,
+#spl.done {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
@@ -123,6 +131,245 @@ html[data-ready] #spl {
   box-shadow:
     0 0 6px 2px rgb(255 255 255 / 0.6),
     inset 0 0 4px rgb(255 255 255 / 0.6);
+}
+/* ==== The launch animation (#spl.launch: js/splash.js starts it, js/features/launch.js adds the day's lines) ====
+   The first opening of the day, about 4.5 s (Satish chose B of the mockups, 2026-11-19): night, the seven stars come
+   out one by one (each a small window onto the picture), today's grows while the others dim, and the day opens out of
+   it as the sky turns to day; the ring and a burst of rays on today's star, a glow behind the Om; then the day's lines
+   (the weekday, the date, the tithi, the place, today's or tomorrow's festival, the session), and the picture flies
+   into the top bar's icon as Home shows. The page's own start-up is not held up: the site script runs under it, and
+   the lines come once it is ready. A tap or a key ends it (.skip); it goes by itself after 8 s whatever happens. */
+#spl.launch {
+  gap: 18px;
+  justify-content: flex-start;
+  padding-top: max(14vh, 60px);
+  animation: spl-out 0s 8s both;
+}
+#spl.launch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--night);
+  animation: spl-dawn 1s 1.85s both;
+}
+@keyframes spl-dawn {
+  to {
+    opacity: 0;
+  }
+}
+#spl.launch > * {
+  position: relative;
+}
+#spl.launch .spln {
+  order: -1;
+  /* its height fixed, so the font arriving late moves nothing under it (layout shift) */
+  height: 1.5em;
+  line-height: 1.5;
+  font-size: var(--fz-xxl);
+  animation: spl-name 1s 1.85s both;
+}
+@keyframes spl-name {
+  from {
+    color: var(--night-ink);
+  }
+}
+#spl.launch .splm {
+  width: 240px;
+  height: 240px;
+  transform-origin: 0 0;
+}
+#spl.launch .splm img {
+  clip-path: circle(0% at var(--sx) var(--sy));
+  animation: spl-open 1.1s 1.85s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes spl-open {
+  to {
+    clip-path: circle(110% at var(--sx) var(--sy));
+  }
+}
+/* a star's window: comes out (its delay set by js/splash.js), dims unless it is today's, and goes once the picture is
+   there */
+.splw {
+  position: absolute;
+  width: 17%;
+  height: 17%;
+  margin: -8.5% 0 0 -8.5%;
+  border-radius: 50%;
+  background-size: 588.24%;
+  box-shadow: 0 0 14px 4px rgb(255 220 150 / 0.35);
+  animation:
+    spl-win 0.45s cubic-bezier(0.3, 1.5, 0.5, 1) both,
+    spl-dim 0.5s forwards,
+    spl-gone 0.3s forwards;
+}
+.splw.splt {
+  animation-name: spl-win, spl-today, spl-gone;
+}
+@keyframes spl-win {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+@keyframes spl-dim {
+  to {
+    opacity: 0.35;
+    filter: grayscale(0.6);
+  }
+}
+@keyframes spl-today {
+  to {
+    transform: scale(1.35);
+    box-shadow: 0 0 22px 8px rgb(255 225 150 / 0.75);
+  }
+}
+@keyframes spl-gone {
+  to {
+    opacity: 0;
+  }
+}
+#spl.launch .splr {
+  border-width: 2px;
+  animation: spl-ring 0.45s 2.35s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+@keyframes spl-ring {
+  from {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+/* the burst of rays from today's star, and the glow behind the Om */
+.splx,
+.splo {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.splx {
+  width: 46%;
+  height: 46%;
+  margin: -23% 0 0 -23%;
+  background: repeating-conic-gradient(rgb(255 225 150 / 0.85) 0 4deg, transparent 4deg 30deg);
+  mask: radial-gradient(circle, transparent 28%, #000 32%, transparent 70%);
+  opacity: 0;
+  animation: spl-rays 1s 2.35s ease-out;
+}
+@keyframes spl-rays {
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) rotate(25deg);
+  }
+}
+.splo {
+  left: 28%;
+  top: 24%;
+  width: 44%;
+  height: 40%;
+  background: radial-gradient(closest-side, rgb(255 220 140 / 0.7), transparent);
+  animation: spl-om 0.8s 2.35s both;
+}
+@keyframes spl-om {
+  from {
+    opacity: 0;
+  }
+}
+/* on a Sankashti, the moon rising beside the picture (js/features/launch.js) */
+.splmn {
+  position: absolute;
+  left: 96%;
+  top: 2%;
+  width: 19%;
+  height: 19%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, #fff9e6, #f3d98f 60%, #d9b45a);
+  box-shadow: 0 0 22px 8px rgb(255 236 180 / 0.55);
+  animation: spl-moon 1.2s 2.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes spl-moon {
+  from {
+    opacity: 0;
+    transform: translateY(160%);
+  }
+}
+/* the day's lines (js/features/launch.js), each coming up in turn (.on) */
+.splh {
+  max-width: 22rem;
+  padding: 0 16px;
+  text-align: center;
+  color: var(--ink);
+}
+.splh > * {
+  /* every line's height fixed by its line-height, whichever font has arrived (no layout shift as the fonts come) */
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.45s,
+    transform 0.45s;
+}
+.splh > .on {
+  opacity: 1;
+  transform: none;
+}
+.splh.out {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.splwd {
+  font-family: var(--head);
+  font-size: calc(var(--fz-xxl) * 1.6);
+  line-height: 1.2;
+  color: var(--accent);
+}
+.splsm {
+  font-size: var(--fz-m);
+  color: var(--muted);
+}
+.splti {
+  margin-top: 12px;
+  font-family: var(--head);
+  font-size: var(--fz-xl);
+}
+.splhl {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  text-align: start;
+}
+.splhl b {
+  display: block;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fz-l);
+  line-height: 1.3;
+  color: var(--accent);
+}
+.splhl small {
+  display: block;
+  font-size: var(--fz-s);
+  color: var(--muted);
+}
+.splss {
+  margin-top: 14px;
+  font-size: var(--fz-m);
+  color: var(--muted);
+}
+.splss b {
+  font-family: var(--head);
+  font-weight: 400;
+  color: var(--ink);
+}
+#spl.launch > .splskip {
+  position: absolute;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  font-size: var(--fz-s);
+  color: var(--muted);
+  opacity: 0.8;
 }
 body {
   /* no gap above the top bar, so it stays in one place when the page scrolls under it */

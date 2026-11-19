@@ -871,6 +871,10 @@ export default {
       return " " + MONTHS.mr[m] + ", " + DAYS.mr[wd] + ", ";
     },
   },
+  // The launch animation (js/features/launch.js): the first opening of the day
+  launch: {
+    skip: "पुढे जाण्यासाठी टॅप करा",
+  },
   language: {
     name: "मराठी",
   },

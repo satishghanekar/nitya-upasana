@@ -119,6 +119,7 @@ var SITE_PARTS = (function () {
     "features/routine-time",
     "features/welcome",
     "features/listen",
+    "features/launch",
   ].map(function (f) {
     return "js/" + f + ".js";
   });
