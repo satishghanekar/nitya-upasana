@@ -62,14 +62,15 @@ export function installKind(ua, more) {
 }
 
 /**
- * Where the arrow points, at the edge of the page nearest the browser's button: "top-right", "bottom-right",
+ * Where the arrow points, at the edge of the page nearest the browser's button: "top-right", "top-address" (Share inside the address bar, Chrome on an iPhone), "bottom-right",
  * "bottom", or "" (none: a button on the page itself, or a menu bar outside the window)
  * @param {InstallKind} kind
  */
 export function arrowAt(kind) {
   if (kind === "samsung") return "bottom-right";
   if (kind === "ios26" || kind === "ios") return "bottom";
-  if (kind === "ipad" || kind === "iosBrowser" || kind === "android" || kind === "androidFirefox" || kind === "desktop") return "top-right";
+  if (kind === "iosBrowser") return "top-address";
+  if (kind === "ipad" || kind === "android" || kind === "androidFirefox" || kind === "desktop") return "top-right";
   return "";
 }
 

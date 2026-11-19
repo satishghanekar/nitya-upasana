@@ -9,6 +9,7 @@ import { openSite, openMore, SETUPS, axeEveryTheme, noViolations } from "./helpe
 const UA = {
   ios26: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1",
   ios18: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Mobile/15E148 Safari/604.1",
+  chromeIos: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/130.0.6723.90 Mobile/15E148 Safari/604.1",
   instagram: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22B83 Instagram 350.0.0.0",
   android: "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
   facebook:
@@ -90,6 +91,15 @@ test.describe("iPhone, Safari on iOS 18", () => {
     await openSite(page, SETUPS.english, { hash: "?add" });
     await expect(steps(page)).toHaveCount(3);
     await expect(page.locator("#install-arrow")).toHaveAttribute("data-at", "bottom");
+  });
+});
+
+test.describe("iPhone, Chrome", () => {
+  test.use({ ...PHONE, userAgent: UA.chromeIos });
+  test("Share beside the address: the arrow points at it, inside the address bar", async ({ page }) => {
+    await openSite(page, SETUPS.english, { hash: "?add" });
+    await expect(steps(page).first()).toContainText("beside the address");
+    await expect(page.locator("#install-arrow")).toHaveAttribute("data-at", "top-address");
   });
 });
 

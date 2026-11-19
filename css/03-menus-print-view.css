@@ -510,6 +510,12 @@ a.t {
   right: 14px;
   transform: rotate(180deg);
 }
+/* (Chrome on an iPhone: Share sits inside the address bar, left of the ⋯ menu) */
+#install-arrow[data-at="top-address"] {
+  top: max(6px, env(safe-area-inset-top));
+  right: 56px;
+  transform: rotate(180deg);
+}
 @media (prefers-reduced-motion: no-preference) {
   #install-arrow svg {
     animation: install-nudge 1.2s ease-in-out infinite;
