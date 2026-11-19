@@ -119,4 +119,6 @@
   ring.style.left = today[0] + "%";
   ring.style.top = today[1] + "%";
   box.appendChild(ring);
+  // set up: its picture and name may show now (css/02-core.css)
+  sp.setAttribute("data-set", "");
 })();

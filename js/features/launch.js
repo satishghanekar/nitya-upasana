@@ -109,7 +109,13 @@ export function init() {
     var to = document.querySelector("#bti img"),
       a = box.getBoundingClientRect(),
       b = to ? to.getBoundingClientRect() : null;
-    if (b && b.width && a.width) box.style.transform = "translate(" + (b.left - a.left) + "px," + (b.top - a.top) + "px) scale(" + b.width / a.width + ")";
+    // (an animation, not a changed style: browsers count a moved box as a layout shift, never an animated transform)
+    if (b && b.width && a.width)
+      box.animate([{ transform: "none" }, { transform: "translate(" + (b.left - a.left) + "px," + (b.top - a.top) + "px) scale(" + b.width / a.width + ")" }], {
+        duration: 550,
+        easing: "cubic-bezier(0.5, 0, 0.2, 1)",
+        fill: "forwards",
+      });
     setTimeout(end, 380);
   }, fly);
 }
