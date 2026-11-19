@@ -43,6 +43,18 @@ var PHONE =
 var TICK =
   '<svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 
+/** The browser's button the arrow points at, drawn beside it (none on a computer: the icon there changes) */
+var TIP_KEY = /** @type {Record<string, string>} */ ({
+  // (Safari 26: ⋯ in the address bar, or Share in the toolbar, as the layout chosen in Settings shows them)
+  ios26: "{more} {share}",
+  ios: "{share}",
+  ipad: "{share}",
+  iosBrowser: "{share}",
+  android: "{menu}",
+  androidFirefox: "{menu}",
+  samsung: "{lines}",
+});
+
 /** A step's words with the browser's buttons drawn in (the words are the catalog's own HTML) @param {string} s */
 function keys(s) {
   return s
@@ -145,6 +157,21 @@ function draw() {
   var at = arrow ? arrowAt(kind) : "";
   byId("install-arrow").hidden = !at;
   byId("install-arrow").setAttribute("data-at", at);
+  // beside the arrow, the button itself and where it is: the arrow can be a little off (another screen width, the
+  // address bar moved to the bottom in the browser's settings), the button's picture isn't
+  var tip = byId("install-tip"),
+    key = at ? TIP_KEY[kind] : "";
+  tip.hidden = !key;
+  tip.setAttribute("data-at", at);
+  // (room under the steps for a label at the bottom, so it covers none of them)
+  page.setAttribute("data-tip", key ? at.split("-")[0] : "");
+  tip.innerHTML = key
+    ? '<span class="install-tip-pill">' +
+      keys(key) +
+      '<span lang="en">' +
+      esc(kind === "ios26" ? w.tipEither : kind === "iosBrowser" ? w.tipAddress : w.tip) +
+      "</span></span>"
+    : "";
   // a computer: the QR code, to set up a phone too
   var ph = byId("install-phone");
   ph.hidden = !(kind === "desktop" || kind === "mac" || kind === "firefox") || state !== "how";

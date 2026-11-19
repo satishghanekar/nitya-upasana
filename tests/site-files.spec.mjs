@@ -115,8 +115,8 @@ test("the scripts, styles and page stay within their size budget", () => {
   // and their words in five languages, js/print/write.js, 395.65 KB with them on a Mac; 399 KB since 2026-11-18: Check for
   // updates waiting for the new version and saying why one could not be saved, in five languages, 397.2 KB then; 406 KB
   // since 2026-11-19: the install page, js/core/install-kind.js and js/features/install-page.js, and its steps for each
-  // browser in five languages, 404.7 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(406_000);
+  // browser in five languages, 404.7 KB then; 407 KB since 2026-11-19: the label beside the install arrow, 406.13 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(407_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a

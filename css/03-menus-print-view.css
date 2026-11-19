@@ -510,6 +510,57 @@ a.t {
   right: 14px;
   transform: rotate(180deg);
 }
+/* (Chrome on an iPhone: Share sits inside the address bar, left of the ⋯ menu) */
+#install-arrow[data-at="top-address"] {
+  top: max(6px, env(safe-area-inset-top));
+  right: 56px;
+  transform: rotate(180deg);
+}
+/* The button's picture and a few words beside the arrow (#install-tip), just past its tail: a row across the page,
+   the pill at the arrow's side, so long words wrap inside the page */
+#install-tip {
+  position: fixed;
+  right: 10px;
+  left: 10px;
+  z-index: 21;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+#install-tip[hidden] {
+  display: none;
+}
+.install-tip-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 6px;
+  border-radius: 22px;
+  background: var(--accent);
+  color: var(--bg);
+  font: 700 var(--fz-m)/1.25 var(--body);
+}
+.install-tip-pill .install-key {
+  flex: none;
+  margin: 0;
+  color: var(--ink);
+}
+#install-tip[data-at^="top"] {
+  top: calc(max(6px, env(safe-area-inset-top)) + 58px);
+}
+#install-tip[data-at^="bottom"] {
+  bottom: calc(max(6px, env(safe-area-inset-bottom)) + 58px);
+}
+#install-tip[data-at="top-address"] {
+  right: 30px;
+}
+#install-tip[data-at="bottom"] {
+  justify-content: center;
+}
+/* (a label at the bottom: room under the steps, so it covers none of them) */
+#install-page[data-tip="bottom"] {
+  padding-bottom: max(150px, calc(env(safe-area-inset-bottom) + 140px));
+}
 @media (prefers-reduced-motion: no-preference) {
   #install-arrow svg {
     animation: install-nudge 1.2s ease-in-out infinite;

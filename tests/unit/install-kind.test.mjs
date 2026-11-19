@@ -60,6 +60,7 @@ test("the arrow points at the browser's button, and only the browsers with a pro
   expect(arrowAt("ios")).toBe("bottom");
   expect(arrowAt("ipad")).toBe("top-right");
   expect(arrowAt("android")).toBe("top-right");
+  expect(arrowAt("iosBrowser")).toBe("top-address");
   expect(arrowAt("samsung")).toBe("bottom-right");
   expect(arrowAt("iosInApp")).toBe("");
   expect(arrowAt("mac")).toBe("");
