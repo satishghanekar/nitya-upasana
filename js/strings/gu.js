@@ -289,7 +289,12 @@ export default {
       return d + ": આ યાદી દરરોજ વાપરવી છે? બીજા દિવસોની પોતાની યાદીઓ નીકળી જશે.";
     },
     fixGo: "દરરોજ વાપરો",
-    bases: { short: "સંક્ષિપ્ત", daily: "દૈનિક", full: "પૂર્ણ", extended: "વિસ્તૃત" },
+    bases: {
+      short: "સંક્ષિપ્ત",
+      daily: "દૈનિક",
+      full: "પૂર્ણ",
+      extended: "વિસ્તૃત",
+    },
     baseG: "તૈયાર દિનચર્યા",
     baseInfo: {
       short: "સવારે અથર્વશીર્ષ અને રોજની આરતીઓ, સાંજે આરતીઓ",
@@ -519,7 +524,11 @@ export default {
   },
   // Offline use and Check for updates (js/features/offline.js): Settings → You → About
   offline: {
-    state: { idle: "ઑફલાઇન માટે તૈયાર", save: "ઑફલાઇન માટે સાચવે છે…", off: "સાચવેલી નકલ વપરાય છે" },
+    state: {
+      idle: "ઑફલાઇન માટે તૈયાર",
+      save: "ઑફલાઇન માટે સાચવે છે…",
+      off: "સાચવેલી નકલ વપરાય છે",
+    },
     // the version line in Settings → You → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
@@ -567,7 +576,12 @@ export default {
         s3: "હોમ સ્ક્રીન પર તેનું આઇકન દબાવો",
         h3: "તે નવી આવૃત્તિ સાથે ખૂલશે.",
       },
-      mac: { s1: "બંધ કરવા ⌘Q દબાવો", h1: "Safari, અથવા Dock માં ઉમેરી હોય તો આ ઍપ.", s2: "તેને ફરી ખોલો", h2: "Dock માંથી, અથવા Safari ખોલીને આ સાઇટ." },
+      mac: {
+        s1: "બંધ કરવા ⌘Q દબાવો",
+        h1: "Safari, અથવા Dock માં ઉમેરી હોય તો આ ઍપ.",
+        s2: "તેને ફરી ખોલો",
+        h2: "Dock માંથી, અથવા Safari ખોલીને આ સાઇટ.",
+      },
     },
     usingSaved: "ઇન્ટરનેટ નથી. સાચવેલી નકલ વાપરીએ છીએ.",
     loading: "નવી આવૃત્તિ, ખૂલે છે…",
@@ -596,9 +610,52 @@ export default {
     texts: "પાઠ",
     linesHead: "લીટીઓ",
   },
+  install: {
+    what: "રોજની ઉપાસના: વેદમંત્રો, આરતીઓ, અષ્ટકો અને પંચાંગ. ઇન્ટરનેટ વિના પણ ચાલે છે.",
+    install: "ઍપ ઇન્સ્ટોલ કરો",
+    installDesk: "આ કમ્પ્યુટર પર ઇન્સ્ટોલ કરો",
+    oneTap: "એક ટૅપમાં બીજી ઍપની જેમ હોમ સ્ક્રીન પર આવી જાય છે. મફત: ઍપ સ્ટોર નહીં, સાઇન-ઇન નહીં.",
+    orMenu: "અથવા બ્રાઉઝરના મેનુમાંથી",
+    add: "હોમ સ્ક્રીન પર ઉમેરો",
+    addMac: "Dock માં ઉમેરો",
+    steps: {
+      ios26: [
+        "નીચે જમણે {more} દબાવો",
+        '{share} <b lang="en">Share</b> દબાવો',
+        'નીચે સરકાવી <b lang="en">Add to Home Screen</b> દબાવો (અથવા પહેલાં <b lang="en">View More</b>)',
+        '<b lang="en">Open as Web App</b> ચાલુ રાખી <b lang="en">Add</b> દબાવો',
+      ],
+      ios: ["સ્ક્રીનની નીચે {share} દબાવો", 'નીચે સરકાવી <b lang="en">Add to Home Screen</b> દબાવો', 'ઉપર જમણે <b lang="en">Add</b> દબાવો'],
+      ipad: ["ઉપર જમણે {share} દબાવો", '<b lang="en">Add to Home Screen</b> દબાવો', '<b lang="en">Add</b> દબાવો'],
+      iosBrowser: ["ઉપર જમણે, સરનામા પાસે {share} દબાવો", '<b lang="en">Add to Home Screen</b> દબાવો (ન દેખાય તો નીચે સરકાવો)', '<b lang="en">Add</b> દબાવો'],
+      android: ["ઉપર જમણે {menu} દબાવો", '<b lang="en">Install app</b> કે <b lang="en">Add to Home screen</b> દબાવો', '<b lang="en">Install</b> દબાવો'],
+      samsung: ["નીચે જમણે {lines} દબાવો", '<b lang="en">Add page to</b>, પછી <b lang="en">Home screen</b> દબાવો', '<b lang="en">Add</b> દબાવો'],
+      androidFirefox: ["ઉપર જમણે {menu} દબાવો", '<b lang="en">Add app to Home screen</b> દબાવો', '<b lang="en">Add</b> દબાવો'],
+      desktop: ["સરનામા પટ્ટીના જમણા છેડે ઇન્સ્ટોલ ચિહ્ન ક્લિક કરો, અથવા બ્રાઉઝરનું મેનુ ખોલો", '<b lang="en">Install</b> ક્લિક કરો'],
+      mac: ['મેનુ બારમાં <b lang="en">File</b> અથવા Safari ટૂલબારમાં {share} ક્લિક કરો', '<b lang="en">Add to Dock…</b>, પછી <b lang="en">Add</b> ક્લિક કરો'],
+    },
+    safariFirst: "પહેલાં આ પાનું Safari માં ખોલો",
+    safariWhy: "આ ઍપનું પોતાનું બ્રાઉઝર હોમ સ્ક્રીન પર ઍપ ઉમેરી શકતું નથી. Safari થોડા ટૅપમાં ઉમેરે છે.",
+    safariOld: '⋯ કે હોકાયંત્ર ચિહ્ન દબાવી <b lang="en">Open in Safari</b> પસંદ કરો. અથવા લિંક કૉપિ કરી Safari માં પેસ્ટ કરો.',
+    openSafari: "Safari માં ખોલો",
+    chromeFirst: "પહેલાં આ પાનું Chrome માં ખોલો",
+    chromeWhy: "આ ઍપનું પોતાનું બ્રાઉઝર ઍપ ઇન્સ્ટોલ કરી શકતું નથી. Chrome એક ટૅપમાં કરે છે.",
+    openChrome: "Chrome માં ખોલો",
+    copy: "લિંક કૉપિ કરો",
+    copied: "લિંક કૉપિ થઈ: બ્રાઉઝરની સરનામા પટ્ટીમાં પેસ્ટ કરો",
+    firefox: "Firefox ઍપ ઇન્સ્ટોલ કરી શકતું નથી. આ પાનું Chrome, Edge કે Safari માં ખોલો, અથવા નીચેના કોડથી ફોનમાં લો.",
+    phone: "ફોનમાં જોઈએ છે?",
+    phoneHow: "ફોનનો કૅમેરા આ કોડ સામે ધરો: એ ફોન માટેનાં પગલાં સાથે આ જ પાનું ખૂલશે.",
+    done: "હોમ સ્ક્રીન પર આવી ગયું",
+    doneHow: "ત્યાંથી ખોલો: ઇન્ટરનેટ વિના પણ ચાલે છે.",
+    added: "મેં ઉમેર્યું",
+    addedHow: "હવે હોમ સ્ક્રીન પરના તેના ચિહ્નથી ખોલો. તમારું નામ અને ઉપાસનાક્રમ ત્યાં નક્કી કરો.",
+    later: "હમણાં નહીં, બ્રાઉઝરમાં જ વાંચો",
+    close: "બંધ કરો",
+  },
   // Share (js/features/share.js): the message for the group chat
   share: {
-    tip: "\nસૂચન: ફોનમાં ઍપની જેમ રાખવા લિંક ખોલીને Add to Home Screen દબાવો.",
+    tip: "\nલિંક ખોલો: ઍપ ફોનમાં કેવી રીતે લેવી તે ત્યાં જ બતાવે છે.",
     /** @param {string} title */
     plain: function (title) {
       return title;
@@ -612,7 +669,13 @@ export default {
   },
   // Print (js/features/print.js): the Print pop-up in the menu language, the printout's own words in its language
   print: {
-    langs: { mr: "મરાઠી", kn: "કન્નડ", te: "તેલુગુ", gu: "ગુજરાતી", en: "અંગ્રેજી" },
+    langs: {
+      mr: "મરાઠી",
+      kn: "કન્નડ",
+      te: "તેલુગુ",
+      gu: "ગુજરાતી",
+      en: "અંગ્રેજી",
+    },
     portrait: "ઊભું",
     landscape: "આડું",
     both: "બંને",
@@ -776,21 +839,6 @@ export default {
       'આ બ્રાઉઝરે છાપવાનો સંવાદ ખોલ્યો નહીં. બ્રાઉઝરનું <b lang="en">Share</b> બટન દબાવી <b lang="en">Print</b> પસંદ કરો. આ પાનું બીજી ઍપની અંદર ખૂલ્યું હોય તો, <b>Safari માં ખોલો</b> દબાવો: તમારી પસંદગીઓ સાથે જશે.',
     nextHowToPrint: "આગળ: કેવી રીતે છાપવું ›",
     print: "છાપો",
-    addToHomeScreen2: "હોમ સ્ક્રીન પર ઉમેરો",
-    tapTheShareButtonAt: '<b lang="en">Share</b> બટન {icon} દબાવો (Safari માં નીચે, Chrome માં ઉપર જમણે).',
-    scrollDownAndTapAdd: 'નીચે સરકાવી <b lang="en">Add to Home Screen</b> દબાવો.',
-    tapAdd: '<b lang="en">Add</b> દબાવો.',
-    openThisPageInSafari: 'આ પાનું <b lang="en">Safari</b> કે <b lang="en">Chrome</b> માં ખોલો (⋯ કે Share → Open in Safari/Chrome).',
-    thenShareAddToHome: 'પછી Share {icon} → <b lang="en">Add to Home Screen</b> → <b lang="en">Add</b>.',
-    openChromeSMenuTop: "Chrome નું <b>⋮</b> મેનુ ખોલો (ઉપર જમણે).",
-    tapAddToHomeScreen: '<b lang="en">Add to Home screen</b> કે <b lang="en">Install app</b> દબાવો.',
-    tapInstallOrAdd: '<b lang="en">Install</b> કે <b lang="en">Add</b> દબાવો.',
-    clickTheInstallIconAt: 'સરનામાની પટ્ટીના જમણા છેડે ઇન્સ્ટૉલ આઇકન પર ક્લિક કરો, કે બ્રાઉઝરના મેનુમાંથી <b lang="en">Install</b> પસંદ કરો.',
-    clickTheShareButtonIn: 'Safari ની ટૂલબારમાં <b lang="en">Share</b> બટન {icon} પર ક્લિક કરો, કે <b lang="en">File</b> મેનુ ખોલો.',
-    chooseAddToDockThen: '<b lang="en">Add to Dock</b> પસંદ કરો, પછી <b lang="en">Add</b> પર ક્લિક કરો.',
-    firefoxCanTAddThis: "Firefox આ સાઇટને ઍપ તરીકે ઉમેરી શકતું નથી. આ પાનું Chrome, Edge કે Safari માં ખોલી આ બટન ફરી દબાવો.",
-    itWillThenOpenLike: "પછી તે ઇન્ટરનેટ વિના પણ ઍપની જેમ ખૂલશે.",
-    ok: "બરાબર",
     home: "મુખ્ય પાનું",
     listen: "સાથે",
     library: "સંગ્રહ",

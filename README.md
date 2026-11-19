@@ -18,7 +18,7 @@ What a reader sees and can do is described in the site's own **Help** (Share in 
 - **Routine builder:** each person's texts for each session, the same every day or by weekday. A new person follows Short, one of four ready-made routines in `content/routines.json` (Short, Daily, Full, Extended), and chooses another at the top of the builder; their first change makes it their own (Go back returns to the ready-made one).
 - **People on one phone:** up to eight profiles, each with their own settings and routine (a new phone starts with one, "Me", and a welcome card on Home asks their name and routine), and `.nitya` backup files to save and restore them.
 - **Print:** a print builder (what to print, then how: language, dhrupad, page, font, paper, with a preview of the first page) that makes a printout or PDF of any texts, a session, a person's routine (the whole week or one day) or the whole Library. A small star and a gold ring mark the choices that take the fewest pages (Dhrupad once, Portrait for one language) and the book-style font (Traditional), a line under Dhrupad and Page says what each choice gives, and the pop-up says about how many pages the printout takes. Every text starts on a new page, with a list of contents when more than one text is printed. A session prints in the order Home shows it, under the day and the session ("Tuesday · Evening"). A routine prints each text once, in routine order, with a week-at-a-glance page and a tag on each text saying when it is said ("Daily · Morning, Evening").
-- **Share** (a ready message with the link and the next Sankashti), a **QR** code of the site, and **Add to Home Screen** help for every phone and browser.
+- **Share** (a ready message with the link and the next Sankashti) and a **QR** code of the site. Both open the **install page**, which shows the one way to put the app on the home screen for that phone or browser: one-tap Install on Android and in Chrome or Edge, the steps with an arrow at the right button on an iPhone or an iPad, and Open in Safari or Chrome from inside WhatsApp, Instagram or Gmail.
 
 ## What is in this repository
 
@@ -44,7 +44,8 @@ There is no build step. The files in this repository are exactly what the site s
 | `icon-*.png`, `apple-touch-icon*.png`, `favicon-midday-32.png`, `favicon-sunset-32.png` | The app icon (the sunrise picture; phones copy it when the app is installed, so it does not change with the time of day) and the browser tab icons for the afternoon and evening. |
 | `share.jpg` | The picture shown in link previews (WhatsApp and others). |
 
-| `manifest.json` | Name, colours and icons used when the site is added to a Home Screen. |
+| `manifest.json` | Name, description, colours, icons and screenshots used when the site is installed (Chrome shows the description and screenshots in its install box). |
+| `screenshots/` | The screenshots `manifest.json` names: three of a phone (`narrow`) and one of a computer (`wide`). Taken from the site; take them again when Home changes a lot. |
 | `_headers` | How long phones may keep each kind of file before asking again (read by Cloudflare Pages). |
 | `tests/` | The automated tests (see `tests/README.md`). Not part of the site. |
 | `.github/workflows/` | The test run on every pull request and push to `main`, and the job that refreshes its screenshots. |

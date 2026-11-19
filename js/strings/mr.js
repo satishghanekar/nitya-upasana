@@ -283,7 +283,12 @@ export default {
       return d + "ची यादी रोज वापरायची? इतर वारांच्या वेगळ्या याद्या काढल्या जातील.";
     },
     fixGo: "रोज वापरा",
-    bases: { short: "संक्षिप्त", daily: "दैनिक", full: "पूर्ण", extended: "विस्तृत" },
+    bases: {
+      short: "संक्षिप्त",
+      daily: "दैनिक",
+      full: "पूर्ण",
+      extended: "विस्तृत",
+    },
     baseG: "तयार दिनक्रम",
     baseInfo: {
       short: "सकाळी अथर्वशीर्ष आणि रोजच्या आरत्या, सायंकाळी आरत्या",
@@ -511,7 +516,11 @@ export default {
     online: "फक्त ऑनलाइन",
   },
   offline: {
-    state: { idle: "ऑफलाइन तयार", save: "ऑफलाइनसाठी जतन…", off: "जतन केलेली प्रत" },
+    state: {
+      idle: "ऑफलाइन तयार",
+      save: "ऑफलाइनसाठी जतन…",
+      off: "जतन केलेली प्रत",
+    },
     // the version line in Settings → You → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
@@ -592,8 +601,58 @@ export default {
     texts: "रचना",
     linesHead: "ओळी",
   },
+  install: {
+    what: "रोजची उपासना: वेदमंत्र, आरत्या, अष्टके आणि पंचांग. इंटरनेटशिवायही चालते.",
+    install: "ॲप इन्स्टॉल करा",
+    installDesk: "या संगणकावर इन्स्टॉल करा",
+    oneTap: "एका टॅपमध्ये ते इतर ॲप्सप्रमाणे होम स्क्रीनवर येते. विनामूल्य: ॲप स्टोअर नाही, साइन-इन नाही.",
+    orMenu: "किंवा ब्राउझरच्या मेनूतून",
+    add: "होम स्क्रीनवर जोडा",
+    addMac: "Dock मध्ये जोडा",
+    steps: {
+      ios26: [
+        "खाली उजवीकडे {more} दाबा",
+        '{share} <b lang="en">Share</b> दाबा',
+        'खाली स्क्रोल करून <b lang="en">Add to Home Screen</b> दाबा (किंवा आधी <b lang="en">View More</b>)',
+        '<b lang="en">Open as Web App</b> चालू ठेवा, मग <b lang="en">Add</b> दाबा',
+      ],
+      ios: ["स्क्रीनच्या खाली {share} दाबा", 'खाली स्क्रोल करून <b lang="en">Add to Home Screen</b> दाबा', 'वर उजवीकडे <b lang="en">Add</b> दाबा'],
+      ipad: ["वर उजवीकडे {share} दाबा", '<b lang="en">Add to Home Screen</b> दाबा', '<b lang="en">Add</b> दाबा'],
+      iosBrowser: [
+        "वर उजवीकडे, पत्त्याशेजारी {share} दाबा",
+        '<b lang="en">Add to Home Screen</b> दाबा (दिसत नसल्यास खाली स्क्रोल करा)',
+        '<b lang="en">Add</b> दाबा',
+      ],
+      android: ["वर उजवीकडे {menu} दाबा", '<b lang="en">Install app</b> किंवा <b lang="en">Add to Home screen</b> दाबा', '<b lang="en">Install</b> दाबा'],
+      samsung: ["खाली उजवीकडे {lines} दाबा", '<b lang="en">Add page to</b>, मग <b lang="en">Home screen</b> दाबा', '<b lang="en">Add</b> दाबा'],
+      androidFirefox: ["वर उजवीकडे {menu} दाबा", '<b lang="en">Add app to Home screen</b> दाबा', '<b lang="en">Add</b> दाबा'],
+      desktop: ["पत्त्याच्या पट्टीच्या उजव्या टोकाचे इन्स्टॉल चिन्ह क्लिक करा, किंवा ब्राउझरचा मेनू उघडा", '<b lang="en">Install</b> क्लिक करा'],
+      mac: [
+        'मेनू बारमधील <b lang="en">File</b> किंवा Safari च्या टूलबारमधील {share} क्लिक करा',
+        '<b lang="en">Add to Dock…</b>, मग <b lang="en">Add</b> क्लिक करा',
+      ],
+    },
+    safariFirst: "आधी हे पान Safari मध्ये उघडा",
+    safariWhy: "या ॲपचा स्वतःचा ब्राउझर होम स्क्रीनवर ॲप जोडू शकत नाही. Safari काही टॅपमध्ये जोडतो.",
+    safariOld: '⋯ किंवा होकायंत्राचे चिन्ह दाबून <b lang="en">Open in Safari</b> निवडा. किंवा लिंक कॉपी करून Safari मध्ये पेस्ट करा.',
+    openSafari: "Safari मध्ये उघडा",
+    chromeFirst: "आधी हे पान Chrome मध्ये उघडा",
+    chromeWhy: "या ॲपचा स्वतःचा ब्राउझर ॲप इन्स्टॉल करू शकत नाही. Chrome एका टॅपमध्ये करतो.",
+    openChrome: "Chrome मध्ये उघडा",
+    copy: "लिंक कॉपी करा",
+    copied: "लिंक कॉपी झाली: ब्राउझरच्या पत्त्याच्या पट्टीत पेस्ट करा",
+    firefox: "Firefox ॲप इन्स्टॉल करू शकत नाही. हे पान Chrome, Edge किंवा Safari मध्ये उघडा, किंवा खालचा कोड वापरून फोनवर घ्या.",
+    phone: "फोनवर हवे?",
+    phoneHow: "फोनचा कॅमेरा या कोडवर धरा: त्या फोनसाठीच्या पायऱ्यांसह हेच पान उघडेल.",
+    done: "ते होम स्क्रीनवर आले",
+    doneHow: "तिथून उघडा: ते इंटरनेटशिवायही चालते.",
+    added: "मी जोडले",
+    addedHow: "आता होम स्क्रीनवरील त्याच्या चिन्हावरून उघडा. तुमचे नाव आणि उपासनाक्रम तिथे ठरवा.",
+    later: "आत्ता नको, ब्राउझरमध्येच वाचा",
+    close: "बंद करा",
+  },
   share: {
-    tip: "\nफोनवर ॲपसारखे ठेवण्यासाठी: लिंक उघडा आणि होम स्क्रीनवर जोडा (Add to Home Screen) दाबा.",
+    tip: "\nलिंक उघडा: ॲप फोनवर कसे घ्यायचे ते तिथेच दाखवते.",
     /** @param {string} title */
     plain: function (title) {
       return title + " — पूजा आणि आरती";
@@ -606,7 +665,13 @@ export default {
     copied: "संदेश कॉपी झाला",
   },
   print: {
-    langs: { mr: "मराठी", kn: "कन्नड", te: "तेलुगू", gu: "गुजराती", en: "इंग्रजी" },
+    langs: {
+      mr: "मराठी",
+      kn: "कन्नड",
+      te: "तेलुगू",
+      gu: "गुजराती",
+      en: "इंग्रजी",
+    },
     portrait: "उभे",
     landscape: "आडवे",
     both: "दोन्ही",
@@ -769,21 +834,6 @@ export default {
       "या ब्राउझरने प्रिंट विंडो उघडली नाही. ब्राउझरचे <b>शेअर</b> बटण दाबा आणि <b>प्रिंट</b> निवडा. दुसऱ्या ॲपमधून उघडले असल्यास <b>Safari मध्ये उघडा</b> दाबा: तुमच्या निवडी सोबत जातात.",
     nextHowToPrint: "पुढे: कसे प्रिंट करायचे ›",
     print: "प्रिंट",
-    addToHomeScreen2: "होम स्क्रीनवर जोडा",
-    tapTheShareButtonAt: "शेअर बटण {icon} दाबा (Safari मध्ये खाली, Chrome मध्ये वर उजवीकडे).",
-    scrollDownAndTapAdd: 'खाली स्क्रोल करून <b lang="en">Add to Home Screen</b> दाबा.',
-    tapAdd: '<b lang="en">Add</b> दाबा.',
-    openThisPageInSafari: 'हे पान <b lang="en">Safari</b> किंवा <b lang="en">Chrome</b> मध्ये उघडा (⋯ किंवा शेअर → Open in Safari/Chrome).',
-    thenShareAddToHome: 'मग शेअर {icon} → <b lang="en">Add to Home Screen</b> → <b lang="en">Add</b>.',
-    openChromeSMenuTop: "Chrome चा <b>⋮</b> मेनू (वर उजवीकडे) उघडा.",
-    tapAddToHomeScreen: '<b lang="en">Add to Home screen</b> किंवा <b lang="en">Install app</b> दाबा.',
-    tapInstallOrAdd: '<b lang="en">Install</b> किंवा <b lang="en">Add</b> दाबा.',
-    clickTheInstallIconAt: 'पत्त्याच्या पट्टीच्या उजव्या टोकाला असलेले Install चिन्ह दाबा, किंवा ब्राउझरच्या मेनूतून <b lang="en">Install</b> निवडा.',
-    clickTheShareButtonIn: 'Safari च्या टूलबारवरील शेअर बटण {icon} दाबा, किंवा <b lang="en">File</b> मेनू उघडा.',
-    chooseAddToDockThen: '<b lang="en">Add to Dock</b> निवडा, मग <b lang="en">Add</b> दाबा.',
-    firefoxCanTAddThis: "Firefox मध्ये हे ॲप म्हणून जोडता येत नाही. हे पान Chrome, Edge किंवा Safari मध्ये उघडा आणि हे बटण पुन्हा दाबा.",
-    itWillThenOpenLike: "मग ते ॲपसारखे उघडेल, इंटरनेटशिवायही.",
-    ok: "ठीक आहे",
     home: "मुख्यपृष्ठ",
     listen: "सोबत",
     library: "संग्रह",

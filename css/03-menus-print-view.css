@@ -5,7 +5,7 @@
    Sections:
    - Top-bar title, heading for screen readers, contents overlay refinements
    - Share menu (App, Share, QR, Help); Share / QR / Print buttons, QR pop-up
-   - Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm)
+   - The install page (#install-page) and the Add to Home Screen buttons
    - Top-bar title with the app's picture; Home button in the contents overlay
    - Contents headings (refined)
    - Print builder (#prm: What, then How); print view (#pv, built by the script just before printing)
@@ -201,8 +201,7 @@ a.t {
 }
 /* centred while it fits; taller than the screen (a phone on its side, 400% zoom) it starts at the top and the
    pop-up scrolls, so Close is always reachable (WCAG 1.4.10) */
-#qrm,
-#inm {
+#qrm {
   position: fixed;
   inset: 0;
   z-index: 20;
@@ -214,12 +213,10 @@ a.t {
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-#qrm > .qrc,
-#inm > .qrc {
+#qrm > .qrc {
   margin-block: auto;
 }
-#qrm[hidden],
-#inm[hidden] {
+#qrm[hidden] {
   display: none;
 }
 .qrc {
@@ -250,7 +247,10 @@ a.t {
   overflow-wrap: anywhere;
 }
 
-/* ==== Add to Home Screen: button on the home page and in Settings, steps pop-up (#inm) ==== */
+/* ==== The install page (#install-page, js/features/install-page.js) and the Add to Home Screen buttons ====
+   A page of its own over everything: the app's picture and icon, its name, one line on what it is, then one way to
+   install for this device (#install-how). The arrow (#install-arrow) sits at the edge of the page nearest the
+   browser's own button (data-at), just inside the page, and points at it. */
 .inb {
   display: flex;
   align-items: center;
@@ -267,25 +267,264 @@ a.t {
 .inb[hidden] {
   display: none;
 }
-.inl {
-  text-align: left;
-  font: var(--fz-l)/1.5 var(--lat);
-  margin: 0 0 10px;
-  padding-left: 24px;
+#install-page {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(84px, calc(env(safe-area-inset-bottom) + 72px));
 }
-.inl .mr {
-  font-family: var(--body);
+#install-page[hidden] {
+  display: none;
 }
-.inl li + li {
-  margin-top: 6px;
+.install-card {
+  width: min(440px, 100%);
+  margin: 0 auto;
+  text-align: center;
 }
-.inn {
-  font: var(--fz-m)/1.45 var(--lat);
+/* the picture as on Home, round; smaller on a short screen (a phone on its side) */
+.install-picture {
+  display: block;
+  width: min(220px, 56vw, 34vh);
+  height: auto;
+  aspect-ratio: 1;
+  margin: 8px auto 0;
+  border-radius: 50%;
+}
+/* the icon as it will be on the home screen, over the picture's foot */
+.install-icon {
+  display: block;
+  position: relative;
+  width: 72px;
+  height: 72px;
+  margin: -40px auto 8px;
+  border: 3px solid var(--bg);
+  border-radius: 18px;
+  background: var(--bg);
+}
+#install-title {
+  margin: 0;
+  font: 700 var(--fz-xxl)/1.25 var(--lat);
+  color: var(--ink);
+}
+#install-title:focus {
+  outline: none;
+}
+.install-name {
+  display: block;
+  font: 600 var(--fz-xl)/1.4 var(--head);
+  color: var(--accent);
+}
+#install-what {
+  margin: 8px 0 18px;
+  font: var(--fz-m)/1.5 var(--body);
   color: var(--muted);
-  margin: 0 0 14px;
 }
-.inn .mr {
-  font-family: var(--body);
+.install-head {
+  margin: 18px 0 8px;
+  font: 700 var(--fz-l)/1.35 var(--body);
+  text-align: left;
+  color: var(--ink);
+}
+.install-head:focus {
+  outline: none;
+}
+/* the big button: Install, Open in Safari, Open in Chrome */
+.install-go {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: auto;
+  min-height: 56px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--accent);
+  color: var(--bg);
+  font: 700 var(--fz-xl)/1.25 var(--body);
+  text-decoration: none;
+}
+.install-copy,
+#install-close {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 48px;
+  margin-top: 12px;
+  padding: 8px 12px;
+  border: 1.5px solid var(--rule);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--ink);
+  font: 600 var(--fz-m)/1.3 var(--body);
+}
+/* not now: a quiet line under the rest */
+#install-close {
+  margin-top: 22px;
+  border: 0;
+  color: var(--muted);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.install-small {
+  margin: 10px 0 0;
+  font: var(--fz-s)/1.45 var(--body);
+  color: var(--muted);
+}
+.install-left {
+  margin-bottom: 14px;
+  text-align: left;
+}
+/* the steps, each numbered in a round badge, the first marked as the one to do now */
+.install-steps {
+  list-style: none;
+  counter-reset: install;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+.install-steps li {
+  counter-increment: install;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 -10px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  font: var(--fz-m)/1.45 var(--body);
+}
+.install-steps li::before {
+  content: counter(install);
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  font: 700 var(--fz-m)/1 var(--lat);
+}
+.install-steps li:first-child {
+  background: var(--surface);
+}
+.install-steps li + li {
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+}
+/* a browser button inside a step, drawn as it looks */
+.install-key {
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  height: 28px;
+  margin: 0 2px;
+  padding: 0 6px;
+  vertical-align: middle;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--pill);
+  font: 700 var(--fz-m)/1 var(--lat);
+}
+.install-done {
+  margin-top: 8px;
+}
+.install-done p {
+  margin: 0;
+  font: var(--fz-m)/1.5 var(--body);
+}
+.install-done .install-head {
+  margin-top: 4px;
+  text-align: center;
+}
+.install-tick {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: 4px auto 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+}
+/* a computer: the QR code for the phone */
+#install-phone {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  text-align: left;
+}
+#install-phone[hidden] {
+  display: none;
+}
+.install-qr {
+  flex: none;
+  width: 104px;
+  height: 104px;
+  padding: 4px;
+  border-radius: 8px;
+  background: #fff;
+}
+.install-qr svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#install-phone p {
+  margin: 0;
+  font: var(--fz-s)/1.45 var(--body);
+  color: var(--muted);
+}
+#install-phone b {
+  color: var(--ink);
+}
+#install-arrow {
+  position: fixed;
+  z-index: 21;
+  color: var(--accent);
+  pointer-events: none;
+}
+#install-arrow[hidden] {
+  display: none;
+}
+#install-arrow[data-at="bottom-right"] {
+  right: 18px;
+  bottom: max(6px, env(safe-area-inset-bottom));
+}
+#install-arrow[data-at="bottom"] {
+  left: calc(50% - 22px);
+  bottom: max(6px, env(safe-area-inset-bottom));
+}
+#install-arrow[data-at="top-right"] {
+  top: max(6px, env(safe-area-inset-top));
+  right: 14px;
+  transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  #install-arrow svg {
+    animation: install-nudge 1.2s ease-in-out infinite;
+  }
+}
+@keyframes install-nudge {
+  50% {
+    transform: translateY(8px);
+  }
+}
+@media (hover: hover) {
+  .install-copy:hover,
+  #install-close:hover {
+    color: var(--accent);
+  }
 }
 
 /* ==== Top-bar title with the app's picture, small and round (Satish, 2026-10-24: in place of the Ganesha icon);

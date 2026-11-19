@@ -290,7 +290,12 @@ export default {
       return d + ": ಈ ಪಟ್ಟಿಯನ್ನು ಪ್ರತಿದಿನ ಬಳಸುವುದೇ? ಇತರ ದಿನಗಳ ಸ್ವಂತ ಪಟ್ಟಿಗಳು ತೆಗೆದುಹಾಕಲ್ಪಡುತ್ತವೆ.";
     },
     fixGo: "ಪ್ರತಿದಿನ ಬಳಸಿ",
-    bases: { short: "ಸಂಕ್ಷಿಪ್ತ", daily: "ದೈನಿಕ", full: "ಪೂರ್ಣ", extended: "ವಿಸ್ತೃತ" },
+    bases: {
+      short: "ಸಂಕ್ಷಿಪ್ತ",
+      daily: "ದೈನಿಕ",
+      full: "ಪೂರ್ಣ",
+      extended: "ವಿಸ್ತೃತ",
+    },
     baseG: "ಸಿದ್ಧ ದಿನಚರಿ",
     baseInfo: {
       short: "ಬೆಳಿಗ್ಗೆ ಅಥರ್ವಶೀರ್ಷ ಮತ್ತು ದಿನನಿತ್ಯದ ಆರತಿಗಳು, ಸಂಜೆ ಆರತಿಗಳು",
@@ -429,7 +434,12 @@ export default {
       return d + " ವರೆಗೆ";
     },
     uNone: "ಈ ದಿನಗಳಲ್ಲಿ ಏನೂ ಗುರುತಿಸಿಲ್ಲ.",
-    kinds: { fest: "ಹಬ್ಬಗಳು", sk: "ಸಂಕಷ್ಟಿ", pradosh: "ಪ್ರದೋಷ", hol: "ರಜಾದಿನಗಳು" },
+    kinds: {
+      fest: "ಹಬ್ಬಗಳು",
+      sk: "ಸಂಕಷ್ಟಿ",
+      pradosh: "ಪ್ರದೋಷ",
+      hol: "ರಜಾದಿನಗಳು",
+    },
     /** Settings: the public holidays Home's Coming up shows (P.hol), by the groups of content/holidays.json */
     holHome: "ರಜಾದಿನಗಳನ್ನು ತೋರಿಸಿ",
     groups: { us: "ಅಮೆರಿಕ", in: "ಭಾರತ", mh: "ಮಹಾರಾಷ್ಟ್ರ", ka: "ಕರ್ನಾಟಕ" },
@@ -520,7 +530,11 @@ export default {
   },
   // Offline use and Check for updates (js/features/offline.js): Settings → You → About
   offline: {
-    state: { idle: "ಆಫ್‌ಲೈನ್‌ಗೆ ಸಿದ್ಧ", save: "ಆಫ್‌ಲೈನ್‌ಗಾಗಿ ಉಳಿಸಲಾಗುತ್ತಿದೆ…", off: "ಉಳಿಸಿದ ಪ್ರತಿ ಬಳಕೆಯಲ್ಲಿದೆ" },
+    state: {
+      idle: "ಆಫ್‌ಲೈನ್‌ಗೆ ಸಿದ್ಧ",
+      save: "ಆಫ್‌ಲೈನ್‌ಗಾಗಿ ಉಳಿಸಲಾಗುತ್ತಿದೆ…",
+      off: "ಉಳಿಸಿದ ಪ್ರತಿ ಬಳಕೆಯಲ್ಲಿದೆ",
+    },
     // the version line in Settings → You → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
@@ -602,9 +616,63 @@ export default {
     texts: "ಪಠ್ಯಗಳು",
     linesHead: "ಸಾಲುಗಳು",
   },
+  install: {
+    what: "ದಿನನಿತ್ಯದ ಉಪಾಸನೆ: ವೇದಮಂತ್ರಗಳು, ಆರತಿಗಳು, ಅಷ್ಟಕಗಳು ಮತ್ತು ಪಂಚಾಂಗ. ಇಂಟರ್ನೆಟ್ ಇಲ್ಲದೆಯೂ ಕೆಲಸ ಮಾಡುತ್ತದೆ.",
+    install: "ಆ್ಯಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ",
+    installDesk: "ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ",
+    oneTap: "ಒಂದೇ ಒತ್ತಿನಲ್ಲಿ ಇತರ ಆ್ಯಪ್‌ಗಳಂತೆ ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಬರುತ್ತದೆ. ಉಚಿತ: ಆ್ಯಪ್ ಸ್ಟೋರ್ ಇಲ್ಲ, ಸೈನ್-ಇನ್ ಇಲ್ಲ.",
+    orMenu: "ಅಥವಾ ಬ್ರೌಸರ್‌ನ ಮೆನುವಿನಿಂದ",
+    add: "ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಸೇರಿಸಿ",
+    addMac: "Dock ಗೆ ಸೇರಿಸಿ",
+    steps: {
+      ios26: [
+        "ಕೆಳಗೆ ಬಲಭಾಗದಲ್ಲಿ {more} ಒತ್ತಿ",
+        '{share} <b lang="en">Share</b> ಒತ್ತಿ',
+        'ಕೆಳಗೆ ಸರಿಸಿ <b lang="en">Add to Home Screen</b> ಒತ್ತಿ (ಅಥವಾ ಮೊದಲು <b lang="en">View More</b>)',
+        '<b lang="en">Open as Web App</b> ಆನ್ ಇರಲಿ, ನಂತರ <b lang="en">Add</b> ಒತ್ತಿ',
+      ],
+      ios: ["ಪರದೆಯ ಕೆಳಗೆ {share} ಒತ್ತಿ", 'ಕೆಳಗೆ ಸರಿಸಿ <b lang="en">Add to Home Screen</b> ಒತ್ತಿ', 'ಮೇಲೆ ಬಲಭಾಗದಲ್ಲಿ <b lang="en">Add</b> ಒತ್ತಿ'],
+      ipad: ["ಮೇಲೆ ಬಲಭಾಗದಲ್ಲಿ {share} ಒತ್ತಿ", '<b lang="en">Add to Home Screen</b> ಒತ್ತಿ', '<b lang="en">Add</b> ಒತ್ತಿ'],
+      iosBrowser: [
+        "ಮೇಲೆ ಬಲಭಾಗದಲ್ಲಿ, ವಿಳಾಸದ ಪಕ್ಕ {share} ಒತ್ತಿ",
+        '<b lang="en">Add to Home Screen</b> ಒತ್ತಿ (ಕಾಣದಿದ್ದರೆ ಕೆಳಗೆ ಸರಿಸಿ)',
+        '<b lang="en">Add</b> ಒತ್ತಿ',
+      ],
+      android: [
+        "ಮೇಲೆ ಬಲಭಾಗದಲ್ಲಿ {menu} ಒತ್ತಿ",
+        '<b lang="en">Install app</b> ಅಥವಾ <b lang="en">Add to Home screen</b> ಒತ್ತಿ',
+        '<b lang="en">Install</b> ಒತ್ತಿ',
+      ],
+      samsung: ["ಕೆಳಗೆ ಬಲಭಾಗದಲ್ಲಿ {lines} ಒತ್ತಿ", '<b lang="en">Add page to</b>, ನಂತರ <b lang="en">Home screen</b> ಒತ್ತಿ', '<b lang="en">Add</b> ಒತ್ತಿ'],
+      androidFirefox: ["ಮೇಲೆ ಬಲಭಾಗದಲ್ಲಿ {menu} ಒತ್ತಿ", '<b lang="en">Add app to Home screen</b> ಒತ್ತಿ', '<b lang="en">Add</b> ಒತ್ತಿ'],
+      desktop: ["ವಿಳಾಸ ಪಟ್ಟಿಯ ಬಲತುದಿಯ ಇನ್‌ಸ್ಟಾಲ್ ಚಿಹ್ನೆ ಕ್ಲಿಕ್ ಮಾಡಿ, ಅಥವಾ ಬ್ರೌಸರ್‌ನ ಮೆನು ತೆರೆಯಿರಿ", '<b lang="en">Install</b> ಕ್ಲಿಕ್ ಮಾಡಿ'],
+      mac: [
+        'ಮೆನು ಬಾರ್‌ನ <b lang="en">File</b> ಅಥವಾ Safari ಟೂಲ್‌ಬಾರ್‌ನ {share} ಕ್ಲಿಕ್ ಮಾಡಿ',
+        '<b lang="en">Add to Dock…</b>, ನಂತರ <b lang="en">Add</b> ಕ್ಲಿಕ್ ಮಾಡಿ',
+      ],
+    },
+    safariFirst: "ಮೊದಲು ಈ ಪುಟವನ್ನು Safari ಯಲ್ಲಿ ತೆರೆಯಿರಿ",
+    safariWhy: "ಈ ಆ್ಯಪ್‌ನ ಸ್ವಂತ ಬ್ರೌಸರ್ ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಆ್ಯಪ್ ಸೇರಿಸಲಾರದು. Safari ಕೆಲವು ಒತ್ತುಗಳಲ್ಲಿ ಸೇರಿಸುತ್ತದೆ.",
+    safariOld: '⋯ ಅಥವಾ ದಿಕ್ಸೂಚಿ ಚಿಹ್ನೆ ಒತ್ತಿ <b lang="en">Open in Safari</b> ಆರಿಸಿ. ಅಥವಾ ಲಿಂಕ್ ಕಾಪಿ ಮಾಡಿ Safari ಯಲ್ಲಿ ಅಂಟಿಸಿ.',
+    openSafari: "Safari ಯಲ್ಲಿ ತೆರೆಯಿರಿ",
+    chromeFirst: "ಮೊದಲು ಈ ಪುಟವನ್ನು Chrome ನಲ್ಲಿ ತೆರೆಯಿರಿ",
+    chromeWhy: "ಈ ಆ್ಯಪ್‌ನ ಸ್ವಂತ ಬ್ರೌಸರ್ ಆ್ಯಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲಾರದು. Chrome ಒಂದೇ ಒತ್ತಿನಲ್ಲಿ ಮಾಡುತ್ತದೆ.",
+    openChrome: "Chrome ನಲ್ಲಿ ತೆರೆಯಿರಿ",
+    copy: "ಲಿಂಕ್ ಕಾಪಿ ಮಾಡಿ",
+    copied: "ಲಿಂಕ್ ಕಾಪಿ ಆಯಿತು: ಬ್ರೌಸರ್‌ನ ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ ಅಂಟಿಸಿ",
+    firefox: "Firefox ಆ್ಯಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲಾರದು. ಈ ಪುಟವನ್ನು Chrome, Edge ಅಥವಾ Safari ಯಲ್ಲಿ ತೆರೆಯಿರಿ, ಅಥವಾ ಕೆಳಗಿನ ಕೋಡ್‌ನಿಂದ ಫೋನಿಗೆ ತೆಗೆದುಕೊಳ್ಳಿ.",
+    phone: "ಫೋನಿನಲ್ಲಿ ಬೇಕೇ?",
+    phoneHow: "ಫೋನಿನ ಕ್ಯಾಮೆರಾವನ್ನು ಈ ಕೋಡ್‌ಗೆ ಹಿಡಿಯಿರಿ: ಆ ಫೋನಿನ ಹಂತಗಳೊಂದಿಗೆ ಇದೇ ಪುಟ ತೆರೆಯುತ್ತದೆ.",
+    done: "ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಬಂದಿದೆ",
+    doneHow: "ಅಲ್ಲಿಂದ ತೆರೆಯಿರಿ: ಇಂಟರ್ನೆಟ್ ಇಲ್ಲದೆಯೂ ಕೆಲಸ ಮಾಡುತ್ತದೆ.",
+    added: "ಸೇರಿಸಿದ್ದೇನೆ",
+    addedHow: "ಈಗ ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ನ ಅದರ ಚಿಹ್ನೆಯಿಂದ ತೆರೆಯಿರಿ. ನಿಮ್ಮ ಹೆಸರು ಮತ್ತು ಉಪಾಸನಾಕ್ರಮವನ್ನು ಅಲ್ಲಿ ಹೊಂದಿಸಿ.",
+    later: "ಈಗ ಬೇಡ, ಬ್ರೌಸರ್‌ನಲ್ಲೇ ಓದಿ",
+    close: "ಮುಚ್ಚಿ",
+  },
   // Share (js/features/share.js): the message for the group chat
   share: {
-    tip: "\nಸಲಹೆ: ಫೋನಿನಲ್ಲಿ ಆ್ಯಪ್‌ನಂತೆ ಇಟ್ಟುಕೊಳ್ಳಲು ಲಿಂಕ್ ತೆರೆದು Add to Home Screen ಒತ್ತಿ.",
+    tip: "\nಲಿಂಕ್ ತೆರೆಯಿರಿ: ಆ್ಯಪ್ ಅನ್ನು ಫೋನಿಗೆ ಹೇಗೆ ಹಾಕುವುದೆಂದು ಅಲ್ಲೇ ತೋರಿಸುತ್ತದೆ.",
     /** @param {string} title */
     plain: function (title) {
       return title;
@@ -618,7 +686,13 @@ export default {
   },
   // Print (js/features/print.js): the Print pop-up in the menu language, the printout's own words in its language
   print: {
-    langs: { mr: "ಮರಾಠಿ", kn: "ಕನ್ನಡ", te: "ತೆಲುಗು", gu: "ಗುಜರಾತಿ", en: "ಇಂಗ್ಲಿಷ್" },
+    langs: {
+      mr: "ಮರಾಠಿ",
+      kn: "ಕನ್ನಡ",
+      te: "ತೆಲುಗು",
+      gu: "ಗುಜರಾತಿ",
+      en: "ಇಂಗ್ಲಿಷ್",
+    },
     portrait: "ಲಂಬ",
     landscape: "ಅಡ್ಡ",
     both: "ಎರಡೂ",
@@ -782,21 +856,6 @@ export default {
       'ಈ ಬ್ರೌಸರ್ ಮುದ್ರಣ ಸಂವಾದವನ್ನು ತೆರೆಯಲಿಲ್ಲ. ಬ್ರೌಸರ್‌ನ <b lang="en">Share</b> ಬಟನ್ ಒತ್ತಿ <b lang="en">Print</b> ಆರಿಸಿ. ಈ ಪುಟ ಬೇರೆ ಆ್ಯಪ್‌ನೊಳಗೆ ತೆರೆದಿದ್ದರೆ, <b>Safari ಯಲ್ಲಿ ತೆರೆಯಿರಿ</b> ಒತ್ತಿ: ನಿಮ್ಮ ಆಯ್ಕೆಗಳು ಜೊತೆಗೆ ಹೋಗುತ್ತವೆ.',
     nextHowToPrint: "ಮುಂದೆ: ಹೇಗೆ ಮುದ್ರಿಸಬೇಕು ›",
     print: "ಮುದ್ರಿಸಿ",
-    addToHomeScreen2: "ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಸೇರಿಸಿ",
-    tapTheShareButtonAt: '<b lang="en">Share</b> ಬಟನ್ {icon} ಒತ್ತಿ (Safari ಯಲ್ಲಿ ಕೆಳಗೆ, Chrome ನಲ್ಲಿ ಮೇಲೆ ಬಲಕ್ಕೆ).',
-    scrollDownAndTapAdd: 'ಕೆಳಗೆ ಸರಿಸಿ <b lang="en">Add to Home Screen</b> ಒತ್ತಿ.',
-    tapAdd: '<b lang="en">Add</b> ಒತ್ತಿ.',
-    openThisPageInSafari: 'ಈ ಪುಟವನ್ನು <b lang="en">Safari</b> ಅಥವಾ <b lang="en">Chrome</b> ನಲ್ಲಿ ತೆರೆಯಿರಿ (⋯ ಅಥವಾ Share → Open in Safari/Chrome).',
-    thenShareAddToHome: 'ನಂತರ Share {icon} → <b lang="en">Add to Home Screen</b> → <b lang="en">Add</b>.',
-    openChromeSMenuTop: "Chrome ನ <b>⋮</b> ಮೆನು ತೆರೆಯಿರಿ (ಮೇಲೆ ಬಲಕ್ಕೆ).",
-    tapAddToHomeScreen: '<b lang="en">Add to Home screen</b> ಅಥವಾ <b lang="en">Install app</b> ಒತ್ತಿ.',
-    tapInstallOrAdd: '<b lang="en">Install</b> ಅಥವಾ <b lang="en">Add</b> ಒತ್ತಿ.',
-    clickTheInstallIconAt: 'ವಿಳಾಸ ಪಟ್ಟಿಯ ಬಲ ತುದಿಯಲ್ಲಿರುವ ಇನ್‌ಸ್ಟಾಲ್ ಐಕಾನ್ ಕ್ಲಿಕ್ ಮಾಡಿ, ಅಥವಾ ಬ್ರೌಸರ್ ಮೆನುವಿನಿಂದ <b lang="en">Install</b> ಆರಿಸಿ.',
-    clickTheShareButtonIn: 'Safari ಯ ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ <b lang="en">Share</b> ಬಟನ್ {icon} ಕ್ಲಿಕ್ ಮಾಡಿ, ಅಥವಾ <b lang="en">File</b> ಮೆನು ತೆರೆಯಿರಿ.',
-    chooseAddToDockThen: '<b lang="en">Add to Dock</b> ಆರಿಸಿ, ನಂತರ <b lang="en">Add</b> ಕ್ಲಿಕ್ ಮಾಡಿ.',
-    firefoxCanTAddThis: "Firefox ಈ ತಾಣವನ್ನು ಆ್ಯಪ್ ಆಗಿ ಸೇರಿಸಲಾರದು. ಈ ಪುಟವನ್ನು Chrome, Edge ಅಥವಾ Safari ಯಲ್ಲಿ ತೆರೆದು ಮತ್ತೆ ಈ ಬಟನ್ ಒತ್ತಿ.",
-    itWillThenOpenLike: "ನಂತರ ಇದು ಇಂಟರ್ನೆಟ್ ಇಲ್ಲದಿದ್ದರೂ ಆ್ಯಪ್‌ನಂತೆ ತೆರೆಯುತ್ತದೆ.",
-    ok: "ಸರಿ",
     home: "ಮುಖಪುಟ",
     listen: "ಜೊತೆ",
     library: "ಸಂಗ್ರಹ",
