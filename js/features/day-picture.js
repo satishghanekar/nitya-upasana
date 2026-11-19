@@ -51,7 +51,7 @@ export function update() {
     set(btn.querySelector("img"), "srcset", p.small + " 360w, " + p.large + " 940w");
     set(btn, "aria-label", "Show the picture full screen: " + p.label);
     set(document.querySelector("#bti img"), "src", p.small);
-    set(document.getElementById("bti"), "aria-label", "Show the picture full screen: " + p.label);
+    set(document.getElementById("bti"), "aria-label", "Play the day's opening again: " + p.label);
     btn.setAttribute("data-picture", p.picture);
     btn.setAttribute("data-day", String(p.day));
   }

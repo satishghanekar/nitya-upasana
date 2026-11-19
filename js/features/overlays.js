@@ -23,8 +23,9 @@ import { clearSearch, libTab } from "./contents-list.js";
  * page: one of the four pages (one open at a time; Tabbing out of it closes it; the bottom bar steps aside for it);
  * trap: Tab stays inside it while it is open; back: the phone's Back closes it in js/features/history.js (the others
  * listen for Back themselves); opener: the buttons that open it (ids, space between), told when Back closes it
- * (aria-expanded).
- * @type {{ id: string, page?: boolean, trap?: boolean, back?: boolean, opener?: string }[]}
+ * (aria-expanded); open: a class it has only while it is open over the page (the splash is there, not hidden, at every
+ * start).
+ * @type {{ id: string, page?: boolean, trap?: boolean, back?: boolean, opener?: string, open?: string }[]}
  */
 export const LAYERS = [
   { id: "bkm", trap: true, back: true },
@@ -36,6 +37,8 @@ export const LAYERS = [
   { id: "install-page", trap: true, back: true },
   { id: "upm", trap: true },
   { id: "pzv", trap: true, back: true },
+  // the launch animation played again from the top bar (js/features/launch.js): open only then (.stay), not the splash
+  { id: "spl", trap: true, back: true, open: "stay" },
   { id: "rsh", trap: true, back: true, opener: "rsb" },
   { id: "goto", trap: true, back: true, opener: "where tkb" },
   { id: "panel", page: true, trap: true },
@@ -44,10 +47,13 @@ export const LAYERS = [
   { id: "rtb", page: true },
 ];
 
-/** @param {string} id */
-function shown(id) {
-  var e = document.getElementById(id);
-  return !!e && !e.hidden;
+/** One of LAYERS is open (also read by js/features/pinch.js) @param {string} id */
+export function shown(id) {
+  var e = document.getElementById(id),
+    l = LAYERS.filter(function (x) {
+      return x.id === id;
+    })[0];
+  return !!e && !e.hidden && !(l && l.open && !e.classList.contains(l.open));
 }
 
 /** Something is open over the page */

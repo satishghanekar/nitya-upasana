@@ -249,6 +249,8 @@ test("the first opening of the day plays the launch animation with the day's lin
   await expect(spl.locator(".splti")).not.toBeEmpty();
   await expect(spl.locator(".splh")).toContainText("Columbus");
   await expect(spl.locator(".splss")).toContainText("सकाळ");
+  await expect(spl.locator(".spl-by")).toContainText("A volunteer offering by Satish Ghanekar");
+  await expect(spl.locator(".spl-ver")).toContainText("Version 1.");
   // no moon on a day that is not a Sankashti
   await expect(spl.locator(".splmn")).toHaveCount(0);
   // the lines come up while it plays, and it goes by itself, leaving Home
@@ -281,6 +283,112 @@ test("a tap ends the launch animation at once @mobile", async ({ page }) => {
   await spl.click();
   await expect(spl).toBeHidden({ timeout: 1000 });
   await expect(page.locator("#tdd")).toBeVisible();
+});
+
+// An iPhone keeps the scripts it has in memory until the app is closed, so after an update the new launch part can
+// meet the last version's calendar, Home card and words. It must still start, and the app with it (2026-11-19: a
+// name it imported was missing, every script stopped, and the app stayed on its splash).
+test("the launch animation starts with the last version's calendar, Home card and words, and so does the app @mobile", async ({ page }) => {
+  // the files as the last version had them: without the parts this one added
+  await page.route(/\/js\/(features\/(vedic-calendar|today-card)|strings\/(en|mr))\.js$/, async (route) => {
+    const body = (await (await route.fetch()).text())
+      .replace("export function launchDay(", "function launchDay(")
+      .replace("export function launchSession(", "function launchSession(")
+      .replace(/\n  launch: \{\n    skip: [^\n]*\n  \},/, "");
+    await route.fulfill({ contentType: "text/javascript", body });
+  });
+  await openSite(page, SETUPS.marathi, { now: MORNING, launch: true });
+  const spl = page.locator("#spl");
+  await expect(spl).toHaveClass(/launch/);
+  await expect(spl.locator(".splwd")).toHaveText("गुरुवार");
+  await expect(spl.locator(".splti")).toHaveCount(0);
+  await expect(spl).toBeHidden({ timeout: 7000 });
+  await expect(page.locator("#btt")).toHaveText("नित्य उपासना");
+  await expect(page.locator("#tdd")).toBeVisible();
+});
+
+// The top bar's picture plays it again (Satish, 2026-11-19): the same night, stars and lines, and then it stays, a
+// dialog, until ✕, a tap, Escape or Back closes it; its picture opens the picture full screen.
+test("the top bar's picture plays the day's opening again, and it stays until closed @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: MORNING });
+  const spl = page.locator("#spl"),
+    bti = page.locator("#bti");
+  await expect(spl).toBeHidden();
+  await bti.click();
+  await expect(spl).toBeVisible();
+  await expect(spl).toHaveClass(/launch/);
+  await expect(spl).toHaveClass(/stay/);
+  await expect(spl).toHaveAttribute("role", "dialog");
+  await expect(spl).toHaveAttribute("aria-modal", "true");
+  await expect(spl.locator(".splw")).toHaveCount(7);
+  await expect(spl.locator(".splw.splt")).toHaveCount(1);
+  await expect(spl.locator("#launch-close")).toBeFocused();
+  await expect(spl.locator(".splwd")).toHaveText("गुरुवार");
+  await expect(spl.locator(".splwd")).toHaveClass(/on/, { timeout: 4000 });
+  await expect(spl.locator(".splskip")).toHaveText("Tap the picture to see it full screen");
+  // who made the site and the version, small at its foot
+  const version = (await page.locator('meta[name="version"]').getAttribute("content")).replace(/^aarti-v/, "");
+  await expect(spl.locator(".spl-by")).toContainText("A volunteer offering by Satish Ghanekar");
+  await expect(spl.locator(".spl-ver")).toHaveText("Version " + version);
+  await expect(spl.locator(".spl-by")).toBeVisible();
+  // well past the time the first opening goes by itself: still there, the picture not flown away
+  await page.waitForTimeout(6500);
+  await expect(spl).toBeVisible();
+  await expect(spl.locator(".splh")).not.toHaveClass(/out/);
+  // Escape closes it, focus back on the picture in the top bar, Home under it
+  await page.keyboard.press("Escape");
+  await expect(spl).toBeHidden();
+  await expect(bti).toBeFocused();
+  await expect(page.locator("#tdd")).toBeVisible();
+  // again, and ✕
+  await bti.click();
+  await expect(spl).toBeVisible();
+  await expect(spl.locator(".splh")).toHaveCount(1);
+  await expect(spl.locator(".splw")).toHaveCount(7);
+  await spl.locator("#launch-close").click();
+  await expect(spl).toBeHidden();
+  // again, and the phone's Back
+  await bti.click();
+  await expect(spl).toBeVisible();
+  await page.goBack();
+  await expect(spl).toBeHidden();
+  await expect(page.locator("#tdd")).toBeVisible();
+  // again, and its picture: the picture full screen, with today's star ringed
+  await bti.click();
+  await spl.locator(".splm").click();
+  await expect(spl).toBeHidden();
+  await expect(page.locator("#pzv")).toBeVisible();
+  await page.locator("#pzx").click();
+  await expect(page.locator("#pzv")).toBeHidden();
+  await expect(bti).toBeFocused();
+  // and Back still steps through the page as before (no Back step left behind by the closed ones)
+  await expect(page.locator("#tdd")).toBeVisible();
+});
+
+test("after the first opening of the day the top bar's picture plays it again @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: MORNING, launch: true });
+  const spl = page.locator("#spl");
+  await expect(spl).toBeHidden({ timeout: 8000 });
+  await page.locator("#bti").click();
+  await expect(spl).toBeVisible();
+  await expect(spl.locator(".splh")).toHaveCount(1);
+  await expect(spl.locator(".splwd")).toHaveClass(/on/, { timeout: 4000 });
+  // a tap anywhere but the picture closes it
+  await spl.locator(".splskip").click();
+  await expect(spl).toBeHidden();
+  await expect(page.locator("#pzv")).toBeHidden();
+});
+
+test("with less motion the top bar's picture shows the day's opening as it ends, at once @mobile", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await openSite(page, SETUPS.marathi, { now: MORNING });
+  await page.locator("#bti").click();
+  const spl = page.locator("#spl");
+  await expect(spl).toBeVisible();
+  await expect(spl.locator(".splw").first()).toBeHidden();
+  expect(await spl.locator(".splm img").evaluate((i) => getComputedStyle(i).clipPath)).toBe("none");
+  expect(await spl.evaluate((e) => getComputedStyle(e, "::before").display)).toBe("none");
+  await expect(spl.locator(".splwd")).toHaveCSS("opacity", "1", { timeout: 4000 });
 });
 
 test("no launch animation for less motion or for a link to a text @mobile", async ({ page }) => {

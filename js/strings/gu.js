@@ -880,6 +880,10 @@ export default {
   // The launch animation (js/features/launch.js): the first opening of the day
   launch: {
     skip: "આગળ વધવા ટૅપ કરો",
+    // played again from the top bar's picture: the line under it, ✕, and its picture as a button
+    again: "ચિત્ર પૂરી સ્ક્રીન પર જોવા તેના પર ટૅપ કરો",
+    close: "બંધ કરો",
+    picture: "ચિત્ર પૂરી સ્ક્રીન પર બતાવો",
   },
   // The language's own name, in its own letters: Settings → Menus and buttons (js/features/settings-panel.js)
   language: {

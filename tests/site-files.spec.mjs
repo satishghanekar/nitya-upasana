@@ -2,6 +2,7 @@
 // offline copy), but the page itself loads files from its own <link> and <script> tags. These checks keep
 // the two in step, so a new style or script file is never missing from the offline copy.
 // Also the size budget: what a first visit downloads.
+import { firstDownload, mb } from "./tools/download-size.mjs";
 import { test, expect } from "@playwright/test";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { gzipSync } from "node:zlib";
@@ -116,8 +117,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // updates waiting for the new version and saying why one could not be saved, in five languages, 397.2 KB then; 406 KB
   // since 2026-11-19: the install page, js/core/install-kind.js and js/features/install-page.js, and its steps for each
   // browser in five languages, 404.7 KB then; 407 KB since 2026-11-19: the label beside the install arrow, 406.13 KB then;
-  // 411 KB since 2026-11-19: the launch animation, js/features/launch.js and the splash's part, 409.3 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(411_000);
+  // 411 KB since 2026-11-19: the launch animation, js/features/launch.js and the splash's part, 409.3 KB then; 414 KB
+  // since 2026-11-19: the launch animation played again from the top bar's picture, in five languages, 412.6 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(414_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -147,8 +149,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then; 33 KB since
   // 2026-11-15: Settings → Chanting pace, the builder's weekday line, and Help on how long things take: 32.47 KB then; 33.5 KB
   // since 2026-11-15: the computer's top bar (#bar-nav, #bar-find) and Help on it and on the keys, 32.92 KB then on a Mac,
-  // about 33 KB on GitHub's runners, whose gzip gives a little more)
-  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(33_500);
+  // about 33 KB on GitHub's runners, whose gzip gives a little more; 34 KB since 2026-11-19: Help on the launch
+  // animation, its replay and the download size, 33.69 KB then)
+  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(34_000);
 });
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):
@@ -232,4 +235,16 @@ test("CI's test jobs fit in the jobs run at once, and each browser's shards cove
         .sort((a, b) => a - b),
       p,
     ).toEqual(Array.from({ length: n }, (_, i) => i + 1));
+});
+
+// DOWNLOAD-SIZE.md and Help say how much a phone downloads (tests/tools/download-size.mjs, npm run sizes): still true,
+// within 5%, so a change that makes the site much bigger or smaller says so there too
+test("DOWNLOAD-SIZE.md and Help still give the download size", () => {
+  const { total } = firstDownload();
+  const written = readFileSync(new URL("../DOWNLOAD-SIZE.md", import.meta.url), "utf8");
+  const md = Number((/## The first time: about ([\d.]+) MB/.exec(written) || [])[1]);
+  expect(Math.abs(md * 1e6 - total) / total, "DOWNLOAD-SIZE.md is out of date: cd tests && npm run sizes").toBeLessThan(0.05);
+  const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  const help = Number((/<span data-size="first">([\d.]+)<\/span>/.exec(html) || [])[1]);
+  expect(Math.abs(help * 1e6 - total) / total, "Help's download size (index.html, data-size) is out of date: " + mb(total) + " MB").toBeLessThan(0.05);
 });

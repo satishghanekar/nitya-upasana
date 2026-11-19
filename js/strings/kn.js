@@ -897,6 +897,10 @@ export default {
   // The launch animation (js/features/launch.js): the first opening of the day
   launch: {
     skip: "ಮುಂದೆ ಹೋಗಲು ಟ್ಯಾಪ್ ಮಾಡಿ",
+    // played again from the top bar's picture: the line under it, ✕, and its picture as a button
+    again: "ಚಿತ್ರವನ್ನು ಪೂರ್ಣ ಪರದೆಯಲ್ಲಿ ನೋಡಲು ಅದನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ",
+    close: "ಮುಚ್ಚಿ",
+    picture: "ಚಿತ್ರವನ್ನು ಪೂರ್ಣ ಪರದೆಯಲ್ಲಿ ತೋರಿಸಿ",
   },
   // The language's own name, in its own letters: Settings → Menus and buttons (js/features/settings-panel.js)
   language: {

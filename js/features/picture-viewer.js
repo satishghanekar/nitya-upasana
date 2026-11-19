@@ -19,6 +19,18 @@ export function openPicture(name, b) {
   showOne(name, b);
 }
 
+/**
+ * Open the time of day's picture full screen (the picture Home shows, with its day's star), from the launch animation
+ * played again from the top bar (js/features/launch.js)
+ * @param {HTMLElement} b the button that opened it, where focus returns
+ */
+export function openDayPicture(b) {
+  showDay(b);
+}
+
+/** @type {(b: HTMLElement) => void} */
+let showDay = function () {};
+
 export function init() {
   // Works with fingers and a mouse (scroll wheel zooms). The text-size pinch is off while it is open.
   (function () {
@@ -28,8 +40,6 @@ export function init() {
       wrap = /** @type {HTMLElement} */ (document.getElementById("pzw")),
       ring = /** @type {HTMLElement} */ (document.getElementById("pzr")),
       ib = /** @type {HTMLElement} */ (document.getElementById("iconb")),
-      // the small picture in the top bar opens it too (on phones the only one: Home's card has no picture there)
-      tb = document.getElementById("bti"),
       /** @type {HTMLElement} the button that opened it, where focus returns */
       from = ib,
       hint = /** @type {HTMLElement} */ (document.getElementById("pzh")),
@@ -113,17 +123,24 @@ export function init() {
         from.focus({ preventScroll: true });
       } catch (e) {}
     }
-    [ib, tb].forEach(function (b) {
-      if (b)
-        b.addEventListener("click", function (e) {
-          e.stopPropagation();
-          from = b;
-          open(false);
-        });
+    // (the small picture in the top bar plays the launch animation again, whose picture opens this: openDayPicture)
+    ib.addEventListener("click", function (e) {
+      e.stopPropagation();
+      from = ib;
+      open(false);
     });
+    showDay = function (b) {
+      from = b;
+      open(false);
+    };
     showOne = function (name, b) {
       var t = name === "sunset" ? "Sunset picture" : "Sunrise picture";
-      if (!kept) kept = { src: im.getAttribute("src"), alt: im.alt, label: v.getAttribute("aria-label") };
+      if (!kept)
+        kept = {
+          src: im.getAttribute("src"),
+          alt: im.alt,
+          label: v.getAttribute("aria-label"),
+        };
       im.src = "picture-" + name + ".webp";
       im.alt = t + ": ॐ, a palm-leaf book and a rosary under seven stars for the days of the week";
       v.setAttribute("aria-label", t);
@@ -157,7 +174,12 @@ export function init() {
       } else if (k.length === 2) {
         var a = pts[k[0]],
           b = pts[k[1]];
-        g = { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, s: s, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
+        g = {
+          d: Math.hypot(a.x - b.x, a.y - b.y) || 1,
+          s: s,
+          mx: (a.x + b.x) / 2,
+          my: (a.y + b.y) / 2,
+        };
         moved = true;
       }
     });

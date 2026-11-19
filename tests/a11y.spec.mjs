@@ -38,8 +38,25 @@ const STATES = [
   ],
   ["Help open", SETUPS.marathi, (p) => tapMore(p, "#hlpb")],
   ["QR open", SETUPS.marathi, (p) => tapMore(p, "#qrb")],
-  // (from the small picture in the top bar, on every screen)
-  ["picture open", SETUPS.marathi, (p) => p.locator("#bti").click()],
+  // the day's opening played again from the small picture in the top bar (it stays), and its picture full screen
+  [
+    "day's opening again",
+    SETUPS.marathi,
+    async (p) => {
+      await p.locator("#bti").click();
+      // every line up, and done fading in (a line half faded in reads as too faint)
+      await p.locator("#spl .splh > :last-child.on").waitFor();
+      await p.waitForTimeout(600);
+    },
+  ],
+  [
+    "picture open",
+    SETUPS.marathi,
+    async (p) => {
+      await p.locator("#bti").click();
+      await p.locator("#spl .splm").click();
+    },
+  ],
 ];
 
 // Go to over Pavamana Suktam, its third adhyaya open (js/features/where.js): the sheet, in every theme (the reading page
