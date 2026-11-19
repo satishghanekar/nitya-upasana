@@ -382,6 +382,44 @@ function homeRender() {
   upHome(pl);
 }
 
+/**
+ * Today's lines for the launch animation (js/features/launch.js), as Home's card has them, at the reader's place (the
+ * one they gave, or their time zone's): the tithi, the place with the sunrise, and the day's festival, Pradosh,
+ * Sankashti or holiday, else tomorrow's, with its drawing, and whether today is a Sankashti (the moon rises in it);
+ * null when no place is known
+ * @returns {{ tithi: string, place: string, day: { icon: string, name: string, small: string } | null, moon: boolean } | null}
+ */
+export function launchDay() {
+  var L = skLoc(),
+    pl = where();
+  if (!L || !pl) return null;
+  var now = new Date(),
+    k = keyOf(now),
+    p;
+  try {
+    p = dayPanchang(now, pl);
+  } catch (e) {
+    return null;
+  }
+  var w = words(),
+    list = loaded.festivals ? oneRowADay(upList(k, addDays(k, 1), pl, (P && P.hol) || [])) : [],
+    u = list[0],
+    det = !u ? "" : u.kind === "sk" ? (u.rise ? txt(N.moonrise, nameLang() === "en" ? "en" : "mr") + " " + clock(u.rise) : w.noRise) : "",
+    two = u ? nameH2(u.name) : "";
+  return {
+    tithi: nameH(title(p)),
+    place: say(placeName(L) + (p.sunrise ? " · " + w.sunrise + " " + clock(p.sunrise) : "")),
+    day: u
+      ? {
+          icon: upIcon(u),
+          name: nameH(u.name),
+          small: [say(whenOf(u.date, k)), two, det ? say(det) : ""].filter(Boolean).join(say(" · ")),
+        }
+      : null,
+    moon: !!u && u.kind === "sk" && u.date === k,
+  };
+}
+
 // ----- festivals (content/festivals.json; js/core/festivals.js) -----
 
 /** A festival's name (a Name: mr and en) in the first reading language, like the panchang's names

@@ -898,6 +898,10 @@ export default {
       return " " + MONTHS.te[m] + ", " + DAYS.te[wd] + ", ";
     },
   },
+  // The launch animation (js/features/launch.js): the first opening of the day
+  launch: {
+    skip: "దాటవేయడానికి నొక్కండి",
+  },
   // The language's own name, in its own letters: Settings → Menus and buttons (js/features/settings-panel.js)
   language: {
     name: "తెలుగు",

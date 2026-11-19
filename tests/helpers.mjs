@@ -54,14 +54,15 @@ export const SETUPS = {
  * @param {object} prefs   settings merged over BASE_PREFS
  * @param {object} [opt]   { hash: "#a1", errors: array that collects page errors, now: a Date other than FIXED_NOW,
  *                          running: true to start the clock at that time and let the test move it (page.clock.runFor),
- *                          welcome: true to show the welcome card, as on a new phone }
+ *                          welcome: true to show the welcome card, as on a new phone,
+ *                          launch: true to play the launch animation, as on the first opening of the day }
  */
 export async function openSite(page, prefs = {}, opt = {}) {
   const all = { ...BASE_PREFS, ...prefs };
   if (opt.running) await page.clock.install({ time: opt.now || FIXED_NOW });
   else await page.clock.setFixedTime(opt.now || FIXED_NOW);
   await page.addInitScript(
-    ([k, v, wl]) => {
+    ([k, v, wl, la]) => {
       // only on the first load of this page: a test that reloads keeps what the site saved
       if (sessionStorage.getItem("__seeded")) return;
       sessionStorage.setItem("__seeded", "1");
@@ -69,8 +70,11 @@ export async function openSite(page, prefs = {}, opt = {}) {
       localStorage.setItem(k, v);
       // the welcome card (js/features/welcome.js) only where a test asks for it (opt.welcome): seen, as on a phone in use
       if (!wl) localStorage.setItem("nitya-welcome", "2");
+      // the launch animation (js/splash.js, js/features/launch.js) only where a test asks for it: seen today already
+      const d = new Date();
+      if (!la) localStorage.setItem("nitya-launch", d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
     },
-    [PREFS_KEY, JSON.stringify(all), !!opt.welcome],
+    [PREFS_KEY, JSON.stringify(all), !!opt.welcome, !!opt.launch],
   );
   if (opt.errors) {
     page.on("pageerror", (e) => opt.errors.push(e.message));

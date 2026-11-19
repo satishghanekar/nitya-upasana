@@ -214,6 +214,8 @@ test("the splash shows the evening picture with Sunday's star ringed, then goes 
   });
   await page.clock.setFixedTime(EVENING);
   await page.addInitScript(([k, v]) => localStorage.setItem(k, v), ["aarti2-prefs", JSON.stringify({ th: "dark" })]);
+  // (opened today already: the plain splash, not the launch animation)
+  await page.addInitScript(() => localStorage.setItem("nitya-launch", "2026-10-18"));
   // the site script is held back, so the page is still starting (main.js also holds back the page's load event)
   await page.goto("./", { waitUntil: "commit" });
   const spl = page.locator("#spl");
@@ -230,6 +232,65 @@ test("the splash shows the evening picture with Sunday's star ringed, then goes 
   await settle(page);
   await expect(spl).toBeHidden();
   expect(await spl.evaluate((e) => getComputedStyle(e).pointerEvents)).toBe("none");
+});
+
+// The launch animation (js/splash.js, js/features/launch.js): the first opening of the day, night, the seven stars, today's
+// growing and the day opening out of it, then the day's lines at the reader's place (here their time zone's, Columbus),
+// and Home. Once a day: opened again, the plain splash.
+test("the first opening of the day plays the launch animation with the day's lines, then Home @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: MORNING, launch: true });
+  const spl = page.locator("#spl");
+  await expect(spl).toHaveClass(/launch/);
+  await expect(spl.locator(".splw")).toHaveCount(7);
+  // Thursday's star (र is Sunday) is the one that grows
+  expect(await spl.locator(".splw").evaluateAll((ws) => ws.map((w) => w.classList.contains("splt")))).toEqual([false, false, false, false, true, false, false]);
+  await expect(spl.locator(".splwd")).toHaveText("गुरुवार");
+  await expect(spl.locator(".splwd")).toHaveAttribute("lang", "mr");
+  await expect(spl.locator(".splti")).not.toBeEmpty();
+  await expect(spl.locator(".splh")).toContainText("Columbus");
+  await expect(spl.locator(".splss")).toContainText("सकाळ");
+  // no moon on a day that is not a Sankashti
+  await expect(spl.locator(".splmn")).toHaveCount(0);
+  // the lines come up while it plays, and it goes by itself, leaving Home
+  await expect(spl.locator(".splwd")).toHaveClass(/on/, { timeout: 4000 });
+  await expect(spl).toBeHidden({ timeout: 7000 });
+  await expect(page.locator("#tdd")).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem("nitya-launch"))).toBe("2026-10-15");
+  // opened again the same day: the plain splash
+  await page.reload();
+  await settle(page);
+  await expect(spl).not.toHaveClass(/launch/);
+});
+
+test("on a Sankashti the launch animation has the moon rising and the Sankashti with its moonrise @mobile", async ({ page }) => {
+  // Friday 27 November 2026, a Sankashti in Columbus, in the evening
+  await openSite(page, SETUPS.marathi, { now: new Date("2026-11-27T19:00:00-05:00"), launch: true });
+  const spl = page.locator("#spl");
+  await expect(spl.locator(".splmn")).toHaveCount(1);
+  await expect(spl.locator(".splwd")).toHaveText("शुक्रवार");
+  await expect(spl.locator(".splhl b")).toHaveText("संकष्टी चतुर्थी");
+  await expect(spl.locator(".splhl small")).toContainText("8:23");
+  await expect(spl.locator(".splhl .fi")).toHaveCount(1);
+});
+
+test("a tap ends the launch animation at once @mobile", async ({ page }) => {
+  await openSite(page, SETUPS.marathi, { now: MORNING, launch: true });
+  const spl = page.locator("#spl");
+  await expect(spl).toHaveClass(/launch/);
+  await expect(spl.locator(".splskip")).toHaveText("Tap to skip");
+  await spl.click();
+  await expect(spl).toBeHidden({ timeout: 1000 });
+  await expect(page.locator("#tdd")).toBeVisible();
+});
+
+test("no launch animation for less motion or for a link to a text @mobile", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await openSite(page, SETUPS.marathi, { now: MORNING, launch: true });
+  await expect(page.locator("#spl")).not.toHaveClass(/launch/);
+  await expect(page.locator("#spl")).toBeHidden();
+  const other = await page.context().newPage();
+  await openSite(other, SETUPS.marathi, { now: MORNING, launch: true, hash: "#a1" });
+  await expect(other.locator("#spl")).not.toHaveClass(/launch/);
 });
 
 test("the session switch changes the list, the picture and what screen readers hear @mobile", async ({ page }) => {

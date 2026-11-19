@@ -910,6 +910,10 @@ export default {
       return " " + MONTHS.en[m] + ", " + DAYS.en[wd] + ", ";
     },
   },
+  // The launch animation (js/features/launch.js): the first opening of the day
+  launch: {
+    skip: "Tap to skip",
+  },
   // The language's own name, in its own letters: Settings → Menus and buttons (js/features/settings-panel.js)
   language: {
     name: "English",

@@ -1,7 +1,8 @@
 // @ts-check
 // The splash (#spl in index.html): from the very first paint until the site script has set up the page, the app's
 // picture for the time of day with today's weekday star ringed, as on Home, and the app's name. While it waits, the
-// seven stars light up one after another (css/02-core.css, "Splash"). It goes once js/main.js sets data-ready.
+// seven stars light up one after another (css/02-core.css, "Splash"). It goes once js/main.js sets data-ready. The
+// first opening of the day plays the launch animation instead (below, and js/features/launch.js).
 // A plain script, run as the page is read, so it needs no module and nothing else to load first. It also puts the
 // reader's theme on the page now (from the boot copy of the settings), so the splash is light, sepia or dark to match.
 (function () {
@@ -41,8 +42,9 @@
     var th = JSON.parse(localStorage.getItem("aarti2-prefs") || "{}").th;
     if (th === "light" || th === "dark" || th === "sepia") document.documentElement.setAttribute("data-pref", th);
   } catch (e) {}
-  var sp = document.getElementById("spl");
-  if (!sp) return;
+  var found = document.getElementById("spl");
+  if (!found) return;
+  var sp = /** @type {HTMLElement} */ (found);
   // the same picture as Home: sunrise before 12:00, midday until 17:00, then sunset (js/core/time-of-day.js)
   var now = new Date(),
     h = now.getHours(),
@@ -51,17 +53,68 @@
     img = sp.querySelector("img");
   if (!box || !img) return;
   img.src = "picture-" + pic + "-360.webp";
-  // a glow on each star, lit in turn from र to श, and the ring on today's
-  STARS[pic].forEach(function (s, i) {
-    var glow = document.createElement("i");
-    glow.className = "spls";
-    glow.style.left = s[0] + "%";
-    glow.style.top = s[1] + "%";
-    glow.style.animationDelay = (i * 0.22).toFixed(2) + "s";
-    box.appendChild(glow);
-  });
-  var ring = document.createElement("i"),
-    today = STARS[pic][now.getDay()];
+  var today = STARS[pic][now.getDay()];
+  // The first opening of the day plays the launch animation instead (css/02-core.css, "The launch animation";
+  // js/features/launch.js adds the day's lines): night, the seven stars coming out one by one, today's growing while
+  // the others dim, the day opening out of it. Only on Home (not a link to a text or the install page), never for a
+  // reader who asks for less motion, and once a day: the day is kept on this phone (localStorage "nitya-launch").
+  var key = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate(),
+    full = false;
+  try {
+    full =
+      window.top === window &&
+      !location.hash &&
+      !location.search &&
+      !matchMedia("(prefers-reduced-motion: reduce)").matches &&
+      localStorage.getItem("nitya-launch") !== key;
+    if (full) localStorage.setItem("nitya-launch", key);
+  } catch (e) {
+    full = false;
+  }
+  if (full) {
+    sp.classList.add("launch");
+    sp.setAttribute("data-t0", String(Math.round(performance.now())));
+    sp.style.setProperty("--sx", today[0] + "%");
+    sp.style.setProperty("--sy", today[1] + "%");
+    // each star seen through a small round window onto the picture, the rest of it still dark
+    STARS[pic].forEach(function (s, i) {
+      var w = document.createElement("i");
+      w.className = "splw" + (i === now.getDay() ? " splt" : "");
+      w.style.left = s[0] + "%";
+      w.style.top = s[1] + "%";
+      w.style.backgroundImage = "url(picture-" + pic + "-360.webp)";
+      // (the window is 17% of the picture: this puts the star's centre in its middle)
+      w.style.backgroundPosition = ((s[0] - 8.5) / 0.83).toFixed(2) + "% " + ((s[1] - 8.5) / 0.83).toFixed(2) + "%";
+      w.style.animationDelay = (0.15 + i * 0.13).toFixed(2) + "s, 1.25s, 2.35s";
+      box.appendChild(w);
+    });
+    var rays = document.createElement("i");
+    rays.className = "splx";
+    rays.style.left = today[0] + "%";
+    rays.style.top = today[1] + "%";
+    box.appendChild(rays);
+    var om = document.createElement("i");
+    om.className = "splo";
+    box.appendChild(om);
+    // a tap or a key ends it (once the page is ready: css/02-core.css)
+    var skip = function () {
+      sp.classList.add("skip");
+    };
+    sp.addEventListener("click", skip);
+    document.addEventListener("keydown", skip, { once: true });
+  } else {
+    // a glow on each star, lit in turn from र to श, while the page starts
+    STARS[pic].forEach(function (s, i) {
+      var glow = document.createElement("i");
+      glow.className = "spls";
+      glow.style.left = s[0] + "%";
+      glow.style.top = s[1] + "%";
+      glow.style.animationDelay = (i * 0.22).toFixed(2) + "s";
+      box.appendChild(glow);
+    });
+  }
+  // the ring on today's star
+  var ring = document.createElement("i");
   ring.className = "splr";
   ring.style.left = today[0] + "%";
   ring.style.top = today[1] + "%";

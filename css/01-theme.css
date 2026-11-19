@@ -13,6 +13,9 @@
   --ink: #391a0e;
   --muted: #6d5a4c;
   --accent: #7b1113;
+  /* the night sky the launch animation starts in (css/02-core.css), the same in every theme, and its words */
+  --night: #130d1d;
+  --night-ink: #efe3d4;
   --rule: #d9c9b4;
   --bar: #fcf9f4ee;
   --pill: #fffdf9;

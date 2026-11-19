@@ -118,6 +118,7 @@ var SITE_PARTS = (function () {
     "features/routine-builder",
     "features/routine-time",
     "features/welcome",
+    "features/launch",
     "features/listen",
   ].map(function (f) {
     return "js/" + f + ".js";

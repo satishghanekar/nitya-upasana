@@ -73,6 +73,7 @@ import { init as startRoutineBuilder } from "./features/routine-builder.js";
 import { init as startRoutineTime } from "./features/routine-time.js";
 import { init as startWelcome } from "./features/welcome.js";
 import { init as startListen } from "./features/listen.js";
+import { init as startLaunch } from "./features/launch.js";
 
 // One part that fails to start is reported and passed over, so the parts after it still start (a part that needs
 // it may then fail too, but no more than that)
@@ -137,6 +138,7 @@ function start() {
     run(startRoutineBuilder); // The routine builder (#rtb): each person's texts per session, in order, with the Add texts picker
     run(startWelcome); // Welcome (#wlc): once, on a new phone's Home, the first person's name and ready-made routine
     run(startListen); // Listen (#lsb, the ear in the bottom bar): the phone hears the chanting and marks the line being chanted
+    run(startLaunch); // The launch animation, the first opening of the day: the day's lines under the splash's picture (last: it reads Home)
   } finally {
     // Show the page (see "data-ready" in css/02-core.css), even if a part failed to start
     document.documentElement.setAttribute("data-ready", "");
