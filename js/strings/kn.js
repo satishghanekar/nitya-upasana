@@ -626,7 +626,7 @@ export default {
     addMac: "Dock ಗೆ ಸೇರಿಸಿ",
     steps: {
       ios26: [
-        "ಕೆಳಗೆ ಬಲಭಾಗದಲ್ಲಿ {more} ಒತ್ತಿ",
+        'ಕೆಳಗಿನ ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ {more} ಒತ್ತಿ (ಅಥವಾ {share} <b lang="en">Share</b> ಕಾಣಿಸಿದರೆ ಅದನ್ನು)',
         '{share} <b lang="en">Share</b> ಒತ್ತಿ',
         'ಕೆಳಗೆ ಸರಿಸಿ <b lang="en">Add to Home Screen</b> ಒತ್ತಿ (ಅಥವಾ ಮೊದಲು <b lang="en">View More</b>)',
         '<b lang="en">Open as Web App</b> ಆನ್ ಇರಲಿ, ನಂತರ <b lang="en">Add</b> ಒತ್ತಿ',

@@ -9,7 +9,8 @@
 /**
  * The kinds:
  * - "app": opened from the home screen icon already: no install page
- * - "ios26": Safari on an iPhone, iOS 26 and later (⋯ at the bottom right, then Share)
+ * - "ios26": Safari on an iPhone, iOS 26 and later (⋯ in the address bar at the bottom, or Share where the
+ *   layout chosen in Settings shows it: the page can't tell which, so the arrow points at the bottom)
  * - "ios": Safari on an iPhone, older (Share in the toolbar at the bottom)
  * - "ipad": Safari on an iPad (Share at the top right)
  * - "iosBrowser": Chrome, Edge or Firefox on an iPhone or an iPad (Share beside the address)
@@ -66,8 +67,8 @@ export function installKind(ua, more) {
  * @param {InstallKind} kind
  */
 export function arrowAt(kind) {
-  if (kind === "ios26" || kind === "samsung") return "bottom-right";
-  if (kind === "ios") return "bottom";
+  if (kind === "samsung") return "bottom-right";
+  if (kind === "ios26" || kind === "ios") return "bottom";
   if (kind === "ipad" || kind === "iosBrowser" || kind === "android" || kind === "androidFirefox" || kind === "desktop") return "top-right";
   return "";
 }

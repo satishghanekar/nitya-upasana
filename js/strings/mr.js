@@ -611,7 +611,7 @@ export default {
     addMac: "Dock मध्ये जोडा",
     steps: {
       ios26: [
-        "खाली उजवीकडे {more} दाबा",
+        'खाली पत्त्याच्या पट्टीतील {more} दाबा (किंवा {share} <b lang="en">Share</b> दिसत असल्यास ते)',
         '{share} <b lang="en">Share</b> दाबा',
         'खाली स्क्रोल करून <b lang="en">Add to Home Screen</b> दाबा (किंवा आधी <b lang="en">View More</b>)',
         '<b lang="en">Open as Web App</b> चालू ठेवा, मग <b lang="en">Add</b> दाबा',

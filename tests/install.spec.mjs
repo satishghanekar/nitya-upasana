@@ -21,16 +21,16 @@ const steps = (page) => page.locator("#install-how .install-steps li");
 test.describe("iPhone, Safari on iOS 26", () => {
   test.use({ ...PHONE, userAgent: UA.ios26 });
 
-  test("the shared link opens the steps, the arrow at ⋯, and leaves the address and the welcome card alone", async ({ page }) => {
+  test("the shared link opens the steps, the arrow at the bottom, and leaves the address and the welcome card alone", async ({ page }) => {
     const errors = [];
     await openSite(page, SETUPS.english, { hash: "?add", welcome: true, errors });
     await expect(page$(page)).toBeVisible();
     await expect(page.locator("#install-title")).toBeFocused();
     await expect(steps(page)).toHaveCount(4);
-    await expect(steps(page).first()).toContainText("at the bottom right");
+    await expect(steps(page).first()).toContainText("in the address bar");
     await expect(steps(page).nth(3)).toContainText("Open as Web App");
     await expect(page.locator("#install-arrow")).toBeVisible();
-    await expect(page.locator("#install-arrow")).toHaveAttribute("data-at", "bottom-right");
+    await expect(page.locator("#install-arrow")).toHaveAttribute("data-at", "bottom");
     // the mark is gone, so the icon added from here opens the site itself
     expect(new URL(page.url()).search).toBe("");
     // the welcome card waits for the Home Screen app

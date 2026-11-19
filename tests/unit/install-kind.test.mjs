@@ -56,7 +56,7 @@ describe("installKind", () => {
 });
 
 test("the arrow points at the browser's button, and only the browsers with a prompt get one tap", () => {
-  expect(arrowAt("ios26")).toBe("bottom-right");
+  expect(arrowAt("ios26")).toBe("bottom");
   expect(arrowAt("ios")).toBe("bottom");
   expect(arrowAt("ipad")).toBe("top-right");
   expect(arrowAt("android")).toBe("top-right");

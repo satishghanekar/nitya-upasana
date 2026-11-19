@@ -645,7 +645,7 @@ export default {
     addMac: "Add it to your Dock",
     steps: {
       ios26: [
-        "Tap {more} at the bottom right",
+        'Tap {more} in the address bar at the bottom (or {share} <b lang="en">Share</b>, if you see it)',
         'Tap {share} <b lang="en">Share</b>',
         'Scroll down and tap <b lang="en">Add to Home Screen</b> (or <b lang="en">View More</b> first)',
         'Leave <b lang="en">Open as Web App</b> on, then tap <b lang="en">Add</b>',

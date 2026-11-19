@@ -620,7 +620,7 @@ export default {
     addMac: "Dock માં ઉમેરો",
     steps: {
       ios26: [
-        "નીચે જમણે {more} દબાવો",
+        'નીચે સરનામાં પટ્ટીમાં {more} દબાવો (અથવા {share} <b lang="en">Share</b> દેખાય તો તે)',
         '{share} <b lang="en">Share</b> દબાવો',
         'નીચે સરકાવી <b lang="en">Add to Home Screen</b> દબાવો (અથવા પહેલાં <b lang="en">View More</b>)',
         '<b lang="en">Open as Web App</b> ચાલુ રાખી <b lang="en">Add</b> દબાવો',

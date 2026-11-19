@@ -626,7 +626,7 @@ export default {
     addMac: "Dock కు జోడించండి",
     steps: {
       ios26: [
-        "కింద కుడివైపు {more} నొక్కండి",
+        'కింద చిరునామా పట్టీలో {more} నొక్కండి (లేదా {share} <b lang="en">Share</b> కనిపిస్తే అది)',
         '{share} <b lang="en">Share</b> నొక్కండి',
         'కిందికి జరిపి <b lang="en">Add to Home Screen</b> నొక్కండి (లేదా ముందుగా <b lang="en">View More</b>)',
         '<b lang="en">Open as Web App</b> ఆన్‌లో ఉంచి, <b lang="en">Add</b> నొక్కండి',
