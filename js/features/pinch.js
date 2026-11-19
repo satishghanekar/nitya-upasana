@@ -8,7 +8,7 @@ import { FSA } from "../text/autofit.js";
 import { pn } from "../core/apply.js";
 import { apply, fsuMark } from "./bars.js";
 import { fsTap, szSet } from "./settings-panel.js";
-import { LAYERS, setJ, setP } from "./overlays.js";
+import { LAYERS, setJ, setP, shown } from "./overlays.js";
 import { menuWords } from "../core/strings.js";
 
 /** @type {{ d: number, fs: number, at: any } | null} the pinch under way: the fingers' first distance, the size then, the
@@ -43,8 +43,7 @@ function still(t) {
   var el = /** @type {Element | null} */ (t);
   if (el && el.closest && el.closest(NO_PINCH)) return true;
   return LAYERS.some(function (l) {
-    var e = document.getElementById(l.id);
-    return PINCH_OVER.indexOf(l.id) < 0 && !!e && !e.hidden;
+    return PINCH_OVER.indexOf(l.id) < 0 && shown(l.id);
   });
 }
 

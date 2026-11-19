@@ -366,10 +366,55 @@ html[data-ready] #spl.skip,
 }
 #spl.launch > .splskip {
   position: absolute;
-  bottom: max(24px, env(safe-area-inset-bottom));
+  bottom: calc(max(10px, env(safe-area-inset-bottom)) + 2.4em);
   font-size: var(--fz-s);
   color: var(--muted);
-  opacity: 0.8;
+}
+/* who made the site, and under it the version, very small at the foot of the splash (js/splash.js writes the version), the
+   launch animation and its replay; English always, as under Settings → About */
+#spl > .spl-by {
+  position: absolute;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  padding: 0 16px;
+  font: 400 var(--fz-xs) / 1.5 var(--lat);
+  text-align: center;
+  color: var(--muted);
+}
+#spl .spl-ver {
+  display: block;
+}
+/* Played again from the top bar's picture (.stay, js/features/launch.js): it stays, a dialog over the page, until a tap,
+   ✕, Escape or Back closes it; its picture opens the picture full screen. With less motion it shows at once, as it ends. */
+#spl.launch.stay {
+  animation: none;
+}
+#spl.stay .splm {
+  cursor: pointer;
+}
+#spl > #launch-close {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right, 0px));
+  width: 44px;
+  height: 44px;
+  min-height: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+}
+@media (prefers-reduced-motion: reduce) {
+  #spl.stay::before,
+  #spl.stay .splw,
+  #spl.stay .splx {
+    display: none;
+  }
+  #spl.stay .splm img {
+    clip-path: none;
+  }
 }
 body {
   /* no gap above the top bar, so it stays in one place when the page scrolls under it */

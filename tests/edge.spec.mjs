@@ -69,6 +69,8 @@ test.describe("notched iPhone @chromium-only", () => {
     await clear("#panel .sp-hd button");
     await page.keyboard.press("Escape");
     await page.locator("#bti").click();
+    await clear("#launch-close");
+    await page.locator("#spl .splm").click();
     await clear("#pzx");
   });
 });

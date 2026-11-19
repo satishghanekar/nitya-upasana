@@ -45,6 +45,10 @@
   var found = document.getElementById("spl");
   if (!found) return;
   var sp = /** @type {HTMLElement} */ (found);
+  // the version, small at the foot, on a line of its own under who made the site (from <meta name="version">, as Settings → About shows it)
+  var ver = sp.querySelector(".spl-ver"),
+    meta = document.querySelector('meta[name="version"]');
+  if (ver && meta) ver.textContent = "Version " + (meta.getAttribute("content") || "").replace(/^aarti-v/, "");
   // the same picture as Home: sunrise before 12:00, midday until 17:00, then sunset (js/core/time-of-day.js)
   var now = new Date(),
     h = now.getHours(),

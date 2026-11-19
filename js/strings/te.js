@@ -901,6 +901,10 @@ export default {
   // The launch animation (js/features/launch.js): the first opening of the day
   launch: {
     skip: "దాటవేయడానికి నొక్కండి",
+    // played again from the top bar's picture: the line under it, ✕, and its picture as a button
+    again: "చిత్రాన్ని పూర్తి స్క్రీన్‌లో చూడటానికి దానిపై నొక్కండి",
+    close: "మూసివేయండి",
+    picture: "చిత్రాన్ని పూర్తి స్క్రీన్‌లో చూపించు",
   },
   // The language's own name, in its own letters: Settings → Menus and buttons (js/features/settings-panel.js)
   language: {

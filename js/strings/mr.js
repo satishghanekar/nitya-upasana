@@ -874,6 +874,10 @@ export default {
   // The launch animation (js/features/launch.js): the first opening of the day
   launch: {
     skip: "पुढे जाण्यासाठी टॅप करा",
+    // played again from the top bar's picture: the line under it, ✕, and its picture as a button
+    again: "चित्र मोठे पाहण्यासाठी त्यावर टॅप करा",
+    close: "बंद करा",
+    picture: "चित्र पूर्ण स्क्रीनवर पाहा",
   },
   language: {
     name: "मराठी",

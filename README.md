@@ -50,6 +50,7 @@ There is no build step. The files in this repository are exactly what the site s
 | `tests/` | The automated tests (see `tests/README.md`). Not part of the site. |
 | `.github/workflows/` | The test run on every pull request and push to `main`, and the job that refreshes its screenshots. |
 | `ARCHITECTURE.md` | How the page, styles and scripts fit together, for anyone changing the code. |
+| `DOWNLOAD-SIZE.md` | How much a phone downloads, the first time, for a new version and only when used, by kind of file; written by `cd tests && npm run sizes` and checked by the tests. |
 | `CLAUDE.md`, `.cursorrules` | The short list of rules for changing the site, for people and AI assistants (`.cursorrules` points Cursor to `CLAUDE.md`). |
 
 The pictures exactly as Satish supplied them, which these were cut from, were removed on 2026-11-02 (everything here is published, and the site has what it needs); they are in the repository's history, `originals/`, if ever needed.

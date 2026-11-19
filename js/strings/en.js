@@ -913,6 +913,10 @@ export default {
   // The launch animation (js/features/launch.js): the first opening of the day
   launch: {
     skip: "Tap to skip",
+    // played again from the top bar's picture: the line under it, ✕, and its picture as a button
+    again: "Tap the picture to see it full screen",
+    close: "Close",
+    picture: "Show the picture full screen",
   },
   // The language's own name, in its own letters: Settings → Menus and buttons (js/features/settings-panel.js)
   language: {

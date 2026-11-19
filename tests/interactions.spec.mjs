@@ -399,10 +399,11 @@ for (const [when, picture, day, name, label] of [
   ["2026-10-18T19:30:00-04:00", "sunset", 0, "favicon-sunset-32.png", "Sunset picture, Sunday star marked"],
 ]) {
   test(`at ${when.slice(11, 16)} on the ${when.slice(8, 10)}th the ${picture} picture shows with star ${day} ringed @mobile`, async ({ page }) => {
-    // the large picture, with its ring, is on wide screens; on phones the small one in the top bar opens it (#bti)
+    // the large picture, with its ring, is on wide screens; on phones the small one in the top bar (#bti) plays the day's
+    // opening again, whose picture opens it
     await page.setViewportSize({ width: 1280, height: 820 });
     await openSite(page, SETUPS.marathi, { now: new Date(when) });
-    await expect(page.locator("#bti")).toHaveAttribute("aria-label", "Show the picture full screen: " + label);
+    await expect(page.locator("#bti")).toHaveAttribute("aria-label", "Play the day's opening again: " + label);
     await expect(page.locator("#bti img")).toHaveAttribute("src", `picture-${picture}-360.webp`);
     const btn = page.locator("#iconb");
     await expect(btn).toHaveAttribute("data-picture", picture);
