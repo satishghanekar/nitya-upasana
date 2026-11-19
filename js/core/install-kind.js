@@ -105,9 +105,18 @@ export function addLink(origin, path) {
   return origin + path + "?add";
 }
 
+// "add" not followed by a letter or digit: ?address is not the mark, but ?add%20, ?add. or an invisible character
+// picked up when the link is pasted from a message still is
+var MARK = /^add(?![A-Za-z0-9_-])/;
+
 /** The address carries the install page's mark @param {string} search location.search */
 export function hasAdd(search) {
-  return /[?&]add(?:[=&]|$)/.test(search);
+  return search
+    .replace(/^\?/, "")
+    .split("&")
+    .some(function (p) {
+      return MARK.test(p);
+    });
 }
 
 /** The search part without the mark (empty when nothing else is left) @param {string} search */
@@ -116,7 +125,7 @@ export function withoutAdd(search) {
     .replace(/^\?/, "")
     .split("&")
     .filter(function (p) {
-      return p && p !== "add" && p.indexOf("add=") !== 0;
+      return p && !MARK.test(p);
     })
     .join("&");
   return rest ? "?" + rest : "";
