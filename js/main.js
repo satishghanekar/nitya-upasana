@@ -73,6 +73,7 @@ import { init as startRoutineBuilder } from "./features/routine-builder.js";
 import { init as startRoutineTime } from "./features/routine-time.js";
 import { init as startWelcome } from "./features/welcome.js";
 import { init as startFastModeReport } from "./features/fast-mode-report.js";
+import { init as startFollowReport } from "./features/follow-report.js";
 import { init as startListen } from "./features/listen.js";
 import { init as startLaunch } from "./features/launch.js";
 
@@ -140,6 +141,7 @@ function start() {
     run(startWelcome); // Welcome (#wlc): once, on a new phone's Home, the first person's name and ready-made routine
     // (before Listen: a page that closed while the GPU was tried is found out before Listen picks the GPU or the CPU)
     run(startFastModeReport); // fast mode's report: About's row when the GPU did not work here, and Share report
+    run(startFollowReport); // Follow's report: how the last few times went, kept here, and Share Follow report
     run(startListen); // Listen (#lsb, the ear in the bottom bar): the phone hears the chanting and marks the line being chanted
     run(startLaunch); // The launch animation, the first opening of the day: the day's lines under the splash's picture (last: it reads Home)
   } finally {

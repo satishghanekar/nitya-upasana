@@ -252,16 +252,16 @@ test("the top bar is the same on Home and while reading: the name, profile, Shar
     sp = await page.locator("#panel").boundingBox();
   expect(sp.y).toBeGreaterThanOrEqual(bar.y + bar.height - 1);
   // Back and the tabs in one row, the title for screen readers only, as on the Library and the calendar pages; on
-  // desktops Back and the title, and no tabs (every group at once)
+  // desktops the title beside Back too, the tabs at the other end
   await expect(page.locator("#spt")).toHaveText("Settings");
   if (page.viewportSize().width >= 760) {
     await expect(page.locator("#spt")).toBeVisible();
-    await expect(page.locator("#spv")).toBeHidden();
+    await expect(page.locator("#spv")).toBeVisible();
   } else {
     const xc = await page.locator("#xc").boundingBox(),
       tabs = await page.locator("#spv").boundingBox();
     expect(Math.abs(xc.y - tabs.y)).toBeLessThan(4);
-    await expect(page.locator("#spv button")).toHaveText([/Reading$/, /Screen$/, /You$/]);
+    await expect(page.locator("#spv button")).toHaveText([/Reading$/, /Screen$/, /You$/, /About$/]);
   }
 });
 

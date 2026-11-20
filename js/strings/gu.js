@@ -57,7 +57,7 @@ export default {
     problems: {
       "not-json": "આ નિત્ય ઉપાસના બેકઅપ ફાઇલ (.nitya) નથી.",
       "not-nitya": "આ નિત્ય ઉપાસના બેકઅપ ફાઇલ (.nitya) નથી.",
-      newer: "આ ફાઇલ ઍપની નવી આવૃત્તિએ સાચવી છે. અપડેટ માટે તપાસો (સેટિંગ્સ → તમે → વિશે, આવૃત્તિની લીટી દબાવો) અને ફરી પ્રયત્ન કરો.",
+      newer: "આ ફાઇલ ઍપની નવી આવૃત્તિએ સાચવી છે. અપડેટ માટે તપાસો (સેટિંગ્સ → વિશે, આવૃત્તિની લીટી દબાવો) અને ફરી પ્રયત્ન કરો.",
       kind: "આ .nitya ફાઇલ પૂરો બેકઅપ નથી.",
       checksum: "સાચવ્યા પછી આ ફાઇલ બદલાઈ છે અથવા બગડી છે (તેનો ચેકસમ મળતો નથી), તેથી કંઈ પાછું લાવ્યા નથી.",
       empty: "આ બેકઅપમાં કોઈ નથી.",
@@ -480,6 +480,10 @@ export default {
     fastFailedNote: "તેના બદલે સામાન્ય રીત વપરાય છે. અહેવાલ મોકલવાથી અહીં ઝડપી રીત ચાલુ કરવામાં મદદ મળશે.",
     shareReport: "અહેવાલ મોકલો",
     reportCopied: "અહેવાલ કૉપિ થયો",
+    // Settings → About → Follow: how Follow went the last few times (js/features/follow-report.js)
+    followReport: "‘સાથે’ કેવું ચાલ્યું",
+    followReportNote: "છેલ્લી થોડી વારનો હિસાબ આ ઉપકરણ પર જ રહે છે, જાતે મોકલાતો નથી. તે મોકલવાથી ‘સાથે’ વધુ સારું બનાવવામાં મદદ મળે છે.",
+    shareFollowReport: "‘સાથે’ અહેવાલ મોકલો",
   },
   bottomBar: {
     prev: "‹ પાછળ",
@@ -526,14 +530,14 @@ export default {
     saved: "આ ફોનમાં સાચવ્યું",
     online: "ફક્ત ઑનલાઇન",
   },
-  // Offline use and Check for updates (js/features/offline.js): Settings → You → About
+  // Offline use and Check for updates (js/features/offline.js): Settings → About
   offline: {
     state: {
       idle: "ઑફલાઇન માટે તૈયાર",
       save: "ઑફલાઇન માટે સાચવે છે…",
       off: "સાચવેલી નકલ વપરાય છે",
     },
-    // the version line in Settings → You → About: what Check for updates found (under the version), and the round
+    // the version line in Settings → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
       check: "અપડેટ માટે તપાસો",
@@ -807,6 +811,7 @@ export default {
     restoreFromAFile: "ફાઇલમાંથી પાછું લાવો",
     aNityaFileSavedBefore: "અગાઉ સાચવેલી .nitya ફાઇલ",
     about: "વિશે",
+    thisApp: "આ ઍપ",
     helpAndHowToUse: "મદદ અને વાપરવાની રીત",
     addToHomeScreen: "હોમ સ્ક્રીન પર ઉમેરો",
     nityaUpasana: "નિત્ય ઉપાસના",

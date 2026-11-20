@@ -1,7 +1,7 @@
 // @ts-check
 // Fast mode's report (Satish, 2026-11-20): Follow tries the phone's GPU first (js/features/listen.js); when the GPU
 // fails, or the app closes while it starts, Follow carries on in standard mode (the CPU) and keeps a report of what
-// happened. Settings → You → About then shows "Fast mode did not work on this phone" (#lswf), with Share report: the
+// happened. Settings → About then shows "Fast mode did not work on this phone" (#lswf), with Share report: the
 // phone's share sheet (WhatsApp, a message), or the report copied where there is none, so a reader far away can send it
 // in one go (js/core/gpu-report.js writes it). The report is kept on this phone (localStorage "nitya-fast-mode") while
 // fast mode is tried ("trying"), so a page that dies meanwhile is found out on the next opening ("closed"); once the GPU
@@ -87,7 +87,7 @@ export function subgroups(v, asked) {
   note("GPU features asked: " + (asked.join(", ") || "none") + "; subgroups " + v);
 }
 
-/** Settings → You → About: the row, when there is a report to share */
+/** Settings → About: the row, when there is a report to share */
 export function show() {
   var row = document.getElementById("lswf");
   if (row) row.hidden = !failedHere();
@@ -157,8 +157,9 @@ async function gpuInfo() {
   return out;
 }
 
-/** The phone and the browser: model, system, cores, memory, screen; nothing personal */
-async function phoneInfo() {
+/** The phone and the browser: model, system, cores, memory, screen; nothing personal (Follow's report too,
+ * js/features/follow-report.js) */
+export async function phoneInfo() {
   /** @type {any} */ var nav = navigator,
     /** @type {Record<string, any>} */ out = {
       cores: nav.hardwareConcurrency,

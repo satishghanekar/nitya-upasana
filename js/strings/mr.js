@@ -45,7 +45,7 @@ export default {
     problems: {
       "not-json": "ही नित्य उपासनेची बॅकअप फाइल (.nitya) नाही.",
       "not-nitya": "ही नित्य उपासनेची बॅकअप फाइल (.nitya) नाही.",
-      newer: "ही फाइल ॲपच्या नव्या आवृत्तीने जतन केली आहे. अपडेट तपासा (सेटिंग्ज → तुम्ही → माहिती, आवृत्तीची ओळ दाबा) आणि पुन्हा प्रयत्न करा.",
+      newer: "ही फाइल ॲपच्या नव्या आवृत्तीने जतन केली आहे. अपडेट तपासा (सेटिंग्ज → माहिती, आवृत्तीची ओळ दाबा) आणि पुन्हा प्रयत्न करा.",
       kind: "ही .nitya फाइल पूर्ण बॅकअप नाही.",
       checksum: "जतन केल्यानंतर ही फाइल बदलली किंवा खराब झाली आहे (चेकसम जुळत नाही), त्यामुळे काहीही परत आणले नाही.",
       empty: "या बॅकअपमध्ये एकही व्यक्ती नाही.",
@@ -479,6 +479,10 @@ export default {
     fastFailedNote: "त्याऐवजी साधारण पद्धत वापरली जाते. अहवाल पाठवल्यास इथे वेगवान पद्धत चालू करायला मदत होईल.",
     shareReport: "अहवाल पाठवा",
     reportCopied: "अहवाल कॉपी झाला",
+    // Settings → About → Follow: how Follow went the last few times (js/features/follow-report.js)
+    followReport: "‘सोबत’ कसे झाले",
+    followReportNote: "शेवटच्या काही वेळांचा हिशोब याच उपकरणावर ठेवला जातो, आपोआप पाठवला जात नाही. तो पाठवल्याने ‘सोबत’ अधिक चांगले होण्यास मदत होते.",
+    shareFollowReport: "‘सोबत’ अहवाल पाठवा",
   },
   bottomBar: {
     prev: "‹ मागील",
@@ -525,7 +529,7 @@ export default {
       save: "ऑफलाइनसाठी जतन…",
       off: "जतन केलेली प्रत",
     },
-    // the version line in Settings → You → About: what Check for updates found (under the version), and the round
+    // the version line in Settings → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
       check: "अपडेट तपासा",
@@ -802,6 +806,7 @@ export default {
     restoreFromAFile: "फाइलमधून परत आणा",
     aNityaFileSavedBefore: "आधी जतन केलेली .nitya फाइल",
     about: "माहिती",
+    thisApp: "हे ॲप",
     helpAndHowToUse: "मदत आणि वापर",
     addToHomeScreen: "होम स्क्रीनवर ठेवा",
     nityaUpasana: "नित्य उपासना",

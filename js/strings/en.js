@@ -46,7 +46,7 @@ export default {
     problems: {
       "not-json": "This is not a Nitya Upasana backup file (.nitya).",
       "not-nitya": "This is not a Nitya Upasana backup file (.nitya).",
-      newer: "This file was saved by a newer version of the app. Check for updates (Settings → You → About, tap the version line) and try again.",
+      newer: "This file was saved by a newer version of the app. Check for updates (Settings → About, tap the version line) and try again.",
       kind: "This .nitya file is not a full backup.",
       checksum: "This file has been changed or damaged since it was saved (its checksum does not match), so nothing was restored.",
       empty: "This backup has no people in it.",
@@ -489,7 +489,7 @@ export default {
     idle: function (n) {
       return "Follow stopped: no chanting heard for " + n + " minutes. Tap Follow to start again.";
     },
-    // Settings → You → About: where Follow runs its model on this device (title, a line under it, a badge)
+    // Settings → About: where Follow runs its model on this device (title, a line under it, a badge)
     // (in the reader's words since 2026-11-15, not GPU and CPU: fast where the phone's graphics chip runs it)
     gpu: "Follow: fast mode",
     gpuNote: "About 3× faster, lighter on battery",
@@ -503,6 +503,10 @@ export default {
     fastFailedNote: "Standard mode is used instead. Sharing the report helps get fast mode working here.",
     shareReport: "Share report",
     reportCopied: "Report copied",
+    // Settings → About → Follow: how Follow went the last few times (js/features/follow-report.js)
+    followReport: "How Follow went",
+    followReportNote: "Your last few times are kept on this device, never sent by itself. Sharing them helps make Follow better.",
+    shareFollowReport: "Share Follow report",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js): the arrow stays, the word may be left out on small phones
   bottomBar: {
@@ -551,14 +555,14 @@ export default {
     saved: "saved on this phone",
     online: "online only",
   },
-  // Offline use and Check for updates (js/features/offline.js): Settings → You → About
+  // Offline use and Check for updates (js/features/offline.js): Settings → About
   offline: {
     state: {
       idle: "Offline ready",
       save: "Saving for offline…",
       off: "Saved copy in use",
     },
-    // the version line in Settings → You → About: what Check for updates found (under the version), and the round
+    // the version line in Settings → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
       check: "Check for updates",
@@ -841,6 +845,7 @@ export default {
     restoreFromAFile: "Restore from a file",
     aNityaFileSavedBefore: "A .nitya file saved before",
     about: "About",
+    thisApp: "This app",
     helpAndHowToUse: "Help and how to use",
     addToHomeScreen: "Add to Home Screen",
     nityaUpasana: "Nitya Upasana",

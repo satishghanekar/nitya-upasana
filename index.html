@@ -11,7 +11,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.78.7">
+<meta name="version" content="aarti-v1.79.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -70,6 +70,7 @@
 <link rel="modulepreload" href="js/core/words.js">
 <link rel="modulepreload" href="js/core/hearing.js">
 <link rel="modulepreload" href="js/core/gpu-report.js">
+<link rel="modulepreload" href="js/core/follow-report.js">
 <link rel="modulepreload" href="js/core/align.js">
 <link rel="modulepreload" href="js/core/follow.js">
 <link rel="modulepreload" href="js/core/timing.js">
@@ -143,6 +144,7 @@
 <link rel="modulepreload" href="js/features/routine-time.js">
 <link rel="modulepreload" href="js/features/welcome.js">
 <link rel="modulepreload" href="js/features/fast-mode-report.js">
+<link rel="modulepreload" href="js/features/follow-report.js">
 <link rel="modulepreload" href="js/features/listen.js">
 <link rel="modulepreload" href="js/features/launch.js">
 </head>
@@ -233,12 +235,12 @@
   </div>
 </div>
 <!-- ==== Settings page: opened by the ⚙ button, it covers the whole page until Back (or the phone's Back) closes it.
-     Back and three tabs, Reading | Screen | You, each with its groups of rows in rounded cards, like phone settings ==== -->
+     Back and four tabs, Reading | Screen | You | About, each with its groups of rows in rounded cards, like phone settings ==== -->
 <div class="sp" id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="spt" tabindex="-1">
   <div class="sp-pg" id="sp-home">
-    <!-- Back (‹), the page's title and the tabs, Reading | Screen | You, in one row as on the Library and the calendar
-         pages (Satish, 2026-10-25; js/features/settings-panel.js spTab). Phones and tablets: the tabs, the title for
-         screen readers only. iPads and desktops: the title, every group at once, no tabs (Satish, 2026-10-30). Each group
+    <!-- Back (‹), the page's title and the tabs, Reading | Screen | You | About, in one row as on the Library and the
+         calendar pages (js/features/settings-panel.js spTab): the same four everywhere (Satish, 2026-11-20). Phones: the
+         title for screen readers only. iPads and desktops: the title too, and a tab's groups in two columns. Each group
          below says which tab it is on (data-tab) -->
     <div class="sp-hd">
       <button type="button" id="xc"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="sr"><span data-w="page.back">Back</span></span></button>
@@ -247,18 +249,16 @@
         <button type="button" data-v="read" aria-pressed="true"><span data-w="page.reading">Reading</span></button>
         <button type="button" data-v="screen" aria-pressed="false"><span data-w="page.screen">Screen</span></button>
         <button type="button" data-v="more" aria-pressed="false"><span data-w="page.more">More</span></button>
+        <button type="button" data-v="about" aria-pressed="false"><span data-w="page.about">About</span></button>
       </div>
     </div>
     <div class="sp-body">
-      <!-- each heading with its card in one group (.sp-grp, tagged with its tab); on wider screens a tab's groups sit in
-           two columns (css/09-settings-page.css) -->
+      <!-- each heading with its card in one group (.sp-grp, tagged with its tab); on iPads and desktops a tab's groups
+           sit in two columns (css/09-settings-page.css) -->
       <!-- Reading: what the texts look like. The preview first (beside the choices on wider screens), then every choice it
            shows in one card: the main and second language (the phone's own dropdown, an invisible <select> over each
            row; English is listed twice, once per spelling), text size and font. Then how a text is laid out, which the
            preview can't show: the dhrupad and the columns (Satish, 2026-10-25) -->
-      <!-- two columns on desktops (css/09-settings-page.css): the preview and the choices it shows; then the screen,
-           profiles and about. Elsewhere the groups lie as if these were not there (display: contents) -->
-      <div class="sp-c1">
       <section class="sp-grp sp-pvg" data-tab="read">
         <h3 class="sp-h"><span data-w="page.preview">Preview</span></h3>
         <!-- a few lines of the Ganapati aarti, as the pieces will show them (filled in by the script) -->
@@ -310,8 +310,6 @@
         </div>
       </section>
       <!-- Screen: the app around the texts: the language of the menus and buttons, the theme, contrast, screen on -->
-      </div>
-      <div class="sp-c2">
       <section class="sp-grp" data-tab="screen">
         <h3 class="sp-h"><span data-w="page.screen">Screen</span></h3>
         <div class="sp-card">
@@ -392,17 +390,10 @@
           <button type="button" class="sp-row sp-go" id="bko"><span class="sp-l"><span data-w="page.restoreFromAFile">Restore from a file</span><small><span data-w="page.aNityaFileSavedBefore">A .nitya file saved before</span></small></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></button>
         </div>
       </section>
-      </div>
-      <!-- About: after the two columns, across both on wide screens, so they end nearly level (Satish, 2026-11-15) -->
-      <section class="sp-grp sp-abt" data-tab="more">
-        <h3 class="sp-h"><span data-w="page.about">About</span></h3>
+      <!-- About, a tab of its own (Satish, 2026-11-20): This app, then Follow -->
+      <section class="sp-grp sp-abt" data-tab="about">
+        <h3 class="sp-h"><span data-w="page.thisApp">This app</span></h3>
         <div class="sp-card">
-          <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span data-w="page.helpAndHowToUse">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-          <button type="button" class="sp-row sp-go" id="inb2" hidden><span class="sp-l"><span data-w="page.addToHomeScreen">Add to Home Screen</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-          <!-- where Follow (Listen until 2026-11-11) runs: GPU or CPU (data-way picks the icon's mark and the badge colour). listen.js showWay -->
-          <div class="sp-row" id="lswr" hidden><span class="lsw-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/><path class="lsw-gpu" d="M12.6 8.2 10 12.3h3.2l-1.8 3.5" stroke-width="1.8"/><rect class="lsw-cpu" x="9" y="9" width="6" height="6" rx="1"/></svg></span><span class="sp-l"><span id="lsw"></span><small id="lswn"></small></span><span class="lsw-b" id="lswb"></span></div>
-          <!-- fast mode did not work on this phone: why is kept, and Share report sends it (js/features/fast-mode-report.js) -->
-          <div class="sp-row" id="lswf" hidden><span class="lsw-ic lsw-warn" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4.5M12 17.5h.01"/></svg></span><span class="sp-l"><span data-w="listen.fastFailed">Fast mode did not work on this phone</span><small data-w="listen.fastFailedNote">Standard mode is used instead. Sharing the report helps get fast mode working here.</small><button type="button" id="lswfs" class="lsw-share"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg><span data-w="listen.shareReport">Share report</span></button><span id="lswfl" class="sr" aria-live="polite"></span></span></div>
           <!-- the version, and under it whether the site is saved for offline use or what Check for updates found; the
                round button checks (fetches the page and its files fresh; if any changed, saves the new copy and reloads
                with it, else says it is up to date). Safari, iPhones and iPads finish an update only once the app is closed
@@ -411,10 +402,25 @@
             <span class="sp-l"><span><span data-w="offline.version">Version</span> <span id="ver" lang="en"></span></span><small id="ups"><span id="offv"></span><span id="updv"></span><button type="button" id="uph" aria-haspopup="dialog" aria-controls="upm" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8 1c0 1.7-2.4 2.2-2.4 3.6"/><path d="M12 17.2h.01"/></svg><span data-w="offline.how">How?</span></button><span id="update-why" hidden></span></small></span>
             <button type="button" class="upb" id="upd" aria-describedby="ups"><span class="sr" id="updl"></span><svg class="vli vli-check" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg><svg class="vli vli-busy" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" opacity=".25"/><path d="M12 3a9 9 0 0 1 9 9"/></svg><svg class="vli vli-ok" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><svg class="vli vli-off" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M8.5 8.6A5 5 0 0 0 6.5 18H17"/><path d="M11 6.2A6 6 0 0 1 18 11a4 4 0 0 1 2.4 6.3"/></svg><svg class="vli vli-restart" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg></button>
           </div>
+          <button type="button" class="sp-row sp-go" id="hlp2"><span class="sp-l"><span data-w="page.helpAndHowToUse">Help and how to use</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button type="button" class="sp-row sp-go" id="inb2" hidden><span class="sp-l"><span data-w="page.addToHomeScreen">Add to Home Screen</span></span><svg class="sp-ch" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </section>
+      <!-- Follow (js/features/listen.js): where its model runs here, fast mode's report when fast mode failed, and how
+           Follow went. Left out where this browser can't follow (data-off, taken away by listen.js showWay) -->
+      <section class="sp-grp sp-follow" data-tab="about" data-off>
+        <h3 class="sp-h"><span data-w="page.listen">Follow</span></h3>
+        <div class="sp-card">
+          <!-- where Follow (Listen until 2026-11-11) runs: GPU or CPU (data-way picks the icon's mark and the badge colour). listen.js showWay -->
+          <div class="sp-row" id="lswr" hidden><span class="lsw-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/><path class="lsw-gpu" d="M12.6 8.2 10 12.3h3.2l-1.8 3.5" stroke-width="1.8"/><rect class="lsw-cpu" x="9" y="9" width="6" height="6" rx="1"/></svg></span><span class="sp-l"><span id="lsw"></span><small id="lswn"></small></span><span class="lsw-b" id="lswb"></span></div>
+          <!-- fast mode did not work on this phone: why is kept, and Share report sends it (js/features/fast-mode-report.js) -->
+          <div class="sp-row" id="lswf" hidden><span class="lsw-ic lsw-warn" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4.5M12 17.5h.01"/></svg></span><span class="sp-l"><span data-w="listen.fastFailed">Fast mode did not work on this phone</span><small data-w="listen.fastFailedNote">Standard mode is used instead. Sharing the report helps get fast mode working here.</small><button type="button" id="lswfs" class="lsw-share"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg><span data-w="listen.shareReport">Share report</span></button><span id="lswfl" class="sr" aria-live="polite"></span></span></div>
+          <!-- how Follow went the last few times, kept on this device: Share Follow report sends them (js/features/follow-report.js) -->
+          <div class="sp-row" id="follow-report" hidden><span class="lsw-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="sp-l"><span data-w="listen.followReport">How Follow went</span><small data-w="listen.followReportNote">Your last few times are kept on this device, never sent by itself. Sharing them helps make Follow better.</small><button type="button" id="follow-report-share" class="lsw-share"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg><span data-w="listen.shareFollowReport">Share Follow report</span></button><span id="follow-report-said" class="sr" aria-live="polite"></span></span></div>
         </div>
       </section>
     </div>
-    <!-- who made the site, always in English: under About (on a phone, the You tab only; js/features/settings-panel.js spTab) -->
+    <!-- who made the site, always in English: under the About tab (js/features/settings-panel.js spTab) -->
     <p class="sp-by" lang="en">A volunteer offering by Satish Ghanekar<br><a href="mailto:satishghanekar1@gmail.com">satishghanekar1@gmail.com</a></p>
   </div>
 </div>
@@ -651,7 +657,7 @@
     <div class="pfbs"><button type="button" id="bkok" class="pri"></button><button type="button" id="bkno"></button></div>
   </div>
 </div>
-<!-- ==== Help (English only), opened from the top bar's Share menu and Settings → You → About. Keep it up to date with every change a reader can see ==== -->
+<!-- ==== Help (English only), opened from the top bar's Share menu and Settings → About. Keep it up to date with every change a reader can see ==== -->
 <div id="help" hidden role="dialog" aria-modal="true" aria-labelledby="hlpt" lang="en">
   <div class="hlpbar"><h2 id="hlpt">Help</h2><button type="button" id="hlpx" aria-label="Close help"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <!-- Help's text is laid out only when Help is first opened (js/features/help.js) -->
@@ -737,7 +743,7 @@
         <li><b>Fold a text:</b> a tap anywhere on its heading (or its round ⌃) folds it down to its heading; tap it again to open it. Your phone remembers this, and going to a folded text from the Library or search opens it.</li>
         <li><b>More room to read:</b> on phones and tablets, while you read a text the top and bottom bars slide away as you scroll down (on Home they stay), leaving a thin strip with the name of the text. Scroll up a little, tap a blank part of the page or the strip, or reach the end of the page to bring them back.</li>
         <li><b>Pinch</b> (on a computer: a trackpad pinch, or Ctrl + / Ctrl − and Ctrl 0 to reset; ⌘ on a Mac) or use A− / A+ (under <b>Reading</b>, the sliders in the bottom bar, or in Settings) to change the text size. The page itself never zooms, and on Home, in the calendar and in the routine builder a pinch does nothing. The bubble shows the size (100% is the normal size for your screen: the same for every text, a little larger on an iPad, and larger again if you have set larger text on your phone or in your browser; a line too long for the screen goes onto a second row, set a little closer, rather than the text shrinking); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
-        <li><b>Follow:</b> while an aarti or a chant is going on, tap <b>Follow</b> in the bottom bar. The phone hears the chanting, opens the text if another one is on screen (started on Home, it opens the session there, so the next texts follow below), marks the line being chanted and keeps it in view as the chanting goes on, until you tap the round stop button (■) in the small bar over the bottom bar, or Follow again. That bar shows the text's name and a wave that moves with what the phone hears. While it follows, the dhrupad is shown after every verse, so its mark goes there too when the dhrupad is sung; after Stop it is shown again as you had it. If you scroll yourself, it waits a few seconds before moving the page. The first time it downloads about 120 MB (best on Wi-Fi), kept on the phone so it works offline after that. Nothing it hears leaves the phone. Settings → You → About shows whether Follow runs on this phone's GPU (faster, marked Optimized) or its CPU.</li>
+        <li><b>Follow:</b> while an aarti or a chant is going on, tap <b>Follow</b> in the bottom bar. The phone hears the chanting, opens the text if another one is on screen (started on Home, it opens the session there, so the next texts follow below), marks the line being chanted and keeps it in view as the chanting goes on, until you tap the round stop button (■) in the small bar over the bottom bar, or Follow again. That bar shows the text's name and a wave that moves with what the phone hears. While it follows, the dhrupad is shown after every verse, so its mark goes there too when the dhrupad is sung; after Stop it is shown again as you had it. If you scroll yourself, it waits a few seconds before moving the page. The first time it downloads about 120 MB (best on Wi-Fi), kept on the phone so it works offline after that. Nothing it hears leaves the phone. Settings → About shows whether Follow runs on this phone's GPU (faster, marked Optimized) or its CPU.</li>
         <li><b>Bottom bar:</b> <b>‹ Prev</b> and <b>Next ›</b> go to the neighbouring texts (in a session, the session's); the house with a lamp goes back to <b>Home</b>; the open book opens the <b>Library</b> and its search; the two sliders open the <b>Reading</b> choices; the microphone starts <b>Follow</b> (see below) and fills in while it follows. Each has its word under it (the smallest phones show the icon alone, and a phone held sideways the word alone); on narrow phones Prev and Next show just their arrows. Like the top bar it keeps its size when you change the text size or pinch.</li>
         <li><b>Go to:</b> in a long text (Pavamana Suktam, Shri Rudra, the Lalita and Vishnu Sahasranamas) or a session, the title in the top bar says where you are as you read: the text's name, and under it its part (तृतीयोऽध्यायः · ९.४७, नमकम् · अनुवाकः ५, स्तोत्रम् · १०८). Tap it to go somewhere else: the text's headings, with the place you are in open (its suktas, anuvakas or verses in groups of 25, each one tap away; ▾ shows another heading's), and in a text of many verses a box to type a verse number. In a session it lists the session's texts first, and the title also says about how long is left of the session, from the text you are on. Back takes you to where you were. While Follow listens, it carries on from the place you went to. In a short text the title takes you Home, as before.</li>
         <li><b>Reading</b> (the sliders in the bottom bar): slides up the reading choices within reach of your thumb: <b>Language</b> (main, second or both), <b>Text size</b> (A− and A+, with ↺ to go back to the normal size) and <b>Dhrupad</b> (once at the top, or after every verse; in “once” mode, tap <b>↻ ध्रुपद</b> under a stanza to see the refrain, and tap anywhere to close it), plus <b>All settings</b>. Your place stays put as you change them. Tap outside it, ✕ or your phone's Back to close it.</li>
@@ -777,7 +783,7 @@
       </ul>
 
       <h3>Settings</h3>
-      <p>On a phone, Settings has three tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages and which to show, text size, font and the dhrupad; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on, and <b>Show holidays from</b> US and India for Coming up) and <b>You</b> (Profile, Backup and About). It opens on Reading each time; on a phone held sideways the preview stays on the left while the choices scroll beside it. On an iPad or a computer there are no tabs: every group shows at once in two columns, the preview and the reading choices on the left, Screen, Profile and Backup on the right, and About under both. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
+      <p>Settings has four tabs beside <b>‹</b> Back: <b>Reading</b> (a preview of the Ganapati aarti with everything it shows: your languages and which to show, text size, font and the dhrupad; then the verses: dhrupad and columns), <b>Screen</b> (the language of the menus and buttons, theme, contrast, keeping the screen on, and <b>Show holidays from</b> US and India for Coming up) <b>You</b> (Profile and Backup) and <b>About</b> (this app, and Follow). It opens on Reading each time; on a phone held sideways the preview stays on the left while the choices scroll beside it. On an iPad or a computer the same four tabs show a tab's groups in two columns: the reading choices on the left and the preview on the right, Profile beside Backup, and This app beside Follow. The Reading and Screen settings are kept for the person reading (see People on one phone).</p>
       <ul>
         <li><b>Main language:</b> the language you read in, in large text: <span lang="mr">मराठी</span> (the text as written), English (in English letters) or the same words in Kannada, Telugu or Gujarati letters (<span lang="kn">ಕನ್ನಡ</span>, <span lang="te">తెలుగు</span>, <span lang="gu">ગુજરાતી</span>). Tap it to pick from a list; English is there twice, once for each spelling (see English spelling below). With Kannada, Telugu or Gujarati letters the second language can be English or None.</li>
         <li><b>Second language:</b> shown smaller, under each line, when Show (below it, or Language under <b>Reading</b> in the bottom bar) is set to both. Pick the other language, or <b>None</b> to read in one language only. Picking your second language as the main one swaps the two.</li>
@@ -800,7 +806,7 @@
         <li><b>Keep screen on</b>: Off, 15, 30, 45 or 60 minutes after your last touch, key or scroll; after that the phone dims and locks as usual, so a phone left on its stand does not run its battery down. It starts at 30 on phones and tablets and Off on computers.</li>
         <li><b>Chanting pace</b> (Settings → You, under Routine), for how long texts and sessions take: <b>Auto</b> learns your own pace while Follow hears you chant (on this phone only, for the person reading) and shows a range until it has heard a few minutes; or pick <b>Quick</b>, <b>Steady</b> or <b>Slow</b>. Under it, what it has learned so far; <b>Forget what was learned</b> starts again.</li>
         <li><b>Profile</b> and <b>Backup:</b> <b>Who is reading</b>, <b>Routine</b> (the ready-made routine you follow, or your own; see Your routine above) and <b>Chanting pace</b>; <b>Save a backup file</b> (with when you last saved one) and <b>Restore from a file</b>. See Backup above.</li>
-        <li><b>About:</b> this Help, <b>Add to Home Screen</b> (until the site is installed), and the version, with whether the site is saved for offline use under it (a green dot: Offline ready); the round button beside it checks for updates (see Good to know below). On a device that can listen, a line above the version says how Follow runs: <b>fast mode</b> (on the phone's graphics chip: about 3× faster and lighter on the battery, marked Fast) or <b>standard mode</b> (works on every phone, marked Standard). Follow tries fast mode first; where it does not work, Follow carries on in standard mode by itself, and a line under it says so, with <b>Share report</b> to send what went wrong (through WhatsApp, a message or email) so it can be fixed. The report holds no personal details.</li>
+        <li><b>About:</b> under <b>This app</b>, the version, with whether the site is saved for offline use under it (a green dot: Offline ready) and the round button beside it that checks for updates (see Good to know below); then this Help and <b>Add to Home Screen</b> (until the site is installed). On a device that can listen, <b>Follow</b> says how it runs: <b>fast mode</b> (on the phone's graphics chip: about 3× faster and lighter on the battery, marked Fast) or <b>standard mode</b> (works on every phone, marked Standard). Follow tries fast mode first; where it does not work, Follow carries on in standard mode by itself, and a line under it says so, with <b>Share report</b> to send what went wrong (through WhatsApp, a message or email) so it can be fixed. <b>How Follow went</b> keeps a short account of each of the last few times Follow listened, on this device only: how fast it heard, how often it found the place, where it got lost, its jumps and the pace. <b>Share Follow report</b> sends them, to help make Follow better; nothing is sent by itself. Neither report holds any sound, the words heard, or personal details.</li>
       </ul>
 
       <h3>Print</h3>
@@ -823,9 +829,9 @@
 
       <h3>Good to know</h3>
       <ul>
-        <li><b>Works without internet:</b> the first time you open the site it is saved on your phone, and Settings → You → About shows “Offline ready” beside the version once it is. With no internet, a small cloud with a line through it shows in the top bar: the saved copy is in use, and everything still works.</li>
+        <li><b>Works without internet:</b> the first time you open the site it is saved on your phone, and Settings → About shows “Offline ready” beside the version once it is. With no internet, a small cloud with a line through it shows in the top bar: the saved copy is in use, and everything still works.</li>
         <li><b>Download size:</b> the first time, the app downloads about <span data-size="first">2.7</span> MB, more than half of it the fonts. After that it opens with nothing to download, and a new version takes about <span data-size="update">1.2</span> MB. A PDF downloads only when you open it, and Listen's chanting model (about 120 MB) only when you turn on Follow and agree to it.</li>
-        <li><b>Getting updates:</b> the site opens straight from the copy saved on your phone, so it starts quickly even with a weak connection. When a new version is published it is saved in the background while you are online, and the next time you open the site you get it. To look straight away, open Settings → You and tap the round button beside the version under About: it turns while it looks, then shows a green ✓ and “You have the latest version” (or “No internet · tap to try again”), or reloads with the new version. On an iPhone or iPad, and in Safari on a Mac, the new version is saved but starts only once the app is closed and opened again: the line says “Saved. Close the app and open it again”, and <b>How?</b> beside it (or the round button) shows the steps for an iPhone, an iPad or a Mac. If the new version can't be saved on your device, the line says “Couldn't save the new version · tap to try again”, the version you have stays in use, and a line under it says why (send a screenshot of it to the email address below).</li>
+        <li><b>Getting updates:</b> the site opens straight from the copy saved on your phone, so it starts quickly even with a weak connection. When a new version is published it is saved in the background while you are online, and the next time you open the site you get it. To look straight away, open Settings → About and tap the round button beside the version: it turns while it looks, then shows a green ✓ and “You have the latest version” (or “No internet · tap to try again”), or reloads with the new version. On an iPhone or iPad, and in Safari on a Mac, the new version is saved but starts only once the app is closed and opened again: the line says “Saved. Close the app and open it again”, and <b>How?</b> beside it (or the round button) shows the steps for an iPhone, an iPad or a Mac. If the new version can't be saved on your device, the line says “Couldn't save the new version · tap to try again”, the version you have stays in use, and a line under it says why (send a screenshot of it to the email address below).</li>
         <li><b>Privacy:</b> your people, settings and location stay on your phone. Nothing is sent anywhere; a backup file goes only where you save or send it.</li>
         <li>Moonrise times are calculated on your phone and may differ by a few minutes from printed calendars.</li>
       </ul>

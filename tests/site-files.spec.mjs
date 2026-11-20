@@ -120,8 +120,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // 411 KB since 2026-11-19: the launch animation, js/features/launch.js and the splash's part, 409.3 KB then; 414 KB
   // since 2026-11-19: the launch animation played again from the top bar's picture, in five languages, 412.6 KB then; 421 KB
   // since 2026-11-20: fast mode's report, js/core/gpu-report.js and js/features/fast-mode-report.js, and About's row in
-  // five languages, 419.2 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(421_000);
+  // five languages, 419.2 KB then; since 2026-11-20 too: Follow's report, js/core/follow-report.js and
+  // js/features/follow-report.js, and the About tab, 427.5 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(428_500);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a

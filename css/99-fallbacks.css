@@ -25,6 +25,10 @@
     background: none;
     box-shadow: inset 0 0 0 1px currentColor;
   }
+  .lsw-b {
+    /* the badge's green word in the ink, outlined as it is */
+    color: var(--ink);
+  }
   :root[data-pref="dark"],
   :root:root:root[data-hc="1"] {
     --sheet: var(--surface);

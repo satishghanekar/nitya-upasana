@@ -342,6 +342,7 @@ test("Settings → About says where Listen runs its model: the CPU here, the GPU
   expect(await page.evaluate(() => window.__gpuAsked)).toBe(0);
   await expect(page.locator("#lswr")).toHaveAttribute("hidden", "");
   await page.locator("#aa").click();
+  await page.locator('#spv [data-v="about"]').click();
   // (no GPU adapter: the CPU)
   await expect(page.locator("#lswr")).not.toHaveAttribute("hidden", "");
   expect(await page.evaluate(() => window.__gpuAsked)).toBe(1);
@@ -349,11 +350,12 @@ test("Settings → About says where Listen runs its model: the CPU here, the GPU
   await expect(page.locator("#lsw")).toHaveText("Follow: standard mode");
   await expect(page.locator("#lswn")).toHaveText("Works on every phone, uses more battery");
   await expect(page.locator("#lswb")).toHaveText("Standard");
-  // the Listen line comes before the version, which is last in About; fast mode's report row (hidden here) between them
-  expect(await page.evaluate(() => document.getElementById("lswr").nextElementSibling.id)).toBe("lswf");
+  // About's Follow group: the Listen line, fast mode's report row and How Follow went (both hidden here), in that order
+  await expect(page.locator(".sp-follow")).toBeVisible();
+  await expect(page.locator(".sp-follow .sp-h")).toHaveText("Follow");
+  expect(await page.locator(".sp-follow .sp-card > *").evaluateAll((es) => es.map((e) => e.id))).toEqual(["lswr", "lswf", "follow-report"]);
   await expect(page.locator("#lswf")).toBeHidden();
-  expect(await page.evaluate(() => document.getElementById("lswf").nextElementSibling.id)).toBe("upr");
-  expect(await page.evaluate(() => document.getElementById("upr").nextElementSibling)).toBeNull();
+  await expect(page.locator("#follow-report")).toBeHidden();
   // the Standard badge reads at 4.5:1 in every theme (a11y.spec scans Settings too, but never sees the GPU line)
   expect(await axeEveryTheme(page, "#lswr")).toEqual(noViolations());
   expect(errors).toEqual([]);
@@ -366,6 +368,7 @@ test("Settings → About says the GPU when the browser has WebGPU and an adapter
   });
   await openSite(page, SETUPS.english, { errors });
   await page.locator("#aa").click();
+  await page.locator('#spv [data-v="about"]').click();
   await expect(page.locator("#lswr")).toHaveAttribute("data-way", "gpu");
   await expect(page.locator("#lsw")).toHaveText("Follow: fast mode");
   await expect(page.locator("#lswn")).toHaveText("About 3× faster, lighter on battery");
@@ -449,6 +452,7 @@ test("fast mode that fails on this phone: Follow carries on on the CPU, and Abou
   await panel.getByRole("button", { name: "Stop" }).click();
   // About: standard mode, and the row with Share report
   await page.locator("#aa").click();
+  await page.locator('#spv [data-v="about"]').click();
   await expect(page.locator("#lswr")).toHaveAttribute("data-way", "cpu");
   const row = page.locator("#lswf");
   await expect(row).toBeVisible();
@@ -534,6 +538,7 @@ test("the app closed while fast mode was tried: found out on the next opening, F
   await settle(page);
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-fast-mode")).status)).toBe("closed");
   await page.locator("#aa").click();
+  await page.locator('#spv [data-v="about"]').click();
   await expect(page.locator("#lswr")).toHaveAttribute("data-way", "cpu");
   await page.locator("#lswfs").click();
   const shared = await page.waitForFunction(() => window.__shared).then((h) => h.jsonValue());
@@ -552,6 +557,77 @@ test("fast mode left while still downloading is not a failure: the GPU is tried 
   await settle(page);
   expect(await page.evaluate(() => localStorage.getItem("nitya-fast-mode"))).toBeNull();
   await page.locator("#aa").click();
+  await page.locator('#spv [data-v="about"]').click();
   await expect(page.locator("#lswr")).toHaveAttribute("data-way", "gpu");
   await expect(page.locator("#lswf")).toBeHidden();
+});
+
+// Follow's report (Satish, 2026-11-20): each time Follow listens half a minute or more, its account is kept on this
+// device, the last 6; About's Follow group then shows How Follow went, and Share Follow report hands the phone's share
+// sheet the text. Counted here through the part itself (a real time would need a chanting voice)
+test("Follow's report: a time counted and kept, About shows it, and Share Follow report sends it", async ({ page }) => {
+  const errors = [];
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "share", { value: (d) => ((window.__shared = d), Promise.resolve()), configurable: true });
+  });
+  await openSite(page, SETUPS.english, { errors, running: true });
+  const count = (fn) => page.evaluate(fn);
+  await count(async () => {
+    const r = await import("./js/features/follow-report.js");
+    window.__r = r;
+    r.start("cpu", "chant-v6-q4", false);
+    r.library("1.30.0");
+    r.ready();
+    r.found("search", "aarti-sukhkarta", 0, false);
+    for (let i = 0; i < 9; i++) {
+      r.hearing(100 + i, 0.04, "aarti-sukhkarta");
+      if (i < 7) r.found("near", "aarti-sukhkarta", 20, false);
+      r.pace(7.5);
+    }
+    r.quiet();
+    r.lost("aarti-sukhkarta", 6);
+    r.hand();
+  });
+  // too short to keep: under half a minute
+  await page.clock.runFor(10_000);
+  await count(() => window.__r.end("Stop"));
+  expect(await page.evaluate(() => localStorage.getItem("nitya-follow-report"))).toBeNull();
+  await count(() => {
+    const r = window.__r;
+    r.start("gpu", "chant-v6-q4", true);
+    r.ready();
+    r.hearing(80, 0.05, "");
+    r.found("search", "aarti-devi", 0, false);
+    r.hearing(90, 0.05, "aarti-devi");
+    r.found("near", "aarti-devi", -100, false);
+    r.found("search", "aarti-sukhkarta", 0, true);
+  });
+  await page.clock.runFor(45_000);
+  await count(() => window.__r.end("the app put away"));
+  const kept = await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-follow-report")));
+  expect(kept).toHaveLength(1);
+  expect(kept[0]).toMatchObject({ mode: "gpu", downloaded: true, n: 2, near: 1, search: 2, toText: 1, back: 1, end: "the app put away" });
+  expect(JSON.stringify(kept[0]).length, "small: about 600 bytes a time").toBeLessThan(1200);
+  // About's Follow group: How Follow went, and Share Follow report
+  await page.locator("#aa").click();
+  await page.locator('#spv [data-v="about"]').click();
+  const row = page.locator("#follow-report");
+  await expect(row).toBeVisible();
+  await expect(row).toContainText("How Follow went");
+  await page.waitForTimeout(300);
+  await row.getByRole("button", { name: "Share Follow report" }).click();
+  const shared = await page.waitForFunction(() => window.__shared).then((h) => h.jsonValue());
+  expect(shared.title).toBe("Nitya Upasana: Follow report");
+  for (const want of [
+    "Follow report (last 1 time)",
+    "Phone: ",
+    "fast mode (GPU)",
+    "(downloaded first)",
+    "Speed: 2 hearings",
+    "Jumps: 1 to another text, 1 back",
+    "ended with the app put away",
+  ])
+    expect(shared.text).toContain(want);
+  expect(await axeEveryTheme(page, "#follow-report")).toEqual(noViolations());
+  expect(errors).toEqual([]);
 });
