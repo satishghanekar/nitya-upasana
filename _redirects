@@ -1,0 +1,18 @@
+# Developer files stay in the repository, not on the site. Cloudflare Pages serves every file in it as it is, and
+# can't answer "not found" for a file that exists, so each of these sends the visitor to the app instead
+# (tests/site-files.spec.mjs checks that every document, dotfile and test is here, and nothing the app loads).
+/tests/* / 301
+/.github/* / 301
+/.cursorrules / 301
+/.editorconfig / 301
+/.gitignore / 301
+/ARCHITECTURE.md / 301
+/CLAUDE.md / 301
+/DOWNLOAD-SIZE.md / 301
+/README.md / 301
+/content/pdfs/README.md / 301
+/css/README.md / 301
+/fonts/README.md / 301
+/js/README.md / 301
+/models/README.md / 301
+/vendor/onnxruntime/README.md / 301

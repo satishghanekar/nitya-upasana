@@ -2,7 +2,7 @@
 
 This is for anyone changing the code. To change a text, see `README.md` instead. `js/README.md` lists every script and `css/README.md` every style file.
 
-The site is one page, `index.html`, plus plain CSS and JavaScript files and the texts as plain-text files. **There is no build step, no framework and no server.** Cloudflare Pages serves the files exactly as they are in the repository. The JavaScript is ES modules with JSDoc types, checked by `tsc` but never compiled.
+The site is one page, `index.html`, plus plain CSS and JavaScript files and the texts as plain-text files. **There is no build step, no framework and no server.** Cloudflare Pages serves the files exactly as they are in the repository. The documents, dotfiles and `tests/` are kept off the site by `_redirects` (each sends the visitor to the app); `LICENSE.txt` is the terms of use, linked from Settings → About. The JavaScript is ES modules with JSDoc types, checked by `tsc` but never compiled.
 
 ## What happens when the page opens
 

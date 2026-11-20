@@ -3,8 +3,8 @@
 Read `ARCHITECTURE.md` first, then `js/README.md` or `css/README.md` for the part you change. Texts: `README.md`,
 "How to add a text". Tests: `tests/README.md`. This file is the short list of rules; those files say why.
 
-Everything at the repository root is served as it is (Cloudflare Pages), this file included: never commit anything
-private.
+Everything in the repository is served as it is (Cloudflare Pages), except what `_redirects` sends to the app (the
+documents, dotfiles and `tests/`): never commit anything private. A new document or dotfile goes into `_redirects`.
 
 ## The stack: keep it
 - No build step, no framework, no bundler, no runtime npm packages. `index.html`, plain CSS and ES modules are served
