@@ -827,6 +827,8 @@ export default {
     restoreFromAFile: "ಫೈಲ್‌ನಿಂದ ಮರುಸ್ಥಾಪಿಸಿ",
     aNityaFileSavedBefore: "ಹಿಂದೆ ಉಳಿಸಿದ .nitya ಫೈಲ್",
     about: "ಕುರಿತು",
+    contact: "ಸಂಪರ್ಕ",
+    termsOfUse: "ಬಳಕೆಯ ನಿಯಮಗಳು",
     thisApp: "ಈ ಆ್ಯಪ್",
     helpAndHowToUse: "ಸಹಾಯ ಮತ್ತು ಬಳಸುವ ವಿಧಾನ",
     addToHomeScreen: "ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಸೇರಿಸಿ",

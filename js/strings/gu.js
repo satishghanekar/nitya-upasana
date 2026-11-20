@@ -811,6 +811,8 @@ export default {
     restoreFromAFile: "ફાઇલમાંથી પાછું લાવો",
     aNityaFileSavedBefore: "અગાઉ સાચવેલી .nitya ફાઇલ",
     about: "વિશે",
+    contact: "સંપર્ક",
+    termsOfUse: "ઉપયોગની શરતો",
     thisApp: "આ ઍપ",
     helpAndHowToUse: "મદદ અને વાપરવાની રીત",
     addToHomeScreen: "હોમ સ્ક્રીન પર ઉમેરો",

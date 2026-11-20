@@ -832,6 +832,8 @@ export default {
     restoreFromAFile: "ఫైల్ నుండి పునరుద్ధరించు",
     aNityaFileSavedBefore: "ముందు సేవ్ చేసిన .nitya ఫైల్",
     about: "గురించి",
+    contact: "సంప్రదించండి",
+    termsOfUse: "వినియోగ నిబంధనలు",
     thisApp: "ఈ యాప్",
     helpAndHowToUse: "సహాయం, వాడే విధానం",
     addToHomeScreen: "హోమ్ స్క్రీన్‌కు జోడించు",

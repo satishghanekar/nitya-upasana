@@ -64,6 +64,7 @@ import { init as startPictureViewer } from "./features/picture-viewer.js";
 import { init as startHelp } from "./features/help.js";
 import { init as startPrint } from "./features/print.js";
 import { init as startShare } from "./features/share.js";
+import { init as startTerms } from "./features/terms.js";
 import { init as startInstallPage } from "./features/install-page.js";
 import { init as startMoreMenu } from "./features/more-menu.js";
 import { init as startOffline } from "./features/offline.js";
@@ -132,6 +133,7 @@ function start() {
     run(startHelp); // Help: opens over the page; the phone's Back button closes it
     run(startPrint); // Print
     run(startShare); // Share and the QR code
+    run(startTerms); // Terms of use (#terms), from the maker's line in Settings → About
     run(startInstallPage); // The install page (#install-page): the shared link (?add), App in the Share menu, Add to Home Screen in Settings
     run(startMoreMenu); // Share in the top bar: App, Share, QR, Print and Help in a small menu
     run(startOffline); // Offline use: home-screen app details and the service worker (sw.js)

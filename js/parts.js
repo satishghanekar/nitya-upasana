@@ -111,6 +111,7 @@ var SITE_PARTS = (function () {
     "core/install-kind",
     "features/install-page",
     "features/share",
+    "features/terms",
     "features/more-menu",
     "features/offline",
     "store/backup",

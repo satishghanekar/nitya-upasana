@@ -11,7 +11,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.79.1">
+<meta name="version" content="aarti-v1.79.2">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -134,6 +134,7 @@
 <link rel="modulepreload" href="js/core/install-kind.js">
 <link rel="modulepreload" href="js/features/install-page.js">
 <link rel="modulepreload" href="js/features/share.js">
+<link rel="modulepreload" href="js/features/terms.js">
 <link rel="modulepreload" href="js/features/more-menu.js">
 <link rel="modulepreload" href="js/features/offline.js">
 <link rel="modulepreload" href="js/store/backup.js">
@@ -421,7 +422,9 @@
       </section>
     </div>
     <!-- who made the site, always in English: under the About tab (js/features/settings-panel.js spTab) -->
-    <p class="sp-by" lang="en">A volunteer offering by Satish Ghanekar<br><a href="mailto:satishghanekar1@gmail.com">satishghanekar1@gmail.com</a><br>© 2026 Satish Ghanekar. All rights reserved. <a href="LICENSE.txt" target="_blank" rel="noopener">Terms of use</a></p>
+    <!-- the maker's line (Satish, 2026-11-20): the app's name, the offering, Contact (an email) and Terms of use, which opens
+         #terms (js/features/terms.js) -->
+    <div class="sp-by"><p class="sp-by-name" lang="en">Nitya Upasana</p><p lang="en">A volunteer offering by Satish Ghanekar</p><div class="sp-by-buttons"><a class="sp-by-button" href="mailto:satishghanekar1@gmail.com"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span data-w="page.contact">Contact</span></a><button type="button" class="sp-by-button" id="terms-open"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg><span data-w="page.termsOfUse">Terms of use</span></button></div></div>
   </div>
 </div>
 <!-- ==== Vedic calendar (js/features/vedic-calendar.js, worked out by js/core/panchang.js on this phone): opened by the
@@ -560,6 +563,10 @@
 </div>
 <div id="qrm" hidden role="dialog" aria-modal="true" aria-label="QR code">
   <div class="qrc"><div class="qrt"><span data-w="page.scanWithTheCameraTo">Scan with the camera to open</span></div><div class="qri"><svg viewBox="-4 -4 37 37" width="100%" height="100%" shape-rendering="crispEdges" role="img" aria-label="QR code for https://nitya-upasana.pages.dev/?add"><rect x="-4" y="-4" width="37" height="37" fill="#fff"/><path fill="#000" d="M0 0h7v1h-7zM8 0h1v1h-1zM10 0h2v1h-2zM13 0h2v1h-2zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h1v1h-1zM13 1h2v1h-2zM18 1h3v1h-3zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM9 2h3v1h-3zM15 2h1v1h-1zM17 2h1v1h-1zM19 2h2v1h-2zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM11 3h2v1h-2zM15 3h2v1h-2zM18 3h2v1h-2zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h3v1h-3zM14 4h3v1h-3zM18 4h1v1h-1zM20 4h1v1h-1zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM11 5h2v1h-2zM18 5h2v1h-2zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM11 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM17 7h2v1h-2zM0 8h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM12 8h2v1h-2zM17 8h1v1h-1zM19 8h7v1h-7zM28 8h1v1h-1zM0 9h5v1h-5zM8 9h1v1h-1zM10 9h1v1h-1zM13 9h4v1h-4zM18 9h1v1h-1zM22 9h7v1h-7zM2 10h3v1h-3zM6 10h3v1h-3zM11 10h2v1h-2zM15 10h1v1h-1zM18 10h1v1h-1zM21 10h2v1h-2zM28 10h1v1h-1zM2 11h4v1h-4zM9 11h2v1h-2zM14 11h7v1h-7zM22 11h4v1h-4zM27 11h2v1h-2zM3 12h2v1h-2zM6 12h1v1h-1zM8 12h3v1h-3zM12 12h3v1h-3zM17 12h1v1h-1zM20 12h1v1h-1zM23 12h1v1h-1zM27 12h1v1h-1zM0 13h1v1h-1zM2 13h1v1h-1zM4 13h2v1h-2zM10 13h2v1h-2zM15 13h2v1h-2zM18 13h1v1h-1zM22 13h7v1h-7zM1 14h1v1h-1zM5 14h4v1h-4zM10 14h1v1h-1zM13 14h3v1h-3zM17 14h2v1h-2zM20 14h1v1h-1zM23 14h1v1h-1zM25 14h2v1h-2zM28 14h1v1h-1zM1 15h3v1h-3zM5 15h1v1h-1zM7 15h2v1h-2zM10 15h2v1h-2zM13 15h1v1h-1zM17 15h2v1h-2zM22 15h1v1h-1zM27 15h2v1h-2zM0 16h1v1h-1zM3 16h2v1h-2zM6 16h1v1h-1zM8 16h1v1h-1zM10 16h4v1h-4zM15 16h3v1h-3zM19 16h3v1h-3zM23 16h1v1h-1zM27 16h1v1h-1zM0 17h4v1h-4zM7 17h1v1h-1zM9 17h2v1h-2zM12 17h4v1h-4zM21 17h5v1h-5zM27 17h2v1h-2zM3 18h4v1h-4zM8 18h2v1h-2zM11 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM26 18h1v1h-1zM28 18h1v1h-1zM2 19h3v1h-3zM8 19h1v1h-1zM10 19h1v1h-1zM14 19h1v1h-1zM17 19h3v1h-3zM22 19h3v1h-3zM27 19h2v1h-2zM0 20h2v1h-2zM3 20h2v1h-2zM6 20h3v1h-3zM10 20h6v1h-6zM17 20h9v1h-9zM28 20h1v1h-1zM8 21h4v1h-4zM15 21h1v1h-1zM17 21h2v1h-2zM20 21h1v1h-1zM24 21h1v1h-1zM28 21h1v1h-1zM0 22h7v1h-7zM8 22h2v1h-2zM11 22h1v1h-1zM13 22h4v1h-4zM18 22h3v1h-3zM22 22h1v1h-1zM24 22h3v1h-3zM28 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM9 23h1v1h-1zM12 23h2v1h-2zM17 23h1v1h-1zM19 23h2v1h-2zM24 23h1v1h-1zM27 23h2v1h-2zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h2v1h-2zM13 24h1v1h-1zM16 24h2v1h-2zM19 24h7v1h-7zM27 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM12 25h1v1h-1zM14 25h3v1h-3zM18 25h1v1h-1zM20 25h2v1h-2zM28 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM10 26h2v1h-2zM15 26h1v1h-1zM17 26h2v1h-2zM25 26h4v1h-4zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h1v1h-1zM12 27h1v1h-1zM14 27h2v1h-2zM17 27h1v1h-1zM20 27h6v1h-6zM27 27h2v1h-2zM0 28h7v1h-7zM8 28h1v1h-1zM10 28h2v1h-2zM17 28h1v1h-1zM20 28h1v1h-1zM23 28h1v1h-1zM25 28h1v1h-1zM27 28h1v1h-1z"/></svg></div><div class="qru" lang="en">nitya-upasana.pages.dev</div><button type="button" class="wide" id="qrx"><span data-w="page.close">Close</span></button></div>
+</div>
+<!-- ==== Terms of use (js/features/terms.js), from Settings → About: the same words as LICENSE.txt, in English ==== -->
+<div id="terms" hidden role="dialog" aria-modal="true" aria-labelledby="terms-title">
+  <div class="qrc terms-card"><h2 class="qrt" id="terms-title" tabindex="-1"><span data-w="page.termsOfUse">Terms of use</span></h2><div class="terms-text" lang="en"><p>Nitya Upasana is a volunteer offering, free for anyone to use for their own prayer and reading.</p><p>Its code, design, pictures, the chant model used by Follow and the way its texts are set out are Satish Ghanekar's work. Copying, republishing or reusing any of them, in whole or in part, in another app, site or product needs his written permission.</p><p>The traditional prayers and texts themselves belong to everyone; these terms cover this app's own work.</p><p class="terms-copyright">© 2026 Satish Ghanekar. All rights reserved.</p></div><button type="button" class="wide" id="terms-close"><span data-w="page.close">Close</span></button></div>
 </div>
 <!-- ==== Print builder (js/features/print.js, js/print/what.js): What (the Library's texts with ticks, filled in by the
      script), then How (dhrupad, page, font). One step at a time on a phone (data-step), side by side from 760px. ==== -->
