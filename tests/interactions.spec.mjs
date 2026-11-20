@@ -672,6 +672,9 @@ test("Settings: Reading | Screen | You, one at a time; opens on Reading each tim
   await expect(page.locator("#hlp2")).toBeVisible();
   await expect(page.locator(".sp-abt .sp-row").first()).toHaveId("upr");
   await expect(page.locator(".sp-by")).toBeVisible();
+  // the maker's line: the copyright and the terms of use (LICENSE.txt)
+  await expect(page.locator(".sp-by")).toContainText("All rights reserved.");
+  await expect(page.locator('.sp-by a[href="LICENSE.txt"]')).toHaveText("Terms of use");
   // the four tabs side by side on the smallest phone, each word whole
   await page.setViewportSize({ width: 320, height: 568 });
   for (const b of await page.locator("#spv button").all()) expect(await b.evaluate((x) => x.scrollWidth <= x.clientWidth)).toBe(true);

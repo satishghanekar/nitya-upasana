@@ -1,0 +1,10 @@
+Nitya Upasana (nitya-upasana.pages.dev)
+Copyright (c) 2026 Satish Ghanekar. All rights reserved.
+
+This app is a volunteer offering, free for anyone to use for their own prayer and reading.
+
+Its code, design, pictures, the chant model in models/ and the way its texts are set out are the author's work. Copying,
+republishing or reusing any of them, in whole or in part, in another app, site or product, needs the
+author's written permission: satishghanekar1@gmail.com
+
+The traditional prayers and texts themselves belong to everyone; this notice covers this app's own work.
