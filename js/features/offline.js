@@ -52,7 +52,7 @@ export function init() {
       m2.content = "Nitya Upasana";
       hd.appendChild(m2);
     } catch (e) {}
-    // Offline: a small cloud in the top bar while there is no internet (#ofb), and in Settings → You → About whether the
+    // Offline: a small cloud in the top bar while there is no internet (#ofb), and in Settings → About whether the
     // site is saved for offline use (#offv). A short note says so once, when the first visit has saved it.
     ofb = byId("ofb");
     offv = byId("offv");
@@ -74,7 +74,7 @@ export function init() {
       words(offv, "offline.state." + st);
       ofb.hidden = st !== "off";
     }
-    // Check for updates (Settings → You → About, the round button): its icon and name, and under the version what it
+    // Check for updates (Settings → About, the round button): its icon and name, and under the version what it
     // found (the offline state while there is nothing to say), in the menu language. The row's look follows data-s.
     upd = byId("upd");
     updv = byId("updv");

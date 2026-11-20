@@ -44,6 +44,7 @@ import { leaveFor, startFor } from "./today-card.js";
 import { heard, heardEnd } from "./routine-time.js";
 import { ALIKE_LEAST, alike, checkSound } from "../core/gpu-report.js";
 import * as fast from "./fast-mode-report.js";
+import * as followed from "./follow-report.js";
 
 var ORT = "vendor/onnxruntime/",
   TAP = "js/worklets/listen-tap.js",
@@ -161,6 +162,8 @@ var seenAt = 0,
   ticker = 0;
 /** another text heard once, waiting to be heard again @type {{ doc: number, line: number } | null} */ var pending = null;
 var touched = 0;
+/** this start asked first to download the model (Follow's report) */
+var asked = false;
 
 export function init() {
   // another version of a text (js/features/versions.js): its letters are the ones followed from now on
@@ -176,7 +179,7 @@ export function init() {
   if (!btn || !bar) return;
   // (a phone with no microphone access or no AudioWorklet can't listen: no button)
   btn.hidden = !(navigator.mediaDevices && window.AudioWorkletNode && window.WebAssembly);
-  // (Settings → You → About says where the model runs here: the same choice Listen makes when started; asked only
+  // (Settings → About says where the model runs here: the same choice Listen makes when started; asked only
   // when Settings opens, as asking for the GPU wakes it, and logs a warning where there is none)
   document.addEventListener("nitya-settings", function () {
     if (!btn.hidden) way().then(showWay);
@@ -186,7 +189,9 @@ export function init() {
     else stop();
   });
   yes.addEventListener("click", begin);
-  no.addEventListener("click", stop);
+  no.addEventListener("click", function () {
+    stop("Stop");
+  });
   // while the panel shows it covers the foot of the page, over the bottom bar: the page leaves that much more room at
   // its end (--lsnh, css/07-bottom-bar-folds.css), so the last lines of a text can still be scrolled up above it
   if (window.ResizeObserver)
@@ -216,6 +221,8 @@ export function init() {
     addEventListener(
       ev,
       function () {
+        // (a new touch while Follow listens: the reader moved the page themselves, counted for Follow's report)
+        if (phase === "run" && Date.now() - touched > 3000) followed.hand();
         touched = Date.now();
       },
       { passive: true },
@@ -223,7 +230,7 @@ export function init() {
   });
   // the phone stops the microphone of a page out of sight anyway
   document.addEventListener("visibilitychange", function () {
-    if (document.hidden && phase !== "off") stop();
+    if (document.hidden && phase !== "off") stop("the app put away");
   });
 }
 
@@ -248,11 +255,18 @@ function panel(text, o) {
 
 async function start() {
   var w = menuWords("listen");
+  asked = false;
   phase = "ask";
   btn.setAttribute("aria-pressed", "true");
   await way();
   if (model || (await stored())) begin();
-  else panel(esc(w.ask(num(/** @type {any} */ (how).mb))), { yes: w.download, no: w.notNow });
+  else {
+    asked = true;
+    panel(esc(w.ask(num(/** @type {any} */ (how).mb))), {
+      yes: w.download,
+      no: w.notNow,
+    });
+  }
 }
 
 /** The GPU where the browser has WebGPU and a GPU to give (and it hasn't failed here before), else the CPU. Exported for
@@ -271,7 +285,7 @@ export async function way() {
   return how === WAYS.gpu ? "gpu" : "cpu";
 }
 
-/** Settings → You → About: where Listen runs its model on this device (#lswr): a chip icon (with a bolt on the GPU),
+/** Settings → About → Follow: where Listen runs its model on this device (#lswr): a chip icon (with a bolt on the GPU),
  * "Listen: GPU" or "Listen: CPU", a line under it and a badge, in the menu language @param {"gpu" | "cpu"} w */
 function showWay(w) {
   var row = document.getElementById("lswr");
@@ -287,6 +301,9 @@ function showWay(w) {
   });
   fillWords(row);
   row.hidden = false;
+  // (the About tab's Follow group, left out until Follow is known to work in this browser)
+  var grp = row.closest(".sp-follow");
+  if (grp) grp.removeAttribute("data-off");
   fast.show();
 }
 
@@ -295,9 +312,20 @@ function begin() {
   var w = menuWords("listen");
   /** @type {any} */ var win = window;
   ctx = new (win.AudioContext || win.webkitAudioContext)();
-  var mic = navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+  var mic = navigator.mediaDevices.getUserMedia({
+    audio: {
+      echoCancellation: false,
+      noiseSuppression: false,
+      autoGainControl: false,
+    },
+  });
   phase = "load";
-  panel(esc(model ? w.starting : w.downloading), { no: w.stop, progress: !model });
+  // (Follow's report: this time counted from the tap, js/features/follow-report.js)
+  followed.start(how === WAYS.gpu ? "gpu" : "cpu", String(/** @type {any} */ (how).model).replace(/^models\/|\/$/g, ""), asked);
+  panel(esc(model ? w.starting : w.downloading), {
+    no: w.stop,
+    progress: !model,
+  });
   prog.value = 0;
   Promise.all([mic, load()])
     .then(function (r) {
@@ -307,13 +335,15 @@ function begin() {
       if (phase === "off") return;
       console.warn("Listen:", e);
       var why = e && e.name === "NotAllowedError" ? w.noMic : !navigator.onLine ? w.offline : w.failed;
-      stop();
+      stop("an error: " + ((e && e.message) || e));
       panel(esc(why), { no: w.close });
     });
 }
 
-function stop() {
+/** @param {string} [why]  how it ended, for Follow's report */
+function stop(why) {
   phase = "off";
+  followed.end(why || "Stop");
   // fast mode on trial: stopped by the reader (or the page hidden), not brought down: trusted if the model is running,
   // else tried again next time
   if (fast.trying()) {
@@ -426,7 +456,15 @@ async function file(c, path, sum, tick) {
     return at + x.length;
   }, 0);
   if (sum && (await sha256(all)) !== sum) throw new Error(path + " is damaged (its SHA-256 differs)");
-  if (c) await c.put(url, new Response(all, { headers: { "Content-Type": r.headers.get("Content-Type") || "application/octet-stream" } }));
+  if (c)
+    await c.put(
+      url,
+      new Response(all, {
+        headers: {
+          "Content-Type": r.headers.get("Content-Type") || "application/octet-stream",
+        },
+      }),
+    );
   return all;
 }
 
@@ -469,7 +507,15 @@ async function filesInto(c, list, tick) {
       throw new Error(f.path + " is damaged (its size or SHA-256 differs)");
     }
     // (the cache takes its own copy of the bytes, for the moment it writes them)
-    if (!m && c) await c.put(url, new Response(view, { headers: { "Content-Type": r.headers.get("Content-Type") || "application/octet-stream" } }));
+    if (!m && c)
+      await c.put(
+        url,
+        new Response(view, {
+          headers: {
+            "Content-Type": r.headers.get("Content-Type") || "application/octet-stream",
+          },
+        }),
+      );
     at += f.bytes;
   }
   return all;
@@ -547,7 +593,9 @@ async function load() {
     ort.env.wasm.proxy = h.ep === "wasm";
     // only real errors: on the GPU it notes, as an error, the few shape steps it leaves to the CPU (as meant)
     ort.env.logLevel = "error";
-    if (onGpu) fast.library(String((ort.env.versions && ort.env.versions.common) || ""));
+    var ver = String((ort.env.versions && ort.env.versions.common) || "");
+    if (onGpu) fast.library(ver);
+    followed.library(ver);
   }
   /** @type {Record<string, number>} */ var ids = {};
   names.forEach(function (/** @type {string} */ n, /** @type {number} */ i) {
@@ -556,7 +604,10 @@ async function load() {
   /** @type {any} */ var session = null;
   try {
     var t = performance.now();
-    session = await ort.InferenceSession.create(weights, { executionProviders: [h.ep], logSeverityLevel: 3 });
+    session = await ort.InferenceSession.create(weights, {
+      executionProviders: [h.ep],
+      logSeverityLevel: 3,
+    });
     if (onGpu) {
       fast.took("starting the model", performance.now() - t);
       watchGpu();
@@ -586,6 +637,7 @@ async function load() {
     console.warn("Listen: the GPU failed, the CPU instead:", e);
     fast.failed(e);
     how = WAYS.cpu;
+    followed.mode("cpu");
     showWay("cpu");
     ort = null;
     // (the GPU's model let go before the CPU's is read, so the two are never held at once)
@@ -661,7 +713,11 @@ async function checkOn(session, c, dir) {
     });
   });
   var a = alike(choices(data, n), check.ids);
-  fast.checked({ ms: Math.round(ms), alike: a, far: Math.round(far * 100) / 100 });
+  fast.checked({
+    ms: Math.round(ms),
+    alike: a,
+    far: Math.round(far * 100) / 100,
+  });
   if (a < ALIKE_LEAST) throw new Error("the GPU heard the check sound wrong: " + Math.round(a * 1000) / 10 + "% of steps right");
 }
 
@@ -730,6 +786,7 @@ async function run(s) {
   // (the tap writes nothing out; joined to the speakers only so that every browser runs it)
   node.connect(ctx.destination);
   phase = "run";
+  followed.ready();
   // the dhrupad after every stanza while it listens, whatever the reader shows (Satish, 2026-11-11: with it shown once,
   // the mark had nowhere to go while it was sung); the reader's setting is left as it is (data-following, read by
   // js/features/bars.js apply())
@@ -739,7 +796,10 @@ async function run(s) {
   });
   aliveAt = performance.now();
   ticker = setInterval(tick, 250);
-  panel(esc(menuWords("listen").listening), { no: menuWords("listen").stop, on: true });
+  panel(esc(menuWords("listen").listening), {
+    no: menuWords("listen").stop,
+    on: true,
+  });
   /** @type {any} */ var nav = navigator;
   if (nav.wakeLock)
     nav.wakeLock
@@ -792,7 +852,7 @@ async function loop() {
   while (phase === "run" && ctx) {
     if (performance.now() - aliveAt > IDLE * 60000) {
       var w = menuWords("listen");
-      stop();
+      stop("no chanting for " + IDLE + " minutes");
       panel(esc(w.idle(num(IDLE))), { no: w.close });
       break;
     }
@@ -809,13 +869,18 @@ async function loop() {
       power = 0;
     for (var i = 0; i < audio.length; i++) power += audio[i] * audio[i];
     // silence: the mark waits
-    if (Math.sqrt(power / audio.length) < QUIET) {
+    var level = Math.sqrt(power / audio.length);
+    if (level < QUIET) {
+      followed.quiet();
       pauseAt(at);
       continue;
     }
     try {
-      var out = await scores(audio);
+      var h0 = performance.now(),
+        out = await scores(audio);
+      followed.hearing(performance.now() - h0, level, mark ? order[mark.doc].id : "");
     } catch (/** @type {any} */ e) {
+      followed.failed();
       console.warn("Listen:", e);
       fast.note("a hearing failed: " + ((e && e.message) || e));
       await sleep(500);
@@ -855,8 +920,10 @@ function alignAt(lp, outputs, began) {
   var pos = tg.at[a.end] + 1;
   // the dhrupad said again after a stanza (lined up back where it is written, once): the mark waits where it is until
   // the text goes on, as locate() has it; the first time through, it is followed like any line
-  if (doc.refrain[lineAt(doc, pos - 1)] && pos < here - COVER) pauseAt(now);
-  else place(mark.doc, pos, began + (a.step + 1) * model.info.step_ms);
+  if (doc.refrain[lineAt(doc, pos - 1)] && pos < here - COVER) {
+    followed.found("near", order[mark.doc].id, 0, false);
+    pauseAt(now);
+  } else place(mark.doc, pos, began + (a.step + 1) * model.info.step_ms, "near");
   return true;
 }
 
@@ -887,7 +954,13 @@ function texts() {
 
 /** The mark, stopped where it is now @param {number} now */
 function pauseAt(now) {
-  if (mark) mark = { doc: mark.doc, pos: ahead(mark, pace, now, texts()[mark.doc].text.length), t: now, paused: true };
+  if (mark)
+    mark = {
+      doc: mark.doc,
+      pos: ahead(mark, pace, now, texts()[mark.doc].text.length),
+      t: now,
+      paused: true,
+    };
 }
 
 /** What the model heard, followed: the place found becomes the mark, which moves on at the chanting's pace (tick)
@@ -898,11 +971,17 @@ export function follow(heard, end) {
   var all = texts(),
     now = performance.now(),
     at = end === undefined ? now : end,
-    cur = mark ? { doc: mark.doc, line: lineAt(all[mark.doc], Math.max(0, ahead(mark, pace, now, all[mark.doc].text.length) - 1)) } : null,
+    cur = mark
+      ? {
+          doc: mark.doc,
+          line: lineAt(all[mark.doc], Math.max(0, ahead(mark, pace, now, all[mark.doc].text.length) - 1)),
+        }
+      : null,
     r = locate(heard, all, cur);
   if (!r) return false;
   // a dhrupad that can't be told apart from its other repeats: the mark waits where it is until the text goes on
   if (r.held) {
+    if (mark) followed.found("search", order[mark.doc].id, 0, false);
     pauseAt(now);
     return true;
   }
@@ -912,16 +991,24 @@ export function follow(heard, end) {
     return true;
   }
   pending = null;
-  place(r.doc, r.end, at);
+  place(r.doc, r.end, at, "search");
   return true;
 }
 
 /** A place found: the letter `pos` of a text was chanted at `at` (performance.now()); the mark set from there, the
- * pace measured, the text opened if it is another @param {number} doc @param {number} pos @param {number} at */
-function place(doc, pos, at) {
+ * pace measured, the text opened if it is another @param {number} doc @param {number} pos @param {number} at
+ * @param {"near" | "search"} [how]  lined up near the mark, or found by searching the texts (Follow's report) */
+function place(doc, pos, at, how) {
   var all = texts(),
-    /** @type {import("../core/follow.js").Mark} */ found = { doc: doc, pos: pos, t: at };
+    /** @type {import("../core/follow.js").Mark} */ found = {
+      doc: doc,
+      pos: pos,
+      t: at,
+    };
+  // (Follow's report: how it was found, and how far from where the mark was)
+  followed.found(how || "search", order[doc].id, mark && mark.doc === doc ? pos - ahead(mark, pace, at, all[doc].text.length) : 0, !!mark && mark.doc !== doc);
   pace = nextPace(pace, before, found);
+  followed.pace(pace);
   before = found;
   // each place found also teaches the reader's own pace, pauses included (js/features/routine-time.js)
   heard(order[doc].id, pos, at);
@@ -981,7 +1068,10 @@ function tick() {
   var now = performance.now(),
     doc = texts()[mark.doc];
   // nothing found for a while (a long pause, or talk): the mark stops rather than run on alone
-  if (!mark.paused && now - seenAt > LOST) pauseAt(now);
+  if (!mark.paused && now - seenAt > LOST) {
+    pauseAt(now);
+    followed.lost(order[mark.doc].id, lineAt(doc, Math.max(0, mark.pos - 1)));
+  }
   var line = lineAt(doc, Math.max(0, ahead(mark, pace, now, doc.text.length) - 1));
   if (line === shown) return;
   shown = line;
@@ -1008,7 +1098,10 @@ function tick() {
     top = topEdge() + 24,
     low = innerHeight * 0.6;
   if (force || box.top < top || box.bottom > low)
-    scrollBy({ top: box.top - Math.max(top, innerHeight * 0.3), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    scrollBy({
+      top: box.top - Math.max(top, innerHeight * 0.3),
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
 }
 
 /** @param {Element} x */

@@ -58,7 +58,7 @@ export default {
       "not-json": "ఇది నిత్య ఉపాసన బ్యాకప్ ఫైల్ (.nitya) కాదు.",
       "not-nitya": "ఇది నిత్య ఉపాసన బ్యాకప్ ఫైల్ (.nitya) కాదు.",
       newer:
-        "ఈ ఫైల్‌ను యాప్ యొక్క కొత్త వెర్షన్ సేవ్ చేసింది. అప్‌డేట్‌ల కోసం చూడండి (సెట్టింగ్‌లు → మీరు → గురించి, వెర్షన్ పంక్తిని నొక్కండి), మళ్లీ ప్రయత్నించండి.",
+        "ఈ ఫైల్‌ను యాప్ యొక్క కొత్త వెర్షన్ సేవ్ చేసింది. అప్‌డేట్‌ల కోసం చూడండి (సెట్టింగ్‌లు → గురించి, వెర్షన్ పంక్తిని నొక్కండి), మళ్లీ ప్రయత్నించండి.",
       kind: "ఈ .nitya ఫైల్ పూర్తి బ్యాకప్ కాదు.",
       checksum: "సేవ్ చేసిన తర్వాత ఈ ఫైల్ మారింది లేదా పాడైంది (దాని చెక్‌సమ్ సరిపోలడం లేదు), కాబట్టి ఏదీ పునరుద్ధరించబడలేదు.",
       empty: "ఈ బ్యాకప్‌లో ఎవరూ లేరు.",
@@ -486,6 +486,10 @@ export default {
     fastFailedNote: "బదులుగా సాధారణ విధానం వాడబడుతుంది. నివేదిక పంపితే ఇక్కడ వేగవంతమైన విధానం పని చేసేలా చేయడానికి సహాయపడుతుంది.",
     shareReport: "నివేదిక పంపండి",
     reportCopied: "నివేదిక కాపీ అయింది",
+    // Settings → About → Follow: how Follow went the last few times (js/features/follow-report.js)
+    followReport: "‘వెంట’ ఎలా సాగింది",
+    followReportNote: "చివరి కొన్నిసార్ల వివరాలు ఈ పరికరంలోనే ఉంటాయి, వాటంతట అవి పంపబడవు. వాటిని పంపితే ‘వెంట’ ఇంకా మెరుగవడానికి సహాయపడుతుంది.",
+    shareFollowReport: "‘వెంట’ నివేదిక పంపండి",
   },
   bottomBar: {
     prev: "‹ ముందటిది",
@@ -532,14 +536,14 @@ export default {
     saved: "ఈ ఫోన్‌లో సేవ్ అయింది",
     online: "ఆన్‌లైన్‌లో మాత్రమే",
   },
-  // Offline use and Check for updates (js/features/offline.js): Settings → You → About
+  // Offline use and Check for updates (js/features/offline.js): Settings → About
   offline: {
     state: {
       idle: "ఆఫ్‌లైన్‌కు సిద్ధం",
       save: "ఆఫ్‌లైన్ కోసం సేవ్ అవుతోంది…",
       off: "సేవ్ చేసిన ప్రతి వాడుకలో ఉంది",
     },
-    // the version line in Settings → You → About: what Check for updates found (under the version), and the round
+    // the version line in Settings → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
       check: "అప్‌డేట్‌ల కోసం చూడు",
@@ -828,6 +832,7 @@ export default {
     restoreFromAFile: "ఫైల్ నుండి పునరుద్ధరించు",
     aNityaFileSavedBefore: "ముందు సేవ్ చేసిన .nitya ఫైల్",
     about: "గురించి",
+    thisApp: "ఈ యాప్",
     helpAndHowToUse: "సహాయం, వాడే విధానం",
     addToHomeScreen: "హోమ్ స్క్రీన్‌కు జోడించు",
     nityaUpasana: "నిత్య ఉపాసన",

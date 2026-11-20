@@ -53,7 +53,7 @@ test("offline ready only once every file is saved @chromium-only", async ({ page
   await page.goto("./");
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.locator("#aa").click();
-  await settingsTab(page, "more");
+  await settingsTab(page, "about");
   // the other files are saved, the picture is not: still saving
   await expect
     .poll(() => page.evaluate(async () => (await caches.open(document.querySelector('meta[name="version"]').content)).keys().then((k) => k.length)), {
@@ -116,7 +116,7 @@ test("Check for updates saves a changed file and reloads with it @chromium-only"
     await r.fulfill({ response: res, body: (await res.text()) + "\n#__changed{color:red}" });
   });
   await page.locator("#aa").click();
-  await settingsTab(page, "more");
+  await settingsTab(page, "about");
   await page.locator("#upd").click();
   await page.waitForEvent("load", { timeout: 25_000 });
   await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
@@ -147,7 +147,7 @@ test.describe("in Safari", () => {
     let reloaded = false;
     page.on("load", () => (reloaded = true));
     await page.locator("#aa").click();
-    await settingsTab(page, "more");
+    await settingsTab(page, "about");
     await page.locator("#upd").click();
     await expect(page.locator("#upd")).toHaveAttribute("data-s", "restart", { timeout: 25_000 });
     await expect(page.locator("#updv")).toHaveText("Saved. Close the app and open it again");
@@ -204,7 +204,7 @@ test("Check for updates finds a new version installed while the old one is on sc
     await caches.delete(name);
   });
   await page.locator("#aa").click();
-  await settingsTab(page, "more");
+  await settingsTab(page, "about");
   const loaded = page.waitForEvent("load", { timeout: 25_000 });
   await page.locator("#upd").click();
   await loaded;
@@ -223,7 +223,7 @@ async function openWithWorker(page, url = "./") {
   await page.reload();
   await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
   await page.locator("#aa").click();
-  await settingsTab(page, "more");
+  await settingsTab(page, "about");
 }
 
 test("a new version this device never takes up says so @chromium-only", async ({ page, context }) => {
@@ -283,7 +283,7 @@ test("a new version whose install fails: why, kept until the next one @chromium-
     await page.reload();
     await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
     await page.locator("#aa").click();
-    await settingsTab(page, "more");
+    await settingsTab(page, "about");
     await expect(page.locator("#update-why code")).toHaveText("manifest.json: 404");
     // the file back: the next try installs it, and why is gone
     symlinkSync(join(repo, "manifest.json"), join(dir, "manifest.json"));
@@ -293,7 +293,7 @@ test("a new version whose install fails: why, kept until the next one @chromium-
     await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
     expect(await page.evaluate(() => caches.keys())).not.toContain("update-failed");
     await page.locator("#aa").click();
-    await settingsTab(page, "more");
+    await settingsTab(page, "about");
     await expect(page.locator("#update-why")).toBeHidden();
   } finally {
     server.kill();

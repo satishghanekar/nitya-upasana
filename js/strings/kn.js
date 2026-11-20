@@ -57,8 +57,7 @@ export default {
     problems: {
       "not-json": "ಇದು ನಿತ್ಯ ಉಪಾಸನಾ ಬ್ಯಾಕಪ್ ಫೈಲ್ (.nitya) ಅಲ್ಲ.",
       "not-nitya": "ಇದು ನಿತ್ಯ ಉಪಾಸನಾ ಬ್ಯಾಕಪ್ ಫೈಲ್ (.nitya) ಅಲ್ಲ.",
-      newer:
-        "ಈ ಫೈಲ್ ಅನ್ನು ಆ್ಯಪ್‌ನ ಹೊಸ ಆವೃತ್ತಿ ಉಳಿಸಿದೆ. ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ (ಸೆಟ್ಟಿಂಗ್‌ಗಳು → ನೀವು → ಕುರಿತು, ಆವೃತ್ತಿಯ ಸಾಲನ್ನು ಒತ್ತಿ) ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+      newer: "ಈ ಫೈಲ್ ಅನ್ನು ಆ್ಯಪ್‌ನ ಹೊಸ ಆವೃತ್ತಿ ಉಳಿಸಿದೆ. ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ (ಸೆಟ್ಟಿಂಗ್‌ಗಳು → ಕುರಿತು, ಆವೃತ್ತಿಯ ಸಾಲನ್ನು ಒತ್ತಿ) ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
       kind: "ಈ .nitya ಫೈಲ್ ಪೂರ್ಣ ಬ್ಯಾಕಪ್ ಅಲ್ಲ.",
       checksum: "ಉಳಿಸಿದ ನಂತರ ಈ ಫೈಲ್ ಬದಲಾಗಿದೆ ಅಥವಾ ಹಾಳಾಗಿದೆ (ಅದರ ಚೆಕ್‌ಸಮ್ ಹೊಂದುವುದಿಲ್ಲ), ಆದ್ದರಿಂದ ಏನನ್ನೂ ಮರುಸ್ಥಾಪಿಸಿಲ್ಲ.",
       empty: "ಈ ಬ್ಯಾಕಪ್‌ನಲ್ಲಿ ಯಾರೂ ಇಲ್ಲ.",
@@ -486,6 +485,10 @@ export default {
     fastFailedNote: "ಬದಲಿಗೆ ಸಾಮಾನ್ಯ ವಿಧಾನ ಬಳಸಲಾಗುತ್ತದೆ. ವರದಿಯನ್ನು ಕಳುಹಿಸಿದರೆ ಇಲ್ಲಿ ವೇಗದ ವಿಧಾನ ಕೆಲಸ ಮಾಡುವಂತೆ ಮಾಡಲು ಸಹಾಯವಾಗುತ್ತದೆ.",
     shareReport: "ವರದಿ ಕಳುಹಿಸಿ",
     reportCopied: "ವರದಿ ನಕಲಿಸಲಾಗಿದೆ",
+    // Settings → About → Follow: how Follow went the last few times (js/features/follow-report.js)
+    followReport: "‘ಜೊತೆ’ ಹೇಗೆ ನಡೆಯಿತು",
+    followReportNote: "ಕೊನೆಯ ಕೆಲವು ಬಾರಿಯ ವಿವರ ಈ ಸಾಧನದಲ್ಲೇ ಇರುತ್ತದೆ, ತಾನಾಗಿ ಕಳುಹಿಸಲಾಗುವುದಿಲ್ಲ. ಅದನ್ನು ಕಳುಹಿಸಿದರೆ ‘ಜೊತೆ’ ಇನ್ನಷ್ಟು ಉತ್ತಮವಾಗಲು ನೆರವಾಗುತ್ತದೆ.",
+    shareFollowReport: "‘ಜೊತೆ’ ವರದಿ ಕಳುಹಿಸಿ",
   },
   bottomBar: {
     prev: "‹ ಹಿಂದೆ",
@@ -532,14 +535,14 @@ export default {
     saved: "ಈ ಫೋನಿನಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆ",
     online: "ಆನ್‌ಲೈನ್ ಮಾತ್ರ",
   },
-  // Offline use and Check for updates (js/features/offline.js): Settings → You → About
+  // Offline use and Check for updates (js/features/offline.js): Settings → About
   offline: {
     state: {
       idle: "ಆಫ್‌ಲೈನ್‌ಗೆ ಸಿದ್ಧ",
       save: "ಆಫ್‌ಲೈನ್‌ಗಾಗಿ ಉಳಿಸಲಾಗುತ್ತಿದೆ…",
       off: "ಉಳಿಸಿದ ಪ್ರತಿ ಬಳಕೆಯಲ್ಲಿದೆ",
     },
-    // the version line in Settings → You → About: what Check for updates found (under the version), and the round
+    // the version line in Settings → About: what Check for updates found (under the version), and the round
     // button's name in each state
     update: {
       check: "ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ",
@@ -824,6 +827,7 @@ export default {
     restoreFromAFile: "ಫೈಲ್‌ನಿಂದ ಮರುಸ್ಥಾಪಿಸಿ",
     aNityaFileSavedBefore: "ಹಿಂದೆ ಉಳಿಸಿದ .nitya ಫೈಲ್",
     about: "ಕುರಿತು",
+    thisApp: "ಈ ಆ್ಯಪ್",
     helpAndHowToUse: "ಸಹಾಯ ಮತ್ತು ಬಳಸುವ ವಿಧಾನ",
     addToHomeScreen: "ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಸೇರಿಸಿ",
     nityaUpasana: "ನಿತ್ಯ ಉಪಾಸನಾ",
