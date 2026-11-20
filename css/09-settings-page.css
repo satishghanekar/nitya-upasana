@@ -1065,3 +1065,26 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
     opacity: 0.15;
   }
 }
+
+/* About's row when fast mode did not work on this phone (#lswf, js/features/fast-mode-report.js): a warning in the
+   tinted square, the title and a line, and Share report under them */
+.sp #lswf {
+  gap: 12px;
+  align-items: flex-start;
+}
+.lsw-share {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 0 16px;
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-size: var(--fz-s);
+  font-weight: 700;
+}

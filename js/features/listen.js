@@ -42,6 +42,8 @@ import { keepPlace } from "./dhrupad-button.js";
 import { jumpTo } from "./history.js";
 import { leaveFor, startFor } from "./today-card.js";
 import { heard, heardEnd } from "./routine-time.js";
+import { ALIKE_LEAST, alike, checkSound } from "../core/gpu-report.js";
+import * as fast from "./fast-mode-report.js";
 
 var ORT = "vendor/onnxruntime/",
   TAP = "js/worklets/listen-tap.js",
@@ -73,8 +75,12 @@ var ORT = "vendor/onnxruntime/",
       ep: "wasm",
     },
   },
-  // remembered when the GPU failed to start the model on this phone: the CPU from then on
-  NO_GPU = "nitya-listen-cpu",
+  // fast mode on trial (js/features/fast-mode-report.js): the most ms the GPU may take over the check sound before it is
+  // given up (a GPU that hangs; a phone's takes well under a second, Chromium's software GPU in the tests 30 to 40 s),
+  // and the hearings after it before the GPU is trusted for good (a GPU that brings the page down mostly does it within
+  // the first few)
+  CHECK_WAIT = 60000,
+  TRUSTED_AFTER = 10,
   // seconds of sound heard each time (about 30 letters, enough to tell the place), and of new sound before the next
   WINDOW = 4,
   EVERY = 0.5,
@@ -246,7 +252,7 @@ export async function way() {
     /** @type {any} */ var nav = navigator,
       gpu = false;
     try {
-      gpu = !!nav.gpu && !localStorage.getItem(NO_GPU) && !!(await nav.gpu.requestAdapter());
+      gpu = !!nav.gpu && !fast.failedHere() && !!(await nav.gpu.requestAdapter());
     } catch (e) {
       gpu = false;
     }
@@ -271,6 +277,7 @@ function showWay(w) {
   });
   fillWords(row);
   row.hidden = false;
+  fast.show();
 }
 
 // In the tap (Listen, or Download): Safari starts sound and asks for the microphone only in one
@@ -297,6 +304,12 @@ function begin() {
 
 function stop() {
   phase = "off";
+  // fast mode on trial: stopped by the reader (or the page hidden), not brought down: trusted if the model is running,
+  // else tried again next time
+  if (fast.trying()) {
+    if (model) fast.works();
+    else fast.drop();
+  }
   // the stretch heard so far adds to the reader's pace (js/features/routine-time.js)
   heardEnd();
   if (stream)
@@ -458,8 +471,11 @@ async function load() {
   await way();
   var h = /** @type {(typeof WAYS)["cpu"]} */ (how),
     dir = h.model,
+    onGpu = h.ep === "webgpu",
     c = await box(),
-    info = JSON.parse(new TextDecoder().decode(await file(c, dir + "model.json"))),
+    began = performance.now();
+  if (onGpu && !fast.trying()) await fast.begin(dir.replace(/^models\/|\/$/g, ""));
+  var info = JSON.parse(new TextDecoder().decode(await file(c, dir + "model.json"))),
     pieces = info.model,
     total =
       pieces.reduce(function (/** @type {number} */ n, /** @type {any} */ x) {
@@ -494,6 +510,10 @@ async function load() {
   await file(c, ORT + h.lib);
   await file(c, TAP);
   if (phase === "off") throw new Error("stopped");
+  if (onGpu) {
+    fast.took("download or cache", performance.now() - began);
+    fast.step("starting the model");
+  }
   panel(esc(menuWords("listen").starting), { no: menuWords("listen").stop });
   if (!ort) {
     ort = await import(/* @vite-ignore */ abs(ORT + h.lib));
@@ -510,32 +530,50 @@ async function load() {
     ort.env.wasm.proxy = h.ep === "wasm";
     // only real errors: on the GPU it notes, as an error, the few shape steps it leaves to the CPU (as meant)
     ort.env.logLevel = "error";
+    if (onGpu) fast.library(String((ort.env.versions && ort.env.versions.common) || ""));
   }
   /** @type {Record<string, number>} */ var ids = {};
   names.forEach(function (/** @type {string} */ n, /** @type {number} */ i) {
     if (n && n !== "|") ids[n] = i;
   });
+  /** @type {any} */ var session = null;
   try {
-    var session = await ort.InferenceSession.create(weights, { executionProviders: [h.ep], logSeverityLevel: 3 });
+    var t = performance.now();
+    session = await ort.InferenceSession.create(weights, { executionProviders: [h.ep], logSeverityLevel: 3 });
+    if (onGpu) {
+      fast.took("starting the model", performance.now() - t);
+      watchGpu();
+      // a GPU can start the model and still compute it wrong, or never answer: the check sound, heard before it is trusted
+      fast.step("hearing the check sound");
+      await checkOn(session, c, dir);
+      fast.step("listening");
+    }
   } catch (e) {
     if (h.ep === "wasm") throw e;
-    // the GPU couldn't run it here: the CPU from now on, on this phone (its own model and library, downloaded now)
+    // the GPU couldn't run it here: the CPU from now on, on this phone (its own model and library, from the cache if
+    // it is there, else downloaded now), and why it failed kept for About's Share report
     console.warn("Listen: the GPU failed, the CPU instead:", e);
-    try {
-      localStorage.setItem(NO_GPU, "1");
-    } catch (x) {}
+    fast.failed(e);
+    if (session) session.release().catch(function () {});
     how = WAYS.cpu;
     showWay("cpu");
     ort = null;
     // (the GPU's model let go before the CPU's is read, so the two are never held at once)
     weights = new Uint8Array(0);
-    return load();
+    try {
+      await load();
+    } catch (/** @type {any} */ x) {
+      fast.cpu("standard mode (CPU) failed too: " + ((x && x.message) || x));
+      throw x;
+    }
+    fast.cpu("standard mode (CPU) started and works");
+    return;
   }
   model = { info: info, names: names, ids: ids, session: session };
   if (c)
     tidy(
       c,
-      [dir + "model.json", dir + "letters.json", ORT + h.lib, TAP].concat(
+      [dir + "model.json", dir + "letters.json", dir + "check.json", ORT + h.lib, TAP].concat(
         h.wasm.map(function (w) {
           return ORT + w.file;
         }),
@@ -544,6 +582,57 @@ async function load() {
         }),
       ),
     );
+}
+
+/** The GPU ONNX Runtime made, watched while fast mode is on trial: lost, or an error nobody caught, goes in the report */
+function watchGpu() {
+  try {
+    Promise.resolve(ort.env.webgpu && ort.env.webgpu.device)
+      .then(function (/** @type {any} */ d) {
+        if (!d) return;
+        if (d.lost)
+          d.lost.then(function (/** @type {any} */ i) {
+            fast.note("GPU device lost: " + (i && i.reason) + " " + (i && i.message));
+          });
+        if (d.addEventListener)
+          d.addEventListener("uncapturederror", function (/** @type {any} */ e) {
+            fast.note("GPU error: " + (e && e.error && e.error.message));
+          });
+      })
+      .catch(function () {});
+  } catch (e) {}
+}
+
+/** The check sound heard on the GPU and compared with the model's own answers (models/chant-vN/check.json): too slow
+ * to answer (CHECK_WAIT) or too unlike them (ALIKE_LEAST), and the GPU is given up here
+ * @param {any} session @param {Cache | null} c @param {string} dir */
+async function checkOn(session, c, dir) {
+  var check = JSON.parse(new TextDecoder().decode(await file(c, dir + "check.json"))),
+    input = new ort.Tensor("float32", normalize(checkSound()), [1, 48000]),
+    t = performance.now(),
+    /** @type {any} */ timer = 0,
+    late = new Promise(function (_, no) {
+      timer = setTimeout(function () {
+        no(new Error("no answer from the GPU in " + CHECK_WAIT / 1000 + " s on the check sound"));
+      }, CHECK_WAIT);
+    }),
+    out = (
+      await Promise.race([session.run({ input_values: input }), late]).finally(function () {
+        clearTimeout(timer);
+      })
+    ).logits,
+    ms = performance.now() - t,
+    data = out.data || (await out.getData()),
+    n = out.dims[2],
+    far = 0;
+  Object.keys(check.scores || {}).forEach(function (step) {
+    check.scores[step].forEach(function (/** @type {number} */ v, /** @type {number} */ o) {
+      far = Math.max(far, Math.abs(data[Number(step) * n + o] - v));
+    });
+  });
+  var a = alike(choices(data, n), check.ids);
+  fast.checked({ ms: Math.round(ms), alike: a, far: Math.round(far * 100) / 100 });
+  if (a < ALIKE_LEAST) throw new Error("the GPU heard the check sound wrong: " + Math.round(a * 1000) / 10 + "% of steps right");
 }
 
 /** An older model's files (a new chant-vN) taken out of the cache @param {Cache} c @param {string[]} keep */
@@ -640,7 +729,8 @@ function sleep(ms) {
 }
 
 async function loop() {
-  var used = 0;
+  var used = 0,
+    hearings = 0;
   while (phase === "run" && ctx) {
     if (performance.now() - aliveAt > IDLE * 60000) {
       var w = menuWords("listen");
@@ -667,11 +757,14 @@ async function loop() {
     }
     try {
       var out = await scores(audio);
-    } catch (e) {
+    } catch (/** @type {any} */ e) {
       console.warn("Listen:", e);
+      fast.note("a hearing failed: " + ((e && e.message) || e));
       await sleep(500);
       continue;
     }
+    // fast mode on trial: trusted once it has heard this many windows without bringing the page down
+    if (fast.trying() && ++hearings >= TRUSTED_AFTER) fast.works();
     if (phase !== "run") break;
     // a step's moment: the window began its length before `at`, and the step is that many 20 ms into it
     var began = at - (1000 * heard.length) / rate,

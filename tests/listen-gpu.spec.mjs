@@ -60,6 +60,8 @@ test("the GPU's way: the 4-bit model (in ONNX Runtime's own format) and the libr
     return { way: await m.way(), same: JSON.stringify(h.choices(data, n)) === JSON.stringify(check.ids), far, offMean };
   });
   expect(got.way).toBe("gpu");
+  // fast mode heard the check sound right on this GPU: trusted, with no report kept (Stop, once the model ran)
+  expect(await page.evaluate(() => localStorage.getItem("nitya-fast-mode"))).toBeNull();
   expect(got.same).toBe(true);
   expect(got.far).toBeLessThan(0.4);
   expect(got.offMean).toBeLessThan(0.15);

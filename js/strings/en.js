@@ -497,6 +497,12 @@ export default {
     cpu: "Follow: standard mode",
     cpuNote: "Works on every phone, uses more battery",
     cpuBadge: "Standard",
+    // About, when fast mode did not work on this phone (js/features/fast-mode-report.js): a title, a line, a button,
+    // and what a screen reader hears once the report is copied (where the phone has no share sheet)
+    fastFailed: "Fast mode did not work on this phone",
+    fastFailedNote: "Standard mode is used instead. Sharing the report helps get fast mode working here.",
+    shareReport: "Share report",
+    reportCopied: "Report copied",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js): the arrow stays, the word may be left out on small phones
   bottomBar: {
