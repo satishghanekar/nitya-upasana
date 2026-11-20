@@ -817,7 +817,7 @@ test("About → Follow: Keep on this phone and Free memory ask first, and the me
   await page.locator("#lsb").click();
   await about();
   await expect(memory).toBeVisible();
-  await expect(memory).toContainText("Follow frees it by itself 2 minutes after it stops");
+  await expect(memory).toContainText("Freed by itself 2 min after Follow stops");
   // Free memory: asks, Cancel leaves it, then Free memory lets it go and the row goes
   await memory.getByRole("button", { name: "Free memory" }).click();
   await expect(ask.getByRole("heading")).toHaveText("Free Follow's memory?");
