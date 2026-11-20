@@ -3,7 +3,6 @@
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { byId, note } from "../core/page.js";
-import { skCache, skFmt, skLoc, skMid, skNext, skTemple } from "./sankashti.js";
 import { ovDone, ovPush } from "./history.js";
 import { focusBack } from "./more-menu.js";
 import { menuWords } from "../core/strings.js";
@@ -38,21 +37,14 @@ export function init() {
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && !qm.hidden) qr(false);
     });
-    // Share: the app's name, then a ready reminder for the group chat (next Sankathara Chaturthi, pooja time near the temple, moonrise) plus the link
+    // Share: the app's name, the link and what the link does. Nothing about Sankashti: this is a daily prayer app
+    // (Sankathara Chaturthi, the sister app, puts the next Sankashti and its pooja in its own message).
     // sep = true: leave the link out, because the share sheet is given it separately (it lands at the end)
     /** @param {boolean} [sep] */
     function shareText(sep) {
-      skNext();
-      var C = skCache,
-        L = skLoc(),
-        // in English whatever the menu language: the people it is sent to may read no Marathi (Satish, 2026-11-19)
-        w = menuWords("share", "en");
-      if (!C || !L) return w.plain(title) + (sep ? "" : "\n" + url) + w.tip;
-      var o = C.list[C.sel].day >= skMid() ? C.list[C.sel] : C.list[C.ni],
-        f = skFmt(o, "en"),
-        t = skTemple(L),
-        ang = f.ang ? "Angaraki " : ""; // with the name, which is always English
-      return w.next(title, ang, f.day, t ? w.temple : "", o.rise ? f.time : "") + (sep ? "" : "\n" + url) + w.tip;
+      // in English whatever the menu language: the people it is sent to may read no Marathi
+      var w = menuWords("share", "en");
+      return w.plain(title) + (sep ? "" : "\n" + url) + w.tip;
     }
     byId("shb").onclick = function () {
       var txt = shareText();

@@ -689,12 +689,6 @@ export default {
     plain: function (title) {
       return title;
     },
-    temple: " · Pooja 7:00–8:30 pm at Bharatiya Hindu Temple, Powell",
-    /** @param {string} title @param {string} ang "Angaraki " or "" @param {string} date @param {string} temple the line above, or ""
-     * @param {string} rise the moonrise, or "" */
-    next: function (title, ang, date, temple, rise) {
-      return title + "\nNext " + ang + "Sankathara Chaturthi: " + date + temple + (rise ? " · Moonrise " + rise : "");
-    },
     copied: "Message copied",
   },
   // Print (js/features/print.js): the Print pop-up in the menu language, the printout's own words in its language

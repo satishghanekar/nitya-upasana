@@ -657,11 +657,6 @@ export default {
     plain: function (title) {
       return title + " — पूजा आणि आरती";
     },
-    temple: " · पूजा सायं. ७:०० ते ८:३०, भारतीय हिंदू मंदिर, पॉवेल",
-    /** @param {string} title @param {string} ang @param {string} date @param {string} temple @param {string} rise */
-    next: function (title, ang, date, temple, rise) {
-      return title + " — पूजा आणि आरती\nपुढील " + ang + "Sankathara Chaturthi: " + date + temple + (rise ? " · चंद्रोदय " + rise : "");
-    },
     copied: "संदेश कॉपी झाला",
   },
   print: {

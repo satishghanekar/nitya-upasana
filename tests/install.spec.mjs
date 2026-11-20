@@ -221,4 +221,6 @@ test("Share sends the link with ?add, and the message says what the link does", 
   const d = await page.evaluate(() => window.__shared);
   expect(d.url).toMatch(/\/\?add$/);
   expect(d.text).toContain("Tap the link");
+  // a daily prayer app: no Sankashti, temple pooja or moonrise in its message (that is the sister app's)
+  expect(d.text).toBe("Nitya Upasana\nTap the link: it shows how to put the app on your phone in a few taps.");
 });

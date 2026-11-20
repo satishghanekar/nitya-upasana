@@ -4,8 +4,7 @@
 //
 // Home v2: the home page no longer has the date card. On a Sankashti day only, one
 // small line under the date says so, with tonight's moonrise and the place (#skt): "Sankashti Chaturthi today ·
-// Moonrise 8:09 pm · Columbus, OH". The next Sankashti is still worked out on every visit for the Share message
-// (js/features/share.js reads skCache), which is unchanged.
+// Moonrise 8:09 pm · Columbus, OH".
 // The place: the reader's own (the place on Home's Vedic calendar line, with its pin: "Use my location", kept on this device as P.loc and
 // named from the built-in list below), else a city for the phone's time zone.
 
@@ -306,19 +305,8 @@ export function skFmt(o, lang) {
 }
 
 /**
- * True within 120 km of Bharatiya Hindu Temple, Powell OH, where the group meets 7:00–8:30 pm (the Share message)
- * @param {Place} L
- */
-export function skTemple(L) {
-  var r0 = Math.PI / 180,
-    a = Math.sin(((L.lat - 40.2148) * r0) / 2),
-    b = Math.sin(((L.lon + 83.1067) * r0) / 2);
-  return 12742 * Math.asin(Math.sqrt(a * a + Math.cos(L.lat * r0) * Math.cos(40.2148 * r0) * b * b)) <= 120;
-}
-
-/**
  * The next Sankashti (today's, on the day) for the place, worked out once per place and day and kept in
- * skCache as { key, list, ni, sel } (the shape js/features/share.js reads)
+ * skCache as { key, list, ni, sel }
  * @returns {Sankashti | null}
  */
 export function skNext() {
