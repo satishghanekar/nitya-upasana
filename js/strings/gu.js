@@ -660,11 +660,6 @@ export default {
     plain: function (title) {
       return title;
     },
-    temple: " · પૂજા સાંજે 7:00–8:30, ભારતીય હિંદુ મંદિર, પૉવેલ",
-    /** @param {string} title @param {string} ang @param {string} date @param {string} temple @param {string} rise */
-    next: function (title, ang, date, temple, rise) {
-      return title + "\nહવે પછીની " + ang + "Sankathara Chaturthi: " + date + temple + (rise ? " · ચંદ્રોદય " + rise : "");
-    },
     copied: "સંદેશની નકલ થઈ",
   },
   // Print (js/features/print.js): the Print pop-up in the menu language, the printout's own words in its language
