@@ -47,6 +47,7 @@ var SITE_PARTS = (function () {
     "core/words",
     "core/hearing",
     "core/gpu-report",
+    "core/net",
     "core/follow-report",
     "core/align",
     "core/follow",
@@ -123,6 +124,8 @@ var SITE_PARTS = (function () {
     "features/welcome",
     "features/fast-mode-report",
     "features/follow-report",
+    "features/follow-model",
+    "features/follow-model-rows",
     "features/listen",
     "features/launch",
   ].map(function (f) {

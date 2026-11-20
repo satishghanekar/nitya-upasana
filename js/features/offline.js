@@ -6,6 +6,21 @@ import { byId, note, onPiece, root } from "../core/page.js";
 import { fillWords, menuWords } from "../core/strings.js";
 import { esc } from "../core/words.js";
 import { ovSub, ovSubDone } from "./history.js";
+import { fetchWithin } from "../core/net.js";
+
+/** ms a file may take to answer, checking for an update or saving the offline copy, before it is given up: a request
+ * that hung on a weak connection left Check for updates busy for good (it refuses a second tap while busy), and the
+ * offline badge saving for good (a second save waits for the first) */
+var WAIT = 30000;
+
+/** A file fetched (given up after WAIT) and kept in the saved copy, as Cache.add() would, which has no time limit
+ * @param {Cache} c @param {RequestInfo} req @returns {Promise<void>} */
+function keepFile(c, req) {
+  return fetchWithin(req, {}, WAIT).then(function (r) {
+    if (!r.ok) throw new Error((typeof req === "string" ? req : req.url) + ": " + r.status);
+    return c.put(req, r);
+  });
+}
 
 /** @type {string[]} */
 var FONTS;
@@ -199,7 +214,7 @@ export function init() {
       ).then(function (old) {
         return Promise.all(
           files.map(function (u, i) {
-            return fetch(fresh(u), { cache: "no-store" }).then(function (r) {
+            return fetchWithin(fresh(u), { cache: "no-store" }, WAIT).then(function (r) {
               if (!r.ok) throw new Error(String(r.status));
               return r.text().then(function (t) {
                 // (the page: its <meta name="version">, which the saved copy may no longer have to compare with)
@@ -230,7 +245,7 @@ export function init() {
         var files = ["./"].concat(PARTS);
         saved = Promise.all(
           files.map(function (u) {
-            return fetch(fresh(u), { cache: "reload" }).then(function (r) {
+            return fetchWithin(fresh(u), { cache: "reload" }, WAIT).then(function (r) {
               if (!r.ok) throw new Error(String(r.status));
               return r;
             });
@@ -378,7 +393,7 @@ export function init() {
             c.match("./")
               .then(
                 /** @param {Response | undefined} h @returns {any} */ function (h) {
-                  return h || c.add(new Request("./", { cache: "reload" }));
+                  return h || keepFile(c, new Request("./", { cache: "reload" }));
                 },
               )
               .catch(function () {});
@@ -386,7 +401,7 @@ export function init() {
               files.map(function (u) {
                 return c.match(u).then(
                   /** @param {Response | undefined} h @returns {any} */ function (h) {
-                    return h || c.add(u);
+                    return h || keepFile(c, u);
                   },
                 );
               }),

@@ -176,7 +176,7 @@ export function init() {
       // nor Finish the update or Terms of use, over Settings)
       // (nor into Home's calendar card or This week, which open the calendar at another view: closing it first would
       // let its Back step close the calendar they open)
-      if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help,#lbm,#pfm,#upm,#terms,#pan,#tdd,#upw")) return;
+      if (el.hidden || !t || el.contains(t) || t.closest(".bar,#help,#lbm,#pfm,#upm,#terms,#follow-model-ask,#pan,#tdd,#upw")) return;
       /** @type {any} */ (el)._ret = null;
       if (el === pn) setP(false);
       else if (el === jp) setJ(false);

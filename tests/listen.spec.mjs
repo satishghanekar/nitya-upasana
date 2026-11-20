@@ -350,10 +350,19 @@ test("Settings → About says where Listen runs its model: the CPU here, the GPU
   await expect(page.locator("#lsw")).toHaveText("Follow: standard mode");
   await expect(page.locator("#lswn")).toHaveText("Works on every phone, uses more battery");
   await expect(page.locator("#lswb")).toHaveText("Standard");
-  // About's Follow group: the Listen line, fast mode's report row and How Follow went (both hidden here), in that order
+  // About's Follow group: the Listen line, the model on this phone (Keep on this phone; Using memory now, hidden while it
+  // isn't loaded), fast mode's report row and How Follow went (both hidden here), in that order
   await expect(page.locator(".sp-follow")).toBeVisible();
   await expect(page.locator(".sp-follow .sp-h")).toHaveText("Follow");
-  expect(await page.locator(".sp-follow .sp-card > *").evaluateAll((es) => es.map((e) => e.id))).toEqual(["lswr", "lswf", "follow-report"]);
+  expect(await page.locator(".sp-follow .sp-card > *").evaluateAll((es) => es.map((e) => e.id))).toEqual([
+    "lswr",
+    "follow-model-download",
+    "follow-model-memory",
+    "lswf",
+    "follow-report",
+  ]);
+  await expect(page.locator("#follow-model-download")).toBeVisible();
+  await expect(page.locator("#follow-model-memory")).toBeHidden();
   await expect(page.locator("#lswf")).toBeHidden();
   await expect(page.locator("#follow-report")).toBeHidden();
   // the Standard badge reads at 4.5:1 in every theme (a11y.spec scans Settings too, but never sees the GPU line)
@@ -413,7 +422,7 @@ test("with the site's offline copy (the service worker), Follow starts the first
   await context.close();
 });
 
-test("fast mode that fails on this phone: Follow carries on on the CPU, and About shares a report of why @chromium-only", async ({ page }) => {
+test("fast mode that fails on this phone: Follow restarts the app for the CPU, and About shares a report of why @chromium-only", async ({ page }) => {
   // (Satish, 2026-11-20: a Galaxy S24 Ultra far away whose GPU failed with nothing kept to say why.) A browser that says
   // it has a GPU and gives one that can't run anything: ONNX Runtime fails to start the model on it
   test.setTimeout(400_000);
@@ -443,12 +452,28 @@ test("fast mode that fails on this phone: Follow carries on on the CPU, and Abou
   // the GPU's download is asked about first
   await expect(panel.getByRole("status")).toContainText("117 MB");
   await panel.getByRole("button", { name: "Download" }).click();
-  // the GPU fails, and Follow goes on on the CPU by itself: no second question, no tap
+  // the GPU fails: the library that tried it stays in this page with what it holds, so the CPU's is not loaded beside
+  // it; Follow offers to open the app again (2026-11-20)
+  await expect(panel.getByRole("status")).toHaveText("Fast mode did not work on this phone. Restart the app to carry on in standard mode.", {
+    timeout: 360_000,
+  });
+  const failed = await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-fast-mode")));
+  expect(failed.status).toBe("failed");
+  expect(failed.step).toBe("starting the model");
+  await expect(page.locator("#lsb")).toHaveAttribute("aria-pressed", "false");
+  // Restart: the app opens again and Follow offers its own download, the CPU's, asking first (it is another 122 MB)
+  await Promise.all([page.waitForEvent("load"), panel.getByRole("button", { name: "Restart" }).click()]);
+  await settle(page);
+  await expect(panel.getByRole("status")).toContainText("122 MB");
+  await panel.getByRole("button", { name: "Download" }).click();
   await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 360_000 });
   const report = await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-fast-mode")));
   expect(report.status).toBe("failed");
   expect(report.step).toBe("starting the model");
   expect(report.cpu).toBe("standard mode (CPU) started and works");
+  // (the GPU's download let go before the CPU's came: never both on the phone)
+  const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
+  expect(kept.some((k) => k.includes("chant-v6-q4"))).toBe(false);
   await panel.getByRole("button", { name: "Stop" }).click();
   // About: standard mode, and the row with Share report
   await page.locator("#aa").click();
@@ -475,7 +500,9 @@ test("fast mode that fails on this phone: Follow carries on on the CPU, and Abou
   expect(errors).toEqual([]);
 });
 
-test("fast mode that fails with the GPU's subgroups is tried once more without them, then the CPU; the report tells both @chromium-only", async ({ page }) => {
+test("fast mode that fails with the GPU's subgroups is tried once more without them, then the CPU, each after a restart; the report tells both @chromium-only", async ({
+  page,
+}) => {
   // (the cross-device test of chant-v6-q4, 2026-11-20: ONNX Runtime's 4-bit kernel takes a subgroup path that some
   // Android drivers get wrong; without subgroups it takes another kernel)
   test.setTimeout(400_000);
@@ -494,13 +521,26 @@ test("fast mode that fails with the GPU's subgroups is tried once more without t
   });
   await openSite(page, SETUPS.english);
   const panel = page.locator("#lsn");
+  const restartSays = "Fast mode did not work on this phone. Restart the app to carry on in standard mode.";
   await page.locator("#lsb").click();
   await panel.getByRole("button", { name: "Download" }).click();
-  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 360_000 });
-  // the GPU asked for twice: with its subgroups, then without them
+  // the GPU asked for with its subgroups fails: the app opens again to try it without them
+  await expect(panel.getByRole("status")).toHaveText(restartSays, { timeout: 360_000 });
+  expect((await page.evaluate(() => window.__asked))[0]).toContain("subgroups");
+  await Promise.all([page.waitForEvent("load"), panel.getByRole("button", { name: "Restart" }).click()]);
+  await settle(page);
+  // back in the app: the GPU's download is here, so Follow offers Start (sound starts only in a tap)
+  await expect(panel.getByRole("status")).toHaveText("Follow is ready to start.");
+  await panel.getByRole("button", { name: "Start" }).click();
+  await expect(panel.getByRole("status")).toHaveText(restartSays, { timeout: 360_000 });
   const asked = await page.evaluate(() => window.__asked);
-  expect(asked[0]).toContain("subgroups");
   expect(asked.at(-1)).not.toContain("subgroups");
+  // then the CPU, after the app opens once more
+  await Promise.all([page.waitForEvent("load"), panel.getByRole("button", { name: "Restart" }).click()]);
+  await settle(page);
+  await expect(panel.getByRole("status")).toContainText("122 MB");
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 360_000 });
   const report = await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-fast-mode")));
   expect(report.status).toBe("failed");
   expect(report.subgroups).toBe("off");
@@ -629,5 +669,182 @@ test("Follow's report: a time counted and kept, About shows it, and Share Follow
   ])
     expect(shared.text).toContain(want);
   expect(await axeEveryTheme(page, "#follow-report")).toEqual(noViolations());
+  expect(errors).toEqual([]);
+});
+
+// ==== Follow's runs, its time limits and its model's memory (2026-11-20) ====
+
+// The microphone streams and sound contexts the page made, kept where the test can read them
+const COUNT_SOUND = () => {
+  window.__streams = [];
+  window.__contexts = [];
+  const gum = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+  navigator.mediaDevices.getUserMedia = (c) => gum(c).then((s) => (window.__streams.push(s), s));
+  const AC = window.AudioContext;
+  window.AudioContext = class extends AC {
+    constructor(...a) {
+      super(...a);
+      window.__contexts.push(this);
+    }
+  };
+};
+
+test("Stop and Follow again while it starts: one run listens, and after Stop no microphone or sound is left on @chromium-only", async ({ page }) => {
+  test.setTimeout(300_000);
+  const errors = [];
+  await page.addInitScript(COUNT_SOUND);
+  await openSite(page, SETUPS.english, { errors });
+  const panel = page.locator("#lsn"),
+    ear = page.locator("#lsb");
+  await ear.click();
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toHaveText("Downloading Follow…");
+  // Stop in the middle of the download, and Follow again at once: the same download is taken up, not a second one
+  await ear.click();
+  await expect(ear).toHaveAttribute("aria-pressed", "false");
+  await ear.click();
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 240_000 });
+  // one microphone live and one sound context running: the first run's were let go when it ended
+  const live = await page.evaluate(() => ({
+    streams: window.__streams.filter((s) => s.getTracks().some((t) => t.readyState === "live")).length,
+    contexts: window.__contexts.filter((c) => c.state !== "closed").length,
+  }));
+  expect(live).toEqual({ streams: 1, contexts: 1 });
+  await ear.click();
+  await expect(panel).toBeHidden();
+  await expect
+    .poll(() =>
+      page.evaluate(() => ({
+        streams: window.__streams.filter((s) => s.getTracks().some((t) => t.readyState === "live")).length,
+        contexts: window.__contexts.filter((c) => c.state !== "closed").length,
+      })),
+    )
+    .toEqual({ streams: 0, contexts: 0 });
+  expect(errors).toEqual([]);
+});
+
+test("a model that stops answering: Follow stops, lets go of the microphone and offers to restart the app @chromium-only", async ({ page }) => {
+  test.setTimeout(300_000);
+  await page.addInitScript(COUNT_SOUND);
+  await openSite(page, SETUPS.english);
+  const panel = page.locator("#lsn");
+  await page.locator("#lsb").click();
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 240_000 });
+  // the model hangs from now on (as a GPU or a worker that stopped answering): its hearings never come back
+  await page.evaluate(async () => {
+    const m = await import(new URL("js/features/follow-model.js", document.baseURI).href);
+    m.current().session.run = () => new Promise(() => {});
+  });
+  await expect(panel.getByRole("status")).toHaveText("Follow stopped answering. Restart the app to start it again.", { timeout: 90_000 });
+  await expect(page.locator("#lsb")).toHaveAttribute("aria-pressed", "false");
+  await expect(panel.getByRole("button", { name: "Restart" })).toBeVisible();
+  expect(await page.evaluate(() => window.__streams.filter((s) => s.getTracks().some((t) => t.readyState === "live")).length)).toBe(0);
+  // Follow again in this page: the same offer, never the hung model
+  await panel.getByRole("button", { name: "Close" }).click();
+  await page.locator("#lsb").click();
+  await expect(panel.getByRole("status")).toHaveText("Follow stopped answering. Restart the app to start it again.");
+  // Restart: the app opens again, and Follow is ready to start with a tap
+  await Promise.all([page.waitForEvent("load"), panel.getByRole("button", { name: "Restart" }).click()]);
+  await settle(page);
+  await expect(panel.getByRole("status")).toHaveText("Follow is ready to start.");
+  await panel.getByRole("button", { name: "Start" }).click();
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 120_000 });
+  await panel.getByRole("button", { name: "Stop" }).click();
+});
+
+test("a download that stops coming in is given up and says so; a phone too full is told before downloading @chromium-only", async ({ page }) => {
+  test.setTimeout(240_000);
+  await openSite(page, SETUPS.english);
+  const panel = page.locator("#lsn");
+  // too full: the room left is checked against what is still to download
+  await page.evaluate(() => {
+    navigator.storage.estimate = () => Promise.resolve({ quota: 50e6, usage: 40e6 });
+  });
+  await page.locator("#lsb").click();
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toContainText("Not enough space on this phone: Follow needs about");
+  await expect(page.locator("#lsb")).toHaveAttribute("aria-pressed", "false");
+  await panel.getByRole("button", { name: "Close" }).click();
+  // a piece that never answers (the connection dropped without saying so): given up after its time limit
+  await page.evaluate(() => {
+    delete navigator.storage.estimate;
+  });
+  await page.route("**/models/chant-v6/model.onnx.2", () => {});
+  await page.locator("#lsb").click();
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toHaveText("The download stopped coming in. Check the internet and try again; what came in is kept.", {
+    timeout: 120_000,
+  });
+  // what came in is kept: the first piece is in the cache for the next try
+  const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
+  expect(kept).toContain("/models/chant-v6/model.onnx");
+});
+
+test("About → Follow: Keep on this phone and Free memory ask first, and the memory is let go by itself after Follow stops @chromium-only", async ({ page }) => {
+  test.setTimeout(400_000);
+  const errors = [];
+  await openSite(page, SETUPS.english, { errors, running: true });
+  const about = async () => {
+    await page.locator("#aa").click();
+    await page.locator('#spv [data-v="about"]').click();
+  };
+  const sw = page.getByRole("switch", { name: "Keep on this phone" }),
+    note = page.locator("#follow-model-download-note"),
+    memory = page.locator("#follow-model-memory"),
+    ask = page.locator("#follow-model-ask");
+  // nothing downloaded yet: the switch is off, and Using memory now isn't shown
+  await about();
+  await expect(sw).toHaveAttribute("aria-checked", "false");
+  await expect(note).toHaveText("Not downloaded · 122 MB");
+  await expect(memory).toBeHidden();
+  // on: asks first, then downloads without starting Follow
+  await sw.click();
+  await expect(ask).toBeVisible();
+  await expect(ask.getByRole("heading")).toHaveText("Download Follow now?");
+  expect(await axeEveryTheme(page, "#follow-model-ask")).toEqual(noViolations());
+  await ask.getByRole("button", { name: "Download" }).click();
+  await expect(ask).toBeHidden();
+  await expect(note).toHaveText("Downloaded · 122 MB", { timeout: 240_000 });
+  await expect(sw).toHaveAttribute("aria-checked", "true");
+  await expect(memory).toBeHidden();
+  await page.locator("#xc").click();
+  // Follow, then Stop: the model stays in memory a while, and About shows Using memory now with Free memory
+  const panel = page.locator("#lsn");
+  await page.locator("#lsb").click();
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 120_000 });
+  await page.locator("#lsb").click();
+  await about();
+  await expect(memory).toBeVisible();
+  await expect(memory).toContainText("Follow frees it by itself 2 minutes after it stops");
+  // Free memory: asks, Cancel leaves it, then Free memory lets it go and the row goes
+  await memory.getByRole("button", { name: "Free memory" }).click();
+  await expect(ask.getByRole("heading")).toHaveText("Free Follow's memory?");
+  await ask.getByRole("button", { name: "Cancel" }).click();
+  await expect(ask).toBeHidden();
+  await expect(memory).toBeVisible();
+  await memory.getByRole("button", { name: "Free memory" }).click();
+  await ask.getByRole("button", { name: "Free memory" }).click();
+  await expect(memory).toBeHidden();
+  expect(await page.evaluate(async () => !!(await import(new URL("js/features/follow-model.js", document.baseURI).href)).current())).toBe(false);
+  // by itself: two minutes after Follow stops
+  await page.locator("#xc").click();
+  await page.locator("#lsb").click();
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 120_000 });
+  await page.locator("#lsb").click();
+  const loaded = () => page.evaluate(async () => !!(await import(new URL("js/features/follow-model.js", document.baseURI).href)).current());
+  expect(await loaded()).toBe(true);
+  await page.clock.fastForward("02:05");
+  await expect.poll(loaded).toBe(false);
+  // off: asks, then takes the download off the phone
+  await about();
+  await sw.click();
+  await expect(ask.getByRole("heading")).toHaveText("Remove Follow's download?");
+  await expect(ask).toContainText("This frees 122 MB on this phone.");
+  await ask.getByRole("button", { name: "Remove" }).click();
+  await expect(sw).toHaveAttribute("aria-checked", "false");
+  await expect(note).toHaveText("Not downloaded · 122 MB");
+  expect(await page.evaluate(() => caches.has("nitya-listen"))).toBe(false);
   expect(errors).toEqual([]);
 });

@@ -1100,3 +1100,104 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   font-size: var(--fz-s);
   font-weight: 700;
 }
+/* ==== About → Follow: the model on this phone (js/features/follow-model-rows.js). Downloaded is a switch at the row's
+   end: a 44px tap target holding a track and its knob; off is an outlined track with a muted knob (the outline at 3:1
+   on the card), on is the accent with the page's colour for the knob. In memory has Free memory under its words, as
+   Share report has. The pop-up that asks first is the Terms of use dialog's frame, with its two buttons side by side ==== */
+.sp .follow-model-row {
+  gap: 12px;
+}
+.sp .follow-model-switch {
+  flex: none;
+  position: relative;
+  width: 60px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+.follow-model-switch::before {
+  content: "";
+  position: absolute;
+  inset: 6px 4px;
+  border: 2px solid var(--muted);
+  border-radius: 16px;
+  background: transparent;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+.follow-model-switch[aria-checked="true"]::before {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.follow-model-knob {
+  position: absolute;
+  top: 11px;
+  left: 9px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition:
+    transform 0.15s,
+    background-color 0.15s;
+}
+.follow-model-switch[aria-checked="true"] .follow-model-knob {
+  background: var(--bg);
+  transform: translateX(20px);
+}
+.sp .follow-model-switch[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: default;
+}
+@media (prefers-reduced-motion: reduce) {
+  .follow-model-switch::before,
+  .follow-model-knob {
+    transition: none;
+  }
+}
+#follow-model-ask {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#follow-model-ask > .qrc {
+  margin-block: auto;
+  width: min(400px, 100%);
+  text-align: start;
+}
+#follow-model-ask .qrt:focus {
+  outline: none;
+}
+#follow-model-ask p {
+  margin: 0 0 16px;
+  font-size: var(--fz-m);
+  line-height: 1.5;
+  color: var(--ink);
+}
+.follow-model-buttons {
+  display: flex;
+  gap: 10px;
+}
+.follow-model-buttons .wide {
+  flex: 1;
+  width: auto;
+}
+.follow-model-buttons #follow-model-yes {
+  background: var(--accent);
+  color: var(--bg);
+}
+.follow-model-buttons .follow-model-cancel {
+  border-color: var(--rule);
+  color: var(--ink);
+}

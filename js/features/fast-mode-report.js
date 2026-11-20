@@ -79,9 +79,14 @@ export function subgroupsOn() {
   return !!cur && cur.subgroups === "on";
 }
 
+/** the subgroups as the GPU was last asked for in this page, for a failure that comes after the trial (failedLater)
+ * @type {"on" | "off" | "none" | ""} */
+var lastSubgroups = "";
+
 /** Whether the GPU's subgroups were used, turned off, or not offered @param {"on" | "off" | "none"} v
  * @param {string[]} asked  the features ONNX Runtime asked the GPU for */
 export function subgroups(v, asked) {
+  lastSubgroups = v;
   if (!cur) return;
   cur.subgroups = v;
   note("GPU features asked: " + (asked.join(", ") || "none") + "; subgroups " + v);
@@ -253,6 +258,17 @@ export function failed(e) {
   cur.error = errorText(e);
   if (e && e.stack) cur.stack = String(e.stack).split("\n").slice(0, 8).join(" | ").slice(0, 1500);
   note("failed: " + cur.error);
+}
+
+/** Fast mode failed after its trial, while trusted (a GPU that stopped answering later): a report begun for it and kept
+ * as failed, so the next opening tries the next way (failedHere, retryWithoutSubgroups) and About can share why
+ * @param {string} model @param {any} e */
+export async function failedLater(model, e) {
+  await begin(model);
+  if (!cur) return;
+  if (lastSubgroups) cur.subgroups = lastSubgroups;
+  cur.step = "listening, after its trial";
+  failed(e);
 }
 
 /** What came of the CPU after (kept on the report, whether it is the one being written or one from before)

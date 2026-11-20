@@ -14,6 +14,10 @@
 // (js/features/pdfs.js); without it the tab is not shown.
 
 import { buildContent } from "./content.js";
+import { fetchWithin } from "../core/net.js";
+
+/** ms a text file may take to answer before it is given up */
+var WAIT = 20000;
 
 /**
  * What was loaded, for the parts that need it after start-up: the library (content/library.json), the ready-made routines by id (content/routines.json), the festival rules
@@ -34,7 +38,9 @@ export const loaded = { library: null, routines: null, festivals: null, holidays
  * @returns {Promise<Response>}
  */
 function get(url) {
-  return fetch(url).then(function (r) {
+  // (given up after WAIT: a request that hangs on a weak connection kept the page hidden, as the parts start only once
+  // the texts have loaded or failed, js/main.js)
+  return fetchWithin(url, {}, WAIT).then(function (r) {
     if (!r.ok) throw new Error(url + ": " + r.status);
     return r;
   });

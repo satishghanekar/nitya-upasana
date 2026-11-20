@@ -137,6 +137,15 @@ step), so each place found is where the chanting was at that moment, and between
 by line at the chanting's own pace (measured from the places found). (The first model, Whisper base, took about 1.7 s
 on an iPhone for every 5 s window, too slow to follow along: replaced 2026-11-07.)
 
+Follow's model and its memory are `js/features/follow-model.js`'s (2026-11-20): one load at a time, whoever asks (Stop
+and Follow again takes up the load under way); each start of Follow is a run that holds its microphone, sound and
+timers and lets them go together; every wait ends (`js/core/net.js`: a download that stops coming in, a GPU that never
+answers, a hearing that never comes back). A copy of ONNX Runtime, once loaded, stays in the page with its memory and
+GPU device, so when the GPU fails (or a hearing hangs) the next way is tried only after the app opens again: Follow
+offers Restart, then Start. The model is let go from memory two minutes after Follow stops, at once when the app is put
+away, or from Settings → About → Follow (Using memory now, Free memory); Keep on this phone removes the download, or
+downloads it ahead (`js/features/follow-model-rows.js`).
+
 Two reports help make Follow better, both kept on the device and sent only when the reader taps Share in Settings →
 About → Follow, as plain English text (WhatsApp, a message), with no sound, words heard or personal details. Fast
 mode's report (`js/features/fast-mode-report.js`, `js/core/gpu-report.js`) says why the GPU failed, when it did.
@@ -160,7 +169,9 @@ Share and the QR code send `https://nitya-upasana.pages.dev/?add`. `?add` opens 
   - Every file comes from the saved copy of this version whenever it has it, at once and without asking the network, so start-up takes the same time with a weak connection or none. A file not saved yet (a first visit still saving, an optional font once picked, a PDF once opened) is fetched and then kept.
   - Nothing is downloaded again until a new version is published. Opening the site online lets the browser notice the changed `sw.js`; the new worker saves a whole fresh copy in a new cache (the font files and the unchanged PDFs a reader opened are copied from the old one), takes over, and deletes the old copy. The page already open keeps running; the next launch opens the new version. If a file can't be fetched, that install fails and the old version stays until the next launch tries again, so the saved copy is never a mix of two versions (a first visit, with nothing to fall back on, goes on without the file and `js/features/offline.js` saves it later). Why it failed (the file and its status, or the step it was on after 3 minutes) is kept in a cache of its own, `update-failed`, and sent to the open pages; About shows it under the version (`#update-why`) while the device is on an older version than the one that failed, and the next version that installs removes it.
   - Requests made with `cache: 'no-store'` or `'reload'` (Check for updates, the page saving missing files) go straight to the network.
-  - If the saved copy can't be read within 2 s, the request goes to the network (Safari's storage can stall).
+  - If the saved copy can't be read within 2 s, the network is asked too, and the first of the two to answer is given
+    (Safari's storage can stall; a weak connection can hang). The page's own requests for the texts, Check for updates
+    and the offline copy are given up after their time (`js/core/net.js`), so none leaves the page waiting for good.
 - **The version is written twice on purpose:** in `sw.js` (`V`) and in `<meta name="version">` in `index.html`. Browsers install a new service worker only when `sw.js` itself changes, and not every browser re-checks the files it imports, so the version must sit in `sw.js`; the page needs it at start-up too. `tests/offline.spec.mjs` fails if the two differ.
 - **Check for updates** (the round button beside the version in Settings → About, `#upd` in `#upr`, `js/features/offline.js`) fetches the page and each file in `js/parts.js` fresh. If any changed, it asks for the new `sw.js` and waits until the new version is in charge (files changed under the same version it saves over the saved copy instead), then reloads, so it finds changes even when the version stays the same. It never says a new version is saved when it isn't: an install that fails, or a new version named by the site with no copy of it on the device, sets the row to "Couldn't save the new version · tap to try again" (`data-s="failed"`) with why under it (an iPhone stayed on 1.73.0 while it said 1.74.0, 2026-11-18). Safari and every iPhone and iPad browser (WebKit, `wk`) keep the scripts they have in memory until the app is closed, whatever reloads the page, so there it says "Updated to v…. Close the app and open it again to finish." instead of reloading. The row then says so, and How? (`#uph`, or the round button) opens Finish the update (`#upm`, `upmInit()`): the steps to close the app and open it again on an iPhone, an iPad or a Mac, the reader's own first, with its own Back step over Settings (`ovSub()`).
 - **`_headers`** lets phones keep font files for a year and pictures for a week without asking again. The page, styles and scripts are always re-checked (`no-cache`).
