@@ -4,7 +4,7 @@
 // its line marked. (No real chanting here: the family's recordings stay private; the model's own tests, in the
 // shravan-model repository, hear real chanting.)
 import { test, expect } from "@playwright/test";
-import { axeEveryTheme, buildAll, noViolations, openSite, SETUPS } from "./helpers.mjs";
+import { axeEveryTheme, buildAll, noViolations, openSite, settle, SETUPS } from "./helpers.mjs";
 
 // (launchOptions here replace the config's, so the pre-installed Chromium, PW_CHROMIUM_PATH, is named again)
 test.use({
@@ -349,8 +349,10 @@ test("Settings → About says where Listen runs its model: the CPU here, the GPU
   await expect(page.locator("#lsw")).toHaveText("Follow: standard mode");
   await expect(page.locator("#lswn")).toHaveText("Works on every phone, uses more battery");
   await expect(page.locator("#lswb")).toHaveText("Standard");
-  // the Listen line comes before the version, which is last in About
-  expect(await page.evaluate(() => document.getElementById("lswr").nextElementSibling.id)).toBe("upr");
+  // the Listen line comes before the version, which is last in About; fast mode's report row (hidden here) between them
+  expect(await page.evaluate(() => document.getElementById("lswr").nextElementSibling.id)).toBe("lswf");
+  await expect(page.locator("#lswf")).toBeHidden();
+  expect(await page.evaluate(() => document.getElementById("lswf").nextElementSibling.id)).toBe("upr");
   expect(await page.evaluate(() => document.getElementById("upr").nextElementSibling)).toBeNull();
   // the Standard badge reads at 4.5:1 in every theme (a11y.spec scans Settings too, but never sees the GPU line)
   expect(await axeEveryTheme(page, "#lswr")).toEqual(noViolations());
@@ -406,4 +408,113 @@ test("with the site's offline copy (the service worker), Follow starts the first
   expect(h).toEqual(["require-corp", "same-origin"]);
   expect(errors).toEqual([]);
   await context.close();
+});
+
+test("fast mode that fails on this phone: Follow carries on on the CPU, and About shares a report of why @chromium-only", async ({ page }) => {
+  // (Satish, 2026-11-20: a Galaxy S24 Ultra far away whose GPU failed with nothing kept to say why.) A browser that says
+  // it has a GPU and gives one that can't run anything: ONNX Runtime fails to start the model on it
+  test.setTimeout(400_000);
+  const errors = [];
+  await page.addInitScript(() => {
+    const adapter = {
+      info: { vendor: "testvendor", architecture: "testarch", description: "Test GPU 1" },
+      limits: { maxBufferSize: 268435456, maxComputeWorkgroupStorageSize: 16384 },
+      features: new Set(["shader-f16"]),
+      requestDevice: () => Promise.reject(new Error("this test GPU gives no device")),
+    };
+    Object.defineProperty(navigator, "gpu", {
+      value: { requestAdapter: () => Promise.resolve(adapter), getPreferredCanvasFormat: () => "rgba8unorm" },
+      configurable: true,
+    });
+    // what Share report hands the phone's share sheet
+    Object.defineProperty(navigator, "share", { value: (d) => ((window.__shared = d), Promise.resolve()), configurable: true });
+  });
+  await openSite(page, SETUPS.english, { errors });
+  // the GPU's failure as kept before this report: let go on the next opening, so the GPU is tried once more
+  await page.evaluate(() => localStorage.setItem("nitya-listen-cpu", "1"));
+  await page.reload();
+  await settle(page);
+  expect(await page.evaluate(() => localStorage.getItem("nitya-listen-cpu"))).toBeNull();
+  const panel = page.locator("#lsn");
+  await page.locator("#lsb").click();
+  // the GPU's download is asked about first
+  await expect(panel.getByRole("status")).toContainText("117 MB");
+  await panel.getByRole("button", { name: "Download" }).click();
+  // the GPU fails, and Follow goes on on the CPU by itself: no second question, no tap
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 360_000 });
+  const report = await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-fast-mode")));
+  expect(report.status).toBe("failed");
+  expect(report.step).toBe("starting the model");
+  expect(report.cpu).toBe("standard mode (CPU) started and works");
+  await panel.getByRole("button", { name: "Stop" }).click();
+  // About: standard mode, and the row with Share report
+  await page.locator("#aa").click();
+  await expect(page.locator("#lswr")).toHaveAttribute("data-way", "cpu");
+  const row = page.locator("#lswf");
+  await expect(row).toBeVisible();
+  await expect(row).toContainText("Fast mode did not work on this phone");
+  await row.getByRole("button", { name: "Share report" }).click();
+  const shared = await page.waitForFunction(() => window.__shared).then((h) => h.jsonValue());
+  for (const want of [
+    "Follow fast mode report",
+    "What happened: fast mode failed while starting the model",
+    "Error: ",
+    "Model: chant-v6-q4, ONNX Runtime 1.",
+    "GPU: testvendor · testarch · Test GPU 1",
+    "maxBufferSize 256 MB",
+    "Features: shader-f16",
+    "Then: standard mode (CPU) started and works",
+  ])
+    expect(shared.text).toContain(want);
+  expect(await axeEveryTheme(page, "#lswf")).toEqual(noViolations());
+  // (the GPU's failure is warned of in the console, as meant: not an error)
+  expect(errors).toEqual([]);
+});
+
+test("the app closed while fast mode was tried: found out on the next opening, Follow keeps to the CPU, and About says so @chromium-only", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "gpu", { value: { requestAdapter: () => Promise.resolve({}) }, configurable: true });
+    Object.defineProperty(navigator, "share", { value: (d) => ((window.__shared = d), Promise.resolve()), configurable: true });
+  });
+  await openSite(page, SETUPS.english);
+  // (as a page that died while the GPU heard the check sound left it)
+  await page.evaluate(() =>
+    localStorage.setItem(
+      "nitya-fast-mode",
+      JSON.stringify({
+        status: "trying",
+        step: "hearing the check sound",
+        at: "x",
+        tz: "",
+        app: "1.78.6",
+        model: "chant-v6-q4",
+        ort: "",
+        log: ["+0 ms fast mode tried"],
+      }),
+    ),
+  );
+  await page.reload();
+  await settle(page);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-fast-mode")).status)).toBe("closed");
+  await page.locator("#aa").click();
+  await expect(page.locator("#lswr")).toHaveAttribute("data-way", "cpu");
+  await page.locator("#lswfs").click();
+  const shared = await page.waitForFunction(() => window.__shared).then((h) => h.jsonValue());
+  expect(shared.text).toContain("What happened: the app closed (crashed) while fast mode was hearing the check sound");
+});
+
+test("fast mode left while still downloading is not a failure: the GPU is tried again @chromium-only", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "gpu", { value: { requestAdapter: () => Promise.resolve({}) }, configurable: true });
+  });
+  await openSite(page, SETUPS.english);
+  await page.evaluate(() =>
+    localStorage.setItem("nitya-fast-mode", JSON.stringify({ status: "trying", step: "downloading", at: "x", tz: "", app: "1", model: "m", ort: "", log: [] })),
+  );
+  await page.reload();
+  await settle(page);
+  expect(await page.evaluate(() => localStorage.getItem("nitya-fast-mode"))).toBeNull();
+  await page.locator("#aa").click();
+  await expect(page.locator("#lswr")).toHaveAttribute("data-way", "gpu");
+  await expect(page.locator("#lswf")).toBeHidden();
 });
