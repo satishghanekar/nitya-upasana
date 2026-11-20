@@ -374,3 +374,36 @@ test("Settings → About says the GPU when the browser has WebGPU and an adapter
   expect(await axeEveryTheme(page, "#lswr")).toEqual(noViolations());
   expect(errors).toEqual([]);
 });
+
+test("with the site's offline copy (the service worker), Follow starts the first time and again after a relaunch @chromium-only", async ({ browser }) => {
+  // (a Galaxy S24 Ultra, 2026-11-20: the service worker gave the library from Listen's cache without the page's
+  // cross-origin headers, so Chrome refused the workers it starts from that file, and Follow could not start; the
+  // other tests run with no service worker, so none saw it)
+  test.setTimeout(300_000);
+  const context = await browser.newContext({ serviceWorkers: "allow", permissions: ["microphone"] });
+  const page = await context.newPage();
+  const errors = [];
+  await openSite(page, SETUPS.english, { errors });
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  const panel = page.locator("#lsn");
+  for (const round of ["first", "after a relaunch"]) {
+    if (round !== "first") {
+      await page.reload();
+      await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
+      expect(await page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
+    }
+    await page.locator("#lsb").click();
+    if (round === "first") await panel.getByRole("button", { name: "Download" }).click();
+    await expect(panel.getByRole("status"), round).toHaveText("Listening…", { timeout: 240_000 });
+    await panel.getByRole("button", { name: "Stop" }).click();
+    await expect(panel).toBeHidden();
+  }
+  // the library as the service worker gives it from Listen's cache: with the page's cross-origin headers
+  const h = await page.evaluate(async () => {
+    const r = await fetch("vendor/onnxruntime/ort.wasm.bundle.min.mjs");
+    return [r.headers.get("Cross-Origin-Embedder-Policy"), r.headers.get("Cross-Origin-Resource-Policy")];
+  });
+  expect(h).toEqual(["require-corp", "same-origin"]);
+  expect(errors).toEqual([]);
+  await context.close();
+});

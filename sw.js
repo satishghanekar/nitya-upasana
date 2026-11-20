@@ -1,6 +1,6 @@
 // Service worker: keeps a copy of the site on the phone so it opens without internet.
 // V is the site's version (shown as "v1.9" in Settings → About). It must match <meta name="version"> in index.html; change both on a new release.
-const V = "aarti-v1.78.2";
+const V = "aarti-v1.78.4";
 // The page's styles and scripts, the font files and the pictures to keep: one list for the page and this worker, in js/parts.js
 importScripts("js/parts.js");
 const PARTS = SITE_PARTS.all;
@@ -118,6 +118,18 @@ self.addEventListener("activate", (e) => {
 // goes wrong, the request goes straight to the network as if there were no service worker.
 // (Safari on a Mac sat on a blank page with the previous version; its storage can stall.)
 const wait = (p, ms) => Promise.race([p, new Promise((res) => setTimeout(() => res(null), ms))]);
+// Listen's library, as kept in its cache (js/features/listen.js keeps only each file's type), given with the page's
+// cross-origin headers (_headers): the library starts its workers from its own file, and in a cross-origin isolated
+// page a worker whose file lacks them is refused. Without them Listen started only while its library still came from
+// the network, and could not start again once it came from the phone (a Galaxy S24 Ultra, 2026-11-20).
+const isolated = (m) => {
+  if (!m) return m;
+  const h = new Headers(m.headers);
+  h.set("Cross-Origin-Embedder-Policy", "require-corp");
+  h.set("Cross-Origin-Opener-Policy", "same-origin");
+  h.set("Cross-Origin-Resource-Policy", "same-origin");
+  return new Response(m.body, { status: m.status, statusText: m.statusText, headers: h });
+};
 self.addEventListener("fetch", (e) => {
   const r = e.request;
   if (r.method !== "GET") return;
@@ -137,7 +149,7 @@ self.addEventListener("fetch", (e) => {
     const c = await wait(caches.open(V), 2000);
     let m = c ? await wait(c.match(key), 2000) : null;
     if (m && m.redirected) m = null; // Safari refuses a redirected copy for a page
-    if (!m && /\/(vendor\/onnxruntime|js\/worklets)\//.test(u.pathname)) m = await wait(caches.match(key, { cacheName: LISTEN }), 2000);
+    if (!m && /\/(vendor\/onnxruntime|js\/worklets)\//.test(u.pathname)) m = isolated(await wait(caches.match(key, { cacheName: LISTEN }), 2000));
     if (m) return m;
     const net = () =>
       fetch(nav ? key : u.origin + u.pathname, { cache: "no-cache", credentials: "same-origin" })

@@ -105,3 +105,38 @@ test("closing Settings after a text-size change lays the page out only a few tim
   expect(size.layouts, "page layouts when Settings closes").toBeLessThanOrEqual(3);
   await context.close();
 });
+
+test("once started, the page sits still: nothing animates on and on, so the phone is not kept busy @chromium-only", async ({ browser }) => {
+  test.setTimeout(90_000);
+  // (a Galaxy S24 Ultra, 2026-11-20: the splash's twinkling stars went on animating, hidden, all the time the app was
+  // open, and the browser restyled the page every frame; at launch and on every later opening of the day). On a computer
+  // the ring on today's star glows a few times as Home shows, then rests (it glowed on for ever)
+  for (const [launch, width] of [
+    [false, 412],
+    [true, 412],
+    [false, 1280],
+  ]) {
+    const phone = width < 800;
+    const context = await browser.newContext({ viewport: { width, height: 915 }, isMobile: phone, hasTouch: phone, serviceWorkers: "block" });
+    const page = await context.newPage();
+    const cdp = await context.newCDPSession(page);
+    await cdp.send("Performance.enable");
+    await openSite(page, SETUPS.marathi, { launch, running: true });
+    // the launch animation is over by 8 s at the latest (css/02-core.css)
+    await page.waitForTimeout(launch ? 9000 : 1000);
+    const endless = await page.evaluate(() =>
+      document
+        .getAnimations()
+        .filter((a) => a.playState === "running" && a.effect && a.effect.getComputedTiming().iterations === Infinity)
+        .map((a) => /** @type {any} */ (a).animationName + " on ." + /** @type {any} */ (a.effect).target.className),
+    );
+    expect(endless, (launch ? "after the launch animation" : "after the splash") + ", " + width + "px").toEqual([]);
+    // (the ring's glows are over by 15 s)
+    if (!phone) await page.waitForTimeout(14500);
+    const t = await metrics(cdp);
+    await page.waitForTimeout(2000);
+    const idle = diff(t, await metrics(cdp));
+    expect(idle.styles, "style work while the page sits still").toBeLessThanOrEqual(5);
+    await context.close();
+  }
+});
