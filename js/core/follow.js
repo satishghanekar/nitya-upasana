@@ -177,7 +177,10 @@ export function locate(heard, docs, here) {
     if (doc.refrain[line] && here) {
       // the dhrupad sung right after the stanza the place is at (or the one it is in) is followed there; any other
       // repeat of it can't be told apart, so the place stays (Satish, 2026-11-11: the mark stayed on the stanza)
-      var b = k === here.doc ? refrainAfter(doc, here.line) : null,
+      // In another text, its dhrupad is where that text starts: the one at its top, before the first stanza (an aarti
+      // after an aarti starts with its dhrupad; Satish, 2026-11-20: Follow waited until the first stanza). Only the
+      // text being followed has repeats that can't be told apart, and its own dhrupad is found there first.
+      var b = k === here.doc ? refrainAfter(doc, here.line) : refrainAfter(doc, doc.refrain.indexOf(true)),
         first = b ? doc.ends[b[0] - 1] || 0 : 0,
         there = b && match(h, doc.text, first, doc.ends[b[1]]);
       if (there && there.cost / h.length <= most && there.end > first)

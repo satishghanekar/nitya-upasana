@@ -97,6 +97,16 @@ describe("locate, on the site's texts", () => {
     const r = locate(heard(sk, 0, 2), docs, { doc: sk, line: mid });
     expect(r).toMatchObject({ doc: sk, line: mid, held: true });
   });
+  test("the next aarti, started with its dhrupad, is followed at its top dhrupad, not held on the last one", () => {
+    // (Satish, 2026-11-20: from one aarti to the next, Follow waited until the first stanza was sung)
+    const sl = at("aarti-shendur-laal-chadhayo"),
+      lines = pieceLines(pieces[sl]),
+      top = lines.findIndex((l) => l.refrain);
+    const r = locate(heard(sl, top, top + 1), docs, { doc: sk, line: pieceLines(pieces[sk]).length - 1 });
+    expect(r).toMatchObject({ doc: sl, held: false });
+    expect(r.line).toBeGreaterThanOrEqual(top);
+    expect(lines.slice(top, r.line + 1).every((l) => l.refrain)).toBe(true);
+  });
   test("the next stanza of an aarti is found", () => {
     const lines = pieceLines(pieces[sk]);
     const stanza = lines.findIndex((l) => l.text.includes("मुक्ताफळांची"));
