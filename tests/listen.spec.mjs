@@ -471,6 +471,43 @@ test("fast mode that fails on this phone: Follow carries on on the CPU, and Abou
   expect(errors).toEqual([]);
 });
 
+test("fast mode that fails with the GPU's subgroups is tried once more without them, then the CPU; the report tells both @chromium-only", async ({ page }) => {
+  // (the cross-device test of chant-v6-q4, 2026-11-20: ONNX Runtime's 4-bit kernel takes a subgroup path that some
+  // Android drivers get wrong; without subgroups it takes another kernel)
+  test.setTimeout(400_000);
+  await page.addInitScript(() => {
+    window.__asked = [];
+    const adapter = {
+      info: { vendor: "testvendor", architecture: "testarch", description: "Test GPU 2", subgroupMinSize: 64, subgroupMaxSize: 128 },
+      limits: { maxBufferSize: 268435456 },
+      features: new Set(["subgroups", "shader-f16"]),
+      requestDevice: (d) => (window.__asked.push((d && d.requiredFeatures) || []), Promise.reject(new Error("this test GPU gives no device"))),
+    };
+    Object.defineProperty(navigator, "gpu", {
+      value: { requestAdapter: () => Promise.resolve(adapter), getPreferredCanvasFormat: () => "rgba8unorm" },
+      configurable: true,
+    });
+  });
+  await openSite(page, SETUPS.english);
+  const panel = page.locator("#lsn");
+  await page.locator("#lsb").click();
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toHaveText("Listening…", { timeout: 360_000 });
+  // the GPU asked for twice: with its subgroups, then without them
+  const asked = await page.evaluate(() => window.__asked);
+  expect(asked[0]).toContain("subgroups");
+  expect(asked.at(-1)).not.toContain("subgroups");
+  const report = await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-fast-mode")));
+  expect(report.status).toBe("failed");
+  expect(report.subgroups).toBe("off");
+  expect(report.before).toContain("Subgroups: used");
+  expect(report.before).toContain("subgroup size 64 to 128");
+  expect(report.cpu).toBe("standard mode (CPU) started and works");
+  // (a GPU that never worked here: nothing remembered about its subgroups)
+  expect(await page.evaluate(() => localStorage.getItem("nitya-gpu-no-subgroups"))).toBeNull();
+  await panel.getByRole("button", { name: "Stop" }).click();
+});
+
 test("the app closed while fast mode was tried: found out on the next opening, Follow keeps to the CPU, and About says so @chromium-only", async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "gpu", { value: { requestAdapter: () => Promise.resolve({}) }, configurable: true });

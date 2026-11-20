@@ -34,7 +34,8 @@ export var ALIKE_LEAST = 0.95;
 /**
  * @typedef {{ status: "trying" | "failed" | "closed", step: string, at: string, tz: string, app: string, model: string,
  *   ort: string, error?: string, stack?: string, log: string[], gpu?: Record<string, any>, phone?: Record<string, any>,
- *   check?: { ms: number, alike: number, far: number }, timings?: Record<string, number>, cpu?: string }} Report
+ *   check?: { ms: number, alike: number, far: number }, timings?: Record<string, number>, cpu?: string,
+ *   subgroups?: "on" | "off" | "none", before?: string }} Report
  */
 
 /** A number of bytes in MB or KB, as people read them @param {number} n */
@@ -61,6 +62,8 @@ export function reportText(r) {
   if (r.error) lines.push("Error: " + r.error);
   if (r.stack) lines.push("Where: " + r.stack);
   lines.push("Model: " + r.model + ", ONNX Runtime " + r.ort);
+  // (ONNX Runtime's 4-bit kernel uses the GPU's subgroups when it has them; tried once more without them where it failed)
+  if (r.subgroups) lines.push("Subgroups: " + { on: "used", off: "turned off for this try", none: "not offered by this GPU" }[r.subgroups]);
   if (r.check)
     lines.push("Check sound: " + r.check.ms + " ms, " + Math.round(r.check.alike * 1000) / 10 + "% of steps right, scores off by up to " + r.check.far);
   if (r.timings)
@@ -79,7 +82,8 @@ export function reportText(r) {
           return x;
         })
         .join(" · ") +
-      (g.fallback ? " (a fallback adapter)" : ""),
+      (g.fallback ? " (a fallback adapter)" : "") +
+      (g.subgroupMinSize ? ", subgroup size " + g.subgroupMinSize + " to " + g.subgroupMaxSize : ""),
   );
   if (g.limits)
     lines.push(
@@ -117,5 +121,11 @@ export function reportText(r) {
     });
   }
   lines.push("Then: " + (r.cpu || "standard mode (CPU) is used from now on"));
+  if (r.before) {
+    lines.push("", "Earlier try:");
+    r.before.split("\n").forEach(function (x) {
+      lines.push("  " + x);
+    });
+  }
   return lines.join("\n");
 }

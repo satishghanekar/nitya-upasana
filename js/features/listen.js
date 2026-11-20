@@ -80,6 +80,8 @@ var ORT = "vendor/onnxruntime/",
   // and the hearings after it before the GPU is trusted for good (a GPU that brings the page down mostly does it within
   // the first few)
   CHECK_WAIT = 60000,
+  // remembered once the GPU has worked here with its subgroups turned off (below, sgOff)
+  NO_SUBGROUPS = "nitya-gpu-no-subgroups",
   TRUSTED_AFTER = 10,
   // seconds of sound heard each time (about 30 letters, enough to tell the place), and of new sound before the next
   WINDOW = 4,
@@ -119,6 +121,14 @@ var WAVE = '<span class="lsn-wave" aria-hidden="true"><i></i><i></i><i></i><i></
   LEVEL_EVERY = 90,
   LEVEL_FULL = 0.12;
 var levelAt = 0;
+
+/** The GPU's subgroups turned off for ONNX Runtime (2026-11-20, the cross-device test of chant-v6-q4): with them, its
+ * 4-bit kernel (MatMulNBits) takes a path that calls subgroupShuffle, tested only at SwiftShader's subgroup size of 4;
+ * phones' GPUs have 64 or 128, and some Android drivers get it wrong. Without them it takes another kernel, as right
+ * and as fast. A GPU that fails with them is tried once more without them before the CPU. */
+var sgOff = false;
+/** @type {any} the browser's own requestAdapter, once wrapped (guardGpu) */ var gpuAsk = null;
+/** the adapters whose requestDevice is wrapped already (a browser may give the same one twice) */ var wrapped = new WeakSet();
 
 /** off: nothing; ask: the download question; load: downloading and starting; run: listening @type {"off" | "ask" | "load" | "run"} */
 var phase = "off";
@@ -474,7 +484,13 @@ async function load() {
     onGpu = h.ep === "webgpu",
     c = await box(),
     began = performance.now();
-  if (onGpu && !fast.trying()) await fast.begin(dir.replace(/^models\/|\/$/g, ""));
+  if (onGpu) {
+    try {
+      sgOff = sgOff || localStorage.getItem(NO_SUBGROUPS) === "1" || fast.retryWithoutSubgroups();
+    } catch (e) {}
+    guardGpu();
+    if (!fast.trying()) await fast.begin(dir.replace(/^models\/|\/$/g, ""));
+  }
   var info = JSON.parse(new TextDecoder().decode(await file(c, dir + "model.json"))),
     pieces = info.model,
     total =
@@ -516,7 +532,8 @@ async function load() {
   }
   panel(esc(menuWords("listen").starting), { no: menuWords("listen").stop });
   if (!ort) {
-    ort = await import(/* @vite-ignore */ abs(ORT + h.lib));
+    // (with the subgroups off, a fresh copy of the library: a copy already loaded keeps the GPU device it made)
+    ort = await import(/* @vite-ignore */ abs(ORT + h.lib) + (onGpu && sgOff ? "?subgroups=off" : ""));
     ort.env.wasm.wasmBinary = binary.buffer;
     // on the CPU every core (up to 4): the page is cross-origin isolated (_headers). On the GPU one: the work is the
     // GPU's, and each thread costs memory. Safari closed the page and opened it again as Follow started, on an iPhone
@@ -547,14 +564,27 @@ async function load() {
       fast.step("hearing the check sound");
       await checkOn(session, c, dir);
       fast.step("listening");
+      if (sgOff)
+        try {
+          localStorage.setItem(NO_SUBGROUPS, "1");
+        } catch (x) {}
     }
   } catch (e) {
     if (h.ep === "wasm") throw e;
+    if (session) session.release().catch(function () {});
+    // the GPU failed with its subgroups used: once more without them, before the CPU
+    if (!sgOff && fast.subgroupsOn()) {
+      console.warn("Listen: the GPU failed, once more without its subgroups:", e);
+      fast.failed(e);
+      sgOff = true;
+      ort = null;
+      weights = new Uint8Array(0);
+      return load();
+    }
     // the GPU couldn't run it here: the CPU from now on, on this phone (its own model and library, from the cache if
     // it is there, else downloaded now), and why it failed kept for About's Share report
     console.warn("Listen: the GPU failed, the CPU instead:", e);
     fast.failed(e);
-    if (session) session.release().catch(function () {});
     how = WAYS.cpu;
     showWay("cpu");
     ort = null;
@@ -633,6 +663,34 @@ async function checkOn(session, c, dir) {
   var a = alike(choices(data, n), check.ids);
   fast.checked({ ms: Math.round(ms), alike: a, far: Math.round(far * 100) / 100 });
   if (a < ALIKE_LEAST) throw new Error("the GPU heard the check sound wrong: " + Math.round(a * 1000) / 10 + "% of steps right");
+}
+
+/** The GPU's device as ONNX Runtime asks for it: the features it asks for noted, and the subgroups taken out while
+ * sgOff (wrapped once, before the library is loaded) */
+function guardGpu() {
+  /** @type {any} */ var g = /** @type {any} */ (navigator).gpu;
+  if (!g || gpuAsk) return;
+  gpuAsk = g.requestAdapter.bind(g);
+  g.requestAdapter = function (/** @type {any} */ o) {
+    return gpuAsk(o).then(function (/** @type {any} */ a) {
+      if (!a || !a.requestDevice || wrapped.has(a)) return a;
+      wrapped.add(a);
+      var ask = a.requestDevice.bind(a);
+      try {
+        a.requestDevice = function (/** @type {any} */ d) {
+          var want = Array.from((d && d.requiredFeatures) || []),
+            has = want.indexOf("subgroups") >= 0;
+          if (sgOff)
+            want = want.filter(function (f) {
+              return f !== "subgroups" && f !== "subgroup-size-control";
+            });
+          fast.subgroups(!has ? "none" : sgOff ? "off" : "on", want);
+          return ask(Object.assign({}, d || {}, { requiredFeatures: want }));
+        };
+      } catch (e) {}
+      return a;
+    });
+  };
 }
 
 /** An older model's files (a new chant-vN) taken out of the cache @param {Cache} c @param {string[]} keep */

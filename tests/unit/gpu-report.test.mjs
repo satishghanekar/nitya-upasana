@@ -91,6 +91,17 @@ describe("the report shared", () => {
     ])
       expect(t).toContain(want);
   });
+  test("the subgroups, and an earlier try, are told", () => {
+    const t = reportText({
+      ...r,
+      subgroups: "off",
+      gpu: { ...r.gpu, subgroupMinSize: 64, subgroupMaxSize: 128 },
+      before: "Nitya Upasana 1.78.7: Follow fast mode report\nSubgroups: used",
+    });
+    expect(t).toContain("Subgroups: turned off for this try");
+    expect(t).toContain("Adreno (TM) 750, subgroup size 64 to 128");
+    expect(t).toContain("Earlier try:\n  Nitya Upasana 1.78.7: Follow fast mode report\n  Subgroups: used");
+  });
   test("a page that closed while the GPU worked says so, and what is missing still reads", () => {
     const t = reportText({ status: "closed", step: "hearing the check sound", at: "x", tz: "", app: "1", model: "m", ort: "", log: [] });
     expect(t).toContain("What happened: the app closed (crashed) while fast mode was hearing the check sound");

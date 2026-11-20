@@ -61,10 +61,30 @@ export function init() {
   document.addEventListener("nitya-settings", show);
 }
 
-/** Whether fast mode did not work on this phone: Follow runs on the CPU */
+/** Whether fast mode did not work on this phone: Follow runs on the CPU (a GPU that failed with its subgroups used is
+ * tried once more without them first, retryWithoutSubgroups()) */
 export function failedHere() {
   var r = stored();
-  return !!r && (r.status === "failed" || r.status === "closed");
+  return !!r && (r.status === "failed" || r.status === "closed") && r.subgroups !== "on";
+}
+
+/** Whether fast mode failed here with the GPU's subgroups used: tried once more without them */
+export function retryWithoutSubgroups() {
+  var r = stored();
+  return !!r && (r.status === "failed" || r.status === "closed") && r.subgroups === "on";
+}
+
+/** Whether the try being written used the GPU's subgroups */
+export function subgroupsOn() {
+  return !!cur && cur.subgroups === "on";
+}
+
+/** Whether the GPU's subgroups were used, turned off, or not offered @param {"on" | "off" | "none"} v
+ * @param {string[]} asked  the features ONNX Runtime asked the GPU for */
+export function subgroups(v, asked) {
+  if (!cur) return;
+  cur.subgroups = v;
+  note("GPU features asked: " + (asked.join(", ") || "none") + "; subgroups " + v);
 }
 
 /** Settings → You → About: the row, when there is a report to share */
@@ -77,6 +97,8 @@ export function show() {
 function errorText(e) {
   if (!e) return "unknown";
   if (typeof e === "string") return e;
+  // (ONNX Runtime's WebAssembly throws a bare number for some failures; its words go to the console, kept in the log)
+  if (typeof e === "number") return "ONNX Runtime error " + e + " (see the log)";
   return ((e.name ? e.name + ": " : "") + (e.message || String(e))).slice(0, 1000);
 }
 
@@ -88,6 +110,31 @@ export function note(what) {
   keep(cur);
 }
 
+/** The console's warnings and errors while fast mode is on trial, kept in the log too: ONNX Runtime and the browser say
+ * there what went wrong on the GPU (wrapped once, and passed on as they were) */
+var hooked = false;
+function hookConsole() {
+  if (hooked) return;
+  hooked = true;
+  ["warn", "error"].forEach(function (k) {
+    /** @type {any} */ var con = console,
+      was = con[k];
+    con[k] = function () {
+      if (cur && cur.status === "trying")
+        note(
+          k +
+            ": " +
+            Array.prototype.map
+              .call(arguments, function (/** @type {any} */ x) {
+                return x && x.message ? errorText(x) : String(x);
+              })
+              .join(" "),
+        );
+      return was.apply(con, arguments);
+    };
+  });
+}
+
 /** The GPU's name, limits and features (asked again: a fresh adapter tells as much as Follow's) */
 async function gpuInfo() {
   /** @type {any} */ var nav = navigator,
@@ -96,7 +143,7 @@ async function gpuInfo() {
     var a = nav.gpu && (await nav.gpu.requestAdapter());
     if (!a) return { description: "no adapter given" };
     var info = a.info || (a.requestAdapterInfo ? await a.requestAdapterInfo() : {});
-    ["vendor", "architecture", "device", "description"].forEach(function (k) {
+    ["vendor", "architecture", "device", "description", "subgroupMinSize", "subgroupMaxSize"].forEach(function (k) {
       if (info && info[k]) out[k] = info[k];
     });
     out.fallback = !!(a.isFallbackAdapter || (info && info.isFallbackAdapter));
@@ -145,7 +192,9 @@ async function phoneInfo() {
 export async function begin(model) {
   t0 = performance.now();
   var now = new Date(),
-    meta = document.querySelector('meta[name="version"]');
+    meta = document.querySelector('meta[name="version"]'),
+    // a try before this one that failed: kept in this report, so one message tells both
+    old = stored();
   cur = {
     status: "trying",
     step: "downloading",
@@ -157,7 +206,9 @@ export async function begin(model) {
     log: [],
     timings: {},
   };
+  if (old && old.status !== "trying") cur.before = reportText(old).slice(0, 6000);
   keep(cur);
+  hookConsole();
   note("fast mode tried");
   var both = await Promise.all([gpuInfo(), phoneInfo()]);
   if (!cur) return;
