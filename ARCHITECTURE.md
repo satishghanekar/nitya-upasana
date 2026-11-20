@@ -128,7 +128,8 @@ phone downloads only the way it uses, and Settings → You → About says which,
 model, 2026-11-05, so until 1.49 Listen used the CPU only.) **Follow** (`js/features/listen.js`, the microphone in the bottom bar) uses it: the first time, after the reader
 agrees, it downloads the model and the library (about 117 MB for the GPU, 122 MB for the CPU) into the cache `nitya-listen`, which `sw.js` keeps
 across versions and gives the library and the microphone tap (`js/worklets/listen-tap.js`) from, so Follow works
-offline. Every half second of new sound it hears the last 4 s. Near the mark, the model's scores are lined up with
+offline. It gives them with the page's cross-origin headers (`isolated()` in `sw.js`): the library starts its workers
+from its own file, and Chrome refuses a worker whose file lacks them in a cross-origin isolated page. Every half second of new sound it hears the last 4 s. Near the mark, the model's scores are lined up with
 the text there (`js/core/align.js`, CTC forced alignment); when they don't fit, or the place isn't known yet,
 `js/core/follow.js` looks for the letters it heard in the texts (near the last place, then the text, then every
 text). The model says when its last letter was said (its

@@ -405,12 +405,13 @@
 #iconr[hidden] {
   display: none;
 }
+/* three glows, then a plain ring: an endless glow repainted every frame */
 @media (prefers-reduced-motion: no-preference) {
   #iconr {
     transition:
       left 0.4s,
       top 0.4s;
-    animation: iconr-glow 2.4s ease-in-out infinite alternate;
+    animation: iconr-glow 2.4s ease-in-out 6 alternate;
   }
 }
 @keyframes iconr-glow {
