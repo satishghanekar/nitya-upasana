@@ -1,6 +1,6 @@
 // Service worker: keeps a copy of the site on the phone so it opens without internet.
 // V is the site's version (shown as "v1.9" in Settings → About). It must match <meta name="version"> in index.html; change both on a new release.
-const V = "aarti-v1.79.2";
+const V = "aarti-v1.80.0";
 // The page's styles and scripts, the font files and the pictures to keep: one list for the page and this worker, in js/parts.js
 importScripts("js/parts.js");
 const PARTS = SITE_PARTS.all;
@@ -114,10 +114,22 @@ self.addEventListener("activate", (e) => {
 // always opened from the phone (the Books tab marks the ones kept, js/features/pdfs.js).
 // "Check for updates" (js/features/offline.js) marks its requests ?fresh (Safari's worker never sees a request's cache
 // mode), and the page saving missing files asks with cache 'reload': those go straight to the network.
-// Nothing here may leave the page waiting: if the saved copy can't be read within 2 s, or anything
-// goes wrong, the request goes straight to the network as if there were no service worker.
+// Nothing here may leave the page waiting: if the saved copy can't be read within 2 s, the network is asked too and
+// the first of the two to answer is given; if anything goes wrong, the request goes to the network as if there were no
+// service worker.
 // (Safari on a Mac sat on a blank page with the previous version; its storage can stall.)
-const wait = (p, ms) => Promise.race([p, new Promise((res) => setTimeout(() => res(null), ms))]);
+const LATE = Symbol("late");
+const wait = (p, ms) => Promise.race([p, new Promise((res) => setTimeout(() => res(LATE), ms))]);
+// The first usable answer of two (a response, not null), or null when neither gives one. When the saved copy is slow
+// (its storage stalled), the network is asked too, and the saved copy still answers if it comes first: a weak
+// connection that hangs must not leave the page waiting on it alone (2026-11-20)
+const first = (a, b) =>
+  new Promise((res) => {
+    let left = 2;
+    const one = (x) => (x ? res(x) : --left === 0 && res(null));
+    a.then(one, () => one(null));
+    b.then(one, () => one(null));
+  });
 // Listen's library, as kept in its cache (js/features/listen.js keeps only each file's type), given with the page's
 // cross-origin headers (_headers): the library starts its workers from its own file, and in a cross-origin isolated
 // page a worker whose file lacks them is refused. Without them Listen started only while its library still came from
@@ -146,10 +158,25 @@ self.addEventListener("fetch", (e) => {
   const nav = !pdf && (r.mode === "navigate" || /\/(index\.html)?$/.test(u.pathname));
   const key = nav ? new URL("./", location.href).href : u.origin + u.pathname;
   const go = async () => {
-    const c = await wait(caches.open(V), 2000);
-    let m = c ? await wait(c.match(key), 2000) : null;
+    const opening = caches.open(V);
+    let c = await wait(opening, 2000);
+    // the saved copy's answer, still to come when it was too slow (else null): it may yet answer before the network
+    let late = null;
+    if (c === LATE) {
+      late = opening.then((k) => k.match(key));
+      c = null;
+    }
+    const looking = c ? c.match(key) : null;
+    let m = looking ? await wait(looking, 2000) : null;
+    if (m === LATE) {
+      late = looking;
+      m = null;
+    }
     if (m && m.redirected) m = null; // Safari refuses a redirected copy for a page
-    if (!m && /\/(vendor\/onnxruntime|js\/worklets)\//.test(u.pathname)) m = isolated(await wait(caches.match(key, { cacheName: LISTEN }), 2000));
+    if (!m && /\/(vendor\/onnxruntime|js\/worklets)\//.test(u.pathname)) {
+      const l = await wait(caches.match(key, { cacheName: LISTEN }), 2000);
+      m = l === LATE ? null : isolated(l);
+    }
     if (m) return m;
     const net = () =>
       fetch(nav ? key : u.origin + u.pathname, { cache: "no-cache", credentials: "same-origin" })
@@ -158,11 +185,16 @@ self.addEventListener("fetch", (e) => {
           return x;
         })
         .catch(() => null);
-    const x = await net();
+    const x = await (late
+      ? first(
+          net(),
+          late.then((r) => (r && !r.redirected ? r : null)),
+        )
+      : net());
     if (x) return x;
     if (c && nav) {
       const h = await wait(c.match("./", { ignoreSearch: true }), 2000);
-      if (h) return h;
+      if (h && h !== LATE) return h;
     }
     if (pdf)
       return new Response(

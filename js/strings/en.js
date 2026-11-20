@@ -507,6 +507,59 @@ export default {
     followReport: "How Follow went",
     followReportNote: "Your last few times are kept on this device, never sent by itself. Sharing them helps make Follow better.",
     shareFollowReport: "Share Follow report",
+    // When Follow can't go on in this page (js/features/listen.js offerRestart): the GPU failed, or the model stopped
+    // answering; Restart opens the app again, which then offers Start
+    gpuFailed: "Fast mode did not work on this phone. Restart the app to carry on in standard mode.",
+    stuck: "Follow stopped answering. Restart the app to start it again.",
+    restart: "Restart",
+    again: "Follow is ready to start.",
+    start: "Start",
+    stalled: "The download stopped coming in. Check the internet and try again; what came in is kept.",
+    /** @param {string} mb */
+    noSpace: function (mb) {
+      return "Not enough space on this phone: Follow needs about " + mb + " MB more. Free some space, then try again.";
+    },
+    // Settings → About → Follow: the download, a switch, and the memory, a row with Free memory while the model is
+    // loaded; each asks first in a pop-up
+    // (js/features/follow-model.js)
+    dlTitle: "Keep on this phone",
+    /** @param {string} mb */
+    dlOn: function (mb) {
+      return "Downloaded · " + mb + " MB";
+    },
+    /** @param {string} mb */
+    dlOff: function (mb) {
+      return "Not downloaded · " + mb + " MB";
+    },
+    /** @param {string} p  percent */
+    dlBusy: function (p) {
+      return "Downloading… " + p + "%";
+    },
+    memTitle: "Using memory now",
+    memNote: "Follow frees it by itself 2 minutes after it stops, or when the app is put away",
+    memUse: "In use while Follow listens",
+    stopFirst: "Stop Follow first to change this.",
+    askRemove: "Remove Follow's download?",
+    /** @param {string} mb */
+    askRemoveText: function (mb) {
+      return "This frees " + mb + " MB on this phone. The next time you tap Follow, it asks before downloading it again.";
+    },
+    remove: "Remove",
+    askDownload: "Download Follow now?",
+    /** @param {string} mb */
+    askDownloadText: function (mb) {
+      return mb + " MB, kept on this phone so Follow starts without waiting. Wi-Fi is best.";
+    },
+    askFree: "Free Follow's memory?",
+    askFreeText: "The download stays on this phone. The next time you tap Follow, it takes a few seconds more to start.",
+    freeMemory: "Free memory",
+    cancel: "Cancel",
+    freed: "Follow's memory freed",
+    /** @param {string} mb */
+    removed: function (mb) {
+      return "Download removed · " + mb + " MB freed";
+    },
+    doneDownload: "Follow downloaded",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js): the arrow stays, the word may be left out on small phones
   bottomBar: {

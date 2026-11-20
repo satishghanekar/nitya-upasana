@@ -34,6 +34,7 @@ export const LAYERS = [
   { id: "help", trap: true },
   { id: "qrm", trap: true, back: true },
   { id: "terms", trap: true, back: true, opener: "terms-open" },
+  { id: "follow-model-ask", trap: true, back: true },
   { id: "prm", trap: true, back: true },
   { id: "install-page", trap: true, back: true },
   { id: "upm", trap: true },

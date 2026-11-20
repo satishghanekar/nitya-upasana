@@ -128,13 +128,18 @@ export function pdfLang() {
   marks();
 }
 
-/** After a PDF is opened: checked again every few seconds for a minute, as it may take that long to come in */
+/** the check after a PDF is opened, while it runs @type {any} */
+var watchT = 0;
+
+/** After a PDF is opened: checked again every few seconds for a minute, as it may take that long to come in. One check
+ * at a time: another PDF opened meanwhile starts the minute again, rather than a second check beside the first */
 function watch() {
-  var n = 0,
-    t = setInterval(function () {
-      marks();
-      if (++n >= 20) clearInterval(t);
-    }, 3000);
+  var n = 0;
+  clearInterval(watchT);
+  watchT = setInterval(function () {
+    marks();
+    if (++n >= 20) clearInterval(watchT);
+  }, 3000);
 }
 
 function render() {

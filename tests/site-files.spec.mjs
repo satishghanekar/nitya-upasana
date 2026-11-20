@@ -122,8 +122,10 @@ test("the scripts, styles and page stay within their size budget", () => {
   // since 2026-11-20: fast mode's report, js/core/gpu-report.js and js/features/fast-mode-report.js, and About's row in
   // five languages, 419.2 KB then; since 2026-11-20 too: Follow's report, js/core/follow-report.js and
   // js/features/follow-report.js, and the About tab, 427.5 KB then; 429.5 KB since 2026-11-20: Terms of use,
-  // js/features/terms.js, in five languages, 428.5 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(429_500);
+  // js/features/terms.js, in five languages, 428.5 KB then; 444 KB since 2026-11-20: Follow's model in a part of its own,
+  // js/features/follow-model.js and About's Keep on this phone and Free memory, js/features/follow-model-rows.js, every
+  // wait given a limit, js/core/net.js, and their words in five languages, 442.3 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(444_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -146,8 +148,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // then; 89.5 KB since 2026-11-18: the printout as a book, css/15-print.css: its ornaments, headings, cover and closing
   // page, the English in EB Garamond, and the print pop-up's Cover switch, 88.71 KB with them on a Mac; 90.5 KB since
   // 2026-11-19: the install page, its steps and the arrow at the browser's button, 89.8 KB then; 92 KB since 2026-11-19:
-  // the launch animation, 91.3 KB then; 92.5 KB since 2026-11-20: About's fast mode report row, 92.2 KB then)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(92_500);
+  // the launch animation, 91.3 KB then; 92.5 KB since 2026-11-20: About's fast mode report row, 92.2 KB then; 93.5 KB since 2026-11-20:
+  // About's Keep on this phone switch, Using memory now and the pop-up that asks first, 92.9 KB then)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(93_500);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
   // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then; 33 KB since
@@ -157,8 +160,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // animation, its replay and the download size, 33.69 KB then; 34.5 KB since 2026-11-20: About's fast mode report row
   // and Help on it, 34.16 KB then; 35 KB since 2026-11-20: the About tab, How Follow went, and the copyright line,
   // 34.54 KB then; 35.5 KB since 2026-11-20: the maker's line with Contact and Terms of use, and the Terms dialog,
-  // 35.05 KB then)
-  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(35_500);
+  // 35.05 KB then; 36 KB since 2026-11-20: About's Keep on this phone and Using memory now rows, and the pop-up that asks
+  // first, 35.59 KB then)
+  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(36_000);
 });
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):

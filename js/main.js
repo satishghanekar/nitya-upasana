@@ -75,6 +75,8 @@ import { init as startRoutineTime } from "./features/routine-time.js";
 import { init as startWelcome } from "./features/welcome.js";
 import { init as startFastModeReport } from "./features/fast-mode-report.js";
 import { init as startFollowReport } from "./features/follow-report.js";
+import { init as startFollowModel } from "./features/follow-model.js";
+import { init as startFollowModelRows } from "./features/follow-model-rows.js";
 import { init as startListen } from "./features/listen.js";
 import { init as startLaunch } from "./features/launch.js";
 
@@ -144,6 +146,8 @@ function start() {
     // (before Listen: a page that closed while the GPU was tried is found out before Listen picks the GPU or the CPU)
     run(startFastModeReport); // fast mode's report: About's row when the GPU did not work here, and Share report
     run(startFollowReport); // Follow's report: how the last few times went, kept here, and Share Follow report
+    run(startFollowModel); // Follow's model: its download and its memory, let go by itself once Follow has stopped
+    run(startFollowModelRows); // About → Follow: Downloaded (a switch) and In memory (Free memory), each asking first
     run(startListen); // Listen (#lsb, the ear in the bottom bar): the phone hears the chanting and marks the line being chanted
     run(startLaunch); // The launch animation, the first opening of the day: the day's lines under the splash's picture (last: it reads Home)
   } finally {

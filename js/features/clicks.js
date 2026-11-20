@@ -50,7 +50,7 @@ export function init() {
       /** @type {any} */
       var x = e.target;
       if (!x || !x.closest) return;
-      if (x.closest("#panel,#jump,#lbm,#upm,#terms,.bar,[data-keep]")) return;
+      if (x.closest("#panel,#jump,#lbm,#upm,#terms,#follow-model-ask,.bar,[data-keep]")) return;
       if (!pn.hidden || !jp.hidden) {
         setP(false);
         setJ(false);
