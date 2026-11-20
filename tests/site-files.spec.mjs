@@ -121,8 +121,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // since 2026-11-19: the launch animation played again from the top bar's picture, in five languages, 412.6 KB then; 421 KB
   // since 2026-11-20: fast mode's report, js/core/gpu-report.js and js/features/fast-mode-report.js, and About's row in
   // five languages, 419.2 KB then; since 2026-11-20 too: Follow's report, js/core/follow-report.js and
-  // js/features/follow-report.js, and the About tab, 427.5 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(428_500);
+  // js/features/follow-report.js, and the About tab, 427.5 KB then; 429.5 KB since 2026-11-20: Terms of use,
+  // js/features/terms.js, in five languages, 428.5 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(429_500);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -155,8 +156,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // about 33 KB on GitHub's runners, whose gzip gives a little more; 34 KB since 2026-11-19: Help on the launch
   // animation, its replay and the download size, 33.69 KB then; 34.5 KB since 2026-11-20: About's fast mode report row
   // and Help on it, 34.16 KB then; 35 KB since 2026-11-20: the About tab, How Follow went, and the copyright line,
-  // 34.54 KB then)
-  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(35_000);
+  // 34.54 KB then; 35.5 KB since 2026-11-20: the maker's line with Contact and Terms of use, and the Terms dialog,
+  // 35.05 KB then)
+  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(35_500);
 });
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):
@@ -279,5 +281,4 @@ test("_redirects keeps the documents, dotfiles and tests off the site, and nothi
     files.filter((f) => covered(f) && !dev.includes(f)),
     "the app's own files",
   ).toEqual([]);
-  expect(html).toContain('href="LICENSE.txt"');
 });

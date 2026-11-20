@@ -347,18 +347,40 @@ html[data-sp] {
 :root[data-font] .sp-pw > [lang="en"] {
   font-family: var(--tf), var(--lat);
 }
-/* the maker's name and email, quiet, centred under all the cards (outside their columns) */
+/* the maker's line, quiet, centred under the cards: the app's name, the offering, and Contact and Terms of use as two
+   rounded buttons (Satish, 2026-11-20) */
 .sp-by {
-  margin: 18px 22px 8px;
-  font: 400 var(--fz-s)/1.6 var(--lat);
+  margin: 26px 16px 10px;
+  font: 400 var(--fz-s)/1.5 var(--lat);
   text-align: center;
   color: var(--muted);
 }
-.sp-by a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
-  text-underline-offset: 3px;
+.sp-by p {
+  margin: 0;
+}
+.sp-by .sp-by-name {
+  font: 600 var(--fz-m)/1.3 var(--lat);
+  color: var(--ink);
+}
+.sp-by-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+.sp .sp-by-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 500 var(--fz-s)/1 var(--lat);
+  text-decoration: none;
 }
 @media (max-width: 359px) {
   .sp-body {

@@ -219,6 +219,38 @@ a.t {
 #qrm[hidden] {
   display: none;
 }
+/* Terms of use (js/features/terms.js): the QR code's dialog, wider, its words read as a page */
+#terms {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#terms > .qrc {
+  margin-block: auto;
+  width: min(480px, 100%);
+  text-align: start;
+}
+#terms .qrt:focus {
+  outline: none;
+}
+.terms-text {
+  font: 400 var(--fz-m)/1.55 var(--lat);
+  color: var(--ink);
+}
+.terms-text p {
+  margin: 0 0 12px;
+}
+.terms-text .terms-copyright {
+  color: var(--muted);
+  font-size: var(--fz-s);
+}
 .qrc {
   width: min(340px, 100%);
   background: var(--bg);

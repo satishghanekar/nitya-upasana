@@ -806,6 +806,8 @@ export default {
     restoreFromAFile: "फाइलमधून परत आणा",
     aNityaFileSavedBefore: "आधी जतन केलेली .nitya फाइल",
     about: "माहिती",
+    contact: "संपर्क",
+    termsOfUse: "वापराच्या अटी",
     thisApp: "हे ॲप",
     helpAndHowToUse: "मदत आणि वापर",
     addToHomeScreen: "होम स्क्रीनवर ठेवा",

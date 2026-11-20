@@ -845,6 +845,8 @@ export default {
     restoreFromAFile: "Restore from a file",
     aNityaFileSavedBefore: "A .nitya file saved before",
     about: "About",
+    contact: "Contact",
+    termsOfUse: "Terms of use",
     thisApp: "This app",
     helpAndHowToUse: "Help and how to use",
     addToHomeScreen: "Add to Home Screen",
