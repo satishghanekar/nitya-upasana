@@ -3,53 +3,61 @@ title: श्रीगुरु दत्ता जय
 title-en: Shriguru Datta Jay
 language: mr
 credit: author vasudevanand-saraswati
-lines: 18
-letters: 523
+lines: 21
+letters: 555
 ---
 [once]
-श्रीगुरु दत्ता जय भगवंता ।
-Shriguru Datta Jay Bhagavanta |
-तें मन निष्ठुर न करी आतां ।
-Ten Man Nishthur Na Kari Aatan |
-श्रीगुरु दत्ता ॥
-Shriguru Datta ||
+श्रीगुरुदत्ता जय भगवंता ।
+Shrigurudatta Jay Bhagavanta |
+ते मन निष्ठुर न करी आता ।
+Te Man Nishthur Na Kari Aata |
+श्रीगुरुदत्ता ॥
+Shrigurudatta ||
 
 [1]
-चोरे द्विजासी मारितां मन जे । ¦चोरे द्विजासी मारितां मन जे ।
-Chore Dvijasi Maritan Man Je | ¦Chore Dvijasi Maritan Man Je |
-कळवळले ते कळवळो आतां । ¦कळवळले ते कळवळो आतां ॥
-Kalavalale Te Kalavalo Aatan | ¦Kalavalale Te Kalavalo Aatan ||
-श्रीगुरु दत्ता ॥
-Shriguru Datta ||
+चोरे द्विजासी मारीता मन जे । ¦चोरे द्विजासी मारीता मन जे ।
+Chore Dvijasi Marita Man Je | ¦Chore Dvijasi Marita Man Je |
+कळवळले ते कळवळो आता । ¦कळवळले ते कळवळो आता ॥
+Kalavalale Te Kalavalo Aata | ¦Kalavalale Te Kalavalo Aata ||
+श्रीगुरुदत्ता ॥
+Shrigurudatta ||
 
 [2]
 पोटशूळाने द्विज तडफडता । ¦पोटशूळाने द्विज तडफडता ।
 Potashulane Dvij Tadaphadata | ¦Potashulane Dvij Tadaphadata |
-कळवळले ते कळवळो आतां । ¦कळवळले ते कळवळो आतां ॥
-Kalavalale Te Kalavalo Aatan | ¦Kalavalale Te Kalavalo Aatan ||
-श्रीगुरु दत्ता ॥
-Shriguru Datta ||
+कळवळले ते कळवळो आता । ¦कळवळले ते कळवळो आता ॥
+Kalavalale Te Kalavalo Aata | ¦Kalavalale Te Kalavalo Aata ||
+श्रीगुरुदत्ता ॥
+Shrigurudatta ||
 
 [3]
-द्विजसुत मरतां वळले ते मन । ¦द्विजसुत मरतां वळले ते मन ।
-Dvijasut Maratan Valale Te Man | ¦Dvijasut Maratan Valale Te Man |
-हो की उदासिन न वळे आतां । ¦हो की उदासिन न वळे आतां ॥
-Ho Ki Udasin Na Vale Aatan | ¦Ho Ki Udasin Na Vale Aatan ||
-श्रीगुरु दत्ता ॥
-Shriguru Datta ||
+द्विजसुत मरता वळले ते मन । ¦द्विजसुत मरता वळले ते मन ।
+Dvijasut Marata Valale Te Man | ¦Dvijasut Marata Valale Te Man |
+हो की उदासीन न वळे आता । ¦हो की उदासीन न वळे आता ॥
+Ho Ki Udasin Na Vale Aata | ¦Ho Ki Udasin Na Vale Aata ||
+श्रीगुरुदत्ता ॥
+Shrigurudatta ||
 
 [4]
-सतिपति मरतां काकुळति येतां । ¦सतिपति मरतां काकुळति येतां ।
-Satipati Maratan Kakulati Yetan | ¦Satipati Maratan Kakulati Yetan |
-वळले ते मन न वळे की आतां । ¦वळले ते मन न वळे की आतां ॥
-Valale Te Man Na Vale Ki Aatan | ¦Valale Te Man Na Vale Ki Aatan ||
-श्रीगुरु दत्ता ॥
-Shriguru Datta ||
+सतिपति मरता काकुळती येता । ¦सतिपति मरता काकुळती येता ।
+Satipati Marata Kakulati Yeta | ¦Satipati Marata Kakulati Yeta |
+वळले ते मन न वळे की आता । ¦वळले ते मन न वळे की आता ॥
+Valale Te Man Na Vale Ki Aata | ¦Valale Te Man Na Vale Ki Aata ||
+श्रीगुरुदत्ता ॥
+Shrigurudatta ||
 
 [5]
-श्रीगुरुदत्ता त्यजि निष्ठुरता । ¦श्रीगुरुदत्ता त्यजि निष्ठुरता ।
+श्रीगुरुदत्ता त्यजी निष्ठुरता । ¦श्रीगुरुदत्ता त्यजी निष्ठुरता ।
 Shrigurudatta Tyaji Nishthurata | ¦Shrigurudatta Tyaji Nishthurata |
-कोमल चित्ता वळवी आतां । ¦कोमल चित्ता वळवी आतां ॥
-Komal Chitta Valavi Aatan | ¦Komal Chitta Valavi Aatan ||
-श्रीगुरु दत्ता ॥
-Shriguru Datta ||
+कोमल चित्ता वळवी आता । ¦कोमल चित्ता वळवी आता ॥
+Komal Chitta Valavi Aata | ¦Komal Chitta Valavi Aata ||
+श्रीगुरुदत्ता ॥
+Shrigurudatta ||
+
+[once]
+श्रीगुरुदत्ता जय भगवंता ।
+Shrigurudatta Jay Bhagavanta |
+ते मन निष्ठुर न करी आता ।
+Te Man Nishthur Na Kari Aata |
+श्रीगुरुदत्ता ॥
+Shrigurudatta ||

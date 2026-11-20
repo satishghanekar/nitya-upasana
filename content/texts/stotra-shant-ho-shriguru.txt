@@ -5,64 +5,64 @@ language: mr
 refrain: every-verse
 credit: author vasudevanand-saraswati
 lines: 23
-letters: 924
+letters: 921
 ---
 [once]
-शांत हो श्रीगुरु दत्ता ¦मम चित्ता शमवी आता ॥
-Shant Ho Shriguru Datta ¦Mama Chitta Shamavi Aata ||
+शांत हो श्रीगुरुदत्ता ¦मम चित्ता शमवी आता ॥
+Shant Ho Shrigurudatta ¦Mama Chitta Shamavi Aata ||
 
 [dhrupad]
-शांत हो श्रीगुरु दत्ता ¦मम चित्ता शमवी आता ।
-Shant Ho Shriguru Datta ¦Mama Chitta Shamavi Aata |
+शांत हो श्रीगुरुदत्ता ¦मम चित्ता शमवी आता ।
+Shant Ho Shrigurudatta ¦Mama Chitta Shamavi Aata |
 शांत हो ॥ धृ ॥
 Shant Ho || Dhr. ||
 
 [1]
-तूं केवळ माता जनिता, ¦सर्वथा तूं हितकर्ता ।
-Tun Keval Mata Janita, ¦Sarvatha Tun Hitakarta |
-तूं आप्त स्वजन भ्राता, ¦सर्वथा तूंची त्राता ॥
-Tun Aapta Svajan Bhrata, ¦Sarvatha Tunchi Trata ||
-भय कर्ता तूं भय हर्ता । ¦दंडधर्ता तूं परिपाता ॥
-Bhay Karta Tun Bhay Harta | ¦Dandadharta Tun Paripata ||
-तुज वाचुंनि न दुजी वार्ता । ¦तूं आर्ता आश्रय दाता ॥
-Tuj Vachunni Na Duji Varta | ¦Tun Aarta Aashray Data ||
+तू केवळ माता जनिता, ¦सर्वथा तू हितकर्ता ।
+Tu Keval Mata Janita, ¦Sarvatha Tu Hitakarta |
+तू आप्तस्वजन भ्राता, ¦सर्वथा तूचि त्राता ॥
+Tu Aaptasvajan Bhrata, ¦Sarvatha Tuchi Trata ||
+भयकर्ता तू भयहर्ता । ¦दंडधर्ता तू परिपाता ॥
+Bhayakarta Tu Bhayaharta | ¦Dandadharta Tu Paripata ||
+तुजवाचुनि न दुजी वार्ता । ¦तू आर्ता आश्रय दत्ता ॥
+Tujavachuni Na Duji Varta | ¦Tu Aarta Aashray Datta ||
 
 [2]
-अपराधास्तव गुरुनाथा, ¦जरी दंडा धरिसी यथार्था ।
+अपराधास्तव गुरुनाथा, ¦जरि दंडा धरिसी यथार्था ।
 Aparadhastav Gurunatha, ¦Jari Danda Dharisi Yathartha |
-तरी आम्ही गाऊनि गाथा, ¦तव चरणी नमवू माथा ॥
-Tari Aamhi Gauni Gatha, ¦Tav Charani Namavu Matha ||
-तूं तथापि दंडिसि देवा । ¦कोणाचा मग करु धावा ॥
-Tun Tathapi Dandisi Deva | ¦Konacha Mag Karu Dhava ||
-सोडविना दुसरा तेंव्हा । ¦कोण दत्ता आम्हां त्राता ॥
-Sodavina Dusara Tenvha | ¦Kon Datta Aamhan Trata ||
+तरि आम्ही गाउनि गाथा, ¦तव चरणीं नमवू माथा ॥
+Tari Aamhi Gauni Gatha, ¦Tav Charanin Namavu Matha ||
+तू तथापि दंडिसी देवा । ¦कोणाचा मग करूं धावा ॥
+Tu Tathapi Dandisi Deva | ¦Konacha Mag Karun Dhava ||
+सोडविता दुसरा तेव्हां । ¦कोण दत्ता आम्हां त्राता ॥
+Sodavita Dusara Tevhan | ¦Kon Datta Aamhan Trata ||
 
 [3]
-तूं नटसा होऊनि कोपी, ¦दंडिताहि आम्ही पापी ।
-Tun Natasa Houni Kopi, ¦Danditahi Aamhi Papi |
-पुनरपिही चुकता तथापि, ¦आम्हांवरी नच संतापी ॥
-Punarapihi Chukata Tathapi, ¦Aamhanvari Nach Santapi ||
-गच्छतः स्खलनं क्वापि । ¦असे मानुनि नच हो कोपी ॥
-Gachchhatah Skhalanam Kvapi | ¦Ase Manuni Nach Ho Kopi ||
-निज कृपालेशा ओपी । ¦आम्हावरि तूं भगवंता ॥
-Nij Krupalesha Opi | ¦Aamhavari Tun Bhagavanta ||
+तू नटसा होउनि कोपी, ¦दंडिताहि आम्ही पापी ।
+Tu Natasa Houni Kopi, ¦Danditahi Aamhi Papi |
+पुनरपिही चुकत तथापि, ¦आम्हांवरी न च संतापी ॥
+Punarapihi Chukat Tathapi, ¦Aamhanvari Na Cha Santapi ||
+गच्छतः स्खलनं क्वापि । ¦असें मानुनि नच होऊ कोपी ॥
+Gachchhatah Skhalanam Kvapi | ¦Asen Manuni Nach Hou Kopi ||
+निजकृपा लेशा ओपी । ¦आम्हांवरि तू भगवंता ॥
+Nijakrupa Lesha Opi | ¦Aamhanvari Tu Bhagavanta ||
 
 [4]
-तवपदरी असता ताता, ¦आडमार्गी पाऊल पडता ।
-Tavapadari Asata Tata, ¦Aadamargi Paul Padata |
-सांभाळुनि मार्गावरता, ¦आणिता न दुजा त्राता ॥
+तव पदरीं असता ताता, ¦आडमार्गीं पाऊल पडतां ।
+Tav Padarin Asata Tata, ¦Aadamargin Paul Padatan |
+सांभाळुनि मार्गावरता, ¦आणिता न दूजा त्राता ॥
 Sambhaluni Margavarata, ¦Aanita Na Duja Trata ||
-निज बिरुदा आणुनि चित्ता । ¦तूं पतित पावन दत्ता ॥
-Nij Biruda Aanuni Chitta | ¦Tun Patit Pavan Datta ||
-वळे आता आम्हावरता । ¦करुणाघन तूं गुरुनाथा ॥
-Vale Aata Aamhavarata | ¦Karunaghan Tun Gurunatha ||
+निजबिरुदा आणुनि चित्ता । ¦तू पतितपावन दत्ता ॥
+Nijabiruda Aanuni Chitta | ¦Tu Patitapavan Datta ||
+वळे आतां आम्हांवरता । ¦करुणाघन तू गुरुनाथा ॥
+Vale Aatan Aamhanvarata | ¦Karunaghan Tu Gurunatha ||
 
 [5]
-सहकुटूंब सहपरिवार, ¦दास आम्ही हे घरदार ।
-Sahakutumb Sahaparivar, ¦Das Aamhi He Gharadar |
-तव पदीं अर्पू असार, ¦संसाराहित हा भार ॥
-Tav Padin Arpu Asar, ¦Sansarahit Ha Bhar ||
-परिहरिसी करुणासिंधो । ¦तूं दीनानाथ सुबंधो ॥
-Pariharisi Karunasindho | ¦Tun Dinanath Subandho ||
-आम्हां अघलेश न बाधो । ¦वासुदेव प्रार्थित दत्ता ॥
-Aamhan Aghalesh Na Badho | ¦Vasudev Prarthit Datta ||
+सहकुटुंब सहपरिवार, ¦दास आम्ही हें घरदार ।
+Sahakutumb Sahaparivar, ¦Das Aamhi Hen Gharadar |
+तव पदी अर्पू असार, ¦संसाराहित हा भार ॥
+Tav Padi Arpu Asar, ¦Sansarahit Ha Bhar ||
+परिहरिसी करुणासिंधो । ¦तू दीनानाथ सुबन्धो ॥
+Pariharisi Karunasindho | ¦Tu Dinanath Subandho ||
+आम्हां अघलेश न बाधो । ¦वासुदेव-प्रार्थित दत्ता ॥
+Aamhan Aghalesh Na Badho | ¦Vasudev-Prarthit Datta ||
