@@ -681,11 +681,6 @@ export default {
     plain: function (title) {
       return title;
     },
-    temple: " · పూజ సాయంత్రం 7:00–8:30, భారతీయ హిందూ దేవాలయం, పావెల్",
-    /** @param {string} title @param {string} ang @param {string} date @param {string} temple @param {string} rise */
-    next: function (title, ang, date, temple, rise) {
-      return title + "\nతర్వాతి " + ang + "Sankathara Chaturthi: " + date + temple + (rise ? " · చంద్రోదయం " + rise : "");
-    },
     copied: "సందేశం కాపీ అయింది",
   },
   // Print (js/features/print.js): the Print pop-up in the menu language, the printout's own words in its language
