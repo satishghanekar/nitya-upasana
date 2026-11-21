@@ -481,10 +481,9 @@ export default {
     shareReport: "અહેવાલ મોકલો",
     reportCopied: "અહેવાલ કૉપિ થયો",
     // Settings → About → Follow: how Follow went the last few times (js/features/follow-report.js)
-    followReport: "‘સાથે’ કેવું ચાલ્યું",
-    followReportNote: "આ ફોન પર જ રહે છે, જાતે મોકલાતો નથી. મોકલવાથી ‘સાથે’ સુધરે છે.",
-    shareFollowReport: "‘સાથે’ અહેવાલ મોકલો",
-    shareShort: '<span class="sr">‘સાથે’ અહેવાલ </span>મોકલો',
+    followReportNote: "આ ફોન પર જ રહે છે. મોકલવા ટૅપ કરો.",
+    // the row's title is the link that shares: the title seen, Share heard first
+    shareLink: '<span class="sr">મોકલો: </span>‘સાથે’ કેવું ચાલ્યું',
     gpuFailed: "આ ફોન પર ઝડપી રીત ચાલી નહીં. સામાન્ય રીતે આગળ વધવા ઍપ ફરી શરૂ કરો.",
     stuck: "‘સાથે’ જવાબ આપતું બંધ થયું. તેને ફરી શરૂ કરવા ઍપ ફરી શરૂ કરો.",
     restart: "ફરી શરૂ કરો",
@@ -509,7 +508,7 @@ export default {
       return "ડાઉનલોડ થાય છે… " + p + "%";
     },
     memTitle: "હમણાં મેમરી વપરાય છે",
-    memNote: "‘સાથે’ બંધ થયાની 2 મિનિટ પછી જાતે ખાલી થાય છે",
+    memNote: "હમણાં વપરાશમાં. 2 મિનિટ પછી જાતે ખાલી થાય છે.",
     memUse: "‘સાથે’ સાંભળે ત્યારે વપરાશમાં",
     stopFirst: "આ બદલવા પહેલાં ‘સાથે’ બંધ કરો.",
     askRemove: "‘સાથે’નું ડાઉનલોડ કાઢી નાખવું છે?",
@@ -526,7 +525,6 @@ export default {
     askFree: "‘સાથે’ની મેમરી ખાલી કરવી છે?",
     askFreeText: "ડાઉનલોડ આ ફોનમાં જ રહેશે. હવે પછી ‘સાથે’ દબાવશો ત્યારે શરૂ થવામાં થોડી સેકંડ વધુ લાગશે.",
     freeMemory: "મેમરી ખાલી કરો",
-    freeShort: '<span class="sr">મેમરી </span>ખાલી કરો',
     cancel: "રદ કરો",
     freed: "‘સાથે’ની મેમરી ખાલી થઈ",
     /** @param {string} mb */

@@ -2,7 +2,8 @@
 // Settings → About → Follow: Follow's model on this phone (Satish, 2026-11-20, for a phone low on memory or space).
 // - Keep on this phone (#follow-model-download): a switch, the download's state under it. Off takes the download off the phone; on downloads it ahead, so
 //   Follow starts without waiting. Locked while Follow is on.
-// - Using memory now (#follow-model-memory): shown only while the model is loaded, with Free memory. It is let go by itself
+// - Free memory (#follow-model-memory): shown only while the model is loaded, its title the link (Using memory now, plain,
+//   while Follow listens). It is let go by itself
 //   anyway, two minutes after Follow stops or when the app is put away (js/features/follow-model.js), so this is for
 //   the moment the reader wants it now. No Load: loading ahead saves a few seconds at the start and holds the memory.
 // - Each asks first, in a pop-up (#follow-model-ask), which says what it frees or costs.
@@ -51,7 +52,9 @@ function paint() {
   mem.hidden = !st.loaded;
   if (focused && mem.hidden) byId("follow-model-download-title").focus();
   byId("follow-model-memory-note").textContent = st.follow ? w.memUse : w.memNote;
+  // (Free memory is the row's title, a link; while Follow listens it can't be freed, and the title is plain words)
   byId("follow-model-free").hidden = st.follow;
+  byId("follow-model-memory-title").hidden = !st.follow;
   dl.hidden = false;
 }
 

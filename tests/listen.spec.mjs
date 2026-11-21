@@ -603,9 +603,9 @@ test("fast mode left while still downloading is not a failure: the GPU is tried 
 });
 
 // Follow's report (Satish, 2026-11-20): each time Follow listens half a minute or more, its account is kept on this
-// device, the last 6; About's Follow group then shows How Follow went, and Share Follow report hands the phone's share
+// device, the last 6; About's Follow group then shows How Follow went, whose link hands the phone's share
 // sheet the text. Counted here through the part itself (a real time would need a chanting voice)
-test("Follow's report: a time counted and kept, About shows it, and Share Follow report sends it", async ({ page }) => {
+test("Follow's report: a time counted and kept, About shows it, and its title link sends it", async ({ page }) => {
   const errors = [];
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "share", { value: (d) => ((window.__shared = d), Promise.resolve()), configurable: true });
@@ -648,14 +648,15 @@ test("Follow's report: a time counted and kept, About shows it, and Share Follow
   expect(kept).toHaveLength(1);
   expect(kept[0]).toMatchObject({ mode: "gpu", downloaded: true, n: 2, near: 1, search: 2, toText: 1, back: 1, end: "the app put away" });
   expect(JSON.stringify(kept[0]).length, "small: about 600 bytes a time").toBeLessThan(1200);
-  // About's Follow group: How Follow went, and Share Follow report
+  // About's Follow group: How Follow went, its title the link that shares
   await page.locator("#aa").click();
   await page.locator('#spv [data-v="about"]').click();
   const row = page.locator("#follow-report");
   await expect(row).toBeVisible();
   await expect(row).toContainText("How Follow went");
   await page.waitForTimeout(300);
-  await row.getByRole("button", { name: "Share Follow report" }).click();
+  // (the row's title is the link: seen as How Follow went, heard as Share: How Follow went)
+  await row.getByRole("button", { name: "Share: How Follow went" }).click();
   const shared = await page.waitForFunction(() => window.__shared).then((h) => h.jsonValue());
   expect(shared.title).toBe("Nitya Upasana: Follow report");
   for (const want of [
@@ -817,7 +818,10 @@ test("About → Follow: Keep on this phone and Free memory ask first, and the me
   await page.locator("#lsb").click();
   await about();
   await expect(memory).toBeVisible();
-  await expect(memory).toContainText("Freed by itself 2 min after Follow stops");
+  await expect(memory).toContainText("In use now. Frees itself after 2 min.");
+  // its title is the link (the plain Using memory now only while Follow listens), readable in every theme
+  await expect(memory.getByText("Using memory now")).toBeHidden();
+  expect(await axeEveryTheme(page, "#follow-model-memory")).toEqual(noViolations());
   // Free memory: asks, Cancel leaves it, then Free memory lets it go and the row goes
   await memory.getByRole("button", { name: "Free memory" }).click();
   await expect(ask.getByRole("heading")).toHaveText("Free Follow's memory?");

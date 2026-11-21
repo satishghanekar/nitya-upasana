@@ -486,10 +486,9 @@ export default {
     shareReport: "ವರದಿ ಕಳುಹಿಸಿ",
     reportCopied: "ವರದಿ ನಕಲಿಸಲಾಗಿದೆ",
     // Settings → About → Follow: how Follow went the last few times (js/features/follow-report.js)
-    followReport: "‘ಜೊತೆ’ ಹೇಗೆ ನಡೆಯಿತು",
-    followReportNote: "ಈ ಫೋನಿನಲ್ಲೇ ಇರುತ್ತದೆ, ತಾನಾಗಿ ಕಳುಹಿಸಲಾಗುವುದಿಲ್ಲ. ಕಳುಹಿಸಿದರೆ ‘ಜೊತೆ’ ಸುಧಾರಿಸುತ್ತದೆ.",
-    shareFollowReport: "‘ಜೊತೆ’ ವರದಿ ಕಳುಹಿಸಿ",
-    shareShort: '<span class="sr">‘ಜೊತೆ’ ವರದಿ </span>ಕಳುಹಿಸಿ',
+    followReportNote: "ಈ ಫೋನಿನಲ್ಲೇ ಇರುತ್ತದೆ. ಕಳುಹಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ.",
+    // the row's title is the link that shares: the title seen, Share heard first
+    shareLink: '<span class="sr">ಕಳುಹಿಸಿ: </span>‘ಜೊತೆ’ ಹೇಗೆ ನಡೆಯಿತು',
     gpuFailed: "ಈ ಫೋನಿನಲ್ಲಿ ವೇಗದ ವಿಧಾನ ಕೆಲಸ ಮಾಡಲಿಲ್ಲ. ಸಾಮಾನ್ಯ ವಿಧಾನದಲ್ಲಿ ಮುಂದುವರಿಯಲು ಆ್ಯಪ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ.",
     stuck: "‘ಜೊತೆ’ ಪ್ರತಿಕ್ರಿಯಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಿದೆ. ಮತ್ತೆ ಪ್ರಾರಂಭಿಸಲು ಆ್ಯಪ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ.",
     restart: "ಮರುಪ್ರಾರಂಭಿಸಿ",
@@ -514,7 +513,7 @@ export default {
       return "ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ… " + p + "%";
     },
     memTitle: "ಈಗ ಮೆಮೊರಿ ಬಳಕೆಯಲ್ಲಿದೆ",
-    memNote: "‘ಜೊತೆ’ ನಿಂತ 2 ನಿಮಿಷಗಳ ನಂತರ ತಾನಾಗಿ ಖಾಲಿಯಾಗುತ್ತದೆ",
+    memNote: "ಈಗ ಬಳಕೆಯಲ್ಲಿದೆ. 2 ನಿಮಿಷಗಳ ನಂತರ ತಾನಾಗಿ ಖಾಲಿಯಾಗುತ್ತದೆ.",
     memUse: "‘ಜೊತೆ’ ಆಲಿಸುವಾಗ ಬಳಕೆಯಲ್ಲಿದೆ",
     stopFirst: "ಇದನ್ನು ಬದಲಾಯಿಸಲು ಮೊದಲು ‘ಜೊತೆ’ ನಿಲ್ಲಿಸಿ.",
     askRemove: "‘ಜೊತೆ’ಯ ಡೌನ್‌ಲೋಡ್ ತೆಗೆದುಹಾಕಬೇಕೆ?",
@@ -531,7 +530,6 @@ export default {
     askFree: "‘ಜೊತೆ’ಯ ಮೆಮೊರಿ ಖಾಲಿ ಮಾಡಬೇಕೆ?",
     askFreeText: "ಡೌನ್‌ಲೋಡ್ ಈ ಫೋನಿನಲ್ಲೇ ಉಳಿಯುತ್ತದೆ. ಮುಂದಿನ ಬಾರಿ ‘ಜೊತೆ’ ಒತ್ತಿದಾಗ ಪ್ರಾರಂಭವಾಗಲು ಕೆಲವು ಸೆಕೆಂಡು ಹೆಚ್ಚು ಬೇಕಾಗುತ್ತದೆ.",
     freeMemory: "ಮೆಮೊರಿ ಖಾಲಿ ಮಾಡಿ",
-    freeShort: '<span class="sr">ಮೆಮೊರಿ </span>ಖಾಲಿ ಮಾಡಿ',
     cancel: "ರದ್ದುಮಾಡಿ",
     freed: "‘ಜೊತೆ’ಯ ಮೆಮೊರಿ ಖಾಲಿಯಾಯಿತು",
     /** @param {string} mb */
