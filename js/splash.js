@@ -2,7 +2,8 @@
 // The splash (#spl in index.html): from the very first paint until the site script has set up the page, the app's
 // picture for the time of day with today's weekday star ringed, as on Home, and the app's name. While it waits, the
 // seven stars light up one after another (css/02-core.css, "Splash"). It goes once js/main.js sets data-ready. The
-// first opening of the day plays the launch animation instead (below, and js/features/launch.js).
+// first opening of the day plays the launch animation instead, and any other opening keeps the splash about 1.5 s
+// (below, and js/features/launch.js).
 // A plain script, run as the page is read, so it needs no module and nothing else to load first. It also puts the
 // reader's theme on the page now (from the boot copy of the settings), so the splash is light, sepia or dark to match.
 (function () {
@@ -62,22 +63,33 @@
   // js/features/launch.js adds the day's lines): night, the seven stars coming out one by one, today's growing while
   // the others dim, the day opening out of it. Only on Home (not a link to a text or the install page), never for a
   // reader who asks for less motion, and once a day: the day is kept on this phone (localStorage "nitya-launch").
+  // Every other time the app is opened (Satish, 2026-11-21) the plain splash stays a moment, about 1.5 s, while the
+  // stars light in turn (#spl.brief; js/features/launch.js ends it): once a visit, not again when the page reloads
+  // (sessionStorage "nitya-opened", gone when the app or the tab is closed).
   var key = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate(),
-    full = false;
+    full = false,
+    brief = false;
   try {
-    full =
-      window.top === window &&
-      !location.hash &&
-      !location.search &&
-      !matchMedia("(prefers-reduced-motion: reduce)").matches &&
-      localStorage.getItem("nitya-launch") !== key;
+    var home = window.top === window && !location.hash && !location.search && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    full = home && localStorage.getItem("nitya-launch") !== key;
+    brief = home && !full && !sessionStorage.getItem("nitya-opened");
     if (full) localStorage.setItem("nitya-launch", key);
+    if (home) sessionStorage.setItem("nitya-opened", "1");
   } catch (e) {
-    full = false;
+    full = brief = false;
   }
+  // a tap or a key ends either (once the page is ready: css/02-core.css)
+  if (full || brief) {
+    sp.setAttribute("data-t0", String(Math.round(performance.now())));
+    var skip = function () {
+      sp.classList.add("skip");
+    };
+    sp.addEventListener("click", skip);
+    document.addEventListener("keydown", skip, { once: true });
+  }
+  if (brief) sp.classList.add("brief");
   if (full) {
     sp.classList.add("launch");
-    sp.setAttribute("data-t0", String(Math.round(performance.now())));
     sp.style.setProperty("--sx", today[0] + "%");
     sp.style.setProperty("--sy", today[1] + "%");
     // each star seen through a small round window onto the picture, the rest of it still dark
@@ -100,12 +112,6 @@
     var om = document.createElement("i");
     om.className = "splo";
     box.appendChild(om);
-    // a tap or a key ends it (once the page is ready: css/02-core.css)
-    var skip = function () {
-      sp.classList.add("skip");
-    };
-    sp.addEventListener("click", skip);
-    document.addEventListener("keydown", skip, { once: true });
   } else {
     // a glow on each star, lit in turn from र to श, while the page starts
     STARS[pic].forEach(function (s, i) {

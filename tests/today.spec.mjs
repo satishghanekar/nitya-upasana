@@ -216,6 +216,8 @@ test("the splash shows the evening picture with Sunday's star ringed, then goes 
   await page.addInitScript(([k, v]) => localStorage.setItem(k, v), ["aarti2-prefs", JSON.stringify({ th: "dark" })]);
   // (opened today already: the plain splash, not the launch animation)
   await page.addInitScript(() => localStorage.setItem("nitya-launch", "2026-10-18"));
+  // (and opened already in this visit: not the short splash either)
+  await page.addInitScript(() => sessionStorage.setItem("nitya-opened", "1"));
   // the site script is held back, so the page is still starting (main.js also holds back the page's load event)
   await page.goto("./", { waitUntil: "commit" });
   const spl = page.locator("#spl");
@@ -232,6 +234,59 @@ test("the splash shows the evening picture with Sunday's star ringed, then goes 
   await settle(page);
   await expect(spl).toBeHidden();
   expect(await spl.evaluate((e) => getComputedStyle(e).pointerEvents)).toBe("none");
+});
+
+// Any other opening (Satish, 2026-11-21): the plain splash stays about 1.5 s, the stars lighting in turn, then Home;
+// a tap ends it sooner, and a reload in the same visit does not show it again.
+test("any later opening keeps the splash about 1.5 s, then Home; a tap ends it sooner @mobile", async ({ page }) => {
+  // what the splash was doing the moment the page became ready, and whether it went after that (not timed here: a slow
+  // test machine can take longer than 1.5 s to settle, fonts and all)
+  await page.addInitScript(() => {
+    const seen = {};
+    window.__splash = seen;
+    new MutationObserver(() => {
+      const spl = document.getElementById("spl");
+      if (!spl) return;
+      if (document.documentElement.hasAttribute("data-ready") && !seen.ready) {
+        seen.ready = true;
+        seen.visibleAtReady = getComputedStyle(spl).visibility;
+      }
+      if (spl.classList.contains("done") && !seen.done) seen.done = seen.ready ? "after" : "before";
+    }).observe(document, { subtree: true, attributes: true, attributeFilter: ["data-ready", "class"] });
+  });
+  await openSite(page, SETUPS.marathi, { now: MORNING, brief: true });
+  const spl = page.locator("#spl");
+  await expect(spl).toHaveClass(/brief/);
+  await expect(spl).not.toHaveClass(/launch/);
+  // the page was ready, and the splash still up; then it went by itself, leaving Home
+  expect(await page.evaluate(() => window.__splash.visibleAtReady)).toBe("visible");
+  await expect(spl).toBeHidden({ timeout: 4000 });
+  expect(await page.evaluate(() => window.__splash.done)).toBe("after");
+  await expect(page.locator("#tdd")).toBeVisible();
+  // reloaded in the same visit: not again
+  await page.reload();
+  await settle(page);
+  await expect(spl).not.toHaveClass(/brief/);
+  await expect(spl).toBeHidden();
+  // a new visit (the app closed and opened again): a tap ends it
+  await page.evaluate(() => sessionStorage.removeItem("nitya-opened"));
+  await page.reload();
+  await settle(page);
+  await expect(spl).toHaveClass(/brief/);
+  await spl.dispatchEvent("click");
+  await expect(spl).toHaveClass(/skip/);
+  await expect(spl).toBeHidden();
+});
+
+// Not for a reader who asks for less motion, nor a link to a text: the page shows as soon as it is ready.
+test("the short splash is not kept for less motion or a link to a text", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await openSite(page, SETUPS.marathi, { now: MORNING, brief: true });
+  await expect(page.locator("#spl")).not.toHaveClass(/brief/);
+  await expect(page.locator("#spl")).toBeHidden();
+  const other = await page.context().newPage();
+  await openSite(other, SETUPS.marathi, { now: MORNING, brief: true, hash: "#a1" });
+  await expect(other.locator("#spl")).not.toHaveClass(/brief/);
 });
 
 // The launch animation (js/splash.js, js/features/launch.js): the first opening of the day, night, the seven stars, today's
