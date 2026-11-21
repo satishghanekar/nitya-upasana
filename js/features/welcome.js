@@ -60,7 +60,8 @@ function draw() {
     b = base();
   card.lang = ui();
   card.setAttribute("aria-label", w.title);
-  el("welcome-sub").textContent = w.app;
+  // (with Marathi menus the title above already says it)
+  el("welcome-sub").textContent = ui() === "mr" ? "" : w.app;
   el("welcome-what").textContent = w.what;
   el("welcome-facts").innerHTML = /** @type {string[]} */ (w.facts)
     .map(function (f) {

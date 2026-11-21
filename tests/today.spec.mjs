@@ -218,6 +218,8 @@ test("the splash shows the evening picture with Sunday's star ringed, then goes 
   await page.addInitScript(() => localStorage.setItem("nitya-launch", "2026-10-18"));
   // (and opened already in this visit: not the short splash either)
   await page.addInitScript(() => sessionStorage.setItem("nitya-opened", "1"));
+  // (and the welcome seen: on a new phone it covers the screen)
+  await page.addInitScript(() => localStorage.setItem("nitya-welcome", "2"));
   // the site script is held back, so the page is still starting (main.js also holds back the page's load event)
   await page.goto("./", { waitUntil: "commit" });
   const spl = page.locator("#spl");

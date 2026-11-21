@@ -193,7 +193,7 @@ export default {
     },
   },
   // Welcome: once, on a new phone, two steps over Home (js/features/welcome.js); app: the name under नित्य उपासना, in
-  // the menu language's letters (none in Marathi)
+  // the menu language's letters (not shown with Marathi menus, where the title already is)
   welcome: {
     title: "Welcome to Nitya Upasana",
     app: "Nitya Upasana",
