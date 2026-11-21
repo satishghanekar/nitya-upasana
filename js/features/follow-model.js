@@ -23,7 +23,7 @@
 
 import { fetchWithin, readBody, timedOut, within } from "../core/net.js";
 import { choices, normalize } from "../core/hearing.js";
-import { ALIKE_LEAST, alike, checkSound } from "../core/gpu-report.js";
+import { ALIKE_LEAST, alike, checkSound, subgroupsTrusted } from "../core/gpu-report.js";
 import { menuWords } from "../core/strings.js";
 import { num } from "../core/words.js";
 import * as fast from "./fast-mode-report.js";
@@ -83,7 +83,8 @@ var // fast mode on trial (js/features/fast-mode-report.js): the most ms the GPU
 /** The GPU's subgroups turned off for ONNX Runtime (2026-11-20, the cross-device test of chant-v6-q4): with them, its
  * 4-bit kernel (MatMulNBits) takes a path that calls subgroupShuffle, tested only at SwiftShader's subgroup size of 4;
  * phones' GPUs have 64 or 128, and some Android drivers get it wrong. Without them it takes another kernel, as right
- * and as fast. A GPU that fails with them is tried once more without them (after the app opens again) before the CPU. */
+ * and as fast. A GPU that fails with them is tried once more without them (after the app opens again) before the CPU.
+ * Only Apple's GPUs use them (subgroupsTrusted(), 2026-11-21). */
 var sgOff = false;
 /** @type {any} the browser's own requestAdapter, once wrapped (guardGpu) */ var gpuAsk = null;
 /** the adapters whose requestDevice is wrapped already (a browser may give the same one twice) */ var wrapped = new WeakSet();
@@ -546,7 +547,7 @@ async function checkOn(session, c, dir) {
 }
 
 /** The GPU's device as ONNX Runtime asks for it: the features it asks for noted, and the subgroups taken out while
- * sgOff (wrapped once, before the library is loaded) */
+ * sgOff or not trusted (wrapped once, before the library is loaded) */
 function guardGpu() {
   /** @type {any} */ var g = /** @type {any} */ (navigator).gpu;
   if (!g || gpuAsk) return;
@@ -560,12 +561,13 @@ function guardGpu() {
       try {
         a.requestDevice = function (/** @type {any} */ d) {
           var want = Array.from((d && d.requiredFeatures) || []),
-            has = want.indexOf("subgroups") >= 0;
-          if (sgOff)
+            has = want.indexOf("subgroups") >= 0,
+            off = sgOff || !subgroupsTrusted(a.info);
+          if (off)
             want = want.filter(function (f) {
               return f !== "subgroups" && f !== "subgroup-size-control";
             });
-          fast.subgroups(!has ? "none" : sgOff ? "off" : "on", want);
+          fast.subgroups(!has ? "none" : off ? "off" : "on", want);
           return ask(Object.assign({}, d || {}, { requiredFeatures: want }));
         };
       } catch (e) {}
