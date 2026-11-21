@@ -21,6 +21,7 @@ import { loaded } from "../text/load.js";
 import { esc, ui } from "../core/words.js";
 import { menuWords } from "../core/strings.js";
 import { fromLink } from "./install-page.js";
+import { handedOver } from "./print.js";
 import { pickFirst, readingName } from "./languages.js";
 
 var KEY = "nitya-welcome",
@@ -188,7 +189,8 @@ export function init() {
   if (!card || seen()) return;
   // opened at a text (a shared link) or to print: not now; nor under the install page opened by the shared link: in
   // Safari it would be asked again in the home screen app, which keeps its data apart (js/features/install-page.js)
-  if (location.hash.length > 1 || /[?&]print=/.test(location.search) || fromLink) return;
+  // (a print handed over from the Home Screen app has had its address cleaned already, js/render.js: print.js says so)
+  if (location.hash.length > 1 || /[?&]print=/.test(location.search) || handedOver || fromLink) return;
   el("welcome-lang").addEventListener("change", function () {
     var v = /** @type {HTMLSelectElement} */ (el("welcome-lang")).value;
     if (v && (v !== P.ind || P.lead === "en")) pickFirst(v);

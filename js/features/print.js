@@ -38,6 +38,10 @@ import { menuWords } from "../core/strings.js";
 // The page each printout is made for: one language upright, both languages side by side on a sideways page
 var CHOICE = { one: { page: "up" }, both: { page: "land" } };
 
+/** A print handed over from the iPhone Home Screen app (Open in Safari, js/render.js): this opening is for printing,
+ * so the welcome waits (js/features/welcome.js reads this) */
+export var handedOver = false;
+
 export function init() {
   (function () {
     var pm = byId("prm"),
@@ -1070,6 +1074,7 @@ export function init() {
     if (W.PRQ) {
       var mode = W.PRQ;
       W.PRQ = "";
+      handedOver = true;
       // a session from Home: the Routine tab with its texts in Home's order (js/render.js reads it)
       if (W.PRO) {
         what.today(W.PRT || [], W.PRO, W.PROD);
