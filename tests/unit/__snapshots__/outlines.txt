@@ -223,3 +223,4 @@ ashtak-lingashtakam: none
 ashtak-nandikeshvara-ashtakam: none
 ashtak-rudrashtakam: none
 ashtak-kalabhairava-ashtakam: none
+bhajan-mahaganesh-pancharatnam: none

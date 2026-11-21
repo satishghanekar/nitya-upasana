@@ -64,9 +64,9 @@ describe("a backup file", () => {
 
   test("from version 1.8 it carries the family's categories (checked when read); an older file has none", () => {
     const library = {
-      added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }],
+      added: [{ id: "abhang", name: { mr: "अभंग", en: "Abhang" }, order: 5 }],
       renames: { aarti: { mr: "आरत्या", en: "Aartis" } },
-      moves: { "aarti-ghalin-lotangan": "bhajan" },
+      moves: { "aarti-ghalin-lotangan": "abhang" },
     };
     const text = serialise(makeBackup({ ...DATA, library }, { app: "aarti-v1.8", created: NOW }));
     const r = parseBackup(text, ENV);

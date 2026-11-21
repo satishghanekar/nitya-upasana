@@ -1,0 +1,43 @@
+id: bhajan-mahaganesh-pancharatnam
+title: श्री महागणेश पंचरत्नम्
+title-en: Shri Mahaganesh Pancharatnam
+language: sa
+credit: attributed adi-shankara
+lines: 12
+letters: 744
+---
+[1]
+मुदाकरात्त मोदकं सदा विमुक्ति साधकम् । ¦कलाधरावतंसकं विलासिलोक रक्षकम् ।
+Mudakaratta Modakam Sada Vimukti Sadhakam | ¦Kaladharavatamsakam Vilasiloka Rakshakam |
+अनायकैक नायकं विनाशितेभ दैत्यकम् । ¦नताशुभाशु नाशकं नमामि तं विनायकम् ॥
+Anayakaika Nayakam Vinashitebha Daityakam | ¦Natashubhashu Nashakam Namami Tam Vinayakam ||
+
+[2]
+नतेतराति भीकरं नवोदितार्क भास्वरम् । ¦नमत्सुरारि निर्जरं नताधिकापदुद्धरम् ।
+Natetarati Bhikaram Navoditarka Bhasvaram | ¦Namatsurari Nirjaram Natadhikapaduddharam |
+सुरेश्वरं निधीश्वरं गजेश्वरं गणेश्वरम् । ¦महेश्वरं तमाश्रये परात्परं निरंतरम् ॥
+Sureshvaram Nidhishvaram Gajeshvaram Ganeshvaram | ¦Maheshvaram Tamashraye Paratparam Nirantaram ||
+
+[3]
+समस्त लोक शंकरं निरस्त दैत्य कुंजरम् । ¦दरेतरोदरं वरं वरेभ वक्त्रमक्षरम् ।
+Samasta Loka Shankaram Nirasta Daitya Kunjaram | ¦Daretarodaram Varam Varebha Vaktramaksharam |
+कृपाकरं क्षमाकरं मुदाकरं यशस्करम् । ¦मनस्करं नमस्कृतां नमस्करोमि भास्वरम् ॥
+Krupakaram Kshamakaram Mudakaram Yashaskaram | ¦Manaskaram Namaskrutam Namaskaromi Bhasvaram ||
+
+[4]
+अकिंचनार्ति मार्जनं चिरंतनोक्ति भाजनम् । ¦पुरारि पूर्व नंदनं सुरारि गर्व चर्वणम् ।
+Akinchanarti Marjanam Chirantanokti Bhajanam | ¦Purari Purva Nandanam Surari Garva Charvanam |
+प्रपंच नाश भीषणं धनंजयादि भूषणम् । ¦कपोल दानवारणं भजे पुराण वारणम् ॥
+Prapancha Nasha Bhishanam Dhananjayadi Bhushanam | ¦Kapola Danavaranam Bhaje Purana Varanam ||
+
+[5]
+नितांत कांत दंत कांति मंत कांत कात्मजम् । ¦अचिंत्य रूपमंत हीन मंतराय कृंतनम् ।
+Nitanta Kanta Danta Kanti Manta Kanta Katmajam | ¦Achintya Rupamanta Hina Mantaraya Kruntanam |
+हृदंतरे निरंतरं वसंतमेव योगिनाम् । ¦तमेकदंतमेव तं विचिंतयामि संततम् ॥
+Hrudantare Nirantaram Vasantameva Yoginam | ¦Tamekadantameva Tam Vichintayami Santatam ||
+
+[once]
+महागणेश पंचरत्नमादरेण योऽन्वहम् । ¦प्रजल्पति प्रभातके हृदि स्मरन् गणेश्वरम् ।
+Mahaganesha Pancharatnamadarena Yonvaham | ¦Prajalpati Prabhatake Hrudi Smaran Ganeshvaram |
+अरोगतामदोषतां सुसाहितीं सुपुत्रताम् । ¦समाहितायु रष्टभूति मभ्युपैति सोऽचिरात् ॥
+Arogatamadoshatam Susahitim Suputratam | ¦Samahitayu Rashtabhuti Mabhyupaiti Sochirat ||

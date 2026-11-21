@@ -178,9 +178,9 @@ describe("the store", () => {
     await load(idb, V13, null);
     expect(store.getLibrary()).toEqual({ added: [], renames: {}, moves: {} });
     const lib = {
-      added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }],
+      added: [{ id: "abhang", name: { mr: "अभंग", en: "Abhang" }, order: 5 }],
       renames: { aarti: { mr: "आरत्या", en: "Aartis" } },
-      moves: { "aarti-ghalin-lotangan": "bhajan" },
+      moves: { "aarti-ghalin-lotangan": "abhang" },
     };
     await store.setLibrary(lib);
     // another person reading sees the same library

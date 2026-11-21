@@ -99,6 +99,16 @@
     "ashtak-rudrashtakam",
     "ashtak-kalabhairava-ashtakam"
    ]
+  },
+  {
+   "id": "bhajan",
+   "name": {
+    "mr": "भजन",
+    "en": "Bhajan"
+   },
+   "texts": [
+    "bhajan-mahaganesh-pancharatnam"
+   ]
   }
  ],
  "versions": {

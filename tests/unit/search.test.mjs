@@ -85,9 +85,10 @@ describe("ranking", () => {
     expect(r.lines.every((l, i) => i === 0 || r.lines[i - 1].score >= l.score)).toBe(true);
   });
   test("Texts are found by their title, not by what is inside them: those are under Lines", () => {
-    // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotram, but only Jai Ganesh Deva has Ganesh in its title
+    // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotram, but only Jai Ganesh Deva and the Mahaganesh Pancharatnam
+    // have Ganesh in their titles
     const r = search(ix, "ganesh");
-    expect(r.texts.map((t) => t.id)).toEqual(["aarti-jai-ganesh-deva"]);
+    expect(r.texts.map((t) => t.id).sort()).toEqual(["aarti-jai-ganesh-deva", "bhajan-mahaganesh-pancharatnam"]);
     expect(r.lines.map((l) => l.text)).toContain("stotra-ram-raksha");
     expect(r.texts.every((t) => t.score >= SCORE.titleTypo)).toBe(true);
   });

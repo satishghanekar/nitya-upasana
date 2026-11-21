@@ -307,8 +307,8 @@ describe("content checks", () => {
     // the arati sung with its refrain after every verse, as the other aartis
     expect(parseText(files["aarti-jai-shiv-omkara"], "x").refrain).toBe("every-verse");
   });
-  test("categories: Vedic Chant, Aarti, Stotra, Ashtak", () => {
-    expect(LIBRARY.categories.map((c) => c.id)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak"]);
+  test("categories: Vedic Chant, Aarti, Stotra, Ashtak, Bhajan", () => {
+    expect(LIBRARY.categories.map((c) => c.id)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak", "bhajan"]);
   });
 });
 
