@@ -27,8 +27,8 @@ export function alike(got, want) {
   return same / want.length;
 }
 
-/** Whether ONNX Runtime may use this GPU's subgroups: only Apple's (32, checked on the Mac and iPhones). Android's 64
- * or 128 broke its 4-bit path on a Galaxy (2026-11-20); without them it takes another kernel, as right.
+/** Whether ONNX Runtime may use this GPU's subgroups: only Apple's (32, checked on the Mac). Android's 64
+ * or 128 most likely crashed Adreno's compiler on a Galaxy (2026-11-20); without them it takes another kernel.
  * @param {{ vendor?: string } | null | undefined} info the adapter's info */
 export function subgroupsTrusted(info) {
   return !!info && String(info.vendor || "").toLowerCase() === "apple";
