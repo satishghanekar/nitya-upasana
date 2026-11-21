@@ -1227,3 +1227,13 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   border-color: var(--rule);
   color: var(--ink);
 }
+/* About's check of this phone (#follow-check, js/features/follow-check.js, shown once unlocked): Download and check
+   and Cancel side by side, Cancel without a border; Share results as Share report */
+.sp .follow-check-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.sp .follow-check-cancel {
+  border-color: transparent;
+}

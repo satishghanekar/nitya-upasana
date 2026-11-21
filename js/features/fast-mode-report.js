@@ -141,7 +141,7 @@ function hookConsole() {
 }
 
 /** The GPU's name, limits and features (asked again: a fresh adapter tells as much as Follow's) */
-async function gpuInfo() {
+export async function gpuInfo() {
   /** @type {any} */ var nav = navigator,
     /** @type {Record<string, any>} */ out = {};
   try {
@@ -301,16 +301,21 @@ export function trying() {
 /** Share report: the phone's share sheet, else the report copied */
 function send() {
   var r = stored();
-  if (!r) return;
-  var text = reportText(r),
-    /** @type {Record<string, any>} */ w = menuWords("listen") || {},
-    live = document.getElementById("lswfl");
+  if (r) share("Nitya Upasana: fast mode report", reportText(r), "lswfl", "reportCopied");
+}
+
+/** A report shared: the phone's share sheet, else copied, and said in the live region `liveId` (the check's results
+ * too, js/features/follow-check.js) @param {string} title @param {string} text @param {string} liveId
+ * @param {string} copied the catalog's word for "copied" */
+export function share(title, text, liveId, copied) {
+  var /** @type {Record<string, any>} */ w = menuWords("listen") || {},
+    live = document.getElementById(liveId);
   /** @param {string} s */
   function say(s) {
     if (live) live.textContent = s || "";
   }
   if (navigator.share)
-    navigator.share({ title: "Nitya Upasana: fast mode report", text: text }).catch(function (e) {
+    navigator.share({ title: title, text: text }).catch(function (e) {
       // (the reader closed the sheet: nothing to do; anything else: copied instead)
       if (e && e.name === "AbortError") return;
       copy();
@@ -320,7 +325,7 @@ function send() {
     if (navigator.clipboard)
       navigator.clipboard.writeText(text).then(
         function () {
-          say(w.reportCopied);
+          say(w[copied]);
         },
         function () {},
       );

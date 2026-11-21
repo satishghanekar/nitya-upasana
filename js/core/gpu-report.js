@@ -57,31 +57,9 @@ function happened(r) {
   return "fast mode was still " + r.step;
 }
 
-/**
- * The report as the text shared (WhatsApp, a message), in English: for whoever fixes it, whatever the menu language
- * @param {Report} r
- * @returns {string}
- */
-export function reportText(r) {
-  var g = r.gpu || {},
-    p = r.phone || {},
-    lines = ["Nitya Upasana " + r.app + ": Follow fast mode report", "When: " + r.at + " (" + r.tz + ")", "What happened: " + happened(r)];
-  if (r.error) lines.push("Error: " + r.error);
-  if (r.stack) lines.push("Where: " + r.stack);
-  lines.push("Model: " + r.model + ", ONNX Runtime " + r.ort);
-  // (ONNX Runtime's 4-bit kernel uses the GPU's subgroups when it has them; tried once more without them where it failed)
-  if (r.subgroups) lines.push("Subgroups: " + { on: "used", off: "turned off for this try", none: "not offered by this GPU" }[r.subgroups]);
-  if (r.check)
-    lines.push("Check sound: " + r.check.ms + " ms, " + Math.round(r.check.alike * 1000) / 10 + "% of steps right, scores off by up to " + r.check.far);
-  if (r.timings)
-    lines.push(
-      "Times: " +
-        Object.keys(r.timings)
-          .map(function (k) {
-            return k + " " + /** @type {Record<string, number>} */ (r.timings)[k] + " ms";
-          })
-          .join(", "),
-    );
+/** The GPU, the phone and the browser, a line each (both reports) @param {Record<string, any>} g @param {Record<string, any>} p */
+function deviceLines(g, p) {
+  /** @type {string[]} */ var lines = [];
   lines.push(
     "GPU: " +
       [g.vendor, g.architecture, g.device, g.description]
@@ -121,6 +99,35 @@ export function reportText(r) {
   );
   if (p.screen) lines.push("Screen: " + p.screen);
   if (p.ua) lines.push("User agent: " + p.ua);
+  return lines;
+}
+
+/**
+ * The report as the text shared (WhatsApp, a message), in English: for whoever fixes it, whatever the menu language
+ * @param {Report} r
+ * @returns {string}
+ */
+export function reportText(r) {
+  var g = r.gpu || {},
+    p = r.phone || {},
+    lines = ["Nitya Upasana " + r.app + ": Follow fast mode report", "When: " + r.at + " (" + r.tz + ")", "What happened: " + happened(r)];
+  if (r.error) lines.push("Error: " + r.error);
+  if (r.stack) lines.push("Where: " + r.stack);
+  lines.push("Model: " + r.model + ", ONNX Runtime " + r.ort);
+  // (ONNX Runtime's 4-bit kernel uses the GPU's subgroups when it has them; tried once more without them where it failed)
+  if (r.subgroups) lines.push("Subgroups: " + { on: "used", off: "turned off for this try", none: "not offered by this GPU" }[r.subgroups]);
+  if (r.check)
+    lines.push("Check sound: " + r.check.ms + " ms, " + Math.round(r.check.alike * 1000) / 10 + "% of steps right, scores off by up to " + r.check.far);
+  if (r.timings)
+    lines.push(
+      "Times: " +
+        Object.keys(r.timings)
+          .map(function (k) {
+            return k + " " + /** @type {Record<string, number>} */ (r.timings)[k] + " ms";
+          })
+          .join(", "),
+    );
+  lines.push.apply(lines, deviceLines(g, p));
   if (r.log.length) {
     lines.push("Log:");
     r.log.forEach(function (x) {
@@ -135,4 +142,63 @@ export function reportText(r) {
     });
   }
   return lines.join("\n");
+}
+
+/**
+ * About's check of this phone (js/features/follow-check.js): its tries, one per opening of the app. As Follow runs
+ * ("app"), with no extra features ("none"), then, where the GPU offers subgroups, the other way round from Follow:
+ * with them on a GPU that isn't Apple's ("on", last: on a Galaxy it may bring the GPU down), without them on Apple's
+ * @param {{ vendor?: string } | null | undefined} info @param {string[]} features the adapter's
+ * @returns {("app" | "none" | "on" | "off")[]}
+ */
+export function checkTries(info, features) {
+  /** @type {("app" | "none" | "on" | "off")[]} */ var t = ["app", "none"];
+  if (features.indexOf("subgroups") >= 0) t.push(subgroupsTrusted(info) ? "off" : "on");
+  return t;
+}
+
+/** @typedef {{ mode: string, ok: boolean, startMs?: number, hearMs?: number, check?: { ms: number, alike: number, far: number },
+ *   asked?: string[], error?: string, ort?: string, log?: string[] }} Try */
+
+/**
+ * The check's results as the text shared, in English, for whoever reads them (never shown on the phone)
+ * @param {{ at: string, app: string, model: string, gpu?: Record<string, any>, phone?: Record<string, any>, results: Try[] }} s
+ * @returns {string}
+ */
+export function checkText(s) {
+  /** @type {Record<string, string>} */ var name = {
+      app: "as the app runs it",
+      none: "no extra GPU features",
+      on: "with subgroups",
+      off: "without subgroups",
+    },
+    lines = ["Nitya Upasana " + s.app + ": Follow check", "When: " + s.at, "Model: " + s.model];
+  s.results.forEach(function (r, i) {
+    var c = r.check;
+    lines.push(
+      "Step " +
+        (i + 1) +
+        ", " +
+        (name[r.mode] || r.mode) +
+        ": " +
+        (r.ok ? "works" : "failed") +
+        (r.hearMs ? ", " + r.hearMs + " ms a hearing" : "") +
+        (r.startMs ? ", started in " + r.startMs + " ms" : "") +
+        (c ? ", check sound " + Math.round(c.alike * 1000) / 10 + "% right" : "") +
+        (r.error ? ", error: " + r.error : "") +
+        (r.asked ? " (features asked: " + (r.asked.join(", ") || "none") + ")" : ""),
+    );
+    (r.log || []).forEach(function (x) {
+      lines.push("  " + x);
+    });
+  });
+  var ort = s.results
+    .map(function (r) {
+      return r.ort;
+    })
+    .filter(function (x) {
+      return x;
+    })[0];
+  if (ort) lines.push("ONNX Runtime " + ort);
+  return lines.concat(deviceLines(s.gpu || {}, s.phone || {})).join("\n");
 }

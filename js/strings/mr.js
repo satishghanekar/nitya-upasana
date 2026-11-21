@@ -531,6 +531,26 @@ export default {
       return "डाउनलोड काढले · " + mb + " MB मोकळे";
     },
     doneDownload: "‘सोबत’ डाउनलोड झाले",
+    checkTitle: "या फोनवर ‘सोबत’ तपासा",
+    /** @param {string} n  minutes */
+    checkNote: function (n) {
+      return "सुमारे " + n + " मिनिटे लागतील.";
+    },
+    /** @param {string} mb */
+    checkNeeds: function (mb) {
+      return "आधी " + mb + " MB डाउनलोड करावे लागेल.";
+    },
+    checkGo: "डाउनलोड करून तपासा",
+    /** @param {string} n  the step @param {string} m  of how many */
+    checking: function (n, m) {
+      return "तपासत आहे… " + m + " पैकी " + n;
+    },
+    checkKeepOpen: "ॲप आपोआप पुन्हा सुरू होईल. कृपया ते उघडेच ठेवा.",
+    checkDone: "तपासणी पूर्ण झाली",
+    checkThanks: "धन्यवाद! कृपया निकाल पाठवा.",
+    shareResults: "निकाल पाठवा",
+    resultsCopied: "निकाल कॉपी झाले",
+    checkShown: "‘सोबत’ची तपासणी आता खाली उपलब्ध आहे.",
   },
   bottomBar: {
     prev: "‹ मागील",

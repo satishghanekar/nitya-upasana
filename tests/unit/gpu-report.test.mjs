@@ -120,3 +120,44 @@ describe("the GPU's subgroups", () => {
     for (const info of [undefined, null, {}, { vendor: "" }]) expect(subgroupsTrusted(info)).toBe(false);
   });
 });
+
+describe("About's check of this phone", () => {
+  test("tries as the app runs it, with no extra features, then subgroups the other way round from Follow", async () => {
+    const { checkTries } = await import("../../js/core/gpu-report.js");
+    expect(checkTries({ vendor: "qualcomm" }, ["subgroups", "shader-f16"])).toEqual(["app", "none", "on"]);
+    expect(checkTries({ vendor: "apple" }, ["subgroups"])).toEqual(["app", "none", "off"]);
+    expect(checkTries({ vendor: "arm" }, ["shader-f16"])).toEqual(["app", "none"]);
+  });
+  test("its results are shared in English, each step on a line, with the GPU and the phone", async () => {
+    const { checkText } = await import("../../js/core/gpu-report.js");
+    const t = checkText({
+      at: "2026-11-21T10:00:00Z",
+      app: "1.83.2",
+      model: "chant-v7-q4",
+      gpu: {
+        vendor: "qualcomm",
+        architecture: "adreno-7xx",
+        description: "Adreno (TM) 750",
+        subgroupMinSize: 64,
+        subgroupMaxSize: 128,
+        features: ["subgroups"],
+      },
+      phone: { model: "SM-S928B", platform: "Android", platformVersion: "16", cores: 8, memory: 8, browser: "Chrome 154", installed: true, isolated: true },
+      results: [
+        { mode: "app", ok: true, hearMs: 180, startMs: 900, check: { ms: 200, alike: 1, far: 0.01 }, asked: ["shader-f16"], ort: "1.30.0" },
+        { mode: "none", ok: true, hearMs: 190, asked: [] },
+        { mode: "on", ok: false, error: "the app or the GPU stopped during this try" },
+      ],
+    });
+    for (const want of [
+      "Nitya Upasana 1.83.2: Follow check",
+      "Step 1, as the app runs it: works, 180 ms a hearing, started in 900 ms, check sound 100% right (features asked: shader-f16)",
+      "Step 2, no extra GPU features: works, 190 ms a hearing (features asked: none)",
+      "Step 3, with subgroups: failed, error: the app or the GPU stopped during this try",
+      "ONNX Runtime 1.30.0",
+      "GPU: qualcomm · adreno-7xx · Adreno (TM) 750, subgroup size 64 to 128",
+      "Phone: SM-S928B, Android 16, 8 cores, 8 GB memory",
+    ])
+      expect(t).toContain(want);
+  });
+});

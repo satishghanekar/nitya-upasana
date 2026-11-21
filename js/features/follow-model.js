@@ -103,6 +103,12 @@ var broke = "";
 /** @type {any} */ var lingerT = 0;
 /** the slowest hearing so far, in ms (the hearing's time limit) */ var slowest = 0;
 /** the GPU ONNX Runtime asked for is the browser's software one (guardGpu) */ var software = false;
+/** About's check of this phone (js/features/follow-check.js), one try per opening of the app: "app" as Follow asks
+ * the GPU, "none" with no extra features, "on" with its subgroups, "off" without; "" while Follow runs as usual. A
+ * try keeps nothing for Follow (no report, nothing remembered, the other way's download left alone) */
+var trial = "";
+/** what the try asked the GPU for, and the check sound's answers @type {{ asked?: string[], check?: any }} */
+var tried = {};
 
 /** @typedef {{ progress: (percent: number) => void, starting: () => void }} Watch */
 
@@ -350,7 +356,7 @@ async function tidy(c, keep) {
 /** Whether nobody wants the load any more (Follow stopped, and was not started again meanwhile, and About's Download
  * isn't under way) */
 function unwanted() {
-  return !follow && !fetchOnly;
+  return !follow && !fetchOnly && !trial;
 }
 
 /**
@@ -371,7 +377,8 @@ export function ensure(w) {
   return loading;
 }
 
-/** The library and the model, from the cache or downloaded; the progress counted in bytes */
+/** The library and the model, from the cache or downloaded; the progress counted in bytes (for a check's try, the
+ * session) @returns {Promise<any>} */
 async function load() {
   await way();
   var h = chosen(),
@@ -381,7 +388,7 @@ async function load() {
     began = performance.now();
   if (onGpu) {
     try {
-      sgOff = sgOff || localStorage.getItem(NO_SUBGROUPS) === "1" || fast.retryWithoutSubgroups();
+      if (!trial) sgOff = sgOff || localStorage.getItem(NO_SUBGROUPS) === "1" || fast.retryWithoutSubgroups();
     } catch (e) {}
     guardGpu();
   }
@@ -396,7 +403,7 @@ async function load() {
       return n + x.bytes;
     }, 0),
     done = 0;
-  if (c) await tidy(c, keepList(h, info));
+  if (c && !trial) await tidy(c, keepList(h, info));
   await roomFor(c, wasm.concat(pieces));
   /** @param {number} n */
   function tick(n) {
@@ -413,8 +420,8 @@ async function load() {
   if (onGpu) await file(c, dir + "check.json");
   if (unwanted()) throw stopped();
   // (About's Download alone: the files are kept, and the model is started only when Follow wants it)
-  if (!follow) return;
-  if (onGpu) {
+  if (!follow && !trial) return;
+  if (onGpu && !trial) {
     // fast mode on trial from here: a page that dies from now on is found out on the next opening
     if (!fast.trying()) await fast.begin(modelName(h));
     fast.took("download or cache", performance.now() - began);
@@ -475,10 +482,12 @@ async function load() {
     }
     // the GPU couldn't run it here: kept for About's Share report and for the next opening, which tries the GPU without
     // its subgroups (if they were used) or else the CPU (fast-mode-report.js failedHere, retryWithoutSubgroups)
+    if (trial) throw e;
     fast.failed(e);
     give("gpu", e);
     throw e;
   }
+  if (trial) return session;
   if (!follow) {
     // (Follow stopped while it started: let go at once, as nobody waits for it)
     session.release().catch(function () {});
@@ -538,6 +547,7 @@ async function checkOn(session, c, dir) {
     });
   });
   var a = alike(choices(data, n), check.ids);
+  tried.check = { ms: Math.round(ms), alike: a, far: Math.round(far * 100) / 100 };
   fast.checked({
     ms: Math.round(ms),
     alike: a,
@@ -562,11 +572,13 @@ function guardGpu() {
         a.requestDevice = function (/** @type {any} */ d) {
           var want = Array.from((d && d.requiredFeatures) || []),
             has = want.indexOf("subgroups") >= 0,
-            off = sgOff || !subgroupsTrusted(a.info);
-          if (off)
+            off = trial ? trial === "off" || (trial === "app" && !subgroupsTrusted(a.info)) : sgOff || !subgroupsTrusted(a.info);
+          if (trial === "none") want = [];
+          else if (off)
             want = want.filter(function (f) {
               return f !== "subgroups" && f !== "subgroup-size-control";
             });
+          tried.asked = want;
           fast.subgroups(!has ? "none" : off ? "off" : "on", want);
           return ask(Object.assign({}, d || {}, { requiredFeatures: want }));
         };
@@ -616,6 +628,66 @@ function give(why, e) {
   model = null;
   if (m) m.session.release().catch(function () {});
   changed();
+}
+
+// ==== About's check of this phone ====
+
+/** One try of About's check (js/features/follow-check.js): the GPU's model started as `mode` says, the check sound
+ * heard, and three hearings timed. Run once per opening of the app (a library loaded stays in the page), and never
+ * while Follow is on. Its download is the GPU's, kept as Follow keeps it.
+ * @param {"app" | "none" | "on" | "off"} mode @param {(percent: number) => void} progress
+ * @returns {Promise<{ mode: string, ok: boolean, startMs?: number, hearMs?: number, check?: any, asked?: string[], error?: string, ort?: string, log?: string[] }>} */
+export async function checkTry(mode, progress) {
+  // (a choice under way, About's rows asking, finishes first, so it can't undo this one)
+  await way();
+  trial = mode;
+  tried = {};
+  how = WAYS.gpu;
+  choosing = Promise.resolve();
+  watch = { progress: progress, starting: none };
+  /** @type {any} */ var r = { mode: mode, ok: false },
+    t = performance.now(),
+    session = null;
+  try {
+    session = await load();
+    r.startMs = Math.round(performance.now() - t);
+    var input = new ort.Tensor("float32", normalize(checkSound()), [1, 48000]),
+      /** @type {number[]} */ ms = [];
+    for (var i = 0; i < 3; i++) {
+      t = performance.now();
+      await within(session.run({ input_values: input }), software ? CHECK_WAIT_SOFTWARE : CHECK_WAIT, "a timed hearing");
+      ms.push(performance.now() - t);
+    }
+    r.hearMs = Math.round(
+      ms.sort(function (x, y) {
+        return x - y;
+      })[1],
+    );
+    r.ok = true;
+  } catch (e) {
+    // (ONNX Runtime throws a bare number for some failures; its words go to the console, which the check keeps)
+    r.error = typeof e === "number" ? "ONNX Runtime error " + e : String((e && /** @type {any} */ (e).message) || e).slice(0, 500);
+  }
+  if (session) session.release().catch(function () {});
+  r.check = tried.check;
+  r.asked = tried.asked;
+  r.ort = ort ? String((ort.env.versions && ort.env.versions.common) || "") : "";
+  return r;
+}
+
+/** Whether the GPU's download is all on this phone (About's check asks before downloading it) */
+export async function gpuKept() {
+  try {
+    if (!window.caches || !(await caches.has(CACHE))) return false;
+    var c = await caches.open(CACHE),
+      h = WAYS.gpu,
+      m = await c.match(abs(h.model + "model.json"));
+    if (!m) return false;
+    for (var f of keepList(h, await m.json())) if (!(await c.match(abs(f)))) return false;
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
 // ==== In use, and let go ====
