@@ -201,3 +201,14 @@ function spPick(w, k) {
   if (sw) refit(); // Kannada lines are wider or narrower than Marathi ones
   if (c) c.scrollIntoView();
 }
+
+/** The first reading language picked at the welcome (js/features/welcome.js), as Settings picks it: Marathi in its own
+ * letters or in Kannada, Telugu or Gujarati ones, English staying the second @param {string} k mr | kn | te | gu */
+export function pickFirst(k) {
+  spPick(1, k);
+}
+
+/** A reading language's name, as Settings lists it @param {string} k */
+export function readingName(k) {
+  return spName(k, false);
+}

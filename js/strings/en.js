@@ -192,19 +192,34 @@ export default {
       return n + " days ago";
     },
   },
-  // Welcome: once, on a new phone's Home (js/features/welcome.js)
+  // Welcome: once, on a new phone, two steps over Home (js/features/welcome.js); app: the name under नित्य उपासना, in
+  // the menu language's letters (not shown with Marathi menus, where the title already is)
   welcome: {
     title: "Welcome to Nitya Upasana",
-    name: "Your name",
-    routine: "Your routine",
+    app: "Nitya Upasana",
+    what: "Your daily chants, aartis and stotras. Each time, it opens on what to chant now.",
+    facts: ["Works offline", "Stays on your phone", "No sign-up", "Can follow your chanting"],
+    first: "Texts in",
+    second: "and English",
+    name: "What should we call you?",
+    namePh: "Your name",
+    nameNote: "Shown on your routine and printouts. It stays on this phone.",
+    next: "Next",
+    guest: "Continue as Guest",
+    back: "Back",
+    routine: "Choose a daily routine",
+    routineNote: "Pick by the time you have. You can change it any day.",
+    own: "You have made your routine your own: it stays as it is.",
+    change: "Change it any time",
+    editTip: "beside Morning or Evening: add or remove texts",
+    badgeTip: "your badge at the top: switch routine or change your name",
     start: "Start",
-    later: "Later",
-    hint: "Change either any time: tap your badge at the top, or Edit beside a session.",
     /** @param {string} n */
     done: function (n) {
       return "Welcome, " + n;
     },
   },
+
   // The routine builder and its Add texts picker (js/features/routine-builder.js)
   routine: {
     /** @param {string} n */
