@@ -450,58 +450,6 @@
 }
 /* (nothing here moves, so reduced motion needs no rule) */
 
-/* ==== Welcome (#wlc, js/features/welcome.js): a note (.pfw) at Home's top; the routines are .rtseg ==== */
-#wlc[hidden],
-#wlcr[hidden] {
-  display: none;
-}
-#wlc {
-  display: grid;
-  gap: 10px;
-  margin: 0 0 12px;
-  font: 400 var(--fz-m)/1.45 var(--lat);
-}
-#wlc:not([lang="en"]),
-#wlc:not([lang="en"]) .rtseg button,
-#wlc:not([lang="en"]) #wlcn {
-  font-family: var(--body);
-}
-#wlct {
-  margin: 0;
-  color: var(--ink);
-  font: 600 var(--fz-l)/1.3 var(--body);
-}
-.wlcf {
-  display: grid;
-  gap: 4px;
-  font-weight: 600;
-}
-#wlcn {
-  min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid var(--hdrl);
-  border-radius: 12px;
-  background: var(--bg);
-  color: var(--ink);
-  /* 16px: Safari on an iPhone zooms into anything smaller */
-  font: 400 var(--fz-l)/1.2 var(--lat);
-}
-#wlcr {
-  display: grid;
-  gap: 6px;
-}
-#wlcrl {
-  font-weight: 600;
-}
-#wlci,
-#wlch {
-  margin: 0;
-  color: var(--muted);
-  font-size: var(--fz-s);
-}
-#wlc .pfwb {
-  margin-top: 0;
-}
 /* The smallest phones: the app's name would be cut to its first letter ("नि…"), so the picture alone names it there.
    The bottom bar's buttons give their words back the room. */
 @media (max-width: 359px) {
@@ -514,4 +462,256 @@
   #lsb {
     padding: 0 2px;
   }
+}
+
+/* ==== Welcome (#wlc, js/features/welcome.js): once, on a new phone, two full-screen steps over Home and its bars
+   (only the splash is above), each in one column; Home under it does not scroll ==== */
+html[data-welcome] {
+  overflow: hidden;
+}
+#wlc {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow-y: auto;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--fz-m)/1.45 var(--lat);
+}
+#wlc[hidden],
+#wlc [hidden] {
+  display: none;
+}
+#wlc:not([lang="en"]),
+#wlc:not([lang="en"]) button,
+#wlc:not([lang="en"]) select,
+#wlc:not([lang="en"]) #wlcn {
+  font-family: var(--body);
+}
+.welcome-step {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-height: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: max(20px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
+}
+.welcome-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+}
+.welcome-dots {
+  display: flex;
+  gap: 6px;
+}
+.welcome-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--rule);
+}
+.welcome-dots span.on {
+  width: 22px;
+  background: var(--accent);
+}
+#welcome-routine .welcome-dots {
+  margin-right: auto;
+}
+.welcome-lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: var(--fz-s);
+}
+#welcome-lang {
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--pill);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fz-m);
+}
+#welcome-picture {
+  align-self: center;
+  width: 112px;
+  height: 112px;
+  margin-top: 16px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 15%);
+}
+#welcome-title {
+  display: grid;
+  justify-items: center;
+  margin: 14px 0 0;
+  color: var(--accent);
+  font: 400 calc(var(--fz-xxl) * 1.4) / 1.2 var(--body);
+}
+#welcome-sub {
+  color: var(--muted);
+  font: 400 var(--fz-l) / 1.4 var(--body);
+}
+#welcome-sub:empty {
+  display: none;
+}
+#welcome-what {
+  margin: 8px auto 0;
+  max-width: 22em;
+  text-align: center;
+  font-size: var(--fz-l);
+}
+#welcome-facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: var(--fz-xs);
+}
+#welcome-facts li {
+  padding: 4px 11px;
+  border-radius: 20px;
+  background: var(--surface);
+}
+.welcome-name {
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: var(--fz-l);
+}
+#wlcn {
+  min-height: 52px;
+  padding: 0 14px;
+  border: 1.5px solid var(--rule);
+  border-radius: 14px;
+  background: var(--pill);
+  color: var(--ink);
+  font: 400 var(--fz-l)/1.2 var(--lat);
+}
+.welcome-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: var(--fz-s);
+}
+.welcome-go {
+  display: grid;
+  gap: 4px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+.welcome-main {
+  min-height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--bg);
+  font: 600 var(--fz-l)/1.2 var(--lat);
+  cursor: pointer;
+}
+.welcome-quiet {
+  min-height: 44px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: 600 var(--fz-m)/1.2 var(--lat);
+  cursor: pointer;
+}
+#welcome-routine-title {
+  margin: 12px 0 0;
+  color: var(--accent);
+  font: 600 var(--fz-xxl)/1.25 var(--body);
+}
+#welcome-title:focus,
+#welcome-routine-title:focus {
+  outline: none;
+}
+#welcome-second {
+  white-space: nowrap;
+}
+#wlcb {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+#wlcb button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 12px;
+  align-items: baseline;
+  min-height: 44px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--rule);
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--ink);
+  text-align: start;
+  font: inherit;
+  /* (buttons elsewhere keep to one line) */
+  height: auto;
+  white-space: normal;
+  overflow: visible;
+  cursor: pointer;
+}
+#wlcb button[aria-checked="true"] {
+  border: 2px solid var(--accent);
+  background: var(--pill);
+}
+.welcome-r-name {
+  font: 600 var(--fz-l)/1.3 var(--body);
+}
+.welcome-r-time {
+  font-weight: 600;
+  color: var(--accent);
+}
+.welcome-r-info {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: var(--fz-s);
+}
+#welcome-change {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--surface);
+  font-size: var(--fz-s);
+}
+#welcome-change p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+#welcome-edit {
+  flex: none;
+  padding: 2px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--pill);
+  color: var(--accent);
+  font-weight: 600;
+}
+#welcome-badge {
+  flex: none;
+}
+#welcome-routine #wlcs {
+  margin-top: auto;
+}
+#welcome-change + #wlcs {
+  margin-top: 24px;
 }

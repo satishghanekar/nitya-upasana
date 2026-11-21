@@ -1291,6 +1291,7 @@ test("print builder: the Routine tab: which routine, when and which session @chr
 test("print builder: the preview and the page count drawn without a <base>, nothing in the console @mobile", async ({ page }) => {
   const errors = [];
   await openSite(page, SETUPS.marathi, { errors, welcome: true });
+  await page.locator("#welcome-next").click();
   await page.locator('#wlcb [data-v="daily"]').click();
   await page.locator("#wlcs").click();
   await openPrintBuilder(page);

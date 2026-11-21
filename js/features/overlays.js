@@ -28,6 +28,8 @@ import { clearSearch, libTab } from "./contents-list.js";
  * @type {{ id: string, page?: boolean, trap?: boolean, back?: boolean, opener?: string, open?: string }[]}
  */
 export const LAYERS = [
+  // the welcome on a new phone (js/features/welcome.js): over everything but the splash
+  { id: "wlc", trap: true },
   { id: "bkm", trap: true, back: true },
   { id: "pfm", trap: true },
   { id: "lbm", trap: true },

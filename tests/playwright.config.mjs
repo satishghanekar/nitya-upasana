@@ -29,8 +29,14 @@ const chromiumLaunch = exe ? { launchOptions: { executablePath: exe } } : {};
 // - the rest is logic, run once, in Chromium.
 const ENGINE = /(smoke|layout|text-size|edge|compat|print-view|fonts)\.spec\.mjs$/;
 const FLOWS = /(smoke|layout|text-size|edge|compat|print-view|fonts|interactions|a11y|offline|reading|today|welcome)\.spec\.mjs$/;
+// The two suites that run Follow's model on Chromium's software GPU (SwiftShader): each keeps the processor busy for
+// minutes, and run side by side on a CI machine's four cores the older one's check sound went past its 180 s limit
+// (2026-11-21, from #265 on: listen-gpu failed and follow-check retried in every run). In a project of their own, one
+// at a time; Chromium runs them whenever it runs.
+const GPU = /(listen-gpu|follow-check)\.spec\.mjs$/;
 const all = {
-  chromium: { use: { ...devices["Desktop Chrome"], ...chromiumLaunch } },
+  chromium: { use: { ...devices["Desktop Chrome"], ...chromiumLaunch }, testIgnore: GPU },
+  "chromium-gpu": { use: { ...devices["Desktop Chrome"], ...chromiumLaunch }, testMatch: GPU, workers: 1 },
   firefox: { use: { ...devices["Desktop Firefox"] }, grepInvert: /@chromium-only/, testMatch: ENGINE },
   webkit: { use: { ...devices["Desktop Safari"] }, grepInvert: /@chromium-only/, testMatch: FLOWS },
   iphone: { use: { ...devices["iPhone 13"] }, grep: /@mobile/ },
@@ -38,6 +44,7 @@ const all = {
   pixel: { use: { ...devices["Pixel 7"], ...chromiumLaunch }, grep: /@mobile/, testMatch: /(smoke|layout|text-size|edge|compat|interactions)\.spec\.mjs$/ },
 };
 const wanted = (process.env.PW_PROJECTS || (process.env.CI ? Object.keys(all).join(",") : "chromium")).split(",");
+if (wanted.includes("chromium") && !wanted.includes("chromium-gpu")) wanted.push("chromium-gpu");
 
 export default defineConfig({
   testDir: ".",

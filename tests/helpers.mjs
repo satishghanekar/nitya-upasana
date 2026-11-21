@@ -54,7 +54,7 @@ export const SETUPS = {
  * @param {object} prefs   settings merged over BASE_PREFS
  * @param {object} [opt]   { hash: "#a1", errors: array that collects page errors, now: a Date other than FIXED_NOW,
  *                          running: true to start the clock at that time and let the test move it (page.clock.runFor),
- *                          welcome: true to show the welcome card, as on a new phone,
+ *                          welcome: true to show the welcome, as on a new phone,
  *                          launch: true to play the launch animation, as on the first opening of the day,
  *                          brief: true for the short splash of any other opening }
  */
@@ -69,7 +69,7 @@ export async function openSite(page, prefs = {}, opt = {}) {
       sessionStorage.setItem("__seeded", "1");
       localStorage.clear();
       localStorage.setItem(k, v);
-      // the welcome card (js/features/welcome.js) only where a test asks for it (opt.welcome): seen, as on a phone in use
+      // the welcome (js/features/welcome.js) only where a test asks for it (opt.welcome): seen, as on a phone in use
       if (!wl) localStorage.setItem("nitya-welcome", "2");
       // the launch animation (js/splash.js, js/features/launch.js) only where a test asks for it: seen today already
       const d = new Date();
