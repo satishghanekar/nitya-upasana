@@ -246,7 +246,8 @@ test("any later opening keeps the splash about 1.5 s, then Home; a tap ends it s
   await expect(spl.locator(".spls")).toHaveCount(7);
   // the page is ready, but the splash is still there, and the stars still light
   await expect(spl).toBeVisible();
-  expect(await spl.locator(".spls").first().evaluate((e) => getComputedStyle(e).animationPlayState)).toBe("running");
+  const star = spl.locator(".spls").first();
+  expect(await star.evaluate((e) => getComputedStyle(e).animationPlayState)).toBe("running");
   await expect(spl).toBeHidden({ timeout: 2500 });
   await expect(page.locator("#tdd")).toBeVisible();
   // reloaded in the same visit: not again
