@@ -8,7 +8,7 @@ const raw = (o = {}) => ({
   tz: "Asia/Kolkata",
   app: "1.79.0",
   mode: "gpu",
-  model: "chant-v6-q4",
+  model: "chant-v7-q4",
   ort: "1.30.0",
   ms: 1080000,
   ready: 2400,

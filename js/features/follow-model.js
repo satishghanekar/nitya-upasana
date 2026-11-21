@@ -2,8 +2,8 @@
 // Follow's model (2026-11-20, out of js/features/listen.js, which keeps the listening): the model and the library that
 // runs it, from the download to the moment it is let go. Listen asks it for the model (ensure()), hears through it
 // (scores()), and tells it when Follow starts and stops (use()); About's rows show it (js/features/follow-model-rows.js).
-// - Two ways to run it (WAYS, way()): on the GPU where the browser has WebGPU (models/chant-v6-q4/, 4-bit, in ONNX
-//   Runtime's own format, and the library's WebGPU build, about 117 MB), else on the CPU (models/chant-v6/, 8-bit, and
+// - Two ways to run it (WAYS, way()): on the GPU where the browser has WebGPU (models/chant-v7-q4/, 4-bit, in ONNX
+//   Runtime's own format, and the library's WebGPU build, about 117 MB), else on the CPU (models/chant-v7/, 8-bit, and
 //   its CPU build, about 122 MB). Downloaded once, after the reader agrees, into a cache of its own, "nitya-listen",
 //   which a new version of the site leaves alone (sw.js); each piece checked against its SHA-256 before it is kept,
 //   and read straight into one buffer of the whole size (filesInto), never held twice.
@@ -41,7 +41,7 @@ export var ORT = "vendor/onnxruntime/",
  * @type {Record<"gpu" | "cpu", Way>} */
 export var WAYS = {
   gpu: {
-    model: "models/chant-v6-q4/",
+    model: "models/chant-v7-q4/",
     lib: "ort.webgpu.bundle.min.mjs",
     wasm: [
       { file: "ort-wasm-simd-threaded.asyncify.wasm", bytes: 20000000 },
@@ -52,7 +52,7 @@ export var WAYS = {
     ep: "webgpu",
   },
   cpu: {
-    model: "models/chant-v6/",
+    model: "models/chant-v7/",
     lib: "ort.wasm.bundle.min.mjs",
     wasm: [{ file: "ort-wasm-simd-threaded.wasm", bytes: 14239897 }],
     sha256: "3398c10d07d229bd91b364548e130e0e51a8e5704b88c7c083ebbeb78842dee2",
@@ -137,7 +137,7 @@ export function chosen() {
   return /** @type {Way} */ (how);
 }
 
-/** The model's folder name ("chant-v6-q4") @param {Way} h */
+/** The model's folder name ("chant-v7-q4") @param {Way} h */
 export function modelName(h) {
   return h.model.replace(/^models\/|\/$/g, "");
 }

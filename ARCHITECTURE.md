@@ -118,9 +118,9 @@ checked against its SHA-256 in `model.json`. It runs in ONNX Runtime Web (`vendo
 "no runtime packages", with `'wasm-unsafe-eval'` in the security policy). The arithmetic
 around it is plain, unit-tested JavaScript (`js/core/hearing.js`): sound into the model's input, its answer (the
 likeliest letter for every 20 ms) into words. Where the browser has WebGPU it runs on the GPU: the model with its weights in 4 bits
-(`models/chant-v6-q4/`, 90 MB) and the library's WebGPU build (27 MB), three times quicker on an iPhone than the CPU
+(`models/chant-v7-q4/`, 90 MB) and the library's WebGPU build (27 MB), three times quicker on an iPhone than the CPU
 (233 ms a hearing against 712, 2026-11-09) and far less work for the phone. Elsewhere, or if the GPU fails to start it
-(remembered), it runs on the CPU on every core: the 8-bit model (`models/chant-v6/`) and the library's CPU build
+(remembered), it runs on the CPU on every core: the 8-bit model (`models/chant-v7/`) and the library's CPU build
 (14 MB), in the library's own worker, never on the page's thread; the site is cross-origin isolated
 (`Cross-Origin-Opener-Policy` and `-Embedder-Policy` in `_headers`; it loads nothing from other sites anyway). A
 phone downloads only the way it uses, and Settings → About → Follow says which: a chip icon

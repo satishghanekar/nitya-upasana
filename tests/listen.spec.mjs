@@ -52,9 +52,9 @@ test("Download, then listening to the microphone until Stop; the second time it 
   const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
   expect(kept).toEqual(
     expect.arrayContaining([
-      "/models/chant-v6/model.onnx",
-      "/models/chant-v6/model.onnx.6",
-      "/models/chant-v6/letters.json",
+      "/models/chant-v7/model.onnx",
+      "/models/chant-v7/model.onnx.6",
+      "/models/chant-v7/letters.json",
       "/vendor/onnxruntime/ort.wasm.bundle.min.mjs",
       "/vendor/onnxruntime/ort-wasm-simd-threaded.wasm",
     ]),
@@ -64,7 +64,7 @@ test("Download, then listening to the microphone until Stop; the second time it 
   // rounds a little differently in WebAssembly: chant-v3 up to 0.18 apart, chant-v4 0.31, 2026-11-09; at every step
   // of the check sound the first choice is at least 7 above the second, so this never changes what is heard)
   const got = await page.evaluate(async () => {
-    const check = await (await fetch("models/chant-v6/check.json")).json();
+    const check = await (await fetch("models/chant-v7/check.json")).json();
     const a = new Float32Array(48000);
     for (let i = 0; i < a.length; i++) {
       const t = i / 16000;
@@ -473,7 +473,7 @@ test("fast mode that fails on this phone: Follow restarts the app for the CPU, a
   expect(report.cpu).toBe("standard mode (CPU) started and works");
   // (the GPU's download let go before the CPU's came: never both on the phone)
   const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
-  expect(kept.some((k) => k.includes("chant-v6-q4"))).toBe(false);
+  expect(kept.some((k) => k.includes("chant-v7-q4"))).toBe(false);
   await panel.getByRole("button", { name: "Stop" }).click();
   // About: standard mode, and the row with Share report
   await page.locator("#aa").click();
@@ -488,7 +488,7 @@ test("fast mode that fails on this phone: Follow restarts the app for the CPU, a
     "Follow fast mode report",
     "What happened: fast mode failed while starting the model",
     "Error: ",
-    "Model: chant-v6-q4, ONNX Runtime 1.",
+    "Model: chant-v7-q4, ONNX Runtime 1.",
     "GPU: testvendor · testarch · Test GPU 1",
     "maxBufferSize 256 MB",
     "Features: shader-f16",
@@ -568,7 +568,7 @@ test("the app closed while fast mode was tried: found out on the next opening, F
         at: "x",
         tz: "",
         app: "1.78.6",
-        model: "chant-v6-q4",
+        model: "chant-v7-q4",
         ort: "",
         log: ["+0 ms fast mode tried"],
       }),
@@ -615,7 +615,7 @@ test("Follow's report: a time counted and kept, About shows it, and its title li
   await count(async () => {
     const r = await import("./js/features/follow-report.js");
     window.__r = r;
-    r.start("cpu", "chant-v6-q4", false);
+    r.start("cpu", "chant-v7-q4", false);
     r.library("1.30.0");
     r.ready();
     r.found("search", "aarti-sukhkarta", 0, false);
@@ -634,7 +634,7 @@ test("Follow's report: a time counted and kept, About shows it, and its title li
   expect(await page.evaluate(() => localStorage.getItem("nitya-follow-report"))).toBeNull();
   await count(() => {
     const r = window.__r;
-    r.start("gpu", "chant-v6-q4", true);
+    r.start("gpu", "chant-v7-q4", true);
     r.ready();
     r.hearing(80, 0.05, "");
     r.found("search", "aarti-devi", 0, false);
@@ -772,7 +772,7 @@ test("a download that stops coming in is given up and says so; a phone too full 
   await page.evaluate(() => {
     delete navigator.storage.estimate;
   });
-  await page.route("**/models/chant-v6/model.onnx.2", () => {});
+  await page.route("**/models/chant-v7/model.onnx.2", () => {});
   await page.locator("#lsb").click();
   await panel.getByRole("button", { name: "Download" }).click();
   await expect(panel.getByRole("status")).toHaveText("The download stopped coming in. Check the internet and try again; what came in is kept.", {
@@ -780,7 +780,7 @@ test("a download that stops coming in is given up and says so; a phone too full 
   });
   // what came in is kept: the first piece is in the cache for the next try
   const kept = await page.evaluate(async () => (await (await caches.open("nitya-listen")).keys()).map((k) => new URL(k.url).pathname));
-  expect(kept).toContain("/models/chant-v6/model.onnx");
+  expect(kept).toContain("/models/chant-v7/model.onnx");
 });
 
 test("About → Follow: Keep on this phone and Free memory ask first, and the memory is let go by itself after Follow stops @chromium-only", async ({ page }) => {
