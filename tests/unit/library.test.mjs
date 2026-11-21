@@ -93,7 +93,7 @@ describe("adding, renaming and deleting a category", () => {
     const old = { ...emptyLocal(), added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }], moves: { "aarti-ghalin-lotangan": "bhajan" } };
     const cats = categoriesOf(BUNDLED, old);
     expect(cats.filter((c) => c.id === "bhajan")).toEqual([expect.objectContaining({ origin: "bundled" })]);
-    expect(shelf(old, "bhajan")).toEqual(expect.arrayContaining(["aarti-ghalin-lotangan", "bhajan-mahaganesh-pancharatnam"]));
+    expect(shelf(old, "bhajan")).toEqual(expect.arrayContaining(["aarti-ghalin-lotangan", "bhajan-ganesha-pancharatnam"]));
     expect(addCategory(emptyLocal(), BUNDLED, { mr: "भजन", en: "Bhajan" })).toEqual({ ok: false, problem: "taken" });
   });
   test("add refuses an empty or taken name, and more than the limit", () => {

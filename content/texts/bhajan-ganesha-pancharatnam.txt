@@ -1,23 +1,16 @@
-id: bhajan-mahaganesh-pancharatnam-bhajan
-title: श्री महागणेश पंचरत्नम्
-title-en: Shri Mahaganesh Pancharatnam
+id: bhajan-ganesha-pancharatnam
+title: गणेश पंचरत्नम्
+title-en: Ganesha Pancharatnam
 language: sa
 refrain: every-verse
 refrain-before-first: yes
 credit: attributed adi-shankara
-version-name: भजन | Bhajan
-lines: 28
-letters: 1472
+lines: 25
+letters: 926
 ---
 [dhrupad]
 जय गणेश जय गणेश, ¦जय गणेश पाहि माम् ।
 Jay Ganesh Jay Ganesh, ¦Jay Ganesh Pahi Mam |
-जय गणेश जय गणेश, ¦जय गणेश रक्ष माम् ।
-Jay Ganesh Jay Ganesh, ¦Jay Ganesh Raksha Mam |
-जय गणेश जय गणेश, ¦जय गणेश पाहि माम् ।
-Jay Ganesh Jay Ganesh, ¦Jay Ganesh Pahi Mam |
-जय गणेश जय गणेश, ¦जय गणेश रक्ष माम् ॥
-Jay Ganesh Jay Ganesh, ¦Jay Ganesh Raksha Mam ||
 
 [1]
 मुदाकरात्त मोदकं सदा विमुक्ति साधकम् ।

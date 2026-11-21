@@ -124,22 +124,14 @@ describe("a text's versions", () => {
       ["stotra-hanuman-chalisa", "तुलसीदास", "Tulsidas"],
       ["stotra-hanuman-chalisa-popular", "प्रचलित", "Popular"],
     ]);
-    expect(Object.keys(CONTENT.versions)).toEqual(["stotra-hanuman-chalisa", "bhajan-mahaganesh-pancharatnam"]);
+    expect(Object.keys(CONTENT.versions)).toEqual(["stotra-hanuman-chalisa"]);
   });
-  test("the Mahaganesh Pancharatnam: the shloka first, then the bhajan, its words the same with जय गणेश around them", () => {
-    expect(LIBRARY.versions["bhajan-mahaganesh-pancharatnam"]).toEqual(["bhajan-mahaganesh-pancharatnam-bhajan"]);
-    const shloka = parseText(files["bhajan-mahaganesh-pancharatnam"], "x");
-    const bhajan = parseText(files["bhajan-mahaganesh-pancharatnam-bhajan"], "x");
-    expect([shloka.versionName, bhajan.versionName]).toEqual(["श्लोक | Shloka", "भजन | Bhajan"]);
-    expect(bhajan.refrain).toBe("every-verse");
-    const lines = (t) => t.blocks.flatMap((b) => b.lines.map((l) => l.orig));
-    const words = (ls) => ls.join(" ").replace(/[ ¦।॥]/g, "");
-    expect(
-      lines(bhajan)
-        .slice(0, 4)
-        .every((l) => l.startsWith("जय गणेश जय गणेश")),
-    ).toBe(true);
-    expect(words(lines(bhajan).slice(4))).toBe(words(lines(shloka)));
+  test("the Ganesha Pancharatnam, sung as a bhajan: जय गणेश before the first stanza and after every one", () => {
+    const t = parseText(files["bhajan-ganesha-pancharatnam"], "x");
+    expect([t.refrain, t.versionName]).toEqual(["every-verse", undefined]);
+    const lines = t.blocks.flatMap((b) => b.lines.map((l) => l.orig));
+    expect(lines[0]).toBe("जय गणेश जय गणेश, ¦जय गणेश पाहि माम् ।");
+    expect(lines[1]).toBe("मुदाकरात्त मोदकं सदा विमुक्ति साधकम् ।");
   });
   test("the text's own is the piece in the Library; the other has its id, number and text id, and its own lines", () => {
     const [own, popular] = vs.map((v) => v.piece);
