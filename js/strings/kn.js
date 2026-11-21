@@ -537,6 +537,26 @@ export default {
       return "ಡೌನ್‌ಲೋಡ್ ತೆಗೆದುಹಾಕಲಾಗಿದೆ · " + mb + " MB ಖಾಲಿ";
     },
     doneDownload: "‘ಜೊತೆ’ ಡೌನ್‌ಲೋಡ್ ಆಯಿತು",
+    checkTitle: "ಈ ಫೋನಿನಲ್ಲಿ ‘ಜೊತೆ’ ಪರೀಕ್ಷಿಸಿ",
+    /** @param {string} n  minutes */
+    checkNote: function (n) {
+      return "ಸುಮಾರು " + n + " ನಿಮಿಷ ಬೇಕಾಗುತ್ತದೆ.";
+    },
+    /** @param {string} mb */
+    checkNeeds: function (mb) {
+      return "ಮೊದಲು " + mb + " MB ಡೌನ್‌ಲೋಡ್ ಮಾಡಬೇಕು.";
+    },
+    checkGo: "ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ ಪರೀಕ್ಷಿಸಿ",
+    /** @param {string} n  the step @param {string} m  of how many */
+    checking: function (n, m) {
+      return "ಪರೀಕ್ಷಿಸಲಾಗುತ್ತಿದೆ… " + m + " ರಲ್ಲಿ " + n;
+    },
+    checkKeepOpen: "ಆ್ಯಪ್ ತಾನಾಗಿಯೇ ಮರುಪ್ರಾರಂಭವಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ಅದನ್ನು ತೆರೆದೇ ಇಡಿ.",
+    checkDone: "ಪರೀಕ್ಷೆ ಮುಗಿದಿದೆ",
+    checkThanks: "ಧನ್ಯವಾದಗಳು! ದಯವಿಟ್ಟು ಫಲಿತಾಂಶ ಕಳುಹಿಸಿ.",
+    shareResults: "ಫಲಿತಾಂಶ ಕಳುಹಿಸಿ",
+    resultsCopied: "ಫಲಿತಾಂಶ ನಕಲಿಸಲಾಗಿದೆ",
+    checkShown: "‘ಜೊತೆ’ ಪರೀಕ್ಷೆ ಈಗ ಕೆಳಗೆ ಲಭ್ಯವಿದೆ.",
   },
   bottomBar: {
     prev: "‹ ಹಿಂದೆ",

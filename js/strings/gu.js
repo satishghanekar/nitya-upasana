@@ -532,6 +532,26 @@ export default {
       return "ડાઉનલોડ કાઢી નાખ્યું · " + mb + " MB ખાલી";
     },
     doneDownload: "‘સાથે’ ડાઉનલોડ થયું",
+    checkTitle: "આ ફોનમાં ‘સાથે’ તપાસો",
+    /** @param {string} n  minutes */
+    checkNote: function (n) {
+      return "લગભગ " + n + " મિનિટ લાગશે.";
+    },
+    /** @param {string} mb */
+    checkNeeds: function (mb) {
+      return "પહેલાં " + mb + " MB ડાઉનલોડ કરવું પડશે.";
+    },
+    checkGo: "ડાઉનલોડ કરીને તપાસો",
+    /** @param {string} n  the step @param {string} m  of how many */
+    checking: function (n, m) {
+      return "તપાસી રહ્યા છીએ… " + m + " માંથી " + n;
+    },
+    checkKeepOpen: "ઍપ જાતે ફરી શરૂ થશે. કૃપા કરીને તેને ખુલ્લી રાખો.",
+    checkDone: "તપાસ પૂરી થઈ",
+    checkThanks: "આભાર! કૃપા કરીને પરિણામ મોકલો.",
+    shareResults: "પરિણામ મોકલો",
+    resultsCopied: "પરિણામ કૉપિ થયું",
+    checkShown: "‘સાથે’ની તપાસ હવે નીચે ઉપલબ્ધ છે.",
   },
   bottomBar: {
     prev: "‹ પાછળ",

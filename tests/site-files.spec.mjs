@@ -124,8 +124,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // js/features/follow-report.js, and the About tab, 427.5 KB then; 429.5 KB since 2026-11-20: Terms of use,
   // js/features/terms.js, in five languages, 428.5 KB then; 444 KB since 2026-11-20: Follow's model in a part of its own,
   // js/features/follow-model.js and About's Keep on this phone and Free memory, js/features/follow-model-rows.js, every
-  // wait given a limit, js/core/net.js, and their words in five languages, 442.3 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(444_000);
+  // wait given a limit, js/core/net.js, and their words in five languages, 442.3 KB then; 451 KB since 2026-11-21:
+  // About's Check Follow on this phone, js/features/follow-check.js, in five languages, 450 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(451_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a

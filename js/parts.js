@@ -126,6 +126,7 @@ var SITE_PARTS = (function () {
     "features/follow-report",
     "features/follow-model",
     "features/follow-model-rows",
+    "features/follow-check",
     "features/listen",
     "features/launch",
   ].map(function (f) {

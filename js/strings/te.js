@@ -538,6 +538,26 @@ export default {
       return "డౌన్‌లోడ్ తీసివేయబడింది · " + mb + " MB ఖాళీ";
     },
     doneDownload: "‘వెంట’ డౌన్‌లోడ్ అయింది",
+    checkTitle: "ఈ ఫోన్‌లో ‘వెంట’ను పరీక్షించండి",
+    /** @param {string} n  minutes */
+    checkNote: function (n) {
+      return "సుమారు " + n + " నిమిషాలు పడుతుంది.";
+    },
+    /** @param {string} mb */
+    checkNeeds: function (mb) {
+      return "ముందుగా " + mb + " MB డౌన్‌లోడ్ చేయాలి.";
+    },
+    checkGo: "డౌన్‌లోడ్ చేసి పరీక్షించండి",
+    /** @param {string} n  the step @param {string} m  of how many */
+    checking: function (n, m) {
+      return "పరీక్షిస్తోంది… " + m + " లో " + n;
+    },
+    checkKeepOpen: "యాప్ దానంతట అదే మళ్ళీ ప్రారంభమవుతుంది. దయచేసి దాన్ని తెరిచే ఉంచండి.",
+    checkDone: "పరీక్ష పూర్తయింది",
+    checkThanks: "ధన్యవాదాలు! దయచేసి ఫలితాలు పంపండి.",
+    shareResults: "ఫలితాలు పంపండి",
+    resultsCopied: "ఫలితాలు కాపీ అయ్యాయి",
+    checkShown: "‘వెంట’ పరీక్ష ఇప్పుడు కింద అందుబాటులో ఉంది.",
   },
   bottomBar: {
     prev: "‹ ముందటిది",

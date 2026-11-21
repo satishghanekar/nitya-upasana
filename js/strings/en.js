@@ -560,6 +560,28 @@ export default {
       return "Download removed · " + mb + " MB freed";
     },
     doneDownload: "Follow downloaded",
+    // Settings → About → Follow: the check of this phone, shown once unlocked (five taps on the version), in plain
+    // words; its results are shared in English (js/features/follow-check.js)
+    checkTitle: "Check Follow on this phone",
+    /** @param {string} n  minutes */
+    checkNote: function (n) {
+      return "Takes about " + n + " minutes.";
+    },
+    /** @param {string} mb */
+    checkNeeds: function (mb) {
+      return "This needs a " + mb + " MB download first.";
+    },
+    checkGo: "Download and check",
+    /** @param {string} n  the step @param {string} m  of how many */
+    checking: function (n, m) {
+      return "Checking… " + n + " of " + m;
+    },
+    checkKeepOpen: "The app will restart. Please keep it open.",
+    checkDone: "Check finished",
+    checkThanks: "Thank you! Please share the results.",
+    shareResults: "Share results",
+    resultsCopied: "Results copied",
+    checkShown: "The Follow check is now available below.",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js): the arrow stays, the word may be left out on small phones
   bottomBar: {

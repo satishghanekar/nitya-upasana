@@ -351,16 +351,19 @@ test("Settings → About says where Listen runs its model: the CPU here, the GPU
   await expect(page.locator("#lswn")).toHaveText("Works on every phone, uses more battery");
   await expect(page.locator("#lswb")).toHaveText("Standard");
   // About's Follow group: the Listen line, the model on this phone (Keep on this phone; Using memory now, hidden while it
-  // isn't loaded), fast mode's report row and How Follow went (both hidden here), in that order
+  // isn't loaded), the check of this phone (hidden until unlocked), fast mode's report row and How Follow went (both
+  // hidden here), in that order
   await expect(page.locator(".sp-follow")).toBeVisible();
   await expect(page.locator(".sp-follow .sp-h")).toHaveText("Follow");
   expect(await page.locator(".sp-follow .sp-card > *").evaluateAll((es) => es.map((e) => e.id))).toEqual([
     "lswr",
     "follow-model-download",
     "follow-model-memory",
+    "follow-check",
     "lswf",
     "follow-report",
   ]);
+  await expect(page.locator("#follow-check")).toBeHidden();
   await expect(page.locator("#follow-model-download")).toBeVisible();
   await expect(page.locator("#follow-model-memory")).toBeHidden();
   await expect(page.locator("#lswf")).toBeHidden();
