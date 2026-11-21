@@ -61,8 +61,11 @@ export var WAYS = {
   },
 };
 var // fast mode on trial (js/features/fast-mode-report.js): the most ms the GPU may take over the check sound before it
-  // is given up (a GPU that hangs; a phone's takes well under a second, Chromium's software GPU in the tests 30 to 40 s)
+  // is given up (a GPU that hangs; a phone's takes well under a second)
   CHECK_WAIT = 60000,
+  // ... and on a software GPU (the browser's fallback adapter, SwiftShader in the tests), which no phone gives Follow:
+  // the check sound took 54 s there on a fast machine and more on the CI's busy runners (2026-11-20), over CHECK_WAIT
+  CHECK_WAIT_SOFTWARE = 180000,
   // remembered once the GPU has worked here with its subgroups turned off (below, sgOff)
   NO_SUBGROUPS = "nitya-gpu-no-subgroups",
   // ms a download may go with nothing coming in before it is given up (the connection dropped without saying so)
@@ -98,6 +101,7 @@ var broke = "";
 /** About's Download is under way (the files only: the model is started only for Follow) */ var fetchOnly = false;
 /** @type {any} */ var lingerT = 0;
 /** the slowest hearing so far, in ms (the hearing's time limit) */ var slowest = 0;
+/** the GPU ONNX Runtime asked for is the browser's software one (guardGpu) */ var software = false;
 
 /** @typedef {{ progress: (percent: number) => void, starting: () => void }} Watch */
 
@@ -514,13 +518,13 @@ function watchGpu() {
 }
 
 /** The check sound heard on the GPU and compared with the model's own answers (models/chant-vN/check.json): too slow
- * to answer (CHECK_WAIT) or too unlike them (ALIKE_LEAST), and the GPU is given up here
+ * to answer (CHECK_WAIT, CHECK_WAIT_SOFTWARE) or too unlike them (ALIKE_LEAST), and the GPU is given up here
  * @param {any} session @param {Cache | null} c @param {string} dir */
 async function checkOn(session, c, dir) {
   var check = JSON.parse(text(await file(c, dir + "check.json"))),
     input = new ort.Tensor("float32", normalize(checkSound()), [1, 48000]),
     t = performance.now(),
-    out = (await within(session.run({ input_values: input }), CHECK_WAIT, "the GPU on the check sound")).logits,
+    out = (await within(session.run({ input_values: input }), software ? CHECK_WAIT_SOFTWARE : CHECK_WAIT, "the GPU on the check sound")).logits,
     ms = performance.now() - t,
     data = out.data || (await out.getData()),
     n = out.dims[2],
@@ -549,6 +553,7 @@ function guardGpu() {
   gpuAsk = g.requestAdapter.bind(g);
   g.requestAdapter = function (/** @type {any} */ o) {
     return gpuAsk(o).then(function (/** @type {any} */ a) {
+      if (a && (a.isFallbackAdapter || (a.info && a.info.isFallbackAdapter))) software = true;
       if (!a || !a.requestDevice || wrapped.has(a)) return a;
       wrapped.add(a);
       var ask = a.requestDevice.bind(a);

@@ -505,8 +505,10 @@ export default {
     reportCopied: "Report copied",
     // Settings → About → Follow: how Follow went the last few times (js/features/follow-report.js)
     followReport: "How Follow went",
-    followReportNote: "Your last few times are kept on this device, never sent by itself. Sharing them helps make Follow better.",
+    followReportNote: "Kept on this phone, never sent by itself. Sharing helps improve Follow.",
     shareFollowReport: "Share Follow report",
+    // the row's own button, at its end: a short word seen, the whole name heard
+    shareShort: 'Share<span class="sr"> Follow report</span>',
     // When Follow can't go on in this page (js/features/listen.js offerRestart): the GPU failed, or the model stopped
     // answering; Restart opens the app again, which then offers Start
     gpuFailed: "Fast mode did not work on this phone. Restart the app to carry on in standard mode.",
@@ -536,7 +538,7 @@ export default {
       return "Downloading… " + p + "%";
     },
     memTitle: "Using memory now",
-    memNote: "Follow frees it by itself 2 minutes after it stops, or when the app is put away",
+    memNote: "Freed by itself 2 min after Follow stops",
     memUse: "In use while Follow listens",
     stopFirst: "Stop Follow first to change this.",
     askRemove: "Remove Follow's download?",
@@ -553,6 +555,8 @@ export default {
     askFree: "Free Follow's memory?",
     askFreeText: "The download stays on this phone. The next time you tap Follow, it takes a few seconds more to start.",
     freeMemory: "Free memory",
+    // Using memory now's own button, at the row's end: a short word seen, the whole name heard
+    freeShort: 'Free<span class="sr"> memory</span>',
     cancel: "Cancel",
     freed: "Follow's memory freed",
     /** @param {string} mb */
