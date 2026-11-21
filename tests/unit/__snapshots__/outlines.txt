@@ -223,4 +223,9 @@ ashtak-lingashtakam: none
 ashtak-nandikeshvara-ashtakam: none
 ashtak-rudrashtakam: none
 ashtak-kalabhairava-ashtakam: none
+bhajan-vakratunda-mahakaya: none
+bhajan-ganapati-bappa-morya: none
+bhajan-vande-ganapati: none
 bhajan-mahaganesh-pancharatnam: none
+bhajan-gaiye-ganapati-jagvandan: none
+bhajan-nadatuni-ya-nad-nirmito: none

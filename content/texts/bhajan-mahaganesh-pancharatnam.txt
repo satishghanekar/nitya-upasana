@@ -3,6 +3,7 @@ title: श्री महागणेश पंचरत्नम्
 title-en: Shri Mahaganesh Pancharatnam
 language: sa
 credit: attributed adi-shankara
+version-name: श्लोक | Shloka
 lines: 12
 letters: 744
 ---

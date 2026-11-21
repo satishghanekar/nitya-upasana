@@ -1,0 +1,80 @@
+id: bhajan-mahaganesh-pancharatnam-bhajan
+title: श्री महागणेश पंचरत्नम्
+title-en: Shri Mahaganesh Pancharatnam
+language: sa
+refrain: every-verse
+refrain-before-first: yes
+credit: attributed adi-shankara
+version-name: भजन | Bhajan
+lines: 28
+letters: 1472
+---
+[dhrupad]
+जय गणेश जय गणेश, ¦जय गणेश पाहि माम् ।
+Jay Ganesh Jay Ganesh, ¦Jay Ganesh Pahi Mam |
+जय गणेश जय गणेश, ¦जय गणेश रक्ष माम् ।
+Jay Ganesh Jay Ganesh, ¦Jay Ganesh Raksha Mam |
+जय गणेश जय गणेश, ¦जय गणेश पाहि माम् ।
+Jay Ganesh Jay Ganesh, ¦Jay Ganesh Pahi Mam |
+जय गणेश जय गणेश, ¦जय गणेश रक्ष माम् ॥
+Jay Ganesh Jay Ganesh, ¦Jay Ganesh Raksha Mam ||
+
+[1]
+मुदाकरात्त मोदकं सदा विमुक्ति साधकम् ।
+Mudakaratta Modakam Sada Vimukti Sadhakam |
+कलाधरावतंसकं विलासिलोक रक्षकम् ।
+Kaladharavatamsakam Vilasiloka Rakshakam |
+अनायकैक नायकं विनाशितेभ दैत्यकम् ।
+Anayakaika Nayakam Vinashitebha Daityakam |
+नताशुभाशु नाशकं नमामि तं विनायकम् ॥
+Natashubhashu Nashakam Namami Tam Vinayakam ||
+
+[2]
+नतेतराति भीकरं नवोदितार्क भास्वरम् ।
+Natetarati Bhikaram Navoditarka Bhasvaram |
+नमत्सुरारि निर्जरं नताधिकापदुद्धरम् ।
+Namatsurari Nirjaram Natadhikapaduddharam |
+सुरेश्वरं निधीश्वरं गजेश्वरं गणेश्वरम् ।
+Sureshvaram Nidhishvaram Gajeshvaram Ganeshvaram |
+महेश्वरं तमाश्रये परात्परं निरंतरम् ॥
+Maheshvaram Tamashraye Paratparam Nirantaram ||
+
+[3]
+समस्त लोक शंकरं निरस्त दैत्य कुंजरम् ।
+Samasta Loka Shankaram Nirasta Daitya Kunjaram |
+दरेतरोदरं वरं वरेभ वक्त्रमक्षरम् ।
+Daretarodaram Varam Varebha Vaktramaksharam |
+कृपाकरं क्षमाकरं मुदाकरं यशस्करम् ।
+Krupakaram Kshamakaram Mudakaram Yashaskaram |
+मनस्करं नमस्कृतां नमस्करोमि भास्वरम् ॥
+Manaskaram Namaskrutam Namaskaromi Bhasvaram ||
+
+[4]
+अकिंचनार्ति मार्जनं चिरंतनोक्ति भाजनम् ।
+Akinchanarti Marjanam Chirantanokti Bhajanam |
+पुरारि पूर्व नंदनं सुरारि गर्व चर्वणम् ।
+Purari Purva Nandanam Surari Garva Charvanam |
+प्रपंच नाश भीषणं धनंजयादि भूषणम् ।
+Prapancha Nasha Bhishanam Dhananjayadi Bhushanam |
+कपोल दानवारणं भजे पुराण वारणम् ॥
+Kapola Danavaranam Bhaje Purana Varanam ||
+
+[5]
+नितांत कांत दंत कांति मंत कांत कात्मजम् ।
+Nitanta Kanta Danta Kanti Manta Kanta Katmajam |
+अचिंत्य रूपमंत हीन मंतराय कृंतनम् ।
+Achintya Rupamanta Hina Mantaraya Kruntanam |
+हृदंतरे निरंतरं वसंतमेव योगिनाम् ।
+Hrudantare Nirantaram Vasantameva Yoginam |
+तमेकदंतमेव तं विचिंतयामि संततम् ॥
+Tamekadantameva Tam Vichintayami Santatam ||
+
+[6]
+महागणेश पंचरत्नमादरेण योऽन्वहम् ।
+Mahaganesha Pancharatnamadarena Yonvaham |
+प्रजल्पति प्रभातके हृदि स्मरन् गणेश्वरम् ।
+Prajalpati Prabhatake Hrudi Smaran Ganeshvaram |
+अरोगतामदोषतां सुसाहितीं सुपुत्रताम् ।
+Arogatamadoshatam Susahitim Suputratam |
+समाहितायु रष्टभूति मभ्युपैति सोऽचिरात् ॥
+Samahitayu Rashtabhuti Mabhyupaiti Sochirat ||

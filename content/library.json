@@ -107,13 +107,21 @@
     "en": "Bhajan"
    },
    "texts": [
-    "bhajan-mahaganesh-pancharatnam"
+    "bhajan-vakratunda-mahakaya",
+    "bhajan-ganapati-bappa-morya",
+    "bhajan-vande-ganapati",
+    "bhajan-mahaganesh-pancharatnam",
+    "bhajan-gaiye-ganapati-jagvandan",
+    "bhajan-nadatuni-ya-nad-nirmito"
    ]
   }
  ],
  "versions": {
   "stotra-hanuman-chalisa": [
    "stotra-hanuman-chalisa-popular"
+  ],
+  "bhajan-mahaganesh-pancharatnam": [
+   "bhajan-mahaganesh-pancharatnam-bhajan"
   ]
  }
 }

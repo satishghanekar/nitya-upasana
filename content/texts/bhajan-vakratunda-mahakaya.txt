@@ -1,0 +1,85 @@
+id: bhajan-vakratunda-mahakaya
+title: वक्रतुंड महाकाय
+title-en: Vakratunda Mahakaya
+language: sa
+stanza-numbers: as-written
+lines: 30
+letters: 1010
+---
+[1]
+वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ ।
+Vakratunda Mahakaya Suryakoti Samaprabha |
+निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा ॥
+Nirvighnam Kuru Me Deva Sarvakaryeshu Sarvada ||
+
+[2]
+गणनायकाय गणदेवताय गणाध्यक्षाय धीमहि ।
+Gananayakaya Ganadevataya Ganadhyakshaya Dhimahi |
+गुणशरीराय गुणमण्डिताय गुणेशानाय धीमहि ॥
+Gunashariraya Gunamanditaya Guneshanaya Dhimahi ||
+
+[3]
+गुणातीताय गुणाधीशाय गुणप्रविष्टाय धीमहि ।
+Gunatitaya Gunadhishaya Gunapravishtaya Dhimahi |
+एकदंताय वक्रतुण्डाय गौरीतनयाय धीमहि ।
+Ekadantaya Vakratundaya Gauritanayaya Dhimahi |
+गजेशानाय भालचन्द्राय श्रीगणेशाय धीमहि ॥
+Gajeshanaya Bhalachandraya Shriganeshaya Dhimahi ||
+
+[4]
+गानचतुराय गानप्राणाय गानान्तरात्मने ।
+Ganachaturaya Ganapranaya Ganantaratmane |
+गानोत्सुकाय गानमत्ताय गानोत्सुकमनसे ।
+Ganotsukaya Ganamattaya Ganotsukamanase |
+गुरुपूजिताय गुरुदेवताय गुरुकुलस्थायिने ।
+Gurupujitaya Gurudevataya Gurukulasthayine |
+गुरुविक्रमाय गुह्यप्रवराय गुरवे गुणगुरवे ॥
+Guruvikramaya Guhyapravaraya Gurave Gunagurave ||
+
+[5]
+गुरुदैत्यगलच्छेत्रे गुरुधर्मसदाराध्याय ।
+Gurudaityagalachchhetre Gurudharmasadaradhyaya |
+गुरुपुत्रपरित्रात्रे गुरुपाखण्डखण्डकाय ।
+Guruputraparitratre Gurupakhandakhandakaya |
+गीतसाराय गीततत्त्वाय गीतगोत्राय धीमहि ।
+Gitasaraya Gitatattvaya Gitagotraya Dhimahi |
+गूढगुल्फाय गन्धमत्ताय गोजयप्रदाय धीमहि ।
+Gudhagulphaya Gandhamattaya Gojayapradaya Dhimahi |
+गुणातीताय गुणाधीशाय गुणप्रविष्टाय धीमहि ॥
+Gunatitaya Gunadhishaya Gunapravishtaya Dhimahi ||
+
+[6]
+गुणातीताय गुणाधीशाय गुणप्रविष्टाय धीमहि ।
+Gunatitaya Gunadhishaya Gunapravishtaya Dhimahi |
+एकदंताय वक्रतुण्डाय गौरीतनयाय धीमहि ।
+Ekadantaya Vakratundaya Gauritanayaya Dhimahi |
+गजेशानाय भालचन्द्राय श्रीगणेशाय धीमहि ॥
+Gajeshanaya Bhalachandraya Shriganeshaya Dhimahi ||
+
+[7]
+ग्रन्थगीताय ग्रन्थगेयाय ग्रन्थान्तरात्मने ।
+Granthagitaya Granthageyaya Granthantaratmane |
+गीतलीनाय गीताश्रयाय गीतवाद्यपटवे ।
+Gitalinaya Gitashrayaya Gitavadyapatave |
+गेयचरिताय गायकवराय गन्धर्वप्रियकृते ।
+Geyacharitaya Gayakavaraya Gandharvapriyakrute |
+गायकाधीनविग्रहाय गङ्गाजलप्रणयवते ।
+Gayakadhinavigrahaya Gangajalapranayavate |
+गौरीस्तनन्धयाय गौरीहृदयनन्दनाय ।
+Gauristanandhayaya Gaurihrudayanandanaya |
+गौरभानुसुताय गौरीगणेश्वराय ॥
+Gaurabhanusutaya Gauriganeshvaraya ||
+
+[8]
+गौरीप्रणयाय गौरीप्रवणाय गौरभावाय धीमहि ।
+Gauripranayaya Gauripravanaya Gaurabhavaya Dhimahi |
+गोसहस्राय गोवर्धनाय गोपगोपाय धीमहि ॥
+Gosahasraya Govardhanaya Gopagopaya Dhimahi ||
+
+[9]
+गुणातीताय गुणाधीशाय गुणप्रविष्टाय धीमहि ।
+Gunatitaya Gunadhishaya Gunapravishtaya Dhimahi |
+एकदंताय वक्रतुण्डाय गौरीतनयाय धीमहि ।
+Ekadantaya Vakratundaya Gauritanayaya Dhimahi |
+गजेशानाय भालचन्द्राय श्रीगणेशाय धीमहि ॥
+Gajeshanaya Bhalachandraya Shriganeshaya Dhimahi ||
