@@ -1100,19 +1100,31 @@ html[data-scr][data-font]:not([data-font="std"]) .sp-pw :is([lang="kn"], [lang="
   font-size: var(--fz-s);
   font-weight: 700;
 }
-/* How Follow went and Using memory now keep their button at the row's end, as the version's round button, with a short
-   word (the whole name for screen readers), so About's group stays short enough to see the maker's line without
-   scrolling */
+/* Free memory and How Follow went: the row's title is the link (Satish, 2026-11-20), in the accent and underlined, its
+   icon after it, so the colour is never the only sign; a 44px tap target, drawn into the row's own height */
+.sp .sp-title-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: -8px 0 -6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 700;
+  text-align: start;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.sp .sp-title-link[hidden],
+#follow-model-memory-title[hidden] {
+  display: none;
+}
 .sp #follow-report {
   align-items: center;
-}
-.sp .sp-row > .lsw-share {
-  flex: none;
-  align-self: center;
-  gap: 6px;
-  margin-top: 0;
-  padding: 0 14px;
-  white-space: nowrap;
 }
 /* ==== About → Follow: the model on this phone (js/features/follow-model-rows.js). Downloaded is a switch at the row's
    end: a 44px tap target holding a track and its knob; off is an outlined track with a muted knob (the outline at 3:1

@@ -487,10 +487,9 @@ export default {
     shareReport: "నివేదిక పంపండి",
     reportCopied: "నివేదిక కాపీ అయింది",
     // Settings → About → Follow: how Follow went the last few times (js/features/follow-report.js)
-    followReport: "‘వెంట’ ఎలా సాగింది",
-    followReportNote: "ఈ ఫోన్‌లోనే ఉంటుంది, దానంతట అది పంపబడదు. పంపితే ‘వెంట’ మెరుగవుతుంది.",
-    shareFollowReport: "‘వెంట’ నివేదిక పంపండి",
-    shareShort: '<span class="sr">‘వెంట’ నివేదిక </span>పంపండి',
+    followReportNote: "ఈ ఫోన్‌లోనే ఉంటుంది. పంపడానికి నొక్కండి.",
+    // the row's title is the link that shares: the title seen, Share heard first
+    shareLink: '<span class="sr">పంపండి: </span>‘వెంట’ ఎలా సాగింది',
     gpuFailed: "ఈ ఫోన్‌లో వేగవంతమైన విధానం పని చేయలేదు. సాధారణ విధానంలో కొనసాగడానికి యాప్‌ను మళ్ళీ ప్రారంభించండి.",
     stuck: "‘వెంట’ స్పందించడం ఆగిపోయింది. మళ్ళీ ప్రారంభించడానికి యాప్‌ను మళ్ళీ ప్రారంభించండి.",
     restart: "మళ్ళీ ప్రారంభించండి",
@@ -515,7 +514,7 @@ export default {
       return "డౌన్‌లోడ్ అవుతోంది… " + p + "%";
     },
     memTitle: "ఇప్పుడు మెమరీ వాడుకలో ఉంది",
-    memNote: "‘వెంట’ ఆగిన 2 నిమిషాల తర్వాత తనంతట తానే ఖాళీ అవుతుంది",
+    memNote: "ఇప్పుడు వాడుకలో ఉంది. 2 నిమిషాల తర్వాత తనంతట తానే ఖాళీ అవుతుంది.",
     memUse: "‘వెంట’ వింటున్నప్పుడు వాడుకలో ఉంది",
     stopFirst: "దీన్ని మార్చడానికి ముందు ‘వెంట’ ఆపండి.",
     askRemove: "‘వెంట’ డౌన్‌లోడ్ తీసివేయాలా?",
@@ -532,7 +531,6 @@ export default {
     askFree: "‘వెంట’ మెమరీని ఖాళీ చేయాలా?",
     askFreeText: "డౌన్‌లోడ్ ఈ ఫోన్‌లోనే ఉంటుంది. తదుపరిసారి ‘వెంట’ నొక్కినప్పుడు ప్రారంభం కావడానికి కొన్ని సెకన్లు ఎక్కువ పడుతుంది.",
     freeMemory: "మెమరీ ఖాళీ చేయండి",
-    freeShort: '<span class="sr">మెమరీ </span>ఖాళీ చేయండి',
     cancel: "రద్దు చేయండి",
     freed: "‘వెంట’ మెమరీ ఖాళీ అయింది",
     /** @param {string} mb */
