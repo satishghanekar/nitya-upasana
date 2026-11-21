@@ -2,7 +2,7 @@ Back
 Library
 Chants
 Books
-64 texts
+65 texts
 Order of the texts
 Book order
 A–Z
@@ -266,4 +266,9 @@ about 1 minute
 संस्कृत
 2–3 min
 2 to 3 minutes
+भजन
+१. श्री महागणेश पंचरत्नम्
+संस्कृत
+1–2 min
+1 to 2 minutes
 Edit categories

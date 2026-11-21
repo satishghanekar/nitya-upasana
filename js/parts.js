@@ -207,6 +207,7 @@ var SITE_PARTS = (function () {
     "texts/ashtak-nandikeshvara-ashtakam.txt",
     "texts/ashtak-rudrashtakam.txt",
     "texts/ashtak-kalabhairava-ashtakam.txt",
+    "texts/bhajan-mahaganesh-pancharatnam.txt",
     // the other versions of a text sung in more than one way (content/library.json "versions")
     "texts/stotra-hanuman-chalisa-popular.txt",
   ].map(function (f) {

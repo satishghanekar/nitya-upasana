@@ -84,10 +84,12 @@ test("search in the Library finds a line and goes to it", async ({ page }) => {
 test("search lists texts by their title first; a text found only inside it is under Lines", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#hm").click();
-  // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotram, but only Jai Ganesh Deva has Ganesh in its title
+  // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotram, but only Jai Ganesh Deva and the Mahaganesh Pancharatnam
+  // have Ganesh in their titles
   await page.locator("#q").fill("ganesh");
-  await expect(page.locator("#res li.rt")).toHaveCount(1);
-  await expect(page.locator("#res li.rt .rl")).toHaveText("आरती जय गणेश देवा");
+  await expect(page.locator("#res li.rt")).toHaveCount(2);
+  await expect(page.locator("#res li.rt .rl", { hasText: "आरती जय गणेश देवा" })).toHaveCount(1);
+  await expect(page.locator("#res li.rt .rl", { hasText: "श्री महागणेश पंचरत्नम्" })).toHaveCount(1);
   await expect(page.locator("#res li:not(.rh):not(.rt) .rs", { hasText: "श्रीरामरक्षास्तोत्रम्" }).first()).toBeVisible();
 });
 
@@ -382,20 +384,20 @@ test("a pinch on the Library resizes only its list, with the reading page's text
 test("add a category, move a text into it, rename it: the list follows, and it is kept after a reload @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await openSheet(page);
-  await expect(page.locator("#lbcl li")).toHaveCount(4); // empty categories are shown here
+  await expect(page.locator("#lbcl li")).toHaveCount(5); // empty categories are shown here
   await page.locator("#lbadd").click();
   await expect(page.locator("#lbmr")).toBeFocused(); // the field of the first reading language
-  await page.locator("#lbmr").fill("भजन");
-  await page.locator("#lben").fill("Bhajan");
+  await page.locator("#lbmr").fill("अभंग");
+  await page.locator("#lben").fill("Abhang");
   await page.locator("#lbsave").click();
-  await expect(page.locator("#lbcl li")).toHaveCount(5);
-  await expect(page.locator("#lblive")).toHaveText("भजन added");
+  await expect(page.locator("#lbcl li")).toHaveCount(6);
+  await expect(page.locator("#lblive")).toHaveText("अभंग added");
   // still empty: not in the list yet
   expect(await groups(page)).toEqual(GROUPS);
-  await page.locator("#lbs-aarti-ghalin-lotangan").selectOption("bhajan");
-  await expect(page.locator("#lblive")).toHaveText("घालीन लोटांगण: now in भजन");
-  expect(await groups(page)).toEqual([...GROUPS, "भजन"]);
-  expect(await inGroup(page, "bhajan")).toEqual(["a8"]);
+  await page.locator("#lbs-aarti-ghalin-lotangan").selectOption("abhang");
+  await expect(page.locator("#lblive")).toHaveText("घालीन लोटांगण: now in अभंग");
+  expect(await groups(page)).toEqual([...GROUPS, "अभंग"]);
+  expect(await inGroup(page, "abhang")).toEqual(["a8"]);
   // numbered in its new category
   await expect(page.locator('#jl a[data-go="a8"] .nm')).toHaveText("१.");
   // rename a built-in one (on this phone only)
@@ -404,9 +406,9 @@ test("add a category, move a text into it, rename it: the list follows, and it i
   await page.locator("#lben").fill("Aartis");
   await page.locator("#lbsave").click();
   await expect(page.locator('.lbe[data-id="aarti"]')).toBeFocused();
-  expect(await groups(page)).toEqual([...GROUPS.map((g) => (g === "आरती" ? "आरत्या" : g)), "भजन"]);
+  expect(await groups(page)).toEqual([...GROUPS.map((g) => (g === "आरती" ? "आरत्या" : g)), "अभंग"]);
   // a name already used is refused, and said so
-  await page.locator('.lbe[data-id="bhajan"]').click();
+  await page.locator('.lbe[data-id="abhang"]').click();
   await page.locator("#lben").fill("Aartis");
   await page.locator("#lbmr").fill("");
   await page.locator("#lbsave").click();
@@ -421,9 +423,9 @@ test("add a category, move a text into it, rename it: the list follows, and it i
   await page.reload();
   await page.waitForFunction(() => document.documentElement.hasAttribute("data-ready"));
   await page.locator("#hm").click();
-  expect(await groups(page)).toEqual([...GROUPS.map((g) => (g === "आरती" ? "आरत्या" : g)), "भजन"]);
+  expect(await groups(page)).toEqual([...GROUPS.map((g) => (g === "आरती" ? "आरत्या" : g)), "अभंग"]);
   // search finds a text by its category's new name
-  await page.locator("#q").fill("bhajan");
+  await page.locator("#q").fill("abhang");
   await expect(page.locator("#res li.rt .rl")).toHaveText(["घालीन लोटांगण"]);
 });
 
@@ -431,21 +433,21 @@ test("delete a family category: its texts go back; a built-in one can only be re
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await openSheet(page);
   await page.locator("#lbadd").click();
-  await page.locator("#lben").fill("Bhajan");
+  await page.locator("#lben").fill("Abhang");
   await page.locator("#lbsave").click();
-  await page.locator("#lbs-aarti-jai-jagdish-hare").selectOption("bhajan");
-  expect(await inGroup(page, "bhajan")).toEqual(["a10"]);
+  await page.locator("#lbs-aarti-jai-jagdish-hare").selectOption("abhang");
+  expect(await inGroup(page, "abhang")).toEqual(["a10"]);
   await page.locator('.lbe[data-id="aarti"]').click();
   await expect(page.locator("#lbdel")).toBeHidden();
   await expect(page.locator("#lbbi")).toBeVisible();
   await page.locator("#lbcan").click();
-  await page.locator('.lbe[data-id="bhajan"]').click();
+  await page.locator('.lbe[data-id="abhang"]').click();
   await page.locator("#lbdel").click();
-  await expect(page.locator("#lbdq")).toContainText("Delete Bhajan?");
+  await expect(page.locator("#lbdq")).toContainText("Delete Abhang?");
   await expect(page.locator("#lbdn")).toBeFocused();
   await page.locator("#lbdy").click();
-  await expect(page.locator("#lblive")).toHaveText("Bhajan deleted");
-  await expect(page.locator("#lbcl li")).toHaveCount(4);
+  await expect(page.locator("#lblive")).toHaveText("Abhang deleted");
+  await expect(page.locator("#lbcl li")).toHaveCount(5);
   expect(await groups(page)).toEqual(GROUPS);
   expect(await inGroup(page, "aarti")).toContain("a10");
 });
@@ -537,7 +539,7 @@ test("English only (Settings → Languages): English titles and category names, 
   await expect(page.locator("#jl .tocg .gh .mr").first()).toBeHidden();
   expect(await page.locator('#jl a[data-go="a1"] .m').innerText()).toMatch(/^1\.\s*Sukhkarta Dukhharta$/);
   await page.locator("#lbb").click();
-  await expect(page.locator("#lbcl .lbn")).toHaveText(["Vedic Chant", "Aarti", "Stotra", "Ashtak"]);
+  await expect(page.locator("#lbcl .lbn")).toHaveText(["Vedic Chant", "Aarti", "Stotra", "Ashtak", "Bhajan"]);
   await expect(page.locator("#lbcl .lbo")).toHaveCount(0); // no second language
   await expect(page.locator("#lbtl .lbtn").first()).toHaveText("Ganapati Atharvashirsha");
   await expect(page.locator("#lbs-aarti-sukhkarta option:checked")).toHaveText("Aarti");
@@ -804,7 +806,7 @@ test("A–Z puts each category's texts in alphabetical order, each keeping its n
   expect(az).toEqual(await sorted("mr", book));
   expect(az).not.toEqual(book);
   // each text keeps its number: Kalabhairava is still 18 among the ashtakams, and no longer last
-  const ashtak = az[az.length - 1];
+  const ashtak = az.find((g) => g.some((x) => x.t === "श्रीकालभैरवाष्टकम्"));
   expect(ashtak.find((x) => x.t === "श्रीकालभैरवाष्टकम्").no).toBe("18.");
   expect(ashtak[ashtak.length - 1].t).not.toBe("श्रीकालभैरवाष्टकम्");
   // kept for this person after a reload

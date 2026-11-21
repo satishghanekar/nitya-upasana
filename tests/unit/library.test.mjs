@@ -33,7 +33,7 @@ const shelf = (local, id) => shelves(TEXTS, categoriesOf(BUNDLED, local), local)
 describe("the bundled library (decisions Q2)", () => {
   const cats = categoriesOf(BUNDLED, emptyLocal());
   test("categories in order, with Marathi and English names", () => {
-    expect(ids(cats)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak"]);
+    expect(ids(cats)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak", "bhajan"]);
     expect(cats[0].name).toEqual({ mr: "वैदिक मंत्र", en: "Vedic Chant" });
     expect(cats[1].name).toEqual({ mr: "आरती", en: "Aarti" });
     expect(cats.every((c) => c.origin === "bundled" && c.original === null)).toBe(true);
@@ -41,7 +41,7 @@ describe("the bundled library (decisions Q2)", () => {
   test("every text is on its own category's shelf, in reading order; Atharvashirsha is Vedic Chant, Ghalin Lotangan is Aarti", () => {
     const sh = shelves(TEXTS, cats, emptyLocal());
     expect(sh.map((s) => [s.category.id, s.texts])).toEqual(
-      ["vedic-chant", "aarti", "stotra", "ashtak"].map((c) => [c, TEXTS.filter((t) => t.category === c).map((t) => t.id)]),
+      ["vedic-chant", "aarti", "stotra", "ashtak", "bhajan"].map((c) => [c, TEXTS.filter((t) => t.category === c).map((t) => t.id)]),
     );
     expect(shelf(emptyLocal(), "vedic-chant")[0]).toBe("vedic-chant-atharvashirsha");
     expect(shelf(emptyLocal(), "aarti")).toContain("aarti-ghalin-lotangan");
@@ -81,13 +81,20 @@ describe("names", () => {
 
 describe("adding, renaming and deleting a category", () => {
   test("add: after the others, by its readable id, empty", () => {
-    const r = addCategory(emptyLocal(), BUNDLED, { mr: "भजन", en: "Bhajan" });
+    const r = addCategory(emptyLocal(), BUNDLED, { mr: "अभंग", en: "Abhang" });
     expect(r.ok).toBe(true);
-    expect(r.id).toBe("bhajan");
+    expect(r.id).toBe("abhang");
     const cats = categoriesOf(BUNDLED, r.local);
-    expect(ids(cats)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak", "bhajan"]);
-    expect(cats[4]).toMatchObject({ origin: "family", name: { mr: "भजन", en: "Bhajan" } });
-    expect(shelf(r.local, "bhajan")).toEqual([]);
+    expect(ids(cats)).toEqual(["vedic-chant", "aarti", "stotra", "ashtak", "bhajan", "abhang"]);
+    expect(cats[5]).toMatchObject({ origin: "family", name: { mr: "अभंग", en: "Abhang" } });
+    expect(shelf(r.local, "abhang")).toEqual([]);
+  });
+  test("a Bhajan category a family made before the bundled one is folded into it, with the texts they moved there", () => {
+    const old = { ...emptyLocal(), added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }], moves: { "aarti-ghalin-lotangan": "bhajan" } };
+    const cats = categoriesOf(BUNDLED, old);
+    expect(cats.filter((c) => c.id === "bhajan")).toEqual([expect.objectContaining({ origin: "bundled" })]);
+    expect(shelf(old, "bhajan").sort()).toEqual(["aarti-ghalin-lotangan", "bhajan-mahaganesh-pancharatnam"]);
+    expect(addCategory(emptyLocal(), BUNDLED, { mr: "भजन", en: "Bhajan" })).toEqual({ ok: false, problem: "taken" });
   });
   test("add refuses an empty or taken name, and more than the limit", () => {
     expect(addCategory(emptyLocal(), BUNDLED, { mr: "", en: " " })).toEqual({ ok: false, problem: "empty" });
@@ -98,7 +105,7 @@ describe("adding, renaming and deleting a category", () => {
   });
   test("the input is never changed", () => {
     const l = emptyLocal();
-    addCategory(l, BUNDLED, { en: "Bhajan" });
+    addCategory(l, BUNDLED, { en: "Abhang" });
     renameCategory(l, BUNDLED, "aarti", { en: "Aartis" });
     expect(l).toEqual(emptyLocal());
   });
@@ -115,24 +122,24 @@ describe("adding, renaming and deleting a category", () => {
     expect(back.local.renames).toEqual({});
   });
   test("a family category is renamed in place", () => {
-    const a = addCategory(emptyLocal(), BUNDLED, { en: "Bhajan" }).local;
-    const r = renameCategory(a, BUNDLED, "bhajan", { mr: "भजने", en: "Bhajans" });
-    expect(r.local.added[0]).toMatchObject({ id: "bhajan", name: { mr: "भजने", en: "Bhajans" } });
+    const a = addCategory(emptyLocal(), BUNDLED, { en: "Abhang" }).local;
+    const r = renameCategory(a, BUNDLED, "abhang", { mr: "अभंगवाणी", en: "Abhangvani" });
+    expect(r.local.added[0]).toMatchObject({ id: "abhang", name: { mr: "अभंगवाणी", en: "Abhangvani" } });
     expect(renameCategory(a, BUNDLED, "nope", { en: "x" })).toEqual({ ok: false, problem: "missing" });
-    expect(renameCategory(a, BUNDLED, "bhajan", { en: "Aarti" })).toEqual({ ok: false, problem: "taken" });
+    expect(renameCategory(a, BUNDLED, "abhang", { en: "Aarti" })).toEqual({ ok: false, problem: "taken" });
   });
   test("a bundled category can't be deleted; a family one can, and its texts go back home", () => {
     expect(removeCategory(emptyLocal(), BUNDLED, "aarti")).toEqual({ ok: false, problem: "bundled" });
     expect(removeCategory(emptyLocal(), BUNDLED, "nope")).toEqual({ ok: false, problem: "missing" });
-    let l = addCategory(emptyLocal(), BUNDLED, { en: "Bhajan" }).local;
+    let l = addCategory(emptyLocal(), BUNDLED, { en: "Abhang" }).local;
     l = moveText(
       l,
       categoriesOf(BUNDLED, l),
       TEXTS.find((t) => t.id === "aarti-ghalin-lotangan"),
-      "bhajan",
+      "abhang",
     ).local;
-    expect(shelf(l, "bhajan")).toEqual(["aarti-ghalin-lotangan"]);
-    const r = removeCategory(l, BUNDLED, "bhajan");
+    expect(shelf(l, "abhang")).toEqual(["aarti-ghalin-lotangan"]);
+    const r = removeCategory(l, BUNDLED, "abhang");
     expect(r.ok).toBe(true);
     expect(r.local).toEqual(emptyLocal());
     expect(shelf(r.local, "aarti")).toContain("aarti-ghalin-lotangan");
@@ -171,24 +178,24 @@ describe("what storage or a backup file holds is checked", () => {
     expect(cleanLocal("x")).toEqual(emptyLocal());
     const l = cleanLocal({
       added: [
-        { id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 },
-        { id: "bhajan", name: { en: "Twice" } },
+        { id: "abhang", name: { mr: "अभंग", en: "Abhang" }, order: 5 },
+        { id: "abhang", name: { en: "Twice" } },
         { id: "Bad Id", name: { en: "x" } },
         { id: "noname" },
       ],
       renames: { aarti: { mr: "आरत्या", en: "" }, "vedic-chant": 3 },
-      moves: { "aarti-ghalin-lotangan": "bhajan", x: 5, "<b>": "aarti" },
+      moves: { "aarti-ghalin-lotangan": "abhang", x: 5, "<b>": "aarti" },
     });
     expect(l).toEqual({
-      added: [{ id: "bhajan", name: { mr: "भजन", en: "Bhajan" }, order: 5 }],
+      added: [{ id: "abhang", name: { mr: "अभंग", en: "Abhang" }, order: 5 }],
       renames: { aarti: { mr: "आरत्या", en: "आरत्या" } },
-      moves: { "aarti-ghalin-lotangan": "bhajan" },
+      moves: { "aarti-ghalin-lotangan": "abhang" },
     });
   });
   test("a clean one comes back the same", () => {
-    let l = addCategory(emptyLocal(), BUNDLED, { mr: "भजन", en: "Bhajan" }).local;
+    let l = addCategory(emptyLocal(), BUNDLED, { mr: "अभंग", en: "Abhang" }).local;
     l = renameCategory(l, BUNDLED, "aarti", { mr: "आरत्या", en: "Aartis" }).local;
-    l = moveText(l, categoriesOf(BUNDLED, l), TEXTS[1], "bhajan").local;
+    l = moveText(l, categoriesOf(BUNDLED, l), TEXTS[1], "abhang").local;
     expect(cleanLocal(JSON.parse(JSON.stringify(l)))).toEqual(l);
   });
 });

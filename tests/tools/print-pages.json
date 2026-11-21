@@ -63,7 +63,8 @@
   "ashtak-lingashtakam": 2,
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 2,
-  "ashtak-kalabhairava-ashtakam": 2
+  "ashtak-kalabhairava-ashtakam": 2,
+  "bhajan-mahaganesh-pancharatnam": 2
  },
  "both": {
   "vedic-chant-atharvashirsha": 6,
@@ -129,7 +130,8 @@
   "ashtak-lingashtakam": 2,
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 2,
-  "ashtak-kalabhairava-ashtakam": 2
+  "ashtak-kalabhairava-ashtakam": 2,
+  "bhajan-mahaganesh-pancharatnam": 2
  },
  "english": {
   "vedic-chant-atharvashirsha": 3,
@@ -195,7 +197,8 @@
   "ashtak-lingashtakam": 1,
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
-  "ashtak-kalabhairava-ashtakam": 2
+  "ashtak-kalabhairava-ashtakam": 2,
+  "bhajan-mahaganesh-pancharatnam": 1
  },
  "marathi-a4": {
   "vedic-chant-atharvashirsha": 2,
@@ -261,7 +264,8 @@
   "ashtak-lingashtakam": 1,
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
-  "ashtak-kalabhairava-ashtakam": 1
+  "ashtak-kalabhairava-ashtakam": 1,
+  "bhajan-mahaganesh-pancharatnam": 1
  },
  "marathi-bold": {
   "vedic-chant-atharvashirsha": 3,
@@ -327,7 +331,8 @@
   "ashtak-lingashtakam": 1,
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
-  "ashtak-kalabhairava-ashtakam": 1
+  "ashtak-kalabhairava-ashtakam": 1,
+  "bhajan-mahaganesh-pancharatnam": 1
  },
  "marathi-every-verse": {
   "vedic-chant-atharvashirsha": 3,
@@ -393,7 +398,8 @@
   "ashtak-lingashtakam": 1,
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
-  "ashtak-kalabhairava-ashtakam": 1
+  "ashtak-kalabhairava-ashtakam": 1,
+  "bhajan-mahaganesh-pancharatnam": 1
  },
  "marathi-landscape": {
   "vedic-chant-atharvashirsha": 3,
@@ -459,7 +465,8 @@
   "ashtak-lingashtakam": 1,
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
-  "ashtak-kalabhairava-ashtakam": 1
+  "ashtak-kalabhairava-ashtakam": 1,
+  "bhajan-mahaganesh-pancharatnam": 1
  },
  "marathi-modern": {
   "vedic-chant-atharvashirsha": 3,
@@ -525,7 +532,8 @@
   "ashtak-lingashtakam": 1,
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
-  "ashtak-kalabhairava-ashtakam": 1
+  "ashtak-kalabhairava-ashtakam": 1,
+  "bhajan-mahaganesh-pancharatnam": 1
  },
  "marathi": {
   "vedic-chant-atharvashirsha": 3,
@@ -591,6 +599,7 @@
   "ashtak-lingashtakam": 1,
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
-  "ashtak-kalabhairava-ashtakam": 1
+  "ashtak-kalabhairava-ashtakam": 1,
+  "bhajan-mahaganesh-pancharatnam": 1
  }
 }
