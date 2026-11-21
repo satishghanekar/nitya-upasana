@@ -7,7 +7,7 @@ import { choices } from "../../js/core/hearing.js";
 describe("the check sound", () => {
   test("is 3 s at 16 kHz, as check.json says, and the same sound the Listen tests hear", () => {
     const a = checkSound();
-    const check = JSON.parse(readFileSync(new URL("../../models/chant-v6-q4/check.json", import.meta.url), "utf8"));
+    const check = JSON.parse(readFileSync(new URL("../../models/chant-v7-q4/check.json", import.meta.url), "utf8"));
     expect(a.length).toBe(check.seconds * 16000);
     const t = 1234 / 16000;
     expect(a[1234]).toBeCloseTo(0.3 * Math.sin(2 * Math.PI * (220 + 60 * t) * t) + 0.2 * Math.sin(2 * Math.PI * 440 * t) * Math.cos(2 * Math.PI * 0.5 * t), 6);
@@ -25,7 +25,7 @@ describe("alike", () => {
     expect(ALIKE_LEAST).toBeGreaterThan(0.9);
   });
   test("the model's own scores at check.json's steps give its own choices there", () => {
-    const check = JSON.parse(readFileSync(new URL("../../models/chant-v6/check.json", import.meta.url), "utf8"));
+    const check = JSON.parse(readFileSync(new URL("../../models/chant-v7/check.json", import.meta.url), "utf8"));
     for (const [step, row] of Object.entries(check.scores)) expect(choices(Float32Array.from(row), row.length)[0]).toBe(check.ids[Number(step)]);
   });
 });
@@ -37,7 +37,7 @@ describe("the report shared", () => {
     at: "2026-11-21T00:42:00.000Z",
     tz: "Asia/Kolkata",
     app: "1.78.6",
-    model: "chant-v6-q4",
+    model: "chant-v7-q4",
     ort: "1.23.0",
     error: "Error: failed to compile MatMulNBits",
     stack: "at create (ort.webgpu.bundle.min.mjs:6:100)",
@@ -74,7 +74,7 @@ describe("the report shared", () => {
       "What happened: fast mode failed while starting the model",
       "Error: Error: failed to compile MatMulNBits",
       "Where: at create",
-      "Model: chant-v6-q4, ONNX Runtime 1.23.0",
+      "Model: chant-v7-q4, ONNX Runtime 1.23.0",
       "Check sound: 210 ms, 42% of steps right, scores off by up to 9.1",
       "Times: download or cache 4100 ms, starting the model 700 ms",
       "GPU: qualcomm · adreno-7xx · Adreno (TM) 750",

@@ -81,10 +81,10 @@ function later() {
     ]);
   }
   // Listen (Nitya Upasana): one of two ways, its model, library and WebAssembly (js/features/listen.js, WAYS)
-  if (existsSync(at("models/chant-v6"))) {
+  if (existsSync(at("models/chant-v7"))) {
     const v = (d, lib, wasm) => folder(d) + [lib, ...wasm].reduce((n, f) => n + statSync(at("vendor/onnxruntime/" + f)).size, 0);
-    const gpu = v("models/chant-v6-q4", "ort.webgpu.bundle.min.mjs", ["ort-wasm-simd-threaded.asyncify.wasm", "ort-wasm-simd-threaded.asyncify.wasm.2"]),
-      cpu = v("models/chant-v6", "ort.wasm.bundle.min.mjs", ["ort-wasm-simd-threaded.wasm"]);
+    const gpu = v("models/chant-v7-q4", "ort.webgpu.bundle.min.mjs", ["ort-wasm-simd-threaded.asyncify.wasm", "ort-wasm-simd-threaded.asyncify.wasm.2"]),
+      cpu = v("models/chant-v7", "ort.wasm.bundle.min.mjs", ["ort-wasm-simd-threaded.wasm"]);
     out.push(["Listen's chanting model", `${kb(gpu)} (phones with WebGPU) or ${kb(cpu)}, once, only after the reader agrees to it`]);
   }
   return out;
@@ -99,7 +99,7 @@ function onlyWhenUsed() {
 
 /** The whole of DOWNLOAD-SIZE.md */
 export function page() {
-  const app = existsSync(at("models/chant-v6")) ? "Nitya Upasana" : "Sankathara Chaturthi";
+  const app = existsSync(at("models/chant-v7")) ? "Nitya Upasana" : "Sankathara Chaturthi";
   const { rows, total } = firstDownload();
   const fonts = rows.find((r) => r[0] === "Fonts");
   return `# Download size

@@ -16,6 +16,17 @@ A model is downloaded only when Follow is first used, never with the page (about
 The starting model's Hugging Face page names no licence (checked 2026-11-10); the Vakyansh project's repositories on
 GitHub are MIT. These weights are fine-tuned partly on published recordings as well as the family's.
 
+## chant-v7 and chant-v7-q4 (2026-11-21)
+
+chant-v6's settings, trained on every recording not held out, now with a published chorus (Shant Ho Shriguru Datta, its
+refrains) and RG's Martand Bavani. The same two forms, sizes and speed as chant-v6: `chant-v7` (8-bit, `.onnx`) for a
+phone's CPU and `chant-v7-q4` (4-bit, `model.ort`) for its GPU. Against chant-v6 in the same form on recordings
+neither trained on, at 3 s (8-bit): a temple's Lalita Sahasranama, three voices on one microphone, followed in 94 units
+of 100 (87); the same temple's Pancharatnam, two voices, 4 units of 5 (3); RG's Rudrashtakam in a car 7 of 8 (5); AG's
+Hanuman Chalisa every unit (41 of 42). Letters wrong within a point either way, the one-voice Lalita a point worse; found
+after a jump about as often. The full table: shravan-model `results/README.md`, ctc-v7. chant-v6 is in git history (a
+phone that has it downloads chant-v7 the next time Follow starts, and the old pieces are taken out of its cache).
+
 ## chant-v6 and chant-v6-q4 (2026-11-16)
 
 chant-v4's settings, trained on every recording not held out, now with the family's Saturday and Sunday aartis,

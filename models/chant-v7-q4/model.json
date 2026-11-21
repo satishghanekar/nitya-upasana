@@ -1,0 +1,36 @@
+{
+ "name": "chant-v7-q4",
+ "kind": "ctc",
+ "format": "ort",
+ "model": [
+  {
+   "file": "model.ort",
+   "bytes": 20000000,
+   "sha256": "12e7decf9eda2e0c0bc7df249c4f2d1bc4bc30eea3a05245d25b9c5ba4dc2368"
+  },
+  {
+   "file": "model.ort.2",
+   "bytes": 20000000,
+   "sha256": "dbd9b6f43f0a4acc9f0e09c101cef9f3a188a4a12fb0405d592352d269703992"
+  },
+  {
+   "file": "model.ort.3",
+   "bytes": 20000000,
+   "sha256": "80076987e0423361bca65dbcbabebdf6fd062f3089a5cccde3b696f2ee772a63"
+  },
+  {
+   "file": "model.ort.4",
+   "bytes": 20000000,
+   "sha256": "4e7aec83884cc609fd6bca566ece960b65b9954bdb7899c129ddd8db2fab3f12"
+  },
+  {
+   "file": "model.ort.5",
+   "bytes": 9867424,
+   "sha256": "5b78d2e8952bff873ea0b236b6e500c61a43481220837aa3f8e8166ee299ba90"
+  }
+ ],
+ "rate": 16000,
+ "step_ms": 20.0,
+ "blank": 0,
+ "word": 4
+}
