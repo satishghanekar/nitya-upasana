@@ -500,16 +500,16 @@ test("fast mode that fails on this phone: Follow restarts the app for the CPU, a
   expect(errors).toEqual([]);
 });
 
-test("fast mode that fails with the GPU's subgroups is tried once more without them, then the CPU, each after a restart; the report tells both @chromium-only", async ({
+test("fast mode that fails with an Apple GPU's subgroups is tried once more without them, then the CPU, each after a restart; the report tells both @chromium-only", async ({
   page,
 }) => {
   // (the cross-device test of chant-v6-q4, 2026-11-20: ONNX Runtime's 4-bit kernel takes a subgroup path that some
-  // Android drivers get wrong; without subgroups it takes another kernel)
+  // Android drivers get wrong; without subgroups it takes another kernel. Since 2026-11-21 only Apple's GPUs use them)
   test.setTimeout(400_000);
   await page.addInitScript(() => {
     window.__asked = [];
     const adapter = {
-      info: { vendor: "testvendor", architecture: "testarch", description: "Test GPU 2", subgroupMinSize: 64, subgroupMaxSize: 128 },
+      info: { vendor: "apple", architecture: "testarch", description: "Test GPU 2", subgroupMinSize: 32, subgroupMaxSize: 32 },
       limits: { maxBufferSize: 268435456 },
       features: new Set(["subgroups", "shader-f16"]),
       requestDevice: (d) => (window.__asked.push((d && d.requiredFeatures) || []), Promise.reject(new Error("this test GPU gives no device"))),
@@ -545,11 +545,45 @@ test("fast mode that fails with the GPU's subgroups is tried once more without t
   expect(report.status).toBe("failed");
   expect(report.subgroups).toBe("off");
   expect(report.before).toContain("Subgroups: used");
-  expect(report.before).toContain("subgroup size 64 to 128");
+  expect(report.before).toContain("subgroup size 32 to 32");
   expect(report.cpu).toBe("standard mode (CPU) started and works");
   // (a GPU that never worked here: nothing remembered about its subgroups)
   expect(await page.evaluate(() => localStorage.getItem("nitya-gpu-no-subgroups"))).toBeNull();
   await panel.getByRole("button", { name: "Stop" }).click();
+});
+
+test("a GPU that isn't Apple's (a Galaxy's Adreno) is asked for without its subgroups from the first try, and a failure goes straight to the CPU @chromium-only", async ({
+  page,
+}) => {
+  test.setTimeout(400_000);
+  await page.addInitScript(() => {
+    window.__asked = [];
+    const adapter = {
+      info: { vendor: "qualcomm", architecture: "adreno-7xx", description: "Adreno (TM) 750", subgroupMinSize: 64, subgroupMaxSize: 128 },
+      limits: { maxBufferSize: 268435456 },
+      features: new Set(["subgroups", "shader-f16"]),
+      requestDevice: (d) => (window.__asked.push((d && d.requiredFeatures) || []), Promise.reject(new Error("this test GPU gives no device"))),
+    };
+    Object.defineProperty(navigator, "gpu", {
+      value: { requestAdapter: () => Promise.resolve(adapter), getPreferredCanvasFormat: () => "rgba8unorm" },
+      configurable: true,
+    });
+  });
+  await openSite(page, SETUPS.english);
+  const panel = page.locator("#lsn");
+  await page.locator("#lsb").click();
+  await panel.getByRole("button", { name: "Download" }).click();
+  await expect(panel.getByRole("status")).toHaveText("Fast mode did not work on this phone. Restart the app to carry on in standard mode.", {
+    timeout: 360_000,
+  });
+  const asked = await page.evaluate(() => window.__asked);
+  expect(asked.length).toBeGreaterThan(0);
+  for (const a of asked) expect(a).not.toContain("subgroups");
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("nitya-fast-mode")).subgroups)).toBe("off");
+  // the next opening: the CPU's download, not the GPU once more
+  await Promise.all([page.waitForEvent("load"), panel.getByRole("button", { name: "Restart" }).click()]);
+  await settle(page);
+  await expect(panel.getByRole("status")).toContainText("122 MB");
 });
 
 test("the app closed while fast mode was tried: found out on the next opening, Follow keeps to the CPU, and About says so @chromium-only", async ({ page }) => {

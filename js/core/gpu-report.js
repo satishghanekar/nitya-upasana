@@ -27,6 +27,13 @@ export function alike(got, want) {
   return same / want.length;
 }
 
+/** Whether ONNX Runtime may use this GPU's subgroups: only Apple's (32, checked on the Mac and iPhones). Android's 64
+ * or 128 broke its 4-bit path on a Galaxy (2026-11-20); without them it takes another kernel, as right.
+ * @param {{ vendor?: string } | null | undefined} info the adapter's info */
+export function subgroupsTrusted(info) {
+  return !!info && String(info.vendor || "").toLowerCase() === "apple";
+}
+
 /** The fewest of the check sound's steps that must match for the GPU to be trusted: on SwiftShader and the M4 every
  * step matches (the first choice leads the second by 7 or more at each step), so a GPU off by more is computing wrong */
 export var ALIKE_LEAST = 0.95;

@@ -1,7 +1,7 @@
 // Fast mode's report (js/core/gpu-report.js): the check sound, how alike two runs' choices are, and the text shared
 import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
-import { ALIKE_LEAST, alike, checkSound, reportText } from "../../js/core/gpu-report.js";
+import { ALIKE_LEAST, alike, checkSound, reportText, subgroupsTrusted } from "../../js/core/gpu-report.js";
 import { choices } from "../../js/core/hearing.js";
 
 describe("the check sound", () => {
@@ -107,5 +107,16 @@ describe("the report shared", () => {
     expect(t).toContain("What happened: the app closed (crashed) while fast mode was hearing the check sound");
     expect(t).toContain("Then: standard mode (CPU) is used from now on");
     expect(t).not.toContain("undefined");
+  });
+});
+
+describe("the GPU's subgroups", () => {
+  test("are used only on Apple's GPUs, where ONNX Runtime's 4-bit path has been checked", () => {
+    expect(subgroupsTrusted({ vendor: "apple", architecture: "common-3" })).toBe(true);
+    expect(subgroupsTrusted({ vendor: "Apple" })).toBe(true);
+    // a Galaxy's Adreno (subgroups of 64 to 128), a Pixel's Mali, a laptop's, and the software GPU: without them
+    for (const vendor of ["qualcomm", "arm", "intel", "nvidia", "amd", "google", "testvendor"]) expect(subgroupsTrusted({ vendor })).toBe(false);
+    // a GPU that doesn't say whose it is: without them too
+    for (const info of [undefined, null, {}, { vendor: "" }]) expect(subgroupsTrusted(info)).toBe(false);
   });
 });
