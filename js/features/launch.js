@@ -290,6 +290,25 @@ function replay(sp, from) {
   play(sp, box, true, close);
 }
 
+/** How long the splash stays on any other opening, from its start (js/splash.js, #spl.brief; Satish, 2026-11-21) */
+var BRIEF = 1500;
+
+/**
+ * Any opening but the first of the day: the plain splash stays until BRIEF from its start, then fades (#spl.done). It
+ * waits for the page too (data-ready), so it never leaves the screen blank; a replay meanwhile (the top bar's picture)
+ * takes it over.
+ * @param {HTMLElement} sp #spl
+ */
+function brief(sp) {
+  var t0 = Number(sp.getAttribute("data-t0")) || 0;
+  var end = function () {
+    if (!sp.classList.contains("brief")) return;
+    if (!document.documentElement.hasAttribute("data-ready")) return setTimeout(end, 50);
+    sp.classList.add("done");
+  };
+  setTimeout(end, Math.max(0, BRIEF - (performance.now() - t0)));
+}
+
 export function init() {
   var found = document.getElementById("spl");
   if (!found) return;
@@ -304,6 +323,7 @@ export function init() {
       replay(sp, b);
     });
   }
+  if (sp.classList.contains("brief")) return brief(sp);
   if (!sp.classList.contains("launch") || sp.classList.contains("skip")) return;
   var boxEl = /** @type {HTMLElement | null} */ (sp.querySelector(".splm"));
   /** It ends: the splash fades (css/02-core.css #spl.done) */

@@ -55,14 +55,15 @@ export const SETUPS = {
  * @param {object} [opt]   { hash: "#a1", errors: array that collects page errors, now: a Date other than FIXED_NOW,
  *                          running: true to start the clock at that time and let the test move it (page.clock.runFor),
  *                          welcome: true to show the welcome card, as on a new phone,
- *                          launch: true to play the launch animation, as on the first opening of the day }
+ *                          launch: true to play the launch animation, as on the first opening of the day,
+ *                          brief: true for the short splash of any other opening }
  */
 export async function openSite(page, prefs = {}, opt = {}) {
   const all = { ...BASE_PREFS, ...prefs };
   if (opt.running) await page.clock.install({ time: opt.now || FIXED_NOW });
   else await page.clock.setFixedTime(opt.now || FIXED_NOW);
   await page.addInitScript(
-    ([k, v, wl, la]) => {
+    ([k, v, wl, la, br]) => {
       // only on the first load of this page: a test that reloads keeps what the site saved
       if (sessionStorage.getItem("__seeded")) return;
       sessionStorage.setItem("__seeded", "1");
@@ -73,8 +74,10 @@ export async function openSite(page, prefs = {}, opt = {}) {
       // the launch animation (js/splash.js, js/features/launch.js) only where a test asks for it: seen today already
       const d = new Date();
       if (!la) localStorage.setItem("nitya-launch", d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
+      // nor the short splash of any other opening (js/splash.js #spl.brief) unless a test asks for it: opened already
+      if (!br) sessionStorage.setItem("nitya-opened", "1");
     },
-    [PREFS_KEY, JSON.stringify(all), !!opt.welcome, !!opt.launch],
+    [PREFS_KEY, JSON.stringify(all), !!opt.welcome, !!opt.launch, !!opt.brief],
   );
   if (opt.errors) {
     page.on("pageerror", (e) => opt.errors.push(e.message));
