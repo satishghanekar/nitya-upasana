@@ -64,7 +64,12 @@
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 2,
   "ashtak-kalabhairava-ashtakam": 2,
-  "bhajan-mahaganesh-pancharatnam": 2
+  "bhajan-vakratunda-mahakaya": 2,
+  "bhajan-ganapati-bappa-morya": 3,
+  "bhajan-vande-ganapati": 2,
+  "bhajan-ganesha-pancharatnam": 2,
+  "bhajan-gaiye-ganapati-jagvandan": 2,
+  "bhajan-nadatuni-ya-nad-nirmito": 6
  },
  "both": {
   "vedic-chant-atharvashirsha": 6,
@@ -131,7 +136,12 @@
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 2,
   "ashtak-kalabhairava-ashtakam": 2,
-  "bhajan-mahaganesh-pancharatnam": 2
+  "bhajan-vakratunda-mahakaya": 2,
+  "bhajan-ganapati-bappa-morya": 3,
+  "bhajan-vande-ganapati": 2,
+  "bhajan-ganesha-pancharatnam": 2,
+  "bhajan-gaiye-ganapati-jagvandan": 2,
+  "bhajan-nadatuni-ya-nad-nirmito": 6
  },
  "english": {
   "vedic-chant-atharvashirsha": 3,
@@ -198,7 +208,12 @@
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
   "ashtak-kalabhairava-ashtakam": 2,
-  "bhajan-mahaganesh-pancharatnam": 1
+  "bhajan-vakratunda-mahakaya": 2,
+  "bhajan-ganapati-bappa-morya": 2,
+  "bhajan-vande-ganapati": 1,
+  "bhajan-ganesha-pancharatnam": 2,
+  "bhajan-gaiye-ganapati-jagvandan": 2,
+  "bhajan-nadatuni-ya-nad-nirmito": 5
  },
  "marathi-a4": {
   "vedic-chant-atharvashirsha": 2,
@@ -265,7 +280,12 @@
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
   "ashtak-kalabhairava-ashtakam": 1,
-  "bhajan-mahaganesh-pancharatnam": 1
+  "bhajan-vakratunda-mahakaya": 2,
+  "bhajan-ganapati-bappa-morya": 2,
+  "bhajan-vande-ganapati": 1,
+  "bhajan-ganesha-pancharatnam": 2,
+  "bhajan-gaiye-ganapati-jagvandan": 1,
+  "bhajan-nadatuni-ya-nad-nirmito": 5
  },
  "marathi-bold": {
   "vedic-chant-atharvashirsha": 3,
@@ -332,7 +352,12 @@
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
   "ashtak-kalabhairava-ashtakam": 1,
-  "bhajan-mahaganesh-pancharatnam": 1
+  "bhajan-vakratunda-mahakaya": 2,
+  "bhajan-ganapati-bappa-morya": 2,
+  "bhajan-vande-ganapati": 1,
+  "bhajan-ganesha-pancharatnam": 2,
+  "bhajan-gaiye-ganapati-jagvandan": 2,
+  "bhajan-nadatuni-ya-nad-nirmito": 5
  },
  "marathi-every-verse": {
   "vedic-chant-atharvashirsha": 3,
@@ -399,7 +424,12 @@
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
   "ashtak-kalabhairava-ashtakam": 1,
-  "bhajan-mahaganesh-pancharatnam": 1
+  "bhajan-vakratunda-mahakaya": 2,
+  "bhajan-ganapati-bappa-morya": 2,
+  "bhajan-vande-ganapati": 1,
+  "bhajan-ganesha-pancharatnam": 2,
+  "bhajan-gaiye-ganapati-jagvandan": 2,
+  "bhajan-nadatuni-ya-nad-nirmito": 5
  },
  "marathi-landscape": {
   "vedic-chant-atharvashirsha": 3,
@@ -466,7 +496,12 @@
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
   "ashtak-kalabhairava-ashtakam": 1,
-  "bhajan-mahaganesh-pancharatnam": 1
+  "bhajan-vakratunda-mahakaya": 2,
+  "bhajan-ganapati-bappa-morya": 3,
+  "bhajan-vande-ganapati": 2,
+  "bhajan-ganesha-pancharatnam": 2,
+  "bhajan-gaiye-ganapati-jagvandan": 2,
+  "bhajan-nadatuni-ya-nad-nirmito": 6
  },
  "marathi-modern": {
   "vedic-chant-atharvashirsha": 3,
@@ -533,7 +568,12 @@
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
   "ashtak-kalabhairava-ashtakam": 1,
-  "bhajan-mahaganesh-pancharatnam": 1
+  "bhajan-vakratunda-mahakaya": 2,
+  "bhajan-ganapati-bappa-morya": 2,
+  "bhajan-vande-ganapati": 1,
+  "bhajan-ganesha-pancharatnam": 2,
+  "bhajan-gaiye-ganapati-jagvandan": 2,
+  "bhajan-nadatuni-ya-nad-nirmito": 5
  },
  "marathi": {
   "vedic-chant-atharvashirsha": 3,
@@ -600,6 +640,11 @@
   "ashtak-nandikeshvara-ashtakam": 1,
   "ashtak-rudrashtakam": 1,
   "ashtak-kalabhairava-ashtakam": 1,
-  "bhajan-mahaganesh-pancharatnam": 1
+  "bhajan-vakratunda-mahakaya": 2,
+  "bhajan-ganapati-bappa-morya": 2,
+  "bhajan-vande-ganapati": 1,
+  "bhajan-ganesha-pancharatnam": 2,
+  "bhajan-gaiye-ganapati-jagvandan": 2,
+  "bhajan-nadatuni-ya-nad-nirmito": 5
  }
 }

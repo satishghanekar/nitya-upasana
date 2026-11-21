@@ -126,6 +126,13 @@ describe("a text's versions", () => {
     ]);
     expect(Object.keys(CONTENT.versions)).toEqual(["stotra-hanuman-chalisa"]);
   });
+  test("the Ganesha Pancharatnam, sung as a bhajan: जय गणेश before the first stanza and after every one", () => {
+    const t = parseText(files["bhajan-ganesha-pancharatnam"], "x");
+    expect([t.refrain, t.versionName]).toEqual(["every-verse", undefined]);
+    const lines = t.blocks.flatMap((b) => b.lines.map((l) => l.orig));
+    expect(lines[0]).toBe("जय गणेश जय गणेश, ¦जय गणेश पाहि माम् ।");
+    expect(lines[1]).toBe("मुदाकरात्त मोदकं सदा विमुक्ति साधकम् ।");
+  });
   test("the text's own is the piece in the Library; the other has its id, number and text id, and its own lines", () => {
     const [own, popular] = vs.map((v) => v.piece);
     expect(CONTENT.categories.flatMap((c) => c.pieces)).toContain(own);

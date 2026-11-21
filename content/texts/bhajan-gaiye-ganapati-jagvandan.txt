@@ -1,0 +1,78 @@
+id: bhajan-gaiye-ganapati-jagvandan
+title: गाइये गणपति जगवंदन
+title-en: Gaiye Ganapati Jagavandan
+language: hi
+stanza-numbers: as-written
+credit: author tulsidas
+lines: 24
+letters: 786
+---
+[1]
+गाइये गणपति जगवंदन, ¦गाइये गणपति जगवंदन
+Gaiye Ganapati Jagavandan, ¦Gaiye Ganapati Jagavandan
+गाइये गणपति जगवंदन, ¦गाइये गणपति जगवंदन ॥
+Gaiye Ganapati Jagavandan, ¦Gaiye Ganapati Jagavandan ||
+
+[2]
+शंकर सुवन भवानी नंदन, ¦शंकर सुवन भवानी नंदन
+Shankar Suvan Bhavani Nandan, ¦Shankar Suvan Bhavani Nandan
+शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन ॥
+Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan ||
+
+[3]
+सिद्धि सदन गज वदन विनायक, ¦सिद्धि सदन गज वदन विनायक
+Siddhi Sadan Gaj Vadan Vinayak, ¦Siddhi Sadan Gaj Vadan Vinayak
+सिद्धि सदन गज वदन विनायक, ¦सिद्धि सदन गज वदन विनायक
+Siddhi Sadan Gaj Vadan Vinayak, ¦Siddhi Sadan Gaj Vadan Vinayak
+कृपा सिंधु सुंदर सब लायक, ¦कृपा सिंधु सुंदर सब लायक ॥
+Krupa Sindhu Sundar Sab Layak, ¦Krupa Sindhu Sundar Sab Layak ||
+
+[4]
+शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन
+Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan
+गाइये गणपति जगवंदन ॥
+Gaiye Ganapati Jagavandan ||
+
+[5]
+शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन ॥
+Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan ||
+
+[6]
+मोदक प्रिय मुद मंगल दाता, ¦मोदक प्रिय मुद मंगल दाता
+Modak Priya Mud Mangal Data, ¦Modak Priya Mud Mangal Data
+मोदक प्रिय मुद मंगल दाता, ¦मोदक प्रिय मुद मंगल दाता
+Modak Priya Mud Mangal Data, ¦Modak Priya Mud Mangal Data
+विद्या वारिधि बुद्धि विधाता, ¦विद्या वारिधि बुद्धि विधाता ॥
+Vidya Varidhi Buddhi Vidhata, ¦Vidya Varidhi Buddhi Vidhata ||
+
+[7]
+शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन
+Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan
+गाइये गणपति जगवंदन ॥
+Gaiye Ganapati Jagavandan ||
+
+[8]
+शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन ॥
+Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan ||
+
+[9]
+मांगत तुलसीदास कर जोरे, ¦मांगत तुलसीदास कर जोरे
+Mangat Tulasidas Kar Jore, ¦Mangat Tulasidas Kar Jore
+मांगत तुलसीदास कर जोरे, ¦मांगत तुलसीदास कर जोरे
+Mangat Tulasidas Kar Jore, ¦Mangat Tulasidas Kar Jore
+बसहु राम सिय मानस मोरे, ¦बसहु राम सिय मानस मोरे ॥
+Basahu Ram Siy Manas More, ¦Basahu Ram Siy Manas More ||
+
+[10]
+शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन
+Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan
+गाइये गणपति जगवंदन ॥
+Gaiye Ganapati Jagavandan ||
+
+[11]
+शंकर सुवन भवानी नंदन, ¦शंकर सुवन भवानी नंदन
+Shankar Suvan Bhavani Nandan, ¦Shankar Suvan Bhavani Nandan
+गाइये गणपति जगवंदन, ¦गाइये गणपति जगवंदन
+Gaiye Ganapati Jagavandan, ¦Gaiye Ganapati Jagavandan
+गाइये गणपति जगवंदन ॥
+Gaiye Ganapati Jagavandan ||

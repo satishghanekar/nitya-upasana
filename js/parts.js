@@ -207,7 +207,12 @@ var SITE_PARTS = (function () {
     "texts/ashtak-nandikeshvara-ashtakam.txt",
     "texts/ashtak-rudrashtakam.txt",
     "texts/ashtak-kalabhairava-ashtakam.txt",
-    "texts/bhajan-mahaganesh-pancharatnam.txt",
+    "texts/bhajan-vakratunda-mahakaya.txt",
+    "texts/bhajan-ganapati-bappa-morya.txt",
+    "texts/bhajan-vande-ganapati.txt",
+    "texts/bhajan-ganesha-pancharatnam.txt",
+    "texts/bhajan-gaiye-ganapati-jagvandan.txt",
+    "texts/bhajan-nadatuni-ya-nad-nirmito.txt",
     // the other versions of a text sung in more than one way (content/library.json "versions")
     "texts/stotra-hanuman-chalisa-popular.txt",
   ].map(function (f) {

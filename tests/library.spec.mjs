@@ -84,12 +84,12 @@ test("search in the Library finds a line and goes to it", async ({ page }) => {
 test("search lists texts by their title first; a text found only inside it is under Lines", async ({ page }) => {
   await openSite(page, SETUPS.marathi, { now: EVENING });
   await page.locator("#hm").click();
-  // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotram, but only Jai Ganesh Deva and the Mahaganesh Pancharatnam
+  // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotram, but only Jai Ganesh Deva and the Ganesha Pancharatnam
   // have Ganesh in their titles
   await page.locator("#q").fill("ganesh");
   await expect(page.locator("#res li.rt")).toHaveCount(2);
   await expect(page.locator("#res li.rt .rl", { hasText: "आरती जय गणेश देवा" })).toHaveCount(1);
-  await expect(page.locator("#res li.rt .rl", { hasText: "श्री महागणेश पंचरत्नम्" })).toHaveCount(1);
+  await expect(page.locator("#res li.rt .rl", { hasText: "गणेश पंचरत्नम्" })).toHaveCount(1);
   await expect(page.locator("#res li:not(.rh):not(.rt) .rs", { hasText: "श्रीरामरक्षास्तोत्रम्" }).first()).toBeVisible();
 });
 

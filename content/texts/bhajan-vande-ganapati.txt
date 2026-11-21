@@ -1,0 +1,65 @@
+id: bhajan-vande-ganapati
+title: वंदे गणपती विघ्नविनाशन
+title-en: Vande Ganapati Vighnavinashan
+language: hi
+stanza-numbers: as-written
+lines: 25
+letters: 886
+---
+[1]
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना ॥
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana ||
+
+[2]
+रिद्धि सिद्धि के दाता तुम हो, ¦रिद्धि सिद्धि के दाता तुम हो
+Riddhi Siddhi Ke Data Tum Ho, ¦Riddhi Siddhi Ke Data Tum Ho
+रिद्धि सिद्धि के दाता तुम हो, ¦रिद्धि सिद्धि के दाता तुम हो
+Riddhi Siddhi Ke Data Tum Ho, ¦Riddhi Siddhi Ke Data Tum Ho
+हे शशि शेखर नंदना
+He Shashi Shekhar Nandana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना ॥
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana ||
+
+[3]
+जो ध्यावे वांछित फल पावे, ¦जो ध्यावे वांछित फल पावे
+Jo Dhyave Vanchhit Phal Pave, ¦Jo Dhyave Vanchhit Phal Pave
+जो ध्यावे वांछित फल पावे, ¦जो ध्यावे वांछित फल पावे
+Jo Dhyave Vanchhit Phal Pave, ¦Jo Dhyave Vanchhit Phal Pave
+अग्र देव तुम्हे वंदना, ¦अग्र देव तुम्हे वंदना
+Agra Dev Tumhe Vandana, ¦Agra Dev Tumhe Vandana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+रिद्धि सिद्धि के दाता तुम हो, ¦हे शशि शेखर नंदना
+Riddhi Siddhi Ke Data Tum Ho, ¦He Shashi Shekhar Nandana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना ॥
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana ||
+
+[4]
+काम क्रोध मद लोभ आदि हारो, ¦काम क्रोध मद लोभ आदि हारो
+Kam Krodh Mad Lobh Adi Haro, ¦Kam Krodh Mad Lobh Adi Haro
+काम क्रोध मद लोभ आदि हारो, ¦काम क्रोध मद लोभ आदि हारो
+Kam Krodh Mad Lobh Adi Haro, ¦Kam Krodh Mad Lobh Adi Haro
+निर विकार निर्मल मना, ¦निर विकार निर्मल मना
+Nir Vikar Nirmal Mana, ¦Nir Vikar Nirmal Mana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+रिद्धि सिद्धि के दाता तुम हो, ¦हे शशि शेखर नंदना
+Riddhi Siddhi Ke Data Tum Ho, ¦He Shashi Shekhar Nandana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना ॥
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana ||
