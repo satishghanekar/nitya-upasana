@@ -3,6 +3,8 @@ title: गणपती बाप्पा मोरया
 title-en: Ganapati Bappa Morya
 language: mr
 stanza-numbers: as-written
+credit: traditional
+recording: [Jagjit Singh](https://www.youtube.com/watch?v=2zOJ9aZR-08&t=10)
 lines: 46
 letters: 1374
 ---
