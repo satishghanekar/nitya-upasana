@@ -3,6 +3,8 @@ title: वंदे गणपती विघ्नविनाशन
 title-en: Vande Ganapati Vighnavinashan
 language: hi
 stanza-numbers: as-written
+credit: traditional
+recording: [Jagjit Singh](https://www.youtube.com/watch?v=mt-vSIgsaxU&t=15)
 lines: 25
 letters: 886
 ---

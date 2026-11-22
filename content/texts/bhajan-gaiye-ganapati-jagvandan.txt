@@ -4,6 +4,7 @@ title-en: Gaiye Ganapati Jagavandan
 language: hi
 stanza-numbers: as-written
 credit: author tulsidas
+recording: [Jagjit Singh](https://www.youtube.com/watch?v=aASYnk-eaXI&t=27)
 lines: 24
 letters: 786
 ---

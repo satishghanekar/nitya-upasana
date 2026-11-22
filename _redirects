@@ -3,6 +3,7 @@
 # (tests/site-files.spec.mjs checks that every document, dotfile and test is here, and nothing the app loads).
 /tests/* / 301
 /.github/* / 301
+/.claude/* / 301
 /.cursorrules / 301
 /.editorconfig / 301
 /.gitignore / 301
