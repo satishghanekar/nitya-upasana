@@ -334,6 +334,8 @@ test("the texts with a recording link to it, at the second each starts", () => {
   // voice-only recording Satish chose (not the one aligned: it is shorter)
   expect(at("vedic-chant-lalita-sahasranama")).toBe("[Rajshri Soul](https://www.youtube.com/watch?v=DtSBLpQStT4&t=87)");
   expect(at("ashtak-kalabhairava-ashtakam")).toMatch(/RQ85ltEoPAE\)$/);
+  // Jagjit Singh's Gaiye Ganapati from 0:15, where the singing starts (Viveka heard it there; Satish confirmed, 2026-11-23)
+  expect(at("bhajan-gaiye-ganapati-jagvandan")).toMatch(/aASYnk-eaXI&t=15\)$/);
 });
 
 // Shri Sukta as the family chants it (Satish's sheet, 2026-11-11): the fifteen verses of the hymn, then
