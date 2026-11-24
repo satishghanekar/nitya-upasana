@@ -1231,7 +1231,7 @@ html[data-asb="1"] {
 /* ==== Who sings while the page scrolls (Satish, 2026-11-24): in a text marked with who sings (data-who-here, set by
    js/features/where.js) the pill shown while the bars are tucked is its singing choices instead of its name (#tks):
    one tap to switch, no menu. Each choice an icon, the chosen ones with their word too (Solo: one person; Group: three;
-   my part: the three with mine filled in); the chorus's carries its rule. In a session the Go to pill stays beside it,
+   my part: the three with mine filled in; a rule on a round button bent into a "(", so none). In a session the Go to pill stays beside it,
    showing only "५ / ८" and its arrow. The same choices in the Reading sheet (.rs-who), for when the bars are back. ==== */
 #tks {
   display: none;
@@ -1286,9 +1286,6 @@ html[data-sing="solo"] #tks .sing-part {
   padding: 0 12px;
   background: var(--accent);
   color: var(--bg);
-}
-#tks button[data-part="chorus"] {
-  box-shadow: inset 3px 0 0 var(--chorus);
 }
 #tks button[aria-pressed="false"] .sw {
   position: absolute;
