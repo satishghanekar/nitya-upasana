@@ -264,13 +264,40 @@
   align-items: center;
   gap: 6px 8px;
 }
+/* on a phone one row of icons, the chosen ones with their word (as the pill shown while the page scrolls, #tks); the
+   labels and the other words for screen readers only. A tablet or computer has the room for every word and the labels */
 .ash > .sing .vlab {
   color: var(--muted);
 }
+.ash > .sing :is(.vlab, button[aria-pressed="false"] .sw) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (min-width: 600px) {
+  .ash > .sing :is(.vlab, button[aria-pressed="false"] .sw) {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+}
+.ash > .sing .sing-part {
+  padding-inline-start: 8px;
+  border-inline-start: 1px solid var(--rule);
+}
 .ash > .sing button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   min-width: 44px;
   min-height: 44px;
-  padding: 4px 16px;
+  padding: 4px 12px;
   border: 1px solid var(--hdrl);
   border-radius: 99px;
   background: var(--hdrt);
@@ -320,14 +347,24 @@ html[data-lead="en"] [data-lang="both"] .sing .mr {
   [data-sing="group"] .ash.who .verse p[data-who] {
     position: relative;
   }
+  /* (a phone's step in is smaller: its lines are short already, and a long step wrapped them, 2026-11-24) */
   [data-sing="group"] .ash.who .verse p[data-who="chorus"] {
-    margin-inline-start: 1.1em;
-    padding-inline-start: 0.55em;
+    margin-inline-start: 0.7em;
+    padding-inline-start: 0.4em;
     border-inline-start: 3px solid var(--chorus);
   }
   /* (the English under the original is drawn smaller: the same step in, in the original's em) */
   [data-sing="group"] [data-lang="both"].ash.who .verse .en p[data-who="chorus"] {
-    margin-inline-start: 1.53em;
+    margin-inline-start: 0.97em;
+  }
+  @media (min-width: 600px) {
+    [data-sing="group"] .ash.who .verse p[data-who="chorus"] {
+      margin-inline-start: 1.1em;
+      padding-inline-start: 0.55em;
+    }
+    [data-sing="group"] [data-lang="both"].ash.who .verse .en p[data-who="chorus"] {
+      margin-inline-start: 1.53em;
+    }
   }
   [data-sing="group"][data-part="lead"] .ash.who .verse p[data-who="chorus"],
   [data-sing="group"][data-part="chorus"] .ash.who .verse p[data-who="lead"] {

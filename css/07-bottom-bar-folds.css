@@ -1227,3 +1227,90 @@ html[data-asb="1"] {
     font-size: var(--fz-m);
   }
 }
+
+/* ==== Who sings while the page scrolls (Satish, 2026-11-24): in a text marked with who sings (data-who-here, set by
+   js/features/where.js) the pill shown while the bars are tucked is its singing choices instead of its name (#tks):
+   one tap to switch, no menu. Each choice an icon, the chosen ones with their word too (Solo: one person; Group: three;
+   my part: the three with mine filled in); the chorus's carries its rule. In a session the Go to pill stays beside it,
+   showing only "५ / ८" and its arrow. The same choices in the Reading sheet (.rs-who), for when the bars are back. ==== */
+#tks {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  max-width: 100%;
+  padding: 2px;
+  background: var(--pill);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  box-shadow:
+    0 6px 22px #00000026,
+    0 1px 3px #0000001a;
+  font: 600 var(--fz-s) / 1.2 var(--body);
+  pointer-events: auto;
+}
+html[data-who-here] #tks {
+  display: flex;
+}
+html[data-who-here] #tuck {
+  gap: 6px;
+}
+#tks > div {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+#tks .sing-part {
+  margin-inline-start: 2px;
+  padding-inline-start: 4px;
+  border-inline-start: 1px solid var(--rule);
+}
+html[data-sing="solo"] #tks .sing-part {
+  display: none;
+}
+#tks button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+#tks button[aria-pressed="true"] {
+  padding: 0 12px;
+  background: var(--accent);
+  color: var(--bg);
+}
+#tks button[data-part="chorus"] {
+  box-shadow: inset 3px 0 0 var(--chorus);
+}
+#tks button[aria-pressed="false"] .sw {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (hover: hover) {
+  #tks button:not([aria-pressed="true"]):hover {
+    background: var(--surface);
+  }
+}
+/* the text's name gives its place to the choices; in a session Go to keeps its count and arrow */
+html[data-who-here] #tkb:not([aria-haspopup]) {
+  display: none;
+}
+html[data-who-here] #tkb[aria-haspopup] :is(#tkw, .wh-in, .wh-left, .wh-dot) {
+  display: none;
+}
+html:not([data-who-here]) .rs-who,
+html[data-sing="solo"] .rs-part {
+  display: none;
+}

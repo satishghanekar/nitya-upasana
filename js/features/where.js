@@ -205,6 +205,9 @@ export function whereMark(c, onText, l, title) {
   if (!pill) return; // (before this part has started)
   lang = l;
   current = c;
+  // the text being read is marked with who sings (js/features/who-sings.js): while the page scrolls, its singing choices
+  // take the pill's place (in a session, Go to keeps its "५ / ८" at the end), and the Reading sheet shows them
+  if (root.hasAttribute("data-who-here") !== !!(c && c.classList.contains("who"))) root.toggleAttribute("data-who-here");
   var s = c ? session() : null,
     long = !!(c && outlines[c.id]),
     on = !!(c && onText && (long || s)),

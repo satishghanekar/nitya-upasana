@@ -11,7 +11,7 @@
 <meta name="application-name" content="Nitya Upasana">
 <meta name="theme-color" content="#7b1113">
 <!-- The site version: the offline copy's name. Change it here and in sw.js on a new release -->
-<meta name="version" content="aarti-v1.86.1">
+<meta name="version" content="aarti-v1.87.0">
 <!-- Fonts are served from this site (fonts/), so nothing is fetched from Google and they work offline -->
 <link rel="preload" href="fonts/tiro-marathi-devanagari.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/noto-sans-deva-devanagari.woff2" as="font" type="font/woff2" crossorigin>
@@ -896,7 +896,7 @@
 <!-- While reading with the bars tucked away: the text's name in a small pill at the top (js/features/bars.js). In a long text
      or a session it also says where the reading is and opens Go to, as the top bar's title does (js/features/where.js);
      elsewhere a tap on it brings the bars back. -->
-<div id="tuck"><button type="button" id="tkb" aria-hidden="true" tabindex="-1" aria-controls="goto" aria-expanded="false"><span id="tkt"></span><span id="tkw"></span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><i id="tkp"></i></button></div>
+<div id="tuck"><div id="tks" class="sing"><div class="sing-mode" role="group" aria-labelledby="tksl"><span class="sr" id="tksl"><span data-w="text.who.sing">Singing</span></span><button type="button" data-sing="solo" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.5c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg><span class="sw"><span data-w="text.who.solo">Solo</span></span></button><button type="button" data-sing="group" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4"/><circle cx="4.9" cy="9.6" r="2.2"/><circle cx="19.1" cy="9.6" r="2.2"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg><span class="sw"><span data-w="text.who.group">Group</span></span></button></div><div class="sing-part" role="group" aria-labelledby="tkspl"><span class="sr" id="tkspl"><span data-w="text.who.part">My part</span></span><button type="button" data-part="lead" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1" fill="currentColor"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4" fill="currentColor"/><circle cx="4.9" cy="9.6" r="2.2"/><circle cx="19.1" cy="9.6" r="2.2"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg><span class="sw"><span data-w="text.who.lead">Lead</span></span></button><button type="button" data-part="chorus" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4"/><circle cx="4.9" cy="9.6" r="2.2" fill="currentColor"/><circle cx="19.1" cy="9.6" r="2.2" fill="currentColor"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg><span class="sw"><span data-w="text.who.chorus">Chorus</span></span></button></div></div><button type="button" id="tkb" aria-hidden="true" tabindex="-1" aria-controls="goto" aria-expanded="false"><span id="tkt"></span><span id="tkw"></span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><i id="tkp"></i></button></div>
 <div id="asc" hidden role="navigation" aria-label="Previous, home, library, reading, listen, next">
   <div id="asi">
     <button type="button" id="asv" class="asx"></button>
@@ -942,6 +942,20 @@
       <div class="rs-seg" id="rsf" role="group" aria-labelledby="rsfl">
         <button type="button" data-v="1"><span data-w="page.once">Once</span></button>
         <button type="button" data-v="0"><span data-w="page.everyVerse">Every verse</span></button>
+      </div>
+    </div>
+    <div class="rs-row rs-who">
+      <span class="rs-l" id="rswl"><span data-w="text.who.sing">Singing</span></span>
+      <div class="rs-seg sing" id="rsw" role="group" aria-labelledby="rswl">
+        <button type="button" data-sing="solo" aria-pressed="false"><span data-w="text.who.solo">Solo</span></button>
+        <button type="button" data-sing="group" aria-pressed="false"><span data-w="text.who.group">Group</span></button>
+      </div>
+    </div>
+    <div class="rs-row rs-who rs-part">
+      <span class="rs-l" id="rswpl"><span data-w="text.who.part">My part</span></span>
+      <div class="rs-seg sing" id="rswp" role="group" aria-labelledby="rswpl">
+        <button type="button" data-part="lead" aria-pressed="false"><span data-w="text.who.lead">Lead</span></button>
+        <button type="button" data-part="chorus" aria-pressed="false"><span data-w="text.who.chorus">Chorus</span></button>
       </div>
     </div>
     <button type="button" class="rs-go" id="rsall"><span class="rs-l"><span data-w="page.allSettings">All settings</span><small><span data-w="page.fontThemeLayout">Font, theme, layout</span></small></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>

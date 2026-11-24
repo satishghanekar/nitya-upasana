@@ -5,8 +5,10 @@
 // text as one person sings it) or Group (the turns shown, css/04-columns-rail.css), and in the group view the part this
 // person sings (their lines in full with a dot, the other part's muted). Both are the person's settings (P.sing,
 // P.part), the same for every marked text.
-// This part puts them on the page (data-sing, data-part), keeps the buttons pressed as they are, and gives the CSS the
-// words a screen reader hears where each turn starts, in the language and letters the lines are read in (--who-…).
+// This part puts them on the page (data-sing, data-part), keeps the buttons pressed as they are (under a text's heading,
+// in the pill shown while the page scrolls, #tks, and in the Reading sheet), and gives the CSS the words a screen reader
+// hears where each turn starts, in the language and letters the lines are read in (--who-…). Which text is marked is
+// js/features/where.js's (data-who-here, as it keeps the pill).
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { P, change } from "../core/state.js";
@@ -51,12 +53,11 @@ export function whoMark() {
     put("--who-chorus", w.chorus + (P.part === "chorus" ? ", " + w.part : "") + ": ");
     put("--who-together", w.together);
   }
-  document.querySelectorAll(".ash.who").forEach(function (s) {
-    pressed(/** @type {HTMLElement} */ (s));
-  });
+  // (the texts', the pill shown while the page scrolls, #tks, and the Reading sheet's, #rsh)
+  pressed(document.body);
 }
 
-/** A marked text's buttons pressed as the settings are @param {HTMLElement} sec */
+/** The singing buttons in a part of the page pressed as the settings are @param {HTMLElement} sec */
 function pressed(sec) {
   sec.querySelectorAll(".sing button").forEach(function (b) {
     var d = /** @type {HTMLElement} */ (b).dataset;

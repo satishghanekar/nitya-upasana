@@ -119,6 +119,51 @@ test("accessible in every theme, group view with a part chosen @chromium-only", 
   for (const b of await page.locator(`#${VANDE} .sing button`).all()) expect((await b.boundingBox()).height).toBeGreaterThanOrEqual(44);
 });
 
+// While the page scrolls (the bars tucked away) the pill at the top is the singing choices in a marked text: one tap
+// switches; another text's pill is its name, as before
+test("while the page scrolls, the pill is the singing choices: one tap to switch; another text keeps its name @chromium-only", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await readText(page, VANDE);
+  await page.evaluate(() => scrollBy(0, 700));
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  const pill = page.locator("#tks");
+  await expect(pill).toBeVisible();
+  await expect(page.locator("#tkb")).toBeHidden();
+  // the chosen one shows its word, the others are named for screen readers
+  await expect(pill.getByRole("button", { name: "Group" })).toHaveAttribute("aria-pressed", "true");
+  expect(await style(pill.getByRole("button", { name: "Group" }).locator(".sw"), "position")).toBe("static");
+  expect(await style(pill.getByRole("button", { name: "Solo" }).locator(".sw"), "position")).toBe("absolute");
+  await pill.getByRole("button", { name: "Chorus" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-part", "chorus");
+  // a tap on a choice leaves the bars tucked
+  await expect(page.locator("html")).toHaveAttribute("data-tuck", "1");
+  await pill.getByRole("button", { name: "Solo" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-sing", "solo");
+  await expect(pill.getByRole("group", { name: "My part" })).toBeHidden();
+  // every choice is a 44 px target
+  for (const b of await pill.getByRole("button").all()) if (await b.isVisible()) expect((await b.boundingBox()).height).toBeGreaterThanOrEqual(44);
+  // a text without the marks: its name, as before
+  await page.evaluate(() => document.documentElement.removeAttribute("data-tuck"));
+  await readText(page, "a1");
+  await page.evaluate(() => scrollBy(0, 700));
+  await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+  await expect(page.locator("#tks")).toBeHidden();
+  await expect(page.locator("#tkb")).toBeVisible();
+});
+
+test("the Reading sheet has the singing choices in a marked text only @chromium-only", async ({ page }) => {
+  await openSite(page, SETUPS.marathi);
+  await readText(page, VANDE);
+  await page.evaluate(() => document.getElementById("rsb").click());
+  const sheet = page.locator("#rsh");
+  await expect(sheet.getByRole("group", { name: "Singing" })).toBeVisible();
+  await sheet.getByRole("group", { name: "My part" }).getByRole("button", { name: "Lead" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-part", "lead");
+  await expect(page.locator(`#${VANDE} .sing button[data-part="lead"]`)).toHaveAttribute("aria-pressed", "true");
+  await sheet.getByRole("group", { name: "Singing" }).getByRole("button", { name: "Solo" }).click();
+  await expect(sheet.getByRole("group", { name: "My part" })).toBeHidden();
+});
+
 /** The printout of Vande Ganapati alone, as a print link makes it (layout: as, one language; side, both) */
 async function printVande(page, prefs, layout = "as") {
   await stubPrint(page);
@@ -176,6 +221,10 @@ test("pictures: phone, iPad and computer @chromium-only", async ({ browser }) =>
     await readText(page, VANDE);
     await page.locator(`#${VANDE} header`).scrollIntoViewIfNeeded();
     await page.screenshot({ path: `${process.env.WHO_SHOTS}/${name}.png` });
+    // and scrolled on, the bars tucked away: the pill
+    await page.evaluate(() => scrollBy(0, 700));
+    await page.evaluate(() => document.documentElement.setAttribute("data-tuck", "1"));
+    await page.screenshot({ path: `${process.env.WHO_SHOTS}/${name}-scrolled.png` });
     await ctx.close();
   }
   // and the printout, one page of it
