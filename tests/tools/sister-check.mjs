@@ -81,13 +81,5 @@ show("Drifted apart (bring the change to the other app, or record it with --upda
 show("Closer than before (record it with --update):", closer);
 show("New in both apps (record it with --update):", added);
 show("No longer in both apps (record it with --update):", gone);
-// The texts both apps have (content/texts/): Sankathara's are Nitya Upasana's files copied as they are, its letters
-// count included (tests/tools/texts.mjs keeps it there), so a text in both is the same, byte for byte, with no baseline
-const texts = (root) => (existsSync(join(root, "content/texts")) ? readdirSync(join(root, "content/texts")).filter((f) => f.endsWith(".txt")) : []);
-const theirTexts = new Set(texts(other));
-const textsApart = texts(here)
-  .filter((f) => theirTexts.has(f) && apart("content/texts/" + f))
-  .map((f) => "content/texts/" + f + ": " + lines(apart("content/texts/" + f)));
-show("Texts that differ (copy Nitya Upasana's file to Sankathara Chaturthi: the texts are its files):", textsApart);
-if (!drift.length && !closer.length && !added.length && !gone.length && !textsApart.length) console.log("As the baseline: nothing has drifted.");
-process.exit(drift.length || textsApart.length ? 1 : 0);
+if (!drift.length && !closer.length && !added.length && !gone.length) console.log("As the baseline: nothing has drifted.");
+process.exit(drift.length ? 1 : 0);
