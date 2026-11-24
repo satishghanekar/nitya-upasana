@@ -155,8 +155,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // the launch animation, 91.3 KB then; 92.5 KB since 2026-11-20: About's fast mode report row, 92.2 KB then; 93.5 KB since 2026-11-20:
   // About's Keep on this phone switch, Using memory now and the pop-up that asks first, 92.9 KB then; 94.5 KB since
   // 2026-11-21: the welcome as two full-screen steps, 94.1 KB then; 96 KB since 2026-11-24: who sings, the switch under
-  // the heading and the group view's turns on phone, tablet and side by side, 95.8 KB with them on a Mac)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(96_000);
+  // the heading and the group view's turns on phone, tablet and side by side, and their printout, 95.8 KB with them on a
+  // Mac, 96.25 KB on GitHub's: 96.5 KB)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(96_500);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
   // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then; 33 KB since
