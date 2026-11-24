@@ -124,7 +124,7 @@ describe("blocks", () => {
     ["English where the original goes", "[1]\nK\nक\n", /expected an original line/],
     ["a line outside a block", "क\nK\n", /a line outside a block/],
     ["a stanza out of order", "[1]\nक\nK\n\n[3]\nख\nKh\n", /stanza \[3\] should be \[2\]/],
-    ["an unknown block", "[chorus]\nक\nK\n", /unknown block "\[chorus\]"/],
+    ["an unknown block", "[verse]\nक\nK\n", /unknown block "\[verse\]"/],
     ["an empty block", "[1]\n\n", /a block with no lines/],
     ["lines in a note", "[note: अ | a]\nक\nK\n", /a \[note\] block has no lines/],
     ["[refrain] outside a block", "[refrain]\nक\nK\n", /\[refrain\] goes inside a block/],
@@ -147,6 +147,37 @@ describe("blocks", () => {
     ],
   ])("every-verse rules: refuses %s", (_, body, head, err) => {
     expect(() => parse(body, head)).toThrow(err);
+  });
+  test("who sings: [lead], [chorus] and [together] mark the pairs after them, up to the next, and are written back where they change", () => {
+    const body = "[1]\n[lead]\nक\nK\n[chorus]\nक\nK\nख\nKh\n\n[2]\n[chorus]\nग\nG\n[together]\nघ\nGh\n";
+    const t = parse(body);
+    expect(t.blocks.map((b) => b.lines.map((l) => l.who))).toEqual([
+      ["lead", "chorus", "chorus"],
+      ["chorus", "together"],
+    ]);
+    expect(formatText(t)).toBe(HEAD + "---\n" + body);
+    expect(parseText(formatText(t))).toEqual(t);
+  });
+  test("who sings goes with refrain lines and every-verse, and a text without it has no who at all", () => {
+    const body = "[1]\n[lead]\nग\nG\n[refrain]\n[together]\nक\nK\n";
+    const t = parse(body);
+    expect(t.blocks[0].lines).toEqual([
+      { orig: "ग", en: "G", rf: false, who: "lead" },
+      { orig: "क", en: "K", rf: true, who: "together" },
+    ]);
+    expect(formatText(t)).toBe(HEAD + "---\n" + body);
+    const ev = "[dhrupad]\n[lead]\nक\nK\n[chorus]\nक\nK\n\n[1]\n[lead]\nग\nG\n";
+    expect(formatText(parse(ev, "refrain: every-verse\n"))).toBe(HEAD + "refrain: every-verse\n---\n" + ev);
+    expect(parse("[1]\nक\nK\n").blocks[0].lines[0]).not.toHaveProperty("who");
+  });
+  test.each([
+    ["a mark outside a block", "[lead]\n[1]\nक\nK\n", /\[lead\] goes inside a block/],
+    ["a mark between an original and its English", "[1]\n[lead]\nक\n[chorus]\nK\n", /\[chorus\] goes inside a block/],
+    ["a mark in a note", "[note: अ | a]\n[lead]\n", /\[lead\] goes inside a block/],
+    ["a block without one, in a marked text", "[1]\n[lead]\nक\nK\n\n[2]\nख\nKh\n", /every block/],
+    ["lines before the first mark of a block", "[1]\nक\nK\n[lead]\nख\nKh\n", /every block/],
+  ])("who sings: refuses %s", (_, body, err) => {
+    expect(() => parse(body)).toThrow(err);
   });
   test("an error names the file and line", () => {
     expect(() => parseText(HEAD + "---\n[1]\nक\nख\n", "x.txt")).toThrow("x.txt line 8: expected the everyday English line here");

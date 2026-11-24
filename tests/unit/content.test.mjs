@@ -81,6 +81,17 @@ describe("CONTENT from the text files", () => {
     expect(p.items.map((i) => i.kind || (i.rmk ? "rmk" : "stanza"))).toEqual(["stanza", "rmk", "rf", "dh"]);
     expect(p.items[3]).toEqual({ kind: "dh", bold: true, lines: [{ l: "x.3", mr: "घ", en: "Gh" }] });
   });
+  // who sings (2026-11-24): each line carries its singer, after rf, also in the dhrupad sung again after a stanza
+  test("who sings: each line carries who sings it, the dhrupad sung again too", () => {
+    const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: mr\nrefrain: every-verse\n---\n";
+    const p = toPiece(parseText(head + "[dhrupad]\n[lead]\nख\nKh\n[chorus]\nख\nKh\n\n[1]\n[lead]\nग\nG\n[together]\nघ\nGh\n"), 1);
+    expect(p.items[0].lines).toEqual([
+      { l: "x.1", who: "lead", mr: "ग", en: "G" },
+      { l: "x.2", who: "together", mr: "घ", en: "Gh" },
+    ]);
+    expect(p.items[2].lines.map((l) => l.who)).toEqual(["lead", "chorus"]);
+    expect(JSON.stringify(p.items[2].lines[0])).toBe('{"l":"x.3","rf":true,"who":"lead","mr":"ख","en":"Kh"}');
+  });
   // with no dhrupad: [once] lines at the top go above the text (lead), later ones stand where they are
   test("no dhrupad: [once] lines at the top lead, later ones stand where they are", () => {
     const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: sa\n---\n";
