@@ -13,6 +13,9 @@
   --ink: #391a0e;
   --muted: #6d5a4c;
   --accent: #7b1113;
+  /* the rule beside a chorus line, in a text marked with who sings (css/04-columns-rail.css): a blue that is no other
+     colour's, 8.9:1 on the page */
+  --chorus: #1f4e66;
   /* the night sky the launch animation starts in (css/02-core.css), the same in every theme, and its words */
   --night: #130d1d;
   --night-ink: #efe3d4;
@@ -47,6 +50,7 @@
     --ink: #efe3d4;
     --muted: #b4a08f;
     --accent: #e8a98c;
+    --chorus: #8fc3dc;
     --rule: #3a2d25;
     --bar: #17110eee;
     --pill: #241a15;
@@ -61,6 +65,7 @@
   --ink: #efe3d4;
   --muted: #b4a08f;
   --accent: #e8a98c;
+  --chorus: #8fc3dc;
   --rule: #3a2d25;
   --bar: #17110eee;
   --pill: #241a15;
@@ -73,6 +78,7 @@
   --ink: #391a0e;
   --muted: #6d5a4c;
   --accent: #7b1113;
+  --chorus: #1f4e66;
   --rule: #d9c9b4;
   --bar: #fcf9f4ee;
   --pill: #fffdf9;
@@ -85,6 +91,7 @@
   --ink: #3b2a17;
   --muted: #6a5436;
   --accent: #7a2418;
+  --chorus: #1d4a5e;
   --rule: #cdb78d;
   --bar: #efe0c3ee;
   --pill: #f6ead2;

@@ -8,7 +8,8 @@
  * @typedef {import("./text/content.js").Item} Item
  * @typedef {import("./text/content.js").Content} Content
  * @typedef {{ mr: string, en: string }} Pair
- * @typedef {{ mr: string, en: string, l?: string, rf?: true }} Line  a line of a stanza, or of the dhrupad (no l)
+ * @typedef {{ mr: string, en: string, l?: string, rf?: true, who?: string }} Line  a line of a stanza, or of the dhrupad (no l); who:
+ *   in a text marked with who sings, lead, chorus or together
  */
 (function () {
   "use strict";
@@ -55,8 +56,10 @@
   /** @param {Line[]} list @param {"mr" | "en"} lang @param {string} pad */
   function lines(list, lang, pad) {
     return list
-      .map(function (/** @type {Line} */ x) {
-        return pad + "<p" + (x.rf ? ' class="rf"' : "") + (x.l ? ' data-l="' + x.l + '"' : "") + ">" + x[lang] + "</p>\n";
+      .map(function (/** @type {Line} */ x, /** @type {number} */ i) {
+        // who sings it (a text marked with who sings), and data-turn where a turn starts: the label goes there (CSS)
+        var who = x.who ? ' data-who="' + x.who + '"' + (i && list[i - 1].who === x.who ? "" : " data-turn") : "";
+        return pad + "<p" + (x.rf ? ' class="rf"' : "") + (x.l ? ' data-l="' + x.l + '"' : "") + who + ">" + x[lang] + "</p>\n";
       })
       .join("");
   }
@@ -155,6 +158,53 @@
       "    </div>\n"
     );
   }
+  /** A text marked with who sings (its lines carry who: js/text/content.js) @param {Piece} p */
+  function marked(p) {
+    return p.items.some(function (/** @type {Item} */ x) {
+      return (x.lines || []).some(function (/** @type {Line} */ l) {
+        return !!l.who;
+      });
+    });
+  }
+  /**
+   * A text marked with who sings: under its heading, solo or group, and in the group view the part this person sings
+   * (js/features/who-sings.js presses the buttons and keeps them up to date). Each row is named by its label.
+   * @param {Piece} p @param {Content} C
+   */
+  function singing(p, C) {
+    if (!marked(p)) return "";
+    var w = C.ui.who;
+    /** @param {string} k */
+    var word = function (k) {
+      return two({ mr: w.mr[k], en: w.en[k] }, "who." + k);
+    };
+    /** @param {string} attr @param {string} k */
+    var button = function (attr, k) {
+      return '        <button type="button" data-' + attr + '="' + k + '" aria-pressed="false">' + word(k) + "</button>\n";
+    };
+    return (
+      '    <div class="sing">\n' +
+      '      <div class="sing-mode" role="group" aria-labelledby="sing-' +
+      p.id +
+      '">\n        <span class="vlab" id="sing-' +
+      p.id +
+      '">' +
+      word("sing") +
+      "</span>\n" +
+      button("sing", "solo") +
+      button("sing", "group") +
+      '      </div>\n      <div class="sing-part" role="group" aria-labelledby="part-' +
+      p.id +
+      '">\n        <span class="vlab" id="part-' +
+      p.id +
+      '">' +
+      word("part") +
+      "</span>\n" +
+      button("part", "lead") +
+      button("part", "chorus") +
+      "      </div>\n    </div>\n"
+    );
+  }
   /** @param {Piece} p @param {Piece | null} prev @param {Piece | null} next @param {Content} C */
   function piece(p, prev, next, C) {
     var ui = C.ui;
@@ -164,6 +214,7 @@
       '" class="ash' +
       (p.cls ? " " + p.cls : "") +
       (p.prose ? " prose" : "") +
+      (marked(p) ? " who" : "") +
       '"' +
       (p.lang ? ' lang="' + p.lang + '"' : "") +
       ">\n" +
@@ -179,7 +230,8 @@
       two(p.tag, "lang." + (p.lang || W.CONTENT.pageLanguage)) +
       "</div>\n" +
       "    </header>\n" +
-      versions(p, C);
+      versions(p, C) +
+      singing(p, C);
     // [once] lines and [note]s that come before the dhrupad at the top (js/text/content.js)
     if (p.lead) h += '    <div class="items lead">\n' + p.lead.map(item).join("") + "    </div>\n";
     if (p.refrain)

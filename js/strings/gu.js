@@ -1072,6 +1072,17 @@ export default {
     refrainWord: "ધ્રુપદ",
     refrainHow: "(દરેક કડી પછી ગાવું)",
     version: "પાઠભેદ",
+    // who sings, in a text marked with it: the switch under the heading (solo or group), the part this person sings,
+    // and each turn's label (js/features/who-sings.js)
+    who: {
+      sing: "ગાયન",
+      solo: "સોલો",
+      group: "સમૂહ",
+      part: "મારો ભાગ",
+      lead: "ગાયક",
+      chorus: "કોરસ",
+      together: "સર્વ",
+    },
     refrainNote: "↻ ધ્રુપદ",
     prev: "પાછલું",
     next: "આગલું",

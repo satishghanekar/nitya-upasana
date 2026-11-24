@@ -1088,6 +1088,17 @@ export default {
     refrainWord: "ಧ್ರುಪದ",
     refrainHow: "(ಪ್ರತಿ ಚರಣದ ನಂತರ ಹೇಳಿ)",
     version: "ಪಾಠಭೇದ",
+    // who sings, in a text marked with it: the switch under the heading (solo or group), the part this person sings,
+    // and each turn's label (js/features/who-sings.js)
+    who: {
+      sing: "ಗಾಯನ",
+      solo: "ಸೋಲೋ",
+      group: "ಸಮೂಹ",
+      part: "ನನ್ನ ಭಾಗ",
+      lead: "ಗಾಯಕ",
+      chorus: "ಕೋರಸ್",
+      together: "ಎಲ್ಲರೂ",
+    },
     refrainNote: "↻ ಧ್ರುಪದ",
     prev: "ಹಿಂದಿನ",
     next: "ಮುಂದಿನ",

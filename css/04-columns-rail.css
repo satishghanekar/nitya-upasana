@@ -11,6 +11,7 @@
    - Wide layout on screens 1024px and wider (data-rail)
    - Reading progress line under the top bar
    - Dhrupad markers (↻ ध्रुपद) as small pills
+   - Who sings: Solo | Group and My part under the heading; the group view's turns (lead, chorus, together)
 */
 
 /* ==== Two columns on wide screens (data-cols="2"); the script assigns each stanza its grid row ==== */
@@ -235,5 +236,172 @@
     width: fit-content;
     margin-inline: auto;
     padding-right: 1em;
+  }
+}
+
+/* ==== Who sings (a text marked with lead, chorus and together: .ash.who; js/features/who-sings.js) ====
+   Under the heading, as the version switch is: Solo or Group, then in the group view the part this person sings.
+   The group view (data-sing="group" on the page): a stanza is one block, centred, its lines from its start edge, so a
+   chorus line can step in from the lead's with a rule beside it; together, a small सर्व label where the turn starts.
+   With a part chosen (data-part), the other part's lines are muted and this person's carry a dot: colour alone would
+   fail WCAG 1.4.1, and high contrast has no muted colour. A screen reader hears who sings where each turn starts
+   (the labels below, words from js/strings/ "text", set by the script as --who-… so the line's own words stay as they
+   are for search, Follow, copying and print). Indents in em, from the text size. Solo: the text as one person sings it. */
+.ash > .sing {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 16px;
+  margin: -4px 0 14px;
+  font: 500 var(--fz-s)/1.2 var(--body);
+}
+.ash > .sing > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 8px;
+}
+.ash > .sing .vlab {
+  color: var(--muted);
+}
+.ash > .sing button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px 16px;
+  border: 1px solid var(--hdrl);
+  border-radius: 99px;
+  background: var(--hdrt);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.ash > .sing button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+}
+/* the chorus button carries the chorus's rule, so the switch is the key to the lines too */
+.ash > .sing button[data-part="chorus"] {
+  border-inline-start: 4px solid var(--chorus);
+}
+[data-sing="solo"] .ash > .sing .sing-part {
+  display: none;
+}
+[data-lang="both"] .sing .en {
+  display: none;
+}
+html[data-lead="en"] [data-lang="both"] .sing .en {
+  display: inline;
+}
+html[data-lead="en"] [data-lang="both"] .sing .mr {
+  display: none;
+}
+@media (hover: hover) {
+  .ash > .sing button:not([aria-pressed="true"]):hover {
+    border-color: var(--accent);
+  }
+}
+@media print {
+  .ash > .sing {
+    display: none;
+  }
+}
+@media screen {
+  [data-sing="group"] .ash.who .items .verse {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    text-align: start;
+  }
+  [data-sing="group"] .ash.who .verse p[data-who] {
+    position: relative;
+  }
+  [data-sing="group"] .ash.who .verse p[data-who="chorus"] {
+    margin-inline-start: 1.1em;
+    padding-inline-start: 0.55em;
+    border-inline-start: 3px solid var(--chorus);
+  }
+  /* (the English under the original is drawn smaller: the same step in, in the original's em) */
+  [data-sing="group"] [data-lang="both"].ash.who .verse .en p[data-who="chorus"] {
+    margin-inline-start: 1.53em;
+  }
+  [data-sing="group"][data-part="lead"] .ash.who .verse p[data-who="chorus"],
+  [data-sing="group"][data-part="chorus"] .ash.who .verse p[data-who="lead"] {
+    color: var(--muted);
+  }
+  /* The labels and the dot go on the lines read first (data-who-first, set by the script: the original's, or the
+     English where it alone shows or leads). The words, "my part" in them when it is, come from the script too. */
+  html[data-sing="group"][data-who-first="mr"] .ash.who .verse > .mr > p[data-turn]::before,
+  html[data-sing="group"][data-who-first="en"] .ash.who .verse > .en > p[data-turn]::before {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    content: var(--who-lead);
+  }
+  html[data-sing="group"][data-who-first="mr"] .ash.who .verse > .mr > p[data-turn][data-who="chorus"]::before,
+  html[data-sing="group"][data-who-first="en"] .ash.who .verse > .en > p[data-turn][data-who="chorus"]::before {
+    content: var(--who-chorus);
+  }
+  /* together: the label shows, a small outlined word before the line */
+  html[data-sing="group"][data-who-first="mr"] .ash.who .verse > .mr > p[data-turn][data-who="together"]::before,
+  html[data-sing="group"][data-who-first="en"] .ash.who .verse > .en > p[data-turn][data-who="together"]::before {
+    position: static;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    margin-inline-end: 0.5em;
+    padding: 0 0.45em;
+    border: 1.5px solid currentcolor;
+    border-radius: 0.6em;
+    font: 700 0.55em/1.5 var(--body);
+    vertical-align: 0.3em;
+    content: var(--who-together);
+  }
+  /* my part: a dot in the margin before each of my lines */
+  html[data-sing="group"][data-part="lead"][data-who-first="mr"] .ash.who .verse > .mr > p[data-who="lead"]::after,
+  html[data-sing="group"][data-part="lead"][data-who-first="en"] .ash.who .verse > .en > p[data-who="lead"]::after,
+  html[data-sing="group"][data-part="chorus"][data-who-first="mr"] .ash.who .verse > .mr > p[data-who="chorus"]::after,
+  html[data-sing="group"][data-part="chorus"][data-who-first="en"] .ash.who .verse > .en > p[data-who="chorus"]::after {
+    position: absolute;
+    inset-inline-start: -0.85em;
+    top: 0.62em;
+    width: 0.36em;
+    height: 0.36em;
+    border-radius: 50%;
+    background: var(--accent);
+    content: "";
+  }
+  /* Both languages side by side (two columns): the original is set against the middle gap on its right, the English
+     on its left, so a chorus line steps away from the gap on both sides, its rule on the gap's side, and the dot
+     stands at the gap's end of the original */
+  [data-sing="group"][data-cols="2"] [data-lang="both"].ash.who .items .verse {
+    width: auto;
+  }
+  [data-sing="group"][data-cols="2"] [data-lang="both"].ash.who .verse > .mr > p[data-who="chorus"] {
+    margin-inline: 0 1.1em;
+    padding-inline: 0 0.55em;
+    border-inline-start: 0;
+    border-inline-end: 3px solid var(--chorus);
+  }
+  [data-sing="group"][data-cols="2"] [data-lang="both"].ash.who .verse > .en > p[data-who="chorus"] {
+    margin-inline-start: 0.8em;
+    padding-inline-start: 0.5em;
+  }
+  /* (html and its attributes as in the dot's own rule above, so this one, later, wins) */
+  html[data-sing="group"][data-cols="2"][data-who-first="mr"] [data-lang="both"].ash.who .verse > .mr > p[data-who]::after {
+    inset-inline-start: auto;
+    inset-inline-end: -0.85em;
+  }
+  html[data-sing="group"][data-cols="2"][data-who-first="mr"] [data-lang="both"].ash.who .verse > .mr > p[data-who="chorus"]::after {
+    inset-inline-end: -1.6em;
   }
 }

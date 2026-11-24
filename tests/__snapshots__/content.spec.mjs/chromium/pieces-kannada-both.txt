@@ -18113,6 +18113,12 @@ Gajeshanaya Bhalachandraya Shriganeshaya Dhimahi ||
 ### bhajan-ganapati-bappa-morya
 2. ಗಣಪತೀ ಬಾಪ್ಪಾ ಮೋರಯಾ
 Ganapati Bappa Morya
+ಗಾಯನ
+ಸೋಲೋ
+ಸಮೂಹ
+ನನ್ನ ಭಾಗ
+ಗಾಯಕ
+ಕೋರಸ್
 
 ಗಣಪತೀ ಬಾಪ್ಪಾ ಮೋರಯಾ, ​ಮಂಗಲ ಮೂರ್ತೀ ಮೋರಯಾ
 
@@ -18300,6 +18306,12 @@ Ganapati Bappa Morya, Mangal Murti Morya ||
 ### bhajan-vande-ganapati
 3. ವಂದೇ ಗಣಪತೀ ವಿಘ್ನವಿನಾಶನ
 Vande Ganapati Vighnavinashan
+ಗಾಯನ
+ಸೋಲೋ
+ಸಮೂಹ
+ನನ್ನ ಭಾಗ
+ಗಾಯಕ
+ಕೋರಸ್
 
 ವಂದೇ ಗಣಪತೀ ವಿಘ್ನವಿನಾಶನ, ​ಹೇ ಲಂಬೋದರ ಗಜಾನನಾ
 
@@ -18555,6 +18567,12 @@ Samahitayu Rashtabhuti Mabhyupaiti Sochirat || 6 ||
 ### bhajan-gaiye-ganapati-jagvandan
 5. ಗಾಇಯೇ ಗಣಪತಿ ಜಗವಂದನ
 Gaiye Ganapati Jagavandan
+ಗಾಯನ
+ಸೋಲೋ
+ಸಮೂಹ
+ನನ್ನ ಭಾಗ
+ಗಾಯಕ
+ಕೋರಸ್
 
 ಗಾಇಯೇ ಗಣಪತಿ ಜಗವಂದನ
 

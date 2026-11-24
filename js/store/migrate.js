@@ -8,7 +8,7 @@
 //
 // Per person: text size, languages, English style, font, dhrupad, theme, high contrast,
 // autoscroll, folds, the highlighted line, the Library's Recent and its order, the holidays in Coming up and Coming up
-// folded, the chanting pace and what Follow has learned of it. Per device: keep the screen on, location, layout on wide screens, the
+// folded, the chanting pace and what Follow has learned of it, solo or group and the part they sing. Per device: keep the screen on, location, layout on wide screens, the
 // Print pop-up's choices and the folded home card.
 
 /**
@@ -46,6 +46,8 @@ export const PROFILE_KEYS = [
   "pace",
   "paceLog",
   "ver",
+  "sing",
+  "part",
 ];
 // what stays with the device, whoever is reading
 export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "plang", "ppr", "pcov", "fold"];
@@ -93,6 +95,8 @@ export function defaults(env) {
     pace: "", // chanting pace for how long a text takes: "" learned from Follow (a range until then) | quick | steady | slow
     paceLog: {}, // what Follow has heard this person chant: { s: seconds, n: letters } (js/core/timing.js)
     ver: {}, // the version of a text sung in more than one way this person reads: text id → its file's id (js/features/versions.js)
+    sing: "group", // a text marked with who sings (lead, chorus, together): group shows the turns, solo as one person sings it (js/features/who-sings.js)
+    part: "", // the part this person sings in the group view: "" none | lead | chorus (their lines in full, the others muted)
   };
 }
 
@@ -107,6 +111,8 @@ function fits(k, v, d) {
   if (v === undefined) return false;
   if (k === "loc") return v === null || (!!v && typeof v === "object" && typeof v.lat === "number" && typeof v.lon === "number");
   if (k === "pref") return v === "" || v === 0 || v === 1;
+  if (k === "sing") return v === "group" || v === "solo";
+  if (k === "part") return v === "" || v === "lead" || v === "chorus";
   if (Array.isArray(d))
     return (
       Array.isArray(v) &&

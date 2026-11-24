@@ -43,7 +43,8 @@ describe("CONTENT from the text files", () => {
     // and in the same key order, so even the order the page meets things in is unchanged
     expect(JSON.stringify(same)).toBe(JSON.stringify(OLD_PIECES));
     // (with the version switch's label since 2026-11-15)
-    const { version, ...ui } = C.ui; // eslint-disable-line no-unused-vars
+    // (and the who-sings words since 2026-11-24)
+    const { version, who, ...ui } = C.ui; // eslint-disable-line no-unused-vars
     expect(ui).toStrictEqual(OLD.ui);
   });
   // (60 <br>: the Vitthal Aarti's dhrupad breaks after its first half in English and at the top too, Satish 2026-10-23)

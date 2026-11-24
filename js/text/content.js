@@ -53,7 +53,7 @@ var SCRIPTS = LANGUAGES.filter(function (l) {
  *   difference)
  * @typedef {{ ver: string, name: Pair, piece: Piece }} Version   one way of singing a text: its file, what the switch
  *   calls it, and its piece
- * @typedef {{ pageLanguage: string, ui: { prev: Pair, next: Pair, version: Pair }, text: Record<string, any>, wiki: Wiki | null,
+ * @typedef {{ pageLanguage: string, ui: { prev: Pair, next: Pair, version: Pair, who: { mr: Record<string, string>, en: Record<string, string> } }, text: Record<string, any>, wiki: Wiki | null,
  *   timing: any, texts: Record<string, TextFacts>, categories: { id: string, name: Pair,
  *   pieces: Piece[] }[], versions: Record<string, Version[]> }} Content
  */
@@ -410,6 +410,8 @@ export function buildContent(lib, files, more) {
       prev: { mr: W("mr").prev, en: W("en").prev },
       next: { mr: W("mr").next, en: W("en").next },
       version: { mr: W("mr").version, en: W("en").version },
+      // the who-sings switch and labels (js/render.js, js/features/who-sings.js): each word in both languages
+      who: { mr: W("mr").who, en: W("en").who },
     },
     text: text,
     // which Wikipedia page a link opens (js/core/wiki.js): the credits' links are written with theirs, and

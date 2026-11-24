@@ -1120,6 +1120,17 @@ export default {
     refrainHow: "(sung after every verse)",
     // the switch between a text's versions (the Hanuman Chalisa: Tulsidas | Popular)
     version: "Version",
+    // who sings, in a text marked with it: the switch under the heading (solo or group), the part this person sings,
+    // and each turn's label (js/features/who-sings.js)
+    who: {
+      sing: "Singing",
+      solo: "Solo",
+      group: "Group",
+      part: "My part",
+      lead: "Lead",
+      chorus: "Chorus",
+      together: "Together",
+    },
     refrainNote: "Refrain",
     prev: "Previous",
     next: "Next",

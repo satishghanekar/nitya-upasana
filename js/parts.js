@@ -91,6 +91,7 @@ var SITE_PARTS = (function () {
     "features/reading-sheet",
     "features/where",
     "features/versions",
+    "features/who-sings",
     "features/wake-lock",
     "features/overlays",
     "features/history",

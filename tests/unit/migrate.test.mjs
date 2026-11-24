@@ -352,6 +352,16 @@ describe("the holidays in Home's Coming up (P.hol)", () => {
     for (const bad of ["popular", [], null]) expect(p({ ver: bad }).ver).toEqual({});
     expect(PROFILE_KEYS).toContain("ver");
   });
+  test("who sings (2026-11-24): group view unless solo is picked; the part sung only lead, chorus or none", () => {
+    const p = (o) => migratePrefs({ sv: 6, ...o }, PHONE).prefs;
+    expect(p({}).sing).toBe("group");
+    expect(p({}).part).toBe("");
+    expect(p({ sing: "solo" }).sing).toBe("solo");
+    for (const v of ["lead", "chorus"]) expect(p({ part: v }).part).toBe(v);
+    for (const bad of ["duet", 1, null]) expect(p({ sing: bad }).sing).toBe("group");
+    for (const bad of ["together", "LEAD", 0]) expect(p({ part: bad }).part).toBe("");
+    expect(PROFILE_KEYS).toEqual(expect.arrayContaining(["sing", "part"]));
+  });
 });
 
 describe("a person's settings and the device's", () => {
