@@ -1227,3 +1227,134 @@ html[data-asb="1"] {
     font-size: var(--fz-m);
   }
 }
+
+/* ==== Who sings while the page scrolls (Satish, 2026-11-24): in a text marked with who sings (data-who-here, set by
+   js/features/where.js) the pill shown while the bars are tucked is its singing choices instead of its name (#tks):
+   one tap to switch, no menu. Each choice an icon, the chosen ones with their word too (Solo: one person; Group: three;
+   my part: the three with mine filled in; a rule on a round button bent into a "(", so none). In a session the Go to pill stays beside it,
+   showing only "५ / ८" and its arrow. The same choices in the Reading sheet (.rs-who), for when the bars are back. ==== */
+#tks {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  max-width: 100%;
+  padding: 2px;
+  background: var(--pill);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  box-shadow:
+    0 6px 22px #00000026,
+    0 1px 3px #0000001a;
+  font: 600 var(--fz-s) / 1.2 var(--body);
+  pointer-events: auto;
+}
+html[data-who-here] #tks {
+  display: flex;
+}
+html[data-who-here] #tuck {
+  gap: 6px;
+}
+#tks > div {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+#tks .sing-part {
+  margin-inline-start: 2px;
+  padding-inline-start: 4px;
+  border-inline-start: 1px solid var(--rule);
+}
+html[data-sing="solo"] #tks .sing-part {
+  display: none;
+}
+#tks button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+#tks button[aria-pressed="true"] {
+  padding: 0 12px;
+  background: var(--accent);
+  color: var(--bg);
+}
+#tks button[aria-pressed="false"] .sw {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (hover: hover) {
+  #tks button:not([aria-pressed="true"]):hover {
+    background: var(--surface);
+  }
+}
+/* the text's name gives its place to the choices; in a session Go to keeps its count and arrow */
+html[data-who-here] #tkb:not([aria-haspopup]) {
+  display: none;
+}
+html[data-who-here] #tkb[aria-haspopup] :is(#tkw, .wh-in, .wh-left, .wh-dot) {
+  display: none;
+}
+html:not([data-who-here]) .rs-who,
+html[data-sing="solo"] .rs-part {
+  display: none;
+}
+
+/* ==== The pill's band (Satish, 2026-11-24: "I don't see text scrolling underneath it"): while the bars are tucked the
+   pill sits on a band of the page's own colour, from the top of the screen to just under the pill, so the lines go out
+   of sight behind it instead of showing round it; a short fade under it, so they slide away rather than being cut.
+   Behind the pill (inside #tuck's own layer) and taking no taps, as #tuck takes none. ==== */
+#tuck::before,
+#tuck::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+#tuck::before {
+  top: calc(-1 * (env(safe-area-inset-top, 0px) + 12px));
+  bottom: -8px;
+  background: var(--bg);
+}
+#tuck::after {
+  top: calc(100% + 8px);
+  height: 14px;
+  background: linear-gradient(var(--bg), transparent);
+}
+
+/* ==== Who sings on a computer (the wide layout, data-rail): its bars never tuck, so the pill never showed there; once a
+   marked text's heading has gone under the top bar (data-who-pin, js/features/where.js) the singing pill shows under
+   the top bar, centred over the text's column (--L, --S, --W: css/04-columns-rail.css), on its band. Go to's pill
+   stays a phone's and a tablet's. ==== */
+@media screen and (min-width: 1024px) and (orientation: landscape) {
+  html[data-rail="1"][data-who-here][data-who-pin]:not([data-home="1"], [data-tuck="1"]) #tuck {
+    visibility: visible;
+    top: 72px;
+    /* (Sankathara Chaturthi's column starts 260px after --L: it has no --S) */
+    left: calc(var(--L) + var(--S, 260px));
+    right: auto;
+    width: var(--W);
+    box-sizing: border-box;
+  }
+  /* (only the singing pill: the bars are not tucked, so Go to's pill is not wanted beside it) */
+  html[data-rail="1"][data-who-here][data-who-pin]:not([data-home="1"], [data-tuck="1"]) #tkb {
+    display: none;
+  }
+  html[data-rail="1"][data-who-here][data-who-pin]:not([data-home="1"], [data-tuck="1"]) #tuck::before {
+    top: -8px;
+  }
+}

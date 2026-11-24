@@ -41,7 +41,8 @@ var SCRIPTS = LANGUAGES.filter(function (l) {
  *   (menuWords(part, lang), given by js/main.js: this file is loaded with the store, before the menu words can be)
  * @typedef {{ id: string, title: string, titleEn: string, language: string, category: string, lines: number,
  *   letters: number }} TextFacts   what a text is (its file's header) and where it stands (the library's category)
- * @typedef {{ l: string, rf?: true, mr: string, en: string }} Line
+ * @typedef {{ l: string, rf?: true, who?: import("./format.js").Who, mr: string, en: string }} Line
+ *   who: in a text marked with who sings, the lead, the chorus or all together (js/features/who-sings.js shows it)
  * @typedef {{ kind?: string, bold?: true, para?: true, lines?: Line[], rmk?: Pair, nt?: true }} Item
  *   rmk: a small line between blocks: the dhrupad's marker (↻ ध्रुपद), or, with nt, a [note] from the text file (Phalashruti,
  *   ↻ ३ वेळा), which is part of the text and always shown, whatever the dhrupad setting
@@ -52,7 +53,7 @@ var SCRIPTS = LANGUAGES.filter(function (l) {
  *   difference)
  * @typedef {{ ver: string, name: Pair, piece: Piece }} Version   one way of singing a text: its file, what the switch
  *   calls it, and its piece
- * @typedef {{ pageLanguage: string, ui: { prev: Pair, next: Pair, version: Pair }, text: Record<string, any>, wiki: Wiki | null,
+ * @typedef {{ pageLanguage: string, ui: { prev: Pair, next: Pair, version: Pair, who: { mr: Record<string, string>, en: Record<string, string> } }, text: Record<string, any>, wiki: Wiki | null,
  *   timing: any, texts: Record<string, TextFacts>, categories: { id: string, name: Pair,
  *   pieces: Piece[] }[], versions: Record<string, Version[]> }} Content
  */
@@ -224,9 +225,10 @@ export function toPiece(t, n, ctx) {
   }
   /** @param {import("./format.js").TextLine} x */
   function line(x) {
-    // (the keys in this order: l, rf, mr, en, as they always were)
+    // (the keys in this order: l, rf, mr, en, as they always were; who only in a text marked with who sings)
     var l = /** @type {Line} */ ({ l: nextId() });
     if (x.rf) l.rf = true;
+    if (x.who) l.who = x.who;
     l.mr = toHtml(x.orig);
     l.en = toHtml(x.en);
     return l;
@@ -280,7 +282,7 @@ export function toPiece(t, n, ctx) {
       items.push({
         kind: "rf",
         lines: rep.lines.map(function (x) {
-          return line({ orig: x.orig, en: x.en, rf: true });
+          return line({ orig: x.orig, en: x.en, rf: true, who: x.who });
         }),
       });
     };
@@ -408,6 +410,8 @@ export function buildContent(lib, files, more) {
       prev: { mr: W("mr").prev, en: W("en").prev },
       next: { mr: W("mr").next, en: W("en").next },
       version: { mr: W("mr").version, en: W("en").version },
+      // the who-sings switch and labels (js/render.js, js/features/who-sings.js): each word in both languages
+      who: { mr: W("mr").who, en: W("en").who },
     },
     text: text,
     // which Wikipedia page a link opens (js/core/wiki.js): the credits' links are written with theirs, and

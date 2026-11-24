@@ -14,12 +14,12 @@ formats already and are sent as they are.
 | --- | ---: | ---: |
 | Fonts | 21 | 1.4 MB |
 | Pictures | 12 | 472 KB |
-| Code | 93 | 375 KB |
-| Texts and calendar data | 79 | 239 KB |
-| Styles | 18 | 93 KB |
-| Menu words (every menu language) | 5 | 67 KB |
-| The page | 2 | 36 KB |
-| **All** | 230 | **2.7 MB** |
+| Code | 94 | 382 KB |
+| Texts and calendar data | 79 | 240 KB |
+| Styles | 18 | 94 KB |
+| Menu words (every menu language) | 5 | 70 KB |
+| The page | 2 | 37 KB |
+| **All** | 231 | **2.7 MB** |
 
 Opening the app again downloads nothing: it opens from the saved copy.
 

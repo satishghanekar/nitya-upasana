@@ -1064,6 +1064,17 @@ export default {
     refrainWord: "ध्रुपद",
     refrainHow: "(प्रत्येक कडव्यानंतर म्हणावे)",
     version: "पाठभेद",
+    // who sings, in a text marked with it: the switch under the heading (solo or group), the part this person sings,
+    // and each turn's label (js/features/who-sings.js)
+    who: {
+      sing: "गायन",
+      solo: "सोलो",
+      group: "समूह",
+      part: "माझा भाग",
+      lead: "गायक",
+      chorus: "कोरस",
+      together: "सर्व",
+    },
     refrainNote: "↻ ध्रुपद",
     prev: "मागील",
     next: "पुढील",

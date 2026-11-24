@@ -9,7 +9,8 @@
      page as wide as its longest line, its lines starting level; a line too long for the page wraps, the rest of it
      indented. The original and English look alike: English a little smaller, as its letters are larger.
    - one language, a Vedic text (.pvved): running paragraphs, room between the lines for the svara marks.
-   - both languages (data-mode="side", on a sideways page): a table, each line beside its English line. */
+   - both languages (data-mode="side", on a sideways page): a table, each line beside its English line.
+   - a text marked with who sings, in the group view (.pvwho): as on screen, in black ("Who sings", at the end). */
 
 #pv {
   display: none;
@@ -814,5 +815,54 @@
   #pv .pvat :is(.pvdate, .pvpan) {
     margin-top: 1mm;
     font-size: 11pt;
+  }
+
+  /* ---- Who sings (a text marked with it, printed while the page shows the group view: .pvwho) ----
+     As on screen (css/04-columns-rail.css), in black: a key under the title, the stanza's lines from one edge, a chorus
+     line stepped in with a rule, together labelled where its turn starts. Side by side, the original's cell steps in. */
+  #pv .pvwkey {
+    display: flex;
+    justify-content: center;
+    gap: 12pt;
+    margin: 3pt 0 8pt;
+    color: #333;
+    font-size: 9.5pt;
+    break-after: avoid;
+  }
+  #pv .pvwk-chorus {
+    padding-inline-start: 5pt;
+    border-inline-start: 1.5pt solid #000;
+  }
+  #pv .pvtog {
+    display: inline-block;
+    padding: 0 4pt;
+    border: 1pt solid #000;
+    border-radius: 6pt;
+    color: #000;
+    font-size: 0.65em;
+    font-weight: 700;
+    line-height: 1.5;
+    vertical-align: 0.2em;
+  }
+  /* each stanza a block as wide as its longest line, centred, its lines from its start edge, as on screen (the column
+     itself fills the page: its stanzas' boxes are 100% wide, which keeps each whole on a page) */
+  #pv .pvwho .pvsc {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+  #pv .pvwho .pvsz > .pvl {
+    text-align: start;
+  }
+  #pv .pvwho .pvl.pvw-chorus {
+    margin-inline-start: 1.4em;
+    padding-inline-start: 0.45em;
+    border-inline-start: 1.5pt solid #000;
+  }
+  #pv .pvwho .pvt .pvwcell {
+    display: block;
+    margin-inline-start: 1.1em;
+    padding-inline-start: 0.45em;
+    border-inline-start: 1.5pt solid #000;
   }
 }

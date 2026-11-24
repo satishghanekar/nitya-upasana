@@ -8,7 +8,8 @@
  * @typedef {import("./text/content.js").Item} Item
  * @typedef {import("./text/content.js").Content} Content
  * @typedef {{ mr: string, en: string }} Pair
- * @typedef {{ mr: string, en: string, l?: string, rf?: true }} Line  a line of a stanza, or of the dhrupad (no l)
+ * @typedef {{ mr: string, en: string, l?: string, rf?: true, who?: string }} Line  a line of a stanza, or of the dhrupad (no l); who:
+ *   in a text marked with who sings, lead, chorus or together
  */
 (function () {
   "use strict";
@@ -19,6 +20,17 @@
     '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
   var ICON_NEXT =
     '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
+  // Who sings: one person (solo), three (group); my part, the three with mine filled in: the one in front (lead) or the
+  // two beside (chorus). (Not a microphone: Follow's button is one.) The same drawings as the pill's in index.html (#tks)
+  /** @type {Record<string, string>} */
+  var WHO_ICONS = {
+    solo: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.5c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg>',
+    group:
+      '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4"/><circle cx="4.9" cy="9.6" r="2.2"/><circle cx="19.1" cy="9.6" r="2.2"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg>',
+    lead: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1" fill="currentColor"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4" fill="currentColor"/><circle cx="4.9" cy="9.6" r="2.2"/><circle cx="19.1" cy="9.6" r="2.2"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg>',
+    chorus:
+      '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4"/><circle cx="4.9" cy="9.6" r="2.2" fill="currentColor"/><circle cx="19.1" cy="9.6" r="2.2" fill="currentColor"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg>',
+  };
   var LOTUS =
     '<div class="fin" aria-hidden="true"><svg viewBox="0 0 160 28" width="160" height="28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20H56"/><path d="M104 20H152"/><circle cx="62" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="98" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M80 4C75 9 74.5 15 80 21C85.5 15 85 9 80 4Z"/><path d="M80 21C73 20 68.5 15.5 67.5 10.5C73 11.5 77.5 15 80 21Z"/><path d="M80 21C87 20 91.5 15.5 92.5 10.5C87 11.5 82.5 15 80 21Z"/><path d="M70 22.5C74 24.5 86 24.5 90 22.5"/></svg></div>';
   var PNQ =
@@ -55,8 +67,10 @@
   /** @param {Line[]} list @param {"mr" | "en"} lang @param {string} pad */
   function lines(list, lang, pad) {
     return list
-      .map(function (/** @type {Line} */ x) {
-        return pad + "<p" + (x.rf ? ' class="rf"' : "") + (x.l ? ' data-l="' + x.l + '"' : "") + ">" + x[lang] + "</p>\n";
+      .map(function (/** @type {Line} */ x, /** @type {number} */ i) {
+        // who sings it (a text marked with who sings), and data-turn where a turn starts: the label goes there (CSS)
+        var who = x.who ? ' data-who="' + x.who + '"' + (i && list[i - 1].who === x.who ? "" : " data-turn") : "";
+        return pad + "<p" + (x.rf ? ' class="rf"' : "") + (x.l ? ' data-l="' + x.l + '"' : "") + who + ">" + x[lang] + "</p>\n";
       })
       .join("");
   }
@@ -155,6 +169,66 @@
       "    </div>\n"
     );
   }
+  /** A text marked with who sings (its lines carry who: js/text/content.js) @param {Piece} p */
+  function marked(p) {
+    return p.items.some(function (/** @type {Item} */ x) {
+      return (x.lines || []).some(function (/** @type {Line} */ l) {
+        return !!l.who;
+      });
+    });
+  }
+  /**
+   * A text marked with who sings: under its heading, solo or group, and in the group view the part this person sings
+   * (js/features/who-sings.js presses the buttons and keeps them up to date). Each row is named by its label.
+   * @param {Piece} p @param {Content} C
+   */
+  function singing(p, C) {
+    if (!marked(p)) return "";
+    var w = C.ui.who;
+    /** @param {string} k */
+    var word = function (k) {
+      return two({ mr: w.mr[k], en: w.en[k] }, "who." + k);
+    };
+    // each choice an icon and its word: on a phone only the chosen ones show their word (css/04-columns-rail.css), the
+    // same as the pill shown while the page scrolls (#tks, index.html), so the icons are learnt from either
+    /** @param {string} attr @param {string} k */
+    var button = function (attr, k) {
+      return (
+        '        <button type="button" data-' +
+        attr +
+        '="' +
+        k +
+        '" aria-pressed="false">' +
+        WHO_ICONS[k] +
+        '<span class="sw">' +
+        word(k) +
+        "</span></button>\n"
+      );
+    };
+    return (
+      '    <div class="sing">\n' +
+      '      <div class="sing-mode" role="group" aria-labelledby="sing-' +
+      p.id +
+      '">\n        <span class="vlab" id="sing-' +
+      p.id +
+      '">' +
+      word("sing") +
+      "</span>\n" +
+      button("sing", "solo") +
+      button("sing", "group") +
+      '      </div>\n      <div class="sing-part" role="group" aria-labelledby="part-' +
+      p.id +
+      '">\n        <span class="vlab" id="part-' +
+      p.id +
+      '">' +
+      word("part") +
+      "</span>\n" +
+      button("part", "lead") +
+      button("part", "chorus") +
+      "      </div>\n    </div>\n"
+    );
+  }
+
   /** @param {Piece} p @param {Piece | null} prev @param {Piece | null} next @param {Content} C */
   function piece(p, prev, next, C) {
     var ui = C.ui;
@@ -164,6 +238,7 @@
       '" class="ash' +
       (p.cls ? " " + p.cls : "") +
       (p.prose ? " prose" : "") +
+      (marked(p) ? " who" : "") +
       '"' +
       (p.lang ? ' lang="' + p.lang + '"' : "") +
       ">\n" +
@@ -179,7 +254,8 @@
       two(p.tag, "lang." + (p.lang || W.CONTENT.pageLanguage)) +
       "</div>\n" +
       "    </header>\n" +
-      versions(p, C);
+      versions(p, C) +
+      singing(p, C);
     // [once] lines and [note]s that come before the dhrupad at the top (js/text/content.js)
     if (p.lead) h += '    <div class="items lead">\n' + p.lead.map(item).join("") + "    </div>\n";
     if (p.refrain)
@@ -217,7 +293,7 @@
     if (q) {
       var got = JSON.parse(decodeURIComponent(q[2] || "") || "{}"),
         prefs = JSON.parse(localStorage.getItem("aarti2-prefs") || "{}");
-      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "ppr", "tr", "por"].forEach(function (k) {
+      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "ppr", "tr", "por", "sing"].forEach(function (k) {
         if (typeof got[k] === "string" || typeof got[k] === "number") prefs[k] = got[k];
       });
       // a first visit in Safari: these choices are already up to date, so the start-up changes for older settings

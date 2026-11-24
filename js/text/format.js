@@ -16,10 +16,17 @@
 // The words are kept exactly as written: nothing is trimmed, normalised or corrected. In a line, "¦" marks a
 // place where a long line may break (shown as a zero-width space) and " // " a place where it always breaks
 // (shown as a line break); toHtml() makes that change and toMarks() undoes it.
+//
+// Who sings (Satish, 2026-11-24: the bhajans as recorded, lead and chorus taking turns): "[lead]", "[chorus]" or
+// "[together]" between line pairs, like "[refrain]", says who sings the pairs after it, up to the next one. A text
+// with one has them throughout: every line pair after one in its own block, so no line is left unsaid. The words come
+// from viveka-model's checked words-as-sung (sung.json), written out with the site's own spelling.
 
 /**
- * @typedef {{ orig: string, en: string, rf: boolean }} TextLine
- *   one line pair as written in the file; rf: after [refrain] in its block (shown as a refrain line)
+ * @typedef {"lead" | "chorus" | "together"} Who   who sings a line: the lead singer, the chorus, or all of them
+ * @typedef {{ orig: string, en: string, rf: boolean, who?: Who }} TextLine
+ *   one line pair as written in the file; rf: after [refrain] in its block (shown as a refrain line); who: in a text
+ *   marked with who sings, after [lead], [chorus] or [together]
  * @typedef {{ mr: string, en: string }} Pair
  * @typedef {{ role: "author" | "attributed" | "compiled" | "source" | "traditional", who?: string, also?: string,
  *   detail?: Pair }} TextCredit
@@ -81,6 +88,8 @@ const REFRAINS = ["every-verse", "always", "none"];
 // an English line none, so a missing or swapped line is caught
 const INDIC = /[ऀ-෿᳐-᳿꣠-ꣿ]/;
 const ZWSP = "​";
+/** @type {Who[]} */
+export const WHO = ["lead", "chorus", "together"];
 
 /** "¦" → zero-width space, " // " → <br>, after & < > are written as HTML entities. */
 export function toHtml(/** @type {string} */ s) {
@@ -183,6 +192,9 @@ export function parseText(raw, name) {
   var orig = /** @type {string | null} */ (null),
     origAt = 0,
     rf = false,
+    /** @type {Who | null} */ who = null,
+    marked = 0,
+    unmarked = 0,
     stanzas = 0;
   /** @param {number} n */
   function close(n) {
@@ -203,11 +215,17 @@ export function parseText(raw, name) {
       rf = true;
       continue;
     }
+    if (h && WHO.indexOf(/** @type {Who} */ (h[1])) >= 0) {
+      if (!cur || cur.kind === "note" || orig !== null) fail(where, "[" + h[1] + "] goes inside a block, between line pairs");
+      who = /** @type {Who} */ (h[1]);
+      continue;
+    }
     if (h) {
       close(i);
       var b = h[1],
         s;
       rf = false;
+      who = null;
       if (b === "dhrupad") cur = { kind: "dhrupad", lines: [] };
       else if (b === "dhrupad bold") cur = { kind: "dhrupad", bold: true, lines: [] };
       else if (b === "dhrupad repeated") cur = { kind: "dhrupad-repeated", lines: [] };
@@ -230,11 +248,18 @@ export function parseText(raw, name) {
       origAt = i + 1;
     } else {
       if (INDIC.test(r)) fail(where, "expected the everyday English line here");
-      cur.lines.push({ orig: orig, en: r, rf: rf });
+      /** @type {TextLine} */
+      var tl = { orig: orig, en: r, rf: rf };
+      if (who) {
+        tl.who = who;
+        marked++;
+      } else unmarked++;
+      cur.lines.push(tl);
       orig = null;
     }
   }
   close(rows.length);
+  if (marked && unmarked) fail(file, "a text marked with who sings has [lead], [chorus] or [together] before the first line pair of every block");
 
   // How the blocks fit the refrain pattern
   /** @type {Block[]} */
@@ -298,11 +323,15 @@ export function formatText(t) {
     else if (b.kind === "once") out.push("[once]");
     else if (b.kind === "note") out.push("[note: " + (b.note && b.note.mr) + " | " + (b.note && b.note.en) + "]");
     else out.push("[" + (b.para ? "para " : "") + b.n + "]");
-    var inRf = false;
+    var inRf = false,
+      who = "";
     b.lines.forEach(function (l) {
       if (l.rf && !inRf) out.push("[refrain]");
       if (!l.rf && inRf) throw new Error(t.id + ": a refrain line can only be followed by refrain lines in its block");
       inRf = l.rf;
+      // who sings, where it changes (a block starts afresh)
+      if (l.who && l.who !== who) out.push("[" + l.who + "]");
+      who = l.who || "";
       out.push(l.orig, l.en);
     });
   });

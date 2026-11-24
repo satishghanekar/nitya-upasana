@@ -127,8 +127,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // wait given a limit, js/core/net.js, and their words in five languages, 442.3 KB then; 451 KB since 2026-11-21:
   // About's Check Follow on this phone, js/features/follow-check.js, in five languages, 450 KB then; 454 KB since
   // 2026-11-21: the welcome as two steps, the first reading language and the routines' times, in five languages, 452.2 KB
-  // then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(454_000);
+  // then; 458 KB since 2026-11-24: who sings, js/features/who-sings.js, the switch and the turns' words in five
+  // languages, 456.3 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(458_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -153,8 +154,11 @@ test("the scripts, styles and page stay within their size budget", () => {
   // 2026-11-19: the install page, its steps and the arrow at the browser's button, 89.8 KB then; 92 KB since 2026-11-19:
   // the launch animation, 91.3 KB then; 92.5 KB since 2026-11-20: About's fast mode report row, 92.2 KB then; 93.5 KB since 2026-11-20:
   // About's Keep on this phone switch, Using memory now and the pop-up that asks first, 92.9 KB then; 94.5 KB since
-  // 2026-11-21: the welcome as two full-screen steps, 94.1 KB then)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(94_500);
+  // 2026-11-21: the welcome as two full-screen steps, 94.1 KB then; 96 KB since 2026-11-24: who sings, the switch under
+  // the heading and the group view's turns on phone, tablet and side by side, and their printout, 95.8 KB with them on a
+  // Mac, 96.25 KB on GitHub's: 96.5 KB; 98 KB since 2026-11-24 too: the pill shown while the page scrolls as the singing
+  // choices, the Reading sheet's rows and one row of icons under the heading, 97.07 KB then on a Mac)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(98_000);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
   // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then; 33 KB since
@@ -165,8 +169,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // and Help on it, 34.16 KB then; 35 KB since 2026-11-20: the About tab, How Follow went, and the copyright line,
   // 34.54 KB then; 35.5 KB since 2026-11-20: the maker's line with Contact and Terms of use, and the Terms dialog,
   // 35.05 KB then; 36 KB since 2026-11-20: About's Keep on this phone and Using memory now rows, and the pop-up that asks
-  // first, 35.59 KB then; 36.5 KB since 2026-11-21: the welcome's two steps and Help on them, 36.2 KB then)
-  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(36_500);
+  // first, 35.59 KB then; 36.5 KB since 2026-11-21: the welcome's two steps and Help on them, 36.2 KB then; 37.5 KB since
+  // 2026-11-24: who sings, the pill's singing choices with their drawings and the Reading sheet's rows, 36.65 KB then)
+  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(37_500);
 });
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):

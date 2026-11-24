@@ -5,72 +5,120 @@ language: hi
 stanza-numbers: as-written
 credit: author tulsidas
 recording: [Jagjit Singh](https://www.youtube.com/watch?v=aASYnk-eaXI&t=15)
-lines: 24
+lines: 37
 letters: 786
 ---
 [1]
-गाइये गणपति जगवंदन, ¦गाइये गणपति जगवंदन
-Gaiye Ganapati Jagavandan, ¦Gaiye Ganapati Jagavandan
-गाइये गणपति जगवंदन, ¦गाइये गणपति जगवंदन ॥
-Gaiye Ganapati Jagavandan, ¦Gaiye Ganapati Jagavandan ||
+[lead]
+गाइये गणपति जगवंदन
+Gaiye Ganapati Jagavandan
+[chorus]
+गाइये गणपति जगवंदन
+Gaiye Ganapati Jagavandan
+[lead]
+गाइये गणपति जगवंदन
+Gaiye Ganapati Jagavandan
+[chorus]
+गाइये गणपति जगवंदन ॥
+Gaiye Ganapati Jagavandan ||
 
 [2]
-शंकर सुवन भवानी नंदन, ¦शंकर सुवन भवानी नंदन
-Shankar Suvan Bhavani Nandan, ¦Shankar Suvan Bhavani Nandan
-शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन ॥
-Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan ||
+[lead]
+शंकर सुवन भवानी नंदन
+Shankar Suvan Bhavani Nandan
+[chorus]
+शंकर सुवन भवानी नंदन
+Shankar Suvan Bhavani Nandan
+[lead]
+शंकर सुवन भवानी नंदन
+Shankar Suvan Bhavani Nandan
+[together]
+गाइये गणपति जगवंदन ॥
+Gaiye Ganapati Jagavandan ||
 
 [3]
-सिद्धि सदन गज वदन विनायक, ¦सिद्धि सदन गज वदन विनायक
-Siddhi Sadan Gaj Vadan Vinayak, ¦Siddhi Sadan Gaj Vadan Vinayak
-सिद्धि सदन गज वदन विनायक, ¦सिद्धि सदन गज वदन विनायक
-Siddhi Sadan Gaj Vadan Vinayak, ¦Siddhi Sadan Gaj Vadan Vinayak
-कृपा सिंधु सुंदर सब लायक, ¦कृपा सिंधु सुंदर सब लायक ॥
-Krupa Sindhu Sundar Sab Layak, ¦Krupa Sindhu Sundar Sab Layak ||
+[lead]
+सिद्धि सदन गज वदन विनायक
+Siddhi Sadan Gaj Vadan Vinayak
+[chorus]
+सिद्धि सदन गज वदन विनायक
+Siddhi Sadan Gaj Vadan Vinayak
+[lead]
+सिद्धि सदन गज वदन विनायक
+Siddhi Sadan Gaj Vadan Vinayak
+[chorus]
+सिद्धि सदन गज वदन विनायक
+Siddhi Sadan Gaj Vadan Vinayak
+[lead]
+कृपा सिंधु सुंदर सब लायक
+Krupa Sindhu Sundar Sab Layak
+[chorus]
+कृपा सिंधु सुंदर सब लायक
+Krupa Sindhu Sundar Sab Layak
+[lead]
+शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन
+Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan
+[together]
+गाइये गणपति जगवंदन
+Gaiye Ganapati Jagavandan
+शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन ॥
+Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan ||
 
 [4]
+[lead]
+मोदक प्रिय मुद मंगल दाता
+Modak Priya Mud Mangal Data
+[chorus]
+मोदक प्रिय मुद मंगल दाता
+Modak Priya Mud Mangal Data
+[lead]
+मोदक प्रिय मुद मंगल दाता
+Modak Priya Mud Mangal Data
+[chorus]
+मोदक प्रिय मुद मंगल दाता
+Modak Priya Mud Mangal Data
+[lead]
+विद्या वारिधि बुद्धि विधाता
+Vidya Varidhi Buddhi Vidhata
+[chorus]
+विद्या वारिधि बुद्धि विधाता
+Vidya Varidhi Buddhi Vidhata
+[lead]
 शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन
 Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan
-गाइये गणपति जगवंदन ॥
-Gaiye Ganapati Jagavandan ||
+[chorus]
+गाइये गणपति जगवंदन
+Gaiye Ganapati Jagavandan
+[together]
+शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन ॥
+Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan ||
 
 [5]
-शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन ॥
-Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan ||
-
-[6]
-मोदक प्रिय मुद मंगल दाता, ¦मोदक प्रिय मुद मंगल दाता
-Modak Priya Mud Mangal Data, ¦Modak Priya Mud Mangal Data
-मोदक प्रिय मुद मंगल दाता, ¦मोदक प्रिय मुद मंगल दाता
-Modak Priya Mud Mangal Data, ¦Modak Priya Mud Mangal Data
-विद्या वारिधि बुद्धि विधाता, ¦विद्या वारिधि बुद्धि विधाता ॥
-Vidya Varidhi Buddhi Vidhata, ¦Vidya Varidhi Buddhi Vidhata ||
-
-[7]
+[lead]
+मांगत तुलसीदास कर जोरे
+Mangat Tulasidas Kar Jore
+[chorus]
+मांगत तुलसीदास कर जोरे
+Mangat Tulasidas Kar Jore
+[lead]
+मांगत तुलसीदास कर जोरे
+Mangat Tulasidas Kar Jore
+[chorus]
+मांगत तुलसीदास कर जोरे
+Mangat Tulasidas Kar Jore
+[lead]
+बसहु राम सिय मानस मोरे
+Basahu Ram Siy Manas More
+[chorus]
+बसहु राम सिय मानस मोरे
+Basahu Ram Siy Manas More
+[lead]
 शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन
 Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan
-गाइये गणपति जगवंदन ॥
-Gaiye Ganapati Jagavandan ||
-
-[8]
-शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन ॥
-Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan ||
-
-[9]
-मांगत तुलसीदास कर जोरे, ¦मांगत तुलसीदास कर जोरे
-Mangat Tulasidas Kar Jore, ¦Mangat Tulasidas Kar Jore
-मांगत तुलसीदास कर जोरे, ¦मांगत तुलसीदास कर जोरे
-Mangat Tulasidas Kar Jore, ¦Mangat Tulasidas Kar Jore
-बसहु राम सिय मानस मोरे, ¦बसहु राम सिय मानस मोरे ॥
-Basahu Ram Siy Manas More, ¦Basahu Ram Siy Manas More ||
-
-[10]
-शंकर सुवन भवानी नंदन, ¦गाइये गणपति जगवंदन
-Shankar Suvan Bhavani Nandan, ¦Gaiye Ganapati Jagavandan
-गाइये गणपति जगवंदन ॥
-Gaiye Ganapati Jagavandan ||
-
-[11]
+[chorus]
+गाइये गणपति जगवंदन
+Gaiye Ganapati Jagavandan
+[together]
 शंकर सुवन भवानी नंदन, ¦शंकर सुवन भवानी नंदन
 Shankar Suvan Bhavani Nandan, ¦Shankar Suvan Bhavani Nandan
 गाइये गणपति जगवंदन, ¦गाइये गणपति जगवंदन

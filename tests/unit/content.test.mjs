@@ -43,7 +43,8 @@ describe("CONTENT from the text files", () => {
     // and in the same key order, so even the order the page meets things in is unchanged
     expect(JSON.stringify(same)).toBe(JSON.stringify(OLD_PIECES));
     // (with the version switch's label since 2026-11-15)
-    const { version, ...ui } = C.ui; // eslint-disable-line no-unused-vars
+    // (and the who-sings words since 2026-11-24)
+    const { version, who, ...ui } = C.ui; // eslint-disable-line no-unused-vars
     expect(ui).toStrictEqual(OLD.ui);
   });
   // (60 <br>: the Vitthal Aarti's dhrupad breaks after its first half in English and at the top too, Satish 2026-10-23)
@@ -80,6 +81,17 @@ describe("CONTENT from the text files", () => {
     const p = toPiece(parseText(head + "[dhrupad]\nख\nKh\n\n[1]\nग\nG\n\n[dhrupad bold]\nघ\nGh\n"), 1);
     expect(p.items.map((i) => i.kind || (i.rmk ? "rmk" : "stanza"))).toEqual(["stanza", "rmk", "rf", "dh"]);
     expect(p.items[3]).toEqual({ kind: "dh", bold: true, lines: [{ l: "x.3", mr: "घ", en: "Gh" }] });
+  });
+  // who sings (2026-11-24): each line carries its singer, after rf, also in the dhrupad sung again after a stanza
+  test("who sings: each line carries who sings it, the dhrupad sung again too", () => {
+    const head = "id: x\ntitle: क\ntitle-en: K\nlanguage: mr\nrefrain: every-verse\n---\n";
+    const p = toPiece(parseText(head + "[dhrupad]\n[lead]\nख\nKh\n[chorus]\nख\nKh\n\n[1]\n[lead]\nग\nG\n[together]\nघ\nGh\n"), 1);
+    expect(p.items[0].lines).toEqual([
+      { l: "x.1", who: "lead", mr: "ग", en: "G" },
+      { l: "x.2", who: "together", mr: "घ", en: "Gh" },
+    ]);
+    expect(p.items[2].lines.map((l) => l.who)).toEqual(["lead", "chorus"]);
+    expect(JSON.stringify(p.items[2].lines[0])).toBe('{"l":"x.3","rf":true,"who":"lead","mr":"ख","en":"Kh"}');
   });
   // with no dhrupad: [once] lines at the top go above the text (lead), later ones stand where they are
   test("no dhrupad: [once] lines at the top lead, later ones stand where they are", () => {

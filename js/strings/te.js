@@ -1093,6 +1093,17 @@ export default {
     refrainWord: "ధ్రువపదం",
     refrainHow: "(ప్రతి చరణం తర్వాత పాడండి)",
     version: "పాఠభేదం",
+    // who sings, in a text marked with it: the switch under the heading (solo or group), the part this person sings,
+    // and each turn's label (js/features/who-sings.js)
+    who: {
+      sing: "గానం",
+      solo: "సోలో",
+      group: "బృందం",
+      part: "నా భాగం",
+      lead: "గాయకుడు",
+      chorus: "కోరస్",
+      together: "అందరూ",
+    },
     refrainNote: "↻ ధ్రువపదం",
     prev: "మునుపటి",
     next: "తరువాతి",
