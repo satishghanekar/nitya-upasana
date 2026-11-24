@@ -5,111 +5,150 @@ language: mr
 stanza-numbers: as-written
 credit: traditional
 recording: [Jagjit Singh](https://www.youtube.com/watch?v=2zOJ9aZR-08&t=10)
-lines: 46
-letters: 1374
+lines: 45
+letters: 1343
 ---
 [1]
+[lead]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया
 Ganapati Bappa Morya, ¦Mangal Murti Morya
+[chorus]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया
 Ganapati Bappa Morya, ¦Mangal Murti Morya
+[lead]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया
 Ganapati Bappa Morya, ¦Mangal Murti Morya
+[chorus]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया ॥
 Ganapati Bappa Morya, ¦Mangal Murti Morya ||
 
 [2]
+[lead]
 सिद्धिविनायक मोरया, ¦गिरजानंदन मोरया
 Siddhivinayak Morya, ¦Girajanandan Morya
+[chorus]
 सिद्धिविनायक मोरया, ¦गिरजानंदन मोरया
 Siddhivinayak Morya, ¦Girajanandan Morya
+[lead]
 सिद्धिविनायक मोरया, ¦गिरजानंदन मोरया
 Siddhivinayak Morya, ¦Girajanandan Morya
+[chorus]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया
 Ganapati Bappa Morya, ¦Mangal Murti Morya
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया ॥
 Ganapati Bappa Morya, ¦Mangal Murti Morya ||
 
 [3]
+[lead]
 एक दंत जय मोरया, ¦गौरी सुत मोरया
 Ek Dant Jay Morya, ¦Gauri Sut Morya
+[chorus]
 एक दंत जय मोरया, ¦गौरी सुत मोरया
 Ek Dant Jay Morya, ¦Gauri Sut Morya
+[lead]
 एक दंत जय मोरया, ¦गौरी सुत मोरया
 Ek Dant Jay Morya, ¦Gauri Sut Morya
+[chorus]
 एक दंत जय मोरया, ¦गौरी सुत मोरया
 Ek Dant Jay Morya, ¦Gauri Sut Morya
+[lead]
 जय लंबोदर मोरया, ¦अग्र देव जय मोरया
 Jay Lambodar Morya, ¦Agra Dev Jay Morya
+[chorus]
 जय लंबोदर मोरया, ¦अग्र देव जय मोरया
 Jay Lambodar Morya, ¦Agra Dev Jay Morya
+[lead]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया
 Ganapati Bappa Morya, ¦Mangal Murti Morya
+[chorus]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया ॥
 Ganapati Bappa Morya, ¦Mangal Murti Morya ||
 
 [4]
+[lead]
 विघ्न विनाशक मोरया, ¦जय धुमेश्वर मोरया
 Vighna Vinashak Morya, ¦Jay Dhumeshvar Morya
+[chorus]
 विघ्न विनाशक मोरया, ¦जय धुमेश्वर मोरया
 Vighna Vinashak Morya, ¦Jay Dhumeshvar Morya
+[lead]
 विघ्न विनाशक मोरया, ¦जय धुमेश्वर मोरया
 Vighna Vinashak Morya, ¦Jay Dhumeshvar Morya
+[chorus]
 विघ्न विनाशक मोरया, ¦जय धुमेश्वर मोरया
 Vighna Vinashak Morya, ¦Jay Dhumeshvar Morya
+[lead]
 गजानना जय मोरया, ¦विद्या वारिधी मोरया
 Gajanana Jay Morya, ¦Vidya Varidhi Morya
+[chorus]
 गजानना जय मोरया, ¦विद्या वारिधी मोरया
 Gajanana Jay Morya, ¦Vidya Varidhi Morya
+[lead]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया
 Ganapati Bappa Morya, ¦Mangal Murti Morya
+[chorus]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया ॥
 Ganapati Bappa Morya, ¦Mangal Murti Morya ||
 
 [5]
+[lead]
 सुख कर्ता जय मोरया, ¦दुख हरता जय मोरया
 Sukh Karta Jay Morya, ¦Dukh Harata Jay Morya
+[chorus]
 सुख कर्ता जय मोरया, ¦दुख हरता जय मोरया
 Sukh Karta Jay Morya, ¦Dukh Harata Jay Morya
+[lead]
 सुख कर्ता जय मोरया, ¦दुख हरता जय मोरया
 Sukh Karta Jay Morya, ¦Dukh Harata Jay Morya
+[chorus]
 सुख कर्ता जय मोरया, ¦दुख हरता जय मोरया
 Sukh Karta Jay Morya, ¦Dukh Harata Jay Morya
+[lead]
 कृपा सिंधु जय मोरया, ¦बुद्धी विधाता मोरया
 Krupa Sindhu Jay Morya, ¦Buddhi Vidhata Morya
+[chorus]
 कृपा सिंधु जय मोरया, ¦बुद्धी विधाता मोरया
 Krupa Sindhu Jay Morya, ¦Buddhi Vidhata Morya
+[lead]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया
 Ganapati Bappa Morya, ¦Mangal Murti Morya
+[chorus]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया ॥
 Ganapati Bappa Morya, ¦Mangal Murti Morya ||
 
 [6]
+[lead]
 भवानी नंदन मोरया, ¦जय शिव नंदन मोरया
 Bhavani Nandan Morya, ¦Jay Shiv Nandan Morya
+[chorus]
 भवानी नंदन मोरया, ¦जय शिव नंदन मोरया
 Bhavani Nandan Morya, ¦Jay Shiv Nandan Morya
+[lead]
 भवानी नंदन मोरया, ¦जय शिव नंदन मोरया
 Bhavani Nandan Morya, ¦Jay Shiv Nandan Morya
+[chorus]
 भवानी नंदन मोरया, ¦जय शिव नंदन मोरया
 Bhavani Nandan Morya, ¦Jay Shiv Nandan Morya
+[lead]
 जय मोदक प्रिया मोरया, ¦अष्टविनायक मोरया
 Jay Modak Priya Morya, ¦Ashtavinayak Morya
+[chorus]
 जय मोदक प्रिया मोरया, ¦अष्टविनायक मोरया
 Jay Modak Priya Morya, ¦Ashtavinayak Morya
+[lead]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया
 Ganapati Bappa Morya, ¦Mangal Murti Morya
-गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया ॥
-Ganapati Bappa Morya, ¦Mangal Murti Morya ||
-
-[7]
+[chorus]
+गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया
+Ganapati Bappa Morya, ¦Mangal Murti Morya
+[lead]
 सिद्धिविनायक मोरया, ¦गिरजानंदन मोरया
 Siddhivinayak Morya, ¦Girajanandan Morya
-सिद्धिविनायक मोरया, ¦गिरजानंदन मोरया
-Siddhivinayak Morya, ¦Girajanandan Morya
+[chorus]
 सिद्धिविनायक मोरया, ¦गिरजानंदन मोरया
 Siddhivinayak Morya, ¦Girajanandan Morya
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया
 Ganapati Bappa Morya, ¦Mangal Murti Morya
+[lead]
 गणपती बाप्पा मोरया, ¦मंगल मूर्ती मोरया ॥
 Ganapati Bappa Morya, ¦Mangal Murti Morya ||

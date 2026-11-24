@@ -5,62 +5,104 @@ language: hi
 stanza-numbers: as-written
 credit: traditional
 recording: [Jagjit Singh](https://www.youtube.com/watch?v=mt-vSIgsaxU&t=15)
-lines: 25
-letters: 886
+lines: 32
+letters: 897
 ---
 [1]
+[lead]
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+[chorus]
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+[lead]
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+[chorus]
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना ॥
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana ||
 
 [2]
-रिद्धि सिद्धि के दाता तुम हो, ¦रिद्धि सिद्धि के दाता तुम हो
-Riddhi Siddhi Ke Data Tum Ho, ¦Riddhi Siddhi Ke Data Tum Ho
-रिद्धि सिद्धि के दाता तुम हो, ¦रिद्धि सिद्धि के दाता तुम हो
-Riddhi Siddhi Ke Data Tum Ho, ¦Riddhi Siddhi Ke Data Tum Ho
-हे शशि शेखर नंदना
-He Shashi Shekhar Nandana
+[lead]
+रिद्धि सिद्धि के दाता तुम हो
+Riddhi Siddhi Ke Data Tum Ho
+[chorus]
+रिद्धि सिद्धि के दाता तुम हो
+Riddhi Siddhi Ke Data Tum Ho
+[lead]
+रिद्धि सिद्धि के दाता तुम हो, ¦हे शशि शेखर नंदना
+Riddhi Siddhi Ke Data Tum Ho, ¦He Shashi Shekhar Nandana
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+[chorus]
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना ॥
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana ||
 
 [3]
-जो ध्यावे वांछित फल पावे, ¦जो ध्यावे वांछित फल पावे
-Jo Dhyave Vanchhit Phal Pave, ¦Jo Dhyave Vanchhit Phal Pave
-जो ध्यावे वांछित फल पावे, ¦जो ध्यावे वांछित फल पावे
-Jo Dhyave Vanchhit Phal Pave, ¦Jo Dhyave Vanchhit Phal Pave
-अग्र देव तुम्हे वंदना, ¦अग्र देव तुम्हे वंदना
-Agra Dev Tumhe Vandana, ¦Agra Dev Tumhe Vandana
+[lead]
+जो ध्यावे वांछित फल पावे
+Jo Dhyave Vanchhit Phal Pave
+[chorus]
+जो ध्यावे वांछित फल पावे
+Jo Dhyave Vanchhit Phal Pave
+[lead]
+जो ध्यावे वांछित फल पावे
+Jo Dhyave Vanchhit Phal Pave
+[chorus]
+जो ध्यावे वांछित फल पावे
+Jo Dhyave Vanchhit Phal Pave
+[lead]
+अग्र देव तुम्हे वंदना
+Agra Dev Tumhe Vandana
+[chorus]
+अग्र देव तुम्हे वंदना
+Agra Dev Tumhe Vandana
+[lead]
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+[chorus]
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+[lead]
 रिद्धि सिद्धि के दाता तुम हो, ¦हे शशि शेखर नंदना
 Riddhi Siddhi Ke Data Tum Ho, ¦He Shashi Shekhar Nandana
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+[chorus]
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना ॥
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana ||
 
 [4]
-काम क्रोध मद लोभ आदि हारो, ¦काम क्रोध मद लोभ आदि हारो
-Kam Krodh Mad Lobh Adi Haro, ¦Kam Krodh Mad Lobh Adi Haro
-काम क्रोध मद लोभ आदि हारो, ¦काम क्रोध मद लोभ आदि हारो
-Kam Krodh Mad Lobh Adi Haro, ¦Kam Krodh Mad Lobh Adi Haro
-निर विकार निर्मल मना, ¦निर विकार निर्मल मना
-Nir Vikar Nirmal Mana, ¦Nir Vikar Nirmal Mana
+[lead]
+काम क्रोध मद लोभ आदि हारो
+Kam Krodh Mad Lobh Adi Haro
+[chorus]
+काम क्रोध मद लोभ आदि हारो
+Kam Krodh Mad Lobh Adi Haro
+[lead]
+काम क्रोध मद लोभ आदि हारो
+Kam Krodh Mad Lobh Adi Haro
+[chorus]
+काम क्रोध मद लोभ आदि हारो
+Kam Krodh Mad Lobh Adi Haro
+[lead]
+निर विकार निर्मल मना
+Nir Vikar Nirmal Mana
+[chorus]
+निर विकार निर्मल मना
+Nir Vikar Nirmal Mana
+[lead]
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+[chorus]
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
+[lead]
 रिद्धि सिद्धि के दाता तुम हो, ¦हे शशि शेखर नंदना
 Riddhi Siddhi Ke Data Tum Ho, ¦He Shashi Shekhar Nandana
+[together]
+वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
+Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना
 Vande Ganapati Vighnavinashan, ¦He Lambodar Gajanana
 वंदे गणपती विघ्नविनाशन, ¦हे लंबोदर गजानना ॥
