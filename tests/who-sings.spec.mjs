@@ -157,6 +157,38 @@ test("while the page scrolls, the pill is the singing choices: one tap to switch
   await expect(page.locator("#tkb")).toBeVisible();
 });
 
+// A computer's bars never tuck: once the heading has gone under the top bar, the singing pill shows under it, over the
+// text's column
+test("on a computer the singing pill shows under the top bar once the heading has scrolled away @chromium-only", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSite(page, SETUPS.marathi);
+  await readText(page, VANDE);
+  await expect(page.locator("html")).toHaveAttribute("data-rail", "1");
+  await page.locator(`#${VANDE} header`).scrollIntoViewIfNeeded();
+  await page.evaluate(() => scrollTo(0, 0));
+  await page.evaluate((id) => document.getElementById(id).scrollIntoView(), VANDE);
+  await expect(page.locator("#tks")).toBeHidden();
+  await page.evaluate(() => scrollBy(0, 700));
+  await expect(page.locator("html")).toHaveAttribute("data-who-pin", "");
+  const pill = page.locator("#tks");
+  await expect(pill).toBeVisible();
+  await expect(page.locator("#tkb")).toBeHidden();
+  const [p, col, bar] = await page.evaluate(
+    (id) => [
+      document.getElementById("tks").getBoundingClientRect().toJSON(),
+      document.getElementById(id).getBoundingClientRect().toJSON(),
+      document.querySelector("body > .bar").getBoundingClientRect().toJSON(),
+    ],
+    VANDE,
+  );
+  // under the top bar, and centred over the text, not the whole screen
+  expect(p.top).toBeGreaterThanOrEqual(bar.bottom - 1);
+  expect(Math.abs(p.left + p.width / 2 - (col.left + col.width / 2))).toBeLessThan(40);
+  await pill.getByRole("button", { name: "Solo" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-sing", "solo");
+  if (process.env.WHO_SHOTS) await page.screenshot({ path: `${process.env.WHO_SHOTS}/computer-pinned.png` });
+});
+
 test("the Reading sheet has the singing choices in a marked text only @chromium-only", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await readText(page, VANDE);

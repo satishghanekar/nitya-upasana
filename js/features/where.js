@@ -208,6 +208,9 @@ export function whereMark(c, onText, l, title) {
   // the text being read is marked with who sings (js/features/who-sings.js): while the page scrolls, its singing choices
   // take the pill's place (in a session, Go to keeps its "५ / ८" at the end), and the Reading sheet shows them
   if (root.hasAttribute("data-who-here") !== !!(c && c.classList.contains("who"))) root.toggleAttribute("data-who-here");
+  // and once its heading has gone under the top bar: a computer, whose bars never tuck, then shows the singing pill
+  // under its top bar (css/07-bottom-bar-folds.css), the choices under the heading being out of sight
+  if (root.hasAttribute("data-who-pin") !== !!(c && onText && c.classList.contains("who"))) root.toggleAttribute("data-who-pin");
   var s = c ? session() : null,
     long = !!(c && outlines[c.id]),
     on = !!(c && onText && (long || s)),

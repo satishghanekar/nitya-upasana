@@ -1335,3 +1335,25 @@ html[data-sing="solo"] .rs-part {
   height: 14px;
   background: linear-gradient(var(--bg), transparent);
 }
+
+/* ==== Who sings on a computer (the wide layout, data-rail): its bars never tuck, so the pill never showed there; once a
+   marked text's heading has gone under the top bar (data-who-pin, js/features/where.js) the singing pill shows under
+   the top bar, centred over the text's column (--L, --S, --W: css/04-columns-rail.css), on its band. Go to's pill
+   stays a phone's and a tablet's. ==== */
+@media screen and (min-width: 1024px) and (orientation: landscape) {
+  html[data-rail="1"][data-who-here][data-who-pin]:not([data-home="1"], [data-tuck="1"]) #tuck {
+    visibility: visible;
+    top: 72px;
+    left: calc(var(--L) + var(--S));
+    right: auto;
+    width: var(--W);
+    box-sizing: border-box;
+  }
+  /* (only the singing pill: the bars are not tucked, so Go to's pill is not wanted beside it) */
+  html[data-rail="1"][data-who-here][data-who-pin]:not([data-home="1"], [data-tuck="1"]) #tkb {
+    display: none;
+  }
+  html[data-rail="1"][data-who-here][data-who-pin]:not([data-home="1"], [data-tuck="1"]) #tuck::before {
+    top: -8px;
+  }
+}
