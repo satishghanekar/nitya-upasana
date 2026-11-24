@@ -169,8 +169,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // and Help on it, 34.16 KB then; 35 KB since 2026-11-20: the About tab, How Follow went, and the copyright line,
   // 34.54 KB then; 35.5 KB since 2026-11-20: the maker's line with Contact and Terms of use, and the Terms dialog,
   // 35.05 KB then; 36 KB since 2026-11-20: About's Keep on this phone and Using memory now rows, and the pop-up that asks
-  // first, 35.59 KB then; 36.5 KB since 2026-11-21: the welcome's two steps and Help on them, 36.2 KB then)
-  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(36_500);
+  // first, 35.59 KB then; 36.5 KB since 2026-11-21: the welcome's two steps and Help on them, 36.2 KB then; 37.5 KB since
+  // 2026-11-24: who sings, the pill's singing choices with their drawings and the Reading sheet's rows, 36.65 KB then)
+  expect(gz(["index.html"]), "index.html, gzip bytes").toBeLessThanOrEqual(37_500);
 });
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):

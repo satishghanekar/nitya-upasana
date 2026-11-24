@@ -1314,3 +1314,27 @@ html:not([data-who-here]) .rs-who,
 html[data-sing="solo"] .rs-part {
   display: none;
 }
+
+/* ==== The pill's band (Satish, 2026-11-24: "I don't see text scrolling underneath it"): while the bars are tucked the
+   pill sits on a band of the page's own colour, from the top of the screen to just under the pill, so the lines go out
+   of sight behind it instead of showing round it; a short fade under it, so they slide away rather than being cut.
+   Behind the pill (inside #tuck's own layer) and taking no taps, as #tuck takes none. ==== */
+#tuck::before,
+#tuck::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+#tuck::before {
+  top: calc(-1 * (env(safe-area-inset-top, 0px) + 12px));
+  bottom: -8px;
+  background: var(--bg);
+}
+#tuck::after {
+  top: calc(100% + 8px);
+  height: 14px;
+  background: linear-gradient(var(--bg), transparent);
+}

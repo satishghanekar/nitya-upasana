@@ -140,6 +140,12 @@ test("while the page scrolls, the pill is the singing choices: one tap to switch
   await pill.getByRole("button", { name: "Solo" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-sing", "solo");
   await expect(pill.getByRole("group", { name: "My part" })).toBeHidden();
+  // the pill sits on a band of the page's colour, so the lines don't show round it
+  const band = await page.evaluate(() => {
+    const b = getComputedStyle(document.getElementById("tuck"), "::before");
+    return { bg: b.backgroundColor, page: getComputedStyle(document.body).backgroundColor, top: document.getElementById("tuck").getBoundingClientRect().top };
+  });
+  expect(band.bg).toBe(band.page);
   // every choice is a 44 px target
   for (const b of await pill.getByRole("button").all()) if (await b.isVisible()) expect((await b.boundingBox()).height).toBeGreaterThanOrEqual(44);
   // a text without the marks: its name, as before
