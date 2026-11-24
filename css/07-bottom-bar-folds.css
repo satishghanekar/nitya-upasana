@@ -1344,7 +1344,8 @@ html[data-sing="solo"] .rs-part {
   html[data-rail="1"][data-who-here][data-who-pin]:not([data-home="1"], [data-tuck="1"]) #tuck {
     visibility: visible;
     top: 72px;
-    left: calc(var(--L) + var(--S));
+    /* (Sankathara Chaturthi's column starts 260px after --L: it has no --S) */
+    left: calc(var(--L) + var(--S, 260px));
     right: auto;
     width: var(--W);
     box-sizing: border-box;
