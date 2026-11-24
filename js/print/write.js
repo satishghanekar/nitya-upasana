@@ -196,7 +196,7 @@ export function createWriter(o) {
   }
   // The lines of a part (a stanza, the dhrupad, a line said once) in a language: each as written, with the stanza
   // number the page adds; a dhrupad line inside a stanza only when the dhrupad is said after every verse
-  /** @param {HTMLElement} u @param {string} k @returns {{ html: string, rf: boolean }[]} */
+  /** @param {HTMLElement} u @param {string} k @returns {{ html: string, rf: boolean, who: string, turn: boolean }[]} */
   function linesOf(u, k) {
     var v = u.querySelector(".verse");
     if (!v) return [];
@@ -207,8 +207,46 @@ export function createWriter(o) {
         return pref() !== 1 || !p.classList.contains("rf") || !!u.closest(".norf");
       })
       .map(function (/** @type {HTMLElement} */ p) {
-        return { html: p.innerHTML, rf: p.classList.contains("rf") || u.classList.contains("rf") };
+        // who sings it, in a text marked with who sings and printed as the group sings it (whoOn), and where a turn starts
+        return {
+          html: p.innerHTML,
+          rf: p.classList.contains("rf") || u.classList.contains("rf"),
+          who: whoOn ? p.getAttribute("data-who") || "" : "",
+          turn: p.hasAttribute("data-turn"),
+        };
       });
+  }
+  // Who sings, on paper (Satish, 2026-11-24): a text marked with it, printed while the page shows the group view
+  // (P.sing), prints as the page does: a key under the title, a chorus line stepped in with a rule, together labelled
+  // where its turn starts (css/15-print.css). whoOn: the text being written is one
+  var whoOn = false;
+  /** the who-sings words in a language printed (the original's in its letters' own language) @param {string} k */
+  function whoWords(k) {
+    /** @type {any} */
+    var C = /** @type {any} */ (window).CONTENT;
+    return k === "en" ? C.ui.who.en : (C.text && C.text[P.ind] && C.text[P.ind].who) || C.ui.who.mr;
+  }
+  /** together's label at the start of a line where its turn starts @param {HTMLElement} el @param {any} l @param {string} k */
+  function whoLabel(el, l, k) {
+    if (l.who !== "together" || !l.turn) return;
+    var t = mk("span", "pvtog");
+    t.textContent = whoWords(k).together;
+    el.insertBefore(document.createTextNode(" "), el.firstChild);
+    el.insertBefore(t, el.firstChild);
+  }
+  /** The key under the title: the lead's word, the chorus's with its rule, together's label @param {string} k */
+  function whoKey(k) {
+    var w = whoWords(k),
+      key = inLang("p", "pvwkey", k, "");
+    [
+      ["", w.lead],
+      ["pvwk-chorus", w.chorus],
+      ["pvtog", w.together],
+    ].forEach(function (x) {
+      var s = key.appendChild(mk("span", x[0]));
+      s.textContent = x[1];
+    });
+    return key;
   }
   // how a part prints: the dhrupad at the top and a [dhrupad bold] block bold, a repeated dhrupad lighter
   /** @param {HTMLElement} u */
@@ -235,8 +273,9 @@ export function createWriter(o) {
       // the dhrupad at the top: its lines in a box as wide as they are, the line beside it hugging them (.pvrefin)
       var top = u.classList.contains("rftop") ? st.appendChild(mk("div", "pvrefin")) : st;
       linesOf(u, k).forEach(function (l) {
-        var p = inLang("p", "pvl" + (l.rf ? " pvrf" : ""), k, l.html);
+        var p = inLang("p", "pvl" + (l.rf ? " pvrf" : "") + (l.who ? " pvw-" + l.who : ""), k, l.html);
         glue(p);
+        whoLabel(p, l, k);
         (l.rf && !look(u) ? rf : top).appendChild(p);
       });
       if (top !== st && !top.firstChild) st.removeChild(top);
@@ -368,10 +407,26 @@ export function createWriter(o) {
       var a = linesOf(u, "mr"),
         e = linesOf(u, "en");
       a.forEach(function (l, i) {
-        var tr = mk("tr", "pvrow" + look(u) + (l.rf ? " pvrf" : "") + (i === a.length - 1 ? " pvend" : "") + (u.classList.contains("rftop") ? " pvref" : ""));
-        order.forEach(function (k) {
+        var tr = mk(
+          "tr",
+          "pvrow" +
+            look(u) +
+            (l.rf ? " pvrf" : "") +
+            (i === a.length - 1 ? " pvend" : "") +
+            (u.classList.contains("rftop") ? " pvref" : "") +
+            (l.who ? " pvw-" + l.who : ""),
+        );
+        order.forEach(function (k, j) {
           var td = inLang("td", "", k, k === "en" ? (e[i] ? e[i].html : "") : l.html);
           glue(td);
+          // (together's label in the first column only; a chorus line's first cell stepped in, its rule beside it: a box
+          // of its own with a border, as backgrounds may not print)
+          if (!j) whoLabel(td, l, k);
+          if (!j && l.who === "chorus") {
+            var w = mk("span", "pvwcell");
+            while (td.firstChild) w.appendChild(td.firstChild);
+            td.appendChild(w);
+          }
           tr.appendChild(td);
         });
         body.appendChild(tr);
@@ -671,6 +726,8 @@ export function createWriter(o) {
         byLine = sec.classList.contains("lines"),
         box = mk("section", "pvs" + (vedic ? " pvved" : ""));
       box.setAttribute("data-sid", sec.id);
+      whoOn = P.sing === "group" && sec.classList.contains("who");
+      if (whoOn) box.classList.add("pvwho");
       var hd = titleOf(sec, "h2", "pvtitle");
       hd.appendChild(orn("rule"));
       // a routine printout: the text's tag under its title
@@ -680,6 +737,7 @@ export function createWriter(o) {
         hd.appendChild(tg);
       }
       box.appendChild(hd);
+      if (whoOn) box.appendChild(whoKey(side ? (LEAD === "en" ? "en" : "mr") : k));
       var ps = parts(sec);
       if (vedic)
         // a Vedic text: running paragraphs in one language; side by side, each line beside its English, the rows of a

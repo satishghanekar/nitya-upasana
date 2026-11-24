@@ -755,7 +755,7 @@ export function init() {
     function link(mode) {
       /** @type {Record<string, any>} */
       var s = {};
-      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "ppr", "tr", "por", "pcov"].forEach(function (k) {
+      ["lang", "lead", "l2", "ui", "ind", "ref", "pref", "fnt", "pfn", "plang", "ppr", "tr", "por", "pcov", "sing"].forEach(function (k) {
         s[k] = P[k];
       });
       var rp = rplan(),
