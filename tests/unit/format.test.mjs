@@ -2,7 +2,7 @@
 // Every bundled text must also read back and write out byte for byte the same.
 import { describe, expect, test } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
-import { formatText, parseText, toHtml, toMarks } from "../../js/text/format.js";
+import { embedOf, formatText, parseText, toHtml, toMarks } from "../../js/text/format.js";
 
 const HEAD = "id: x\ntitle: क\ntitle-en: K\nlanguage: mr\n";
 const parse = (body, head = "") => parseText(HEAD + head + "---\n" + body);
@@ -214,4 +214,19 @@ describe("every text in content/texts/", () => {
     expect(t.id + ".txt").toBe(f);
     expect(formatText(t)).toBe(raw);
   });
+});
+
+// A recording played in the app (js/features/recording-player.js; Satish, 2026-11-24): YouTube's privacy-enhanced
+// player, from the second the text starts, and, given the page's origin, taking Play and Pause by messages
+test("a recording's player: the privacy-enhanced embed, from where the text starts", () => {
+  expect(embedOf("https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90")).toBe(
+    "https://www.youtube-nocookie.com/embed/OQhyYdoKW1k?autoplay=1&playsinline=1&rel=0&start=90",
+  );
+  expect(embedOf("https://www.youtube.com/watch?v=OQhyYdoKW1k")).toBe("https://www.youtube-nocookie.com/embed/OQhyYdoKW1k?autoplay=1&playsinline=1&rel=0");
+  expect(embedOf("https://www.youtube.com/watch?v=OQhyYdoKW1k&t=0", "https://nitya-upasana.pages.dev")).toBe(
+    "https://www.youtube-nocookie.com/embed/OQhyYdoKW1k?autoplay=1&playsinline=1&rel=0&enablejsapi=1&origin=https%3A%2F%2Fnitya-upasana.pages.dev",
+  );
+  // (anything else is not a recording's link: no player)
+  expect(embedOf("https://music.apple.com/album/1")).toBe("");
+  expect(embedOf("https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90&list=x")).toBe("");
 });

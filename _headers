@@ -41,17 +41,20 @@
 /manifest.json
   Cache-Control: no-cache
 
-# What a page may load (Content-Security-Policy): everything from this site, nothing from elsewhere. Scripts are never
-# inline; styles may be, because the print view writes its own (a <style> and style attributes, js/features/print.js).
+# What a page may load (Content-Security-Policy): everything from this site, and one thing from elsewhere: YouTube's
+# privacy-enhanced player (frame-src www.youtube-nocookie.com), for a text's recording played in the app
+# (js/features/recording-player.js; Satish, 2026-11-24), so that Follow, which stops whenever the app is put away, keeps
+# hearing the chanting. Scripts are never inline and never from elsewhere; styles may be inline, because the print view
+# writes its own (a <style> and style attributes, js/features/print.js).
 # WebAssembly may be compiled ('wasm-unsafe-eval', which allows nothing else): the chanting model runs in it
-# (vendor/onnxruntime/, loaded only when Listen is used).
-# The page is cross-origin isolated (the two Cross-Origin headers): it loads nothing from other sites anyway, and being
-# isolated lets the chanting model use every core of the phone instead of one (SharedArrayBuffer; 2026-11-05: one core
-# took 2.1 s for the encoder on an iPhone). Links and shares to other sites are unaffected: they open, not load into
-# the page.
+# (vendor/onnxruntime/, loaded only when Follow is used).
+# The page is no longer cross-origin isolated (Cross-Origin-Opener-Policy and -Embedder-Policy, 2026-11-05 to
+# 2026-11-24): isolation refuses any frame from another site that does not send those headers itself, YouTube's player
+# among them. It let the model use up to 4 cores on the CPU (standard mode; one core took 2.1 s for the encoder on an
+# iPhone); fast mode (the GPU) used one thread anyway, so only standard mode is slower without it
+# (js/features/follow-model.js reads window.crossOriginIsolated).
 # Links to other sites (Wikipedia, WhatsApp) are ordinary links and not limited by it. tests/serve.mjs sends the same
 # policy, so every test runs under it, and a file it blocks fails the tests (a console error).
 /*
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Embedder-Policy: require-corp
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self'; frame-src 'self' blob:; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self'; frame-src 'self' blob: https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'
+  Referrer-Policy: strict-origin-when-cross-origin

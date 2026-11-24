@@ -787,7 +787,7 @@
         <li><b>One text at a time</b> from the Library or search: the page shows the text you opened, and <b>‹ Prev</b> and <b>Next ›</b> in the bottom bar go to the previous and next texts in the Library. A session runs on in one scroll instead (see Home).</li>
         <li><b>Tap a line</b> to highlight it, so everyone can keep their place; its whole stanza gets a soft band too, so you find it again at a glance. Tap again to clear.</li>
         <li><b>Vedic chants</b> (Shri Rudra, the Atharvashirsha, the Purusha Suktam) in one language run on as paragraphs, like a printed booklet. With both languages the lines stay in pairs.</li>
-        <li><b>A recording to hear:</b> under some texts' author line, ▶ YouTube and the chanters' names, a recording checked against the text. A tap opens it in YouTube at the moment the text begins (the Atharvashirsha after the album's opening prayers, for instance). It needs the internet, and is left off a printout.</li>
+        <li><b>A recording to hear:</b> under some texts' author line, ▶ YouTube and the chanters' names, a recording checked against the text. A tap plays it here, under the credit, from the moment the text begins (the Atharvashirsha after the album's opening prayers, for instance), and starts Follow, so the page follows the recording; a bar over the bottom bar keeps Play / Pause and Close in reach as the player scrolls away. A long press opens it in YouTube instead. It needs the internet, and is left off a printout.</li>
         <li><b>Fold a text:</b> a tap anywhere on its heading (or its round ⌃) folds it down to its heading; tap it again to open it. Your phone remembers this, and going to a folded text from the Library or search opens it.</li>
         <li><b>More room to read:</b> on phones and tablets, while you read a text the top and bottom bars slide away as you scroll down (on Home they stay), leaving a thin strip with the name of the text. Scroll up a little, tap a blank part of the page or the strip, or reach the end of the page to bring them back.</li>
         <li><b>Pinch</b> (on a computer: a trackpad pinch, or Ctrl + / Ctrl − and Ctrl 0 to reset; ⌘ on a Mac) or use A− / A+ (under <b>Reading</b>, the sliders in the bottom bar, or in Settings) to change the text size. The page itself never zooms, and on Home, in the calendar and in the routine builder a pinch does nothing. The bubble shows the size (100% is the normal size for your screen: the same for every text, a little larger on an iPad, and larger again if you have set larger text on your phone or in your browser; a line too long for the screen goes onto a second row, set a little closer, rather than the text shrinking); right after a pinch, tap <b>↺ Default size</b> to go back to normal.</li>
@@ -914,6 +914,15 @@
   <p id="lsnm" role="status"></p>
   <progress id="lsnp" max="100" value="0" aria-labelledby="lsnm" hidden></progress>
   <div class="lsnb"><button type="button" id="lsny" hidden></button><button type="button" id="lsnx"></button></div>
+</div>
+<!-- ==== A recording playing in the app (js/features/recording-player.js): over the bottom bar (above Follow's panel),
+     Play / Pause, the text's title and the chanters (a tap scrolls back to the player under the credit), how far it has
+     played, and Close. The words of its buttons are set when a recording opens, in the menu language ==== -->
+<div id="recording-bar" hidden data-playing="0">
+  <button type="button" id="recording-play" aria-label="Play"><svg class="recording-icon-play" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg><svg class="recording-icon-pause" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor"/></svg></button>
+  <button type="button" id="recording-show"><span id="recording-title"></span><span id="recording-who" lang="en"></span></button>
+  <button type="button" id="recording-close" aria-label="Close the recording"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <progress id="recording-progress" max="1" value="0" aria-labelledby="recording-title"></progress>
 </div>
 <!-- ==== Reading sheet: the sliders in the bottom bar slide it up over the bar. Language (main, second, both), text size
      (A− / A+, back to the normal size) and dhrupad (once, every verse), within thumb reach; All settings opens

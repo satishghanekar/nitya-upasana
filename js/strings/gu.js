@@ -461,6 +461,11 @@ export default {
     find: "પાઠ કે લીટી શોધો",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js)
+  recording: {
+    play: "ચલાવો",
+    pause: "થોભો",
+    close: "રેકોર્ડિંગ બંધ કરો",
+  },
   listen: {
     download: "ડાઉનલોડ કરો",
     notNow: "હમણાં નહીં",

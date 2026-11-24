@@ -121,8 +121,8 @@ likeliest letter for every 20 ms) into words. Where the browser has WebGPU it ru
 (`models/chant-v7-q4/`, 90 MB) and the library's WebGPU build (27 MB), three times quicker on an iPhone than the CPU
 (233 ms a hearing against 712, 2026-11-09) and far less work for the phone. Elsewhere, or if the GPU fails to start it
 (remembered), it runs on the CPU on every core: the 8-bit model (`models/chant-v7/`) and the library's CPU build
-(14 MB), in the library's own worker, never on the page's thread; the site is cross-origin isolated
-(`Cross-Origin-Opener-Policy` and `-Embedder-Policy` in `_headers`; it loads nothing from other sites anyway). A
+(14 MB), in the library's own worker, never on the page's thread; on every core while the site was cross-origin
+isolated (2026-11-05 to 2026-11-24), on one since a recording plays in the page (below and `_headers`). A
 phone downloads only the way it uses, and Settings → About → Follow says which: a chip icon
 (with a bolt on the GPU), "Follow: GPU" with a green Optimized badge or "Follow: CPU" with a muted Standard one. (Through the older WebGPU build an iPhone computed nonsense with the 8-bit
 model, 2026-11-05, so until 1.49 Listen used the CPU only.) **Follow** (`js/features/listen.js`, the microphone in the bottom bar) uses it: the first time, after the reader
@@ -153,6 +153,19 @@ Follow's report (`js/features/follow-report.js`, `js/core/follow-report.js`) kee
 6 times Follow listened for half a minute or more (about 600 bytes each): the model's speed (typical and slowest
 hearing), how often it found the place (near the mark or by search), where it got lost (text and line: what to record
 for training), its jumps, the pace, hand scrolling and how it ended, and each text's time and share found.
+
+**A recording played in the app** (`js/features/recording-player.js`; Satish, 2026-11-24). A text's recording (its
+`recording` line: ▶ YouTube and the chanters under the credit) used to open YouTube, and Follow, which stops whenever
+the app is put away, stopped with it. A tap now plays it in the page, in YouTube's own privacy-enhanced player
+(`youtube-nocookie.com`, `js/text/format.js` `embedOf()`) under the credit, from the second the text starts, and starts
+Follow in the same tap (`listen.js` `followOn()`), so Follow hears the recording through the microphone and the page
+follows it. The player scrolls away with the text; a bar over the bottom bar (`#recording-bar`, above Follow's panel)
+keeps Play / Pause, the title (a tap goes back to the player), how far it has played and Close. Play and Pause are the
+player's own commands, sent as messages (`enablejsapi`): no script of YouTube's runs in the page. YouTube's rules for
+its player are kept: always shown, at least 200 × 200 px, its controls its own, its sound never played without it. For
+it, `_headers` lets in the player's frame (`frame-src`) and the site is no longer cross-origin isolated (isolation
+refuses a frame from another site that does not send those headers itself), so the CPU's model runs on one core.
+A long press, a key held or no internet opens the link in YouTube as before.
 
 ## Putting it on the home screen (the install page)
 

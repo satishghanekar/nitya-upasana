@@ -340,6 +340,22 @@ html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
 .cr a {
   padding-block: 6px;
 }
+/* The recording's player, under the credit, when one is tapped (js/features/recording-player.js): YouTube's own, as
+   wide as the column up to 480px, and never less tall than YouTube's rules allow (200px each way; on a narrow phone the
+   video sits in a 200px-tall frame with bands above and below, rather than wider than the screen) */
+.recording-player {
+  max-width: 480px;
+  margin: 10px auto 4px;
+}
+.recording-player iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 200px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--ink);
+}
 .cr,
 .cr .rec {
   line-height: 2;

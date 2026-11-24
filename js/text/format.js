@@ -72,6 +72,27 @@ const FIELDS = [
 // A recording of the text to hear (Satish, 2026-11-11): YouTube only, a watch link with, when the text starts later
 // in the video, its second (t=…), checked against the recording; two or more separated by ", "
 export const RECORDING = /^\[([^\]]+)\]\((https:\/\/www\.youtube\.com\/watch\?v=[\w-]{11}(?:&t=\d+)?)\)$/;
+/**
+ * A recording's watch link as the player in the app plays it (js/features/recording-player.js; Satish, 2026-11-24:
+ * played here, so Follow, which stops when the app is put away, keeps hearing it): YouTube's privacy-enhanced player
+ * (no cookies until it plays), from the second the text starts, playing at once, inline on an iPhone and without other
+ * channels' videos at its end. With the page's origin, the player also takes Play and Pause from the page and tells it
+ * how far it has played (enablejsapi, by messages: no script of YouTube's runs in the page). "" for a link that is not
+ * a recording's.
+ * @param {string} watch
+ * @param {string} [origin]  the page's (location.origin)
+ */
+export function embedOf(watch, origin) {
+  var m = /^https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})(?:&t=(\d+))?$/.exec(watch);
+  if (!m) return "";
+  return (
+    "https://www.youtube-nocookie.com/embed/" +
+    m[1] +
+    "?autoplay=1&playsinline=1&rel=0" +
+    (m[2] && m[2] !== "0" ? "&start=" + m[2] : "") +
+    (origin ? "&enablejsapi=1&origin=" + encodeURIComponent(origin) : "")
+  );
+}
 // A text's credit (Satish, 2026-11-15: one line for all of it): its role; unless traditional, the key of a person
 // (a source's, with source) in content/credits.json; with author, ", also" another person it is also credited to; and
 // what only this text says, " | Marathi | English", in brackets after the name (in place of a person's time), or, in a

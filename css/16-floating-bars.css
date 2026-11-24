@@ -278,4 +278,7 @@
   [data-rail="1"] #lsn {
     bottom: 16px;
   }
+  [data-rail="1"] #recording-bar {
+    bottom: calc(16px + var(--lsnh, 0px) + 8px);
+  }
 }

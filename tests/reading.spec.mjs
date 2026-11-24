@@ -64,7 +64,7 @@ test("Back from a text shows Home again", async ({ page }) => {
   await expect(page.locator("#home")).toBeVisible();
 });
 
-test("a text with a recording shows it under the credit: YouTube, the chanters, opening in a new tab where it starts @mobile", async ({ page }) => {
+test("a text with a recording shows it under the credit: YouTube, the chanters, played here from where it starts @mobile", async ({ page }) => {
   await openSite(page, SETUPS.marathi);
   await page.locator("#hm").click();
   // a text's section, by its title in the Library
@@ -74,12 +74,13 @@ test("a text with a recording shows it under the credit: YouTube, the chanters, 
   await page.locator(`#jl a[data-go="${ath}"]`).click();
   const rec = page.locator(`#${ath} .cr .rec`);
   await expect(rec).toBeVisible();
-  await expect(rec).toHaveText("▶ YouTube: Challakere Brothers ↗");
+  await expect(rec).toHaveText("▶ YouTube: Challakere Brothers");
   const a = rec.locator("a");
   await expect(a).toHaveAttribute("href", "https://www.youtube.com/watch?v=OQhyYdoKW1k&t=90");
   await expect(a).toHaveAttribute("target", "_blank");
   await expect(a).toHaveAttribute("rel", "noopener");
-  await expect(a).toHaveAccessibleName("Challakere Brothers: YouTube (opens in a new tab)");
+  // (a long press still opens it in YouTube, in a new tab)
+  await expect(a).toHaveAccessibleName("Challakere Brothers: YouTube, plays here");
   // two recordings, the long name wrapping inside the screen
   await page.locator("#hm").click();
   await page.locator(`#jl a[data-go="${pav}"]`).click();
@@ -87,6 +88,59 @@ test("a text with a recording shows it under the credit: YouTube, the chanters, 
   await expect(pv.locator("a")).toHaveCount(2);
   const box = await pv.boundingBox();
   expect(box.x + box.width).toBeLessThanOrEqual(await page.evaluate(() => document.documentElement.clientWidth));
+});
+
+// A recording played in the app (js/features/recording-player.js; Satish, 2026-11-24): a tap plays it under the credit,
+// in YouTube's privacy-enhanced player, and starts Follow in the same tap, so Follow keeps hearing it (it stopped when
+// YouTube opened, the app put away); a bar over the bottom bar keeps Play / Pause and Close. YouTube's player is a
+// stand-in here that answers as the real one does: how far it has played, and its state after Play or Pause.
+test("a recording tapped plays here, under the credit, with Follow started and a bar to pause and close it @mobile", async ({ page }) => {
+  const errors = [];
+  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+  await page.route("https://www.youtube-nocookie.com/**", (route) =>
+    route.fulfill({
+      contentType: "text/html",
+      body:
+        "<!doctype html><title>player</title><script>addEventListener('message', function (e) { var d = JSON.parse(e.data);" +
+        " var say = function (m) { parent.postMessage(JSON.stringify(m), '*'); };" +
+        " if (d.event === 'listening') say({ event: 'infoDelivery', info: { playerState: 1, currentTime: 30, duration: 120 } });" +
+        " if (d.event === 'command') say({ event: 'onStateChange', info: d.func === 'pauseVideo' ? 2 : 1 }); });</script>",
+    }),
+  );
+  await openSite(page, SETUPS.marathi);
+  await page.locator("#hm").click();
+  const ath = await page.evaluate(() => [...document.querySelectorAll("#jl a[data-go]")].find((x) => x.textContent.includes("गणपत्यथर्वशीर्ष")).dataset.go);
+  await page.locator(`#jl a[data-go="${ath}"]`).click();
+  const pages = page.context().pages().length;
+  await page.locator(`#${ath} .cr .rec a`).click();
+  // no new tab: the player under the credit, from the second the text starts
+  expect(page.context().pages().length).toBe(pages);
+  const frame = page.locator(`#${ath} .cr + .recording-player iframe`);
+  await expect(frame).toHaveAttribute(
+    "src",
+    /^https:\/\/www\.youtube-nocookie\.com\/embed\/OQhyYdoKW1k\?autoplay=1&playsinline=1&rel=0&start=90&enablejsapi=1&origin=/,
+  );
+  await expect(frame).toHaveAttribute("title", "Challakere Brothers · YouTube");
+  const box = await frame.boundingBox();
+  expect(box.height).toBeGreaterThanOrEqual(200);
+  // Follow started in the same tap, where this browser can follow
+  if (await page.locator("#lsb").isVisible()) await expect(page.locator("#lsb")).toHaveAttribute("aria-pressed", "true");
+  // the bar: playing, 30 s of 120 played, the text's title and the chanters
+  const bar = page.locator("#recording-bar");
+  await expect(bar).toBeVisible();
+  await expect(bar.locator("#recording-who")).toHaveText("Challakere Brothers");
+  await expect(bar.locator("#recording-title")).not.toBeEmpty();
+  await expect(page.locator("#recording-progress")).toHaveJSProperty("value", 30);
+  const play = page.locator("#recording-play");
+  await expect(play).toHaveAccessibleName("Pause");
+  await play.click();
+  await expect(play).toHaveAccessibleName("Play");
+  await expect(bar).toHaveAttribute("data-playing", "0");
+  // Close: the player taken out (its sound with it), the bar put away
+  await page.locator("#recording-close").click();
+  await expect(bar).toBeHidden();
+  await expect(page.locator(".recording-player")).toHaveCount(0);
+  expect(errors).toEqual([]);
 });
 
 // A text sung in more than one way (js/features/versions.js; Satish, 2026-11-15): the Library lists it once; the

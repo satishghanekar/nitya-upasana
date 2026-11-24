@@ -481,6 +481,12 @@ export default {
     find: "Find a text or a line",
   },
   // Listen (js/features/listen.js): the ear in the bottom bar and its panel
+  // A recording played in the app (js/features/recording-player.js): the bar's buttons
+  recording: {
+    play: "Play",
+    pause: "Pause",
+    close: "Close the recording",
+  },
   listen: {
     download: "Download",
     notNow: "Not now",

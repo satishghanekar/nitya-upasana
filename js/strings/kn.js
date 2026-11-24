@@ -466,6 +466,11 @@ export default {
     find: "ಪಠ್ಯ ಅಥವಾ ಸಾಲನ್ನು ಹುಡುಕಿ",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js)
+  recording: {
+    play: "ಪ್ಲೇ ಮಾಡಿ",
+    pause: "ವಿರಾಮ",
+    close: "ಧ್ವನಿಮುದ್ರಣ ಮುಚ್ಚಿ",
+  },
   listen: {
     download: "ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
     notNow: "ಈಗ ಬೇಡ",

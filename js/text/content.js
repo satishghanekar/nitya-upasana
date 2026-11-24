@@ -182,23 +182,16 @@ function creditOf(t, ctx) {
   return both() + (c && c.also ? "<small>" + both(true) + "</small>" : "");
 }
 /**
- * The recordings to hear, under the credit: "▶ YouTube: Challakere Brothers ↗", each opening in a new tab at the second
- * the text starts. YouTube and the chanters' names read the same in every language, so the line has no menu words.
+ * The recordings to hear, under the credit: "▶ YouTube: Challakere Brothers", each played in the app at the second the
+ * text starts, with Follow (js/features/recording-player.js); a long press opens it in YouTube, in a new tab. YouTube
+ * and the chanters' names read the same in every language, so the line has no menu words.
  * @param {string} [s]  the header's recording line, checked by js/text/format.js
  */
 function recordings(s) {
   if (!s) return "";
   var links = s.split(", ").map(function (r) {
     var m = /** @type {RegExpExecArray} */ (RECORDING.exec(r));
-    return (
-      '<a href="' +
-      esc(m[2]) +
-      '" target="_blank" rel="noopener" aria-label="' +
-      esc(m[1] + ": YouTube (opens in a new tab)") +
-      '">' +
-      esc(m[1]) +
-      '<span class="crx" aria-hidden="true"> ↗</span></a>'
-    );
+    return '<a href="' + esc(m[2]) + '" target="_blank" rel="noopener" aria-label="' + esc(m[1] + ": YouTube, plays here") + '">' + esc(m[1]) + "</a>";
   });
   return '<span class="rec" lang="en"><span aria-hidden="true">▶ </span>YouTube: ' + links.join(" · ") + "</span>";
 }

@@ -129,6 +129,7 @@ var SITE_PARTS = (function () {
     "features/follow-model-rows",
     "features/follow-check",
     "features/listen",
+    "features/recording-player",
     "features/launch",
   ].map(function (f) {
     return "js/" + f + ".js";

@@ -467,6 +467,11 @@ export default {
     find: "పాఠం లేదా పంక్తిని వెతుకు",
   },
   // The bottom bar's Prev and Next (js/features/bottom-bar.js)
+  recording: {
+    play: "ప్లే చేయండి",
+    pause: "పాజ్",
+    close: "రికార్డింగ్ మూసివేయండి",
+  },
   listen: {
     download: "డౌన్‌లోడ్ చేయండి",
     notNow: "ఇప్పుడు వద్దు",

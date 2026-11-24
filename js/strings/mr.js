@@ -460,6 +460,11 @@ export default {
     },
     find: "रचना किंवा ओळ शोधा",
   },
+  recording: {
+    play: "चालू करा",
+    pause: "थांबवा",
+    close: "ध्वनिमुद्रण बंद करा",
+  },
   listen: {
     download: "डाउनलोड करा",
     notNow: "आता नको",

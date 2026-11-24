@@ -80,6 +80,7 @@ import { init as startFollowModel } from "./features/follow-model.js";
 import { init as startFollowModelRows } from "./features/follow-model-rows.js";
 import { init as startFollowCheck } from "./features/follow-check.js";
 import { init as startListen } from "./features/listen.js";
+import { init as startRecordingPlayer } from "./features/recording-player.js";
 import { init as startLaunch } from "./features/launch.js";
 
 // One part that fails to start is reported and passed over, so the parts after it still start (a part that needs
@@ -152,6 +153,7 @@ function start() {
     run(startFollowModel); // Follow's model: its download and its memory, let go by itself once Follow has stopped
     run(startFollowModelRows); // About → Follow: Downloaded (a switch) and In memory (Free memory), each asking first
     run(startListen); // Listen (#lsb, the ear in the bottom bar): the phone hears the chanting and marks the line being chanted
+    run(startRecordingPlayer); // A recording under a text's credit played here, Follow hearing it (#recording-bar), after Listen
     run(startFollowCheck); // About → Follow: Check Follow on this phone, once unlocked; a try each time the app opens
     run(startLaunch); // The launch animation, the first opening of the day: the day's lines under the splash's picture (last: it reads Home)
   } finally {

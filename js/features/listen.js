@@ -220,6 +220,14 @@ export function init() {
   if (again && !btn.hidden) start(true);
 }
 
+/**
+ * Follow started by another tap than its own (a recording played in the app, js/features/recording-player.js), unless
+ * it already follows or this phone can't. Called in the tap itself: Safari starts sound and the microphone only in one.
+ */
+export function followOn() {
+  if (btn && !btn.hidden && !run) start(false);
+}
+
 /** The panel over the bottom bar: a message, and the buttons this step needs @param {string} text
  * @param {{ yes?: string, onYes?: () => void, no: string, progress?: boolean, on?: boolean }} o */
 function panel(text, o) {

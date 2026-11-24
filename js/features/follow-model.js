@@ -433,8 +433,8 @@ async function load() {
     // the subgroups left out from the start)
     ort = await import(/* @vite-ignore */ abs(ORT + h.lib) + (onGpu && sgOff ? "?subgroups=off" : ""));
     ort.env.wasm.wasmBinary = binary.buffer;
-    // on the CPU every core (up to 4): the page is cross-origin isolated (_headers). On the GPU one: the work is the
-    // GPU's, and each thread costs memory. Safari closed the page and opened it again as Follow started, on an iPhone
+    // on the CPU every core (up to 4) where the page is cross-origin isolated (not since 2026-11-24: _headers, a
+    // recording's player in the page), else one. On the GPU one: the work is the GPU's, and each thread costs memory. Safari closed the page and opened it again as Follow started, on an iPhone
     // 16 Pro too (2026-11-15); with one thread and the 4-bit model in ONNX Runtime's own format (models/README.md) the
     // start took about 100 MB less in the page and 150 MB less in the GPU's process, and half the time (Chromium's
     // software GPU)
