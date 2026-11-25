@@ -107,6 +107,24 @@ describe("locate, on the site's texts", () => {
     expect(r.line).toBeGreaterThanOrEqual(top);
     expect(lines.slice(top, r.line + 1).every((l) => l.refrain)).toBe(true);
   });
+  test("the next aarti's dhrupad is found in the copy Follow shows, not the hidden one at the top", () => {
+    // (Satish, 2026-11-24: Follow shows the dhrupad after every stanza, which hides the one at the top (.rftop); the
+    // place was found there, so nothing was marked until the first stanza)
+    const sl = at("aarti-shendur-laal-chadhayo"),
+      kg = at("aarti-kariton-guruvar"),
+      lines = pieceLines(pieces[kg]),
+      // (the lines after the dhrupad at the top: its copy before the first stanza, which the page shows)
+      shown = pieces[kg].refrain.lines.length;
+    expect(lines.slice(0, shown).every((l) => l.top)).toBe(true);
+    expect(lines[shown]).toMatchObject({ refrain: true });
+    const r = locate(heard(kg, 0, 1), docs, { doc: sl, line: pieceLines(pieces[sl]).length - 1 });
+    expect(r).toMatchObject({ doc: kg, held: false });
+    expect(r.line).toBeGreaterThanOrEqual(shown);
+    expect(lines[r.line]).toMatchObject({ refrain: true });
+    expect(lines[r.line].top).toBeUndefined();
+    // and the lines at the top still count, so the lines are the page's
+    expect(docs[kg].ends.length).toBe(lines.length);
+  });
   test("the next stanza of an aarti is found", () => {
     const lines = pieceLines(pieces[sk]);
     const stanza = lines.findIndex((l) => l.text.includes("मुक्ताफळांची"));
