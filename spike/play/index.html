@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play mode test</title>
+<link rel="stylesheet" href="spike.css">
+</head>
+<body>
+<h1>Play mode test <small>Phase 0 · not the app</small></h1>
+<p>Plays three bhajans one after another, 20 seconds of each, in YouTube's player. Tap <b>Start</b>, then put the
+phone down and watch: does the next one start by itself?</p>
+<div id="facts"></div>
+<div id="player-box"><div id="player"></div></div>
+<p id="now">Not started</p>
+<div class="row">
+  <button id="start" type="button" class="primary">▶ Start</button>
+  <button id="pause" type="button">❚❚ Pause</button>
+  <button id="next" type="button">⏭ Next</button>
+</div>
+<button id="tapnext" type="button" class="primary" hidden>▶ Play next (it didn't start by itself)</button>
+<label class="check"><input id="full" type="checkbox"> Whole songs, not 20 seconds</label>
+<div class="row">
+  <button id="copy" type="button">Copy log</button>
+  <a href="/play#bhajan-gaiye-ganapati-jagvandan">Open the app at /play</a>
+</div>
+<pre id="log"></pre>
+<script src="spike.js"></script>
+</body>
+</html>

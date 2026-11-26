@@ -147,6 +147,8 @@ self.addEventListener("fetch", (e) => {
   if (r.method !== "GET") return;
   const u = new URL(r.url);
   if (u.origin !== location.origin) return;
+  // SPIKE (branch spike-play only): Play mode's address and its test page come from the network, with their own headers
+  if (u.pathname === "/play" || u.pathname.startsWith("/spike/")) return;
   if (r.cache === "no-store" || r.cache === "reload" || u.searchParams.has("fresh")) return;
   // Saving a fetched file is handed to waitUntil now, while the event is still being dispatched
   // (Safari can refuse waitUntil once the handler has moved on).
