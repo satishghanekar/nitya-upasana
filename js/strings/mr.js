@@ -1084,6 +1084,8 @@ export default {
     also: "(अशीही मान्यता : {name})",
     compiledBy: "संकलन :",
     traditional: "पारंपरिक",
+    // the card at the top of a text with a recording: "Listen: Jagjit Singh" (js/text/content.js listenCards())
+    listen: "ऐका",
     lang: { sa: "संस्कृत", mr: "मराठी", hi: "हिंदी" },
   },
 };

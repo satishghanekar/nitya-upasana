@@ -128,8 +128,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // About's Check Follow on this phone, js/features/follow-check.js, in five languages, 450 KB then; 454 KB since
   // 2026-11-21: the welcome as two steps, the first reading language and the routines' times, in five languages, 452.2 KB
   // then; 458 KB since 2026-11-24: who sings, js/features/who-sings.js, the switch and the turns' words in five
-  // languages, 456.3 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(458_000);
+  // languages, 456.3 KB then; 461 KB since 2026-11-26: the welcome's two full-screen steps and the splash (458.8 KB, over
+  // already), and the Listen card at the top of a text with a recording, its word in five languages, 459.7 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(461_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a

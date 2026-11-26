@@ -572,8 +572,10 @@
     padding-bottom: 5pt;
   }
 
-  /* a text's recording (▶ YouTube, js/text/content.js): a link, of no use on paper */
-  #pv .rec {
+  /* a text's recordings (▶ YouTube at the end, the Listen card at the top, js/text/content.js): links, of no use on
+     paper */
+  #pv .rec,
+  #pv .listen-cards {
     display: none;
   }
 

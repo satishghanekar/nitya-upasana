@@ -33,8 +33,8 @@ describe("CONTENT from the text files", () => {
     // (and each [note] is now marked as one, nt, which the old file did not have either: Ghalin Lotangan's ↻ ३ वेळा;
     // nor a recording to hear under the credit, since 2026-11-11: the Atharvashirsha's; and since 2026-11-15 a credit is
     // written by the site from content/credits.json, each person and source once: tests/unit/credits.test.mjs checks
-    // the credits)
-    .map(({ text, credit, ...p }) => ({ ...p, items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
+    // the credits; nor, since 2026-11-26, the Listen card at the top of a text with a recording)
+    .map(({ text, credit, listen, ...p }) => ({ ...p, items: p.items.map(({ nt, ...i }) => i) })); // eslint-disable-line no-unused-vars
   const OLD_PIECES = pieces(OLD).map(({ credit, ...p }) => p); // eslint-disable-line no-unused-vars
   const OLD_C = { categories: [{ pieces: same }] };
   const byId = (Cx, id) => pieces(Cx).find((p) => p.id === id);

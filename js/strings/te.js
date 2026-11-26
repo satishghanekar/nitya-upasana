@@ -1113,6 +1113,8 @@ export default {
     also: "(వీరిదని కూడా అంటారు : {name})",
     compiledBy: "సంకలనం :",
     traditional: "సాంప్రదాయికం",
+    // the card at the top of a text with a recording: "Listen: Jagjit Singh" (js/text/content.js listenCards())
+    listen: "వినండి",
     lang: { sa: "సంస్కృతం", mr: "మరాఠీ", hi: "హిందీ" },
   },
 };

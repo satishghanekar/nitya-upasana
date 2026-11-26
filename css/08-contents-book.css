@@ -363,3 +363,65 @@ html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
 #jl .tocg ol.toc .ltm [lang="mr"] {
   font-family: var(--body);
 }
+
+/* ==== The Listen card at the top of a text with a recording (js/text/content.js listenCards(); Satish, 2026-11-26:
+   at the end, under the credit, the recordings were hard to find): the play sign in a circle, "Listen: Jagjit Singh"
+   with YouTube under it, and ↗ for the new tab; a card for each recording ==== */
+.listen-cards {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 14px;
+}
+.listen-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 6px 12px 6px 6px;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  text-align: start;
+  text-decoration: none;
+  font: 600 var(--fz-m) / 1.3 var(--lat);
+}
+.listen-card .mr {
+  font-family: var(--body);
+}
+.listen-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+}
+.listen-text {
+  flex: 1;
+  min-width: 0;
+}
+.listen-word,
+.listen-card small {
+  display: block;
+}
+.listen-card small {
+  font-weight: 400;
+  font-size: var(--fz-s);
+  color: var(--muted);
+}
+.listen-out {
+  flex: none;
+  color: var(--muted);
+}
+/* in both languages, the word once, in the text's own language, as the language tag under the heading */
+[data-lang="both"] .listen-card .en {
+  display: none;
+}
+@media (hover: hover) {
+  .listen-card:hover {
+    border-color: var(--accent);
+  }
+}

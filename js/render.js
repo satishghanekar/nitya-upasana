@@ -254,6 +254,8 @@
       two(p.tag, "lang." + (p.lang || W.CONTENT.pageLanguage)) +
       "</div>\n" +
       "    </header>\n" +
+      // the recordings to hear, at the top (js/text/content.js listenCards())
+      (p.listen ? '    <div class="listen-cards">' + p.listen + "</div>\n" : "") +
       versions(p, C) +
       singing(p, C);
     // [once] lines and [note]s that come before the dhrupad at the top (js/text/content.js)
