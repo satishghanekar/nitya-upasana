@@ -18,4 +18,4 @@
 /models/README.md / 301
 /vendor/onnxruntime/README.md / 301
 # SPIKE (branch spike-play only, never merged): Play mode's address, the same page served with its own headers
-/play /index.html 200
+/play / 200
