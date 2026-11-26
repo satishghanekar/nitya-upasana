@@ -34,13 +34,15 @@ export function letters(line) {
  * is the dhrupad (said again and again, so it never tells where the chanting is)
  * @typedef {{ text: string, ends: number[], refrain: boolean[] }} Doc */
 
-/** @param {{ text: string, refrain?: boolean }[]} lines @returns {Doc} */
+/** A `top` line (the dhrupad at the top, hidden while following) has no letters, so the copy shown before the first
+ * stanza is found (Satish, 2026-11-24: nothing was marked until the first stanza); it stays, empty, to count lines.
+ * @param {{ text: string, refrain?: boolean, top?: boolean }[]} lines @returns {Doc} */
 export function makeDoc(lines) {
   var text = "",
     /** @type {number[]} */ ends = [],
     /** @type {boolean[]} */ refrain = [];
   lines.forEach(function (l) {
-    text += letters(l.text);
+    if (!l.top) text += letters(l.text);
     ends.push(text.length);
     refrain.push(!!l.refrain);
   });
@@ -49,10 +51,11 @@ export function makeDoc(lines) {
 
 /** A piece's lines (CONTENT, js/text/content.js) in the order the page shows them, which is the order of its
  * `.verse .mr p` (js/render.js): what comes before the dhrupad, the dhrupad at the top, then the text with the
- * dhrupad again after each stanza. The dhrupad's lines are marked as such.
- * @param {any} p @returns {{ text: string, refrain: boolean }[]} */
+ * dhrupad again after each stanza. The dhrupad's lines are marked as such; the top's `top` if it is written again
+ * before the first stanza (makeDoc).
+ * @param {any} p @returns {{ text: string, refrain: boolean, top?: boolean }[]} */
 export function pieceLines(p) {
-  /** @type {{ text: string, refrain: boolean }[]} */ var out = [];
+  /** @type {{ text: string, refrain: boolean, top?: boolean }[]} */ var out = [];
   /** @param {any[] | undefined} items */
   function items(items) {
     (items || []).forEach(function (it) {
@@ -62,9 +65,13 @@ export function pieceLines(p) {
     });
   }
   items(p.lead);
+  var first = (p.items || []).filter(function (/** @type {any} */ it) {
+      return it.lines;
+    })[0],
+    twin = !!first && first.kind === "rf";
   if (p.refrain)
     p.refrain.lines.forEach(function (/** @type {any} */ l) {
-      out.push({ text: l.mr, refrain: true });
+      out.push(twin ? { text: l.mr, refrain: true, top: true } : { text: l.mr, refrain: true });
     });
   items(p.items);
   return out;
