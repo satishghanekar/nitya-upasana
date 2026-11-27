@@ -48,6 +48,7 @@ export const PROFILE_KEYS = [
   "ver",
   "sing",
   "part",
+  "yt",
 ];
 // what stays with the device, whoever is reading
 export const DEVICE_KEYS = ["sv", "wake", "cols", "loc", "por", "pfn", "pref", "plang", "ppr", "pcov", "fold"];
@@ -97,6 +98,7 @@ export function defaults(env) {
     ver: {}, // the version of a text sung in more than one way this person reads: text id → its file's id (js/features/versions.js)
     sing: "group", // a text marked with who sings (lead, chorus, together): group shows the turns, solo as one person sings it (js/features/who-sings.js)
     part: "", // the part this person sings in the group view: "" none | lead | chorus (their lines in full, the others muted)
+    yt: 0, // a recording played here (Play mode, js/features/play.js; Satish, 2026-11-27: off unless turned on in Settings): 1 on | 0 off, the Listen card opens YouTube
   };
 }
 
@@ -112,6 +114,7 @@ function fits(k, v, d) {
   if (k === "loc") return v === null || (!!v && typeof v === "object" && typeof v.lat === "number" && typeof v.lon === "number");
   if (k === "pref") return v === "" || v === 0 || v === 1;
   if (k === "sing") return v === "group" || v === "solo";
+  if (k === "yt") return v === 0 || v === 1;
   if (k === "part") return v === "" || v === "lead" || v === "chorus";
   if (Array.isArray(d))
     return (

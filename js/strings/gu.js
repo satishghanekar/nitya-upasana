@@ -873,6 +873,10 @@ export default {
     sepia: "સેપિયા",
     dark: "ઘેરું",
     highContrast: "વધુ કૉન્ટ્રાસ્ટ",
+    // Settings → Reading: a recording played here or in YouTube (js/features/play.js)
+    recordings: "રેકોર્ડિંગ",
+    playInApp: "ઍપમાં જ વગાડો",
+    playInAppHint: "રેકોર્ડિંગ અહીં જ, રચનાની ઉપર વાગે છે. બંધ હોય તો રેકોર્ડિંગ દેખાતાં નથી",
     keepScreenOn: "પડદો ચાલુ રાખો",
     afterLastTouch: "છેલ્લા સ્પર્શ પછી, મિનિટ",
     chantingPace: "પાઠની ગતિ",

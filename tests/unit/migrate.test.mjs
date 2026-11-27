@@ -362,6 +362,13 @@ describe("the holidays in Home's Coming up (P.hol)", () => {
     for (const bad of ["together", "LEAD", 0]) expect(p({ part: bad }).part).toBe("");
     expect(PROFILE_KEYS).toEqual(expect.arrayContaining(["sing", "part"]));
   });
+  test("Play in the app (2026-11-27): off unless turned on; only 0 or 1 kept", () => {
+    const p = (o) => migratePrefs({ sv: 6, ...o }, PHONE).prefs;
+    expect(p({}).yt).toBe(0);
+    expect(p({ yt: 1 }).yt).toBe(1);
+    for (const bad of [2, "1", true, null]) expect(p({ yt: bad }).yt).toBe(0);
+    expect(PROFILE_KEYS).toContain("yt");
+  });
 });
 
 describe("a person's settings and the device's", () => {

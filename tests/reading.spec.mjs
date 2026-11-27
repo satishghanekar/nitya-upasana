@@ -65,7 +65,7 @@ test("Back from a text shows Home again", async ({ page }) => {
 });
 
 test("a text with a recording shows it under the credit: YouTube, the chanters, opening in a new tab where it starts @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, { ...SETUPS.marathi, yt: 1 });
   await page.locator("#hm").click();
   // a text's section, by its title in the Library
   const sec = (title) => page.evaluate((t) => [...document.querySelectorAll("#jl a[data-go]")].find((x) => x.textContent.includes(t)).dataset.go, title);
@@ -93,7 +93,7 @@ test("a text with a recording shows it under the credit: YouTube, the chanters, 
 // the heading, "▶ Listen: the chanters" with YouTube under it, the same link; the line at the end stays
 test("a text with a recording has a Listen card at the top: the chanters, YouTube, a whole 44px target @mobile", async ({ page }) => {
   const errors = [];
-  await openSite(page, SETUPS.marathi, { hash: "#bhajan-gaiye-ganapati-jagvandan", errors });
+  await openSite(page, { ...SETUPS.marathi, yt: 1 }, { hash: "#bhajan-gaiye-ganapati-jagvandan", errors });
   const sec = page.locator("#bhajan-gaiye-ganapati-jagvandan");
   const card = sec.locator(".listen-card");
   await expect(card).toHaveCount(1);
@@ -124,7 +124,7 @@ for (const [setup, word] of [
   ["both", "ऐका"],
 ]) {
   test(`the Listen card in ${setup}: ${word}, once @mobile`, async ({ page }) => {
-    await openSite(page, SETUPS[setup], { hash: "#bhajan-gaiye-ganapati-jagvandan" });
+    await openSite(page, { ...SETUPS[setup], yt: 1 }, { hash: "#bhajan-gaiye-ganapati-jagvandan" });
     const card = page.locator("#bhajan-gaiye-ganapati-jagvandan .listen-card");
     expect(await card.evaluate((e) => e.innerText.replace(/\s+/g, " ").trim())).toBe(word + ": Jagjit Singh YouTube ↗");
   });

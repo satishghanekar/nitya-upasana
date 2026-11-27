@@ -54,13 +54,15 @@ const video = (page) => page.evaluate(() => window.__yt && window.__yt.player.vi
 const playing = (page) => expect.poll(() => page.evaluate(() => window.__yt && window.__yt.player.state)).toBe(1);
 const shown = (loc) => loc.evaluate((e) => e.innerText.replace(/\s+/g, " ").trim());
 
+/** Settings → Reading → Play in the app turned on (P.yt; off on a new phone) */
+const ON = { ...SETUPS.marathi, yt: 1 };
 const VANDE = "bhajan-vande-ganapati";
 const GAIYE = "bhajan-gaiye-ganapati-jagvandan";
 
 test("a text on its own: ▶ plays it here, ❚❚ and ▶, it ends and Play mode stops; nothing reaches YouTube before a tap @mobile", async ({ page }) => {
   const errors = [];
   const asked = await stubYouTube(page);
-  await openSite(page, SETUPS.marathi, { errors });
+  await openSite(page, ON, { errors });
   await readText(page, VANDE);
   const sec = page.locator("#" + VANDE);
   const play = sec.locator(".listen-play");
@@ -106,7 +108,7 @@ test("a text on its own: ▶ plays it here, ❚❚ and ▶, it ends and Play mod
 
 test("■ Stop and Back stop it; a video that can't play is said @mobile", async ({ page }) => {
   await stubYouTube(page);
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, ON);
   await readText(page, GAIYE);
   const play = page.locator("#" + GAIYE + " .listen-play");
   await play.click();
@@ -134,7 +136,7 @@ test("in a session: on through its recordings, the text with none passed over, �
   await page.route("**/content/routines.json", (r) =>
     r.fulfill({ contentType: "application/json", body: JSON.stringify({ short: { ...TEST_ROUTINE, morning } }) }),
   );
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, ON);
   await page.locator("#tsl a.tgo").first().click();
   const sec = page.locator("#" + VANDE);
   await expect(sec).toBeVisible();
@@ -167,7 +169,7 @@ test("in a session: on through its recordings, the text with none passed over, �
 
 test("Play mode's words in Marathi menus @mobile", async ({ page }) => {
   await stubYouTube(page);
-  await openSite(page, SETUPS["marathi-menus"]);
+  await openSite(page, { ...SETUPS["marathi-menus"], yt: 1 });
   await readText(page, VANDE);
   await page.locator("#" + VANDE + " .listen-play").click();
   await expect(page.locator("#play-count")).toHaveText("वाजत आहे");
@@ -175,8 +177,40 @@ test("Play mode's words in Marathi menus @mobile", async ({ page }) => {
 });
 
 test("a text with no recording has no ▶ @mobile", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, ON);
   await readText(page, "a1");
   await expect(page.locator("#a1 .listen-card")).toHaveCount(0);
   await expect(page.locator("#a1 .listen-play")).toHaveCount(0);
+});
+
+// Off unless turned on (Satish, 2026-11-27: the whole of it, no YouTube): no Listen card and no recording line under the
+// credit; Settings → Reading → Play in the app brings them, the card itself playing here; off again
+// takes them away
+test("Play in the app: off on a new phone, no recording shown; turned on, the card plays here; off again @mobile", async ({ page }) => {
+  const asked = await stubYouTube(page);
+  await openSite(page, SETUPS.marathi);
+  await readText(page, VANDE);
+  const sec = page.locator("#bhajan-vande-ganapati");
+  await expect(sec.locator(".listen-card")).toBeHidden();
+  await expect(sec.locator(".cr .rec")).toBeHidden();
+  await page.locator("#aa").click();
+  const sw = page.locator("#play-setting");
+  await expect(sw).toHaveAttribute("aria-pressed", "false");
+  await expect(sw).toHaveAccessibleName(/^Play in the app/);
+  await sw.click();
+  await expect(sw).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("html")).toHaveAttribute("data-yt", "");
+  await sw.click();
+  await expect(page.locator("html")).not.toHaveAttribute("data-yt", /.*/);
+  await sw.click();
+  await page.keyboard.press("Escape");
+  await expect(sec.locator(".listen-play")).toHaveCount(1);
+  // a tap on the card plays here, never a page of YouTube's
+  const opened = [];
+  page.context().on("page", (p) => opened.push(p.url()));
+  await sec.locator(".listen-card").click();
+  await expect(page.locator("#play-bar")).toBeVisible();
+  await expect.poll(() => video(page)).toBeTruthy();
+  expect(opened).toEqual([]);
+  expect(asked.filter((u) => !u.endsWith("/iframe_api"))).toEqual([]);
 });

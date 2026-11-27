@@ -8,11 +8,12 @@
 // when one ends, and after the last it says all were played and stops. A text on its own plays alone and stops at its
 // end. While it plays the screen is held on (a phone that locks stops YouTube); a pause the phone made (locked,
 // another app) is said when the page comes back, and ▶ carries on, as a phone starts sound only from a tap. ■ Stop,
-// or the phone's Back, stops it and leaves the text being read where it is. The card's link still opens YouTube.
-// Nothing reaches YouTube before a tap. The order is js/core/play-queue.js's.
+// or the phone's Back, stops it and leaves the text being read where it is. A tap on the card plays here too: nothing
+// opens YouTube, and nothing reaches it before a tap. The order is js/core/play-queue.js's.
 // One part of the site script; js/main.js runs each part's init() in order. See js/README.md.
 
 import { menuWords } from "../core/strings.js";
+import { P, change } from "../core/state.js";
 import { nameLang, num, scr } from "../core/words.js";
 import { byId, note, onPiece, pieceEl, root, warn } from "../core/page.js";
 import { clock, placeOf, playable, skipped, startAt, step, trackOf } from "../core/play-queue.js";
@@ -73,10 +74,24 @@ export function init() {
   at = -1;
   on = false;
   away = false;
+  // Settings → Reading → Play in the app (P.yt): off, as on a new phone, no Listen card and nothing here plays or opens
+  // YouTube; on, the card and the ▶ beside it play the recording here
+  byId("play-setting").addEventListener("click", function () {
+    change({ yt: P.yt ? 0 : 1 }, playMark);
+  });
+  playMark();
   // the ▶ on each text's Listen card plays it here
   onPiece(addPlayButtons);
   document.addEventListener("click", function (e) {
-    var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest(".listen-play"));
+    var t = /** @type {HTMLElement} */ (e.target),
+      b = /** @type {HTMLElement | null} */ (t.closest(".listen-play")),
+      card = t.closest(".listen-card.can-play");
+    // the card itself plays here too, as its ▶ does (Satish, 2026-11-27: nothing opens YouTube)
+    if (!b && card) {
+      e.preventDefault();
+      b = /** @type {HTMLElement | null} */ (card.previousElementSibling);
+      if (!b || !b.classList.contains("listen-play")) return;
+    }
     if (!b) return;
     var id = b.dataset.text || "",
       ids = runIds();
@@ -131,7 +146,33 @@ function secOf(id) {
   return sec;
 }
 
-/** A ▶ on each Listen card of a text built, beside the card's link to YouTube (which stays) @param {HTMLElement} sec */
+/**
+ * Play mode on or off (P.yt, Settings → Reading → Play in the app): the switch pressed as it is, the ▶ on the Listen
+ * cards of the texts built there or not; turned off while a recording plays, it stops. Run at start-up, on a tap,
+ * and whenever the settings are applied again (js/features/bars.js apply(): another person on this phone).
+ */
+export function playMark() {
+  byId("play-setting").setAttribute("aria-pressed", String(!!P.yt));
+  // off: no Listen card and no recording line under the credit, so nothing here opens YouTube (css/08-contents-book.css)
+  if (P.yt) root.setAttribute("data-yt", "");
+  else root.removeAttribute("data-yt");
+  if (P.yt)
+    document.querySelectorAll(".ash").forEach(function (s) {
+      addPlayButtons(/** @type {HTMLElement} */ (s));
+    });
+  else {
+    end(false);
+    document.querySelectorAll(".listen-play").forEach(function (b) {
+      b.remove();
+    });
+    document.querySelectorAll(".listen-card.can-play").forEach(function (c) {
+      c.classList.remove("can-play");
+    });
+  }
+}
+
+/** A ▶ on each Listen card of a text built, the card playing here too (its link to YouTube kept for copying only)
+ * @param {HTMLElement} sec */
 function addPlayButtons(sec) {
   /** @type {any} */
   var C = /** @type {any} */ (window).CONTENT,
@@ -141,7 +182,7 @@ function addPlayButtons(sec) {
       if (p.id === sec.id) piece = p;
     });
   });
-  if (!piece) return;
+  if (!piece || !P.yt) return;
   var id = /** @type {any} */ (piece).text,
     t = track(id),
     card = sec.querySelector(".listen-card");

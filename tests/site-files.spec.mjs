@@ -132,8 +132,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // 458.05 KB then; 462 KB since 2026-11-26: the welcome's two full-screen steps and the splash, and the Listen card at
   // the top of a text with a recording, its word in five languages, 459.89 KB then on a Mac; 471 KB since 2026-11-26: Play
   // mode, a recording played here, js/features/play.js, js/features/youtube.js and js/core/play-queue.js, and its words
-  // in five languages, 469.8 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(471_000);
+  // in five languages, 469.8 KB then; 472.5 KB since 2026-11-27: Play in the app as a setting, off unless turned on, its
+  // words in five languages, and pinch keeping a letter rather than a space, 471.35 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(472_500);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a

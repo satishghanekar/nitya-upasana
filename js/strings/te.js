@@ -894,6 +894,10 @@ export default {
     sepia: "సెపియా",
     dark: "ముదురు",
     highContrast: "అధిక కాంట్రాస్ట్",
+    // Settings → Reading: a recording played here or in YouTube (js/features/play.js)
+    recordings: "రికార్డింగ్‌లు",
+    playInApp: "యాప్‌లోనే వినిపించండి",
+    playInAppHint: "రికార్డింగ్ ఇక్కడే, పాఠం పైన వినిపిస్తుంది. ఆఫ్‌లో ఉంటే రికార్డింగ్‌లు కనిపించవు",
     keepScreenOn: "తెరను ఆన్‌లో ఉంచు",
     afterLastTouch: "చివరి స్పర్శ తర్వాత, నిమిషాలు",
     chantingPace: "పఠన వేగం",
