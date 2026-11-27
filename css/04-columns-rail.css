@@ -241,8 +241,9 @@
 
 /* ==== Who sings (a text marked with lead, chorus and together: .ash.who; js/features/who-sings.js) ====
    Under the heading, as the version switch is: Solo or Group, then in the group view the part this person sings.
-   The group view (data-sing="group" on the page): a stanza is one block, centred, its lines from its start edge, so a
-   chorus line can step in from the lead's with a rule beside it; together, a small सर्व label where the turn starts.
+   The group view (data-sing="group" on the page): every line centred, as in every bhajan (Satish, 2026-11-26: a stanza
+   centred as a block, its lines from its start edge, put short stanzas in the middle and long ones at the edge), a
+   chorus line with a rule just before its words; together, a small सर्व label where the turn starts.
    With a part chosen (data-part), the other part's lines are muted and this person's carry a dot: colour alone would
    fail WCAG 1.4.1, and high contrast has no muted colour. A screen reader hears who sings where each turn starts
    (the labels below, words from js/strings/ "text", set by the script as --who-… so the line's own words stay as they
@@ -334,35 +335,23 @@ html[data-lead="en"] [data-lang="both"] .sing .mr {
   }
 }
 @media screen {
-  [data-sing="group"] .ash.who .items .verse {
+  /* each line as wide as its words and centred, so a chorus line's rule and my part's dot stand next to the words */
+  [data-sing="group"] .ash.who .verse p[data-who] {
+    position: relative;
     width: fit-content;
     max-width: 100%;
     margin-inline: auto;
-    text-align: start;
   }
-  [data-sing="group"] .ash.who .verse p[data-who] {
-    position: relative;
-  }
-  /* (a phone's step in is smaller: its lines are short already, and a long step wrapped them, 2026-11-24) */
   [data-sing="group"] .ash.who .verse p[data-who="chorus"] {
-    margin-inline-start: 0.7em;
     padding-inline-start: 0.4em;
     border-inline-start: 3px solid var(--chorus);
     /* square on the rule's side: a line's rounded corners (its tap highlight, css/02-core.css) bent the rule into a "(" */
     border-start-start-radius: 0;
     border-end-start-radius: 0;
   }
-  /* (the English under the original is drawn smaller: the same step in, in the original's em) */
-  [data-sing="group"] [data-lang="both"].ash.who .verse .en p[data-who="chorus"] {
-    margin-inline-start: 0.97em;
-  }
   @media (min-width: 600px) {
     [data-sing="group"] .ash.who .verse p[data-who="chorus"] {
-      margin-inline-start: 1.1em;
       padding-inline-start: 0.55em;
-    }
-    [data-sing="group"] [data-lang="both"].ash.who .verse .en p[data-who="chorus"] {
-      margin-inline-start: 1.53em;
     }
   }
   [data-sing="group"][data-part="lead"] .ash.who .verse p[data-who="chorus"],
@@ -421,6 +410,11 @@ html[data-lead="en"] [data-lang="both"] .sing .mr {
      stands at the gap's end of the original */
   [data-sing="group"][data-cols="2"] [data-lang="both"].ash.who .items .verse {
     width: auto;
+  }
+  /* (each line the column's width, set against the gap, not centred as in one column) */
+  [data-sing="group"][data-cols="2"] [data-lang="both"].ash.who .verse p[data-who] {
+    width: auto;
+    margin-inline: 0;
   }
   [data-sing="group"][data-cols="2"] [data-lang="both"].ash.who .verse > .mr > p[data-who="chorus"] {
     margin-inline: 0 1.1em;

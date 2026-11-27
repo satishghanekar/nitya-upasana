@@ -1,7 +1,9 @@
-id: bhajan-ganesha-pancharatnam
+id: stotra-ganesha-pancharatnam
 title: गणेश पंचरत्नम्
 title-en: Ganesha Pancharatnam
 language: sa
+legacy-id: bhajan-ganesha-pancharatnam
+line-ids: bhajan-ganesha-pancharatnam.
 refrain: every-verse
 refrain-before-first: yes
 credit: attributed adi-shankara

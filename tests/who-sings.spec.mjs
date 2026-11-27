@@ -20,12 +20,15 @@ test("group by default: the switch, a chorus line stepped in with its rule, toge
   await expect(sec.getByRole("group", { name: "गायन" }).getByRole("button", { name: "समूह" })).toHaveAttribute("aria-pressed", "true");
   await expect(sec.getByRole("button", { name: "सोलो" })).toHaveAttribute("aria-pressed", "false");
   await expect(sec.getByRole("group", { name: "माझा भाग" })).toBeVisible();
-  // the lead at the stanza's edge, the chorus a step in with its rule
+  // the chorus's lines with a rule just before their words, the lead's without
   expect(await style(line(page, "lead"), "border-inline-start-width")).toBe("0px");
   expect(await style(line(page, "chorus"), "border-inline-start-width")).toBe("3px");
-  expect(parseFloat(await style(line(page, "chorus"), "margin-inline-start"))).toBeGreaterThan(10);
-  // the lines start at one edge, the stanza centred
-  expect(await style(sec.locator(".items .verse").first(), "text-align")).toBe("start");
+  // every line centred, as in every bhajan (Satish, 2026-11-26): each as wide as its words, as far from both sides
+  expect(await style(sec.locator(".items .verse").first(), "text-align")).toBe("center");
+  for (const who of ["lead", "chorus"]) {
+    const [l, box] = await Promise.all([line(page, who).boundingBox(), sec.locator(".items .verse").first().boundingBox()]);
+    expect(Math.abs(l.x - box.x - (box.x + box.width - l.x - l.width))).toBeLessThan(2);
+  }
   // where a turn starts, a screen reader hears who sings; together's label shows
   expect(await style(line(page, "lead"), "content", "::before")).toBe('"गायक: "');
   expect(await style(line(page, "chorus"), "content", "::before")).toBe('"कोरस: "');
