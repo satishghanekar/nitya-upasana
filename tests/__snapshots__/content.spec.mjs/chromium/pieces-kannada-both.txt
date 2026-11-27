@@ -18143,12 +18143,12 @@ Ganapati Bappa Morya
 ಕೇಳಿ: Jagjit Singh
 YouTube
 ↗
-ಗಾಯನ
-ಸೋಲೋ
-ಸಮೂಹ
-ನನ್ನ ಭಾಗ
-ಗಾಯಕ
-ಕೋರಸ್
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 ಗಣಪತೀ ಬಾಪ್ಪಾ ಮೋರಯಾ, ​ಮಂಗಲ ಮೂರ್ತೀ ಮೋರಯಾ
 
@@ -18339,12 +18339,12 @@ Vande Ganapati Vighnavinashan
 ಕೇಳಿ: Jagjit Singh
 YouTube
 ↗
-ಗಾಯನ
-ಸೋಲೋ
-ಸಮೂಹ
-ನನ್ನ ಭಾಗ
-ಗಾಯಕ
-ಕೋರಸ್
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 ವಂದೇ ಗಣಪತೀ ವಿಘ್ನವಿನಾಶನ, ​ಹೇ ಲಂಬೋದರ ಗಜಾನನಾ
 
@@ -18603,12 +18603,12 @@ Gaiye Ganapati Jagavandan
 ಕೇಳಿ: Jagjit Singh
 YouTube
 ↗
-ಗಾಯನ
-ಸೋಲೋ
-ಸಮೂಹ
-ನನ್ನ ಭಾಗ
-ಗಾಯಕ
-ಕೋರಸ್
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 ಗಾಇಯೇ ಗಣಪತಿ ಜಗವಂದನ
 

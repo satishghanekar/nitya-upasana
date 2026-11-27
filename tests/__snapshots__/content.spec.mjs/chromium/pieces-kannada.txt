@@ -9298,12 +9298,12 @@ YouTube
 ಕೇಳಿ: Jagjit Singh
 YouTube
 ↗
-ಗಾಯನ
-ಸೋಲೋ
-ಸಮೂಹ
-ನನ್ನ ಭಾಗ
-ಗಾಯಕ
-ಕೋರಸ್
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 ಗಣಪತೀ ಬಾಪ್ಪಾ ಮೋರಯಾ, ​ಮಂಗಲ ಮೂರ್ತೀ ಮೋರಯಾ
 
@@ -9403,12 +9403,12 @@ YouTube
 ಕೇಳಿ: Jagjit Singh
 YouTube
 ↗
-ಗಾಯನ
-ಸೋಲೋ
-ಸಮೂಹ
-ನನ್ನ ಭಾಗ
-ಗಾಯಕ
-ಕೋರಸ್
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 ವಂದೇ ಗಣಪತೀ ವಿಘ್ನವಿನಾಶನ, ​ಹೇ ಲಂಬೋದರ ಗಜಾನನಾ
 
@@ -9551,12 +9551,12 @@ YouTube
 ಕೇಳಿ: Jagjit Singh
 YouTube
 ↗
-ಗಾಯನ
-ಸೋಲೋ
-ಸಮೂಹ
-ನನ್ನ ಭಾಗ
-ಗಾಯಕ
-ಕೋರಸ್
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 ಗಾಇಯೇ ಗಣಪತಿ ಜಗವಂದನ
 

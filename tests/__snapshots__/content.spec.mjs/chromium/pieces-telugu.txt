@@ -9298,12 +9298,12 @@ YouTube
 వినండి: Jagjit Singh
 YouTube
 ↗
-గానం
-సోలో
-బృందం
-నా భాగం
-గాయకుడు
-కోరస్
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 గణపతీ బాప్పా మోరయా, ​మంగల మూర్తీ మోరయా
 
@@ -9403,12 +9403,12 @@ YouTube
 వినండి: Jagjit Singh
 YouTube
 ↗
-గానం
-సోలో
-బృందం
-నా భాగం
-గాయకుడు
-కోరస్
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 వందే గణపతీ విఘ్నవినాశన, ​హే లంబోదర గజాననా
 
@@ -9551,12 +9551,12 @@ YouTube
 వినండి: Jagjit Singh
 YouTube
 ↗
-గానం
-సోలో
-బృందం
-నా భాగం
-గాయకుడు
-కోరస్
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 గాఇయే గణపతి జగవందన
 

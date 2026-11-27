@@ -18143,12 +18143,12 @@ Ganapati Bappa Morya
 ऐका: Jagjit Singh
 YouTube
 ↗
-गायन
-सोलो
-समूह
-माझा भाग
-गायक
-कोरस
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 गणपती बाप्पा मोरया, ​मंगल मूर्ती मोरया
 
@@ -18339,12 +18339,12 @@ Vande Ganapati Vighnavinashan
 ऐका: Jagjit Singh
 YouTube
 ↗
-गायन
-सोलो
-समूह
-माझा भाग
-गायक
-कोरस
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 वंदे गणपती विघ्नविनाशन, ​हे लंबोदर गजानना
 
@@ -18603,12 +18603,12 @@ Gaiye Ganapati Jagavandan
 ऐका: Jagjit Singh
 YouTube
 ↗
-गायन
-सोलो
-समूह
-माझा भाग
-गायक
-कोरस
+Singing
+Solo
+Group
+My part
+Lead
+Chorus
 
 गाइये गणपति जगवंदन
 

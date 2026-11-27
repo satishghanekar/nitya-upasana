@@ -20,14 +20,15 @@
     '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
   var ICON_NEXT =
     '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
-  // Who sings: one person (solo), three (group); my part, the three with mine filled in: the one in front (lead) or the
-  // two beside (chorus). (Not a microphone: Follow's button is one.) The same drawings as the pill's in index.html (#tks)
+  // Who sings: one person (solo), three (group); my part: one person singing, sound beside them (lead; Satish,
+  // 2026-11-26: the three with the middle one filled in read as a group), or the three with the two beside filled in
+  // (chorus). (Not a microphone: Follow's button is one.) The same drawings as the pill's in index.html (#tks)
   /** @type {Record<string, string>} */
   var WHO_ICONS = {
     solo: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.5c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg>',
     group:
       '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4"/><circle cx="4.9" cy="9.6" r="2.2"/><circle cx="19.1" cy="9.6" r="2.2"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg>',
-    lead: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1" fill="currentColor"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4" fill="currentColor"/><circle cx="4.9" cy="9.6" r="2.2"/><circle cx="19.1" cy="9.6" r="2.2"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg>',
+    lead: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.5" cy="8" r="3.4"/><path d="M3 20.5c0-3.7 2.9-6.6 6.5-6.6s6.5 2.9 6.5 6.6"/><path d="M16.6 5.8c1.3 1.2 1.3 3.3 0 4.5"/><path d="M19.2 3.6c2.5 2.4 2.5 6.5 0 8.9"/></svg>',
     chorus:
       '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4"/><circle cx="4.9" cy="9.6" r="2.2" fill="currentColor"/><circle cx="19.1" cy="9.6" r="2.2" fill="currentColor"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg>',
   };
@@ -185,9 +186,12 @@
   function singing(p, C) {
     if (!marked(p)) return "";
     var w = C.ui.who;
+    // the buttons' words are the menu's, in the menu language, as the pill's are (Satish, 2026-11-26: in a text's own
+    // language they read Marathi under English menus): English here, put in by js/features/who-sings.js once the piece
+    // is built and whenever the settings are applied
     /** @param {string} k */
     var word = function (k) {
-      return two({ mr: w.mr[k], en: w.en[k] }, "who." + k);
+      return '<span data-who-word="' + k + '" lang="en">' + w.en[k] + "</span>";
     };
     // each choice an icon and its word: on a phone only the chosen ones show their word (css/04-columns-rail.css), the
     // same as the pill shown while the page scrolls (#tks, index.html), so the icons are learnt from either
