@@ -130,10 +130,11 @@ const first = (a, b) =>
     a.then(one, () => one(null));
     b.then(one, () => one(null));
   });
-// Listen's library, as kept in its cache (js/features/listen.js keeps only each file's type), given with the page's
-// cross-origin headers (_headers): the library starts its workers from its own file, and in a cross-origin isolated
-// page a worker whose file lacks them is refused. Without them Listen started only while its library still came from
-// the network, and could not start again once it came from the phone (a Galaxy S24 Ultra, 2026-11-20).
+// Listen's library, as kept in its cache (js/features/listen.js keeps only each file's type), given with cross-origin
+// headers: the library starts its workers from its own file, and while the page was cross-origin isolated (until
+// 2026-11-26, _headers says why it no longer is) a worker whose file lacked them was refused. Without them Listen
+// started only while its library still came from the network, and could not start again once it came from the phone
+// (a Galaxy S24 Ultra, 2026-11-20). Kept: harmless in a page that isn't isolated, and the worker loads only from here.
 const isolated = (m) => {
   if (!m) return m;
   const h = new Headers(m.headers);
