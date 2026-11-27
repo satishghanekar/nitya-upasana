@@ -140,6 +140,8 @@ test("in a session: on through its recordings, the text with none passed over, â
   await expect(sec).toBeVisible();
   await sec.locator(".listen-play").click();
   await expect.poll(() => video(page)).toBe("mt-vSIgsaxU");
+  // the session's first text: its video turned to, just above it
+  await expect(page.locator("#play-video")).toBeInViewport();
   await expect(page.locator("#play-count")).toHaveText("Playing 1 of 2");
   await expect(page.locator("#play-title")).toHaveText("Vande Ganapati Vighnavinashan Â· next: Gaiye Ganapati Jagavandan");
   await expect(page.locator("#play-prev")).toBeDisabled();
