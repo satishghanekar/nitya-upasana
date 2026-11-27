@@ -2,7 +2,7 @@
 // [chorus] and [together] shows Solo | Group under its heading, and in the group view My part. Group: a stanza one
 // centred block, a chorus line stepped in with a rule, together labelled, a screen reader told who sings where each turn
 // starts; my part's lines full with a dot, the other part's muted. Solo: as one person sings it. A text without the
-// marks has none of it.
+// marks has none of it. Solo leaves the chorus's lines out (Satish, 2026-11-26).
 import { test, expect } from "@playwright/test";
 import { openSite, readText, SETUPS, axeEveryTheme, noViolations, PREFS_KEY } from "./helpers.mjs";
 import { stubPrint } from "./print-helpers.mjs";
@@ -70,7 +70,7 @@ test("my part: its lines with a dot and named so, the other part's muted; tapped
   await expect(page.locator("html")).not.toHaveAttribute("data-part", /./);
 });
 
-test("solo: the text as one person sings it, no part to choose @chromium-only", async ({ page }) => {
+test("solo: the text as one person sings it, the chorus's lines left out, no part to choose @chromium-only", async ({ page }) => {
   await openSite(page, SETUPS["marathi-menus"]);
   await readText(page, VANDE);
   const sec = page.locator("#" + VANDE);
@@ -78,9 +78,15 @@ test("solo: the text as one person sings it, no part to choose @chromium-only", 
   await expect(page.locator("html")).toHaveAttribute("data-sing", "solo");
   await expect(sec.getByRole("button", { name: "सोलो" })).toHaveAttribute("aria-pressed", "true");
   await expect(sec.getByRole("group", { name: "माझा भाग" })).toBeHidden();
-  expect(await style(line(page, "chorus"), "border-inline-start-width")).toBe("0px");
-  expect(await style(line(page, "chorus"), "margin-inline-start")).toBe("0px");
+  // the chorus's lines left out, in both languages; the lead's and together's shown, unlabelled
+  await expect(line(page, "chorus")).toBeHidden();
+  await expect(line(page, "chorus", 0, "en")).toBeHidden();
+  await expect(line(page, "lead")).toBeVisible();
+  await expect(line(page, "together")).toBeVisible();
   expect(await style(line(page, "lead"), "content", "::before")).toBe("none");
+  // back to Group: the chorus's lines again
+  await sec.getByRole("button", { name: "समूह" }).click();
+  await expect(line(page, "chorus")).toBeVisible();
   expect(await style(sec.locator(".items .verse").first(), "text-align")).toBe("center");
 });
 
