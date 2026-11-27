@@ -594,7 +594,19 @@ test.describe("pinch @chromium-only", () => {
         y = innerHeight / 2;
       const el = document.elementFromPoint(x, y);
       const rng = document.caretRangeFromPoint(x, y);
-      rng.setEnd(rng.startContainer, Math.min(rng.startOffset + 1, rng.startContainer.length));
+      // a letter, as pinch keeps (js/features/pinch.js letterNear()): a space between two parts of a line, often a text
+      // node of its own, shrinks to nothing where the line wraps
+      let n = rng.startContainer;
+      if (!n.data.trim()) {
+        const w = document.createTreeWalker(n.parentElement, NodeFilter.SHOW_TEXT);
+        w.currentNode = n;
+        do n = w.previousNode();
+        while (n && !n.data.trim());
+      }
+      let o = n === rng.startContainer ? Math.min(rng.startOffset, n.length - 1) : n.length - 1;
+      while (o > 0 && /\s/.test(n.data.charAt(o))) o--;
+      rng.setStart(n, o);
+      rng.setEnd(n, o + 1);
       const before = rng.getBoundingClientRect().top;
       const t = (id, dx) => new Touch({ identifier: id, target: el, clientX: x + dx, clientY: y });
       const fire = (type, touches, changed) =>

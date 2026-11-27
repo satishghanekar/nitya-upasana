@@ -222,7 +222,14 @@ function anchorAt(x, y) {
   }
   if (r && r.startContainer.nodeType === 3) {
     var n = /** @type {Text} */ (r.startContainer),
-      o = Math.min(r.startOffset, n.data.length - 1);
+      o = Math.min(r.startOffset, n.data.length - 1),
+      near = letterNear(n, o);
+    // a space has no place of its own once the line wraps there (it shrinks to nothing), so a letter beside it is kept
+    // instead (2026-11-27: a point on the space between two parts of a line let the page jump by half a screen)
+    if (near) {
+      n = near.n;
+      o = near.o;
+    }
     if (o >= 0) {
       r.setStart(n, o);
       r.setEnd(n, o + 1);
@@ -234,6 +241,27 @@ function anchorAt(x, y) {
   if (!el) return null;
   var eb = el.getBoundingClientRect();
   return { el: el, y: y, f: eb.height ? (y - eb.top) / eb.height : 0 };
+}
+/**
+ * The letter nearest a place in a text, passing over spaces: this text node's, else the one before it or after it in
+ * the same element (a space between two parts of a line is often a text node of its own)
+ * @param {Text} n @param {number} o
+ * @returns {{ n: Text, o: number } | null}
+ */
+function letterNear(n, o) {
+  var k = o;
+  while (k > 0 && /\s/.test(n.data.charAt(k))) k--;
+  if (k >= 0 && !/\s/.test(n.data.charAt(k))) return { n: n, o: k };
+  for (k = Math.max(0, o); k < n.data.length; k++) if (!/\s/.test(n.data.charAt(k))) return { n: n, o: k };
+  if (!n.parentElement) return null;
+  var w = document.createTreeWalker(n.parentElement, NodeFilter.SHOW_TEXT),
+    m;
+  w.currentNode = n;
+  while ((m = /** @type {Text | null} */ (w.previousNode())) && !m.data.trim());
+  if (m) return letterNear(m, m.data.length - 1);
+  w.currentNode = n;
+  while ((m = /** @type {Text | null} */ (w.nextNode())) && !m.data.trim());
+  return m ? letterNear(m, 0) : null;
 }
 // Scroll so that place is back where it was on the screen (the page, or the list it is in when that scrolls itself)
 /** @param {any} a */

@@ -889,6 +889,10 @@ export default {
     sepia: "ಸೆಪಿಯಾ",
     dark: "ಗಾಢ",
     highContrast: "ಹೆಚ್ಚಿನ ಕಾಂಟ್ರಾಸ್ಟ್",
+    // Settings → Reading: a recording played here or in YouTube (js/features/play.js)
+    recordings: "ಧ್ವನಿಮುದ್ರಣಗಳು",
+    playInApp: "ಆ್ಯಪ್‌ನಲ್ಲೇ ನುಡಿಸಿ",
+    playInAppHint: "ಧ್ವನಿಮುದ್ರಣ ಇಲ್ಲೇ, ಪಠ್ಯದ ಮೇಲೆ ನುಡಿಸುತ್ತದೆ. ಆಫ್ ಇದ್ದರೆ ಧ್ವನಿಮುದ್ರಣಗಳು ಕಾಣುವುದಿಲ್ಲ",
     keepScreenOn: "ಪರದೆ ಆನ್ ಇರಲಿ",
     afterLastTouch: "ಕೊನೆಯ ಸ್ಪರ್ಶದ ನಂತರ, ನಿಮಿಷಗಳು",
     chantingPace: "ಪಠಣದ ವೇಗ",

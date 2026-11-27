@@ -469,3 +469,11 @@ html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
   height: 100%;
   border: 0;
 }
+
+/* Play in the app off (Settings, P.yt; Satish, 2026-11-27): no recording shows, nothing opens YouTube. On: data-yt */
+@media screen {
+  html:not([data-yt]) .listen-cards,
+  html:not([data-yt]) .cr .rec {
+    display: none;
+  }
+}
