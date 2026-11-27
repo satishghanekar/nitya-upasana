@@ -12,7 +12,7 @@ const line = (page, who, n = 0, lang = "mr") => page.locator(`#${VANDE} .verse >
 const style = (loc, prop, pseudo = null) => loc.evaluate((e, [p, ps]) => getComputedStyle(e, ps).getPropertyValue(p), [prop, pseudo]);
 
 test("group by default: the switch, a chorus line stepped in with its rule, together labelled @chromium-only", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, SETUPS["marathi-menus"]);
   await readText(page, VANDE);
   const sec = page.locator("#" + VANDE);
   await expect(sec).toHaveClass(/\bwho\b/);
@@ -20,12 +20,15 @@ test("group by default: the switch, a chorus line stepped in with its rule, toge
   await expect(sec.getByRole("group", { name: "गायन" }).getByRole("button", { name: "समूह" })).toHaveAttribute("aria-pressed", "true");
   await expect(sec.getByRole("button", { name: "सोलो" })).toHaveAttribute("aria-pressed", "false");
   await expect(sec.getByRole("group", { name: "माझा भाग" })).toBeVisible();
-  // the lead at the stanza's edge, the chorus a step in with its rule
+  // the chorus's lines with a rule just before their words, the lead's without
   expect(await style(line(page, "lead"), "border-inline-start-width")).toBe("0px");
   expect(await style(line(page, "chorus"), "border-inline-start-width")).toBe("3px");
-  expect(parseFloat(await style(line(page, "chorus"), "margin-inline-start"))).toBeGreaterThan(10);
-  // the lines start at one edge, the stanza centred
-  expect(await style(sec.locator(".items .verse").first(), "text-align")).toBe("start");
+  // every line centred, as in every bhajan (Satish, 2026-11-26): each as wide as its words, as far from both sides
+  expect(await style(sec.locator(".items .verse").first(), "text-align")).toBe("center");
+  for (const who of ["lead", "chorus"]) {
+    const [l, box] = await Promise.all([line(page, who).boundingBox(), sec.locator(".items .verse").first().boundingBox()]);
+    expect(Math.abs(l.x - box.x - (box.x + box.width - l.x - l.width))).toBeLessThan(2);
+  }
   // where a turn starts, a screen reader hears who sings; together's label shows
   expect(await style(line(page, "lead"), "content", "::before")).toBe('"गायक: "');
   expect(await style(line(page, "chorus"), "content", "::before")).toBe('"कोरस: "');
@@ -39,7 +42,7 @@ test("group by default: the switch, a chorus line stepped in with its rule, toge
 });
 
 test("my part: its lines with a dot and named so, the other part's muted; tapped again, no part @chromium-only", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, SETUPS["marathi-menus"]);
   await readText(page, VANDE);
   const sec = page.locator("#" + VANDE);
   const lead = sec.getByRole("button", { name: "गायक" });
@@ -68,7 +71,7 @@ test("my part: its lines with a dot and named so, the other part's muted; tapped
 });
 
 test("solo: the text as one person sings it, no part to choose @chromium-only", async ({ page }) => {
-  await openSite(page, SETUPS.marathi);
+  await openSite(page, SETUPS["marathi-menus"]);
   await readText(page, VANDE);
   const sec = page.locator("#" + VANDE);
   await sec.getByRole("button", { name: "सोलो" }).click();
@@ -79,6 +82,29 @@ test("solo: the text as one person sings it, no part to choose @chromium-only", 
   expect(await style(line(page, "chorus"), "margin-inline-start")).toBe("0px");
   expect(await style(line(page, "lead"), "content", "::before")).toBe("none");
   expect(await style(sec.locator(".items .verse").first(), "text-align")).toBe("center");
+});
+
+// The switch's words are the menu's (Satish, 2026-11-26: under English menus they read Marathi, the text's language):
+// a Marathi text read with English menus says Group, and the turns' labels stay the text's
+test("Marathi lines, English menus: the switch in English, the turns' labels in Marathi @chromium-only", async ({ page }) => {
+  await openSite(page, { ...SETUPS.marathi, ui: "en" });
+  await readText(page, VANDE);
+  const sec = page.locator("#" + VANDE);
+  await expect(sec.getByRole("group", { name: "Singing" }).getByRole("button", { name: "Group" })).toHaveAttribute("aria-pressed", "true");
+  await expect(sec.getByRole("group", { name: "My part" }).getByRole("button", { name: "Lead" })).toBeVisible();
+  await expect(sec.locator(".sing [data-who-word]").first()).toHaveAttribute("lang", "en");
+  expect(await style(line(page, "chorus"), "content", "::before")).toBe('"कोरस: "');
+});
+
+// The lead's icon is one person singing, sound beside them (Satish, 2026-11-26: the group with its middle person filled
+// in read as a group), under the heading and in the pill: one head, not the chorus's three
+test("the lead's icon: one person with sound, the chorus's three people @chromium-only", async ({ page }) => {
+  await openSite(page, SETUPS["marathi-menus"]);
+  await readText(page, VANDE);
+  for (const where of ["#" + VANDE + " .sing", "#tks"]) {
+    expect(await page.locator(where + ' [data-part="lead"] svg circle').count()).toBe(1);
+    expect(await page.locator(where + ' [data-part="chorus"] svg circle').count()).toBe(3);
+  }
 });
 
 test("English menus and lines: the switch and the turns in English; a text without marks has no switch @chromium-only", async ({ page }) => {

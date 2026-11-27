@@ -1092,6 +1092,8 @@ export default {
     also: "(આમની રચના પણ મનાય છે : {name})",
     compiledBy: "સંકલન :",
     traditional: "પરંપરાગત",
+    // the card at the top of a text with a recording: "Listen: Jagjit Singh" (js/text/content.js listenCards())
+    listen: "સાંભળો",
     lang: { sa: "સંસ્કૃત", mr: "મરાઠી", hi: "હિન્દી" },
   },
 };

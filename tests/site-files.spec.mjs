@@ -129,8 +129,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // 2026-11-21: the welcome as two steps, the first reading language and the routines' times, in five languages, 452.2 KB
   // then; 458 KB since 2026-11-24: who sings, js/features/who-sings.js, the switch and the turns' words in five
   // languages, 456.3 KB then; 459 KB since 2026-11-24: Follow finding an aarti's opening dhrupad in the copy it shows,
-  // 458.05 KB then)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(459_000);
+  // 458.05 KB then; 462 KB since 2026-11-26: the welcome's two full-screen steps and the splash, and the Listen card at
+  // the top of a text with a recording, its word in five languages, 459.89 KB then on a Mac)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(462_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -158,8 +159,9 @@ test("the scripts, styles and page stay within their size budget", () => {
   // 2026-11-21: the welcome as two full-screen steps, 94.1 KB then; 96 KB since 2026-11-24: who sings, the switch under
   // the heading and the group view's turns on phone, tablet and side by side, and their printout, 95.8 KB with them on a
   // Mac, 96.25 KB on GitHub's: 96.5 KB; 98 KB since 2026-11-24 too: the pill shown while the page scrolls as the singing
-  // choices, the Reading sheet's rows and one row of icons under the heading, 97.07 KB then on a Mac)
-  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(98_000);
+  // choices, the Reading sheet's rows and one row of icons under the heading, 97.07 KB then on a Mac;
+  // 99 KB since 2026-11-26: the Listen card at the top of a text with a recording, 98.03 KB then on GitHub's)
+  expect(gz(parts.css), "styles, gzip bytes").toBeLessThanOrEqual(99_000);
   // (31 KB since 2026-11-09: About's Listen line with its chip icon and badge, and Help saying where it runs: 29.96 KB
   // then; 31.5 KB since 2026-11-12: Print in the Share menu on a phone beside its button in the top bar, and Help
   // saying so: 31.06 KB then; 32 KB since 2026-11-14: Go to's button and sheet, and Help on it: 31.56 KB then; 33 KB since

@@ -205,6 +205,7 @@ stotra-ghorakashtoddharan: none
 stotra-vandu-guruchya-charanaravinda: none
 stotra-martand-bavani: none
 stotra-sadguru-vandana: none
+stotra-ganesha-pancharatnam: none
 ashtak-sadguru-padukashtak: none
 ashtak-ananyata-maj-ghado: none
 ashtak-anudin-anutapen: none
@@ -223,9 +224,7 @@ ashtak-lingashtakam: none
 ashtak-nandikeshvara-ashtakam: none
 ashtak-rudrashtakam: none
 ashtak-kalabhairava-ashtakam: none
-bhajan-vakratunda-mahakaya: none
 bhajan-ganapati-bappa-morya: none
 bhajan-vande-ganapati: none
-bhajan-ganesha-pancharatnam: none
 bhajan-gaiye-ganapati-jagvandan: none
 bhajan-nadatuni-ya-nad-nirmito: none

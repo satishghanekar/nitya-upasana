@@ -88,7 +88,7 @@ describe("ranking", () => {
     // "Shri Ganeshaya namah" opens Shri Ram Raksha Stotram, but only Jai Ganesh Deva and the Ganesha Pancharatnam
     // have Ganesh in their titles
     const r = search(ix, "ganesh");
-    expect(r.texts.map((t) => t.id).sort()).toEqual(["aarti-jai-ganesh-deva", "bhajan-ganesha-pancharatnam"]);
+    expect(r.texts.map((t) => t.id).sort()).toEqual(["aarti-jai-ganesh-deva", "stotra-ganesha-pancharatnam"]);
     expect(r.lines.map((l) => l.text)).toContain("stotra-ram-raksha");
     expect(r.texts.every((t) => t.score >= SCORE.titleTypo)).toBe(true);
   });

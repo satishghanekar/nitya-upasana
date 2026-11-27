@@ -191,6 +191,7 @@ var SITE_PARTS = (function () {
     "texts/stotra-vandu-guruchya-charanaravinda.txt",
     "texts/stotra-martand-bavani.txt",
     "texts/stotra-sadguru-vandana.txt",
+    "texts/stotra-ganesha-pancharatnam.txt",
     "texts/ashtak-sadguru-padukashtak.txt",
     "texts/ashtak-ananyata-maj-ghado.txt",
     "texts/ashtak-anudin-anutapen.txt",
@@ -209,10 +210,8 @@ var SITE_PARTS = (function () {
     "texts/ashtak-nandikeshvara-ashtakam.txt",
     "texts/ashtak-rudrashtakam.txt",
     "texts/ashtak-kalabhairava-ashtakam.txt",
-    "texts/bhajan-vakratunda-mahakaya.txt",
     "texts/bhajan-ganapati-bappa-morya.txt",
     "texts/bhajan-vande-ganapati.txt",
-    "texts/bhajan-ganesha-pancharatnam.txt",
     "texts/bhajan-gaiye-ganapati-jagvandan.txt",
     "texts/bhajan-nadatuni-ya-nad-nirmito.txt",
     // the other versions of a text sung in more than one way (content/library.json "versions")

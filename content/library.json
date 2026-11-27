@@ -70,7 +70,8 @@
     "stotra-ghorakashtoddharan",
     "stotra-vandu-guruchya-charanaravinda",
     "stotra-martand-bavani",
-    "stotra-sadguru-vandana"
+    "stotra-sadguru-vandana",
+    "stotra-ganesha-pancharatnam"
    ]
   },
   {
@@ -107,10 +108,8 @@
     "en": "Bhajan"
    },
    "texts": [
-    "bhajan-vakratunda-mahakaya",
     "bhajan-ganapati-bappa-morya",
     "bhajan-vande-ganapati",
-    "bhajan-ganesha-pancharatnam",
     "bhajan-gaiye-ganapati-jagvandan",
     "bhajan-nadatuni-ya-nad-nirmito"
    ]

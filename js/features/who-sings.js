@@ -13,10 +13,15 @@
 
 import { P, change } from "../core/state.js";
 import { onPiece, root } from "../core/page.js";
+import { menuWords } from "../core/strings.js";
+import { ui } from "../core/words.js";
 
 export function init() {
   whoMark();
-  onPiece(pressed);
+  onPiece(function (sec) {
+    menuWordsIn(sec);
+    pressed(sec);
+  });
   document.addEventListener("click", function (e) {
     var b = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest(".sing button[data-sing], .sing button[data-part]"));
     if (!b) return;
@@ -54,7 +59,24 @@ export function whoMark() {
     put("--who-together", w.together);
   }
   // (the texts', the pill shown while the page scrolls, #tks, and the Reading sheet's, #rsh)
+  menuWordsIn(document.body);
   pressed(document.body);
+}
+
+/**
+ * The switch's words under a text's heading in the menu language, as the pill's (Satish, 2026-11-26): js/render.js
+ * writes them in English. Not as the page's own words (fillWords(): a class of the language's code), since a text's
+ * .mr / .en rules would hide them inside it (css/02-core.css).
+ * @param {HTMLElement} sec
+ */
+function menuWordsIn(sec) {
+  var w = /** @type {Record<string, string>} */ (menuWords("text").who),
+    l = ui();
+  sec.querySelectorAll(".sing [data-who-word]").forEach(function (e) {
+    var k = /** @type {HTMLElement} */ (e).dataset.whoWord || "";
+    if (e.textContent !== w[k]) e.textContent = w[k];
+    /** @type {HTMLElement} */ (e).lang = l;
+  });
 }
 
 /** The singing buttons in a part of the page pressed as the settings are @param {HTMLElement} sec */

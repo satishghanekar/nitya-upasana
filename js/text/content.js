@@ -47,7 +47,8 @@ var SCRIPTS = LANGUAGES.filter(function (l) {
  *   rmk: a small line between blocks: the dhrupad's marker (↻ ध्रुपद), or, with nt, a [note] from the text file (Phalashruti,
  *   ↻ ३ वेळा), which is part of the text and always shown, whatever the dhrupad setting
  * @typedef {{ id: string, text: string, lang?: string, cls?: string, prose?: true, no: Pair, title: Pair, tag: Pair,
- *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string, partName?: Pair, ver?: string }} Piece
+ *   lead?: Item[], refrain?: { label: Pair, lines: Pair[] }, items: Item[], credit: string, listen?: string, partName?: Pair,
+ *   ver?: string }} Piece
  *   lead: what comes before the dhrupad at the top (refrain), [once] lines and [note]s, shown above it; ver: in a text
  *   with versions, the file this one is from (its id is the text's, so the Library, sessions and Follow never see a
  *   difference)
@@ -203,6 +204,41 @@ function recordings(s) {
   return '<span class="rec" lang="en"><span aria-hidden="true">▶ </span>YouTube: ' + links.join(" · ") + "</span>";
 }
 /**
+ * The recordings to hear, at the top of the text, under its heading (Satish, 2026-11-26: under the credit at the end
+ * they were hard to find): a card for each, "▶ Listen: Jagjit Singh, YouTube ↗", opening in a new tab at the second
+ * the text starts. Listen is the site's word (js/strings/, "text"), marked with its key for js/render.js as the
+ * credit's are; YouTube and the chanters' names read the same in every language. Without the site's words (npm run
+ * texts counting a piece's letters) there is none.
+ * @param {string | undefined} s  the header's recording line, checked by js/text/format.js
+ * @param {Ctx} ctx
+ */
+function listenCards(s, ctx) {
+  if (!s || !ctx.words) return "";
+  var mr = esc(ctx.words("text", "mr").listen),
+    en = esc(ctx.words("text", "en").listen);
+  return s
+    .split(", ")
+    .map(function (r) {
+      var m = /** @type {RegExpExecArray} */ (RECORDING.exec(r));
+      return (
+        '<a class="listen-card" href="' +
+        esc(m[2]) +
+        '" target="_blank" rel="noopener"><span class="listen-icon" aria-hidden="true">' +
+        PLAY_ICON +
+        '</span><span class="listen-text"><span class="listen-word"><span class="mr" data-tw="listen">' +
+        mr +
+        '</span><span class="en" lang="en">' +
+        en +
+        '</span>: <span lang="en">' +
+        esc(m[1]) +
+        '</span></span><small lang="en">YouTube</small></span><span class="listen-out" aria-hidden="true">↗</span></a>'
+      );
+    })
+    .join("");
+}
+// the Listen card's play sign: a triangle, drawn rather than a character so every phone draws it the same
+var PLAY_ICON = '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>';
+/**
  * One text as a piece of CONTENT.
  * @param {Text} t
  * @param {number} n  its number in its category, from 1
@@ -331,6 +367,8 @@ export function toPiece(t, n, ctx) {
   }
   p.items = items;
   p.credit = creditOf(t, c) + recordings(t.recording);
+  var listen = listenCards(t.recording, c);
+  if (listen) p.listen = listen;
   return p;
 }
 

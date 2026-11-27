@@ -1108,6 +1108,8 @@ export default {
     also: "(ಇವರದೆಂದೂ ಹೇಳಲಾಗುತ್ತದೆ : {name})",
     compiledBy: "ಸಂಕಲನ :",
     traditional: "ಸಾಂಪ್ರದಾಯಿಕ",
+    // the card at the top of a text with a recording: "Listen: Jagjit Singh" (js/text/content.js listenCards())
+    listen: "ಕೇಳಿ",
     lang: { sa: "ಸಂಸ್ಕೃತ", mr: "ಮರಾಠಿ", hi: "ಹಿಂದಿ" },
   },
 };

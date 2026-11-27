@@ -1140,6 +1140,8 @@ export default {
     also: "(also credited to {name})",
     compiledBy: "A compilation:",
     traditional: "Traditional",
+    // the card at the top of a text with a recording: "Listen: Jagjit Singh" (js/text/content.js listenCards())
+    listen: "Listen",
     lang: { sa: "Sanskrit", mr: "Marathi", hi: "Hindi" },
   },
 };

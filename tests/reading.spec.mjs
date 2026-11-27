@@ -89,6 +89,47 @@ test("a text with a recording shows it under the credit: YouTube, the chanters, 
   expect(box.x + box.width).toBeLessThanOrEqual(await page.evaluate(() => document.documentElement.clientWidth));
 });
 
+// The recordings were hard to find under the credit at the end (Satish, 2026-11-26): a card for each at the top, under
+// the heading, "▶ Listen: the chanters" with YouTube under it, the same link; the line at the end stays
+test("a text with a recording has a Listen card at the top: the chanters, YouTube, a whole 44px target @mobile", async ({ page }) => {
+  const errors = [];
+  await openSite(page, SETUPS.marathi, { hash: "#bhajan-gaiye-ganapati-jagvandan", errors });
+  const sec = page.locator("#bhajan-gaiye-ganapati-jagvandan");
+  const card = sec.locator(".listen-card");
+  await expect(card).toHaveCount(1);
+  await expect(card).toBeVisible();
+  // (what shows: the other language's word is hidden, so read as a person sees it, not the element's whole text)
+  const shown = (l) => l.evaluate((e) => e.innerText.replace(/\s+/g, " ").trim());
+  expect(await shown(card)).toBe("ऐका: Jagjit Singh YouTube ↗");
+  await expect(card).toHaveAccessibleName(/^ऐका ?: Jagjit Singh YouTube$/);
+  await expect(card).toHaveAttribute("href", "https://www.youtube.com/watch?v=aASYnk-eaXI&t=15");
+  await expect(card).toHaveAttribute("target", "_blank");
+  await expect(card).toHaveAttribute("rel", "noopener");
+  // above the words, right under the heading, and a whole target
+  const [c, h, v] = await Promise.all([card.boundingBox(), sec.locator("header").boundingBox(), sec.locator(".verse").first().boundingBox()]);
+  expect(c.y).toBeGreaterThanOrEqual(h.y + h.height - 1);
+  expect(c.y + c.height).toBeLessThan(v.y);
+  expect(c.height).toBeGreaterThanOrEqual(44);
+  expect(c.x + c.width).toBeLessThanOrEqual(await page.evaluate(() => document.documentElement.clientWidth));
+  // the line at the end stays, as before
+  await expect(sec.locator(".cr .rec a")).toHaveCount(1);
+  // a text with no recording has no card
+  await readText(page, "a3");
+  await expect(page.locator(".listen-card:visible")).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+for (const [setup, word] of [
+  ["english", "Listen"],
+  ["both", "ऐका"],
+]) {
+  test(`the Listen card in ${setup}: ${word}, once @mobile`, async ({ page }) => {
+    await openSite(page, SETUPS[setup], { hash: "#bhajan-gaiye-ganapati-jagvandan" });
+    const card = page.locator("#bhajan-gaiye-ganapati-jagvandan .listen-card");
+    expect(await card.evaluate((e) => e.innerText.replace(/\s+/g, " ").trim())).toBe(word + ": Jagjit Singh YouTube ↗");
+  });
+}
+
 // A text sung in more than one way (js/features/versions.js; Satish, 2026-11-15): the Library lists it once; the
 // switch under its title shows the other version in place, remembered for the person, and print and search read it
 test("the Hanuman Chalisa: listed once, Tulsidas | Popular under its title, the choice remembered @mobile", async ({ page }) => {
