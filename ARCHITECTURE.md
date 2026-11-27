@@ -120,16 +120,18 @@ around it is plain, unit-tested JavaScript (`js/core/hearing.js`): sound into th
 likeliest letter for every 20 ms) into words. Where the browser has WebGPU it runs on the GPU: the model with its weights in 4 bits
 (`models/chant-v7-q4/`, 90 MB) and the library's WebGPU build (27 MB), three times quicker on an iPhone than the CPU
 (233 ms a hearing against 712, 2026-11-09) and far less work for the phone. Elsewhere, or if the GPU fails to start it
-(remembered), it runs on the CPU on every core: the 8-bit model (`models/chant-v7/`) and the library's CPU build
-(14 MB), in the library's own worker, never on the page's thread; the site is cross-origin isolated
-(`Cross-Origin-Opener-Policy` and `-Embedder-Policy` in `_headers`; it loads nothing from other sites anyway). A
+(remembered), it runs on the CPU: the 8-bit model (`models/chant-v7/`) and the library's CPU build
+(14 MB), in the library's own worker, never on the page's thread; on as many cores as the page
+allows (one since 2026-11-26, when the site stopped being cross-origin isolated so YouTube's player could play inside
+it: the isolation helped only this CPU way). A
 phone downloads only the way it uses, and Settings → About → Follow says which: a chip icon
 (with a bolt on the GPU), "Follow: GPU" with a green Optimized badge or "Follow: CPU" with a muted Standard one. (Through the older WebGPU build an iPhone computed nonsense with the 8-bit
 model, 2026-11-05, so until 1.49 Listen used the CPU only.) **Follow** (`js/features/listen.js`, the microphone in the bottom bar) uses it: the first time, after the reader
 agrees, it downloads the model and the library (about 117 MB for the GPU, 122 MB for the CPU) into the cache `nitya-listen`, which `sw.js` keeps
 across versions and gives the library and the microphone tap (`js/worklets/listen-tap.js`) from, so Follow works
 offline. It gives them with the page's cross-origin headers (`isolated()` in `sw.js`): the library starts its workers
-from its own file, and Chrome refuses a worker whose file lacks them in a cross-origin isolated page. Every half second of new sound it hears the last 4 s. Near the mark, the model's scores are lined up with
+from its own file, and Chrome refused a worker whose file lacked them while the page was cross-origin isolated (kept:
+harmless now, and the worker still loads only from this site). Every half second of new sound it hears the last 4 s. Near the mark, the model's scores are lined up with
 the text there (`js/core/align.js`, CTC forced alignment); when they don't fit, or the place isn't known yet,
 `js/core/follow.js` looks for the letters it heard in the texts (near the last place, then the text, then every
 text). The model says when its last letter was said (its

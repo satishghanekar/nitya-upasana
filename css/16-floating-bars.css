@@ -279,3 +279,90 @@
     bottom: 16px;
   }
 }
+
+/* ==== Play mode's bar (js/features/play.js), in place of the bottom bar while it plays ==== */
+[data-playing] #asc {
+  display: none;
+}
+#play-bar {
+  position: fixed;
+  left: max(12px, env(safe-area-inset-left, 0px));
+  right: max(12px, env(safe-area-inset-right, 0px));
+  bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  z-index: 8;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 10px 14px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 24px;
+  background: var(--bar);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 20%);
+  color: var(--ink);
+  font: 400 var(--fz-s) / 1.35 var(--lat);
+}
+#play-bar[hidden] {
+  display: none;
+}
+.play-now {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+}
+.play-title {
+  margin: 2px 0 6px;
+  font: 600 var(--fz-m) / 1.3 var(--lat);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.play-line {
+  height: 4px;
+  margin-bottom: 8px;
+  border-radius: 2px;
+  background: var(--rule);
+}
+.play-line i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.play-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.play-buttons button {
+  display: grid;
+  place-items: center;
+  min-width: 52px;
+  min-height: 52px;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 600 var(--fz-s) / 1 var(--lat);
+}
+.play-buttons .play-main {
+  min-width: 64px;
+  min-height: 64px;
+  border: 0;
+  background: var(--accent);
+  color: var(--bg);
+}
+.play-buttons .play-stop {
+  display: block;
+  padding: 0 16px;
+}
+.play-buttons button:disabled {
+  opacity: 0.4;
+}
+/* room at the page's end, so the bar never covers the last lines */
+[data-playing] #main {
+  padding-bottom: 190px;
+}

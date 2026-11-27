@@ -45,13 +45,13 @@
 # inline; styles may be, because the print view writes its own (a <style> and style attributes, js/features/print.js).
 # WebAssembly may be compiled ('wasm-unsafe-eval', which allows nothing else): the chanting model runs in it
 # (vendor/onnxruntime/, loaded only when Listen is used).
-# The page is cross-origin isolated (the two Cross-Origin headers): it loads nothing from other sites anyway, and being
-# isolated lets the chanting model use every core of the phone instead of one (SharedArrayBuffer; 2026-11-05: one core
-# took 2.1 s for the encoder on an iPhone). Links and shares to other sites are unaffected: they open, not load into
-# the page.
+# One exception (Satish, 2026-11-26): YouTube's player for Play mode (js/features/youtube.js), its script from
+# www.youtube.com and the player itself on youtube-nocookie.com, loaded only after a tap on ▶, never with the page.
+# The page is no longer cross-origin isolated (Cross-Origin-Opener- and -Embedder-Policy, until 2026-11-26): isolated,
+# it could not hold YouTube's player, which sends neither header, so a recording opened in a window of its own. The
+# isolation only let the chanting model use every core on the CPU; on the GPU (an iPhone, recent Chrome) it runs on
+# one thread either way.
 # Links to other sites (Wikipedia, WhatsApp) are ordinary links and not limited by it. tests/serve.mjs sends the same
 # policy, so every test runs under it, and a file it blocks fails the tests (a console error).
 /*
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Embedder-Policy: require-corp
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self'; frame-src 'self' blob:; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://www.youtube.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self'; frame-src 'self' blob: https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'

@@ -12,6 +12,9 @@ documents, dotfiles and `tests/`): never commit anything private. A new document
 - One exception (agreed 2026-11-05): ONNX Runtime Web, copied unchanged into `vendor/onnxruntime/`, to run the
   chanting model (`models/chant-vN/`), and `'wasm-unsafe-eval'` in the security policy for it. Loaded only when Follow
   is used, never with the page; nothing else goes into `vendor/`. `vendor/onnxruntime/README.md` says how to update it.
+- One more (agreed 2026-11-26), as in Sankathara Chaturthi: YouTube's player for Play mode (`js/features/youtube.js`),
+  its script from www.youtube.com and the player on youtube-nocookie.com, allowed in `_headers` and loaded only after
+  a tap on ▶, never with the page. For it the site is no longer cross-origin isolated (`_headers` says why).
 - A file over 20 MB is cut into pieces (Cloudflare Pages serves none over 25 MiB) and joined by the code that loads it.
 - All tooling lives in `tests/` (its own `package.json`: eslint, stylelint, tsc, Vitest, Playwright, Lighthouse). Never
   add a `package.json` at the root.
@@ -38,7 +41,7 @@ documents, dotfiles and `tests/`): never commit anything private. A new document
   Comments are wrapped by hand at about 120. Anything written into HTML goes
   through `esc()` (`js/core/words.js`).
 - No inline `<script>` and no `on…=` attributes: the Content-Security-Policy in `_headers` blocks them (the tests run
-  under it, `tests/serve.mjs`). Anything the page loads comes from this site.
+  under it, `tests/serve.mjs`). Anything the page loads comes from this site (YouTube's player for Play mode apart, above).
 - No `console.log`. `console.warn` / `console.error` only where a failure is caught and the site carries on (the tests
   fail on any console error).
 - Comments say why, in plain English, as the existing ones do.

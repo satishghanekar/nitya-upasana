@@ -1144,4 +1144,53 @@ export default {
     listen: "Listen",
     lang: { sa: "Sanskrit", mr: "Marathi", hi: "Hindi" },
   },
+  // Play mode (js/features/play.js): a recording played here from a text's Listen card, on through a session
+  play: {
+    bar: "Player",
+    // one recording: what it does, with no count
+    playingOne: "Playing",
+    pausedOne: "Paused",
+    /** @param {string} i @param {string} n */
+    playing: function (i, n) {
+      return "Playing " + i + " of " + n;
+    },
+    /** @param {string} i @param {string} n */
+    paused: function (i, n) {
+      return "Paused · " + i + " of " + n;
+    },
+    /** @param {string} name */
+    next: function (name) {
+      return "next: " + name;
+    },
+    last: "the last one",
+    prev: "Previous",
+    pause: "Pause",
+    resume: "Play",
+    nextButton: "Next",
+    stop: "Stop",
+    /** the Listen card's play button @param {string} who */
+    here: function (who) {
+      return "Play here: " + who;
+    },
+    stopped: "Stopped · tap ▶ to carry on",
+    /** @param {string} names */
+    skipped: function (names) {
+      return "Skipped, no recording: " + names;
+    },
+    /** @param {string} name */
+    cant: function (name) {
+      return "Can’t play " + name + " now: going on to the next";
+    },
+    /** a text played alone, no next to go on to @param {string} name */
+    cantOne: function (name) {
+      return "Can’t play " + name + " here now";
+    },
+    locked: "Paused when the phone was locked · tap ▶ to carry on",
+    tap: "Tap ▶ to start",
+    /** @param {string} n */
+    done: function (n) {
+      return "All " + n + " recordings played";
+    },
+    noYouTube: "YouTube did not load: is the internet on?",
+  },
 };

@@ -466,6 +466,12 @@ export function runIds() {
   return run ? run.ids.slice() : null;
 }
 
+/** Turn to a text of the session being read, as Go to does: Play mode moves on to each text with a recording so
+ * (js/features/play.js) @param {string} id  its Library id */
+export function readInRun(id) {
+  openText(id);
+}
+
 /** The weekday of the session being read (the day it was started on Home), or undefined: Print's heading */
 export function runDay() {
   return run ? fromKey(run.day).getDay() : undefined;

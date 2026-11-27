@@ -130,6 +130,9 @@ var SITE_PARTS = (function () {
     "features/follow-check",
     "features/listen",
     "features/launch",
+    "core/play-queue",
+    "features/play",
+    "features/youtube",
   ].map(function (f) {
     return "js/" + f + ".js";
   });

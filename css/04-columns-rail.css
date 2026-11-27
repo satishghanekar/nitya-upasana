@@ -436,3 +436,10 @@ html[data-lead="en"] [data-lang="both"] .sing .mr {
     inset-inline-end: -1.6em;
   }
 }
+/* Solo (Satish, 2026-11-26): one person sings the lead's lines and all together's, so the chorus's answers are left out
+   on the screen (Follow keeps its place on a line the page doesn't show, js/features/listen.js; print is its own). */
+@media screen {
+  [data-sing="solo"] .ash.who .verse p[data-who="chorus"] {
+    display: none;
+  }
+}
