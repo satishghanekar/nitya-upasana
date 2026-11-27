@@ -100,3 +100,36 @@ function release() {
   } catch (e) {}
   wl = null;
 }
+
+/** @type {any} the screen held on by Play mode */
+var held = null;
+var holding = false;
+
+/**
+ * Hold the screen on while Play mode plays, whatever Keep screen on says (a phone that locks stops YouTube), and let
+ * it go when Play mode stops. Browsers drop the lock when the page is hidden: Play mode asks again as it comes back.
+ * @param {boolean} on
+ */
+export function hold(on) {
+  holding = on;
+  if (!("wakeLock" in navigator)) return;
+  if (on) {
+    if (held) return;
+    navigator.wakeLock
+      .request("screen")
+      .then(function (l) {
+        if (!holding) {
+          l.release().catch(function () {});
+          return;
+        }
+        held = l;
+        l.addEventListener("release", function () {
+          if (held === l) held = null;
+        });
+      })
+      .catch(function () {});
+  } else {
+    if (held) held.release().catch(function () {});
+    held = null;
+  }
+}

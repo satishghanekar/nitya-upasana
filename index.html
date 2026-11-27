@@ -153,6 +153,9 @@
 <link rel="modulepreload" href="js/features/follow-check.js">
 <link rel="modulepreload" href="js/features/listen.js">
 <link rel="modulepreload" href="js/features/launch.js">
+<link rel="modulepreload" href="js/core/play-queue.js">
+<link rel="modulepreload" href="js/features/play.js">
+<link rel="modulepreload" href="js/features/youtube.js">
 </head>
 
 <body>
@@ -584,6 +587,8 @@
       <p id="tlive" class="sr" aria-live="polite"></p>
     </section>
   </section>
+  <!-- Play mode's video (js/features/play.js, js/features/youtube.js): above the text playing, only while it plays -->
+  <div id="play-video" hidden></div>
   <!-- ==== The pieces, from the text files in content/texts/ (fetched by js/text/load.js). Each is built here, before
        #pieces, the first time it is opened (js/core/page.js with js/render.js), in the Library's order ==== -->
   <div id="pieces" hidden></div>
@@ -897,6 +902,20 @@
      or a session it also says where the reading is and opens Go to, as the top bar's title does (js/features/where.js);
      elsewhere a tap on it brings the bars back. -->
 <div id="tuck"><div id="tks" class="sing"><div class="sing-mode" role="group" aria-labelledby="tksl"><span class="sr" id="tksl"><span data-w="text.who.sing">Singing</span></span><button type="button" data-sing="solo" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.5c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg><span class="sw"><span data-w="text.who.solo">Solo</span></span></button><button type="button" data-sing="group" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4"/><circle cx="4.9" cy="9.6" r="2.2"/><circle cx="19.1" cy="9.6" r="2.2"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg><span class="sw"><span data-w="text.who.group">Group</span></span></button></div><div class="sing-part" role="group" aria-labelledby="tkspl"><span class="sr" id="tkspl"><span data-w="text.who.part">My part</span></span><button type="button" data-part="lead" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.5" cy="8" r="3.4"/><path d="M3 20.5c0-3.7 2.9-6.6 6.5-6.6s6.5 2.9 6.5 6.6"/><path d="M16.6 5.8c1.3 1.2 1.3 3.3 0 4.5"/><path d="M19.2 3.6c2.5 2.4 2.5 6.5 0 8.9"/></svg><span class="sw"><span data-w="text.who.lead">Lead</span></span></button><button type="button" data-part="chorus" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M6.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4"/><circle cx="4.9" cy="9.6" r="2.2" fill="currentColor"/><circle cx="19.1" cy="9.6" r="2.2" fill="currentColor"/><path d="M1.6 18.2c.3-2.2 1.7-3.8 3.6-4.2"/><path d="M22.4 18.2c-.3-2.2-1.7-3.8-3.6-4.2"/></svg><span class="sw"><span data-w="text.who.chorus">Chorus</span></span></button></div></div><button type="button" id="tkb" aria-hidden="true" tabindex="-1" aria-controls="goto" aria-expanded="false"><span id="tkt"></span><span id="tkw"></span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><i id="tkp"></i></button></div>
+<!-- Play mode's bar (js/features/play.js), in place of the bottom bar while it plays: where it is, the time, what
+     comes next in a session, ⏮ ❚❚ ⏭ and ■ Stop -->
+<div id="play-bar" hidden role="region" aria-labelledby="play-bar-label">
+  <span class="sr" id="play-bar-label"><span data-w="play.bar">Player</span></span>
+  <div class="play-now"><span id="play-count" aria-live="polite"></span><span id="play-time"></span></div>
+  <div class="play-title" id="play-title"></div>
+  <div class="play-line" aria-hidden="true"><i id="play-fill"></i></div>
+  <div class="play-buttons">
+    <button type="button" id="play-prev" aria-label="Previous"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M6 5h2.5v14H6zM19 5.5v13L9.5 12z"/></svg></button>
+    <button type="button" id="play-toggle" class="play-main" aria-label="Pause"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg></button>
+    <button type="button" id="play-next" aria-label="Next"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M15.5 5H18v14h-2.5zM5 5.5v13L14.5 12z"/></svg></button>
+    <button type="button" id="play-stop" class="play-stop"><span aria-hidden="true">■ </span><span data-w="play.stop">Stop</span></button>
+  </div>
+</div>
 <div id="asc" hidden role="navigation" aria-label="Previous, home, library, reading, listen, next">
   <div id="asi">
     <button type="button" id="asv" class="asx"></button>

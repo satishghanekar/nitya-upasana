@@ -130,8 +130,10 @@ test("the scripts, styles and page stay within their size budget", () => {
   // then; 458 KB since 2026-11-24: who sings, js/features/who-sings.js, the switch and the turns' words in five
   // languages, 456.3 KB then; 459 KB since 2026-11-24: Follow finding an aarti's opening dhrupad in the copy it shows,
   // 458.05 KB then; 462 KB since 2026-11-26: the welcome's two full-screen steps and the splash, and the Listen card at
-  // the top of a text with a recording, its word in five languages, 459.89 KB then on a Mac)
-  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(462_000);
+  // the top of a text with a recording, its word in five languages, 459.89 KB then on a Mac; 471 KB since 2026-11-26: Play
+  // mode, a recording played here, js/features/play.js, js/features/youtube.js and js/core/play-queue.js, and its words
+  // in five languages, 469.8 KB then)
+  expect(gz([...parts.scripts, ...parts.modules]), "scripts, gzip bytes").toBeLessThanOrEqual(471_000);
   // (71 KB since 2026-11-02: every size of the menus and labels named, from one scale in css/01-theme.css; 72 KB since
   // 2026-11-05: layout: lines, a Vedic chant line by line on screen and paper; 73 KB since 2026-11-06: Listen's button,
   // panel and marked line, 72.03 KB then; 73.5 KB since 2026-11-11: the Library's Book order | A–Z, 73.3 KB with it on a
@@ -179,12 +181,14 @@ test("the scripts, styles and page stay within their size budget", () => {
 
 // The Content-Security-Policy in _headers (Cloudflare Pages sends it; tests/serve.mjs too, so every test runs under it):
 // files from this site only, and never an inline script; WebAssembly may be compiled, for the chanting model
-// (vendor/onnxruntime/, CLAUDE.md), and nothing else is allowed beside 'self'
+// (vendor/onnxruntime/, CLAUDE.md), and beside 'self' only YouTube's player for Play mode (Satish, 2026-11-26:
+// js/features/youtube.js): its script from www.youtube.com and the player on youtube-nocookie.com
 test("every file carries the Content-Security-Policy: this site only, no inline scripts", async ({ request }) => {
   for (const path of ["./", "sw.js", "js/main.js"]) {
     const csp = (await request.get(path)).headers()["content-security-policy"] || "";
     expect(csp, path).toContain("default-src 'self'");
-    expect(csp, path).toMatch(/script-src 'self' 'wasm-unsafe-eval'(;|$)/);
+    expect(csp, path).toMatch(/script-src 'self' 'wasm-unsafe-eval' https:\/\/www\.youtube\.com(;|$)/);
+    expect(csp, path).toMatch(/frame-src 'self' blob: https:\/\/www\.youtube-nocookie\.com(;|$)/);
   }
 });
 

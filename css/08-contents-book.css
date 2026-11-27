@@ -425,3 +425,47 @@ html[data-lead="en"] .ash[data-lang="both"] .cr .mr {
     border-color: var(--accent);
   }
 }
+
+/* ==== Play mode on a text (js/features/play.js): ▶ beside the Listen card plays it here (the card's link still
+   opens YouTube), and the video above the text playing (#play-video), 200px tall at least, as YouTube asks ==== */
+.listen-cards {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+.listen-cards > .listen-card:not(.can-play) {
+  grid-column: 1 / -1;
+}
+.listen-play {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+}
+.listen-card.can-play .listen-icon {
+  display: none;
+}
+#play-video {
+  width: 100%;
+  max-width: 720px;
+  /* the screen's width, as tall as a 16:9 video is, never under 200px (a narrow phone shows a strip more of black) */
+  height: clamp(200px, 56.25vw, 405px);
+  margin: 8px auto 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  /* turned to, it sits under the top bar, not behind it */
+  scroll-margin-top: 76px;
+}
+#play-video[hidden] {
+  display: none;
+}
+#play-video iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}

@@ -40,7 +40,7 @@ var SCRIPTS = LANGUAGES.filter(function (l) {
  *   what a piece is built with besides its file: the Wikipedia pages, the credits, and the menu words in a language
  *   (menuWords(part, lang), given by js/main.js: this file is loaded with the store, before the menu words can be)
  * @typedef {{ id: string, title: string, titleEn: string, language: string, category: string, lines: number,
- *   letters: number }} TextFacts   what a text is (its file's header) and where it stands (the library's category)
+ *   letters: number, recording?: string }} TextFacts   what a text is (its file's header) and where it stands (the library's category)
  * @typedef {{ l: string, rf?: true, who?: import("./format.js").Who, mr: string, en: string }} Line
  *   who: in a text marked with who sings, the lead, the chorus or all together (js/features/who-sings.js shows it)
  * @typedef {{ kind?: string, bold?: true, para?: true, lines?: Line[], rmk?: Pair, nt?: true }} Item
@@ -423,6 +423,8 @@ export function buildContent(lib, files, more) {
         if (t.id !== id) throw new Error(file + ': its id is "' + t.id + '", library.json says "' + id + '"');
         // what a text is, from its own file; where it stands, from the library
         facts[id] = { id: id, title: t.title, titleEn: t.titleEn, language: t.language, category: c.id, lines: t.lines || 0, letters: t.letters || 0 };
+        // a recording to hear (Play mode, js/features/play.js): its header's line, as js/text/format.js checked it
+        if (t.recording) facts[id].recording = t.recording;
         var p = toPiece(t, i + 1, ctx);
         if (lib.versions && lib.versions[id]) versions[id] = [version(t, p, file)].concat(lib.versions[id].map(other(p)));
         return p;

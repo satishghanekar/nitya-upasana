@@ -1096,4 +1096,53 @@ export default {
     listen: "સાંભળો",
     lang: { sa: "સંસ્કૃત", mr: "મરાઠી", hi: "હિન્દી" },
   },
+  // Play mode (js/features/play.js): a recording played here from a text's Listen card, on through a session
+  play: {
+    bar: "પ્લેયર",
+    // one recording: what it does, with no count
+    playingOne: "વાગી રહ્યું છે",
+    pausedOne: "અટકાવ્યું",
+    /** @param {string} i @param {string} n */
+    playing: function (i, n) {
+      return n + " માંથી " + i + " વાગી રહ્યું છે";
+    },
+    /** @param {string} i @param {string} n */
+    paused: function (i, n) {
+      return "અટકાવ્યું · " + n + " માંથી " + i;
+    },
+    /** @param {string} name */
+    next: function (name) {
+      return "પછી: " + name;
+    },
+    last: "છેલ્લું",
+    prev: "પાછલું",
+    pause: "અટકાવો",
+    resume: "વગાડો",
+    nextButton: "આગળનું",
+    stop: "બંધ કરો",
+    /** @param {string} who */
+    here: function (who) {
+      return "અહીં જ સાંભળો: " + who;
+    },
+    stopped: "બંધ કર્યું · આગળ સાંભળવા ▶ દબાવો",
+    /** @param {string} names */
+    skipped: function (names) {
+      return "રેકોર્ડિંગ નથી, છોડ્યું: " + names;
+    },
+    /** @param {string} name */
+    cant: function (name) {
+      return name + " અત્યારે વાગતું નથી: આગળનું વગાડે છે";
+    },
+    /** a text played alone, no next to go on to @param {string} name */
+    cantOne: function (name) {
+      return name + " અત્યારે અહીં વાગતું નથી";
+    },
+    locked: "ફોન લૉક થતાં અટક્યું · આગળ સાંભળવા ▶ દબાવો",
+    tap: "શરૂ કરવા ▶ દબાવો",
+    /** @param {string} n */
+    done: function (n) {
+      return "બધાં " + n + " રેકોર્ડિંગ પૂરાં થયાં";
+    },
+    noYouTube: "YouTube ખૂલ્યું નહીં: ઇન્ટરનેટ ચાલુ છે?",
+  },
 };

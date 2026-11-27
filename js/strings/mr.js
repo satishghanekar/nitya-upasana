@@ -1088,4 +1088,53 @@ export default {
     listen: "ऐका",
     lang: { sa: "संस्कृत", mr: "मराठी", hi: "हिंदी" },
   },
+  // Play mode (js/features/play.js): a recording played here from a text's Listen card, on through a session
+  play: {
+    bar: "प्लेअर",
+    // one recording: what it does, with no count
+    playingOne: "वाजत आहे",
+    pausedOne: "थांबवले",
+    /** @param {string} i @param {string} n */
+    playing: function (i, n) {
+      return n + " पैकी " + i + " वाजत आहे";
+    },
+    /** @param {string} i @param {string} n */
+    paused: function (i, n) {
+      return "थांबवले · " + n + " पैकी " + i;
+    },
+    /** @param {string} name */
+    next: function (name) {
+      return "पुढे: " + name;
+    },
+    last: "शेवटची",
+    prev: "मागील",
+    pause: "थांबवा",
+    resume: "वाजवा",
+    nextButton: "पुढील",
+    stop: "बंद करा",
+    /** @param {string} who */
+    here: function (who) {
+      return "इथेच ऐका: " + who;
+    },
+    stopped: "बंद केले · पुढे ऐकण्यासाठी ▶ दाबा",
+    /** @param {string} names */
+    skipped: function (names) {
+      return "रेकॉर्डिंग नाही, वगळले: " + names;
+    },
+    /** @param {string} name */
+    cant: function (name) {
+      return name + " आत्ता वाजत नाही: पुढची लावत आहे";
+    },
+    /** a text played alone, no next to go on to @param {string} name */
+    cantOne: function (name) {
+      return name + " आत्ता इथे वाजत नाही";
+    },
+    locked: "फोन लॉक झाल्यावर थांबले · पुढे ऐकण्यासाठी ▶ दाबा",
+    tap: "सुरू करण्यासाठी ▶ दाबा",
+    /** @param {string} n */
+    done: function (n) {
+      return "सर्व " + n + " रेकॉर्डिंग ऐकून झाली";
+    },
+    noYouTube: "YouTube उघडले नाही: इंटरनेट चालू आहे का?",
+  },
 };

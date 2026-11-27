@@ -1117,4 +1117,53 @@ export default {
     listen: "వినండి",
     lang: { sa: "సంస్కృతం", mr: "మరాఠీ", hi: "హిందీ" },
   },
+  // Play mode (js/features/play.js): a recording played here from a text's Listen card, on through a session
+  play: {
+    bar: "ప్లేయర్",
+    // one recording: what it does, with no count
+    playingOne: "వినిపిస్తోంది",
+    pausedOne: "ఆపబడింది",
+    /** @param {string} i @param {string} n */
+    playing: function (i, n) {
+      return n + " లో " + i + " వినిపిస్తోంది";
+    },
+    /** @param {string} i @param {string} n */
+    paused: function (i, n) {
+      return "ఆపబడింది · " + n + " లో " + i;
+    },
+    /** @param {string} name */
+    next: function (name) {
+      return "తర్వాత: " + name;
+    },
+    last: "చివరిది",
+    prev: "మునుపటి",
+    pause: "ఆపండి",
+    resume: "వినిపించండి",
+    nextButton: "తర్వాతి",
+    stop: "ముగించండి",
+    /** @param {string} who */
+    here: function (who) {
+      return "ఇక్కడే వినండి: " + who;
+    },
+    stopped: "ముగించబడింది · కొనసాగించడానికి ▶ నొక్కండి",
+    /** @param {string} names */
+    skipped: function (names) {
+      return "రికార్డింగ్ లేదు, దాటవేయబడింది: " + names;
+    },
+    /** @param {string} name */
+    cant: function (name) {
+      return name + " ఇప్పుడు వినిపించడం లేదు: తర్వాతిదానికి వెళ్తోంది";
+    },
+    /** a text played alone, no next to go on to @param {string} name */
+    cantOne: function (name) {
+      return name + " ఇప్పుడు ఇక్కడ వినిపించడం లేదు";
+    },
+    locked: "ఫోన్ లాక్ అయినప్పుడు ఆగింది · కొనసాగించడానికి ▶ నొక్కండి",
+    tap: "మొదలుపెట్టడానికి ▶ నొక్కండి",
+    /** @param {string} n */
+    done: function (n) {
+      return "అన్ని " + n + " రికార్డింగ్‌లు పూర్తయ్యాయి";
+    },
+    noYouTube: "YouTube తెరుచుకోలేదు: ఇంటర్నెట్ ఆన్‌లో ఉందా?",
+  },
 };
